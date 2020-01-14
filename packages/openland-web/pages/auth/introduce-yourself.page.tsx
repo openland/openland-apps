@@ -12,9 +12,8 @@ import { useClient } from 'openland-web/utils/useClient';
 import * as Cookie from 'js-cookie';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, FormLayout } from './components/authComponents';
+import { Title, Subtitle, FormLayout, AuthActionButton } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
-import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 
 export type ProfileFormData = {
@@ -44,8 +43,8 @@ const CreateProfileFormInnerWeb = (
     let firstName = useField<string>(
         'input.firstName',
         (prefill && prefill.firstName) ||
-            (props.initialProfileFormData && props.initialProfileFormData.firstName) ||
-            '',
+        (props.initialProfileFormData && props.initialProfileFormData.firstName) ||
+        '',
         form,
         [
             {
@@ -57,8 +56,8 @@ const CreateProfileFormInnerWeb = (
     let lastName = useField<string>(
         'input.lastName',
         (prefill && prefill.lastName) ||
-            (props.initialProfileFormData && props.initialProfileFormData.lastName) ||
-            '',
+        (props.initialProfileFormData && props.initialProfileFormData.lastName) ||
+        '',
         form,
     );
     let photoRef = useField<StoredFileT | null>(
@@ -75,13 +74,13 @@ const CreateProfileFormInnerWeb = (
                     lastName: lastName.value.trim(),
                     photoRef: photoRef.value
                         ? {
-                              ...(photoRef.value as any),
-                              isImage: undefined,
-                              width: undefined,
-                              height: undefined,
-                              crop: undefined,
-                              __typename: undefined,
-                          }
+                            ...(photoRef.value as any),
+                            isImage: undefined,
+                            width: undefined,
+                            height: undefined,
+                            crop: undefined,
+                            __typename: undefined,
+                        }
                         : undefined,
                 };
 
@@ -116,63 +115,52 @@ const CreateProfileFormInnerWeb = (
 
     useShortcuts({ keys: ['Enter'], callback: doConfirm });
 
-    const button = (
-        <UButton
-            loading={sending}
-            style="primary"
-            text={InitTexts.create_profile.continue}
-            size="large"
-            onClick={doConfirm}
-        />
-    );
-
     return (
-        <FormLayout
-            top={
-                <>
-                    <Title text={InitTexts.create_profile.title} />
-                    <Subtitle
-                        text={InitTexts.create_profile.subTitle}
-                        maxWidth={props.isMobile ? 230 : undefined}
+        <FormLayout>
+            <Title text={InitTexts.create_profile.title} />
+            <Subtitle
+                text={InitTexts.create_profile.subTitle}
+                maxWidth={props.isMobile ? 230 : undefined}
+            />
+            <XView marginTop={32} marginBottom={16}>
+                <UAvatarUploadField
+                    field={photoRef}
+                    initialUrl={prefill ? prefill.picture : undefined}
+                />
+            </XView>
+
+            <XView width={props.isMobile ? '100%' : 360} maxWidth={360} marginBottom={16}>
+                <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
+                    <UInput
+                        label="First name"
+                        value={firstName.value}
+                        flexGrow={1}
+                        onChange={firstName.input.onChange}
                     />
-                    <XView marginBottom={20}>
-                        <UAvatarUploadField
-                            field={photoRef}
-                            initialUrl={prefill ? prefill.picture : undefined}
-                        />
-                    </XView>
+                </XView>
+                {firstName.input.invalid &&
+                    firstName.input.errorText && (
+                        <XErrorMessage2 message={firstName.input.errorText} />
+                    )}
+            </XView>
 
-                    <XView width={props.isMobile ? '100%' : 360} maxWidth={360} marginBottom={20}>
-                        <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
-                            <UInput
-                                label="First name"
-                                flexGrow={1}
-                                onChange={firstName.input.onChange}
-                            />
-                        </XView>
-                        {firstName.input.invalid &&
-                            firstName.input.errorText && (
-                                <XErrorMessage2 message={firstName.input.errorText} />
-                            )}
-                    </XView>
+            <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
+                <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
+                    <UInput
+                        label="Last name"
+                        value={lastName.value}
+                        flexGrow={1}
+                        onChange={lastName.input.onChange}
+                    />
+                </XView>
+                {lastName.input.invalid &&
+                    lastName.input.errorText && (
+                        <XErrorMessage2 message={lastName.input.errorText} />
+                    )}
+            </XView>
+            <AuthActionButton loading={sending} text={InitTexts.create_profile.next} onClick={doConfirm} />
+        </FormLayout>
 
-                    <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
-                        <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
-                            <UInput
-                                label="Last name"
-                                flexGrow={1}
-                                onChange={lastName.input.onChange}
-                            />
-                        </XView>
-                        {lastName.input.invalid &&
-                            lastName.input.errorText && (
-                                <XErrorMessage2 message={lastName.input.errorText} />
-                            )}
-                    </XView>
-                </>
-            }
-            bottom={button}
-        />
     );
 };
 
@@ -191,15 +179,15 @@ export const IntroduceYourselfPageInner = ({ isMobile }: IntroduceYourselfPageOu
 
     const initialProfileFormData = profile.profile
         ? {
-              firstName: profile.profile.firstName,
-              lastName: profile.profile.lastName,
-              photoRef: profile.profile.photoRef,
-          }
+            firstName: profile.profile.firstName,
+            lastName: profile.profile.lastName,
+            photoRef: profile.profile.photoRef,
+        }
         : null;
 
     return (
         <Wrapper>
-            <XDocumentHead title="Introduce yourself" />
+            <XDocumentHead title="What’s your name?" />
             <BackSkipLogo
                 onBack={
                     null
@@ -208,7 +196,6 @@ export const IntroduceYourselfPageInner = ({ isMobile }: IntroduceYourselfPageOu
                     // }
                 }
                 onSkip={null}
-                noLogo={isMobile}
             />
             <CreateProfileFormInnerWeb
                 prefill={prefill}

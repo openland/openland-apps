@@ -1,22 +1,17 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { InitTexts } from 'openland-web/pages/init/_text';
-import * as Cookie from 'js-cookie';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, FormLayout } from './components/authComponents';
+import { Title, Subtitle, FormLayout, AuthActionButton, AuthInput } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
-import { UButton } from 'openland-web/components/unicorn/UButton';
-import { UInput } from 'openland-web/components/unicorn/UInput';
 
 export type CreateWithEmailProps = {
     fireEmail: (email: string) => Promise<void>;
-    signin: boolean;
     emailError: string;
     emailValue: string;
     emailSending: boolean;
@@ -35,13 +30,10 @@ export const WebSignUpCreateWithEmail = ({
     loginEmailStart,
     emailSending,
     isMobile,
-    signin,
 }: CreateWithEmailProps & {
     loginEmailStart: (a: string) => void;
 }) => {
     const form = useForm();
-    const title = signin ? 'Enter your email' : 'Create new account';
-    const subTitle = signin ? 'We will send you an activation code' : `It's free and easy`;
 
     let emailField = useField('input.email', emailValue, form, [
         {
@@ -68,40 +60,19 @@ export const WebSignUpCreateWithEmail = ({
     const errorText = (emailField.input.invalid && emailField.input.errorText) || emailError;
     const isInvalid = !!errorText;
 
-    const button = (
-        <UButton
-            style="primary"
-            loading={emailSending}
-            size="large"
-            alignSelf="center"
-            text={InitTexts.auth.continue}
-            onClick={doConfirm}
-        />
-    );
-
     return (
-        <FormLayout
-            top={
-                <>
-                    <Title text={title} />
-                    <XView color="var(--foregroundSecondary)" marginBottom={32} marginTop={8}>
-                        <Subtitle text={subTitle} />
-                    </XView>
-                    <XView width={isMobile ? '100%' : 360} maxWidth={360}>
-                        <UInput
-                            onChange={emailField.input.onChange}
-                            autofocus={true}
-                            width={isMobile ? '100%' : 360}
-                            type="email"
-                            label={InitTexts.auth.emailPlaceholder}
-                            invalid={isInvalid}
-                        />
-                        {isInvalid && <XErrorMessage2 message={errorText} />}
-                    </XView>
-                </>
-            }
-            bottom={button}
-        />
+        <FormLayout>
+            <Title text="What’s your email?" />
+            <Subtitle text="We’ll send you a login code" />
+            <AuthInput
+                isMobile={isMobile}
+                label={InitTexts.auth.emailPlaceholder}
+                invalid={isInvalid}
+                onChange={emailField.input.onChange}
+            />
+            {isInvalid && <XErrorMessage2 message={errorText} />}
+            <AuthActionButton text={InitTexts.auth.next} loading={emailSending} onClick={doConfirm} />
+        </FormLayout>
     );
 };
 
@@ -143,17 +114,12 @@ export const AskEmailPage = (props: CreateWithEmailProps) => {
 
     return (
         <Wrapper>
-            <XDocumentHead title="Ask email" />
+            <XDocumentHead title="What’s your email?" />
             <BackSkipLogo
                 onBack={() => {
-                    if (Cookie.get('x-openland-create-new-account')) {
-                        router.replace('/authorization/create-new-account');
-                    } else {
-                        router.replace('/');
-                    }
+                    router.replace('/signin');
                 }}
                 onSkip={null}
-                noLogo={props.isMobile}
             />
             <WebSignUpCreateWithEmail {...props} loginEmailStart={loginEmailStart} />
         </Wrapper>

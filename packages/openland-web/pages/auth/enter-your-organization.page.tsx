@@ -11,10 +11,8 @@ import { useClient } from 'openland-web/utils/useClient';
 import * as Cookie from 'js-cookie';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, FormLayout } from './components/authComponents';
+import { Title, Subtitle, FormLayout, AuthInput, AuthActionButton } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
-import { UButton } from 'openland-web/components/unicorn/UButton';
-import { UInput } from 'openland-web/components/unicorn/UInput';
 
 export type EnterYourOrganizationPageProps = { inviteKey?: string | null };
 
@@ -38,6 +36,8 @@ const CreateOrganizationFormInnerWeb = ({
 }) => {
     const form = useForm();
 
+    const orgInvite = Cookie.get('x-openland-org-invite');
+
     let organizationField = useField('input.organization', initialOrganizationName || '', form, [
         {
             checkIsValid: (value: string) => !!value.trim(),
@@ -55,40 +55,29 @@ const CreateOrganizationFormInnerWeb = ({
         [organizationField.value],
     );
 
-    const subtitle = 'Give others context about your work';
-
     useShortcuts({ keys: ['Enter'], callback: doConfirm });
 
     const errorText = organizationField.input.errorText;
     const isInvalid = !!errorText && organizationField.input.invalid;
 
-    const button = (
-        <UButton
-            loading={sending}
-            style="primary"
-            text={InitTexts.create_organization.continue}
-            size="large"
-            onClick={doConfirm}
-        />
-    );
-
     return (
-        <FormLayout
-            top={
-                <>
-                    <Title text={InitTexts.create_organization.title} />
-                    <Subtitle text={subtitle} />
-                    <XView width={isMobile ? '100%' : 360} maxWidth={360}>
-                        <UInput
-                            label="Organization name"
-                            onChange={organizationField.input.onChange}
-                        />
-                        {isInvalid && <XErrorMessage2 message={errorText} />}
-                    </XView>
-                </>
-            }
-            bottom={button}
-        />
+        <FormLayout>
+            <Title text={InitTexts.create_organization.title} />
+            <Subtitle text={InitTexts.create_organization.subTitle} />
+            <XView width={isMobile ? '100%' : 360} maxWidth={360}>
+                <AuthInput
+                    label="Organization name"
+                    isMobile={isMobile}
+                    onChange={organizationField.input.onChange}
+                />
+                {isInvalid && <XErrorMessage2 message={errorText} />}
+            </XView>
+            <AuthActionButton
+                loading={sending}
+                text={!!orgInvite ? InitTexts.create_organization.done : InitTexts.create_organization.next}
+                onClick={doConfirm}
+            />
+        </FormLayout>
     );
 };
 
@@ -102,8 +91,8 @@ export const EnterYourOrganizationPageInner = ({
 
     const initialOrganizationName =
         profile.profile &&
-        profile.profile.primaryOrganization &&
-        profile.profile.primaryOrganization.name
+            profile.profile.primaryOrganization &&
+            profile.profile.primaryOrganization.name
             ? profile.profile.primaryOrganization.name
             : undefined;
 
@@ -197,7 +186,7 @@ export const EnterYourOrganizationPageInner = ({
                 ) {
                     window.location.href = `/matchmaking/${room.join.id}/ask/${
                         room.join.matchmaking.questions[0].id
-                    }`;
+                        }`;
                 } else {
                     window.location.href = `/mail/${room.join.id}`;
                 }
@@ -232,13 +221,12 @@ export const EnterYourOrganizationPageInner = ({
 
     return (
         <Wrapper>
-            <XDocumentHead title="Enter organization" />
+            <XDocumentHead title="Where do you work?" />
             <BackSkipLogo
                 onBack={() => {
                     router.replace('/authorization/introduce-yourself');
                 }}
                 onSkip={onSkip}
-                noLogo={isMobile}
             />
             <CreateOrganizationFormInnerWeb
                 initialOrganizationName={initialOrganizationName}

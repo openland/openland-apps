@@ -28,7 +28,7 @@ export const DiscoverStart = ({
     const isMobile = useIsMobile();
     return (
         <XView flexGrow={1}>
-            {!noBackSkipLogo && <BackSkipLogo onBack={null} onSkip={onSkip} noLogo={!!isMobile} />}
+            {!noBackSkipLogo && <BackSkipLogo onBack={null} onSkip={onSkip} />}
             <XView
                 alignItems="center"
                 flexGrow={1}

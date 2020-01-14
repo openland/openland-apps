@@ -2,132 +2,98 @@ import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { BackSkipLogo } from '../components/BackSkipLogo';
-import { TextTitle1, TextBody, TextLabel1 } from 'openland-web/utils/TextStyles';
-import { ULink } from 'openland-web/components/unicorn/ULink';
-import { useIsMobile } from 'openland-web/hooks/useIsMobile';
+import { FormLayout } from './components/authComponents';
+import { TextTitle1, TextBody, TextCaption } from 'openland-web/utils/TextStyles';
 import { css, cx } from 'linaria';
 import { Unicorn } from 'openland-x/XLoader';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import EmailIcon from 'openland-icons/s/ic-mail-24.svg';
-import GoogleIcon from 'openland-icons/s/ic-google.svg';
-import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { isElectron } from 'openland-y-utils/isElectron';
 
-const TermsText = css`
+const titleText = css`
+    color: var(--foregroundPrimary);
+    margin-bottom: 8px;
+`;
+
+const captionText = css`
+    color: var(--foregroundTertiary);
+    text-align: center;
+    padding: 0 16px;
+`;
+
+const boldCaption = css`
+    font-weight: 600;
+`;
+
+const bodyText = css`
     text-align: center;
     color: var(--foregroundSecondary);
 `;
 
-const LinkText = css`
-    color: var(--accentPrimary);
-    cursor: pointer;
-    &:hover {
-        text-decoration: underline;
-    }
-`;
-
 export type AuthMechanism = {
-    onSignUpClick: (event: React.MouseEvent<any, MouseEvent>) => void;
-    onLoginClick: (event: React.MouseEvent<any, MouseEvent>) => void;
-    signin: boolean;
     loginWithGoogle: () => void;
     loginWithEmail: () => void;
-    isMobile: boolean;
 };
 
 export const SignUpAuthMechanism = ({
-    signin,
-    onLoginClick,
-    onSignUpClick,
     loginWithGoogle,
     loginWithEmail,
 }: AuthMechanism) => {
-    const title = signin ? 'Sign in to Openland' : 'Create account';
-    const isMobile = useIsMobile();
-
     return (
-        <>
+        <FormLayout>
             <XView alignItems="center" flexGrow={1} justifyContent="center">
                 <XView
-                    maxHeight={850}
+                    maxWidth={320}
                     alignItems="center"
-                    flexGrow={isMobile ? 1 : undefined}
                     justifyContent="center"
                 >
-                    <span className={TextTitle1}>{title}</span>
-
-                    <div className={cx(TextBody, TermsText)} style={{ marginTop: 8 }}>
-                        By creating Openland account you are <br /> accepting{' '}
-                        <ULink
-                            href="https://openland.com/terms"
-                            className={cx(TextLabel1, TermsText)}
-                        >
-                            Terms
-                        </ULink>{' '}
-                        and{' '}
-                        <ULink
-                            href="https://openland.com/privacy"
-                            className={cx(TextLabel1, TermsText)}
-                        >
-                            Privacy Policy
-                        </ULink>
-                        .
-                    </div>
-
                     <XView
-                        flexGrow={isMobile ? 1 : undefined}
                         justifyContent="center"
-                        margin={isMobile ? undefined : 60}
+                        marginBottom={16}
                     >
-                        <Unicorn width="160" height="160" />
+                        <Unicorn width="128" height="128" />
                     </XView>
+                    <h2 className={cx(TextTitle1, titleText)}>Openland</h2>
 
-                    <div
-                        className={cx(TextBody, TermsText)}
-                        onClick={!signin ? onLoginClick : onSignUpClick}
-                    >
-                        {!signin ? 'Already have an account? ' : 'Need new account? '}
-                        <span className={LinkText}>{signin ? 'Sign up' : 'Log in'}</span>
-                    </div>
+                    <h3 className={cx(TextBody, bodyText)}>
+                        The best place to find and build inspiring communities
+                    </h3>
 
-                    <XView marginBottom={60} width={240} marginTop={20}>
+                    <XView marginBottom={32} width={240} marginTop={32}>
+                        <UButton
+                            onClick={loginWithGoogle}
+                            marginBottom={16}
+                            size="large"
+                            shape="square"
+                            text="Continue with Google"
+                        />
                         <UButton
                             onClick={loginWithEmail}
                             size="large"
+                            shape="square"
                             text="Continue with Email"
                             style="secondary"
-                            left={
-                                <XView marginRight={6}>
-                                    <UIcon icon={<EmailIcon />} />
-                                </XView>
-                            }
-                        />
-                        <UButton
-                            onClick={loginWithGoogle}
-                            marginTop={16}
-                            size="large"
-                            text="Continue with Google"
-                            left={
-                                <XView marginRight={6}>
-                                    <UIcon color="white" icon={<GoogleIcon />} />
-                                </XView>
-                            }
                         />
                     </XView>
+
+                    <p className={cx(TextCaption, captionText)}>By creating an account you are accepting our <span className={boldCaption}>Terms of service</span> and <span className={boldCaption}>Privacy policy</span></p>
                 </XView>
             </XView>
-        </>
+        </FormLayout>
     );
 };
 
 export const CreateNewAccountPage = (props: AuthMechanism) => {
     return (
         <XView backgroundColor="white" flexGrow={1}>
-            <XDocumentHead title="Create New Account" />
-            <BackSkipLogo
-                onBack={() => window.history.back()}
-                onSkip={null}
-                noLogo={true}
-            />
+            <XDocumentHead title="Login" />
+            {!isElectron && (
+                <BackSkipLogo
+                    onBack={() => {
+                        window.history.back();
+                    }}
+                    onSkip={null}
+                />
+            )}
             <SignUpAuthMechanism {...props} />
         </XView>
     );

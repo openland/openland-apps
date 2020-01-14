@@ -146,14 +146,14 @@ const ChatsItemList = ({
                         }}
                     />
                 ) : (
-                    <UButton
-                        text="Select all"
-                        size="medium"
-                        onClick={() => {
-                            setSelectedIds(allRoomsIds);
-                        }}
-                    />
-                )}
+                        <UButton
+                            text="Select all"
+                            size="medium"
+                            onClick={() => {
+                                setSelectedIds(allRoomsIds);
+                            }}
+                        />
+                    )}
             </XView>
 
             <XScrollView3 marginBottom={-110} flexGrow={1} flexShrink={1} alignItems="center">
@@ -235,7 +235,7 @@ export const ChatsForYou = ({
         <Wrapper fullHeight={fullHeight}>
             <XDocumentHead title="Choose role" />
             <XView marginBottom={12}>
-                <BackSkipLogo noLogo={true} onBack={onBack} onSkip={onSkip} />
+                <BackSkipLogo onBack={onBack} onSkip={onSkip} />
             </XView>
 
             <XView

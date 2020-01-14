@@ -39,13 +39,6 @@ const checkIfIsSignInInvite = (router: any) => {
     );
 };
 
-const checkIfIsSignIn = (router: any) => {
-    if (checkIfIsSignInInvite(router)) {
-        return false;
-    }
-    return router.path.endsWith('signin');
-};
-
 export default () => {
     let router = React.useContext(XRouterContext)!;
     let page: pagesT = pages.createNewAccount;
@@ -71,10 +64,6 @@ export default () => {
     if (router.path.includes('ask-email')) {
         page = pages.askEmail;
     }
-    if (router.path.includes('create-new-account')) {
-        Cookie.set('x-openland-create-new-account', 'true');
-        page = pages.createNewAccount;
-    }
     if (
         router.path.includes('enter-your-organization') ||
         router.path.includes('/createOrganization')
@@ -90,7 +79,6 @@ export default () => {
     if (router.path.includes('magic')) {
         page = pages.loading;
     }
-    const [signin, setSignin] = React.useState(router.path.endsWith('signin'));
 
     let redirect = router.query ? (router.query.redirect ? router.query.redirect : null) : null;
 
@@ -112,6 +100,7 @@ export default () => {
     const [emailSent, setEmailSent] = React.useState(false);
     const [googleStarting, setGoogleStarting] = React.useState(false);
     const [fromOutside, setFromOutside] = React.useState(false);
+    const [isExistingUser, setExistingUser] = React.useState(false);
 
     const fireEmail = React.useCallback(
         async (emailToFire: string) => {
@@ -134,6 +123,7 @@ export default () => {
 
                 setEmailSending(false);
                 setEmailSent(true);
+                setExistingUser(!!res.isExistingUser);
             } catch (e) {
                 throw new Error('Something went wrong');
             }
@@ -196,7 +186,7 @@ export default () => {
     }, []);
 
     const loginWithGoogle = React.useCallback(() => {
-        trackEvent(checkIfIsSignIn(router) ? 'signin_google_action' : 'signup_google_action');
+        trackEvent('signin_google_action');
         setGoogleStarting(true);
         setTimeout(() => {
             fireGoogle();
@@ -279,28 +269,19 @@ export default () => {
             )}
             {page === pages.createNewAccount && (
                 <XTrack
-                    event={signin ? 'signin_view' : 'signup_view'}
-                    key={signin ? 'signin-track' : 'signup-track'}
+                    event={'signin_view'}
+                    key={'signin-track'}
                 >
                     <CreateNewAccountPage
-                        onLoginClick={() => {
-                            setSignin(true);
-                        }}
-                        onSignUpClick={() => {
-                            setSignin(false);
-                        }}
-                        signin={signin}
                         loginWithGoogle={loginWithGoogle}
                         loginWithEmail={loginWithEmail}
-                        isMobile={!!isMobile}
                     />
                 </XTrack>
             )}
             {page === pages.askEmail && (
-                <XTrack event={signin ? 'signin_email_view' : 'signup_email_view'}>
+                <XTrack event={'signin_email_view'}>
                     <AskEmailPage
                         fireEmail={fireEmail}
-                        signin={signin}
                         emailError={emailError}
                         emailValue={emailValue}
                         emailSending={emailSending}
@@ -315,7 +296,6 @@ export default () => {
             {page === pages.askActivationCode && (
                 <XTrack event="code_view">
                     <AskActivationPage
-                        signin={signin}
                         resendCodeClick={async () => {
                             trackEvent('code_resend_action');
                             setEmailSending(true);
@@ -330,16 +310,17 @@ export default () => {
                         emailValue={emailValue}
                         emailSending={emailSending}
                         isMobile={!!isMobile}
+                        isExistingUser={isExistingUser}
                     />
                 </XTrack>
             )}
             {page === pages.introduceYourself && (
-                <XTrack event="signup_profile_view">
+                <XTrack event="signin_profile_view">
                     <IntroduceYourselfPage isMobile={!!isMobile} />
                 </XTrack>
             )}
             {page === pages.enterYourOrganization && (
-                <XTrack event="signup_org_view">
+                <XTrack event="signin_org_view">
                     <EnterYourOrganizationPage inviteKey={null} isMobile={!!isMobile} />
                 </XTrack>
             )}
