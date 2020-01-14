@@ -445,6 +445,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                         onTextChange={this.handleChange}
                                         onContentChange={this.onContentChange}
                                         isChannel={this.props.room.__typename === 'SharedRoom' ? this.props.room.isChannel : undefined}
+                                        autoFocus={true}
                                     />
                                 </div>
                             </div>

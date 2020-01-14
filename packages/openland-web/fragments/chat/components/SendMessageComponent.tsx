@@ -454,6 +454,7 @@ interface SendMessageComponentProps {
     rickRef?: React.RefObject<URickInputInstance>;
     onPressUp?: () => boolean;
     onAttach?: (files: File[]) => void;
+    autoFocus?: boolean;
 }
 
 const sendMessageContainer = css`
@@ -647,6 +648,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     onStickerSent={
                         props.onStickerSent || props.onStickerSentAsync ? onStickerSent : undefined
                     }
+                    autofocus={props.autoFocus}
                     placeholder={props.placeholder || 'Write a message...'}
                     onFilesPaste={props.onAttach}
                     withShortcutsButton={!isMobile}
