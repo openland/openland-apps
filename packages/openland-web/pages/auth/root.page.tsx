@@ -150,7 +150,7 @@ export default () => {
             gapi.auth2.init({
                 client_id: "1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com",
                 scope: "profile email"
-            }).then((auth2) => auth2.signIn({ ux_mode: 'redirect', redirect_uri: window.origin + '/authorization/google-complete' }));
+            }).then((auth2) => auth2.signIn({ ux_mode: 'redirect', prompt: 'consent', redirect_uri: window.origin + '/authorization/google-complete' }));
 
         });
     }, []);
@@ -177,6 +177,7 @@ export default () => {
                         }
                     } else {
                         router.replace('/authorization/signin');
+                        console.warn('google auth: not signed in');
                     }
                 });
             });
