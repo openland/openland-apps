@@ -1,8 +1,7 @@
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import * as React from 'react';
-import { backoff } from 'openland-y-utils/timer';
-import { useClient } from 'openland-web/utils/useClient';
-import uuid from 'uuid';
+import { XView } from 'react-mental';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 
 const token = 'pk_test_y80EsXGYQdMKMcJ5lifEM4jx';
 let style = {
@@ -21,50 +20,51 @@ let style = {
     }
 };
 
-export interface StripeCardComponentInstance {
-    createPaymentMethod: () => Promise<string | any>;
+export interface StripeCardProps {
+    text: string;
+    error?: string;
+    loading?: boolean;
+    onSubmit?: (stripe: stripe.Stripe, element: stripe.elements.Element) => void;
 }
 
-export const StripeCardComponent = React.memo(React.forwardRef((props: {}, ref: React.Ref<StripeCardComponentInstance>) => {
+export const StripeCardComponent = React.memo((props: StripeCardProps) => {
     if (!canUseDOM) {
         return null;
     }
-    let client = useClient();
-    let stripe = React.useMemo(() => Stripe(token), []);
-    let elements = React.useMemo(() => stripe.elements(), []);
-    let card = React.useMemo(() => elements.create('card', { style: style }), []);
-    let container = React.useRef<HTMLDivElement>(null);
+    // Create Stripe Instance
+    const stripe = React.useMemo(() => Stripe(token), []);
 
+    // Create Elements Factory
+    const elements = React.useMemo(() => stripe.elements(), []);
+
+    // Create Card Elements
+    const card = React.useMemo(() => elements.create('card', { style: style }), []);
+
+    // Sync Disabled State
+    React.useLayoutEffect(() => {
+        card.update({ disabled: props.loading });
+    }, [props.loading]);
+
+    // Mount Card Elements
+    const container = React.useRef<HTMLDivElement>(null);
     React.useLayoutEffect(() => {
         card.mount(container.current);
     }, []);
 
-    React.useImperativeHandle(ref, () => ({
-        createPaymentMethod: async () => {
-            // Create Intent
-            let retryKey = uuid();
-            let intent = (await backoff(async () => client.mutateCreateCardSetupIntent({ retryKey }))).cardCreateSetupIntent;
-
-            // Confirm Card
-            let method = await backoff(async () => (stripe as any).confirmCardSetup(intent.clientSecret, {
-                payment_method: {
-                    card: card
-                }
-            }));
-            if (method.error) {
-                return method.error;
-            }
-            let pmid = method.setupIntent!.payment_method! as string;
-
-            // Commit Intent
-            await backoff(() => client.mutateCommitCardSetupIntent({ id: intent.id, pmid }));
-
-            // Refetch Cards
-            await backoff(() => client.refetchMyCards());
-
-            return pmid;
+    // On Submit Callback
+    const onSubmit = React.useCallback(() => {
+        if (props.onSubmit) {
+            props.onSubmit(stripe, card);
         }
-    }));
+    }, [props.onSubmit]);
 
-    return <div ref={container} />;
-}));
+    return (
+        <XView flexDirection="column" alignItems="stretch">
+            {props.error && (<XView>{props.error}</XView>)}
+            <XView flexDirection="column" alignItems="stretch" height={40} paddingBottom={24} paddingHorizontal={12} >
+                <div ref={container} />
+            </XView>
+            <UButton text={props.text} onClick={onSubmit} loading={props.loading} />
+        </XView>
+    );
+});
