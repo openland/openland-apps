@@ -1,32 +1,38 @@
 import * as React from 'react';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
-import { SHeader } from 'react-native-s/SHeader';
-import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZInput } from '../../components/ZInput';
 import RNRestart from 'react-native-restart';
-import { Text, StyleSheet, TextStyle } from 'react-native';
+import { Text, StyleSheet, TextStyle, View, KeyboardAvoidingView } from 'react-native';
+import { SScrollView } from 'react-native-s/SScrollView';
 import { UserError, NamedError } from 'openland-y-forms/errorHandling';
 import { ShowAuthError } from './ShowAuthError';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
+import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { trackEvent } from 'openland-mobile/analytics';
 import { TrackAuthError } from './TrackAuthError';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 import { API_HOST } from 'openland-y-utils/api';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export const ACTIVATION_CODE_LENGTH = 6;
 
 const styles = StyleSheet.create({
+    title: {
+        ...TextStyles.Title1,
+        textAlign: 'center',
+        paddingHorizontal: 16,
+        marginBottom: 8,
+    } as TextStyle,
     hint: {
         ...TextStyles.Body,
+        textAlign: 'center',
         paddingHorizontal: 16,
-        marginBottom: 23,
+        marginBottom: 32,
     } as TextStyle,
 });
 
@@ -102,24 +108,31 @@ const EmailStartComponent = (props: PageProps) => {
 
     return (
         <ZTrack event="signup_email_view">
-            <SHeader title="Email" />
-            <SHeaderButton title="Next" onPress={submitForm} />
-
-            <KeyboardAvoidingScrollView>
-                <Text style={[styles.hint, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
-                    Enter your email address to sign in or create a{'\u00A0'}new{'\u00A0'}account
-                </Text>
-                <ZInput
-                    field={emailField}
-                    placeholder="Email"
-                    autoCapitalize="none"
-                    keyboardType="email-address"
-                    autoFocus={true}
-                    returnKeyType="next"
-                    allowFontScaling={false}
-                    onSubmitEditing={submitForm}
-                />
-            </KeyboardAvoidingScrollView>
+            <View flex={1}>
+                <SScrollView>
+                    <Text style={[styles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
+                        What’s your email?
+                    </Text>
+                    <Text style={[styles.hint, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
+                        We’ll send you a login code
+                    </Text>
+                    <ZInput
+                        field={emailField}
+                        placeholder="Email"
+                        autoCapitalize="none"
+                        keyboardType="email-address"
+                        autoFocus={true}
+                        returnKeyType="next"
+                        allowFontScaling={false}
+                        onSubmitEditing={submitForm}
+                    />
+                </SScrollView>
+                <KeyboardAvoidingView behavior="padding">
+                    <View padding={16}>
+                        <ZRoundedButton title="Next" size="large" onPress={submitForm}/>
+                    </View>
+                </KeyboardAvoidingView>
+            </View>
         </ZTrack>
     );
 };
@@ -204,25 +217,32 @@ const EmailCodeComponent = (props: PageProps) => {
 
     return (
         <ZTrack event="code_view">
-            <SHeader title="Confirm email" />
-            <SHeaderButton title="Next" onPress={submitForm} />
-
-            <KeyboardAvoidingScrollView>
-                <Text style={[styles.hint, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
-                    Enter activation code that was just sent to {email}
-                </Text>
-                <ZInput
-                    field={codeField}
-                    placeholder="Activation code"
-                    autoCapitalize="none"
-                    keyboardType="number-pad"
-                    autoFocus={true}
-                    returnKeyType="next"
-                    allowFontScaling={false}
-                    onSubmitEditing={submitForm}
-                    maxLength={ACTIVATION_CODE_LENGTH}
-                />
-            </KeyboardAvoidingScrollView>
+            <View flex={1}>
+                <SScrollView>
+                    <Text style={[styles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
+                        Enter login code
+                    </Text>
+                    <Text style={[styles.hint, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
+                        We just sent it to {email}.
+                    </Text>
+                    <ZInput
+                        field={codeField}
+                        placeholder="Activation code"
+                        autoCapitalize="none"
+                        keyboardType="number-pad"
+                        autoFocus={true}
+                        returnKeyType="next"
+                        allowFontScaling={false}
+                        onSubmitEditing={submitForm}
+                        maxLength={ACTIVATION_CODE_LENGTH}
+                    />
+                </SScrollView>
+                <KeyboardAvoidingView behavior="padding">
+                    <View padding={16}>
+                        <ZRoundedButton title="Next" size="large" onPress={submitForm}/>
+                    </View>
+                </KeyboardAvoidingView>
+            </View>
         </ZTrack>
     );
 };
