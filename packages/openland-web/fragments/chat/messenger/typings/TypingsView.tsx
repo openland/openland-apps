@@ -32,13 +32,23 @@ const typingContent = css`
     color: var(--foregroundSecondary);
 `;
 
+const userLink = css`
+    &,
+    &:hover,
+    &:focus,
+    &:active {
+        color: inherit;
+        text-decoration: none;
+    }
+`;
+
 export interface TypingsViewProps {
     conversationId: string;
 }
 
 const UserLink = (props: TypingsUser) => {
     return (
-        <ULink path={`/${props.userId}`} className={TextBody}>
+        <ULink path={`/${props.userId}`} className={cx(TextBody, userLink)}>
             {emoji(props.userName)}
         </ULink>
     );
