@@ -647,7 +647,6 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     onStickerSent={
                         props.onStickerSent || props.onStickerSentAsync ? onStickerSent : undefined
                     }
-                    autofocus={true}
                     placeholder={props.placeholder || 'Write a message...'}
                     onFilesPaste={props.onAttach}
                     withShortcutsButton={!isMobile}
