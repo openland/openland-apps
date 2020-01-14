@@ -1,0 +1,7 @@
+mutation CreateCardSetupIntent($retryKey: String!) {
+  cardCreateSetupIntent(retryKey: $retryKey) {
+    __typename
+    clientSecret
+    id
+  }
+}

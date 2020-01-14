@@ -14,6 +14,7 @@ import * as Conferences from './queries/Conferences';
 import * as Explore from './queries/Explore';
 import * as FeatureFlag from './queries/FeatureFlag';
 import * as Feed from './queries/Feed';
+import * as Finance from './queries/Finance';
 import * as Matchmaking from './queries/Matchmaking';
 import * as Mentions from './queries/Mentions';
 import * as MyNotificationsCenter from './queries/MyNotificationsCenter';
@@ -193,6 +194,9 @@ export const FeedReactionAddMutation = typedMutation<Types.FeedReactionAdd, Type
 export const FeedReactionRemoveMutation = typedMutation<Types.FeedReactionRemove, Types.FeedReactionRemoveVariables>(Feed.FeedReactionRemoveMutation);
 export const FeedDeletePostMutation = typedMutation<Types.FeedDeletePost, Types.FeedDeletePostVariables>(Feed.FeedDeletePostMutation);
 export const FeedUpdatesSubscription = typedSubscription<Types.FeedUpdates, Types.FeedUpdatesVariables>(Feed.FeedUpdatesSubscription);
+export const MyCardsQuery = typedQuery<Types.MyCards, {}>(Finance.MyCardsQuery);
+export const CreateCardSetupIntentMutation = typedMutation<Types.CreateCardSetupIntent, Types.CreateCardSetupIntentVariables>(Finance.CreateCardSetupIntentMutation);
+export const CommitCardSetupIntentMutation = typedMutation<Types.CommitCardSetupIntent, Types.CommitCardSetupIntentVariables>(Finance.CommitCardSetupIntentMutation);
 export const MatchmakingRoomQuery = typedQuery<Types.MatchmakingRoom, Types.MatchmakingRoomVariables>(Matchmaking.MatchmakingRoomQuery);
 export const MatchmakingProfileQuery = typedQuery<Types.MatchmakingProfile, Types.MatchmakingProfileVariables>(Matchmaking.MatchmakingProfileQuery);
 export const MatchmakingRoomSaveMutation = typedMutation<Types.MatchmakingRoomSave, Types.MatchmakingRoomSaveVariables>(Matchmaking.MatchmakingRoomSaveMutation);

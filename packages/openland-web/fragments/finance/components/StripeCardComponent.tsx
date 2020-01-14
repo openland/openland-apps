@@ -1,6 +1,8 @@
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import * as React from 'react';
 import { backoff } from 'openland-y-utils/timer';
+import { useClient } from 'openland-web/utils/useClient';
+import uuid from 'uuid';
 
 const token = 'pk_test_y80EsXGYQdMKMcJ5lifEM4jx';
 let style = {
@@ -27,7 +29,7 @@ export const StripeCardComponent = React.memo(React.forwardRef((props: {}, ref: 
     if (!canUseDOM) {
         return null;
     }
-
+    let client = useClient();
     let stripe = React.useMemo(() => Stripe(token), []);
     let elements = React.useMemo(() => stripe.elements(), []);
     let card = React.useMemo(() => elements.create('card', { style: style }), []);
@@ -39,12 +41,28 @@ export const StripeCardComponent = React.memo(React.forwardRef((props: {}, ref: 
 
     React.useImperativeHandle(ref, () => ({
         createPaymentMethod: async () => {
-            let method = await backoff(async () => stripe.createPaymentMethod('card', card));
+            // Create Intent
+            let retryKey = uuid();
+            let intent = (await backoff(async () => client.mutateCreateCardSetupIntent({ retryKey }))).cardCreateSetupIntent;
+
+            // Confirm Card
+            let method = await backoff(async () => (stripe as any).confirmCardSetup(intent.clientSecret, {
+                payment_method: {
+                    card: card
+                }
+            }));
             if (method.error) {
                 return method.error;
-            } else {
-                return method.paymentMethod!.id;
             }
+            let pmid = method.setupIntent!.payment_method! as string;
+
+            // Commit Intent
+            await backoff(() => client.mutateCommitCardSetupIntent({ id: intent.id, pmid }));
+
+            // Refetch Cards
+            await backoff(() => client.refetchMyCards());
+
+            return pmid;
         }
     }));
 

@@ -1,0 +1,10 @@
+query MyCards {
+  myCards {
+    __typename
+    brand
+    expMonth
+    expYear
+    id
+    last4
+  }
+}

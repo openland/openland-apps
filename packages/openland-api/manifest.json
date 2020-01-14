@@ -975,6 +975,27 @@
       }
     },
     {
+      "signature": "6fc330972e9c3ad51fc8673f94771370b47b40e6c11c503914307a0f1c2b49d5",
+      "document": "query MyCards{myCards{__typename brand expMonth expYear id last4}}",
+      "metadata": {
+        "engineSignature": "query MyCards{myCards{__typename brand expMonth expYear id last4}}"
+      }
+    },
+    {
+      "signature": "bd1fce9c136067a5e4ebd1852257a8cfc9ac96715f443a4c359cecd5dcae6850",
+      "document": "mutation CreateCardSetupIntent($retryKey:String!){cardCreateSetupIntent(retryKey:$retryKey){__typename clientSecret id}}",
+      "metadata": {
+        "engineSignature": "mutation CreateCardSetupIntent($retryKey:String!){cardCreateSetupIntent(retryKey:$retryKey){__typename clientSecret id}}"
+      }
+    },
+    {
+      "signature": "71835ae481dd2b0cdcf5f7cef67da446946e457bb5532c770f3c09ef5d1aabb1",
+      "document": "mutation CommitCardSetupIntent($id:ID!,$pmid:ID!){cardCommitSetupIntent(id:$id,pmid:$pmid){__typename id}}",
+      "metadata": {
+        "engineSignature": "mutation CommitCardSetupIntent($id:ID!,$pmid:ID!){cardCommitSetupIntent(id:$id,pmid:$pmid){__typename id}}"
+      }
+    },
+    {
       "signature": "00a647704b757894d3538e4430ddb13a86738c771138dd3d878978af79fa797f",
       "document": "fragment MatchmakingProfileFragment on MatchmakingProfile{__typename answers{__typename...on TextMatchmakingAnswer{answer question{__typename id subtitle title}}...on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id isBot isYou name photo primaryOrganization{__typename id name}}}fragment MatchmakingRoomFragment on MatchmakingRoom{__typename enabled myProfile{__typename...MatchmakingProfileFragment}profiles{__typename...MatchmakingProfileFragment}questions{__typename...on TextMatchmakingQuestion{id subtitle title}...on MultiselectMatchmakingQuestion{id subtitle tags title}}}query MatchmakingRoom($peerId:ID!){matchmakingRoom(peerId:$peerId){__typename...MatchmakingRoomFragment}}",
       "metadata": {

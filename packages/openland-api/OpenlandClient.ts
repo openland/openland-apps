@@ -667,6 +667,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderFeedItem(variables: Types.FeedItemVariables, opts?: QueryWatchParameters): Types.FeedItem | null {
         return this.useQuery(Source.FeedItemQuery, variables, opts);
     }
+    async queryMyCards(opts?: OperationParameters): Promise<Types.MyCards> {
+        return this.client.query(Source.MyCardsQuery, undefined, opts);
+    }
+    async refetchMyCards(): Promise<Types.MyCards> {
+        return this.refetch(Source.MyCardsQuery);
+    }
+    useMyCards(opts?: QueryWatchParameters): Types.MyCards {
+        return this.useQuerySuspense(Source.MyCardsQuery, undefined, opts);
+    }
+    useWithoutLoaderMyCards(opts?: QueryWatchParameters): Types.MyCards | null {
+        return this.useQuery(Source.MyCardsQuery, undefined, opts);
+    }
     async queryMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: OperationParameters): Promise<Types.MatchmakingRoom> {
         return this.client.query(Source.MatchmakingRoomQuery, variables, opts);
     }
@@ -1263,6 +1275,12 @@ export class OpenlandClient extends BaseApiClient {
     }
     async mutateFeedDeletePost(variables: Types.FeedDeletePostVariables): Promise<Types.FeedDeletePost> {
         return this.client.mutate(Source.FeedDeletePostMutation, variables);
+    }
+    async mutateCreateCardSetupIntent(variables: Types.CreateCardSetupIntentVariables): Promise<Types.CreateCardSetupIntent> {
+        return this.client.mutate(Source.CreateCardSetupIntentMutation, variables);
+    }
+    async mutateCommitCardSetupIntent(variables: Types.CommitCardSetupIntentVariables): Promise<Types.CommitCardSetupIntent> {
+        return this.client.mutate(Source.CommitCardSetupIntentMutation, variables);
     }
     async mutateMatchmakingRoomSave(variables: Types.MatchmakingRoomSaveVariables): Promise<Types.MatchmakingRoomSave> {
         return this.client.mutate(Source.MatchmakingRoomSaveMutation, variables);

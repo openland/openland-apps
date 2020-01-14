@@ -46,6 +46,7 @@ object Operations {
         if (name == "MessagesBatch") return MessagesBatch
         if (name == "MessagesSearch") return MessagesSearch
         if (name == "MyApps") return MyApps
+        if (name == "MyCards") return MyCards
         if (name == "MyNotificationCenter") return MyNotificationCenter
         if (name == "MyNotifications") return MyNotifications
         if (name == "MyOrganizations") return MyOrganizations
@@ -102,6 +103,7 @@ object Operations {
         if (name == "BetaSubmitNextDiscover") return BetaSubmitNextDiscover
         if (name == "CommentSetReaction") return CommentSetReaction
         if (name == "CommentUnsetReaction") return CommentUnsetReaction
+        if (name == "CommitCardSetupIntent") return CommitCardSetupIntent
         if (name == "ConferenceAnswer") return ConferenceAnswer
         if (name == "ConferenceCandidate") return ConferenceCandidate
         if (name == "ConferenceJoin") return ConferenceJoin
@@ -109,6 +111,7 @@ object Operations {
         if (name == "ConferenceLeave") return ConferenceLeave
         if (name == "ConferenceOffer") return ConferenceOffer
         if (name == "CreateApp") return CreateApp
+        if (name == "CreateCardSetupIntent") return CreateCardSetupIntent
         if (name == "CreateOrganization") return CreateOrganization
         if (name == "CreateUserProfileAndOrganization") return CreateUserProfileAndOrganization
         if (name == "DebugMails") return DebugMails

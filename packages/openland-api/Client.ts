@@ -2461,6 +2461,16 @@ const MyAppsSelector = obj(
                     fragment('AppProfile', AppFullSelector)
                 )))))
         );
+const MyCardsSelector = obj(
+            field('myCards', 'myCards', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('brand', 'brand', args(), notNull(scalar('String'))),
+                    field('expMonth', 'expMonth', args(), notNull(scalar('Int'))),
+                    field('expYear', 'expYear', args(), notNull(scalar('Int'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('last4', 'last4', args(), notNull(scalar('String')))
+                )))))
+        );
 const MyNotificationCenterSelector = obj(
             field('myNotificationCenter', 'myNotificationCenter', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -3247,6 +3257,12 @@ const CommentSetReactionSelector = obj(
 const CommentUnsetReactionSelector = obj(
             field('commentReactionRemove', 'commentReactionRemove', args(fieldValue("commentId", refValue('commentId')), fieldValue("reaction", refValue('reaction'))), notNull(scalar('Boolean')))
         );
+const CommitCardSetupIntentSelector = obj(
+            field('cardCommitSetupIntent', 'cardCommitSetupIntent', args(fieldValue("id", refValue('id')), fieldValue("pmid", refValue('pmid'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID')))
+                )))
+        );
 const ConferenceAnswerSelector = obj(
             field('peerConnectionAnswer', 'peerConnectionAnswer', args(fieldValue("answer", refValue('answer')), fieldValue("id", refValue('id')), fieldValue("ownPeerId", refValue('ownPeerId')), fieldValue("peerId", refValue('peerId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -3291,6 +3307,13 @@ const CreateAppSelector = obj(
             field('createApp', 'createApp', args(fieldValue("about", refValue('about')), fieldValue("name", refValue('name')), fieldValue("photoRef", refValue('photoRef')), fieldValue("shortname", refValue('shortname'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('AppProfile', AppFullSelector)
+                )))
+        );
+const CreateCardSetupIntentSelector = obj(
+            field('cardCreateSetupIntent', 'cardCreateSetupIntent', args(fieldValue("retryKey", refValue('retryKey'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('clientSecret', 'clientSecret', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID')))
                 )))
         );
 const CreateOrganizationSelector = obj(
@@ -4295,6 +4318,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query MyApps{apps:myApps{__typename ...AppFull}}fragment AppFull on AppProfile{__typename about id name photoRef{__typename crop{__typename h w x y}uuid}shortname token{__typename salt}}',
         selector: MyAppsSelector
     },
+    MyCards: {
+        kind: 'query',
+        name: 'MyCards',
+        body: 'query MyCards{myCards{__typename brand expMonth expYear id last4}}',
+        selector: MyCardsSelector
+    },
     MyNotificationCenter: {
         kind: 'query',
         name: 'MyNotificationCenter',
@@ -4631,6 +4660,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'mutation CommentUnsetReaction($commentId:ID!,$reaction:MessageReactionType!){commentReactionRemove(commentId:$commentId,reaction:$reaction)}',
         selector: CommentUnsetReactionSelector
     },
+    CommitCardSetupIntent: {
+        kind: 'mutation',
+        name: 'CommitCardSetupIntent',
+        body: 'mutation CommitCardSetupIntent($id:ID!,$pmid:ID!){cardCommitSetupIntent(id:$id,pmid:$pmid){__typename id}}',
+        selector: CommitCardSetupIntentSelector
+    },
     ConferenceAnswer: {
         kind: 'mutation',
         name: 'ConferenceAnswer',
@@ -4672,6 +4707,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'CreateApp',
         body: 'mutation CreateApp($about:String,$name:String!,$photoRef:ImageRefInput,$shortname:String){createApp(about:$about,name:$name,photoRef:$photoRef,shortname:$shortname){__typename ...AppFull}}fragment AppFull on AppProfile{__typename about id name photoRef{__typename crop{__typename h w x y}uuid}shortname token{__typename salt}}',
         selector: CreateAppSelector
+    },
+    CreateCardSetupIntent: {
+        kind: 'mutation',
+        name: 'CreateCardSetupIntent',
+        body: 'mutation CreateCardSetupIntent($retryKey:String!){cardCreateSetupIntent(retryKey:$retryKey){__typename clientSecret id}}',
+        selector: CreateCardSetupIntentSelector
     },
     CreateOrganization: {
         kind: 'mutation',

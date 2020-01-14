@@ -2458,6 +2458,16 @@ private let MyAppsSelector = obj(
                     fragment("AppProfile", AppFullSelector)
                 )))))
         )
+private let MyCardsSelector = obj(
+            field("myCards", "myCards", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("brand", "brand", notNull(scalar("String"))),
+                    field("expMonth", "expMonth", notNull(scalar("Int"))),
+                    field("expYear", "expYear", notNull(scalar("Int"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("last4", "last4", notNull(scalar("String")))
+                )))))
+        )
 private let MyNotificationCenterSelector = obj(
             field("myNotificationCenter", "myNotificationCenter", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -3244,6 +3254,12 @@ private let CommentSetReactionSelector = obj(
 private let CommentUnsetReactionSelector = obj(
             field("commentReactionRemove", "commentReactionRemove", arguments(fieldValue("commentId", refValue("commentId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
+private let CommitCardSetupIntentSelector = obj(
+            field("cardCommitSetupIntent", "cardCommitSetupIntent", arguments(fieldValue("id", refValue("id")), fieldValue("pmid", refValue("pmid"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
+                )))
+        )
 private let ConferenceAnswerSelector = obj(
             field("peerConnectionAnswer", "peerConnectionAnswer", arguments(fieldValue("answer", refValue("answer")), fieldValue("id", refValue("id")), fieldValue("ownPeerId", refValue("ownPeerId")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -3288,6 +3304,13 @@ private let CreateAppSelector = obj(
             field("createApp", "createApp", arguments(fieldValue("about", refValue("about")), fieldValue("name", refValue("name")), fieldValue("photoRef", refValue("photoRef")), fieldValue("shortname", refValue("shortname"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("AppProfile", AppFullSelector)
+                )))
+        )
+private let CreateCardSetupIntentSelector = obj(
+            field("cardCreateSetupIntent", "cardCreateSetupIntent", arguments(fieldValue("retryKey", refValue("retryKey"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("clientSecret", "clientSecret", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
                 )))
         )
 private let CreateOrganizationSelector = obj(
@@ -4296,6 +4319,12 @@ class Operations {
         "query MyApps{apps:myApps{__typename ...AppFull}}fragment AppFull on AppProfile{__typename about id name photoRef{__typename crop{__typename h w x y}uuid}shortname token{__typename salt}}",
         MyAppsSelector
     )
+    let MyCards = OperationDefinition(
+        "MyCards",
+        .query, 
+        "query MyCards{myCards{__typename brand expMonth expYear id last4}}",
+        MyCardsSelector
+    )
     let MyNotificationCenter = OperationDefinition(
         "MyNotificationCenter",
         .query, 
@@ -4632,6 +4661,12 @@ class Operations {
         "mutation CommentUnsetReaction($commentId:ID!,$reaction:MessageReactionType!){commentReactionRemove(commentId:$commentId,reaction:$reaction)}",
         CommentUnsetReactionSelector
     )
+    let CommitCardSetupIntent = OperationDefinition(
+        "CommitCardSetupIntent",
+        .mutation, 
+        "mutation CommitCardSetupIntent($id:ID!,$pmid:ID!){cardCommitSetupIntent(id:$id,pmid:$pmid){__typename id}}",
+        CommitCardSetupIntentSelector
+    )
     let ConferenceAnswer = OperationDefinition(
         "ConferenceAnswer",
         .mutation, 
@@ -4673,6 +4708,12 @@ class Operations {
         .mutation, 
         "mutation CreateApp($about:String,$name:String!,$photoRef:ImageRefInput,$shortname:String){createApp(about:$about,name:$name,photoRef:$photoRef,shortname:$shortname){__typename ...AppFull}}fragment AppFull on AppProfile{__typename about id name photoRef{__typename crop{__typename h w x y}uuid}shortname token{__typename salt}}",
         CreateAppSelector
+    )
+    let CreateCardSetupIntent = OperationDefinition(
+        "CreateCardSetupIntent",
+        .mutation, 
+        "mutation CreateCardSetupIntent($retryKey:String!){cardCreateSetupIntent(retryKey:$retryKey){__typename clientSecret id}}",
+        CreateCardSetupIntentSelector
     )
     let CreateOrganization = OperationDefinition(
         "CreateOrganization",
@@ -5363,6 +5404,7 @@ class Operations {
         if name == "MessagesBatch" { return MessagesBatch }
         if name == "MessagesSearch" { return MessagesSearch }
         if name == "MyApps" { return MyApps }
+        if name == "MyCards" { return MyCards }
         if name == "MyNotificationCenter" { return MyNotificationCenter }
         if name == "MyNotifications" { return MyNotifications }
         if name == "MyOrganizations" { return MyOrganizations }
@@ -5419,6 +5461,7 @@ class Operations {
         if name == "BetaSubmitNextDiscover" { return BetaSubmitNextDiscover }
         if name == "CommentSetReaction" { return CommentSetReaction }
         if name == "CommentUnsetReaction" { return CommentUnsetReaction }
+        if name == "CommitCardSetupIntent" { return CommitCardSetupIntent }
         if name == "ConferenceAnswer" { return ConferenceAnswer }
         if name == "ConferenceCandidate" { return ConferenceCandidate }
         if name == "ConferenceJoin" { return ConferenceJoin }
@@ -5426,6 +5469,7 @@ class Operations {
         if name == "ConferenceLeave" { return ConferenceLeave }
         if name == "ConferenceOffer" { return ConferenceOffer }
         if name == "CreateApp" { return CreateApp }
+        if name == "CreateCardSetupIntent" { return CreateCardSetupIntent }
         if name == "CreateOrganization" { return CreateOrganization }
         if name == "CreateUserProfileAndOrganization" { return CreateUserProfileAndOrganization }
         if name == "DebugMails" { return DebugMails }
