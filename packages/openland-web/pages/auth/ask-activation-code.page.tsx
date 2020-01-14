@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
 import { useForm } from 'openland-form/useForm';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { BackSkipLogo } from '../components/BackSkipLogo';
@@ -10,15 +9,10 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { trackEvent } from 'openland-x-analytics';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, FormLayout, AuthActionButton } from './components/authComponents';
+import { Title, Subtitle, FormLayout, AuthActionButton, AuthInput } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
-import { UInput } from 'openland-web/components/unicorn/UInput';
 import { completeAuth } from './complete.page';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
-
-const subtitle = css`
-    margin-bottom: 16px;
-`;
 
 export type ActivationCodeProps = {
     emailValue: string;
@@ -96,7 +90,7 @@ export const WebSignUpActivationCode = ({
     return (
         <FormLayout>
             <Title text={InitTexts.auth.enterActivationCode} />
-            <Subtitle className={subtitle}>
+            <Subtitle>
                 {emailSending ? (
                     sendingCodeText
                 ) : (
@@ -108,14 +102,11 @@ export const WebSignUpActivationCode = ({
             </Subtitle>
             {/* {isExistingUser && <XView alignSelf="center" marginTop={16} width={72} height={72} backgroundColor="black" borderRadius={100} />} */}
             <XView width={isMobile ? '100%' : 360} maxWidth={360}>
-                <UInput
-                    width={isMobile ? '100%' : 360}
+                <AuthInput
+                    isMobile={isMobile}
                     pattern="[0-9]*"
                     type="number"
-                    autofocus={true}
                     label={InitTexts.auth.codePlaceholder}
-                    flexGrow={1}
-                    flexShrink={0}
                     onChange={codeField.input.onChange}
                     invalid={isInvalid}
                 />
