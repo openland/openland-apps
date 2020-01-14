@@ -5,11 +5,11 @@ import { withRouter, SingletonRouter } from 'next/router';
 import { MessengerFragment } from 'openland-web/fragments/chat/MessengerFragment';
 import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
 
-interface RawInviteResolverProps {
+interface RawInviteBypassProps {
     router: SingletonRouter;
 }
 
-const RawInviteResolver = React.memo<RawInviteResolverProps>(({ router }) => {
+const RawInviteBypass = React.memo<RawInviteBypassProps>(({ router }) => {
     const client = useClient();
     const unicorn = useUnicorn();
     const key = unicorn.id!;
@@ -29,4 +29,4 @@ const RawInviteResolver = React.memo<RawInviteResolverProps>(({ router }) => {
     return <InviteLandingComponent />;
 });
 
-export const InviteResolver = withRouter(RawInviteResolver);
+export const InviteBypass = withRouter(RawInviteBypass);
