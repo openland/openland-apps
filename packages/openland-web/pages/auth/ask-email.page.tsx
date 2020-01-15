@@ -61,19 +61,21 @@ export const WebSignUpCreateWithEmail = ({
     useShortcuts({ keys: ['Enter'], callback: handleNext });
 
     return (
-        <FormLayout>
-            <Title text="What’s your email?" />
-            <Subtitle text="We’ll send you a login code" />
-            <AuthInputWrapper errorsCount={errorsCount}>
-                <AuthInput
-                    label={InitTexts.auth.emailPlaceholder}
-                    invalid={isInvalid}
-                    onChange={emailField.input.onChange}
-                />
-                {isInvalid && <XErrorMessage2 message={errorText} />}
-            </AuthInputWrapper>
-            <AuthActionButton text={InitTexts.auth.next} loading={emailSending} onClick={handleNext} />
-        </FormLayout>
+        <>
+            <XErrorMessage2 message={errorText} />
+            <FormLayout>
+                <Title text="What’s your email?" />
+                <Subtitle text="We’ll send you a login code" />
+                <AuthInputWrapper errorsCount={errorsCount}>
+                    <AuthInput
+                        label={InitTexts.auth.emailPlaceholder}
+                        invalid={isInvalid}
+                        onChange={emailField.input.onChange}
+                    />
+                </AuthInputWrapper>
+                <AuthActionButton text={InitTexts.auth.next} loading={emailSending} onClick={handleNext} />
+            </FormLayout>
+        </>
     );
 };
 

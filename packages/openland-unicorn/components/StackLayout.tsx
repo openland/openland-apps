@@ -2,13 +2,13 @@ import * as React from 'react';
 import { StackRouter, StackRouterContext, StackItems } from './StackRouter';
 import { PageLayout } from './PageLayout';
 import { UnicornContext } from './UnicornContext';
-import { XViewRoute, XViewRouteContext, XView } from 'react-mental';
+import { XViewRoute, XViewRouteContext } from 'react-mental';
 import { VisibleTabContext } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
 import { debounce } from 'openland-y-utils/timer';
 import { css } from 'linaria';
-import { TextStyles } from 'openland-web/utils/TextStyles';
+import { UToast } from 'openland-web/components/unicorn/UToast';
 
 const PageAnimator = React.memo(
     (props: {
@@ -62,32 +62,32 @@ const PageAnimator = React.memo(
 
 type AnimationAction =
     | {
-          type: 'push';
-          key: string;
-          query: any;
-          id?: string;
-          path: string;
-          component: any;
-      }
+        type: 'push';
+        key: string;
+        query: any;
+        id?: string;
+        path: string;
+        component: any;
+    }
     | {
-          type: 'pop';
-          key: string;
-      }
+        type: 'pop';
+        key: string;
+    }
     | {
-          type: 'entered';
-          key: string;
-      }
+        type: 'entered';
+        key: string;
+    }
     | {
-          type: 'exited';
-          key: string;
-      }
+        type: 'exited';
+        key: string;
+    }
     | {
-          type: 'mounted';
-      }
+        type: 'mounted';
+    }
     | {
-          type: 'reset';
-          pages: StackItems[];
-      };
+        type: 'reset';
+        pages: StackItems[];
+    };
 
 type AnimationState = {
     pages: {
@@ -233,21 +233,7 @@ const PageComponent = React.memo(
     },
 );
 
-const connectingContainerClass = css`
-    display: flex;
-    flex-direction: row;
-    border-radius: 8px;
-    background-color: var(--tintOrange);
-    align-items: center;
-    padding: 7px 16px 9px;
-    opacity: 0;
-    transform: scale(0.84) translateY(-8px);
-    transition: transform 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
-        opacity 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
-    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
-`;
-
-const connectingContainerWrapperClass = css`
+const connectingWrapperClass = css`
     position: absolute;
     left: 0;
     right: 0;
@@ -258,37 +244,24 @@ const connectingContainerWrapperClass = css`
 `;
 
 const ConnectingStatus = () => {
-    const containerRef = React.useRef<HTMLDivElement>(null);
     const client = useClient().client;
+    const [isVisible, setVisible] = React.useState(false);
     React.useEffect(() => {
-        const setConnecting = (connecting: boolean) => {
-            if (containerRef.current) {
-                containerRef.current.style.opacity = connecting ? '1' : '0';
-                containerRef.current.style.transform = `scale(${
-                    connecting ? 1 : 0.84
-                }) translateY(${connecting ? 0 : -8}px)`;
-            }
-        };
-        const setStatusDebaunced = debounce(setConnecting, 500);
+        const setStatusDebounced = debounce(setVisible, 500);
         return client.watchStatus(s => {
-            setStatusDebaunced(s.status === 'connecting');
+            setStatusDebounced(s.status === 'connecting');
         });
     }, []);
+
     return (
-        <div className={connectingContainerWrapperClass}>
-            <div className={connectingContainerClass} ref={containerRef}>
-                <XView width={16} height={16} marginRight={8} marginTop={1}>
-                    <XLoader
-                        contrast={true}
-                        transparentBackground={true}
-                        loading={true}
-                        size="small"
-                    />
-                </XView>
-                <XView {...TextStyles.Label1} color="var(--foregroundContrast)">
-                    Connecting
-                </XView>
-            </div>
+        <div className={connectingWrapperClass}>
+            <UToast
+                isVisible={isVisible}
+                backgroundColor="var(--tintOrange)"
+                text="Connecting"
+                autoclose={false}
+                icon={<XLoader contrast={true} transparentBackground={true} loading={true} size="small" />}
+            />
         </div>
     );
 };

@@ -28,12 +28,12 @@ export const InitTexts = {
         haveNotReceiveCode: "Haven’t received?",
         noEmail: 'Please enter your email address',
         emailInvalid:
-            'It looks like this email is incorrect.\nPlease check your email address and try again.',
+            'Incorrect email.\nPlease check it and try again',
         emailPlaceholder: 'Email',
         codeInvalid: 'Invalid activation code',
         noCode: "Please enter the 6-digit code we've just sent to your email",
         wrongCodeLength:
-            'The code you entered is incorrect.\nPlease check the code in the email and try again.',
+            'Incorrect login code.\nPlease check it and try again',
         codePlaceholder: 'Login code',
         continue: 'Continue',
         next: 'Next',

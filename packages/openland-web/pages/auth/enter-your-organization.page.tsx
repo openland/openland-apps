@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { useForm } from 'openland-form/useForm';
@@ -9,7 +8,6 @@ import { trackEvent } from 'openland-x-analytics';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
 import * as Cookie from 'js-cookie';
-import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { Wrapper } from '../onboarding/components/wrapper';
 import { Title, Subtitle, FormLayout, AuthInput, AuthInputWrapper, AuthActionButton } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
@@ -50,8 +48,6 @@ const CreateOrganizationFormInnerWeb = ({
         [organizationField.value],
     );
 
-    const errorText = organizationField.input.errorText;
-    const isInvalid = !!errorText && organizationField.input.invalid;
     const [errorsCount, setErrorsCount] = React.useState(0);
     const handleNext = React.useCallback(() => {
         doConfirm();
@@ -65,19 +61,16 @@ const CreateOrganizationFormInnerWeb = ({
         <FormLayout>
             <Title text={InitTexts.create_organization.title} />
             <Subtitle text={InitTexts.create_organization.subTitle} />
-            <XView width={isMobile ? '100%' : 360} maxWidth={360}>
-                <AuthInputWrapper errorsCount={errorsCount}>
-                    <AuthInput
-                        label="Organization name"
-                        onChange={organizationField.input.onChange}
-                    />
-                    {isInvalid && <XErrorMessage2 message={errorText} />}
-                </AuthInputWrapper>
-            </XView>
+            <AuthInputWrapper errorsCount={errorsCount}>
+                <AuthInput
+                    label="Organization name"
+                    onChange={organizationField.input.onChange}
+                />
+            </AuthInputWrapper>
             <AuthActionButton
                 loading={sending}
                 text={!!hasInvite ? InitTexts.create_organization.done : InitTexts.create_organization.next}
-                onClick={doConfirm}
+                onClick={handleNext}
             />
         </FormLayout>
     );

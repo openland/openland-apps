@@ -55,6 +55,7 @@ export const WebSignUpActivationCode = ({
     emailWasResend,
     codeSending,
     codeError,
+    setCodeError,
     loginCodeStart,
     isExistingUser,
     avatarId,
@@ -62,21 +63,20 @@ export const WebSignUpActivationCode = ({
 }: ActivationCodeProps & {
     codeSending: boolean;
     codeError: string;
+    setCodeError: Function;
     loginCodeStart: (a: { emailValue: string; codeValue: string }) => void;
 }) => {
     const form = useForm();
 
-    let codeField = useField('input.code', '', form, [
-        {
-            checkIsValid: value => value.length !== 6,
-            text: "Please enter the 6-digit code we've just sent to your email",
-        },
-    ]);
+    let codeField = useField('input.code', '', form);
 
     const doConfirm = React.useCallback(
         () => {
             form.doAction(async () => {
-                loginCodeStart({ emailValue, codeValue: codeField.value });
+                setCodeError('');
+                setTimeout(() => {
+                    loginCodeStart({ emailValue, codeValue: codeField.value });
+                }, 100);
             });
         },
         [codeField.value, emailValue],
@@ -99,41 +99,43 @@ export const WebSignUpActivationCode = ({
     const opsRetina = '-/format/auto/-/scale_crop/144x144/center/-/quality/best/-/progressive/yes/ 2x';
 
     return (
-        <FormLayout>
-            <Title text={InitTexts.auth.enterActivationCode} />
-            <Subtitle>
-                {emailSending ? (
-                    sendingCodeText
-                ) : (
-                        <>
-                            We just sent it to {emailSendedTo}.<br />
-                            {emailWasResend ? 'Code successfully sent.' : InitTexts.auth.haveNotReceiveCode} <a onClick={resendCodeClick}>Resend</a>
-                        </>
-                    )}
-            </Subtitle>
-            {!!avatarId && (
-                <XImage
-                    alignSelf="center"
-                    marginTop={16}
-                    width={72}
-                    height={72}
-                    borderRadius="100%"
-                    src={`https://ucarecdn.com/${avatarId}/${ops}`}
-                    srcSet={`https://ucarecdn.com/${avatarId}/${opsRetina}`}
-                />
-            )}
-            <AuthInputWrapper errorsCount={errorsCount}>
-                <AuthInput
-                    pattern="[0-9]*"
-                    type="number"
-                    label={InitTexts.auth.codePlaceholder}
-                    onChange={codeField.input.onChange}
-                    invalid={isInvalid}
-                />
-                {isInvalid && <XErrorMessage2 message={errorText} />}
-            </AuthInputWrapper>
-            <AuthActionButton text={isExistingUser ? InitTexts.auth.done : InitTexts.auth.next} loading={codeSending} onClick={doConfirm} />
-        </FormLayout>
+        <>
+            <XErrorMessage2 message={errorText} />
+            <FormLayout>
+                <Title text={InitTexts.auth.enterActivationCode} />
+                <Subtitle>
+                    {emailSending ? (
+                        sendingCodeText
+                    ) : (
+                            <>
+                                We just sent it to {emailSendedTo}.<br />
+                                {emailWasResend ? 'Code successfully sent.' : InitTexts.auth.haveNotReceiveCode} <a onClick={resendCodeClick}>Resend</a>
+                            </>
+                        )}
+                </Subtitle>
+                {!!avatarId && (
+                    <XImage
+                        alignSelf="center"
+                        marginTop={16}
+                        width={72}
+                        height={72}
+                        borderRadius="100%"
+                        src={`https://ucarecdn.com/${avatarId}/${ops}`}
+                        srcSet={`https://ucarecdn.com/${avatarId}/${opsRetina}`}
+                    />
+                )}
+                <AuthInputWrapper errorsCount={errorsCount}>
+                    <AuthInput
+                        pattern="[0-9]*"
+                        type="number"
+                        label={InitTexts.auth.codePlaceholder}
+                        onChange={codeField.input.onChange}
+                        invalid={isInvalid}
+                    />
+                </AuthInputWrapper>
+                <AuthActionButton text={isExistingUser ? InitTexts.auth.done : InitTexts.auth.next} loading={codeSending} onClick={handleNext} />
+            </FormLayout>
+        </>
     );
 };
 
@@ -215,6 +217,7 @@ export const AskActivationPage = (props: ActivationCodeProps) => {
                 codeError={codeError}
                 codeSending={codeSending}
                 loginCodeStart={loginCodeStart}
+                setCodeError={setCodeError}
                 backButtonClick={() => {
                     router.replace('/authorization/ask-email');
                     props.backButtonClick();
