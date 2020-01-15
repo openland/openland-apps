@@ -9,7 +9,7 @@ import { OthersPopper } from './OthersPopper';
 import { TextTitle2 } from 'openland-web/utils/TextStyles';
 import { defaultHover } from 'openland-web/utils/Styles';
 import { plural } from 'openland-y-utils/plural';
-import { useClient } from 'openland-web/utils/useClient';
+import { isInviteLink, InviteLink } from './InviteContent';
 
 const boldTextClassName = css`
     font-weight: bold;
@@ -183,32 +183,6 @@ const MentionedOrganization = React.memo((props: { organization: OrganizationSho
             </ULink>
         </span>
     );
-});
-
-interface Link {
-    link: string;
-    children: React.ReactChildren;
-}
-
-const isInviteLink = (link: string) => link.includes('invite');
-
-const InviteLink = React.memo((link: Link) => {
-    const linkSegments = link.link.split('/');
-    const key = linkSegments[linkSegments.length - 1];
-
-    const client = useClient();
-    const invite = client.useResolvedInvite({ key });
-
-    if (!invite.invite) {
-        return <ULink onClick={() => alert('This invite link was revoked.')}>{link.children}</ULink>;
-    }
-
-    if (invite.invite && invite.invite.__typename === 'RoomInvite' && invite.invite.room.membership === 'MEMBER') {
-        const roomId = invite.invite.room.id!;
-        return <ULink path={`/mail/${roomId}`}>{link.children}</ULink>;
-    }
-
-    return <ULink href={link.link}>{link.children}</ULink>;
 });
 
 export const SpanView = React.memo<{ span: Span; children?: any; isService?: boolean }>(props => {
