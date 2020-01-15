@@ -28,8 +28,7 @@ import { FeedItemFragment } from 'openland-web/fragments/feed/FeedItemFragment';
 import { useStackRouter } from 'openland-unicorn/components/StackRouter';
 import { SharedMediaFragment } from 'openland-web/fragments/chat/sharedMedia/SharedMediaFragment';
 import { SettingsAboutFragment } from 'openland-web/fragments/account/SettingsAboutFragment';
-import { InviteBypass } from './inviteBypass';
-
+import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
 // temporary stub for /mail/ -> not found bug
 const TemporaryStub = React.memo(() => {
     const stackRouter = useStackRouter();
@@ -91,8 +90,8 @@ routing.addRoute('/:shortname', () => ShortnameFragment);
 routing.addRoute('/advanced/:id', () => AdvancedSettingsFragment);
 
 // Invites
-routing.addRoute('/invite/:invite', () => InviteBypass);
-routing.addRoute('/join/:invite', () => InviteBypass);
+routing.addRoute('/invite/:invite', () => InviteLandingComponent);
+routing.addRoute('/join/:invite', () => InviteLandingComponent);
 
 //
 // Backward compatibility
