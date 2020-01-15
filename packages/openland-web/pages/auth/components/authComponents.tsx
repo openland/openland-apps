@@ -7,8 +7,13 @@ import { UButton, UButtonProps } from 'openland-web/components/unicorn/UButton';
 import { UInput, UInputProps } from 'openland-web/components/unicorn/UInput';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 
-const textAlignClassName = css`
+export const textClassName = css`
     text-align: center;
+
+    @media (min-width: 400px) {
+        align-self: center;
+        max-width: 320px;
+    }
 `;
 
 const subtitleClassName = css`
@@ -21,13 +26,13 @@ const titleClassName = css`
 `;
 
 export const Title = (props: { text: string }) => (
-    <div className={cx(TextTitle1, textAlignClassName, titleClassName)}>
+    <div className={cx(TextTitle1, textClassName, titleClassName)}>
         {props.text}
     </div>
 );
 
 export const Subtitle = (props: { text?: string; maxWidth?: number | string, children?: any }) => (
-    <div className={cx(TextBody, textAlignClassName, subtitleClassName)}>
+    <div className={cx(TextBody, textClassName, subtitleClassName)}>
         {props.text}
         {props.children}
     </div>
@@ -46,13 +51,59 @@ export const AuthActionButton = (props: UButtonProps) => {
     );
 };
 
-export const AuthInput = (props: UInputProps) => {
-    const [width] = useWithWidth();
+const inputWrapper = css`
+    align-self: center;
+    text-align: center;
+`;
 
+const shake = css`
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+  
+  @keyframes shake {
+        10%, 90% {
+            transform: translate3d(-2px, 0, 0);
+        }
+        
+        20%, 80% {
+            transform: translate3d(4px, 0, 0);
+        }
+    
+        30%, 50%, 70% {
+            transform: translate3d(-8px, 0, 0);
+        }
+    
+        40%, 60% {
+            transform: translate3d(8px, 0, 0);
+        }
+    }
+`;
+
+export const AuthInputWrapper = (props: { errorsCount?: number, children: any }) => {
+    const [screnWidth] = useWithWidth();
+    const width = screnWidth && screnWidth < 400 ? '100%' : 320;
+
+    const [hasNewError, setHasNewError] = React.useState(false);
+    React.useEffect(() => {
+        let timeoutId: any;
+        if (props.errorsCount && props.errorsCount > 0) {
+            setHasNewError(true);
+            timeoutId = setTimeout(() => {
+                setHasNewError(false);
+            }, 600);
+        }
+        return () => { clearTimeout(timeoutId); };
+    }, [props.errorsCount]);
+
+    return <div className={cx(inputWrapper, hasNewError && shake)} style={{ width }}>{props.children}</div>;
+};
+
+export const AuthInput = (props: UInputProps) => {
     return (
         <UInput
             autofocus={true}
-            width={width && width < 400 ? '100%' : 320}
+            width="100%"
             marginTop={32}
             type="email"
             alignSelf="center"

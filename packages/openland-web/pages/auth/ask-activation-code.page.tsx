@@ -8,7 +8,7 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { trackEvent } from 'openland-x-analytics';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, FormLayout, AuthActionButton, AuthInput } from './components/authComponents';
+import { Title, Subtitle, FormLayout, AuthActionButton, AuthInputWrapper, AuthInput } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { completeAuth } from './complete.page';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
@@ -68,7 +68,7 @@ export const WebSignUpActivationCode = ({
 
     let codeField = useField('input.code', '', form, [
         {
-            checkIsValid: value => value !== '',
+            checkIsValid: value => value.length !== 6,
             text: "Please enter the 6-digit code we've just sent to your email",
         },
     ]);
@@ -84,7 +84,14 @@ export const WebSignUpActivationCode = ({
 
     const sendingCodeText = 'Sending code...';
 
-    useShortcuts({ keys: ['Enter'], callback: doConfirm });
+    const [errorsCount, setErrorsCount] = React.useState(0);
+    const handleNext = React.useCallback(() => {
+        doConfirm();
+        if (codeField.input.value.trim() === '') {
+            setErrorsCount(x => x + 1);
+        }
+    }, [errorsCount, doConfirm]);
+    useShortcuts({ keys: ['Enter'], callback: handleNext });
 
     const errorText = (codeField.input.invalid && codeField.input.errorText) || codeError;
     const isInvalid = !!errorText;
@@ -115,14 +122,16 @@ export const WebSignUpActivationCode = ({
                     srcSet={`https://ucarecdn.com/${avatarId}/${opsRetina}`}
                 />
             )}
-            <AuthInput
-                pattern="[0-9]*"
-                type="number"
-                label={InitTexts.auth.codePlaceholder}
-                onChange={codeField.input.onChange}
-                invalid={isInvalid}
-            />
-            {isInvalid && <XErrorMessage2 message={errorText} />}
+            <AuthInputWrapper errorsCount={errorsCount}>
+                <AuthInput
+                    pattern="[0-9]*"
+                    type="number"
+                    label={InitTexts.auth.codePlaceholder}
+                    onChange={codeField.input.onChange}
+                    invalid={isInvalid}
+                />
+                {isInvalid && <XErrorMessage2 message={errorText} />}
+            </AuthInputWrapper>
             <AuthActionButton text={isExistingUser ? InitTexts.auth.done : InitTexts.auth.next} loading={codeSending} onClick={doConfirm} />
         </FormLayout>
     );
@@ -170,9 +179,6 @@ export const AskActivationPage = (props: ActivationCodeProps) => {
         console.log('loginCodeStart');
         if (codeValue === '') {
             trackError('no_code');
-
-            setCodeError(InitTexts.auth.noCode);
-
             return;
         } else if (codeValue.length !== 6) {
             trackError('wrong_code_length');
