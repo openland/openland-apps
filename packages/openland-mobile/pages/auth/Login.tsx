@@ -81,7 +81,7 @@ const PrivacyText = React.memo(() => {
                     color: theme.foregroundTertiary,
                 }}
             >
-                By creating an account you are accepting our{' '}
+                By creating an account you are accepting our{'\n'}
                 <Text style={{ ...TextStyles.Label3 }} onPress={() => Linking.openURL('https://openland.com/terms')}>
                     Terms of service
                 </Text>{' '}and{' '}
