@@ -199,6 +199,10 @@ const InviteLink = React.memo((link: Link) => {
     const client = useClient();
     const invite = client.useResolvedInvite({ key });
 
+    if (!invite.invite) {
+        return <ULink onClick={() => alert('This invite link was revoked.')}>{link.children}</ULink>;
+    }
+
     if (invite.invite && invite.invite.__typename === 'RoomInvite' && invite.invite.room.membership === 'MEMBER') {
         const roomId = invite.invite.room.id!;
         return <ULink path={`/mail/${roomId}`}>{link.children}</ULink>;

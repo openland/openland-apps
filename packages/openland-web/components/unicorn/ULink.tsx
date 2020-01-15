@@ -26,12 +26,35 @@ const ULinkInternal = React.memo((props: { link: string; color?: string, classNa
     );
 });
 
+interface FakeULinkProps {
+    onClick: () => void;
+    children: React.ReactChildren;
+    color?: string;
+    className?: string;
+}
+
+const FakeULink = React.memo((props: FakeULinkProps) => (
+    <a
+        style={{ color: props.color }}
+        className={props.className}
+        onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            props.onClick();
+        }}
+    >
+        { props.children }
+    </a>
+));
+
 interface ULinkProps {
     href?: string; // for external and MAY BE internal links
     path?: string; // fallback only for internal RELATIVE links
     color?: string;
     className?: string;
     children?: any;
+    onClick?: () => void;
 }
 
 const ULinkFallback = React.memo((props: ULinkProps) => (
@@ -49,8 +72,20 @@ const ULinkFallback = React.memo((props: ULinkProps) => (
 ));
 
 export const ULink = React.memo((props: ULinkProps) => {
-    const { children, href, path, color, className } = props;
+    const { children, href, path, color, className, onClick } = props;
     const fallback = <ULinkFallback {...props}>{children}</ULinkFallback>;
+
+    if (onClick) {
+        return (
+            <FakeULink
+                onClick={onClick}
+                color={color}
+                className={className}
+            >
+                { children }
+            </FakeULink>
+        );
+    }
 
     if (path) {
         return (
