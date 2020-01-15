@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { useForm } from 'openland-form/useForm';
@@ -9,9 +8,8 @@ import { trackEvent } from 'openland-x-analytics';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
 import * as Cookie from 'js-cookie';
-import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, FormLayout, AuthInput, AuthActionButton } from './components/authComponents';
+import { Title, Subtitle, FormLayout, AuthInput, AuthInputWrapper, AuthActionButton } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 export type EnterYourOrganizationPageProps = { inviteKey?: string | null };
@@ -36,14 +34,9 @@ const CreateOrganizationFormInnerWeb = ({
 }) => {
     const form = useForm();
 
-    const orgInvite = Cookie.get('x-openland-org-invite');
+    const hasInvite = Cookie.get('x-openland-invite') || Cookie.get('x-openland-app-invite') || Cookie.get('x-openland-org-invite');
 
-    let organizationField = useField('input.organization', initialOrganizationName || '', form, [
-        {
-            checkIsValid: (value: string) => !!value.trim(),
-            text: 'Please enter your organization name',
-        },
-    ]);
+    let organizationField = useField('input.organization', initialOrganizationName || '', form);
     const doConfirm = React.useCallback(
         () => {
             form.doAction(async () => {
@@ -55,27 +48,29 @@ const CreateOrganizationFormInnerWeb = ({
         [organizationField.value],
     );
 
-    useShortcuts({ keys: ['Enter'], callback: doConfirm });
-
-    const errorText = organizationField.input.errorText;
-    const isInvalid = !!errorText && organizationField.input.invalid;
+    const [errorsCount, setErrorsCount] = React.useState(0);
+    const handleNext = React.useCallback(() => {
+        doConfirm();
+        if (organizationField.input.value.trim() === '') {
+            setErrorsCount(x => x + 1);
+        }
+    }, [errorsCount, doConfirm]);
+    useShortcuts({ keys: ['Enter'], callback: handleNext });
 
     return (
         <FormLayout>
             <Title text={InitTexts.create_organization.title} />
             <Subtitle text={InitTexts.create_organization.subTitle} />
-            <XView width={isMobile ? '100%' : 360} maxWidth={360}>
+            <AuthInputWrapper errorsCount={errorsCount}>
                 <AuthInput
                     label="Organization name"
-                    isMobile={isMobile}
                     onChange={organizationField.input.onChange}
                 />
-                {isInvalid && <XErrorMessage2 message={errorText} />}
-            </XView>
+            </AuthInputWrapper>
             <AuthActionButton
                 loading={sending}
-                text={!!orgInvite ? InitTexts.create_organization.done : InitTexts.create_organization.next}
-                onClick={doConfirm}
+                text={!!hasInvite ? InitTexts.create_organization.done : InitTexts.create_organization.next}
+                onClick={handleNext}
             />
         </FormLayout>
     );

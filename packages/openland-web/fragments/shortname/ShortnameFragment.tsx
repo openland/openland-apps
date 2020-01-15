@@ -11,7 +11,9 @@ export const ShortnameFragment = React.memo(() => {
     let unicorn = useUnicorn();
     let data = client.useResolveShortName({ shortname: unicorn.id }, { fetchPolicy: 'cache-and-network' }).item;
 
-    if (data && data.__typename) {
+    // remove ts-ignore adfter SharedRoom deletion logic is implemented
+    // @ts-ignore
+    if (data && data.__typename && !data.isDeleted!) {
         if (data.__typename === 'User') {
             return <UserProfileFragment id={data.id} />;
         }

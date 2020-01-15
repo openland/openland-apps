@@ -17,7 +17,7 @@ import { MemberProfileFragment } from 'openland-web/fragments/group/MemberProfil
 import { MemberProfileEditFragment } from 'openland-web/fragments/group/MemberProfileEditFragment';
 import { MessageFragment } from 'openland-web/fragments/message/MessageFragment';
 import { FeedFragment } from 'openland-web/fragments/feed/FeedFragment';
-import { SettingsFinanceFragment } from 'openland-web/fragments/finance/SettingsFinanceFragment';
+import { WalletFragment } from 'openland-web/fragments/wallet/WalletFragment';
 import { AdvancedSettingsFragment } from 'openland-web/fragments/chat/AdvancedSettingsFragment';
 import { MatchmakingFragment } from 'openland-web/fragments/matchmaking/MatchmakingFragment';
 import { MatchmakingStartFragment } from 'openland-web/fragments/matchmaking/MatchmakingStartFragment';
@@ -28,8 +28,7 @@ import { FeedItemFragment } from 'openland-web/fragments/feed/FeedItemFragment';
 import { useStackRouter } from 'openland-unicorn/components/StackRouter';
 import { SharedMediaFragment } from 'openland-web/fragments/chat/sharedMedia/SharedMediaFragment';
 import { SettingsAboutFragment } from 'openland-web/fragments/account/SettingsAboutFragment';
-import { InviteBypass } from './inviteBypass';
-
+import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
 // temporary stub for /mail/ -> not found bug
 const TemporaryStub = React.memo(() => {
     const stackRouter = useStackRouter();
@@ -75,8 +74,10 @@ routing.addRoute('/settings/email', () => SettingsEmailFragment);
 routing.addRoute('/settings/appearance', () => SettingsAppearanceFragment);
 routing.addRoute('/settings/download', () => DownloadAppsFragment);
 routing.addRoute('/settings/invites', () => InviteFriendsFragment);
-routing.addRoute('/settings/finance', () => SettingsFinanceFragment);
 routing.addRoute('/settings/about', () => SettingsAboutFragment);
+
+// Wallet
+routing.addRoute('/wallet', () => WalletFragment);
 
 // Profile
 routing.addRoute('/group/:id', () => GroupProfileFragment);
@@ -89,8 +90,8 @@ routing.addRoute('/:shortname', () => ShortnameFragment);
 routing.addRoute('/advanced/:id', () => AdvancedSettingsFragment);
 
 // Invites
-routing.addRoute('/invite/:invite', () => InviteBypass);
-routing.addRoute('/join/:invite', () => InviteBypass);
+routing.addRoute('/invite/:invite', () => InviteLandingComponent);
+routing.addRoute('/join/:invite', () => InviteLandingComponent);
 
 //
 // Backward compatibility

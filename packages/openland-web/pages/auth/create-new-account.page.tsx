@@ -2,31 +2,21 @@ import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { BackSkipLogo } from '../components/BackSkipLogo';
-import { FormLayout } from './components/authComponents';
-import { TextTitle1, TextBody, TextCaption } from 'openland-web/utils/TextStyles';
+import { FormLayout, Title, Subtitle, textClassName } from './components/authComponents';
+import { TextCaption } from 'openland-web/utils/TextStyles';
 import { css, cx } from 'linaria';
 import { Unicorn } from 'openland-x/XLoader';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { isElectron } from 'openland-y-utils/isElectron';
-
-const titleText = css`
-    color: var(--foregroundPrimary);
-    margin-bottom: 8px;
-`;
+import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 
 const captionText = css`
     color: var(--foregroundTertiary);
     text-align: center;
-    padding: 0 16px;
 `;
 
 const boldCaption = css`
     font-weight: 600;
-`;
-
-const bodyText = css`
-    text-align: center;
-    color: var(--foregroundSecondary);
 `;
 
 export type AuthMechanism = {
@@ -38,53 +28,42 @@ export const SignUpAuthMechanism = ({
     loginWithGoogle,
     loginWithEmail,
 }: AuthMechanism) => {
+    const [width] = useWithWidth();
     return (
         <FormLayout>
-            <XView alignItems="center" flexGrow={1} justifyContent="center">
-                <XView
-                    maxWidth={320}
-                    alignItems="center"
-                    justifyContent="center"
-                >
-                    <XView
-                        justifyContent="center"
-                        marginBottom={16}
-                    >
-                        <Unicorn width="128" height="128" />
-                    </XView>
-                    <h2 className={cx(TextTitle1, titleText)}>Openland</h2>
-
-                    <h3 className={cx(TextBody, bodyText)}>
-                        The best place to find and build inspiring communities
-                    </h3>
-
-                    <XView marginBottom={32} width={240} marginTop={32}>
-                        <UButton
-                            onClick={loginWithGoogle}
-                            marginBottom={16}
-                            size="large"
-                            shape="square"
-                            text="Continue with Google"
-                        />
-                        <UButton
-                            onClick={loginWithEmail}
-                            size="large"
-                            shape="square"
-                            text="Continue with Email"
-                            style="secondary"
-                        />
-                    </XView>
-
-                    <p className={cx(TextCaption, captionText)}>By creating an account you are accepting our <span className={boldCaption}>Terms of service</span> and <span className={boldCaption}>Privacy policy</span></p>
-                </XView>
+            <XView
+                alignItems="center"
+                marginBottom={16}
+            >
+                <Unicorn width="128" height="128" />
             </XView>
+            <Title text="Openland" />
+            <Subtitle text="The best place to find and build inspiring communities" />
+
+            <XView marginBottom={32} alignSelf="center" width={width && width < 400 ? '100%' : 240} marginTop={32}>
+                <UButton
+                    onClick={loginWithGoogle}
+                    marginBottom={16}
+                    size="large"
+                    shape="square"
+                    text="Continue with Google"
+                />
+                <UButton
+                    onClick={loginWithEmail}
+                    size="large"
+                    shape="square"
+                    text="Continue with Email"
+                    style="secondary"
+                />
+            </XView>
+            <p className={cx(TextCaption, captionText, textClassName)}>By creating an account you are accepting our <span className={boldCaption}>Terms of service</span> and <span className={boldCaption}>Privacy policy</span></p>
         </FormLayout>
     );
 };
 
 export const CreateNewAccountPage = (props: AuthMechanism) => {
     return (
-        <XView backgroundColor="white" flexGrow={1}>
+        <XView backgroundColor="white" flexGrow={1} flexShrink={1}>
             <XDocumentHead title="Login" />
             {!isElectron && (
                 <BackSkipLogo

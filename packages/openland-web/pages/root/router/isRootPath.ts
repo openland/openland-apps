@@ -7,7 +7,6 @@ const rootPaths = [
     '/createProfile',
     '/createOrganization',
     '/signin',
-    '/signup',
 ];
 
 export function isRootPath(router: XRouter) {

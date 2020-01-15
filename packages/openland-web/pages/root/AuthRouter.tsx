@@ -74,7 +74,7 @@ export const AuthRouter = XMemo<{ children?: any }>(props => {
 
     // Redirect to Signup/Signin pages
     if (!userInfo.isLoggedIn) {
-        return redirectIfNeeded('/signin', { pages: ['/signin', '/signup'] });
+        return redirectIfNeeded('/signin');
     }
 
     ////////////////////////////////////////////////

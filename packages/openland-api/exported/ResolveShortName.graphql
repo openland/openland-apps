@@ -3,9 +3,11 @@ query ResolveShortName($shortname: String!) {
     __typename
     ... on User {
       id
+      isDeleted
     }
     ... on Organization {
       id
+      isDeleted
     }
     ... on FeedChannel {
       id

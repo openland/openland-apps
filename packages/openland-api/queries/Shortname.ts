@@ -5,9 +5,11 @@ export const ResolveShortNameQuery = gql`
         item: alphaResolveShortName(shortname: $shortname) {
             ... on User {
                 id
+                isDeleted                
             }
             ... on Organization {
                 id
+                isDeleted                
             }
             ... on FeedChannel {
                 id

@@ -9,6 +9,7 @@ import { OthersPopper } from './OthersPopper';
 import { TextTitle2 } from 'openland-web/utils/TextStyles';
 import { defaultHover } from 'openland-web/utils/Styles';
 import { plural } from 'openland-y-utils/plural';
+import { isInviteLink, InviteLink } from './InviteContent';
 
 const boldTextClassName = css`
     font-weight: bold;
@@ -188,6 +189,9 @@ export const SpanView = React.memo<{ span: Span; children?: any; isService?: boo
     const { span, children } = props;
 
     if (span.type === 'link') {
+        if (isInviteLink(span.link)) {
+            return <InviteLink link={span.link}>{children}</InviteLink>;
+        }
         return <ULink href={span.link}>{children}</ULink>;
     } else if (span.type === 'bold') {
         return (

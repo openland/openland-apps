@@ -7,7 +7,7 @@ import { InitTexts } from 'openland-web/pages/init/_text';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, FormLayout, AuthActionButton, AuthInput } from './components/authComponents';
+import { Title, Subtitle, FormLayout, AuthActionButton, AuthInput, AuthInputWrapper } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 export type CreateWithEmailProps = {
@@ -29,18 +29,12 @@ export const WebSignUpCreateWithEmail = ({
     emailValue,
     loginEmailStart,
     emailSending,
-    isMobile,
 }: CreateWithEmailProps & {
     loginEmailStart: (a: string) => void;
 }) => {
     const form = useForm();
 
-    let emailField = useField('input.email', emailValue, form, [
-        {
-            checkIsValid: value => value !== '',
-            text: 'Please enter your email address',
-        },
-    ]);
+    let emailField = useField('input.email', emailValue, form);
 
     const doConfirm = React.useCallback(
         () => {
@@ -55,24 +49,33 @@ export const WebSignUpCreateWithEmail = ({
         [emailField.value],
     );
 
-    useShortcuts({ keys: ['Enter'], callback: doConfirm });
-
     const errorText = (emailField.input.invalid && emailField.input.errorText) || emailError;
     const isInvalid = !!errorText;
+    const [errorsCount, setErrorsCount] = React.useState(0);
+    const handleNext = React.useCallback(() => {
+        doConfirm();
+        if (emailField.input.value.trim() === '') {
+            setErrorsCount(x => x + 1);
+        }
+    }, [errorsCount, doConfirm]);
+    useShortcuts({ keys: ['Enter'], callback: handleNext });
 
     return (
-        <FormLayout>
-            <Title text="What’s your email?" />
-            <Subtitle text="We’ll send you a login code" />
-            <AuthInput
-                isMobile={isMobile}
-                label={InitTexts.auth.emailPlaceholder}
-                invalid={isInvalid}
-                onChange={emailField.input.onChange}
-            />
-            {isInvalid && <XErrorMessage2 message={errorText} />}
-            <AuthActionButton text={InitTexts.auth.next} loading={emailSending} onClick={doConfirm} />
-        </FormLayout>
+        <>
+            <XErrorMessage2 message={errorText} />
+            <FormLayout>
+                <Title text="What’s your email?" />
+                <Subtitle text="We’ll send you a login code" />
+                <AuthInputWrapper errorsCount={errorsCount}>
+                    <AuthInput
+                        label={InitTexts.auth.emailPlaceholder}
+                        invalid={isInvalid}
+                        onChange={emailField.input.onChange}
+                    />
+                </AuthInputWrapper>
+                <AuthActionButton text={InitTexts.auth.next} loading={emailSending} onClick={handleNext} />
+            </FormLayout>
+        </>
     );
 };
 
@@ -87,8 +90,6 @@ export const AskEmailPage = (props: CreateWithEmailProps) => {
 
     const loginEmailStart = async (email: string) => {
         if (email === '') {
-            setEmailError(InitTexts.auth.noEmail);
-
             return;
         } else if (!validateEmail(email)) {
             setEmailError(InitTexts.auth.emailInvalid);

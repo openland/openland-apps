@@ -199,8 +199,14 @@ routes.add('/settings/notifications', '/unicorn/index');
 routes.add('/settings/email', '/unicorn/index');
 routes.add('/settings/apps', '/unicorn/index');
 routes.add('/settings/apps/', '/unicorn/index');
-routes.add('/settings/finance', '/unicorn/index');
 routes.add('/settings/about', '/unicorn/index');
+
+//
+// Wallet
+//
+
+routes.add('/wallet', '/unicorn/index');
+routes.add('/wallet/', '/unicorn/index');
 
 //
 // Group
