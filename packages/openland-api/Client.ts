@@ -2673,10 +2673,12 @@ const ResolveShortNameSelector = obj(
             field('alphaResolveShortName', 'item', args(fieldValue("shortname", refValue('shortname'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     inline('User', obj(
-                        field('id', 'id', args(), notNull(scalar('ID')))
+                        field('id', 'id', args(), notNull(scalar('ID'))),
+                        field('isDeleted', 'isDeleted', args(), notNull(scalar('Boolean')))
                     )),
                     inline('Organization', obj(
-                        field('id', 'id', args(), notNull(scalar('ID')))
+                        field('id', 'id', args(), notNull(scalar('ID'))),
+                        field('isDeleted', 'isDeleted', args(), notNull(scalar('Boolean')))
                     )),
                     inline('FeedChannel', obj(
                         field('id', 'id', args(), notNull(scalar('ID')))
@@ -4429,7 +4431,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ResolveShortName: {
         kind: 'query',
         name: 'ResolveShortName',
-        body: 'query ResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{id}... on Organization{id}... on FeedChannel{id}}}',
+        body: 'query ResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{id isDeleted}... on Organization{id isDeleted}... on FeedChannel{id}}}',
         selector: ResolveShortNameSelector
     },
     ResolvedInvite: {

@@ -2670,10 +2670,12 @@ private let ResolveShortNameSelector = obj(
             field("alphaResolveShortName", "item", arguments(fieldValue("shortname", refValue("shortname"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     inline("User", obj(
-                        field("id", "id", notNull(scalar("ID")))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("isDeleted", "isDeleted", notNull(scalar("Boolean")))
                     )),
                     inline("Organization", obj(
-                        field("id", "id", notNull(scalar("ID")))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("isDeleted", "isDeleted", notNull(scalar("Boolean")))
                     )),
                     inline("FeedChannel", obj(
                         field("id", "id", notNull(scalar("ID")))
@@ -4430,7 +4432,7 @@ class Operations {
     let ResolveShortName = OperationDefinition(
         "ResolveShortName",
         .query, 
-        "query ResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{id}... on Organization{id}... on FeedChannel{id}}}",
+        "query ResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{id isDeleted}... on Organization{id isDeleted}... on FeedChannel{id}}}",
         ResolveShortNameSelector
     )
     let ResolvedInvite = OperationDefinition(

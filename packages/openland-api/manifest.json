@@ -1360,10 +1360,10 @@
       }
     },
     {
-      "signature": "383f6f84019b39e5315abeebf212f2d8e6baa66e7353ebcb5c4c8ece486689d1",
-      "document": "query ResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename...on User{id}...on Organization{id}...on FeedChannel{id}}}",
+      "signature": "1e46a6df68d723deeec5d872711ad6f1720511fded4adaf75abeb2243a5574d3",
+      "document": "query ResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename...on User{id isDeleted}...on Organization{id isDeleted}...on FeedChannel{id}}}",
       "metadata": {
-        "engineSignature": "query ResolveShortName($shortname:String!){alphaResolveShortName(shortname:$shortname){__typename...on User{id}...on Organization{id}...on FeedChannel{id}}}"
+        "engineSignature": "query ResolveShortName($shortname:String!){alphaResolveShortName(shortname:$shortname){__typename...on User{id isDeleted}...on Organization{id isDeleted}...on FeedChannel{id}}}"
       }
     },
     {
