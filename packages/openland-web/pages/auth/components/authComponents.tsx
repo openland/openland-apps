@@ -5,6 +5,7 @@ import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { UButton, UButtonProps } from 'openland-web/components/unicorn/UButton';
 import { UInput, UInputProps } from 'openland-web/components/unicorn/UInput';
+import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 
 const textAlignClassName = css`
     text-align: center;
@@ -47,12 +48,13 @@ export const AuthActionButton = (props: UButtonProps) => {
 
 export const AuthInput = (props: UInputProps & { isMobile: boolean }) => {
     const { isMobile, ...other } = props;
+    const [width] = useWithWidth();
+
     return (
         <UInput
             autofocus={true}
-            width={props.isMobile ? '100%' : 320}
+            width={width && width < 400 ? '100%' : 320}
             marginTop={32}
-            maxWidth={360}
             type="email"
             alignSelf="center"
             hasPlaceholder={true}
@@ -64,11 +66,9 @@ export const AuthInput = (props: UInputProps & { isMobile: boolean }) => {
 export const FormLayout = (props: { children: any }) => {
     const isMobile = useIsMobile();
 
-    return <XView justifyContent="center" alignItems="center" flexGrow={1} paddingHorizontal={16} minWidth={320}>
-        <XView alignItems={isMobile ? 'stretch' : 'center'} alignSelf={isMobile ? 'stretch' : 'center'} maxWidth={isMobile ? undefined : 320} marginBottom={77}>
-            <XView flexGrow={1} alignItems="center">
-                {props.children}
-            </XView>
+    return <XView justifyContent="center" alignItems="center" flexGrow={1} minWidth={320}>
+        <XView alignItems={isMobile ? 'stretch' : 'center'} width="100%" maxWidth={400} paddingHorizontal={16} marginBottom={isMobile ? 56 : 77}>
+            {props.children}
         </XView>
     </XView>;
 };

@@ -15,6 +15,7 @@ import { Wrapper } from '../onboarding/components/wrapper';
 import { Title, Subtitle, FormLayout, AuthActionButton } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UInput } from 'openland-web/components/unicorn/UInput';
+import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 
 export type ProfileFormData = {
     firstName: string | null;
@@ -114,6 +115,8 @@ const CreateProfileFormInnerWeb = (
     );
 
     useShortcuts({ keys: ['Enter'], callback: doConfirm });
+    const [width] = useWithWidth();
+    const isSmallMobile = width && width < 400;
 
     return (
         <FormLayout>
@@ -122,15 +125,15 @@ const CreateProfileFormInnerWeb = (
                 text={InitTexts.create_profile.subTitle}
                 maxWidth={props.isMobile ? 230 : undefined}
             />
-            <XView marginTop={32} marginBottom={16}>
+            <XView marginTop={32} marginBottom={16} alignSelf="center">
                 <UAvatarUploadField
                     field={photoRef}
                     initialUrl={prefill ? prefill.picture : undefined}
                 />
             </XView>
 
-            <XView width={props.isMobile ? '100%' : 360} maxWidth={360} marginBottom={16}>
-                <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
+            <XView width={isSmallMobile ? '100%' : 320} alignSelf="center" marginBottom={16}>
+                <XView width={isSmallMobile ? '100%' : 320}>
                     <UInput
                         label="First name"
                         value={firstName.value}
@@ -144,8 +147,8 @@ const CreateProfileFormInnerWeb = (
                     )}
             </XView>
 
-            <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
-                <XView width={props.isMobile ? '100%' : 360} maxWidth={360}>
+            <XView width={isSmallMobile ? '100%' : 320} alignSelf="center">
+                <XView width={isSmallMobile ? '100%' : 320}>
                     <UInput
                         label="Last name"
                         value={lastName.value}
@@ -166,6 +169,7 @@ const CreateProfileFormInnerWeb = (
 
 export const IntroduceYourselfPageInner = ({ isMobile }: IntroduceYourselfPageOuterProps) => {
     const client = useClient();
+    let router = React.useContext(XRouterContext)!;
 
     if (canUseDOM) {
         localStorage.setItem('isnewuser', 'newuser');
@@ -190,10 +194,9 @@ export const IntroduceYourselfPageInner = ({ isMobile }: IntroduceYourselfPageOu
             <XDocumentHead title="What’s your name?" />
             <BackSkipLogo
                 onBack={
-                    null
-                    // () => {
-                    //     router.replace('/authorization/ask-activation-code');
-                    // }
+                    () => {
+                        router.replace('/authorization/ask-activation-code');
+                    }
                 }
                 onSkip={null}
             />

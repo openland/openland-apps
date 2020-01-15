@@ -25,7 +25,7 @@ export const InitTexts = {
         signupRoomSignUpEmail: 'Sign up and join the conversation',
         enterActivationCode: 'Enter login code',
         resend: 'Resend.',
-        haveNotReceiveCode: "Haven't received our email?",
+        haveNotReceiveCode: "Haven’t received?",
         noEmail: 'Please enter your email address',
         emailInvalid:
             'It looks like this email is incorrect.\nPlease check your email address and try again.',

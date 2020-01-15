@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
 import { useForm } from 'openland-form/useForm';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { BackSkipLogo } from '../components/BackSkipLogo';
@@ -101,17 +100,15 @@ export const WebSignUpActivationCode = ({
                     )}
             </Subtitle>
             {/* {isExistingUser && <XView alignSelf="center" marginTop={16} width={72} height={72} backgroundColor="black" borderRadius={100} />} */}
-            <XView width={isMobile ? '100%' : 360} maxWidth={360}>
-                <AuthInput
-                    isMobile={isMobile}
-                    pattern="[0-9]*"
-                    type="number"
-                    label={InitTexts.auth.codePlaceholder}
-                    onChange={codeField.input.onChange}
-                    invalid={isInvalid}
-                />
-                {isInvalid && <XErrorMessage2 message={errorText} />}
-            </XView>
+            <AuthInput
+                isMobile={isMobile}
+                pattern="[0-9]*"
+                type="number"
+                label={InitTexts.auth.codePlaceholder}
+                onChange={codeField.input.onChange}
+                invalid={isInvalid}
+            />
+            {isInvalid && <XErrorMessage2 message={errorText} />}
             {/* <AuthActionButton text={isExistingUser ? InitTexts.auth.done : InitTexts.auth.next} loading={codeSending} onClick={doConfirm} /> */}
             <AuthActionButton text={InitTexts.auth.next} loading={codeSending} onClick={doConfirm} />
         </FormLayout>
