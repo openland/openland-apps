@@ -101,6 +101,7 @@ export default () => {
     const [googleStarting, setGoogleStarting] = React.useState(false);
     const [fromOutside, setFromOutside] = React.useState(false);
     const [isExistingUser, setExistingUser] = React.useState(false);
+    const [avatarId, setAvatarId] = React.useState(null);
 
     const fireEmail = React.useCallback(
         async (emailToFire: string) => {
@@ -123,7 +124,8 @@ export default () => {
 
                 setEmailSending(false);
                 setEmailSent(true);
-                setExistingUser(!!res.isExistingUser);
+                setExistingUser(!!res.profileExists);
+                setAvatarId(res.pictureId);
             } catch (e) {
                 throw new Error('Something went wrong');
             }
@@ -305,6 +307,7 @@ export default () => {
                         backButtonClick={() => {
                             setFromOutside(false);
                         }}
+                        avatarId={avatarId}
                         emailWasResend={emailWasResend}
                         emailSendedTo={emailValue}
                         emailValue={emailValue}

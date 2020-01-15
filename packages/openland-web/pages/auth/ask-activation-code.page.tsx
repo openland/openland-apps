@@ -12,6 +12,7 @@ import { Title, Subtitle, FormLayout, AuthActionButton, AuthInput } from './comp
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { completeAuth } from './complete.page';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
+import { XImage } from 'react-mental';
 
 export type ActivationCodeProps = {
     emailValue: string;
@@ -22,6 +23,7 @@ export type ActivationCodeProps = {
     emailSendedTo: string;
     isMobile: boolean;
     isExistingUser: boolean;
+    avatarId: string | null;
 };
 
 const trackError = (error: string) => {
@@ -55,6 +57,7 @@ export const WebSignUpActivationCode = ({
     codeError,
     loginCodeStart,
     isExistingUser,
+    avatarId,
     isMobile,
 }: ActivationCodeProps & {
     codeSending: boolean;
@@ -85,6 +88,8 @@ export const WebSignUpActivationCode = ({
 
     const errorText = (codeField.input.invalid && codeField.input.errorText) || codeError;
     const isInvalid = !!errorText;
+    const ops = '-/format/auto/-/scale_crop/72x72/center/-/quality/best/-/progressive/yes/';
+    const opsRetina = '-/format/auto/-/scale_crop/144x144/center/-/quality/best/-/progressive/yes/ 2x';
 
     return (
         <FormLayout>
@@ -99,7 +104,17 @@ export const WebSignUpActivationCode = ({
                         </>
                     )}
             </Subtitle>
-            {/* {isExistingUser && <XView alignSelf="center" marginTop={16} width={72} height={72} backgroundColor="black" borderRadius={100} />} */}
+            {!!avatarId && (
+                <XImage
+                    alignSelf="center"
+                    marginTop={16}
+                    width={72}
+                    height={72}
+                    borderRadius="100%"
+                    src={`https://ucarecdn.com/${avatarId}/${ops}`}
+                    srcSet={`https://ucarecdn.com/${avatarId}/${opsRetina}`}
+                />
+            )}
             <AuthInput
                 isMobile={isMobile}
                 pattern="[0-9]*"
@@ -109,8 +124,7 @@ export const WebSignUpActivationCode = ({
                 invalid={isInvalid}
             />
             {isInvalid && <XErrorMessage2 message={errorText} />}
-            {/* <AuthActionButton text={isExistingUser ? InitTexts.auth.done : InitTexts.auth.next} loading={codeSending} onClick={doConfirm} /> */}
-            <AuthActionButton text={InitTexts.auth.next} loading={codeSending} onClick={doConfirm} />
+            <AuthActionButton text={isExistingUser ? InitTexts.auth.done : InitTexts.auth.next} loading={codeSending} onClick={doConfirm} />
         </FormLayout>
     );
 };
