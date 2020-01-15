@@ -59,7 +59,7 @@ const InviteInfoInner = (props: any) => {
                             <>
                                 <InviteLandingComponent
                                     signupRedirect={
-                                        '/signup?redirect=' + encodeURIComponent(redirect)
+                                        '/signin?redirect=' + encodeURIComponent(redirect)
                                     }
                                 />
                                 {!isMobile && <Footer />}

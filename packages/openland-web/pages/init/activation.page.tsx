@@ -95,7 +95,7 @@ const Header = () => (
         </LogoWrapper>
         <SignupContainer>
             <SignupStyled>Don't have an Openland account? </SignupStyled>
-            <SignupButton path="/signup">Sign Up</SignupButton>
+            <SignupButton path="/signin">Sign Up</SignupButton>
         </SignupContainer>
     </HeaderStyled>
 );

@@ -46,8 +46,7 @@ export const AuthActionButton = (props: UButtonProps) => {
     );
 };
 
-export const AuthInput = (props: UInputProps & { isMobile: boolean }) => {
-    const { isMobile, ...other } = props;
+export const AuthInput = (props: UInputProps) => {
     const [width] = useWithWidth();
 
     return (
@@ -58,7 +57,7 @@ export const AuthInput = (props: UInputProps & { isMobile: boolean }) => {
             type="email"
             alignSelf="center"
             hasPlaceholder={true}
-            {...other}
+            {...props}
         />
     );
 };

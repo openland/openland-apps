@@ -65,7 +65,6 @@ export const WebSignUpCreateWithEmail = ({
             <Title text="What’s your email?" />
             <Subtitle text="We’ll send you a login code" />
             <AuthInput
-                isMobile={isMobile}
                 label={InitTexts.auth.emailPlaceholder}
                 invalid={isInvalid}
                 onChange={emailField.input.onChange}

@@ -116,7 +116,6 @@ export const WebSignUpActivationCode = ({
                 />
             )}
             <AuthInput
-                isMobile={isMobile}
                 pattern="[0-9]*"
                 type="number"
                 label={InitTexts.auth.codePlaceholder}

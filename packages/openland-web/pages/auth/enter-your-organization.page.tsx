@@ -36,7 +36,7 @@ const CreateOrganizationFormInnerWeb = ({
 }) => {
     const form = useForm();
 
-    const orgInvite = Cookie.get('x-openland-org-invite');
+    const hasInvite = Cookie.get('x-openland-invite') || Cookie.get('x-openland-app-invite') || Cookie.get('x-openland-org-invite');
 
     let organizationField = useField('input.organization', initialOrganizationName || '', form, [
         {
@@ -67,14 +67,13 @@ const CreateOrganizationFormInnerWeb = ({
             <XView width={isMobile ? '100%' : 360} maxWidth={360}>
                 <AuthInput
                     label="Organization name"
-                    isMobile={isMobile}
                     onChange={organizationField.input.onChange}
                 />
                 {isInvalid && <XErrorMessage2 message={errorText} />}
             </XView>
             <AuthActionButton
                 loading={sending}
-                text={!!orgInvite ? InitTexts.create_organization.done : InitTexts.create_organization.next}
+                text={!!hasInvite ? InitTexts.create_organization.done : InitTexts.create_organization.next}
                 onClick={doConfirm}
             />
         </FormLayout>

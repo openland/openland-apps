@@ -7,7 +7,7 @@ export const LandingLinks = {
     terms: '/terms',
 
     signin: '/signin',
-    signup: '/signup',
+    signup: '/signin',
     app: '/',
 
     careers: 'https://angel.co/openland/jobs',
