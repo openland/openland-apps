@@ -109,8 +109,16 @@ export const TabBarDesktop = React.memo((props: TabBarDesktopProps) => {
                 justifyContent="center"
                 cursor="pointer"
                 onClick={() => {
-                    props.setSelected(1);
-                    props.xRouter.navigate('/mail');
+                    // set the active tab to /mail
+                    
+                    if (props.router.stacks[1]) {
+                        props.router.stacks[1].reset();
+                        props.setSelected(1);
+                    }
+
+                    setTimeout(() => {
+                        props.xRouter.navigate('/mail');
+                    }, 10);
                 }}
             >
                 <Logo />
