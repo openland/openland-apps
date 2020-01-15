@@ -27,6 +27,11 @@ let searchStyle = css`
     &:focus input {
         background-color: var(--backgroundSecondaryActive);
     }
+
+    & .input-placeholder {
+        top: -1px;
+    }
+
     & .input-placeholder,
     & input {
         font-size: 15px;
