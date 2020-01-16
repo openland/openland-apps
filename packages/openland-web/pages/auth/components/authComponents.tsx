@@ -6,6 +6,7 @@ import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { UButton, UButtonProps } from 'openland-web/components/unicorn/UButton';
 import { UInput, UInputProps } from 'openland-web/components/unicorn/UInput';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
+import { UToast } from 'openland-web/components/unicorn/UToast';
 
 export const textClassName = css`
     text-align: center;
@@ -121,4 +122,26 @@ export const FormLayout = (props: { children: any }) => {
             {props.children}
         </XView>
     </XView>;
+};
+
+const toastWrapper = css`
+    position: absolute;
+    top: 56px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 0 16px;
+    
+
+    @media (min-width: 750px) {
+        top: 77px;
+    }
+`;
+
+export const AuthToastWrapper = ({ message, isVisible, autoclose }: { message: string, isVisible: boolean, autoclose?: boolean }) => {
+    return (
+        <div className={toastWrapper}>
+            <UToast isVisible={isVisible} text={message} autoclose={autoclose} />
+        </div>
+    );
 };

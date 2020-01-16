@@ -5,9 +5,8 @@ import { useField } from 'openland-form/useField';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, FormLayout, AuthActionButton, AuthInput, AuthInputWrapper } from './components/authComponents';
+import { Title, Subtitle, FormLayout, AuthActionButton, AuthInput, AuthInputWrapper, AuthToastWrapper } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 export type CreateWithEmailProps = {
@@ -62,7 +61,7 @@ export const WebSignUpCreateWithEmail = ({
 
     return (
         <>
-            <XErrorMessage2 message={errorText} />
+            <AuthToastWrapper isVisible={!!errorText} message={errorText} />
             <FormLayout>
                 <Title text="What’s your email?" />
                 <Subtitle text="We’ll send you a login code" />

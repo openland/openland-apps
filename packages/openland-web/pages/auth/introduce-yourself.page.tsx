@@ -10,9 +10,8 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useClient } from 'openland-web/utils/useClient';
 import * as Cookie from 'js-cookie';
-import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, FormLayout, AuthActionButton } from './components/authComponents';
+import { Title, Subtitle, FormLayout, AuthActionButton, AuthInputWrapper } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
@@ -47,12 +46,6 @@ const CreateProfileFormInnerWeb = (
         (props.initialProfileFormData && props.initialProfileFormData.firstName) ||
         '',
         form,
-        [
-            {
-                checkIsValid: (value: string) => !!value.trim(),
-                text: `Please enter your name`,
-            },
-        ],
     );
     let lastName = useField<string>(
         'input.lastName',
@@ -70,6 +63,9 @@ const CreateProfileFormInnerWeb = (
     const doConfirm = React.useCallback(
         () => {
             form.doAction(async () => {
+                if (firstName.value.trim() === '') {
+                    return;
+                }
                 const formData = {
                     firstName: firstName.value.trim(),
                     lastName: lastName.value.trim(),
@@ -114,7 +110,14 @@ const CreateProfileFormInnerWeb = (
         [firstName.value, lastName.value, photoRef.value],
     );
 
-    useShortcuts({ keys: ['Enter'], callback: doConfirm });
+    const [errorsCount, setErrorsCount] = React.useState(0);
+    const handleNext = React.useCallback(() => {
+        doConfirm();
+        if (firstName.input.value.trim() === '') {
+            setErrorsCount(x => x + 1);
+        }
+    }, [errorsCount, doConfirm]);
+    useShortcuts({ keys: ['Enter'], callback: handleNext });
     const [width] = useWithWidth();
     const isSmallMobile = width && width < 400;
 
@@ -133,35 +136,27 @@ const CreateProfileFormInnerWeb = (
             </XView>
 
             <XView width={isSmallMobile ? '100%' : 320} alignSelf="center" marginBottom={16}>
-                <XView width={isSmallMobile ? '100%' : 320}>
+                <AuthInputWrapper errorsCount={errorsCount}>
                     <UInput
                         label="First name"
                         value={firstName.value}
                         flexGrow={1}
                         onChange={firstName.input.onChange}
                     />
-                </XView>
-                {firstName.input.invalid &&
-                    firstName.input.errorText && (
-                        <XErrorMessage2 message={firstName.input.errorText} />
-                    )}
+                </AuthInputWrapper>
             </XView>
 
             <XView width={isSmallMobile ? '100%' : 320} alignSelf="center">
-                <XView width={isSmallMobile ? '100%' : 320}>
+                <AuthInputWrapper>
                     <UInput
                         label="Last name"
                         value={lastName.value}
                         flexGrow={1}
                         onChange={lastName.input.onChange}
                     />
-                </XView>
-                {lastName.input.invalid &&
-                    lastName.input.errorText && (
-                        <XErrorMessage2 message={lastName.input.errorText} />
-                    )}
+                </AuthInputWrapper>
             </XView>
-            <AuthActionButton loading={sending} text={InitTexts.create_profile.next} onClick={doConfirm} />
+            <AuthActionButton loading={sending} text={InitTexts.create_profile.next} onClick={handleNext} />
         </FormLayout>
 
     );

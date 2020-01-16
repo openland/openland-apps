@@ -6,9 +6,8 @@ import { useField } from 'openland-form/useField';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { trackEvent } from 'openland-x-analytics';
-import { XErrorMessage2 } from 'openland-x/XErrorMessage2';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, FormLayout, AuthActionButton, AuthInputWrapper, AuthInput } from './components/authComponents';
+import { Title, Subtitle, FormLayout, AuthActionButton, AuthInputWrapper, AuthToastWrapper, AuthInput } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { completeAuth } from './complete.page';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
@@ -92,6 +91,10 @@ export const WebSignUpActivationCode = ({
         }
     }, [errorsCount, doConfirm]);
     useShortcuts({ keys: ['Enter'], callback: handleNext });
+    const handleResend = React.useCallback(() => {
+        resendCodeClick();
+        setCodeError('');
+    }, []);
 
     const errorText = (codeField.input.invalid && codeField.input.errorText) || codeError;
     const isInvalid = !!errorText;
@@ -100,18 +103,13 @@ export const WebSignUpActivationCode = ({
 
     return (
         <>
-            <XErrorMessage2 message={errorText} />
+            <AuthToastWrapper isVisible={!emailSending && !!errorText} message={errorText} />
+            <AuthToastWrapper isVisible={emailSending} message={sendingCodeText} autoclose={false} />
             <FormLayout>
                 <Title text={InitTexts.auth.enterActivationCode} />
                 <Subtitle>
-                    {emailSending ? (
-                        sendingCodeText
-                    ) : (
-                            <>
-                                We just sent it to {emailSendedTo}.<br />
-                                {emailWasResend ? 'Code successfully sent.' : InitTexts.auth.haveNotReceiveCode} <a onClick={resendCodeClick}>Resend</a>
-                            </>
-                        )}
+                    We just sent it to {emailSendedTo}.<br />
+                    {emailWasResend ? 'Code successfully sent.' : InitTexts.auth.haveNotReceiveCode} <a onClick={handleResend}>Resend</a>
                 </Subtitle>
                 {!!avatarId && (
                     <XImage

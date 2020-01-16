@@ -66,7 +66,7 @@ export const UToast = React.memo((props: UToastProps) => {
                 clearTimeout(timeoutId);
             }
         };
-    }, [autoclose, isRealVisible]);
+    }, [isRealVisible]);
 
     return !!text ? (
         <div className={cx(toastWrapper, className, isRealVisible && toastVisible)} style={{ backgroundColor }}>

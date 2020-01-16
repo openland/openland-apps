@@ -40,6 +40,9 @@ const CreateOrganizationFormInnerWeb = ({
     const doConfirm = React.useCallback(
         () => {
             form.doAction(async () => {
+                if (organizationField.value.trim() !== '') {
+                    return;
+                }
                 await processCreateOrganization({
                     organizationFieldValue: organizationField.value.trim(),
                 });
