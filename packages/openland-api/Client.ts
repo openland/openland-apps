@@ -2516,6 +2516,13 @@ const MyStickersSelector = obj(
 const MySuccessfulInvitesCountSelector = obj(
             field('mySuccessfulInvitesCount', 'mySuccessfulInvitesCount', args(), notNull(scalar('Int')))
         );
+const MyWalletSelector = obj(
+            field('myAccount', 'myAccount', args(), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('balance', 'balance', args(), notNull(scalar('Int'))),
+                    field('id', 'id', args(), notNull(scalar('ID')))
+                )))
+        );
 const OauthContextSelector = obj(
             field('oauthContext', 'context', args(fieldValue("code", refValue('code'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -3211,6 +3218,19 @@ const UsersSelector = obj(
                     field('name', 'title', args(), notNull(scalar('String')))
                 )))))
         );
+const WalletTransactionsSelector = obj(
+            field('walletTransactions', 'walletTransactions', args(fieldValue("after", refValue('after')), fieldValue("first", refValue('first')), fieldValue("id", refValue('id'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('cursor', 'cursor', args(), scalar('String')),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('amount', 'amount', args(), notNull(scalar('Int'))),
+                            field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('readableState', 'readableState', args(), notNull(scalar('String'))),
+                            field('state', 'state', args(), notNull(scalar('String')))
+                        )))))
+                )))
+        );
 const AccountInviteJoinSelector = obj(
             field('alphaJoinInvite', 'alphaJoinInvite', args(fieldValue("key", refValue('inviteKey'))), notNull(scalar('ID')))
         );
@@ -3318,6 +3338,13 @@ const CreateCardSetupIntentSelector = obj(
                     field('id', 'id', args(), notNull(scalar('ID')))
                 )))
         );
+const CreateDepositIntentSelector = obj(
+            field('cardDepositIntent', 'cardDepositIntent', args(fieldValue("amount", refValue('amount')), fieldValue("id", refValue('cardId')), fieldValue("retryKey", refValue('retryKey'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('clientSecret', 'clientSecret', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID')))
+                )))
+        );
 const CreateOrganizationSelector = obj(
             field('createOrganization', 'organization', args(fieldValue("input", refValue('input'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -3353,6 +3380,9 @@ const DeleteOrganizationSelector = obj(
         );
 const DeleteUserSelector = obj(
             field('superDeleteUser', 'superDeleteUser', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
+        );
+const DepositIntentCommitSelector = obj(
+            field('cardDepositIntentCommit', 'cardDepositIntentCommit', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
         );
 const EditCommentSelector = obj(
             field('editComment', 'editComment', args(fieldValue("fileAttachments", refValue('fileAttachments')), fieldValue("id", refValue('id')), fieldValue("mentions", refValue('mentions')), fieldValue("message", refValue('message')), fieldValue("spans", refValue('spans'))), notNull(scalar('Boolean')))
@@ -4356,6 +4386,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query MySuccessfulInvitesCount{mySuccessfulInvitesCount}',
         selector: MySuccessfulInvitesCountSelector
     },
+    MyWallet: {
+        kind: 'query',
+        name: 'MyWallet',
+        body: 'query MyWallet{myAccount{__typename balance id}}',
+        selector: MyWalletSelector
+    },
     OauthContext: {
         kind: 'query',
         name: 'OauthContext',
@@ -4608,6 +4644,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query Users($query:String!){items:users(query:$query){__typename subtitle:email id title:name}}',
         selector: UsersSelector
     },
+    WalletTransactions: {
+        kind: 'query',
+        name: 'WalletTransactions',
+        body: 'query WalletTransactions($after:String,$first:Int!,$id:ID!){walletTransactions(after:$after,first:$first,id:$id){__typename cursor items{__typename amount id readableState state}}}',
+        selector: WalletTransactionsSelector
+    },
     AccountInviteJoin: {
         kind: 'mutation',
         name: 'AccountInviteJoin',
@@ -4716,6 +4758,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'mutation CreateCardSetupIntent($retryKey:String!){cardCreateSetupIntent(retryKey:$retryKey){__typename clientSecret id}}',
         selector: CreateCardSetupIntentSelector
     },
+    CreateDepositIntent: {
+        kind: 'mutation',
+        name: 'CreateDepositIntent',
+        body: 'mutation CreateDepositIntent($amount:Int!,$cardId:ID!,$retryKey:String!){cardDepositIntent(amount:$amount,id:$cardId,retryKey:$retryKey){__typename clientSecret id}}',
+        selector: CreateDepositIntentSelector
+    },
     CreateOrganization: {
         kind: 'mutation',
         name: 'CreateOrganization',
@@ -4757,6 +4805,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'DeleteUser',
         body: 'mutation DeleteUser($id:ID!){superDeleteUser(id:$id)}',
         selector: DeleteUserSelector
+    },
+    DepositIntentCommit: {
+        kind: 'mutation',
+        name: 'DepositIntentCommit',
+        body: 'mutation DepositIntentCommit($id:ID!){cardDepositIntentCommit(id:$id)}',
+        selector: DepositIntentCommitSelector
     },
     EditComment: {
         kind: 'mutation',

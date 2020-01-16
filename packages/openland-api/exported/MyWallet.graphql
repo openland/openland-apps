@@ -1,0 +1,7 @@
+query MyWallet {
+  myAccount {
+    __typename
+    balance
+    id
+  }
+}

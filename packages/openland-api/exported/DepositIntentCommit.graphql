@@ -1,0 +1,3 @@
+mutation DepositIntentCommit($id: ID!) {
+  cardDepositIntentCommit(id: $id)
+}

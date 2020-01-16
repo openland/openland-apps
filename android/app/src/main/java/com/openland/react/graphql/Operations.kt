@@ -52,6 +52,7 @@ object Operations {
         if (name == "MyOrganizations") return MyOrganizations
         if (name == "MyStickers") return MyStickers
         if (name == "MySuccessfulInvitesCount") return MySuccessfulInvitesCount
+        if (name == "MyWallet") return MyWallet
         if (name == "OauthContext") return OauthContext
         if (name == "Online") return Online
         if (name == "Organization") return Organization
@@ -94,6 +95,7 @@ object Operations {
         if (name == "UserAvailableRooms") return UserAvailableRooms
         if (name == "UserStorage") return UserStorage
         if (name == "Users") return Users
+        if (name == "WalletTransactions") return WalletTransactions
         if (name == "AccountInviteJoin") return AccountInviteJoin
         if (name == "AddAppToChat") return AddAppToChat
         if (name == "AddComment") return AddComment
@@ -112,6 +114,7 @@ object Operations {
         if (name == "ConferenceOffer") return ConferenceOffer
         if (name == "CreateApp") return CreateApp
         if (name == "CreateCardSetupIntent") return CreateCardSetupIntent
+        if (name == "CreateDepositIntent") return CreateDepositIntent
         if (name == "CreateOrganization") return CreateOrganization
         if (name == "CreateUserProfileAndOrganization") return CreateUserProfileAndOrganization
         if (name == "DebugMails") return DebugMails
@@ -119,6 +122,7 @@ object Operations {
         if (name == "DeleteNotification") return DeleteNotification
         if (name == "DeleteOrganization") return DeleteOrganization
         if (name == "DeleteUser") return DeleteUser
+        if (name == "DepositIntentCommit") return DepositIntentCommit
         if (name == "EditComment") return EditComment
         if (name == "EditMessage") return EditMessage
         if (name == "FeatureFlagAdd") return FeatureFlagAdd

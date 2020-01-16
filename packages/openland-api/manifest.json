@@ -996,6 +996,34 @@
       }
     },
     {
+      "signature": "6557ab09fb890e08149d15d00a08836de19605d7e4dd52040b6325d6cb490748",
+      "document": "mutation CreateDepositIntent($amount:Int!,$cardId:ID!,$retryKey:String!){cardDepositIntent(amount:$amount,id:$cardId,retryKey:$retryKey){__typename clientSecret id}}",
+      "metadata": {
+        "engineSignature": "mutation CreateDepositIntent($amount:Int!,$cardId:ID!,$retryKey:String!){cardDepositIntent(amount:$amount,id:$cardId,retryKey:$retryKey){__typename clientSecret id}}"
+      }
+    },
+    {
+      "signature": "8d113dbda890707161f725c1f5c5fb0828f0ff0fea3f7a3d63835bc636c211d0",
+      "document": "mutation DepositIntentCommit($id:ID!){cardDepositIntentCommit(id:$id)}",
+      "metadata": {
+        "engineSignature": "mutation DepositIntentCommit($id:ID!){cardDepositIntentCommit(id:$id)}"
+      }
+    },
+    {
+      "signature": "8fe82e5db94b6256d5f37b99d38ed4fccccca79254c22418a9951d739c09ff04",
+      "document": "query MyWallet{myAccount{__typename balance id}}",
+      "metadata": {
+        "engineSignature": "query MyWallet{myAccount{__typename balance id}}"
+      }
+    },
+    {
+      "signature": "3804877bd273d1a761714ed5e63af588a2d0216d7e28da4d02e86341d46bc4a1",
+      "document": "query WalletTransactions($after:String,$first:Int!,$id:ID!){walletTransactions(after:$after,first:$first,id:$id){__typename cursor items{__typename amount id readableState state}}}",
+      "metadata": {
+        "engineSignature": "query WalletTransactions($after:String,$first:Int!,$id:ID!){walletTransactions(after:$after,first:$first,id:$id){__typename cursor items{__typename amount id readableState state}}}"
+      }
+    },
+    {
       "signature": "00a647704b757894d3538e4430ddb13a86738c771138dd3d878978af79fa797f",
       "document": "fragment MatchmakingProfileFragment on MatchmakingProfile{__typename answers{__typename...on TextMatchmakingAnswer{answer question{__typename id subtitle title}}...on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id isBot isYou name photo primaryOrganization{__typename id name}}}fragment MatchmakingRoomFragment on MatchmakingRoom{__typename enabled myProfile{__typename...MatchmakingProfileFragment}profiles{__typename...MatchmakingProfileFragment}questions{__typename...on TextMatchmakingQuestion{id subtitle title}...on MultiselectMatchmakingQuestion{id subtitle tags title}}}query MatchmakingRoom($peerId:ID!){matchmakingRoom(peerId:$peerId){__typename...MatchmakingRoomFragment}}",
       "metadata": {

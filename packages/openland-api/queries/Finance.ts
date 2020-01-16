@@ -28,3 +28,41 @@ export const CommitCardSetupIntentMutation = gql`
         }
     }
 `;
+
+export const CreateDepositIntentMutation = gql`
+    mutation CreateDepositIntent($cardId: ID!, $amount: Int!, $retryKey: String!) {
+        cardDepositIntent(id: $cardId, amount: $amount, retryKey: $retryKey) {
+            id
+            clientSecret
+        }
+    }
+`;
+
+export const DepositIntentCommitMutation = gql`
+    mutation DepositIntentCommit($id: ID!) {
+        cardDepositIntentCommit(id: $id)
+    }
+`;
+
+export const MyWalletQuery = gql`
+    query MyWallet {
+        myAccount {
+            id
+            balance
+        }
+    }
+`;
+
+export const WalletTransactionsQuery = gql`
+    query WalletTransactions($id: ID!, $first: Int!, $after: String) {
+        walletTransactions(id: $id, first: $first, after: $after) {
+            items {
+                id
+                amount
+                state
+                readableState
+            }
+            cursor
+        }
+    }
+`;

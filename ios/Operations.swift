@@ -2513,6 +2513,13 @@ private let MyStickersSelector = obj(
 private let MySuccessfulInvitesCountSelector = obj(
             field("mySuccessfulInvitesCount", "mySuccessfulInvitesCount", notNull(scalar("Int")))
         )
+private let MyWalletSelector = obj(
+            field("myAccount", "myAccount", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("balance", "balance", notNull(scalar("Int"))),
+                    field("id", "id", notNull(scalar("ID")))
+                )))
+        )
 private let OauthContextSelector = obj(
             field("oauthContext", "context", arguments(fieldValue("code", refValue("code"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -3208,6 +3215,19 @@ private let UsersSelector = obj(
                     field("name", "title", notNull(scalar("String")))
                 )))))
         )
+private let WalletTransactionsSelector = obj(
+            field("walletTransactions", "walletTransactions", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("cursor", "cursor", scalar("String")),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("amount", "amount", notNull(scalar("Int"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("readableState", "readableState", notNull(scalar("String"))),
+                            field("state", "state", notNull(scalar("String")))
+                        )))))
+                )))
+        )
 private let AccountInviteJoinSelector = obj(
             field("alphaJoinInvite", "alphaJoinInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
         )
@@ -3315,6 +3335,13 @@ private let CreateCardSetupIntentSelector = obj(
                     field("id", "id", notNull(scalar("ID")))
                 )))
         )
+private let CreateDepositIntentSelector = obj(
+            field("cardDepositIntent", "cardDepositIntent", arguments(fieldValue("amount", refValue("amount")), fieldValue("id", refValue("cardId")), fieldValue("retryKey", refValue("retryKey"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("clientSecret", "clientSecret", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
+                )))
+        )
 private let CreateOrganizationSelector = obj(
             field("createOrganization", "organization", arguments(fieldValue("input", refValue("input"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -3350,6 +3377,9 @@ private let DeleteOrganizationSelector = obj(
         )
 private let DeleteUserSelector = obj(
             field("superDeleteUser", "superDeleteUser", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+        )
+private let DepositIntentCommitSelector = obj(
+            field("cardDepositIntentCommit", "cardDepositIntentCommit", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
 private let EditCommentSelector = obj(
             field("editComment", "editComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("id", refValue("id")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
@@ -4357,6 +4387,12 @@ class Operations {
         "query MySuccessfulInvitesCount{mySuccessfulInvitesCount}",
         MySuccessfulInvitesCountSelector
     )
+    let MyWallet = OperationDefinition(
+        "MyWallet",
+        .query, 
+        "query MyWallet{myAccount{__typename balance id}}",
+        MyWalletSelector
+    )
     let OauthContext = OperationDefinition(
         "OauthContext",
         .query, 
@@ -4609,6 +4645,12 @@ class Operations {
         "query Users($query:String!){items:users(query:$query){__typename subtitle:email id title:name}}",
         UsersSelector
     )
+    let WalletTransactions = OperationDefinition(
+        "WalletTransactions",
+        .query, 
+        "query WalletTransactions($after:String,$first:Int!,$id:ID!){walletTransactions(after:$after,first:$first,id:$id){__typename cursor items{__typename amount id readableState state}}}",
+        WalletTransactionsSelector
+    )
     let AccountInviteJoin = OperationDefinition(
         "AccountInviteJoin",
         .mutation, 
@@ -4717,6 +4759,12 @@ class Operations {
         "mutation CreateCardSetupIntent($retryKey:String!){cardCreateSetupIntent(retryKey:$retryKey){__typename clientSecret id}}",
         CreateCardSetupIntentSelector
     )
+    let CreateDepositIntent = OperationDefinition(
+        "CreateDepositIntent",
+        .mutation, 
+        "mutation CreateDepositIntent($amount:Int!,$cardId:ID!,$retryKey:String!){cardDepositIntent(amount:$amount,id:$cardId,retryKey:$retryKey){__typename clientSecret id}}",
+        CreateDepositIntentSelector
+    )
     let CreateOrganization = OperationDefinition(
         "CreateOrganization",
         .mutation, 
@@ -4758,6 +4806,12 @@ class Operations {
         .mutation, 
         "mutation DeleteUser($id:ID!){superDeleteUser(id:$id)}",
         DeleteUserSelector
+    )
+    let DepositIntentCommit = OperationDefinition(
+        "DepositIntentCommit",
+        .mutation, 
+        "mutation DepositIntentCommit($id:ID!){cardDepositIntentCommit(id:$id)}",
+        DepositIntentCommitSelector
     )
     let EditComment = OperationDefinition(
         "EditComment",
@@ -5412,6 +5466,7 @@ class Operations {
         if name == "MyOrganizations" { return MyOrganizations }
         if name == "MyStickers" { return MyStickers }
         if name == "MySuccessfulInvitesCount" { return MySuccessfulInvitesCount }
+        if name == "MyWallet" { return MyWallet }
         if name == "OauthContext" { return OauthContext }
         if name == "Online" { return Online }
         if name == "Organization" { return Organization }
@@ -5454,6 +5509,7 @@ class Operations {
         if name == "UserAvailableRooms" { return UserAvailableRooms }
         if name == "UserStorage" { return UserStorage }
         if name == "Users" { return Users }
+        if name == "WalletTransactions" { return WalletTransactions }
         if name == "AccountInviteJoin" { return AccountInviteJoin }
         if name == "AddAppToChat" { return AddAppToChat }
         if name == "AddComment" { return AddComment }
@@ -5472,6 +5528,7 @@ class Operations {
         if name == "ConferenceOffer" { return ConferenceOffer }
         if name == "CreateApp" { return CreateApp }
         if name == "CreateCardSetupIntent" { return CreateCardSetupIntent }
+        if name == "CreateDepositIntent" { return CreateDepositIntent }
         if name == "CreateOrganization" { return CreateOrganization }
         if name == "CreateUserProfileAndOrganization" { return CreateUserProfileAndOrganization }
         if name == "DebugMails" { return DebugMails }
@@ -5479,6 +5536,7 @@ class Operations {
         if name == "DeleteNotification" { return DeleteNotification }
         if name == "DeleteOrganization" { return DeleteOrganization }
         if name == "DeleteUser" { return DeleteUser }
+        if name == "DepositIntentCommit" { return DepositIntentCommit }
         if name == "EditComment" { return EditComment }
         if name == "EditMessage" { return EditMessage }
         if name == "FeatureFlagAdd" { return FeatureFlagAdd }
