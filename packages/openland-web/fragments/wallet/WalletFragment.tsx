@@ -6,6 +6,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { showAddCard } from './components/showAddCard';
 import { showAddFunds } from './components/showAddFunds';
+import { Money } from 'openland-web/components/Money';
 
 export const WalletFragment = React.memo(() => {
     let client = useClient();
@@ -17,11 +18,11 @@ export const WalletFragment = React.memo(() => {
             <UHeader title="Finance" />
             <XView flexDirection="column">
                 <XView>
-                    {wallet.myAccount.balance}
+                    <Money amount={wallet.myAccount.balance} />
                 </XView>
                 <XView>
                     {transactions.walletTransactions.items.map((v) => (
-                        <XView key={v.id}>{v.readableState}: {v.amount}</XView>
+                        <XView key={v.id}>{v.readableState}: <Money amount={v.amount} /></XView>
                     ))}
                 </XView>
                 <XView
