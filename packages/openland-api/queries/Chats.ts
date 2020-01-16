@@ -736,12 +736,14 @@ export const RoomJoinMutation = gql`
 export const RoomsJoinMutation = gql`
     mutation RoomsJoin($roomsIds: [ID!]!) {
         join: betaRoomsJoin(roomsIds: $roomsIds) {
-            ...RoomShort
+            ... on PrivateRoom {
+                id
+            }
+            ... on SharedRoom {
+                id
+            }
         }
     }
-    ${UserShort}
-    ${OrganizationShort}
-    ${RoomShort}
 `;
 
 export const RoomsInviteUserMutation = gql`
