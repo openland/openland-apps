@@ -9,6 +9,7 @@ import { Unicorn } from 'openland-x/XLoader';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { isElectron } from 'openland-y-utils/isElectron';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 const captionText = css`
     color: var(--foregroundTertiary);
@@ -62,13 +63,14 @@ export const SignUpAuthMechanism = ({
 };
 
 export const CreateNewAccountPage = (props: AuthMechanism) => {
+    let router = React.useContext(XRouterContext)!;
     return (
         <XView backgroundColor="white" flexGrow={1} flexShrink={1}>
             <XDocumentHead title="Login" />
             {!isElectron && (
                 <BackSkipLogo
                     onBack={() => {
-                        window.history.back();
+                        router.replace('/');
                     }}
                     onSkip={null}
                 />
