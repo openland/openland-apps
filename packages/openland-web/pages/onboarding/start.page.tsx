@@ -42,9 +42,9 @@ export const DiscoverStart = ({
 }) => {
     const client = useClient();
     const { profile, user } = client.useProfile();
-    const { id } = user || {};
-    const { firstName, lastName, photoRef } = profile || {};
-    const { uuid } = photoRef || {};
+    const { id } = user || { id: undefined };
+    const { firstName, lastName, photoRef } = profile || { firstName: '', lastName: '', photoRef: null };
+    const { uuid } = photoRef || { uuid: undefined };
     const fullName = [firstName, lastName].filter(Boolean).join(' ');
     const subtitle = onLogin
         ? 'Your account is ready and it’s time to find interesting communities to join'
