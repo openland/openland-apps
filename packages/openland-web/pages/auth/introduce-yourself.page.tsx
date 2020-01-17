@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { BackSkipLogo } from '../components/BackSkipLogo';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
@@ -15,6 +14,7 @@ import { Title, Subtitle, FormLayout, AuthActionButton, AuthInputWrapper } from 
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
+import { AuthHeaderConfig } from './root.page';
 
 export type ProfileFormData = {
     firstName: string | null;
@@ -195,10 +195,10 @@ export const IntroduceYourselfPageInner = ({ isMobile }: IntroduceYourselfPageOu
     return (
         <Wrapper>
             <XDocumentHead title="What’s your name?" />
-            <BackSkipLogo
+            <AuthHeaderConfig
                 onBack={
                     () => {
-                        router.replace('/authorization/ask-activation-code');
+                        router.replace('/auth/logout');
                     }
                 }
             />

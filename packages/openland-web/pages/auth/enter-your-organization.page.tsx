@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { BackSkipLogo } from '../components/BackSkipLogo';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { InitTexts } from 'openland-web/pages/init/_text';
@@ -11,6 +10,7 @@ import * as Cookie from 'js-cookie';
 import { Wrapper } from '../onboarding/components/wrapper';
 import { Title, Subtitle, FormLayout, AuthInput, AuthInputWrapper, AuthActionButton } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { AuthHeaderConfig } from './root.page';
 
 export type EnterYourOrganizationPageProps = { inviteKey?: string | null };
 
@@ -228,7 +228,7 @@ export const EnterYourOrganizationPageInner = ({
     return (
         <Wrapper>
             <XDocumentHead title="Where do you work?" />
-            <BackSkipLogo
+            <AuthHeaderConfig
                 onBack={() => {
                     router.replace('/authorization/introduce-yourself');
                 }}

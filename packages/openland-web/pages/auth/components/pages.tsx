@@ -17,4 +17,4 @@ export const pages: { [K in pagesT]: pagesT } = {
     introduceYourself: 'introduceYourself',
 };
 
-export const pagesArr = ['acceptInvite', 'createNewAccount', 'askEmail', 'askActivationCode', 'enterYourOrganization', 'introduceYourself'];
+export const pagesArr = ['acceptInvite', 'createNewAccount', 'askEmail', 'askActivationCode', 'introduceYourself', 'enterYourOrganization'];
