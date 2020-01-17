@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { XView } from 'react-mental';
+import { XView, XViewProps } from 'react-mental';
 import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { UButton, UButtonProps } from 'openland-web/components/unicorn/UButton';
@@ -110,12 +110,13 @@ export const AuthInput = (props: UInputProps) => {
     );
 };
 
-export const FormLayout = (props: { children: any }) => {
+export const FormLayout = (props: { children: any } & XViewProps) => {
     const isMobile = useIsMobile();
+    const { children, ...other } = props;
 
-    return <XView justifyContent="center" alignItems="center" flexGrow={1} minWidth={320}>
-        <XView alignItems={isMobile ? 'stretch' : 'center'} width="100%" maxWidth={400} paddingHorizontal={16} marginBottom={isMobile ? 56 : 77}>
-            {props.children}
+    return <XView justifyContent="center" alignItems="center" flexGrow={1} minWidth={320} {...other}>
+        <XView alignItems={isMobile ? 'stretch' : 'center'} width="100%" maxWidth={432} paddingHorizontal={16}>
+            {children}
         </XView>
     </XView>;
 };

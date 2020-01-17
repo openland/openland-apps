@@ -11,6 +11,29 @@ import { ChatsForYou } from './chats-for-you.page';
 import { XLoader } from 'openland-x/XLoader';
 import { Wrapper } from './components/wrapper';
 import { Title, AuthActionButton, FormLayout } from '../auth/components/authComponents';
+import { css } from 'linaria';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
+
+const shadowWrapper = css`
+    width: 100%;
+    height: 112px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+`;
+
+const shadowClassName = css`
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
+`;
 
 const TagsGroupPage = (props: {
     group?: TagGroup | null;
@@ -91,23 +114,44 @@ const LocalDiscoverComponent = ({
         return null;
     }
 
-    const { title } = group;
+    const [isScrollable, setIsScrollable] = React.useState(false);
+    React.useLayoutEffect(() => {
+        if (document.body.scrollHeight > document.body.clientHeight) {
+            setIsScrollable(true);
+        } else {
+            setIsScrollable(false);
+        }
+    }, [group]);
+    const isMobile = useIsMobile();
+
+    const { title, subtitle } = group;
     return (
         <Wrapper fullHeight={fullHeight}>
             <XDocumentHead title={title!!} />
             {!noBackSkipLogo && (
                 <BackSkipLogo onBack={onBack} onSkip={onSkip} />
             )}
-            <FormLayout>
-                <Title text={title!!} />
+            <FormLayout marginTop={isMobile ? 56 : 72} marginBottom={130}>
+                <Title text={subtitle!!} />
                 <TagsGroupPage group={group} selected={localSelected} onPress={onTagPress} />
-                <AuthActionButton
-                    disable={!(allowContinue || !!localSelected.length)}
-                    marginTop={24}
-                    zIndex={2}
-                    text="Continue"
-                    onClick={onMyContinueClick}
-                />
+                {isScrollable ? (
+                    <div className={shadowWrapper}>
+                        <AuthActionButton
+                            marginTop={0}
+                            zIndex={2}
+                            text="Continue"
+                            onClick={onMyContinueClick}
+                        />
+                        <div className={shadowClassName} />
+                    </div>
+                ) : (
+                        <AuthActionButton
+                            marginTop={24}
+                            zIndex={2}
+                            text="Continue"
+                            onClick={onMyContinueClick}
+                        />
+                    )}
             </FormLayout>
         </Wrapper>
     );

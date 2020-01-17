@@ -1,33 +1,38 @@
 import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
-import { UButton } from 'openland-web/components/unicorn/UButton';
-import { css, cx } from 'linaria';
+import { css } from 'linaria';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { useClient } from 'openland-web/utils/useClient';
 import CheckIcon from 'openland-icons/checked.svg';
 import { SuggestedRooms_suggestedRooms_SharedRoom } from 'openland-api/Types';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XLoader } from 'openland-x/XLoader';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { Wrapper } from './components/wrapper';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
+import { Title, Subtitle, AuthActionButton, FormLayout } from '../auth/components/authComponents';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 
-const shadowClassName = css`
-    margin: auto;
-    width: 400px;
-    height: 200px;
-    position: absolute;
-    bottom: -70px;
+const shadowWrapper = css`
+    width: 100%;
+    height: 112px;
+    position: fixed;
     left: 0;
     right: 0;
-    pointer-events: none;
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
 `;
 
-const mobileShadowClassName = css`
-    bottom: -30px;
+const shadowClassName = css`
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
 `;
 
 const CheckIconClassName = css`
@@ -36,8 +41,9 @@ const CheckIconClassName = css`
     justify-content: center;
     width: 18px;
     height: 18px;
-    border-radius: 18px;
-    background-color: #1790ff;
+    border-radius: 4px;
+    background-color: var(--accentPrimary);
+    flex-shrink: 0;
 `;
 
 const ChatsItem = ({
@@ -56,7 +62,7 @@ const ChatsItem = ({
             flexDirection="row"
             alignItems="center"
             paddingLeft={16}
-            paddingRight={20}
+            paddingRight={18}
             paddingVertical={8}
             borderRadius={8}
             backgroundColor={'#fff'}
@@ -64,11 +70,11 @@ const ChatsItem = ({
             onClick={() => onSelect(room.id)}
         >
             <UAvatar photo={room.photo} title={room.title} id={room.id} />
-            <XView flexDirection="column" flexGrow={1} marginLeft={16}>
-                <XView fontSize={15} fontWeight="600">
+            <XView flexDirection="column" flexGrow={1} flexShrink={1} marginLeft={16}>
+                <XView {...TextStyles.Label1} overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" color="var(--foregroundPrimary)">
                     {room.title}
                 </XView>
-                <XView fontSize={14} color="rgba(0, 0, 0, 0.6)">
+                <XView {...TextStyles.Densed} color="var(--foregroundSecondary)">
                     {`${room.membersCount} members`}
                 </XView>
             </XView>
@@ -85,10 +91,12 @@ const ChatsItemList = ({
     rooms,
     isMobile,
     onJoinChats,
+    isScrollable,
 }: {
     rooms: SuggestedRooms_suggestedRooms_SharedRoom[];
     isMobile: boolean;
     onJoinChats?: Function;
+    isScrollable: boolean;
 }) => {
     const allRoomsIds = rooms.map(({ id }) => id);
     const [selectedIds, setSelectedIds] = React.useState<string[]>(allRoomsIds);
@@ -123,78 +131,50 @@ const ChatsItemList = ({
     }
 
     return (
-        <XView flexGrow={1} flexShrink={1}>
+        <XView flexGrow={1} flexShrink={1} marginTop={24}>
             <XView
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="center"
-                marginBottom={18}
+                alignItems="stretch"
                 alignSelf="center"
-                maxWidth={isMobile ? '100%' : 326}
-                paddingHorizontal={18}
-                width="100%"
+                maxWidth={isMobile ? '100%' : 352}
+                width={isMobile ? '100%' : 352}
             >
-                <XView fontWeight={'600'} fontSize={17} color={'rgba(0, 0, 0, 0.5)'}>
-                    {`${rooms.length} chats`}
-                </XView>
-                {allRoomsIds.length === selectedIds.length ? (
-                    <UButton
-                        text="Clear"
-                        size="medium"
-                        onClick={() => {
-                            setSelectedIds([]);
-                        }}
-                    />
-                ) : (
-                        <UButton
-                            text="Select all"
-                            size="medium"
-                            onClick={() => {
-                                setSelectedIds(allRoomsIds);
+                {rooms.map((room, key) => {
+                    return (
+                        <ChatsItem
+                            key={key}
+                            room={room}
+                            isSelected={selectedIds.indexOf(room.id) !== -1}
+                            onSelect={id => {
+                                if (selectedIds.indexOf(id) === -1) {
+                                    setSelectedIds([...selectedIds, id]);
+                                } else {
+                                    setSelectedIds(selectedIds.filter(item => item !== id));
+                                }
                             }}
                         />
-                    )}
+                    );
+                })}
             </XView>
-
-            <XScrollView3 marginBottom={-110} flexGrow={1} flexShrink={1} alignItems="center">
-                <XView
-                    paddingBottom={150}
-                    alignItems="stretch"
-                    alignSelf="center"
-                    maxWidth={isMobile ? '100%' : 350}
-                    width={isMobile ? '100%' : 350}
-                >
-                    {rooms.map((room, key) => {
-                        return (
-                            <ChatsItem
-                                key={key}
-                                room={room}
-                                isSelected={selectedIds.indexOf(room.id) !== -1}
-                                onSelect={id => {
-                                    if (selectedIds.indexOf(id) === -1) {
-                                        setSelectedIds([...selectedIds, id]);
-                                    } else {
-                                        setSelectedIds(selectedIds.filter(item => item !== id));
-                                    }
-                                }}
-                            />
-                        );
-                    })}
-                </XView>
-            </XScrollView3>
-            <div className={cx(shadowClassName, isMobile && mobileShadowClassName)} />
-            <XView flexShrink={0} alignSelf="center" zIndex={2}>
-                <UButton
-                    zIndex={2}
-                    flexShrink={0}
-                    text={joinButtonText}
-                    style="primary"
-                    size="large"
-                    loading={joinLoader}
-                    onClick={join}
-                    disable={!selectedLength}
-                />
-            </XView>
+            {isScrollable ? (
+                <div className={shadowWrapper}>
+                    <AuthActionButton
+                        text={joinButtonText}
+                        loading={joinLoader}
+                        marginTop={0}
+                        onClick={join}
+                        disable={!selectedLength}
+                        zIndex={1}
+                    />
+                    <div className={shadowClassName} />
+                </div>
+            ) : (
+                    <AuthActionButton
+                        text={joinButtonText}
+                        loading={joinLoader}
+                        onClick={join}
+                        disable={!selectedLength}
+                    />
+                )}
         </XView>
     );
 };
@@ -230,35 +210,25 @@ export const ChatsForYou = ({
             rooms.push(room);
         }
     }
+    const [isScrollable, setIsScrollable] = React.useState(false);
+    React.useLayoutEffect(() => {
+        if (document.body.scrollHeight > document.body.clientHeight) {
+            setIsScrollable(true);
+        } else {
+            setIsScrollable(false);
+        }
+    }, [data.suggestedRooms]);
 
     return (
         <Wrapper fullHeight={fullHeight}>
             <XDocumentHead title="Choose role" />
-            <XView marginBottom={12}>
-                <BackSkipLogo onBack={onBack} onSkip={onSkip} />
-            </XView>
+            <BackSkipLogo onBack={onBack} onSkip={onSkip} />
+            <FormLayout marginTop={isScrollable ? 72 : undefined} marginBottom={isScrollable ? 130 : undefined}>
+                <Title text="Chats for you" />
+                <Subtitle text="Recommendations based on your answers" />
 
-            <XView
-                alignItems="center"
-                flexGrow={1}
-                flexShrink={1}
-                justifyContent="center"
-                marginTop={isMobile ? 15 : 20}
-                marginBottom={isMobile ? 30 : 70}
-            >
-                <XView flexDirection="column" alignSelf="stretch" flexGrow={1} flexShrink={1}>
-                    <XView alignItems="center">
-                        <XView fontSize={24} marginBottom={12}>
-                            Chats for you
-                        </XView>
-                        <XView fontSize={16} marginBottom={40}>
-                            Recommendations based on your answers
-                        </XView>
-                    </XView>
-
-                    <ChatsItemList onJoinChats={onJoinChats} rooms={rooms} isMobile={!!isMobile} />
-                </XView>
-            </XView>
+                <ChatsItemList isScrollable={isScrollable} onJoinChats={onJoinChats} rooms={rooms} isMobile={!!isMobile} />
+            </FormLayout>
         </Wrapper>
     );
 };
