@@ -22,12 +22,8 @@ const subtitleClassName = css`
     margin-top: 8px;
 `;
 
-const titleClassName = css`
-    margin-top: 12px;
-`;
-
 export const Title = (props: { text: string }) => (
-    <div className={cx(TextTitle1, textClassName, titleClassName)}>
+    <div className={cx(TextTitle1, textClassName)}>
         {props.text}
     </div>
 );

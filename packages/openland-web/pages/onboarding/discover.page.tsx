@@ -1,10 +1,6 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
-import { css, cx } from 'linaria';
 import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { UButton } from 'openland-web/components/unicorn/UButton';
-import { XScrollView3 } from 'openland-x/XScrollView3';
 import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { BackSkipLogo } from '../components/BackSkipLogo';
@@ -13,22 +9,8 @@ import { TagsCloud } from '../components/TagsCloud';
 import { TagGroup, Tag } from '../components/TagButton';
 import { ChatsForYou } from './chats-for-you.page';
 import { XLoader } from 'openland-x/XLoader';
-import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { Wrapper } from './components/wrapper';
-
-const shadowClassName = css`
-    width: 350px;
-    height: 200px;
-    position: absolute;
-    bottom: -70px;
-    margin: auto;
-    pointer-events: none;
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
-`;
-
-const mobileShadowClassName = css`
-    bottom: -30px;
-`;
+import { Title, AuthActionButton, FormLayout } from '../auth/components/authComponents';
 
 const TagsGroupPage = (props: {
     group?: TagGroup | null;
@@ -40,21 +22,12 @@ const TagsGroupPage = (props: {
     }
 
     return (
-        <XScrollView3
-            marginBottom={-110}
-            flexGrow={1}
-            flexShrink={1}
-            alignSelf="stretch"
-            alignItems="center"
-        >
-            <XView paddingHorizontal={18} paddingBottom={100} alignItems="center">
-                <TagsCloud
-                    tagsGroup={props.group}
-                    selected={props.selected}
-                    onPress={props.onPress}
-                />
-            </XView>
-        </XScrollView3>
+        <TagsCloud
+            tagsGroup={props.group}
+            selectedTags={props.selected}
+            onPress={props.onPress}
+            marginTop={24}
+        />
     );
 };
 
@@ -83,7 +56,6 @@ const LocalDiscoverComponent = ({
     onSkip: ((event: React.MouseEvent) => void) | null;
     onBack: ((event: React.MouseEvent) => void) | null;
 }) => {
-    const isMobile = useIsMobile();
     const [localSelected, setLocalSelected] = React.useState<string[]>(() => selected);
 
     React.useLayoutEffect(
@@ -119,48 +91,24 @@ const LocalDiscoverComponent = ({
         return null;
     }
 
-    const { title, subtitle } = group;
+    const { title } = group;
     return (
         <Wrapper fullHeight={fullHeight}>
-            <XDocumentHead title="Choose role" />
+            <XDocumentHead title={title!!} />
             {!noBackSkipLogo && (
                 <BackSkipLogo onBack={onBack} onSkip={onSkip} />
             )}
-            <XView
-                alignItems="center"
-                flexGrow={1}
-                flexShrink={1}
-                justifyContent="center"
-                marginTop={isMobile ? 15 : 100}
-                marginBottom={isMobile ? 30 : 70}
-            >
-                <XView
-                    flexDirection="column"
-                    alignSelf="stretch"
-                    alignItems="center"
-                    flexGrow={1}
-                    flexShrink={1}
-                >
-                    <XView fontSize={24} marginBottom={15} fontWeight="600">
-                        {title}
-                    </XView>
-                    <XView fontSize={16} marginBottom={30}>
-                        {subtitle}
-                    </XView>
-
-                    <TagsGroupPage group={group} selected={localSelected} onPress={onTagPress} />
-                    <div className={cx(shadowClassName, isMobile && mobileShadowClassName)} />
-                    <UButton
-                        disable={!(allowContinue || !!localSelected.length)}
-                        flexShrink={0}
-                        zIndex={2}
-                        text="Continue"
-                        style="primary"
-                        size="large"
-                        onClick={onMyContinueClick}
-                    />
-                </XView>
-            </XView>
+            <FormLayout>
+                <Title text={title!!} />
+                <TagsGroupPage group={group} selected={localSelected} onPress={onTagPress} />
+                <AuthActionButton
+                    disable={!(allowContinue || !!localSelected.length)}
+                    marginTop={24}
+                    zIndex={2}
+                    text="Continue"
+                    onClick={onMyContinueClick}
+                />
+            </FormLayout>
         </Wrapper>
     );
 };

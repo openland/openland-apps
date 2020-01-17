@@ -1,50 +1,33 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
+import { XView, XViewProps } from 'react-mental';
 import { TagGroup, TagButton, Tag } from './TagButton';
 
 export const TagsCloud = ({
     tagsGroup,
-    selected,
+    selectedTags,
     onPress,
+    ...other
 }: {
     tagsGroup: TagGroup;
-    selected: string[];
+    selectedTags: string[];
     onPress: (pressedTag: Tag) => void;
-}) => {
-    let [showAll, setShowAll] = React.useState(false);
-
-    let onShowAll = React.useCallback(() => {
-        setShowAll(!showAll);
-    }, [showAll]);
-
+} & XViewProps) => {
     return (
-        <XView flexDirection="column">
-            <XView
-                marginBottom={36}
-                flexDirection="row"
-                flexWrap="wrap"
-                justifyContent="center"
-                maxWidth={350}
-            >
-                {tagsGroup.tags
-                    .filter((t, i) => showAll || i < 17)
-                    .map(tag => (
-                        <TagButton
-                            key={tag.id}
-                            tag={tag}
-                            onPress={onPress}
-                            selected={selected.indexOf(tag.id) !== -1}
-                        />
-                    ))}
-                {tagsGroup.tags.length > 17 && !showAll && (
+        <XView
+            flexDirection="row"
+            flexWrap="wrap"
+            justifyContent="center"
+            {...other}
+        >
+            {tagsGroup.tags
+                .map(tag => (
                     <TagButton
-                        tag={{ title: showAll ? 'Less' : 'More', id: 'button_more' }}
-                        onPress={onShowAll}
-                        selected={false}
-                        isMore={true}
+                        key={tag.id}
+                        tag={tag}
+                        onPress={onPress}
+                        selected={selectedTags.indexOf(tag.id) !== -1}
                     />
-                )}
-            </XView>
+                ))}
         </XView>
     );
 };
