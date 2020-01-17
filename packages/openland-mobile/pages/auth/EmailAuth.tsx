@@ -3,7 +3,7 @@ import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { ZInput } from '../../components/ZInput';
 import RNRestart from 'react-native-restart';
-import { Text, Platform, StyleSheet, TextStyle, View, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { Text, Platform, StyleSheet, TextStyle } from 'react-native';
 import { UserError, NamedError } from 'openland-y-forms/errorHandling';
 import { ShowAuthError } from './ShowAuthError';
 import Alert from 'openland-mobile/components/AlertBlanket';
@@ -17,34 +17,11 @@ import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { API_HOST } from 'openland-y-utils/api';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-
-interface FloatContentProps {
-    staticContent: JSX.Element;
-    floatContent: JSX.Element;
-}
-
-const FloatKeyboardArea = React.memo((props: FloatContentProps) => {
-    const area = React.useContext(ASSafeAreaContext);
-    const bottomOffset = area.bottom;
-
-    return (
-        <View flex={1}>
-            <ScrollView paddingTop={Platform.OS === 'ios' ? 80 : undefined}>
-                {props.staticContent}
-            </ScrollView>
-            <KeyboardAvoidingView behavior="padding">
-                <View padding={16} paddingBottom={Platform.OS === 'android' ? bottomOffset + 16 : undefined}>
-                    {props.floatContent}
-                </View>
-            </KeyboardAvoidingView>
-        </View>
-    );
-});
+import { FloatKeyboardArea } from './FloatKeyboardArea';
 
 export const ACTIVATION_CODE_LENGTH = 6;
 
-const styles = StyleSheet.create({
+export const textStyles = StyleSheet.create({
     title: {
         ...TextStyles.Title1,
         textAlign: 'center',
@@ -132,30 +109,27 @@ const EmailStartComponent = (props: PageProps) => {
     return (
         <ZTrack event="signup_email_view">
             <FloatKeyboardArea
-                staticContent={(
-                    <>
-                        <Text style={[styles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
-                            What’s your email?
-                        </Text>
-                        <Text style={[styles.hint, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
-                            We’ll send you a login code
-                        </Text>
-                        <ZInput
-                            field={emailField}
-                            placeholder="Email"
-                            autoCapitalize="none"
-                            keyboardType="email-address"
-                            autoFocus={true}
-                            returnKeyType="next"
-                            allowFontScaling={false}
-                            onSubmitEditing={submitForm}
-                        />
-                    </>
-                )}
                 floatContent={(
                     <ZRoundedButton title="Next" size="large" onPress={submitForm}/>
                 )}
-            />
+            >
+                <Text style={[textStyles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
+                    What’s your email?
+                </Text>
+                <Text style={[textStyles.hint, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
+                    We’ll send you a login code
+                </Text>
+                <ZInput
+                    field={emailField}
+                    placeholder="Email"
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                    autoFocus={true}
+                    returnKeyType="next"
+                    allowFontScaling={false}
+                    onSubmitEditing={submitForm}
+                />
+            </FloatKeyboardArea>
         </ZTrack>
     );
 };
@@ -241,31 +215,28 @@ const EmailCodeComponent = (props: PageProps) => {
     return (
         <ZTrack event="code_view">
             <FloatKeyboardArea
-                staticContent={(
-                    <>
-                        <Text style={[styles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
-                            Enter login code
-                        </Text>
-                        <Text style={[styles.hint, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
-                            We just sent it to {email}.
-                        </Text>
-                        <ZInput
-                            field={codeField}
-                            placeholder="Activation code"
-                            autoCapitalize="none"
-                            keyboardType="number-pad"
-                            autoFocus={true}
-                            returnKeyType="next"
-                            allowFontScaling={false}
-                            onSubmitEditing={submitForm}
-                            maxLength={ACTIVATION_CODE_LENGTH}
-                        />
-                    </>
-                )}
                 floatContent={(
                     <ZRoundedButton title="Next" size="large" onPress={submitForm}/>
                 )}
-            />
+            >
+                <Text style={[textStyles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
+                    Enter login code
+                </Text>
+                <Text style={[textStyles.hint, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
+                    We just sent it to {email}.
+                </Text>
+                <ZInput
+                    field={codeField}
+                    placeholder="Activation code"
+                    autoCapitalize="none"
+                    keyboardType="number-pad"
+                    autoFocus={true}
+                    returnKeyType="next"
+                    allowFontScaling={false}
+                    onSubmitEditing={submitForm}
+                    maxLength={ACTIVATION_CODE_LENGTH}
+                />
+            </FloatKeyboardArea>
         </ZTrack>
     );
 };
