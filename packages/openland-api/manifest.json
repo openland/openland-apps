@@ -751,10 +751,10 @@
       }
     },
     {
-      "signature": "10308622fc33abac223ee96c69482cb2470f13763240cf8f8a9bdf034b207217",
-      "document": "fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query GlobalSearch($kinds:[GlobalSearchEntryKind!],$query:String!){items:alphaGlobalSearch(kinds:$kinds,query:$query){__typename...on Organization{...OrganizationShort}...on User{...UserShort}...on SharedRoom{canSendMessage id kind membersCount membership organization{__typename id name photo}roomPhoto:photo title}}}",
+      "signature": "a0edee615b0a87702c97fb711eca51363c6f264cd66fa1637d269d0a618e6c15",
+      "document": "fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query GlobalSearch($kinds:[GlobalSearchEntryKind!],$query:String!){items:alphaGlobalSearch(kinds:$kinds,query:$query){__typename...on Organization{isCommunity:alphaIsCommunity id name}...on User{...UserShort}...on SharedRoom{canSendMessage id kind membersCount membership organization{__typename id name photo}roomPhoto:photo title}}}",
       "metadata": {
-        "engineSignature": "fragment OrganizationShort on Organization{__typename about alphaIsCommunity id membersCount name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query GlobalSearch($kinds:[GlobalSearchEntryKind!],$query:String!){alphaGlobalSearch(kinds:$kinds,query:$query){__typename...on Organization{...OrganizationShort}...on User{...UserShort}...on SharedRoom{canSendMessage id kind membersCount membership organization{__typename id name photo}photo title}}}"
+        "engineSignature": "fragment OrganizationShort on Organization{__typename about alphaIsCommunity id membersCount name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query GlobalSearch($kinds:[GlobalSearchEntryKind!],$query:String!){alphaGlobalSearch(kinds:$kinds,query:$query){__typename...on Organization{alphaIsCommunity id name}...on User{...UserShort}...on SharedRoom{canSendMessage id kind membersCount membership organization{__typename id name photo}photo title}}}"
       }
     },
     {

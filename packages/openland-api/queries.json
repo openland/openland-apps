@@ -11101,7 +11101,7 @@
 					"type": "[GlobalSearchEntryKind!]"
 				}
 			],
-			"source": "query GlobalSearch($query: String!, $kinds: [GlobalSearchEntryKind!]) {\n  items: alphaGlobalSearch(query: $query, kinds: $kinds) {\n    __typename\n    ... on Organization {\n      ...OrganizationShort\n    }\n    ... on User {\n      ...UserShort\n    }\n    ... on SharedRoom {\n      id\n      kind\n      title\n      canSendMessage\n      roomPhoto: photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
+			"source": "query GlobalSearch($query: String!, $kinds: [GlobalSearchEntryKind!]) {\n  items: alphaGlobalSearch(query: $query, kinds: $kinds) {\n    __typename\n    ... on Organization {\n      id\n      name\n      isCommunity: alphaIsCommunity\n    }\n    ... on User {\n      ...UserShort\n    }\n    ... on SharedRoom {\n      id\n      kind\n      title\n      canSendMessage\n      roomPhoto: photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "items",
@@ -11148,11 +11148,30 @@
 									"fieldName": "__typename",
 									"type": "String!",
 									"isConditional": false
+								},
+								{
+									"responseName": "id",
+									"fieldName": "id",
+									"type": "ID!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "name",
+									"fieldName": "name",
+									"type": "String!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "isCommunity",
+									"fieldName": "alphaIsCommunity",
+									"type": "Boolean!",
+									"isConditional": false,
+									"isDeprecated": false
 								}
 							],
-							"fragmentSpreads": [
-								"OrganizationShort"
-							]
+							"fragmentSpreads": []
 						},
 						{
 							"typeCondition": "User",
@@ -11279,11 +11298,11 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [
-				"OrganizationShort",
-				"UserShort"
+				"UserShort",
+				"OrganizationShort"
 			],
-			"sourceWithFragments": "query GlobalSearch($query: String!, $kinds: [GlobalSearchEntryKind!]) {\n  items: alphaGlobalSearch(query: $query, kinds: $kinds) {\n    __typename\n    ... on Organization {\n      ...OrganizationShort\n    }\n    ... on User {\n      ...UserShort\n    }\n    ... on SharedRoom {\n      id\n      kind\n      title\n      canSendMessage\n      roomPhoto: photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n  membersCount\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}",
-			"operationId": "ac2d9522dd482a4d4ccf4932e0424b8804251d343e360c701fb5dc506cadda85"
+			"sourceWithFragments": "query GlobalSearch($query: String!, $kinds: [GlobalSearchEntryKind!]) {\n  items: alphaGlobalSearch(query: $query, kinds: $kinds) {\n    __typename\n    ... on Organization {\n      id\n      name\n      isCommunity: alphaIsCommunity\n    }\n    ... on User {\n      ...UserShort\n    }\n    ... on SharedRoom {\n      id\n      kind\n      title\n      canSendMessage\n      roomPhoto: photo\n      membersCount\n      membership\n      organization {\n        __typename\n        id\n        name\n        photo\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n  membersCount\n}",
+			"operationId": "3443b38d3d5624bdcdd5923a91d3cd05401e0f89ec04671644cc33e91f0ac8bc"
 		},
 		{
 			"filePath": "file:///Users/uyouthe/repos/openland-apps/packages/openland-api/queries/Explore.ts",

@@ -2294,7 +2294,9 @@ const GlobalSearchSelector = obj(
             field('alphaGlobalSearch', 'items', args(fieldValue("kinds", refValue('kinds')), fieldValue("query", refValue('query'))), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     inline('Organization', obj(
-                        fragment('Organization', OrganizationShortSelector)
+                        field('alphaIsCommunity', 'isCommunity', args(), notNull(scalar('Boolean'))),
+                        field('id', 'id', args(), notNull(scalar('ID'))),
+                        field('name', 'name', args(), notNull(scalar('String')))
                     )),
                     inline('User', obj(
                         fragment('User', UserShortSelector)
@@ -4315,7 +4317,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     GlobalSearch: {
         kind: 'query',
         name: 'GlobalSearch',
-        body: 'query GlobalSearch($kinds:[GlobalSearchEntryKind!],$query:String!){items:alphaGlobalSearch(kinds:$kinds,query:$query){__typename ... on Organization{...OrganizationShort}... on User{...UserShort}... on SharedRoom{canSendMessage id kind membersCount membership organization{__typename id name photo}roomPhoto:photo title}}}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}',
+        body: 'query GlobalSearch($kinds:[GlobalSearchEntryKind!],$query:String!){items:alphaGlobalSearch(kinds:$kinds,query:$query){__typename ... on Organization{isCommunity:alphaIsCommunity id name}... on User{...UserShort}... on SharedRoom{canSendMessage id kind membersCount membership organization{__typename id name photo}roomPhoto:photo title}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}',
         selector: GlobalSearchSelector
     },
     InitFeed: {

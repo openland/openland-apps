@@ -2,7 +2,9 @@ query GlobalSearch($kinds: [GlobalSearchEntryKind!], $query: String!) {
   items: alphaGlobalSearch(kinds: $kinds, query: $query) {
     __typename
     ... on Organization {
-      ...OrganizationShort
+      isCommunity: alphaIsCommunity
+      id
+      name
     }
     ... on User {
       ...UserShort
