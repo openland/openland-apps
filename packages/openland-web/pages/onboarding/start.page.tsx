@@ -35,7 +35,7 @@ export const DiscoverStart = ({
     noBackSkipLogo,
     onLogin,
 }: {
-    onSkip: ((event: React.MouseEvent<Element, MouseEvent>) => void) | null;
+    onSkip?: ((event: React.MouseEvent<Element, MouseEvent>) => void);
     onStartClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
     noBackSkipLogo?: boolean;
     onLogin?: boolean;
@@ -52,7 +52,7 @@ export const DiscoverStart = ({
 
     return (
         <XView flexGrow={1} flexShrink={1}>
-            {!noBackSkipLogo && <BackSkipLogo onBack={null} onSkip={onSkip} />}
+            {!noBackSkipLogo && <BackSkipLogo onSkip={onSkip} />}
             <FormLayout>
                 <Title text="You’re on board!" />
                 <Subtitle text={subtitle} />

@@ -76,8 +76,8 @@ const LocalDiscoverComponent = ({
     selected: string[];
     fullHeight?: boolean;
     progressInPercents: number;
-    onSkip: ((event: React.MouseEvent) => void) | null;
-    onBack: ((event: React.MouseEvent) => void) | null;
+    onSkip?: ((event: React.MouseEvent) => void);
+    onBack?: ((event: React.MouseEvent) => void);
 }) => {
     const [localSelected, setLocalSelected] = React.useState<string[]>(() => selected);
 
@@ -184,9 +184,9 @@ export const Discover = ({
     rootSelected: string[];
     rootExclude: string[];
     onContinueClick: (newSelected: any) => void;
-    onSkip: ((a: { currentPageId: string; exclude: string[] }) => void) | null;
-    onBack: ((event: React.MouseEvent) => void) | null;
-    onChatsForYouSkip: ((event: React.MouseEvent) => void) | null;
+    onSkip?: (a: { currentPageId: string; exclude: string[] }) => void;
+    onBack?: (event: React.MouseEvent) => void;
+    onChatsForYouSkip?: (event: React.MouseEvent) => void;
     onChatsForYouBack: (event: React.MouseEvent) => void;
     fullHeight?: boolean;
     onJoinChats?: Function;
@@ -260,8 +260,8 @@ export const Discover = ({
             noLogo={noLogo}
             noTopBar={noTopBar}
             noBackSkipLogo={noBackSkipLogo}
-            onSkip={onSkip ? onLocalSkip : null}
-            onBack={onBack ? onBack : null}
+            onSkip={onSkip && onLocalSkip}
+            onBack={onBack && onBack}
             group={currentPage.betaNextDiscoverPage!!.tagGroup!!}
             onContinueClick={localOnContinueClick}
             selected={finalSelected}
@@ -429,10 +429,10 @@ export const DiscoverOnLocalState = ({
             noLogo={noLogo}
             noTopBar={noTopBar}
             noBackSkipLogo={noBackSkipLogo}
-            onChatsForYouSkip={noSkipOnChatsForYou ? null : onChatsForYouSkip}
+            onChatsForYouSkip={noSkipOnChatsForYou ? undefined : onChatsForYouSkip}
             onChatsForYouBack={onChatsForYouBack}
-            onSkip={noSkipOnFirstScreen && rootState.length === 0 ? null : onSkip}
-            onBack={noBackOnFirstScreen && rootState.length === 0 ? null : onBack}
+            onSkip={noSkipOnFirstScreen && rootState.length === 0 ? undefined : onSkip}
+            onBack={noBackOnFirstScreen && rootState.length === 0 ? undefined : onBack}
             previousChoisesMap={previousChoisesMap}
             rootSelected={lastStateOrEmpty.selected}
             rootExclude={lastStateOrEmpty.exclude}

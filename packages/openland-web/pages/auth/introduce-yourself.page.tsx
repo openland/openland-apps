@@ -201,7 +201,6 @@ export const IntroduceYourselfPageInner = ({ isMobile }: IntroduceYourselfPageOu
                         router.replace('/authorization/ask-activation-code');
                     }
                 }
-                onSkip={null}
             />
             <CreateProfileFormInnerWeb
                 prefill={prefill}

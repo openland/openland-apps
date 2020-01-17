@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useForm } from 'openland-form/useForm';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { BackSkipLogo } from '../components/BackSkipLogo';
 import { useField } from 'openland-form/useField';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
@@ -13,6 +12,7 @@ import { completeAuth } from './complete.page';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 import { XImage } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
+import { AuthHeaderConfig } from './root.page';
 
 export type ActivationCodeProps = {
     emailValue: string;
@@ -209,12 +209,11 @@ export const AskActivationPage = (props: ActivationCodeProps) => {
     return (
         <Wrapper>
             <XDocumentHead title="Enter login code" />
-            <BackSkipLogo
+            <AuthHeaderConfig
                 onBack={() => {
                     router.replace('/authorization/ask-email');
                     props.backButtonClick();
                 }}
-                onSkip={null}
             />
 
             <WebSignUpActivationCode

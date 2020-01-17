@@ -2,12 +2,12 @@ import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { BackSkipLogo } from '../components/BackSkipLogo';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { Wrapper } from '../onboarding/components/wrapper';
 import { Title, Subtitle, FormLayout, AuthActionButton, AuthInput, AuthInputWrapper, AuthToastWrapper } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { AuthHeaderConfig } from './root.page';
 
 export type CreateWithEmailProps = {
     fireEmail: (email: string) => Promise<void>;
@@ -123,11 +123,10 @@ export const AskEmailPage = (props: CreateWithEmailProps) => {
     return (
         <Wrapper>
             <XDocumentHead title="What’s your email?" />
-            <BackSkipLogo
+            <AuthHeaderConfig
                 onBack={() => {
                     router.replace('/signin');
                 }}
-                onSkip={null}
             />
             <WebSignUpCreateWithEmail {...props} loginEmailStart={loginEmailStart} />
         </Wrapper>

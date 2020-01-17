@@ -16,6 +16,8 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 import { completeAuth } from './complete.page';
 import { css, cx } from 'linaria';
+import { BackSkipLogo } from '../components/BackSkipLogo';
+import { XView } from 'react-mental';
 
 const getAppInvite = (router: any) => {
     if (router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite') {
@@ -44,13 +46,14 @@ const pageContainer = css`
     display: flex;
     justify-content: center;
     align-items: stretch;
-    position: fixed;
+    position: absolute;
     width: 100%;
     height: 100%;
 `;
 
 const outerContainer = css`
     display: flex;
+    position: relative;
     justify-content: center;
     align-items: stretch;
     overflow: hidden;
@@ -114,6 +117,51 @@ const backwardOut = css`
     animation: forwardOut 350ms cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
     pointer-events: none;
 `;
+
+const AuthHeaderConfigContex = React.createContext<{ setOnBack: (f?: (event: React.MouseEvent) => void) => void, setOnSkip: (f?: (event: React.MouseEvent) => void) => void }>({ setOnBack: () => {/**/ }, setOnSkip: () => {/**/ } });
+export const AuthHeaderConfig = React.memo((props: { onBack?: () => void, onSkip?: () => void }) => {
+    const authHeaderConfigContex = React.useContext(AuthHeaderConfigContex);
+    React.useEffect(() => {
+        authHeaderConfigContex.setOnBack(props.onBack);
+        authHeaderConfigContex.setOnSkip(props.onSkip);
+
+        console.warn('setting header', props.onBack, props.onSkip);
+    }, []);
+    return <></>;
+});
+
+interface AuthHeaderInstance {
+    setOnBack: (callback?: (event: React.MouseEvent) => void) => void;
+    setOnSkip: (callback?: (event: React.MouseEvent) => void) => void;
+}
+const AuthHeader = React.memo(React.forwardRef((props: {}, ref: React.Ref<AuthHeaderInstance>) => {
+    const [onBack, setOnBack] = React.useState<{ callback?: (event: React.MouseEvent) => void }>({ callback: (event: React.MouseEvent) => {/**/ } });
+    const [onSkip, setOnSkip] = React.useState<{ callback?: (event: React.MouseEvent) => void }>({ callback: undefined });
+
+    React.useImperativeHandle(ref, () => ({
+        setOnBack: (callback) => setOnBack({ callback }),
+        setOnSkip: (callback) => setOnSkip({ callback })
+    }));
+
+    const onBackPressed = React.useCallback((event: React.MouseEvent) => {
+        if (onBack.callback) {
+            onBack.callback(event);
+        } else {
+            history.back();
+        }
+    }, [onBack]);
+    const onSkipPressed = React.useCallback((event: React.MouseEvent) => {
+        if (onSkip.callback) {
+            onSkip.callback(event);
+        }
+    }, [onSkip]);
+
+    return (
+        <XView position="absolute" width="100%">
+            <BackSkipLogo onBack={onBackPressed} onSkip={onSkip.callback ? onSkipPressed : undefined} />
+        </XView>
+    );
+}));
 
 export default () => {
     let isSafari = (window as any).safari !== undefined;
@@ -435,19 +483,42 @@ export default () => {
 
     let forward = pagesArr.indexOf(page) - pagesArr.indexOf(prevPage || '') > 0;
 
-    if (page === prevPage) {
-        return render;
-    }
+    const headerRef = React.useRef<AuthHeaderInstance>(null);
+    const setOnBack = React.useCallback((callback?: (event: React.MouseEvent) => void) => {
+        if (headerRef.current) {
+            headerRef.current.setOnBack(callback);
+        }
+    }, []);
+    const setOnSkip = React.useCallback((callback?: (event: React.MouseEvent) => void) => {
+        if (headerRef.current) {
+            headerRef.current.setOnSkip(callback);
+        }
+    }, []);
 
     return (
-        prevRender ? (<div className={outerContainer}>
-            <div className={cx(pageContainer, forward ? forwardIn : backwardIn)}>
-                {render}
-            </div>
-            <div className={cx(pageContainer, forward ? forwardOut : backwardOut)}>
-                {prevRender}
-            </div>
+        <div className={outerContainer}>
+            <AuthHeader ref={headerRef} />
 
-        </div>) : render
+            <AuthHeaderConfigContex.Provider
+                value={{
+                    setOnBack,
+                    setOnSkip,
+                }}
+            >
+
+                {prevRender && (page !== prevPage) ? (
+                    <>
+                        <div className={cx(pageContainer, forward ? forwardOut : backwardOut)}>
+                            {prevRender}
+                        </div>
+                        <div className={cx(pageContainer, forward ? forwardIn : backwardIn)}>
+                            {render}
+                        </div>
+
+                    </>
+
+                ) : render}
+            </AuthHeaderConfigContex.Provider>
+        </div>
     );
 };

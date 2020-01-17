@@ -187,7 +187,7 @@ export const ChatsForYou = ({
     onJoinChats,
 }: {
     noTopBar?: boolean;
-    onSkip: ((event: React.MouseEvent) => void) | null;
+    onSkip?: (event: React.MouseEvent) => void;
     onBack: (event: React.MouseEvent) => void;
     fullHeight?: boolean;
     onJoinChats?: Function;

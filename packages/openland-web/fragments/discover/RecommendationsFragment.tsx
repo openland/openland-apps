@@ -25,7 +25,7 @@ export const RecommendationsFragment = React.memo(() => {
             {tab === 'start' && (
                 <>
                     <UHeader documentTitle="Recommendations" />
-                    <DiscoverStart onSkip={null} onStartClick={onStartClick} noBackSkipLogo={true} />
+                    <DiscoverStart onStartClick={onStartClick} noBackSkipLogo={true} />
                 </>
             )}
             {tab === 'discover' && (

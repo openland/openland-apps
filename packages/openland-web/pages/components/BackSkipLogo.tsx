@@ -37,8 +37,8 @@ export const BackSkipLogo = ({
     onBack,
     onSkip,
 }: {
-    onSkip: ((event: React.MouseEvent) => void) | null;
-    onBack: ((event: React.MouseEvent) => void) | null;
+    onSkip?: (event: React.MouseEvent) => void;
+    onBack?: (event: React.MouseEvent) => void;
 }) => {
     const isMobile = useIsMobile();
     const modalBox = React.useContext(XModalBoxContext);

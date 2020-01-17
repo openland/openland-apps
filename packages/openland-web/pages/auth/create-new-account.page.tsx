@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
-import { BackSkipLogo } from '../components/BackSkipLogo';
 import { FormLayout, Title, Subtitle, textClassName } from './components/authComponents';
 import { TextCaption } from 'openland-web/utils/TextStyles';
 import { css, cx } from 'linaria';
@@ -10,6 +9,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { isElectron } from 'openland-y-utils/isElectron';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { AuthHeaderConfig } from './root.page';
 
 const captionText = css`
     color: var(--foregroundTertiary);
@@ -68,11 +68,10 @@ export const CreateNewAccountPage = (props: AuthMechanism) => {
         <XView backgroundColor="white" flexGrow={1} flexShrink={1}>
             <XDocumentHead title="Login" />
             {!isElectron && (
-                <BackSkipLogo
+                <AuthHeaderConfig
                     onBack={() => {
                         router.replace('/');
                     }}
-                    onSkip={null}
                 />
             )}
             <SignUpAuthMechanism {...props} />
