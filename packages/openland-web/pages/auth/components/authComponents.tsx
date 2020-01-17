@@ -58,7 +58,7 @@ const shake = css`
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
   
-  @keyframes shake {
+    @keyframes shake {
         10%, 90% {
             transform: translate3d(-2px, 0, 0);
         }
@@ -77,23 +77,30 @@ const shake = css`
     }
 `;
 
-export const AuthInputWrapper = (props: { errorsCount?: number, children: any }) => {
-    const [screnWidth] = useWithWidth();
-    const width = screnWidth && screnWidth < 400 ? '100%' : 320;
+type ReturnedShakeTuple = [string | undefined, () => void];
 
-    const [hasNewError, setHasNewError] = React.useState(false);
+export const useShake = (): ReturnedShakeTuple => {
+    const [count, setCount] = React.useState(0);
+    const [shouldShake, setShouldShake] = React.useState(false);
     React.useEffect(() => {
         let timeoutId: any;
-        if (props.errorsCount && props.errorsCount > 0) {
-            setHasNewError(true);
+        if (count > 0) {
+            setShouldShake(true);
             timeoutId = setTimeout(() => {
-                setHasNewError(false);
+                setShouldShake(false);
             }, 600);
         }
         return () => { clearTimeout(timeoutId); };
-    }, [props.errorsCount]);
+    }, [count]);
 
-    return <div className={cx(inputWrapper, hasNewError && shake)} style={{ width }}>{props.children}</div>;
+    return [shouldShake ? shake : undefined, () => setCount(x => x + 1)];
+};
+
+export const AuthInputWrapper = (props: { errorsCount?: number, className?: string; children: any }) => {
+    const [screnWidth] = useWithWidth();
+    const width = screnWidth && screnWidth < 400 ? '100%' : 320;
+
+    return <div className={cx(inputWrapper, props.className)} style={{ width }}>{props.children}</div>;
 };
 
 export const AuthInput = React.forwardRef((props: UInputProps, ref: React.RefObject<HTMLInputElement>) => {

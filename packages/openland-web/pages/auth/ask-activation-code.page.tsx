@@ -6,7 +6,7 @@ import { InitTexts } from 'openland-web/pages/init/_text';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { trackEvent } from 'openland-x-analytics';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, FormLayout, AuthActionButton, AuthInputWrapper, AuthToastWrapper, AuthInput } from './components/authComponents';
+import { Title, Subtitle, FormLayout, AuthActionButton, AuthInputWrapper, AuthToastWrapper, AuthInput, useShake } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { completeAuth } from './complete.page';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
@@ -82,13 +82,13 @@ export const WebSignUpActivationCode = ({
         [codeField.value, emailValue],
     );
 
-    const [emptyErrorsCount, setEmptyErrorsCount] = React.useState(0);
+    const [shakeClassName, shake] = useShake();
     const handleNext = React.useCallback(() => {
         doConfirm();
         if (codeField.input.value.trim() === '') {
-            setEmptyErrorsCount(x => x + 1);
+            shake();
         }
-    }, [emptyErrorsCount, doConfirm]);
+    }, [shakeClassName, doConfirm]);
     useShortcuts({ keys: ['Enter'], callback: handleNext });
     const handleResend = React.useCallback(() => {
         resendCodeClick();
@@ -105,7 +105,7 @@ export const WebSignUpActivationCode = ({
         if (inputRef.current) {
             inputRef.current.focus();
         }
-    }, [errorText, emptyErrorsCount]);
+    }, [errorText, shakeClassName]);
 
     return (
         <>
@@ -128,7 +128,7 @@ export const WebSignUpActivationCode = ({
                         srcSet={`https://ucarecdn.com/${avatarId}/${opsRetina}`}
                     />
                 )}
-                <AuthInputWrapper errorsCount={emptyErrorsCount}>
+                <AuthInputWrapper className={shakeClassName}>
                     <AuthInput
                         pattern="[0-9]*"
                         type="number"

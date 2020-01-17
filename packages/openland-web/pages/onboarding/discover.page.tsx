@@ -10,9 +10,10 @@ import { TagGroup, Tag } from '../components/TagButton';
 import { ChatsForYou } from './chats-for-you.page';
 import { XLoader } from 'openland-x/XLoader';
 import { Wrapper } from './components/wrapper';
-import { Title, AuthActionButton, FormLayout } from '../auth/components/authComponents';
+import { Title, AuthActionButton, FormLayout, useShake } from '../auth/components/authComponents';
 import { css } from 'linaria';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const shadowWrapper = css`
     width: 100%;
@@ -38,6 +39,7 @@ const shadowClassName = css`
 const TagsGroupPage = (props: {
     group?: TagGroup | null;
     selected: string[];
+    className?: string;
     onPress: (tag: Tag) => void;
 }) => {
     if (!props.group) {
@@ -49,7 +51,7 @@ const TagsGroupPage = (props: {
             tagsGroup={props.group}
             selectedTags={props.selected}
             onPress={props.onPress}
-            marginTop={24}
+            className={props.className}
         />
     );
 };
@@ -103,16 +105,18 @@ const LocalDiscoverComponent = ({
         [localSelected],
     );
 
+    const [shakeClassName, shake] = useShake();
+
     const onMyContinueClick = React.useCallback(
         () => {
+            if (localSelected.length === 0) {
+                shake();
+                return;
+            }
             onContinueClick(localSelected);
         },
         [localSelected],
     );
-
-    if (!group) {
-        return null;
-    }
 
     const [isScrollable, setIsScrollable] = React.useState(false);
     React.useLayoutEffect(() => {
@@ -124,7 +128,14 @@ const LocalDiscoverComponent = ({
     }, [group]);
     const isMobile = useIsMobile();
 
+    useShortcuts({ keys: ['Enter'], callback: onMyContinueClick });
+
+    if (!group) {
+        return null;
+    }
+
     const { title, subtitle } = group;
+
     return (
         <Wrapper fullHeight={fullHeight}>
             <XDocumentHead title={title!!} />
@@ -133,7 +144,7 @@ const LocalDiscoverComponent = ({
             )}
             <FormLayout marginTop={isMobile ? 56 : 72} marginBottom={130}>
                 <Title text={subtitle!!} />
-                <TagsGroupPage group={group} selected={localSelected} onPress={onTagPress} />
+                <TagsGroupPage group={group} selected={localSelected} className={shakeClassName} onPress={onTagPress} />
                 {isScrollable ? (
                     <div className={shadowWrapper}>
                         <AuthActionButton

@@ -1,24 +1,27 @@
 import * as React from 'react';
-import { XView, XViewProps } from 'react-mental';
+import { css, cx } from 'linaria';
 import { TagGroup, TagButton, Tag } from './TagButton';
+
+const wrapper = css`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 24px;
+`;
 
 export const TagsCloud = ({
     tagsGroup,
     selectedTags,
     onPress,
-    ...other
+    className,
 }: {
     tagsGroup: TagGroup;
     selectedTags: string[];
+    className?: string;
     onPress: (pressedTag: Tag) => void;
-} & XViewProps) => {
+}) => {
     return (
-        <XView
-            flexDirection="row"
-            flexWrap="wrap"
-            justifyContent="center"
-            {...other}
-        >
+        <div className={cx(wrapper, className)}>
             {tagsGroup.tags
                 .map(tag => (
                     <TagButton
@@ -28,6 +31,6 @@ export const TagsCloud = ({
                         selected={selectedTags.indexOf(tag.id) !== -1}
                     />
                 ))}
-        </XView>
+        </div>
     );
 };

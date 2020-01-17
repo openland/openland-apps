@@ -10,7 +10,7 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useClient } from 'openland-web/utils/useClient';
 import * as Cookie from 'js-cookie';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, FormLayout, AuthActionButton, AuthInputWrapper } from './components/authComponents';
+import { Title, Subtitle, FormLayout, AuthActionButton, AuthInputWrapper, useShake } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
@@ -110,13 +110,13 @@ const CreateProfileFormInnerWeb = (
         [firstName.value, lastName.value, photoRef.value],
     );
 
-    const [emptyErrorsCount, setEmptyErrorsCount] = React.useState(0);
+    const [shakeClassName, shake] = useShake();
     const handleNext = React.useCallback(() => {
         doConfirm();
         if (firstName.input.value.trim() === '') {
-            setEmptyErrorsCount(x => x + 1);
+            shake();
         }
-    }, [emptyErrorsCount, doConfirm]);
+    }, [shakeClassName, doConfirm]);
     useShortcuts({ keys: ['Enter'], callback: handleNext });
     const [width] = useWithWidth();
     const isSmallMobile = width && width < 400;
@@ -126,7 +126,7 @@ const CreateProfileFormInnerWeb = (
         if (inputRef.current) {
             inputRef.current.focus();
         }
-    }, [emptyErrorsCount]);
+    }, [shakeClassName]);
 
     return (
         <FormLayout>
@@ -143,7 +143,7 @@ const CreateProfileFormInnerWeb = (
             </XView>
 
             <XView width={isSmallMobile ? '100%' : 320} alignSelf="center" marginBottom={16}>
-                <AuthInputWrapper errorsCount={emptyErrorsCount}>
+                <AuthInputWrapper className={shakeClassName}>
                     <UInput
                         label="First name"
                         value={firstName.value}

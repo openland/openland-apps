@@ -13,6 +13,7 @@ import { Wrapper } from './components/wrapper';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { Title, Subtitle, AuthActionButton, FormLayout } from '../auth/components/authComponents';
 import { TextStyles } from 'openland-web/utils/TextStyles';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const shadowWrapper = css`
     width: 100%;
@@ -120,6 +121,8 @@ const ChatsItemList = ({
             onJoinChats();
         }
     };
+
+    useShortcuts({ keys: ['Enter'], callback: () => { join(); } });
 
     const selectedLength = selectedIds.length;
 

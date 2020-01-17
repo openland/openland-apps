@@ -8,7 +8,7 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { useClient } from 'openland-web/utils/useClient';
 import * as Cookie from 'js-cookie';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, FormLayout, AuthInput, AuthInputWrapper, AuthActionButton } from './components/authComponents';
+import { Title, Subtitle, FormLayout, AuthInput, AuthInputWrapper, AuthActionButton, useShake } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { AuthHeaderConfig } from './root.page';
 
@@ -51,13 +51,13 @@ const CreateOrganizationFormInnerWeb = ({
         [organizationField.value],
     );
 
-    const [emptyErrorsCount, setEmptyErrorsCount] = React.useState(0);
+    const [shakeClassName, shake] = useShake();
     const handleNext = React.useCallback(() => {
         doConfirm();
         if (organizationField.input.value.trim() === '') {
-            setEmptyErrorsCount(x => x + 1);
+            shake();
         }
-    }, [emptyErrorsCount, doConfirm]);
+    }, [shakeClassName, doConfirm]);
     useShortcuts({ keys: ['Enter'], callback: handleNext });
 
     const inputRef = React.useRef<HTMLInputElement>(null);
@@ -65,13 +65,13 @@ const CreateOrganizationFormInnerWeb = ({
         if (inputRef.current) {
             inputRef.current.focus();
         }
-    }, [emptyErrorsCount]);
+    }, [shakeClassName]);
 
     return (
         <FormLayout>
             <Title text={InitTexts.create_organization.title} />
             <Subtitle text={InitTexts.create_organization.subTitle} />
-            <AuthInputWrapper errorsCount={emptyErrorsCount}>
+            <AuthInputWrapper className={shakeClassName}>
                 <AuthInput
                     label="Organization name"
                     ref={inputRef}
