@@ -111,6 +111,9 @@ export const GlobalSearchQuery = gql`
             ... on Organization {
                 id
                 name
+                about
+                photo
+                shortname
                 isCommunity: alphaIsCommunity
             }
             ... on User {
