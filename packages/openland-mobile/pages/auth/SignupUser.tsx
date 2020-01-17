@@ -27,15 +27,6 @@ const SignupUserContent = React.memo((props: PageProps) => {
     const [avatarScale] = React.useState(new Animated.Value(1));
     const [avatarSize] = React.useState(new Animated.Value(96));
 
-    React.useEffect(() => {
-        const isIos = Platform.OS === 'ios';
-        if (isIos) {
-            Keyboard.addListener('keyboardWillShow', keyboardWillShow);
-            Keyboard.addListener('keyboardWillHide', keyboardWillHide);
-        }
-        return () => isIos ? Keyboard.removeAllListeners() : undefined;
-    });
-
     const keyboardWillShow = (e: any) => {
         if (scrollRef.current && Dimensions.get('window').height < 800) {
             scrollRef.current.scrollToEnd({ animated: true });
@@ -64,6 +55,15 @@ const SignupUserContent = React.memo((props: PageProps) => {
             }),
         ]).start();
     };
+
+    React.useEffect(() => {
+        const isIos = Platform.OS === 'ios';
+        if (isIos) {
+            Keyboard.addListener('keyboardWillShow', keyboardWillShow);
+            Keyboard.addListener('keyboardWillHide', keyboardWillHide);
+        }
+        return () => isIos ? Keyboard.removeAllListeners() : undefined;
+    });
 
     const handleSave = () => {
         if (firstNameField.value === '') {

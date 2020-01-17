@@ -27,14 +27,6 @@ export const FloatKeyboardArea = React.memo(
 
         const [floatPadding] = React.useState(new Animated.Value(defaultIosPadding));
 
-        React.useEffect(() => {
-            if (isIos) {
-                Keyboard.addListener('keyboardWillShow', keyboardWillShow);
-                Keyboard.addListener('keyboardWillHide', keyboardWillHide);
-            }
-            return () => (isIos ? Keyboard.removeAllListeners() : undefined);
-        });
-
         const keyboardWillShow = (e: any) => {
             Animated.timing(floatPadding, {
                 duration: e.duration,
@@ -48,6 +40,14 @@ export const FloatKeyboardArea = React.memo(
                 toValue: defaultIosPadding,
             }).start();
         };
+
+        React.useEffect(() => {
+            if (isIos) {
+                Keyboard.addListener('keyboardWillShow', keyboardWillShow);
+                Keyboard.addListener('keyboardWillHide', keyboardWillHide);
+            }
+            return () => (isIos ? Keyboard.removeAllListeners() : undefined);
+        });
 
         return (
             <KeyboardAvoidingView behavior="padding" flex={1}>
