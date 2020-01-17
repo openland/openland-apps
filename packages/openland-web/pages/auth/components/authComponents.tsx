@@ -6,7 +6,7 @@ import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { UButton, UButtonProps } from 'openland-web/components/unicorn/UButton';
 import { UInput, UInputProps } from 'openland-web/components/unicorn/UInput';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
-import { UToast } from 'openland-web/components/unicorn/UToast';
+import { UToast, UToastProps } from 'openland-web/components/unicorn/UToast';
 
 export const textClassName = css`
     text-align: center;
@@ -96,7 +96,7 @@ export const AuthInputWrapper = (props: { errorsCount?: number, children: any })
     return <div className={cx(inputWrapper, hasNewError && shake)} style={{ width }}>{props.children}</div>;
 };
 
-export const AuthInput = (props: UInputProps) => {
+export const AuthInput = React.forwardRef((props: UInputProps, ref: React.RefObject<HTMLInputElement>) => {
     return (
         <UInput
             autofocus={true}
@@ -105,10 +105,11 @@ export const AuthInput = (props: UInputProps) => {
             type="email"
             alignSelf="center"
             hasPlaceholder={true}
+            ref={ref}
             {...props}
         />
     );
-};
+});
 
 export const FormLayout = (props: { children: any } & XViewProps) => {
     const isMobile = useIsMobile();
@@ -135,10 +136,10 @@ const toastWrapper = css`
     }
 `;
 
-export const AuthToastWrapper = ({ message, isVisible, autoclose }: { message: string, isVisible: boolean, autoclose?: boolean }) => {
+export const AuthToastWrapper = (props: UToastProps) => {
     return (
         <div className={toastWrapper}>
-            <UToast isVisible={isVisible} text={message} autoclose={autoclose} />
+            <UToast {...props} />
         </div>
     );
 };

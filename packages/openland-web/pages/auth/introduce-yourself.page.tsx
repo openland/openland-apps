@@ -110,16 +110,23 @@ const CreateProfileFormInnerWeb = (
         [firstName.value, lastName.value, photoRef.value],
     );
 
-    const [errorsCount, setErrorsCount] = React.useState(0);
+    const [emptyErrorsCount, setEmptyErrorsCount] = React.useState(0);
     const handleNext = React.useCallback(() => {
         doConfirm();
         if (firstName.input.value.trim() === '') {
-            setErrorsCount(x => x + 1);
+            setEmptyErrorsCount(x => x + 1);
         }
-    }, [errorsCount, doConfirm]);
+    }, [emptyErrorsCount, doConfirm]);
     useShortcuts({ keys: ['Enter'], callback: handleNext });
     const [width] = useWithWidth();
     const isSmallMobile = width && width < 400;
+
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    React.useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [emptyErrorsCount]);
 
     return (
         <FormLayout>
@@ -136,11 +143,12 @@ const CreateProfileFormInnerWeb = (
             </XView>
 
             <XView width={isSmallMobile ? '100%' : 320} alignSelf="center" marginBottom={16}>
-                <AuthInputWrapper errorsCount={errorsCount}>
+                <AuthInputWrapper errorsCount={emptyErrorsCount}>
                     <UInput
                         label="First name"
                         value={firstName.value}
                         flexGrow={1}
+                        ref={inputRef}
                         onChange={firstName.input.onChange}
                     />
                 </AuthInputWrapper>

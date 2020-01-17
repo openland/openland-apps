@@ -51,22 +51,30 @@ const CreateOrganizationFormInnerWeb = ({
         [organizationField.value],
     );
 
-    const [errorsCount, setErrorsCount] = React.useState(0);
+    const [emptyErrorsCount, setEmptyErrorsCount] = React.useState(0);
     const handleNext = React.useCallback(() => {
         doConfirm();
         if (organizationField.input.value.trim() === '') {
-            setErrorsCount(x => x + 1);
+            setEmptyErrorsCount(x => x + 1);
         }
-    }, [errorsCount, doConfirm]);
+    }, [emptyErrorsCount, doConfirm]);
     useShortcuts({ keys: ['Enter'], callback: handleNext });
+
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    React.useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [emptyErrorsCount]);
 
     return (
         <FormLayout>
             <Title text={InitTexts.create_organization.title} />
             <Subtitle text={InitTexts.create_organization.subTitle} />
-            <AuthInputWrapper errorsCount={errorsCount}>
+            <AuthInputWrapper errorsCount={emptyErrorsCount}>
                 <AuthInput
                     label="Organization name"
+                    ref={inputRef}
                     onChange={organizationField.input.onChange}
                 />
             </AuthInputWrapper>

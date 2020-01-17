@@ -50,25 +50,33 @@ export const WebSignUpCreateWithEmail = ({
 
     const errorText = (emailField.input.invalid && emailField.input.errorText) || emailError;
     const isInvalid = !!errorText;
-    const [errorsCount, setErrorsCount] = React.useState(0);
+    const [emptyErrorsCount, setEmptyErrorsCount] = React.useState(0);
     const handleNext = React.useCallback(() => {
         doConfirm();
         if (emailField.input.value.trim() === '') {
-            setErrorsCount(x => x + 1);
+            setEmptyErrorsCount(x => x + 1);
         }
-    }, [errorsCount, doConfirm]);
+    }, [emptyErrorsCount, doConfirm]);
     useShortcuts({ keys: ['Enter'], callback: handleNext });
+
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    React.useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [errorText, emptyErrorsCount]);
 
     return (
         <>
-            <AuthToastWrapper isVisible={!!errorText} message={errorText} />
+            <AuthToastWrapper isVisible={!!errorText} text={errorText} />
             <FormLayout>
                 <Title text="What’s your email?" />
                 <Subtitle text="We’ll send you a login code" />
-                <AuthInputWrapper errorsCount={errorsCount}>
+                <AuthInputWrapper errorsCount={emptyErrorsCount}>
                     <AuthInput
                         label={InitTexts.auth.emailPlaceholder}
                         invalid={isInvalid}
+                        ref={inputRef}
                         onChange={emailField.input.onChange}
                     />
                 </AuthInputWrapper>

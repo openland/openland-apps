@@ -35,7 +35,7 @@ const textClass = css`
     text-align: center;
 `;
 
-interface UToastProps {
+export interface UToastProps {
     isVisible: boolean;
     text?: string;
     backgroundColor?: string;

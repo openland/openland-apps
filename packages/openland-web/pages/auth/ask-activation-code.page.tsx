@@ -12,6 +12,7 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { completeAuth } from './complete.page';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 import { XImage } from 'react-mental';
+import { XLoader } from 'openland-x/XLoader';
 
 export type ActivationCodeProps = {
     emailValue: string;
@@ -81,15 +82,13 @@ export const WebSignUpActivationCode = ({
         [codeField.value, emailValue],
     );
 
-    const sendingCodeText = 'Sending code...';
-
-    const [errorsCount, setErrorsCount] = React.useState(0);
+    const [emptyErrorsCount, setEmptyErrorsCount] = React.useState(0);
     const handleNext = React.useCallback(() => {
         doConfirm();
         if (codeField.input.value.trim() === '') {
-            setErrorsCount(x => x + 1);
+            setEmptyErrorsCount(x => x + 1);
         }
-    }, [errorsCount, doConfirm]);
+    }, [emptyErrorsCount, doConfirm]);
     useShortcuts({ keys: ['Enter'], callback: handleNext });
     const handleResend = React.useCallback(() => {
         resendCodeClick();
@@ -101,10 +100,17 @@ export const WebSignUpActivationCode = ({
     const ops = '-/format/auto/-/scale_crop/72x72/center/-/quality/best/-/progressive/yes/';
     const opsRetina = '-/format/auto/-/scale_crop/144x144/center/-/quality/best/-/progressive/yes/ 2x';
 
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    React.useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [errorText, emptyErrorsCount]);
+
     return (
         <>
-            <AuthToastWrapper isVisible={!emailSending && !!errorText} message={errorText} />
-            <AuthToastWrapper isVisible={emailSending} message={sendingCodeText} autoclose={false} />
+            <AuthToastWrapper isVisible={!emailSending && !!errorText} text={errorText} />
+            <AuthToastWrapper isVisible={emailSending} text="Sending code" autoclose={false} icon={<XLoader contrast={true} transparentBackground={true} loading={true} size="small" />} />
             <FormLayout>
                 <Title text={InitTexts.auth.enterActivationCode} />
                 <Subtitle>
@@ -122,13 +128,14 @@ export const WebSignUpActivationCode = ({
                         srcSet={`https://ucarecdn.com/${avatarId}/${opsRetina}`}
                     />
                 )}
-                <AuthInputWrapper errorsCount={errorsCount}>
+                <AuthInputWrapper errorsCount={emptyErrorsCount}>
                     <AuthInput
                         pattern="[0-9]*"
                         type="number"
                         label={InitTexts.auth.codePlaceholder}
                         onChange={codeField.input.onChange}
                         invalid={isInvalid}
+                        ref={inputRef}
                     />
                 </AuthInputWrapper>
                 <AuthActionButton text={isExistingUser ? InitTexts.auth.done : InitTexts.auth.next} loading={codeSending} onClick={handleNext} />

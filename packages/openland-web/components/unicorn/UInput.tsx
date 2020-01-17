@@ -89,7 +89,7 @@ export interface UInputProps extends XViewProps {
     onChange?: (v: string) => void;
 }
 
-export const UInput = (props: UInputProps) => {
+export const UInput = React.forwardRef((props: UInputProps, ref: React.RefObject<HTMLInputElement>) => {
     const { label, value, disabled, invalid, type, hasPlaceholder, pattern, autofocus, onChange, ...other } = props;
 
     const [val, setValue] = React.useState(value || '');
@@ -117,6 +117,7 @@ export const UInput = (props: UInputProps) => {
                     autoFocus={autofocus}
                     autoComplete="off"
                     onChange={e => handleChange(e.target.value)}
+                    ref={ref}
                     {...hasPlaceholder && { placeholder: label }}
                 />
                 {!hasPlaceholder && (
@@ -134,7 +135,7 @@ export const UInput = (props: UInputProps) => {
             </div>
         </XView>
     );
-};
+});
 
 export const UInputField = (props: UInputProps & { field: FormField<string> }) => {
     const { field, ...other } = props;
