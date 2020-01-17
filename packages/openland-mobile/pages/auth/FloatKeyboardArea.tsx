@@ -55,7 +55,7 @@ export const FloatKeyboardArea = React.memo(
                     {props.children}
                 </ScrollView>
                 {isAndroid && (
-                    <View paddingHorizontal={16} paddingBottom={bottomOffset + 16}>
+                    <View paddingHorizontal={16} paddingBottom={bottomOffset + 16} paddingTop={16}>
                         {props.floatContent}
                     </View>
                 )}
