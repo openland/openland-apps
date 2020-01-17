@@ -760,12 +760,12 @@ export const RoomsInviteUserMutation = gql`
 export const RoomJoinInviteLinkMutation = gql`
     mutation RoomJoinInviteLink($invite: String!) {
         join: betaRoomInviteLinkJoin(invite: $invite) {
-            ...RoomFull
+            ...RoomShort
         }
     }
     ${UserShort}
     ${OrganizationMedium}
-    ${RoomFull}
+    ${RoomShort}
 `;
 
 export const RoomRenewInviteLinkMutation = gql`
