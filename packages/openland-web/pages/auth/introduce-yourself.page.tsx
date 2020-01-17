@@ -81,6 +81,8 @@ const CreateProfileFormInnerWeb = (
                         : undefined,
                 };
 
+                setSending(true);
+
                 if (props.initialProfileFormData) {
                     await client.mutateProfileUpdate({
                         input: formData,
@@ -95,8 +97,6 @@ const CreateProfileFormInnerWeb = (
                 await client.refetchAccount();
 
                 if (firstName.value) {
-                    setSending(true);
-
                     if (Cookie.get('x-openland-org-invite')) {
                         const orgInvite = Cookie.get('x-openland-org-invite');
                         Cookie.remove('x-openland-org-invite');
@@ -148,6 +148,7 @@ const CreateProfileFormInnerWeb = (
                         label="First name"
                         value={firstName.value}
                         flexGrow={1}
+                        autofocus={true}
                         ref={inputRef}
                         onChange={firstName.input.onChange}
                     />
