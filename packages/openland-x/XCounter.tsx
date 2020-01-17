@@ -32,8 +32,8 @@ const activeStyle = css`
 const counterBigStyle = css`
     font-size: 13px;
     line-height: 10px;
-    height: 20px;
-    min-width: 20px;
+    height: 22px;
+    min-width: 22px;
     padding-left: 5px;
     padding-right: 5px;
     border-radius: 20px;

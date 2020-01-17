@@ -5,7 +5,7 @@ import { XDate } from 'openland-x/XDate';
 import IcLock from 'openland-icons/s/ic-lock-16.svg';
 import IcReply from 'openland-icons/s/ic-reply-16.svg';
 import IcChannel from 'openland-icons/s/ic-channel-16.svg';
-import IcMention from 'openland-icons/s/ic-mention-16.svg';
+import IcMention from 'openland-icons/s/ic-mention-12.svg';
 import IcMuted from 'openland-icons/s/ic-muted-16.svg';
 import { XCounter } from 'openland-x/XCounter';
 import { DialogListWebItem } from './DialogListWebDataSource';
@@ -132,6 +132,20 @@ const unreadCounterContainer = css`
 
 const mentionContainer = css`
     margin-right: -6px;
+
+    background-color: var(--accentPrimary);
+    width: 22px;
+    height: 22px;
+    border-radius: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* override UIcon's white fill */
+    & svg path {
+        fill: none;
+    }
 `;
 
 const replyStyle = css`
@@ -141,6 +155,11 @@ const replyStyle = css`
 
 const replyIconStyle = css`
     margin: 2px;
+`;
+
+const lockContainer = css`
+   margin-right: 3px;
+   opacity: 0.72; 
 `;
 
 interface DialogViewProps {
@@ -239,7 +258,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                 >
                                     {highlightSecretChat &&
                                         !dialog.isChannel && (
-                                            <div className={dialogIconContainer}>
+                                            <div className={cx(dialogIconContainer, lockContainer)}>
                                                 <UIcon
                                                     icon={<IcLock />}
                                                     color={active ? '#fff' : '#36b36a'}
@@ -305,7 +324,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                                     mentionContainer,
                                                 )}
                                             >
-                                                <UIcon icon={<IcMention />} color={'#1885F2'} />
+                                                <UIcon icon={<IcMention />} color={'var(--foregroundContrast)'} />
                                             </div>
                                         )}
                                         <div className={unreadCounterContainer}>
