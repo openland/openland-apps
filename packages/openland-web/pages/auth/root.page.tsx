@@ -169,7 +169,7 @@ export default () => {
             Cookie.set('sign-redirect', redirect, { path: '/' });
         }
         if (googleAuth.current) {
-            let signing = googleAuth.current.signIn({ ux_mode: isSafari ? 'popup' : 'redirect', prompt: 'consent', redirect_uri: window.origin + '/authorization/google-complete' })
+            let signing = googleAuth.current.signIn({ ux_mode: isSafari ? 'popup' : 'redirect', prompt: 'consent', redirect_uri: window.origin + '/authorization/google-complete' });
             signing.then(completeGoogleSignin).catch(e => {
                 setGoogleStarting(false);
                 throw new Error(e);
