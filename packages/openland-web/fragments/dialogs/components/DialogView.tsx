@@ -148,6 +148,15 @@ const mentionContainer = css`
     }
 `;
 
+const mentionContainerActive = css`
+    background-color: var(--backgroundPrimary);
+
+    & svg path,
+    & svg circle {
+        stroke: var(--accentPrimary);
+    }
+`;
+
 const replyStyle = css`
     display: flex;
     align-items: flex-start;
@@ -322,6 +331,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                                 className={cx(
                                                     unreadCounterContainer,
                                                     mentionContainer,
+                                                    active && mentionContainerActive
                                                 )}
                                             >
                                                 <UIcon icon={<IcMention />} color={'var(--foregroundContrast)'} />
