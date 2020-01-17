@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { pages, pagesT } from './components/pages';
+import { pages, pagesT, pagesArr } from './components/pages';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { AcceptInvitePage } from './accept-invite.page';
 import { AskActivationPage, checkCode } from './ask-activation-code.page';
@@ -15,6 +15,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 import { completeAuth } from './complete.page';
+import { css, cx } from 'linaria';
 
 const getAppInvite = (router: any) => {
     if (router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite') {
@@ -38,6 +39,81 @@ const checkIfIsSignInInvite = (router: any) => {
             router.query.redirect.split('/')[1] === 'joinChannel')
     );
 };
+
+const pageContainer = css`
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+`;
+
+const outerContainer = css`
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    overflow: hidden;
+    width: 100vw;
+`;
+
+const forwardIn = css`
+    @keyframes forwardIn {
+        from {
+            opacity: 0;
+            transform: translateX(432px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    animation: forwardIn 350ms cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
+`;
+
+const forwardOut = css`
+    @keyframes forwardOut {
+        from {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateX(-432px);
+        }
+    }
+    animation: forwardOut 350ms cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
+    pointer-events: none;
+`;
+
+const backwardIn = css`
+    @keyframes forwardIn {
+        from {
+            opacity: 0;
+            transform: translateX(-432px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    animation: forwardIn 350ms cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
+`;
+
+const backwardOut = css`
+    @keyframes forwardOut {
+        from {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateX(432px);
+        }
+    }
+    animation: forwardOut 350ms cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
+    pointer-events: none;
+`;
 
 export default () => {
     let isSafari = (window as any).safari !== undefined;
@@ -272,11 +348,16 @@ export default () => {
         }
     }
 
-    if ((fromOutside && emailSending) || googleStarting) {
+    if ((fromOutside && emailSending)) {
         page = pages.loading;
     }
+    const prevPageRef = React.useRef<string>();
+    const prevPage = prevPageRef.current;
 
-    return (
+    const prevRenderRef = React.useRef<JSX.Element>();
+    const prevRender = prevRenderRef.current;
+
+    const render = (
         <>
             {page === pages.loading && <XLoader loading={true} />}
             {page === pages.acceptInvite && (
@@ -346,5 +427,27 @@ export default () => {
                 </XTrack>
             )}
         </>
+    );
+    if (page !== pages.loading) {
+        prevPageRef.current = page;
+    }
+    prevRenderRef.current = render;
+
+    let forward = pagesArr.indexOf(page) - pagesArr.indexOf(prevPage || '') > 0;
+
+    if (page === prevPage) {
+        return render;
+    }
+
+    return (
+        prevRender ? (<div className={outerContainer}>
+            <div className={cx(pageContainer, forward ? forwardIn : backwardIn)}>
+                {render}
+            </div>
+            <div className={cx(pageContainer, forward ? forwardOut : backwardOut)}>
+                {prevRender}
+            </div>
+
+        </div>) : render
     );
 };
