@@ -40,6 +40,8 @@ const checkIfIsSignInInvite = (router: any) => {
 };
 
 export default () => {
+    let isSafari = (window as any).safari !== undefined;
+
     let router = React.useContext(XRouterContext)!;
     let page: pagesT = pages.createNewAccount;
 
@@ -133,18 +135,46 @@ export default () => {
         [redirect],
     );
 
-    const fireGoogle = React.useCallback(async () => {
-        Cookie.set('auth-type', 'google', { path: '/' });
-        if (redirect) {
-            Cookie.set('sign-redirect', redirect, { path: '/' });
-        }
+    // googleAuth is in ref because we should call signIn function synchronously, safari will block popup otherwise 
+    const googleAuth = React.useRef<gapi.auth2.GoogleAuth>();
+    React.useEffect(() => {
         gapi.load('auth2', async () => {
             gapi.auth2.init({
                 client_id: "1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com",
                 scope: "profile email"
-            }).then((auth2) => auth2.signIn({ ux_mode: 'redirect', prompt: 'consent', redirect_uri: window.origin + '/authorization/google-complete' }));
-
+            }).then(auth => {
+                googleAuth.current = auth;
+            });
         });
+    }, []);
+
+    const completeGoogleSignin = React.useCallback(async (user: gapi.auth2.GoogleUser) => {
+        var uploaded = await (await fetch(API_AUTH_ENDPOINT + '/google/getAccessToken', {
+            method: 'POST',
+            headers: [['Content-Type', 'application/json']],
+            body: JSON.stringify({ idToken: user.getAuthResponse().id_token })
+        })).json();
+
+        if (uploaded.ok) {
+            completeAuth(uploaded.accessToken);
+        } else {
+            console.warn(uploaded);
+            router.replace('/authorization/signin');
+        }
+    }, []);
+
+    const fireGoogle = React.useCallback(() => {
+        Cookie.set('auth-type', 'google', { path: '/' });
+        if (redirect) {
+            Cookie.set('sign-redirect', redirect, { path: '/' });
+        }
+        if (googleAuth.current) {
+            let signing = googleAuth.current.signIn({ ux_mode: isSafari ? 'popup' : 'redirect', prompt: 'consent', redirect_uri: window.origin + '/authorization/google-complete' })
+            signing.then(completeGoogleSignin).catch(e => {
+                setGoogleStarting(false);
+                throw new Error(e);
+            });
+        }
     }, []);
 
     React.useEffect(() => {
@@ -155,18 +185,7 @@ export default () => {
                     scope: "profile email"
                 }).then(async (auth2) => {
                     if (auth2.isSignedIn.get()) {
-                        var uploaded = await (await fetch(API_AUTH_ENDPOINT + '/google/getAccessToken', {
-                            method: 'POST',
-                            headers: [['Content-Type', 'application/json']],
-                            body: JSON.stringify({ idToken: auth2.currentUser.get().getAuthResponse().id_token })
-                        })).json();
-
-                        if (uploaded.ok) {
-                            completeAuth(uploaded.accessToken);
-                        } else {
-                            console.warn(uploaded);
-                            router.replace('/authorization/signin');
-                        }
+                        completeGoogleSignin(auth2.currentUser.get());
                     } else {
                         router.replace('/authorization/signin');
                         console.warn('google auth: not signed in');
@@ -190,9 +209,8 @@ export default () => {
     const loginWithGoogle = React.useCallback(() => {
         trackEvent('signin_google_action');
         setGoogleStarting(true);
-        setTimeout(() => {
-            fireGoogle();
-        }, 0);
+        fireGoogle();
+
     }, []);
 
     const loginWithEmail = React.useCallback(() => {
