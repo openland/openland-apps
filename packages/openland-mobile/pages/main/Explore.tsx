@@ -156,7 +156,9 @@ const ExplorePage = (props: PageProps) => {
                                 {!small && <Text numberOfLines={1} style={{ fontSize: 30, color: theme.foregroundPrimary, marginBottom: 10, fontWeight: FontStyles.Weight.Bold }}>Discover chats</Text>}
                                 {<Text numberOfLines={1} style={{ fontSize: 18, color: theme.foregroundPrimary }}>Find the right chats for you</Text>}
                             </View>
-                            <ZRoundedButton size={small ? 'default' : 'large'} title="Start" onPress={() => props.router.push("Discover")} />
+                            <View marginBottom={small ? 32 : undefined}>
+                                <ZRoundedButton size={small ? 'default' : 'large'} title="Start" onPress={() => props.router.push("Discover")} />
+                            </View>
                         </View>
                     )}
                 </ASSafeAreaContext.Consumer>

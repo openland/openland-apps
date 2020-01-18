@@ -3,7 +3,7 @@ import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { ZInput } from '../../components/ZInput';
 import RNRestart from 'react-native-restart';
-import { Text, Platform, StyleSheet, TextStyle } from 'react-native';
+import { Platform } from 'react-native';
 import { UserError, NamedError } from 'openland-y-forms/errorHandling';
 import { ShowAuthError } from './ShowAuthError';
 import Alert from 'openland-mobile/components/AlertBlanket';
@@ -12,29 +12,12 @@ import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { trackEvent } from 'openland-mobile/analytics';
 import { TrackAuthError } from './TrackAuthError';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { API_HOST } from 'openland-y-utils/api';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { FloatKeyboardArea } from './FloatKeyboardArea';
+import { RegistrationContainer } from './RegistrationContainer';
 
 export const ACTIVATION_CODE_LENGTH = 6;
-
-export const textStyles = StyleSheet.create({
-    title: {
-        ...TextStyles.Title1,
-        textAlign: 'center',
-        paddingHorizontal: 16,
-        marginBottom: 8,
-    } as TextStyle,
-    hint: {
-        ...TextStyles.Body,
-        textAlign: 'center',
-        paddingHorizontal: 16,
-        marginBottom: 32,
-    } as TextStyle,
-});
 
 let email = '';
 let session = '';
@@ -74,7 +57,6 @@ const requestActivationCode = async () => {
 };
 
 const EmailStartComponent = (props: PageProps) => {
-    const theme = React.useContext(ThemeContext);
     const form = useForm();
     const emailField = useField('email', '', form);
 
@@ -85,7 +67,13 @@ const EmailStartComponent = (props: PageProps) => {
 
         let lastAtPos = value.lastIndexOf('@');
         let lastDotPos = value.lastIndexOf('.');
-        let isEmailValid = lastAtPos < lastDotPos && lastAtPos > 0 && value.indexOf('@@') === -1 && lastDotPos > 2 && (value.length - lastDotPos) > 2 && !value.includes(' ');
+        let isEmailValid =
+            lastAtPos < lastDotPos &&
+            lastAtPos > 0 &&
+            value.indexOf('@@') === -1 &&
+            lastDotPos > 2 &&
+            value.length - lastDotPos > 2 &&
+            !value.includes(' ');
 
         if (!isEmailValid) {
             throw new NamedError('invalid_email');
@@ -108,17 +96,11 @@ const EmailStartComponent = (props: PageProps) => {
 
     return (
         <ZTrack event="signup_email_view">
-            <FloatKeyboardArea
-                floatContent={(
-                    <ZRoundedButton title="Next" size="large" onPress={submitForm}/>
-                )}
+            <RegistrationContainer
+                title="What’s your email?"
+                subtitle="We’ll send you a login code"
+                floatContent={<ZRoundedButton title="Next" size="large" onPress={submitForm} />}
             >
-                <Text style={[textStyles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
-                    What’s your email?
-                </Text>
-                <Text style={[textStyles.hint, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
-                    We’ll send you a login code
-                </Text>
                 <ZInput
                     field={emailField}
                     placeholder="Email"
@@ -129,15 +111,16 @@ const EmailStartComponent = (props: PageProps) => {
                     allowFontScaling={false}
                     onSubmitEditing={submitForm}
                 />
-            </FloatKeyboardArea>
+            </RegistrationContainer>
         </ZTrack>
     );
 };
 
-export const EmailStart = withApp(EmailStartComponent, { navigationAppearance: Platform.OS === 'ios' ? 'small' : undefined });
+export const EmailStart = withApp(EmailStartComponent, {
+    navigationAppearance: Platform.OS === 'ios' ? 'small' : undefined,
+});
 
 const EmailCodeComponent = (props: PageProps) => {
-    const theme = React.useContext(ThemeContext);
     const form = useForm();
     const codeField = useField('code', '', form);
 
@@ -194,7 +177,7 @@ const EmailCodeComponent = (props: PageProps) => {
                 if (e.name === 'code_expired') {
                     Alert.builder()
                         .title('This code has expired')
-                        .message('Please click Resend and we\'ll send you a new verification email.')
+                        .message("Please click Resend and we'll send you a new verification email.")
                         .button('Cancel', 'cancel')
                         .action('Resend Code', 'default', resendCode)
                         .show();
@@ -206,25 +189,22 @@ const EmailCodeComponent = (props: PageProps) => {
             }
         });
 
-    React.useEffect(() => {
-        if (codeField.value.length === ACTIVATION_CODE_LENGTH) {
-            submitForm();
-        }
-    }, [codeField.value]);
+    React.useEffect(
+        () => {
+            if (codeField.value.length === ACTIVATION_CODE_LENGTH) {
+                submitForm();
+            }
+        },
+        [codeField.value],
+    );
 
     return (
         <ZTrack event="code_view">
-            <FloatKeyboardArea
-                floatContent={(
-                    <ZRoundedButton title="Next" size="large" onPress={submitForm}/>
-                )}
+            <RegistrationContainer
+                title="Enter login code"
+                subtitle={`We just sent it to ${email}.`}
+                floatContent={<ZRoundedButton title="Next" size="large" onPress={submitForm} />}
             >
-                <Text style={[textStyles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
-                    Enter login code
-                </Text>
-                <Text style={[textStyles.hint, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
-                    We just sent it to {email}.
-                </Text>
                 <ZInput
                     field={codeField}
                     placeholder="Activation code"
@@ -236,9 +216,11 @@ const EmailCodeComponent = (props: PageProps) => {
                     onSubmitEditing={submitForm}
                     maxLength={ACTIVATION_CODE_LENGTH}
                 />
-            </FloatKeyboardArea>
+            </RegistrationContainer>
         </ZTrack>
     );
 };
 
-export const EmailCode = withApp(EmailCodeComponent, { navigationAppearance: Platform.OS === 'ios' ? 'small' : undefined });
+export const EmailCode = withApp(EmailCodeComponent, {
+    navigationAppearance: Platform.OS === 'ios' ? 'small' : undefined,
+});

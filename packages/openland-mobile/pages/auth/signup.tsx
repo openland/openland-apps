@@ -23,7 +23,7 @@ export const resolveNextPage = (session: SessionStateFull) => {
     throw new Error('inconsistent state');
 };
 
-export var next: (router: SRouter | NavigationManager) => void;
+export let next: (router: SRouter | NavigationManager) => void;
 
 export const resolveNextPageCompleteAction: (page?: string) => ((router: SRouter) => void) | undefined = (page: string) => {
     if (page === 'SignupOrg') {

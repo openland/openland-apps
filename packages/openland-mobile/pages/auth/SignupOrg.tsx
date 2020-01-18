@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { View, Platform } from 'react-native';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
-import { SHeader } from 'react-native-s/SHeader';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
@@ -11,10 +11,10 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { SScrollView } from 'react-native-s/SScrollView';
-import { View } from 'react-native';
+import { RegistrationContainer } from './RegistrationContainer';
+import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 
-const SignupOrgComponent = XMemo<PageProps>((props) => {
+const SignupOrgComponent = XMemo<PageProps>(props => {
     const form = useForm();
     const nameField = useField('name', '', form);
     const photoField = useField('photoRef', null, form);
@@ -30,7 +30,7 @@ const SignupOrgComponent = XMemo<PageProps>((props) => {
                     name: canSkip ? getMessenger().engine.user.name : nameField.value,
                     photoRef: photoField.value,
                     personal: false,
-                    isCommunity: false
+                    isCommunity: false,
                 },
             });
 
@@ -44,21 +44,39 @@ const SignupOrgComponent = XMemo<PageProps>((props) => {
 
     return (
         <ZTrack event="signup_org_view">
-            <SHeader title="New organization" />
-            <SHeaderButton key={'btn-' + canSkip} title={canSkip ? 'Skip' : 'Next'} onPress={handleSave} />
-            <SScrollView>
-                <View style={{ marginTop: 16, marginBottom: 32, alignItems: 'center' }}>
-                    <ZAvatarPicker field={photoField} size="xx-large" />
+            <RegistrationContainer
+                title="Where do you work?"
+                subtitle="Give others a bit of context about you"
+                autoScrollToBottom={true}
+                header={
+                    <SHeaderButton
+                        key={'btn-' + canSkip}
+                        title={canSkip ? 'Skip' : 'Next'}
+                        onPress={handleSave}
+                    />
+                }
+                floatContent={
+                    <ZRoundedButton
+                        title={canSkip ? 'Skip' : 'Next'}
+                        size="large"
+                        onPress={handleSave}
+                    />
+                }
+                scalableContent={<ZAvatarPicker field={photoField} size="xx-large" />}
+            >
+                <View marginTop={16} marginBottom={100}>
+                    <ZInput
+                        placeholder="Name"
+                        autoFocus={true}
+                        description="Please, provide organization name and optional logo"
+                        field={nameField}
+                    />
                 </View>
-                <ZInput
-                    placeholder="Name"
-                    autoFocus={true}
-                    description="Please, provide organization name and optional logo"
-                    field={nameField}
-                />
-            </SScrollView>
+            </RegistrationContainer>
         </ZTrack>
     );
 });
 
-export const SignupOrg = withApp(SignupOrgComponent);
+export const SignupOrg = withApp(SignupOrgComponent, {
+    navigationAppearance: Platform.OS === 'ios' ? 'small' : undefined,
+});
