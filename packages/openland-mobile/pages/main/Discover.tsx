@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {
     // RadiusStyles,
-    TextStyles
+    TextStyles,
 } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
@@ -128,6 +128,7 @@ const CheapTag = React.memo((props: TagButtonProps) => {
                         marginLeft: -14,
                         opacity: imageStyle,
                         transform: [{ scale: imageStyle }],
+                        tintColor: theme.foregroundInverted,
                     }}
                     source={require('assets/ic-checkmark.png')}
                 />
