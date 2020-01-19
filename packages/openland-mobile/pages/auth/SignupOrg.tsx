@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform } from 'react-native';
+import { View } from 'react-native';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
@@ -78,5 +78,6 @@ const SignupOrgComponent = XMemo<PageProps>(props => {
 });
 
 export const SignupOrg = withApp(SignupOrgComponent, {
-    navigationAppearance: Platform.OS === 'ios' ? 'small' : undefined,
+    navigationAppearance: 'small',
+    hideHairline: true,
 });

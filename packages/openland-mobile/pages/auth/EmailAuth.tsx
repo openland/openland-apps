@@ -222,5 +222,6 @@ const EmailCodeComponent = (props: PageProps) => {
 };
 
 export const EmailCode = withApp(EmailCodeComponent, {
-    navigationAppearance: Platform.OS === 'ios' ? 'small' : undefined,
+    navigationAppearance: 'small',
+    hideHairline: true,
 });

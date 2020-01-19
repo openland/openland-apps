@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, View } from 'react-native';
+import { View } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { next } from './signup';
@@ -70,5 +70,6 @@ const SignupUserComponent = React.memo((props: PageProps) => {
 });
 
 export const SignupUser = withApp(SignupUserComponent, {
-    navigationAppearance: Platform.OS === 'ios' ? 'small' : undefined,
+    navigationAppearance: 'small',
+    hideHairline: true,
 });
