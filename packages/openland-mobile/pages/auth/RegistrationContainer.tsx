@@ -15,7 +15,7 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
-export const textStyles = StyleSheet.create({
+const textStyles = StyleSheet.create({
     title: {
         ...TextStyles.Title1,
         textAlign: 'center',
@@ -107,7 +107,7 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
         <>
             {props.header && props.header}
             <KeyboardAvoidingView behavior="padding" flex={1}>
-                <ScrollView flex={1} paddingTop={isIos ? area.top + 22 : undefined} ref={scrollRef}>
+                <ScrollView flex={1} paddingTop={isIos ? area.top + 16 : undefined} ref={scrollRef}>
                     <Text
                         style={[textStyles.title, { color: theme.foregroundPrimary }]}
                         allowFontScaling={false}

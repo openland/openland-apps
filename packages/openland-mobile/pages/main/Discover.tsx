@@ -1,10 +1,19 @@
 import * as React from 'react';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { SHeader } from 'react-native-s/SHeader';
-import { SScrollView } from 'react-native-s/SScrollView';
-import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
+import {
+    View,
+    ScrollView,
+    Text,
+    Animated,
+    TouchableOpacity,
+    Platform,
+    Dimensions,
+} from 'react-native';
+import {
+    // RadiusStyles,
+    TextStyles
+} from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { SRouter } from 'react-native-s/SRouter';
@@ -12,51 +21,149 @@ import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SuggestedChats as SuggestedChatsPage } from './SuggestedChats';
-import LinearGradient from 'react-native-linear-gradient';
 
-export type Tag = { id: string, title: string };
-export type TagGroup = { id: string, title?: string | null, subtitle?: string | null, tags: Tag[] };
+export type Tag = { id: string; title: string };
+export type TagGroup = { id: string; title?: string | null; subtitle?: string | null; tags: Tag[] };
 
-const TagButton = (props: { tag: Tag, selected: boolean, onPress: (tag: Tag) => void }) => {
-    let style: 'fill' | 'border' = 'fill' as any;
+interface TagButtonProps {
+    tag: Tag;
+    selected: boolean;
+    onPress: (tag: Tag) => void;
+}
 
-    let theme = React.useContext(ThemeContext);
-    let callback = React.useCallback(() => {
+// const TagButton = React.memo((props: TagButtonProps) => {
+//     const style: 'fill' | 'border' = 'fill' as any;
+//
+//     const theme = React.useContext(ThemeContext);
+//     const callback = () => {
+//         props.onPress(props.tag);
+//     };
+//     return (
+//         <TouchableOpacity onPress={callback} activeOpacity={0.6}>
+//             <View
+//                 style={{
+//                     marginRight: 10,
+//                     marginBottom: 12,
+//                     paddingHorizontal: 16,
+//                     paddingVertical: 10,
+//                     borderRadius: RadiusStyles.Medium,
+//                     backgroundColor:
+//                         props.tag.id === 'button_more'
+//                             ? undefined
+//                             : props.selected
+//                                 ? style === 'fill'
+//                                     ? theme.accentPrimary
+//                                     : theme.backgroundTertiary
+//                                 : theme.backgroundTertiary,
+//                 }}
+//             >
+//                 <Text
+//                     allowFontScaling={false}
+//                     style={{
+//                         ...TextStyles.Label1,
+//                         color: props.selected
+//                             ? style === 'fill'
+//                                 ? theme.foregroundInverted
+//                                 : theme.foregroundSecondary
+//                             : theme.foregroundSecondary,
+//                     }}
+//                 >
+//                     {props.tag.title}
+//                 </Text>
+//             </View>
+//         </TouchableOpacity>
+//     );
+// });
+
+const CheapTag = React.memo((props: TagButtonProps) => {
+    const theme = React.useContext(ThemeContext);
+    const [textStyle] = React.useState(new Animated.Value(props.selected ? 6 : 0));
+    const [imageStyle] = React.useState(new Animated.Value(props.selected ? 1 : 0));
+
+    React.useEffect(
+        () => {
+            Animated.parallel([
+                Animated.timing(textStyle, {
+                    duration: 150,
+                    toValue: props.selected ? 6 : 0,
+                    useNativeDriver: true,
+                }),
+                Animated.timing(imageStyle, {
+                    duration: 150,
+                    toValue: props.selected ? 1 : 0,
+                    useNativeDriver: true,
+                }),
+            ]).start();
+        },
+        [props.selected],
+    );
+
+    const callback = () => {
         props.onPress(props.tag);
-    }, [props.tag]);
-    return <TouchableOpacity onPress={callback} activeOpacity={0.6}>
+    };
 
-        <View
-            style={{
-                marginRight: 10,
-                marginBottom: 12,
-                paddingHorizontal: 16,
-                paddingVertical: 10,
-                borderRadius: RadiusStyles.Medium,
-                backgroundColor: props.tag.id === 'button_more' ? undefined : props.selected ? (style === 'fill' ? theme.accentPrimary : theme.backgroundTertiary) : theme.backgroundTertiary,
-            }}
-        >
-            <Text
+    return (
+        <TouchableOpacity onPress={callback} activeOpacity={0.6}>
+            <View
                 style={{
-                    ...TextStyles.Label1,
-                    color: props.selected ? (style === 'fill' ? theme.foregroundInverted : theme.foregroundSecondary) : theme.foregroundSecondary
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    margin: 8,
+                    paddingVertical: 6,
+                    paddingLeft: 24,
+                    paddingRight: 24,
+                    borderRadius: 100,
+                    backgroundColor:
+                        props.tag.id === 'button_more'
+                            ? undefined
+                            : props.selected
+                                ? theme.accentPrimary
+                                : theme.backgroundTertiary,
                 }}
             >
-                {props.tag.title}
-            </Text>
-        </View >
-    </TouchableOpacity>;
-};
+                <Animated.Image
+                    style={{
+                        width: 16,
+                        height: 16,
+                        marginLeft: -14,
+                        opacity: imageStyle,
+                        transform: [{ scale: imageStyle }],
+                    }}
+                    source={require('assets/ic-checkmark.png')}
+                />
+                <Animated.Text
+                    allowFontScaling={false}
+                    style={{
+                        ...TextStyles.Label1,
+                        transform: [{ translateX: textStyle }],
+                        color: props.selected
+                            ? theme.foregroundInverted
+                            : theme.foregroundSecondary,
+                    }}
+                >
+                    {props.tag.title}
+                </Animated.Text>
+            </View>
+        </TouchableOpacity>
+    );
+});
 
-const TagsCloud = (props: { tagsGroup: TagGroup, selected: Set<string>, onSelectedChange: (selected: Set<string>) => void }) => {
+interface TagsCloudProps {
+    tagsGroup: TagGroup;
+    selected: Set<string>;
+    onSelectedChange: (selected: Set<string>) => void;
+}
 
-    let [showAll, setShowAll] = React.useState(false);
+const TagsCloud = React.memo((props: TagsCloudProps) => {
+    const [showAll, setShowAll] = React.useState(false);
+    const onShowAll = React.useCallback(
+        () => {
+            setShowAll(!showAll);
+        },
+        [showAll],
+    );
 
-    let onShowAll = React.useCallback(() => {
-        setShowAll(!showAll);
-    }, [showAll]);
-
-    let onTagPress = (tag: Tag) => {
+    const onTagPress = (tag: Tag) => {
         let selected = props.selected.has(tag.id);
 
         if (selected) {
@@ -68,82 +175,145 @@ const TagsCloud = (props: { tagsGroup: TagGroup, selected: Set<string>, onSelect
     };
 
     return (
-        <View flexDirection="column">
-            <View height={15} />
-            {/* {props.tagsGroup.title && <Text style={{ fontSize: 16, marginBottom: 20, fontWeight: TextStyles.weight.medium, color: theme.foregroundPrimary }}>{props.tagsGroup.title}</Text>} */}
-            <View marginBottom={18} flexDirection="row" flexWrap="wrap">
-                {props.tagsGroup.tags.filter((t, i) => showAll || i < 17).map(tag => (
-                    <TagButton tag={tag} onPress={onTagPress} selected={props.selected.has(tag.id)} />
-                ))}
-                {props.tagsGroup.tags.length > 17 && !showAll && <TagButton tag={{ title: showAll ? 'Less' : 'More', id: 'button_more' }} onPress={onShowAll} selected={false} />}
-            </View>
-            {/* {sub} */}
+        <View flexDirection="row" flexWrap="wrap" justifyContent="center">
+            {props.tagsGroup.tags.filter((t, i) => showAll || i < 17).map(tag => (
+                <CheapTag tag={tag} onPress={onTagPress} selected={props.selected.has(tag.id)} />
+            ))}
+            {props.tagsGroup.tags.length > 17 &&
+                !showAll && (
+                    <CheapTag
+                        tag={{ title: showAll ? 'Less' : 'More', id: 'button_more' }}
+                        onPress={onShowAll}
+                        selected={false}
+                    />
+                )}
         </View>
     );
-};
+});
 
-const TagsGroupPage = (props: { group: TagGroup, selected: Set<string>, exclude: Set<string>, router: SRouter }) => {
-    let [selected, setCurretnSelected] = React.useState(props.selected);
-    let onSelectedChange = React.useCallback((s: Set<string>) => {
-        setCurretnSelected(new Set(s));
-    }, [selected]);
+interface TagsGroupPageProps {
+    group: TagGroup;
+    selected: Set<string>;
+    exclude: Set<string>;
+    router: SRouter;
+}
 
-    let theme = React.useContext(ThemeContext);
+const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
+    const area = React.useContext(ASSafeAreaContext);
+    const theme = React.useContext(ThemeContext);
 
-    let disabled = !selected.size && props.exclude.size <= 1;
-    let next = React.useCallback(() => {
-        if (disabled) {
-            return;
-        }
-        (async () => {
-            let nextPath = 'Discover';
+    const isIos = Platform.OS === 'ios';
+    const isXGen = isIos && Dimensions.get('window').height > 800;
+    const defaultIosPadding = isXGen ? 34 : 16;
 
-            let params: any = { selected, exclude: new Set(props.exclude) };
+    const [selected, setCurrentSelected] = React.useState(props.selected);
 
-            props.router.push(nextPath, params);
-        })();
-    }, [selected, disabled]);
+    const onSelectedChange = React.useCallback(
+        (s: Set<string>) => {
+            setCurrentSelected(new Set(s));
+        },
+        [selected],
+    );
 
-    let { title, subtitle } = props.group;
+    const disabled = !selected.size && props.exclude.size <= 1;
+
+    const next = React.useCallback(
+        () => {
+            if (disabled) {
+                return;
+            }
+            (async () => {
+                let nextPath = 'Discover';
+
+                let params: any = { selected, exclude: new Set(props.exclude) };
+
+                props.router.push(nextPath, params);
+            })();
+        },
+        [selected, disabled],
+    );
+
+    const { title, subtitle } = props.group;
 
     return (
         <>
-            {title && <SHeader title={title} />}
-            <SScrollView justifyContent="flex-start" alignContent="center">
-                {subtitle && <Text style={{ fontSize: 20, paddingBottom: 16, paddingHorizontal: 18, color: theme.foregroundPrimary }}>{subtitle}</Text>}
-                <View paddingHorizontal={18}>
-                    <TagsCloud tagsGroup={props.group} selected={selected} onSelectedChange={onSelectedChange} />
-                </View>
-                <View height={120} />
-            </SScrollView>
-            <LinearGradient colors={[theme.transparent, theme.backgroundPrimary, theme.backgroundPrimary]} height={160} position="absolute" bottom={0} width="100%" justifyContent="center" alignItems="center" pointerEvents="none" />
-
-            <ASSafeAreaContext.Consumer>
-                {sa => (
-                    <View alignContent="center" justifyContent="center" alignSelf="center" bottom={sa.bottom + 48}>
-                        <ZRoundedButton size="large" title="  Next  " enabled={!disabled} onPress={next} />
-                    </View>
+            <ScrollView flex={1} paddingTop={isIos ? area.top + 16 : undefined}>
+                {title && (
+                    <Text
+                        allowFontScaling={false}
+                        style={{
+                            ...TextStyles.Title1,
+                            textAlign: 'center',
+                            paddingHorizontal: 16,
+                            marginBottom: 8,
+                            color: theme.foregroundPrimary,
+                        }}
+                    >
+                        {title}
+                    </Text>
                 )}
-            </ASSafeAreaContext.Consumer>
-
+                {subtitle && (
+                    <Text
+                        allowFontScaling={false}
+                        style={{
+                            ...TextStyles.Body,
+                            textAlign: 'center',
+                            paddingHorizontal: 16,
+                            marginBottom: 32,
+                            color: theme.foregroundSecondary,
+                        }}
+                    >
+                        {subtitle}
+                    </Text>
+                )}
+                <View paddingHorizontal={8} paddingBottom={100} flexDirection="column">
+                    <TagsCloud
+                        tagsGroup={props.group}
+                        selected={selected}
+                        onSelectedChange={onSelectedChange}
+                    />
+                </View>
+            </ScrollView>
+            <View padding={16} paddingBottom={isIos ? defaultIosPadding : area.bottom + 16}>
+                <ZRoundedButton size="large" title="Next" enabled={!disabled} onPress={next} />
+            </View>
         </>
     );
-};
+});
 
-const DiscoverComponent = (props: PageProps) => {
+const DiscoverComponent = React.memo((props: PageProps) => {
     let exclude = props.router.params.exclude || new Set<string>();
     let selected = props.router.params.selected || new Set<string>();
-    let currentPage = getClient().useDiscoverNextPage({ selectedTagsIds: [...selected.values()], excudedGroupsIds: [...exclude.values()] }, { fetchPolicy: 'network-only' });
+    let currentPage = getClient().useDiscoverNextPage(
+        { selectedTagsIds: [...selected.values()], excudedGroupsIds: [...exclude.values()] },
+        { fetchPolicy: 'network-only' },
+    );
 
     if (currentPage.betaNextDiscoverPage) {
         if (currentPage.betaNextDiscoverPage.chats) {
-            return <SuggestedChatsPage chats={currentPage.betaNextDiscoverPage.chats} router={props.router} selectedTagIds={[...selected.values()]} />;
+            return (
+                <SuggestedChatsPage
+                    chats={currentPage.betaNextDiscoverPage.chats}
+                    router={props.router}
+                    selectedTagIds={[...selected.values()]}
+                />
+            );
         } else if (currentPage.betaNextDiscoverPage.tagGroup) {
             exclude.add(currentPage.betaNextDiscoverPage.tagGroup.id);
-            return < TagsGroupPage group={currentPage.betaNextDiscoverPage.tagGroup} exclude={exclude} selected={selected} router={props.router} />;
+            return (
+                <TagsGroupPage
+                    group={currentPage.betaNextDiscoverPage.tagGroup}
+                    exclude={exclude}
+                    selected={selected}
+                    router={props.router}
+                />
+            );
         }
     }
     return <ZLoader />;
-};
+});
 
-export const Discover = withApp(DiscoverComponent, { navigationAppearance: 'large', hideHairline: true });
+export const Discover = withApp(DiscoverComponent, {
+    navigationAppearance: 'small',
+    hideHairline: true,
+});

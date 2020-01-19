@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
-import { Text, View, Image, Dimensions } from 'react-native';
+import { Text, View, Image, Dimensions, Platform } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { SScrollView } from 'react-native-s/SScrollView';
@@ -156,7 +156,7 @@ const ExplorePage = (props: PageProps) => {
                                 {!small && <Text numberOfLines={1} style={{ fontSize: 30, color: theme.foregroundPrimary, marginBottom: 10, fontWeight: FontStyles.Weight.Bold }}>Discover chats</Text>}
                                 {<Text numberOfLines={1} style={{ fontSize: 18, color: theme.foregroundPrimary }}>Find the right chats for you</Text>}
                             </View>
-                            <View marginBottom={small ? 32 : undefined}>
+                            <View marginBottom={(small && Platform.OS === 'ios') ? 32 : undefined}>
                                 <ZRoundedButton size={small ? 'default' : 'large'} title="Start" onPress={() => props.router.push("Discover")} />
                             </View>
                         </View>
