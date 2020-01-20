@@ -29,6 +29,7 @@ import { BottomSheetProvider } from 'openland-mobile/components/BottomSheet';
 import { AndroidSplashView } from '../components/AndroidSplashView';
 import { initialMode } from 'react-native-dark-mode';
 import { GQLClientContext } from 'openland-y-graphql/GQLClientContext';
+import { AppStorage as Storage } from 'openland-y-runtime/AppStorage';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(() => new SAnimatedShadowView('app-placeholder-' + randomKey(), { opacity: 1 }), []);
@@ -222,10 +223,19 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         let client = buildNativeClient(AppStorage.storage, AppStorage.token);
                         saveClient(client);
                         res = await client.queryAccount();
+
                         // res = await cachedQuery(client.client, AccountQuery, {}, 'account');
                         // await cachedQuery(client.client, SettingsQuery, {}, 'settings')
+                        let startDiscover: null | boolean = false;
+                        await Storage.readKey('discover_start').then(data => {
+                            startDiscover = data;
+                        });
+                        const defaultPage = !res.sessionState.isCompleted
+                            ? resolveNextPage(res.sessionState)
+                            : startDiscover
+                                ? 'SignDiscover'
+                                : undefined;
 
-                        let defaultPage = !res.sessionState.isCompleted ? resolveNextPage(res.sessionState) : undefined;
                         this.history = SRouting.create(Routes, defaultPage, { action: resolveNextPageCompleteAction(defaultPage) });
                         if (res.me) {
                             NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0 || __DEV__;

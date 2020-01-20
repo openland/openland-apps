@@ -4,6 +4,7 @@ import { backoff } from 'openland-y-utils/timer';
 import { getClient } from '../../utils/graphqlClient';
 import RNRestart from 'react-native-restart';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
+import { AppStorage as Storage } from 'openland-y-runtime/AppStorage';
 import { trackEvent } from 'openland-mobile/analytics';
 
 export const resolveNextPage = (session: SessionStateFull) => {
@@ -17,8 +18,11 @@ export const resolveNextPage = (session: SessionStateFull) => {
         return 'Waitlist';
     } else if (session.isCompleted) {
         trackEvent('registration_complete');
-
-        RNRestart.Restart();
+        Storage.writeKey('discover_start', true).then(() => {
+            RNRestart.Restart();
+        }).catch(() => {
+            throw new Error('start discover error');
+        });
     }
     throw new Error('inconsistent state');
 };

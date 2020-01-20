@@ -13,6 +13,7 @@ import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { SRouter } from 'react-native-s/SRouter';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { trackEvent } from 'openland-mobile/analytics';
+import { AppStorage as Storage } from 'openland-y-runtime/AppStorage';
 
 interface ChatProps {
     item: RoomShort_SharedRoom;
@@ -129,7 +130,9 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
     );
 
     const toHome = React.useCallback(() => {
-        props.router.pushAndResetRoot('Home');
+        Storage.writeKey('discover_start', null).then(() => {
+            props.router.pushAndResetRoot('Home');
+        });
     }, []);
 
     const skip = React.useCallback(() => {

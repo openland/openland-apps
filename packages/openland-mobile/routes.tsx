@@ -19,6 +19,7 @@ import { EditCommunity } from './pages/main/EditCommunity';
 import { SignupUser } from './pages/auth/SignupUser';
 import { Waitlist } from './pages/auth/Waitlist';
 import { EmailStart, EmailCode } from './pages/auth/EmailAuth';
+import { SignDiscover } from './pages/auth/SignDiscover';
 import { Compose } from './pages/main/Compose';
 import { CreateGroupAttrs } from './pages/compose/CreateGroupAttrs';
 import { ProfileOrganizationLink } from './pages/main/ProfileOrganizationLink';
@@ -147,6 +148,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('HomeDialogs', HomeDialogs)
 
   .addRoute('Discover', Discover)
+  .addRoute('SignDiscover', SignDiscover)
   .addRoute('InstallApps', InstallApps)
   .addRoute('StartConversation', StartConversation)
   .addRoute('Invites', Invites)
