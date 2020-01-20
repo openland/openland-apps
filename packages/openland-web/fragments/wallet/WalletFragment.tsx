@@ -4,11 +4,11 @@ import { XView } from 'react-mental';
 import { Page } from 'openland-unicorn/Page';
 import { useClient } from 'openland-web/utils/useClient';
 import { showAddCard } from './components/showAddCard';
-import { Money } from 'openland-web/components/Money';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { BallanceView } from './components/BalanceView';
 import { CardView } from './components/CardView';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
+import { TransactionView } from './components/TransactionView';
 
 export const WalletFragment = React.memo(() => {
     const client = useClient();
@@ -20,7 +20,7 @@ export const WalletFragment = React.memo(() => {
         <Page track="settings_wallet">
             <UHeader title="Wallet" />
             <XView flexDirection="column">
-                <XView paddingTop={20} paddingBottom={24} paddingHorizontal={16}>
+                <XView paddingTop={20} paddingBottom={12} paddingHorizontal={16}>
                     <BallanceView value={wallet.myAccount.balance} />
                 </XView>
                 <UListGroup
@@ -34,17 +34,17 @@ export const WalletFragment = React.memo(() => {
                             style="secondary"
                         />
                     )}
-                    <XView padding={8} flexDirection="row" flexWrap="wrap">
+                    <XView paddingTop={8} paddingHorizontal={8} paddingBottom={4} flexDirection="row" flexWrap="wrap">
                         {cards.myCards.map((v) => (
-                            <XView key={v.id} width="50%" paddingHorizontal={8} paddingBottom={32}>
-                                <CardView card={v} />
+                            <XView key={v.id} width="50%" paddingHorizontal={8} paddingBottom={16}>
+                                <CardView item={v} />
                             </XView>
                         ))}
                     </XView>
                 </UListGroup>
                 <UListGroup header="Transactions">
                     {transactions.walletTransactions.items.map((v) => (
-                        <XView key={v.id}>{v.readableState}: <Money amount={v.amount} /></XView>
+                        <TransactionView key={v.id} item={v} />
                     ))}
                 </UListGroup>
             </XView>

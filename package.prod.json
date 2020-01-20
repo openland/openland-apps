@@ -108,6 +108,7 @@
         "@juggle/resize-observer": "v3.0.0-0",
         "react-pdf": "^4.1.0",
         "@bugsnag/js": "^6.5.0",
-        "@bugsnag/plugin-react": "^6.5.0"
+        "@bugsnag/plugin-react": "^6.5.0",
+        "canvas-confetti": "^1.0.3"
     }
 }
