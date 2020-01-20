@@ -63,12 +63,10 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
             Animated.timing(avatarSize, {
                 duration: e.duration,
                 toValue: 48,
-                useNativeDriver: true,
             }),
             Animated.timing(avatarScale, {
                 duration: e.duration,
                 toValue: 0.5,
-                useNativeDriver: true,
             }),
             Animated.timing(floatPadding, {
                 duration: e.duration,
@@ -82,12 +80,10 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
             Animated.timing(avatarSize, {
                 duration: e.duration,
                 toValue: 96,
-                useNativeDriver: true,
             }),
             Animated.timing(avatarScale, {
                 duration: e.duration,
                 toValue: 1,
-                useNativeDriver: true,
             }),
             Animated.timing(floatPadding, {
                 duration: e.duration,
