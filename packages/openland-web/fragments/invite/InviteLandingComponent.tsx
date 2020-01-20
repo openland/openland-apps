@@ -55,7 +55,7 @@ const JoinButton = ({ roomId, text }: { roomId: string; text: string }) => {
             flexShrink={0}
             action={async () => {
                 await client.mutateRoomJoin({ roomId });
-                await client.refetchRoom({ id: roomId });
+                await client.refetchRoomWithoutMembers({ id: roomId });
                 console.warn(router, roomId);
                 router!.navigate(`/mail/${roomId}`);
             }}

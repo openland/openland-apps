@@ -14,7 +14,7 @@ import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardA
 
 const EditGroupComponent = XMemo<PageProps>((props) => {
     const client = getClient();
-    const group = client.useRoom({ id: props.router.params.id }, { fetchPolicy: 'network-only' }).room;
+    const group = client.useRoomWithoutMembers({ id: props.router.params.id }, { fetchPolicy: 'network-only' }).room;
 
     if (!group || group.__typename !== 'SharedRoom') {
         return null;
@@ -47,7 +47,7 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
                 };
 
                 await client.mutateRoomUpdate(variables);
-                await client.refetchRoom({ id: props.router.params.id });
+                await client.refetchRoomWithoutMembers({ id: props.router.params.id });
 
                 props.router.back();
             } catch (e) {

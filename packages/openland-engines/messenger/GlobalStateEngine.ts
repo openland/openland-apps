@@ -70,7 +70,7 @@ export class GlobalStateEngine {
     }
 
     resolvePrivateConversation = async (uid: string) => {
-        let res = await this.engine.client.queryRoom({ id: uid });
+        let res = await this.engine.client.queryRoomPico({ id: uid });
         return {
             id: res.room!!.id,
             flexibleId: uid

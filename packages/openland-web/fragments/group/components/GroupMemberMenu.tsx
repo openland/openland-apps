@@ -166,7 +166,7 @@ const getMenuContent = (opts: GroupMemberMenuProps & { client: OpenlandClient })
                         roomId: group.id,
                     });
 
-                    await client.refetchRoom({ id: group.id });
+                    await client.refetchRoomWithoutMembers({ id: group.id });
                     await client.refetchRoomMembersShort({ roomId: id });
 
                     onRemove(user.id);

@@ -1,5 +1,5 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { RoomReadMutation, RoomQuery, ChatInitQuery, ChatInitFromUnreadQuery, MessagesBatchQuery } from 'openland-api';
+import { RoomReadMutation, RoomWithoutMembersQuery, ChatInitQuery, ChatInitFromUnreadQuery, MessagesBatchQuery } from 'openland-api';
 import { MessageReactionType } from 'openland-api/Types';
 import { backoff, delay } from 'openland-y-utils/timer';
 import {
@@ -841,7 +841,7 @@ export class ConversationEngine implements MessageSendHandler {
                 return data;
             }
             return null;
-        }, RoomQuery, { id: this.conversationId });
+        }, RoomWithoutMembersQuery, { id: this.conversationId });
     }
 
     handlePeerUpdated = async (peer: DialogUpdateFragment_DialogPeerUpdated_peer) => {
@@ -860,7 +860,7 @@ export class ConversationEngine implements MessageSendHandler {
             }
 
             return null;
-        }, RoomQuery, { id: this.conversationId });
+        }, RoomWithoutMembersQuery, { id: this.conversationId });
     }
 
     handlePhotoUpdated = async (photo: string) => {
@@ -870,7 +870,7 @@ export class ConversationEngine implements MessageSendHandler {
                 return data;
             }
             return null;
-        }, RoomQuery, { id: this.conversationId });
+        }, RoomWithoutMembersQuery, { id: this.conversationId });
     }
 
     private onMessagesUpdated = () => {
