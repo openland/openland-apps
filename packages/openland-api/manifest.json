@@ -2,10 +2,10 @@
   "version": 1,
   "operations": [
     {
-      "signature": "6f6be66c3aeedb0aa19842279c15ef1bc9371fbde129c78a217d6c5f6d67bcce",
-      "document": "fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}fragment SessionStateFull on SessionState{__typename isAccountActivated isAccountExists isAccountPicked isBlocked isCompleted isLoggedIn isProfileCreated}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query Account{me:me{__typename...UserShort}myPermissions{__typename roles}sessionState:sessionState{__typename...SessionStateFull}}",
+      "signature": "cb6d31833e44717b5fd1036a728c3f89d64d7130f4f4ec1a2463bdf0fb73764d",
+      "document": "fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}fragment SessionStateFull on SessionState{__typename isAccountActivated isAccountExists isAccountPicked isActivated isBlocked isCompleted isLoggedIn isProfileCreated}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query Account{me:me{__typename...UserShort}myPermissions{__typename roles}sessionState:sessionState{__typename...SessionStateFull}}",
       "metadata": {
-        "engineSignature": "fragment OrganizationShort on Organization{__typename about alphaIsCommunity id membersCount name photo shortname}fragment SessionStateFull on SessionState{__typename isAccountActivated isAccountExists isAccountPicked isBlocked isCompleted isLoggedIn isProfileCreated}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query Account{me{__typename...UserShort}myPermissions{__typename roles}sessionState{__typename...SessionStateFull}}"
+        "engineSignature": "fragment OrganizationShort on Organization{__typename about alphaIsCommunity id membersCount name photo shortname}fragment SessionStateFull on SessionState{__typename isAccountActivated isAccountExists isAccountPicked isActivated isBlocked isCompleted isLoggedIn isProfileCreated}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}query Account{me{__typename...UserShort}myPermissions{__typename roles}sessionState{__typename...SessionStateFull}}"
       }
     },
     {

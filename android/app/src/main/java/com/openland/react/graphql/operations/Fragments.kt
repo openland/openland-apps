@@ -1741,6 +1741,7 @@ internal val SessionStateFullSelector = obj(
             field("isAccountActivated", "isAccountActivated", notNull(scalar("Boolean"))),
             field("isAccountExists", "isAccountExists", notNull(scalar("Boolean"))),
             field("isAccountPicked", "isAccountPicked", notNull(scalar("Boolean"))),
+            field("isActivated", "isActivated", notNull(scalar("Boolean"))),
             field("isBlocked", "isBlocked", notNull(scalar("Boolean"))),
             field("isCompleted", "isCompleted", notNull(scalar("Boolean"))),
             field("isLoggedIn", "isLoggedIn", notNull(scalar("Boolean"))),

@@ -3,6 +3,7 @@ fragment SessionStateFull on SessionState {
   isAccountActivated
   isAccountExists
   isAccountPicked
+  isActivated
   isBlocked
   isCompleted
   isLoggedIn

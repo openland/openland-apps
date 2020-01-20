@@ -1735,6 +1735,7 @@ private let SessionStateFullSelector = obj(
             field("isAccountActivated", "isAccountActivated", notNull(scalar("Boolean"))),
             field("isAccountExists", "isAccountExists", notNull(scalar("Boolean"))),
             field("isAccountPicked", "isAccountPicked", notNull(scalar("Boolean"))),
+            field("isActivated", "isActivated", notNull(scalar("Boolean"))),
             field("isBlocked", "isBlocked", notNull(scalar("Boolean"))),
             field("isCompleted", "isCompleted", notNull(scalar("Boolean"))),
             field("isLoggedIn", "isLoggedIn", notNull(scalar("Boolean"))),
@@ -4135,7 +4136,7 @@ class Operations {
     let Account = OperationDefinition(
         "Account",
         .query, 
-        "query Account{me:me{__typename ...UserShort}myPermissions{__typename roles}sessionState:sessionState{__typename ...SessionStateFull}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}fragment SessionStateFull on SessionState{__typename isAccountActivated isAccountExists isAccountPicked isBlocked isCompleted isLoggedIn isProfileCreated}",
+        "query Account{me:me{__typename ...UserShort}myPermissions{__typename roles}sessionState:sessionState{__typename ...SessionStateFull}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}fragment SessionStateFull on SessionState{__typename isAccountActivated isAccountExists isAccountPicked isActivated isBlocked isCompleted isLoggedIn isProfileCreated}",
         AccountSelector
     )
     let AccountAppInvite = OperationDefinition(

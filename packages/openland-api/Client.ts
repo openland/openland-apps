@@ -1738,6 +1738,7 @@ const SessionStateFullSelector = obj(
             field('isAccountActivated', 'isAccountActivated', args(), notNull(scalar('Boolean'))),
             field('isAccountExists', 'isAccountExists', args(), notNull(scalar('Boolean'))),
             field('isAccountPicked', 'isAccountPicked', args(), notNull(scalar('Boolean'))),
+            field('isActivated', 'isActivated', args(), notNull(scalar('Boolean'))),
             field('isBlocked', 'isBlocked', args(), notNull(scalar('Boolean'))),
             field('isCompleted', 'isCompleted', args(), notNull(scalar('Boolean'))),
             field('isLoggedIn', 'isLoggedIn', args(), notNull(scalar('Boolean'))),
@@ -4134,7 +4135,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     Account: {
         kind: 'query',
         name: 'Account',
-        body: 'query Account{me:me{__typename ...UserShort}myPermissions{__typename roles}sessionState:sessionState{__typename ...SessionStateFull}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}fragment SessionStateFull on SessionState{__typename isAccountActivated isAccountExists isAccountPicked isBlocked isCompleted isLoggedIn isProfileCreated}',
+        body: 'query Account{me:me{__typename ...UserShort}myPermissions{__typename roles}sessionState:sessionState{__typename ...SessionStateFull}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}fragment SessionStateFull on SessionState{__typename isAccountActivated isAccountExists isAccountPicked isActivated isBlocked isCompleted isLoggedIn isProfileCreated}',
         selector: AccountSelector
     },
     AccountAppInvite: {

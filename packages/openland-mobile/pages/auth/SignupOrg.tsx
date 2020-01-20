@@ -8,13 +8,12 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { RegistrationContainer } from './RegistrationContainer';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 
-const SignupOrgComponent = XMemo<PageProps>(props => {
+const SignupOrgComponent = React.memo((props: PageProps) => {
     const form = useForm();
     const nameField = useField('name', '', form);
     const photoField = useField('photoRef', null, form);
