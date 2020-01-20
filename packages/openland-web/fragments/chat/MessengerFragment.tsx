@@ -14,7 +14,7 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
     let chat = client.useRoomChat({ id: props.id }).room!;
     const onChatLostAccess = React.useCallback(
         () => {
-            client.refetchRoom({ id: props.id });
+            client.refetchRoomWithoutMembers({ id: props.id });
         },
         [client],
     );
