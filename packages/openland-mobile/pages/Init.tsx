@@ -167,7 +167,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                 await saveLinkIfInvite(this.pendingDeepLink);
                 this.pendingDeepLink = undefined;
             } else if (acc.me) {
-                if (!acc.sessionState.isAccountActivated) {
+                if (!acc.sessionState.isActivated) {
                     // waitlist
                     await saveLinkIfInvite(this.pendingDeepLink);
                     await joinInviteIfHave();

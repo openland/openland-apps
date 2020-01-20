@@ -11,7 +11,7 @@ export const resolveNextPage = (session: SessionStateFull) => {
         return 'SignupUser';
     } else if (!session.isAccountExists) {
         return 'SignupOrg';
-    } else if (!session.isAccountActivated) {
+    } else if (!session.isActivated) {
         trackEvent('registration_complete');
 
         return 'Waitlist';
@@ -33,8 +33,8 @@ export const resolveNextPageCompleteAction: (page?: string) => ((router: SRouter
 };
 
 next = async (router: SRouter | NavigationManager) => {
-    let res = await backoff(async () => await getClient().refetchAccount()); // TODO: Refetch!
-    let nextPage = resolveNextPage(res.sessionState);
+    const res = await backoff(async () => await getClient().refetchAccount()); // TODO: Refetch!
+    const nextPage = resolveNextPage(res.sessionState);
     if (nextPage) {
         router.pushAndResetRoot(nextPage, { action: resolveNextPageCompleteAction(nextPage) });
     }
