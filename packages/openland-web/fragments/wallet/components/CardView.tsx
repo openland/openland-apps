@@ -1,22 +1,18 @@
 import * as React from 'react';
 import { MyCards_myCards } from 'openland-api/Types';
 import { css, cx } from 'linaria';
-import { TextTitle2, TextBody } from 'openland-web/utils/TextStyles';
+import { TextBody, TextStyles } from 'openland-web/utils/TextStyles';
+import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
+import { UPopperController } from 'openland-web/components/unicorn/UPopper';
+import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
+import { XView } from 'react-mental';
 
 const box = css`
-    background: var(--backgroundSecondary);
-    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
+    background: var(--backgroundTertiary);
     border-radius: 12px;
-    padding: 20px 24px 24px;
+    padding: 20px 20px 24px 24px;
     position: relative;
 `;
-
-const titleBox = css`
-    margin-bottom: 26px;
-`;
-
-const title = css``;
-const buttons = css``;
 
 const cardDate = css`
     color: var(--foregroundSecondary);
@@ -33,11 +29,34 @@ const brandLogo = css`
     border: 1px solid var(--border);
     width: 44px; height: 28px;
     border-radius: 3px;
+    background-color: white;
 `;
 
 interface CardViewProps {
     card: MyCards_myCards;
 }
+
+const CardMenu = React.memo((props: CardViewProps & { ctx: UPopperController }) => {
+    const { ctx } = props;
+    const builder = new UPopperMenuBuilder();
+
+    builder.item({
+        title: 'Set as default',
+        // icon: <CopyIcon />,
+    });
+
+    builder.item({
+        title: 'Edit',
+        // icon: <CopyIcon />,
+    });
+
+    builder.item({
+        title: 'Remove',
+        // icon: <CopyIcon />,
+    });
+
+    return builder.build(ctx);
+});
 
 export const CardView = React.memo((props: CardViewProps) => {
     const { card } = props;
@@ -45,14 +64,14 @@ export const CardView = React.memo((props: CardViewProps) => {
 
     return (
         <div className={box}>
-            <div className={titleBox}>
-                <div className={cx(title, TextTitle2)}>
+            <XView marginBottom={26} flexDirection="row">
+                <XView {...TextStyles.Title2} flexGrow={1} justifyContent="center">
                     {brand}
-                </div>
-                <div className={buttons}>
-                    {/* <UMoreButton /> */}
-                </div>
-            </div>
+                </XView>
+                <XView marginRight={-8}>
+                    <UMoreButton menu={ctx => <CardMenu {...props} ctx={ctx} />} />
+                </XView>
+            </XView>
             <div className={cx(cardDate, TextBody)}>
                 {expMonth}/{expYear}
             </div>
