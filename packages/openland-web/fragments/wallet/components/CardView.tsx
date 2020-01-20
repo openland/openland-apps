@@ -28,6 +28,10 @@ const info = css`
     color: var(--foregroundSecondary);
 `;
 
+const dots = css`
+    color: var(--foregroundTertiary);
+`;
+
 const brandLogo = css`
     position: absolute;
     bottom: 24px; right: 24px;
@@ -79,7 +83,7 @@ export const CardView = React.memo((props: CardViewProps) => {
                 </XView>
             </XView>
             <div className={cx(info, TextBody)}>
-                •••• {last4}, {expMonth}/{year}
+                <span className={dots}>••••</span> {last4}, {expMonth}/{year}
             </div>
             <div className={brandLogo}>
                 <BrandLogo brand={brand} />
