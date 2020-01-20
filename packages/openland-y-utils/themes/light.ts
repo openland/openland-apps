@@ -55,6 +55,10 @@ export const ThemeLight: ThemeGlobal = {
     accentNegativeHover: TintRed.hover,
     accentNegativeActive: TintRed.active,
 
+    accentPay: '#171A1F',
+    accentPayHover: '#212329',
+    accentPayActive: '#33373D',
+
     border: 'rgba(0, 0, 0, 0.08)',
     borderLight: 'rgba(0, 0, 0, 0.04)',
 

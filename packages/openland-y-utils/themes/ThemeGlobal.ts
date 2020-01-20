@@ -73,6 +73,10 @@ export type ThemeGlobal = {
     accentNegativeHover: string;
     accentNegativeActive: string;
 
+    accentPay: string;
+    accentPayHover: string;
+    accentPayActive: string;
+
     border: string;
     borderLight: string;
 
