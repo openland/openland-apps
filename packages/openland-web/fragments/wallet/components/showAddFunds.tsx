@@ -9,7 +9,6 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import uuid from 'uuid';
 import { backoff } from 'openland-y-utils/timer';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
-import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { showAddCard } from './showAddCard';
 
 const token = 'pk_test_y80EsXGYQdMKMcJ5lifEM4jx';
