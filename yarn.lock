@@ -2025,6 +2025,11 @@
     "@types/connect" "*"
     "@types/node" "*"
 
+"@types/canvas-confetti@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@types/canvas-confetti/-/canvas-confetti-0.1.0.tgz#5adea661e03322498c32eb4f6a3e8e677e36dd11"
+  integrity sha512-LsnlT52tlm9IHHiYzzG3ti0LrxqyzMSzrFPHFHjDcsdhUfpTfL/76D2Wza7JcAnV9Z1wReyzdOmR8fMNWyO3vA==
+
 "@types/chart.js@^2.7.3":
   version "2.7.40"
   resolved "https://registry.yarnpkg.com/@types/chart.js/-/chart.js-2.7.40.tgz#9e0fbfe8c21fecf1d1549659ede001284ddd636d"
@@ -5323,6 +5328,11 @@ caniuse-lite@^1.0.30000975:
   version "1.0.30000981"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000981.tgz#5b6828803362363e5a1deba2eb550185cf6cec8f"
   integrity sha512-JTByHj4DQgL2crHNMK6PibqAMrqqb/Vvh0JrsTJVSWG4VSUrT16EklkuRZofurlMjgA9e+zlCM4Y39F3kootMQ==
+
+canvas-confetti@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/canvas-confetti/-/canvas-confetti-1.0.3.tgz#39daffb9ad09baf21195f19029a235425be10ddb"
+  integrity sha512-ECh9JmdsWfCCEUpquhu/aWdTLJiHgMdap1fR8nzZmYttoEf7KwFUvTz7rWInt6D6XsnUc1jCAMUBvIiEOe5zpQ==
 
 capture-exit@^1.2.0:
   version "1.2.0"
