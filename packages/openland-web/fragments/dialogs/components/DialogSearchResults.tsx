@@ -33,7 +33,7 @@ type DialogSearchResultsT = {
     isForwarding?: boolean;
 };
 
-const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
+const DialogSearchResultsInner = React.memo((props: DialogSearchResultsT) => {
     const [selectedIndex, setSelectedIndex] = React.useState<number>(-1);
     const client = useClient();
     const data = client.useGlobalSearch(props.variables, {
@@ -115,7 +115,7 @@ const DialogSearchResultsInner = (props: DialogSearchResultsT) => {
             )}
         </>
     );
-};
+});
 
 export const DialogSearchResults = (props: DialogSearchResultsT) => {
     return (
