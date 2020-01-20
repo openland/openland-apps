@@ -5,7 +5,7 @@ import { XLoader } from 'openland-x/XLoader';
 
 type UButtonShape = 'round' | 'square';
 type UButtonSize = 'small' | 'medium' | 'large';
-export type UButtonStyle = 'primary' | 'secondary' | 'danger' | 'success';
+export type UButtonStyle = 'primary' | 'secondary' | 'danger' | 'success' | 'pay';
 
 export interface UButtonProps extends XViewProps {
     text: string;
@@ -150,39 +150,59 @@ const successActiveStyle = css`
     }
 `;
 
-const shapeResolver = {
+const payStyle = css`
+    color: var(--foregroundInverted);
+    background-color: var(--accentPay);
+`;
+
+const payHoverStyle = css`
+    &:hover {
+        background-color: var(--accentPayHover);
+    }
+`;
+
+const payActiveStyle = css`
+    &:active {
+        background-color: var(--accentPayActive);
+    }
+`;
+
+const shapeResolver: { [key in UButtonShape]: string } = {
     round: roundStyle,
     square: squareStyle,
 };
 
-const sizeResolver = {
+const sizeResolver: { [key in UButtonSize]: string } = {
     small: size28,
     medium: size32,
     large: size40,
 };
 
-const styleResolver = {
+const styleResolver: { [key in UButtonStyle]: string } = {
     primary: primaryStyle,
     secondary: secondaryStyle,
     danger: dangerStyle,
     success: successStyle,
+    pay: payStyle,
 };
 
-const styleResolverHover = {
+const styleResolverHover: { [key in UButtonStyle]: string } = {
     primary: primaryHoverStyle,
     secondary: secondaryHoverStyle,
     danger: dangerHoverStyle,
     success: successHoverStyle,
+    pay: payHoverStyle,
 };
 
-const styleResolverActive = {
+const styleResolverActive: { [key in UButtonStyle]: string } = {
     primary: primaryActiveStyle,
     secondary: secondaryActiveStyle,
     danger: dangerActiveStyle,
     success: successActiveStyle,
+    pay: payActiveStyle,
 };
 
-const loaderStyle = {
+const loaderStyle: { [key in UButtonStyle]: { contrast: boolean } } = {
     primary: {
         contrast: true,
     },
@@ -193,6 +213,9 @@ const loaderStyle = {
         contrast: true,
     },
     success: {
+        contrast: true,
+    },
+    pay: {
         contrast: true,
     },
 };
