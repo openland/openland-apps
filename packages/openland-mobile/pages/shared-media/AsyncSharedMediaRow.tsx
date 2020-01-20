@@ -41,7 +41,7 @@ const AsyncFileItem = React.memo(({ message, attachment, index, imageSize, chatI
         const srcImgSize = Math.round(imageSize * PixelRatio.get());
         const d1 = DownloadManagerInstance.watch(attachment.fileId, { width: srcImgSize, height: srcImgSize }, state => {
             if (state.path) {
-                setPreviewPath('file://' + state.path);
+                setPreviewPath(state.path);
             }
         });
 
@@ -104,7 +104,7 @@ const AsyncFileItem = React.memo(({ message, attachment, index, imageSize, chatI
         onLongPress({ filePath: previewPath, message, chatId });
     }, [previewPath]);
 
-    const url = previewPath || attachment.filePreview || undefined;
+    const url = 'file://' + previewPath || attachment.filePreview || undefined;
 
     return (
         <ASFlex
