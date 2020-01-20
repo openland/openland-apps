@@ -3,7 +3,6 @@ import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { ZInput } from '../../components/ZInput';
 import RNRestart from 'react-native-restart';
-import { Platform } from 'react-native';
 import { UserError, NamedError } from 'openland-y-forms/errorHandling';
 import { ShowAuthError } from './ShowAuthError';
 import Alert from 'openland-mobile/components/AlertBlanket';
@@ -56,7 +55,7 @@ const requestActivationCode = async () => {
     session = res.session;
 };
 
-const EmailStartComponent = (props: PageProps) => {
+const EmailStartComponent = React.memo((props: PageProps) => {
     const form = useForm();
     const emailField = useField('email', '', form);
 
@@ -114,13 +113,14 @@ const EmailStartComponent = (props: PageProps) => {
             </RegistrationContainer>
         </ZTrack>
     );
-};
-
-export const EmailStart = withApp(EmailStartComponent, {
-    navigationAppearance: Platform.OS === 'ios' ? 'small' : undefined,
 });
 
-const EmailCodeComponent = (props: PageProps) => {
+export const EmailStart = withApp(EmailStartComponent, {
+    navigationAppearance: 'small',
+    hideHairline: true,
+});
+
+const EmailCodeComponent = React.memo((props: PageProps) => {
     const form = useForm();
     const codeField = useField('code', '', form);
 
@@ -219,7 +219,7 @@ const EmailCodeComponent = (props: PageProps) => {
             </RegistrationContainer>
         </ZTrack>
     );
-};
+});
 
 export const EmailCode = withApp(EmailCodeComponent, {
     navigationAppearance: 'small',

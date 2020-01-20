@@ -63,10 +63,12 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
             Animated.timing(avatarSize, {
                 duration: e.duration,
                 toValue: 48,
+                useNativeDriver: true,
             }),
             Animated.timing(avatarScale, {
                 duration: e.duration,
                 toValue: 0.5,
+                useNativeDriver: true,
             }),
             Animated.timing(floatPadding, {
                 duration: e.duration,
@@ -80,10 +82,12 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
             Animated.timing(avatarSize, {
                 duration: e.duration,
                 toValue: 96,
+                useNativeDriver: true,
             }),
             Animated.timing(avatarScale, {
                 duration: e.duration,
                 toValue: 1,
+                useNativeDriver: true,
             }),
             Animated.timing(floatPadding, {
                 duration: e.duration,
@@ -106,7 +110,11 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
     return (
         <>
             {props.header && props.header}
-            <KeyboardAvoidingView behavior="padding" flex={1}>
+            <KeyboardAvoidingView
+                behavior="padding"
+                flex={1}
+                keyboardVerticalOffset={isIos && theme.type === 'Dark' ? 88 : undefined}
+            >
                 <ScrollView flex={1} paddingTop={isIos ? area.top + 16 : undefined} ref={scrollRef}>
                     <Text
                         style={[textStyles.title, { color: theme.foregroundPrimary }]}
