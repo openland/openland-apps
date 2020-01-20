@@ -8,6 +8,9 @@ import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuB
 import { XView } from 'react-mental';
 import { getPayMethNameByBrand } from 'openland-y-utils/wallet/brands';
 import { BrandLogo } from './BrandLogo';
+import StarIcon from 'openland-icons/s/ic-star-24.svg';
+import EditIcon from 'openland-icons/s/ic-edit-24.svg';
+import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
 
 const box = css`
     background: var(--backgroundTertiary);
@@ -37,7 +40,7 @@ const brandLogo = css`
 `;
 
 interface CardViewProps {
-    card: MyCards_myCards;
+    item: MyCards_myCards;
 }
 
 const CardMenu = React.memo((props: CardViewProps & { ctx: UPopperController }) => {
@@ -46,25 +49,24 @@ const CardMenu = React.memo((props: CardViewProps & { ctx: UPopperController }) 
 
     builder.item({
         title: 'Set as default',
-        // icon: <CopyIcon />,
+        icon: <StarIcon />,
     });
 
     builder.item({
         title: 'Edit',
-        // icon: <CopyIcon />,
+        icon: <EditIcon />,
     });
 
     builder.item({
         title: 'Remove',
-        // icon: <CopyIcon />,
+        icon: <DeleteIcon />,
     });
 
     return builder.build(ctx);
 });
 
 export const CardView = React.memo((props: CardViewProps) => {
-    const { card } = props;
-    const { brand, last4, expMonth, expYear } = card;
+    const { brand, last4, expMonth, expYear } = props.item;
     const year = expYear.toString().slice(-2);
 
     return (
