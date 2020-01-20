@@ -6,16 +6,15 @@ import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButt
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { XView } from 'react-mental';
-import { getPayMethNameByBrand } from 'openland-y-utils/wallet/brands';
+import { getPayhmentMethodName } from 'openland-y-utils/wallet/brands';
 import { BrandLogo } from './BrandLogo';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
-import EditIcon from 'openland-icons/s/ic-edit-24.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
 
 const box = css`
     background: var(--backgroundTertiary);
     border-radius: 12px;
-    padding: 20px 20px 24px 24px;
+    padding: 20px 16px 20px 24px;
     position: relative;
 `;
 
@@ -25,18 +24,13 @@ const title = css`
     text-overflow: ellipsis;
 `;
 
-const cardDate = css`
-    color: var(--foregroundSecondary);
-`;
-
-const cardNumber = css`
-    margin-top: 4px;
+const info = css`
     color: var(--foregroundSecondary);
 `;
 
 const brandLogo = css`
     position: absolute;
-    bottom: 24px; right: 20px;
+    bottom: 24px; right: 24px;
 `;
 
 interface CardViewProps {
@@ -48,21 +42,16 @@ const CardMenu = React.memo((props: CardViewProps & { ctx: UPopperController }) 
     const builder = new UPopperMenuBuilder();
 
     builder.item({
-        title: 'Set as default',
+        title: 'Make default',
         icon: <StarIcon />,
     });
 
     builder.item({
-        title: 'Edit',
-        icon: <EditIcon />,
-    });
-
-    builder.item({
-        title: 'Remove',
+        title: 'Delete card',
         icon: <DeleteIcon />,
     });
 
-    return builder.build(ctx);
+    return builder.build(ctx, 200);
 });
 
 export const CardView = React.memo((props: CardViewProps) => {
@@ -71,21 +60,26 @@ export const CardView = React.memo((props: CardViewProps) => {
 
     return (
         <div className={box}>
-            <XView marginBottom={26} flexDirection="row">
-                <XView {...TextStyles.Title2} flexGrow={1} flexShrink={1} justifyContent="center">
-                    <span className={title}>
-                        {getPayMethNameByBrand(brand)}
-                    </span>
+            <XView marginBottom={40} flexDirection="row">
+                <XView flexGrow={1} flexShrink={1} height={48}>
+                    <XView {...TextStyles.Title3}>
+                        <span className={title}>
+                            {getPayhmentMethodName(brand)}
+                        </span>
+                    </XView>
+                    <XView {...TextStyles.Densed} color="var(--foregroundSecondary)" marginTop={4}>
+                        Default card
+                    </XView>
                 </XView>
-                <XView marginRight={-8}>
-                    <UMoreButton menu={ctx => <CardMenu {...props} ctx={ctx} />} />
+                <XView>
+                    <UMoreButton
+                        size="small-densed"
+                        menu={ctx => <CardMenu {...props} ctx={ctx} />}
+                    />
                 </XView>
             </XView>
-            <div className={cx(cardDate, TextBody)}>
-                {expMonth}/{year}
-            </div>
-            <div className={cx(cardNumber, TextBody)}>
-                •••• {last4}
+            <div className={cx(info, TextBody)}>
+                •••• {last4}, {expMonth}/{year}
             </div>
             <div className={brandLogo}>
                 <BrandLogo brand={brand} />

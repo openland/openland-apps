@@ -4,7 +4,7 @@ import { getBrandSafe } from 'openland-y-utils/wallet/brands';
 
 const box = css`
     width: 40px; height: 28px;
-    border-radius: 3px;
+    border-radius: 4px;
     overflow: hidden;
     position: relative;
 
