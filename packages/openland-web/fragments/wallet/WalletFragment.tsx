@@ -36,13 +36,13 @@ export const WalletFragment = React.memo(() => {
                     )}
                     <XView padding={8} flexDirection="row" flexWrap="wrap">
                         {cards.myCards.map((v) => (
-                            <XView key={v.id} width="50%" paddingHorizontal={8} paddingBottom={16}>
+                            <XView key={v.id} width="50%" paddingHorizontal={8} paddingBottom={32}>
                                 <CardView card={v} />
                             </XView>
                         ))}
                     </XView>
                 </UListGroup>
-                <UListGroup header="Billing history">
+                <UListGroup header="Transactions">
                     {transactions.walletTransactions.items.map((v) => (
                         <XView key={v.id}>{v.readableState}: <Money amount={v.amount} /></XView>
                     ))}
