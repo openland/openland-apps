@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Image, StyleSheet, ViewStyle, ImageStyle, TextStyle, LayoutChangeEvent } from 'react-native';
+import { View, Text, LayoutChangeEvent } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
@@ -43,66 +43,19 @@ const Tabs = ({ activeTab, tabs }: TabsProps) => {
                 const isActive = type === activeTab;
 
                 return (
-                    <ZTab key={name} selected={isActive} onPress={onPress}>
-                        {name}
-                        {count !== 0 && (
-                            <Text style={{ ...TextStyles.Label1, color: theme.foregroundTertiary }}> {count}</Text>
-                        )}
-                    </ZTab>
+                    <View width="33.3%" key={name}>
+                        <ZTab selected={isActive} onPress={onPress}>
+                            {name}
+                            {count !== 0 && (
+                                <Text style={{ ...TextStyles.Label1, color: theme.foregroundTertiary }}> {count}</Text>
+                            )}
+                        </ZTab>
+                    </View>
                 );
             })}
         </View>
     );
 };
-
-const emptyTab = StyleSheet.create({
-    wrapper: {
-        paddingTop: 76,
-        alignItems: 'center',
-    } as ViewStyle,
-    image: {
-        width: 360,
-        height: 240,
-        marginBottom: 12,
-    } as ImageStyle,
-    textWrapper: {
-        paddingHorizontal: 32,
-    } as ViewStyle,
-    title: {
-        ...TextStyles.Title2,
-        textAlign: 'center',
-        marginBottom: 4,
-    } as TextStyle,
-    subtitle: {
-        ...TextStyles.Body,
-        textAlign: 'center',
-    } as TextStyle,
-});
-
-const EmptyTab = React.memo(({ type }: { type: SharedMediaItemType }) => {
-    const texts = {
-        [SharedMediaItemType.MEDIA]: 'media',
-        [SharedMediaItemType.DOCUMENT]: 'files',
-        [SharedMediaItemType.LINK]: 'links',
-    };
-    const theme = useThemeGlobal();
-
-    return (
-        <View style={emptyTab.wrapper}>
-            <Image
-                source={require('assets/art-empty.png')}
-                style={emptyTab.image}
-            />
-            <View style={emptyTab.textWrapper}>
-                <Text style={[emptyTab.title, { color: theme.foregroundPrimary }]}>No {texts[type]} yet</Text>
-                <Text style={[emptyTab.subtitle, { color: theme.foregroundSecondary }]}>
-                    <Text style={{ textTransform: 'capitalize' }}>{texts[type]} </Text>
-                    you’ll send and receive in this chat will appear here
-                </Text>
-            </View>
-        </View >
-    );
-});
 
 const SharedMediaInner = React.memo(({ chatId }: { chatId: string }) => {
     const client = useClient();
@@ -124,12 +77,7 @@ const SharedMediaInner = React.memo(({ chatId }: { chatId: string }) => {
             <Tabs tabs={tabs} activeTab={activeTab} />
             <View flexGrow={1} onLayout={handleLayout}>
                 <React.Suspense fallback={<ZLoader />}>
-                    {currentCount === 0 ? (
-                        <EmptyTab type={activeTab} />
-                    ) : (
-                            <AsyncSharedMediaList mediaType={activeTab} chatId={chatId} wrapperWidth={wrapperWidth} />
-                        )}
-
+                    <AsyncSharedMediaList currentCount={currentCount} mediaType={activeTab} chatId={chatId} wrapperWidth={wrapperWidth} />
                 </React.Suspense>
             </View>
         </>

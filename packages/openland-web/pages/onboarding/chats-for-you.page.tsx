@@ -213,9 +213,13 @@ export const ChatsForYou = ({
             rooms.push(room);
         }
     }
+    const wrapperRef = React.useRef<HTMLDivElement>(null);
     const [isScrollable, setIsScrollable] = React.useState(false);
     React.useLayoutEffect(() => {
-        if (document.body.scrollHeight > document.body.clientHeight) {
+        if (!wrapperRef.current) {
+            return;
+        }
+        if (wrapperRef.current.scrollHeight > wrapperRef.current.clientHeight) {
             setIsScrollable(true);
         } else {
             setIsScrollable(false);
@@ -223,7 +227,7 @@ export const ChatsForYou = ({
     }, [data.suggestedRooms]);
 
     return (
-        <Wrapper fullHeight={fullHeight}>
+        <Wrapper fullHeight={fullHeight} ref={wrapperRef}>
             <XDocumentHead title="Choose role" />
             <BackSkipLogo onBack={onBack} onSkip={onSkip} />
             <FormLayout marginTop={isScrollable ? 72 : undefined} marginBottom={isScrollable ? 130 : undefined}>

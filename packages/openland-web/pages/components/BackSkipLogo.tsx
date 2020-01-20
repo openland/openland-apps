@@ -12,7 +12,7 @@ const wrapper = css`
     background-color: transparent;
     width: 100%;
     height: 72px;
-    z-index: 1001;
+    z-index: 999;
 `;
 const mobileWrapper = css`
     height: 56px;

@@ -22,6 +22,7 @@ const userOnlineStatus = css`
 const organizationTitle = css`
     margin-top: 4px;
     color: #676d7a;
+    text-overflow: ellipsis;
 `;
 
 const Status = (({ variables }) => {
@@ -69,6 +70,7 @@ const userAbout = css`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    text-overflow: ellipsis;
 `;
 
 const userName = css`
@@ -196,6 +198,7 @@ const entityName = css`
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;  
+    text-overflow: ellipsis;
 `;
 
 export const EntityPopperContent = React.memo(

@@ -71,7 +71,7 @@ const SocialButton = (props: SocialButtonProps) => (
 const WritePostBlock = (props: { inviteKey: string; isMobile: boolean }) => {
     const sharingUrl = 'https://openland.com/invite/' + props.inviteKey;
     const sharingText =
-        "Check out Openland, a new community app. There are groups for almost every industry, professional role, skill, interest, and location. Openland is a great place to make new friends, expand your professional network, learn from pros, and get help for any challenge you face.\n Invite to join:\n";
+        "Check out Openland, a new community app. There are groups for almost every industry, professional role, skill, interest, and location. Openland is a great place to make new friends, expand your professional network, learn from pros, and get help for any challenge you face.\nInvite to join:\n";
     const sharingTextFull = sharingText + sharingUrl;
     const [copied, setCopied] = React.useState(false);
     const copyText = () => {

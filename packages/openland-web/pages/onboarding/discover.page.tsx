@@ -118,9 +118,14 @@ const LocalDiscoverComponent = ({
         [localSelected],
     );
 
+    const wrapperRef = React.useRef<HTMLDivElement>(null);
+
     const [isScrollable, setIsScrollable] = React.useState(false);
     React.useLayoutEffect(() => {
-        if (document.body.scrollHeight > document.body.clientHeight) {
+        if (!wrapperRef.current) {
+            return;
+        }
+        if (wrapperRef.current.scrollHeight > wrapperRef.current.clientHeight) {
             setIsScrollable(true);
         } else {
             setIsScrollable(false);
@@ -137,7 +142,7 @@ const LocalDiscoverComponent = ({
     const { title, subtitle } = group;
 
     return (
-        <Wrapper fullHeight={fullHeight}>
+        <Wrapper fullHeight={fullHeight} ref={wrapperRef}>
             <XDocumentHead title={title!!} />
             {!noBackSkipLogo && (
                 <BackSkipLogo onBack={onBack} onSkip={onSkip} />

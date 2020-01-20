@@ -6,15 +6,23 @@ interface UAddItemProps {
     title: string;
     onClick: (event: React.MouseEvent) => void;
     active?: boolean;
+    style?: 'primary' | 'secondary';
 }
 
-export const UAddItem = React.memo((props: UAddItemProps) => (
-    <UListItem
-        title={props.title}
-        onClick={props.onClick}
-        icon={<AddIcon />}
-        iconBackground="var(--accentPrimary)"
-        useRadius={true}
-        hovered={props.active}
-    />
-));
+export const UAddItem = React.memo((props: UAddItemProps) => {
+    const { title, onClick, active, style = 'primary' } = props;
+    const iconColor = style === 'primary' ? 'var(--foregroundContrast)' : 'var(--foregroundSecondary)';
+    const backgroundColor = style === 'primary' ? 'var(--accentPrimary)' : 'var(--backgroundTertiaryTrans)';
+
+    return (
+        <UListItem
+            title={title}
+            onClick={onClick}
+            icon={<AddIcon />}
+            iconColor={iconColor}
+            iconBackground={backgroundColor}
+            useRadius={true}
+            hovered={active}
+        />
+    );
+});

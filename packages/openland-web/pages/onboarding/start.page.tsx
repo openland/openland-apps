@@ -9,6 +9,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { FormLayout, Title, Subtitle, AuthActionButton } from '../auth/components/authComponents';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
+import confetti from 'canvas-confetti';
 
 const avatarWrapper = css`
     position: absolute;
@@ -17,17 +18,74 @@ const avatarWrapper = css`
     transform: translateX(-50%);
 `;
 
-const confetti = css`
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    opacity: 0.48;
-    width: 100%;
-    height: 83%;
-    object-fit: cover;
-    z-index: -1;
-`;
+const useConfetti = () => {
+    const confettiDuration = 7000;
+    const end = Date.now() + confettiDuration;
+    const colors = ['#CC99FF', '#A9D1F7', '#B4F0A7', '#FFFFBF', '#FFDFBE', '#FFB1B0'];
+    let fireworksTimeout: any;
+    let snowTimeout: any;
+    const reset = () => {
+        clearTimeout(fireworksTimeout);
+        clearTimeout(snowTimeout);
+    };
+
+    const snow = () => {
+        colors.forEach(color => {
+            confetti({
+                particleCount: 1,
+                startVelocity: 0,
+                ticks: 700,
+                origin: {
+                    x: Math.random(),
+                    y: -0.1
+                },
+                colors: [color],
+            });
+        });
+
+        if (Date.now() < end + end) {
+            snowTimeout = setTimeout(() => requestAnimationFrame(snow), 100);
+        }
+    };
+
+    const fireworks = () => {
+        confetti({
+            particleCount: colors.length,
+            angle: 60,
+            spread: 55,
+            origin: {
+                x: 0
+            },
+            ticks: 700,
+            colors,
+            zIndex: 1000,
+            decay: 0.92,
+        });
+        confetti({
+            particleCount: colors.length,
+            angle: 120,
+            spread: 55,
+            origin: {
+                x: 1
+            },
+            ticks: 700,
+            colors,
+            zIndex: 1000,
+            decay: 0.92,
+        });
+        if (Date.now() < end) {
+            fireworksTimeout = setTimeout(() => requestAnimationFrame(fireworks), 100);
+        }
+    };
+
+    const start = () => {
+        fireworks();
+
+        snowTimeout = setTimeout(() => snow(), confettiDuration);
+    };
+
+    return [start, reset];
+};
 
 export const DiscoverStart = ({
     onSkip,
@@ -50,6 +108,18 @@ export const DiscoverStart = ({
         ? 'Your account is ready and it’s time to find interesting communities to join'
         : 'Find the most useful chats based on your interests and needs';
 
+    const [start, reset] = useConfetti();
+
+    React.useEffect(() => {
+        start();
+        return reset;
+    }, []);
+
+    const handleStartClick = React.useCallback((event) => {
+        onStartClick(event);
+        reset();
+    }, [onStartClick]);
+
     return (
         <XView flexGrow={1} flexShrink={1}>
             {!noBackSkipLogo && <BackSkipLogo onSkip={onSkip} />}
@@ -61,13 +131,9 @@ export const DiscoverStart = ({
                         <UAvatar uuid={uuid} title={fullName} id={id!!} />
                     </div>
                     <ImgUnboardingStart />
-                    <AuthActionButton text="Discover communities" onClick={onStartClick} />
+                    <AuthActionButton text="Discover communities" onClick={handleStartClick} />
                 </XView>
             </FormLayout>
-            <img
-                className={confetti}
-                srcSet="https://cdn.openland.com/shared/onboarding/confetti.png, https://cdn.openland.com/shared/onboarding/confetti@2x.png 2x"
-            />
         </XView>
     );
 };

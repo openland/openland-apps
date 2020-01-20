@@ -6,31 +6,21 @@ const wrapperClassName = css`
     display: flex;
     flex-grow: 1;
     width: 100%;
+    overflow: auto;
 `;
 
 const heightClassName = css`
     height: 100%;
 `;
 
-const iosClassName = css`
-    overflow: hidden;
-`;
-
-export const Wrapper = (props: { children: any; fullHeight?: boolean }) => {
-    let platform = window.navigator.platform,
-        iosPlatforms = ['iPhone', 'iPad', 'iPod'],
-        isIos = false;
-
-    if (iosPlatforms.indexOf(platform) !== -1) {
-        isIos = true;
-    }
+export const Wrapper = React.forwardRef((props: { children: any; fullHeight?: boolean }, ref: React.RefObject<HTMLDivElement>) => {
     return (
         <div
             className={cx(
                 wrapperClassName,
                 props.fullHeight && heightClassName,
-                props.fullHeight && isIos && iosClassName,
             )}
+            ref={ref}
         >
             <XView
                 backgroundColor="white"
@@ -46,4 +36,4 @@ export const Wrapper = (props: { children: any; fullHeight?: boolean }) => {
             </XView>
         </div>
     );
-};
+});

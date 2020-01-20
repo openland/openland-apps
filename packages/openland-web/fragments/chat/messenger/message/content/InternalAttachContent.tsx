@@ -13,6 +13,7 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
+import AlertBlanket from 'openland-x/AlertBlanket';
 
 const root = css`
     background-color: var(--backgroundTertiary);
@@ -210,6 +211,13 @@ const MessageButton = (props: UButtonProps & { url: string | null, fallback: (e:
     />;
 };
 
+export const showRevokedInviteModal = () => {
+    AlertBlanket.builder()
+        .message('This invitation has been revoked.')
+        .action('OK', async () => { return; })
+        .show();
+};
+
 export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment }) => {
     const { title, subTitle, keyboard, image, imageFallback, socialImage, id, titleLink } = props.attach;
     const layout = useLayout();
@@ -235,7 +243,12 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
         let finalLink = link;
         const invite = await client.queryResolvedInvite({ key });
 
-        if (invite.invite && invite.invite.__typename === 'RoomInvite' && invite.invite.room.membership === 'MEMBER') {
+        if (!invite.invite) {
+            showRevokedInviteModal();
+            return;
+        }
+
+        if (invite.invite.__typename === 'RoomInvite' && invite.invite.room.membership === 'MEMBER') {
             const roomId = invite.invite.room.id!;
             finalLink = `/mail/${roomId}`;
         }
