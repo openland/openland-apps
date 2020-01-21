@@ -28,6 +28,14 @@ export const CardView = (props: CardViewProps) => {
                         {getPayhmentMethodName(brand)}
                     </Text>
 
+                    {isDefault && (
+                        <View position="absolute" top={50} left={24}>
+                            <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} allowFontScaling={false}>
+                                Default
+                            </Text>
+                        </View>
+                    )}
+
                     <View position="absolute" bottom={20} left={24}>
                         <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} allowFontScaling={false}>
                             •• {last4}, {expMonth}/{year}
