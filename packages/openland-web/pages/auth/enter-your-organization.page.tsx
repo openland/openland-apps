@@ -107,10 +107,8 @@ export const EnterYourOrganizationPageInner = ({
 
     const processCreateOrganization = async ({
         organizationFieldValue,
-        shouldSkip,
     }: {
         organizationFieldValue: string | null;
-        shouldSkip?: boolean;
     }) => {
         if (!organizationFieldValue) {
             if (me.me) {
@@ -155,11 +153,8 @@ export const EnterYourOrganizationPageInner = ({
                 });
                 await client.refetchAccount();
             }
-            if (shouldSkip) {
-                window.location.href = '/';
-            } else {
-                window.location.href = '/onboarding/start';
-            }
+
+            window.location.href = '/onboarding/start';
         } else {
             result = await client.mutateCreateOrganization({
                 input: {
@@ -211,18 +206,14 @@ export const EnterYourOrganizationPageInner = ({
                 // can not remove cookie or update will break
                 // Cookie.remove('x-openland-app-invite');
             }
-            if (shouldSkip) {
-                window.location.href = '/';
-            } else {
-                window.location.href = '/onboarding/start';
-            }
+
+            window.location.href = '/onboarding/start';
         }
     };
 
     const onSkip = React.useCallback(async () => {
         await processCreateOrganization({
             organizationFieldValue: null,
-            shouldSkip: true,
         });
     }, []);
 
