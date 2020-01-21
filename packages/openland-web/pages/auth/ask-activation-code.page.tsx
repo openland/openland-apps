@@ -108,7 +108,7 @@ export const WebSignUpActivationCode = ({
         if (inputRef.current) {
             inputRef.current.focus();
         }
-    }, [errorText, shakeClassName]);
+    }, [errorText, shakeClassName, emailWasResend]);
 
     return (
         <>

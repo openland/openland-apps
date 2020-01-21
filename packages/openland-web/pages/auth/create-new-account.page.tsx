@@ -17,9 +17,13 @@ const captionText = css`
     text-align: center;
 `;
 
-const boldCaption = css`
+const captionLink = css`
     font-weight: 600;
     color: var(--foregroundTertiary);
+
+    &:hover {
+        color: var(--foregroundTertiary);
+    }
 `;
 
 export type AuthMechanism = {
@@ -59,7 +63,7 @@ export const SignUpAuthMechanism = ({
                     style="secondary"
                 />
             </XView>
-            <p className={cx(TextCaption, captionText, textClassName)}>By creating an account you are accepting our <ULink path="/terms" className={boldCaption}>Terms&nbsp;of&nbsp;service</ULink> and <ULink path="/privacy" className={boldCaption}>Privacy&nbsp;policy</ULink></p>
+            <p className={cx(TextCaption, captionText, textClassName)}>By creating an account you are accepting our <ULink path="/terms" className={captionLink}>Terms&nbsp;of&nbsp;service</ULink> and <ULink path="/privacy" className={captionLink}>Privacy&nbsp;policy</ULink></p>
         </FormLayout>
     );
 };
