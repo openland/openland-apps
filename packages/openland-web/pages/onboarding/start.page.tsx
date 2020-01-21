@@ -111,10 +111,11 @@ export const DiscoverStart = ({
     const [start, reset] = useConfetti();
 
     React.useEffect(() => {
-        if (onLogin) {
-            start();
-            return reset;
+        if (!onLogin) {
+            return;
         }
+        start();
+        return reset;
     }, []);
 
     const handleStartClick = React.useCallback((event) => {
