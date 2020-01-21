@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { ZInput } from '../../components/ZInput';
@@ -10,7 +10,9 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
+import Toast from 'openland-mobile/components/Toast';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { trackEvent } from 'openland-mobile/analytics';
 import { TrackAuthError } from './TrackAuthError';
 import { useForm } from 'openland-form/useForm';
@@ -23,6 +25,7 @@ export const ACTIVATION_CODE_LENGTH = 6;
 let email = '';
 let session = '';
 let photoSrc: string | null = null;
+let photoCrop: { w: number; h: number; x: number; y: number } | null = null;
 let isExist = false;
 
 const http = async (params: { url: string; body?: any; method: 'POST' | 'GET' }) => {
@@ -59,6 +62,7 @@ const requestActivationCode = async () => {
     session = res.session;
     isExist = res.profileExists;
     photoSrc = res.pictureId ? res.pictureId : null;
+    photoCrop = res.pictureCrop ? res.pictureCrop : null;
 };
 
 const EmailStartComponent = React.memo((props: PageProps) => {
@@ -127,6 +131,7 @@ export const EmailStart = withApp(EmailStartComponent, {
 });
 
 const EmailCodeComponent = React.memo((props: PageProps) => {
+    const theme = React.useContext(ThemeContext);
     const form = useForm();
     const codeField = useField('code', '', form);
 
@@ -146,8 +151,8 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
 
     const resendCode = async () => {
         trackEvent('code_resend_action');
-
         await requestActivationCode();
+        Toast.success({ duration: 1000 }).show();
 
         codeField.input.onChange('');
     };
@@ -204,23 +209,29 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
         [codeField.value],
     );
 
+    const avatarSrc =
+        photoSrc && photoCrop
+            ? `https://ucarecdn.com/${photoSrc}/-/crop/${photoCrop.w}x${photoCrop.h}/${photoCrop.x},${photoCrop.y}/-/scale_crop/72x72/center/`
+            : null;
+
     return (
         <ZTrack event="code_view">
             <RegistrationContainer
                 title="Enter login code"
-                subtitle={`We just sent it to ${email}.`}
+                subtitle={
+                    <Text>
+                        We just sent it to {email}.{'\n'}
+                        Haven’t received?{' '}
+                        <Text style={{ color: theme.accentPrimary }} onPress={resendCode}>
+                            Resend
+                        </Text>
+                    </Text>
+                }
                 floatContent={<ZRoundedButton title="Next" size="large" onPress={submitForm} />}
                 scalableContent={
-                    photoSrc ? (
+                    avatarSrc ? (
                         <View marginTop={-8} marginBottom={32}>
-                            <ZAvatar
-                                size="xx-large"
-                                src={
-                                    'https://ucarecdn.com/' +
-                                    photoSrc +
-                                    '/-/scale_crop/72x72/center/'
-                                }
-                            />
+                            <ZAvatar size="xx-large" src={avatarSrc} />
                         </View>
                     ) : undefined
                 }

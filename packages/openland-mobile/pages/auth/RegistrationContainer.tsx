@@ -32,8 +32,8 @@ const textStyles = StyleSheet.create({
 
 interface RegistrationContainerProps {
     header?: JSX.Element;
-    title?: string | JSX.Element;
-    subtitle?: string | JSX.Element;
+    title: string | JSX.Element;
+    subtitle: string | JSX.Element;
     children: JSX.Element | JSX.Element[];
     floatContent: JSX.Element;
     scalableContent?: JSX.Element;
