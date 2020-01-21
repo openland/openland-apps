@@ -9,7 +9,7 @@
 import Foundation
 
 @objc(RNStripe)
-class RNStripe: NSObject {
+class RNStripe: RCTEventEmitter {
   
 //  @objc(setStatusBarDarkContent)
 //  func setStatusBarDarkContent() {
@@ -28,4 +28,8 @@ class RNStripe: NSObject {
 //      UIApplication.shared.setStatusBarStyle(.lightContent, animated: true)
 //    }
 //  }
+  
+  override func supportedEvents() -> [String]! {
+    return ["setup_intent"]
+  }
 }

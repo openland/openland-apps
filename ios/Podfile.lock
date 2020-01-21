@@ -350,6 +350,7 @@ PODS:
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.0)
   - Starscream (3.0.6)
+  - Stripe (18.4.0)
   - SwiftyJSON (4.3.0)
   - Texture (2.7):
     - Texture/PINRemoteImage (= 2.7)
@@ -423,6 +424,7 @@ DEPENDENCIES:
   - RNRate (from `../node_modules/react-native-rate/ios`)
   - RNShare (from `../node_modules/react-native-share`)
   - Starscream (~> 3.0.2)
+  - Stripe
   - SwiftyJSON (~> 4.0)
   - Texture (from `https://github.com/openland/Texture.git`, branch `2.7-fontfix`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -447,6 +449,7 @@ SPEC REPOS:
     - SDWebImage
     - SDWebImageWebPCoder
     - Starscream
+    - Stripe
     - SwiftyJSON
 
 EXTERNAL SOURCES:
@@ -633,10 +636,11 @@ SPEC CHECKSUMS:
   SDWebImage: 96d7f03415ccb28d299d765f93557ff8a617abd8
   SDWebImageWebPCoder: cc72085bb20368b2f8dbb21b7e355c667e1309b7
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
+  Stripe: fa837c60f0644b488c994024ce7d9b001ea4e97c
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: 727417a03b8af15b7f1f05a9f38e56ce288084a0
+PODFILE CHECKSUM: b635ed7898c90fe16da390b5dedda524834c335c
 
 COCOAPODS: 1.8.4

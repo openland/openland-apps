@@ -10,7 +10,7 @@
 
 #import "Stripe-Bridge.h"
 
-@interface RCT_EXTERN_MODULE(RNStripe, NSObject)
+@interface RCT_EXTERN_MODULE(RNStripe, RCTEventEmitter)
 
 @end
 
