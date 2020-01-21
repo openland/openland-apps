@@ -3616,7 +3616,7 @@ const PinMessageSelector = obj(
                 )))
         );
 const ProfileCreateSelector = obj(
-            field('createProfile', 'createProfile', args(fieldValue("input", refValue('input'))), notNull(obj(
+            field('profileCreate', 'profileCreate', args(fieldValue("input", refValue('input')), fieldValue("inviteKey", refValue('inviteKey'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('about', 'about', args(), scalar('String')),
                     field('email', 'email', args(), scalar('String')),
@@ -3640,7 +3640,7 @@ const ProfileCreateSelector = obj(
                 )))
         );
 const ProfileUpdateSelector = obj(
-            field('profileUpdate', 'profileUpdate', args(fieldValue("input", refValue('input')), fieldValue("uid", refValue('uid'))), notNull(obj(
+            field('profileUpdate', 'profileUpdate', args(fieldValue("input", refValue('input')), fieldValue("inviteKey", refValue('inviteKey')), fieldValue("uid", refValue('uid'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('about', 'about', args(), scalar('String')),
                     field('alphaInvitedBy', 'invitedBy', args(), obj(
@@ -5047,13 +5047,13 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ProfileCreate: {
         kind: 'mutation',
         name: 'ProfileCreate',
-        body: 'mutation ProfileCreate($input:CreateProfileInput!){createProfile(input:$input){__typename about email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}',
+        body: 'mutation ProfileCreate($input:ProfileInput!,$inviteKey:String){profileCreate(input:$input,inviteKey:$inviteKey){__typename about email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}',
         selector: ProfileCreateSelector
     },
     ProfileUpdate: {
         kind: 'mutation',
         name: 'ProfileUpdate',
-        body: 'mutation ProfileUpdate($input:ProfileInput!,$uid:ID){profileUpdate(input:$input,uid:$uid){__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt primaryOrganizationId:alphaPrimaryOrganizationId role:alphaRole email facebook firstName id instagram lastName linkedin location phone photoRef{__typename crop{__typename h w x y}uuid}twitter website}}',
+        body: 'mutation ProfileUpdate($input:ProfileInput!,$inviteKey:String,$uid:ID){profileUpdate(input:$input,inviteKey:$inviteKey,uid:$uid){__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt primaryOrganizationId:alphaPrimaryOrganizationId role:alphaRole email facebook firstName id instagram lastName linkedin location phone photoRef{__typename crop{__typename h w x y}uuid}twitter website}}',
         selector: ProfileUpdateSelector
     },
     ReadNotification: {

@@ -3613,7 +3613,7 @@ private let PinMessageSelector = obj(
                 )))
         )
 private let ProfileCreateSelector = obj(
-            field("createProfile", "createProfile", arguments(fieldValue("input", refValue("input"))), notNull(obj(
+            field("profileCreate", "profileCreate", arguments(fieldValue("input", refValue("input")), fieldValue("inviteKey", refValue("inviteKey"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("about", "about", scalar("String")),
                     field("email", "email", scalar("String")),
@@ -3637,7 +3637,7 @@ private let ProfileCreateSelector = obj(
                 )))
         )
 private let ProfileUpdateSelector = obj(
-            field("profileUpdate", "profileUpdate", arguments(fieldValue("input", refValue("input")), fieldValue("uid", refValue("uid"))), notNull(obj(
+            field("profileUpdate", "profileUpdate", arguments(fieldValue("input", refValue("input")), fieldValue("inviteKey", refValue("inviteKey")), fieldValue("uid", refValue("uid"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("about", "about", scalar("String")),
                     field("alphaInvitedBy", "invitedBy", obj(
@@ -5048,13 +5048,13 @@ class Operations {
     let ProfileCreate = OperationDefinition(
         "ProfileCreate",
         .mutation, 
-        "mutation ProfileCreate($input:CreateProfileInput!){createProfile(input:$input){__typename about email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}",
+        "mutation ProfileCreate($input:ProfileInput!,$inviteKey:String){profileCreate(input:$input,inviteKey:$inviteKey){__typename about email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}",
         ProfileCreateSelector
     )
     let ProfileUpdate = OperationDefinition(
         "ProfileUpdate",
         .mutation, 
-        "mutation ProfileUpdate($input:ProfileInput!,$uid:ID){profileUpdate(input:$input,uid:$uid){__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt primaryOrganizationId:alphaPrimaryOrganizationId role:alphaRole email facebook firstName id instagram lastName linkedin location phone photoRef{__typename crop{__typename h w x y}uuid}twitter website}}",
+        "mutation ProfileUpdate($input:ProfileInput!,$inviteKey:String,$uid:ID){profileUpdate(input:$input,inviteKey:$inviteKey,uid:$uid){__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt primaryOrganizationId:alphaPrimaryOrganizationId role:alphaRole email facebook firstName id instagram lastName linkedin location phone photoRef{__typename crop{__typename h w x y}uuid}twitter website}}",
         ProfileUpdateSelector
     )
     let ReadNotification = OperationDefinition(

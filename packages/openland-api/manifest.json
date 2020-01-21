@@ -1346,17 +1346,17 @@
       }
     },
     {
-      "signature": "75d481a97ef4ac399719f377ac6186430e6d756c6052146aada7a163cf174bbb",
-      "document": "mutation ProfileUpdate($input:ProfileInput!,$uid:ID){profileUpdate(input:$input,uid:$uid){__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt primaryOrganizationId:alphaPrimaryOrganizationId role:alphaRole email facebook firstName id instagram lastName linkedin location phone photoRef{__typename crop{__typename h w x y}uuid}twitter website}}",
+      "signature": "fa3462f528610af6c46f1a4554bd94bf615d5949f26bc95a8d37765c4b7476b0",
+      "document": "mutation ProfileUpdate($input:ProfileInput!,$inviteKey:String,$uid:ID){profileUpdate(input:$input,inviteKey:$inviteKey,uid:$uid){__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt primaryOrganizationId:alphaPrimaryOrganizationId role:alphaRole email facebook firstName id instagram lastName linkedin location phone photoRef{__typename crop{__typename h w x y}uuid}twitter website}}",
       "metadata": {
-        "engineSignature": "mutation ProfileUpdate($input:ProfileInput!,$uid:ID){profileUpdate(input:$input,uid:$uid){__typename about alphaInvitedBy{__typename id name}alphaJoinedAt alphaPrimaryOrganizationId alphaRole email facebook firstName id instagram lastName linkedin location phone photoRef{__typename crop{__typename h w x y}uuid}twitter website}}"
+        "engineSignature": "mutation ProfileUpdate($input:ProfileInput!,$inviteKey:String,$uid:ID){profileUpdate(input:$input,inviteKey:$inviteKey,uid:$uid){__typename about alphaInvitedBy{__typename id name}alphaJoinedAt alphaPrimaryOrganizationId alphaRole email facebook firstName id instagram lastName linkedin location phone photoRef{__typename crop{__typename h w x y}uuid}twitter website}}"
       }
     },
     {
-      "signature": "2443432d2a7e349a73daafaf5cf189ae80ff0cba7ad6acc06eb5164fada01aa4",
-      "document": "mutation ProfileCreate($input:CreateProfileInput!){createProfile(input:$input){__typename about email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}",
+      "signature": "9377b39e1df24687a47888a6c19de8b261c8ebfcd013f6df67b6e6e00ef4be55",
+      "document": "mutation ProfileCreate($input:ProfileInput!,$inviteKey:String){profileCreate(input:$input,inviteKey:$inviteKey){__typename about email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}",
       "metadata": {
-        "engineSignature": "mutation ProfileCreate($input:CreateProfileInput!){createProfile(input:$input){__typename about email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}"
+        "engineSignature": "mutation ProfileCreate($input:ProfileInput!,$inviteKey:String){profileCreate(input:$input,inviteKey:$inviteKey){__typename about email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}"
       }
     },
     {

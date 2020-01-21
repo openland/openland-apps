@@ -45,8 +45,8 @@ export const ProfileQuery = gql`
 `;
 
 export const ProfileUpdateMutation = gql`
-    mutation ProfileUpdate($input: ProfileInput!, $uid: ID) {
-        profileUpdate(input: $input, uid: $uid) {
+    mutation ProfileUpdate($input: ProfileInput!, $uid: ID, $inviteKey: String) {
+        profileUpdate(input: $input, uid: $uid, inviteKey: $inviteKey) {
             id
             firstName
             lastName
@@ -80,8 +80,8 @@ export const ProfileUpdateMutation = gql`
 `;
 
 export const ProfileCreateMutation = gql`
-    mutation ProfileCreate($input: CreateProfileInput!) {
-        createProfile(input: $input) {
+    mutation ProfileCreate($input: ProfileInput!, $inviteKey: String) {
+        profileCreate(input: $input, inviteKey: $inviteKey) {
             id
             firstName
             lastName

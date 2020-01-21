@@ -1,5 +1,5 @@
-mutation ProfileCreate($input: CreateProfileInput!) {
-  createProfile(input: $input) {
+mutation ProfileCreate($input: ProfileInput!, $inviteKey: String) {
+  profileCreate(input: $input, inviteKey: $inviteKey) {
     __typename
     about
     email

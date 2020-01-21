@@ -83,13 +83,17 @@ const CreateProfileFormInnerWeb = (
 
                 setSending(true);
 
+                const inviteKey = Cookie.get('x-openland-invite') || Cookie.get('x-openland-app-invite') || Cookie.get ('x-openland-org-invite');
+
                 if (props.initialProfileFormData) {
                     await client.mutateProfileUpdate({
                         input: formData,
+                        inviteKey
                     });
                 } else {
                     await client.mutateProfileCreate({
                         input: formData,
+                        inviteKey
                     });
                 }
                 await client.refetchProfile();

@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val ProfileCreateSelector = obj(
-            field("createProfile", "createProfile", arguments(fieldValue("input", refValue("input"))), notNull(obj(
+            field("profileCreate", "profileCreate", arguments(fieldValue("input", refValue("input")), fieldValue("inviteKey", refValue("inviteKey"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("about", "about", scalar("String")),
                     field("email", "email", scalar("String")),
@@ -31,6 +31,6 @@ internal val ProfileCreateSelector = obj(
 val ProfileCreate = object: OperationDefinition {
     override val name = "ProfileCreate"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation ProfileCreate(\$input:CreateProfileInput!){createProfile(input:\$input){__typename about email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}"
+    override val body = "mutation ProfileCreate(\$input:ProfileInput!,\$inviteKey:String){profileCreate(input:\$input,inviteKey:\$inviteKey){__typename about email firstName id lastName location phone photoRef{__typename crop{__typename h w x y}uuid}website}}"
     override val selector = ProfileCreateSelector
 }

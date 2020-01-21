@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val ProfileUpdateSelector = obj(
-            field("profileUpdate", "profileUpdate", arguments(fieldValue("input", refValue("input")), fieldValue("uid", refValue("uid"))), notNull(obj(
+            field("profileUpdate", "profileUpdate", arguments(fieldValue("input", refValue("input")), fieldValue("inviteKey", refValue("inviteKey")), fieldValue("uid", refValue("uid"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("about", "about", scalar("String")),
                     field("alphaInvitedBy", "invitedBy", obj(
@@ -43,6 +43,6 @@ internal val ProfileUpdateSelector = obj(
 val ProfileUpdate = object: OperationDefinition {
     override val name = "ProfileUpdate"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation ProfileUpdate(\$input:ProfileInput!,\$uid:ID){profileUpdate(input:\$input,uid:\$uid){__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt primaryOrganizationId:alphaPrimaryOrganizationId role:alphaRole email facebook firstName id instagram lastName linkedin location phone photoRef{__typename crop{__typename h w x y}uuid}twitter website}}"
+    override val body = "mutation ProfileUpdate(\$input:ProfileInput!,\$inviteKey:String,\$uid:ID){profileUpdate(input:\$input,inviteKey:\$inviteKey,uid:\$uid){__typename about invitedBy:alphaInvitedBy{__typename id name}joinedAt:alphaJoinedAt primaryOrganizationId:alphaPrimaryOrganizationId role:alphaRole email facebook firstName id instagram lastName linkedin location phone photoRef{__typename crop{__typename h w x y}uuid}twitter website}}"
     override val selector = ProfileUpdateSelector
 }

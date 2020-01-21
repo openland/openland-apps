@@ -1,5 +1,5 @@
-mutation ProfileUpdate($input: ProfileInput!, $uid: ID) {
-  profileUpdate(input: $input, uid: $uid) {
+mutation ProfileUpdate($input: ProfileInput!, $inviteKey: String, $uid: ID) {
+  profileUpdate(input: $input, inviteKey: $inviteKey, uid: $uid) {
     __typename
     about
     invitedBy: alphaInvitedBy {
