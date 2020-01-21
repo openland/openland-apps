@@ -101,7 +101,7 @@ export const RoomsList = (props: { router: SRouter }) => {
                             key: v.id,
                             title: v.name,
                         }}
-                        subTitle={<>{v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}<Text style={{ opacity: 0.5 }}> ∙</Text> {v.betaPublicRooms.length + (v.betaPublicRooms.length === 1 ? ' chat' : ' chats')}</>}
+                        subTitle={<>{v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}<Text style={{ opacity: 0.5 }}> ∙</Text> {v.betaPublicRoomsCount + (v.betaPublicRoomsCount === 1 ? ' chat' : ' chats')}</>}
                         path="ProfileOrganization"
                         pathParams={{ id: v.id }}
                     />

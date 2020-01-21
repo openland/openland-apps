@@ -819,10 +819,7 @@ private let CommunitySearchSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("about", "about", scalar("String")),
             field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
-            field("betaPublicRooms", "betaPublicRooms", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID")))
-                ))))),
+            field("betaPublicRoomsCount", "betaPublicRoomsCount", notNull(scalar("Int"))),
             field("id", "id", notNull(scalar("ID"))),
             field("isMine", "isMine", notNull(scalar("Boolean"))),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
@@ -4166,7 +4163,7 @@ class Operations {
     let AvailableRooms = OperationDefinition(
         "AvailableRooms",
         .query, 
-        "query AvailableRooms{communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChats:betaUserAvailableRooms(isChannel:false,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChannels:betaUserAvailableRooms(isChannel:true,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}",
+        "query AvailableRooms{communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChats:betaUserAvailableRooms(isChannel:false,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChannels:betaUserAvailableRooms(isChannel:true,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRoomsCount id isMine membersCount name photo status superAccountId}",
         AvailableRoomsSelector
     )
     let ChatInit = OperationDefinition(
@@ -4232,7 +4229,7 @@ class Operations {
     let ExploreCommunity = OperationDefinition(
         "ExploreCommunity",
         .query, 
-        "query ExploreCommunity($after:String,$featuredIfEmptyQuery:Boolean,$page:Int,$query:String,$sort:String){items:alphaComunityPrefixSearch(after:$after,featuredIfEmptyQuery:$featuredIfEmptyQuery,first:25,page:$page,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename ...CommunitySearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}",
+        "query ExploreCommunity($after:String,$featuredIfEmptyQuery:Boolean,$page:Int,$query:String,$sort:String){items:alphaComunityPrefixSearch(after:$after,featuredIfEmptyQuery:$featuredIfEmptyQuery,first:25,page:$page,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename ...CommunitySearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRoomsCount id isMine membersCount name photo status superAccountId}",
         ExploreCommunitySelector
     )
     let ExplorePeople = OperationDefinition(
