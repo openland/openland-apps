@@ -17,6 +17,10 @@ const wrapper = css`
     &:hover {
         background-color: #ebedf0;
     }
+
+    &:active {
+        background-color: #e6e7eb;
+    }
 `;
 
 const wrapperSelected = css`
@@ -25,6 +29,10 @@ const wrapperSelected = css`
 
     &:hover {
         background-color: var(--accentPrimaryHover);
+    }
+
+    &:active {
+        background-color: #1677d9;
     }
 `;
 

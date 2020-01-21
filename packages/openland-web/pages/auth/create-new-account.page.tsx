@@ -10,6 +10,7 @@ import { isElectron } from 'openland-y-utils/isElectron';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { AuthHeaderConfig } from './root.page';
+import { ULink } from 'openland-web/components/unicorn/ULink';
 
 const captionText = css`
     color: var(--foregroundTertiary);
@@ -18,6 +19,7 @@ const captionText = css`
 
 const boldCaption = css`
     font-weight: 600;
+    color: var(--foregroundTertiary);
 `;
 
 export type AuthMechanism = {
@@ -57,7 +59,7 @@ export const SignUpAuthMechanism = ({
                     style="secondary"
                 />
             </XView>
-            <p className={cx(TextCaption, captionText, textClassName)}>By creating an account you are accepting our <span className={boldCaption}>Terms of service</span> and <span className={boldCaption}>Privacy policy</span></p>
+            <p className={cx(TextCaption, captionText, textClassName)}>By creating an account you are accepting our <ULink path="/terms" className={boldCaption}>Terms&nbsp;of&nbsp;service</ULink> and <ULink path="/privacy" className={boldCaption}>Privacy&nbsp;policy</ULink></p>
         </FormLayout>
     );
 };

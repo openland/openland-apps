@@ -12,6 +12,7 @@ import { completeAuth } from './complete.page';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 import { XImage } from 'react-mental';
 import { AuthHeaderConfig } from './root.page';
+import { ULink } from 'openland-web/components/unicorn/ULink';
 
 export type ActivationCodeProps = {
     emailValue: string;
@@ -118,7 +119,7 @@ export const WebSignUpActivationCode = ({
                 <Title text={InitTexts.auth.enterActivationCode} />
                 <Subtitle>
                     We just sent it to {emailSendedTo}.<br />
-                    {InitTexts.auth.haveNotReceiveCode} <a onClick={handleResend}>Resend</a>
+                    {InitTexts.auth.haveNotReceiveCode} <ULink onClick={handleResend}>Resend</ULink>
                 </Subtitle>
                 {!!avatarId && (
                     <XImage

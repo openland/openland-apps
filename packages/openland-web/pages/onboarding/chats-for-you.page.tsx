@@ -4,7 +4,6 @@ import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { useClient } from 'openland-web/utils/useClient';
-import CheckIcon from 'openland-icons/checked.svg';
 import { SuggestedRooms_suggestedRooms_SharedRoom } from 'openland-api/Types';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XLoader } from 'openland-x/XLoader';
@@ -14,6 +13,7 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { Title, Subtitle, AuthActionButton, FormLayout } from '../auth/components/authComponents';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { CheckComponent } from 'openland-web/components/unicorn/UCheckbox';
 
 const shadowWrapper = css`
     width: 100%;
@@ -34,17 +34,6 @@ const shadowClassName = css`
     right: 0;
     bottom: 0;
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
-`;
-
-const CheckIconClassName = css`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-    border-radius: 4px;
-    background-color: var(--accentPrimary);
-    flex-shrink: 0;
 `;
 
 const ChatsItem = ({
@@ -79,11 +68,7 @@ const ChatsItem = ({
                     {`${room.membersCount} members`}
                 </XView>
             </XView>
-            {isSelected && (
-                <div className={CheckIconClassName}>
-                    <CheckIcon />
-                </div>
-            )}
+            <CheckComponent checked={isSelected} squared={true} />
         </XView>
     );
 };
