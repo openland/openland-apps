@@ -4,12 +4,13 @@ import { XModalController } from 'openland-x/showModal';
 import { XView } from 'react-mental';
 import { USelect } from 'openland-web/components/unicorn/USelect';
 import { useClient } from 'openland-web/utils/useClient';
-import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import uuid from 'uuid';
 import { backoff } from 'openland-y-utils/timer';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { showAddCard } from './showAddCard';
+import { RadioButtonsSelect } from 'openland-web/fragments/account/components/RadioButtonsSelect';
+import { getPayhmentMethodName } from 'openland-y-utils/wallet/brands';
 
 const token = 'pk_test_y80EsXGYQdMKMcJ5lifEM4jx';
 
@@ -79,15 +80,14 @@ const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
                     />
                 </XView>
                 <UListGroup header="Payment method" action={{ title: 'Add card', onClick: () => showAddCard() }}>
-                    {cards.myCards.map((v) => (
-                        <XView key={v.id}>
-                            <UCheckbox
-                                label={v.last4}
-                                checked={v.id === currentCard}
-                                onChange={(v2) => v2 ? setCurrentCard(v.id) : setCurrentCard(undefined)}
-                            />
-                        </XView>
-                    ))}
+                    <RadioButtonsSelect
+                        value={currentCard}
+                        onChange={setCurrentCard}
+                        selectOptions={cards.myCards.map(card => ({
+                            value: card.id,
+                            label: `${getPayhmentMethodName(card.brand)}, ${card.last4}`,
+                        }))}
+                    />
                 </UListGroup>
             </XView>
             <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} backgroundColor="var(--backgroundTertiary)" justifyContent="flex-end" flexDirection="row">

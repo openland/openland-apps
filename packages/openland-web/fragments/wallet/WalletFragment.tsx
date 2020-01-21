@@ -22,7 +22,7 @@ export const WalletFragment = React.memo(() => {
     return (
         <Page track="settings_wallet">
             <UHeader title="Wallet" />
-            <XView flexDirection="column">
+            <XView flexDirection="column" paddingBottom={56}>
                 <UListGroup header="Your balance" action={{ title: 'Add funds', onClick: () => showAddFunds() }}>
                     <XView
                         {...TextStyles.Title1}
@@ -43,7 +43,7 @@ export const WalletFragment = React.memo(() => {
                             onClick={() => showAddCard()}
                         />
                     )}
-                    <XView paddingTop={8} paddingHorizontal={8} paddingBottom={4} flexDirection="row" flexWrap="wrap">
+                    <XView paddingTop={8} paddingHorizontal={8} flexDirection="row" flexWrap="wrap">
                         {cards.myCards.map((v) => (
                             <XView key={v.id} width="50%" paddingHorizontal={8} paddingBottom={16}>
                                 <CardView item={v} />
