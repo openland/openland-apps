@@ -26,7 +26,7 @@ let email = '';
 let session = '';
 let photoSrc: string | null = null;
 let photoCrop: { w: number; h: number; x: number; y: number } | null = null;
-let isExist = false;
+// let isExist = false;
 
 const http = async (params: { url: string; body?: any; method: 'POST' | 'GET' }) => {
     let res = await fetch(params.url, {
@@ -60,7 +60,7 @@ const requestActivationCode = async () => {
     });
 
     session = res.session;
-    isExist = res.profileExists;
+    // isExist = res.profileExists;
     photoSrc = res.pictureId ? res.pictureId : null;
     photoCrop = res.pictureCrop ? res.pictureCrop : null;
 };
