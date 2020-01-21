@@ -12,13 +12,10 @@ interface BalanceViewProps {
 
 export const BalanceView = (props: BalanceViewProps) => {
     const { amount } = props;
-
     const theme = React.useContext(ThemeContext);
-    const gradientStart = theme.type === 'Dark' ? 'rgba(36, 38, 41, 0)' : 'rgba(242, 243, 245, 0)';
-    const gradientEnd = theme.type === 'Dark' ? 'rgba(36, 38, 41, 0.56)' : 'rgba(242, 243, 245, 0.56)';
 
     return (
-        <LinearGradient colors={[gradientStart, gradientEnd]} paddingTop={16} paddingBottom={24} paddingHorizontal={16}>
+        <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} paddingTop={16} paddingBottom={24} paddingHorizontal={16}>
             <Text style={{ ...TextStyles.Large, textAlign: 'center', color: theme.foregroundPrimary, marginBottom: 8 }} allowFontScaling={false}>
                 <Money amount={amount} />
             </Text>

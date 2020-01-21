@@ -79,8 +79,8 @@ export const ThemeDark: ThemeGlobal = {
     outgoingForegroundSecondary: '#808185',
     outgoingForegroundTertiary: '#808185',
 
-    gradient0to100Start: 'rgba(36, 38, 41, 0)',
-    gradient0to100End: 'rgba(36, 38, 41, 0.56)',
+    gradient0to100Start: 'rgba(96, 101, 107, 0)',
+    gradient0to100End: 'rgba(96, 101, 107, 0.14)',
 
     blurType: 'none',
     keyboardAppearance: 'dark',
