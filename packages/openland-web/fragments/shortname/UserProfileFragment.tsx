@@ -15,6 +15,8 @@ import { UserMenu } from './components/UserMenu';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import MessageIcon from 'openland-icons/s/ic-message-24.svg';
+import { User } from 'openland-api/Types';
+import { XLoader } from 'openland-x/XLoader';
 
 const MessageButton = React.memo((props: { isBot: boolean, id: string }) => {
     const layout = useLayout();
@@ -33,9 +35,20 @@ const MessageButton = React.memo((props: { isBot: boolean, id: string }) => {
 export const UserProfileFragment = React.memo((props: { id: string }) => {
     const isMobile = useLayout() === 'mobile';
     const client = useClient();
-    const { user, conversation } = client.useUser({ userId: props.id }, { fetchPolicy: 'cache-and-network' });
-    const { id, isBot, name, photo, audienceSize, about, shortname, location, phone, email, linkedin, instagram,
-        primaryOrganization, isYou, chatsWithBadge, website, twitter, facebook } = user;
+    const [data, setData] = React.useState<User | null>(null);
+
+    React.useEffect(() => {
+        client.queryUser({ userId: props.id }).then(setData);
+    }, [props.id]);
+
+    if (!data || !data.user || !data.conversation) {
+        return <XLoader loading={true} />;
+    }
+
+    const { user, user: {
+        id, isBot, name, photo, audienceSize, about, shortname, location, phone, email, linkedin, instagram,
+        primaryOrganization, isYou, chatsWithBadge, website, twitter, facebook 
+    }, conversation } = data;
 
     return (
         <Page padded={false} track="user_profile">
