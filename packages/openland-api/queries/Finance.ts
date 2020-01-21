@@ -8,6 +8,7 @@ export const MyCardsQuery = gql`
             brand
             expYear
             expMonth
+            isDefault
         }
     }
 `;

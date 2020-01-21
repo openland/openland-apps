@@ -42,13 +42,15 @@ interface CardViewProps {
 }
 
 const CardMenu = React.memo((props: CardViewProps & { ctx: UPopperController }) => {
-    const { ctx } = props;
+    const { ctx, item } = props;
     const builder = new UPopperMenuBuilder();
 
-    builder.item({
-        title: 'Make default',
-        icon: <StarIcon />,
-    });
+    if (!item.isDefault) {
+        builder.item({
+            title: 'Make default',
+            icon: <StarIcon />,
+        });
+    }
 
     builder.item({
         title: 'Delete card',
@@ -59,7 +61,7 @@ const CardMenu = React.memo((props: CardViewProps & { ctx: UPopperController }) 
 });
 
 export const CardView = React.memo((props: CardViewProps) => {
-    const { brand, last4, expMonth, expYear } = props.item;
+    const { brand, last4, expMonth, expYear, isDefault } = props.item;
     const year = expYear.toString().slice(-2);
 
     return (
@@ -71,9 +73,11 @@ export const CardView = React.memo((props: CardViewProps) => {
                             {getPayhmentMethodName(brand)}
                         </span>
                     </XView>
-                    {/* <XView {...TextStyles.Densed} color="var(--foregroundSecondary)" marginTop={4}>
-                        Default card
-                    </XView> */}
+                    {isDefault && (
+                        <XView {...TextStyles.Densed} color="var(--foregroundSecondary)" marginTop={4}>
+                            Default card
+                        </XView>
+                    )}
                 </XView>
                 <XView>
                     <UMoreButton

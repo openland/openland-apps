@@ -14,7 +14,7 @@ interface CardViewProps {
 }
 
 export const CardView = (props: CardViewProps) => {
-    const { brand, last4, expMonth, expYear } = props.item;
+    const { brand, last4, expMonth, expYear, isDefault } = props.item;
     const year = expYear.toString().slice(-2);
     const theme = React.useContext(ThemeContext);
 
@@ -24,12 +24,12 @@ export const CardView = (props: CardViewProps) => {
         builder.view(ctx => (
             <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} paddingTop={16} paddingBottom={32} alignItems="center" marginBottom={16}>
                 <View width={263} height={166} backgroundColor={theme.accentPay} borderRadius={RadiusStyles.Medium} paddingTop={20} paddingHorizontal={24}>
-                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundInverted }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
+                    <Text style={{ ...TextStyles.Title2, color: theme.type === 'Dark' ? theme.backgroundPrimary : theme.foregroundInverted }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
                         {getPayhmentMethodName(brand)}
                     </Text>
 
                     <View position="absolute" bottom={20} left={24}>
-                        <Text style={{ ...TextStyles.Subhead, color: theme.foregroundInverted }} allowFontScaling={false}>
+                        <Text style={{ ...TextStyles.Subhead, color: theme.type === 'Dark' ? theme.backgroundPrimary : theme.foregroundInverted }} allowFontScaling={false}>
                             •• {last4}, {expMonth}/{year}
                         </Text>
                     </View>
@@ -41,18 +41,21 @@ export const CardView = (props: CardViewProps) => {
             </LinearGradient>
         ));
 
-        builder.action('Make default', () => { return; }, false, require('assets/ic-star-24.png'));
+        if (!isDefault) {
+            builder.action('Make default', () => { return; }, false, require('assets/ic-star-24.png'));
+        }
+
         builder.action('Delete card', () => { return; }, false, require('assets/ic-delete-24.png'));
 
         builder.show();
-    }, []);
+    }, [isDefault]);
 
     return (
         <ZListItem
             leftIconView={<BrandLogo brand={brand} />}
             text={`${getPayhmentMethodName(brand)}, ${last4}`}
             onPress={handlePress}
-        // description="Default"
+            description={isDefault ? 'Default' : undefined}
         />
     );
 };

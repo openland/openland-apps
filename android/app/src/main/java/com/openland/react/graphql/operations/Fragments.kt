@@ -825,10 +825,7 @@ internal val CommunitySearchSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("about", "about", scalar("String")),
             field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
-            field("betaPublicRooms", "betaPublicRooms", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID")))
-                ))))),
+            field("betaPublicRoomsCount", "betaPublicRoomsCount", notNull(scalar("Int"))),
             field("id", "id", notNull(scalar("ID"))),
             field("isMine", "isMine", notNull(scalar("Boolean"))),
             field("membersCount", "membersCount", notNull(scalar("Int"))),

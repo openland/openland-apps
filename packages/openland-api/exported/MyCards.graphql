@@ -5,6 +5,7 @@ query MyCards {
     expMonth
     expYear
     id
+    isDefault
     last4
   }
 }

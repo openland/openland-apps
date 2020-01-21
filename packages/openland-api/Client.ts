@@ -822,10 +822,7 @@ const CommunitySearchSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('about', 'about', args(), scalar('String')),
             field('alphaFeatured', 'featured', args(), notNull(scalar('Boolean'))),
-            field('betaPublicRooms', 'betaPublicRooms', args(), notNull(list(notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('id', 'id', args(), notNull(scalar('ID')))
-                ))))),
+            field('betaPublicRoomsCount', 'betaPublicRoomsCount', args(), notNull(scalar('Int'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
             field('isMine', 'isMine', args(), notNull(scalar('Boolean'))),
             field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
@@ -2474,6 +2471,7 @@ const MyCardsSelector = obj(
                     field('expMonth', 'expMonth', args(), notNull(scalar('Int'))),
                     field('expYear', 'expYear', args(), notNull(scalar('Int'))),
                     field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('isDefault', 'isDefault', args(), notNull(scalar('Boolean'))),
                     field('last4', 'last4', args(), notNull(scalar('String')))
                 )))))
         );
@@ -4165,7 +4163,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     AvailableRooms: {
         kind: 'query',
         name: 'AvailableRooms',
-        body: 'query AvailableRooms{communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChats:betaUserAvailableRooms(isChannel:false,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChannels:betaUserAvailableRooms(isChannel:true,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}',
+        body: 'query AvailableRooms{communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChats:betaUserAvailableRooms(isChannel:false,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChannels:betaUserAvailableRooms(isChannel:true,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRoomsCount id isMine membersCount name photo status superAccountId}',
         selector: AvailableRoomsSelector
     },
     ChatInit: {
@@ -4231,7 +4229,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ExploreCommunity: {
         kind: 'query',
         name: 'ExploreCommunity',
-        body: 'query ExploreCommunity($after:String,$featuredIfEmptyQuery:Boolean,$page:Int,$query:String,$sort:String){items:alphaComunityPrefixSearch(after:$after,featuredIfEmptyQuery:$featuredIfEmptyQuery,first:25,page:$page,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename ...CommunitySearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRooms{__typename id}id isMine membersCount name photo status superAccountId}',
+        body: 'query ExploreCommunity($after:String,$featuredIfEmptyQuery:Boolean,$page:Int,$query:String,$sort:String){items:alphaComunityPrefixSearch(after:$after,featuredIfEmptyQuery:$featuredIfEmptyQuery,first:25,page:$page,query:$query,sort:$sort){__typename edges{__typename cursor node{__typename ...CommunitySearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRoomsCount id isMine membersCount name photo status superAccountId}',
         selector: ExploreCommunitySelector
     },
     ExplorePeople: {
@@ -4369,7 +4367,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     MyCards: {
         kind: 'query',
         name: 'MyCards',
-        body: 'query MyCards{myCards{__typename brand expMonth expYear id last4}}',
+        body: 'query MyCards{myCards{__typename brand expMonth expYear id isDefault last4}}',
         selector: MyCardsSelector
     },
     MyNotificationCenter: {
