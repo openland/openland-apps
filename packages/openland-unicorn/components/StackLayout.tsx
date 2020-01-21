@@ -4,7 +4,6 @@ import { PageLayout } from './PageLayout';
 import { UnicornContext } from './UnicornContext';
 import { XViewRoute, XViewRouteContext } from 'react-mental';
 import { VisibleTabContext } from 'openland-unicorn/components/utils/VisibleTabContext';
-import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
 import { debounce } from 'openland-y-utils/timer';
 import { css } from 'linaria';
