@@ -7,11 +7,8 @@ import LinearGradient from 'react-native-linear-gradient';
 export const ThemePreview = React.memo(() => {
     const theme = React.useContext(ThemeContext);
 
-    const gradientStart = theme.type === 'Dark' ? 'rgba(36, 38, 41, 0)' : 'rgba(242, 243, 245, 0)';
-    const gradientEnd = theme.type === 'Dark' ? 'rgba(36, 38, 41, 0.56)' : 'rgba(242, 243, 245, 0.56)';
-
     return (
-        <LinearGradient colors={[gradientStart, gradientEnd]} paddingTop={8} paddingBottom={24} paddingHorizontal={16}>
+        <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} paddingTop={8} paddingBottom={24} paddingHorizontal={16}>
             <View marginBottom={8} alignItems="flex-start">
                 <View backgroundColor={theme.incomingBackgroundPrimary} paddingVertical={7} paddingLeft={12} paddingRight={70} borderRadius={RadiusStyles.Large}>
                     <Text style={[TextStyles.Densed, { color: theme.incomingForegroundPrimary }]} allowFontScaling={false}>
