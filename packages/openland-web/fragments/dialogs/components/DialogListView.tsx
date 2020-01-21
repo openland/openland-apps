@@ -87,6 +87,39 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
         };
     }, [props.onDialogClick, conversationId]);
 
+    // const getCurrentConversationId = () => {
+    //     return route && (route as any).routeQuery ? (route as any).routeQuery.conversationId : null;
+    // };
+
+    // const getConversationId = (delta: number) => {
+    //     const currentConversationId = getCurrentConversationId();
+    //     if (currentConversationId === null) {
+    //         return 0;
+    //     }
+
+    //     const currentDialogIndex = dataSource.findIndex(currentConversationId);
+    //     const nextIndex = Math.min(
+    //         Math.max(currentDialogIndex - delta, 0),
+    //         dataSource.getSize() - 1,
+    //     );
+
+    //     return dataSource.getAt(nextIndex).key;
+    // };
+
+    // const handleOptionUp = () => {
+    //     const nextId = getConversationId(+1);
+    //     if (nextId !== getCurrentConversationId()) {
+    //         router!.navigate(`/mail/${nextId}`);
+    //     }
+    // };
+
+    // const handleOptionDown = () => {
+    //     const nextId = getConversationId(-1);
+    //     if (nextId !== getCurrentConversationId()) {
+    //         router!.navigate(`/mail/${nextId}`);
+    //     }
+    // };
+
     const handleCtrlS = () => {
         if (ref.current) {
             ref.current.focus();
@@ -104,6 +137,8 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                 return false;
             }
         },
+        // { keys: ['Meta', 'ArrowUp'], callback: handleOptionUp },
+        // { keys: ['Meta', 'ArrowDown'], callback: handleOptionDown },
         { keys: ['Control', 's'], callback: handleCtrlS },
     ]);
 

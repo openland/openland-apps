@@ -6,11 +6,11 @@ import { useClient } from 'openland-web/utils/useClient';
 import { XLoader } from 'openland-x/XLoader';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { MessagesSearch } from './MessagesSearch';
-// import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { plural } from 'openland-y-utils/plural';
-import { GlobalSearch_items, GlobalSearchVariables, GlobalSearch } from 'openland-api/Types';
+import { GlobalSearch_items, GlobalSearchVariables } from 'openland-api/Types';
 
 const NoResultWrapper = Glamorous(XVertical)({
     marginTop: 34,
@@ -33,45 +33,51 @@ type DialogSearchResultsT = {
     isForwarding?: boolean;
 };
 
-export const DialogSearchResults = React.memo((props: DialogSearchResultsT) => {
-    // const [selectedIndex, setSelectedIndex] = React.useState<number>(-1);
-    const selectedIndex = -1;
+const DialogSearchResultsInner = React.memo((props: DialogSearchResultsT) => {
+    const [selectedIndex, setSelectedIndex] = React.useState<number>(-1);
     const client = useClient();
-    const [data, setData] = React.useState<GlobalSearch | null>(null);
-
-    React.useEffect(() => {
-        // we need this to re-enable loader
-        setData(null);
-        client.queryGlobalSearch(props.variables).then(setData);
-    }, [props.variables.query]);
+    const data = client.useGlobalSearch(props.variables, {
+        fetchPolicy: 'cache-and-network',
+    });
 
     if (!data || !data.items) {
         return <XLoader loading={true} />;
     }
 
-    const items = data.items;
+    let items = data.items;
 
-    // TODO enable shortcuts
-    // const handleOptionUp = () => {
-    //     setSelectedIndex(selectedIndex === null ? 0 : Math.min(Math.max(selectedIndex - 1, 0), items.length - 1));
-    // };
+    const handleOptionUp = () => {
+        if (selectedIndex === null) {
+            setSelectedIndex(0);
+            return;
+        }
+        setSelectedIndex(Math.min(Math.max(selectedIndex - 1, 0), items.length - 1));
 
-    // const handleOptionDown = () => {
-    //     setSelectedIndex(selectedIndex === null ? 0 : Math.min(Math.max(selectedIndex + 1, 0), items.length - 1));
-    // };
+        return;
+    };
 
-    // useShortcuts([
-    //     { keys: ['ArrowUp'], callback: handleOptionUp },
-    //     { keys: ['ArrowDown'], callback: handleOptionDown },
-    //     {
-    //         keys: ['Enter'], callback: () => {
-    //             let d = items[selectedIndex];
-    //             if (d) {
-    //                 props.onPick(d);
-    //             }
-    //         }
-    //     },
-    // ]);
+    const handleOptionDown = () => {
+        if (selectedIndex === null) {
+            setSelectedIndex(0);
+            return;
+        }
+        setSelectedIndex(Math.min(Math.max(selectedIndex + 1, 0), items.length - 1));
+
+        return;
+    };
+
+    useShortcuts([
+        { keys: ['ArrowUp'], callback: handleOptionUp },
+        { keys: ['ArrowDown'], callback: handleOptionDown },
+        {
+            keys: ['Enter'], callback: () => {
+                let d = items[selectedIndex];
+                if (d) {
+                    props.onPick(d);
+                }
+            }
+        },
+    ]);
 
     if (items.length === 0) {
         return (
@@ -110,3 +116,11 @@ export const DialogSearchResults = React.memo((props: DialogSearchResultsT) => {
         </>
     );
 });
+
+export const DialogSearchResults = (props: DialogSearchResultsT) => {
+    return (
+        <React.Suspense fallback={<XLoader loading={true} />}>
+            <DialogSearchResultsInner {...props} />
+        </React.Suspense>
+    );
+};
