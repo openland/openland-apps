@@ -456,6 +456,7 @@ export default () => {
                         }}
                         avatarId={avatarId}
                         emailWasResend={emailWasResend}
+                        setEmailWasResend={setEmailWasResend}
                         emailSendedTo={emailValue}
                         emailValue={emailValue}
                         emailSending={emailSending}

@@ -147,7 +147,7 @@ const LocalDiscoverComponent = ({
             {!noBackSkipLogo && (
                 <BackSkipLogo onBack={onBack} onSkip={onSkip} />
             )}
-            <FormLayout marginTop={isMobile ? 56 : 72} marginBottom={130}>
+            <FormLayout paddingTop={isMobile ? 56 : 72} paddingBottom={130}>
                 <Title text={subtitle!!} />
                 <TagsGroupPage group={group} selected={localSelected} className={shakeClassName} onPress={onTagPress} />
                 {isScrollable ? (

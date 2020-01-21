@@ -53,7 +53,7 @@ export const SignUpAuthMechanism = ({
                     onClick={loginWithEmail}
                     size="large"
                     shape="square"
-                    text="Continue with Email"
+                    text="Continue with email"
                     style="secondary"
                 />
             </XView>

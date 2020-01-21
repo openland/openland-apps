@@ -260,7 +260,7 @@ const ConnectingStatus = () => {
                 backgroundColor="var(--tintOrange)"
                 text="Connecting"
                 autoclose={false}
-                icon={<XLoader contrast={true} transparentBackground={true} loading={true} size="small" />}
+                type="loading"
             />
         </div>
     );

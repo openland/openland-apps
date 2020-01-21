@@ -230,7 +230,7 @@ export const ChatsForYou = ({
         <Wrapper fullHeight={fullHeight} ref={wrapperRef}>
             <XDocumentHead title="Choose role" />
             <BackSkipLogo onBack={onBack} onSkip={onSkip} />
-            <FormLayout marginTop={isScrollable ? 72 : undefined} marginBottom={isScrollable ? 130 : undefined}>
+            <FormLayout paddingTop={isScrollable ? 72 : undefined} paddingBottom={isScrollable ? 130 : undefined}>
                 <Title text="Chats for you" />
                 <Subtitle text="Recommendations based on your answers" />
 

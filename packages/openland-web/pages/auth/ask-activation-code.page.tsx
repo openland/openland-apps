@@ -11,7 +11,6 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { completeAuth } from './complete.page';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 import { XImage } from 'react-mental';
-import { XLoader } from 'openland-x/XLoader';
 import { AuthHeaderConfig } from './root.page';
 
 export type ActivationCodeProps = {
@@ -20,6 +19,7 @@ export type ActivationCodeProps = {
     emailSending: boolean;
     backButtonClick: (event?: React.MouseEvent<any>) => void;
     resendCodeClick: (event?: React.MouseEvent<any>) => void;
+    setEmailWasResend: (flag: boolean) => void;
     emailSendedTo: string;
     isMobile: boolean;
     isExistingUser: boolean;
@@ -53,6 +53,7 @@ export const WebSignUpActivationCode = ({
     emailSendedTo,
     emailSending,
     emailWasResend,
+    setEmailWasResend,
     codeSending,
     codeError,
     setCodeError,
@@ -93,6 +94,7 @@ export const WebSignUpActivationCode = ({
     const handleResend = React.useCallback(() => {
         resendCodeClick();
         setCodeError('');
+        setEmailWasResend(false);
     }, []);
 
     const errorText = (codeField.input.invalid && codeField.input.errorText) || codeError;
@@ -110,12 +112,13 @@ export const WebSignUpActivationCode = ({
     return (
         <>
             <AuthToastWrapper isVisible={!emailSending && !!errorText} text={errorText} />
-            <AuthToastWrapper isVisible={emailSending} text="Sending code" autoclose={false} icon={<XLoader contrast={true} transparentBackground={true} loading={true} size="small" />} />
+            <AuthToastWrapper isVisible={emailSending} text="Sending code" type="loading" />
+            <AuthToastWrapper isVisible={emailWasResend && !errorText} text="Code successfully sent" type="success" />
             <FormLayout>
                 <Title text={InitTexts.auth.enterActivationCode} />
                 <Subtitle>
                     We just sent it to {emailSendedTo}.<br />
-                    {emailWasResend ? 'Code successfully sent.' : InitTexts.auth.haveNotReceiveCode} <a onClick={handleResend}>Resend</a>
+                    {InitTexts.auth.haveNotReceiveCode} <a onClick={handleResend}>Resend</a>
                 </Subtitle>
                 {!!avatarId && (
                     <XImage

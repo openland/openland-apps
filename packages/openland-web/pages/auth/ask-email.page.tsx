@@ -77,6 +77,7 @@ export const WebSignUpCreateWithEmail = ({
                         label={InitTexts.auth.emailPlaceholder}
                         invalid={isInvalid}
                         ref={inputRef}
+                        value={emailField.input.value}
                         onChange={emailField.input.onChange}
                     />
                 </AuthInputWrapper>

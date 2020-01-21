@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
+import { XLoader } from 'openland-x/XLoader';
+import DoneIcon from 'openland-icons/s/ic-done-16.svg';
 
 const toastWrapper = css`
     position: relative;
@@ -28,6 +30,9 @@ const iconClass = css`
     height: 16px;
     margin-right: 8px;
 
+    svg {
+        fill: var(--foregroundContrast);
+    }
 `;
 
 const textClass = css`
@@ -37,15 +42,15 @@ const textClass = css`
 
 export interface UToastProps {
     isVisible: boolean;
+    type?: 'text' | 'loading' | 'success';
     text?: string;
     backgroundColor?: string;
-    icon?: any;
     autoclose?: boolean;
     className?: string;
 }
 
 export const UToast = React.memo((props: UToastProps) => {
-    const { isVisible, className, icon, text, backgroundColor, autoclose = true } = props;
+    const { isVisible, className, text, backgroundColor, type = 'text', autoclose = true } = props;
     const [isRealVisible, setVisible] = React.useState(isVisible);
 
     React.useEffect(() => {
@@ -68,11 +73,18 @@ export const UToast = React.memo((props: UToastProps) => {
         };
     }, [isRealVisible]);
 
+    const iconByType = {
+        loading: () => <XLoader contrast={true} transparentBackground={true} loading={true} size="small" />,
+        success: () => <DoneIcon />
+    };
+
+    const Icon = iconByType[type];
+
     return !!text ? (
         <div className={cx(toastWrapper, className, isRealVisible && toastVisible)} style={{ backgroundColor }}>
-            {!!icon && (
+            {!!Icon && (
                 <div className={iconClass}>
-                    {icon}
+                    <Icon />
                 </div>
             )}
             <h5 className={cx(TextLabel1, textClass)}>
