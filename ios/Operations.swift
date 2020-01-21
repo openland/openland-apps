@@ -2468,6 +2468,7 @@ private let MyCardsSelector = obj(
                     field("expMonth", "expMonth", notNull(scalar("Int"))),
                     field("expYear", "expYear", notNull(scalar("Int"))),
                     field("id", "id", notNull(scalar("ID"))),
+                    field("isDefault", "isDefault", notNull(scalar("Boolean"))),
                     field("last4", "last4", notNull(scalar("String")))
                 )))))
         )
@@ -4367,7 +4368,7 @@ class Operations {
     let MyCards = OperationDefinition(
         "MyCards",
         .query, 
-        "query MyCards{myCards{__typename brand expMonth expYear id last4}}",
+        "query MyCards{myCards{__typename brand expMonth expYear id isDefault last4}}",
         MyCardsSelector
     )
     let MyNotificationCenter = OperationDefinition(

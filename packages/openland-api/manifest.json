@@ -975,10 +975,10 @@
       }
     },
     {
-      "signature": "6fc330972e9c3ad51fc8673f94771370b47b40e6c11c503914307a0f1c2b49d5",
-      "document": "query MyCards{myCards{__typename brand expMonth expYear id last4}}",
+      "signature": "ffd2c760586b92828c02e42b5aa1b0e226c1544029168aff5ee5dc4351a7273a",
+      "document": "query MyCards{myCards{__typename brand expMonth expYear id isDefault last4}}",
       "metadata": {
-        "engineSignature": "query MyCards{myCards{__typename brand expMonth expYear id last4}}"
+        "engineSignature": "query MyCards{myCards{__typename brand expMonth expYear id isDefault last4}}"
       }
     },
     {

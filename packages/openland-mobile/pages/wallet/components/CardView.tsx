@@ -14,7 +14,7 @@ interface CardViewProps {
 }
 
 export const CardView = (props: CardViewProps) => {
-    const { brand, last4, expMonth, expYear } = props.item;
+    const { brand, last4, expMonth, expYear, isDefault } = props.item;
     const year = expYear.toString().slice(-2);
     const theme = React.useContext(ThemeContext);
 
@@ -41,18 +41,21 @@ export const CardView = (props: CardViewProps) => {
             </LinearGradient>
         ));
 
-        builder.action('Make default', () => { return; }, false, require('assets/ic-star-24.png'));
+        if (!isDefault) {
+            builder.action('Make default', () => { return; }, false, require('assets/ic-star-24.png'));
+        }
+
         builder.action('Delete card', () => { return; }, false, require('assets/ic-delete-24.png'));
 
         builder.show();
-    }, []);
+    }, [isDefault]);
 
     return (
         <ZListItem
             leftIconView={<BrandLogo brand={brand} />}
             text={`${getPayhmentMethodName(brand)}, ${last4}`}
             onPress={handlePress}
-        // description="Default"
+            description={isDefault ? 'Default' : undefined}
         />
     );
 };

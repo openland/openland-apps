@@ -2471,6 +2471,7 @@ const MyCardsSelector = obj(
                     field('expMonth', 'expMonth', args(), notNull(scalar('Int'))),
                     field('expYear', 'expYear', args(), notNull(scalar('Int'))),
                     field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('isDefault', 'isDefault', args(), notNull(scalar('Boolean'))),
                     field('last4', 'last4', args(), notNull(scalar('String')))
                 )))))
         );
@@ -4366,7 +4367,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     MyCards: {
         kind: 'query',
         name: 'MyCards',
-        body: 'query MyCards{myCards{__typename brand expMonth expYear id last4}}',
+        body: 'query MyCards{myCards{__typename brand expMonth expYear id isDefault last4}}',
         selector: MyCardsSelector
     },
     MyNotificationCenter: {
