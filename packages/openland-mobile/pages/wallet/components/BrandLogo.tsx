@@ -5,7 +5,6 @@ import { getBrandSafe } from 'openland-y-utils/wallet/brands';
 
 interface BrandLogoProps {
     brand: string;
-    border?: boolean;
 }
 
 export const BrandLogo = (props: BrandLogoProps) => {
@@ -25,8 +24,7 @@ export const BrandLogo = (props: BrandLogoProps) => {
     return (
         <View width={40} height={28} borderRadius={4} backgroundColor={theme.backgroundPrimary} overflow="hidden">
             <Image source={logo} style={{ width: 40, height: 28 }} />
-
-            {props.border && <View position="absolute" top={0} right={0} bottom={0} left={0} borderWidth={1} borderColor={theme.border} borderRadius={4} />}
+            <View position="absolute" top={0} right={0} bottom={0} left={0} borderWidth={1} borderColor={theme.border} borderRadius={4} />
         </View>
     );
 };

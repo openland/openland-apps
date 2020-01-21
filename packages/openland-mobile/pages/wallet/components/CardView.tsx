@@ -51,7 +51,7 @@ export const CardView = (props: CardViewProps) => {
 
     return (
         <ZListItem
-            leftIconView={<BrandLogo brand={brand} border={true} />}
+            leftIconView={<BrandLogo brand={brand} />}
             text={`${getPayhmentMethodName(brand)}, ${last4}`}
             onPress={handlePress}
         // description="Default"

@@ -13,10 +13,10 @@ import { preprocessText } from 'openland-y-utils/TextProcessor';
 
 export interface ZListItemProps {
     leftAvatar?: { photo?: string | null, key: string, title: string };
-    rightAvatar?: { photo?: string | null, key: string, title: string };
     leftIcon?: any | null;
     leftIconColor?: string;
     leftIconView?: JSX.Element;
+    rightElement?: JSX.Element;
     separator?: boolean | null;
     title?: string | null;
     subTitle?: string | any | null;
@@ -211,7 +211,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                     </View>
                     {this.props.subTitle && <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }} allowFontScaling={false} numberOfLines={1} ellipsizeMode={'tail'}>{this.props.subTitle}</Text>}
                 </View>
-                {this.props.rightAvatar && <View paddingRight={16} alignSelf="center"><ZAvatar size="medium" placeholderKey={this.props.rightAvatar.key} placeholderTitle={this.props.rightAvatar.title} src={this.props.rightAvatar.photo} /></View>}
+                {!!this.props.rightElement && <View paddingRight={16} alignSelf="center">{this.props.rightElement}</View>}
             </ZListItemBase >
         );
     }
