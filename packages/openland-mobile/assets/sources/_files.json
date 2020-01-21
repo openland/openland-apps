@@ -1,6 +1,20 @@
 {
     "icons": [
         {
+            "name": "ic-wallet",
+            "src": "ic-wallet-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-wallet-glyph",
+            "src": "ic-wallet-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-play-glyph",
             "src": "ic-play-glyph-24.svg",
             "sizes": [

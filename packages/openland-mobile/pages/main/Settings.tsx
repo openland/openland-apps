@@ -84,7 +84,7 @@ let SettingsContent = ((props: PageProps) => {
                 {NON_PRODUCTION && (
                     <ZListItem
                         leftIconColor={theme.tintCyan}
-                        leftIcon={require('assets/ic-notifications-glyph-24.png')}
+                        leftIcon={require('assets/ic-wallet-glyph-24.png')}
                         text="Wallet"
                         path="Wallet"
                     />
