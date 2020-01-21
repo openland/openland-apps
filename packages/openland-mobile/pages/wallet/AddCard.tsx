@@ -50,7 +50,7 @@ const AddCardComponent = React.memo<PageProps>((props) => {
     return (
         <>
             <SHeader title="Add Card" />
-            <View flexDirection="column" alignSelf="stretch" alignItems="stretch">
+            <View flexDirection="column" alignSelf="stretch" alignItems="stretch" marginTop={32}>
                 <StripeInputView ref={ref} />
                 <View margin={16}>
                     {error && <Text>{error}</Text>}

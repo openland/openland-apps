@@ -7,6 +7,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <React/RCTPushNotificationManager.h>
+#import <Stripe/Stripe.h>
 
 #import "openland-Swift.h"
 
@@ -22,6 +23,11 @@
   [AppCenterReactNative register];
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
   [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
+  
+  /*
+   * Stripe
+   */
+  [Stripe setDefaultPublishableKey: @"pk_test_y80EsXGYQdMKMcJ5lifEM4jx"];
   
   /*
    * Bundle location

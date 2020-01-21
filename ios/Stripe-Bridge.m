@@ -11,6 +11,9 @@
 #import "Stripe-Bridge.h"
 
 @interface RCT_EXTERN_MODULE(RNStripe, RCTEventEmitter)
-
+RCT_EXTERN_METHOD(confirmSetupIntent: (NSString *)callbackKey clientSecret: (NSString *)clientSecret)
 @end
 
+@interface RCT_EXTERN_MODULE(RNStripeCardViewManager, RCTViewManager)
+RCT_EXPORT_VIEW_PROPERTY(callbackKey, NSString)
+@end

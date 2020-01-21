@@ -7,27 +7,92 @@
 //
 
 import Foundation
+import Stripe
+
+@objc(RNStripeCardView)
+class RNStripeCardView: RCTView {
+  let input = STPPaymentCardTextField()
+  
+  @objc override init(frame: CGRect) {
+    super.init(frame: frame);
+    self.addSubview(input);
+    input.postalCodeEntryEnabled = true
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  @objc override func reactSetFrame(_ frame: CGRect) {
+    super.reactSetFrame(frame);
+    input.frame = frame
+  }
+  
+  @objc func setCallbackKey(_ key: String) {
+    RNStripe.views.setObject(self, forKey: key as NSString)
+  }
+}
+
+@objc(RNStripeCardViewManager)
+class RNStripeCardViewManager: RCTViewManager {
+  
+  override func view() -> UIView! {
+    return RNStripeCardView()
+  }
+  
+  static override func requiresMainQueueSetup() -> Bool {
+    return false
+  }
+}
 
 @objc(RNStripe)
-class RNStripe: RCTEventEmitter {
+class RNStripe: RCTEventEmitter, STPAuthenticationContext {
   
-//  @objc(setStatusBarDarkContent)
-//  func setStatusBarDarkContent() {
-//    DispatchQueue.main.async {
-//      if #available(iOS 13.0, *) {
-//        UIApplication.shared.setStatusBarStyle(.darkContent, animated: true)
-//      } else {
-//        UIApplication.shared.setStatusBarStyle(.default, animated: true)
-//      }
-//    }
-//  }
-//
-//  @objc(setStatusBarLightContent)
-//  func setStatusBarLightContent() {
-//    DispatchQueue.main.async {
-//      UIApplication.shared.setStatusBarStyle(.lightContent, animated: true)
-//    }
-//  }
+  public static var views = NSMapTable<NSString, RNStripeCardView>()
+  let controller = RCTPresentedViewController()
+  
+  func authenticationPresentingViewController() -> UIViewController {
+    return self.controller!
+  }
+  
+
+  @objc(confirmSetupIntent:clientSecret:)
+  func confirmSetupIntent(callbackKey: String, clientSecret: String) {
+    let view = RNStripe.views.object(forKey: callbackKey as NSString)
+    if (view == nil) {
+      return
+    }
+    
+    // Collect card details
+    let cardParams = view!.input.cardParams
+    let paymentMethodParams = STPPaymentMethodParams(card: cardParams, billingDetails: STPPaymentMethodBillingDetails(), metadata: nil)
+    let setupIntentParams = STPSetupIntentConfirmParams(clientSecret: clientSecret)
+    setupIntentParams.paymentMethodParams = paymentMethodParams
+    
+    let paymentHandler = STPPaymentHandler.shared()
+    paymentHandler.confirmSetupIntent(withParams: setupIntentParams, authenticationContext: self) { status, setupIntent, error in
+        switch (status) {
+        case .failed:
+            // Setup failed
+            break
+        case .canceled:
+            // Setup canceled
+            break
+        case .succeeded:
+          
+            var dict:[String:Any] = [:]
+            dict["clientSecret"] = clientSecret
+            dict["id"] = setupIntent!.paymentMethodID!
+            dict["status"] = "success"
+            self.sendEvent(withName: "setup_intent", body: dict)
+          
+            break
+        @unknown default:
+            fatalError()
+            break
+        }
+    }
+  }
   
   override func supportedEvents() -> [String]! {
     return ["setup_intent"]

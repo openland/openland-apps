@@ -10,7 +10,6 @@ import com.openland.app.MainActivity
 import com.openland.app.MainApplication
 import com.openland.react.runOnUIThread
 import com.stripe.android.model.ConfirmSetupIntentParams
-import com.stripe.android.model.StripeIntent
 import com.stripe.android.view.CardMultilineWidget
 import java.util.*
 
