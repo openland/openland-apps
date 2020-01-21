@@ -78,11 +78,9 @@ export class BaseApiClient {
             q = this.queries;
         }
         let key = query.document.definitions[0].name.value + '$' + keyFromObject(vars) + '$' + cacheKey;
-        if (q.has(key)) {            
-            if (opts && (opts.fetchPolicy === 'cache-and-network')) {
-                this.refetch(query, vars);
-            }
-            
+        if (q.has(key)) {
+            // SpaceX QueryWatch fetches new data itself (see usage of doRequest on SpaceXWebClient.ts, line 167)
+            // so there is no need to refetch data manually here
             return q.get(key)!! as GraphqlQueryWatch<TQuery>;
         } else {
             let res = this.client.queryWatch(query, vars, opts);
