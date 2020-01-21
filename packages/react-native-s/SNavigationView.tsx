@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, BackHandler, Dimensions, Platform, Keyboard } from 'react-native';
+import { View, BackHandler, Dimensions, Platform } from 'react-native';
 import { SRouting } from './SRouting';
 import { NavigationContainer } from './navigation/NavigationContainer';
 import { PresentationManager } from './navigation/PresentationManager';
@@ -32,7 +32,7 @@ export interface SNavigationViewStyle {
 export class SNavigationView extends React.PureComponent<SNavigationViewProps, { presented?: NavigationManager }> {
 
     private presentKey: string = randomKey();
-    private key: string = randomKey();
+    // private key: string = randomKey();
     private routing: SRouting;
 
     constructor(props: SNavigationViewProps) {

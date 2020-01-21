@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { StripeInputView, StripeInputViewInstance } from './stripe/StripeInputView';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
@@ -53,6 +53,7 @@ const AddCardComponent = React.memo<PageProps>((props) => {
             <View flexDirection="column" alignSelf="stretch" alignItems="stretch">
                 <StripeInputView ref={ref} />
                 <View margin={16}>
+                    {error && <Text>{error}</Text>}
                     <ZRoundedButton title="Add" onPress={submit} loading={loading} />
                 </View>
             </View>
