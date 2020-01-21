@@ -29,6 +29,8 @@
 		A0930DE922B271D40018ECA1 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0930DE822B271D40018ECA1 /* NotificationHandler.swift */; };
 		A099CBDC233B9CFF00A7AC8C /* ChatFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A099CBDB233B9CFF00A7AC8C /* ChatFlowLayout.swift */; };
 		A0DDD9B62226BE8B00AA3061 /* openland-share-ex.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A0153A93222426F400C026A4 /* openland-share-ex.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		AA181CC523D774B400B8C633 /* Stripe-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AA181CC423D774B400B8C633 /* Stripe-Bridge.m */; };
+		AA181CC823D774F400B8C633 /* RNStripe.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA181CC723D774F400B8C633 /* RNStripe.swift */; };
 		AA2281BC228A1DD100810848 /* readFromStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2281BB228A1DD100810848 /* readFromStore.swift */; };
 		AA2281BE228A244800810848 /* RecordStoreReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2281BD228A244800810848 /* RecordStoreReaderTests.swift */; };
 		AA2281C6228A37F900810848 /* SpaceXPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2281C5228A37F900810848 /* SpaceXPersistence.swift */; };
@@ -307,6 +309,9 @@
 		A099CBDB233B9CFF00A7AC8C /* ChatFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFlowLayout.swift; sourceTree = "<group>"; };
 		A0E0F59823876344F91D6134 /* Pods-openland.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openland.release.xcconfig"; path = "Pods/Target Support Files/Pods-openland/Pods-openland.release.xcconfig"; sourceTree = "<group>"; };
 		A938EF8C563947299EE77727 /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
+		AA181CC423D774B400B8C633 /* Stripe-Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Stripe-Bridge.m"; sourceTree = "<group>"; };
+		AA181CC623D774D800B8C633 /* Stripe-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Stripe-Bridge.h"; sourceTree = "<group>"; };
+		AA181CC723D774F400B8C633 /* RNStripe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNStripe.swift; sourceTree = "<group>"; };
 		AA2281BB228A1DD100810848 /* readFromStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = readFromStore.swift; sourceTree = "<group>"; };
 		AA2281BD228A244800810848 /* RecordStoreReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStoreReaderTests.swift; sourceTree = "<group>"; };
 		AA2281C5228A37F900810848 /* SpaceXPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceXPersistence.swift; sourceTree = "<group>"; };
@@ -499,6 +504,7 @@
 		13B07FAE1A68108700A75B9A /* openland */ = {
 			isa = PBXGroup;
 			children = (
+				AA181CB923D7748E00B8C633 /* Stripe */,
 				AAA942AF235E747D00690F14 /* RNSWindowManager */,
 				A0930DF722B77DFA0018ECA1 /* RNNotificationHandler */,
 				AA3DDA122284E76F0078A762 /* SpaceX */,
@@ -630,6 +636,16 @@
 				E113A8495C13145D3D43FED5 /* Pods-openlandTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		AA181CB923D7748E00B8C633 /* Stripe */ = {
+			isa = PBXGroup;
+			children = (
+				AA181CC423D774B400B8C633 /* Stripe-Bridge.m */,
+				AA181CC623D774D800B8C633 /* Stripe-Bridge.h */,
+				AA181CC723D774F400B8C633 /* RNStripe.swift */,
+			);
+			name = Stripe;
 			sourceTree = "<group>";
 		};
 		AA2281C4228A37A100810848 /* Persistence */ = {
@@ -1478,7 +1494,9 @@
 				AAE50186214607B600BEAA04 /* RNSAnimationSpec.swift in Sources */,
 				AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */,
 				AA2FBA2B22247D0E000915F7 /* RNSDevice.swift in Sources */,
+				AA181CC823D774F400B8C633 /* RNStripe.swift in Sources */,
 				AA67E2582149318200AE9CAC /* RNSAnimated-Bridge.m in Sources */,
+				AA181CC523D774B400B8C633 /* Stripe-Bridge.m in Sources */,
 				A099CBDC233B9CFF00A7AC8C /* ChatFlowLayout.swift in Sources */,
 				AAE501802145801600BEAA04 /* RNAsyncKeyboardContext.swift in Sources */,
 				AA67E25521492DBE00AE9CAC /* RNSUtils.swift in Sources */,
