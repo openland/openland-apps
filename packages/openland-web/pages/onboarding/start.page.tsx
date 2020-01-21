@@ -19,7 +19,7 @@ const avatarWrapper = css`
 `;
 
 const useConfetti = () => {
-    const confettiDuration = 3000;
+    const confettiDuration = 2000;
     const end = Date.now() + confettiDuration;
     const colors = ['#CC99FF', '#A9D1F7', '#B4F0A7', '#FFFFBF', '#FFDFBE', '#FFB1B0'];
     let fireworksTimeout: any;

@@ -459,4 +459,4 @@ export const DiscoverOnLocalState = ({
     );
 };
 
-export default withApp('Home', 'viewer', () => <DiscoverOnLocalState />);
+export default withApp('Home', 'viewer', () => <DiscoverOnLocalState noBackOnFirstScreen={true} />);
