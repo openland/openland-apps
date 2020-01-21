@@ -41,7 +41,7 @@ export const SignUpAuthMechanism = ({
                 <Unicorn width="128" height="128" />
             </XView>
             <Title text="Openland" />
-            <Subtitle text="The best place to find and build inspiring communities" />
+            <Subtitle text="The best place to find and build inspiring&nbsp;communities" />
 
             <XView marginBottom={32} alignSelf="center" width={width && width < 400 ? '100%' : 240} marginTop={32}>
                 <UButton
