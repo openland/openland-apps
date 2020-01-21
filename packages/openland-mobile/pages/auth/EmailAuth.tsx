@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { View } from 'react-native';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { ZInput } from '../../components/ZInput';
@@ -8,6 +9,7 @@ import { ShowAuthError } from './ShowAuthError';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
+import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { trackEvent } from 'openland-mobile/analytics';
 import { TrackAuthError } from './TrackAuthError';
@@ -20,6 +22,8 @@ export const ACTIVATION_CODE_LENGTH = 6;
 
 let email = '';
 let session = '';
+let photoSrc: string | null = null;
+let isExist = false;
 
 const http = async (params: { url: string; body?: any; method: 'POST' | 'GET' }) => {
     let res = await fetch(params.url, {
@@ -53,6 +57,8 @@ const requestActivationCode = async () => {
     });
 
     session = res.session;
+    isExist = res.profileExists;
+    photoSrc = res.pictureId ? res.pictureId : null;
 };
 
 const EmailStartComponent = React.memo((props: PageProps) => {
@@ -204,6 +210,21 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
                 title="Enter login code"
                 subtitle={`We just sent it to ${email}.`}
                 floatContent={<ZRoundedButton title="Next" size="large" onPress={submitForm} />}
+                scalableContent={
+                    photoSrc ? (
+                        <View marginTop={-8} marginBottom={32}>
+                            <ZAvatar
+                                size="xx-large"
+                                src={
+                                    'https://ucarecdn.com/' +
+                                    photoSrc +
+                                    '/-/scale_crop/72x72/center/'
+                                }
+                            />
+                        </View>
+                    ) : undefined
+                }
+                scalableContentSize={120}
             >
                 <ZInput
                     field={codeField}

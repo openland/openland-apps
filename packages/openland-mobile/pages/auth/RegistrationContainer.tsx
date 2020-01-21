@@ -37,6 +37,7 @@ interface RegistrationContainerProps {
     children: JSX.Element | JSX.Element[];
     floatContent: JSX.Element;
     scalableContent?: JSX.Element;
+    scalableContentSize?: number;
     autoScrollToBottom?: boolean;
 }
 
@@ -53,7 +54,7 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
 
     const [floatPadding] = React.useState(new Animated.Value(defaultIosPadding));
     const [avatarScale] = React.useState(new Animated.Value(1));
-    const [avatarSize] = React.useState(new Animated.Value(96));
+    const [avatarSize] = React.useState(new Animated.Value(props.scalableContentSize ? props.scalableContentSize : 96));
 
     const keyboardWillShow = (e: any) => {
         if (props.autoScrollToBottom && scrollRef.current && !isXGen) {
@@ -62,7 +63,7 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
         Animated.parallel([
             Animated.timing(avatarSize, {
                 duration: e.duration,
-                toValue: 48,
+                toValue: props.scalableContentSize ? props.scalableContentSize / 2 : 48,
             }),
             Animated.timing(avatarScale, {
                 duration: e.duration,
@@ -79,7 +80,7 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
         Animated.parallel([
             Animated.timing(avatarSize, {
                 duration: e.duration,
-                toValue: 96,
+                toValue: props.scalableContentSize ? props.scalableContentSize : 96,
             }),
             Animated.timing(avatarScale, {
                 duration: e.duration,

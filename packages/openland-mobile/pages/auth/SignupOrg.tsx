@@ -2,7 +2,6 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
-import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZInput } from 'openland-mobile/components/ZInput';
@@ -16,7 +15,6 @@ import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 const SignupOrgComponent = React.memo((props: PageProps) => {
     const form = useForm();
     const nameField = useField('name', '', form);
-    const photoField = useField('photoRef', null, form);
 
     const canSkip = nameField.value.length <= 0;
 
@@ -27,7 +25,6 @@ const SignupOrgComponent = React.memo((props: PageProps) => {
             await client.mutateCreateOrganization({
                 input: {
                     name: canSkip ? getMessenger().engine.user.name : nameField.value,
-                    photoRef: photoField.value,
                     personal: false,
                     isCommunity: false,
                 },
@@ -61,7 +58,6 @@ const SignupOrgComponent = React.memo((props: PageProps) => {
                         onPress={handleSave}
                     />
                 }
-                scalableContent={<ZAvatarPicker field={photoField} size="xx-large" />}
             >
                 <View marginTop={16} marginBottom={100}>
                     <ZInput
