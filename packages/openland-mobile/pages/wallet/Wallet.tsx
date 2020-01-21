@@ -5,7 +5,6 @@ import { PageProps } from 'openland-mobile/components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
-import { View } from 'react-native';
 import { BalanceView } from './components/BalanceView';
 import { CardView } from './components/CardView';
 import { TransactionView } from './components/TransactionView';
