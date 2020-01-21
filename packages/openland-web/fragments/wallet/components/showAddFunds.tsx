@@ -18,6 +18,7 @@ const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
     let cards = client.useMyCards({ fetchPolicy: 'cache-and-network' });
     let [amount, setAmount] = React.useState<1000 | 2000 | 5000>(1000);
     let [currentCard, setCurrentCard] = React.useState<string | undefined>(undefined);
+    const [loading, setLoading] = React.useState(false);
     if (currentCard === undefined) {
         if (cards.myCards.length > 0) {
             setCurrentCard(cards.myCards[0].id);
@@ -36,6 +37,8 @@ const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
     const onSubmit = React.useCallback(() => {
         if (currentCard) {
             (async () => {
+                setLoading(true);
+
                 let retry = uuid();
                 let intent = await backoff(async () =>
                     await client.mutateCreateDepositIntent({ amount: amount, cardId: currentCard!, retryKey: retry })
@@ -48,6 +51,10 @@ const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
                     );
                     let w = await client.refetchMyWallet();
                     await client.refetchWalletTransactions({ id: w.myAccount.id, first: 20 });
+
+                    setLoading(false);
+
+                    props.ctx.hide();
                 }
             })();
         }
@@ -83,7 +90,7 @@ const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
             </XView>
             <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} backgroundColor="var(--backgroundTertiary)" justifyContent="flex-end" flexDirection="row">
                 <UButton text="Cancel" onClick={() => props.ctx.hide()} style="secondary" size="large" />
-                <UButton text={`Top up $${amount / 100}`} onClick={onSubmit} style="pay" size="large" />
+                <UButton text={`Top up $${amount / 100}`} onClick={onSubmit} style="pay" size="large" loading={loading} />
             </XView>
         </XView>
     );
