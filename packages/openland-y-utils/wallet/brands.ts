@@ -12,4 +12,4 @@ const CardBrandsName: { [key in CardBrandsType]: string } = {
 };
 
 export const getPayhmentMethodName = (brand: string) => CardBrandsName[brand] || 'Unknown';
-export const getBrandSafe = (brand: string) => Object.keys(CardBrandsName).indexOf(brand) >= 0 ? brand : 'unknown';
+export const getBrandSafe = (brand: string) => (Object.keys(CardBrandsName).indexOf(brand) >= 0 ? brand : 'unknown') as CardBrandsType | 'unknown';

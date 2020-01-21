@@ -16,6 +16,7 @@ export interface ZListItemProps {
     rightAvatar?: { photo?: string | null, key: string, title: string };
     leftIcon?: any | null;
     leftIconColor?: string;
+    leftIconView?: JSX.Element;
     separator?: boolean | null;
     title?: string | null;
     subTitle?: string | any | null;
@@ -60,6 +61,14 @@ const LeftIcon = (props: { theme: ThemeGlobal, src: any, flatIcon?: boolean, app
     return (
         <View style={{ width: 40, height: 40, borderRadius: 20, alignContent: 'center', justifyContent: 'center', backgroundColor, marginLeft: 16, alignSelf: 'center' }}>
             <Image source={src} resizeMode="contain" fadeDuration={0} style={{ width: 24, height: 24, alignSelf: 'center', tintColor: theme.foregroundContrast }} />
+        </View>
+    );
+};
+
+const LeftIconViewWrapper = (props: { children: any }) => {
+    return (
+        <View style={{ width: 40, height: 40, alignContent: 'center', justifyContent: 'center', marginLeft: 16, alignSelf: 'center' }}>
+            {props.children}
         </View>
     );
 };
@@ -118,7 +127,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
         const enabled = !!this.props.copy || !!this.props.onPress || !!this.props.onLongPress || !!this.props.path || ((!!this.props.checkmarkField) && !checkmarkEnabled) || !!this.props.toggleField;
         const linkify = (this.props.linkify === true || (this.props.linkify === undefined && !this.props.onPress && !this.props.path));
         const descriptionColor = this.props.descriptionColor ? this.props.descriptionColor : theme.foregroundTertiary;
-        const isBig = this.props.subTitle || this.props.leftAvatar || this.props.leftIconColor || (this.props.leftIcon && !this.props.small);
+        const isBig = this.props.leftIconView || this.props.subTitle || this.props.leftAvatar || this.props.leftIconColor || (this.props.leftIcon && !this.props.small);
         const height = this.props.multiline ? null : ((isBig || this.props.tall) ? 56 : 48);
 
         const switchTintColor = theme.accentPrimary.toLowerCase() === '#ffffff' ? theme.foregroundSecondary : theme.accentPrimary;
@@ -136,6 +145,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                 height={height}
             >
                 {this.props.leftIcon && <LeftIcon theme={theme} src={this.props.leftIcon} flatIcon={this.props.small} leftIconColor={this.props.leftIconColor} appearance={this.props.appearance} />}
+                {!!this.props.leftIconView && <LeftIconViewWrapper>{this.props.leftIconView}</LeftIconViewWrapper>}
                 {this.props.leftAvatar && <View paddingLeft={16} alignSelf="center"><ZAvatar size="medium" placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
                 <View paddingHorizontal={16} paddingVertical={this.props.multiline ? 3 : undefined} flexGrow={1} flex={1} justifyContent="center">
                     {this.props.title && <Text style={{ ...TextStyles.Caption, color: theme.foregroundSecondary, marginTop: 2, marginBottom: -2 }} allowFontScaling={false}>{this.props.title.toLocaleLowerCase()}</Text>}

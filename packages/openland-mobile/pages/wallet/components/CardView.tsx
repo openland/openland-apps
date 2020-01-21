@@ -7,6 +7,7 @@ import { View, Text } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import LinearGradient from 'react-native-linear-gradient';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
+import { BrandLogo } from './BrandLogo';
 
 interface CardViewProps {
     item: MyCards_myCards;
@@ -24,8 +25,8 @@ export const CardView = (props: CardViewProps) => {
 
         builder.view(ctx => (
             <LinearGradient colors={[gradientStart, gradientEnd]} paddingTop={16} paddingBottom={32} alignItems="center" marginBottom={16}>
-                <View width={263} height={166} backgroundColor={theme.accentPay} borderRadius={RadiusStyles.Medium} paddingTop={20} paddingLeft={24}>
-                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundInverted }} allowFontScaling={false}>
+                <View width={263} height={166} backgroundColor={theme.accentPay} borderRadius={RadiusStyles.Medium} paddingTop={20} paddingHorizontal={24}>
+                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundInverted }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
                         {getPayhmentMethodName(brand)}
                     </Text>
 
@@ -33,6 +34,10 @@ export const CardView = (props: CardViewProps) => {
                         <Text style={{ ...TextStyles.Subhead, color: theme.foregroundInverted }} allowFontScaling={false}>
                             •• {last4}, {expMonth}/{year}
                         </Text>
+                    </View>
+
+                    <View position="absolute" bottom={24} right={24}>
+                        <BrandLogo brand={brand} />
                     </View>
                 </View>
             </LinearGradient>
@@ -46,8 +51,10 @@ export const CardView = (props: CardViewProps) => {
 
     return (
         <ZListItem
-            text={getPayhmentMethodName(brand)}
+            leftIconView={<BrandLogo brand={brand} border={true} />}
+            text={`${getPayhmentMethodName(brand)}, ${last4}`}
             onPress={handlePress}
+        // description="Default"
         />
     );
 };
