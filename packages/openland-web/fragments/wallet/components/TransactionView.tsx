@@ -5,7 +5,7 @@ import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import RecentIcon from 'openland-icons/s/ic-recent-16.svg';
-import { Money } from 'openland-web/components/Money';
+import { Money } from 'openland-y-utils/wallet/Money';
 
 interface TransactionViewProps {
     item: WalletTransactions_walletTransactions_items;

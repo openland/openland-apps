@@ -81,6 +81,14 @@ let SettingsContent = ((props: PageProps) => {
                 onPress={handleGlobalInvitePress}
             />
             <ZListGroup header="Settings">
+                {NON_PRODUCTION && (
+                    <ZListItem
+                        leftIconColor={theme.tintCyan}
+                        leftIcon={require('assets/ic-notifications-glyph-24.png')}
+                        text="Wallet"
+                        path="Wallet"
+                    />
+                )}
                 <ZListItem
                     leftIconColor={theme.tintBlue}
                     leftIcon={require('assets/ic-notifications-glyph-24.png')}

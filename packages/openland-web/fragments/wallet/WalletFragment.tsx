@@ -9,15 +9,15 @@ import { CardView } from './components/CardView';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { TransactionView } from './components/TransactionView';
 import { showAddFunds } from './components/showAddFunds';
-import { Money } from 'openland-web/components/Money';
+import { Money } from 'openland-y-utils/wallet/Money';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 
 export const WalletFragment = React.memo(() => {
     const client = useClient();
-    const cards = client.useMyCards({ fetchPolicy: 'cache-and-network' });
-    const wallet = client.useMyWallet({ fetchPolicy: 'cache-and-network' });
-    const transactions = client.useWalletTransactions({ id: wallet.myAccount.id, first: 20 });
-    const balance = wallet.myAccount.balance;
+    const cards = client.useMyCards({ fetchPolicy: 'cache-and-network' }).myCards;
+    const wallet = client.useMyWallet({ fetchPolicy: 'cache-and-network' }).myAccount;
+    const transactions = client.useWalletTransactions({ id: wallet.id, first: 20 }).walletTransactions;
+    const balance = wallet.balance;
 
     return (
         <Page track="settings_wallet">
@@ -35,24 +35,24 @@ export const WalletFragment = React.memo(() => {
                 </UListGroup>
                 <UListGroup
                     header="Payments methods"
-                    action={cards.myCards.length > 0 ? { title: 'Add card', onClick: () => showAddCard() } : undefined}
+                    action={cards.length > 0 ? { title: 'Add card', onClick: () => showAddCard() } : undefined}
                 >
-                    {cards.myCards.length === 0 && (
+                    {cards.length === 0 && (
                         <UAddItem
                             title="Add card"
                             onClick={() => showAddCard()}
                         />
                     )}
                     <XView paddingTop={8} paddingHorizontal={8} flexDirection="row" flexWrap="wrap">
-                        {cards.myCards.map((v) => (
-                            <XView key={v.id} width="50%" paddingHorizontal={8} paddingBottom={16}>
-                                <CardView item={v} />
+                        {cards.map(card => (
+                            <XView key={card.id} width="50%" paddingHorizontal={8} paddingBottom={16}>
+                                <CardView item={card} />
                             </XView>
                         ))}
                     </XView>
                 </UListGroup>
                 <UListGroup header="Transactions">
-                    {transactions.walletTransactions.items.map((v) => (
+                    {transactions.items.map((v) => (
                         <TransactionView key={v.id} item={v} />
                     ))}
                 </UListGroup>

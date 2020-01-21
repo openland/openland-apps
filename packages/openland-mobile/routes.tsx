@@ -80,6 +80,7 @@ import { FeedChannelEditAdvanced } from './pages/feed/FeedChannelEditAdvanced';
 import { MatchmakingProfile } from './pages/matchmaking/MatchmakingProfile';
 import { SharedMedia } from './pages/shared-media/SharedMedia';
 import { PowerUps } from './pages/dev/PowerUps';
+import { Wallet } from './pages/wallet/Wallet';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -175,5 +176,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('MatchmakingProfile', MatchmakingProfile)
 
   .addRoute('SharedMedia', SharedMedia)
+
+  .addRoute('Wallet', Wallet)
 
   .build();
