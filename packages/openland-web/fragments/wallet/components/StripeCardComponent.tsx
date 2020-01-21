@@ -2,6 +2,8 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { XModalController } from 'openland-x/showModal';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 
 const token = 'pk_test_y80EsXGYQdMKMcJ5lifEM4jx';
 let style = {
@@ -25,9 +27,12 @@ export interface StripeCardProps {
     error?: string;
     loading?: boolean;
     onSubmit?: (stripe: stripe.Stripe, element: stripe.elements.Element) => void;
+    modalCtx?: XModalController;
 }
 
 export const StripeCardComponent = React.memo((props: StripeCardProps) => {
+    const { text, error, loading, onSubmit, modalCtx } = props;
+
     if (!canUseDOM) {
         return null;
     }
@@ -42,8 +47,8 @@ export const StripeCardComponent = React.memo((props: StripeCardProps) => {
 
     // Sync Disabled State
     React.useLayoutEffect(() => {
-        card.update({ disabled: props.loading });
-    }, [props.loading]);
+        card.update({ disabled: loading });
+    }, [loading]);
 
     // Mount Card Elements
     const container = React.useRef<HTMLDivElement>(null);
@@ -52,19 +57,30 @@ export const StripeCardComponent = React.memo((props: StripeCardProps) => {
     }, []);
 
     // On Submit Callback
-    const onSubmit = React.useCallback(() => {
-        if (props.onSubmit) {
-            props.onSubmit(stripe, card);
+    const handleSubmit = React.useCallback(() => {
+        if (onSubmit) {
+            onSubmit(stripe, card);
         }
-    }, [props.onSubmit]);
+    }, [onSubmit]);
 
     return (
-        <XView flexDirection="column" alignItems="stretch">
-            {props.error && (<XView>{props.error}</XView>)}
-            <XView flexDirection="column" alignItems="stretch" height={40} paddingBottom={24} paddingHorizontal={12} >
-                <div ref={container} />
+        <XView>
+            <XView
+                paddingTop={12}
+                paddingHorizontal={24}
+            >
+                <XView flexDirection="column" alignItems="stretch" height={40} paddingHorizontal={12} paddingVertical={10} backgroundColor="var(--backgroundTertiary)" borderRadius={4}>
+                    <div ref={container} />
+                </XView>
+                {error && (<XView marginTop={8} marginHorizontal={16} color="var(--accentNegative)" {...TextStyles.Caption}>{error}</XView>)}
+                {!modalCtx && <UButton text={text} onClick={handleSubmit} loading={loading} />}
             </XView>
-            <UButton text={props.text} onClick={onSubmit} loading={props.loading} />
+            {!!modalCtx && (
+                <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} backgroundColor="var(--backgroundTertiary)" justifyContent="flex-end" flexDirection="row">
+                    <UButton text="Cancel" onClick={() => modalCtx.hide()} style="secondary" size="large" />
+                    <UButton text={text} onClick={handleSubmit} loading={loading} size="large" />
+                </XView>
+            )}
         </XView>
     );
 });

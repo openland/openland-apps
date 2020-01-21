@@ -71,9 +71,9 @@ export const CardView = React.memo((props: CardViewProps) => {
                             {getPayhmentMethodName(brand)}
                         </span>
                     </XView>
-                    <XView {...TextStyles.Densed} color="var(--foregroundSecondary)" marginTop={4}>
+                    {/* <XView {...TextStyles.Densed} color="var(--foregroundSecondary)" marginTop={4}>
                         Default card
-                    </XView>
+                    </XView> */}
                 </XView>
                 <XView>
                     <UMoreButton
