@@ -20,6 +20,7 @@ export const TransactionView = React.memo((props: TransactionViewProps) => {
             description="Jan 14, 2020"
             avatar={{ photo: undefined, id: '1', title: 'Community creators' }}
             useRadius={true}
+            interactive={false}
             rightElement={
                 <XView alignItems="flex-end" paddingRight={8}>
                     <XView {...TextStyles.Label1} flexDirection="row">

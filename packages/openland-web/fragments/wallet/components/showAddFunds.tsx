@@ -46,6 +46,8 @@ const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
                 const stripe = Stripe(token);
                 let res = await stripe.confirmPaymentIntent(intent.cardDepositIntent.clientSecret);
                 if (res.paymentIntent) {
+                    // TODO: handle res.paymentIntent.status
+
                     await backoff(async () =>
                         await client.mutateDepositIntentCommit({ id: intent.cardDepositIntent.id })
                     );

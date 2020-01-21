@@ -52,6 +52,7 @@ export interface UListItemProps {
     hovered?: boolean;
     disabled?: boolean;
     paddingHorizontal?: number;
+    interactive?: boolean;
 }
 
 export const UListItem = React.memo((props: UListItemProps) => {
@@ -74,6 +75,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
         hovered,
         disabled,
         paddingHorizontal = 16,
+        interactive = true
     } = props;
     const height = large ? 80 : !!avatar || !!iconBackground ? 56 : 48;
 
@@ -192,6 +194,21 @@ export const UListItem = React.memo((props: UListItemProps) => {
                     alignItems="center"
                     flexDirection="row"
                     opacity={0.4}
+                >
+                    {content}
+                </XView>
+            </div>
+        );
+    }
+
+    if (!interactive) {
+        return (
+            <div ref={containerRef} className="x">
+                <XView
+                    height={height}
+                    paddingHorizontal={paddingHorizontal}
+                    alignItems="center"
+                    flexDirection="row"
                 >
                     {content}
                 </XView>
