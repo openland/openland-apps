@@ -10,6 +10,7 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
 import { AppStorage as Storage } from 'openland-y-runtime/AppStorage';
+import { useClient } from 'openland-mobile/utils/useClient';
 
 const Logo = React.memo(() => {
     const theme = React.useContext(ThemeContext);
@@ -68,12 +69,14 @@ const Logo = React.memo(() => {
 
 const SignDiscoverPage = React.memo((props: PageProps) => {
     const area = React.useContext(ASSafeAreaContext);
+    const client = useClient();
 
     const isIos = Platform.OS === 'ios';
     const isXGen = isIos && Dimensions.get('window').height > 800;
     const defaultIosPadding = isXGen ? 34 : 16;
 
     const onSkip = async () => {
+        client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
         await Storage.writeKey('discover_start', null);
         props.router.pushAndResetRoot('Home');
     };

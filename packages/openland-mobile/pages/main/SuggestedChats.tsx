@@ -14,6 +14,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { trackEvent } from 'openland-mobile/analytics';
 import { AppStorage as Storage } from 'openland-y-runtime/AppStorage';
+import { useClient } from 'openland-mobile/utils/useClient';
 
 interface ChatProps {
     item: RoomShort_SharedRoom;
@@ -129,10 +130,12 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
         [selected],
     );
 
-    const toHome = React.useCallback(() => {
-        Storage.writeKey('discover_start', null).then(() => {
-            props.router.pushAndResetRoot('Home');
-        });
+    const client = useClient();
+
+    const toHome = React.useCallback(async () => {
+        client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
+        await Storage.writeKey('discover_start', null);
+        props.router.pushAndResetRoot('Home');
     }, []);
 
     const skip = React.useCallback(() => {
