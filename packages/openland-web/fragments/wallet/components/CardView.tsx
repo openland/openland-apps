@@ -83,7 +83,7 @@ export const CardView = React.memo((props: CardViewProps) => {
                 </XView>
             </XView>
             <div className={cx(info, TextBody)}>
-                <span className={dots}>••••</span> {last4}, {expMonth}/{year}
+                <span className={dots}>••</span> {last4}, {expMonth}/{year}
             </div>
             <div className={brandLogo}>
                 <BrandLogo brand={brand} />
