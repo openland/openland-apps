@@ -92,9 +92,9 @@ const EmailStartComponent = React.memo((props: PageProps) => {
     const submitForm = () =>
         form.doAction(async () => {
             try {
-                validateEmail(emailField.value);
+                validateEmail(emailField.value.trim());
 
-                email = emailField.value;
+                email = emailField.value.trim();
 
                 await requestActivationCode();
                 props.router.push('EmailCode');
@@ -160,13 +160,13 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
     const submitForm = () =>
         form.doAction(async () => {
             try {
-                validateCode(codeField.value);
+                validateCode(codeField.value.trim());
 
                 let res = await http({
                     url: 'https://' + API_HOST + '/auth/checkCode',
                     body: {
                         session: session,
-                        code: codeField.value,
+                        code: codeField.value.trim(),
                     },
                     method: 'POST',
                 });
@@ -211,7 +211,9 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
 
     const avatarSrc =
         photoSrc && photoCrop
-            ? `https://ucarecdn.com/${photoSrc}/-/crop/${photoCrop.w}x${photoCrop.h}/${photoCrop.x},${photoCrop.y}/-/scale_crop/72x72/center/`
+            ? `https://ucarecdn.com/${photoSrc}/-/crop/${photoCrop.w}x${photoCrop.h}/${
+                  photoCrop.x
+              },${photoCrop.y}/-/scale_crop/72x72/center/`
             : null;
 
     return (
@@ -233,7 +235,9 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
                         <View marginTop={-8} marginBottom={32}>
                             <ZAvatar size="xx-large" src={avatarSrc} />
                         </View>
-                    ) : undefined
+                    ) : (
+                        undefined
+                    )
                 }
                 scalableContentSize={120}
             >

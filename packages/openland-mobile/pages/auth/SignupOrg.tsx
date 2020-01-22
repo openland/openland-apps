@@ -16,7 +16,28 @@ const SignupOrgComponent = React.memo((props: PageProps) => {
     const form = useForm();
     const nameField = useField('name', '', form);
 
-    const canSkip = nameField.value.length <= 0;
+    const endSaving = async () => {
+        const client = getClient();
+
+        await client.refetchAccount();
+        await client.refetchAccountSettings();
+
+        if (props.router.params.action) {
+            await props.router.params.action(props.router);
+        }
+    };
+
+    const handleSkip = async () => {
+        const client = getClient();
+        await client.mutateCreateOrganization({
+            input: {
+                name: getMessenger().engine.user.name,
+                personal: false,
+                isCommunity: false,
+            },
+        });
+        await endSaving();
+    };
 
     const handleSave = () =>
         form.doAction(async () => {
@@ -24,18 +45,12 @@ const SignupOrgComponent = React.memo((props: PageProps) => {
 
             await client.mutateCreateOrganization({
                 input: {
-                    name: canSkip ? getMessenger().engine.user.name : nameField.value,
+                    name: nameField.value.trim(),
                     personal: false,
                     isCommunity: false,
                 },
             });
-
-            await client.refetchAccount();
-            await client.refetchAccountSettings();
-
-            if (props.router.params.action) {
-                await props.router.params.action(props.router);
-            }
+            await endSaving();
         });
 
     return (
@@ -44,16 +59,11 @@ const SignupOrgComponent = React.memo((props: PageProps) => {
                 title="Where do you work?"
                 subtitle="Give others a bit of context about you"
                 autoScrollToBottom={true}
-                header={
-                    <SHeaderButton
-                        key={'btn-' + canSkip}
-                        title={canSkip ? 'Skip' : 'Next'}
-                        onPress={handleSave}
-                    />
-                }
+                header={<SHeaderButton key="btn-create-org" title="Skip" onPress={handleSkip} />}
                 floatContent={
                     <ZRoundedButton
-                        title={canSkip ? 'Skip' : 'Next'}
+                        title="Next"
+                        enabled={!!nameField.value.trim()}
                         size="large"
                         onPress={handleSave}
                     />

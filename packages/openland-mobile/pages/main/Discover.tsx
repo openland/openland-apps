@@ -216,11 +216,11 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
         [selected],
     );
 
-    const disabled = !selected.size && props.exclude.size <= 1;
+    const enabled = !!selected.size;
 
     const next = React.useCallback(
         () => {
-            if (disabled) {
+            if (!enabled) {
                 return;
             }
             (async () => {
@@ -231,7 +231,7 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
                 props.router.push(nextPath, params);
             })();
         },
-        [selected, disabled],
+        [selected, enabled],
     );
 
     const { title, subtitle } = props.group;
@@ -276,7 +276,7 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
                 </View>
             </ScrollView>
             <View padding={16} paddingBottom={isIos ? defaultIosPadding : area.bottom + 16}>
-                <ZRoundedButton size="large" title="Next" enabled={!disabled} onPress={next} />
+                <ZRoundedButton size="large" title="Next" enabled={enabled} onPress={next} />
             </View>
         </>
     );
