@@ -73,20 +73,25 @@ class RNStripe: RCTEventEmitter, STPAuthenticationContext {
     paymentHandler.confirmSetupIntent(withParams: setupIntentParams, authenticationContext: self) { status, setupIntent, error in
         switch (status) {
         case .failed:
-            // Setup failed
-            break
+          var dict:[String:Any] = [:]
+          dict["clientSecret"] = clientSecret
+          dict["status"] = "failed"
+          dict["message"] = "We are unable to authenticate your payment method. Please choose a different payment method and try again."
+          self.sendEvent(withName: "setup_intent", body: dict)
+          break
         case .canceled:
-            // Setup canceled
-            break
+          var dict:[String:Any] = [:]
+          dict["clientSecret"] = clientSecret
+          dict["status"] = "failed"
+          self.sendEvent(withName: "setup_intent", body: dict)
+          break
         case .succeeded:
-          
-            var dict:[String:Any] = [:]
-            dict["clientSecret"] = clientSecret
-            dict["id"] = setupIntent!.paymentMethodID!
-            dict["status"] = "success"
-            self.sendEvent(withName: "setup_intent", body: dict)
-          
-            break
+          var dict:[String:Any] = [:]
+          dict["clientSecret"] = clientSecret
+          dict["id"] = setupIntent!.paymentMethodID!
+          dict["status"] = "success"
+          self.sendEvent(withName: "setup_intent", body: dict)
+          break
         @unknown default:
             fatalError()
             break
