@@ -360,7 +360,7 @@ export default ({ small }: { small?: boolean }) => (
                         </ul>
                     </div>
                     <div className={XViewWrapper}>
-                        <XView as="div" path="/invite/h2BGtL">
+                        <XView as="div" path="/signin">
                             <span className={button}>Start community</span>
                         </XView>
                     </div>
@@ -380,7 +380,7 @@ export default ({ small }: { small?: boolean }) => (
                         friends
                     </p>
                     <div className={XViewWrapper}>
-                        <XView as="div" path="/invite/h2BGtL">
+                        <XView as="div" path="/signin">
                             <span className={button}>Start community</span>
                         </XView>
                     </div>

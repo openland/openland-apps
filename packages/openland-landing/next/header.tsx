@@ -331,7 +331,7 @@ export default ({ isGrey, startLink, discoverLink }: Props) => {
                                 <ul className={mobileMenuList}>
                                     <li className={mobileMenuItem}>
                                         <span className={cx(mobileMenuLink, blue)}>
-                                            <XView path="/invite/h2BGtL">Sign up</XView>
+                                            <XView path="/signin">Sign up</XView>
                                         </span>
                                     </li>
                                     <li className={mobileMenuItem}>

@@ -190,7 +190,7 @@ export default () => (
                     </ul>
                 </div>
                 <span className={button}>
-                    <XView path="/invite/h2BGtL">Join Openland</XView>
+                    <XView path="/signin">Join Openland</XView>
                 </span>
                 <div className={dotsRightSmall} />
             </div>

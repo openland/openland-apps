@@ -278,7 +278,7 @@ export default () => {
                         <div className={webApp}>
                             <h2 className={subheading}>Web</h2>
 
-                            <XView path="/invite/h2BGtL">
+                            <XView path="/signin">
                                 <span className={button}>Join Openland</span>
                             </XView>
                         </div>

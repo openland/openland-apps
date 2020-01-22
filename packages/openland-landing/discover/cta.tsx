@@ -222,7 +222,7 @@ export default () => (
                 </h1>
                 <p className={text}>Meet inspiring people, learn and&nbsp;get&nbsp;help</p>
                 <div className={buttons}>
-                    <XView path="/invite/h2BGtL">
+                    <XView path="/signin">
                         <span className={button}>Join Openland</span>
                     </XView>
                 </div>
