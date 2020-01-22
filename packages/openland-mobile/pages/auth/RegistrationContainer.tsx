@@ -145,7 +145,7 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
                     </View>
                 )}
                 {isIos && (
-                    <Animated.View paddingHorizontal={16} paddingBottom={floatPadding}>
+                    <Animated.View paddingHorizontal={16} paddingBottom={floatPadding} paddingTop={16}>
                         {props.floatContent}
                     </Animated.View>
                 )}

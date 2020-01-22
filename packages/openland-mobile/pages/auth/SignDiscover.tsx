@@ -92,7 +92,7 @@ const SignDiscoverPage = React.memo((props: PageProps) => {
                 <Logo />
             </View>
             <View padding={16} paddingBottom={isIos ? defaultIosPadding : area.bottom + 16}>
-                <ZRoundedButton size="large" title="Next" onPress={onNext} />
+                <ZRoundedButton size="large" title="Discover communities" onPress={onNext} />
             </View>
         </>
     );
