@@ -84,11 +84,13 @@ export const CommentView = React.memo((props: CommentViewProps) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
 
     React.useLayoutEffect(() => {
-        if (highlighted || (generation && comment.sender.id === messenger.user.id)) {
-            if (containerRef.current) {
-                containerRef.current.scrollIntoView({ behavior: 'auto', block: 'nearest' });
+        setTimeout(() => {
+            if (highlighted || (generation && comment.sender.id === messenger.user.id)) {
+                if (containerRef.current) {
+                    containerRef.current.scrollIntoView({ behavior: 'auto', block: 'nearest' });
+                }
             }
-        }
+        }, 300);
     }, []);
 
     React.useEffect(
