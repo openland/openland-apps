@@ -10,10 +10,7 @@ import {
     Platform,
     Dimensions,
 } from 'react-native';
-import {
-    // RadiusStyles,
-    TextStyles,
-} from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { SRouter } from 'react-native-s/SRouter';
@@ -31,51 +28,7 @@ interface TagButtonProps {
     onPress: (tag: Tag) => void;
 }
 
-// const TagButton = React.memo((props: TagButtonProps) => {
-//     const style: 'fill' | 'border' = 'fill' as any;
-//
-//     const theme = React.useContext(ThemeContext);
-//     const callback = () => {
-//         props.onPress(props.tag);
-//     };
-//     return (
-//         <TouchableOpacity onPress={callback} activeOpacity={0.6}>
-//             <View
-//                 style={{
-//                     marginRight: 10,
-//                     marginBottom: 12,
-//                     paddingHorizontal: 16,
-//                     paddingVertical: 10,
-//                     borderRadius: RadiusStyles.Medium,
-//                     backgroundColor:
-//                         props.tag.id === 'button_more'
-//                             ? undefined
-//                             : props.selected
-//                                 ? style === 'fill'
-//                                     ? theme.accentPrimary
-//                                     : theme.backgroundTertiary
-//                                 : theme.backgroundTertiary,
-//                 }}
-//             >
-//                 <Text
-//                     allowFontScaling={false}
-//                     style={{
-//                         ...TextStyles.Label1,
-//                         color: props.selected
-//                             ? style === 'fill'
-//                                 ? theme.foregroundInverted
-//                                 : theme.foregroundSecondary
-//                             : theme.foregroundSecondary,
-//                     }}
-//                 >
-//                     {props.tag.title}
-//                 </Text>
-//             </View>
-//         </TouchableOpacity>
-//     );
-// });
-
-const CheapTag = React.memo((props: TagButtonProps) => {
+const TagButton = React.memo((props: TagButtonProps) => {
     const theme = React.useContext(ThemeContext);
     const [textStyle] = React.useState(new Animated.Value(props.selected ? 6 : 0));
     const [imageStyle] = React.useState(new Animated.Value(props.selected ? 1 : 0));
@@ -113,12 +66,9 @@ const CheapTag = React.memo((props: TagButtonProps) => {
                     paddingLeft: 24,
                     paddingRight: 24,
                     borderRadius: 100,
-                    backgroundColor:
-                        props.tag.id === 'button_more'
-                            ? undefined
-                            : props.selected
-                                ? theme.accentPrimary
-                                : theme.backgroundTertiary,
+                    backgroundColor: props.selected
+                        ? theme.accentPrimary
+                        : theme.backgroundTertiary,
                 }}
             >
                 <Animated.Image
@@ -156,14 +106,6 @@ interface TagsCloudProps {
 }
 
 const TagsCloud = React.memo((props: TagsCloudProps) => {
-    const [showAll, setShowAll] = React.useState(false);
-    const onShowAll = React.useCallback(
-        () => {
-            setShowAll(!showAll);
-        },
-        [showAll],
-    );
-
     const onTagPress = (tag: Tag) => {
         let selected = props.selected.has(tag.id);
 
@@ -177,17 +119,14 @@ const TagsCloud = React.memo((props: TagsCloudProps) => {
 
     return (
         <View flexDirection="row" flexWrap="wrap" justifyContent="center">
-            {props.tagsGroup.tags.filter((t, i) => showAll || i < 17).map(tag => (
-                <CheapTag tag={tag} onPress={onTagPress} selected={props.selected.has(tag.id)} />
+            {props.tagsGroup.tags.map(tag => (
+                <TagButton
+                    tag={tag}
+                    onPress={onTagPress}
+                    selected={props.selected.has(tag.id)}
+                    key={tag.id}
+                />
             ))}
-            {props.tagsGroup.tags.length > 17 &&
-                !showAll && (
-                    <CheapTag
-                        tag={{ title: showAll ? 'Less' : 'More', id: 'button_more' }}
-                        onPress={onShowAll}
-                        selected={false}
-                    />
-                )}
         </View>
     );
 });
@@ -216,7 +155,7 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
         [selected],
     );
 
-    const enabled = !!selected.size;
+    const enabled = props.group.tags.some(r => selected.has(r.id));
 
     const next = React.useCallback(
         () => {
@@ -231,7 +170,7 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
                 props.router.push(nextPath, params);
             })();
         },
-        [selected, enabled],
+        [selected],
     );
 
     const { title, subtitle } = props.group;
