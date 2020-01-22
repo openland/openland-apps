@@ -20,6 +20,7 @@ import android.content.res.Configuration
 import com.stripe.android.ApiResultCallback
 import com.stripe.android.SetupIntentResult
 import com.stripe.android.Stripe
+import com.stripe.android.StripeIntentResult
 import com.stripe.android.model.StripeIntent
 
 class MainActivity : ReactActivity() {
@@ -109,46 +110,58 @@ class MainActivity : ReactActivity() {
         pendingIntent = intent
     }
 
+    private fun reportSetupIntentResult(clientSecret: String, status: String, id: String?, message: String?) {
+        val map = WritableNativeMap()
+        map.putString("clientSecret", clientSecret)
+        map.putString("status", status)
+        if (id != null) {
+            map.putString("id", id)
+        }
+        if (message != null) {
+            map.putString("message", message)
+        }
+        (applicationContext as MainApplication)
+                .reactNativeHost
+                .reactInstanceManager
+                .currentReactContext
+                ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                ?.emit("openland_stripe_setup_intent", map)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+        val defaultError = "We are unable to authenticate your payment method. Please choose a different payment method and try again."
+        val clientSecret = data?.extras?.getString("client_secret")
 
         this.stripe.onSetupResult(requestCode, data, object : ApiResultCallback<SetupIntentResult> {
             override fun onSuccess(result: SetupIntentResult) {
                 val setupIntent = result.intent
                 val status = setupIntent.status
 
-
-                val map = WritableNativeMap()
-                map.putString("clientSecret", data!!.extras!!.getString("client_secret")!!)
                 if (status == StripeIntent.Status.Succeeded) {
-                    map.putString("status", "success")
-                    map.putString("id", result.intent.paymentMethodId!!)
+                    reportSetupIntentResult(clientSecret!!, "success", result.intent.paymentMethodId!!, null)
                 } else {
-                    map.putString("status", "failed")
-                }
 
-//                if (height > 0) {
-//                    map.putDouble("height", (height / resources.displayMetrics.density).toDouble())
-//                } else {
-//                    map.putDouble("height", 0.0)
-//                }
-                (applicationContext as MainApplication)
-                        .reactNativeHost
-                        .reactInstanceManager
-                        .currentReactContext
-                        ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                        ?.emit("openland_stripe_setup_intent", map)
-//
-//                if (status == StripeIntent.Status.Succeeded) {
-//
-//                    // Setup completed successfully
-//                } else if (status == StripeIntent.Status.RequiresPaymentMethod) {
-//                    // Setup failed
-//                }
+                    if (result.outcome == StripeIntentResult.Outcome.CANCELED) {
+                        // Special case for canceled authentication - sending failed state without
+                        // error message that is not going to display error message
+
+                        reportSetupIntentResult(clientSecret!!, "failed", null, null)
+                    } else {
+                        // We expect that any other state is failed with generic message
+
+                        // NOTE: Error messages are not very user friendly and we use just generic
+                        // error text instead
+                        reportSetupIntentResult(clientSecret!!, "failed", null, defaultError)
+                    }
+                }
             }
 
             override fun onError(e: Exception) {
-                // Setup request failed
+                // This is some kind of fatal error
+                e.printStackTrace()
+                reportSetupIntentResult(clientSecret!!, "failed", null, defaultError)
             }
         })
     }

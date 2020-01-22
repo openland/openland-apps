@@ -1,5 +1,6 @@
 package com.openland.react.stripe
 
+import android.util.Log
 import android.widget.FrameLayout
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
@@ -11,15 +12,17 @@ import com.openland.app.MainApplication
 import com.openland.react.runOnUIThread
 import com.stripe.android.model.ConfirmSetupIntentParams
 import com.stripe.android.view.CardMultilineWidget
-import java.util.*
+import java.lang.ref.WeakReference
+import kotlin.collections.HashMap
 
 object StripeRegistry {
-    val views = WeakHashMap<String, StripeCardView>()
+    val views = HashMap<String, WeakReference<StripeCardView>>()
 }
 
 class StripeCardView(context: ReactContext) : FrameLayout(context) {
 
     val input = CardMultilineWidget(context)
+    var key: String? = null
 
     init {
         this.addView(this.input, LayoutParams(
@@ -29,7 +32,8 @@ class StripeCardView(context: ReactContext) : FrameLayout(context) {
     }
 
     fun setCallbackKey(src: String) {
-        StripeRegistry.views[src] = this
+        this.key = src
+        StripeRegistry.views[src] = WeakReference(this)
     }
 }
 
@@ -58,9 +62,15 @@ class StripeModule(reactContext: ReactApplicationContext) : ReactContextBaseJava
     @ReactMethod
     fun confirmSetupIntent(callbackKey: String, clientSecret: String) {
         runOnUIThread {
-            val pparams = StripeRegistry.views[callbackKey]?.input?.paymentMethodCreateParams
+            val pparams = StripeRegistry.views[callbackKey]?.get()?.input?.paymentMethodCreateParams
             val activity = reactApplicationContext.currentActivity!! as MainActivity
+
             if (pparams === null) {
+
+                // Input errors
+                // Sending failed state without message to trigger built in
+                // error display instead
+
                 val map = WritableNativeMap()
                 map.putString("clientSecret", clientSecret)
                 map.putString("status", "failed")
