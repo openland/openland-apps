@@ -90,7 +90,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                     containerRef.current.scrollIntoView({ behavior: 'auto', block: 'nearest' });
                 }
             }
-        }, 250);
+        }, 300);
     }, []);
 
     React.useEffect(
