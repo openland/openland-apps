@@ -30,14 +30,14 @@ const PageAnimator = React.memo(
                         if (active) {
                             props.dispatch({ type: 'entered', key: props.k });
                         }
-                    }, 250);
+                    }, 400);
                 }
                 if (props.state === 'exiting' || props.removing) {
                     setTimeout(() => {
                         if (active) {
                             props.dispatch({ type: 'exited', key: props.k });
                         }
-                    }, 250);
+                    }, 400);
                 }
                 return () => {
                     active = false;
