@@ -1,0 +1,7 @@
+mutation RemoveCard($id: ID!) {
+  cardRemove(id: $id) {
+    __typename
+    deleted
+    id
+  }
+}

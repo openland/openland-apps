@@ -21,6 +21,7 @@ import org.wonday.pdf.RCTPdfView;
 import com.ocetnik.timer.BackgroundTimerPackage;
 import com.mkuczera.RNReactNativeHapticFeedbackPackage;
 import com.openland.lmdb.LMDB;
+import com.stripe.android.PaymentConfiguration;
 import com.zxcpoiu.incallmanager.InCallManagerPackage;
 
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
@@ -44,7 +45,6 @@ import com.openland.react.RNSPackage;
 
 import dk.madslee.imageCapInsets.RCTImageCapInsetPackage;
 
-import com.openland.react.threads.RNThreadPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.cmcewen.blurview.BlurViewPackage;
@@ -77,8 +77,8 @@ public class MainApplication extends Application implements ShareApplication, Re
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-            new RNLocationPackage(),
-            new RNVersionNumberPackage(),
+                    new RNLocationPackage(),
+                    new RNVersionNumberPackage(),
                     new CameraRollPackage(),
                     new RNGoogleSigninPackage(),
                     new ReactVideoPackage(),
@@ -90,7 +90,6 @@ public class MainApplication extends Application implements ShareApplication, Re
                     new ReactNativeDocumentPicker(),
                     new WebRTCModulePackage(),
                     new AndroidOpenSettingsPackage(),
-                    new RNThreadPackage(mReactNativeHost),
                     new ReactNativeRestartPackage(),
                     new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
                     new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
@@ -143,6 +142,9 @@ public class MainApplication extends Application implements ShareApplication, Re
         // App Center
         AppCenterReactNativeShared.configureAppCenter(this);
         AppCenter.start(Distribute.class);
+
+        // Stripe
+        PaymentConfiguration.init(this, "pk_test_y80EsXGYQdMKMcJ5lifEM4jx");
 
         Log.d("Native", "BOOTSTRAP: app start done");
     }

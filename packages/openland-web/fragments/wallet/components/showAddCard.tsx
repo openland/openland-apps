@@ -24,7 +24,7 @@ const AddCardComponent = React.memo((props: { ctx: XModalController }) => {
                         card: element
                     }
                 }));
-                if (method.error) {
+                if (method.error) { // Unfortunatelly we can't detect if user just canceled 3D Secure
                     setError(method.error.message);
                     return;
                 }

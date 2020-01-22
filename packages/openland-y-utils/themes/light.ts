@@ -89,8 +89,8 @@ export const ThemeLight: ThemeGlobal = {
     outgoingForegroundSecondary: 'rgba(255, 255, 255, 0.56)',
     outgoingForegroundTertiary: 'rgba(255, 255, 255, 0.36)',
 
-    gradient0to100Start: 'rgba(242, 243, 245, 0)',
-    gradient0to100End: 'rgba(242, 243, 245, 0.56)',
+    gradient0to100Start: 'rgba(201, 204, 209, 0)',
+    gradient0to100End: 'rgba(201, 204, 209, 0.14)',
 
     blurType: 'light',
     keyboardAppearance: 'light',

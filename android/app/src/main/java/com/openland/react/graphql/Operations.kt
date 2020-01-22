@@ -165,6 +165,7 @@ object Operations {
         if (name == "RefreshAppToken") return RefreshAppToken
         if (name == "RegisterPush") return RegisterPush
         if (name == "RegisterWebPush") return RegisterWebPush
+        if (name == "RemoveCard") return RemoveCard
         if (name == "ReportContent") return ReportContent
         if (name == "ReportOnline") return ReportOnline
         if (name == "RoomAddMembers") return RoomAddMembers

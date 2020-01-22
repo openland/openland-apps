@@ -282,6 +282,9 @@ dependencies {
     // Databases
     implementation 'com.openland:lmdb-android:1.0.1'
 
+    // Stripe
+    implementation 'com.stripe:stripe-android:13.1.0'
+
     // Hermes
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";

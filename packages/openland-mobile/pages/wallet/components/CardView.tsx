@@ -23,13 +23,21 @@ export const CardView = (props: CardViewProps) => {
 
         builder.view(ctx => (
             <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} paddingTop={16} paddingBottom={32} alignItems="center" marginBottom={16}>
-                <View width={263} height={166} backgroundColor={theme.accentPay} borderRadius={RadiusStyles.Medium} paddingTop={20} paddingHorizontal={24}>
-                    <Text style={{ ...TextStyles.Title2, color: theme.type === 'Dark' ? theme.backgroundPrimary : theme.foregroundInverted }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
+                <View width={263} height={166} backgroundColor={theme.backgroundTertiaryTrans} borderRadius={RadiusStyles.Medium} paddingTop={20} paddingHorizontal={24}>
+                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
                         {getPayhmentMethodName(brand)}
                     </Text>
 
+                    {isDefault && (
+                        <View position="absolute" top={50} left={24}>
+                            <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} allowFontScaling={false}>
+                                Default
+                            </Text>
+                        </View>
+                    )}
+
                     <View position="absolute" bottom={20} left={24}>
-                        <Text style={{ ...TextStyles.Subhead, color: theme.type === 'Dark' ? theme.backgroundPrimary : theme.foregroundInverted }} allowFontScaling={false}>
+                        <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} allowFontScaling={false}>
                             •• {last4}, {expMonth}/{year}
                         </Text>
                     </View>

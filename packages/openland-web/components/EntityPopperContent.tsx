@@ -56,6 +56,7 @@ const userContainer = css`
     flex-direction: column;
     max-width: 400px;
     min-width: 360px;
+    height: 144px;
     position: relative;
     border-radius: 8px;
     overflow: hidden;

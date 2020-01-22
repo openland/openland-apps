@@ -11,6 +11,16 @@ import { TransactionView } from './components/TransactionView';
 import { showAddFunds } from './components/showAddFunds';
 import { Money } from 'openland-y-utils/wallet/Money';
 import { TextStyles } from 'openland-web/utils/TextStyles';
+import { css } from 'linaria';
+
+const cardContainer = css`
+    width: 50%;
+    padding: 0 8px 16px;
+
+    @media (max-width: 560px) {
+        width: 100%;
+    }
+`;
 
 export const WalletFragment = React.memo(() => {
     const client = useClient();
@@ -45,9 +55,9 @@ export const WalletFragment = React.memo(() => {
                     )}
                     <XView paddingTop={8} paddingHorizontal={8} flexDirection="row" flexWrap="wrap">
                         {cards.map(card => (
-                            <XView key={card.id} width="50%" paddingHorizontal={8} paddingBottom={16}>
+                            <div className={cardContainer} key={card.id}>
                                 <CardView item={card} />
-                            </XView>
+                            </div>
                         ))}
                     </XView>
                 </UListGroup>

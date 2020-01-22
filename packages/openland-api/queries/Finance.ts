@@ -9,6 +9,7 @@ export const MyCardsQuery = gql`
             expYear
             expMonth
             isDefault
+            deleted
         }
     }
 `;
@@ -42,6 +43,15 @@ export const CreateDepositIntentMutation = gql`
 export const DepositIntentCommitMutation = gql`
     mutation DepositIntentCommit($id: ID!) {
         cardDepositIntentCommit(id: $id)
+    }
+`;
+
+export const RemoveCardMutation = gql`
+    mutation RemoveCard($id: ID!) {
+        cardRemove(id: $id) {
+            id
+            deleted
+        }
     }
 `;
 

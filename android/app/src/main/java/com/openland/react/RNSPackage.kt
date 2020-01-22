@@ -5,8 +5,6 @@ import com.facebook.litho.config.ComponentsConfiguration
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.NativeModule
 import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.jstasks.HeadlessJsTaskContext
-import com.facebook.react.modules.core.Timing
 import com.facebook.react.uimanager.ReactShadowNode
 import com.facebook.react.uimanager.ViewManager
 import com.openland.react.async.AsyncConfigManager
@@ -16,6 +14,8 @@ import com.openland.react.async.AsyncViewManager
 import com.openland.react.anim.RNSAnimatedViewManager
 import com.openland.react.anim.RNSAnimatedViewViewManager
 import com.openland.react.graphql.RNGraphQL
+import com.openland.react.stripe.StripeCardViewManager
+import com.openland.react.stripe.StripeModule
 import com.openland.react.window.BottomSafeAreaProvider
 import com.openland.react.window.RNSWindowManager
 
@@ -35,7 +35,8 @@ class RNSPackage : ReactPackage {
                 RNSWindowManager(reactContext),
                 BottomSafeAreaProvider(reactContext),
                 BenchmarkModule(reactContext),
-                RNGraphQL(reactContext)
+                RNGraphQL(reactContext),
+                StripeModule(reactContext)
         )
     }
 
@@ -44,7 +45,8 @@ class RNSPackage : ReactPackage {
                 AsyncViewManager(),
                 AsyncListViewManager(),
                 RNSAnimatedViewViewManager.sharedInstance,
-                SplashViewManager()
+                SplashViewManager(),
+                StripeCardViewManager()
         ) as MutableList<ViewManager<View, ReactShadowNode<*>>>
     }
 }

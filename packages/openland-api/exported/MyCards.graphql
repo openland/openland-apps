@@ -2,6 +2,7 @@ query MyCards {
   myCards {
     __typename
     brand
+    deleted
     expMonth
     expYear
     id

@@ -13,12 +13,14 @@ import { RadioButtonsSelect } from 'openland-web/fragments/account/components/Ra
 import { getPayhmentMethodName } from 'openland-y-utils/wallet/brands';
 
 const token = 'pk_test_y80EsXGYQdMKMcJ5lifEM4jx';
+const defaultError = 'We are unable to authenticate your payment method. Please choose a different payment method and try again.';
 
 const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
     let client = useClient();
     let cards = client.useMyCards({ fetchPolicy: 'cache-and-network' });
     let [amount, setAmount] = React.useState<1000 | 2000 | 5000>(1000);
     let [currentCard, setCurrentCard] = React.useState<string | undefined>(undefined);
+    let [error, setError] = React.useState<string | undefined>(undefined);
     const [loading, setLoading] = React.useState(false);
     if (currentCard === undefined) {
         if (cards.myCards.length > 0) {
@@ -40,24 +42,52 @@ const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
             (async () => {
                 setLoading(true);
 
-                let retry = uuid();
-                let intent = await backoff(async () =>
-                    await client.mutateCreateDepositIntent({ amount: amount, cardId: currentCard!, retryKey: retry })
-                );
-                const stripe = Stripe(token);
-                let res = await stripe.confirmPaymentIntent(intent.cardDepositIntent.clientSecret);
-                if (res.paymentIntent) {
-                    // TODO: handle res.paymentIntent.status
+                try {
+                    const stripe = Stripe(token);
 
+                    // Create deposit intent
+                    let retry = uuid();
+                    let intent = await backoff(async () =>
+                        await client.mutateCreateDepositIntent({ amount: amount, cardId: currentCard!, retryKey: retry })
+                    );
+
+                    // Confirming card payment
+                    let res = await (stripe as any).confirmCardPayment(intent.cardDepositIntent.clientSecret);
+
+                    // Error during confirmation
+                    if (res.error) {
+                        setError(res.error.message);
+                        setLoading(false);
+                        return;
+                    }
+
+                    // Unknown state/error
+                    if (!res.paymentIntent || res.paymentIntent.status !== 'succeeded') {
+                        setError(defaultError);
+                        setLoading(false);
+                        return;
+                    }
+
+                    // Report commit to backend
                     await backoff(async () =>
                         await client.mutateDepositIntentCommit({ id: intent.cardDepositIntent.id })
                     );
+
+                    // Reload wallet
                     let w = await client.refetchMyWallet();
+
+                    // Reload transactions
                     await client.refetchWalletTransactions({ id: w.myAccount.id, first: 20 });
 
-                    setLoading(false);
-
+                    // Exit
                     props.ctx.hide();
+                } catch (e) {
+                    
+                    // Unknown exception
+                    console.warn(e);
+                    setError(defaultError);
+                    setLoading(false);
+                    return;
                 }
             })();
         }
@@ -89,6 +119,7 @@ const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
                         }))}
                     />
                 </UListGroup>
+                {error && <XView>{error}</XView>}
             </XView>
             <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} backgroundColor="var(--backgroundTertiary)" justifyContent="flex-end" flexDirection="row">
                 <UButton text="Cancel" onClick={() => props.ctx.hide()} style="secondary" size="large" />

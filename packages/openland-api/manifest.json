@@ -975,10 +975,10 @@
       }
     },
     {
-      "signature": "ffd2c760586b92828c02e42b5aa1b0e226c1544029168aff5ee5dc4351a7273a",
-      "document": "query MyCards{myCards{__typename brand expMonth expYear id isDefault last4}}",
+      "signature": "2aa83554a511ab63d3f3bb39c8a20bb8dd4710e670e3617b1d63b982192e2e05",
+      "document": "query MyCards{myCards{__typename brand deleted expMonth expYear id isDefault last4}}",
       "metadata": {
-        "engineSignature": "query MyCards{myCards{__typename brand expMonth expYear id isDefault last4}}"
+        "engineSignature": "query MyCards{myCards{__typename brand deleted expMonth expYear id isDefault last4}}"
       }
     },
     {
@@ -1007,6 +1007,13 @@
       "document": "mutation DepositIntentCommit($id:ID!){cardDepositIntentCommit(id:$id)}",
       "metadata": {
         "engineSignature": "mutation DepositIntentCommit($id:ID!){cardDepositIntentCommit(id:$id)}"
+      }
+    },
+    {
+      "signature": "6b0bb4ed60b0b097c0c43ea2c8511e7bd1878f0b49d6da28e3734ff0f67a2151",
+      "document": "mutation RemoveCard($id:ID!){cardRemove(id:$id){__typename deleted id}}",
+      "metadata": {
+        "engineSignature": "mutation RemoveCard($id:ID!){cardRemove(id:$id){__typename deleted id}}"
       }
     },
     {

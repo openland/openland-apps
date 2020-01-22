@@ -38,6 +38,7 @@ target 'openland' do
   pod 'SwiftyJSON', '~> 4.0'
   pod 'Starscream', '~> 3.0.2'
   pod 'ReachabilitySwift'
+  pod 'Stripe'
 
   pod 'AppCenter', '~> 1.14.0'
   pod 'AppCenter/Crashes', '~> 1.14.0'

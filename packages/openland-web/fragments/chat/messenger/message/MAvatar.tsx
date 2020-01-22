@@ -3,8 +3,8 @@ import { css, cx } from 'linaria';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { PlaceholderColor } from 'openland-web/components/unicorn/UAvatar';
-import { showAvatarModal } from 'openland-web/components/showAvatarModal';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
+import { ULink } from 'openland-web/components/unicorn/ULink';
 
 const phBackgrounds = [
     css`background-image: linear-gradient(138deg, #ffb600, #ff8d00);`,
@@ -27,22 +27,35 @@ const avatarPlaceholderClass = css`
     color: #fff;
 `;
 
+const avatarLink = css`
+    cursor: pointer;
+
+    &,
+    &:hover,
+    &:focus,
+    &:active {
+        text-decoration: none;
+    }
+`;
+
 const AvatarPlaceholder = React.memo((props: { title: string, titleEmoji: any, id: string }) => {
     const { title, id } = props;
     const ph = extractPlaceholder(title);
     const phIndex = Math.abs(doSimpleHash(id)) % PlaceholderColor.length;
 
     return (
-        <div className={cx(avatarPlaceholderClass, phBackgrounds[phIndex])}>
-            {/* TODO: preprocess avatar placeholder in DS */}
-            {/* {titleEmoji ||
-                emoji({
-                    src: ph,
-                    size: 20,
-                    cache: true,
-                })} */}
-            {ph}
-        </div>
+        <ULink path={`/${id}`} className={avatarLink}>
+            <div className={cx(avatarPlaceholderClass, phBackgrounds[phIndex])}>
+                {/* TODO: preprocess avatar placeholder in DS */}
+                {/* {titleEmoji ||
+                    emoji({
+                        src: ph,
+                        size: 20,
+                        cache: true,
+                    })} */}
+                {ph}
+            </div>
+        </ULink>
     );
 });
 
@@ -79,24 +92,19 @@ const imageWrapper = css`
     }
 `;
 
-const AvatarImage = React.memo((props: { photo: string }) => {
+const AvatarImage = React.memo((props: { photo: string, id: string}) => {
     let ops = '-/format/auto/-/scale_crop/40x40/center/-/quality/best/-/format/jpeg/-/progressive/yes/';
     let opsRetina =
         '-/format/auto/-/scale_crop/80x80/center/-/quality/best/-/format/jpeg/-/progressive/yes/ 2x';
 
     return (
-        <div className={imageWrapper}>
+        <ULink className={cx(avatarLink, imageWrapper)} path={`/${props.id}`}>
             <ImgWithRetry
                 className={avatarImageClass}
                 src={props.photo + ops}
                 srcSet={props.photo + opsRetina}
-                onClick={(e) => {
-                    e.stopPropagation();
-
-                    showAvatarModal(props.photo);
-                }}
             />
-        </div>
+        </ULink>
     );
 });
 
@@ -110,7 +118,7 @@ interface MAvatarProps {
 export const MAvatar = (props: MAvatarProps) => {
     let res = <AvatarPlaceholder titleEmoji={props.senderNameEmojify} title={props.senderName} id={props.senderId} />;
     if (props.senderPhoto && !props.senderPhoto.startsWith('ph://')) {
-        res = <AvatarImage photo={props.senderPhoto} />;
+        res = <AvatarImage photo={props.senderPhoto} id={props.senderId} />;
     }
     return res;
 };

@@ -31,7 +31,8 @@ export interface SNavigationViewStyle {
 
 export class SNavigationView extends React.PureComponent<SNavigationViewProps, { presented?: NavigationManager }> {
 
-    private key: string = randomKey();
+    private presentKey: string = randomKey();
+    // private key: string = randomKey();
     private routing: SRouting;
 
     constructor(props: SNavigationViewProps) {
@@ -45,15 +46,16 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
     private handlePresented = (manager: NavigationManager) => {
         let unlock1 = this.props.routing.navigationManager.beginLock();
         let unlock2 = manager.beginLock();
+        this.presentKey = randomKey();
         SAnimated.beginTransaction();
         if (Platform.OS === 'ios') {
-            SAnimated.spring('presented-' + this.key, {
+            SAnimated.spring('presented-' + this.presentKey, {
                 property: 'translateY',
                 from: Dimensions.get('screen').height,
                 to: 0
             });
         } else {
-            SAnimated.timing('presented-' + this.key, {
+            SAnimated.timing('presented-' + this.presentKey, {
                 property: 'translateY',
                 from: Dimensions.get('screen').height,
                 to: 0,
@@ -71,13 +73,13 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
         let unlock1 = this.props.routing.navigationManager.beginLock();
         SAnimated.beginTransaction();
         if (Platform.OS === 'ios') {
-            SAnimated.spring('presented-' + this.key, {
+            SAnimated.spring('presented-' + this.presentKey, {
                 property: 'translateY',
                 from: 0,
                 to: Dimensions.get('screen').height
             });
         } else {
-            SAnimated.timing('presented-' + this.key, {
+            SAnimated.timing('presented-' + this.presentKey, {
                 property: 'translateY',
                 from: 0,
                 to: Dimensions.get('screen').height,
@@ -134,7 +136,7 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
             <View height={this.props.height} width={this.props.width} overflow="hidden">
                 <NavigationContainer manager={this.routing.navigationManager} style={style} width={this.props.width} height={this.props.height} />
                 {this.state.presented && (
-                    <SAnimated.View name={'presented-' + this.key} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+                    <SAnimated.View name={'presented-' + this.presentKey} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
                         <NavigationContainer manager={this.state.presented} style={style} width={this.props.width} height={this.props.height} />
                     </SAnimated.View>
                 )}

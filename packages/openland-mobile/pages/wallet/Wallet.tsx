@@ -21,7 +21,7 @@ const WalletComponent = React.memo<PageProps>((props) => {
             <SHeader title="Wallet" />
             <SScrollView>
                 <BalanceView amount={balance} />
-                <ZListGroup header="Payment methods" actionRight={{ title: 'Add card', onPress: () => { return; } }}>
+                <ZListGroup header="Payment methods" actionRight={{ title: 'Add card', onPress: () => { props.router.present('AddCard'); } }}>
                     {cards.map(card => <CardView key={card.id} item={card} />)}
                 </ZListGroup>
                 <ZListGroup header="Transactions">
