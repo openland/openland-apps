@@ -2465,6 +2465,7 @@ private let MyCardsSelector = obj(
             field("myCards", "myCards", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("brand", "brand", notNull(scalar("String"))),
+                    field("deleted", "deleted", notNull(scalar("Boolean"))),
                     field("expMonth", "expMonth", notNull(scalar("Int"))),
                     field("expYear", "expYear", notNull(scalar("Int"))),
                     field("id", "id", notNull(scalar("ID"))),
@@ -3689,6 +3690,13 @@ private let RegisterPushSelector = obj(
 private let RegisterWebPushSelector = obj(
             field("registerWebPush", "registerWebPush", arguments(fieldValue("endpoint", refValue("endpoint"))), notNull(scalar("String")))
         )
+private let RemoveCardSelector = obj(
+            field("cardRemove", "cardRemove", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("deleted", "deleted", notNull(scalar("Boolean"))),
+                    field("id", "id", notNull(scalar("ID")))
+                )))
+        )
 private let ReportContentSelector = obj(
             field("reportContent", "reportContent", arguments(fieldValue("contentId", refValue("contentId")), fieldValue("message", refValue("message")), fieldValue("type", refValue("type"))), scalar("Boolean"))
         )
@@ -4368,7 +4376,7 @@ class Operations {
     let MyCards = OperationDefinition(
         "MyCards",
         .query, 
-        "query MyCards{myCards{__typename brand expMonth expYear id isDefault last4}}",
+        "query MyCards{myCards{__typename brand deleted expMonth expYear id isDefault last4}}",
         MyCardsSelector
     )
     let MyNotificationCenter = OperationDefinition(
@@ -5079,6 +5087,12 @@ class Operations {
         "mutation RegisterWebPush($endpoint:String!){registerWebPush(endpoint:$endpoint)}",
         RegisterWebPushSelector
     )
+    let RemoveCard = OperationDefinition(
+        "RemoveCard",
+        .mutation, 
+        "mutation RemoveCard($id:ID!){cardRemove(id:$id){__typename deleted id}}",
+        RemoveCardSelector
+    )
     let ReportContent = OperationDefinition(
         "ReportContent",
         .mutation, 
@@ -5593,6 +5607,7 @@ class Operations {
         if name == "RefreshAppToken" { return RefreshAppToken }
         if name == "RegisterPush" { return RegisterPush }
         if name == "RegisterWebPush" { return RegisterWebPush }
+        if name == "RemoveCard" { return RemoveCard }
         if name == "ReportContent" { return ReportContent }
         if name == "ReportOnline" { return ReportOnline }
         if name == "RoomAddMembers" { return RoomAddMembers }

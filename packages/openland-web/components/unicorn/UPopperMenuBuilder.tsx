@@ -16,7 +16,7 @@ export interface MenuItem {
     title: string | JSX.Element;
     icon?: JSX.Element;
     onClick?: () => void;
-    action?: () => void;
+    action?: () => any;
     path?: string;
     closeAfterAction?: boolean;
     closeDelay?: number;

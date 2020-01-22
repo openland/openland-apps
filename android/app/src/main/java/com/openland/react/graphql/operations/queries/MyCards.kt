@@ -8,6 +8,7 @@ internal val MyCardsSelector = obj(
             field("myCards", "myCards", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("brand", "brand", notNull(scalar("String"))),
+                    field("deleted", "deleted", notNull(scalar("Boolean"))),
                     field("expMonth", "expMonth", notNull(scalar("Int"))),
                     field("expYear", "expYear", notNull(scalar("Int"))),
                     field("id", "id", notNull(scalar("ID"))),
@@ -18,6 +19,6 @@ internal val MyCardsSelector = obj(
 val MyCards = object: OperationDefinition {
     override val name = "MyCards"
     override val kind = OperationKind.QUERY
-    override val body = "query MyCards{myCards{__typename brand expMonth expYear id isDefault last4}}"
+    override val body = "query MyCards{myCards{__typename brand deleted expMonth expYear id isDefault last4}}"
     override val selector = MyCardsSelector
 }

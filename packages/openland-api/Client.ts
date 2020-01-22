@@ -2468,6 +2468,7 @@ const MyCardsSelector = obj(
             field('myCards', 'myCards', args(), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('brand', 'brand', args(), notNull(scalar('String'))),
+                    field('deleted', 'deleted', args(), notNull(scalar('Boolean'))),
                     field('expMonth', 'expMonth', args(), notNull(scalar('Int'))),
                     field('expYear', 'expYear', args(), notNull(scalar('Int'))),
                     field('id', 'id', args(), notNull(scalar('ID'))),
@@ -3692,6 +3693,13 @@ const RegisterPushSelector = obj(
 const RegisterWebPushSelector = obj(
             field('registerWebPush', 'registerWebPush', args(fieldValue("endpoint", refValue('endpoint'))), notNull(scalar('String')))
         );
+const RemoveCardSelector = obj(
+            field('cardRemove', 'cardRemove', args(fieldValue("id", refValue('id'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('deleted', 'deleted', args(), notNull(scalar('Boolean'))),
+                    field('id', 'id', args(), notNull(scalar('ID')))
+                )))
+        );
 const ReportContentSelector = obj(
             field('reportContent', 'reportContent', args(fieldValue("contentId", refValue('contentId')), fieldValue("message", refValue('message')), fieldValue("type", refValue('type'))), scalar('Boolean'))
         );
@@ -4367,7 +4375,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     MyCards: {
         kind: 'query',
         name: 'MyCards',
-        body: 'query MyCards{myCards{__typename brand expMonth expYear id isDefault last4}}',
+        body: 'query MyCards{myCards{__typename brand deleted expMonth expYear id isDefault last4}}',
         selector: MyCardsSelector
     },
     MyNotificationCenter: {
@@ -5077,6 +5085,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'RegisterWebPush',
         body: 'mutation RegisterWebPush($endpoint:String!){registerWebPush(endpoint:$endpoint)}',
         selector: RegisterWebPushSelector
+    },
+    RemoveCard: {
+        kind: 'mutation',
+        name: 'RemoveCard',
+        body: 'mutation RemoveCard($id:ID!){cardRemove(id:$id){__typename deleted id}}',
+        selector: RemoveCardSelector
     },
     ReportContent: {
         kind: 'mutation',

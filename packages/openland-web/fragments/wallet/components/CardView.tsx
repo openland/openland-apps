@@ -10,6 +10,7 @@ import { getPayhmentMethodName } from 'openland-y-utils/wallet/brands';
 import { BrandLogo } from './BrandLogo';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
+import { useClient } from 'openland-web/utils/useClient';
 
 const box = css`
     background: var(--backgroundTertiary);
@@ -44,6 +45,7 @@ interface CardViewProps {
 const CardMenu = React.memo((props: CardViewProps & { ctx: UPopperController }) => {
     const { ctx, item } = props;
     const builder = new UPopperMenuBuilder();
+    const client = useClient();
 
     if (!item.isDefault) {
         builder.item({
@@ -55,6 +57,10 @@ const CardMenu = React.memo((props: CardViewProps & { ctx: UPopperController }) 
     builder.item({
         title: 'Delete card',
         icon: <DeleteIcon />,
+        action: async () => {
+            await client.mutateRemoveCard({ id: item.id });
+            await client.refetchMyCards();
+        }
     });
 
     return builder.build(ctx, 200);
