@@ -107,14 +107,15 @@ interface TagsCloudProps {
 
 const TagsCloud = React.memo((props: TagsCloudProps) => {
     const onTagPress = (tag: Tag) => {
-        let selected = props.selected.has(tag.id);
+        let selected = new Set(props.selected);
+        let thisSelected = selected.has(tag.id);
 
-        if (selected) {
-            props.selected.delete(tag.id);
+        if (thisSelected) {
+            selected.delete(tag.id);
         } else {
-            props.selected.add(tag.id);
+            selected.add(tag.id);
         }
-        props.onSelectedChange(props.selected);
+        props.onSelectedChange(selected);
     };
 
     return (
@@ -141,7 +142,6 @@ interface TagsGroupPageProps {
 const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
     const area = React.useContext(ASSafeAreaContext);
     const theme = React.useContext(ThemeContext);
-
     const isIos = Platform.OS === 'ios';
     const isXGen = isIos && Dimensions.get('window').height > 800;
     const defaultIosPadding = isXGen ? 34 : 16;
@@ -222,6 +222,8 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
 });
 
 const DiscoverComponent = React.memo((props: PageProps) => {
+    // const [exclude] = React.useState(props.router.params.exclude || new Set<string>());
+    // const [selected] = React.useState(props.router.params.selected || new Set<string>());
     let exclude = props.router.params.exclude || new Set<string>();
     let selected = props.router.params.selected || new Set<string>();
     let currentPage = getClient().useDiscoverNextPage(
