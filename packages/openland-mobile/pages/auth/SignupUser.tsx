@@ -12,6 +12,7 @@ import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
 import { RegistrationContainer } from './RegistrationContainer';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { logout } from 'openland-mobile/utils/logout';
 
 const SignupUserComponent = React.memo((props: PageProps) => {
     const prefill = getClient().useProfilePrefill().prefill;
@@ -72,4 +73,5 @@ const SignupUserComponent = React.memo((props: PageProps) => {
 export const SignupUser = withApp(SignupUserComponent, {
     navigationAppearance: 'small',
     hideHairline: true,
+    backButtonRootFallback: logout
 });

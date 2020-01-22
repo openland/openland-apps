@@ -11,6 +11,7 @@ import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { RegistrationContainer } from './RegistrationContainer';
 import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { logout } from 'openland-mobile/utils/logout';
 
 const SignupOrgComponent = React.memo((props: PageProps) => {
     const form = useForm();
@@ -85,4 +86,5 @@ const SignupOrgComponent = React.memo((props: PageProps) => {
 export const SignupOrg = withApp(SignupOrgComponent, {
     navigationAppearance: 'small',
     hideHairline: true,
+    backButtonRootFallback: logout
 });

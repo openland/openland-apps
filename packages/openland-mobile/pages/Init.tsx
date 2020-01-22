@@ -201,10 +201,13 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             console.log('BOOTSTRAP: theme prepared');
             await AppStorage.prepare();
             console.log('BOOTSTRAP: storage prepared');
+            // hotfix, spacex cache reset needed
+            const useAccountReefetchNeeded = await Storage.readKey('user_refetch_needed');
             try {
                 if (hasClient()) {
-                    let res = (await backoff(async () => await getClient().queryAccount()));
+                    let res = (await backoff(async () => useAccountReefetchNeeded ? await getClient().refetchAccount() : await getClient().queryAccount()));
                     console.log('OPENLAND: query queries');
+                    console.warn(JSON.stringify(res.me, undefined, 4));
                     if (res && res.me) {
                         NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0 || __DEV__;
                         SUPER_ADMIN = res.myPermissions.roles.indexOf('super-admin') >= 0;
@@ -222,7 +225,9 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         this.setState({ state: 'loading' });
                         let client = buildNativeClient(AppStorage.storage, AppStorage.token);
                         saveClient(client);
-                        res = await client.queryAccount();
+                        res = await (useAccountReefetchNeeded ? client.refetchAccount() : client.queryAccount());
+                        console.warn(JSON.stringify(res.me, undefined, 4));
+                        console.warn(JSON.stringify(res.sessionState, undefined, 4));
 
                         // res = await cachedQuery(client.client, AccountQuery, {}, 'account');
                         // await cachedQuery(client.client, SettingsQuery, {}, 'settings')
@@ -276,6 +281,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         this.setState({ state: 'initial' });
                     }
                 }
+                await Storage.writeKey('user_refetch_needed', false);
             } catch (e) {
                 Alert.alert(e.message);
             }

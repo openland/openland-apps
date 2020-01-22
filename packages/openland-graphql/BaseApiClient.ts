@@ -14,6 +14,10 @@ export class BaseApiClient {
         this.client = client;
     }
 
+    close = () => {
+        this.client.close();
+    }
+
     protected refetch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
         return this.client.query(query, vars, { fetchPolicy: 'network-only' });
     }
@@ -21,7 +25,7 @@ export class BaseApiClient {
     protected useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, opts?: QueryWatchParameters): TQuery | null {
         // tslint:disable-next-line
         const [observableQuery, currentResult] = this.useObservableQuery(query, vars, opts);
-        
+
         if (currentResult && currentResult.error) {
             throw currentResult.error!!;
         } else if (currentResult && currentResult.data) {
@@ -45,7 +49,7 @@ export class BaseApiClient {
     private useObservableQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, opts?: QueryWatchParameters): [GraphqlQueryWatch<TQuery>, GraphqlQueryResult<TQuery> | undefined] {
         log.log('useQuery: ' + JSON.stringify(opts));
         const clientCache = React.useContext(ClientCacheContext);
-        
+
         if (!clientCache && (opts && opts.fetchPolicy && (opts.fetchPolicy === 'cache-and-network' || opts.fetchPolicy === 'network-only'))) {
             throw Error('Unable to use cache-and-network or network-only fetch policy outside of cache context');
         }

@@ -42,6 +42,10 @@ export class SpaceXWebClient implements GraphqlClient {
         };
     }
 
+    close() {
+        throw new Error('not yet implemented');
+    }
+
     watchStatus(handler: (status: GraphqlClientStatus) => void) {
         return this.statusWatcher.watch(handler);
     }

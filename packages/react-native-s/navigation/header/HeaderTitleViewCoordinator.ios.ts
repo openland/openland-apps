@@ -257,7 +257,7 @@ export class HeaderTitleViewCoordinator {
         // Small header
         this.titleView.opacity *= opacityDelayed; // -1 + (1 - Math.abs(progress)) * (1 - Math.abs(progress)) * 2;
         this.rightView.opacity = opacitySimple;
-        if (this.page.startIndex === 0 && !this.coordinator.isModal) {
+        if (this.page.startIndex === 0 && !this.coordinator.isModal && !this.page.config.backButtonRootFallback) {
             this.leftView.opacity = 0;
         } else {
             if (isInSearch) {

@@ -126,6 +126,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                                 <>
                                     {showCloseButton && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.textColor} />}
                                     {showBackButton && <SBackButton onPress={v.config.searchActive ? v.config.searchClosed!! : this.handleSoftBackPress} tintColor={this.props.style.iconColor} />}
+                                    {!showCloseButton && !showBackButton && v.config.backButtonRootFallback && <SBackButton onPress={v.config.backButtonRootFallback} tintColor={this.props.style.iconColor} />}
                                 </>
                             )}
                             {v.config.searchActive && (

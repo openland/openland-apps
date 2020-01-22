@@ -14,6 +14,10 @@ export class WorkerClient extends BridgedClient {
         });
     }
 
+    close() {
+        throw new Error('not yet implemented');
+    }
+
     protected postQuery(id: string, query: any, vars: any, params?: OperationParameters) {
         this.postMessage({ type: 'query', id, body: query, variables: vars, params });
     }

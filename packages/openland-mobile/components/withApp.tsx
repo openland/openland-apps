@@ -65,7 +65,7 @@ class PageErrorBoundary extends React.Component<{}, { isError: boolean, retry: n
     }
 }
 
-export const withApp = (Wrapped: React.ComponentType<PageProps>, args?: { navigationAppearance?: SHeaderAppearance, hideBackText?: boolean, hideHairline?: boolean }) => {
+export const withApp = (Wrapped: React.ComponentType<PageProps>, args?: { navigationAppearance?: SHeaderAppearance, hideBackText?: boolean, hideHairline?: boolean, backButtonRootFallback?: () => void }) => {
 
     let res = class WrappedPage extends React.Component<PageProps> {
         shouldComponentUpdate() {
@@ -74,8 +74,7 @@ export const withApp = (Wrapped: React.ComponentType<PageProps>, args?: { naviga
         render() {
             return (
                 <SHeaderSafeArea appearance={args && args.navigationAppearance || 'large'}>
-                    {args && args.hideBackText && <SHeader hideBackText={true} />}
-                    {args && args.hideHairline && <SHeader hairline="hidden" />}
+                    {args && (args.hideBackText || args.hideHairline || args.backButtonRootFallback) && <SHeader hideBackText={args.hideBackText} hairline={args.hideHairline ? 'hidden' : undefined} backButtonRootFallback={args.backButtonRootFallback}/>}
                     <ClientCacheProvider>
                         <PageErrorBoundary>
                             <React.Suspense fallback={<ZLoader />} >

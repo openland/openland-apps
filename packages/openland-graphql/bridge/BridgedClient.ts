@@ -34,6 +34,8 @@ export abstract class BridgedClient implements GraphqlClient {
         this.statusWatcher.setState({ status: 'connecting' });
     }
 
+    abstract close(): void;
+
     //
     // Query
     //

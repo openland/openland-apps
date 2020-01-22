@@ -8,20 +8,19 @@ import RNRestart from 'react-native-restart';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { joinInviteIfHave } from 'openland-mobile/utils/resolveInternalLink';
 import { ZText } from 'openland-mobile/components/ZText';
-import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { logout } from 'openland-mobile/utils/logout';
 
 class WaitlistComponentThemed extends React.PureComponent<PageProps & { theme: ThemeGlobal }> {
     mounted = false;
 
     handleLogout = () => {
         (async () => {
-            await AppStorage.resetToken();
-            RNRestart.Restart();
+            logout();
         })();
     }
 

@@ -33,7 +33,12 @@ class NativeGraphqlClient(val key: String, val context: ReactApplicationContext,
     }
 
     fun dispose() {
-        // TODO: Implement
+        subscriptions.forEach {
+            it.value()
+        }
+        subscriptions.clear()
+        watches.forEach{ it.value() }
+        watches.clear()
     }
 
     //

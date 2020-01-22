@@ -23,6 +23,13 @@ export function getClient(unsafe?: boolean): OpenlandClient {
     return cachedClient!;
 }
 
+export function resetClient() {
+    if (cachedClient) {
+        cachedClient.close();
+        cachedClient = null;
+    }
+}
+
 export function buildNativeClient(storage?: string, token?: string) {
     return new OpenlandClient(new NativeSpaceXClient(storage, token));
 }

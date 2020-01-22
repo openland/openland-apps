@@ -22,6 +22,8 @@ export interface HeaderConfig {
     hideBackText?: boolean;
     hideIcon?: boolean;
 
+    backButtonRootFallback?: () => void;
+
     contentOffset?: STrackedValue;
     buttons?: HeaderButtonDescription[];
     appearance?: SHeaderAppearance;
@@ -59,6 +61,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let searchContainer: SAnimatedShadowView | undefined;
     let searchContext: SearchContext | undefined;
     let hideBackText: boolean | undefined;
+    let backButtonRootFallback: (() => void) | undefined;
     let hideIcon: boolean | undefined;
     for (let c of configs) {
         if (c.title) {
@@ -90,6 +93,9 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
         }
         if (c.hideBackText !== undefined) {
             hideBackText = c.hideBackText;
+        }
+        if (c.backButtonRootFallback !== undefined) {
+            backButtonRootFallback = c.backButtonRootFallback;
         }
         if (c.hideIcon !== undefined) {
             hideIcon = c.hideIcon;
@@ -125,7 +131,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
             searchContext = c.searchContext;
         }
     }
-    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress, searchContainer, searchClosingCompleted, searchChanged, searchContext, headerHidden, accentColor, iconColor, hideBackText, hideIcon, backgroundColor };
+    return { title, buttons, searchUnderlay, contentOffset, appearance, titleView, hairline, search, searchActive, searchClosed, searchPress, searchContainer, searchClosingCompleted, searchChanged, searchContext, headerHidden, accentColor, iconColor, hideBackText, hideIcon, backgroundColor, backButtonRootFallback };
 }
 
 export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
@@ -145,6 +151,9 @@ export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
         return false;
     }
     if (a.hideBackText !== b.hideBackText) {
+        return false;
+    }
+    if (a.backButtonRootFallback !== b.backButtonRootFallback) {
         return false;
     }
     if (a.hideIcon !== b.hideIcon) {

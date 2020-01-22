@@ -58,6 +58,8 @@ export interface GraphqlClientStatus {
 
 export interface GraphqlClient {
 
+    close: () => void;
+
     status: GraphqlClientStatus;
     watchStatus(handler: (status: GraphqlClientStatus) => void): () => void;
 

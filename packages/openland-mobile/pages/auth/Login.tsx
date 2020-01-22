@@ -13,6 +13,7 @@ import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { API_HOST } from 'openland-y-utils/api';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { AppStorage as Storage } from 'openland-y-runtime-native/AppStorage';
 
 const styles = StyleSheet.create({
     container: {
@@ -124,6 +125,8 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean; load
 
                 if (body.ok) {
                     await AppStorage.setToken(body.accessToken);
+                    // hotfix, spacex cache reset needed
+                    await Storage.writeKey('user_refetch_needed', true);
                     RNRestart.Restart();
                     return;
                 }

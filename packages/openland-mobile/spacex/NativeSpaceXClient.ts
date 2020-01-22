@@ -80,6 +80,10 @@ export class NativeSpaceXClient extends BridgedClient {
         }
     }
 
+    close() {
+        NativeGraphQL.closeClient(this.key);
+    }
+
     protected postQuery(id: string, query: any, vars: any, params?: OperationParameters) {
         // log.log('postQuery');
         let name = query.document.definitions[0].name.value;

@@ -19,6 +19,7 @@ import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { API_HOST } from 'openland-y-utils/api';
 import { RegistrationContainer } from './RegistrationContainer';
+import { AppStorage as Storage } from 'openland-y-runtime-native/AppStorage';
 
 export const ACTIVATION_CODE_LENGTH = 6;
 
@@ -180,7 +181,8 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
                 });
 
                 await AppStorage.setToken(res2.accessToken);
-
+                // hotfix, spacex cache reset needed
+                await Storage.writeKey('user_refetch_needed', true);
                 RNRestart.Restart();
             } catch (e) {
                 TrackAuthError(e);

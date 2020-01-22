@@ -81,7 +81,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
 
     render() {
         let v = this.props.page;
-        const showBackButton = !this.props.manager.parent || this.props.page.page.startIndex !== 0;
+        const showBackButton = (!this.props.manager.parent && !this.props.page.config.backButtonRootFallback) || this.props.page.page.startIndex !== 0;
         const showCloseButton = !!this.props.manager.parent && this.props.page.page.startIndex === 0;
 
         let content = (
@@ -91,18 +91,21 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                         <>
                             {showCloseButton && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.iconColor} />}
                             {showBackButton && <SBackButton onPress={this.props.manager.pop} tintColor={this.props.page.config.iconColor || this.props.style.iconColor} hideText={this.props.page.config.hideBackText} />}
+                            {!showCloseButton && !showBackButton && this.props.page.config.backButtonRootFallback && <SBackButton onPress={this.props.page.config.backButtonRootFallback} tintColor={this.props.page.config.iconColor || this.props.style.iconColor} hideText={this.props.page.config.hideBackText} />}
                         </>
                     )}
                 </SAnimated.View>
                 <SAnimated.View name={'header-title--' + v.page.key} style={{ flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column' }}>
                     {!v.config.titleView && v.config.title && <Text numberOfLines={1} style={[styles.title, { color: this.props.style.textColor }]} allowFontScaling={false}>{v.config.title}</Text>}
                     {v.config.titleView && v.config.titleView()}
+
                 </SAnimated.View>
                 <View style={{ flexGrow: 0, flexDirection: 'row', paddingRight: 4, alignItems: 'center' }} pointerEvents="box-none">
                     <SAnimated.View name={'header-right--' + v.page.key} pointerEvents="box-none" style={{ flexDirection: 'row' }}>
                         {v.config.buttons && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
                     </SAnimated.View>
                 </View>
+
             </SEquisiteCentered>
         );
 

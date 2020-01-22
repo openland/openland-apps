@@ -4,16 +4,9 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-import RNRestart from 'react-native-restart';
-import { AppStorage } from 'openland-mobile/utils/AppStorage';
+import { logout } from 'openland-mobile/utils/logout';
 
 export const Developer = withApp(() => {
-    const handleLogout = () => {
-        (async () => {
-            await AppStorage.clear();
-            RNRestart.Restart();
-        })();
-    };
 
     return (
         <>
@@ -38,7 +31,7 @@ export const Developer = withApp(() => {
                     <ZListItem text="Videos" path="DevVideos" />
                     <ZListItem text="Document extensions" path="DevDocumentsExt" />
                     <ZListItem text="PowerUps" path="DevPowerUps" pathPresent={true} />
-                    <ZListItem text="Log out" onPress={handleLogout} />
+                    <ZListItem text="Log out" onPress={logout} />
                 </ZListGroup>
             </SScrollView>
         </>
