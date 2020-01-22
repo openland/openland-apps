@@ -222,8 +222,6 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
 });
 
 const DiscoverComponent = React.memo((props: PageProps) => {
-    // const [exclude] = React.useState(props.router.params.exclude || new Set<string>());
-    // const [selected] = React.useState(props.router.params.selected || new Set<string>());
     let exclude = props.router.params.exclude || new Set<string>();
     let selected = props.router.params.selected || new Set<string>();
     let currentPage = getClient().useDiscoverNextPage(
