@@ -34,7 +34,7 @@ export const CommentInput = React.memo((props: CommentInputProps) => {
         if (props.forceAutofocus && ref.current) {
             timer = setTimeout(() => {
                 ref.current!.focus();
-            }, 300);
+            }, 250);
         }
         return () => clearTimeout(timer);
     }, []);
