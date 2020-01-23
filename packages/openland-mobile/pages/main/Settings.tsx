@@ -152,6 +152,7 @@ let SettingsContent = ((props: PageProps) => {
             </ZListGroup>
             {NON_PRODUCTION && (
                 <ZListGroup header={null}>
+                    <ZListItem text="Feed" path="Feed" />
                     <ZListItem text="Developer Menu" path="Dev" />
                 </ZListGroup>
             )}
