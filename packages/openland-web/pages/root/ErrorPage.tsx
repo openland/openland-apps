@@ -49,8 +49,8 @@ export const ErrorPage = ({ statusCode, message }: ErrorPageProps) => (
                     <XView flexGrow={1} justifyContent="center" alignItems="center">
                         <XImage
                             marginBottom={16}
-                            width={346}
-                            height={222}
+                            width={320}
+                            height={200}
                             src="/static/X/illustration-error.png"
                             srcSet="/static/X/illustration-error@2x.png 2x"
                         />

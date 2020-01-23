@@ -7,11 +7,17 @@ import { SharedRoomPlaceholder } from '../invite/InviteLandingComponent';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { ChatHeader } from './header/ChatHeader';
 import { Deferred } from 'openland-unicorn/components/Deferred';
+import { NotFound } from 'openland-unicorn/NotFound';
 
 export const MessengerFragment = React.memo<{ id: string }>(props => {
     // Load chat info
     const client = useClient();
     let chat = client.useRoomChat({ id: props.id }).room!;
+
+    if (!chat) {
+        return <NotFound />;
+    }
+
     const onChatLostAccess = React.useCallback(
         () => {
             client.refetchRoomWithoutMembers({ id: props.id });
