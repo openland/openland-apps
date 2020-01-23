@@ -3,7 +3,8 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XView, XImage } from 'react-mental';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
+import { TextTitle1 } from 'openland-web/utils/TextStyles';
 
 const descriptionClassName = css`
     text-align: center;
@@ -35,7 +36,7 @@ export const ErrorPage = ({ statusCode, message }: ErrorPageProps) => (
         <XDocumentHead title={statusCode === 404 ? 'Not found' : 'Something went wrong'} />
         <XTrack event="View 404">
             <XView minHeight="100vh" width="100%" backgroundColor="#ffffff" alignItems="center">
-                <XView
+                {/* <XView
                     paddingTop={19}
                     paddingLeft={32}
                     paddingBottom={19}
@@ -43,12 +44,11 @@ export const ErrorPage = ({ statusCode, message }: ErrorPageProps) => (
                     alignSelf="flex-start"
                 >
                     <XImage width={145} height={42} src="/static/X/signup/logo-2.svg" />
-                </XView>
+                </XView> */}
                 <XView flexGrow={1} alignItems="center">
                     <XView flexGrow={1} justifyContent="center" alignItems="center">
                         <XImage
-                            marginTop={-9}
-                            marginBottom={53}
+                            marginBottom={16}
                             width={346}
                             height={222}
                             src="/static/X/illustration-error.png"
@@ -61,7 +61,7 @@ export const ErrorPage = ({ statusCode, message }: ErrorPageProps) => (
                             marginBottom={10}
                             maxWidth={700}
                         >
-                            <span className={errorClassName}>
+                            <span className={cx(TextTitle1, errorClassName)}>
                                 {statusCode === 404
                                     ? 'Not found'
                                     : message || 'Something went wrong'}
