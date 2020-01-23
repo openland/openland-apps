@@ -89,8 +89,9 @@ const membersIconContainer = css`
 export const MemberProfilesComponent = React.memo((props: { chatId: string }) => {
     const router = React.useContext(XViewRouterContext);
     const client = useClient();
-    const data = client.useMatchmakingRoom({ peerId: props.chatId }).matchmakingRoom;
-
+    const res = client.useWithoutLoaderMatchmakingRoom({ peerId: props.chatId });
+    const data = res && res.matchmakingRoom;
+    
     const myMemberProfile = data && data.myProfile;
     const otherMemberProfiles =
         myMemberProfile && data && data.profiles && data.profiles.length > 1;
