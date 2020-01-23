@@ -52,7 +52,7 @@ const MenuItemComponent = (props: { item: MenuItem, ctx: UPopperController }) =>
     return (
         <UListItem
             title={item.title}
-            icon={loading ? <XLoader size="medium" transparentBackground={true} /> : item.icon}
+            icon={loading ? <XLoader size="medium" transparentBackground={true} loading={true} /> : item.icon}
             onClick={!item.path ? onClick : undefined}
             path={item.path}
         />
