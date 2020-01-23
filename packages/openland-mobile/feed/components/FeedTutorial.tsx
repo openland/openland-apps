@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { View, StyleSheet, ViewStyle, Text, TextStyle, Image, ImageStyle, AsyncStorage } from 'react-native';
 import { ZModalController } from 'openland-mobile/components/ZModal';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -69,7 +69,7 @@ const FeedTutorial = React.memo((props: { ctx: ZModalController }) => {
                 {TUTORIAL[step].subtitle}
             </Text>
             <View style={styles.buttons}>
-                <ZRoundedButton
+                <ZButton
                     size="large"
                     title={isFinal ? 'Got it' : 'Next'}
                     onPress={isFinal ? handleClose : handleNext}

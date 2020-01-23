@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SlideType, SlideCoverAlign, ImageRefInput } from 'openland-api/Types';
 import { FeedManageSlide } from './FeedManageSlide';
@@ -110,7 +110,7 @@ export const FeedManagePost = React.memo((props: FeedManagePostProps) => {
                     ))}
 
                     <View style={{ alignItems: 'center', marginTop: 8 }}>
-                        <ZRoundedButton
+                        <ZButton
                             title="Add card"
                             style="secondary"
                             onPress={() => addSlide()}

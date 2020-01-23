@@ -8,7 +8,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { AppStorage as Storage } from 'openland-y-runtime/AppStorage';
 import { useClient } from 'openland-mobile/utils/useClient';
 
@@ -92,7 +92,7 @@ const SignDiscoverPage = React.memo((props: PageProps) => {
                 <Logo />
             </View>
             <View padding={16} paddingBottom={isIos ? defaultIosPadding : area.bottom + 16}>
-                <ZRoundedButton size="large" title="Discover communities" onPress={onNext} />
+                <ZButton size="large" title="Discover communities" onPress={onNext} />
             </View>
         </>
     );

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text, Alert, StyleSheet, ViewStyle, TextStyle, Platform } from 'react-native';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { SHeaderView } from 'react-native-s/SHeaderView';
@@ -85,7 +85,7 @@ export const ChatJoin = React.memo((props: ChatJoinProps) => {
                     </View>
                 </View>
                 <View style={styles.buttonWrapper}>
-                    <ZRoundedButton
+                    <ZButton
                         title={`Join ${typeStr}`}
                         size="large"
                         onPress={async () => {

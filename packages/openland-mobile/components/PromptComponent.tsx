@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, Keyboard, TextInput, } from 'react-native';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
-import { ZRoundedButton } from './ZRoundedButton';
+import { ZButton } from './ZButton';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZModalController } from './ZModal';
@@ -24,7 +24,7 @@ export const PromptComponent = XMemo((props: { builder: PromptBuilder; modalCont
                 {builder._actions.map((a, i) => (
                     <>
                         <View style={{ width: 4 }} />
-                        <ZRoundedButton
+                        <ZButton
                             key={i + '-ac'}
                             style={a.style === 'cancel' ? 'secondary' : a.style === 'destructive' ? 'danger' : 'primary'}
                             title={a.name}

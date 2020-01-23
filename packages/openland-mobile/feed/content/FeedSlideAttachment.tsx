@@ -5,7 +5,7 @@ import { SlideFragment_attachments, SlideFragment_attachments_SharedRoom, SlideF
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { plural } from 'openland-y-utils/plural';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { useClient } from 'openland-mobile/utils/useClient';
@@ -56,7 +56,7 @@ const Inner = React.memo((props: InnerProps) => {
             )}
             {action && !!actionTitle && (
                 <View marginTop={16}>
-                    <ZRoundedButton title={actionTitle} onPress={action} />
+                    <ZButton title={actionTitle} onPress={action} />
                 </View>
             )}
         </>

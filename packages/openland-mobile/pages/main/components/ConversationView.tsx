@@ -9,7 +9,7 @@ import { trackEvent } from 'openland-mobile/analytics';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { useChatSelectionMode } from 'openland-engines/messenger/MessagesActionsState';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 export interface MessagesListProps {
@@ -133,16 +133,16 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                                     </Text>
 
                                     <View marginBottom={16} flexDirection="row">
-                                        <ZRoundedButton style="secondary" title="👋" onPress={() => this.sendMessage('👋')} />
+                                        <ZButton style="secondary" title="👋" onPress={() => this.sendMessage('👋')} />
                                         <View marginLeft={16}>
-                                            <ZRoundedButton
+                                            <ZButton
                                                 style="secondary"
                                                 title={`Hello, ${userName}!`}
                                                 onPress={() => this.sendMessage(`Hello, ${userName}!`)}
                                             />
                                         </View>
                                     </View>
-                                    <ZRoundedButton style="secondary" title="Happy to connect!" onPress={() => this.sendMessage('Happy to connect!')} />
+                                    <ZButton style="secondary" title="Happy to connect!" onPress={() => this.sendMessage('Happy to connect!')} />
                                 </>
                             )}
 

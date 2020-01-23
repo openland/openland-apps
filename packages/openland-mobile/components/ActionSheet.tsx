@@ -3,7 +3,7 @@ import { View, Platform } from 'react-native';
 import { showSheetModal } from './showSheetModal';
 import { ZModalController } from './ZModal';
 import { ZListItem } from './ZListItem';
-import { ZRoundedButton } from './ZRoundedButton';
+import { ZButton } from './ZButton';
 import { BottomSheetActions, showBottomSheet } from './BottomSheet';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { isPad } from 'openland-mobile/pages/Root';
@@ -96,7 +96,7 @@ export class ActionSheetBuilder {
                         {this.renderItems(ctx)}
                         {this._cancelable && (
                             <View margin={16}>
-                                <ZRoundedButton
+                                <ZButton
                                     size="large"
                                     title="Cancel"
                                     style="secondary"

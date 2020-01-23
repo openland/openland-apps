@@ -11,7 +11,7 @@ import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import Toast from 'openland-mobile/components/Toast';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { trackEvent } from 'openland-mobile/analytics';
 import { TrackAuthError } from './TrackAuthError';
@@ -109,7 +109,7 @@ const EmailStartComponent = React.memo((props: PageProps) => {
             <RegistrationContainer
                 title="What’s your email?"
                 subtitle="We’ll send you a login code"
-                floatContent={<ZRoundedButton title="Next" size="large" onPress={submitForm} />}
+                floatContent={<ZButton title="Next" size="large" onPress={submitForm} />}
             >
                 <ZInput
                     field={emailField}
@@ -214,8 +214,8 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
     const avatarSrc =
         photoSrc && photoCrop
             ? `https://ucarecdn.com/${photoSrc}/-/crop/${photoCrop.w}x${photoCrop.h}/${
-                  photoCrop.x
-              },${photoCrop.y}/-/scale_crop/72x72/center/`
+            photoCrop.x
+            },${photoCrop.y}/-/scale_crop/72x72/center/`
             : null;
 
     return (
@@ -231,15 +231,15 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
                         </Text>
                     </Text>
                 }
-                floatContent={<ZRoundedButton title="Next" size="large" onPress={submitForm} />}
+                floatContent={<ZButton title="Next" size="large" onPress={submitForm} />}
                 scalableContent={
                     avatarSrc ? (
                         <View marginTop={-8} marginBottom={32}>
                             <ZAvatar size="xx-large" src={avatarSrc} />
                         </View>
                     ) : (
-                        undefined
-                    )
+                            undefined
+                        )
                 }
                 scalableContentSize={120}
             >

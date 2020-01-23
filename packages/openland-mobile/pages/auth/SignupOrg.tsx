@@ -10,7 +10,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { RegistrationContainer } from './RegistrationContainer';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { logout } from 'openland-mobile/utils/logout';
 
 const SignupOrgComponent = React.memo((props: PageProps) => {
@@ -62,7 +62,7 @@ const SignupOrgComponent = React.memo((props: PageProps) => {
                 autoScrollToBottom={true}
                 header={<SHeaderButton key="btn-create-org" title="Skip" onPress={handleSkip} />}
                 floatContent={
-                    <ZRoundedButton
+                    <ZButton
                         title="Next"
                         enabled={!!nameField.value.trim()}
                         size="large"

@@ -4,7 +4,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import LinearGradient from 'react-native-linear-gradient';
 import { Money } from 'openland-y-utils/wallet/Money';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 
 interface BalanceViewProps {
     amount: number;
@@ -23,7 +23,7 @@ export const BalanceView = (props: BalanceViewProps) => {
                 Your balance
             </Text>
             <View marginTop={24}>
-                <ZRoundedButton size="large" title="Add funds" />
+                <ZButton size="large" title="Add funds" />
             </View>
         </LinearGradient>
     );

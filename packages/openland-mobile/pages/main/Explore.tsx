@@ -13,7 +13,7 @@ import { SDeferred } from 'react-native-s/SDeferred';
 import { GlobalSearch } from './components/globalSearch/GlobalSearch';
 import { SRouter } from 'react-native-s/SRouter';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
@@ -157,7 +157,7 @@ const ExplorePage = (props: PageProps) => {
                                 {<Text numberOfLines={1} style={{ fontSize: 18, color: theme.foregroundPrimary }}>Find the right chats for you</Text>}
                             </View>
                             <View marginBottom={(small && Platform.OS === 'ios') ? 32 : undefined}>
-                                <ZRoundedButton size={small ? 'default' : 'large'} title="Start" onPress={() => props.router.push("Discover")} />
+                                <ZButton size={small ? 'default' : 'large'} title="Start" onPress={() => props.router.push("Discover")} />
                             </View>
                         </View>
                     )}

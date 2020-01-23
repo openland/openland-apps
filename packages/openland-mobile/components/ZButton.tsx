@@ -8,8 +8,8 @@ import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { LoaderSpinner } from './LoaderSpinner';
 
-type ZRoundedButtonStyle = 'primary' | 'secondary' | 'danger';
-type ZRoundedButtonSize = 'default' | 'large';
+type ZButtonStyle = 'primary' | 'secondary' | 'danger';
+type ZButtonSize = 'default' | 'large';
 
 const stylesDefault = StyleSheet.create({
     container: {
@@ -44,7 +44,7 @@ const resolveStylesBySize = {
     large: stylesLarge,
 };
 
-export interface ZRoundedButtonProps {
+export interface ZButtonProps {
     title: string;
     onPress?: () => void;
     action?: () => void;
@@ -53,13 +53,13 @@ export interface ZRoundedButtonProps {
     onActionSuccess?: () => void;
     onActionError?: (e: Error) => void;
     path?: string;
-    size?: ZRoundedButtonSize;
-    style?: ZRoundedButtonStyle;
+    size?: ZButtonSize;
+    style?: ZButtonStyle;
     enabled?: boolean;
     loading?: boolean;
 }
 
-const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRouter }>((props) => {
+const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) => {
     const [actionInProgress, setActionInProgress] = React.useState(props.loading || false);
 
     React.useEffect(() => {
@@ -100,8 +100,8 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
         }
     }, [props.onPress, props.path, props.action, props.onActionSuccess, props.onActionError, props.actionFinally]);
 
-    const size: ZRoundedButtonSize = props.size || 'default';
-    const style: ZRoundedButtonStyle = props.style || 'primary';
+    const size: ZButtonSize = props.size || 'default';
+    const style: ZButtonStyle = props.style || 'primary';
     const styles = resolveStylesBySize[size];
     const backgroundColor = style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : theme.backgroundTertiaryTrans);
     const textColor = style === 'primary' ? theme.foregroundInverted : (style === 'danger' ? theme.foregroundContrast : theme.foregroundSecondary);
@@ -144,4 +144,4 @@ const ZRoundedButtonComponent = React.memo<ZRoundedButtonProps & { router: SRout
     );
 });
 
-export const ZRoundedButton = withRouter<ZRoundedButtonProps>(ZRoundedButtonComponent);
+export const ZButton = withRouter<ZButtonProps>(ZButtonComponent);

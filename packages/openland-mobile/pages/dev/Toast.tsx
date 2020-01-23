@@ -4,7 +4,7 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import Toast from 'openland-mobile/components/Toast';
 import { delay } from 'openland-y-utils/timer';
 
@@ -13,7 +13,7 @@ export const LoadersComponent = (props: PageProps) => (
         <SHeader title="Toast" />
         <View alignItems={'center'}>
             <View marginVertical={20}>
-                <ZRoundedButton
+                <ZButton
                     title={'Show success'}
                     onPress={() => {
                         Toast.success({ duration: 1000 }).show();
@@ -21,7 +21,7 @@ export const LoadersComponent = (props: PageProps) => (
                 />
             </View>
             <View marginVertical={20}>
-                <ZRoundedButton
+                <ZButton
                     title={'Show failure with custom text'}
                     onPress={() => {
                         Toast.failure({ text: 'Unknown error', duration: 1000 }).show();
@@ -29,7 +29,7 @@ export const LoadersComponent = (props: PageProps) => (
                 />
             </View>
             <View marginVertical={20}>
-                <ZRoundedButton
+                <ZButton
                     title={'Show custom toast'}
                     onPress={() => {
                         Toast.build({
@@ -41,7 +41,7 @@ export const LoadersComponent = (props: PageProps) => (
                 />
             </View>
             <View marginVertical={20}>
-                <ZRoundedButton
+                <ZButton
                     title={'Handle error'}
                     onPress={() => {
                         Toast.handle(
@@ -58,7 +58,7 @@ export const LoadersComponent = (props: PageProps) => (
                 />
             </View>
             <View marginVertical={20}>
-                <ZRoundedButton
+                <ZButton
                     title={'Handle success'}
                     onPress={() => {
                         Toast.handle(

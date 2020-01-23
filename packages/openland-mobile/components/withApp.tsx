@@ -8,7 +8,7 @@ import { ZLoader } from './ZLoader';
 import { ClientCacheProvider } from 'openland-graphql/ClientCache';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { View, Image, Text } from 'react-native';
-import { ZRoundedButton } from './ZRoundedButton';
+import { ZButton } from './ZButton';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
@@ -27,7 +27,7 @@ function PageError(props: { refresh: () => void }) {
                 </View>
                 <View height="27%" alignItems="center" justifyContent="center">
                     <View width={118}>
-                        <ZRoundedButton
+                        <ZButton
                             // size="large"
                             title="Try again"
                             onPress={props.refresh}
@@ -74,7 +74,7 @@ export const withApp = (Wrapped: React.ComponentType<PageProps>, args?: { naviga
         render() {
             return (
                 <SHeaderSafeArea appearance={args && args.navigationAppearance || 'large'}>
-                    {args && (args.hideBackText || args.hideHairline || args.backButtonRootFallback) && <SHeader hideBackText={args.hideBackText} hairline={args.hideHairline ? 'hidden' : undefined} backButtonRootFallback={args.backButtonRootFallback}/>}
+                    {args && (args.hideBackText || args.hideHairline || args.backButtonRootFallback) && <SHeader hideBackText={args.hideBackText} hairline={args.hideHairline ? 'hidden' : undefined} backButtonRootFallback={args.backButtonRootFallback} />}
                     <ClientCacheProvider>
                         <PageErrorBoundary>
                             <React.Suspense fallback={<ZLoader />} >

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, TextStyle, ViewStyle, Image, Dimensions } from 'react-native';
-import { ZRoundedButton } from './ZRoundedButton';
+import { ZButton } from './ZButton';
 import { XPAvatarWithPreview } from './XPAvatarWithPreview';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
@@ -97,7 +97,7 @@ export const ZListHero = React.memo<ZListHeroProps>((props) => {
 
                     {action && (
                         <View style={styles.footer}>
-                            <ZRoundedButton title={action.title} path={action.path} onPress={action.onPress} />
+                            <ZButton title={action.title} path={action.path} onPress={action.onPress} />
                         </View>
                     )}
                 </View>

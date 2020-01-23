@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Platform, View, Text, Image } from 'react-native';
-import { ZRoundedButton } from './ZRoundedButton';
+import { ZButton } from './ZButton';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZModalController } from './ZModal';
 import { delay } from 'openland-y-utils/timer';
@@ -86,7 +86,7 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
                     {props.builder._cancelAction && !props.builder._actions.find(a => a.name.toLowerCase() === 'cancel') && (
                         <>
                             <View style={{ width: 8 }} />
-                            <ZRoundedButton
+                            <ZButton
                                 key={'cancel-ac'}
                                 style="secondary"
                                 title="Cancel"
@@ -103,7 +103,7 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
                     {props.builder._actions.map((a, i) => (
                         <>
                             <View style={{ width: 8 }} />
-                            <ZRoundedButton
+                            <ZButton
                                 key={i + '-ac'}
                                 style={a.style === 'cancel' ? 'secondary' : a.style === 'destructive' ? 'danger' : 'primary'}
                                 title={a.name}

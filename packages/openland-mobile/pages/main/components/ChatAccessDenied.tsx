@@ -3,7 +3,7 @@ import { View, Text, Image } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { SHeader } from 'react-native-s/SHeader';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
@@ -25,7 +25,7 @@ export const ChatAccessDenied = XMemo<ChatAccessDeniedProps>((props) => (
             </View>
             <View height="27%" alignItems="center" justifyContent="center">
                 <View width={118}>
-                    <ZRoundedButton
+                    <ZButton
                         size="large"
                         title="Go back"
                         style="secondary"

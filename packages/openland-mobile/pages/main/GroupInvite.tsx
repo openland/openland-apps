@@ -6,7 +6,7 @@ import { RoomInviteInfo_invite } from 'openland-api/Types';
 import { Text, TextStyle, View, StyleSheet, ViewStyle, Platform } from 'react-native';
 import { FontStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import Alert from 'openland-mobile/components/AlertBlanket';
@@ -82,7 +82,7 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
                 </View>
             </View>
             <View style={styles.buttonWrapper}>
-                <ZRoundedButton
+                <ZButton
                     size="large"
                     title={`Join ${typeString}`}
                     onPress={async () => {

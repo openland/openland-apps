@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Keyboard, Text } from 'react-native';
 import Modalize from 'react-native-modalize';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -112,7 +112,7 @@ class BottomSheetProviderComponent extends React.Component<
 
         return (
             <View padding={16} paddingBottom={SDevice.safeArea.bottom || undefined}>
-                <ZRoundedButton
+                <ZButton
                     title={'Cancel'}
                     size="large"
                     style="secondary"

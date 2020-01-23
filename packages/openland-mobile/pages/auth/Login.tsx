@@ -8,7 +8,7 @@ import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { trackEvent } from 'openland-mobile/analytics';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { API_HOST } from 'openland-y-utils/api';
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
@@ -163,14 +163,14 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean; load
                     <View style={styles.container}>
                         <Logo />
                         <View style={styles.buttons}>
-                            <ZRoundedButton
+                            <ZButton
                                 title="Continue with Google"
                                 loading={this.state.loading}
                                 onPress={this.handleGoogleAuth}
                                 size="large"
                             />
                             <View height={16} />
-                            <ZRoundedButton
+                            <ZButton
                                 title="Continue with Email"
                                 enabled={!this.state.loading}
                                 onPress={this.handleEmailPress}

@@ -14,7 +14,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { SRouter } from 'react-native-s/SRouter';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SuggestedChats as SuggestedChatsPage } from './SuggestedChats';
@@ -215,7 +215,7 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
                 </View>
             </ScrollView>
             <View padding={16} paddingBottom={isIos ? defaultIosPadding : area.bottom + 16}>
-                <ZRoundedButton size="large" title="Next" enabled={enabled} onPress={next} />
+                <ZButton size="large" title="Next" enabled={enabled} onPress={next} />
             </View>
         </>
     );

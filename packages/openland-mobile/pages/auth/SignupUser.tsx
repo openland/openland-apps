@@ -11,7 +11,7 @@ import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
 import { RegistrationContainer } from './RegistrationContainer';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { logout } from 'openland-mobile/utils/logout';
 
 const SignupUserComponent = React.memo((props: PageProps) => {
@@ -48,7 +48,7 @@ const SignupUserComponent = React.memo((props: PageProps) => {
                 title="What’s your name?"
                 subtitle="Help others recognize you"
                 autoScrollToBottom={true}
-                floatContent={<ZRoundedButton title="Next" size="large" onPress={handleSave} />}
+                floatContent={<ZButton title="Next" size="large" onPress={handleSave} />}
                 scalableContent={
                     <ZAvatarPicker
                         field={photoField}

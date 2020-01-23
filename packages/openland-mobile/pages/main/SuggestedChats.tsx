@@ -9,7 +9,7 @@ import { Image } from 'react-native';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { SRouter } from 'react-native-s/SRouter';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { trackEvent } from 'openland-mobile/analytics';
@@ -208,7 +208,7 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
                 <View height={120} />
             </ScrollView>
             <View padding={16} paddingBottom={isIos ? defaultIosPadding : area.bottom + 16}>
-                <ZRoundedButton
+                <ZButton
                     size="large"
                     title={`   ${
                         selected.size === 0

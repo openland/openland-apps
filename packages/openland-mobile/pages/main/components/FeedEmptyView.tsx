@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text, Image, Dimensions, StyleSheet, ViewStyle, ImageStyle, TextStyle } from 'react-native';
-import { ZRoundedButton } from 'openland-mobile/components/ZRoundedButton';
+import { ZButton } from 'openland-mobile/components/ZButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
@@ -52,7 +52,7 @@ export const FeedEmptyView = React.memo((props: FeedEmptyViewProps) => {
                 {subtitle}
             </Text>
 
-            <ZRoundedButton title={action} size="large" onPress={onPress} />
+            <ZButton title={action} size="large" onPress={onPress} />
         </View>
     );
 });

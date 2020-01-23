@@ -9,7 +9,7 @@ import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import Share from 'react-native-share';
 import { Platform, View, TouchableWithoutFeedback, Text, StyleSheet, TextStyle } from 'react-native';
 import { formatBytes } from 'openland-mobile/utils/formatBytes';
-import { ZRoundedButton } from '../ZRoundedButton';
+import { ZButton } from '../ZButton';
 import { PdfPreview } from 'openland-mobile/pages/main/modals/PdfPreview';
 import { ZVideoComponent } from './ZVideoComponent';
 import { ZDocumentExt } from './ZDocumentExt';
@@ -156,7 +156,7 @@ class FilePreviewInner extends React.PureComponent<FilePreviewInnerProps, FilePr
                 </TouchableWithoutFeedback>
 
                 <View style={{ paddingHorizontal: 16 }}>
-                    <ZRoundedButton
+                    <ZButton
                         title="Open"
                         size="large"
                         onPress={this.handleOpen}
