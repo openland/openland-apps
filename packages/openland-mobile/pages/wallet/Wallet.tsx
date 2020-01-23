@@ -8,6 +8,7 @@ import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { BalanceView } from './components/BalanceView';
 import { CardView } from './components/CardView';
 import { TransactionView } from './components/TransactionView';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
 
 const WalletComponent = React.memo<PageProps>((props) => {
     const client = useClient();
@@ -16,12 +17,26 @@ const WalletComponent = React.memo<PageProps>((props) => {
     const transactions = client.useWalletTransactions({ id: wallet.id, first: 20 }).walletTransactions;
     const balance = wallet.balance;
 
+    const handleAddCard = React.useCallback(() => {
+        props.router.present('AddCard');
+    }, []);
+
     return (
         <>
             <SHeader title="Wallet" />
             <SScrollView>
                 <BalanceView amount={balance} />
-                <ZListGroup header="Payment methods" actionRight={{ title: 'Add card', onPress: () => { props.router.present('AddCard'); } }}>
+                <ZListGroup
+                    header="Payment methods"
+                    actionRight={cards.length > 0 ? { title: 'Add card', onPress: handleAddCard } : undefined}
+                >
+                    {cards.length === 0 && (
+                        <ZListItem
+                            leftIcon={require('assets/ic-add-glyph-24.png')}
+                            text="Add card"
+                            onPress={handleAddCard}
+                        />
+                    )}
                     {cards.map(card => <CardView key={card.id} item={card} />)}
                 </ZListGroup>
                 <ZListGroup header="Transactions">

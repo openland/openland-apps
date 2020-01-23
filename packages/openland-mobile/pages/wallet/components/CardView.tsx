@@ -8,15 +8,18 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import LinearGradient from 'react-native-linear-gradient';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { BrandLogo } from './BrandLogo';
+import { useClient } from 'openland-mobile/utils/useClient';
+import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 
 interface CardViewProps {
     item: MyCards_myCards;
 }
 
 export const CardView = (props: CardViewProps) => {
-    const { brand, last4, expMonth, expYear, isDefault } = props.item;
+    const { id, brand, last4, expMonth, expYear, isDefault } = props.item;
     const year = expYear.toString().slice(-2);
     const theme = React.useContext(ThemeContext);
+    const client = useClient();
 
     const handlePress = React.useCallback(() => {
         const builder = new ActionSheetBuilder();
@@ -53,7 +56,20 @@ export const CardView = (props: CardViewProps) => {
             builder.action('Make default', () => { return; }, false, require('assets/ic-star-24.png'));
         }
 
-        builder.action('Delete card', () => { return; }, false, require('assets/ic-delete-24.png'));
+        builder.action('Delete card', async () => {
+            AlertBlanket.builder()
+                .title('Delete card?')
+                .message('The card will be deleted')
+                .button('Cancel', 'cancel')
+                .action('Delete', 'destructive', async () => {
+                    try {
+                        await client.mutateRemoveCard({ id });
+                        await client.refetchMyCards();
+                    } catch (e) {
+                        console.warn(e);
+                    }
+                }).show();
+        }, false, require('assets/ic-delete-24.png'));
 
         builder.show();
     }, [isDefault]);
