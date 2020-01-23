@@ -12,7 +12,7 @@ import { NotFound } from 'openland-unicorn/NotFound';
 export const MessengerFragment = React.memo<{ id: string }>(props => {
     // Load chat info
     const client = useClient();
-    let chat = client.useRoomChat({ id: props.id }).room!;
+    let chat = client.useRoomChat({ id: props.id }).room;
 
     if (!chat) {
         return <NotFound />;
@@ -34,7 +34,7 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
     // Check group state
     const header = React.useMemo(
         () => {
-            return <ChatHeader chat={chat} />;
+            return <ChatHeader chat={chat!} />;
         },
         [chat],
     );
