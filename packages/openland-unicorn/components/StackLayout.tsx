@@ -242,11 +242,11 @@ const connectingWrapperClass = css`
     display: flex;
 `;
 
-const ConnectingStatus = () => {
+const ConnectionStatus = () => {
     const client = useClient().client;
     const [isVisible, setVisible] = React.useState(false);
     React.useEffect(() => {
-        const setStatusDebounced = debounce(setVisible, 500);
+        const setStatusDebounced = debounce(setVisible, 1000);
         return client.watchStatus(s => {
             setStatusDebounced(s.status === 'connecting');
         });
@@ -310,7 +310,7 @@ export const StackLayout = React.memo((props: StackLayoutProps) => {
                             />
                         </PageAnimator>
                     ))}
-                    <ConnectingStatus />
+                    <ConnectionStatus />
                 </div>
             </VisibleTabContext.Provider>
         </StackRouterContext.Provider>
