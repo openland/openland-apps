@@ -11,24 +11,25 @@ import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { showAddCard } from './showAddCard';
 import { RadioButtonsSelect } from 'openland-web/fragments/account/components/RadioButtonsSelect';
 import { getPaymentMethodName } from 'openland-y-utils/wallet/brands';
+import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 
 const token = 'pk_test_y80EsXGYQdMKMcJ5lifEM4jx';
 const defaultError = 'We are unable to authenticate your payment method. Please choose a different payment method and try again.';
 
 const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
     let client = useClient();
-    let cards = client.useMyCards({ fetchPolicy: 'cache-and-network' });
+    let cards = client.useMyCards({ fetchPolicy: 'cache-and-network' }).myCards;
     let [amount, setAmount] = React.useState<1000 | 2000 | 5000>(1000);
     let [currentCard, setCurrentCard] = React.useState<string | undefined>(undefined);
     let [error, setError] = React.useState<string | undefined>(undefined);
     const [loading, setLoading] = React.useState(false);
     if (currentCard === undefined) {
-        if (cards.myCards.length > 0) {
-            setCurrentCard(cards.myCards[0].id);
+        if (cards.length > 0) {
+            setCurrentCard(cards[0].id);
         }
     } else {
         let found = false;
-        for (let c of cards.myCards) {
+        for (let c of cards) {
             if (c.id === currentCard) {
                 found = true;
             }
@@ -109,21 +110,32 @@ const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
                         onChange={(v) => setAmount((v as any).value)}
                     />
                 </XView>
-                <UListGroup header="Payment method" action={{ title: 'Add card', onClick: () => showAddCard() }}>
-                    <RadioButtonsSelect
-                        value={currentCard}
-                        onChange={setCurrentCard}
-                        selectOptions={cards.myCards.map(card => ({
-                            value: card.id,
-                            label: `${getPaymentMethodName(card.brand)}, ${card.last4}`,
-                        }))}
-                    />
+                <UListGroup
+                    header="Payment method"
+                    action={cards.length > 0 ? { title: 'Add card', onClick: () => showAddCard() } : undefined}
+                >
+                    {cards.length === 0 && (
+                        <UAddItem
+                            title="Add card"
+                            onClick={() => showAddCard()}
+                        />
+                    )}
+                    {cards.length > 0 && (
+                        <RadioButtonsSelect
+                            value={currentCard}
+                            onChange={setCurrentCard}
+                            selectOptions={cards.map(card => ({
+                                value: card.id,
+                                label: `${getPaymentMethodName(card.brand)}, ${card.last4}`,
+                            }))}
+                        />
+                    )}
                 </UListGroup>
                 {error && <XView>{error}</XView>}
             </XView>
             <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} backgroundColor="var(--backgroundTertiary)" justifyContent="flex-end" flexDirection="row">
                 <UButton text="Cancel" onClick={() => props.ctx.hide()} style="secondary" size="large" />
-                <UButton text={`Top up $${amount / 100}`} onClick={onSubmit} style="pay" size="large" loading={loading} />
+                <UButton disable={cards.length === 0} text={`Top up $${amount / 100}`} onClick={onSubmit} style="pay" size="large" loading={loading} />
             </XView>
         </XView>
     );
