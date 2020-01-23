@@ -189,3 +189,10 @@ export const DiscoverIsDoneQuery = gql`
         betaIsDiscoverDone
     }
 `;
+
+export const DiscoverStateQuery = gql`
+    query DiscoverState {
+        isDiscoverSkipped
+        betaIsDiscoverDone
+    }
+`;

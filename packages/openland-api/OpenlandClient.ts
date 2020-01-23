@@ -523,6 +523,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderDiscoverIsDone(opts?: QueryWatchParameters): Types.DiscoverIsDone | null {
         return this.useQuery(Source.DiscoverIsDoneQuery, undefined, opts);
     }
+    async queryDiscoverState(opts?: OperationParameters): Promise<Types.DiscoverState> {
+        return this.client.query(Source.DiscoverStateQuery, undefined, opts);
+    }
+    async refetchDiscoverState(): Promise<Types.DiscoverState> {
+        return this.refetch(Source.DiscoverStateQuery);
+    }
+    useDiscoverState(opts?: QueryWatchParameters): Types.DiscoverState {
+        return this.useQuerySuspense(Source.DiscoverStateQuery, undefined, opts);
+    }
+    useWithoutLoaderDiscoverState(opts?: QueryWatchParameters): Types.DiscoverState | null {
+        return this.useQuery(Source.DiscoverStateQuery, undefined, opts);
+    }
     async queryFeatureFlags(opts?: OperationParameters): Promise<Types.FeatureFlags> {
         return this.client.query(Source.FeatureFlagsQuery, undefined, opts);
     }

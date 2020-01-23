@@ -786,6 +786,13 @@
       }
     },
     {
+      "signature": "456acb32605eb010eeff1ea13d651cb486ab861f62b6eb742cd8ea653de8862e",
+      "document": "query DiscoverState{betaIsDiscoverDone isDiscoverSkipped}",
+      "metadata": {
+        "engineSignature": "query DiscoverState{betaIsDiscoverDone isDiscoverSkipped}"
+      }
+    },
+    {
       "signature": "667fffbb630552a214f235875f7789a818a7cef4ab06f180a0a7e60109e88325",
       "document": "query FeatureFlags{featureFlags{__typename id key title}}",
       "metadata": {

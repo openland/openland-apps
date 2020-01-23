@@ -167,6 +167,7 @@ export const DiscoverNextPageQuery = typedQuery<Types.DiscoverNextPage, Types.Di
 export const BetaSubmitNextDiscoverMutation = typedMutation<Types.BetaSubmitNextDiscover, Types.BetaSubmitNextDiscoverVariables>(Explore.BetaSubmitNextDiscoverMutation);
 export const BetaDiscoverSkipMutation = typedMutation<Types.BetaDiscoverSkip, Types.BetaDiscoverSkipVariables>(Explore.BetaDiscoverSkipMutation);
 export const DiscoverIsDoneQuery = typedQuery<Types.DiscoverIsDone, {}>(Explore.DiscoverIsDoneQuery);
+export const DiscoverStateQuery = typedQuery<Types.DiscoverState, {}>(Explore.DiscoverStateQuery);
 export const FeatureFlagsQuery = typedQuery<Types.FeatureFlags, {}>(FeatureFlag.FeatureFlagsQuery);
 export const FeatureFlagAddMutation = typedMutation<Types.FeatureFlagAdd, Types.FeatureFlagAddVariables>(FeatureFlag.FeatureFlagAddMutation);
 export const FeatureFlagEnableMutation = typedMutation<Types.FeatureFlagEnable, Types.FeatureFlagEnableVariables>(FeatureFlag.FeatureFlagEnableMutation);

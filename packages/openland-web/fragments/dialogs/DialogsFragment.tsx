@@ -17,6 +17,15 @@ const DialogsCounter = React.memo(() => {
     return null;
 });
 
+const BotActivator = () => {
+    const client = useClient();
+    const discoverState = client.useWithoutLoaderDiscoverState();
+    if (discoverState && !discoverState.isDiscoverSkipped && !discoverState.betaIsDiscoverDone) {
+        client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
+    }
+    return null;
+};
+
 export const DialogsFragment = React.memo(() => {
     let router = React.useContext(XViewRouterContext)!;
     const isVisible = useVisibleTab();
@@ -29,6 +38,7 @@ export const DialogsFragment = React.memo(() => {
     return (
         <>
             <DialogsCounter />
+            <BotActivator />
             <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
                 <USideHeader title="Chats">
                     <NotificationsButton />
