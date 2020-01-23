@@ -11,5 +11,5 @@ const CardBrandsName: { [key in CardBrandsType]: string } = {
     'google-pay': 'Google Pay',
 };
 
-export const getPayhmentMethodName = (brand: string) => CardBrandsName[brand] || 'Unknown';
+export const getPaymentMethodName = (brand: string) => CardBrandsName[brand] || 'Unknown';
 export const getBrandSafe = (brand: string) => (Object.keys(CardBrandsName).indexOf(brand) >= 0 ? brand : 'unknown') as CardBrandsType | 'unknown';

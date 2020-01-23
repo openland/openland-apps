@@ -10,7 +10,7 @@ import { backoff } from 'openland-y-utils/timer';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { showAddCard } from './showAddCard';
 import { RadioButtonsSelect } from 'openland-web/fragments/account/components/RadioButtonsSelect';
-import { getPayhmentMethodName } from 'openland-y-utils/wallet/brands';
+import { getPaymentMethodName } from 'openland-y-utils/wallet/brands';
 
 const token = 'pk_test_y80EsXGYQdMKMcJ5lifEM4jx';
 const defaultError = 'We are unable to authenticate your payment method. Please choose a different payment method and try again.';
@@ -82,7 +82,7 @@ const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
                     // Exit
                     props.ctx.hide();
                 } catch (e) {
-                    
+
                     // Unknown exception
                     console.warn(e);
                     setError(defaultError);
@@ -115,7 +115,7 @@ const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
                         onChange={setCurrentCard}
                         selectOptions={cards.myCards.map(card => ({
                             value: card.id,
-                            label: `${getPayhmentMethodName(card.brand)}, ${card.last4}`,
+                            label: `${getPaymentMethodName(card.brand)}, ${card.last4}`,
                         }))}
                     />
                 </UListGroup>

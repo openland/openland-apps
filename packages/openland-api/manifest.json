@@ -1017,6 +1017,13 @@
       }
     },
     {
+      "signature": "93b75f32df996adb23d47af406d971cdef00a58bf26628318de14e29c752a8b2",
+      "document": "mutation MakeCardDefault($id:ID!){cardMakeDefault(id:$id){__typename id isDefault}}",
+      "metadata": {
+        "engineSignature": "mutation MakeCardDefault($id:ID!){cardMakeDefault(id:$id){__typename id isDefault}}"
+      }
+    },
+    {
       "signature": "8fe82e5db94b6256d5f37b99d38ed4fccccca79254c22418a9951d739c09ff04",
       "document": "query MyWallet{myAccount{__typename balance id}}",
       "metadata": {

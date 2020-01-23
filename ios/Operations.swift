@@ -3469,6 +3469,13 @@ private let FeedReactionAddSelector = obj(
 private let FeedReactionRemoveSelector = obj(
             field("feedReactionRemove", "feedReactionRemove", arguments(fieldValue("feedItemId", refValue("feedItemId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
+private let MakeCardDefaultSelector = obj(
+            field("cardMakeDefault", "cardMakeDefault", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("isDefault", "isDefault", notNull(scalar("Boolean")))
+                )))
+        )
 private let MarkSequenceReadSelector = obj(
             field("alphaGlobalRead", "alphaGlobalRead", arguments(fieldValue("toSeq", refValue("seq"))), notNull(scalar("String")))
         )
@@ -4931,6 +4938,12 @@ class Operations {
         "mutation FeedReactionRemove($feedItemId:ID!,$reaction:MessageReactionType!){feedReactionRemove(feedItemId:$feedItemId,reaction:$reaction)}",
         FeedReactionRemoveSelector
     )
+    let MakeCardDefault = OperationDefinition(
+        "MakeCardDefault",
+        .mutation, 
+        "mutation MakeCardDefault($id:ID!){cardMakeDefault(id:$id){__typename id isDefault}}",
+        MakeCardDefaultSelector
+    )
     let MarkSequenceRead = OperationDefinition(
         "MarkSequenceRead",
         .mutation, 
@@ -5581,6 +5594,7 @@ class Operations {
         if name == "FeedEditPost" { return FeedEditPost }
         if name == "FeedReactionAdd" { return FeedReactionAdd }
         if name == "FeedReactionRemove" { return FeedReactionRemove }
+        if name == "MakeCardDefault" { return MakeCardDefault }
         if name == "MarkSequenceRead" { return MarkSequenceRead }
         if name == "MatchmakingConnect" { return MatchmakingConnect }
         if name == "MatchmakingProfileFill" { return MatchmakingProfileFill }

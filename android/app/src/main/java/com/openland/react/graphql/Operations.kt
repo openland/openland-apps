@@ -139,6 +139,7 @@ object Operations {
         if (name == "FeedEditPost") return FeedEditPost
         if (name == "FeedReactionAdd") return FeedReactionAdd
         if (name == "FeedReactionRemove") return FeedReactionRemove
+        if (name == "MakeCardDefault") return MakeCardDefault
         if (name == "MarkSequenceRead") return MarkSequenceRead
         if (name == "MatchmakingConnect") return MatchmakingConnect
         if (name == "MatchmakingProfileFill") return MatchmakingProfileFill

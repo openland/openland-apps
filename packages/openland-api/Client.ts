@@ -3472,6 +3472,13 @@ const FeedReactionAddSelector = obj(
 const FeedReactionRemoveSelector = obj(
             field('feedReactionRemove', 'feedReactionRemove', args(fieldValue("feedItemId", refValue('feedItemId')), fieldValue("reaction", refValue('reaction'))), notNull(scalar('Boolean')))
         );
+const MakeCardDefaultSelector = obj(
+            field('cardMakeDefault', 'cardMakeDefault', args(fieldValue("id", refValue('id'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('isDefault', 'isDefault', args(), notNull(scalar('Boolean')))
+                )))
+        );
 const MarkSequenceReadSelector = obj(
             field('alphaGlobalRead', 'alphaGlobalRead', args(fieldValue("toSeq", refValue('seq'))), notNull(scalar('String')))
         );
@@ -4929,6 +4936,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'FeedReactionRemove',
         body: 'mutation FeedReactionRemove($feedItemId:ID!,$reaction:MessageReactionType!){feedReactionRemove(feedItemId:$feedItemId,reaction:$reaction)}',
         selector: FeedReactionRemoveSelector
+    },
+    MakeCardDefault: {
+        kind: 'mutation',
+        name: 'MakeCardDefault',
+        body: 'mutation MakeCardDefault($id:ID!){cardMakeDefault(id:$id){__typename id isDefault}}',
+        selector: MakeCardDefaultSelector
     },
     MarkSequenceRead: {
         kind: 'mutation',

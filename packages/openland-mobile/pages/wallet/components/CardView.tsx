@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MyCards_myCards } from 'openland-api/Types';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { getPayhmentMethodName } from 'openland-y-utils/wallet/brands';
+import { getPaymentMethodName } from 'openland-y-utils/wallet/brands';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { View, Text } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -10,6 +10,7 @@ import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { BrandLogo } from './BrandLogo';
 import { useClient } from 'openland-mobile/utils/useClient';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
+import { stopLoader, startLoader } from 'openland-mobile/components/ZGlobalLoader';
 
 interface CardViewProps {
     item: MyCards_myCards;
@@ -28,7 +29,7 @@ export const CardView = (props: CardViewProps) => {
             <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} paddingTop={16} paddingBottom={32} alignItems="center" marginBottom={16}>
                 <View width={263} height={166} backgroundColor={theme.backgroundTertiaryTrans} borderRadius={RadiusStyles.Medium} paddingTop={20} paddingHorizontal={24}>
                     <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
-                        {getPayhmentMethodName(brand)}
+                        {getPaymentMethodName(brand)}
                     </Text>
 
                     {isDefault && (
@@ -53,7 +54,18 @@ export const CardView = (props: CardViewProps) => {
         ));
 
         if (!isDefault) {
-            builder.action('Make default', () => { return; }, false, require('assets/ic-star-24.png'));
+            builder.action('Make default', async () => {
+                startLoader();
+
+                try {
+                    await client.mutateMakeCardDefault({ id });
+                    await client.refetchMyCards();
+                } catch (e) {
+                    console.warn(e);
+                } finally {
+                    stopLoader();
+                }
+            }, false, require('assets/ic-star-24.png'));
         }
 
         builder.action('Delete card', async () => {
@@ -77,7 +89,7 @@ export const CardView = (props: CardViewProps) => {
     return (
         <ZListItem
             leftIconView={<BrandLogo brand={brand} />}
-            text={`${getPayhmentMethodName(brand)}, ${last4}`}
+            text={`${getPaymentMethodName(brand)}, ${last4}`}
             onPress={handlePress}
             description={isDefault ? 'Default' : undefined}
         />

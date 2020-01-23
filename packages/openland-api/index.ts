@@ -200,6 +200,7 @@ export const CommitCardSetupIntentMutation = typedMutation<Types.CommitCardSetup
 export const CreateDepositIntentMutation = typedMutation<Types.CreateDepositIntent, Types.CreateDepositIntentVariables>(Finance.CreateDepositIntentMutation);
 export const DepositIntentCommitMutation = typedMutation<Types.DepositIntentCommit, Types.DepositIntentCommitVariables>(Finance.DepositIntentCommitMutation);
 export const RemoveCardMutation = typedMutation<Types.RemoveCard, Types.RemoveCardVariables>(Finance.RemoveCardMutation);
+export const MakeCardDefaultMutation = typedMutation<Types.MakeCardDefault, Types.MakeCardDefaultVariables>(Finance.MakeCardDefaultMutation);
 export const MyWalletQuery = typedQuery<Types.MyWallet, {}>(Finance.MyWalletQuery);
 export const WalletTransactionsQuery = typedQuery<Types.WalletTransactions, Types.WalletTransactionsVariables>(Finance.WalletTransactionsQuery);
 export const MatchmakingRoomQuery = typedQuery<Types.MatchmakingRoom, Types.MatchmakingRoomVariables>(Matchmaking.MatchmakingRoomQuery);

@@ -6,7 +6,7 @@ import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButt
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { XView } from 'react-mental';
-import { getPayhmentMethodName } from 'openland-y-utils/wallet/brands';
+import { getPaymentMethodName } from 'openland-y-utils/wallet/brands';
 import { BrandLogo } from './BrandLogo';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
@@ -52,6 +52,10 @@ const CardMenu = React.memo((props: CardViewProps & { ctx: UPopperController }) 
         builder.item({
             title: 'Make default',
             icon: <StarIcon />,
+            action: async () => {
+                await client.mutateMakeCardDefault({ id: item.id });
+                await client.refetchMyCards();
+            }
         });
     }
 
@@ -82,7 +86,7 @@ export const CardView = React.memo((props: CardViewProps) => {
                 <XView flexGrow={1} flexShrink={1} height={48}>
                     <XView {...TextStyles.Title3}>
                         <span className={title}>
-                            {getPayhmentMethodName(brand)}
+                            {getPaymentMethodName(brand)}
                         </span>
                     </XView>
                     {isDefault && (
@@ -93,6 +97,7 @@ export const CardView = React.memo((props: CardViewProps) => {
                 </XView>
                 <XView>
                     <UMoreButton
+                        key={`card-menu-${isDefault}`}
                         size="small-densed"
                         menu={ctx => <CardMenu {...props} ctx={ctx} />}
                     />

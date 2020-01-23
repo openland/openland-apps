@@ -55,6 +55,15 @@ export const RemoveCardMutation = gql`
     }
 `;
 
+export const MakeCardDefaultMutation = gql`
+    mutation MakeCardDefault($id: ID!) {
+        cardMakeDefault(id: $id) {
+            id
+            isDefault
+        }
+    }
+`;
+
 export const MyWalletQuery = gql`
     query MyWallet {
         myAccount {
