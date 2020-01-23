@@ -9,9 +9,9 @@ export const ThemeDark: ThemeGlobal = {
     transparent: 'rgba(0, 0, 0, 0)',
 
     foregroundPrimary: '#FFFFFF',
-    foregroundSecondary: '#808185',
-    foregroundTertiary: '#55575C',
-    foregroundQuaternary: '#36383D',
+    foregroundSecondary: '#898B8F',
+    foregroundTertiary: '#5E6166',
+    foregroundQuaternary: '#484B52',
     foregroundContrast: '#FFFFFF',
     foregroundInverted: '#111214',
 

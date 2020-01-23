@@ -15,7 +15,7 @@ export const TintOrange: TintGlobal = {
 };
 
 export const TintGreen: TintGlobal = {
-    primary: '#43BF58',
+    primary: '#40B855',
     hover: '#52CC66',
     active: '#32A645',
     secondary: '#36B24A',
