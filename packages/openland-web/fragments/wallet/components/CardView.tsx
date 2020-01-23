@@ -11,6 +11,7 @@ import { BrandLogo } from './BrandLogo';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
 import { useClient } from 'openland-web/utils/useClient';
+import AlertBlanket from 'openland-x/AlertBlanket';
 
 const box = css`
     background: var(--backgroundTertiary);
@@ -57,9 +58,14 @@ const CardMenu = React.memo((props: CardViewProps & { ctx: UPopperController }) 
     builder.item({
         title: 'Delete card',
         icon: <DeleteIcon />,
-        action: async () => {
-            await client.mutateRemoveCard({ id: item.id });
-            await client.refetchMyCards();
+        onClick: () => {
+            AlertBlanket.builder()
+                .title('Delete card?')
+                .message('The card will be deleted')
+                .action('Delete', async () => {
+                    await client.mutateRemoveCard({ id: item.id });
+                    await client.refetchMyCards();
+                }, 'danger').show();
         }
     });
 
