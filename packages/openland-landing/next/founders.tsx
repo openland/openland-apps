@@ -53,10 +53,7 @@ export default () => (
             <div className={founders}>
                 <Heading>Building the future of communities</Heading>
                 <p className={text}>
-                    Openland is a modern platform for chat communities. Anyone can start a community
-                    as a simple chat and add more activies as it grows. Openland provides tools for
-                    sharing and organizing community knowledge and connecting community members via
-                    1-1 introductions.
+                    Openland is a new messenger for high-quality communities. Its communities are small, moderated, and are based on shared values. In premium communities, members are asked to pay a small monthly subscription to ensure active participation and to compensate organizers' work. Community experience is centered around conversations with experts, building community knowledge, sharing experiences among members, and starting new meaningful relationships. Openland has beautiful, ultra-fast apps for all desktop and mobile platforms.
                 </p>
                 <p className={text}>
                     The company was founded in 2017 and is based in San Francisco. Openland is
