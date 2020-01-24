@@ -1429,10 +1429,6 @@ internal val OrganizationFullSelector = obj(
                 ))))),
             field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
             field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
-            field("betaPublicRooms", "rooms", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Room", RoomShortSelector)
-                ))))),
             field("facebook", "facebook", scalar("String")),
             field("id", "id", notNull(scalar("ID"))),
             field("instagram", "instagram", scalar("String")),

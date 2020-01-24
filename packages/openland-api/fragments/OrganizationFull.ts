@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
 import { UserFull } from './UserFull';
-import { RoomShort } from './RoomShort';
 
 export const OrganizationFull = gql`
     fragment OrganizationFull on Organization {
@@ -38,11 +37,6 @@ export const OrganizationFull = gql`
                 ...UserFull
             }
         }
-
-        rooms: betaPublicRooms {
-            ...RoomShort
-        }
     }
     ${UserFull}
-    ${RoomShort}
 `;

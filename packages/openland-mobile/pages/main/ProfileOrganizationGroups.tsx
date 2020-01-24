@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Organization_organization_rooms } from 'openland-api/Types';
+import { OrganizationWithoutMembersFragment_rooms } from 'openland-api/Types';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { ZListGroup } from '../../components/ZListGroup';
@@ -10,7 +10,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { GroupView } from './components/GroupView';
 
-class GroupsList extends React.PureComponent<{ groups: (Organization_organization_rooms | null)[], router: SRouter }> {
+class GroupsList extends React.PureComponent<{ groups: (OrganizationWithoutMembersFragment_rooms | null)[], router: SRouter }> {
     render() {
         return (
             <SScrollView>

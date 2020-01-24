@@ -22,10 +22,6 @@ fragment OrganizationFull on Organization {
   }
   isAdmin: betaIsAdmin
   isOwner: betaIsOwner
-  rooms: betaPublicRooms {
-    __typename
-    ...RoomShort
-  }
   facebook
   id
   instagram
