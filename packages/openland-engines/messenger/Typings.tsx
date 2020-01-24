@@ -49,7 +49,7 @@ export class TypingsWatcher {
 
                 if (!event.typings.cancel) {
                     existing[event.typings.user.id] = {
-                        userName: event.typings.user.name,
+                        userName: event.typings.user.firstName,
                         userPic: event.typings.user.photo,
                         userId: event.typings.user.id
                     };

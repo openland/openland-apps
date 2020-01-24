@@ -4138,8 +4138,8 @@ const TypingsWatchSelector = obj(
                         ))),
                     field('user', 'user', args(), notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('firstName', 'firstName', args(), notNull(scalar('String'))),
                             field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('name', 'name', args(), notNull(scalar('String'))),
                             field('photo', 'photo', args(), scalar('String'))
                         )))
                 )))
@@ -5462,7 +5462,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     TypingsWatch: {
         kind: 'subscription',
         name: 'TypingsWatch',
-        body: 'subscription TypingsWatch{typings{__typename cancel conversation:chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}user{__typename id name photo}}}',
+        body: 'subscription TypingsWatch{typings{__typename cancel conversation:chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}user{__typename firstName id photo}}}',
         selector: TypingsWatchSelector
     },
 };

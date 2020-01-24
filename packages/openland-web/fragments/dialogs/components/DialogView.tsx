@@ -12,6 +12,9 @@ import { DialogListWebItem } from './DialogListWebDataSource';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
+import typingGray from 'openland-icons/typings/typing-gray.json';
+import typingWhite from 'openland-icons/typings/typing-white.json';
+import Lottie from 'react-lottie';
 
 const dialogContainer = css`
     cursor: pointer;
@@ -195,7 +198,27 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     let message: JSX.Element | null = null;
 
     if (dialog.typingEmojify) {
-        message = <span>{dialog.typingEmojify}</span>;
+        message = (
+            <XViewSelectedContext.Consumer>
+                {active => (
+                    <>
+                        <XView width={20} marginRight={8} alignItems="center">
+                            <Lottie
+                                isStopped={false}
+                                isPaused={false}
+                                height={20}
+                                width={20}
+                                options={{
+                                    animationData: active ? typingWhite : typingGray,
+                                    loop: true
+                                }}
+                            />
+                        </XView>
+                        <span>{dialog.typingEmojify}</span>
+                    </>
+                )}
+            </XViewSelectedContext.Consumer>
+        );
     } else {
         if (dialog.message) {
             if (isService) {

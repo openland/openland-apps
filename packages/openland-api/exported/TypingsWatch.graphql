@@ -13,8 +13,8 @@ subscription TypingsWatch {
     }
     user {
       __typename
+      firstName
       id
-      name
       photo
     }
   }

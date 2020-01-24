@@ -520,10 +520,10 @@
       }
     },
     {
-      "signature": "65b5dc52cef912306d241ab654f34ac7e2a3c78cfbce9651a11241ea44f31f43",
-      "document": "subscription TypingsWatch{typings{__typename cancel conversation:chat{__typename...on PrivateRoom{id}...on SharedRoom{id}}user{__typename id name photo}}}",
+      "signature": "9eeb62040308c760b512a8c8a192eee88a9e570e9c3151fcdf59a95fb68b5e2a",
+      "document": "subscription TypingsWatch{typings{__typename cancel conversation:chat{__typename...on PrivateRoom{id}...on SharedRoom{id}}user{__typename firstName id photo}}}",
       "metadata": {
-        "engineSignature": "subscription TypingsWatch{typings{__typename cancel chat{__typename...on PrivateRoom{id}...on SharedRoom{id}}user{__typename id name photo}}}"
+        "engineSignature": "subscription TypingsWatch{typings{__typename cancel chat{__typename...on PrivateRoom{id}...on SharedRoom{id}}user{__typename firstName id photo}}}"
       }
     },
     {

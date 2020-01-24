@@ -19,8 +19,8 @@ internal val TypingsWatchSelector = obj(
                         ))),
                     field("user", "user", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
+                            field("firstName", "firstName", notNull(scalar("String"))),
                             field("id", "id", notNull(scalar("ID"))),
-                            field("name", "name", notNull(scalar("String"))),
                             field("photo", "photo", scalar("String"))
                         )))
                 )))
@@ -28,6 +28,6 @@ internal val TypingsWatchSelector = obj(
 val TypingsWatch = object: OperationDefinition {
     override val name = "TypingsWatch"
     override val kind = OperationKind.SUBSCRIPTION
-    override val body = "subscription TypingsWatch{typings{__typename cancel conversation:chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}user{__typename id name photo}}}"
+    override val body = "subscription TypingsWatch{typings{__typename cancel conversation:chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}user{__typename firstName id photo}}}"
     override val selector = TypingsWatchSelector
 }
