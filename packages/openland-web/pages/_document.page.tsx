@@ -154,9 +154,9 @@ export default class OpenlandDocument extends Document {
                     }
 
                     metaTagsInfo = {
-                        title: room.title,
+                        title: `${room.title} on Openland`,
                         url: urlPrefix + originalUrl,
-                        description: room.description,
+                        description: room.description || 'Join Openland and find inspiring communities',
                         image: room.socialImage ? room.socialImage : room.photo,
                     };
                 }
