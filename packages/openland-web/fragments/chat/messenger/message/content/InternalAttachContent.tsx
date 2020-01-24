@@ -233,7 +233,8 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
 
     const link = makeInternalLinkRelative(titleLink || '');
     const linkSegments = link.split('/');
-    const key = linkSegments.includes('invite') ? linkSegments[linkSegments.length - 1] : '';
+    const isInviteLink = linkSegments.includes('invite');
+    const key = isInviteLink ? linkSegments[linkSegments.length - 1] : '';
     const client = engine.client;
 
     const keyboardAction = React.useCallback(async (e: React.MouseEvent, path: string | null) => {
@@ -241,16 +242,19 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
         e.preventDefault();
 
         let finalLink = link;
-        const invite = await client.queryResolvedInvite({ key });
 
-        if (!invite.invite) {
-            showRevokedInviteModal();
-            return;
-        }
+        if (isInviteLink) {
+            const invite = await client.queryResolvedInvite({ key });
 
-        if (invite.invite.__typename === 'RoomInvite' && invite.invite.room.membership === 'MEMBER') {
-            const roomId = invite.invite.room.id!;
-            finalLink = `/mail/${roomId}`;
+            if (!invite.invite) {
+                showRevokedInviteModal();
+                return;
+            }
+    
+            if (invite.invite.__typename === 'RoomInvite' && invite.invite.room.membership === 'MEMBER') {
+                const roomId = invite.invite.room.id!;
+                finalLink = `/mail/${roomId}`;
+            }
         }
 
         router.navigate(finalLink);
