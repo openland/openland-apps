@@ -12,7 +12,6 @@ import { useClient } from 'openland-web/utils/useClient';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { switchOrganization } from 'openland-web/utils/switchOrganization';
-import { XTrack } from 'openland-x-analytics/XTrack';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { UButton } from 'openland-web/components/unicorn/UButton';
@@ -20,6 +19,7 @@ import { InviteImage } from './InviteImage';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { MatchmakingStartComponent } from '../matchmaking/MatchmakingStartFragment';
 import { showModalBox } from 'openland-x/showModalBox';
+import { trackEvent } from 'openland-x-analytics';
 
 const RootClassName = css`
     position: relative;
@@ -54,6 +54,7 @@ const JoinButton = ({ roomId, text }: { roomId: string; text: string }) => {
             alignSelf="center"
             flexShrink={0}
             action={async () => {
+                trackEvent('invite_button_clicked');
                 await client.mutateRoomJoin({ roomId });
                 await client.refetchRoomWithoutMembers({ id: roomId });
                 console.warn(router, roomId);
@@ -81,6 +82,7 @@ const JoinLinkButton = (props: {
             alignSelf="center"
             flexShrink={0}
             action={async () => {
+                trackEvent('invite_button_clicked');
                 props.onAccept(true);
                 let res = await client.mutateRoomJoinInviteLink({ invite: props.invite });
                 if (props.matchmaking) {
@@ -385,6 +387,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
             <UButton
                 text={'Accept invite'}
                 action={async () => {
+                    trackEvent('invite_button_clicked');
                     await client.mutateAccountInviteJoin({
                         inviteKey: key,
                     });
@@ -407,22 +410,16 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
             : 'Organization';
 
     return (
-        <>
-            <XTrack
-                event="invite_landing_view"
-                params={{ invite_type: whereToInvite.toLowerCase() }}
-            />
-            <InviteLandingComponentLayout
-                invitedByUser={invitedByUser}
-                button={button}
-                noLogin={!loggedIn}
-                whereToInvite={whereToInvite}
-                photo={room ? room.photo : organization!.photo}
-                title={room ? room.title : organization!.name}
-                id={room ? room.id : organization!.id}
-                membersCount={room ? room.membersCount : organization!.membersCount}
-                description={room ? room.description : organization!.about}
-            />
-        </>
+        <InviteLandingComponentLayout
+            invitedByUser={invitedByUser}
+            button={button}
+            noLogin={!loggedIn}
+            whereToInvite={whereToInvite}
+            photo={room ? room.photo : organization!.photo}
+            title={room ? room.title : organization!.name}
+            id={room ? room.id : organization!.id}
+            membersCount={room ? room.membersCount : organization!.membersCount}
+            description={room ? room.description : organization!.about}
+        />
     );
 };
