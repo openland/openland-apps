@@ -20,6 +20,7 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { MatchmakingStartComponent } from '../matchmaking/MatchmakingStartFragment';
 import { showModalBox } from 'openland-x/showModalBox';
 import { trackEvent } from 'openland-x-analytics';
+import { XTrack } from 'openland-x-analytics/XTrack';
 
 const RootClassName = css`
     position: relative;
@@ -410,16 +411,22 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
             : 'Organization';
 
     return (
-        <InviteLandingComponentLayout
-            invitedByUser={invitedByUser}
-            button={button}
-            noLogin={!loggedIn}
-            whereToInvite={whereToInvite}
-            photo={room ? room.photo : organization!.photo}
-            title={room ? room.title : organization!.name}
-            id={room ? room.id : organization!.id}
-            membersCount={room ? room.membersCount : organization!.membersCount}
-            description={room ? room.description : organization!.about}
-        />
+        <>
+            <XTrack
+                event="invite_landing_view"
+                params={{ invite_type: whereToInvite.toLowerCase() }}
+            />
+            <InviteLandingComponentLayout
+                invitedByUser={invitedByUser}
+                button={button}
+                noLogin={!loggedIn}
+                whereToInvite={whereToInvite}
+                photo={room ? room.photo : organization!.photo}
+                title={room ? room.title : organization!.name}
+                id={room ? room.id : organization!.id}
+                membersCount={room ? room.membersCount : organization!.membersCount}
+                description={room ? room.description : organization!.about}
+            />
+        </>
     );
 };
