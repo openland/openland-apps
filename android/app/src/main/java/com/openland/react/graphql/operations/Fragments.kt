@@ -1816,5 +1816,17 @@ internal val WalletUpdateFragmentSelector = obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("WalletTransaction", WalletTransactionFragmentSelector)
                     )))
+            )),
+            inline("WalletUpdatePaymentStatus", obj(
+                field("payment", "payment", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("intent", "intent", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("clientSecret", "clientSecret", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID")))
+                            )),
+                        field("status", "status", notNull(scalar("String")))
+                    )))
             ))
         )

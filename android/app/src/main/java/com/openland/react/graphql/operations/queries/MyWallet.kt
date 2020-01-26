@@ -11,6 +11,14 @@ internal val MyWalletSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("state", "state", notNull(scalar("String")))
                 ))),
+            field("transactionsHistory", "transactionsHistory", arguments(fieldValue("first", intValue(20))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("cursor", "cursor", scalar("String")),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("WalletTransaction", WalletTransactionFragmentSelector)
+                        )))))
+                ))),
             field("transactionsPending", "transactionsPending", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("WalletTransaction", WalletTransactionFragmentSelector)
@@ -19,6 +27,6 @@ internal val MyWalletSelector = obj(
 val MyWallet = object: OperationDefinition {
     override val name = "MyWallet"
     override val kind = OperationKind.QUERY
-    override val body = "query MyWallet{myWallet{__typename balance id state}transactionsPending{__typename ...WalletTransactionFragment}}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}}status}"
+    override val body = "query MyWallet{myWallet{__typename balance id state}transactionsHistory(first:20){__typename cursor items{__typename ...WalletTransactionFragment}}transactionsPending{__typename ...WalletTransactionFragment}}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}}status}"
     override val selector = MyWalletSelector
 }

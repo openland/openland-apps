@@ -21,4 +21,16 @@ fragment WalletUpdateFragment on WalletUpdate {
       ...WalletTransactionFragment
     }
   }
+  ... on WalletUpdatePaymentStatus {
+    payment {
+      __typename
+      id
+      intent {
+        __typename
+        clientSecret
+        id
+      }
+      status
+    }
+  }
 }

@@ -72,12 +72,6 @@ const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController, id: 
                         await client.mutatePaymentIntentCommit({ id: props.id })
                     );
 
-                    // Reload wallet
-                    let w = await client.refetchMyWallet();
-
-                    // Reload transactions
-                    // await client.refetchWalletTransactions({ id: w.myAccount.id, first: 20 });
-
                     // Exit
                     props.ctx.hide();
                 } catch (e) {

@@ -16,7 +16,6 @@ import { UListItem } from 'openland-web/components/unicorn/UListItem';
 // import AlertBlanket from 'openland-x/AlertBlanket';
 // import uuid from 'uuid';
 // import { showConfirmPayment } from './components/showConfirmPayment';
-import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { showConfirmPayment } from './components/showConfirmPayment';
 
@@ -91,26 +90,6 @@ export const WalletFragment = React.memo(() => {
                         ))}
                     </XView>
                 </UListGroup>
-                {/* <UListGroup header="Subscriptions" action={{ title: 'Donate', onClick: createDonation }}>
-                    {subscriptions.mySubscriptions.map((v) => (
-                        <UListItem key={v.id} title={v.title} subtitle={<Money amount={v.amount} />} />
-                    ))}
-                    {subscriptions.mySubscriptions.length === 0 && (<XView>No subscriptions</XView>)}
-                </UListGroup> */}
-                {/* <UListGroup header="Payments">
-                    {pending.myPendingPayments.map((v) => (
-                        <UListItem
-                            key={v.id}
-                            title={v.status}
-                            subtitle={v.id}
-                            onClick={() => {
-                                if (v.status === 'ACTION_REQUIRED') {
-                                    showConfirmPayment(v.intent!.id, v.intent!.clientSecret);
-                                }
-                            }}
-                        />
-                    ))}
-                </UListGroup> */}
                 <UListGroup header="Pending Transactions">
                     {wallet.pendingTransactions.map((v) => (
                         <UListItem
@@ -123,7 +102,15 @@ export const WalletFragment = React.memo(() => {
                                 }
                             }}
                         />
-                        // <TransactionView key={v.id} item={v} />
+                    ))}
+                </UListGroup>
+                <UListGroup header="Latest Transactions">
+                    {wallet.historyTransactions.map((v) => (
+                        <UListItem
+                            key={v.id}
+                            title={v.status}
+                            subtitle={<Money amount={v.operation.amount} />}
+                        />
                     ))}
                 </UListGroup>
             </XView>

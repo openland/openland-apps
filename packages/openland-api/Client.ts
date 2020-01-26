@@ -1813,6 +1813,18 @@ const WalletUpdateFragmentSelector = obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
                         fragment('WalletTransaction', WalletTransactionFragmentSelector)
                     )))
+            )),
+            inline('WalletUpdatePaymentStatus', obj(
+                field('payment', 'payment', args(), notNull(obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('id', 'id', args(), notNull(scalar('ID'))),
+                        field('intent', 'intent', args(), obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('clientSecret', 'clientSecret', args(), notNull(scalar('String'))),
+                                field('id', 'id', args(), notNull(scalar('ID')))
+                            )),
+                        field('status', 'status', args(), notNull(scalar('String')))
+                    )))
             ))
         );
 
@@ -2579,6 +2591,14 @@ const MyWalletSelector = obj(
                     field('balance', 'balance', args(), notNull(scalar('Int'))),
                     field('id', 'id', args(), notNull(scalar('ID'))),
                     field('state', 'state', args(), notNull(scalar('String')))
+                ))),
+            field('transactionsHistory', 'transactionsHistory', args(fieldValue("first", intValue(20))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('cursor', 'cursor', args(), scalar('String')),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('WalletTransaction', WalletTransactionFragmentSelector)
+                        )))))
                 ))),
             field('transactionsPending', 'transactionsPending', args(), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -4487,7 +4507,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     MyWallet: {
         kind: 'query',
         name: 'MyWallet',
-        body: 'query MyWallet{myWallet{__typename balance id state}transactionsPending{__typename ...WalletTransactionFragment}}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}}status}',
+        body: 'query MyWallet{myWallet{__typename balance id state}transactionsHistory(first:20){__typename cursor items{__typename ...WalletTransactionFragment}}transactionsPending{__typename ...WalletTransactionFragment}}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}}status}',
         selector: MyWalletSelector
     },
     OauthContext: {
@@ -5525,7 +5545,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     WalletUpdates: {
         kind: 'subscription',
         name: 'WalletUpdates',
-        body: 'subscription WalletUpdates($state:String!){event:walletUpdates(fromState:$state){__typename ... on WalletUpdateSingle{state update{__typename ...WalletUpdateFragment}}... on WalletUpdateBatch{state updates{__typename ...WalletUpdateFragment}}}}fragment WalletUpdateFragment on WalletUpdate{__typename ... on WalletUpdateBalance{amount}... on WalletUpdateTransactionSuccess{transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionCanceled{transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionPending{transaction{__typename ...WalletTransactionFragment}}}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}}status}',
+        body: 'subscription WalletUpdates($state:String!){event:walletUpdates(fromState:$state){__typename ... on WalletUpdateSingle{state update{__typename ...WalletUpdateFragment}}... on WalletUpdateBatch{state updates{__typename ...WalletUpdateFragment}}}}fragment WalletUpdateFragment on WalletUpdate{__typename ... on WalletUpdateBalance{amount}... on WalletUpdateTransactionSuccess{transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionCanceled{transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionPending{transaction{__typename ...WalletTransactionFragment}}... on WalletUpdatePaymentStatus{payment{__typename id intent{__typename clientSecret id}status}}}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}}status}',
         selector: WalletUpdatesSelector
     },
 };

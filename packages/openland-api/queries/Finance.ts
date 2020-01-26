@@ -107,6 +107,12 @@ export const MyWalletQuery = gql`
         transactionsPending {
             ...WalletTransactionFragment
         }
+        transactionsHistory(first: 20) {
+            items {
+                ...WalletTransactionFragment
+            }
+            cursor
+        }
     }
     ${WalletTransactionFragment}
 `;
@@ -129,6 +135,16 @@ export const WalletUpdateFragment = gql`
         ... on WalletUpdateTransactionPending {
             transaction {
                 ...WalletTransactionFragment
+            }
+        }
+        ... on WalletUpdatePaymentStatus  {
+            payment {
+                id
+                status
+                intent {
+                    id
+                    clientSecret
+                }
             }
         }
     }

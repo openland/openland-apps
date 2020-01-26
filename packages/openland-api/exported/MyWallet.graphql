@@ -5,6 +5,14 @@ query MyWallet {
     id
     state
   }
+  transactionsHistory(first: 20) {
+    __typename
+    cursor
+    items {
+      __typename
+      ...WalletTransactionFragment
+    }
+  }
   transactionsPending {
     __typename
     ...WalletTransactionFragment
