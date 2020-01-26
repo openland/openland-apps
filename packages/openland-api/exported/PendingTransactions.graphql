@@ -1,0 +1,18 @@
+query PendingTransactions {
+  transactionsPending {
+    __typename
+    id
+    operation {
+      __typename
+      ... on WalletTransactionDeposit {
+        amount
+        payment {
+          __typename
+          id
+          status
+        }
+      }
+    }
+    status
+  }
+}

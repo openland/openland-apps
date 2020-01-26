@@ -1,0 +1,27 @@
+fragment WalletUpdateFragment on WalletUpdate {
+  __typename
+  ... on WalletUpdateBalance {
+    amount
+  }
+  ... on WalletUpdateTransactionSuccess {
+    transaction {
+      __typename
+      id
+      status
+    }
+  }
+  ... on WalletUpdateTransactionCanceled {
+    transaction {
+      __typename
+      id
+      status
+    }
+  }
+  ... on WalletUpdateTransactionPending {
+    transaction {
+      __typename
+      id
+      status
+    }
+  }
+}

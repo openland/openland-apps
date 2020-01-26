@@ -63,6 +63,7 @@ object Operations {
         if (name == "OrganizationProfile") return OrganizationProfile
         if (name == "OrganizationPublicInvite") return OrganizationPublicInvite
         if (name == "OrganizationWithoutMembers") return OrganizationWithoutMembers
+        if (name == "PendingTransactions") return PendingTransactions
         if (name == "Permissions") return Permissions
         if (name == "Profile") return Profile
         if (name == "ProfilePrefill") return ProfilePrefill
@@ -96,7 +97,6 @@ object Operations {
         if (name == "UserAvailableRooms") return UserAvailableRooms
         if (name == "UserStorage") return UserStorage
         if (name == "Users") return Users
-        if (name == "WalletTransactions") return WalletTransactions
         if (name == "AccountInviteJoin") return AccountInviteJoin
         if (name == "AddAppToChat") return AddAppToChat
         if (name == "AddComment") return AddComment
@@ -123,7 +123,6 @@ object Operations {
         if (name == "DeleteNotification") return DeleteNotification
         if (name == "DeleteOrganization") return DeleteOrganization
         if (name == "DeleteUser") return DeleteUser
-        if (name == "DepositIntentCommit") return DepositIntentCommit
         if (name == "EditComment") return EditComment
         if (name == "EditMessage") return EditMessage
         if (name == "FeatureFlagAdd") return FeatureFlagAdd
@@ -159,6 +158,7 @@ object Operations {
         if (name == "OrganizationChangeMemberRole") return OrganizationChangeMemberRole
         if (name == "OrganizationCreatePublicInvite") return OrganizationCreatePublicInvite
         if (name == "OrganizationMemberRemove") return OrganizationMemberRemove
+        if (name == "PaymentIntentCommit") return PaymentIntentCommit
         if (name == "PersistEvents") return PersistEvents
         if (name == "PinMessage") return PinMessage
         if (name == "ProfileCreate") return ProfileCreate
@@ -227,6 +227,7 @@ object Operations {
         if (name == "OnlineWatch") return OnlineWatch
         if (name == "SettingsWatch") return SettingsWatch
         if (name == "TypingsWatch") return TypingsWatch
+        if (name == "WalletUpdates") return WalletUpdates
         error("Unknown operation: $name")
     }
 }

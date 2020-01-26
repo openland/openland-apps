@@ -7,11 +7,16 @@ import { showAddCard } from './components/showAddCard';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { CardView } from './components/CardView';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
-import { TransactionView } from './components/TransactionView';
+// import { TransactionView } from './components/TransactionView';
 import { showAddFunds } from './components/showAddFunds';
 import { Money } from 'openland-y-utils/wallet/Money';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { css } from 'linaria';
+import { UListItem } from 'openland-web/components/unicorn/UListItem';
+// import AlertBlanket from 'openland-x/AlertBlanket';
+// import uuid from 'uuid';
+// import { showConfirmPayment } from './components/showConfirmPayment';
+import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 
 const cardContainer = css`
     width: 50%;
@@ -25,9 +30,30 @@ const cardContainer = css`
 export const WalletFragment = React.memo(() => {
     const client = useClient();
     const cards = client.useMyCards({ fetchPolicy: 'cache-and-network' }).myCards;
-    const wallet = client.useMyWallet({ fetchPolicy: 'cache-and-network' }).myAccount;
-    const transactions = client.useWalletTransactions({ id: wallet.id, first: 20 }).walletTransactions;
-    const balance = wallet.balance;
+    const wallet = client.useMyWallet({ fetchPolicy: 'cache-and-network' }).myWallet;
+    const pendingTransactions = client.usePendingTransactions({ fetchPolicy: 'cache-and-network' }).transactionsPending;
+    React.useEffect(() => {
+        console.log('Wallet start from: ' + wallet.state);
+        let sequence = new SequenceModernWatcher('wallet', client.subscribeWalletUpdates({ state: wallet.state }), client.client, async (src) => {
+            console.log(src);
+        }, undefined, undefined, wallet.state);
+        return () => {
+            sequence.destroy();
+        };
+    }, []);
+    // const transactions = client.useWalletTransactions({ id: wallet.id, first: 20 }).walletTransactions;
+    // const subscriptions = client.useMySubscriptions({ fetchPolicy: 'cache-and-network' });
+    // const pending = client.useMyPendingPayments({ fetchPolicy: 'cache-and-network' });
+    // const balance = wallet.balance;
+    // const createDonation = React.useCallback(() => {
+    //     AlertBlanket.builder()
+    //         .title('Add donation?')
+    //         .message('5$ monthly donation will be added to your account')
+    //         .action('Donate', async () => {
+    //             await client.mutateCreateDonateSubscription({ amount: 500, retryKey: uuid() });
+    //             await client.refetchMySubscriptions();
+    //         }, 'danger').show();
+    // }, []);
 
     return (
         <Page track="settings_wallet">
@@ -36,11 +62,11 @@ export const WalletFragment = React.memo(() => {
                 <UListGroup header="Your balance" action={{ title: 'Add funds', onClick: () => showAddFunds() }}>
                     <XView
                         {...TextStyles.Title1}
-                        color={balance === 0 ? 'var(--foregroundTertiary)' : 'var(--accentPrimary)'}
+                        color={wallet.balance === 0 ? 'var(--foregroundTertiary)' : 'var(--accentPrimary)'}
                         paddingHorizontal={16}
                         paddingBottom={16}
                     >
-                        <Money amount={balance} />
+                        <Money amount={wallet.balance} />
                     </XView>
                 </UListGroup>
                 <UListGroup
@@ -61,9 +87,34 @@ export const WalletFragment = React.memo(() => {
                         ))}
                     </XView>
                 </UListGroup>
+                {/* <UListGroup header="Subscriptions" action={{ title: 'Donate', onClick: createDonation }}>
+                    {subscriptions.mySubscriptions.map((v) => (
+                        <UListItem key={v.id} title={v.title} subtitle={<Money amount={v.amount} />} />
+                    ))}
+                    {subscriptions.mySubscriptions.length === 0 && (<XView>No subscriptions</XView>)}
+                </UListGroup> */}
+                {/* <UListGroup header="Payments">
+                    {pending.myPendingPayments.map((v) => (
+                        <UListItem
+                            key={v.id}
+                            title={v.status}
+                            subtitle={v.id}
+                            onClick={() => {
+                                if (v.status === 'ACTION_REQUIRED') {
+                                    showConfirmPayment(v.intent!.id, v.intent!.clientSecret);
+                                }
+                            }}
+                        />
+                    ))}
+                </UListGroup> */}
                 <UListGroup header="Transactions">
-                    {transactions.items.map((v) => (
-                        <TransactionView key={v.id} item={v} />
+                    {pendingTransactions.map((v) => (
+                        <UListItem
+                            key={v.id}
+                            title={v.status + ': ' + v.operation.payment!.status}
+                            subtitle={<Money amount={v.operation.amount} />}
+                        />
+                        // <TransactionView key={v.id} item={v} />
                     ))}
                 </UListGroup>
             </XView>

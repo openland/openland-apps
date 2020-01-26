@@ -36,7 +36,7 @@ export const SelectableText = React.memo((props: XViewProps) => {
 export interface UListItemProps {
     title: string | JSX.Element;
     titleIcon?: JSX.Element;
-    subtitle?: string;
+    subtitle?: string | JSX.Element | null;
     description?: string | JSX.Element | null;
     descriptionColor?: string;
     icon?: JSX.Element;

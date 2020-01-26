@@ -1771,3 +1771,31 @@ internal val StickerPackFragmentSelector = obj(
                 ))))),
             field("title", "title", notNull(scalar("String")))
         )
+
+internal val WalletUpdateFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("WalletUpdateBalance", obj(
+                field("amount", "amount", notNull(scalar("Int")))
+            )),
+            inline("WalletUpdateTransactionSuccess", obj(
+                field("transaction", "transaction", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("status", "status", notNull(scalar("String")))
+                    )))
+            )),
+            inline("WalletUpdateTransactionCanceled", obj(
+                field("transaction", "transaction", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("status", "status", notNull(scalar("String")))
+                    )))
+            )),
+            inline("WalletUpdateTransactionPending", obj(
+                field("transaction", "transaction", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("status", "status", notNull(scalar("String")))
+                    )))
+            ))
+        )

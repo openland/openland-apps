@@ -4,6 +4,7 @@ export const MyCardsQuery = gql`
     query MyCards {
         myCards {
             id
+            pmid
             last4
             brand
             expYear
@@ -40,9 +41,9 @@ export const CreateDepositIntentMutation = gql`
     }
 `;
 
-export const DepositIntentCommitMutation = gql`
-    mutation DepositIntentCommit($id: ID!) {
-        cardDepositIntentCommit(id: $id)
+export const PaymentIntentCommitMutation = gql`
+    mutation PaymentIntentCommit($id: ID!) {
+        paymentIntentCommit(id: $id)
     }
 `;
 
@@ -66,23 +67,74 @@ export const MakeCardDefaultMutation = gql`
 
 export const MyWalletQuery = gql`
     query MyWallet {
-        myAccount {
+        myWallet {
             id
             balance
+            state
         }
     }
 `;
 
-export const WalletTransactionsQuery = gql`
-    query WalletTransactions($id: ID!, $first: Int!, $after: String) {
-        walletTransactions(id: $id, first: $first, after: $after) {
-            items {
-                id
-                amount
-                state
-                readableState
+export const PendingTransactionsQuery = gql`
+    query PendingTransactions {
+        transactionsPending {
+            id
+            status
+            operation {
+                ... on WalletTransactionDeposit {
+                    amount
+                    payment {
+                        id
+                        status
+                    }
+                }
             }
-            cursor
         }
     }
+`;
+
+export const WalletUpdateFragment = gql`
+    fragment WalletUpdateFragment on WalletUpdate {
+        ... on WalletUpdateBalance {
+            amount
+        }
+        ... on WalletUpdateTransactionSuccess {
+            transaction {
+                id
+                status
+            }
+        }
+        ... on WalletUpdateTransactionCanceled {
+            transaction {
+                id
+                status
+            }
+        }
+        ... on WalletUpdateTransactionPending {
+            transaction {
+                id
+                status
+            }
+        }
+    }
+`;
+
+export const WalletUpdatesSubscription = gql`
+    subscription WalletUpdates($state: String!) {
+        event: walletUpdates(fromState: $state) {
+            ... on WalletUpdateSingle {
+                state
+                update {
+                    ...WalletUpdateFragment
+                }
+            }
+            ... on WalletUpdateBatch {
+                state
+                updates {
+                    ...WalletUpdateFragment
+                }
+            }
+        }
+    }
+    ${WalletUpdateFragment}
 `;

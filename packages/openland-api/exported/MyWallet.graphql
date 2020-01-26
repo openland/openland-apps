@@ -1,7 +1,8 @@
 query MyWallet {
-  myAccount {
+  myWallet {
     __typename
     balance
     id
+    state
   }
 }

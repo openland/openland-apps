@@ -1766,6 +1766,34 @@ private let StickerPackFragmentSelector = obj(
             field("title", "title", notNull(scalar("String")))
         )
 
+private let WalletUpdateFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("WalletUpdateBalance", obj(
+                field("amount", "amount", notNull(scalar("Int")))
+            )),
+            inline("WalletUpdateTransactionSuccess", obj(
+                field("transaction", "transaction", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("status", "status", notNull(scalar("String")))
+                    )))
+            )),
+            inline("WalletUpdateTransactionCanceled", obj(
+                field("transaction", "transaction", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("status", "status", notNull(scalar("String")))
+                    )))
+            )),
+            inline("WalletUpdateTransactionPending", obj(
+                field("transaction", "transaction", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("status", "status", notNull(scalar("String")))
+                    )))
+            ))
+        )
+
 private let AccountSelector = obj(
             field("me", "me", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -2474,7 +2502,8 @@ private let MyCardsSelector = obj(
                     field("expYear", "expYear", notNull(scalar("Int"))),
                     field("id", "id", notNull(scalar("ID"))),
                     field("isDefault", "isDefault", notNull(scalar("Boolean"))),
-                    field("last4", "last4", notNull(scalar("String")))
+                    field("last4", "last4", notNull(scalar("String"))),
+                    field("pmid", "pmid", notNull(scalar("ID")))
                 )))))
         )
 private let MyNotificationCenterSelector = obj(
@@ -2523,10 +2552,11 @@ private let MySuccessfulInvitesCountSelector = obj(
             field("mySuccessfulInvitesCount", "mySuccessfulInvitesCount", notNull(scalar("Int")))
         )
 private let MyWalletSelector = obj(
-            field("myAccount", "myAccount", notNull(obj(
+            field("myWallet", "myWallet", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("balance", "balance", notNull(scalar("Int"))),
-                    field("id", "id", notNull(scalar("ID")))
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("state", "state", notNull(scalar("String")))
                 )))
         )
 private let OauthContextSelector = obj(
@@ -2621,6 +2651,24 @@ private let OrganizationWithoutMembersSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationWithoutMembersFragmentSelector)
                 )))
+        )
+private let PendingTransactionsSelector = obj(
+            field("transactionsPending", "transactionsPending", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("operation", "operation", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            inline("WalletTransactionDeposit", obj(
+                                field("amount", "amount", notNull(scalar("Int"))),
+                                field("payment", "payment", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("status", "status", notNull(scalar("String")))
+                                    ))
+                            ))
+                        ))),
+                    field("status", "status", notNull(scalar("String")))
+                )))))
         )
 private let PermissionsSelector = obj(
             field("myPermissions", "myPermissions", notNull(obj(
@@ -3224,19 +3272,6 @@ private let UsersSelector = obj(
                     field("name", "title", notNull(scalar("String")))
                 )))))
         )
-private let WalletTransactionsSelector = obj(
-            field("walletTransactions", "walletTransactions", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("id", refValue("id"))), notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("cursor", "cursor", scalar("String")),
-                    field("items", "items", notNull(list(notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("amount", "amount", notNull(scalar("Int"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("readableState", "readableState", notNull(scalar("String"))),
-                            field("state", "state", notNull(scalar("String")))
-                        )))))
-                )))
-        )
 private let AccountInviteJoinSelector = obj(
             field("alphaJoinInvite", "alphaJoinInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
         )
@@ -3386,9 +3421,6 @@ private let DeleteOrganizationSelector = obj(
         )
 private let DeleteUserSelector = obj(
             field("superDeleteUser", "superDeleteUser", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
-        )
-private let DepositIntentCommitSelector = obj(
-            field("cardDepositIntentCommit", "cardDepositIntentCommit", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
 private let EditCommentSelector = obj(
             field("editComment", "editComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("id", refValue("id")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
@@ -3612,6 +3644,9 @@ private let OrganizationMemberRemoveSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID")))
                 )))
+        )
+private let PaymentIntentCommitSelector = obj(
+            field("paymentIntentCommit", "paymentIntentCommit", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
 private let PersistEventsSelector = obj(
             field("track", "track", arguments(fieldValue("did", refValue("did")), fieldValue("events", refValue("events")), fieldValue("isProd", refValue("isProd"))), notNull(scalar("String")))
@@ -4145,6 +4180,25 @@ private let TypingsWatchSelector = obj(
                         )))
                 )))
         )
+private let WalletUpdatesSelector = obj(
+            field("walletUpdates", "event", arguments(fieldValue("fromState", refValue("state"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    inline("WalletUpdateSingle", obj(
+                        field("state", "state", notNull(scalar("String"))),
+                        field("update", "update", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("WalletUpdate", WalletUpdateFragmentSelector)
+                            )))
+                    )),
+                    inline("WalletUpdateBatch", obj(
+                        field("state", "state", notNull(scalar("String"))),
+                        field("updates", "updates", notNull(list(notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("WalletUpdate", WalletUpdateFragmentSelector)
+                            )))))
+                    ))
+                )))
+        )
 
 class Operations {
     static let shared = Operations()
@@ -4393,7 +4447,7 @@ class Operations {
     let MyCards = OperationDefinition(
         "MyCards",
         .query, 
-        "query MyCards{myCards{__typename brand deleted expMonth expYear id isDefault last4}}",
+        "query MyCards{myCards{__typename brand deleted expMonth expYear id isDefault last4 pmid}}",
         MyCardsSelector
     )
     let MyNotificationCenter = OperationDefinition(
@@ -4429,7 +4483,7 @@ class Operations {
     let MyWallet = OperationDefinition(
         "MyWallet",
         .query, 
-        "query MyWallet{myAccount{__typename balance id}}",
+        "query MyWallet{myWallet{__typename balance id state}}",
         MyWalletSelector
     )
     let OauthContext = OperationDefinition(
@@ -4485,6 +4539,12 @@ class Operations {
         .query, 
         "query OrganizationWithoutMembers($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationWithoutMembersFragment}}fragment OrganizationWithoutMembersFragment on Organization{__typename about featured:alphaFeatured isCommunity:alphaIsCommunity isPrivate:alphaIsPrivate requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}isAdmin:betaIsAdmin isOwner:betaIsOwner rooms:betaPublicRooms{__typename ...RoomShort}facebook id instagram isMine linkedin membersCount name photo shortname superAccountId twitter website}fragment UserFull on User{__typename about audienceSize email facebook firstName id instagram isBot isYou lastName lastSeen linkedin location name online phone photo primaryOrganization{__typename ...OrganizationShort}shortname twitter website}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}fragment RoomShort on Room{__typename ... on PrivateRoom{id myBadge{__typename ...UserBadge}pinnedMessage{__typename ...FullMessage}settings{__typename id mute}user{__typename ...UserShort}}... on SharedRoom{canEdit canSendMessage id isChannel kind matchmaking{__typename ...MatchmakingRoomFragment}membersCount membership myBadge{__typename ...UserBadge}organization{__typename ...OrganizationShort}photo pinnedMessage{__typename ...FullMessage}role settings{__typename id mute}title}}fragment UserBadge on UserBadge{__typename id name verified}fragment FullMessage on ModernMessage{__typename date fallback id message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id isChannel membersCount}}}}spans{__typename ...SpanFragment}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id style title url}}socialImage{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}subTitle text title titleLink titleLinkHostname}}commentsCount edited id overrideAvatar{__typename crop{__typename h w x y}uuid}overrideName quotedMessages{__typename ...QuotedMessage}reactions{__typename reaction user{__typename ...UserShort}}}... on StickerMessage{commentsCount date id overrideAvatar{__typename crop{__typename h w x y}uuid}overrideName quotedMessages{__typename ...QuotedMessage}reactions{__typename reaction user{__typename ...UserShort}}sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}sticker{__typename ...StickerFragment}}... on ServiceMessage{id overrideAvatar{__typename crop{__typename h w x y}uuid}overrideName serviceMetadata{__typename ... on InviteServiceMetadata{invitedBy{__typename ...UserTiny}users{__typename ...UserTiny}}... on KickServiceMetadata{kickedBy{__typename ...UserTiny}user{__typename ...UserTiny}}... on TitleChangeServiceMetadata{title}... on PhotoChangeServiceMetadata{photo}... on PostRespondServiceMetadata{respondType}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment SpanFragment on MessageSpan{__typename length offset ... on MessageSpanUserMention{user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{room{__typename ...RoomNano}}... on MessageSpanLink{url}... on MessageSpanDate{date}}fragment UserForMention on User{__typename id isBot isYou name photo primaryOrganization{__typename id name}shortname}fragment RoomNano on Room{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename id name photo}}... on SharedRoom{...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id isChannel kind membersCount roomPhoto:photo settings{__typename id mute}title}fragment QuotedMessage on ModernMessage{__typename date fallback id message message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}spans{__typename ...SpanFragment}... on GeneralMessage{attachments{__typename fallback ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{fallback icon{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}id image{__typename metadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}url}imageFallback{__typename photo text}subTitle text title titleLink titleLinkHostname}}commentsCount edited id overrideAvatar{__typename crop{__typename h w x y}uuid}overrideName}... on StickerMessage{date id overrideAvatar{__typename crop{__typename h w x y}uuid}overrideName reactions{__typename reaction user{__typename ...UserShort}}sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}}}sticker{__typename ... on ImageSticker{id image{__typename ... on ImageRef{uuid}}pack{__typename ... on StickerPack{id title}}}}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{id image{__typename uuid}pack{__typename id title}}}fragment UserTiny on User{__typename firstName id isYou lastName name photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment MatchmakingRoomFragment on MatchmakingRoom{__typename enabled myProfile{__typename ...MatchmakingProfileFragment}profiles{__typename ...MatchmakingProfileFragment}questions{__typename ... on TextMatchmakingQuestion{id subtitle title}... on MultiselectMatchmakingQuestion{id subtitle tags title}}}fragment MatchmakingProfileFragment on MatchmakingProfile{__typename answers{__typename ... on TextMatchmakingAnswer{answer question{__typename id subtitle title}}... on MultiselectMatchmakingAnswer{question{__typename id subtitle title}tags}}chatCreated user{__typename id isBot isYou name photo primaryOrganization{__typename id name}}}",
         OrganizationWithoutMembersSelector
+    )
+    let PendingTransactions = OperationDefinition(
+        "PendingTransactions",
+        .query, 
+        "query PendingTransactions{transactionsPending{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id status}}}status}}",
+        PendingTransactionsSelector
     )
     let Permissions = OperationDefinition(
         "Permissions",
@@ -4684,12 +4744,6 @@ class Operations {
         "query Users($query:String!){items:users(query:$query){__typename subtitle:email id title:name}}",
         UsersSelector
     )
-    let WalletTransactions = OperationDefinition(
-        "WalletTransactions",
-        .query, 
-        "query WalletTransactions($after:String,$first:Int!,$id:ID!){walletTransactions(after:$after,first:$first,id:$id){__typename cursor items{__typename amount id readableState state}}}",
-        WalletTransactionsSelector
-    )
     let AccountInviteJoin = OperationDefinition(
         "AccountInviteJoin",
         .mutation, 
@@ -4845,12 +4899,6 @@ class Operations {
         .mutation, 
         "mutation DeleteUser($id:ID!){superDeleteUser(id:$id)}",
         DeleteUserSelector
-    )
-    let DepositIntentCommit = OperationDefinition(
-        "DepositIntentCommit",
-        .mutation, 
-        "mutation DepositIntentCommit($id:ID!){cardDepositIntentCommit(id:$id)}",
-        DepositIntentCommitSelector
     )
     let EditComment = OperationDefinition(
         "EditComment",
@@ -5061,6 +5109,12 @@ class Operations {
         .mutation, 
         "mutation OrganizationMemberRemove($organizationId:ID!,$userId:ID!){betaOrganizationMemberRemove(organizationId:$organizationId,userId:$userId){__typename id}}",
         OrganizationMemberRemoveSelector
+    )
+    let PaymentIntentCommit = OperationDefinition(
+        "PaymentIntentCommit",
+        .mutation, 
+        "mutation PaymentIntentCommit($id:ID!){paymentIntentCommit(id:$id)}",
+        PaymentIntentCommitSelector
     )
     let PersistEvents = OperationDefinition(
         "PersistEvents",
@@ -5470,6 +5524,12 @@ class Operations {
         "subscription TypingsWatch{typings{__typename cancel conversation:chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}user{__typename id name photo}}}",
         TypingsWatchSelector
     )
+    let WalletUpdates = OperationDefinition(
+        "WalletUpdates",
+        .subscription, 
+        "subscription WalletUpdates($state:String!){event:walletUpdates(fromState:$state){__typename ... on WalletUpdateSingle{state update{__typename ...WalletUpdateFragment}}... on WalletUpdateBatch{state updates{__typename ...WalletUpdateFragment}}}}fragment WalletUpdateFragment on WalletUpdate{__typename ... on WalletUpdateBalance{amount}... on WalletUpdateTransactionSuccess{transaction{__typename id status}}... on WalletUpdateTransactionCanceled{transaction{__typename id status}}... on WalletUpdateTransactionPending{transaction{__typename id status}}}",
+        WalletUpdatesSelector
+    )
     
     func operationByName(_ name: String) -> OperationDefinition {
         if name == "Account" { return Account }
@@ -5528,6 +5588,7 @@ class Operations {
         if name == "OrganizationProfile" { return OrganizationProfile }
         if name == "OrganizationPublicInvite" { return OrganizationPublicInvite }
         if name == "OrganizationWithoutMembers" { return OrganizationWithoutMembers }
+        if name == "PendingTransactions" { return PendingTransactions }
         if name == "Permissions" { return Permissions }
         if name == "Profile" { return Profile }
         if name == "ProfilePrefill" { return ProfilePrefill }
@@ -5561,7 +5622,6 @@ class Operations {
         if name == "UserAvailableRooms" { return UserAvailableRooms }
         if name == "UserStorage" { return UserStorage }
         if name == "Users" { return Users }
-        if name == "WalletTransactions" { return WalletTransactions }
         if name == "AccountInviteJoin" { return AccountInviteJoin }
         if name == "AddAppToChat" { return AddAppToChat }
         if name == "AddComment" { return AddComment }
@@ -5588,7 +5648,6 @@ class Operations {
         if name == "DeleteNotification" { return DeleteNotification }
         if name == "DeleteOrganization" { return DeleteOrganization }
         if name == "DeleteUser" { return DeleteUser }
-        if name == "DepositIntentCommit" { return DepositIntentCommit }
         if name == "EditComment" { return EditComment }
         if name == "EditMessage" { return EditMessage }
         if name == "FeatureFlagAdd" { return FeatureFlagAdd }
@@ -5624,6 +5683,7 @@ class Operations {
         if name == "OrganizationChangeMemberRole" { return OrganizationChangeMemberRole }
         if name == "OrganizationCreatePublicInvite" { return OrganizationCreatePublicInvite }
         if name == "OrganizationMemberRemove" { return OrganizationMemberRemove }
+        if name == "PaymentIntentCommit" { return PaymentIntentCommit }
         if name == "PersistEvents" { return PersistEvents }
         if name == "PinMessage" { return PinMessage }
         if name == "ProfileCreate" { return ProfileCreate }
@@ -5692,6 +5752,7 @@ class Operations {
         if name == "OnlineWatch" { return OnlineWatch }
         if name == "SettingsWatch" { return SettingsWatch }
         if name == "TypingsWatch" { return TypingsWatch }
+        if name == "WalletUpdates" { return WalletUpdates }
         fatalError("Unknown operation: " + name)
     }
 }

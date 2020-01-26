@@ -703,17 +703,17 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderMyWallet(opts?: QueryWatchParameters): Types.MyWallet | null {
         return this.useQuery(Source.MyWalletQuery, undefined, opts);
     }
-    async queryWalletTransactions(variables: Types.WalletTransactionsVariables, opts?: OperationParameters): Promise<Types.WalletTransactions> {
-        return this.client.query(Source.WalletTransactionsQuery, variables, opts);
+    async queryPendingTransactions(opts?: OperationParameters): Promise<Types.PendingTransactions> {
+        return this.client.query(Source.PendingTransactionsQuery, undefined, opts);
     }
-    async refetchWalletTransactions(variables: Types.WalletTransactionsVariables): Promise<Types.WalletTransactions> {
-        return this.refetch(Source.WalletTransactionsQuery, variables);
+    async refetchPendingTransactions(): Promise<Types.PendingTransactions> {
+        return this.refetch(Source.PendingTransactionsQuery);
     }
-    useWalletTransactions(variables: Types.WalletTransactionsVariables, opts?: QueryWatchParameters): Types.WalletTransactions {
-        return this.useQuerySuspense(Source.WalletTransactionsQuery, variables, opts);
+    usePendingTransactions(opts?: QueryWatchParameters): Types.PendingTransactions {
+        return this.useQuerySuspense(Source.PendingTransactionsQuery, undefined, opts);
     }
-    useWithoutLoaderWalletTransactions(variables: Types.WalletTransactionsVariables, opts?: QueryWatchParameters): Types.WalletTransactions | null {
-        return this.useQuery(Source.WalletTransactionsQuery, variables, opts);
+    useWithoutLoaderPendingTransactions(opts?: QueryWatchParameters): Types.PendingTransactions | null {
+        return this.useQuery(Source.PendingTransactionsQuery, undefined, opts);
     }
     async queryMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: OperationParameters): Promise<Types.MatchmakingRoom> {
         return this.client.query(Source.MatchmakingRoomQuery, variables, opts);
@@ -1321,8 +1321,8 @@ export class OpenlandClient extends BaseApiClient {
     async mutateCreateDepositIntent(variables: Types.CreateDepositIntentVariables): Promise<Types.CreateDepositIntent> {
         return this.client.mutate(Source.CreateDepositIntentMutation, variables);
     }
-    async mutateDepositIntentCommit(variables: Types.DepositIntentCommitVariables): Promise<Types.DepositIntentCommit> {
-        return this.client.mutate(Source.DepositIntentCommitMutation, variables);
+    async mutatePaymentIntentCommit(variables: Types.PaymentIntentCommitVariables): Promise<Types.PaymentIntentCommit> {
+        return this.client.mutate(Source.PaymentIntentCommitMutation, variables);
     }
     async mutateRemoveCard(variables: Types.RemoveCardVariables): Promise<Types.RemoveCard> {
         return this.client.mutate(Source.RemoveCardMutation, variables);
@@ -1467,6 +1467,9 @@ export class OpenlandClient extends BaseApiClient {
     }
     subscribeFeedUpdates(variables: Types.FeedUpdatesVariables): GraphqlActiveSubscription<Types.FeedUpdates, Types.FeedUpdatesVariables> {
         return this.client.subscribe(Source.FeedUpdatesSubscription, variables);
+    }
+    subscribeWalletUpdates(variables: Types.WalletUpdatesVariables): GraphqlActiveSubscription<Types.WalletUpdates, Types.WalletUpdatesVariables> {
+        return this.client.subscribe(Source.WalletUpdatesSubscription, variables);
     }
     subscribeMyNotificationsCenter(variables: Types.MyNotificationsCenterVariables): GraphqlActiveSubscription<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables> {
         return this.client.subscribe(Source.MyNotificationsCenterSubscription, variables);
