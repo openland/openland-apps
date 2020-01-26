@@ -6,22 +6,19 @@ fragment WalletUpdateFragment on WalletUpdate {
   ... on WalletUpdateTransactionSuccess {
     transaction {
       __typename
-      id
-      status
+      ...WalletTransactionFragment
     }
   }
   ... on WalletUpdateTransactionCanceled {
     transaction {
       __typename
-      id
-      status
+      ...WalletTransactionFragment
     }
   }
   ... on WalletUpdateTransactionPending {
     transaction {
       __typename
-      id
-      status
+      ...WalletTransactionFragment
     }
   }
 }

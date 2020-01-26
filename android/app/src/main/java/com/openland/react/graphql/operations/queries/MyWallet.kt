@@ -10,11 +10,15 @@ internal val MyWalletSelector = obj(
                     field("balance", "balance", notNull(scalar("Int"))),
                     field("id", "id", notNull(scalar("ID"))),
                     field("state", "state", notNull(scalar("String")))
-                )))
+                ))),
+            field("transactionsPending", "transactionsPending", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("WalletTransaction", WalletTransactionFragmentSelector)
+                )))))
         )
 val MyWallet = object: OperationDefinition {
     override val name = "MyWallet"
     override val kind = OperationKind.QUERY
-    override val body = "query MyWallet{myWallet{__typename balance id state}}"
+    override val body = "query MyWallet{myWallet{__typename balance id state}transactionsPending{__typename ...WalletTransactionFragment}}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}}status}"
     override val selector = MyWalletSelector
 }

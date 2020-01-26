@@ -1,0 +1,21 @@
+fragment WalletTransactionFragment on WalletTransaction {
+  __typename
+  id
+  operation {
+    __typename
+    ... on WalletTransactionDeposit {
+      amount
+      payment {
+        __typename
+        id
+        intent {
+          __typename
+          clientSecret
+          id
+        }
+        status
+      }
+    }
+  }
+  status
+}

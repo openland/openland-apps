@@ -703,18 +703,6 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderMyWallet(opts?: QueryWatchParameters): Types.MyWallet | null {
         return this.useQuery(Source.MyWalletQuery, undefined, opts);
     }
-    async queryPendingTransactions(opts?: OperationParameters): Promise<Types.PendingTransactions> {
-        return this.client.query(Source.PendingTransactionsQuery, undefined, opts);
-    }
-    async refetchPendingTransactions(): Promise<Types.PendingTransactions> {
-        return this.refetch(Source.PendingTransactionsQuery);
-    }
-    usePendingTransactions(opts?: QueryWatchParameters): Types.PendingTransactions {
-        return this.useQuerySuspense(Source.PendingTransactionsQuery, undefined, opts);
-    }
-    useWithoutLoaderPendingTransactions(opts?: QueryWatchParameters): Types.PendingTransactions | null {
-        return this.useQuery(Source.PendingTransactionsQuery, undefined, opts);
-    }
     async queryMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: OperationParameters): Promise<Types.MatchmakingRoom> {
         return this.client.query(Source.MatchmakingRoomQuery, variables, opts);
     }
@@ -1318,17 +1306,17 @@ export class OpenlandClient extends BaseApiClient {
     async mutateCommitCardSetupIntent(variables: Types.CommitCardSetupIntentVariables): Promise<Types.CommitCardSetupIntent> {
         return this.client.mutate(Source.CommitCardSetupIntentMutation, variables);
     }
-    async mutateCreateDepositIntent(variables: Types.CreateDepositIntentVariables): Promise<Types.CreateDepositIntent> {
-        return this.client.mutate(Source.CreateDepositIntentMutation, variables);
-    }
-    async mutatePaymentIntentCommit(variables: Types.PaymentIntentCommitVariables): Promise<Types.PaymentIntentCommit> {
-        return this.client.mutate(Source.PaymentIntentCommitMutation, variables);
-    }
     async mutateRemoveCard(variables: Types.RemoveCardVariables): Promise<Types.RemoveCard> {
         return this.client.mutate(Source.RemoveCardMutation, variables);
     }
     async mutateMakeCardDefault(variables: Types.MakeCardDefaultVariables): Promise<Types.MakeCardDefault> {
         return this.client.mutate(Source.MakeCardDefaultMutation, variables);
+    }
+    async mutateCreateDepositIntent(variables: Types.CreateDepositIntentVariables): Promise<Types.CreateDepositIntent> {
+        return this.client.mutate(Source.CreateDepositIntentMutation, variables);
+    }
+    async mutatePaymentIntentCommit(variables: Types.PaymentIntentCommitVariables): Promise<Types.PaymentIntentCommit> {
+        return this.client.mutate(Source.PaymentIntentCommitMutation, variables);
     }
     async mutateMatchmakingRoomSave(variables: Types.MatchmakingRoomSaveVariables): Promise<Types.MatchmakingRoomSave> {
         return this.client.mutate(Source.MatchmakingRoomSaveMutation, variables);

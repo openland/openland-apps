@@ -1,5 +1,9 @@
 import gql from 'graphql-tag';
 
+//
+// Cards
+//
+
 export const MyCardsQuery = gql`
     query MyCards {
         myCards {
@@ -32,21 +36,6 @@ export const CommitCardSetupIntentMutation = gql`
     }
 `;
 
-export const CreateDepositIntentMutation = gql`
-    mutation CreateDepositIntent($cardId: ID!, $amount: Int!, $retryKey: String!) {
-        cardDepositIntent(id: $cardId, amount: $amount, retryKey: $retryKey) {
-            id
-            clientSecret
-        }
-    }
-`;
-
-export const PaymentIntentCommitMutation = gql`
-    mutation PaymentIntentCommit($id: ID!) {
-        paymentIntentCommit(id: $id)
-    }
-`;
-
 export const RemoveCardMutation = gql`
     mutation RemoveCard($id: ID!) {
         cardRemove(id: $id) {
@@ -65,6 +54,49 @@ export const MakeCardDefaultMutation = gql`
     }
 `;
 
+//
+// Payments Workflow
+//
+
+export const CreateDepositIntentMutation = gql`
+    mutation CreateDepositIntent($cardId: ID!, $amount: Int!, $retryKey: String!) {
+        cardDepositIntent(id: $cardId, amount: $amount, retryKey: $retryKey) {
+            id
+            clientSecret
+        }
+    }
+`;
+
+export const PaymentIntentCommitMutation = gql`
+    mutation PaymentIntentCommit($id: ID!) {
+        paymentIntentCommit(id: $id)
+    }
+`;
+
+//
+// Wallet
+//
+
+export const WalletTransactionFragment = gql`
+    fragment WalletTransactionFragment on WalletTransaction {
+        id
+        status
+        operation {
+            ... on WalletTransactionDeposit {
+                amount
+                payment {
+                    id
+                    status
+                    intent {
+                        id
+                        clientSecret
+                    }
+                }
+            }
+        }
+    }
+`;
+
 export const MyWalletQuery = gql`
     query MyWallet {
         myWallet {
@@ -72,25 +104,11 @@ export const MyWalletQuery = gql`
             balance
             state
         }
-    }
-`;
-
-export const PendingTransactionsQuery = gql`
-    query PendingTransactions {
         transactionsPending {
-            id
-            status
-            operation {
-                ... on WalletTransactionDeposit {
-                    amount
-                    payment {
-                        id
-                        status
-                    }
-                }
-            }
+            ...WalletTransactionFragment
         }
     }
+    ${WalletTransactionFragment}
 `;
 
 export const WalletUpdateFragment = gql`
@@ -100,20 +118,17 @@ export const WalletUpdateFragment = gql`
         }
         ... on WalletUpdateTransactionSuccess {
             transaction {
-                id
-                status
+                ...WalletTransactionFragment
             }
         }
         ... on WalletUpdateTransactionCanceled {
             transaction {
-                id
-                status
+                ...WalletTransactionFragment
             }
         }
         ... on WalletUpdateTransactionPending {
             transaction {
-                id
-                status
+                ...WalletTransactionFragment
             }
         }
     }
@@ -137,4 +152,5 @@ export const WalletUpdatesSubscription = gql`
         }
     }
     ${WalletUpdateFragment}
+    ${WalletTransactionFragment}
 `;

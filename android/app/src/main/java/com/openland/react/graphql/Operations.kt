@@ -63,7 +63,6 @@ object Operations {
         if (name == "OrganizationProfile") return OrganizationProfile
         if (name == "OrganizationPublicInvite") return OrganizationPublicInvite
         if (name == "OrganizationWithoutMembers") return OrganizationWithoutMembers
-        if (name == "PendingTransactions") return PendingTransactions
         if (name == "Permissions") return Permissions
         if (name == "Profile") return Profile
         if (name == "ProfilePrefill") return ProfilePrefill

@@ -17,6 +17,8 @@ import { UListItem } from 'openland-web/components/unicorn/UListItem';
 // import uuid from 'uuid';
 // import { showConfirmPayment } from './components/showConfirmPayment';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { showConfirmPayment } from './components/showConfirmPayment';
 
 const cardContainer = css`
     width: 50%;
@@ -29,18 +31,20 @@ const cardContainer = css`
 
 export const WalletFragment = React.memo(() => {
     const client = useClient();
+    const messenger = React.useContext(MessengerContext);
+    const wallet = messenger.wallet.state.useState();
     const cards = client.useMyCards({ fetchPolicy: 'cache-and-network' }).myCards;
-    const wallet = client.useMyWallet({ fetchPolicy: 'cache-and-network' }).myWallet;
-    const pendingTransactions = client.usePendingTransactions({ fetchPolicy: 'cache-and-network' }).transactionsPending;
-    React.useEffect(() => {
-        console.log('Wallet start from: ' + wallet.state);
-        let sequence = new SequenceModernWatcher('wallet', client.subscribeWalletUpdates({ state: wallet.state }), client.client, async (src) => {
-            console.log(src);
-        }, undefined, undefined, wallet.state);
-        return () => {
-            sequence.destroy();
-        };
-    }, []);
+    // const wallet = client.useMyWallet({ fetchPolicy: 'cache-and-network' }).myWallet;
+    // const pendingTransactions = client.usePendingTransactions({ fetchPolicy: 'cache-and-network' }).transactionsPending;
+    // React.useEffect(() => {
+    //     console.log('Wallet start from: ' + wallet.state);
+    //     let sequence = new SequenceModernWatcher('wallet', client.subscribeWalletUpdates({ state: wallet.state }), client.client, async (src) => {
+    //         console.log(src);
+    //     }, undefined, undefined, wallet.state);
+    //     return () => {
+    //         sequence.destroy();
+    //     };
+    // }, []);
     // const transactions = client.useWalletTransactions({ id: wallet.id, first: 20 }).walletTransactions;
     // const subscriptions = client.useMySubscriptions({ fetchPolicy: 'cache-and-network' });
     // const pending = client.useMyPendingPayments({ fetchPolicy: 'cache-and-network' });
@@ -107,12 +111,17 @@ export const WalletFragment = React.memo(() => {
                         />
                     ))}
                 </UListGroup> */}
-                <UListGroup header="Transactions">
-                    {pendingTransactions.map((v) => (
+                <UListGroup header="Pending Transactions">
+                    {wallet.pendingTransactions.map((v) => (
                         <UListItem
                             key={v.id}
                             title={v.status + ': ' + v.operation.payment!.status}
                             subtitle={<Money amount={v.operation.amount} />}
+                            onClick={() => {
+                                if (v.operation.payment!.status === 'ACTION_REQUIRED') {
+                                    showConfirmPayment(v.operation.payment!.intent!.id, v.operation.payment!.intent!.clientSecret);
+                                }
+                            }}
                         />
                         // <TransactionView key={v.id} item={v} />
                     ))}
