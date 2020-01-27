@@ -19112,7 +19112,7 @@
 					"type": "String"
 				}
 			],
-			"source": "query SharedMedia($chatId: ID!, $mediaTypes: [SharedMediaType!]!, $first: Int!, $after: String) {\n  sharedMedia: chatSharedMedia(chatId: $chatId, mediaTypes: $mediaTypes, first: $first, after: $after) {\n    __typename\n    pageInfo {\n      __typename\n      hasNextPage\n      currentPage\n    }\n    edges {\n      __typename\n      node {\n        __typename\n        message {\n          __typename\n          ... on GeneralMessage {\n            id\n            fallback\n            date\n            sender {\n              __typename\n              id\n              name\n            }\n            attachments {\n              __typename\n              ... on MessageAttachmentFile {\n                id\n                fileMetadata {\n                  __typename\n                  name\n                  isImage\n                  imageFormat\n                  mimeType\n                  imageWidth\n                  imageHeight\n                  size\n                }\n                filePreview\n                fileId\n                fallback\n              }\n              ... on MessageRichAttachment {\n                id\n                title\n                text\n                titleLink\n                imagePreview\n                image {\n                  __typename\n                  url\n                }\n                imageFallback {\n                  __typename\n                  photo\n                }\n              }\n            }\n          }\n        }\n      }\n      cursor\n    }\n  }\n}",
+			"source": "query SharedMedia($chatId: ID!, $mediaTypes: [SharedMediaType!]!, $first: Int!, $after: String) {\n  sharedMedia: chatSharedMedia(chatId: $chatId, mediaTypes: $mediaTypes, first: $first, after: $after) {\n    __typename\n    pageInfo {\n      __typename\n      hasNextPage\n      currentPage\n    }\n    edges {\n      __typename\n      node {\n        __typename\n        message {\n          __typename\n          ... on GeneralMessage {\n            id\n            fallback\n            date\n            sender {\n              __typename\n              id\n              name\n            }\n            attachments {\n              __typename\n              ... on MessageAttachmentFile {\n                id\n                fileMetadata {\n                  __typename\n                  name\n                  isImage\n                  imageFormat\n                  mimeType\n                  imageWidth\n                  imageHeight\n                  size\n                }\n                filePreview\n                fileId\n                fallback\n              }\n              ... on MessageRichAttachment {\n                id\n                title\n                text\n                titleLink\n                imagePreview\n                image {\n                  __typename\n                  url\n                }\n                imageFallback {\n                  __typename\n                  photo\n                }\n                keyboard {\n                  __typename\n                  buttons {\n                    __typename\n                    id\n                    title\n                    url\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n      cursor\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "sharedMedia",
@@ -19518,6 +19518,61 @@
 																			],
 																			"fragmentSpreads": [],
 																			"inlineFragments": []
+																		},
+																		{
+																			"responseName": "keyboard",
+																			"fieldName": "keyboard",
+																			"type": "MessageKeyboard",
+																			"isConditional": false,
+																			"isDeprecated": false,
+																			"fields": [
+																				{
+																					"responseName": "__typename",
+																					"fieldName": "__typename",
+																					"type": "String!",
+																					"isConditional": false
+																				},
+																				{
+																					"responseName": "buttons",
+																					"fieldName": "buttons",
+																					"type": "[[ModernMessageButton!]]!",
+																					"isConditional": false,
+																					"isDeprecated": false,
+																					"fields": [
+																						{
+																							"responseName": "__typename",
+																							"fieldName": "__typename",
+																							"type": "String!",
+																							"isConditional": false
+																						},
+																						{
+																							"responseName": "id",
+																							"fieldName": "id",
+																							"type": "ID!",
+																							"isConditional": false,
+																							"isDeprecated": false
+																						},
+																						{
+																							"responseName": "title",
+																							"fieldName": "title",
+																							"type": "String!",
+																							"isConditional": false,
+																							"isDeprecated": false
+																						},
+																						{
+																							"responseName": "url",
+																							"fieldName": "url",
+																							"type": "String",
+																							"isConditional": false,
+																							"isDeprecated": false
+																						}
+																					],
+																					"fragmentSpreads": [],
+																					"inlineFragments": []
+																				}
+																			],
+																			"fragmentSpreads": [],
+																			"inlineFragments": []
 																		}
 																	],
 																	"fragmentSpreads": []
@@ -19552,8 +19607,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "query SharedMedia($chatId: ID!, $mediaTypes: [SharedMediaType!]!, $first: Int!, $after: String) {\n  sharedMedia: chatSharedMedia(chatId: $chatId, mediaTypes: $mediaTypes, first: $first, after: $after) {\n    __typename\n    pageInfo {\n      __typename\n      hasNextPage\n      currentPage\n    }\n    edges {\n      __typename\n      node {\n        __typename\n        message {\n          __typename\n          ... on GeneralMessage {\n            id\n            fallback\n            date\n            sender {\n              __typename\n              id\n              name\n            }\n            attachments {\n              __typename\n              ... on MessageAttachmentFile {\n                id\n                fileMetadata {\n                  __typename\n                  name\n                  isImage\n                  imageFormat\n                  mimeType\n                  imageWidth\n                  imageHeight\n                  size\n                }\n                filePreview\n                fileId\n                fallback\n              }\n              ... on MessageRichAttachment {\n                id\n                title\n                text\n                titleLink\n                imagePreview\n                image {\n                  __typename\n                  url\n                }\n                imageFallback {\n                  __typename\n                  photo\n                }\n              }\n            }\n          }\n        }\n      }\n      cursor\n    }\n  }\n}",
-			"operationId": "012eb7ddf1aff1c072b58d50c386b4564bdb610d926dd621bc2a195d35bcbd2c"
+			"sourceWithFragments": "query SharedMedia($chatId: ID!, $mediaTypes: [SharedMediaType!]!, $first: Int!, $after: String) {\n  sharedMedia: chatSharedMedia(chatId: $chatId, mediaTypes: $mediaTypes, first: $first, after: $after) {\n    __typename\n    pageInfo {\n      __typename\n      hasNextPage\n      currentPage\n    }\n    edges {\n      __typename\n      node {\n        __typename\n        message {\n          __typename\n          ... on GeneralMessage {\n            id\n            fallback\n            date\n            sender {\n              __typename\n              id\n              name\n            }\n            attachments {\n              __typename\n              ... on MessageAttachmentFile {\n                id\n                fileMetadata {\n                  __typename\n                  name\n                  isImage\n                  imageFormat\n                  mimeType\n                  imageWidth\n                  imageHeight\n                  size\n                }\n                filePreview\n                fileId\n                fallback\n              }\n              ... on MessageRichAttachment {\n                id\n                title\n                text\n                titleLink\n                imagePreview\n                image {\n                  __typename\n                  url\n                }\n                imageFallback {\n                  __typename\n                  photo\n                }\n                keyboard {\n                  __typename\n                  buttons {\n                    __typename\n                    id\n                    title\n                    url\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n      cursor\n    }\n  }\n}",
+			"operationId": "5405b2a821fd37746aefd6d3847a5b67adfd38a5706005e69087997e4930f85f"
 		},
 		{
 			"filePath": "file:///Users/mac/code/openland-apps/packages/openland-api/queries/SharedMedia.ts",

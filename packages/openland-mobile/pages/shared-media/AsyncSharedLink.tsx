@@ -8,6 +8,7 @@ import { ASImage } from 'react-native-async-view/ASImage';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { TextStylesAsync } from 'openland-mobile/styles/AppStyles';
+import { resolveInternalLink } from 'openland-mobile/utils/resolveInternalLink';
 
 const isAvatar = (url: string | null) => {
     return url && url.startsWith('ph://');
@@ -23,9 +24,16 @@ export const AsyncSharedLink = React.memo(({ item, chatId, onLongPress }: AsyncS
     const { message, attachment } = item;
     const senderName = message.sender.name;
     const theme = useThemeGlobal();
+    const buttons = attachment.keyboard && attachment.keyboard.buttons[0];
+    const button = buttons && buttons[0];
+    const title = attachment.title || button && (button as any).title;
 
     const onPress = React.useCallback(() => {
-        Linking.openURL(attachment.titleLink!!);
+        if (attachment.titleLink) {
+            Linking.openURL(attachment.titleLink!!);
+        } else {
+            (resolveInternalLink(button && (button as any).url))();
+        }
     }, []);
 
     const handleLongPress = React.useCallback(() => {
@@ -80,7 +88,7 @@ export const AsyncSharedLink = React.memo(({ item, chatId, onLongPress }: AsyncS
                     </ASFlex>
                 </ASFlex>
                 <ASFlex flexDirection="column" flexGrow={1} flexBasis={0} flexShrink={1} marginLeft={16}>
-                    {!!attachment.title && (
+                    {!!title && (
                         <ASText
                             {...TextStylesAsync.Label1}
                             color={theme.foregroundPrimary}
@@ -88,7 +96,7 @@ export const AsyncSharedLink = React.memo(({ item, chatId, onLongPress }: AsyncS
                             numberOfLines={3}
                             flexShrink={1}
                         >
-                            {attachment.title}
+                            {title}
                         </ASText>
                     )}
                     {!!attachment.text && (

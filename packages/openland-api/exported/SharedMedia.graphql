@@ -38,6 +38,15 @@ query SharedMedia($after: String, $chatId: ID!, $first: Int!, $mediaTypes: [Shar
                   photo
                 }
                 imagePreview
+                keyboard {
+                  __typename
+                  buttons {
+                    __typename
+                    id
+                    title
+                    url
+                  }
+                }
                 text
                 title
                 titleLink
