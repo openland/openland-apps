@@ -118,7 +118,7 @@ export class TypingsWatcher {
 
         let verb = userNames.length === 1 ? 'is' : 'are';
 
-        let typing = `${userNamesTyping} ${verb} typing...`;
+        let typing = `${userNamesTyping} ${verb} typing`;
 
         return {
             typing,
