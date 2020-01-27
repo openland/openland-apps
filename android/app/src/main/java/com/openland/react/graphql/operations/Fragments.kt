@@ -1598,6 +1598,7 @@ internal val RoomFullSelector = obj(
                 field("featuredMembersCount", "featuredMembersCount", notNull(scalar("Int"))),
                 field("id", "id", notNull(scalar("ID"))),
                 field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                field("isPaid", "isPaid", notNull(scalar("Boolean"))),
                 field("kind", "kind", notNull(scalar("String"))),
                 field("matchmaking", "matchmaking", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -1626,6 +1627,13 @@ internal val RoomFullSelector = obj(
                 field("organization", "organization", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("Organization", OrganizationMediumSelector)
+                    )),
+                field("paidPassIsActive", "paidPassIsActive", notNull(scalar("Boolean"))),
+                field("paymentSettings", "paymentSettings", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("price", "price", notNull(scalar("Int"))),
+                        field("strategy", "strategy", notNull(scalar("String")))
                     )),
                 field("photo", "photo", notNull(scalar("String"))),
                 field("pinnedMessage", "pinnedMessage", obj(

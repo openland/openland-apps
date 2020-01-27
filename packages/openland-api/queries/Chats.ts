@@ -275,6 +275,12 @@ export const RoomChatQuery = gql`
                     id
                     mute
                 }
+                paidPassIsActive
+                paymentSettings {
+                    id
+                    price
+                    strategy
+                }
             }
         }
     }
@@ -480,6 +486,7 @@ export const RoomCreateMutation = gql`
         $photoRef: ImageRefInput
         $organizationId: ID
         $channel: Boolean!
+        $paid: Boolean
     ) {
         room: betaRoomCreate(
             kind: $kind
@@ -490,9 +497,22 @@ export const RoomCreateMutation = gql`
             photoRef: $photoRef
             organizationId: $organizationId
             channel: $channel
+            paid: $paid
         ) {
             id
         }
+    }
+`;
+
+export const BuyPaidChatPassMutation = gql`
+    mutation BuyPaidChatPass(
+        $chatId: ID!
+        $paymentMethodId: String!
+    ) {
+        betaBuyPaidChatPass(
+            chatId: $chatId
+            paymentMethodId: $paymentMethodId
+        )
     }
 `;
 
@@ -856,6 +876,13 @@ export const ResolvedInviteQuery = gql`
                         membersCount
                         matchmaking {
                             enabled
+                        }
+                        isPaid
+                        paidPassIsActive
+                        paymentSettings{
+                            id
+                            price
+                            strategy
                         }
                     }
                 }

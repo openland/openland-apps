@@ -21,6 +21,8 @@ import { MatchmakingStartComponent } from '../matchmaking/MatchmakingStartFragme
 import { showModalBox } from 'openland-x/showModalBox';
 import { trackEvent } from 'openland-x-analytics';
 import { XTrack } from 'openland-x-analytics/XTrack';
+import { formatMoney } from 'openland-y-utils/wallet/Money';
+import AlertBlanket from 'openland-x/AlertBlanket';
 
 const RootClassName = css`
     position: relative;
@@ -267,13 +269,33 @@ const InviteLandingComponentLayout = ({
     );
 };
 
+const BuyPaidChatPassButton = (props: { id: string; paymentSettings: { price: number } }) => {
+    const client = useClient();
+    let router = React.useContext(XViewRouterContext)!;
+    const buyPaidChatPass = React.useCallback(async () => {
+        try {
+            let res = await client.mutateBuyPaidChatPass({ chatId: props.id, paymentMethodId: 'openland' });
+            if (res) {
+                router.navigate('/mail/' + props.id);
+            }
+        } catch (e) {
+            AlertBlanket.alert(e.message);
+        }
+    }, []);
+    return (
+        <UButton style="pay" text={`Pay ${formatMoney(props.paymentSettings.price)}`} action={buyPaidChatPass} />
+    );
+};
+
 const resolveRoomButton = (
-    room: { id: string; membership: SharedRoomMembershipStatus },
+    room: { id: string; membership: SharedRoomMembershipStatus, paymentSettings?: { price: number } | null, paidPassIsActive: boolean },
     key?: string,
     matchmaking?: boolean,
 ) => {
     const [loading, setLoading] = React.useState(false);
-    if (
+    if (room && room.paymentSettings && !room.paidPassIsActive) {
+        return <BuyPaidChatPassButton id={room.id} paymentSettings={room.paymentSettings} />;
+    } else if (
         room &&
         (room.membership === 'NONE' ||
             room.membership === 'KICKED' ||
@@ -363,13 +385,14 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     }
 
     let button: JSX.Element | undefined;
-
+    const isPaid = room && room.isPaid;
+    console.warn(loggedIn, room);
     if (!loggedIn) {
         button = (
             <UButton
-                style="primary"
+                style={isPaid ? 'pay' : 'primary'}
                 size="large"
-                text="Accept invitation"
+                text={(room && room.paymentSettings) ? `Pay ${formatMoney(room.paymentSettings.price)}` : 'Accept invitation'}
                 alignSelf="center"
                 flexShrink={0}
                 path={!matchmaking ? signupRedirect : undefined}

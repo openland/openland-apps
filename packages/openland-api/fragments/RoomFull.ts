@@ -75,6 +75,13 @@ export const RoomFull = gql`
             myBadge {
                 ...UserBadge
             }
+            isPaid
+            paidPassIsActive
+            paymentSettings{
+                id
+                price
+                strategy
+            }
         }
     }
     ${FullMessage}

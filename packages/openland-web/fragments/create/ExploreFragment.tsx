@@ -38,11 +38,11 @@ const textTitle = css`
 interface CreateEntityInterface {
     entityType: 'group' | 'channel' | 'community' | 'organization';
     inOrgId?: string;
-
     title: string;
     description?: string;
     photo?: ImageRefInput | null;
     secret: boolean;
+    isPaid?: boolean;
     hide: () => void;
 }
 
@@ -95,6 +95,7 @@ const ExplorePeopleComponent = React.memo((props: CreateEntityInterface) => {
                 members: skip ? [] : !!selectedUsers ? [...selectedUsers.keys()] : [],
                 organizationId: props.inOrgId || '',
                 channel: props.entityType === 'channel',
+                paid: props.isPaid
             })).room;
 
             props.hide();

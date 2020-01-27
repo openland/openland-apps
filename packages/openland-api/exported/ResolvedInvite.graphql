@@ -37,6 +37,7 @@ query ResolvedInvite($key: String!) {
           description
           id
           isChannel
+          isPaid
           kind
           matchmaking {
             __typename
@@ -44,6 +45,13 @@ query ResolvedInvite($key: String!) {
           }
           membersCount
           membership
+          paidPassIsActive
+          paymentSettings {
+            __typename
+            id
+            price
+            strategy
+          }
           photo
           socialImage
           title

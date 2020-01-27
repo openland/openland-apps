@@ -41,6 +41,13 @@ query RoomChat($id: ID!) {
         __typename
         ...OrganizationMedium
       }
+      paidPassIsActive
+      paymentSettings {
+        __typename
+        id
+        price
+        strategy
+      }
       photo
       pinnedMessage {
         __typename

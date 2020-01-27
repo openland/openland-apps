@@ -1,0 +1,3 @@
+mutation BuyPaidChatPass($chatId: ID!, $paymentMethodId: String!) {
+  betaBuyPaidChatPass(chatId: $chatId, paymentMethodId: $paymentMethodId)
+}
