@@ -6283,7 +6283,7 @@
 					"type": "String!"
 				}
 			],
-			"source": "query RoomInviteInfo($invite: String!) {\n  invite: betaRoomInviteInfo(invite: $invite) {\n    __typename\n    id\n    room {\n      __typename\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        photo\n        socialImage\n        description\n        organization {\n          __typename\n          ...OrganizationShort\n        }\n        membership\n        membersCount\n        matchmaking {\n          __typename\n          enabled\n        }\n      }\n    }\n    invitedByUser {\n      __typename\n      ...UserShort\n    }\n  }\n}",
+			"source": "query RoomInviteInfo($invite: String!) {\n  invite: betaRoomInviteInfo(invite: $invite) {\n    __typename\n    id\n    room {\n      __typename\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        photo\n        socialImage\n        description\n        organization {\n          __typename\n          ...OrganizationShort\n        }\n        membership\n        membersCount\n        matchmaking {\n          __typename\n          enabled\n        }\n        isPaid\n        paidPassIsActive\n        paymentSettings {\n          __typename\n          id\n          price\n          strategy\n        }\n      }\n    }\n    invitedByUser {\n      __typename\n      ...UserShort\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "invite",
@@ -6433,6 +6433,58 @@
 									],
 									"fragmentSpreads": [],
 									"inlineFragments": []
+								},
+								{
+									"responseName": "isPaid",
+									"fieldName": "isPaid",
+									"type": "Boolean!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "paidPassIsActive",
+									"fieldName": "paidPassIsActive",
+									"type": "Boolean!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "paymentSettings",
+									"fieldName": "paymentSettings",
+									"type": "PaidChatSettings",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "price",
+											"fieldName": "price",
+											"type": "Int!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "strategy",
+											"fieldName": "strategy",
+											"type": "PaidChatStrategy!",
+											"isConditional": false,
+											"isDeprecated": false
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
 								}
 							],
 							"fragmentSpreads": [],
@@ -6468,8 +6520,8 @@
 				"OrganizationShort",
 				"UserShort"
 			],
-			"sourceWithFragments": "query RoomInviteInfo($invite: String!) {\n  invite: betaRoomInviteInfo(invite: $invite) {\n    __typename\n    id\n    room {\n      __typename\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        photo\n        socialImage\n        description\n        organization {\n          __typename\n          ...OrganizationShort\n        }\n        membership\n        membersCount\n        matchmaking {\n          __typename\n          enabled\n        }\n      }\n    }\n    invitedByUser {\n      __typename\n      ...UserShort\n    }\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n  membersCount\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}",
-			"operationId": "5fe46f649b21098bc5c8127f1d581a908c1aef75aa8d02446b9ae43d0d58148e"
+			"sourceWithFragments": "query RoomInviteInfo($invite: String!) {\n  invite: betaRoomInviteInfo(invite: $invite) {\n    __typename\n    id\n    room {\n      __typename\n      ... on SharedRoom {\n        id\n        kind\n        isChannel\n        title\n        photo\n        socialImage\n        description\n        organization {\n          __typename\n          ...OrganizationShort\n        }\n        membership\n        membersCount\n        matchmaking {\n          __typename\n          enabled\n        }\n        isPaid\n        paidPassIsActive\n        paymentSettings {\n          __typename\n          id\n          price\n          strategy\n        }\n      }\n    }\n    invitedByUser {\n      __typename\n      ...UserShort\n    }\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n  membersCount\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}",
+			"operationId": "1d88d6521473c753cebd3c02ef0682ce09d8bd4133fdd93738448dfcfbbb108f"
 		},
 		{
 			"filePath": "file:///Users/kor_ka/Documents/openland-apps/packages/openland-api/queries/Chats.ts",

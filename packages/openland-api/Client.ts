@@ -2884,6 +2884,7 @@ const RoomInviteInfoSelector = obj(
                                 field('description', 'description', args(), scalar('String')),
                                 field('id', 'id', args(), notNull(scalar('ID'))),
                                 field('isChannel', 'isChannel', args(), notNull(scalar('Boolean'))),
+                                field('isPaid', 'isPaid', args(), notNull(scalar('Boolean'))),
                                 field('kind', 'kind', args(), notNull(scalar('String'))),
                                 field('matchmaking', 'matchmaking', args(), obj(
                                         field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -2894,6 +2895,13 @@ const RoomInviteInfoSelector = obj(
                                 field('organization', 'organization', args(), obj(
                                         field('__typename', '__typename', args(), notNull(scalar('String'))),
                                         fragment('Organization', OrganizationShortSelector)
+                                    )),
+                                field('paidPassIsActive', 'paidPassIsActive', args(), notNull(scalar('Boolean'))),
+                                field('paymentSettings', 'paymentSettings', args(), obj(
+                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                        field('id', 'id', args(), notNull(scalar('ID'))),
+                                        field('price', 'price', args(), notNull(scalar('Int'))),
+                                        field('strategy', 'strategy', args(), notNull(scalar('String')))
                                     )),
                                 field('photo', 'photo', args(), notNull(scalar('String'))),
                                 field('socialImage', 'socialImage', args(), scalar('String')),
@@ -4589,7 +4597,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     RoomInviteInfo: {
         kind: 'query',
         name: 'RoomInviteInfo',
-        body: 'query RoomInviteInfo($invite:String!){invite:betaRoomInviteInfo(invite:$invite){__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel kind matchmaking{__typename enabled}membersCount membership organization{__typename ...OrganizationShort}photo socialImage title}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}',
+        body: 'query RoomInviteInfo($invite:String!){invite:betaRoomInviteInfo(invite:$invite){__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel isPaid kind matchmaking{__typename enabled}membersCount membership organization{__typename ...OrganizationShort}paidPassIsActive paymentSettings{__typename id price strategy}photo socialImage title}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}',
         selector: RoomInviteInfoSelector
     },
     RoomInviteLink: {

@@ -821,6 +821,13 @@ export const RoomInviteInfoQuery = gql`
                     matchmaking {
                         enabled
                     }
+                    isPaid
+                    paidPassIsActive
+                    paymentSettings{
+                        id
+                        price
+                        strategy
+                    }
                 }
             }
             invitedByUser {
