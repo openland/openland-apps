@@ -76,6 +76,7 @@ export const WebSignUpActivationCode = ({
         () => {
             form.doAction(async () => {
                 setCodeError('');
+                setEmailWasResend(false);
                 setTimeout(() => {
                     loginCodeStart({ emailValue, codeValue: codeField.value });
                 }, 100);
@@ -203,7 +204,13 @@ export const AskActivationPage = (props: ActivationCodeProps) => {
                 let token = await checkCode(codeValue);
                 await completeAuth(token);
             } catch (e) {
-                setCodeError(e instanceof AuthError ? e.message : 'Something went wrong');
+                let message = 'Something went wrong';
+                if (e instanceof AuthError) {
+                    message = e.message;
+                } else if (!navigator.onLine) {
+                    message = 'Check your connection and try again';
+                }
+                setCodeError(message);
                 setCodeSending(false);
             }
 

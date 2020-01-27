@@ -115,7 +115,11 @@ export const AskEmailPage = (props: CreateWithEmailProps) => {
                 }, 0);
             } catch (e) {
                 setEmailSending(false);
-                setEmailError(e.message);
+                if (!navigator.onLine) {
+                    setEmailError('Check your connection and try again');
+                } else {
+                    setEmailError(e.message);
+                }
             }
 
         }
