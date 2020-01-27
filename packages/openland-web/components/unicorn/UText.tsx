@@ -6,6 +6,7 @@ import { ULink } from './ULink';
 interface UTextProps {
     text?: string | null;
     linkify?: boolean;
+    proccessText?: (text?: string) => JSX.Element | string;
 }
 
 const textStyle = css`
@@ -15,7 +16,7 @@ const textStyle = css`
 `;
 
 export const UText = React.memo((props: UTextProps) => {
-    const { text, linkify = true } = props;
+    const { text, proccessText, linkify = true } = props;
 
     if (text) {
         const preprocessed = preprocessText(text);
@@ -29,7 +30,7 @@ export const UText = React.memo((props: UTextProps) => {
                     </ULink>
                 );
             } else {
-                return <span key={'text-' + i}>{v.text}</span>;
+                return <span key={'text-' + i}>{proccessText ? proccessText(v.text) : v.text}</span>;
             }
         });
 
