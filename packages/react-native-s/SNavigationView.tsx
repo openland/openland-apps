@@ -70,6 +70,8 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
     }
 
     private handleDismissed = () => {
+        console.warn('boom 3');
+
         let unlock1 = this.props.routing.navigationManager.beginLock();
         SAnimated.beginTransaction();
         if (Platform.OS === 'ios') {
@@ -101,7 +103,12 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
             return true;
         }
         if (this.state.presented) {
-            this.handleDismissed();
+            // Sorry universe.
+            // It's a temp fix for https://openland.myjetbrains.com/youtrack/issue/APP-364
+            if (this.props.routing.navigationManager.presentationManager) {
+                this.props.routing.navigationManager.presentationManager.dismiss();
+            }
+            // this.handleDismissed();
 
             return true;
         } else {
