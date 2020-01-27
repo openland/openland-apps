@@ -895,6 +895,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables, opts?: QueryWatchParameters): Types.OrganizationByPrefix | null {
         return this.useQuery(Source.OrganizationByPrefixQuery, variables, opts);
     }
+    async queryOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: OperationParameters): Promise<Types.OrganizationPublicRooms> {
+        return this.client.query(Source.OrganizationPublicRoomsQuery, variables, opts);
+    }
+    async refetchOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables): Promise<Types.OrganizationPublicRooms> {
+        return this.refetch(Source.OrganizationPublicRoomsQuery, variables);
+    }
+    useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: QueryWatchParameters): Types.OrganizationPublicRooms {
+        return this.useQuerySuspense(Source.OrganizationPublicRoomsQuery, variables, opts);
+    }
+    useWithoutLoaderOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: QueryWatchParameters): Types.OrganizationPublicRooms | null {
+        return this.useQuery(Source.OrganizationPublicRoomsQuery, variables, opts);
+    }
     async queryPermissions(opts?: OperationParameters): Promise<Types.Permissions> {
         return this.client.query(Source.PermissionsQuery, undefined, opts);
     }

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { RoomShort_SharedRoom } from 'openland-api/Types';
+import { SharedRoomView } from 'openland-api/Types';
 import { plural } from 'openland-y-utils/plural';
 
-export const UGroupView = React.memo((props: { group: RoomShort_SharedRoom }) => {
+export const UGroupView = React.memo((props: { group: SharedRoomView }) => {
     const { id, photo, title, membersCount } = props.group;
 
     return (

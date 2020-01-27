@@ -2,7 +2,7 @@ fragment CommunitySearch on Organization {
   __typename
   about
   featured: alphaFeatured
-  betaPublicRoomsCount
+  roomsCount: betaPublicRoomsCount
   id
   isMine
   membersCount

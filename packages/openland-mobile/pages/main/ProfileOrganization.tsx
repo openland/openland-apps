@@ -62,7 +62,9 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
         return <PrivateProfile {...props} organization={organization} />;
     }
 
-    const initialMembers = client.useOrganizationMembers({ organizationId: props.router.params.id, first: 10 }, { fetchPolicy: 'cache-and-network' }).organization.members;
+    const initialMembers = client.useOrganizationMembers({ organizationId: props.router.params.id, first: 10 }, { fetchPolicy: 'network-only' }).organization.members;
+    const publicRooms = client.useOrganizationPublicRooms({ organizationId: props.router.params.id, first: 3 }).organizationPublicRooms;
+    const organizationRooms = publicRooms ? publicRooms.items : [];
 
     const myUserID = getMessenger().engine.user.id;
     const canMakePrimary = organization.isMine && organization.id !== (settings.me && settings.me.primaryOrganization && settings.me.primaryOrganization.id) && !organization.isCommunity;
@@ -328,8 +330,8 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
 
             <ZListGroup
                 header="Groups and channels"
-                counter={organization.rooms.length}
-                actionRight={organization.rooms.length > 3 ? { title: 'See all', onPress: () => props.router.push('ProfileOrganizationGroups', { organizationId: organization.id, title: organization.name }) } : undefined}
+                counter={organization.roomsCount}
+                actionRight={organization.roomsCount > 3 ? { title: 'See all', onPress: () => props.router.push('ProfileOrganizationGroups', { organizationId: organization.id, title: organization.name }) } : undefined}
             >
                 {organization.isMine && (
                     <ZListItem
@@ -338,15 +340,13 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                         onPress={handleCreatePress}
                     />
                 )}
-                {organization.rooms
-                    .sort((a, b) => (b.membersCount || 0) - (a.membersCount || 0))
-                    .filter((c, i) => i <= 2)
+                {organizationRooms
                     .map(v => (
                         <GroupView
                             key={v!!.id}
                             item={v!}
+                            photo={v.photo}
                             onPress={() => props.router.push('Conversation', { flexibleId: v!!.id })}
-                            photo={v!.photo}
                         />
                     ))
                 }

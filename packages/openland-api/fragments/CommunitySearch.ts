@@ -11,6 +11,6 @@ export const CommunitySearch = gql`
         status
         featured: alphaFeatured
         membersCount
-        betaPublicRoomsCount
+        roomsCount: betaPublicRoomsCount
     }
 `;

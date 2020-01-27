@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RoomShort_SharedRoom, GlobalSearch_items_SharedRoom } from 'openland-api/Types';
+import { SharedRoomView } from 'openland-api/Types';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { View, Text } from 'react-native';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
@@ -7,7 +7,7 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 interface GroupViewProps {
-    item: RoomShort_SharedRoom | GlobalSearch_items_SharedRoom;
+    item: Omit<SharedRoomView, 'photo'>;
     photo?: string;
     paddingRight?: number;
     onPress: (id: string) => void;

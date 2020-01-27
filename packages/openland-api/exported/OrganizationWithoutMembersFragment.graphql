@@ -14,10 +14,7 @@ fragment OrganizationWithoutMembersFragment on Organization {
   }
   isAdmin: betaIsAdmin
   isOwner: betaIsOwner
-  rooms: betaPublicRooms {
-    __typename
-    ...RoomShort
-  }
+  roomsCount: betaPublicRoomsCount
   facebook
   id
   instagram
