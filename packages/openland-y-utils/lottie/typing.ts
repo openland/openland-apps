@@ -909,6 +909,5 @@ export const getTyping = (color: string): object => {
       }
     ],
     "markers": []
-  }
-}
-
+  };
+};

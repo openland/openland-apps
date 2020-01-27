@@ -8,7 +8,6 @@ import { ULink } from 'openland-web/components/unicorn/ULink';
 // import { useUserPopper } from 'openland-web/components/EntityPoppers';
 import { TypingsUser } from 'openland-engines/messenger/Typings';
 import Lottie from 'react-lottie';
-import typingGray from 'openland-icons/typings/typing-gray.json';
 import { XView } from 'react-mental';
 
 import { getJSON } from 'openland-y-utils/lottie/getJSON';

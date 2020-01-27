@@ -12,8 +12,6 @@ import { DialogListWebItem } from './DialogListWebDataSource';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
-import typingGray from 'openland-icons/typings/typing-gray.json';
-import typingWhite from 'openland-icons/typings/typing-white.json';
 import Lottie from 'react-lottie';
 import { getJSON } from 'openland-y-utils/lottie/getJSON';
 
