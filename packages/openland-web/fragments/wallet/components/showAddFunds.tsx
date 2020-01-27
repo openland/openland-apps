@@ -12,6 +12,7 @@ import { showAddCard } from './showAddCard';
 import { RadioButtonsSelect } from 'openland-web/fragments/account/components/RadioButtonsSelect';
 import { getPaymentMethodName } from 'openland-y-utils/wallet/brands';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
+import { formatMoney } from 'openland-y-utils/wallet/Money';
 
 const token = 'pk_test_y80EsXGYQdMKMcJ5lifEM4jx';
 const defaultError = 'We are unable to authenticate your payment method. Please choose a different payment method and try again.';
@@ -135,7 +136,7 @@ const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
             </XView>
             <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} backgroundColor="var(--backgroundTertiary)" justifyContent="flex-end" flexDirection="row">
                 <UButton text="Cancel" onClick={() => props.ctx.hide()} style="secondary" size="large" />
-                <UButton disable={cards.length === 0} text={`Top up $${amount / 100}`} onClick={onSubmit} style="pay" size="large" loading={loading} />
+                <UButton disable={cards.length === 0} text={`Deposit ${formatMoney(amount)}`} onClick={onSubmit} style="pay" size="large" loading={loading} />
             </XView>
         </XView>
     );
