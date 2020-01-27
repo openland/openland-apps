@@ -50,7 +50,7 @@ const CardMenu = React.memo((props: CardViewProps & { ctx: UPopperController }) 
 
     if (!item.isDefault) {
         builder.item({
-            title: 'Make default',
+            title: 'Make primary',
             icon: <StarIcon />,
             action: async () => {
                 await client.mutateMakeCardDefault({ id: item.id });
@@ -91,7 +91,7 @@ export const CardView = React.memo((props: CardViewProps) => {
                     </XView>
                     {isDefault && (
                         <XView {...TextStyles.Densed} color="var(--foregroundSecondary)" marginTop={4}>
-                            Default card
+                            Primary card
                         </XView>
                     )}
                 </XView>
