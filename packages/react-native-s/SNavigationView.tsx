@@ -70,8 +70,6 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
     }
 
     private handleDismissed = () => {
-        console.warn('boom 3');
-
         let unlock1 = this.props.routing.navigationManager.beginLock();
         SAnimated.beginTransaction();
         if (Platform.OS === 'ios') {
