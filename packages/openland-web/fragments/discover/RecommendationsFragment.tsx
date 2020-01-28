@@ -2,11 +2,11 @@ import * as React from 'react';
 import { useClient } from 'openland-web/utils/useClient';
 import { showModalBox } from 'openland-x/showModalBox';
 import { DiscoverOnLocalState } from 'openland-web/pages/onboarding/discover.page';
-import { DiscoverStart } from 'openland-web/pages/onboarding/start.page';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { RoomShort_SharedRoom } from 'openland-api/Types';
+import { DiscoverRecommendationsStart } from './components/DiscoverRecommendationsStart';
 
 export const RecommendationsFragment = React.memo(() => {
     const client = useClient();
@@ -25,7 +25,7 @@ export const RecommendationsFragment = React.memo(() => {
             {tab === 'start' && (
                 <>
                     <UHeader documentTitle="Recommendations" />
-                    <DiscoverStart onStartClick={onStartClick} noBackSkipLogo={true} />
+                    <DiscoverRecommendationsStart onStartClick={onStartClick} />
                 </>
             )}
             {tab === 'discover' && (

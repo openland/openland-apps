@@ -90,13 +90,9 @@ const useConfetti = () => {
 export const DiscoverStart = ({
     onSkip,
     onStartClick,
-    noBackSkipLogo,
-    onLogin,
 }: {
     onSkip?: ((event: React.MouseEvent<Element, MouseEvent>) => void);
     onStartClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
-    noBackSkipLogo?: boolean;
-    onLogin?: boolean;
 }) => {
     const client = useClient();
     const { profile, user } = client.useProfile();
@@ -104,33 +100,25 @@ export const DiscoverStart = ({
     const { firstName, lastName, photoRef } = profile || { firstName: '', lastName: '', photoRef: null };
     const { uuid } = photoRef || { uuid: undefined };
     const fullName = [firstName, lastName].filter(Boolean).join(' ');
-    const subtitle = onLogin
-        ? 'Your account is ready and it’s time to find interesting communities to join'
-        : 'Find the most useful chats based on your interests and needs';
 
     const [start, reset] = useConfetti();
 
     React.useEffect(() => {
-        if (!onLogin) {
-            return;
-        }
         start();
         return reset;
     }, []);
 
     const handleStartClick = React.useCallback((event) => {
         onStartClick(event);
-        if (onLogin) {
-            reset();
-        }
+        reset();
     }, [onStartClick]);
 
     return (
         <XView flexGrow={1} flexShrink={1}>
-            {!noBackSkipLogo && <BackSkipLogo onSkip={onSkip} />}
+            <BackSkipLogo onSkip={onSkip} />
             <FormLayout>
                 <Title text="You’re on board!" />
-                <Subtitle text={subtitle} />
+                <Subtitle text="Your account is ready and it’s time to find interesting communities to join" />
                 <XView position="relative" marginTop={32} alignSelf="center">
                     <div className={avatarWrapper}>
                         <UAvatar uuid={uuid} title={fullName} id={id!!} />
@@ -159,7 +147,7 @@ export default withApp('Home', 'viewer', () => {
     return (
         <React.Suspense fallback={null}>
             <XDocumentHead title="You’re on board!" />
-            <DiscoverStart onSkip={onSkip} onStartClick={onStartClick} onLogin={true} />
+            <DiscoverStart onSkip={onSkip} onStartClick={onStartClick} />
         </React.Suspense>
     );
 });
