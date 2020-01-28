@@ -10,7 +10,6 @@ import { URickTextValue, convertFromInputValue } from 'openland-web/components/u
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { showAvatarModal } from 'openland-web/components/showAvatarModal';
 import { useRole } from 'openland-x-permissions/XWithRole';
 import { CommentEntryFragment_comment, StickerFragment } from 'openland-api/Types';
 import { CommentEditInput } from './CommentEditInput';
@@ -19,6 +18,7 @@ import { findSpans } from 'openland-y-utils/findSpans';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
+import { XViewRouterContext } from 'react-mental';
 
 const avatarWrapper = css`
     flex-shrink: 0;
@@ -82,6 +82,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
     );
     const [edit, setEdit] = React.useState(false);
     const containerRef = React.useRef<HTMLDivElement>(null);
+    const router = React.useContext(XViewRouterContext)!;
 
     React.useLayoutEffect(() => {
         setTimeout(() => {
@@ -161,11 +162,11 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                     title={sender.name}
                     photo={sender.photo}
                     size={depth > 0 ? 'x-small' : 'medium'}
-                    onClick={
-                        sender.photo && !sender.photo.startsWith('ph://')
-                            ? () => showAvatarModal(sender.photo!)
-                            : undefined
-                    }
+                    onClick={() => {
+                        if (router) {
+                            router.navigate(`/${sender.id}`);
+                        }
+                    }}
                 />
             </div>
             <div className={content}>

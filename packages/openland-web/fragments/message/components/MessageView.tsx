@@ -11,10 +11,10 @@ import { MessageReactions } from 'openland-web/fragments/chat/messenger/message/
 import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { css } from 'linaria';
-import { showAvatarModal } from 'openland-web/components/showAvatarModal';
 import { ReactionReducedEmojify } from 'openland-engines/reactions/types';
 import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
 import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
+import { XViewRouterContext } from 'react-mental';
 
 const avatarWrapper = css`
     flex-shrink: 0;
@@ -54,6 +54,7 @@ export const MessageView = React.memo((props: MessageViewProps) => {
     const [senderNameEmojify, setSenderNameEmojify] = React.useState<string | JSX.Element>(sender.name);
     const [reactionsReducedEmojify, setReactionsReduced] = React.useState<ReactionReducedEmojify[]>([]);
     const [reactionsLabelEmojify, setReactionsLabel] = React.useState<string | JSX.Element>('');
+    const router = React.useContext(XViewRouterContext)!;
 
     React.useEffect(() => {
         setReply(message.quotedMessages.map((r) => convertDsMessage(convertMessage(r as FullMessage, '', messenger))));
@@ -79,7 +80,11 @@ export const MessageView = React.memo((props: MessageViewProps) => {
                     id={sender.id}
                     title={sender.name}
                     photo={sender.photo}
-                    onClick={sender.photo && !sender.photo.startsWith('ph://') ? () => showAvatarModal(sender.photo!) : undefined}
+                    onClick={() => {
+                        if (router) {
+                            router.navigate(`/${sender.id}`);
+                        }
+                    }}
                 />
             </div>
             <div className={content}>
