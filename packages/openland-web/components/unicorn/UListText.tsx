@@ -3,23 +3,13 @@ import { XView, XViewProps } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { emoji } from 'openland-y-utils/emoji';
 import { css } from 'linaria';
+import { UText } from 'openland-web/components/unicorn/UText';
 
 const wrapper = css`
     span {
         display: inline;
     }
 `;
-
-const getRows = (value: string) => {
-    const processedRows: (JSX.Element | string)[] = [];
-    const rows = value.split('\n');
-
-    rows.map((row, index) => {
-        processedRows.push(<div key={`line-${index}-${row}`}>{emoji(row)}</div>);
-    });
-
-    return processedRows;
-};
 
 interface UListTextProps extends XViewProps {
     value?: string | JSX.Element | JSX.Element[];
@@ -38,7 +28,7 @@ export const UListText = (props: UListTextProps) => {
             flexShrink={1}
         >
             <div className={wrapper}>
-                {typeof value === 'string' && getRows(value)}
+                {typeof value === 'string' && <UText text={value} proccessText={emoji} />}
                 {typeof value !== 'string' && value}
             </div>
         </XView>

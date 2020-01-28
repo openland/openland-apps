@@ -51,6 +51,13 @@ export const SharedMediaQuery = gql`
                                                 imageFallback {
                                                     photo
                                                 }
+                                                keyboard {
+                                                    buttons {
+                                                        id
+                                                        title
+                                                        url
+                                                    }
+                                                }
                                             }
                                         }
                                     }

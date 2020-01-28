@@ -8,8 +8,9 @@ import { ULink } from 'openland-web/components/unicorn/ULink';
 // import { useUserPopper } from 'openland-web/components/EntityPoppers';
 import { TypingsUser } from 'openland-engines/messenger/Typings';
 import Lottie from 'react-lottie';
-import typingGray from 'openland-icons/typings/typing-gray.json';
 import { XView } from 'react-mental';
+
+import { getJSON } from 'openland-y-utils/lottie/getJSON';
 
 const typingWrapper = css`
     display: flex;
@@ -79,7 +80,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                 height={20}
                 width={20}
                 options={{
-                    animationData: typingGray,
+                    animationData: getJSON('typing', '#878A91'),
                     loop: true
                 }}
             />
@@ -94,7 +95,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                     <>
                         { dots }
                         <UserLink {...typingArr[0]} />
-                        &nbsp;is typing...
+                        &nbsp;is typing
                     </>
                 )}
 
@@ -104,7 +105,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                         <UserLink {...typingArr[0]} />
                         &nbsp;and&nbsp;
                         <UserLink {...typingArr[1]} />
-                        &nbsp;are typing...
+                        &nbsp;are typing
                     </>
                 )}
 
@@ -116,7 +117,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                         <UserLink {...typingArr[1]} />
                         &nbsp;and&nbsp;
                         <UserLink {...typingArr[2]} />
-                        &nbsp;are typing...
+                        &nbsp;are typing
                     </>
                 )}
 
@@ -128,7 +129,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                         <UserLink {...typingArr[1]} />
                         &nbsp;and&nbsp;
                         {typingArr.length - 2}
-                        &nbsp;more are typing...
+                        &nbsp;more are typing
                     </>
                 )}
             </div>

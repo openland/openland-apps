@@ -29,6 +29,6 @@ internal val ExploreCommunitySelector = obj(
 val ExploreCommunity = object: OperationDefinition {
     override val name = "ExploreCommunity"
     override val kind = OperationKind.QUERY
-    override val body = "query ExploreCommunity(\$after:String,\$featuredIfEmptyQuery:Boolean,\$page:Int,\$query:String,\$sort:String){items:alphaComunityPrefixSearch(after:\$after,featuredIfEmptyQuery:\$featuredIfEmptyQuery,first:25,page:\$page,query:\$query,sort:\$sort){__typename edges{__typename cursor node{__typename ...CommunitySearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured betaPublicRoomsCount id isMine membersCount name photo status superAccountId}"
+    override val body = "query ExploreCommunity(\$after:String,\$featuredIfEmptyQuery:Boolean,\$page:Int,\$query:String,\$sort:String){items:alphaComunityPrefixSearch(after:\$after,featuredIfEmptyQuery:\$featuredIfEmptyQuery,first:25,page:\$page,query:\$query,sort:\$sort){__typename edges{__typename cursor node{__typename ...CommunitySearch}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured roomsCount:betaPublicRoomsCount id isMine membersCount name photo status superAccountId}"
     override val selector = ExploreCommunitySelector
 }

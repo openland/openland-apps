@@ -1,0 +1,8 @@
+fragment SharedRoomView on SharedRoom {
+  __typename
+  id
+  membersCount
+  photo
+  photo
+  title
+}

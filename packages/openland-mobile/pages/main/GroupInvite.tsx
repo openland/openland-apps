@@ -12,6 +12,8 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { trackEvent } from 'openland-mobile/analytics';
+import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 
 const styles = StyleSheet.create({
     label: {
@@ -63,42 +65,48 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
     let showMembersCount = room.membersCount ? room.membersCount >= MIN_MEMBERS_COUNT_TO_SHOW : false;
 
     return (
-        <View style={{ flexGrow: 1, paddingTop: area.top, paddingBottom }}>
-            <View flexGrow={1} paddingHorizontal={32}>
-                <Text style={[styles.label, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
-                    <Text style={styles.userName} allowFontScaling={false}>{user.name}</Text> invites you to join {typeString}
-                </Text>
-                <View flexGrow={1} justifyContent="center" alignItems="center" flexDirection="column">
-                    <ZAvatar size="xx-large" src={room.photo} placeholderKey={room.id} placeholderTitle={room.title} />
-                    <Text style={[styles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>{room.title}</Text>
-                    {!!room.description && (
-                        <Text style={[styles.description, { color: theme.foregroundSecondary }]} allowFontScaling={false}>{room.description}</Text>
-                    )}
-                    <View style={[styles.membersWrapper, { backgroundColor: theme.backgroundTertiaryTrans }]}>
-                        <Text style={[styles.members, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
-                            {showMembersCount ? `${room.membersCount} members` : `New ${typeString}`}
-                        </Text>
+        <ZTrack
+            event="invite_landing_view"
+            params={{ invite_type: room.title.toLowerCase() }}
+        >
+            <View style={{ flexGrow: 1, paddingTop: area.top, paddingBottom }}>
+                <View flexGrow={1} paddingHorizontal={32}>
+                    <Text style={[styles.label, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
+                        <Text style={styles.userName} allowFontScaling={false}>{user.name}</Text> invites you to join {typeString}
+                    </Text>
+                    <View flexGrow={1} justifyContent="center" alignItems="center" flexDirection="column">
+                        <ZAvatar size="xx-large" src={room.photo} placeholderKey={room.id} placeholderTitle={room.title} />
+                        <Text style={[styles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>{room.title}</Text>
+                        {!!room.description && (
+                            <Text style={[styles.description, { color: theme.foregroundSecondary }]} allowFontScaling={false}>{room.description}</Text>
+                        )}
+                        <View style={[styles.membersWrapper, { backgroundColor: theme.backgroundTertiaryTrans }]}>
+                            <Text style={[styles.members, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
+                                {showMembersCount ? `${room.membersCount} members` : `New ${typeString}`}
+                            </Text>
+                        </View>
                     </View>
                 </View>
-            </View>
-            <View style={styles.buttonWrapper}>
-                <ZButton
-                    size="large"
-                    title={`Join ${typeString}`}
-                    onPress={async () => {
-                        startLoader();
-                        try {
-                            await getClient().mutateRoomJoinInviteLink({ invite: inviteId });
+                <View style={styles.buttonWrapper}>
+                    <ZButton
+                        size="large"
+                        title={`Join ${typeString}`}
+                        onPress={async () => {
+                            startLoader();
+                            try {
+                                await getClient().mutateRoomJoinInviteLink({ invite: inviteId });
 
-                            props.router.pushAndReset('Conversation', { id: room.id });
-                        } catch (e) {
-                            Alert.alert(e.message);
-                        }
-                        stopLoader();
-                    }}
-                />
+                                props.router.pushAndReset('Conversation', { id: room.id });
+                                trackEvent('invite_button_clicked');
+                            } catch (e) {
+                                Alert.alert(e.message);
+                            }
+                            stopLoader();
+                        }}
+                    />
+                </View>
             </View>
-        </View>
+        </ZTrack>
     );
 });
 

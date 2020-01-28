@@ -12,9 +12,8 @@ import { DialogListWebItem } from './DialogListWebDataSource';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
-import typingGray from 'openland-icons/typings/typing-gray.json';
-import typingWhite from 'openland-icons/typings/typing-white.json';
 import Lottie from 'react-lottie';
+import { getJSON } from 'openland-y-utils/lottie/getJSON';
 
 const dialogContainer = css`
     cursor: pointer;
@@ -209,7 +208,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                 height={20}
                                 width={20}
                                 options={{
-                                    animationData: active ? typingWhite : typingGray,
+                                    animationData: getJSON('typing', active ? '#FFFFFF' : '#878A91'),
                                     loop: true
                                 }}
                             />

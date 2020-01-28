@@ -1,42 +1,50 @@
 import * as React from 'react';
-import { OrganizationWithoutMembersFragment_rooms } from 'openland-api/Types';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
-import { ZListGroup } from '../../components/ZListGroup';
-import { SRouter } from 'react-native-s/SRouter';
 import { SHeader } from 'react-native-s/SHeader';
-import { SScrollView } from 'react-native-s/SScrollView';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { GroupView } from './components/GroupView';
-
-class GroupsList extends React.PureComponent<{ groups: (OrganizationWithoutMembersFragment_rooms | null)[], router: SRouter }> {
-    render() {
-        return (
-            <SScrollView>
-                <ZListGroup>
-                    {this.props.groups
-                        .sort((a, b) => (b!.membersCount || 0) - (a!.membersCount || 0))
-                        .map((v) => (
-                            <GroupView
-                                key={v!!.id}
-                                item={v!}
-                                onPress={() => this.props.router.push('Conversation', { flexibleId: v!!.id })}
-                                photo={v!.photo}
-                            />
-                        ))}
-                </ZListGroup>
-            </SScrollView>
-        );
-    }
-}
+import { SFlatList } from 'react-native-s/SFlatList';
 
 const ProfileOrganizationGroupsComponent = XMemo<PageProps>((props) => {
-    let organization = getClient().useOrganizationWithoutMembers({ organizationId: props.router.params.organizationId }, { fetchPolicy: 'cache-and-network' }).organization;
+    const client = getClient();
+    const { organizationId } = props.router.params;
+    const organizationRooms = client.useOrganizationPublicRooms({ organizationId, first: 3 }, { fetchPolicy: 'cache-and-network' }).organizationPublicRooms;
+
+    const [rooms, setRooms] = React.useState(organizationRooms.items);
+    const [after, setAfter] = React.useState(organizationRooms.cursor);
+    const [loading, setLoading] = React.useState(false);
+
+    const handleLoadMore = async () => {
+        if (loading || !after) {
+            return;
+        }
+        setLoading(true);
+        const loaded = await client.queryOrganizationPublicRooms({ organizationId, first: 10, after });
+        const { items, cursor } = loaded.organizationPublicRooms;
+        setAfter(cursor);
+        setRooms(prev => prev.concat(items));
+        setLoading(false);
+    };
+
     return (
         <>
             <SHeader title={props.router.params.title || 'Groups'} />
-            <GroupsList router={props.router} groups={organization.rooms} />
+            <SFlatList
+                data={rooms}
+                renderItem={({ item }) => (
+                    <GroupView
+                        key={item.id}
+                        item={item}
+                        photo={item.photo}
+                        onPress={() => props.router.push('Conversation', { flexibleId: item.id })}
+                    />
+                )}
+                keyExtractor={(item, index) => index + '-' + item.id}
+                onEndReached={() => handleLoadMore()}
+                refreshing={loading}
+            />
         </>
     );
 });

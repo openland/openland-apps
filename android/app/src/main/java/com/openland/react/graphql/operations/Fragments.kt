@@ -825,7 +825,7 @@ internal val CommunitySearchSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("about", "about", scalar("String")),
             field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
-            field("betaPublicRoomsCount", "betaPublicRoomsCount", notNull(scalar("Int"))),
+            field("betaPublicRoomsCount", "roomsCount", notNull(scalar("Int"))),
             field("id", "id", notNull(scalar("ID"))),
             field("isMine", "isMine", notNull(scalar("Boolean"))),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
@@ -1524,10 +1524,7 @@ internal val OrganizationWithoutMembersFragmentSelector = obj(
                 ))))),
             field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
             field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
-            field("betaPublicRooms", "rooms", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Room", RoomShortSelector)
-                ))))),
+            field("betaPublicRoomsCount", "roomsCount", notNull(scalar("Int"))),
             field("facebook", "facebook", scalar("String")),
             field("id", "id", notNull(scalar("ID"))),
             field("instagram", "instagram", scalar("String")),
@@ -1601,6 +1598,7 @@ internal val RoomFullSelector = obj(
                 field("featuredMembersCount", "featuredMembersCount", notNull(scalar("Int"))),
                 field("id", "id", notNull(scalar("ID"))),
                 field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                field("isPaid", "isPaid", notNull(scalar("Boolean"))),
                 field("kind", "kind", notNull(scalar("String"))),
                 field("matchmaking", "matchmaking", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -1629,6 +1627,13 @@ internal val RoomFullSelector = obj(
                 field("organization", "organization", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("Organization", OrganizationMediumSelector)
+                    )),
+                field("paidPassIsActive", "paidPassIsActive", notNull(scalar("Boolean"))),
+                field("paymentSettings", "paymentSettings", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("price", "price", notNull(scalar("Int"))),
+                        field("strategy", "strategy", notNull(scalar("String")))
                     )),
                 field("photo", "photo", notNull(scalar("String"))),
                 field("pinnedMessage", "pinnedMessage", obj(
@@ -1756,6 +1761,15 @@ internal val SettingsFullSelector = obj(
                     fragment("PlatformNotificationSettings", PlatformNotificationSettingsFullSelector)
                 ))),
             field("primaryEmail", "primaryEmail", notNull(scalar("String")))
+        )
+
+internal val SharedRoomViewSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("photo", "photo", notNull(scalar("String"))),
+            field("photo", "photo", notNull(scalar("String"))),
+            field("title", "title", notNull(scalar("String")))
         )
 
 internal val StickerPackFragmentSelector = obj(

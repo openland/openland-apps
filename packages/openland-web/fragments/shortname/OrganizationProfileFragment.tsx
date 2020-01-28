@@ -27,16 +27,11 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
     }
 
     const initialMembers = client.useOrganizationMembers({ organizationId: props.id, first: 15 }, { fetchPolicy: 'cache-and-network' }).organization.members;
-    const { id, name, photo, about, shortname, website, twitter, facebook, rooms, membersCount, isCommunity,
-        linkedin, instagram, isMine } = organization;
+    const { id, name, photo, about, shortname, website, twitter, facebook, membersCount, isCommunity,
+        linkedin, instagram, isMine, roomsCount } = organization;
 
-    const [displayGroups, setDisplayGroups] = React.useState(rooms.slice(0, 10));
     const [members, setMembers] = React.useState(initialMembers);
     const [loading, setLoading] = React.useState(false);
-
-    const handleGroupsShowMore = React.useCallback(async () => {
-        setDisplayGroups(rooms);
-    }, []);
 
     const handleLoadMore = React.useCallback(async () => {
         if (members.length < membersCount && !loading) {
@@ -52,6 +47,26 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
             setLoading(false);
         }
     }, [membersCount, members, loading]);
+
+    const initialGroups = client.useOrganizationPublicRooms({ organizationId: props.id, first: 10 }, { fetchPolicy: 'cache-and-network' }).organizationPublicRooms;
+    const [displayGroups, setDisplayGroups] = React.useState(initialGroups.items);
+    const [groupsAfter, setGroupsAfter] = React.useState(initialGroups.cursor);
+    const [groupsLoading, setGroupsLoading] = React.useState(false);
+    const [groupsOpenedCount, setGroupsOpenedCount] = React.useState(0);
+
+    const handleLoadMoreGroups = React.useCallback(async () => {
+        if (groupsLoading || !groupsAfter) {
+            return;
+        }
+        setGroupsLoading(true);
+        const first = groupsOpenedCount === 2 ? roomsCount - 20 : 10;
+        const loaded = await client.queryOrganizationPublicRooms({ organizationId: props.id, first, after: groupsAfter });
+        const { items, cursor } = loaded.organizationPublicRooms;
+        setGroupsAfter(cursor);
+        setDisplayGroups(prev => prev.concat(items));
+        setGroupsOpenedCount(prev => prev + 1);
+        setGroupsLoading(false);
+    }, [props.id, groupsAfter, groupsLoading, displayGroups, roomsCount]);
 
     const handleAddMembers = React.useCallback((addedMembers: OrganizationMembers_organization_members[]) => {
         setMembers(current => [...current, ...addedMembers]);
@@ -119,22 +134,22 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
                 {!!facebook && <UListField label="Facebook" value={facebook} />}
                 {!!linkedin && <UListField label="LinkedIn" value={linkedin} />}
             </UListGroup>
-            <UListGroup header="Groups" counter={rooms.length}>
+            <UListGroup header="Groups" counter={roomsCount}>
                 {isMine && <CreateGroupButton id={id} />}
-                {displayGroups.map(room => (
+                {displayGroups.map(group => (
                     <UGroupView
-                        key={'room-' + room.id}
-                        group={room}
+                        key={'room-' + group.id}
+                        group={group}
                     />
                 ))}
-                {displayGroups.length !== rooms.length && (
+                {displayGroups.length !== roomsCount && (
                     <UListItem
-                        title="Show more"
+                        title={groupsOpenedCount < 2 ? 'Show more' : 'Show all'}
                         icon={<MoreHIcon />}
                         iconColor="var(--foregroundSecondary)"
                         iconBackground="var(--backgroundTertiary)"
                         useRadius={true}
-                        onClick={handleGroupsShowMore}
+                        onClick={handleLoadMoreGroups}
                     />
                 )}
             </UListGroup>

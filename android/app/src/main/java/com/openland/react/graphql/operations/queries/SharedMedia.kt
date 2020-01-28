@@ -44,6 +44,15 @@ internal val SharedMediaSelector = obj(
                                                                     field("photo", "photo", notNull(scalar("String")))
                                                                 )),
                                                             field("imagePreview", "imagePreview", scalar("String")),
+                                                            field("keyboard", "keyboard", obj(
+                                                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                                                    field("buttons", "buttons", notNull(list(list(notNull(obj(
+                                                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                                                            field("id", "id", notNull(scalar("ID"))),
+                                                                            field("title", "title", notNull(scalar("String"))),
+                                                                            field("url", "url", scalar("String"))
+                                                                        ))))))
+                                                                )),
                                                             field("text", "text", scalar("String")),
                                                             field("title", "title", scalar("String")),
                                                             field("titleLink", "titleLink", scalar("String"))
@@ -71,6 +80,6 @@ internal val SharedMediaSelector = obj(
 val SharedMedia = object: OperationDefinition {
     override val name = "SharedMedia"
     override val kind = OperationKind.QUERY
-    override val body = "query SharedMedia(\$after:String,\$chatId:ID!,\$first:Int!,\$mediaTypes:[SharedMediaType!]!){sharedMedia:chatSharedMedia(after:\$after,chatId:\$chatId,first:\$first,mediaTypes:\$mediaTypes){__typename edges{__typename cursor node{__typename message{__typename ... on GeneralMessage{attachments{__typename ... on MessageAttachmentFile{fallback fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{id image{__typename url}imageFallback{__typename photo}imagePreview text title titleLink}}date fallback id sender{__typename id name}}}}}pageInfo{__typename currentPage hasNextPage}}}"
+    override val body = "query SharedMedia(\$after:String,\$chatId:ID!,\$first:Int!,\$mediaTypes:[SharedMediaType!]!){sharedMedia:chatSharedMedia(after:\$after,chatId:\$chatId,first:\$first,mediaTypes:\$mediaTypes){__typename edges{__typename cursor node{__typename message{__typename ... on GeneralMessage{attachments{__typename ... on MessageAttachmentFile{fallback fileId fileMetadata{__typename imageFormat imageHeight imageWidth isImage mimeType name size}filePreview id}... on MessageRichAttachment{id image{__typename url}imageFallback{__typename photo}imagePreview keyboard{__typename buttons{__typename id title url}}text title titleLink}}date fallback id sender{__typename id name}}}}}pageInfo{__typename currentPage hasNextPage}}}"
     override val selector = SharedMediaSelector
 }

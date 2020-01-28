@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
+import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 
 type LoaderSize = 'medium' | 'small' | 'large';
 
@@ -71,7 +72,7 @@ const SvgLoader = React.memo((props: LoaderRenderProps) => {
         ? loaderSizePath + '-contrast.svg'
         : loaderSizePath + '.svg';
 
-    return <img src={loaderFullPath} className={props.static === true ? undefined : rotate} />;
+    return <ImgWithRetry src={loaderFullPath} className={props.static === true ? undefined : rotate} />;
 });
 
 export const XLoader = React.forwardRef((props: XLoaderProps, ref: React.Ref<HTMLDivElement>) => {

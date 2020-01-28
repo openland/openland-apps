@@ -18,6 +18,7 @@ import { completeAuth } from './complete.page';
 import { css, cx } from 'linaria';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { XView } from 'react-mental';
+import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 
 const getAppInvite = (router: any) => {
     if (router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite') {
@@ -443,27 +444,32 @@ export default () => {
                 </XTrack>
             )}
             {page === pages.askActivationCode && (
-                <XTrack event="code_view">
-                    <AskActivationPage
-                        resendCodeClick={async () => {
-                            trackEvent('code_resend_action');
-                            setEmailSending(true);
-                            await fireEmail(emailValue);
-                            setEmailWasResend(true);
-                        }}
-                        backButtonClick={() => {
-                            setFromOutside(false);
-                        }}
-                        avatarId={avatarId}
-                        emailWasResend={emailWasResend}
-                        setEmailWasResend={setEmailWasResend}
-                        emailSendedTo={emailValue}
-                        emailValue={emailValue}
-                        emailSending={emailSending}
-                        isMobile={!!isMobile}
-                        isExistingUser={isExistingUser}
-                    />
-                </XTrack>
+                !emailValue ? (
+                    <XPageRedirect path="/" />
+                ) : (
+                        <XTrack event="code_view">
+                            <AskActivationPage
+                                resendCodeClick={async () => {
+                                    trackEvent('code_resend_action');
+                                    setEmailSending(true);
+                                    await fireEmail(emailValue);
+                                    setEmailWasResend(true);
+                                }}
+                                backButtonClick={() => {
+                                    setFromOutside(false);
+                                }}
+                                avatarId={avatarId}
+                                emailWasResend={emailWasResend}
+                                setEmailWasResend={setEmailWasResend}
+                                emailSendedTo={emailValue}
+                                emailValue={emailValue}
+                                emailSending={emailSending}
+                                isMobile={!!isMobile}
+                                isExistingUser={isExistingUser}
+                            />
+                        </XTrack>
+                    )
+
             )}
             {page === pages.introduceYourself && (
                 <XTrack event="signin_profile_view">

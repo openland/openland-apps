@@ -62,6 +62,7 @@ object Operations {
         if (name == "OrganizationMembersShort") return OrganizationMembersShort
         if (name == "OrganizationProfile") return OrganizationProfile
         if (name == "OrganizationPublicInvite") return OrganizationPublicInvite
+        if (name == "OrganizationPublicRooms") return OrganizationPublicRooms
         if (name == "OrganizationWithoutMembers") return OrganizationWithoutMembers
         if (name == "Permissions") return Permissions
         if (name == "Profile") return Profile
@@ -104,6 +105,7 @@ object Operations {
         if (name == "BetaDiscoverSkip") return BetaDiscoverSkip
         if (name == "BetaNextDiscoverReset") return BetaNextDiscoverReset
         if (name == "BetaSubmitNextDiscover") return BetaSubmitNextDiscover
+        if (name == "BuyPaidChatPass") return BuyPaidChatPass
         if (name == "CommentSetReaction") return CommentSetReaction
         if (name == "CommentUnsetReaction") return CommentUnsetReaction
         if (name == "CommitCardSetupIntent") return CommitCardSetupIntent

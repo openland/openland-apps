@@ -48,6 +48,7 @@ import * as RoomNano from './fragments/RoomNano';
 import * as RoomShort from './fragments/RoomShort';
 import * as SessionStateFull from './fragments/SessionStateFull';
 import * as SettingsFragment from './fragments/SettingsFragment';
+import * as SharedRoomView from './fragments/SharedRoomView';
 import * as StickerFragment from './fragments/StickerFragment';
 import * as UserBadge from './fragments/UserBadge';
 import * as UserForMention from './fragments/UserForMention';
@@ -100,6 +101,7 @@ export const ChatInitFromUnreadQuery = typedQuery<Types.ChatInitFromUnread, Type
 export const SendMessageMutation = typedMutation<Types.SendMessage, Types.SendMessageVariables>(Chats.SendMessageMutation);
 export const RoomReadMutation = typedMutation<Types.RoomRead, Types.RoomReadVariables>(Chats.RoomReadMutation);
 export const RoomCreateMutation = typedMutation<Types.RoomCreate, Types.RoomCreateVariables>(Chats.RoomCreateMutation);
+export const BuyPaidChatPassMutation = typedMutation<Types.BuyPaidChatPass, Types.BuyPaidChatPassVariables>(Chats.BuyPaidChatPassMutation);
 export const SetTypingMutation = typedMutation<Types.SetTyping, Types.SetTypingVariables>(Chats.SetTypingMutation);
 export const RoomAddMembersMutation = typedMutation<Types.RoomAddMembers, Types.RoomAddMembersVariables>(Chats.RoomAddMembersMutation);
 export const RoomKickMutation = typedMutation<Types.RoomKick, Types.RoomKickVariables>(Chats.RoomKickMutation);
@@ -233,6 +235,7 @@ export const OrganizationMemberRemoveMutation = typedMutation<Types.Organization
 export const OrganizationActivateByInviteMutation = typedMutation<Types.OrganizationActivateByInvite, Types.OrganizationActivateByInviteVariables>(Organization.OrganizationActivateByInviteMutation);
 export const OrganizationAlterPublishedMutation = typedMutation<Types.OrganizationAlterPublished, Types.OrganizationAlterPublishedVariables>(Organization.OrganizationAlterPublishedMutation);
 export const OrganizationByPrefixQuery = typedQuery<Types.OrganizationByPrefix, Types.OrganizationByPrefixVariables>(Organization.OrganizationByPrefixQuery);
+export const OrganizationPublicRoomsQuery = typedQuery<Types.OrganizationPublicRooms, Types.OrganizationPublicRoomsVariables>(Organization.OrganizationPublicRoomsQuery);
 export const PermissionsQuery = typedQuery<Types.Permissions, {}>(Permissions.PermissionsQuery);
 export const DebugMailsMutation = typedMutation<Types.DebugMails, Types.DebugMailsVariables>(Permissions.DebugMailsMutation);
 export const SuperAdminsQuery = typedQuery<Types.SuperAdmins, {}>(Permissions.SuperAdminsQuery);
@@ -307,6 +310,7 @@ export const RoomShortFragment = typedFragment<Types.RoomShort>(RoomShort.RoomSh
 export const SessionStateFullFragment = typedFragment<Types.SessionStateFull>(SessionStateFull.SessionStateFull);
 export const PlatformNotificationSettingsFullFragment = typedFragment<Types.PlatformNotificationSettingsFull>(SettingsFragment.PlatformNotificationSettingsFull);
 export const SettingsFullFragment = typedFragment<Types.SettingsFull>(SettingsFragment.SettingsFull);
+export const SharedRoomViewFragment = typedFragment<Types.SharedRoomView>(SharedRoomView.SharedRoomView);
 export const StickerFragmentFragment = typedFragment<Types.StickerFragment>(StickerFragment.StickerFragment);
 export const StickerPackFragmentFragment = typedFragment<Types.StickerPackFragment>(StickerFragment.StickerPackFragment);
 export const UserBadgeFragment = typedFragment<Types.UserBadge>(UserBadge.UserBadge);

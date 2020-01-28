@@ -14,6 +14,8 @@ import { ExploreFragment } from './ExploreFragment';
 import BackIcon from 'openland-icons/s/ic-back-24.svg';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { trackEvent } from 'openland-x-analytics';
+import { UCheckboxFiled } from 'openland-web/components/unicorn/UCheckbox';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const containerStyle = css`
     display: flex;
@@ -104,6 +106,7 @@ const CreateEntityComponent = React.memo((props: CreateEntityInterface & { hide:
     const avatarField = useField<StoredFileT | undefined | null>('input.avatar', null, form);
     const descriptionField = useField('input.description', '', form);
     const secretTypeField = useField<boolean>('input.type', !props.inOrgId, form);
+    const chatIsPaidField = useField<boolean>('input.isPaid', false, form);
     const selectedOrgField = useField<string | null>(
         'input.selectedOrg',
         props.inOrgId ? props.inOrgId : null,
@@ -181,8 +184,8 @@ const CreateEntityComponent = React.memo((props: CreateEntityInterface & { hide:
                                                 subtitle: isCommunity
                                                     ? 'Anyone can find and join this community'
                                                     : `${
-                                                          props.entityType
-                                                      } where your organization or community members communicate`,
+                                                    props.entityType
+                                                    } where your organization or community members communicate`,
                                             },
                                             {
                                                 value: true,
@@ -193,12 +196,17 @@ const CreateEntityComponent = React.memo((props: CreateEntityInterface & { hide:
                                                 subtitle: isCommunity
                                                     ? 'Only invited people can join community and view chats'
                                                     : `People can view and join only by invite from a ${
-                                                          props.entityType
-                                                      } member`,
+                                                    props.entityType
+                                                    } member`,
                                             },
                                         ]}
                                     />
                                 )}
+                                <XWithRole role="super-admin">
+                                    {props.entityType === 'group' && (
+                                        <UCheckboxFiled label="Paid" boldTitle={true} asSwitcher={true} field={chatIsPaidField} />
+                                    )}
+                                </XWithRole>
                                 {isOrg && (
                                     <UTextAreaField
                                         field={descriptionField}
@@ -242,6 +250,7 @@ const CreateEntityComponent = React.memo((props: CreateEntityInterface & { hide:
                                 selectedOrgField.value ? selectedOrgField.value : props.inOrgId
                             }
                             entityType={props.entityType}
+                            isPaid={chatIsPaidField.value}
                         />
                     </>
                 )}

@@ -35,7 +35,7 @@ export const CardView = (props: CardViewProps) => {
                     {isDefault && (
                         <View position="absolute" top={50} left={24}>
                             <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} allowFontScaling={false}>
-                                Default
+                                Primary
                             </Text>
                         </View>
                     )}
@@ -54,7 +54,7 @@ export const CardView = (props: CardViewProps) => {
         ));
 
         if (!isDefault) {
-            builder.action('Make default', async () => {
+            builder.action('Make primary', async () => {
                 startLoader();
 
                 try {
@@ -91,7 +91,7 @@ export const CardView = (props: CardViewProps) => {
             leftIconView={<BrandLogo brand={brand} />}
             text={`${getPaymentMethodName(brand)}, ${last4}`}
             onPress={handlePress}
-            description={isDefault ? 'Default' : undefined}
+            description={isDefault ? 'Primary' : undefined}
         />
     );
 };

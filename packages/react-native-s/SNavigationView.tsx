@@ -101,7 +101,12 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
             return true;
         }
         if (this.state.presented) {
-            this.handleDismissed();
+            // Sorry universe.
+            // It's a temp fix for https://openland.myjetbrains.com/youtrack/issue/APP-364
+            if (this.props.routing.navigationManager.presentationManager) {
+                this.props.routing.navigationManager.presentationManager.dismiss();
+            }
+            // this.handleDismissed();
 
             return true;
         } else {

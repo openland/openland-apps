@@ -18,6 +18,7 @@ internal val RoomInviteInfoSelector = obj(
                                 field("description", "description", scalar("String")),
                                 field("id", "id", notNull(scalar("ID"))),
                                 field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                                field("isPaid", "isPaid", notNull(scalar("Boolean"))),
                                 field("kind", "kind", notNull(scalar("String"))),
                                 field("matchmaking", "matchmaking", obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -29,6 +30,13 @@ internal val RoomInviteInfoSelector = obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
                                         fragment("Organization", OrganizationShortSelector)
                                     )),
+                                field("paidPassIsActive", "paidPassIsActive", notNull(scalar("Boolean"))),
+                                field("paymentSettings", "paymentSettings", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("price", "price", notNull(scalar("Int"))),
+                                        field("strategy", "strategy", notNull(scalar("String")))
+                                    )),
                                 field("photo", "photo", notNull(scalar("String"))),
                                 field("socialImage", "socialImage", scalar("String")),
                                 field("title", "title", notNull(scalar("String")))
@@ -39,6 +47,6 @@ internal val RoomInviteInfoSelector = obj(
 val RoomInviteInfo = object: OperationDefinition {
     override val name = "RoomInviteInfo"
     override val kind = OperationKind.QUERY
-    override val body = "query RoomInviteInfo(\$invite:String!){invite:betaRoomInviteInfo(invite:\$invite){__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel kind matchmaking{__typename enabled}membersCount membership organization{__typename ...OrganizationShort}photo socialImage title}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}"
+    override val body = "query RoomInviteInfo(\$invite:String!){invite:betaRoomInviteInfo(invite:\$invite){__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel isPaid kind matchmaking{__typename enabled}membersCount membership organization{__typename ...OrganizationShort}paidPassIsActive paymentSettings{__typename id price strategy}photo socialImage title}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}"
     override val selector = RoomInviteInfoSelector
 }

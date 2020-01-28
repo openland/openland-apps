@@ -6,6 +6,7 @@ import { OrganizationProfileFull } from '../fragments/OrganizationProfileFull';
 import { OrganizationSearch } from '../fragments/OrganizationSearch';
 import { CommunitySearch } from '../fragments/CommunitySearch';
 import { UserShort } from 'openland-api/fragments/UserShort';
+import { SharedRoomView } from 'openland-api/fragments/SharedRoomView';
 
 export const MyOrganizationsQuery = gql`
     query MyOrganizations {
@@ -191,4 +192,16 @@ export const OrganizationByPrefixQuery = gql`
         }
     }
     ${OrganizationSearch}
+`;
+
+export const OrganizationPublicRoomsQuery = gql`
+    query OrganizationPublicRooms($organizationId: ID!, $first: Int!, $after: ID) {
+        organizationPublicRooms(id: $organizationId, first: $first, after: $after) {
+            items {
+                ...SharedRoomView
+            }
+            cursor
+        }
+    }
+    ${SharedRoomView}
 `;
