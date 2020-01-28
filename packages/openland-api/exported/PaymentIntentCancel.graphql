@@ -1,0 +1,3 @@
+mutation PaymentIntentCancel($id: ID!) {
+  paymentCancel(id: $id)
+}

@@ -122,6 +122,7 @@ object Operations {
         if (name == "DeleteNotification") return DeleteNotification
         if (name == "DeleteOrganization") return DeleteOrganization
         if (name == "DeleteUser") return DeleteUser
+        if (name == "Donate") return Donate
         if (name == "EditComment") return EditComment
         if (name == "EditMessage") return EditMessage
         if (name == "FeatureFlagAdd") return FeatureFlagAdd
@@ -157,6 +158,7 @@ object Operations {
         if (name == "OrganizationChangeMemberRole") return OrganizationChangeMemberRole
         if (name == "OrganizationCreatePublicInvite") return OrganizationCreatePublicInvite
         if (name == "OrganizationMemberRemove") return OrganizationMemberRemove
+        if (name == "PaymentIntentCancel") return PaymentIntentCancel
         if (name == "PaymentIntentCommit") return PaymentIntentCommit
         if (name == "PersistEvents") return PersistEvents
         if (name == "PinMessage") return PinMessage

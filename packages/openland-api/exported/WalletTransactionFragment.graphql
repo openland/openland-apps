@@ -16,6 +16,19 @@ fragment WalletTransactionFragment on WalletTransaction {
         status
       }
     }
+    ... on WalletTransactionSubscription {
+      amount
+      subscriptionPayment: payment {
+        __typename
+        id
+        intent {
+          __typename
+          clientSecret
+          id
+        }
+        status
+      }
+    }
   }
   status
 }

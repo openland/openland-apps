@@ -14517,6 +14517,85 @@
 		},
 		{
 			"filePath": "file:///Volumes/Develop/openland-apps/packages/openland-api/queries/Finance.ts",
+			"operationName": "PaymentIntentCancel",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "id",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation PaymentIntentCancel($id: ID!) {\n  paymentCancel(id: $id)\n}",
+			"fields": [
+				{
+					"responseName": "paymentCancel",
+					"fieldName": "paymentCancel",
+					"type": "Boolean!",
+					"args": [
+						{
+							"name": "id",
+							"value": {
+								"kind": "Variable",
+								"variableName": "id"
+							},
+							"type": "ID!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation PaymentIntentCancel($id: ID!) {\n  paymentCancel(id: $id)\n}",
+			"operationId": "3158017657b60e823ccc8693c6c29f4e192a76a9a3937dcf51f6e6867f2eefe9"
+		},
+		{
+			"filePath": "file:///Volumes/Develop/openland-apps/packages/openland-api/queries/Finance.ts",
+			"operationName": "Donate",
+			"operationType": "mutation",
+			"rootType": "Mutation",
+			"variables": [
+				{
+					"name": "id",
+					"type": "ID!"
+				}
+			],
+			"source": "mutation Donate($id: ID!) {\n  donateToUser(id: $id, amount: 100)\n}",
+			"fields": [
+				{
+					"responseName": "donateToUser",
+					"fieldName": "donateToUser",
+					"type": "Boolean!",
+					"args": [
+						{
+							"name": "id",
+							"value": {
+								"kind": "Variable",
+								"variableName": "id"
+							},
+							"type": "ID!"
+						},
+						{
+							"name": "amount",
+							"value": 100,
+							"type": "Int!"
+						}
+					],
+					"isConditional": false,
+					"isDeprecated": false
+				}
+			],
+			"fragmentSpreads": [],
+			"inlineFragments": [],
+			"fragmentsReferenced": [],
+			"sourceWithFragments": "mutation Donate($id: ID!) {\n  donateToUser(id: $id, amount: 100)\n}",
+			"operationId": "b263c7fbe11b07a28a46802a91452e179132caf7484d8fc73d6338cb5e919e97"
+		},
+		{
+			"filePath": "file:///Volumes/Develop/openland-apps/packages/openland-api/queries/Finance.ts",
 			"operationName": "MyWallet",
 			"operationType": "query",
 			"rootType": "Query",
@@ -14636,8 +14715,8 @@
 			"fragmentsReferenced": [
 				"WalletTransactionFragment"
 			],
-			"sourceWithFragments": "query MyWallet {\n  myWallet {\n    __typename\n    id\n    balance\n    state\n  }\n  transactionsPending {\n    __typename\n    ...WalletTransactionFragment\n  }\n  transactionsHistory(first: 20) {\n    __typename\n    items {\n      __typename\n      ...WalletTransactionFragment\n    }\n    cursor\n  }\n}\nfragment WalletTransactionFragment on WalletTransaction {\n  __typename\n  id\n  status\n  operation {\n    __typename\n    ... on WalletTransactionDeposit {\n      amount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n  }\n}",
-			"operationId": "9d2a60af7e7f516428739e827fcf2705730c2324b981964fd4cf05197f0919f8"
+			"sourceWithFragments": "query MyWallet {\n  myWallet {\n    __typename\n    id\n    balance\n    state\n  }\n  transactionsPending {\n    __typename\n    ...WalletTransactionFragment\n  }\n  transactionsHistory(first: 20) {\n    __typename\n    items {\n      __typename\n      ...WalletTransactionFragment\n    }\n    cursor\n  }\n}\nfragment WalletTransactionFragment on WalletTransaction {\n  __typename\n  id\n  status\n  operation {\n    __typename\n    ... on WalletTransactionDeposit {\n      amount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n    ... on WalletTransactionSubscription {\n      amount\n      subscriptionPayment: payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n  }\n}",
+			"operationId": "3cb1472c6f5dc0918ff1e6ad646ebaecf1f83457b8d5d736510b329ef4173961"
 		},
 		{
 			"filePath": "file:///Volumes/Develop/openland-apps/packages/openland-api/queries/Finance.ts",
@@ -14769,8 +14848,8 @@
 				"WalletUpdateFragment",
 				"WalletTransactionFragment"
 			],
-			"sourceWithFragments": "subscription WalletUpdates($state: String!) {\n  event: walletUpdates(fromState: $state) {\n    __typename\n    ... on WalletUpdateSingle {\n      state\n      update {\n        __typename\n        ...WalletUpdateFragment\n      }\n    }\n    ... on WalletUpdateBatch {\n      state\n      updates {\n        __typename\n        ...WalletUpdateFragment\n      }\n    }\n  }\n}\nfragment WalletUpdateFragment on WalletUpdate {\n  __typename\n  ... on WalletUpdateBalance {\n    amount\n  }\n  ... on WalletUpdateTransactionSuccess {\n    transaction {\n      __typename\n      ...WalletTransactionFragment\n    }\n  }\n  ... on WalletUpdateTransactionCanceled {\n    transaction {\n      __typename\n      ...WalletTransactionFragment\n    }\n  }\n  ... on WalletUpdateTransactionPending {\n    transaction {\n      __typename\n      ...WalletTransactionFragment\n    }\n  }\n  ... on WalletUpdatePaymentStatus {\n    payment {\n      __typename\n      id\n      status\n      intent {\n        __typename\n        id\n        clientSecret\n      }\n    }\n  }\n}\nfragment WalletTransactionFragment on WalletTransaction {\n  __typename\n  id\n  status\n  operation {\n    __typename\n    ... on WalletTransactionDeposit {\n      amount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n  }\n}",
-			"operationId": "15c72e18c8e9616d296999ac4ce3c3f8c8c8fb6ecad4fa8ebcc56b58fc0788ef"
+			"sourceWithFragments": "subscription WalletUpdates($state: String!) {\n  event: walletUpdates(fromState: $state) {\n    __typename\n    ... on WalletUpdateSingle {\n      state\n      update {\n        __typename\n        ...WalletUpdateFragment\n      }\n    }\n    ... on WalletUpdateBatch {\n      state\n      updates {\n        __typename\n        ...WalletUpdateFragment\n      }\n    }\n  }\n}\nfragment WalletUpdateFragment on WalletUpdate {\n  __typename\n  ... on WalletUpdateBalance {\n    amount\n  }\n  ... on WalletUpdateTransactionSuccess {\n    transaction {\n      __typename\n      ...WalletTransactionFragment\n    }\n  }\n  ... on WalletUpdateTransactionCanceled {\n    transaction {\n      __typename\n      ...WalletTransactionFragment\n    }\n  }\n  ... on WalletUpdateTransactionPending {\n    transaction {\n      __typename\n      ...WalletTransactionFragment\n    }\n  }\n  ... on WalletUpdatePaymentStatus {\n    payment {\n      __typename\n      id\n      status\n      intent {\n        __typename\n        id\n        clientSecret\n      }\n    }\n  }\n}\nfragment WalletTransactionFragment on WalletTransaction {\n  __typename\n  id\n  status\n  operation {\n    __typename\n    ... on WalletTransactionDeposit {\n      amount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n    ... on WalletTransactionSubscription {\n      amount\n      subscriptionPayment: payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n  }\n}",
+			"operationId": "315feed880f1dcc9b2fbf111c4336e9fa55fc289572edae7a86cf2761cf0dbc8"
 		},
 		{
 			"filePath": "file:///Volumes/Develop/openland-apps/packages/openland-api/queries/Matchmaking.ts",
@@ -31647,7 +31726,7 @@
 			],
 			"fragmentName": "WalletTransactionFragment",
 			"filePath": "file:///Volumes/Develop/openland-apps/packages/openland-api/queries/Finance.ts",
-			"source": "fragment WalletTransactionFragment on WalletTransaction {\n  __typename\n  id\n  status\n  operation {\n    __typename\n    ... on WalletTransactionDeposit {\n      amount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n  }\n}",
+			"source": "fragment WalletTransactionFragment on WalletTransaction {\n  __typename\n  id\n  status\n  operation {\n    __typename\n    ... on WalletTransactionDeposit {\n      amount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n    ... on WalletTransactionSubscription {\n      amount\n      subscriptionPayment: payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "__typename",
@@ -31681,20 +31760,15 @@
 							"fieldName": "__typename",
 							"type": "String!",
 							"isConditional": false
-						},
+						}
+					],
+					"fragmentSpreads": [],
+					"inlineFragments": [
 						{
-							"responseName": "amount",
-							"fieldName": "amount",
-							"type": "Int!",
-							"isConditional": false,
-							"isDeprecated": false
-						},
-						{
-							"responseName": "payment",
-							"fieldName": "payment",
-							"type": "Payment",
-							"isConditional": false,
-							"isDeprecated": false,
+							"typeCondition": "WalletTransactionDeposit",
+							"possibleTypes": [
+								"WalletTransactionDeposit"
+							],
 							"fields": [
 								{
 									"responseName": "__typename",
@@ -31703,23 +31777,16 @@
 									"isConditional": false
 								},
 								{
-									"responseName": "id",
-									"fieldName": "id",
-									"type": "ID!",
+									"responseName": "amount",
+									"fieldName": "amount",
+									"type": "Int!",
 									"isConditional": false,
 									"isDeprecated": false
 								},
 								{
-									"responseName": "status",
-									"fieldName": "status",
-									"type": "PaymentStatus!",
-									"isConditional": false,
-									"isDeprecated": false
-								},
-								{
-									"responseName": "intent",
-									"fieldName": "intent",
-									"type": "PaymentIntent",
+									"responseName": "payment",
+									"fieldName": "payment",
+									"type": "Payment",
 									"isConditional": false,
 									"isDeprecated": false,
 									"fields": [
@@ -31737,23 +31804,135 @@
 											"isDeprecated": false
 										},
 										{
-											"responseName": "clientSecret",
-											"fieldName": "clientSecret",
-											"type": "String!",
+											"responseName": "status",
+											"fieldName": "status",
+											"type": "PaymentStatus!",
 											"isConditional": false,
 											"isDeprecated": false
+										},
+										{
+											"responseName": "intent",
+											"fieldName": "intent",
+											"type": "PaymentIntent",
+											"isConditional": false,
+											"isDeprecated": false,
+											"fields": [
+												{
+													"responseName": "__typename",
+													"fieldName": "__typename",
+													"type": "String!",
+													"isConditional": false
+												},
+												{
+													"responseName": "id",
+													"fieldName": "id",
+													"type": "ID!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "clientSecret",
+													"fieldName": "clientSecret",
+													"type": "String!",
+													"isConditional": false,
+													"isDeprecated": false
+												}
+											],
+											"fragmentSpreads": [],
+											"inlineFragments": []
 										}
 									],
 									"fragmentSpreads": [],
 									"inlineFragments": []
 								}
 							],
-							"fragmentSpreads": [],
-							"inlineFragments": []
+							"fragmentSpreads": []
+						},
+						{
+							"typeCondition": "WalletTransactionSubscription",
+							"possibleTypes": [
+								"WalletTransactionSubscription"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "amount",
+									"fieldName": "amount",
+									"type": "Int!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "subscriptionPayment",
+									"fieldName": "payment",
+									"type": "Payment!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "status",
+											"fieldName": "status",
+											"type": "PaymentStatus!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "intent",
+											"fieldName": "intent",
+											"type": "PaymentIntent",
+											"isConditional": false,
+											"isDeprecated": false,
+											"fields": [
+												{
+													"responseName": "__typename",
+													"fieldName": "__typename",
+													"type": "String!",
+													"isConditional": false
+												},
+												{
+													"responseName": "id",
+													"fieldName": "id",
+													"type": "ID!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "clientSecret",
+													"fieldName": "clientSecret",
+													"type": "String!",
+													"isConditional": false,
+													"isDeprecated": false
+												}
+											],
+											"fragmentSpreads": [],
+											"inlineFragments": []
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
+								}
+							],
+							"fragmentSpreads": []
 						}
-					],
-					"fragmentSpreads": [],
-					"inlineFragments": []
+					]
 				}
 			],
 			"fragmentSpreads": [],

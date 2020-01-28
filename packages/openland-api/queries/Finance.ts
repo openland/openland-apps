@@ -73,6 +73,18 @@ export const PaymentIntentCommitMutation = gql`
     }
 `;
 
+export const PaymentIntentCancelMutation = gql`
+    mutation PaymentIntentCancel($id: ID!) {
+        paymentCancel(id: $id)
+    }
+`;
+
+export const DonateMutation = gql`
+    mutation Donate($id: ID!) {
+        donateToUser(id: $id, amount: 100)
+    }
+`;
+
 //
 // Wallet
 //
@@ -85,6 +97,17 @@ export const WalletTransactionFragment = gql`
             ... on WalletTransactionDeposit {
                 amount
                 payment {
+                    id
+                    status
+                    intent {
+                        id
+                        clientSecret
+                    }
+                }
+            }
+            ... on WalletTransactionSubscription {
+                amount
+                subscriptionPayment: payment {
                     id
                     status
                     intent {

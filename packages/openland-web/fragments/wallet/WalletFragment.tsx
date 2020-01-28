@@ -94,11 +94,20 @@ export const WalletFragment = React.memo(() => {
                     {wallet.pendingTransactions.map((v) => (
                         <UListItem
                             key={v.id}
-                            title={v.status + ': ' + v.operation.payment!.status}
+                            title={v.status + ': ' + ((v as any).operation.payment && (v as any).operation.payment!.status) + ((v as any).operation.subscriptionPayment && (v as any).operation.subscriptionPayment!.status)}
                             subtitle={<Money amount={v.operation.amount} />}
                             onClick={() => {
-                                if (v.operation.payment!.status === 'ACTION_REQUIRED') {
-                                    showConfirmPayment(v.operation.payment!.intent!.id, v.operation.payment!.intent!.clientSecret);
+                                if ((v as any).operation.payment && (v as any).operation.payment!.status === 'FAILING') {
+                                    client.mutatePaymentIntentCancel({ id: (v as any).operation.payment!.id });
+                                }
+                                if ((v as any).operation.payment && (v as any).operation.payment!.status === 'ACTION_REQUIRED') {
+                                    showConfirmPayment((v as any).operation.payment!.intent!.id, (v as any).operation.payment!.intent!.clientSecret);
+                                }
+                                if ((v as any).operation.subscriptionPayment && (v as any).operation.subscriptionPayment.status === 'FAILING') {
+                                    client.mutatePaymentIntentCancel({ id: (v as any).operation.subscriptionPayment!.id });
+                                }
+                                if ((v as any).operation.subscriptionPayment && (v as any).operation.subscriptionPayment.status === 'ACTION_REQUIRED') {
+                                    showConfirmPayment((v as any).operation.subscriptionPayment.intent!.id, (v as any).operation.subscriptionPayment.intent!.clientSecret);
                                 }
                             }}
                         />

@@ -1786,6 +1786,19 @@ const WalletTransactionFragmentSelector = obj(
                                     )),
                                 field('status', 'status', args(), notNull(scalar('String')))
                             ))
+                    )),
+                    inline('WalletTransactionSubscription', obj(
+                        field('amount', 'amount', args(), notNull(scalar('Int'))),
+                        field('payment', 'subscriptionPayment', args(), notNull(obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('id', 'id', args(), notNull(scalar('ID'))),
+                                field('intent', 'intent', args(), obj(
+                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                        field('clientSecret', 'clientSecret', args(), notNull(scalar('String'))),
+                                        field('id', 'id', args(), notNull(scalar('ID')))
+                                    )),
+                                field('status', 'status', args(), notNull(scalar('String')))
+                            )))
                     ))
                 ))),
             field('status', 'status', args(), notNull(scalar('String')))
@@ -3450,6 +3463,9 @@ const DeleteOrganizationSelector = obj(
 const DeleteUserSelector = obj(
             field('superDeleteUser', 'superDeleteUser', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
         );
+const DonateSelector = obj(
+            field('donateToUser', 'donateToUser', args(fieldValue("amount", intValue(100)), fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
+        );
 const EditCommentSelector = obj(
             field('editComment', 'editComment', args(fieldValue("fileAttachments", refValue('fileAttachments')), fieldValue("id", refValue('id')), fieldValue("mentions", refValue('mentions')), fieldValue("message", refValue('message')), fieldValue("spans", refValue('spans'))), notNull(scalar('Boolean')))
         );
@@ -3672,6 +3688,9 @@ const OrganizationMemberRemoveSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('id', 'id', args(), notNull(scalar('ID')))
                 )))
+        );
+const PaymentIntentCancelSelector = obj(
+            field('paymentCancel', 'paymentCancel', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
         );
 const PaymentIntentCommitSelector = obj(
             field('paymentIntentCommit', 'paymentIntentCommit', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
@@ -4507,7 +4526,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     MyWallet: {
         kind: 'query',
         name: 'MyWallet',
-        body: 'query MyWallet{myWallet{__typename balance id state}transactionsHistory(first:20){__typename cursor items{__typename ...WalletTransactionFragment}}transactionsPending{__typename ...WalletTransactionFragment}}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}}status}',
+        body: 'query MyWallet{myWallet{__typename balance id state}transactionsHistory(first:20){__typename cursor items{__typename ...WalletTransactionFragment}}transactionsPending{__typename ...WalletTransactionFragment}}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}... on WalletTransactionSubscription{amount subscriptionPayment:payment{__typename id intent{__typename clientSecret id}status}}}status}',
         selector: MyWalletSelector
     },
     OauthContext: {
@@ -4918,6 +4937,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'mutation DeleteUser($id:ID!){superDeleteUser(id:$id)}',
         selector: DeleteUserSelector
     },
+    Donate: {
+        kind: 'mutation',
+        name: 'Donate',
+        body: 'mutation Donate($id:ID!){donateToUser(amount:100,id:$id)}',
+        selector: DonateSelector
+    },
     EditComment: {
         kind: 'mutation',
         name: 'EditComment',
@@ -5127,6 +5152,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'OrganizationMemberRemove',
         body: 'mutation OrganizationMemberRemove($organizationId:ID!,$userId:ID!){betaOrganizationMemberRemove(organizationId:$organizationId,userId:$userId){__typename id}}',
         selector: OrganizationMemberRemoveSelector
+    },
+    PaymentIntentCancel: {
+        kind: 'mutation',
+        name: 'PaymentIntentCancel',
+        body: 'mutation PaymentIntentCancel($id:ID!){paymentCancel(id:$id)}',
+        selector: PaymentIntentCancelSelector
     },
     PaymentIntentCommit: {
         kind: 'mutation',
@@ -5545,7 +5576,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     WalletUpdates: {
         kind: 'subscription',
         name: 'WalletUpdates',
-        body: 'subscription WalletUpdates($state:String!){event:walletUpdates(fromState:$state){__typename ... on WalletUpdateSingle{state update{__typename ...WalletUpdateFragment}}... on WalletUpdateBatch{state updates{__typename ...WalletUpdateFragment}}}}fragment WalletUpdateFragment on WalletUpdate{__typename ... on WalletUpdateBalance{amount}... on WalletUpdateTransactionSuccess{transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionCanceled{transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionPending{transaction{__typename ...WalletTransactionFragment}}... on WalletUpdatePaymentStatus{payment{__typename id intent{__typename clientSecret id}status}}}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}}status}',
+        body: 'subscription WalletUpdates($state:String!){event:walletUpdates(fromState:$state){__typename ... on WalletUpdateSingle{state update{__typename ...WalletUpdateFragment}}... on WalletUpdateBatch{state updates{__typename ...WalletUpdateFragment}}}}fragment WalletUpdateFragment on WalletUpdate{__typename ... on WalletUpdateBalance{amount}... on WalletUpdateTransactionSuccess{transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionCanceled{transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionPending{transaction{__typename ...WalletTransactionFragment}}... on WalletUpdatePaymentStatus{payment{__typename id intent{__typename clientSecret id}status}}}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}... on WalletTransactionSubscription{amount subscriptionPayment:payment{__typename id intent{__typename clientSecret id}status}}}status}',
         selector: WalletUpdatesSelector
     },
 };

@@ -27,6 +27,6 @@ internal val MyWalletSelector = obj(
 val MyWallet = object: OperationDefinition {
     override val name = "MyWallet"
     override val kind = OperationKind.QUERY
-    override val body = "query MyWallet{myWallet{__typename balance id state}transactionsHistory(first:20){__typename cursor items{__typename ...WalletTransactionFragment}}transactionsPending{__typename ...WalletTransactionFragment}}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}}status}"
+    override val body = "query MyWallet{myWallet{__typename balance id state}transactionsHistory(first:20){__typename cursor items{__typename ...WalletTransactionFragment}}transactionsPending{__typename ...WalletTransactionFragment}}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}... on WalletTransactionSubscription{amount subscriptionPayment:payment{__typename id intent{__typename clientSecret id}status}}}status}"
     override val selector = MyWalletSelector
 }

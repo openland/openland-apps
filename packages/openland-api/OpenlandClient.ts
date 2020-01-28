@@ -1318,6 +1318,12 @@ export class OpenlandClient extends BaseApiClient {
     async mutatePaymentIntentCommit(variables: Types.PaymentIntentCommitVariables): Promise<Types.PaymentIntentCommit> {
         return this.client.mutate(Source.PaymentIntentCommitMutation, variables);
     }
+    async mutatePaymentIntentCancel(variables: Types.PaymentIntentCancelVariables): Promise<Types.PaymentIntentCancel> {
+        return this.client.mutate(Source.PaymentIntentCancelMutation, variables);
+    }
+    async mutateDonate(variables: Types.DonateVariables): Promise<Types.Donate> {
+        return this.client.mutate(Source.DonateMutation, variables);
+    }
     async mutateMatchmakingRoomSave(variables: Types.MatchmakingRoomSaveVariables): Promise<Types.MatchmakingRoomSave> {
         return this.client.mutate(Source.MatchmakingRoomSaveMutation, variables);
     }
