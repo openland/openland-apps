@@ -81,6 +81,7 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
                 let r = await ImagePicker.openPicker({
                     width: props.pickSize ? props.pickSize.width : 1024,
                     height: props.pickSize ? props.pickSize.height : 1024,
+                    writeTempFile: false,
                     cropping: true
                 });
                 if (!Array.isArray(r)) {

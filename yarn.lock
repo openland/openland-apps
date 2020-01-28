@@ -13946,10 +13946,10 @@ react-native-image-capinsets@^0.5.0:
   resolved "https://registry.yarnpkg.com/react-native-image-capinsets/-/react-native-image-capinsets-0.5.0.tgz#577385772779f71b0ff1d7a96996a29add024b5d"
   integrity sha512-cvJMldl0iju8bS1NAWL2Up1sBW4wlXdnlgmLhqom4hTOfhKqHdlDfuUmhixCR0vbb5pLgbEn/09T2X5IhQ9HYQ==
 
-react-native-image-crop-picker@^0.25.3:
-  version "0.25.3"
-  resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.25.3.tgz#46ee28b4a0a187240e388bd28a44cf8c274caec6"
-  integrity sha512-jQ416WXEiEQ3w057QOYU++8/mDqYb2A/AGZY/NwR5eKda/z8a4wncWKj7oF9KBAHNKE1TmPrl9Rm0GZ0Jrzp6A==
+react-native-image-crop-picker@^0.26.1:
+  version "0.26.2"
+  resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.26.2.tgz#c70985ff6740e63569f90b185be0516d83f5933b"
+  integrity sha512-KnPtSJklwXr/BNdcyAlDp9xkDCQyJ5ZA4dM10elBc2aIXac/4CndbiPFZrwu4GlAYYYKlkiTTwTYW+h4RyGLaw==
 
 react-native-image-pan-zoom@^2.1.7, react-native-image-pan-zoom@^2.1.9:
   version "2.1.11"
