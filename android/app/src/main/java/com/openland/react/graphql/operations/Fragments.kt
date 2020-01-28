@@ -1792,7 +1792,7 @@ internal val WalletTransactionFragmentSelector = obj(
                     )),
                     inline("WalletTransactionSubscription", obj(
                         field("amount", "amount", notNull(scalar("Int"))),
-                        field("payment", "subscriptionPayment", notNull(obj(
+                        field("payment", "payment", obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
                                 field("id", "id", notNull(scalar("ID"))),
                                 field("intent", "intent", obj(
@@ -1801,6 +1801,31 @@ internal val WalletTransactionFragmentSelector = obj(
                                         field("id", "id", notNull(scalar("ID")))
                                     )),
                                 field("status", "status", notNull(scalar("String")))
+                            ))
+                    )),
+                    inline("WalletTransactionTransferOut", obj(
+                        field("chargeAmount", "chargeAmount", notNull(scalar("Int"))),
+                        field("payment", "payment", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("intent", "intent", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("clientSecret", "clientSecret", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID")))
+                                    )),
+                                field("status", "status", notNull(scalar("String")))
+                            )),
+                        field("toUser", "toUser", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("User", UserShortSelector)
+                            ))),
+                        field("walletAmount", "walletAmount", notNull(scalar("Int")))
+                    )),
+                    inline("WalletTransactionTransferIn", obj(
+                        field("amount", "amount", notNull(scalar("Int"))),
+                        field("fromUser", "fromUser", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("User", UserShortSelector)
                             )))
                     ))
                 ))),

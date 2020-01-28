@@ -1,3 +1,4 @@
+import { UserShort } from './../fragments/UserShort';
 import gql from 'graphql-tag';
 
 //
@@ -107,13 +108,34 @@ export const WalletTransactionFragment = gql`
             }
             ... on WalletTransactionSubscription {
                 amount
-                subscriptionPayment: payment {
+                payment {
                     id
                     status
                     intent {
                         id
                         clientSecret
                     }
+                }
+            }
+            ... on WalletTransactionTransferOut {
+                walletAmount
+                chargeAmount
+                payment {
+                    id
+                    status
+                    intent {
+                        id
+                        clientSecret
+                    }
+                }
+                toUser {
+                    ...UserShort
+                }
+            }
+            ... on WalletTransactionTransferIn {
+                amount
+                fromUser {
+                    ...UserShort
                 }
             }
         }

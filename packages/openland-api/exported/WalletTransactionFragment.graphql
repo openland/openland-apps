@@ -18,7 +18,7 @@ fragment WalletTransactionFragment on WalletTransaction {
     }
     ... on WalletTransactionSubscription {
       amount
-      subscriptionPayment: payment {
+      payment {
         __typename
         id
         intent {
@@ -27,6 +27,31 @@ fragment WalletTransactionFragment on WalletTransaction {
           id
         }
         status
+      }
+    }
+    ... on WalletTransactionTransferOut {
+      chargeAmount
+      payment {
+        __typename
+        id
+        intent {
+          __typename
+          clientSecret
+          id
+        }
+        status
+      }
+      toUser {
+        __typename
+        ...UserShort
+      }
+      walletAmount
+    }
+    ... on WalletTransactionTransferIn {
+      amount
+      fromUser {
+        __typename
+        ...UserShort
       }
     }
   }

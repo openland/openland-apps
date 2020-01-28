@@ -14713,10 +14713,12 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [
-				"WalletTransactionFragment"
+				"WalletTransactionFragment",
+				"UserShort",
+				"OrganizationShort"
 			],
-			"sourceWithFragments": "query MyWallet {\n  myWallet {\n    __typename\n    id\n    balance\n    state\n  }\n  transactionsPending {\n    __typename\n    ...WalletTransactionFragment\n  }\n  transactionsHistory(first: 20) {\n    __typename\n    items {\n      __typename\n      ...WalletTransactionFragment\n    }\n    cursor\n  }\n}\nfragment WalletTransactionFragment on WalletTransaction {\n  __typename\n  id\n  status\n  operation {\n    __typename\n    ... on WalletTransactionDeposit {\n      amount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n    ... on WalletTransactionSubscription {\n      amount\n      subscriptionPayment: payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n  }\n}",
-			"operationId": "3cb1472c6f5dc0918ff1e6ad646ebaecf1f83457b8d5d736510b329ef4173961"
+			"sourceWithFragments": "query MyWallet {\n  myWallet {\n    __typename\n    id\n    balance\n    state\n  }\n  transactionsPending {\n    __typename\n    ...WalletTransactionFragment\n  }\n  transactionsHistory(first: 20) {\n    __typename\n    items {\n      __typename\n      ...WalletTransactionFragment\n    }\n    cursor\n  }\n}\nfragment WalletTransactionFragment on WalletTransaction {\n  __typename\n  id\n  status\n  operation {\n    __typename\n    ... on WalletTransactionDeposit {\n      amount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n    ... on WalletTransactionSubscription {\n      amount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n    ... on WalletTransactionTransferOut {\n      walletAmount\n      chargeAmount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n      toUser {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on WalletTransactionTransferIn {\n      amount\n      fromUser {\n        __typename\n        ...UserShort\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n  membersCount\n}",
+			"operationId": "ba36a0d4a30a3bc3527db9df8046fa0864cc0be52ca622faf521ca16a32404f8"
 		},
 		{
 			"filePath": "file:///Volumes/Develop/openland-apps/packages/openland-api/queries/Finance.ts",
@@ -14846,10 +14848,12 @@
 			"inlineFragments": [],
 			"fragmentsReferenced": [
 				"WalletUpdateFragment",
-				"WalletTransactionFragment"
+				"WalletTransactionFragment",
+				"UserShort",
+				"OrganizationShort"
 			],
-			"sourceWithFragments": "subscription WalletUpdates($state: String!) {\n  event: walletUpdates(fromState: $state) {\n    __typename\n    ... on WalletUpdateSingle {\n      state\n      update {\n        __typename\n        ...WalletUpdateFragment\n      }\n    }\n    ... on WalletUpdateBatch {\n      state\n      updates {\n        __typename\n        ...WalletUpdateFragment\n      }\n    }\n  }\n}\nfragment WalletUpdateFragment on WalletUpdate {\n  __typename\n  ... on WalletUpdateBalance {\n    amount\n  }\n  ... on WalletUpdateTransactionSuccess {\n    transaction {\n      __typename\n      ...WalletTransactionFragment\n    }\n  }\n  ... on WalletUpdateTransactionCanceled {\n    transaction {\n      __typename\n      ...WalletTransactionFragment\n    }\n  }\n  ... on WalletUpdateTransactionPending {\n    transaction {\n      __typename\n      ...WalletTransactionFragment\n    }\n  }\n  ... on WalletUpdatePaymentStatus {\n    payment {\n      __typename\n      id\n      status\n      intent {\n        __typename\n        id\n        clientSecret\n      }\n    }\n  }\n}\nfragment WalletTransactionFragment on WalletTransaction {\n  __typename\n  id\n  status\n  operation {\n    __typename\n    ... on WalletTransactionDeposit {\n      amount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n    ... on WalletTransactionSubscription {\n      amount\n      subscriptionPayment: payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n  }\n}",
-			"operationId": "315feed880f1dcc9b2fbf111c4336e9fa55fc289572edae7a86cf2761cf0dbc8"
+			"sourceWithFragments": "subscription WalletUpdates($state: String!) {\n  event: walletUpdates(fromState: $state) {\n    __typename\n    ... on WalletUpdateSingle {\n      state\n      update {\n        __typename\n        ...WalletUpdateFragment\n      }\n    }\n    ... on WalletUpdateBatch {\n      state\n      updates {\n        __typename\n        ...WalletUpdateFragment\n      }\n    }\n  }\n}\nfragment WalletUpdateFragment on WalletUpdate {\n  __typename\n  ... on WalletUpdateBalance {\n    amount\n  }\n  ... on WalletUpdateTransactionSuccess {\n    transaction {\n      __typename\n      ...WalletTransactionFragment\n    }\n  }\n  ... on WalletUpdateTransactionCanceled {\n    transaction {\n      __typename\n      ...WalletTransactionFragment\n    }\n  }\n  ... on WalletUpdateTransactionPending {\n    transaction {\n      __typename\n      ...WalletTransactionFragment\n    }\n  }\n  ... on WalletUpdatePaymentStatus {\n    payment {\n      __typename\n      id\n      status\n      intent {\n        __typename\n        id\n        clientSecret\n      }\n    }\n  }\n}\nfragment WalletTransactionFragment on WalletTransaction {\n  __typename\n  id\n  status\n  operation {\n    __typename\n    ... on WalletTransactionDeposit {\n      amount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n    ... on WalletTransactionSubscription {\n      amount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n    ... on WalletTransactionTransferOut {\n      walletAmount\n      chargeAmount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n      toUser {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on WalletTransactionTransferIn {\n      amount\n      fromUser {\n        __typename\n        ...UserShort\n      }\n    }\n  }\n}\nfragment UserShort on User {\n  __typename\n  id\n  name\n  firstName\n  lastName\n  photo\n  email\n  online\n  lastSeen\n  isYou\n  isBot\n  shortname\n  primaryOrganization {\n    __typename\n    ...OrganizationShort\n  }\n}\nfragment OrganizationShort on Organization {\n  __typename\n  id\n  name\n  photo\n  shortname\n  about\n  isCommunity: alphaIsCommunity\n  membersCount\n}",
+			"operationId": "b10679004e9984716d8c031e178d5bc3d5fc4ee154ba37696aec72d1994fcf2d"
 		},
 		{
 			"filePath": "file:///Volumes/Develop/openland-apps/packages/openland-api/queries/Matchmaking.ts",
@@ -31726,7 +31730,7 @@
 			],
 			"fragmentName": "WalletTransactionFragment",
 			"filePath": "file:///Volumes/Develop/openland-apps/packages/openland-api/queries/Finance.ts",
-			"source": "fragment WalletTransactionFragment on WalletTransaction {\n  __typename\n  id\n  status\n  operation {\n    __typename\n    ... on WalletTransactionDeposit {\n      amount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n    ... on WalletTransactionSubscription {\n      amount\n      subscriptionPayment: payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n  }\n}",
+			"source": "fragment WalletTransactionFragment on WalletTransaction {\n  __typename\n  id\n  status\n  operation {\n    __typename\n    ... on WalletTransactionDeposit {\n      amount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n    ... on WalletTransactionSubscription {\n      amount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n    }\n    ... on WalletTransactionTransferOut {\n      walletAmount\n      chargeAmount\n      payment {\n        __typename\n        id\n        status\n        intent {\n          __typename\n          id\n          clientSecret\n        }\n      }\n      toUser {\n        __typename\n        ...UserShort\n      }\n    }\n    ... on WalletTransactionTransferIn {\n      amount\n      fromUser {\n        __typename\n        ...UserShort\n      }\n    }\n  }\n}",
 			"fields": [
 				{
 					"responseName": "__typename",
@@ -31868,9 +31872,9 @@
 									"isDeprecated": false
 								},
 								{
-									"responseName": "subscriptionPayment",
+									"responseName": "payment",
 									"fieldName": "payment",
-									"type": "Payment!",
+									"type": "Payment",
 									"isConditional": false,
 									"isDeprecated": false,
 									"fields": [
@@ -31927,6 +31931,157 @@
 										}
 									],
 									"fragmentSpreads": [],
+									"inlineFragments": []
+								}
+							],
+							"fragmentSpreads": []
+						},
+						{
+							"typeCondition": "WalletTransactionTransferOut",
+							"possibleTypes": [
+								"WalletTransactionTransferOut"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "walletAmount",
+									"fieldName": "walletAmount",
+									"type": "Int!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "chargeAmount",
+									"fieldName": "chargeAmount",
+									"type": "Int!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "payment",
+									"fieldName": "payment",
+									"type": "Payment",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										},
+										{
+											"responseName": "id",
+											"fieldName": "id",
+											"type": "ID!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "status",
+											"fieldName": "status",
+											"type": "PaymentStatus!",
+											"isConditional": false,
+											"isDeprecated": false
+										},
+										{
+											"responseName": "intent",
+											"fieldName": "intent",
+											"type": "PaymentIntent",
+											"isConditional": false,
+											"isDeprecated": false,
+											"fields": [
+												{
+													"responseName": "__typename",
+													"fieldName": "__typename",
+													"type": "String!",
+													"isConditional": false
+												},
+												{
+													"responseName": "id",
+													"fieldName": "id",
+													"type": "ID!",
+													"isConditional": false,
+													"isDeprecated": false
+												},
+												{
+													"responseName": "clientSecret",
+													"fieldName": "clientSecret",
+													"type": "String!",
+													"isConditional": false,
+													"isDeprecated": false
+												}
+											],
+											"fragmentSpreads": [],
+											"inlineFragments": []
+										}
+									],
+									"fragmentSpreads": [],
+									"inlineFragments": []
+								},
+								{
+									"responseName": "toUser",
+									"fieldName": "toUser",
+									"type": "User!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										}
+									],
+									"fragmentSpreads": [
+										"UserShort"
+									],
+									"inlineFragments": []
+								}
+							],
+							"fragmentSpreads": []
+						},
+						{
+							"typeCondition": "WalletTransactionTransferIn",
+							"possibleTypes": [
+								"WalletTransactionTransferIn"
+							],
+							"fields": [
+								{
+									"responseName": "__typename",
+									"fieldName": "__typename",
+									"type": "String!",
+									"isConditional": false
+								},
+								{
+									"responseName": "amount",
+									"fieldName": "amount",
+									"type": "Int!",
+									"isConditional": false,
+									"isDeprecated": false
+								},
+								{
+									"responseName": "fromUser",
+									"fieldName": "fromUser",
+									"type": "User!",
+									"isConditional": false,
+									"isDeprecated": false,
+									"fields": [
+										{
+											"responseName": "__typename",
+											"fieldName": "__typename",
+											"type": "String!",
+											"isConditional": false
+										}
+									],
+									"fragmentSpreads": [
+										"UserShort"
+									],
 									"inlineFragments": []
 								}
 							],
