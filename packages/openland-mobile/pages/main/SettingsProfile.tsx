@@ -1,20 +1,23 @@
 import * as React from 'react';
+import { View, Platform } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 
-const SettingsProfileContent = XMemo<PageProps>((props) => {
+const SettingsProfileContent = React.memo((props: PageProps) => {
+    const theme = React.useContext(ThemeContext);
+    const isIos = Platform.OS === 'ios';
     const { user, profile } = getClient().useProfile({ fetchPolicy: 'network-only' });
 
     if (!user || !profile) {
@@ -128,6 +131,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                         placeholder="LinkedIn"
                         field={linkedinField}
                     />
+                    {isIos && theme.type === 'Dark' && (<View height={88}/>)}
                 </ZListGroup>
             </KeyboardAvoidingScrollView>
         </>
