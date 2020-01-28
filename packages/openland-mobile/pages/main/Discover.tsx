@@ -16,6 +16,7 @@ import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { SRouter } from 'react-native-s/SRouter';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SuggestedChats as SuggestedChatsPage } from './SuggestedChats';
 
@@ -56,7 +57,7 @@ const TagButton = React.memo((props: TagButtonProps) => {
     };
 
     return (
-        <TouchableOpacity onPress={callback} activeOpacity={0.6}>
+        <TouchableOpacity onPress={callback} activeOpacity={1}>
             <View
                 style={{
                     flexDirection: 'row',
@@ -185,14 +186,18 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
                             ...TextStyles.Title1,
                             textAlign: 'center',
                             paddingHorizontal: 16,
-                            marginBottom: 8,
+                            marginBottom: 32,
                             color: theme.foregroundPrimary,
                         }}
                     >
                         {subtitle}
                     </Text>
                 )}
-                <View paddingHorizontal={8} paddingBottom={100} flexDirection="column">
+                <View
+                    paddingHorizontal={8}
+                    flexDirection="column"
+                    paddingBottom={isXGen ? 216 : 198}
+                >
                     <TagsCloud
                         tagsGroup={props.group}
                         selected={selected}
@@ -200,9 +205,17 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
                     />
                 </View>
             </ScrollView>
-            <View padding={16} paddingBottom={isIos ? defaultIosPadding : area.bottom + 16}>
+            <ZBlurredView
+                position="absolute"
+                bottom={0}
+                left={0}
+                right={0}
+                padding={16}
+                paddingBottom={isIos ? defaultIosPadding : area.bottom + 16}
+                intensity="normal"
+            >
                 <ZButton size="large" title="Next" enabled={enabled} onPress={next} />
-            </View>
+            </ZBlurredView>
         </>
     );
 });
