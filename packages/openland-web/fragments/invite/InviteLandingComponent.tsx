@@ -22,7 +22,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { trackEvent } from 'openland-x-analytics';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
-import AlertBlanket from 'openland-x/AlertBlanket';
+import { showPayConfirm } from '../wallet/components/showPaymentConfirm';
 
 const RootClassName = css`
     position: relative;
@@ -269,32 +269,35 @@ const InviteLandingComponentLayout = ({
     );
 };
 
-const BuyPaidChatPassButton = (props: { id: string; paymentSettings: { price: number } }) => {
+const BuyPaidChatPassButton = (props: { id: string; paymentSettings: { price: number }, title: string }) => {
     const client = useClient();
     let router = React.useContext(XViewRouterContext)!;
+    const [loading, setLoading] = React.useState(false);
     const buyPaidChatPass = React.useCallback(async () => {
-        try {
-            let res = await client.mutateBuyPaidChatPass({ chatId: props.id, paymentMethodId: 'openland' });
-            if (res) {
-                router.navigate('/mail/' + props.id);
+        showPayConfirm(props.paymentSettings.price, 'payment', `Membership in "${props.title}"`, async (paymentMethodId) => {
+            try {
+                let res = await client.mutateBuyPaidChatPass({ chatId: props.id, paymentMethodId });
+                if (res) {
+                    router.navigate('/mail/' + props.id);
+                }
+            } catch (e) {
+                setLoading(false);
             }
-        } catch (e) {
-            AlertBlanket.alert(e.message);
-        }
+        });
     }, []);
     return (
-        <UButton style="pay" text={`Pay ${formatMoney(props.paymentSettings.price)}`} action={buyPaidChatPass} />
+        <UButton loading={loading} style="pay" text={`Join for ${formatMoney(props.paymentSettings.price)}`} action={buyPaidChatPass} />
     );
 };
 
 const resolveRoomButton = (
-    room: { id: string; membership: SharedRoomMembershipStatus, paymentSettings?: { price: number } | null, paidPassIsActive: boolean },
+    room: { id: string; membership: SharedRoomMembershipStatus, paymentSettings?: { price: number } | null, paidPassIsActive: boolean, title: string },
     key?: string,
     matchmaking?: boolean,
 ) => {
     const [loading, setLoading] = React.useState(false);
     if (room && room.paymentSettings && !room.paidPassIsActive) {
-        return <BuyPaidChatPassButton id={room.id} paymentSettings={room.paymentSettings} />;
+        return <BuyPaidChatPassButton id={room.id} paymentSettings={room.paymentSettings} title={room.title} />;
     } else if (
         room &&
         (room.membership === 'NONE' ||

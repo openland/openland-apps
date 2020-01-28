@@ -1,5 +1,6 @@
-type CardBrandsType = 'amex' | 'diners' | 'discover' | 'jcb' | 'mastercard' | 'unionpay' | 'visa' | 'apple-pay' | 'google-pay';
+type CardBrandsType = 'openland' | 'amex' | 'diners' | 'discover' | 'jcb' | 'mastercard' | 'unionpay' | 'visa' | 'apple-pay' | 'google-pay';
 const CardBrandsName: { [key in CardBrandsType]: string } = {
+    'openland': 'Balance',
     'amex': 'American Express',
     'diners': 'Diners Club',
     'discover': 'Discover',
