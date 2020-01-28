@@ -436,7 +436,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     return (
         <>
             <XTrack
-                event="invite_landing_view"
+                event={loggedIn ? "invite_screen_view" : "invite_landing_view"}
                 params={{ invite_type: whereToInvite.toLowerCase() }}
             />
             <InviteLandingComponentLayout

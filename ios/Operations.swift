@@ -3260,6 +3260,15 @@ private let UserAvailableRoomsSelector = obj(
                     ))
                 )))))
         )
+private let UserPicoSelector = obj(
+            field("user", "user", arguments(fieldValue("id", refValue("userId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("firstName", "firstName", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("photo", "photo", scalar("String"))
+                )))
+        )
 private let UserStorageSelector = obj(
             field("userStorage", "userStorage", arguments(fieldValue("keys", refValue("keys")), fieldValue("namespace", refValue("namespace"))), notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -4733,6 +4742,12 @@ class Operations {
         "query UserAvailableRooms($after:ID,$isChannel:Boolean,$limit:Int!){betaUserAvailableRooms(after:$after,isChannel:$isChannel,limit:$limit){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
         UserAvailableRoomsSelector
     )
+    let UserPico = OperationDefinition(
+        "UserPico",
+        .query, 
+        "query UserPico($userId:ID!){user:user(id:$userId){__typename firstName id name photo}}",
+        UserPicoSelector
+    )
     let UserStorage = OperationDefinition(
         "UserStorage",
         .query, 
@@ -5627,6 +5642,7 @@ class Operations {
         if name == "SuperBadgeInRoom" { return SuperBadgeInRoom }
         if name == "User" { return User }
         if name == "UserAvailableRooms" { return UserAvailableRooms }
+        if name == "UserPico" { return UserPico }
         if name == "UserStorage" { return UserStorage }
         if name == "Users" { return Users }
         if name == "WalletTransactions" { return WalletTransactions }

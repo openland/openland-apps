@@ -168,7 +168,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                     <View flexGrow={1} flexShrink={1}>
                         <View flexDirection="row">
                             <TouchableOpacity activeOpacity={HighlightAlpha} disabled={deleted} onPress={() => router.push('ProfileUser', { id: sender.id })}>
-                                <Text style={[styles.senderName, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
+                                <Text style={[styles.senderName, { color: theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
                                     {sender.name}
                                 </Text>
                             </TouchableOpacity>

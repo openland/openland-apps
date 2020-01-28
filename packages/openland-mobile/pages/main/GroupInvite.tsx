@@ -66,8 +66,8 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
 
     return (
         <ZTrack
-            event="invite_landing_view"
-            params={{ invite_type: room.title.toLowerCase() }}
+            event="invite_screen_view"
+            params={{ invite_type: typeString.toLowerCase() }}
         >
             <View style={{ flexGrow: 1, paddingTop: area.top, paddingBottom }}>
                 <View flexGrow={1} paddingHorizontal={32}>

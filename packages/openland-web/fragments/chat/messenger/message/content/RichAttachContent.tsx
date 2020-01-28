@@ -47,7 +47,8 @@ const richImageContainer = css`
     min-height: 120px;
     max-width: 50%;
     cursor: pointer;
-    width: var(--image-width);
+    min-width: var(--image-width);
+    min-height: var(--image-height);
 
     border: 1px solid var(--borderLight);
     border-top-left-radius: 8px;
@@ -55,11 +56,10 @@ const richImageContainer = css`
 
     @media (max-width: 1100px) {
         flex-direction: column;
-        min-width: 100%;
-        max-height: 162px;
-        height: var(--image-height);
         border-top-right-radius: 8px;
         border-bottom-left-radius: 0;
+
+        min-width: 100%;
     }
 `;
 
@@ -69,8 +69,13 @@ const richImageStyle = css`
     top: var(--image-top-position);
     object-fit: cover;
     flex-shrink: 0;
-    min-width: 100%;
-    min-height: 100%;
+    width: 100%;
+    height: 100%;
+
+    @media (max-width: 1100px) {
+        position: initial;
+        height: auto;
+    }
 `;
 
 const imgContentContainer = css`
@@ -230,7 +235,7 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
             attach.image.metadata.imageWidth || 0,
             attach.image.metadata.imageHeight || 0,
             300,
-            200,
+            300,
             24,
             24,
         );
@@ -240,14 +245,14 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
                 style={
                     {
                         '--image-width': `${layout.width}px`,
-                        '--image-height': `${layout.width}px`,
+                        '--image-height': `${layout.height}px`,
                     } as React.CSSProperties
                 }
             >
                 <ImgWithRetry
                     className={richImageStyle}
-                    width={layout.width}
-                    height={layout.height}
+                    // width={layout.width}
+                    // height={layout.height}
                     src={attach.image.url}
                     style={
                         {

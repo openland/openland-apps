@@ -10,7 +10,7 @@ import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { View, Image, Text } from 'react-native';
 import { ZButton } from './ZButton';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { FontStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 
 function PageError(props: { refresh: () => void }) {
@@ -19,20 +19,15 @@ function PageError(props: { refresh: () => void }) {
         <>
             <HeaderConfigRegistrator config={{ appearance: 'small' }} />
             <SHeader title="Error" />
-            <ASSafeAreaView flexGrow={1} paddingHorizontal={16}>
-                <View height="73%" alignItems="center" justifyContent="center">
-                    <Image source={theme.type === 'Light' ? require('assets/img-empty.png') : require('assets/img-empty-dark.png')} style={{ width: 224, height: 224, marginBottom: 30 }} />
-                    <Text style={{ textAlign: 'center', fontSize: 22, lineHeight: 28, color: theme.foregroundPrimary, marginBottom: 10, fontWeight: FontStyles.Weight.Medium }} allowFontScaling={false}>Content is unavailable</Text>
-                    <Text style={{ textAlign: 'center', fontSize: 16, lineHeight: 24, color: theme.foregroundSecondary }} allowFontScaling={false}>This content doesn't exist or you don't have permission to view it</Text>
-                </View>
-                <View height="27%" alignItems="center" justifyContent="center">
-                    <View width={118}>
-                        <ZButton
-                            // size="large"
-                            title="Try again"
-                            onPress={props.refresh}
-                        />
-                    </View>
+            <ASSafeAreaView flexGrow={1} alignContent="center" justifyContent="center">
+                <View alignItems="center" justifyContent="center" paddingHorizontal={32} paddingVertical={16}>
+                    <Image source={require('assets/art-error.png')} style={{ width: 240, height: 150, marginBottom: 4 }} />
+                    <Text style={{ ...TextStyles.Title2, textAlign: 'center', color: theme.foregroundPrimary, marginBottom: 4, }} allowFontScaling={false}>Content is unavailable</Text>
+                    <Text style={{ ...TextStyles.Body, textAlign: 'center', color: theme.foregroundSecondary, marginBottom: 16 }} allowFontScaling={false}>This content doesn’t exist or you don’t have an access</Text>
+                    <ZButton
+                        title="Try again"
+                        onPress={props.refresh}
+                    />
                 </View>
             </ASSafeAreaView>
         </>

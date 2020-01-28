@@ -1514,6 +1514,13 @@
       }
     },
     {
+      "signature": "708bc50255312a592edd655e1f4efc488bad7b727799ae4806320a8c67794c92",
+      "document": "query UserPico($userId:ID!){user:user(id:$userId){__typename firstName id name photo}}",
+      "metadata": {
+        "engineSignature": "query UserPico($userId:ID!){user(id:$userId){__typename firstName id name photo}}"
+      }
+    },
+    {
       "signature": "91ad2f6af2f17a5ccc8ae344434341963a5be19d1f73db5557af35e97faaf3e6",
       "document": "query Online($userId:ID!){user:user(id:$userId){__typename id isBot lastSeen online}}",
       "metadata": {

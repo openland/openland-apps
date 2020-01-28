@@ -1063,6 +1063,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderUser(variables: Types.UserVariables, opts?: QueryWatchParameters): Types.User | null {
         return this.useQuery(Source.UserQuery, variables, opts);
     }
+    async queryUserPico(variables: Types.UserPicoVariables, opts?: OperationParameters): Promise<Types.UserPico> {
+        return this.client.query(Source.UserPicoQuery, variables, opts);
+    }
+    async refetchUserPico(variables: Types.UserPicoVariables): Promise<Types.UserPico> {
+        return this.refetch(Source.UserPicoQuery, variables);
+    }
+    useUserPico(variables: Types.UserPicoVariables, opts?: QueryWatchParameters): Types.UserPico {
+        return this.useQuerySuspense(Source.UserPicoQuery, variables, opts);
+    }
+    useWithoutLoaderUserPico(variables: Types.UserPicoVariables, opts?: QueryWatchParameters): Types.UserPico | null {
+        return this.useQuery(Source.UserPicoQuery, variables, opts);
+    }
     async queryOnline(variables: Types.OnlineVariables, opts?: OperationParameters): Promise<Types.Online> {
         return this.client.query(Source.OnlineQuery, variables, opts);
     }

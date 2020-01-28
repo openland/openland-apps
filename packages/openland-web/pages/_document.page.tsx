@@ -121,6 +121,12 @@ export default class OpenlandDocument extends Document {
 
             metaTagsInfo = matchMetaTags[originalUrl] || {};
 
+            let urlPrefix = 'https://openland.com';
+
+            if (process.env.APP_ENVIRONMENT === 'next') {
+                urlPrefix = 'https://next.openland.com';
+            }
+
             if (originalUrl.startsWith('/invite/')) {
                 inviteKey = originalUrl.slice('/invite/'.length);
             } else if (originalUrl.startsWith('/joinChannel/')) {
@@ -128,6 +134,7 @@ export default class OpenlandDocument extends Document {
             }
 
             if (inviteKey) {
+                // room meta tags
                 const resolvedInvite = await openland.queryResolvedInvite({
                     key: inviteKey,
                 });
@@ -147,18 +154,32 @@ export default class OpenlandDocument extends Document {
                 ) {
                     const room = resolvedInvite.invite.room;
 
-                    let urlPrefix = 'https://openland.com';
-
-                    if (process.env.APP_ENVIRONMENT === 'next') {
-                        urlPrefix = 'https://next.openland.com';
-                    }
-
                     metaTagsInfo = {
                         title: `${room.title} on Openland`,
                         url: urlPrefix + originalUrl,
                         description: room.description || 'Join Openland and find inspiring communities',
                         image: room.socialImage ? room.socialImage : room.photo,
                     };
+                }
+            } else {
+                // probably user meta tags needed
+                const linkSegments = originalUrl.split('/');
+                if (linkSegments.length === 2) {
+                    const shortname = linkSegments[1];
+                    try {
+                        const { user } = await openland.queryUserPico({ userId: shortname });
+
+                        metaTagsInfo = {
+                            title: `${user.name} on Openland`,
+                            url: urlPrefix + originalUrl,
+                            description: `${user.firstName} uses Openland. Want to reach them? Join Openland and write a message `,
+                            image: user.photo || 'https://cdn.openland.com/shared/og/og-global.png',
+                        };
+
+                    } catch (e) {
+                        // default meta tags
+                        metaTagsInfo = matchMetaTags[originalUrl] || {};
+                    }
                 }
             }
         }
