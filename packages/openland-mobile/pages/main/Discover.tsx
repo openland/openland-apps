@@ -196,7 +196,7 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
                 <View
                     paddingHorizontal={8}
                     flexDirection="column"
-                    paddingBottom={isXGen ? 216 : 198}
+                    paddingBottom={isXGen ? 216 : 140}
                 >
                     <TagsCloud
                         tagsGroup={props.group}
