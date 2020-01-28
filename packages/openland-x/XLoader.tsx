@@ -70,7 +70,7 @@ const SvgLoader = React.memo((props: LoaderRenderProps) => {
     const loaderSizePath = `https://cdn.openland.com/shared/loader/loader-${size[props.size]}`;
     const loaderFullPath = props.contrast
         ? loaderSizePath + '-contrast.svg'
-        : loaderSizePath + '.svg';
+        : loaderSizePath + '-dark.svg';
 
     return <ImgWithRetry src={loaderFullPath} className={props.static === true ? undefined : rotate} />;
 });
