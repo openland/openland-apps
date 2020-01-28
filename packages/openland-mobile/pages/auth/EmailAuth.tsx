@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, Animated, Text, TouchableOpacity, Easing, TextStyle } from 'react-native';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { ZInput } from '../../components/ZInput';
 import RNRestart from 'react-native-restart';
 import { UserError, NamedError } from 'openland-y-forms/errorHandling';
-import { ShowAuthError } from './ShowAuthError';
-import Alert from 'openland-mobile/components/AlertBlanket';
+import { GetAuthError } from './ShowAuthError';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
@@ -20,6 +19,7 @@ import { useField } from 'openland-form/useField';
 import { API_HOST } from 'openland-y-utils/api';
 import { RegistrationContainer } from './RegistrationContainer';
 import { AppStorage as Storage } from 'openland-y-runtime-native/AppStorage';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 export const ACTIVATION_CODE_LENGTH = 6;
 
@@ -27,7 +27,6 @@ let email = '';
 let session = '';
 let photoSrc: string | null = null;
 let photoCrop: { w: number; h: number; x: number; y: number } | null = null;
-// let isExist = false;
 
 const http = async (params: { url: string; body?: any; method: 'POST' | 'GET' }) => {
     let res = await fetch(params.url, {
@@ -61,46 +60,32 @@ const requestActivationCode = async () => {
     });
 
     session = res.session;
-    // isExist = res.profileExists;
     photoSrc = res.pictureId ? res.pictureId : null;
     photoCrop = res.pictureCrop ? res.pictureCrop : null;
 };
 
 const EmailStartComponent = React.memo((props: PageProps) => {
+    const [errorText, setErrorText] = React.useState('');
+    const [shakeAnimation] = React.useState(new Animated.Value(0));
+    const theme = React.useContext(ThemeContext);
     const form = useForm();
     const emailField = useField('email', '', form);
-
-    const validateEmail = (value?: string) => {
-        if (!value) {
-            throw new NamedError('no_email_or_phone');
-        }
-
-        let lastAtPos = value.lastIndexOf('@');
-        let lastDotPos = value.lastIndexOf('.');
-        let isEmailValid =
-            lastAtPos < lastDotPos &&
-            lastAtPos > 0 &&
-            value.indexOf('@@') === -1 &&
-            lastDotPos > 2 &&
-            value.length - lastDotPos > 2 &&
-            !value.includes(' ');
-
-        if (!isEmailValid) {
-            throw new NamedError('invalid_email');
-        }
-    };
 
     const submitForm = () =>
         form.doAction(async () => {
             try {
-                validateEmail(emailField.value.trim());
-
                 email = emailField.value.trim();
-
                 await requestActivationCode();
                 props.router.push('EmailCode');
             } catch (e) {
-                ShowAuthError(e);
+                setErrorText(GetAuthError(e));
+                shakeAnimation.setValue(0);
+                Animated.timing(shakeAnimation, {
+                    duration: 400,
+                    toValue: 3,
+                    easing: Easing.bounce,
+                    useNativeDriver: true,
+                }).start();
             }
         });
 
@@ -109,18 +94,51 @@ const EmailStartComponent = React.memo((props: PageProps) => {
             <RegistrationContainer
                 title="What’s your email?"
                 subtitle="We’ll send you a login code"
-                floatContent={<ZButton title="Next" size="large" onPress={submitForm} />}
+                floatContent={
+                    <ZButton
+                        title="Next"
+                        size="large"
+                        onPress={submitForm}
+                        loading={form.loading}
+                    />
+                }
             >
-                <ZInput
-                    field={emailField}
-                    placeholder="Email"
-                    autoCapitalize="none"
-                    keyboardType="email-address"
-                    autoFocus={true}
-                    returnKeyType="next"
-                    allowFontScaling={false}
-                    onSubmitEditing={submitForm}
-                />
+                <Animated.View
+                    paddingHorizontal={16}
+                    style={{
+                        transform: [
+                            {
+                                translateX: shakeAnimation.interpolate({
+                                    inputRange: [0, 0.5, 1, 1.5, 2, 2.5, 3],
+                                    outputRange: [0, -15, 0, 15, 0, -15, 0],
+                                }),
+                            },
+                        ],
+                    }}
+                >
+                    <ZInput
+                        field={emailField}
+                        placeholder="Email"
+                        autoCapitalize="none"
+                        keyboardType="email-address"
+                        autoFocus={true}
+                        returnKeyType="next"
+                        allowFontScaling={false}
+                        onSubmitEditing={submitForm}
+                        noWrapper={true}
+                        invalid={!!errorText}
+                    />
+                </Animated.View>
+                {!!errorText && (
+                    <View paddingHorizontal={32} paddingTop={8} marginBottom={120}>
+                        <Text
+                            style={[TextStyles.Caption, { color: theme.accentNegative }]}
+                            allowFontScaling={false}
+                        >
+                            {errorText}
+                        </Text>
+                    </View>
+                )}
             </RegistrationContainer>
         </ZTrack>
     );
@@ -131,38 +149,54 @@ export const EmailStart = withApp(EmailStartComponent, {
     hideHairline: true,
 });
 
+const EmailCodeHeader = React.memo((props: { resendCode: () => void }) => {
+    const theme = React.useContext(ThemeContext);
+    const textStyle = [
+        TextStyles.Body,
+        {
+            color: theme.foregroundSecondary,
+            textAlign: 'center',
+        },
+    ] as TextStyle;
+    return (
+        <View marginBottom={32}>
+            <Text style={[textStyle, { paddingHorizontal: 16 }]} allowFontScaling={false}>
+                We just sent it to {email}.
+            </Text>
+            <View flexDirection="row" justifyContent="center" alignItems="center">
+                <Text style={textStyle} allowFontScaling={false}>
+                    Haven’t received?{' '}
+                </Text>
+                <TouchableOpacity onPress={props.resendCode} activeOpacity={0.24}>
+                    <Text
+                        style={[TextStyles.Body, { color: theme.accentPrimary }]}
+                        allowFontScaling={false}
+                    >
+                        Resend
+                    </Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+});
+
 const EmailCodeComponent = React.memo((props: PageProps) => {
+    const [errorText, setErrorText] = React.useState('');
+    const [shakeAnimation] = React.useState(new Animated.Value(0));
     const theme = React.useContext(ThemeContext);
     const form = useForm();
     const codeField = useField('code', '', form);
-
-    const validateCode = (value?: string) => {
-        if (!value) {
-            throw new NamedError('no_code');
-        }
-
-        if (value.length !== ACTIVATION_CODE_LENGTH) {
-            throw new NamedError('wrong_code_length');
-        }
-
-        if (!value.match(/^[0-9]+$/)) {
-            throw new NamedError('wrong_code');
-        }
-    };
 
     const resendCode = async () => {
         trackEvent('code_resend_action');
         await requestActivationCode();
         Toast.success({ duration: 1000 }).show();
-
         codeField.input.onChange('');
     };
 
     const submitForm = () =>
         form.doAction(async () => {
             try {
-                validateCode(codeField.value.trim());
-
                 let res = await http({
                     url: 'https://' + API_HOST + '/auth/checkCode',
                     body: {
@@ -187,18 +221,18 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
             } catch (e) {
                 TrackAuthError(e);
 
+                shakeAnimation.setValue(0);
+                Animated.timing(shakeAnimation, {
+                    duration: 400,
+                    toValue: 3,
+                    easing: Easing.bounce,
+                    useNativeDriver: true,
+                }).start();
                 if (e.name === 'code_expired') {
-                    Alert.builder()
-                        .title('This code has expired')
-                        .message("Please click Resend and we'll send you a new verification email.")
-                        .button('Cancel', 'cancel')
-                        .action('Resend Code', 'default', resendCode)
-                        .show();
-
+                    setErrorText('This code has expired');
                     return;
                 }
-
-                ShowAuthError(e);
+                setErrorText(GetAuthError(e));
             }
         });
 
@@ -214,46 +248,72 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
     const avatarSrc =
         photoSrc && photoCrop
             ? `https://ucarecdn.com/${photoSrc}/-/crop/${photoCrop.w}x${photoCrop.h}/${
-            photoCrop.x
-            },${photoCrop.y}/-/scale_crop/72x72/center/`
+                  photoCrop.x
+              },${photoCrop.y}/-/scale_crop/72x72/center/`
             : null;
 
     return (
         <ZTrack event="code_view">
             <RegistrationContainer
+                autoScrollToBottom={true}
                 title="Enter login code"
-                subtitle={
-                    <Text>
-                        We just sent it to {email}.{'\n'}
-                        Haven’t received?{' '}
-                        <Text style={{ color: theme.accentPrimary }} onPress={resendCode}>
-                            Resend
-                        </Text>
-                    </Text>
+                subtitle={<EmailCodeHeader resendCode={resendCode} />}
+                floatContent={
+                    <ZButton
+                        title="Next"
+                        size="large"
+                        onPress={submitForm}
+                        loading={form.loading}
+                    />
                 }
-                floatContent={<ZButton title="Next" size="large" onPress={submitForm} />}
-                scalableContent={
-                    avatarSrc ? (
-                        <View marginTop={-8} marginBottom={32}>
-                            <ZAvatar size="xx-large" src={avatarSrc} />
-                        </View>
-                    ) : (
-                            undefined
-                        )
-                }
-                scalableContentSize={120}
             >
-                <ZInput
-                    field={codeField}
-                    placeholder="Activation code"
-                    autoCapitalize="none"
-                    keyboardType="number-pad"
-                    autoFocus={true}
-                    returnKeyType="next"
-                    allowFontScaling={false}
-                    onSubmitEditing={submitForm}
-                    maxLength={ACTIVATION_CODE_LENGTH}
-                />
+                {avatarSrc && (
+                    <View
+                        marginTop={-8}
+                        marginBottom={32}
+                        flexDirection="row"
+                        justifyContent="center"
+                    >
+                        <ZAvatar size="xx-large" src={avatarSrc} />
+                    </View>
+                )}
+                <Animated.View
+                    paddingHorizontal={16}
+                    style={{
+                        transform: [
+                            {
+                                translateX: shakeAnimation.interpolate({
+                                    inputRange: [0, 0.5, 1, 1.5, 2, 2.5, 3],
+                                    outputRange: [0, -15, 0, 15, 0, -15, 0],
+                                }),
+                            },
+                        ],
+                    }}
+                >
+                    <ZInput
+                        field={codeField}
+                        placeholder="Activation code"
+                        autoCapitalize="none"
+                        keyboardType="number-pad"
+                        autoFocus={true}
+                        returnKeyType="next"
+                        allowFontScaling={false}
+                        onSubmitEditing={submitForm}
+                        maxLength={ACTIVATION_CODE_LENGTH}
+                        noWrapper={true}
+                        invalid={!!errorText}
+                    />
+                </Animated.View>
+                {!!errorText && (
+                    <View paddingHorizontal={32} paddingTop={8} marginBottom={120}>
+                        <Text
+                            style={[TextStyles.Caption, { color: theme.accentNegative }]}
+                            allowFontScaling={false}
+                        >
+                            {errorText}
+                        </Text>
+                    </View>
+                )}
             </RegistrationContainer>
         </ZTrack>
     );

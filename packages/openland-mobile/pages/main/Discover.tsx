@@ -173,12 +173,12 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
         [selected],
     );
 
-    const { title, subtitle } = props.group;
+    const { subtitle } = props.group;
 
     return (
         <>
             <ScrollView flex={1} paddingTop={isIos ? area.top + 16 : undefined}>
-                {title && (
+                {subtitle && (
                     <Text
                         allowFontScaling={false}
                         style={{
@@ -187,20 +187,6 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
                             paddingHorizontal: 16,
                             marginBottom: 8,
                             color: theme.foregroundPrimary,
-                        }}
-                    >
-                        {title}
-                    </Text>
-                )}
-                {subtitle && (
-                    <Text
-                        allowFontScaling={false}
-                        style={{
-                            ...TextStyles.Body,
-                            textAlign: 'center',
-                            paddingHorizontal: 16,
-                            marginBottom: 32,
-                            color: theme.foregroundSecondary,
                         }}
                     >
                         {subtitle}

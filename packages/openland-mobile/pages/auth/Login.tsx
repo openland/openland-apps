@@ -24,18 +24,19 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        paddingBottom: 45,
     } as ViewStyle,
     buttons: {
         paddingTop: 16,
-        paddingHorizontal: 32,
+        paddingHorizontal: 16,
         maxWidth: 424,
         alignSelf: 'center',
         width: '100%',
     } as ViewStyle,
     privacy: {
         paddingTop: 16,
-        paddingBottom: 32,
-        paddingHorizontal: 32,
+        paddingBottom: 16,
+        paddingHorizontal: 16,
         alignItems: 'center',
         justifyContent: 'center',
     } as ViewStyle,
@@ -53,7 +54,7 @@ const Logo = React.memo(() => {
                         ? require('assets/ic-logo-240.png')
                         : require('assets/ic-logo-dark-240.png')
                 }
-                style={{ width: 240, height: 240, marginBottom: 12 }}
+                style={{ width: 240, height: 240 }}
             />
             <Text
                 allowFontScaling={false}
@@ -82,11 +83,19 @@ const PrivacyText = React.memo(() => {
                     color: theme.foregroundTertiary,
                 }}
             >
-                By creating an account you are accepting our{'\n'}
-                <Text style={{ ...TextStyles.Label3 }} onPress={() => Linking.openURL('https://openland.com/terms')}>
+                By creating an account you are accepting our
+                {'\n'}
+                <Text
+                    style={{ ...TextStyles.Label3 }}
+                    onPress={() => Linking.openURL('https://openland.com/terms')}
+                >
                     Terms of service
-                </Text>{' '}and{' '}
-                <Text style={{ ...TextStyles.Label3 }} onPress={() => Linking.openURL('https://openland.com/privacy')}>
+                </Text>{' '}
+                and{' '}
+                <Text
+                    style={{ ...TextStyles.Label3 }}
+                    onPress={() => Linking.openURL('https://openland.com/privacy')}
+                >
                     Privacy policy
                 </Text>
             </Text>

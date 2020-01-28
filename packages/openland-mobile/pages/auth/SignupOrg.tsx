@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, Animated, Text, Easing } from 'react-native';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -12,8 +12,13 @@ import { useField } from 'openland-form/useField';
 import { RegistrationContainer } from './RegistrationContainer';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { logout } from 'openland-mobile/utils/logout';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const SignupOrgComponent = React.memo((props: PageProps) => {
+    const [errorText, setErrorText] = React.useState('');
+    const [shakeAnimation] = React.useState(new Animated.Value(0));
+    const theme = React.useContext(ThemeContext);
     const form = useForm();
     const nameField = useField('name', '', form);
 
@@ -40,7 +45,19 @@ const SignupOrgComponent = React.memo((props: PageProps) => {
         await endSaving();
     };
 
-    const handleSave = () =>
+    const handleSave = () => {
+        if (!nameField.value.trim()) {
+            setErrorText('Please enter organization name');
+            shakeAnimation.setValue(0);
+            Animated.timing(shakeAnimation, {
+                duration: 400,
+                toValue: 3,
+                easing: Easing.bounce,
+                useNativeDriver: true,
+            }).start();
+
+            return;
+        }
         form.doAction(async () => {
             const client = getClient();
 
@@ -53,6 +70,7 @@ const SignupOrgComponent = React.memo((props: PageProps) => {
             });
             await endSaving();
         });
+    };
 
     return (
         <ZTrack event="signup_org_view">
@@ -64,20 +82,45 @@ const SignupOrgComponent = React.memo((props: PageProps) => {
                 floatContent={
                     <ZButton
                         title="Next"
-                        enabled={!!nameField.value.trim()}
                         size="large"
                         onPress={handleSave}
+                        loading={form.loading}
                     />
                 }
             >
-                <View marginTop={16} marginBottom={100}>
+                <Animated.View
+                    paddingHorizontal={16}
+                    marginTop={16}
+                    style={{
+                        transform: [
+                            {
+                                translateX: shakeAnimation.interpolate({
+                                    inputRange: [0, 0.5, 1, 1.5, 2, 2.5, 3],
+                                    outputRange: [0, -15, 0, 15, 0, -15, 0],
+                                }),
+                            },
+                        ],
+                    }}
+                >
                     <ZInput
                         placeholder="Name"
                         autoFocus={true}
-                        description="Please, provide organization name and optional logo"
+                        description="Please, provide organization name"
                         field={nameField}
+                        noWrapper={true}
+                        invalid={!!errorText}
                     />
-                </View>
+                </Animated.View>
+                {!!errorText && (
+                    <View paddingHorizontal={32} paddingTop={8} marginBottom={120}>
+                        <Text
+                            style={[TextStyles.Caption, { color: theme.accentNegative }]}
+                            allowFontScaling={false}
+                        >
+                            {errorText}
+                        </Text>
+                    </View>
+                )}
             </RegistrationContainer>
         </ZTrack>
     );
@@ -86,5 +129,5 @@ const SignupOrgComponent = React.memo((props: PageProps) => {
 export const SignupOrg = withApp(SignupOrgComponent, {
     navigationAppearance: 'small',
     hideHairline: true,
-    backButtonRootFallback: logout
+    backButtonRootFallback: logout,
 });

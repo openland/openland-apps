@@ -15,7 +15,7 @@ export const ZInput = (props: ZInputProps) => {
                 {...other} 
                 description={field.input.invalid ? field.input.errorText : undefined}
                 value={field.input.value}
-                invalid={field.input.invalid}
+                invalid={field.input.invalid || props.invalid}
                 onChangeText={(text) => {
                     field.input.onChange(text);
 

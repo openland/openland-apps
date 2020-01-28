@@ -1,27 +1,16 @@
-import Alert from 'openland-mobile/components/AlertBlanket';
-import Toast from 'openland-mobile/components/Toast';
 import { NamedError } from 'openland-y-forms/errorHandling';
 import { ACTIVATION_CODE_LENGTH } from './EmailAuth';
 
-export const ShowAuthError = (error: NamedError) => {
+export const GetAuthError = (error: NamedError) => {
     if (error.name === 'no_email_or_phone') {
-        Alert.builder()
-            .title('Please enter your email address')
-            .button('GOT IT!').show();
+        return 'Please enter your email address';
     } else if (error.name === 'invalid_email') {
-        Alert.builder()
-            .title('The email you entered is incorrect')
-            .message('Please check your email address and try again.')
-            .button('TRY AGAIN').show();
+        return 'The email you entered is incorrect';
     } else if (error.name === 'wrong_code' || error.name === 'wrong_code_length') {
-        Toast.failure({ text: 'Wrong code', duration: 1000 }).show();
+        return 'Wrong code';
     } else if (error.name === 'no_code') {
-        Alert.builder()
-            .title('Please enter the ' + ACTIVATION_CODE_LENGTH + '-digit code we\'ve just sent to your email')
-            .button('GOT IT!').show();
+        return 'Please enter the ' + ACTIVATION_CODE_LENGTH + '-digit code we\'ve just sent to your email';
     } else {
-        Alert.builder()
-            .title('An unexpected error occurred')
-            .button('TRY AGAIN').show();
+        return 'An unexpected error occurred';
     }
 };
