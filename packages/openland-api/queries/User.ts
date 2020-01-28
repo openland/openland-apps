@@ -43,6 +43,17 @@ export const UserQuery = gql`
     ${UserBadge}
 `;
 
+export const UserPicoQuery = gql`
+    query UserPico($userId: ID!) {
+        user: user(id: $userId) {
+            id
+            name
+            firstName
+            photo
+        }
+    }
+`;
+
 export const OnlineQuery = gql`
     query Online($userId: ID!) {
         user: user(id: $userId) {

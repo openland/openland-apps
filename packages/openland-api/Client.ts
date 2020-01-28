@@ -3263,6 +3263,15 @@ const UserAvailableRoomsSelector = obj(
                     ))
                 )))))
         );
+const UserPicoSelector = obj(
+            field('user', 'user', args(fieldValue("id", refValue('userId'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('firstName', 'firstName', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('name', 'name', args(), notNull(scalar('String'))),
+                    field('photo', 'photo', args(), scalar('String'))
+                )))
+        );
 const UserStorageSelector = obj(
             field('userStorage', 'userStorage', args(fieldValue("keys", refValue('keys')), fieldValue("namespace", refValue('namespace'))), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -4731,6 +4740,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'UserAvailableRooms',
         body: 'query UserAvailableRooms($after:ID,$isChannel:Boolean,$limit:Int!){betaUserAvailableRooms(after:$after,isChannel:$isChannel,limit:$limit){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}',
         selector: UserAvailableRoomsSelector
+    },
+    UserPico: {
+        kind: 'query',
+        name: 'UserPico',
+        body: 'query UserPico($userId:ID!){user:user(id:$userId){__typename firstName id name photo}}',
+        selector: UserPicoSelector
     },
     UserStorage: {
         kind: 'query',

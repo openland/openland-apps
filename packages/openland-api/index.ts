@@ -272,6 +272,7 @@ export const AddStickerCommentMutation = typedMutation<Types.AddStickerComment, 
 export const PersistEventsMutation = typedMutation<Types.PersistEvents, Types.PersistEventsVariables>(Track.PersistEventsMutation);
 export const UsersQuery = typedQuery<Types.Users, Types.UsersVariables>(User.UsersQuery);
 export const UserQuery = typedQuery<Types.User, Types.UserVariables>(User.UserQuery);
+export const UserPicoQuery = typedQuery<Types.UserPico, Types.UserPicoVariables>(User.UserPicoQuery);
 export const OnlineQuery = typedQuery<Types.Online, Types.OnlineVariables>(User.OnlineQuery);
 export const OnlineWatchSubscription = typedSubscription<Types.OnlineWatch, Types.OnlineWatchVariables>(User.OnlineWatchSubscription);
 export const ExplorePeopleQuery = typedQuery<Types.ExplorePeople, Types.ExplorePeopleVariables>(User.ExplorePeopleQuery);
