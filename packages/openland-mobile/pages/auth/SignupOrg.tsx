@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Animated, Text, Easing } from 'react-native';
+import { Animated, Easing } from 'react-native';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
