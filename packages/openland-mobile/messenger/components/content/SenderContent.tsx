@@ -33,6 +33,8 @@ export const SenderContent = React.memo((props: SenderContentProps) => {
             <ASText
                 {...TextStylesAsync.Label2}
                 color={theme.foregroundPrimary}
+                numberOfLines={1}
+                flexShrink={1}
             >
                 {message.senderName}
             </ASText>
