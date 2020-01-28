@@ -4,7 +4,11 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import { exportWrongFields } from './exportWrongFields';
 import { AppLoader } from 'openland-y-runtime/AppLoader';
 
-export function useForm(): SForm {
+interface FormConfig {
+    disableAppLoader?: boolean;
+}
+
+export function useForm(config?: FormConfig): SForm {
     const started = React.useRef(false);
     let clientValidation = {};
     const [loading, setLoading] = React.useState<boolean>(false);
@@ -40,7 +44,9 @@ export function useForm(): SForm {
                 return;
             }
             started.current = true;
-            AppLoader.start();
+            if (!config || config.disableAppLoader !== true) {
+                AppLoader.start();
+            }
             setLoading(true);
             setEnabled(false);
             setError(null);
@@ -58,8 +64,9 @@ export function useForm(): SForm {
                 setError(message);
             } finally {
                 clientValidation = {};
-
-                AppLoader.stop();
+                if (!config || config.disableAppLoader !== true) {
+                    AppLoader.stop();
+                }
                 setLoading(false);
                 setEnabled(true);
                 started.current = false;

@@ -1,16 +1,18 @@
+import Toast from 'openland-mobile/components/Toast';
 import { NamedError } from 'openland-y-forms/errorHandling';
-import { ACTIVATION_CODE_LENGTH } from './EmailAuth';
 
-export const GetAuthError = (error: NamedError) => {
+export const ShowAuthError = (error: NamedError) => {
     if (error.name === 'no_email_or_phone') {
-        return 'Please enter your email address';
+        Toast.failure({ text: 'Enter email address', duration: 1000 }).show();
     } else if (error.name === 'invalid_email') {
-        return 'The email you entered is incorrect';
+        Toast.failure({ text: 'Incorrect email', duration: 1000 }).show();
     } else if (error.name === 'wrong_code' || error.name === 'wrong_code_length') {
-        return 'Wrong code';
+        Toast.failure({ text: 'Wrong code', duration: 1000 }).show();
     } else if (error.name === 'no_code') {
-        return 'Please enter the ' + ACTIVATION_CODE_LENGTH + '-digit code we\'ve just sent to your email';
+        Toast.failure({ text: 'Enter code', duration: 1000 }).show();
+    } else if (error.name === 'code_expired') {
+        Toast.failure({ text: 'Code expired', duration: 1000 }).show();
     } else {
-        return 'An unexpected error occurred';
+        Toast.failure({ text: 'Unexpected error', duration: 1000 }).show();
     }
 };

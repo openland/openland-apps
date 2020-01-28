@@ -5,7 +5,7 @@ import { withApp } from '../../components/withApp';
 import { ZInput } from '../../components/ZInput';
 import RNRestart from 'react-native-restart';
 import { UserError, NamedError } from 'openland-y-forms/errorHandling';
-import { GetAuthError } from './ShowAuthError';
+import { ShowAuthError } from './ShowAuthError';
 import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
@@ -65,29 +65,31 @@ const requestActivationCode = async () => {
 };
 
 const EmailStartComponent = React.memo((props: PageProps) => {
-    const [errorText, setErrorText] = React.useState('');
     const [shakeAnimation] = React.useState(new Animated.Value(0));
-    const theme = React.useContext(ThemeContext);
-    const form = useForm();
+    const form = useForm({ disableAppLoader: true });
     const emailField = useField('email', '', form);
 
-    const submitForm = () =>
+    const submitForm = () => {
+        if (!emailField.value.trim()) {
+            shakeAnimation.setValue(0);
+            Animated.timing(shakeAnimation, {
+                duration: 400,
+                toValue: 3,
+                easing: Easing.bounce,
+                useNativeDriver: true,
+            }).start();
+            return;
+        }
         form.doAction(async () => {
             try {
                 email = emailField.value.trim();
                 await requestActivationCode();
                 props.router.push('EmailCode');
             } catch (e) {
-                setErrorText(GetAuthError(e));
-                shakeAnimation.setValue(0);
-                Animated.timing(shakeAnimation, {
-                    duration: 400,
-                    toValue: 3,
-                    easing: Easing.bounce,
-                    useNativeDriver: true,
-                }).start();
+                ShowAuthError(e);
             }
         });
+    };
 
     return (
         <ZTrack event="signup_email_view">
@@ -104,7 +106,6 @@ const EmailStartComponent = React.memo((props: PageProps) => {
                 }
             >
                 <Animated.View
-                    paddingHorizontal={16}
                     style={{
                         transform: [
                             {
@@ -125,20 +126,8 @@ const EmailStartComponent = React.memo((props: PageProps) => {
                         returnKeyType="next"
                         allowFontScaling={false}
                         onSubmitEditing={submitForm}
-                        noWrapper={true}
-                        invalid={!!errorText}
                     />
                 </Animated.View>
-                {!!errorText && (
-                    <View paddingHorizontal={32} paddingTop={8} marginBottom={120}>
-                        <Text
-                            style={[TextStyles.Caption, { color: theme.accentNegative }]}
-                            allowFontScaling={false}
-                        >
-                            {errorText}
-                        </Text>
-                    </View>
-                )}
             </RegistrationContainer>
         </ZTrack>
     );
@@ -181,10 +170,8 @@ const EmailCodeHeader = React.memo((props: { resendCode: () => void }) => {
 });
 
 const EmailCodeComponent = React.memo((props: PageProps) => {
-    const [errorText, setErrorText] = React.useState('');
     const [shakeAnimation] = React.useState(new Animated.Value(0));
-    const theme = React.useContext(ThemeContext);
-    const form = useForm();
+    const form = useForm({ disableAppLoader: true });
     const codeField = useField('code', '', form);
 
     const resendCode = async () => {
@@ -194,7 +181,17 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
         codeField.input.onChange('');
     };
 
-    const submitForm = () =>
+    const submitForm = () => {
+        if (!codeField.value.trim()) {
+            shakeAnimation.setValue(0);
+            Animated.timing(shakeAnimation, {
+                duration: 400,
+                toValue: 3,
+                easing: Easing.bounce,
+                useNativeDriver: true,
+            }).start();
+            return;
+        }
         form.doAction(async () => {
             try {
                 let res = await http({
@@ -220,21 +217,10 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
                 RNRestart.Restart();
             } catch (e) {
                 TrackAuthError(e);
-
-                shakeAnimation.setValue(0);
-                Animated.timing(shakeAnimation, {
-                    duration: 400,
-                    toValue: 3,
-                    easing: Easing.bounce,
-                    useNativeDriver: true,
-                }).start();
-                if (e.name === 'code_expired') {
-                    setErrorText('This code has expired');
-                    return;
-                }
-                setErrorText(GetAuthError(e));
+                ShowAuthError(e);
             }
         });
+    };
 
     React.useEffect(
         () => {
@@ -278,7 +264,6 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
                     </View>
                 )}
                 <Animated.View
-                    paddingHorizontal={16}
                     style={{
                         transform: [
                             {
@@ -300,20 +285,8 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
                         allowFontScaling={false}
                         onSubmitEditing={submitForm}
                         maxLength={ACTIVATION_CODE_LENGTH}
-                        noWrapper={true}
-                        invalid={!!errorText}
                     />
                 </Animated.View>
-                {!!errorText && (
-                    <View paddingHorizontal={32} paddingTop={8} marginBottom={120}>
-                        <Text
-                            style={[TextStyles.Caption, { color: theme.accentNegative }]}
-                            allowFontScaling={false}
-                        >
-                            {errorText}
-                        </Text>
-                    </View>
-                )}
             </RegistrationContainer>
         </ZTrack>
     );
