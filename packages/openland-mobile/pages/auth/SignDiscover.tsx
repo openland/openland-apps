@@ -76,7 +76,8 @@ const SignDiscoverPage = React.memo((props: PageProps) => {
     const defaultIosPadding = isXGen ? 34 : 16;
 
     const onSkip = async () => {
-        client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
+        await client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
+        await client.refetchDiscoverIsDone();
         await Storage.writeKey('discover_start', null);
         props.router.pushAndResetRoot('Home');
     };

@@ -133,14 +133,15 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
     const client = useClient();
 
     const toHome = React.useCallback(async () => {
-        client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
+        await client.mutateBetaDiscoverSkip({ selectedTagsIds: props.selectedTagIds });
+        await client.refetchDiscoverIsDone();
         await Storage.writeKey('discover_start', null);
         props.router.pushAndResetRoot('Home');
     }, []);
 
     const skip = React.useCallback(() => {
         (async () => {
-            toHome();
+            await toHome();
         })();
     }, []);
 
@@ -149,18 +150,18 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
             startLoader();
             await getClient().mutateRoomsJoin({ roomsIds: selectedIds });
             stopLoader();
-            toHome();
+            await toHome();
         })();
     }, []);
 
     const onAdd = React.useCallback(
-        () => {
+        async () => {
             trackEvent('chats_after_navigator', { count: selected.size });
 
             if (selected.size) {
                 join([...selected.values()]);
             } else {
-                toHome();
+                await toHome();
             }
         },
         [selected],
