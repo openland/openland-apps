@@ -8,6 +8,7 @@ import { next } from 'openland-mobile/pages/auth/signup';
 import UrlPattern from 'url-pattern';
 import UrlParse from 'url-parse';
 import { ResolvedInvite_invite_RoomInvite, AccountInviteInfo_invite } from 'openland-api/Types';
+import { publicPaths } from 'openland-y-utils/publicPaths';
 
 export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?: boolean) => {
     return async () => {
@@ -226,9 +227,11 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         //
         // SHORT_NAME
         //
+        let webPublicPaths = publicPaths.map(s => s.slice(1));
         let shortNamePattern = new UrlPattern(patternBase + ':shortname');
         let matchShortName = shortNamePattern.match(link);
-        if (matchShortName && matchShortName.shortname) {
+
+        if (matchShortName && matchShortName.shortname && !webPublicPaths.includes(matchShortName.shortname)) {
             startLoader();
             try {
                 let info = await getMessenger().engine.client.queryResolveShortName({ shortname: matchShortName.shortname });

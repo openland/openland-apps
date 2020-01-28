@@ -1,5 +1,5 @@
-const publicPath = ['/', '/download', '/about', '/terms', '/privacy'];
+import { publicPaths } from 'openland-y-utils/publicPaths';
 
 export function isPublicPath(path: string) {
-    return publicPath.indexOf(path) >= 0;
+    return publicPaths.indexOf(path) >= 0;
 }
