@@ -1,0 +1,3 @@
+mutation Donate($id: ID!) {
+  donateToUser(amount: 100, id: $id)
+}

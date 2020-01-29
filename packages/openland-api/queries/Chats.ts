@@ -508,10 +508,12 @@ export const BuyPaidChatPassMutation = gql`
     mutation BuyPaidChatPass(
         $chatId: ID!
         $paymentMethodId: String!
+        $retryKey: String!
     ) {
         betaBuyPaidChatPass(
             chatId: $chatId
             paymentMethodId: $paymentMethodId
+            retryKey: $retryKey
         )
     }
 `;

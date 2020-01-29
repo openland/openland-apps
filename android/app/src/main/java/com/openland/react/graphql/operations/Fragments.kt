@@ -1781,3 +1781,100 @@ internal val StickerPackFragmentSelector = obj(
                 ))))),
             field("title", "title", notNull(scalar("String")))
         )
+
+internal val WalletTransactionFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("operation", "operation", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    inline("WalletTransactionDeposit", obj(
+                        field("amount", "amount", notNull(scalar("Int"))),
+                        field("payment", "payment", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("intent", "intent", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("clientSecret", "clientSecret", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID")))
+                                    )),
+                                field("status", "status", notNull(scalar("String")))
+                            ))
+                    )),
+                    inline("WalletTransactionSubscription", obj(
+                        field("amount", "amount", notNull(scalar("Int"))),
+                        field("payment", "payment", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("intent", "intent", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("clientSecret", "clientSecret", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID")))
+                                    )),
+                                field("status", "status", notNull(scalar("String")))
+                            ))
+                    )),
+                    inline("WalletTransactionTransferOut", obj(
+                        field("chargeAmount", "chargeAmount", notNull(scalar("Int"))),
+                        field("payment", "payment", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("intent", "intent", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("clientSecret", "clientSecret", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID")))
+                                    )),
+                                field("status", "status", notNull(scalar("String")))
+                            )),
+                        field("toUser", "toUser", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("User", UserShortSelector)
+                            ))),
+                        field("walletAmount", "walletAmount", notNull(scalar("Int")))
+                    )),
+                    inline("WalletTransactionTransferIn", obj(
+                        field("amount", "amount", notNull(scalar("Int"))),
+                        field("fromUser", "fromUser", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("User", UserShortSelector)
+                            )))
+                    ))
+                ))),
+            field("status", "status", notNull(scalar("String")))
+        )
+
+internal val WalletUpdateFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("WalletUpdateBalance", obj(
+                field("amount", "amount", notNull(scalar("Int")))
+            )),
+            inline("WalletUpdateTransactionSuccess", obj(
+                field("transaction", "transaction", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("WalletTransaction", WalletTransactionFragmentSelector)
+                    )))
+            )),
+            inline("WalletUpdateTransactionCanceled", obj(
+                field("transaction", "transaction", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("WalletTransaction", WalletTransactionFragmentSelector)
+                    )))
+            )),
+            inline("WalletUpdateTransactionPending", obj(
+                field("transaction", "transaction", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("WalletTransaction", WalletTransactionFragmentSelector)
+                    )))
+            )),
+            inline("WalletUpdatePaymentStatus", obj(
+                field("payment", "payment", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("intent", "intent", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("clientSecret", "clientSecret", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID")))
+                            )),
+                        field("status", "status", notNull(scalar("String")))
+                    )))
+            ))
+        )

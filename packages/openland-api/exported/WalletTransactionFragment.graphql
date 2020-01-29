@@ -1,0 +1,59 @@
+fragment WalletTransactionFragment on WalletTransaction {
+  __typename
+  id
+  operation {
+    __typename
+    ... on WalletTransactionDeposit {
+      amount
+      payment {
+        __typename
+        id
+        intent {
+          __typename
+          clientSecret
+          id
+        }
+        status
+      }
+    }
+    ... on WalletTransactionSubscription {
+      amount
+      payment {
+        __typename
+        id
+        intent {
+          __typename
+          clientSecret
+          id
+        }
+        status
+      }
+    }
+    ... on WalletTransactionTransferOut {
+      chargeAmount
+      payment {
+        __typename
+        id
+        intent {
+          __typename
+          clientSecret
+          id
+        }
+        status
+      }
+      toUser {
+        __typename
+        ...UserShort
+      }
+      walletAmount
+    }
+    ... on WalletTransactionTransferIn {
+      amount
+      fromUser {
+        __typename
+        ...UserShort
+      }
+    }
+  }
+  status
+}

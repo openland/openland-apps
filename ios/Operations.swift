@@ -1776,6 +1776,103 @@ private let StickerPackFragmentSelector = obj(
             field("title", "title", notNull(scalar("String")))
         )
 
+private let WalletTransactionFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("operation", "operation", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    inline("WalletTransactionDeposit", obj(
+                        field("amount", "amount", notNull(scalar("Int"))),
+                        field("payment", "payment", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("intent", "intent", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("clientSecret", "clientSecret", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID")))
+                                    )),
+                                field("status", "status", notNull(scalar("String")))
+                            ))
+                    )),
+                    inline("WalletTransactionSubscription", obj(
+                        field("amount", "amount", notNull(scalar("Int"))),
+                        field("payment", "payment", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("intent", "intent", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("clientSecret", "clientSecret", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID")))
+                                    )),
+                                field("status", "status", notNull(scalar("String")))
+                            ))
+                    )),
+                    inline("WalletTransactionTransferOut", obj(
+                        field("chargeAmount", "chargeAmount", notNull(scalar("Int"))),
+                        field("payment", "payment", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("intent", "intent", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("clientSecret", "clientSecret", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID")))
+                                    )),
+                                field("status", "status", notNull(scalar("String")))
+                            )),
+                        field("toUser", "toUser", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("User", UserShortSelector)
+                            ))),
+                        field("walletAmount", "walletAmount", notNull(scalar("Int")))
+                    )),
+                    inline("WalletTransactionTransferIn", obj(
+                        field("amount", "amount", notNull(scalar("Int"))),
+                        field("fromUser", "fromUser", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("User", UserShortSelector)
+                            )))
+                    ))
+                ))),
+            field("status", "status", notNull(scalar("String")))
+        )
+
+private let WalletUpdateFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("WalletUpdateBalance", obj(
+                field("amount", "amount", notNull(scalar("Int")))
+            )),
+            inline("WalletUpdateTransactionSuccess", obj(
+                field("transaction", "transaction", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("WalletTransaction", WalletTransactionFragmentSelector)
+                    )))
+            )),
+            inline("WalletUpdateTransactionCanceled", obj(
+                field("transaction", "transaction", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("WalletTransaction", WalletTransactionFragmentSelector)
+                    )))
+            )),
+            inline("WalletUpdateTransactionPending", obj(
+                field("transaction", "transaction", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("WalletTransaction", WalletTransactionFragmentSelector)
+                    )))
+            )),
+            inline("WalletUpdatePaymentStatus", obj(
+                field("payment", "payment", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("intent", "intent", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("clientSecret", "clientSecret", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID")))
+                            )),
+                        field("status", "status", notNull(scalar("String")))
+                    )))
+            ))
+        )
+
 private let AccountSelector = obj(
             field("me", "me", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -2491,7 +2588,8 @@ private let MyCardsSelector = obj(
                     field("expYear", "expYear", notNull(scalar("Int"))),
                     field("id", "id", notNull(scalar("ID"))),
                     field("isDefault", "isDefault", notNull(scalar("Boolean"))),
-                    field("last4", "last4", notNull(scalar("String")))
+                    field("last4", "last4", notNull(scalar("String"))),
+                    field("pmid", "pmid", notNull(scalar("ID")))
                 )))))
         )
 private let MyNotificationCenterSelector = obj(
@@ -2540,11 +2638,24 @@ private let MySuccessfulInvitesCountSelector = obj(
             field("mySuccessfulInvitesCount", "mySuccessfulInvitesCount", notNull(scalar("Int")))
         )
 private let MyWalletSelector = obj(
-            field("myAccount", "myAccount", notNull(obj(
+            field("myWallet", "myWallet", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("balance", "balance", notNull(scalar("Int"))),
-                    field("id", "id", notNull(scalar("ID")))
-                )))
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("state", "state", notNull(scalar("String")))
+                ))),
+            field("transactionsHistory", "transactionsHistory", arguments(fieldValue("first", intValue(20))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("cursor", "cursor", scalar("String")),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("WalletTransaction", WalletTransactionFragmentSelector)
+                        )))))
+                ))),
+            field("transactionsPending", "transactionsPending", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("WalletTransaction", WalletTransactionFragmentSelector)
+                )))))
         )
 private let OauthContextSelector = obj(
             field("oauthContext", "context", arguments(fieldValue("code", refValue("code"))), obj(
@@ -3292,19 +3403,6 @@ private let UsersSelector = obj(
                     field("name", "title", notNull(scalar("String")))
                 )))))
         )
-private let WalletTransactionsSelector = obj(
-            field("walletTransactions", "walletTransactions", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("id", refValue("id"))), notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("cursor", "cursor", scalar("String")),
-                    field("items", "items", notNull(list(notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("amount", "amount", notNull(scalar("Int"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("readableState", "readableState", notNull(scalar("String"))),
-                            field("state", "state", notNull(scalar("String")))
-                        )))))
-                )))
-        )
 private let AccountInviteJoinSelector = obj(
             field("alphaJoinInvite", "alphaJoinInvite", arguments(fieldValue("key", refValue("inviteKey"))), notNull(scalar("ID")))
         )
@@ -3348,7 +3446,7 @@ private let BetaSubmitNextDiscoverSelector = obj(
                 ))
         )
 private let BuyPaidChatPassSelector = obj(
-            field("betaBuyPaidChatPass", "betaBuyPaidChatPass", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("paymentMethodId", refValue("paymentMethodId"))), notNull(scalar("Boolean")))
+            field("betaBuyPaidChatPass", "betaBuyPaidChatPass", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("paymentMethodId", refValue("paymentMethodId")), fieldValue("retryKey", refValue("retryKey"))), notNull(scalar("Boolean")))
         )
 private let CommentSetReactionSelector = obj(
             field("commentReactionAdd", "commentReactionAdd", arguments(fieldValue("commentId", refValue("commentId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
@@ -3458,8 +3556,8 @@ private let DeleteOrganizationSelector = obj(
 private let DeleteUserSelector = obj(
             field("superDeleteUser", "superDeleteUser", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
-private let DepositIntentCommitSelector = obj(
-            field("cardDepositIntentCommit", "cardDepositIntentCommit", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+private let DonateSelector = obj(
+            field("donateToUser", "donateToUser", arguments(fieldValue("amount", intValue(100)), fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
 private let EditCommentSelector = obj(
             field("editComment", "editComment", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("id", refValue("id")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
@@ -3683,6 +3781,12 @@ private let OrganizationMemberRemoveSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID")))
                 )))
+        )
+private let PaymentIntentCancelSelector = obj(
+            field("paymentCancel", "paymentCancel", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+        )
+private let PaymentIntentCommitSelector = obj(
+            field("paymentIntentCommit", "paymentIntentCommit", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
 private let PersistEventsSelector = obj(
             field("track", "track", arguments(fieldValue("did", refValue("did")), fieldValue("events", refValue("events")), fieldValue("isProd", refValue("isProd"))), notNull(scalar("String")))
@@ -4216,6 +4320,25 @@ private let TypingsWatchSelector = obj(
                         )))
                 )))
         )
+private let WalletUpdatesSelector = obj(
+            field("walletUpdates", "event", arguments(fieldValue("fromState", refValue("state"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    inline("WalletUpdateSingle", obj(
+                        field("state", "state", notNull(scalar("String"))),
+                        field("update", "update", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("WalletUpdate", WalletUpdateFragmentSelector)
+                            )))
+                    )),
+                    inline("WalletUpdateBatch", obj(
+                        field("state", "state", notNull(scalar("String"))),
+                        field("updates", "updates", notNull(list(notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("WalletUpdate", WalletUpdateFragmentSelector)
+                            )))))
+                    ))
+                )))
+        )
 
 class Operations {
     static let shared = Operations()
@@ -4464,7 +4587,7 @@ class Operations {
     let MyCards = OperationDefinition(
         "MyCards",
         .query, 
-        "query MyCards{myCards{__typename brand deleted expMonth expYear id isDefault last4}}",
+        "query MyCards{myCards{__typename brand deleted expMonth expYear id isDefault last4 pmid}}",
         MyCardsSelector
     )
     let MyNotificationCenter = OperationDefinition(
@@ -4500,7 +4623,7 @@ class Operations {
     let MyWallet = OperationDefinition(
         "MyWallet",
         .query, 
-        "query MyWallet{myAccount{__typename balance id}}",
+        "query MyWallet{myWallet{__typename balance id state}transactionsHistory(first:20){__typename cursor items{__typename ...WalletTransactionFragment}}transactionsPending{__typename ...WalletTransactionFragment}}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}... on WalletTransactionSubscription{amount payment{__typename id intent{__typename clientSecret id}status}}... on WalletTransactionTransferOut{chargeAmount payment{__typename id intent{__typename clientSecret id}status}toUser{__typename ...UserShort}walletAmount}... on WalletTransactionTransferIn{amount fromUser{__typename ...UserShort}}}status}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}",
         MyWalletSelector
     )
     let OauthContext = OperationDefinition(
@@ -4767,12 +4890,6 @@ class Operations {
         "query Users($query:String!){items:users(query:$query){__typename subtitle:email id title:name}}",
         UsersSelector
     )
-    let WalletTransactions = OperationDefinition(
-        "WalletTransactions",
-        .query, 
-        "query WalletTransactions($after:String,$first:Int!,$id:ID!){walletTransactions(after:$after,first:$first,id:$id){__typename cursor items{__typename amount id readableState state}}}",
-        WalletTransactionsSelector
-    )
     let AccountInviteJoin = OperationDefinition(
         "AccountInviteJoin",
         .mutation, 
@@ -4818,7 +4935,7 @@ class Operations {
     let BuyPaidChatPass = OperationDefinition(
         "BuyPaidChatPass",
         .mutation, 
-        "mutation BuyPaidChatPass($chatId:ID!,$paymentMethodId:String!){betaBuyPaidChatPass(chatId:$chatId,paymentMethodId:$paymentMethodId)}",
+        "mutation BuyPaidChatPass($chatId:ID!,$paymentMethodId:String!,$retryKey:String!){betaBuyPaidChatPass(chatId:$chatId,paymentMethodId:$paymentMethodId,retryKey:$retryKey)}",
         BuyPaidChatPassSelector
     )
     let CommentSetReaction = OperationDefinition(
@@ -4935,11 +5052,11 @@ class Operations {
         "mutation DeleteUser($id:ID!){superDeleteUser(id:$id)}",
         DeleteUserSelector
     )
-    let DepositIntentCommit = OperationDefinition(
-        "DepositIntentCommit",
+    let Donate = OperationDefinition(
+        "Donate",
         .mutation, 
-        "mutation DepositIntentCommit($id:ID!){cardDepositIntentCommit(id:$id)}",
-        DepositIntentCommitSelector
+        "mutation Donate($id:ID!){donateToUser(amount:100,id:$id)}",
+        DonateSelector
     )
     let EditComment = OperationDefinition(
         "EditComment",
@@ -5150,6 +5267,18 @@ class Operations {
         .mutation, 
         "mutation OrganizationMemberRemove($organizationId:ID!,$userId:ID!){betaOrganizationMemberRemove(organizationId:$organizationId,userId:$userId){__typename id}}",
         OrganizationMemberRemoveSelector
+    )
+    let PaymentIntentCancel = OperationDefinition(
+        "PaymentIntentCancel",
+        .mutation, 
+        "mutation PaymentIntentCancel($id:ID!){paymentCancel(id:$id)}",
+        PaymentIntentCancelSelector
+    )
+    let PaymentIntentCommit = OperationDefinition(
+        "PaymentIntentCommit",
+        .mutation, 
+        "mutation PaymentIntentCommit($id:ID!){paymentIntentCommit(id:$id)}",
+        PaymentIntentCommitSelector
     )
     let PersistEvents = OperationDefinition(
         "PersistEvents",
@@ -5559,6 +5688,12 @@ class Operations {
         "subscription TypingsWatch{typings{__typename cancel conversation:chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}user{__typename firstName id photo}}}",
         TypingsWatchSelector
     )
+    let WalletUpdates = OperationDefinition(
+        "WalletUpdates",
+        .subscription, 
+        "subscription WalletUpdates($state:String!){event:walletUpdates(fromState:$state){__typename ... on WalletUpdateSingle{state update{__typename ...WalletUpdateFragment}}... on WalletUpdateBatch{state updates{__typename ...WalletUpdateFragment}}}}fragment WalletUpdateFragment on WalletUpdate{__typename ... on WalletUpdateBalance{amount}... on WalletUpdateTransactionSuccess{transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionCanceled{transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionPending{transaction{__typename ...WalletTransactionFragment}}... on WalletUpdatePaymentStatus{payment{__typename id intent{__typename clientSecret id}status}}}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}... on WalletTransactionSubscription{amount payment{__typename id intent{__typename clientSecret id}status}}... on WalletTransactionTransferOut{chargeAmount payment{__typename id intent{__typename clientSecret id}status}toUser{__typename ...UserShort}walletAmount}... on WalletTransactionTransferIn{amount fromUser{__typename ...UserShort}}}status}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}",
+        WalletUpdatesSelector
+    )
     
     func operationByName(_ name: String) -> OperationDefinition {
         if name == "Account" { return Account }
@@ -5652,7 +5787,6 @@ class Operations {
         if name == "UserPico" { return UserPico }
         if name == "UserStorage" { return UserStorage }
         if name == "Users" { return Users }
-        if name == "WalletTransactions" { return WalletTransactions }
         if name == "AccountInviteJoin" { return AccountInviteJoin }
         if name == "AddAppToChat" { return AddAppToChat }
         if name == "AddComment" { return AddComment }
@@ -5680,7 +5814,7 @@ class Operations {
         if name == "DeleteNotification" { return DeleteNotification }
         if name == "DeleteOrganization" { return DeleteOrganization }
         if name == "DeleteUser" { return DeleteUser }
-        if name == "DepositIntentCommit" { return DepositIntentCommit }
+        if name == "Donate" { return Donate }
         if name == "EditComment" { return EditComment }
         if name == "EditMessage" { return EditMessage }
         if name == "FeatureFlagAdd" { return FeatureFlagAdd }
@@ -5716,6 +5850,8 @@ class Operations {
         if name == "OrganizationChangeMemberRole" { return OrganizationChangeMemberRole }
         if name == "OrganizationCreatePublicInvite" { return OrganizationCreatePublicInvite }
         if name == "OrganizationMemberRemove" { return OrganizationMemberRemove }
+        if name == "PaymentIntentCancel" { return PaymentIntentCancel }
+        if name == "PaymentIntentCommit" { return PaymentIntentCommit }
         if name == "PersistEvents" { return PersistEvents }
         if name == "PinMessage" { return PinMessage }
         if name == "ProfileCreate" { return ProfileCreate }
@@ -5784,6 +5920,7 @@ class Operations {
         if name == "OnlineWatch" { return OnlineWatch }
         if name == "SettingsWatch" { return SettingsWatch }
         if name == "TypingsWatch" { return TypingsWatch }
+        if name == "WalletUpdates" { return WalletUpdates }
         fatalError("Unknown operation: " + name)
     }
 }

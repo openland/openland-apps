@@ -8,10 +8,12 @@ import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { CardView } from './components/CardView';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { TransactionView } from './components/TransactionView';
+import { PendingTransactionView } from './components/PendingTransactionView';
 import { showAddFunds } from './components/showAddFunds';
 import { Money } from 'openland-y-utils/wallet/Money';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { css } from 'linaria';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 const cardContainer = css`
     width: 50%;
@@ -24,9 +26,9 @@ const cardContainer = css`
 
 export const WalletFragment = React.memo(() => {
     const client = useClient();
+    const messenger = React.useContext(MessengerContext);
+    const wallet = messenger.wallet.state.useState();
     const cards = client.useMyCards({ fetchPolicy: 'cache-and-network' }).myCards;
-    const wallet = client.useMyWallet({ fetchPolicy: 'cache-and-network' }).myAccount;
-    const transactions = client.useWalletTransactions({ id: wallet.id, first: 20 }).walletTransactions;
     const balance = wallet.balance;
 
     return (
@@ -61,10 +63,12 @@ export const WalletFragment = React.memo(() => {
                         ))}
                     </XView>
                 </UListGroup>
-                <UListGroup header="Transactions">
-                    {transactions.items.map((v) => (
-                        <TransactionView key={v.id} item={v} />
-                    ))}
+                <UListGroup header="Pending Transactions">
+                    {wallet.pendingTransactions.map((v) => <PendingTransactionView key={v.id} item={v} />)}
+                </UListGroup>
+
+                <UListGroup header="Latest Transactions">
+                    {wallet.historyTransactions.map((v) => <TransactionView key={v.id} item={v} />)}
                 </UListGroup>
             </XView>
         </Page>

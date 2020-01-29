@@ -24,14 +24,14 @@ const AddFundsComponent = React.memo((props: { ctx: XModalController, amount: nu
     let [loading, setLoading] = React.useState<boolean>(false);
     if (currentCard === undefined) {
         if (cards.length > 0) {
-            if (wallet.myAccount.balance >= props.amount) {
+            if (wallet.myWallet.balance >= props.amount) {
                 setCurrentCard('openland');
             } else {
                 setCurrentCard(cards[0].id);
             }
         }
     }
-    if ((wallet.myAccount.balance >= props.amount) || currentCard === 'openland') {
+    if ((wallet.myWallet.balance >= props.amount) || currentCard === 'openland') {
         cards.unshift({ id: 'openland', brand: 'openland' });
     }
     const onSubmit = React.useCallback(async () => {

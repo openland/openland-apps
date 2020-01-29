@@ -9,12 +9,13 @@ import { BalanceView } from './components/BalanceView';
 import { CardView } from './components/CardView';
 import { TransactionView } from './components/TransactionView';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 const WalletComponent = React.memo<PageProps>((props) => {
     const client = useClient();
+    const messenger = getMessenger();
+    const wallet = messenger.engine.wallet.state.useState();
     const cards = client.useMyCards({ fetchPolicy: 'cache-and-network' }).myCards;
-    const wallet = client.useMyWallet({ fetchPolicy: 'cache-and-network' }).myAccount;
-    const transactions = client.useWalletTransactions({ id: wallet.id, first: 20 }).walletTransactions;
     const balance = wallet.balance;
 
     const handleAddCard = React.useCallback(() => {
@@ -39,8 +40,12 @@ const WalletComponent = React.memo<PageProps>((props) => {
                     )}
                     {cards.map(card => <CardView key={card.id} item={card} />)}
                 </ZListGroup>
-                <ZListGroup header="Transactions">
-                    {transactions.items.map(transaction => <TransactionView key={transaction.id} item={transaction} />)}
+                <ZListGroup header="Pending Transactions">
+                    {wallet.pendingTransactions.map((v) => <TransactionView key={v.id} item={v} />)}
+                </ZListGroup>
+
+                <ZListGroup header="Latest Transactions">
+                    {wallet.historyTransactions.map((v) => <TransactionView key={v.id} item={v} />)}
                 </ZListGroup>
             </SScrollView>
         </>

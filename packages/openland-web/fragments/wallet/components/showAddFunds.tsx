@@ -72,14 +72,8 @@ const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
 
                     // Report commit to backend
                     await backoff(async () =>
-                        await client.mutateDepositIntentCommit({ id: intent.cardDepositIntent.id })
+                        await client.mutatePaymentIntentCommit({ id: intent.cardDepositIntent.id })
                     );
-
-                    // Reload wallet
-                    let w = await client.refetchMyWallet();
-
-                    // Reload transactions
-                    await client.refetchWalletTransactions({ id: w.myAccount.id, first: 20 });
 
                     // Exit
                     props.ctx.hide();

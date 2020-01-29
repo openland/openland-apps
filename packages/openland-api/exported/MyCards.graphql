@@ -8,5 +8,6 @@ query MyCards {
     id
     isDefault
     last4
+    pmid
   }
 }

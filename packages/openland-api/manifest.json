@@ -317,10 +317,10 @@
       }
     },
     {
-      "signature": "f701dc8010a564706822d9217dd718b9b61faf83c39dfc5e90e1d34af999e35a",
-      "document": "mutation BuyPaidChatPass($chatId:ID!,$paymentMethodId:String!){betaBuyPaidChatPass(chatId:$chatId,paymentMethodId:$paymentMethodId)}",
+      "signature": "c4cfdc90af81ad3908a6e879be8eb79449b8fa3d02d27176e44f43ec60e03849",
+      "document": "mutation BuyPaidChatPass($chatId:ID!,$paymentMethodId:String!,$retryKey:String!){betaBuyPaidChatPass(chatId:$chatId,paymentMethodId:$paymentMethodId,retryKey:$retryKey)}",
       "metadata": {
-        "engineSignature": "mutation BuyPaidChatPass($chatId:ID!,$paymentMethodId:String!){betaBuyPaidChatPass(chatId:$chatId,paymentMethodId:$paymentMethodId)}"
+        "engineSignature": "mutation BuyPaidChatPass($chatId:ID!,$paymentMethodId:String!,$retryKey:String!){betaBuyPaidChatPass(chatId:$chatId,paymentMethodId:$paymentMethodId,retryKey:$retryKey)}"
       }
     },
     {
@@ -989,10 +989,10 @@
       }
     },
     {
-      "signature": "2aa83554a511ab63d3f3bb39c8a20bb8dd4710e670e3617b1d63b982192e2e05",
-      "document": "query MyCards{myCards{__typename brand deleted expMonth expYear id isDefault last4}}",
+      "signature": "76549eb19f8ded41c7b39eb2dd5467380b51d3310bc5e3067c9b0c4ad00ff0ae",
+      "document": "query MyCards{myCards{__typename brand deleted expMonth expYear id isDefault last4 pmid}}",
       "metadata": {
-        "engineSignature": "query MyCards{myCards{__typename brand deleted expMonth expYear id isDefault last4}}"
+        "engineSignature": "query MyCards{myCards{__typename brand deleted expMonth expYear id isDefault last4 pmid}}"
       }
     },
     {
@@ -1010,20 +1010,6 @@
       }
     },
     {
-      "signature": "6557ab09fb890e08149d15d00a08836de19605d7e4dd52040b6325d6cb490748",
-      "document": "mutation CreateDepositIntent($amount:Int!,$cardId:ID!,$retryKey:String!){cardDepositIntent(amount:$amount,id:$cardId,retryKey:$retryKey){__typename clientSecret id}}",
-      "metadata": {
-        "engineSignature": "mutation CreateDepositIntent($amount:Int!,$cardId:ID!,$retryKey:String!){cardDepositIntent(amount:$amount,id:$cardId,retryKey:$retryKey){__typename clientSecret id}}"
-      }
-    },
-    {
-      "signature": "8d113dbda890707161f725c1f5c5fb0828f0ff0fea3f7a3d63835bc636c211d0",
-      "document": "mutation DepositIntentCommit($id:ID!){cardDepositIntentCommit(id:$id)}",
-      "metadata": {
-        "engineSignature": "mutation DepositIntentCommit($id:ID!){cardDepositIntentCommit(id:$id)}"
-      }
-    },
-    {
       "signature": "6b0bb4ed60b0b097c0c43ea2c8511e7bd1878f0b49d6da28e3734ff0f67a2151",
       "document": "mutation RemoveCard($id:ID!){cardRemove(id:$id){__typename deleted id}}",
       "metadata": {
@@ -1038,17 +1024,45 @@
       }
     },
     {
-      "signature": "8fe82e5db94b6256d5f37b99d38ed4fccccca79254c22418a9951d739c09ff04",
-      "document": "query MyWallet{myAccount{__typename balance id}}",
+      "signature": "6557ab09fb890e08149d15d00a08836de19605d7e4dd52040b6325d6cb490748",
+      "document": "mutation CreateDepositIntent($amount:Int!,$cardId:ID!,$retryKey:String!){cardDepositIntent(amount:$amount,id:$cardId,retryKey:$retryKey){__typename clientSecret id}}",
       "metadata": {
-        "engineSignature": "query MyWallet{myAccount{__typename balance id}}"
+        "engineSignature": "mutation CreateDepositIntent($amount:Int!,$cardId:ID!,$retryKey:String!){cardDepositIntent(amount:$amount,id:$cardId,retryKey:$retryKey){__typename clientSecret id}}"
       }
     },
     {
-      "signature": "3804877bd273d1a761714ed5e63af588a2d0216d7e28da4d02e86341d46bc4a1",
-      "document": "query WalletTransactions($after:String,$first:Int!,$id:ID!){walletTransactions(after:$after,first:$first,id:$id){__typename cursor items{__typename amount id readableState state}}}",
+      "signature": "69c55ee939dd77518b0184de7d5ca296f43ae9c7a6e16458805119ec3c9020ff",
+      "document": "mutation PaymentIntentCommit($id:ID!){paymentIntentCommit(id:$id)}",
       "metadata": {
-        "engineSignature": "query WalletTransactions($after:String,$first:Int!,$id:ID!){walletTransactions(after:$after,first:$first,id:$id){__typename cursor items{__typename amount id readableState state}}}"
+        "engineSignature": "mutation PaymentIntentCommit($id:ID!){paymentIntentCommit(id:$id)}"
+      }
+    },
+    {
+      "signature": "727ed2b39bd1bd521d58c3ff90dc159ede974e085c027574a28a3d5de0d6a05d",
+      "document": "mutation PaymentIntentCancel($id:ID!){paymentCancel(id:$id)}",
+      "metadata": {
+        "engineSignature": "mutation PaymentIntentCancel($id:ID!){paymentCancel(id:$id)}"
+      }
+    },
+    {
+      "signature": "d4f5a399652a3e16ad99b771efc682ce957c4a2930012bcaf7655611d2cc8398",
+      "document": "mutation Donate($id:ID!){donateToUser(amount:100,id:$id)}",
+      "metadata": {
+        "engineSignature": "mutation Donate($id:ID!){donateToUser(amount:0,id:$id)}"
+      }
+    },
+    {
+      "signature": "6dbb9d88e09b469635cdb2532a403f04cb4336cf52a65e921f5f721c5061a9b6",
+      "document": "fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename...on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}...on WalletTransactionSubscription{amount payment{__typename id intent{__typename clientSecret id}status}}...on WalletTransactionTransferOut{chargeAmount payment{__typename id intent{__typename clientSecret id}status}toUser{__typename...UserShort}walletAmount}...on WalletTransactionTransferIn{amount fromUser{__typename...UserShort}}}status}query MyWallet{myWallet{__typename balance id state}transactionsHistory(first:20){__typename cursor items{__typename...WalletTransactionFragment}}transactionsPending{__typename...WalletTransactionFragment}}",
+      "metadata": {
+        "engineSignature": "fragment OrganizationShort on Organization{__typename about alphaIsCommunity id membersCount name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename...on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}...on WalletTransactionSubscription{amount payment{__typename id intent{__typename clientSecret id}status}}...on WalletTransactionTransferOut{chargeAmount payment{__typename id intent{__typename clientSecret id}status}toUser{__typename...UserShort}walletAmount}...on WalletTransactionTransferIn{amount fromUser{__typename...UserShort}}}status}query MyWallet{myWallet{__typename balance id state}transactionsHistory(first:0){__typename cursor items{__typename...WalletTransactionFragment}}transactionsPending{__typename...WalletTransactionFragment}}"
+      }
+    },
+    {
+      "signature": "2b7d18bf4d32271a47e34cc4585ab67b28a2103849bdd85c6e9e66cd7913cc7f",
+      "document": "fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename...on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}...on WalletTransactionSubscription{amount payment{__typename id intent{__typename clientSecret id}status}}...on WalletTransactionTransferOut{chargeAmount payment{__typename id intent{__typename clientSecret id}status}toUser{__typename...UserShort}walletAmount}...on WalletTransactionTransferIn{amount fromUser{__typename...UserShort}}}status}fragment WalletUpdateFragment on WalletUpdate{__typename...on WalletUpdateBalance{amount}...on WalletUpdateTransactionSuccess{transaction{__typename...WalletTransactionFragment}}...on WalletUpdateTransactionCanceled{transaction{__typename...WalletTransactionFragment}}...on WalletUpdateTransactionPending{transaction{__typename...WalletTransactionFragment}}...on WalletUpdatePaymentStatus{payment{__typename id intent{__typename clientSecret id}status}}}subscription WalletUpdates($state:String!){event:walletUpdates(fromState:$state){__typename...on WalletUpdateSingle{state update{__typename...WalletUpdateFragment}}...on WalletUpdateBatch{state updates{__typename...WalletUpdateFragment}}}}",
+      "metadata": {
+        "engineSignature": "fragment OrganizationShort on Organization{__typename about alphaIsCommunity id membersCount name photo shortname}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename...on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}...on WalletTransactionSubscription{amount payment{__typename id intent{__typename clientSecret id}status}}...on WalletTransactionTransferOut{chargeAmount payment{__typename id intent{__typename clientSecret id}status}toUser{__typename...UserShort}walletAmount}...on WalletTransactionTransferIn{amount fromUser{__typename...UserShort}}}status}fragment WalletUpdateFragment on WalletUpdate{__typename...on WalletUpdateBalance{amount}...on WalletUpdateTransactionSuccess{transaction{__typename...WalletTransactionFragment}}...on WalletUpdateTransactionCanceled{transaction{__typename...WalletTransactionFragment}}...on WalletUpdateTransactionPending{transaction{__typename...WalletTransactionFragment}}...on WalletUpdatePaymentStatus{payment{__typename id intent{__typename clientSecret id}status}}}subscription WalletUpdates($state:String!){walletUpdates(fromState:$state){__typename...on WalletUpdateSingle{state update{__typename...WalletUpdateFragment}}...on WalletUpdateBatch{state updates{__typename...WalletUpdateFragment}}}}"
       }
     },
     {

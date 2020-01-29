@@ -1,0 +1,3 @@
+mutation PaymentIntentCommit($id: ID!) {
+  paymentIntentCommit(id: $id)
+}

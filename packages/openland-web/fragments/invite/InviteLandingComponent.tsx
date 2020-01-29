@@ -24,6 +24,7 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { showPayConfirm } from '../wallet/components/showPaymentConfirm';
 import { NotFound } from 'openland-unicorn/NotFound';
+import UUID from 'uuid/v4';
 
 const RootClassName = css`
     position: relative;
@@ -275,9 +276,10 @@ const BuyPaidChatPassButton = (props: { id: string; paymentSettings: { price: nu
     let router = React.useContext(XViewRouterContext)!;
     const [loading, setLoading] = React.useState(false);
     const buyPaidChatPass = React.useCallback(async () => {
+        const retryKey = UUID();
         showPayConfirm(props.paymentSettings.price, 'payment', `Membership in "${props.title}"`, async (paymentMethodId) => {
             try {
-                let res = await client.mutateBuyPaidChatPass({ chatId: props.id, paymentMethodId });
+                let res = await client.mutateBuyPaidChatPass({ chatId: props.id, paymentMethodId, retryKey });
                 if (res) {
                     router.navigate('/mail/' + props.id);
                 }

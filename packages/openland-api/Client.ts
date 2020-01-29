@@ -1779,6 +1779,103 @@ const StickerPackFragmentSelector = obj(
             field('title', 'title', args(), notNull(scalar('String')))
         );
 
+const WalletTransactionFragmentSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('operation', 'operation', args(), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    inline('WalletTransactionDeposit', obj(
+                        field('amount', 'amount', args(), notNull(scalar('Int'))),
+                        field('payment', 'payment', args(), obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('id', 'id', args(), notNull(scalar('ID'))),
+                                field('intent', 'intent', args(), obj(
+                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                        field('clientSecret', 'clientSecret', args(), notNull(scalar('String'))),
+                                        field('id', 'id', args(), notNull(scalar('ID')))
+                                    )),
+                                field('status', 'status', args(), notNull(scalar('String')))
+                            ))
+                    )),
+                    inline('WalletTransactionSubscription', obj(
+                        field('amount', 'amount', args(), notNull(scalar('Int'))),
+                        field('payment', 'payment', args(), obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('id', 'id', args(), notNull(scalar('ID'))),
+                                field('intent', 'intent', args(), obj(
+                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                        field('clientSecret', 'clientSecret', args(), notNull(scalar('String'))),
+                                        field('id', 'id', args(), notNull(scalar('ID')))
+                                    )),
+                                field('status', 'status', args(), notNull(scalar('String')))
+                            ))
+                    )),
+                    inline('WalletTransactionTransferOut', obj(
+                        field('chargeAmount', 'chargeAmount', args(), notNull(scalar('Int'))),
+                        field('payment', 'payment', args(), obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('id', 'id', args(), notNull(scalar('ID'))),
+                                field('intent', 'intent', args(), obj(
+                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                        field('clientSecret', 'clientSecret', args(), notNull(scalar('String'))),
+                                        field('id', 'id', args(), notNull(scalar('ID')))
+                                    )),
+                                field('status', 'status', args(), notNull(scalar('String')))
+                            )),
+                        field('toUser', 'toUser', args(), notNull(obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                fragment('User', UserShortSelector)
+                            ))),
+                        field('walletAmount', 'walletAmount', args(), notNull(scalar('Int')))
+                    )),
+                    inline('WalletTransactionTransferIn', obj(
+                        field('amount', 'amount', args(), notNull(scalar('Int'))),
+                        field('fromUser', 'fromUser', args(), notNull(obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                fragment('User', UserShortSelector)
+                            )))
+                    ))
+                ))),
+            field('status', 'status', args(), notNull(scalar('String')))
+        );
+
+const WalletUpdateFragmentSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            inline('WalletUpdateBalance', obj(
+                field('amount', 'amount', args(), notNull(scalar('Int')))
+            )),
+            inline('WalletUpdateTransactionSuccess', obj(
+                field('transaction', 'transaction', args(), notNull(obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        fragment('WalletTransaction', WalletTransactionFragmentSelector)
+                    )))
+            )),
+            inline('WalletUpdateTransactionCanceled', obj(
+                field('transaction', 'transaction', args(), notNull(obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        fragment('WalletTransaction', WalletTransactionFragmentSelector)
+                    )))
+            )),
+            inline('WalletUpdateTransactionPending', obj(
+                field('transaction', 'transaction', args(), notNull(obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        fragment('WalletTransaction', WalletTransactionFragmentSelector)
+                    )))
+            )),
+            inline('WalletUpdatePaymentStatus', obj(
+                field('payment', 'payment', args(), notNull(obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('id', 'id', args(), notNull(scalar('ID'))),
+                        field('intent', 'intent', args(), obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('clientSecret', 'clientSecret', args(), notNull(scalar('String'))),
+                                field('id', 'id', args(), notNull(scalar('ID')))
+                            )),
+                        field('status', 'status', args(), notNull(scalar('String')))
+                    )))
+            ))
+        );
+
 const AccountSelector = obj(
             field('me', 'me', args(), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -2494,7 +2591,8 @@ const MyCardsSelector = obj(
                     field('expYear', 'expYear', args(), notNull(scalar('Int'))),
                     field('id', 'id', args(), notNull(scalar('ID'))),
                     field('isDefault', 'isDefault', args(), notNull(scalar('Boolean'))),
-                    field('last4', 'last4', args(), notNull(scalar('String')))
+                    field('last4', 'last4', args(), notNull(scalar('String'))),
+                    field('pmid', 'pmid', args(), notNull(scalar('ID')))
                 )))))
         );
 const MyNotificationCenterSelector = obj(
@@ -2543,11 +2641,24 @@ const MySuccessfulInvitesCountSelector = obj(
             field('mySuccessfulInvitesCount', 'mySuccessfulInvitesCount', args(), notNull(scalar('Int')))
         );
 const MyWalletSelector = obj(
-            field('myAccount', 'myAccount', args(), notNull(obj(
+            field('myWallet', 'myWallet', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('balance', 'balance', args(), notNull(scalar('Int'))),
-                    field('id', 'id', args(), notNull(scalar('ID')))
-                )))
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('state', 'state', args(), notNull(scalar('String')))
+                ))),
+            field('transactionsHistory', 'transactionsHistory', args(fieldValue("first", intValue(20))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('cursor', 'cursor', args(), scalar('String')),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('WalletTransaction', WalletTransactionFragmentSelector)
+                        )))))
+                ))),
+            field('transactionsPending', 'transactionsPending', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('WalletTransaction', WalletTransactionFragmentSelector)
+                )))))
         );
 const OauthContextSelector = obj(
             field('oauthContext', 'context', args(fieldValue("code", refValue('code'))), obj(
@@ -3295,19 +3406,6 @@ const UsersSelector = obj(
                     field('name', 'title', args(), notNull(scalar('String')))
                 )))))
         );
-const WalletTransactionsSelector = obj(
-            field('walletTransactions', 'walletTransactions', args(fieldValue("after", refValue('after')), fieldValue("first", refValue('first')), fieldValue("id", refValue('id'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('cursor', 'cursor', args(), scalar('String')),
-                    field('items', 'items', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('amount', 'amount', args(), notNull(scalar('Int'))),
-                            field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('readableState', 'readableState', args(), notNull(scalar('String'))),
-                            field('state', 'state', args(), notNull(scalar('String')))
-                        )))))
-                )))
-        );
 const AccountInviteJoinSelector = obj(
             field('alphaJoinInvite', 'alphaJoinInvite', args(fieldValue("key", refValue('inviteKey'))), notNull(scalar('ID')))
         );
@@ -3351,7 +3449,7 @@ const BetaSubmitNextDiscoverSelector = obj(
                 ))
         );
 const BuyPaidChatPassSelector = obj(
-            field('betaBuyPaidChatPass', 'betaBuyPaidChatPass', args(fieldValue("chatId", refValue('chatId')), fieldValue("paymentMethodId", refValue('paymentMethodId'))), notNull(scalar('Boolean')))
+            field('betaBuyPaidChatPass', 'betaBuyPaidChatPass', args(fieldValue("chatId", refValue('chatId')), fieldValue("paymentMethodId", refValue('paymentMethodId')), fieldValue("retryKey", refValue('retryKey'))), notNull(scalar('Boolean')))
         );
 const CommentSetReactionSelector = obj(
             field('commentReactionAdd', 'commentReactionAdd', args(fieldValue("commentId", refValue('commentId')), fieldValue("reaction", refValue('reaction'))), notNull(scalar('Boolean')))
@@ -3461,8 +3559,8 @@ const DeleteOrganizationSelector = obj(
 const DeleteUserSelector = obj(
             field('superDeleteUser', 'superDeleteUser', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
         );
-const DepositIntentCommitSelector = obj(
-            field('cardDepositIntentCommit', 'cardDepositIntentCommit', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
+const DonateSelector = obj(
+            field('donateToUser', 'donateToUser', args(fieldValue("amount", intValue(100)), fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
         );
 const EditCommentSelector = obj(
             field('editComment', 'editComment', args(fieldValue("fileAttachments", refValue('fileAttachments')), fieldValue("id", refValue('id')), fieldValue("mentions", refValue('mentions')), fieldValue("message", refValue('message')), fieldValue("spans", refValue('spans'))), notNull(scalar('Boolean')))
@@ -3686,6 +3784,12 @@ const OrganizationMemberRemoveSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('id', 'id', args(), notNull(scalar('ID')))
                 )))
+        );
+const PaymentIntentCancelSelector = obj(
+            field('paymentCancel', 'paymentCancel', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
+        );
+const PaymentIntentCommitSelector = obj(
+            field('paymentIntentCommit', 'paymentIntentCommit', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
         );
 const PersistEventsSelector = obj(
             field('track', 'track', args(fieldValue("did", refValue('did')), fieldValue("events", refValue('events')), fieldValue("isProd", refValue('isProd'))), notNull(scalar('String')))
@@ -4219,6 +4323,25 @@ const TypingsWatchSelector = obj(
                         )))
                 )))
         );
+const WalletUpdatesSelector = obj(
+            field('walletUpdates', 'event', args(fieldValue("fromState", refValue('state'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    inline('WalletUpdateSingle', obj(
+                        field('state', 'state', args(), notNull(scalar('String'))),
+                        field('update', 'update', args(), notNull(obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                fragment('WalletUpdate', WalletUpdateFragmentSelector)
+                            )))
+                    )),
+                    inline('WalletUpdateBatch', obj(
+                        field('state', 'state', args(), notNull(scalar('String'))),
+                        field('updates', 'updates', args(), notNull(list(notNull(obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                fragment('WalletUpdate', WalletUpdateFragmentSelector)
+                            )))))
+                    ))
+                )))
+        );
 export const Operations: { [key: string]: OperationDefinition } = {
     Account: {
         kind: 'query',
@@ -4463,7 +4586,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     MyCards: {
         kind: 'query',
         name: 'MyCards',
-        body: 'query MyCards{myCards{__typename brand deleted expMonth expYear id isDefault last4}}',
+        body: 'query MyCards{myCards{__typename brand deleted expMonth expYear id isDefault last4 pmid}}',
         selector: MyCardsSelector
     },
     MyNotificationCenter: {
@@ -4499,7 +4622,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     MyWallet: {
         kind: 'query',
         name: 'MyWallet',
-        body: 'query MyWallet{myAccount{__typename balance id}}',
+        body: 'query MyWallet{myWallet{__typename balance id state}transactionsHistory(first:20){__typename cursor items{__typename ...WalletTransactionFragment}}transactionsPending{__typename ...WalletTransactionFragment}}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}... on WalletTransactionSubscription{amount payment{__typename id intent{__typename clientSecret id}status}}... on WalletTransactionTransferOut{chargeAmount payment{__typename id intent{__typename clientSecret id}status}toUser{__typename ...UserShort}walletAmount}... on WalletTransactionTransferIn{amount fromUser{__typename ...UserShort}}}status}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}',
         selector: MyWalletSelector
     },
     OauthContext: {
@@ -4766,12 +4889,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query Users($query:String!){items:users(query:$query){__typename subtitle:email id title:name}}',
         selector: UsersSelector
     },
-    WalletTransactions: {
-        kind: 'query',
-        name: 'WalletTransactions',
-        body: 'query WalletTransactions($after:String,$first:Int!,$id:ID!){walletTransactions(after:$after,first:$first,id:$id){__typename cursor items{__typename amount id readableState state}}}',
-        selector: WalletTransactionsSelector
-    },
     AccountInviteJoin: {
         kind: 'mutation',
         name: 'AccountInviteJoin',
@@ -4817,7 +4934,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     BuyPaidChatPass: {
         kind: 'mutation',
         name: 'BuyPaidChatPass',
-        body: 'mutation BuyPaidChatPass($chatId:ID!,$paymentMethodId:String!){betaBuyPaidChatPass(chatId:$chatId,paymentMethodId:$paymentMethodId)}',
+        body: 'mutation BuyPaidChatPass($chatId:ID!,$paymentMethodId:String!,$retryKey:String!){betaBuyPaidChatPass(chatId:$chatId,paymentMethodId:$paymentMethodId,retryKey:$retryKey)}',
         selector: BuyPaidChatPassSelector
     },
     CommentSetReaction: {
@@ -4934,11 +5051,11 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'mutation DeleteUser($id:ID!){superDeleteUser(id:$id)}',
         selector: DeleteUserSelector
     },
-    DepositIntentCommit: {
+    Donate: {
         kind: 'mutation',
-        name: 'DepositIntentCommit',
-        body: 'mutation DepositIntentCommit($id:ID!){cardDepositIntentCommit(id:$id)}',
-        selector: DepositIntentCommitSelector
+        name: 'Donate',
+        body: 'mutation Donate($id:ID!){donateToUser(amount:100,id:$id)}',
+        selector: DonateSelector
     },
     EditComment: {
         kind: 'mutation',
@@ -5149,6 +5266,18 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'OrganizationMemberRemove',
         body: 'mutation OrganizationMemberRemove($organizationId:ID!,$userId:ID!){betaOrganizationMemberRemove(organizationId:$organizationId,userId:$userId){__typename id}}',
         selector: OrganizationMemberRemoveSelector
+    },
+    PaymentIntentCancel: {
+        kind: 'mutation',
+        name: 'PaymentIntentCancel',
+        body: 'mutation PaymentIntentCancel($id:ID!){paymentCancel(id:$id)}',
+        selector: PaymentIntentCancelSelector
+    },
+    PaymentIntentCommit: {
+        kind: 'mutation',
+        name: 'PaymentIntentCommit',
+        body: 'mutation PaymentIntentCommit($id:ID!){paymentIntentCommit(id:$id)}',
+        selector: PaymentIntentCommitSelector
     },
     PersistEvents: {
         kind: 'mutation',
@@ -5557,5 +5686,11 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'TypingsWatch',
         body: 'subscription TypingsWatch{typings{__typename cancel conversation:chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}user{__typename firstName id photo}}}',
         selector: TypingsWatchSelector
+    },
+    WalletUpdates: {
+        kind: 'subscription',
+        name: 'WalletUpdates',
+        body: 'subscription WalletUpdates($state:String!){event:walletUpdates(fromState:$state){__typename ... on WalletUpdateSingle{state update{__typename ...WalletUpdateFragment}}... on WalletUpdateBatch{state updates{__typename ...WalletUpdateFragment}}}}fragment WalletUpdateFragment on WalletUpdate{__typename ... on WalletUpdateBalance{amount}... on WalletUpdateTransactionSuccess{transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionCanceled{transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionPending{transaction{__typename ...WalletTransactionFragment}}... on WalletUpdatePaymentStatus{payment{__typename id intent{__typename clientSecret id}status}}}fragment WalletTransactionFragment on WalletTransaction{__typename id operation{__typename ... on WalletTransactionDeposit{amount payment{__typename id intent{__typename clientSecret id}status}}... on WalletTransactionSubscription{amount payment{__typename id intent{__typename clientSecret id}status}}... on WalletTransactionTransferOut{chargeAmount payment{__typename id intent{__typename clientSecret id}status}toUser{__typename ...UserShort}walletAmount}... on WalletTransactionTransferIn{amount fromUser{__typename ...UserShort}}}status}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}',
+        selector: WalletUpdatesSelector
     },
 };
