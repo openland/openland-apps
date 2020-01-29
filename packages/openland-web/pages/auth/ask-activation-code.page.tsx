@@ -113,7 +113,7 @@ export const WebSignUpActivationCode = ({
 
     return (
         <>
-            <AuthToastWrapper isVisible={!emailSending && !!errorText} text={errorText} />
+            <AuthToastWrapper isVisible={!emailSending && !codeSending && !!errorText} text={errorText} />
             <AuthToastWrapper isVisible={emailSending} text="Sending code" type="loading" />
             <AuthToastWrapper isVisible={emailWasResend && !errorText} text="Code successfully sent" type="success" />
             <FormLayout>
@@ -205,13 +205,14 @@ export const AskActivationPage = (props: ActivationCodeProps) => {
                 await completeAuth(token);
             } catch (e) {
                 let message = 'Something went wrong';
-                if (e instanceof AuthError) {
-                    message = e.message;
-                } else if (!navigator.onLine) {
+                if (!navigator.onLine) {
                     message = 'Check your connection and try again';
+                } else if (e instanceof AuthError) {
+                    message = e.message;
                 }
-                setCodeError(message);
+
                 setCodeSending(false);
+                setTimeout(() => { setCodeError(message); }, 100);
             }
 
         }
