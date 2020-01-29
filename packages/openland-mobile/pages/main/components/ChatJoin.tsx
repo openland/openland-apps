@@ -111,11 +111,11 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
         <View style={{ flexGrow: 1, paddingTop: area.top, paddingBottom }}>
             <View style={styles.container}>
                 {joinAvatars}
-                <Text style={[styles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>
+                <Text style={[styles.title, { color: theme.foregroundPrimary }]} numberOfLines={3} allowFontScaling={false}>
                     {joinTitle}
                 </Text>
                 {!!description && (
-                    <Text style={[styles.description, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
+                    <Text style={[styles.description, { color: theme.foregroundSecondary }]} numberOfLines={4} allowFontScaling={false}>
                         {description}
                     </Text>
                 )}
