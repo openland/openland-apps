@@ -225,6 +225,17 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         }
 
         //
+        // SHARED MEDIA
+        //
+        let sharedMediaPattern = new UrlPattern(patternBase + 'mail/:id/shared');
+        let sharedMediaPatternDeep = new UrlPattern(patternBaseDeep + 'mail/:id/shared');
+        let matchSharedMedia = sharedMediaPattern.match(link) || sharedMediaPatternDeep.match(link);
+        if (matchSharedMedia && matchSharedMedia.id) {
+            navigate('SharedMedia', { chatId: matchSharedMedia.id });
+            return;
+        }
+
+        //
         // SHORT_NAME
         //
         let webPublicPaths = publicPaths.map(s => s.slice(1));
