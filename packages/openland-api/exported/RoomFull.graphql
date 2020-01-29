@@ -53,6 +53,7 @@ fragment RoomFull on Room {
       __typename
       ...UserBadge
     }
+    onlineMembersCount
     organization {
       __typename
       ...OrganizationMedium
@@ -68,6 +69,11 @@ fragment RoomFull on Room {
     pinnedMessage {
       __typename
       ...FullMessage
+    }
+    previewMembers {
+      __typename
+      id
+      photo
     }
     requests {
       __typename

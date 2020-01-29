@@ -45,6 +45,7 @@ query ResolvedInvite($key: String!) {
           }
           membersCount
           membership
+          onlineMembersCount
           paidPassIsActive
           paymentSettings {
             __typename
@@ -53,6 +54,11 @@ query ResolvedInvite($key: String!) {
             strategy
           }
           photo
+          previewMembers {
+            __typename
+            id
+            photo
+          }
           socialImage
           title
         }

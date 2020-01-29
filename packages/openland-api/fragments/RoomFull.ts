@@ -36,6 +36,11 @@ export const RoomFull = gql`
             role
             membersCount
             featuredMembersCount
+            onlineMembersCount
+            previewMembers {
+                id
+                photo
+            }
             members {
                 role
                 membership

@@ -32,6 +32,11 @@ export const RoomShort = gql`
             canEdit
             canSendMessage
             membersCount
+            onlineMembersCount
+            previewMembers {
+                id
+                photo
+            }
             pinnedMessage {
                 ...FullMessage
             }

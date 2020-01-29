@@ -51,6 +51,7 @@ internal val ResolvedInviteSelector = obj(
                                         )),
                                     field("membersCount", "membersCount", notNull(scalar("Int"))),
                                     field("membership", "membership", notNull(scalar("String"))),
+                                    field("onlineMembersCount", "onlineMembersCount", notNull(scalar("Int"))),
                                     field("paidPassIsActive", "paidPassIsActive", notNull(scalar("Boolean"))),
                                     field("paymentSettings", "paymentSettings", obj(
                                             field("__typename", "__typename", notNull(scalar("String"))),
@@ -59,6 +60,11 @@ internal val ResolvedInviteSelector = obj(
                                             field("strategy", "strategy", notNull(scalar("String")))
                                         )),
                                     field("photo", "photo", notNull(scalar("String"))),
+                                    field("previewMembers", "previewMembers", notNull(list(notNull(obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("id", "id", notNull(scalar("ID"))),
+                                            field("photo", "photo", scalar("String"))
+                                        ))))),
                                     field("socialImage", "socialImage", scalar("String")),
                                     field("title", "title", notNull(scalar("String")))
                                 ))
@@ -69,6 +75,6 @@ internal val ResolvedInviteSelector = obj(
 val ResolvedInvite = object: OperationDefinition {
     override val name = "ResolvedInvite"
     override val kind = OperationKind.QUERY
-    override val body = "query ResolvedInvite(\$key:String!){invite:alphaResolveInvite(key:\$key){__typename ... on InviteInfo{creator{__typename ...UserShort}id orgId organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo}title}... on AppInvite{inviter{__typename ...UserShort}}... on RoomInvite{id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel isPaid kind matchmaking{__typename enabled}membersCount membership paidPassIsActive paymentSettings{__typename id price strategy}photo socialImage title}}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}"
+    override val body = "query ResolvedInvite(\$key:String!){invite:alphaResolveInvite(key:\$key){__typename ... on InviteInfo{creator{__typename ...UserShort}id orgId organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo}title}... on AppInvite{inviter{__typename ...UserShort}}... on RoomInvite{id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel isPaid kind matchmaking{__typename enabled}membersCount membership onlineMembersCount paidPassIsActive paymentSettings{__typename id price strategy}photo previewMembers{__typename id photo}socialImage title}}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}"
     override val selector = ResolvedInviteSelector
 }

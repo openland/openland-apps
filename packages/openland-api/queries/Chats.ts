@@ -820,6 +820,11 @@ export const RoomInviteInfoQuery = gql`
                     }
                     membership
                     membersCount
+                    onlineMembersCount
+                    previewMembers {
+                        id
+                        photo
+                    }
                     matchmaking {
                         enabled
                     }
@@ -883,6 +888,11 @@ export const ResolvedInviteQuery = gql`
                         description
                         membership
                         membersCount
+                        onlineMembersCount
+                        previewMembers {
+                            id
+                            photo
+                        }
                         matchmaking {
                             enabled
                         }

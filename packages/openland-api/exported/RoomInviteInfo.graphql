@@ -20,6 +20,7 @@ query RoomInviteInfo($invite: String!) {
         }
         membersCount
         membership
+        onlineMembersCount
         organization {
           __typename
           ...OrganizationShort
@@ -32,6 +33,11 @@ query RoomInviteInfo($invite: String!) {
           strategy
         }
         photo
+        previewMembers {
+          __typename
+          id
+          photo
+        }
         socialImage
         title
       }
