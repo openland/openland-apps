@@ -98,6 +98,8 @@ target 'openland' do
   pod 'react-native-mapbox-gl', :path => '../node_modules/@react-native-mapbox-gl/maps'
 
   pod 'react-native-location', :path => '../node_modules/react-native-location'
+  
+  pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
 end
 
 target 'openlandTests' do
