@@ -12,7 +12,7 @@ query RoomInviteInfo($invite: String!) {
         description
         id
         isChannel
-        isPaid
+        isPro
         kind
         matchmaking {
           __typename
@@ -25,18 +25,18 @@ query RoomInviteInfo($invite: String!) {
           __typename
           ...OrganizationShort
         }
-        paidPassIsActive
-        paymentSettings {
-          __typename
-          id
-          price
-          strategy
-        }
         photo
         previewMembers {
           __typename
           id
           photo
+        }
+        proPassIsActive
+        proSettings {
+          __typename
+          id
+          interval
+          price
         }
         socialImage
         title

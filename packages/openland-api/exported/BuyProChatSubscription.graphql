@@ -1,0 +1,3 @@
+mutation BuyProChatSubscription($chatId: ID!) {
+  betaBuyProChatSubscription(chatId: $chatId)
+}

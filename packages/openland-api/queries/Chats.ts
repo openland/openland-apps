@@ -275,11 +275,12 @@ export const RoomChatQuery = gql`
                     id
                     mute
                 }
-                paidPassIsActive
-                paymentSettings {
+                isPro
+                proPassIsActive
+                proSettings {
                     id
                     price
-                    strategy
+                    interval
                 }
             }
         }
@@ -486,7 +487,8 @@ export const RoomCreateMutation = gql`
         $photoRef: ImageRefInput
         $organizationId: ID
         $channel: Boolean!
-        $paid: Boolean
+        $price: Int
+        $interval: WalletSubscriptionInterval
     ) {
         room: betaRoomCreate(
             kind: $kind
@@ -497,23 +499,20 @@ export const RoomCreateMutation = gql`
             photoRef: $photoRef
             organizationId: $organizationId
             channel: $channel
-            paid: $paid
+            price: $price
+            interval: $interval
         ) {
             id
         }
     }
 `;
 
-export const BuyPaidChatPassMutation = gql`
-    mutation BuyPaidChatPass(
+export const BuyProChatSubscriptionMutation = gql`
+    mutation BuyProChatSubscription(
         $chatId: ID!
-        $paymentMethodId: String!
-        $retryKey: String!
     ) {
-        betaBuyPaidChatPass(
+        betaBuyProChatSubscription(
             chatId: $chatId
-            paymentMethodId: $paymentMethodId
-            retryKey: $retryKey
         )
     }
 `;
@@ -828,12 +827,12 @@ export const RoomInviteInfoQuery = gql`
                     matchmaking {
                         enabled
                     }
-                    isPaid
-                    paidPassIsActive
-                    paymentSettings{
+                    isPro
+                    proPassIsActive
+                    proSettings{
                         id
                         price
-                        strategy
+                        interval
                     }
                 }
             }
@@ -896,12 +895,12 @@ export const ResolvedInviteQuery = gql`
                         matchmaking {
                             enabled
                         }
-                        isPaid
-                        paidPassIsActive
-                        paymentSettings{
+                        isPro
+                        proPassIsActive
+                        proSettings{
                             id
                             price
-                            strategy
+                            interval
                         }
                     }
                 }

@@ -80,12 +80,12 @@ export const RoomFull = gql`
             myBadge {
                 ...UserBadge
             }
-            isPaid
-            paidPassIsActive
-            paymentSettings{
+            isPro
+            proPassIsActive
+            proSettings{
                 id
                 price
-                strategy
+                interval
             }
         }
     }

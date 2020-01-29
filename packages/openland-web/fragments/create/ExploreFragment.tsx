@@ -5,7 +5,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { SearchBox } from './SearchBox';
 import { XLoader } from 'openland-x/XLoader';
 import { ExplorePeople } from './ExplorePeople';
-import { SharedRoomKind, ImageRefInput } from 'openland-api/Types';
+import { SharedRoomKind, ImageRefInput, WalletSubscriptionInterval } from 'openland-api/Types';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 
 const headerContainer = css`
@@ -95,7 +95,8 @@ const ExplorePeopleComponent = React.memo((props: CreateEntityInterface) => {
                 members: skip ? [] : !!selectedUsers ? [...selectedUsers.keys()] : [],
                 organizationId: props.inOrgId || '',
                 channel: props.entityType === 'channel',
-                paid: props.isPaid
+                price: props.isPaid ? 500 : undefined,
+                interval: WalletSubscriptionInterval.MONTH,
             })).room;
 
             props.hide();

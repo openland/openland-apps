@@ -27,7 +27,7 @@ fragment RoomFull on Room {
     featuredMembersCount
     id
     isChannel
-    isPaid
+    isPro
     kind
     matchmaking {
       __typename
@@ -58,13 +58,6 @@ fragment RoomFull on Room {
       __typename
       ...OrganizationMedium
     }
-    paidPassIsActive
-    paymentSettings {
-      __typename
-      id
-      price
-      strategy
-    }
     photo
     pinnedMessage {
       __typename
@@ -74,6 +67,13 @@ fragment RoomFull on Room {
       __typename
       id
       photo
+    }
+    proPassIsActive
+    proSettings {
+      __typename
+      id
+      interval
+      price
     }
     requests {
       __typename

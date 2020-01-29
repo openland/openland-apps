@@ -6,6 +6,7 @@ import {
     ResolvedInvite_invite_InviteInfo_organization,
     SharedRoomMembershipStatus,
     RoomChat_room_SharedRoom,
+    WalletSubscriptionInterval,
 } from 'openland-api/Types';
 import { XView, XViewRouterContext } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
@@ -23,8 +24,6 @@ import { trackEvent } from 'openland-x-analytics';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { showPayConfirm } from '../wallet/components/showPaymentConfirm';
-import { NotFound } from 'openland-unicorn/NotFound';
-import UUID from 'uuid/v4';
 
 const RootClassName = css`
     position: relative;
@@ -271,15 +270,14 @@ const InviteLandingComponentLayout = ({
     );
 };
 
-const BuyPaidChatPassButton = (props: { id: string; paymentSettings: { price: number }, title: string }) => {
+const BuyPaidChatPassButton = (props: { id: string; paymentSettings: { price: number, interval: WalletSubscriptionInterval }, title: string }) => {
     const client = useClient();
     let router = React.useContext(XViewRouterContext)!;
     const [loading, setLoading] = React.useState(false);
     const buyPaidChatPass = React.useCallback(async () => {
-        const retryKey = UUID();
-        showPayConfirm(props.paymentSettings.price, 'payment', `Membership in "${props.title}"`, async (paymentMethodId) => {
+        showPayConfirm(props.paymentSettings.price, props.paymentSettings.interval, `Membership in "${props.title}"`, async () => {
             try {
-                let res = await client.mutateBuyPaidChatPass({ chatId: props.id, paymentMethodId, retryKey });
+                let res = await client.mutateBuyProChatSubscription({ chatId: props.id });
                 if (res) {
                     router.navigate('/mail/' + props.id);
                 }
@@ -294,13 +292,13 @@ const BuyPaidChatPassButton = (props: { id: string; paymentSettings: { price: nu
 };
 
 const resolveRoomButton = (
-    room: { id: string; membership: SharedRoomMembershipStatus, paymentSettings?: { price: number } | null, paidPassIsActive: boolean, title: string },
+    room: { id: string; membership: SharedRoomMembershipStatus, proSettings?: { price: number, interval: WalletSubscriptionInterval } | null, proPassIsActive: boolean, title: string },
     key?: string,
     matchmaking?: boolean,
 ) => {
     const [loading, setLoading] = React.useState(false);
-    if (room && room.paymentSettings && !room.paidPassIsActive) {
-        return <BuyPaidChatPassButton id={room.id} paymentSettings={room.paymentSettings} title={room.title} />;
+    if (room && room.proSettings && !room.proPassIsActive) {
+        return <BuyPaidChatPassButton id={room.id} paymentSettings={room.proSettings} title={room.title} />;
     } else if (
         room &&
         (room.membership === 'NONE' ||
@@ -374,10 +372,6 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     let invitedByUser;
     let matchmaking = undefined;
 
-    if (!room && !organization) {
-        return <NotFound />;
-    }
-
     if (invite.invite && invite.invite.__typename === 'InviteInfo' && invite.invite.organization) {
         organization = invite.invite.organization;
         invitedByUser = invite.invite.creator;
@@ -395,14 +389,14 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     }
 
     let button: JSX.Element | undefined;
-    const isPaid = room && room.isPaid;
+    const isPaid = room && room.isPro;
     console.warn(loggedIn, room);
     if (!loggedIn) {
         button = (
             <UButton
                 style={isPaid ? 'pay' : 'primary'}
                 size="large"
-                text={(room && room.paymentSettings) ? `Pay ${formatMoney(room.paymentSettings.price)}` : 'Accept invitation'}
+                text={(room && room.proSettings) ? `Pay ${formatMoney(room.proSettings.price)}` : 'Accept invitation'}
                 alignSelf="center"
                 flexShrink={0}
                 path={!matchmaking ? signupRedirect : undefined}

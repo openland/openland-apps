@@ -1604,7 +1604,7 @@ internal val RoomFullSelector = obj(
                 field("featuredMembersCount", "featuredMembersCount", notNull(scalar("Int"))),
                 field("id", "id", notNull(scalar("ID"))),
                 field("isChannel", "isChannel", notNull(scalar("Boolean"))),
-                field("isPaid", "isPaid", notNull(scalar("Boolean"))),
+                field("isPro", "isPro", notNull(scalar("Boolean"))),
                 field("kind", "kind", notNull(scalar("String"))),
                 field("matchmaking", "matchmaking", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -1635,13 +1635,6 @@ internal val RoomFullSelector = obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("Organization", OrganizationMediumSelector)
                     )),
-                field("paidPassIsActive", "paidPassIsActive", notNull(scalar("Boolean"))),
-                field("paymentSettings", "paymentSettings", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("price", "price", notNull(scalar("Int"))),
-                        field("strategy", "strategy", notNull(scalar("String")))
-                    )),
                 field("photo", "photo", notNull(scalar("String"))),
                 field("pinnedMessage", "pinnedMessage", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -1652,6 +1645,13 @@ internal val RoomFullSelector = obj(
                         field("id", "id", notNull(scalar("ID"))),
                         field("photo", "photo", scalar("String"))
                     ))))),
+                field("proPassIsActive", "proPassIsActive", notNull(scalar("Boolean"))),
+                field("proSettings", "proSettings", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("interval", "interval", notNull(scalar("String"))),
+                        field("price", "price", notNull(scalar("Int")))
+                    )),
                 field("requests", "requests", list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("user", "user", notNull(obj(

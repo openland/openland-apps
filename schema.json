@@ -9094,7 +9094,7 @@
             "deprecationReason": null
           },
           {
-            "name": "isPaid",
+            "name": "isPro",
             "description": null,
             "args": [],
             "type": {
@@ -9110,7 +9110,7 @@
             "deprecationReason": null
           },
           {
-            "name": "paidPassIsActive",
+            "name": "proPassIsActive",
             "description": null,
             "args": [],
             "type": {
@@ -9126,12 +9126,12 @@
             "deprecationReason": null
           },
           {
-            "name": "paymentSettings",
+            "name": "proSettings",
             "description": null,
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "PaidChatSettings",
+              "name": "ProChatSettings",
               "ofType": null
             },
             "isDeprecated": false,
@@ -10697,7 +10697,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "PaidChatSettings",
+        "name": "ProChatSettings",
         "description": null,
         "fields": [
           {
@@ -10733,7 +10733,7 @@
             "deprecationReason": null
           },
           {
-            "name": "strategy",
+            "name": "interval",
             "description": null,
             "args": [],
             "type": {
@@ -10741,7 +10741,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "PaidChatStrategy",
+                "name": "WalletSubscriptionInterval",
                 "ofType": null
               }
             },
@@ -10756,20 +10756,20 @@
       },
       {
         "kind": "ENUM",
-        "name": "PaidChatStrategy",
+        "name": "WalletSubscriptionInterval",
         "description": null,
         "fields": null,
         "inputFields": null,
         "interfaces": null,
         "enumValues": [
           {
-            "name": "ONE_TIME",
+            "name": "MONTH",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "SUBSCRIPTION",
+            "name": "WEEK",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -31033,11 +31033,21 @@
                 "defaultValue": null
               },
               {
-                "name": "paid",
+                "name": "price",
                 "description": null,
                 "type": {
                   "kind": "SCALAR",
-                  "name": "Boolean",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "interval",
+                "description": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "WalletSubscriptionInterval",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -31518,7 +31528,7 @@
             "deprecationReason": null
           },
           {
-            "name": "betaBuyPaidChatPass",
+            "name": "betaBuyProChatSubscription",
             "description": null,
             "args": [
               {
@@ -31530,34 +31540,6 @@
                   "ofType": {
                     "kind": "SCALAR",
                     "name": "ID",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "paymentMethodId",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "retryKey",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
                     "ofType": null
                   }
                 },
