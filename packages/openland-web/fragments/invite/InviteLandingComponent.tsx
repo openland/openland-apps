@@ -23,6 +23,7 @@ import { trackEvent } from 'openland-x-analytics';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { showPayConfirm } from '../wallet/components/showPaymentConfirm';
+import { NotFound } from 'openland-unicorn/NotFound';
 
 const RootClassName = css`
     position: relative;
@@ -372,7 +373,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     let matchmaking = undefined;
 
     if (!room && !organization) {
-        return <div>not found</div>;
+        return <NotFound />;
     }
 
     if (invite.invite && invite.invite.__typename === 'InviteInfo' && invite.invite.organization) {

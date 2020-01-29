@@ -10,6 +10,7 @@ import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { AuthHeaderConfig } from './root.page';
+import { NotFound } from 'openland-unicorn/NotFound';
 
 const LogoBig = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="228" height="66" fill="none" viewBox="0 0 228 66">
@@ -106,7 +107,7 @@ export const AcceptInvitePage = (props: {
     });
 
     if (!resolvedInvite || !resolvedInvite.invite) {
-        return <div>not found</div>
+        return <NotFound />;
     }
 
     let inviter;

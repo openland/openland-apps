@@ -136,7 +136,9 @@ interface AuthHeaderInstance {
     setOnSkip: (callback?: (event: React.MouseEvent) => void) => void;
 }
 const AuthHeader = React.memo(React.forwardRef((props: {}, ref: React.Ref<AuthHeaderInstance>) => {
-    const [onBack, setOnBack] = React.useState<{ callback?: (event: React.MouseEvent) => void }>({ callback: (event: React.MouseEvent) => {/**/ } });
+    const [onBack, setOnBack] = React.useState<{ callback?: (event: React.MouseEvent) => void }>({ callback: (event: React.MouseEvent) => {
+        history.back();
+    } });
     const [onSkip, setOnSkip] = React.useState<{ callback?: (event: React.MouseEvent) => void }>({ callback: undefined });
 
     React.useImperativeHandle(ref, () => ({
