@@ -35,7 +35,7 @@ const AsyncFileItem = React.memo(({ message, attachment, index, imageSize, chatI
         const d = DownloadManagerInstance.watch(attachment.fileId, fullScreenSize, state => {
 
             if (state.path) {
-                fsPathRef.current = 'file://' + state.path;
+                fsPathRef.current = state.path;
             }
         });
         const srcImgSize = Math.round(imageSize * PixelRatio.get());
