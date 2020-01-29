@@ -11,6 +11,7 @@ import { useClient } from 'openland-mobile/utils/useClient';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { useLastSeen } from 'openland-y-utils/LastSeen';
 import { TextStyles, CompensationAlpha } from 'openland-mobile/styles/AppStyles';
+import Lottie from 'lottie-react-native';
 
 const styles = StyleSheet.create({
     title: {
@@ -80,7 +81,7 @@ const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: s
 
     if (typing) {
         accent = true;
-        subtitle = 'typing...';
+        subtitle = 'typing';
     }
 
     return (
@@ -95,7 +96,27 @@ const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: s
                     />
                 )}
             </View>
-            <Text style={[styles.subTitle, { color: accent ? theme.accentPrimary : theme.foregroundSecondary }]} allowFontScaling={false}>{subtitle}</Text>
+            
+            <View flexDirection="row" alignItems="center">
+                { typing && (
+                    <Lottie
+                        loop={true}
+                        autoPlay={true}
+                        resizeMode="contain"
+                        source={require('assets/animations/typing.json')}
+                        style={{
+                            width: 16,
+                            height: 16,
+                        }}
+                        colorFilters={[{
+                            keypath: "Ellipse 1",
+                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                        }]}
+                    />
+                )}
+                <Text style={[styles.subTitle, { color: accent ? theme.accentPrimary : theme.foregroundSecondary }]} allowFontScaling={false}>{subtitle}</Text>
+            </View>
+
         </View>
     );
 });
