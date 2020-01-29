@@ -2095,6 +2095,13 @@ private let DiscoverNextPageSelector = obj(
         )
 private let DiscoverStateSelector = obj(
             field("betaIsDiscoverDone", "betaIsDiscoverDone", notNull(scalar("Boolean"))),
+            field("dialogs", "dialogs", arguments(fieldValue("first", intValue(1))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID")))
+                        )))))
+                ))),
             field("isDiscoverSkipped", "isDiscoverSkipped", notNull(scalar("Boolean")))
         )
 private let ExploreCommunitySelector = obj(
@@ -4313,7 +4320,7 @@ class Operations {
     let DiscoverState = OperationDefinition(
         "DiscoverState",
         .query, 
-        "query DiscoverState{betaIsDiscoverDone isDiscoverSkipped}",
+        "query DiscoverState{betaIsDiscoverDone dialogs(first:1){__typename items{__typename id}}isDiscoverSkipped}",
         DiscoverStateSelector
     )
     let ExploreCommunity = OperationDefinition(

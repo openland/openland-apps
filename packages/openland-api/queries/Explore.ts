@@ -194,5 +194,10 @@ export const DiscoverStateQuery = gql`
     query DiscoverState {
         isDiscoverSkipped
         betaIsDiscoverDone
+        dialogs(first: 1) {
+            items {
+                id
+            }
+        }
     }
 `;

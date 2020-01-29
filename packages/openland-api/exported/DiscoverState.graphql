@@ -1,4 +1,11 @@
 query DiscoverState {
   betaIsDiscoverDone
+  dialogs(first: 1) {
+    __typename
+    items {
+      __typename
+      id
+    }
+  }
   isDiscoverSkipped
 }

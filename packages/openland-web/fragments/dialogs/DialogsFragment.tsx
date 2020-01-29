@@ -20,7 +20,10 @@ const DialogsCounter = React.memo(() => {
 const BotActivator = () => {
     const client = useClient();
     const discoverState = client.useWithoutLoaderDiscoverState();
-    if (discoverState && !discoverState.isDiscoverSkipped && !discoverState.betaIsDiscoverDone) {
+    if (!discoverState) {
+        return null;
+    }
+    if (!discoverState.isDiscoverSkipped && !discoverState.betaIsDiscoverDone || discoverState.dialogs.items.length === 0) {
         client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
     }
     return null;
