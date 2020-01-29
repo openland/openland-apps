@@ -106,7 +106,7 @@ export const AcceptInvitePage = (props: {
     });
 
     if (!resolvedInvite || !resolvedInvite.invite) {
-        return <XLoader loading={true} />;
+        return <div>not found</div>
     }
 
     let inviter;

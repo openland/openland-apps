@@ -371,6 +371,10 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     let invitedByUser;
     let matchmaking = undefined;
 
+    if (!room && !organization) {
+        return <div>not found</div>;
+    }
+
     if (invite.invite && invite.invite.__typename === 'InviteInfo' && invite.invite.organization) {
         organization = invite.invite.organization;
         invitedByUser = invite.invite.creator;
