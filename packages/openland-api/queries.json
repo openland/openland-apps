@@ -11967,22 +11967,8 @@
 			"operationType": "query",
 			"rootType": "Query",
 			"variables": [],
-			"source": "query DiscoverState {\n  isDiscoverSkipped\n  betaIsDiscoverDone\n  dialogs(first: 1) {\n    __typename\n    items {\n      __typename\n      id\n    }\n  }\n}",
+			"source": "query DiscoverState {\n  dialogs(first: 1) {\n    __typename\n    items {\n      __typename\n      id\n    }\n  }\n}",
 			"fields": [
-				{
-					"responseName": "isDiscoverSkipped",
-					"fieldName": "isDiscoverSkipped",
-					"type": "Boolean!",
-					"isConditional": false,
-					"isDeprecated": false
-				},
-				{
-					"responseName": "betaIsDiscoverDone",
-					"fieldName": "betaIsDiscoverDone",
-					"type": "Boolean!",
-					"isConditional": false,
-					"isDeprecated": false
-				},
 				{
 					"responseName": "dialogs",
 					"fieldName": "dialogs",
@@ -12035,8 +12021,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "query DiscoverState {\n  isDiscoverSkipped\n  betaIsDiscoverDone\n  dialogs(first: 1) {\n    __typename\n    items {\n      __typename\n      id\n    }\n  }\n}",
-			"operationId": "69bad98b95a06c0b43ddbd100f8ce5c97b9562cf6e421ca32b439cac7b72e05b"
+			"sourceWithFragments": "query DiscoverState {\n  dialogs(first: 1) {\n    __typename\n    items {\n      __typename\n      id\n    }\n  }\n}",
+			"operationId": "5eaebf4d487b131f199109fd8ac40b891b21885edfbcf30f9109189c44e58ca5"
 		},
 		{
 			"filePath": "file:///Users/mac/code/openland-apps/packages/openland-api/queries/FeatureFlag.ts",

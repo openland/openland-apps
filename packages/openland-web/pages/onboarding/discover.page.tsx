@@ -359,7 +359,6 @@ export const DiscoverOnLocalState = ({
     );
 
     const onChatsForYouSkip = React.useCallback(async () => {
-        await client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
         router.push('/mail/');
     }, []);
 

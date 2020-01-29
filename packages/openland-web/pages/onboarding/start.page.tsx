@@ -135,6 +135,13 @@ export default withApp('Home', 'viewer', () => {
     const router = React.useContext(XRouterContext)!;
     const client = useClient();
 
+    const isDiscoverDone = client.useDiscoverIsDone().betaIsDiscoverDone;
+
+    if (isDiscoverDone) {
+        router.push('/onboarding/discover');
+        return null;
+    }
+
     const onSkip = React.useCallback(async () => {
         await client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
         router.push('/');

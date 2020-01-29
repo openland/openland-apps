@@ -2203,15 +2203,13 @@ private let DiscoverNextPageSelector = obj(
                 ))
         )
 private let DiscoverStateSelector = obj(
-            field("betaIsDiscoverDone", "betaIsDiscoverDone", notNull(scalar("Boolean"))),
             field("dialogs", "dialogs", arguments(fieldValue("first", intValue(1))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("id", "id", notNull(scalar("ID")))
                         )))))
-                ))),
-            field("isDiscoverSkipped", "isDiscoverSkipped", notNull(scalar("Boolean")))
+                )))
         )
 private let ExploreCommunitySelector = obj(
             field("alphaComunityPrefixSearch", "items", arguments(fieldValue("after", refValue("after")), fieldValue("featuredIfEmptyQuery", refValue("featuredIfEmptyQuery")), fieldValue("first", intValue(25)), fieldValue("page", refValue("page")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
@@ -4467,7 +4465,7 @@ class Operations {
     let DiscoverState = OperationDefinition(
         "DiscoverState",
         .query, 
-        "query DiscoverState{betaIsDiscoverDone dialogs(first:1){__typename items{__typename id}}isDiscoverSkipped}",
+        "query DiscoverState{dialogs(first:1){__typename items{__typename id}}}",
         DiscoverStateSelector
     )
     let ExploreCommunity = OperationDefinition(

@@ -2206,15 +2206,13 @@ const DiscoverNextPageSelector = obj(
                 ))
         );
 const DiscoverStateSelector = obj(
-            field('betaIsDiscoverDone', 'betaIsDiscoverDone', args(), notNull(scalar('Boolean'))),
             field('dialogs', 'dialogs', args(fieldValue("first", intValue(1))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('items', 'items', args(), notNull(list(notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             field('id', 'id', args(), notNull(scalar('ID')))
                         )))))
-                ))),
-            field('isDiscoverSkipped', 'isDiscoverSkipped', args(), notNull(scalar('Boolean')))
+                )))
         );
 const ExploreCommunitySelector = obj(
             field('alphaComunityPrefixSearch', 'items', args(fieldValue("after", refValue('after')), fieldValue("featuredIfEmptyQuery", refValue('featuredIfEmptyQuery')), fieldValue("first", intValue(25)), fieldValue("page", refValue('page')), fieldValue("query", refValue('query')), fieldValue("sort", refValue('sort'))), notNull(obj(
@@ -4466,7 +4464,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     DiscoverState: {
         kind: 'query',
         name: 'DiscoverState',
-        body: 'query DiscoverState{betaIsDiscoverDone dialogs(first:1){__typename items{__typename id}}isDiscoverSkipped}',
+        body: 'query DiscoverState{dialogs(first:1){__typename items{__typename id}}}',
         selector: DiscoverStateSelector
     },
     ExploreCommunity: {

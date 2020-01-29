@@ -23,7 +23,7 @@ const BotActivator = () => {
     if (!discoverState) {
         return null;
     }
-    if (!discoverState.isDiscoverSkipped && !discoverState.betaIsDiscoverDone || discoverState.dialogs.items.length === 0) {
+    if (discoverState.dialogs.items.length === 0) {
         client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
     }
     return null;

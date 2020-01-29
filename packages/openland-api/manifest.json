@@ -793,10 +793,10 @@
       }
     },
     {
-      "signature": "a5150a75ce61b8e37baffeeadb27fb06b79930a01f7c0ac250d2856b1c8eb3be",
-      "document": "query DiscoverState{betaIsDiscoverDone dialogs(first:1){__typename items{__typename id}}isDiscoverSkipped}",
+      "signature": "90d43a9b503a8fe92cb6f0c11da3c5864c09bbd17e63d3ca0889b3e2d80ea8a1",
+      "document": "query DiscoverState{dialogs(first:1){__typename items{__typename id}}}",
       "metadata": {
-        "engineSignature": "query DiscoverState{betaIsDiscoverDone dialogs(first:0){__typename items{__typename id}}isDiscoverSkipped}"
+        "engineSignature": "query DiscoverState{dialogs(first:0){__typename items{__typename id}}}"
       }
     },
     {
