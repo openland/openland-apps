@@ -4,7 +4,7 @@ import { DataSource } from 'openland-y-utils/DataSource';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 
 export interface MessagesActionsState {
-    action?: 'forward' | 'reply' | 'edit';
+    action?: 'forward' | 'reply' | 'edit' | 'select';
     messages: DataSourceMessageItem[];
 }
 
@@ -13,7 +13,7 @@ export class MessagesActionsStateEngine {
     private listeners = new Set<(state: MessagesActionsState) => void>();
     private engine: MessengerEngine;
 
-    constructor (engine: MessengerEngine) {
+    constructor(engine: MessengerEngine) {
         this.engine = engine;
     }
 
@@ -37,13 +37,13 @@ export class MessagesActionsStateEngine {
     }
 
     selectToggle = (message: DataSourceMessageItem) => {
-        if (this.state.action) {
+        if (this.state.action && this.state.action !== 'select') {
             return;
         }
         if (!(this.state.messages || []).find(m => (m.key === message.key))) {
-            this.setState({ messages: [...this.state.messages, message] });
+            this.setState({ messages: [...this.state.messages, message], action: 'select' });
         } else {
-            this.setState({ messages: this.state.messages.filter(m => m.key !== message.key) });
+            this.setState({ messages: this.state.messages.filter(m => m.key !== message.key), action: 'select' });
         }
     }
 
@@ -78,7 +78,7 @@ export class MessagesActionsStateEngine {
 
     listenSelect = (message: DataSourceMessageItem, listener: (selected: boolean) => void) => {
         return this.listen((s) => {
-            listener(!!s.messages.find(m => (m.key === message.key)) && !s.action);
+            listener(!!s.messages.find(m => (m.key === message.key)) && s.action === 'select');
         });
     }
 
@@ -116,7 +116,7 @@ export const useMessageSelected = (engine: MessagesActionsStateEngine, message: 
     let [selected, setSelected] = React.useState(false);
     React.useEffect(() => {
         return engine.listen((s) => {
-            setSelected(!!s.messages.find(m => (m.key === message.key)) && !s.action);
+            setSelected(!!s.messages.find(m => (m.key === message.key)) && s.action === 'select');
         });
     }, [message]);
     let toggleSelect = React.useCallback(() => {
@@ -129,7 +129,7 @@ export const useChatSelectionMode = (engine: MessagesActionsStateEngine) => {
     let [selectionActive, setSelectionActive] = React.useState(false);
     React.useEffect(() => {
         return engine.listen((s) => {
-            setSelectionActive(s.messages.length > 0 && !s.action);
+            setSelectionActive(s.action === 'select');
         });
     });
     return selectionActive;

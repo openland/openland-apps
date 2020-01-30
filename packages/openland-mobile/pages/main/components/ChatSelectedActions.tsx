@@ -15,7 +15,9 @@ import { SCloseButton } from 'react-native-s/SCloseButton';
 import { plural } from 'openland-y-utils/plural';
 
 export const ChatSelectedActionsHeader = (props: { messagesCount: number, cancel: () => void }) => {
-    const messagesText = plural(props.messagesCount, ['message', 'messages']);
+    const messagesText = props.messagesCount > 0
+        ? `${plural(props.messagesCount, ['message', 'messages'])} selected`
+        : 'Select messages';
     const theme = React.useContext(ThemeContext);
     const height = Platform.OS === 'android' ? 56 : 44;
 
@@ -35,7 +37,7 @@ export const ChatSelectedActionsHeader = (props: { messagesCount: number, cancel
                 />
             </View>
             <Text style={{ ...TextStyles.Headline, textAlign: 'center', color: theme.foregroundPrimary }} allowFontScaling={false}>
-                {messagesText} selected
+                {messagesText}
             </Text>
         </View>
     );
@@ -70,6 +72,7 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
     let height = 52;
 
     let canDelete = true;
+    const hasSelectedMessages = props.conversation.messagesActionsStateEngine.getState().messages.length > 0;
 
     if (!SUPER_ADMIN) {
         props.conversation.messagesActionsStateEngine.getState().messages.map(m => {
@@ -78,19 +81,21 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
             }
         });
     }
+    const isDeleteDisabled = !canDelete || !hasSelectedMessages;
+    const isForwardDisabled = !hasSelectedMessages;
 
     let res =
         <View flexGrow={1} flexDirection="row" alignItems="center">
             <View flexGrow={1} justifyContent="center" alignItems="center">
-                <TouchableOpacity onPress={del} disabled={!canDelete}>
-                    <View style={{ height: height, alignItems: 'center', justifyContent: 'center', opacity: canDelete ? 1 : 0.24, }}>
+                <TouchableOpacity onPress={del} disabled={isDeleteDisabled}>
+                    <View style={{ height: height, alignItems: 'center', justifyContent: 'center', opacity: isDeleteDisabled ? 0.24 : 1, }}>
                         <Image source={require('assets/ic-delete-24.png')} style={{ tintColor: theme.foregroundSecondary }} />
                     </View>
                 </TouchableOpacity>
             </View>
             <View flexGrow={1}>
-                <TouchableOpacity onPress={fwd}>
-                    <View style={{ height: height, alignItems: 'center', justifyContent: 'center', }}>
+                <TouchableOpacity onPress={fwd} disabled={isForwardDisabled}>
+                    <View style={{ height: height, alignItems: 'center', justifyContent: 'center', opacity: isForwardDisabled ? 0.24 : 1, }}>
                         <Image source={require('assets/ic-forward-24.png')} style={{ tintColor: theme.foregroundSecondary }} />
                     </View>
                 </TouchableOpacity>

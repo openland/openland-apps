@@ -158,7 +158,7 @@ export const MessagesActionsHeader = (props: { chatId: string }) => {
     React.useEffect(() => {
         engine.listen(state => {
             if (containerRef.current) {
-                containerRef.current.className = cx(containerClass, state.messages.length && !state.action && containerVisibleClass);
+                containerRef.current.className = cx(containerClass, state.messages.length && state.action === 'select' && containerVisibleClass);
             }
         });
     }, []);
