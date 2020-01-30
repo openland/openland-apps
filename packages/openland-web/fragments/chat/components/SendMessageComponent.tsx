@@ -43,6 +43,7 @@ const mentionContainer = css`
     padding-left: 16px;
     padding-right: 16px;
     justify-content: start;
+    overflow: hidden;
 `;
 
 const mentionUserDataWrap = css`
@@ -54,12 +55,18 @@ const mentionUserDataWrap = css`
 
 const userName = css`
     color: var(--foregroundPrimary);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 `;
 
 const userOrg = css`
     margin-left: 8px;
     margin-top: 2px;
     color: var(--foregroundTertiary);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
 `;
 
 const allMentionIcon = css`

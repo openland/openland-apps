@@ -16,6 +16,7 @@ const style = css`
 const wrapper = css`
     padding: 8px 0;
     max-height: 70vh;
+    max-width: 60vw;
     overflow-y: scroll;
 `;
 
