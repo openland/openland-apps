@@ -127,7 +127,7 @@ export class DialogListEngine {
                 //     }
                 // }
                 return {
-                    items: res.dialogs.items.map((v) => extractDialog(v, engine.user.id)),
+                    items: res.dialogs.items.filter((v) => !!v.topMessage).map((v) => extractDialog(v, engine.user.id)),
                     cursor: res.dialogs.cursor ? res.dialogs.cursor : undefined,
                     state: res.state.state!!
                 };
@@ -281,10 +281,14 @@ export class DialogListEngine {
         let existing = await this._dataSourceStored.getItem(cid);
 
         if (existing && existing.messageId === mid) {
-            await this._dataSourceStored.updateItem(extractDialog({
-                id: existing.key,
-                cid: cid, fid: existing.flexibleId, kind: existing.kind as DialogKind, isChannel: !!existing.isChannel, title: existing.title, photo: existing.photo || '', unreadCount: unread, topMessage: prevMessage, isMuted: !!existing.isMuted, haveMention: haveMention, __typename: "Dialog"
-            }, uid));
+            if (prevMessage === null) {
+                await this._dataSourceStored.removeItem(existing.key);
+            } else {
+                await this._dataSourceStored.updateItem(extractDialog({
+                    id: existing.key,
+                    cid: cid, fid: existing.flexibleId, kind: existing.kind as DialogKind, isChannel: !!existing.isChannel, title: existing.title, photo: existing.photo || '', unreadCount: unread, topMessage: prevMessage, isMuted: !!existing.isMuted, haveMention: haveMention, __typename: "Dialog"
+                }, uid));
+            }
         }
     }
 
