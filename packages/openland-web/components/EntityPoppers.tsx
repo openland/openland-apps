@@ -18,6 +18,7 @@ export const useUserPopper = (props: UserPopperProps) => {
             scope: 'entity-popper',
             useWrapper: !props.noCardOnMe || !props.isMe,
             showTimeout: 400,
+            hideOnChildClick: true,
         },
         ctx => (
             <UserPopperContent
