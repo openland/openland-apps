@@ -108,6 +108,20 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     const hasText = !!(message.text);
     const hasUrlAug = !!augmenationAttach;
 
+    const hasReplyWithAttachments = !!(
+        hasReply && 
+        message.reply![message.reply!.length - 1].attachments && 
+        message.reply![message.reply!.length - 1].attachments!.length > 0
+    );
+
+    const lastReplyAttachments = hasReplyWithAttachments
+        ? message.reply![message.reply!.length - 1].attachments
+        : [];
+
+    const lastReplyAttachment = lastReplyAttachments![lastReplyAttachments!.length - 1] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+    const lastReplyAttachmentIsImage = !!(lastReplyAttachment && lastReplyAttachment.fileMetadata.isImage);
+
     const sticker = message.sticker && message.sticker.__typename === 'ImageSticker' ? message.sticker : undefined;
 
     const isEmojiOnly = message.textSpans.length === 1 && message.textSpans[0].type === 'emoji' && (message.attachments || []).length === 0 && (message.reply || []).length === 0;
@@ -171,6 +185,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         hasDocument,
         hasImage,
         hasReply,
+        lastReplyAttachmentIsImage,
         hasText,
         hasUrlAug,
         topContent,
@@ -190,6 +205,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
     const {
         hasDocument,
         hasImage,
+        lastReplyAttachmentIsImage,
         hasText,
         imageOnly,
         topContent,
@@ -211,7 +227,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
     const fixedSize = !imageOnly && (imageLayout || richAttachImageLayout);
     const isImageBottom = hasImage && !hasText && !hasDocument;
     // sorry
-    const shiftMeta = !!(!bottomContent.length && (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment' && a.keyboard).length);
+    const shiftMeta = !!(!bottomContent.length && (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment' && a.keyboard).length) || lastReplyAttachmentIsImage;
     const meta = <MetaInfoIndicator type={isImageBottom ? 'media' : 'default'} message={message} theme={theme} />;
 
     const bubbleBackgroundPrimary = message.isOut ? theme.outgoingBackgroundPrimary : theme.incomingBackgroundPrimary;
