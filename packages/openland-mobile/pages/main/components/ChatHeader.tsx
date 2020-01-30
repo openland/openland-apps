@@ -111,7 +111,13 @@ const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: s
                             marginTop: 0.5,
                         }}
                         colorFilters={[{
-                            keypath: "Ellipse 1",
+                            keypath: "1",
+                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                        }, {
+                            keypath: "2",
+                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                        }, {
+                            keypath: "3",
                             color: accent ? theme.accentPrimary : theme.foregroundSecondary
                         }]}
                     />
