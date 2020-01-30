@@ -352,7 +352,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         let showPinAuthor = sharedRoom && (sharedRoom!.kind !== SharedRoomKind.PUBLIC);
 
-        let showSelectedMessagesActions = this.state.messagesActionsState.messages.length > 0 && !this.state.messagesActionsState.action;
+        let showSelectedMessagesActions = this.state.messagesActionsState.action === 'select';
         let pinnedMessage = this.props.chat.pinnedMessage;
 
         let inputPlaceholder = null;

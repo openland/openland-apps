@@ -27,7 +27,7 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
             return (
                 <Text
                     key={'link'}
-                    style={{ color: theme.accentPrimary }}
+                    style={{ color: theme.accentPrimary, textDecorationLine: 'underline' }}
                     onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))}
                     onLongPress={() => openLinkContextMenu(span.link)}
                     allowFontScaling={false}

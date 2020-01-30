@@ -260,6 +260,12 @@ export class MobileMessenger {
 
             return;
         }
+        const state = conversation.messagesActionsStateEngine.getState();
+        const isSelecting = state.action === 'select';
+
+        if (isSelecting) {
+            return;
+        }
 
         builder.view((ctx: ZModalController) => (
             <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={52} paddingHorizontal={10}>
@@ -278,8 +284,8 @@ export class MobileMessenger {
             </View>
         ));
 
-        const hasActiveActions = !!conversation.messagesActionsStateEngine.getState().action;
-        if (!hasActiveActions) {
+        const hideSelect = state.action && state.action !== 'select';
+        if (!hideSelect) {
             builder.action('Select', () => {
                 conversation.messagesActionsStateEngine.selectToggle(message);
             }, false, require('assets/ic-select-24.png'));
