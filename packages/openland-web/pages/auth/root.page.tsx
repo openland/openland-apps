@@ -270,7 +270,7 @@ export default () => {
             gapi.auth2.init({
                 client_id: "1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com",
                 scope: "profile email",
-                cookie_policy: "openland.com"
+                cookie_policy: isSafari ? "none" : undefined
             }).then(auth => {
                 googleAuth.current = auth;
             });
@@ -313,7 +313,7 @@ export default () => {
                 gapi.auth2.init({
                     client_id: "1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com",
                     scope: "profile email",
-                    cookie_policy: "openland.com"
+                    cookie_policy: isSafari ? "none" : undefined
                 }).then(async (auth2) => {
                     if (auth2.isSignedIn.get()) {
                         completeGoogleSignin(auth2.currentUser.get());
