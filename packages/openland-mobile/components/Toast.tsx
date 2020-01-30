@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
         paddingVertical: 32,
     } as ViewStyle,
     toastText: {
-        color: '#78808F',
         fontSize: 15,
         fontWeight: '600',
         textAlign: 'center',
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     } as ViewStyle,
     toastIconWrapper: {
-        marginBottom: 5,
+        marginBottom: 4,
     } as ViewStyle,
 });
 
@@ -61,12 +60,12 @@ const ToastComponent = ({ text, iconSource, IconComponent, textStyle }: ToastBui
 
     return (
         <View style={styles.modalWrapper}>
-            <View style={[styles.toastContainer, toastContainerStyle, { backgroundColor: theme.backgroundTertiary, }]}>
+            <View style={[styles.toastContainer, toastContainerStyle, { backgroundColor: theme.overlayHeavy, }]}>
                 <View style={styles.toast}>
                     {iconSource && <Image source={iconSource} />}
                     {IconComponent && IconComponent()}
 
-                    {text && <Text style={[styles.toastText, textIndent, textStyle]}>{text}</Text>}
+                    {text && <Text style={[styles.toastText, textIndent, textStyle, { color: theme.foregroundContrast }]}>{text}</Text>}
                 </View>
             </View>
         </View>
@@ -101,19 +100,19 @@ function build(config: ToastBuildConfig) {
 }
 
 function loader() {
-    return build({ IconComponent: () => <LoaderSpinner size="large" /> });
+    return build({ IconComponent: () => <LoaderSpinner size="large" color="#ffffff" /> });
 }
 
 function success(config: ToastBuildConfig = {}) {
     return build({
-        iconSource: require('assets/ic-done-32.png'),
+        iconSource: require('assets/ic-done-36.png'),
         ...config,
     });
 }
 
 function failure(config: ToastBuildConfig = {}) {
     return build({
-        iconSource: require('assets/ic-error-32.png'),
+        iconSource: require('assets/ic-error-36.png'),
         ...config,
     });
 }
@@ -126,7 +125,7 @@ const handle = async (
     fn: Function,
     config: { success?: ToastBuildConfig; failure?: ToastBuildConfig } = {},
 ) => {
-    const toastLoader = build({ IconComponent: () => <LoaderSpinner size="large" /> });
+    const toastLoader = build({ IconComponent: () => <LoaderSpinner size="large" color="#ffffff" /> });
 
     try {
         toastLoader.show();
