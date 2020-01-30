@@ -7,10 +7,8 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { InitTexts } from '../_text';
 import { useClient } from 'openland-web/utils/useClient';
 import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
-import { Footer } from 'openland-web/fragments/invite/Footer';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
-import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XDialogProviderComponent } from 'openland-x/XDialogProvider';
 import { LayoutProvider } from 'openland-unicorn/components/utils/LayoutContext';
 
@@ -27,7 +25,6 @@ const InviteInfoInner = (props: any) => {
         loading,
     }: InviteInfoInnerT & { data: any; loading: any } = props;
     const client = useClient();
-    const isMobile = useIsMobile();
     const data = client.useWithoutLoaderRoomInviteInfo({
         invite: props.variables.invite,
     });
@@ -56,14 +53,9 @@ const InviteInfoInner = (props: any) => {
                 <XView flexDirection="column" minHeight="100vh" width="100%" backgroundColor="#fff">
                     <XView flexGrow={1}>
                         {data.invite && (
-                            <>
-                                <InviteLandingComponent
-                                    signupRedirect={
-                                        '/signin?redirect=' + encodeURIComponent(redirect)
-                                    }
-                                />
-                                {!isMobile && <Footer />}
-                            </>
+                            <InviteLandingComponent
+                                signupRedirect={'/signin?redirect=' + encodeURIComponent(redirect)}
+                            />
                         )}
                         {!data.invite &&
                             !loading && (
@@ -81,13 +73,13 @@ const InviteInfoInner = (props: any) => {
     );
 };
 
-export const SignInInvite = ({ invite, isPaid }: { invite: string, isPaid?: boolean }) => {
+export const SignInInvite = ({ invite, isPaid }: { invite: string; isPaid?: boolean }) => {
     Cookie.set('x-openland-invite', invite, { path: '/' });
 
     let userCtx = React.useContext(UserInfoContext)!!;
 
     const instantRedirect = userCtx.isLoggedIn
-        ? ((userCtx.isCompleted || isPaid) ? '/invite/' : '/acceptChannelInvite/') + invite
+        ? (userCtx.isCompleted || isPaid ? '/invite/' : '/acceptChannelInvite/') + invite
         : undefined;
 
     return (
@@ -104,7 +96,6 @@ export const SignInInvite = ({ invite, isPaid }: { invite: string, isPaid?: bool
                     instantRedirect={instantRedirect}
                 />
             </LayoutProvider>
-
         </>
     );
 };

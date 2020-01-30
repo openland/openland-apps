@@ -1,11 +1,59 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { OrganizationWithoutMembers_organization } from 'openland-api/Types';
 import { XView } from 'react-mental';
-import { InviteImage } from 'openland-web/fragments/invite/InviteImage';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useStackRouter } from 'openland-unicorn/components/StackRouter';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+
+const imageWrapperStyle = css`
+    height: 367px;
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 60px;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+
+    @media (max-height: 800px) {
+        height: 250px;
+    }
+`;
+
+const imageStyle = css`
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1242px;
+    margin-left: -688px;
+    background: url(/static/X/signup/invite-illustration.png) no-repeat;
+    background-image: -webkit-image-set(
+        url(/static/X/signup/invite-illustration.png) 1x,
+        url(/static/X/signup/invite-illustration@2x.png) 2x
+    );
+    background-size: auto 100%;
+
+    @media (max-height: 800px) {
+        width: 846px;
+        margin-left: -500px;
+    }
+
+    @media (max-height: 600px) {
+        background: none;
+        background-image: none;
+    }
+`;
+
+export const InviteImage = () => {
+    return (
+        <div className={imageWrapperStyle}>
+            <div className={imageStyle} />
+        </div>
+    );
+};
 
 interface PrivateCommunityViewProps {
     organization: OrganizationWithoutMembers_organization;
@@ -43,12 +91,7 @@ export const PrivateCommunityView = (props: PrivateCommunityViewProps) => {
                 </XView>
 
                 <XView marginTop={40}>
-                    <UAvatar
-                        photo={photo || undefined}
-                        title={name}
-                        id={id}
-                        size="x-large"
-                    />
+                    <UAvatar photo={photo || undefined} title={name} id={id} size="x-large" />
                 </XView>
 
                 <XView lineHeight={1.2} fontSize={20} fontWeight={'600'} marginTop={20}>
@@ -77,8 +120,7 @@ export const PrivateCommunityView = (props: PrivateCommunityViewProps) => {
                     />
                 </XView>
             </XView>
-
-            {layout === 'desktop' && <InviteImage onBottom={true} />}
+            {layout === 'desktop' && <InviteImage />}
         </>
     );
 };

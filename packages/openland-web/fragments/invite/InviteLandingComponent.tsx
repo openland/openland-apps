@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import ProfileIcon from 'openland-icons/ic-profile.svg';
 import {
     ResolvedInvite_invite_RoomInvite_room,
     ResolvedInvite_invite_InviteInfo_organization,
@@ -9,15 +8,12 @@ import {
     WalletSubscriptionInterval,
     WalletSubscriptionState,
 } from 'openland-api/Types';
-import { XView, XViewRouterContext } from 'react-mental';
+import { XViewRouterContext } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
-import { useIsMobile } from 'openland-web/hooks/useIsMobile';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { switchOrganization } from 'openland-web/utils/switchOrganization';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { InviteImage } from './InviteImage';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { MatchmakingStartComponent } from '../matchmaking/MatchmakingStartFragment';
 import { showModalBox } from 'openland-x/showModalBox';
@@ -25,29 +21,192 @@ import { trackEvent } from 'openland-x-analytics';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { showPayConfirm } from '../wallet/components/showPaymentConfirm';
-import { TextStyles } from 'openland-web/utils/TextStyles';
+import { TextCaption, TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
 
-const RootClassName = css`
+const rootClassName = css`
     position: relative;
-    overflow: auto;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    background-color: #fff;
-    min-width: 100%;
-    padding-left: 20px;
-    padding-right: 20px;
+    background-color: var(--backgroundPrimary);
+    padding: 0 32px 32px;
+    overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
 `;
 
-const RootMobileNologinClassName = css`
-    overflow: auto;
-    height: auto;
+const mainContainer = css`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    flex-shrink: 0;
 `;
 
-const RootMobileLoginClassName = css`
-    padding-bottom: 160px;
+const avatarsContainer = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 `;
+
+const bigAvatarWrapper = css`
+    flex-shrink: 0;
+    margin: 0 -6px;
+    border-radius: 100%;
+    border: 2px solid var(--backgroundPrimary);
+    z-index: 1;
+`;
+
+const smallAvatarWrapper = css`
+    flex-shrink: 0;
+    margin: 0 -3px;
+    border-radius: 100%;
+    border: 1px solid var(--backgroundPrimary);
+    z-index: 1;
+`;
+
+const titleStyle = css`
+    text-align: center;
+    color: var(--foregroundPrimary);
+    margin-top: 32px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 320px;
+    align-self: center;
+`;
+
+const descriptionStyle = css`
+    text-align: center;
+    color: var(--foregroundSecondary);
+    margin-top: 8px;
+    max-width: 320px;
+    align-self: center;
+`;
+
+const membersContainer = css`
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    align-items: center;
+    margin-top: 32px;
+`;
+
+const membersAvatarsContainer = css`
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: row;
+    align-items: center;
+`;
+
+const buttonContainer = css`
+    margin-top: 32px;
+    flex-shrink: 0;
+    align-self: center;
+`;
+
+interface InviteLandingComponentLayoutProps {
+    invitedByUser?: {
+        id: string;
+        name: string;
+        photo?: string | null;
+    } | null;
+    whereToInvite: 'Channel' | 'Group' | 'Organization' | 'Community';
+    photo: string | null;
+    title: string;
+    id: string;
+    membersCount?: number | null;
+    description?: string | null;
+    button: any;
+    room?: ResolvedInvite_invite_RoomInvite_room;
+}
+
+const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLayoutProps) => {
+    const {
+        invitedByUser,
+        whereToInvite,
+        photo,
+        title,
+        id,
+        membersCount,
+        description,
+        button,
+        room,
+    } = props;
+
+    const avatars = room
+        ? room.previewMembers
+              .map(x => x)
+              .filter(x => !!x)
+              .slice(0, 5)
+        : [];
+
+    const showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
+    const showOnlineMembers = room ? room.onlineMembersCount >= 10 : false;
+
+    const joinTitle = !!invitedByUser
+        ? `${invitedByUser.name} invites you to join “${title}”`
+        : title;
+
+    return (
+        <div className={rootClassName}>
+            <div className={mainContainer}>
+                {invitedByUser ? (
+                    <div className={avatarsContainer}>
+                        <div className={bigAvatarWrapper}>
+                            <UAvatar
+                                photo={invitedByUser.photo}
+                                title={invitedByUser.name}
+                                id={invitedByUser.id}
+                                size="x-large"
+                            />
+                        </div>
+                        <div className={bigAvatarWrapper}>
+                            <UAvatar photo={photo} title={title} id={id} size="x-large" />
+                        </div>
+                    </div>
+                ) : (
+                    <div className={avatarsContainer}>
+                        <UAvatar photo={photo} title={title} id={id} size="xx-large" />
+                    </div>
+                )}
+                <div className={cx(TextTitle1, titleStyle)}>{joinTitle}</div>
+                {!!description && (
+                    <div className={cx(TextBody, descriptionStyle)}>{description}</div>
+                )}
+                {showMembers &&
+                    room && (
+                        <div className={membersContainer}>
+                            <div className={membersAvatarsContainer}>
+                                {avatars.map(i => (
+                                    <div key={i.id} className={smallAvatarWrapper}>
+                                        <UAvatar
+                                            title={''}
+                                            id={i.id}
+                                            photo={i.photo}
+                                            size="small"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                            <div className={cx(TextBody, descriptionStyle)}>
+                                {membersCount} members
+                                {room && showOnlineMembers && `, ${room.onlineMembersCount} online`}
+                            </div>
+                        </div>
+                    )}
+                {!showMembers &&
+                    !description && (
+                        <div className={cx(TextBody, descriptionStyle)}>
+                            New {whereToInvite.toLocaleLowerCase()}
+                        </div>
+                    )}
+
+                <div className={buttonContainer}>{button}</div>
+            </div>
+        </div>
+    );
+});
 
 const JoinButton = ({ roomId, text }: { roomId: string; text: string }) => {
     const client = useClient();
@@ -63,7 +222,6 @@ const JoinButton = ({ roomId, text }: { roomId: string; text: string }) => {
                 trackEvent('invite_button_clicked');
                 await client.mutateRoomJoin({ roomId });
                 await client.refetchRoomWithoutMembers({ id: roomId });
-                console.warn(router, roomId);
                 router!.navigate(`/mail/${roomId}`);
             }}
         />
@@ -101,224 +259,93 @@ const JoinLinkButton = (props: {
     );
 };
 
-const textAlignCenter = css`
-    text-align: center;
-    text-shadow: 0 0 6px #fff, 0 0 6px #fff;
-`;
-
-const titleClassName = css`
-    text-shadow: 0 0 6px #fff, 0 0 6px #fff;
-`;
-
-const InviteByUser = ({
-    invitedByUser,
-    chatTypeStr,
-}: {
-    invitedByUser: {
-        id: string;
-        name: string;
-        photo?: string | null;
-    };
-    chatTypeStr: string;
-}) => {
-    return (
-        <XView
-            flexDirection="row"
-            justifyContent="center"
-            alignItems="center"
-            flexShrink={0}
-            marginTop={50}
-        >
-            <UAvatar
-                photo={invitedByUser.photo}
-                title={invitedByUser.name}
-                id={invitedByUser.id}
-                size="x-small"
-            />
-            <XView marginLeft={12} fontSize={14} lineHeight={1.43}>
-                {invitedByUser.name} {`invites you to join ${chatTypeStr.toLowerCase()}`}
-            </XView>
-        </XView>
-    );
-};
-
-type RoomInfoColumnT = {
-    photo: string | null;
-    title: string;
+const BuyPaidChatPassButton = (props: {
     id: string;
-    membersCount?: number | null;
-    description?: string | null;
-    signup?: string;
-    button: any;
-};
-
-const EntityInfoColumn = ({
-    photo,
-    title,
-    id,
-    membersCount,
-    description,
-    button,
-}: RoomInfoColumnT) => {
-    return (
-        <XView marginTop={60} alignSelf="center" flexGrow={1} maxWidth={428} zIndex={1} >
-            <XView flexGrow={1} justifyContent="center" alignItems="center">
-                <UAvatar photo={photo} title={title} id={id} size="x-large" />
-                <XView marginTop={16} lineHeight={1} fontSize={24} fontWeight={'600'}>
-                    <span className={titleClassName}>{title}</span>
-                </XView>
-                <XView
-                    marginTop={14}
-                    paddingBottom={6}
-                    paddingTop={6}
-                    paddingLeft={12}
-                    paddingRight={12}
-                    height={23}
-                    borderRadius={16}
-                    backgroundColor={'#eaf4ff'}
-                    justifyContent="center"
-                >
-                    <XView
-                        flexDirection="row"
-                        fontSize={13}
-                        fontWeight={'600'}
-                        color={'#1790ff'}
-                        lineHeight={1.23}
-                    >
-                        <XView marginTop={1} marginRight={4}>
-                            <ProfileIcon />
-                        </XView>
-
-                        {`${membersCount} members`}
-                    </XView>
-                </XView>
-                {description && (
-                    <XView lineHeight={1.5} marginTop={18}>
-                        <div className={textAlignCenter}>{description}</div>
-                    </XView>
-                )}
-            </XView>
-            <XView marginTop={36} marginBottom={60}>
-                {button}
-            </XView>
-        </XView>
-    );
-};
-
-const InviteLandingComponentLayout = ({
-    whereToInvite,
-    photo,
-    title,
-    id,
-    membersCount,
-    description,
-    invitedByUser,
-    noLogin,
-    button,
-}: RoomInfoColumnT & {
-    inviteLink?: string;
-    signup?: string;
-    invitedByUser?: {
-        id: string;
-        name: string;
-        photo?: string | null;
-    } | null;
-    noLogin?: boolean;
-    whereToInvite: 'Channel' | 'Group' | 'Organization' | 'Community';
+    premiumSettings: { price: number; interval: WalletSubscriptionInterval };
+    title: string;
 }) => {
-    if (!canUseDOM) {
-        return null;
-    }
-
-    const isMobile = useIsMobile();
-
-    return (
-        <div
-            className={cx(
-                RootClassName,
-                isMobile && noLogin && RootMobileNologinClassName,
-                isMobile && !noLogin && RootMobileLoginClassName,
-            )}
-        >
-            <XView maxHeight={850} flexGrow={isMobile ? 1 : undefined}>
-                {isMobile &&
-                    !noLogin && (
-                        <XView flexDirection="row" justifyContent="center" alignItems="center">
-                            <XView fontSize={20} fontWeight="600" color="rgba(0, 0, 0, 0.9)">
-                                {`${whereToInvite} invitation`}
-                            </XView>
-                        </XView>
-                    )}
-                <XView flexDirection="column" paddingHorizontal={20} zIndex={1}>
-                    {invitedByUser ? (
-                        <InviteByUser invitedByUser={invitedByUser} chatTypeStr={whereToInvite} />
-                    ) : (
-                            <XView height={50} flexShrink={0} />
-                        )}
-                </XView>
-                <EntityInfoColumn
-                    photo={photo}
-                    title={title}
-                    id={id}
-                    membersCount={membersCount}
-                    description={description}
-                    button={button}
-                />
-
-            </XView>
-
-            {!isMobile && <InviteImage onBottom={!noLogin} />}
-        </div>
-    );
-};
-
-const BuyPaidChatPassButton = (props: { id: string; premiumSettings: { price: number, interval: WalletSubscriptionInterval }, title: string }) => {
     const client = useClient();
     let router = React.useContext(XViewRouterContext)!;
     const [loading, setLoading] = React.useState(false);
     const buyPaidChatPass = React.useCallback(async () => {
-        showPayConfirm(props.premiumSettings.price, props.premiumSettings.interval, `Membership in "${props.title}"`, async () => {
-            try {
-                let res = await client.mutateBuyPremiumChatSubscription({ chatId: props.id });
-                if (res.betaBuyPremiumChatSubscription.premiumPassIsActive) {
-                    router.navigate('/mail/' + props.id);
+        showPayConfirm(
+            props.premiumSettings.price,
+            props.premiumSettings.interval,
+            `Membership in "${props.title}"`,
+            async () => {
+                try {
+                    let res = await client.mutateBuyPremiumChatSubscription({ chatId: props.id });
+                    if (res.betaBuyPremiumChatSubscription.premiumPassIsActive) {
+                        router.navigate('/mail/' + props.id);
+                    }
+                } catch (e) {
+                    setLoading(false);
                 }
-            } catch (e) {
-                setLoading(false);
-            }
-        });
+            },
+        );
     }, []);
     return (
-        <UButton loading={loading} style="pay" text={`Join for ${formatMoney(props.premiumSettings.price)}`} action={buyPaidChatPass} />
+        <UButton
+            loading={loading}
+            style="pay"
+            text={`Join for ${formatMoney(props.premiumSettings.price)}`}
+            action={buyPaidChatPass}
+        />
     );
 };
 
 const resolveRoomButton = (
-    room: { id: string; membership: SharedRoomMembershipStatus, premiumSettings?: { price: number, interval: WalletSubscriptionInterval } | null, premiumPassIsActive: boolean, premiumSubscription?: { state: WalletSubscriptionState } | null, title: string },
+    room: {
+        id: string;
+        membership: SharedRoomMembershipStatus;
+        premiumSettings?: { price: number; interval: WalletSubscriptionInterval } | null;
+        premiumPassIsActive: boolean;
+        premiumSubscription?: { state: WalletSubscriptionState } | null;
+        title: string;
+    },
     key?: string,
     matchmaking?: boolean,
 ) => {
     const [loading, setLoading] = React.useState(false);
     if (room && room.premiumSettings && !room.premiumPassIsActive) {
         if (room.premiumSubscription) {
-            if (room.premiumSubscription.state === WalletSubscriptionState.CANCELED || room.premiumSubscription.state === WalletSubscriptionState.EXPIRED) {
-                return (<>
-                    <XView {...TextStyles.Caption}> You subscription is {room.premiumSubscription.state.toLowerCase()} buy new one</XView>
-                    <BuyPaidChatPassButton id={room.id} premiumSettings={room.premiumSettings} title={room.title} /></>);
+            if (
+                room.premiumSubscription.state === WalletSubscriptionState.CANCELED ||
+                room.premiumSubscription.state === WalletSubscriptionState.EXPIRED
+            ) {
+                return (
+                    <>
+                        <div className={TextCaption}>
+                            You subscription is {room.premiumSubscription.state.toLowerCase()} buy
+                            new one
+                        </div>
+                        <BuyPaidChatPassButton
+                            id={room.id}
+                            premiumSettings={room.premiumSettings}
+                            title={room.title}
+                        />
+                    </>
+                );
             } else {
                 return (
                     <>
-                        <XView {...TextStyles.Caption}> You subscription is {room.premiumSubscription.state.toLowerCase()} </XView>
+                        <div className={TextCaption}>
+                            You subscription is {room.premiumSubscription.state.toLowerCase()}{' '}
+                        </div>
                         <UButton text="View in wallet" path="/wallet" />
                     </>
                 );
             }
-
         } else {
-            return <BuyPaidChatPassButton id={room.id} premiumSettings={room.premiumSettings} title={room.title} />;
+            return (
+                <BuyPaidChatPassButton
+                    id={room.id}
+                    premiumSettings={room.premiumSettings}
+                    title={room.title}
+                />
+            );
         }
-    } else 
-    if (
+    } else if (
         room &&
         (room.membership === 'NONE' ||
             room.membership === 'KICKED' ||
@@ -344,7 +371,7 @@ const resolveRoomButton = (
                 invite={key}
                 refetchVars={{ conversationId: room.id! }}
                 onAccept={setLoading}
-                text="Accept invite"
+                text="Join group"
                 matchmaking={matchmaking}
             />
         );
@@ -376,20 +403,21 @@ export const SharedRoomPlaceholder = ({ room }: { room: RoomChat_room_SharedRoom
 };
 
 export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: string }) => {
-    let userInfo = React.useContext(UserInfoContext);
-    let loggedIn = userInfo && userInfo.isLoggedIn;
-    let client = useClient();
-    let unicorn = useUnicorn();
-    let router = React.useContext(XViewRouterContext);
+    const userInfo = React.useContext(UserInfoContext);
+    const loggedIn = userInfo && userInfo.isLoggedIn;
+    const client = useClient();
+    const unicorn = useUnicorn();
+    const router = React.useContext(XViewRouterContext);
 
-    let path = window.location.pathname.split('/');
-    let key = unicorn ? unicorn.id : path[path.length - 1];
+    const path = window.location.pathname.split('/');
+    const key = unicorn ? unicorn.id : path[path.length - 1];
 
     let invite = client.useResolvedInvite({ key });
     let room: ResolvedInvite_invite_RoomInvite_room | undefined;
     let organization: ResolvedInvite_invite_InviteInfo_organization | undefined;
+
     let invitedByUser;
-    let matchmaking = undefined;
+    let matchmaking;
 
     if (invite.invite && invite.invite.__typename === 'InviteInfo' && invite.invite.organization) {
         organization = invite.invite.organization;
@@ -409,21 +437,39 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
 
     let button: JSX.Element | undefined;
     const isPremium = room && room.isPremium;
-    console.warn(loggedIn, room);
+
+    const whereToInvite = room
+        ? room.isChannel
+            ? 'Channel'
+            : 'Group'
+        : organization && organization.isCommunity
+            ? 'Community'
+            : 'Organization';
+
     if (!loggedIn) {
         button = (
             <UButton
                 style={isPremium ? 'pay' : 'primary'}
                 size="large"
-                text={(room && room.premiumSettings) ? `Pay ${formatMoney(room.premiumSettings.price)}` : 'Accept invitation'}
+                text={
+                    room && room.premiumSettings
+                        ? `Pay ${formatMoney(room.premiumSettings.price)}`
+                        : `Join ${whereToInvite.toLocaleLowerCase()}`
+                }
                 alignSelf="center"
                 flexShrink={0}
                 path={!matchmaking ? signupRedirect : undefined}
-                onClick={matchmaking && signupRedirect ? (() => {
-                    showModalBox({ fullScreen: true, useTopCloser: false }, () =>
-                        <MatchmakingStartComponent onStart={() => router!.navigate(signupRedirect)} />
-                    );
-                }) : undefined}
+                onClick={
+                    matchmaking && signupRedirect
+                        ? () => {
+                              showModalBox({ fullScreen: true, useTopCloser: false }, () => (
+                                  <MatchmakingStartComponent
+                                      onStart={() => router!.navigate(signupRedirect)}
+                                  />
+                              ));
+                          }
+                        : undefined
+                }
                 zIndex={2}
             />
         );
@@ -432,7 +478,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     } else if (organization) {
         button = (
             <UButton
-                text={'Accept invite'}
+                text={`Join ${whereToInvite.toLocaleLowerCase()}`}
                 action={async () => {
                     trackEvent('invite_button_clicked');
                     await client.mutateAccountInviteJoin({
@@ -448,30 +494,22 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
         );
     }
 
-    const whereToInvite = room
-        ? room.isChannel
-            ? 'Channel'
-            : 'Group'
-        : organization && organization.isCommunity
-            ? 'Community'
-            : 'Organization';
-
     return (
         <>
             <XTrack
-                event={loggedIn ? "invite_screen_view" : "invite_landing_view"}
+                event={loggedIn ? 'invite_screen_view' : 'invite_landing_view'}
                 params={{ invite_type: whereToInvite.toLowerCase() }}
             />
             <InviteLandingComponentLayout
                 invitedByUser={invitedByUser}
                 button={button}
-                noLogin={!loggedIn}
                 whereToInvite={whereToInvite}
                 photo={room ? room.photo : organization!.photo}
                 title={room ? room.title : organization!.name}
                 id={room ? room.id : organization!.id}
                 membersCount={room ? room.membersCount : organization!.membersCount}
                 description={room ? room.description : organization!.about}
+                room={room}
             />
         </>
     );
