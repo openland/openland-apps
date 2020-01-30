@@ -21,6 +21,7 @@ interface DocumentContentProps {
     onGroupPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
+    onLongPress: (event: ASPressEvent) => void;
     compensateBubble?: boolean;
     theme: ThemeGlobal;
 }
@@ -59,7 +60,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
         }
     }
     render() {
-        let { message } = this.props;
+        let { message, onLongPress } = this.props;
         let downloaded = !!(this.state.downloadState && this.state.downloadState.path);
 
         return (
@@ -67,6 +68,7 @@ export class DocumentContent extends React.PureComponent<DocumentContentProps, {
                 height={40}
                 flexDirection="row"
                 onPress={this.handlePress}
+                onLongPress={onLongPress}
                 marginTop={2}
                 marginBottom={1}
                 marginLeft={this.props.compensateBubble ? -2 : undefined}

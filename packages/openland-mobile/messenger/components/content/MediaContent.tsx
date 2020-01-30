@@ -21,7 +21,7 @@ interface MediaContentProps {
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
-    onMediaLongPress: (e: ASPressEvent) => void;
+    onLongPress: (e: ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     layout: { width: number, height: number };
     compensateBubble?: boolean;
@@ -127,7 +127,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     }
 
     render() {
-        const { hasTopContent, hasBottomContent, message, attach, layout, compensateBubble, theme, onMediaLongPress } = this.props;
+        const { hasTopContent, hasBottomContent, message, attach, layout, compensateBubble, theme, onLongPress } = this.props;
         const { downloadState } = this.state;
         const isSingle = !hasTopContent && !hasBottomContent;
         const useBorder = isSingle && !!compensateBubble && layout.height >= IMAGE_MIN_SIZE && layout.width >= IMAGE_MIN_SIZE;
@@ -149,12 +149,12 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 alignItems="center"
                 justifyContent="center"
                 onPress={Platform.OS === 'android' ? this.handlePress : undefined}
-                onLongPress={Platform.OS === 'android' ? onMediaLongPress : undefined}
+                onLongPress={Platform.OS === 'android' ? onLongPress : undefined}
             >
                 <ASFlex>
                     <ASImage
                         maxWidth={layout.width}
-                        source={{ uri: (downloadState && downloadState.path) ? ('file://' + downloadState.path)  :  (attach && attach.uri) ? attach.uri : undefined }}
+                        source={{ uri: (downloadState && downloadState.path) ? ('file://' + downloadState.path) : (attach && attach.uri) ? attach.uri : undefined }}
                         isGif={attach!!.fileMetadata.imageFormat === 'GIF'}
                         width={layout.width}
                         height={layout.height}
@@ -203,7 +203,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                             maskColor={theme.backgroundPrimary}
                             borderColor={theme.border}
                             onPress={Platform.OS === 'ios' ? this.handlePress : undefined}
-                            onLongPress={Platform.OS === 'ios' ? onMediaLongPress : undefined}
+                            onLongPress={Platform.OS === 'ios' ? onLongPress : undefined}
                             useBorder={useBorder}
                         />
                     </ASFlex>

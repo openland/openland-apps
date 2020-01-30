@@ -44,7 +44,7 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
         onGroupPress: messenger.handleGroupClick,
         onOrganizationPress: messenger.handleOrganizationClick,
         onMediaPress: messenger.handleMediaClick,
-        onMediaLongPress: handleLongPress,
+        onLongPress: handleLongPress,
         onDocumentPress: messenger.handleDocumentClick
     }, maxWidth);
 
