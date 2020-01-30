@@ -164,8 +164,7 @@ const AuthHeader = React.memo(React.forwardRef((props: {}, ref: React.Ref<AuthHe
 }));
 
 export default () => {
-    let isSafari = (window as any).safari !== undefined;
-
+    let isSafari = ((window as any).safari !== undefined) || (/iPad|iPhone|iPod/.test(navigator.userAgent));
     let router = React.useContext(XRouterContext)!;
     let page: pagesT = pages.createNewAccount;
 
