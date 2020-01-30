@@ -61,7 +61,7 @@ const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController, amou
 });
 
 export function showPayConfirm(amount: number, type: paymentType, description: string, action: () => void) {
-    showModalBox({ title: 'Payment' }, (ctx) => {
+    showModalBox({ title: type === 'payment' ? 'Payment' : 'Subscription' }, (ctx) => {
         return (
             <ConfirmPaymentComponent ctx={ctx} amount={amount} description={description} onConfirm={action} type={type} />
         );

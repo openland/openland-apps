@@ -1159,8 +1159,8 @@ export class OpenlandClient extends BaseApiClient {
     async mutateRoomCreate(variables: Types.RoomCreateVariables): Promise<Types.RoomCreate> {
         return this.client.mutate(Source.RoomCreateMutation, variables);
     }
-    async mutateBuyProChatSubscription(variables: Types.BuyProChatSubscriptionVariables): Promise<Types.BuyProChatSubscription> {
-        return this.client.mutate(Source.BuyProChatSubscriptionMutation, variables);
+    async mutateBuyPremiumChatSubscription(variables: Types.BuyPremiumChatSubscriptionVariables): Promise<Types.BuyPremiumChatSubscription> {
+        return this.client.mutate(Source.BuyPremiumChatSubscriptionMutation, variables);
     }
     async mutateSetTyping(variables: Types.SetTypingVariables): Promise<Types.SetTyping> {
         return this.client.mutate(Source.SetTypingMutation, variables);

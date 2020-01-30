@@ -1,0 +1,12 @@
+mutation BuyPremiumChatSubscription($chatId: ID!) {
+  betaBuyPremiumChatSubscription(chatId: $chatId) {
+    __typename
+    id
+    premiumPassIsActive
+    premiumSubscription {
+      __typename
+      id
+      state
+    }
+  }
+}

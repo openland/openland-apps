@@ -7,6 +7,7 @@ import {
     SharedRoomMembershipStatus,
     RoomChat_room_SharedRoom,
     WalletSubscriptionInterval,
+    WalletSubscriptionState,
 } from 'openland-api/Types';
 import { XView, XViewRouterContext } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
@@ -24,6 +25,7 @@ import { trackEvent } from 'openland-x-analytics';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { showPayConfirm } from '../wallet/components/showPaymentConfirm';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 
 const RootClassName = css`
     position: relative;
@@ -270,15 +272,15 @@ const InviteLandingComponentLayout = ({
     );
 };
 
-const BuyPaidChatPassButton = (props: { id: string; paymentSettings: { price: number, interval: WalletSubscriptionInterval }, title: string }) => {
+const BuyPaidChatPassButton = (props: { id: string; premiumSettings: { price: number, interval: WalletSubscriptionInterval }, title: string }) => {
     const client = useClient();
     let router = React.useContext(XViewRouterContext)!;
     const [loading, setLoading] = React.useState(false);
     const buyPaidChatPass = React.useCallback(async () => {
-        showPayConfirm(props.paymentSettings.price, props.paymentSettings.interval, `Membership in "${props.title}"`, async () => {
+        showPayConfirm(props.premiumSettings.price, props.premiumSettings.interval, `Membership in "${props.title}"`, async () => {
             try {
-                let res = await client.mutateBuyProChatSubscription({ chatId: props.id });
-                if (res) {
+                let res = await client.mutateBuyPremiumChatSubscription({ chatId: props.id });
+                if (res.betaBuyPremiumChatSubscription.premiumPassIsActive) {
                     router.navigate('/mail/' + props.id);
                 }
             } catch (e) {
@@ -287,19 +289,36 @@ const BuyPaidChatPassButton = (props: { id: string; paymentSettings: { price: nu
         });
     }, []);
     return (
-        <UButton loading={loading} style="pay" text={`Join for ${formatMoney(props.paymentSettings.price)}`} action={buyPaidChatPass} />
+        <UButton loading={loading} style="pay" text={`Join for ${formatMoney(props.premiumSettings.price)}`} action={buyPaidChatPass} />
     );
 };
 
 const resolveRoomButton = (
-    room: { id: string; membership: SharedRoomMembershipStatus, proSettings?: { price: number, interval: WalletSubscriptionInterval } | null, proPassIsActive: boolean, title: string },
+    room: { id: string; membership: SharedRoomMembershipStatus, premiumSettings?: { price: number, interval: WalletSubscriptionInterval } | null, premiumPassIsActive: boolean, premiumSubscription?: { state: WalletSubscriptionState } | null, title: string },
     key?: string,
     matchmaking?: boolean,
 ) => {
     const [loading, setLoading] = React.useState(false);
-    if (room && room.proSettings && !room.proPassIsActive) {
-        return <BuyPaidChatPassButton id={room.id} paymentSettings={room.proSettings} title={room.title} />;
-    } else if (
+    if (room && room.premiumSettings && !room.premiumPassIsActive) {
+        if (room.premiumSubscription) {
+            if (room.premiumSubscription.state === WalletSubscriptionState.CANCELED || room.premiumSubscription.state === WalletSubscriptionState.EXPIRED) {
+                return (<>
+                    <XView {...TextStyles.Caption}> You subscription is {room.premiumSubscription.state.toLowerCase()} buy new one</XView>
+                    <BuyPaidChatPassButton id={room.id} premiumSettings={room.premiumSettings} title={room.title} /></>);
+            } else {
+                return (
+                    <>
+                        <XView {...TextStyles.Caption}> You subscription is {room.premiumSubscription.state.toLowerCase()} </XView>
+                        <UButton text="View in wallet" path="/wallet" />
+                    </>
+                );
+            }
+
+        } else {
+            return <BuyPaidChatPassButton id={room.id} premiumSettings={room.premiumSettings} title={room.title} />;
+        }
+    } else 
+    if (
         room &&
         (room.membership === 'NONE' ||
             room.membership === 'KICKED' ||
@@ -389,14 +408,14 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     }
 
     let button: JSX.Element | undefined;
-    const isPaid = room && room.isPro;
+    const isPremium = room && room.isPremium;
     console.warn(loggedIn, room);
     if (!loggedIn) {
         button = (
             <UButton
-                style={isPaid ? 'pay' : 'primary'}
+                style={isPremium ? 'pay' : 'primary'}
                 size="large"
-                text={(room && room.proSettings) ? `Pay ${formatMoney(room.proSettings.price)}` : 'Accept invitation'}
+                text={(room && room.premiumSettings) ? `Pay ${formatMoney(room.premiumSettings.price)}` : 'Accept invitation'}
                 alignSelf="center"
                 flexShrink={0}
                 path={!matchmaking ? signupRedirect : undefined}

@@ -87,7 +87,7 @@ export const SignInInvite = ({ invite, isPaid }: { invite: string, isPaid?: bool
     let userCtx = React.useContext(UserInfoContext)!!;
 
     const instantRedirect = userCtx.isLoggedIn
-        ? ((userCtx.isCompleted || isPaid) ? '/mail/invite/' : '/acceptChannelInvite/') + invite
+        ? ((userCtx.isCompleted || isPaid) ? '/invite/' : '/acceptChannelInvite/') + invite
         : undefined;
 
     return (
@@ -100,7 +100,7 @@ export const SignInInvite = ({ invite, isPaid }: { invite: string, isPaid?: bool
                 <XDialogProviderComponent />
                 <InviteInfoInner
                     variables={{ invite }}
-                    redirect={`${isPaid ? '/mail/invite/' : '/acceptChannelInvite/'}${invite}`}
+                    redirect={`${isPaid ? '/invite/' : '/acceptChannelInvite/'}${invite}`}
                     instantRedirect={instantRedirect}
                 />
             </LayoutProvider>

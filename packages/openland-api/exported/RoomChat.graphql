@@ -30,7 +30,7 @@ query RoomChat($id: ID!) {
       canEdit
       id
       isChannel
-      isPro
+      isPremium
       kind
       matchmaking {
         __typename
@@ -47,12 +47,17 @@ query RoomChat($id: ID!) {
         __typename
         ...FullMessage
       }
-      proPassIsActive
-      proSettings {
+      premiumPassIsActive
+      premiumSettings {
         __typename
         id
         interval
         price
+      }
+      premiumSubscription {
+        __typename
+        id
+        state
       }
       role
       settings {

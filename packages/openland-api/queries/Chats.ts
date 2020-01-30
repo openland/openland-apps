@@ -275,9 +275,13 @@ export const RoomChatQuery = gql`
                     id
                     mute
                 }
-                isPro
-                proPassIsActive
-                proSettings {
+                isPremium
+                premiumPassIsActive
+                premiumSubscription {
+                    id
+                    state
+                }           
+                premiumSettings {
                     id
                     price
                     interval
@@ -507,13 +511,20 @@ export const RoomCreateMutation = gql`
     }
 `;
 
-export const BuyProChatSubscriptionMutation = gql`
-    mutation BuyProChatSubscription(
+export const BuyPremiumChatSubscriptionMutation = gql`
+    mutation BuyPremiumChatSubscription(
         $chatId: ID!
     ) {
-        betaBuyProChatSubscription(
+        betaBuyPremiumChatSubscription(
             chatId: $chatId
-        )
+        ){
+            id
+            premiumPassIsActive
+            premiumSubscription {
+                id
+                state
+            }            
+        }
     }
 `;
 
@@ -827,9 +838,13 @@ export const RoomInviteInfoQuery = gql`
                     matchmaking {
                         enabled
                     }
-                    isPro
-                    proPassIsActive
-                    proSettings{
+                    isPremium
+                    premiumPassIsActive
+                    premiumSubscription {
+                        id
+                        state
+                    }     
+                    premiumSettings {
                         id
                         price
                         interval
@@ -895,9 +910,13 @@ export const ResolvedInviteQuery = gql`
                         matchmaking {
                             enabled
                         }
-                        isPro
-                        proPassIsActive
-                        proSettings{
+                        isPremium
+                        premiumPassIsActive
+                        premiumSubscription {
+                            id
+                            state
+                        }   
+                        premiumSettings{
                             id
                             price
                             interval

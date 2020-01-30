@@ -37,7 +37,7 @@ query ResolvedInvite($key: String!) {
           description
           id
           isChannel
-          isPro
+          isPremium
           kind
           matchmaking {
             __typename
@@ -47,17 +47,22 @@ query ResolvedInvite($key: String!) {
           membership
           onlineMembersCount
           photo
-          previewMembers {
-            __typename
-            id
-            photo
-          }
-          proPassIsActive
-          proSettings {
+          premiumPassIsActive
+          premiumSettings {
             __typename
             id
             interval
             price
+          }
+          premiumSubscription {
+            __typename
+            id
+            state
+          }
+          previewMembers {
+            __typename
+            id
+            photo
           }
           socialImage
           title

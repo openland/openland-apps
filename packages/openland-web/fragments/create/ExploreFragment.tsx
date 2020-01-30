@@ -96,7 +96,7 @@ const ExplorePeopleComponent = React.memo((props: CreateEntityInterface) => {
                 organizationId: props.inOrgId || '',
                 channel: props.entityType === 'channel',
                 price: props.isPaid ? 500 : undefined,
-                interval: WalletSubscriptionInterval.MONTH,
+                interval: WalletSubscriptionInterval.WEEK,
             })).room;
 
             props.hide();

@@ -12,7 +12,7 @@ query RoomInviteInfo($invite: String!) {
         description
         id
         isChannel
-        isPro
+        isPremium
         kind
         matchmaking {
           __typename
@@ -26,17 +26,22 @@ query RoomInviteInfo($invite: String!) {
           ...OrganizationShort
         }
         photo
-        previewMembers {
-          __typename
-          id
-          photo
-        }
-        proPassIsActive
-        proSettings {
+        premiumPassIsActive
+        premiumSettings {
           __typename
           id
           interval
           price
+        }
+        premiumSubscription {
+          __typename
+          id
+          state
+        }
+        previewMembers {
+          __typename
+          id
+          photo
         }
         socialImage
         title

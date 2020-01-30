@@ -27,7 +27,7 @@ fragment RoomFull on Room {
     featuredMembersCount
     id
     isChannel
-    isPro
+    isPremium
     kind
     matchmaking {
       __typename
@@ -63,17 +63,22 @@ fragment RoomFull on Room {
       __typename
       ...FullMessage
     }
-    previewMembers {
-      __typename
-      id
-      photo
-    }
-    proPassIsActive
-    proSettings {
+    premiumPassIsActive
+    premiumSettings {
       __typename
       id
       interval
       price
+    }
+    premiumSubscription {
+      __typename
+      id
+      state
+    }
+    previewMembers {
+      __typename
+      id
+      photo
     }
     requests {
       __typename

@@ -24,7 +24,7 @@ export const ResolveInviteComponent = () => {
         if (resolvedInvite.invite.__typename === 'AppInvite') {
             return <AppJoinComponent inviteKey={inviteKey} />;
         } else if (resolvedInvite.invite.__typename === 'RoomInvite') {
-            return <SignInInvite invite={inviteKey} isPaid={resolvedInvite.invite.room.isPro} />;
+            return <SignInInvite invite={inviteKey} isPaid={resolvedInvite.invite.room.isPremium} />;
         } else if (resolvedInvite.invite.__typename === 'InviteInfo') {
             return <JoinFragment inviteKey={inviteKey} />;
         }

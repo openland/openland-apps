@@ -136,9 +136,11 @@ interface AuthHeaderInstance {
     setOnSkip: (callback?: (event: React.MouseEvent) => void) => void;
 }
 const AuthHeader = React.memo(React.forwardRef((props: {}, ref: React.Ref<AuthHeaderInstance>) => {
-    const [onBack, setOnBack] = React.useState<{ callback?: (event: React.MouseEvent) => void }>({ callback: (event: React.MouseEvent) => {
-        history.back();
-    } });
+    const [onBack, setOnBack] = React.useState<{ callback?: (event: React.MouseEvent) => void }>({
+        callback: (event: React.MouseEvent) => {
+            history.back();
+        }
+    });
     const [onSkip, setOnSkip] = React.useState<{ callback?: (event: React.MouseEvent) => void }>({ callback: undefined });
 
     React.useImperativeHandle(ref, () => ({
@@ -209,8 +211,6 @@ export default () => {
         page = pages.loading;
     }
 
-    let redirect = router.query ? (router.query.redirect ? router.query.redirect : null) : null;
-
     if (router.routeQuery.redirect) {
         if (router.routeQuery.redirect.indexOf('/acceptChannelInvite/') !== -1) {
             Cookie.set(
@@ -235,6 +235,7 @@ export default () => {
     const fireEmail = React.useCallback(
         async (emailToFire: string) => {
             Cookie.set('auth-type', 'email', { path: '/' });
+            let redirect = router.query ? (router.query.redirect ? router.query.redirect : null) : null;
             if (redirect) {
                 Cookie.set('sign-redirect', redirect, { path: '/' });
             }
@@ -259,7 +260,7 @@ export default () => {
                 throw new Error('Something went wrong');
             }
         },
-        [redirect],
+        [],
     );
 
     // googleAuth is in ref because we should call signIn function synchronously, safari will block popup otherwise 
@@ -292,6 +293,7 @@ export default () => {
 
     const fireGoogle = React.useCallback(() => {
         Cookie.set('auth-type', 'google', { path: '/' });
+        let redirect = router.query ? (router.query.redirect ? router.query.redirect : null) : null;
         if (redirect) {
             Cookie.set('sign-redirect', redirect, { path: '/' });
         }
