@@ -1,0 +1,9 @@
+fragment UserNano on User {
+  __typename
+  firstName
+  id
+  lastName
+  name
+  online
+  photo
+}

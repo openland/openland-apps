@@ -1444,6 +1444,13 @@
       }
     },
     {
+      "signature": "d6eefcd74f18f153d108d10990bf4252ffee4fbebf7657360ddaadf8bd4987a9",
+      "document": "fragment UserNano on User{__typename firstName id lastName name online photo}query GetUser($id:ID!){user:user(id:$id){__typename...UserNano}}",
+      "metadata": {
+        "engineSignature": "fragment UserNano on User{__typename firstName id lastName name online photo}query GetUser($id:ID!){user(id:$id){__typename...UserNano}}"
+      }
+    },
+    {
       "signature": "bfb503a5aa5fae4d36eb763f7c25a5e250a64b194bc1cabc94cf75aa49ddba65",
       "document": "mutation SetOrgShortname($organizationId:ID!,$shortname:String!){alphaSetOrgShortName(id:$organizationId,shortname:$shortname)}",
       "metadata": {

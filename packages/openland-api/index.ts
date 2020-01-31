@@ -53,6 +53,7 @@ import * as StickerFragment from './fragments/StickerFragment';
 import * as UserBadge from './fragments/UserBadge';
 import * as UserForMention from './fragments/UserForMention';
 import * as UserFull from './fragments/UserFull';
+import * as UserNano from './fragments/UserNano';
 import * as UserShort from './fragments/UserShort';
 import * as UserTiny from './fragments/UserTiny';
 
@@ -262,6 +263,7 @@ export const SettingsUpdateMutation = typedMutation<Types.SettingsUpdate, Types.
 export const SharedMediaQuery = typedQuery<Types.SharedMedia, Types.SharedMediaVariables>(SharedMedia.SharedMediaQuery);
 export const SharedMediaCountersQuery = typedQuery<Types.SharedMediaCounters, Types.SharedMediaCountersVariables>(SharedMedia.SharedMediaCountersQuery);
 export const ResolveShortNameQuery = typedQuery<Types.ResolveShortName, Types.ResolveShortNameVariables>(Shortname.ResolveShortNameQuery);
+export const GetUserQuery = typedQuery<Types.GetUser, Types.GetUserVariables>(Shortname.GetUserQuery);
 export const SetOrgShortnameMutation = typedMutation<Types.SetOrgShortname, Types.SetOrgShortnameVariables>(Shortname.SetOrgShortnameMutation);
 export const SetUserShortnameMutation = typedMutation<Types.SetUserShortname, Types.SetUserShortnameVariables>(Shortname.SetUserShortnameMutation);
 export const SetFeedChannelShortnameMutation = typedMutation<Types.SetFeedChannelShortname, Types.SetFeedChannelShortnameVariables>(Shortname.SetFeedChannelShortnameMutation);
@@ -319,6 +321,7 @@ export const StickerPackFragmentFragment = typedFragment<Types.StickerPackFragme
 export const UserBadgeFragment = typedFragment<Types.UserBadge>(UserBadge.UserBadge);
 export const UserForMentionFragment = typedFragment<Types.UserForMention>(UserForMention.UserForMention);
 export const UserFullFragment = typedFragment<Types.UserFull>(UserFull.UserFull);
+export const UserNanoFragment = typedFragment<Types.UserNano>(UserNano.UserNano);
 export const UserShortFragment = typedFragment<Types.UserShort>(UserShort.UserShort);
 export const UserTinyFragment = typedFragment<Types.UserTiny>(UserTiny.UserTiny);
 export const ChatUpdateFragmentFragment = typedFragment<Types.ChatUpdateFragment>(Chats.ChatUpdateFragment);

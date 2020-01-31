@@ -2,19 +2,29 @@ import * as React from 'react';
 import { UserInfoContext } from '../../components/UserInfo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { GetUser } from 'openland-api/Types';
 import { extractRedirect } from './router/extractRedirect';
 import { isRootPath } from './router/isRootPath';
 import { redirectSuffix } from './router/redirectSuffix';
 import { isPublicPath } from './router/isPublicPath';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { useClient } from 'openland-web/utils/useClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 export const AuthRouter = XMemo<{ children?: any }>(props => {
-    let router = React.useContext(XRouterContext)!;
-    let userInfo = React.useContext(UserInfoContext)!;
+    const router = React.useContext(XRouterContext)!;
+    const userInfo = React.useContext(UserInfoContext)!;
     let redirectPath: string = extractRedirect(router);
+    const client = useClient();
 
-    const { hostName, path } = router;
+    const { hostName, path, routeQuery } = router;
+
+    const shortName = routeQuery && routeQuery.shortname ? routeQuery.shortname : null;
+    let usr: GetUser | null = null;
+
+    if (!userInfo.isLoggedIn && shortName) {
+        usr = client.useGetUser({ id: shortName });
+    }
 
     if (hostName === 'app.openland.com') {
         if (canUseDOM) {
@@ -22,6 +32,10 @@ export const AuthRouter = XMemo<{ children?: any }>(props => {
         }
 
         return null;
+    }
+
+    if (!userInfo.isLoggedIn && usr) {
+        return <div>future user page</div>;
     }
 
     const defaultRoute = <>{props.children}</>;

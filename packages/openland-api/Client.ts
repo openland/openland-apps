@@ -1796,6 +1796,16 @@ const StickerPackFragmentSelector = obj(
             field('title', 'title', args(), notNull(scalar('String')))
         );
 
+const UserNanoSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('firstName', 'firstName', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('lastName', 'lastName', args(), scalar('String')),
+            field('name', 'name', args(), notNull(scalar('String'))),
+            field('online', 'online', args(), notNull(scalar('Boolean'))),
+            field('photo', 'photo', args(), scalar('String'))
+        );
+
 const WalletTransactionFragmentSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -2412,6 +2422,12 @@ const FetchPushSettingsSelector = obj(
             field('pushSettings', 'pushSettings', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('webPushKey', 'webPushKey', args(), scalar('String'))
+                )))
+        );
+const GetUserSelector = obj(
+            field('user', 'user', args(fieldValue("id", refValue('id'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('User', UserNanoSelector)
                 )))
         );
 const GlobalCounterSelector = obj(
@@ -4580,6 +4596,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'FetchPushSettings',
         body: 'query FetchPushSettings{pushSettings{__typename webPushKey}}',
         selector: FetchPushSettingsSelector
+    },
+    GetUser: {
+        kind: 'query',
+        name: 'GetUser',
+        body: 'query GetUser($id:ID!){user:user(id:$id){__typename ...UserNano}}fragment UserNano on User{__typename firstName id lastName name online photo}',
+        selector: GetUserSelector
     },
     GlobalCounter: {
         kind: 'query',

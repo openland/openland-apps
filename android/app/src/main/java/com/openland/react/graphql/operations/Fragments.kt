@@ -1799,6 +1799,16 @@ internal val StickerPackFragmentSelector = obj(
             field("title", "title", notNull(scalar("String")))
         )
 
+internal val UserNanoSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("firstName", "firstName", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("lastName", "lastName", scalar("String")),
+            field("name", "name", notNull(scalar("String"))),
+            field("online", "online", notNull(scalar("Boolean"))),
+            field("photo", "photo", scalar("String"))
+        )
+
 internal val WalletTransactionFragmentSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),

@@ -1793,6 +1793,16 @@ private let StickerPackFragmentSelector = obj(
             field("title", "title", notNull(scalar("String")))
         )
 
+private let UserNanoSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("firstName", "firstName", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("lastName", "lastName", scalar("String")),
+            field("name", "name", notNull(scalar("String"))),
+            field("online", "online", notNull(scalar("Boolean"))),
+            field("photo", "photo", scalar("String"))
+        )
+
 private let WalletTransactionFragmentSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -2409,6 +2419,12 @@ private let FetchPushSettingsSelector = obj(
             field("pushSettings", "pushSettings", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("webPushKey", "webPushKey", scalar("String"))
+                )))
+        )
+private let GetUserSelector = obj(
+            field("user", "user", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("User", UserNanoSelector)
                 )))
         )
 private let GlobalCounterSelector = obj(
@@ -4582,6 +4598,12 @@ class Operations {
         "query FetchPushSettings{pushSettings{__typename webPushKey}}",
         FetchPushSettingsSelector
     )
+    let GetUser = OperationDefinition(
+        "GetUser",
+        .query, 
+        "query GetUser($id:ID!){user:user(id:$id){__typename ...UserNano}}fragment UserNano on User{__typename firstName id lastName name online photo}",
+        GetUserSelector
+    )
     let GlobalCounter = OperationDefinition(
         "GlobalCounter",
         .query, 
@@ -5779,6 +5801,7 @@ class Operations {
         if name == "FeedSubscriptions" { return FeedSubscriptions }
         if name == "FeedWritableChannels" { return FeedWritableChannels }
         if name == "FetchPushSettings" { return FetchPushSettings }
+        if name == "GetUser" { return GetUser }
         if name == "GlobalCounter" { return GlobalCounter }
         if name == "GlobalSearch" { return GlobalSearch }
         if name == "InitFeed" { return InitFeed }

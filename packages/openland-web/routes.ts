@@ -258,13 +258,6 @@ routes.add('/oauth/:code', '/oauth/oauth');
 routes.add('/oauth/:code/', '/oauth/oauth');
 
 //
-// Shortnames
-//
-
-routes.add('/:shortname', '/unicorn/index');
-routes.add('/:shortname/', '/unicorn/index');
-
-//
 // Backward compatibility
 //
 
@@ -281,6 +274,13 @@ routes.add('/direcory/o/:id', '/unicorn/index');
 routes.add('/direcory/o/:id/', '/unicorn/index');
 routes.add('/direcory/c/:id', '/unicorn/index');
 routes.add('/direcory/c/:id/', '/unicorn/index');
+
+//
+// Shortnames
+//
+
+routes.add('/:shortname', '/unicorn/index');
+routes.add('/:shortname/', '/unicorn/index');
 
 export function getRequestHandler(src: any): any {
     return routes.getRequestHandler(src);

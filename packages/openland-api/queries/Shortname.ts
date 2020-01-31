@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { UserNano } from '../fragments/UserNano';
 
 export const ResolveShortNameQuery = gql`
     query ResolveShortName($shortname: String!) {
@@ -16,6 +17,15 @@ export const ResolveShortNameQuery = gql`
             }
         }
     }
+`;
+
+export const GetUserQuery = gql`
+    query GetUser($id: ID!) {
+        user: user(id: $id) {
+            ...UserNano
+        }
+    }
+    ${UserNano}
 `;
 
 export const SetOrgShortnameMutation = gql`

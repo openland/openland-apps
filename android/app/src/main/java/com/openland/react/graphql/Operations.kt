@@ -38,6 +38,7 @@ object Operations {
         if (name == "FeedSubscriptions") return FeedSubscriptions
         if (name == "FeedWritableChannels") return FeedWritableChannels
         if (name == "FetchPushSettings") return FetchPushSettings
+        if (name == "GetUser") return GetUser
         if (name == "GlobalCounter") return GlobalCounter
         if (name == "GlobalSearch") return GlobalSearch
         if (name == "InitFeed") return InitFeed
