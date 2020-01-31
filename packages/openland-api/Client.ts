@@ -4110,7 +4110,7 @@ const SetOrgShortnameSelector = obj(
             field('alphaSetOrgShortName', 'alphaSetOrgShortName', args(fieldValue("id", refValue('organizationId')), fieldValue("shortname", refValue('shortname'))), scalar('String'))
         );
 const SetTypingSelector = obj(
-            field('typingSend', 'typingSend', args(fieldValue("conversationId", refValue('conversationId')), fieldValue("type", stringValue("TEXT"))), notNull(scalar('String')))
+            field('typingSend', 'typingSend', args(fieldValue("conversationId", refValue('conversationId')), fieldValue("type", refValue('type'))), notNull(scalar('String')))
         );
 const SetUserShortnameSelector = obj(
             field('alphaSetUserShortName', 'alphaSetUserShortName', args(fieldValue("shortname", refValue('shortname'))), scalar('String'))
@@ -5565,7 +5565,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     SetTyping: {
         kind: 'mutation',
         name: 'SetTyping',
-        body: 'mutation SetTyping($conversationId:ID!){typingSend(conversationId:$conversationId,type:TEXT)}',
+        body: 'mutation SetTyping($conversationId:ID!,$type:TypingType!){typingSend(conversationId:$conversationId,type:$type)}',
         selector: SetTypingSelector
     },
     SetUserShortname: {

@@ -12,7 +12,7 @@ import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/C
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, SharedRoomKind } from 'openland-api/Types';
+import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, SharedRoomKind, TypingType } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
@@ -72,7 +72,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     inputRef = React.createRef<TextInput>();
 
     private setTyping = throttle(() => {
-        getMessenger().engine.client.mutateSetTyping({ conversationId: this.props.chat.id });
+        getMessenger().engine.client.mutateSetTyping({ conversationId: this.props.chat.id, type: TypingType.TEXT });
     }, 1000);
 
     constructor(props: ConversationRootProps) {

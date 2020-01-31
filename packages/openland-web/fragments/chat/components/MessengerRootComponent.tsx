@@ -14,6 +14,7 @@ import {
     RoomChat_room,
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
     StickerFragment,
+    TypingType,
 } from 'openland-api/Types';
 import { trackEvent } from 'openland-x-analytics';
 import { throttle, delay } from 'openland-y-utils/timer';
@@ -141,6 +142,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     private setTyping = throttle(() => {
         this.props.messenger.client.mutateSetTyping({
             conversationId: this.props.conversationId,
+            type: TypingType.TEXT
         });
     }, 1000);
 

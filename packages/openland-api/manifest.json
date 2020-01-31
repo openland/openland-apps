@@ -324,10 +324,10 @@
       }
     },
     {
-      "signature": "6acdbb5f269c0a225765b63b4111078f259c1d4e2df115933e0215e7b3ba7aa4",
-      "document": "mutation SetTyping($conversationId:ID!){typingSend(conversationId:$conversationId,type:TEXT)}",
+      "signature": "489398db01d962054addc5015970a46b9cd935624240a489100b8040581982ba",
+      "document": "mutation SetTyping($conversationId:ID!,$type:TypingType!){typingSend(conversationId:$conversationId,type:$type)}",
       "metadata": {
-        "engineSignature": "mutation SetTyping($conversationId:ID!){typingSend(conversationId:$conversationId,type:TEXT)}"
+        "engineSignature": "mutation SetTyping($conversationId:ID!,$type:TypingType!){typingSend(conversationId:$conversationId,type:$type)}"
       }
     },
     {

@@ -529,8 +529,8 @@ export const BuyPremiumChatSubscriptionMutation = gql`
 `;
 
 export const SetTypingMutation = gql`
-    mutation SetTyping($conversationId: ID!) {
-        typingSend(conversationId: $conversationId, type: TEXT)
+    mutation SetTyping($conversationId: ID!, $type: TypingType!) {
+        typingSend(conversationId: $conversationId, type: $type)
     }
 `;
 

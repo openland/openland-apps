@@ -4107,7 +4107,7 @@ private let SetOrgShortnameSelector = obj(
             field("alphaSetOrgShortName", "alphaSetOrgShortName", arguments(fieldValue("id", refValue("organizationId")), fieldValue("shortname", refValue("shortname"))), scalar("String"))
         )
 private let SetTypingSelector = obj(
-            field("typingSend", "typingSend", arguments(fieldValue("conversationId", refValue("conversationId")), fieldValue("type", stringValue("TEXT"))), notNull(scalar("String")))
+            field("typingSend", "typingSend", arguments(fieldValue("conversationId", refValue("conversationId")), fieldValue("type", refValue("type"))), notNull(scalar("String")))
         )
 private let SetUserShortnameSelector = obj(
             field("alphaSetUserShortName", "alphaSetUserShortName", arguments(fieldValue("shortname", refValue("shortname"))), scalar("String"))
@@ -5566,7 +5566,7 @@ class Operations {
     let SetTyping = OperationDefinition(
         "SetTyping",
         .mutation, 
-        "mutation SetTyping($conversationId:ID!){typingSend(conversationId:$conversationId,type:TEXT)}",
+        "mutation SetTyping($conversationId:ID!,$type:TypingType!){typingSend(conversationId:$conversationId,type:$type)}",
         SetTypingSelector
     )
     let SetUserShortname = OperationDefinition(

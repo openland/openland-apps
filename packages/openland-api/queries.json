@@ -4318,9 +4318,13 @@
 				{
 					"name": "conversationId",
 					"type": "ID!"
+				},
+				{
+					"name": "type",
+					"type": "TypingType!"
 				}
 			],
-			"source": "mutation SetTyping($conversationId: ID!) {\n  typingSend(conversationId: $conversationId, type: TEXT)\n}",
+			"source": "mutation SetTyping($conversationId: ID!, $type: TypingType!) {\n  typingSend(conversationId: $conversationId, type: $type)\n}",
 			"fields": [
 				{
 					"responseName": "typingSend",
@@ -4337,7 +4341,10 @@
 						},
 						{
 							"name": "type",
-							"value": "TEXT",
+							"value": {
+								"kind": "Variable",
+								"variableName": "type"
+							},
 							"type": "TypingType!"
 						}
 					],
@@ -4348,8 +4355,8 @@
 			"fragmentSpreads": [],
 			"inlineFragments": [],
 			"fragmentsReferenced": [],
-			"sourceWithFragments": "mutation SetTyping($conversationId: ID!) {\n  typingSend(conversationId: $conversationId, type: TEXT)\n}",
-			"operationId": "3b376c9bf15b7e2e33ae0919cd60784a7f08b4b13818e26b2c9787fc4241fe2c"
+			"sourceWithFragments": "mutation SetTyping($conversationId: ID!, $type: TypingType!) {\n  typingSend(conversationId: $conversationId, type: $type)\n}",
+			"operationId": "cef7e8dddda0b3ecf6dfc7cd8e3aa9030d8c5b3af249398e01cac4b1e92e877e"
 		},
 		{
 
@@ -34605,6 +34612,32 @@
 			]
 		},
 		{
+			"kind": "EnumType",
+			"name": "TypingType",
+			"values": [
+				{
+					"name": "TEXT",
+					"isDeprecated": false
+				},
+				{
+					"name": "PHOTO",
+					"isDeprecated": false
+				},
+				{
+					"name": "FILE",
+					"isDeprecated": false
+				},
+				{
+					"name": "STICKER",
+					"isDeprecated": false
+				},
+				{
+					"name": "VIDEO",
+					"isDeprecated": false
+				}
+			]
+		},
+		{
 			"kind": "InputObjectType",
 			"name": "RoomInviteInput",
 			"fields": [
@@ -34669,32 +34702,6 @@
 				{
 					"name": "kind",
 					"type": "SharedRoomKind"
-				}
-			]
-		},
-		{
-			"kind": "EnumType",
-			"name": "TypingType",
-			"values": [
-				{
-					"name": "TEXT",
-					"isDeprecated": false
-				},
-				{
-					"name": "PHOTO",
-					"isDeprecated": false
-				},
-				{
-					"name": "FILE",
-					"isDeprecated": false
-				},
-				{
-					"name": "STICKER",
-					"isDeprecated": false
-				},
-				{
-					"name": "VIDEO",
-					"isDeprecated": false
 				}
 			]
 		},
