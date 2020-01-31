@@ -576,9 +576,9 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         let contentInset = SDevice.navigationBarHeight + SDevice.statusBarHeight + SDevice.safeArea.top;
 
         return (
-            <View style={[styles.fill, this.props.style.isOpaque && { paddingTop: contentInset }]} {...Platform.OS === 'ios' ? this.panResponder.panHandlers : undefined}>
+            <View style={[styles.fill, Platform.OS === 'android' && { paddingTop: contentInset }]} {...Platform.OS === 'ios' ? this.panResponder.panHandlers : undefined}>
                 <ASSafeAreaProvider
-                    top={this.props.style.isOpaque ? 0 : contentInset}
+                    top={Platform.OS === 'android' ? 0 : contentInset}
                     bottom={SDevice.safeArea.bottom}
                 >
                     {pages}
