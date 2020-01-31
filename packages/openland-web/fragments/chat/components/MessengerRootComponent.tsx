@@ -146,6 +146,35 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         });
     }, 1000);
 
+    // uncomment this all when you need to handle sticker picking
+
+    // private setStickerPicking = () => {
+    //     this.props.messenger.client.mutateSetTyping({
+    //         conversationId: this.props.conversationId,
+    //         type: TypingType.STICKER
+    //     });
+    // }
+
+    // private unsetTyping = () => {
+    //     this.props.messenger.client.mutateUnsetTyping({
+    //         conversationId: this.props.conversationId
+    //     });
+    // }
+
+    // TODO remove any
+    // private stickerPickingMutationIntervals: any[] = [];
+    private startStickerPicking = () => {
+        // this.setStickerPicking();
+        // this.stickerPickingMutationIntervals.push(setInterval(() => {
+        //     console.log('From the interval');
+        //     this.setStickerPicking();
+        // }, 3000));
+    }
+    private finishStickerPicking = () => {
+        // this.stickerPickingMutationIntervals.forEach(clearInterval);
+        // this.unsetTyping();
+    }
+
     activeSubscription?: () => void;
     initialContent?: URickTextValue;
 
@@ -362,6 +391,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
 
     onStickerSent = (sticker: StickerFragment) => {
         this.conversation!.sendSticker(sticker);
+        this.finishStickerPicking();
     }
 
     onContentChange = (text: URickTextValue) => {
@@ -448,6 +478,8 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                         onContentChange={this.onContentChange}
                                         isChannel={this.props.room.__typename === 'SharedRoom' ? this.props.room.isChannel : undefined}
                                         autoFocus={true}
+                                        onEmojiPickerShow={this.startStickerPicking}
+                                        onEmojiPickerHide={this.finishStickerPicking}
                                     />
                                 </div>
                             </div>

@@ -331,6 +331,13 @@
       }
     },
     {
+      "signature": "52be4a6d3ac0e5254204c322bec36ce33069360093ab83f2249a87471f583657",
+      "document": "mutation UnsetTyping($conversationId:ID!){typingCancel(conversationId:$conversationId)}",
+      "metadata": {
+        "engineSignature": "mutation UnsetTyping($conversationId:ID!){typingCancel(conversationId:$conversationId)}"
+      }
+    },
+    {
       "signature": "bb6b8120d8af08551d8c4bdf85581de2bc936c91a9f6cbdfd4ad9a9b920d8df9",
       "document": "fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}fragment UserBadge on UserBadge{__typename id name verified}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename...OrganizationShort}shortname}mutation RoomAddMembers($invites:[RoomInviteInput!]!,$roomId:ID!){alphaRoomInvite(invites:$invites,roomId:$roomId){__typename badge{__typename...UserBadge}canKick membership role user{__typename...UserShort}}}",
       "metadata": {

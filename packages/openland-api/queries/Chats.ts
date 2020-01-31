@@ -534,6 +534,12 @@ export const SetTypingMutation = gql`
     }
 `;
 
+export const UnsetTypingMutation = gql`
+    mutation UnsetTyping($conversationId: ID!) {
+        typingCancel(conversationId: $conversationId)
+    }
+`;
+
 export const RoomAddMembersMutation = gql`
     mutation RoomAddMembers($roomId: ID!, $invites: [RoomInviteInput!]!) {
         alphaRoomInvite(roomId: $roomId, invites: $invites) {

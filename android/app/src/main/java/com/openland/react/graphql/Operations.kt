@@ -216,6 +216,7 @@ object Operations {
         if (name == "SuperBadgeUnsetToRoom") return SuperBadgeUnsetToRoom
         if (name == "UnSubscribeFromComments") return UnSubscribeFromComments
         if (name == "UnpinMessage") return UnpinMessage
+        if (name == "UnsetTyping") return UnsetTyping
         if (name == "UpdateApp") return UpdateApp
         if (name == "UpdateOrganization") return UpdateOrganization
         if (name == "UpdateWelcomeMessage") return UpdateWelcomeMessage

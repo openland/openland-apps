@@ -387,6 +387,8 @@ const CategoryButton = React.memo(
 interface EmojiPickerProps {
     onEmojiPicked: (arg: string) => void;
     onStickerSent?: (sticker: StickerFragment) => void;
+    onShow?: () => void;
+    onHide?: () => void;
 }
 
 const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
@@ -641,8 +643,19 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
         ),
     );
 
+    if (!visible && props.onHide) {
+        props.onHide();
+    }
+
+    const showWithEvent = (e: any) => {
+        show(e);
+        if (props.onShow) {
+            props.onShow();
+        }
+    };
+
     return (
-        <div className={cx(emojiPickerIcon, visible && emojiPickerIconOpen)} onMouseEnter={show}>
+        <div className={cx(emojiPickerIcon, visible && emojiPickerIconOpen)} onMouseEnter={showWithEvent}>
             <UIcon icon={<IcSticker />} size={20} />
         </div>
     );

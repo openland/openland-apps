@@ -1177,6 +1177,9 @@ export class OpenlandClient extends BaseApiClient {
     async mutateSetTyping(variables: Types.SetTypingVariables): Promise<Types.SetTyping> {
         return this.client.mutate(Source.SetTypingMutation, variables);
     }
+    async mutateUnsetTyping(variables: Types.UnsetTypingVariables): Promise<Types.UnsetTyping> {
+        return this.client.mutate(Source.UnsetTypingMutation, variables);
+    }
     async mutateRoomAddMembers(variables: Types.RoomAddMembersVariables): Promise<Types.RoomAddMembers> {
         return this.client.mutate(Source.RoomAddMembersMutation, variables);
     }

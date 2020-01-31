@@ -104,6 +104,7 @@ export const RoomReadMutation = typedMutation<Types.RoomRead, Types.RoomReadVari
 export const RoomCreateMutation = typedMutation<Types.RoomCreate, Types.RoomCreateVariables>(Chats.RoomCreateMutation);
 export const BuyPremiumChatSubscriptionMutation = typedMutation<Types.BuyPremiumChatSubscription, Types.BuyPremiumChatSubscriptionVariables>(Chats.BuyPremiumChatSubscriptionMutation);
 export const SetTypingMutation = typedMutation<Types.SetTyping, Types.SetTypingVariables>(Chats.SetTypingMutation);
+export const UnsetTypingMutation = typedMutation<Types.UnsetTyping, Types.UnsetTypingVariables>(Chats.UnsetTypingMutation);
 export const RoomAddMembersMutation = typedMutation<Types.RoomAddMembers, Types.RoomAddMembersVariables>(Chats.RoomAddMembersMutation);
 export const RoomKickMutation = typedMutation<Types.RoomKick, Types.RoomKickVariables>(Chats.RoomKickMutation);
 export const RoomChangeRoleMutation = typedMutation<Types.RoomChangeRole, Types.RoomChangeRoleVariables>(Chats.RoomChangeRoleMutation);

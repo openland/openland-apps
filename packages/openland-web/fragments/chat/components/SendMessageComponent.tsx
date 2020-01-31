@@ -456,6 +456,8 @@ interface SendMessageComponentProps {
     onStickerSent?: (sticker: StickerFragment) => void;
     onStickerSentAsync?: (sticker: StickerFragment) => void;
     onTextChange?: (text: string) => void;
+    onEmojiPickerShow?: () => void;
+    onEmojiPickerHide?: () => void;
     placeholder?: string;
     initialText?: URickTextValue;
     rickRef?: React.RefObject<URickInputInstance>;
@@ -581,7 +583,6 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     }, []);
 
     const onAttachPress = React.useCallback(() => {
-        //
         if (fileInputRef.current) {
             fileInputRef.current.click();
         }
@@ -660,6 +661,8 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     onFilesPaste={props.onAttach}
                     withShortcutsButton={!isMobile}
                     className={(isWindows || isLinux) ? hideScrollStyle : undefined}
+                    onEmojiPickerShow={props.onEmojiPickerShow}
+                    onEmojiPickerHide={props.onEmojiPickerHide}
                 />
             </XView>
             {!loading && (

@@ -99,6 +99,9 @@ export interface URickInputProps {
     withShortcutsButton?: boolean;
     onStickerSent?: (sticker: StickerFragment) => void;
 
+    onEmojiPickerShow?: () => void;
+    onEmojiPickerHide?: () => void;
+
     onPressEnter?: () => Promise<boolean>;
     onPressUp?: () => boolean;
     onPressDown?: () => boolean;
@@ -494,7 +497,12 @@ export const URickInput = React.memo(
             >
                 <div ref={containerRef} />
                 {props.withShortcutsButton && <ShortcutButton />}
-                <EmojiPicker onEmojiPicked={onEmojiPicked} onStickerSent={props.onStickerSent} />
+                <EmojiPicker
+                    onEmojiPicked={onEmojiPicked}
+                    onStickerSent={props.onStickerSent}
+                    onShow={props.onEmojiPickerShow}
+                    onHide={props.onEmojiPickerHide}
+                />
             </div>
         );
     }),
