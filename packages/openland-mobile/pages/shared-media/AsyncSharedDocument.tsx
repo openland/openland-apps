@@ -42,7 +42,7 @@ export const AsyncSharedDocument = React.memo(({ item, chatId, onLongPress }: As
             <ASDocumentExt name={attachment.fileMetadata.name} size="medium" />
             <ASFlex
                 marginLeft={16}
-                marginTop={6}
+                marginTop={4}
                 marginBottom={6}
                 flexGrow={1}
                 flexShrink={1}
