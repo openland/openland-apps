@@ -121,7 +121,7 @@ const UserMultiplePickerComponent = XMemo<PageProps>((props) => {
             />
             <View style={{ flexDirection: 'column', width: '100%', height: '100%' }}>
                 <SScrollView>
-                    <View paddingTop={searchHeight} minHeight={Dimensions.get('screen').height - searchHeight}>
+                    <View paddingTop={searchHeight - 16} minHeight={Dimensions.get('screen').height - searchHeight}>
                         <React.Suspense fallback={<ZLoader />}>
                             <UsersList {...props} users={users} query={query} onAdd={handleAddUser} />
                         </React.Suspense>
@@ -138,7 +138,6 @@ const UserMultiplePickerComponent = XMemo<PageProps>((props) => {
                             title="Members:"
                             theme={theme}
                         />
-                        <View style={{ height: 1, backgroundColor: theme.border }} />
                     </ZBlurredView>
                 )}
             </ASSafeAreaContext.Consumer>

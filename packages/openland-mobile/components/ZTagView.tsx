@@ -95,19 +95,37 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
             <ScrollView keyboardShouldPersistTaps="always">
                 <View style={{ paddingHorizontal: 15, paddingVertical: 8 }}>
                     <TouchableWithoutFeedback onPress={() => this.handleTouchOutside()}>
-                        <View flexWrap="wrap" flexDirection="row">
+                        <View flexWrap="wrap" flexDirection="row" marginLeft={-7}>
                             {this.props.title && (
-                                <View style={{ height: 32, paddingRight: 5 }}>
-                                    <Text style={{ lineHeight: 32, fontSize: 15, color: this.props.theme.foregroundPrimary, opacity: 0.6, fontWeight: '500' }}>{this.props.title}</Text>
+                                <View style={{ height: 32, paddingRight: 5, marginLeft: 8 }}>
+                                    <Text style={{ lineHeight: 32, fontSize: 15, color: this.props.theme.foregroundPrimary, opacity: 0.6 }}>{this.props.title}</Text>
                                 </View>
                             )}
 
                             {this.props.items.map((v) => (
                                 <TouchableWithoutFeedback onPress={() => this.handleFocus(v.id)}>
-                                    <View paddingLeft={1} paddingRight={1} paddingTop={2} paddingBottom={2}>
-                                        <View height={28} borderRadius={RadiusStyles.Medium} backgroundColor={this.state.focused === v.id ? this.props.theme.accentPrimary : undefined} paddingLeft={1} paddingRight={1}>
-                                            <Text style={{ color: this.state.focused === v.id ? this.props.theme.foregroundContrast : this.props.theme.accentPrimary, height: 24, lineHeight: 28, textAlignVertical: 'center', fontSize: 15 }}>{v.text},</Text>
-                                        </View>
+                                    <View
+                                        height={28}
+                                        paddingLeft={8}
+                                        paddingRight={8}
+                                        paddingTop={4}
+                                        paddingBottom={4}
+                                        marginTop={3}
+                                        borderRadius={RadiusStyles.Medium}
+                                        backgroundColor={this.state.focused === v.id ? this.props.theme.accentPrimary : undefined}
+                                        alignItems="center"
+                                        justifyContent="center"
+                                    >
+                                        <Text
+                                            style={{
+                                                color: this.state.focused === v.id ? this.props.theme.foregroundContrast : this.props.theme.accentPrimary,
+                                                textAlignVertical: 'center',
+                                                fontSize: 15
+                                            }}
+                                        >
+                                            {v.text}
+                                            <Text style={{ color: this.props.theme.accentPrimary }}>,</Text>
+                                        </Text>
                                     </View>
                                 </TouchableWithoutFeedback>
                             ))}

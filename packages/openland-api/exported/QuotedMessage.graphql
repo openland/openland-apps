@@ -86,6 +86,16 @@ fragment QuotedMessage on ModernMessage {
           photo
           text
         }
+        keyboard {
+          __typename
+          buttons {
+            __typename
+            id
+            style
+            title
+            url
+          }
+        }
         subTitle
         text
         title

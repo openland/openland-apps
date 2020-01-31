@@ -200,6 +200,7 @@ export const fileContainer = css`
         transition: all 150ms;
         transform: translateY(0);
         opacity: 1;
+        margin-top: 2px;
     }
 
     & .icon-info .download-icon {
@@ -256,6 +257,7 @@ const iconInfo = css`
 const metadataContainer = css`
     display: flex;
     flex-direction: column;
+    margin-bottom: 2px;
 `;
 
 const title = css`

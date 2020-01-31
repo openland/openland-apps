@@ -54,7 +54,7 @@ export const ASDocumentExt = (props: ASDocumentExtProps) => {
                         flexShrink={1}
                         color={theme.foregroundContrast}
                         numberOfLines={1}
-                        marginBottom={size === 'large' ? 12 : 6}
+                        marginBottom={size === 'large' ? 10 : 4}
                         marginLeft={size === 'large' ? 8 : 4}
                         marginRight={size === 'large' ? 8 : 4}
                     >

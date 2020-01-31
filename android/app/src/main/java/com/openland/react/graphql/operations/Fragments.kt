@@ -253,6 +253,16 @@ internal val QuotedMessageSelector = obj(
                                     field("photo", "photo", notNull(scalar("String"))),
                                     field("text", "text", notNull(scalar("String")))
                                 )),
+                            field("keyboard", "keyboard", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("buttons", "buttons", notNull(list(list(notNull(obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("id", "id", notNull(scalar("ID"))),
+                                            field("style", "style", notNull(scalar("String"))),
+                                            field("title", "title", notNull(scalar("String"))),
+                                            field("url", "url", scalar("String"))
+                                        ))))))
+                                )),
                             field("subTitle", "subTitle", scalar("String")),
                             field("text", "text", scalar("String")),
                             field("title", "title", scalar("String")),

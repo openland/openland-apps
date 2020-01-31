@@ -37,7 +37,7 @@ const useSharedHandlers = (room: Room_room_SharedRoom, router: SRouter) => {
                     router.back();
                 }
             },
-            'Invite friends',
+            'Add people',
             [],
             [userId],
             { path: 'ProfileGroupLink', pathParams: { room } }
@@ -84,7 +84,7 @@ export const ConversationManageButton = XMemo((props: ConversationManageButtonPr
 
         const isPrivate = room.__typename === 'PrivateRoom';
         if (!isPrivate) {
-            builder.action('Invite friends', onInvitePress, false, require('assets/ic-invite-24.png'));
+            builder.action('Add people', onInvitePress, false, require('assets/ic-invite-24.png'));
         }
 
         builder.action('Shared media', onSharedPress, false, require('assets/ic-attach-24.png'));
