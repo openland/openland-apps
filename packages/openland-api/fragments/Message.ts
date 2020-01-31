@@ -228,6 +228,14 @@ export const QuotedMessage = gql`
                             imageFormat
                         }
                     }
+                    keyboard {
+                        buttons {
+                            id
+                            title
+                            style
+                            url
+                        }
+                    }
                     imageFallback {
                         photo
                         text
