@@ -1007,6 +1007,7 @@ export const TypingsWatchSubscription = gql`
                 firstName
             }
             cancel
+            type
         }
     }
 `;

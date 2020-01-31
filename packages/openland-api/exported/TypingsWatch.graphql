@@ -11,6 +11,7 @@ subscription TypingsWatch {
         id
       }
     }
+    type
     user {
       __typename
       firstName

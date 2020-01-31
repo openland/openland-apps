@@ -4390,6 +4390,7 @@ private let TypingsWatchSelector = obj(
                                 field("id", "id", notNull(scalar("ID")))
                             ))
                         ))),
+                    field("type", "type", notNull(scalar("String"))),
                     field("user", "user", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("firstName", "firstName", notNull(scalar("String"))),
@@ -5769,7 +5770,7 @@ class Operations {
     let TypingsWatch = OperationDefinition(
         "TypingsWatch",
         .subscription, 
-        "subscription TypingsWatch{typings{__typename cancel conversation:chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}user{__typename firstName id photo}}}",
+        "subscription TypingsWatch{typings{__typename cancel conversation:chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}type user{__typename firstName id photo}}}",
         TypingsWatchSelector
     )
     let WalletUpdates = OperationDefinition(
