@@ -173,8 +173,6 @@ export default () => {
     let router = React.useContext(XRouterContext)!;
     let page: pagesT = pages.createNewAccount;
 
-    const isSignInInvite = checkIfIsSignInInvite(router);
-
     if (getAppInvite(router)) {
         Cookie.set('x-openland-app-invite', getAppInvite(router));
     }
@@ -182,10 +180,8 @@ export default () => {
     if (getOrgInvite(router)) {
         Cookie.set('x-openland-org-invite', getOrgInvite(router));
     }
-
-    let isInvitePage = isSignInInvite;
-
-    if (router.path.includes('accept-invite') || isInvitePage) {
+    
+    if (router.path.includes('accept-invite') || checkIfIsSignInInvite(router)) {
         page = pages.acceptInvite;
     }
     if (router.path.includes('ask-activation-code')) {

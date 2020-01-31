@@ -245,7 +245,7 @@ export const UAvatar = XMemo<UAvatarProps>(props => {
     const dotBackground = selected ? 'var(--foregroundContrast)' : 'var(--accentPrimary)';
 
     return (
-        <XView {...other} cursor={props.onClick || props.path ? 'pointer' : undefined}>
+        <XView height={boxSize} width={boxSize} cursor={props.onClick || props.path ? 'pointer' : undefined} {...other}>
             <div
                 className={colorProvider}
                 style={

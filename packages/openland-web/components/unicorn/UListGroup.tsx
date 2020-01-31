@@ -12,6 +12,7 @@ interface UListGroupProps {
         path?: string;
         onClick?: () => void;
     };
+    padded?: boolean;
     children?: any;
 }
 
@@ -31,7 +32,7 @@ export const UListGroup = (props: UListGroupProps) => {
 
     return (
         <XView marginTop={marginTop} marginBottom={marginBottom}>
-            {!!header && <UListHeader text={header} counter={counter} action={action} />}
+            {!!header && <UListHeader text={header} counter={counter} action={action} padded={props.padded} />}
 
             <XView>{components}</XView>
         </XView>

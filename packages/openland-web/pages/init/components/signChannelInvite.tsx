@@ -73,13 +73,13 @@ const InviteInfoInner = (props: any) => {
     );
 };
 
-export const SignInInvite = ({ invite, isPaid }: { invite: string; isPaid?: boolean }) => {
+export const SignInInvite = ({ invite }: { invite: string }) => {
     Cookie.set('x-openland-invite', invite, { path: '/' });
 
     let userCtx = React.useContext(UserInfoContext)!!;
 
     const instantRedirect = userCtx.isLoggedIn
-        ? (userCtx.isCompleted || isPaid ? '/invite/' : '/acceptChannelInvite/') + invite
+        ? (userCtx.isCompleted ? '/invite/' : '/acceptChannelInvite/') + invite
         : undefined;
 
     return (
@@ -92,7 +92,7 @@ export const SignInInvite = ({ invite, isPaid }: { invite: string; isPaid?: bool
                 <XDialogProviderComponent />
                 <InviteInfoInner
                     variables={{ invite }}
-                    redirect={`${isPaid ? '/invite/' : '/acceptChannelInvite/'}${invite}`}
+                    redirect={`/acceptChannelInvite/${invite}`}
                     instantRedirect={instantRedirect}
                 />
             </LayoutProvider>

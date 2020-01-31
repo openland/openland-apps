@@ -6,36 +6,42 @@ import { InitTexts } from './_text';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-class AcceptInviteComponent extends React.Component<{ mutation: any }> {
-    componentDidMount() {
-        this.accept();
-    }
 
-    accept = async () => {
-        await this.props.mutation({});
-        window.location.href = '/';
-    }
-    render() {
-        return <XLoader loading={true} />;
-    }
-}
-
-export default withAppBase('Room Invite', () => {
+let AcceptInviteComponent = () => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
-    const join = async () => {
-        await client.mutateRoomJoinInviteLink({
-            invite: router.routeQuery.invite,
-        });
-    };
+    let invite = client.useResolvedInvite({ key: router.routeQuery.invite });
+
+    React.useEffect(() => {
+        console.warn(invite);
+        if (invite && invite.invite && invite.invite.__typename === 'RoomInvite') {
+            if (invite.invite.room.isPremium) {
+                window.location.href = `/invite/${router.routeQuery.invite}`;
+            } else {
+                (async () => {
+                    await client.mutateRoomJoinInviteLink({
+                        invite: router.routeQuery.invite,
+                    });
+                    window.location.href = '/';
+                })();
+
+            }
+        }
+    });
+    return <XLoader loading={true} />;
+};
+
+export default withAppBase('Room Invite', () => {
     return (
         <AuthRouter>
             <XDocumentHead
                 title={InitTexts.invite.pageTitle}
                 titleSocial={InitTexts.socialPageTitle}
             />
-            <AcceptInviteComponent mutation={join} />
+            <React.Suspense fallback={<XLoader loading={true} />}>
+                <AcceptInviteComponent />
+            </React.Suspense>
         </AuthRouter>
     );
 });

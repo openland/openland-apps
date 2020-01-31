@@ -33,6 +33,10 @@ interface URadioItemProps {
     useAnyOption?: boolean;
 }
 
+export const URadioDot = (props: { checked?: boolean }) => {
+    return <div className={cx(radioDotStyle, props.checked && radioDotCheckedStyle)} />;
+};
+
 export const URadioItem = (props: URadioItemProps) => {
     const handleChange = () => {
         if (props.onChange) {
@@ -73,7 +77,7 @@ export const URadioItem = (props: URadioItemProps) => {
                     hoverBackgroundColor="var(--backgroundPrimaryHover)"
                 >
                     <span>{props.label}</span>
-                    <div className={cx(radioDotStyle, props.checked && radioDotCheckedStyle)} />
+                    <URadioDot checked={props.checked} />
                 </XView>
             </label>
         </XView>

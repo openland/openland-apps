@@ -35,6 +35,7 @@ export const SelectableText = React.memo((props: XViewProps) => {
 
 export interface UListItemProps {
     title: string | JSX.Element;
+    titleStyle?: XViewProps;
     titleIcon?: JSX.Element;
     subtitle?: string | JSX.Element;
     description?: string | JSX.Element | null;
@@ -58,6 +59,7 @@ export interface UListItemProps {
 export const UListItem = React.memo((props: UListItemProps) => {
     const {
         title,
+        titleStyle,
         titleIcon,
         subtitle,
         description,
@@ -141,7 +143,8 @@ export const UListItem = React.memo((props: UListItemProps) => {
                         color="var(--foregroundPrimary)"
                         selectedColor="var(--foregroundContrast)"
                     >
-                        {titleEmojify}
+
+                        {titleStyle ? <XView {...titleStyle}>{titleEmojify}</XView> : titleEmojify}
                     </SelectableText>
 
                     {!!subtitle && (

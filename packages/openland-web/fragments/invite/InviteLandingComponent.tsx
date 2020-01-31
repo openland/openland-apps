@@ -20,7 +20,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { trackEvent } from 'openland-x-analytics';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
-import { showPayConfirm } from '../wallet/components/showPaymentConfirm';
+import { showPayConfirm } from '../wallet/components/showPayConfirm';
 import { TextCaption, TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
 
 const rootClassName = css`
@@ -136,9 +136,9 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
 
     const avatars = room
         ? room.previewMembers
-              .map(x => x)
-              .filter(x => !!x)
-              .slice(0, 5)
+            .map(x => x)
+            .filter(x => !!x)
+            .slice(0, 5)
         : [];
 
     const showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
@@ -166,10 +166,10 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
                         </div>
                     </div>
                 ) : (
-                    <div className={avatarsContainer}>
-                        <UAvatar photo={photo} title={title} id={id} size="xx-large" />
-                    </div>
-                )}
+                        <div className={avatarsContainer}>
+                            <UAvatar photo={photo} title={title} id={id} size="xx-large" />
+                        </div>
+                    )}
                 <div className={cx(TextTitle1, titleStyle)}>{joinTitle}</div>
                 {!!description && (
                     <div className={cx(TextBody, descriptionStyle)}>{description}</div>
@@ -263,34 +263,48 @@ const BuyPaidChatPassButton = (props: {
     id: string;
     premiumSettings: { price: number; interval: WalletSubscriptionInterval };
     title: string;
+    photo?: string
 }) => {
     const client = useClient();
     let router = React.useContext(XViewRouterContext)!;
     const [loading, setLoading] = React.useState(false);
     const buyPaidChatPass = React.useCallback(async () => {
         showPayConfirm(
-            props.premiumSettings.price,
-            props.premiumSettings.interval,
-            `Membership in "${props.title}"`,
-            async () => {
-                try {
-                    let res = await client.mutateBuyPremiumChatSubscription({ chatId: props.id });
-                    if (res.betaBuyPremiumChatSubscription.premiumPassIsActive) {
-                        router.navigate('/mail/' + props.id);
+            {
+                amount: props.premiumSettings.price,
+                type: 'subscription',
+                interval: props.premiumSettings.interval,
+                productTitle: props.title,
+                productDescription: 'Subscription',
+                productPicture: (<UAvatar title={props.title} id={props.id} photo={props.photo} />),
+                action: async () => {
+                    try {
+                        let res = await client.mutateBuyPremiumChatSubscription({ chatId: props.id });
+                        if (res.betaBuyPremiumChatSubscription.premiumPassIsActive) {
+                            router.navigate('/mail/' + props.id);
+                        }
+                    } catch (e) {
+                        setLoading(false);
                     }
-                } catch (e) {
-                    setLoading(false);
-                }
-            },
+                },
+            }
+
         );
     }, []);
     return (
-        <UButton
-            loading={loading}
-            style="pay"
-            text={`Join for ${formatMoney(props.premiumSettings.price)}`}
-            action={buyPaidChatPass}
-        />
+        <>
+            <UButton
+                loading={loading}
+                style="pay"
+                text={`Join for ${formatMoney(props.premiumSettings.price)}`}
+                action={buyPaidChatPass}
+                shape="square"
+                size="large"
+                marginBottom={16}
+                width={240}
+            />
+            <UButton text="Get help" path="/yury" shape="square" size="large" style="secondary" width={240} />
+        </>
     );
 };
 
@@ -302,46 +316,32 @@ const resolveRoomButton = (
         premiumPassIsActive: boolean;
         premiumSubscription?: { state: WalletSubscriptionState } | null;
         title: string;
+        photo?: string;
     },
     key?: string,
     matchmaking?: boolean,
 ) => {
     const [loading, setLoading] = React.useState(false);
     if (room && room.premiumSettings && !room.premiumPassIsActive) {
-        if (room.premiumSubscription) {
-            if (
-                room.premiumSubscription.state === WalletSubscriptionState.CANCELED ||
-                room.premiumSubscription.state === WalletSubscriptionState.EXPIRED
-            ) {
-                return (
-                    <>
-                        <div className={TextCaption}>
-                            You subscription is {room.premiumSubscription.state.toLowerCase()} buy
-                            new one
-                        </div>
-                        <BuyPaidChatPassButton
-                            id={room.id}
-                            premiumSettings={room.premiumSettings}
-                            title={room.title}
-                        />
-                    </>
-                );
-            } else {
-                return (
-                    <>
-                        <div className={TextCaption}>
-                            You subscription is {room.premiumSubscription.state.toLowerCase()}{' '}
-                        </div>
-                        <UButton text="View in wallet" path="/wallet" />
-                    </>
-                );
-            }
+        if (room.premiumSubscription && (room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED)) {
+            // pass is not active, but user have non-expired subscription - looks like some problems with subscriptions payment - open wallet
+            // TODO: show transaction if ACTION_REQUIRED?
+            return (
+                <>
+                    <div className={TextCaption}>
+                        To keep your access to the group by subscription you need to complete payment
+                    </div>
+                    <UButton text="Open wallet" path="/wallet" shape="square" size="large" marginBottom={16} width={240} />
+                    <UButton text="Get help" path="/yury" shape="square" size="large" style="secondary" width={240} />
+                </>
+            );
         } else {
             return (
                 <BuyPaidChatPassButton
                     id={room.id}
                     premiumSettings={room.premiumSettings}
                     title={room.title}
+                    photo={room.photo}
                 />
             );
         }
@@ -451,6 +451,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
             <UButton
                 style={isPremium ? 'pay' : 'primary'}
                 size="large"
+                shape="square"
                 text={
                     room && room.premiumSettings
                         ? `Pay ${formatMoney(room.premiumSettings.price)}`
@@ -462,12 +463,12 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 onClick={
                     matchmaking && signupRedirect
                         ? () => {
-                              showModalBox({ fullScreen: true, useTopCloser: false }, () => (
-                                  <MatchmakingStartComponent
-                                      onStart={() => router!.navigate(signupRedirect)}
-                                  />
-                              ));
-                          }
+                            showModalBox({ fullScreen: true, useTopCloser: false }, () => (
+                                <MatchmakingStartComponent
+                                    onStart={() => router!.navigate(signupRedirect)}
+                                />
+                            ));
+                        }
                         : undefined
                 }
                 zIndex={2}

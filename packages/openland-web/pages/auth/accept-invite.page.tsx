@@ -106,7 +106,11 @@ export const AcceptInvitePage = (props: {
         key: props.variables.inviteKey,
     });
 
-    if (!resolvedInvite || !resolvedInvite.invite) {
+    if (!resolvedInvite) {
+        return <XLoader />;
+    }
+
+    if (!resolvedInvite.invite) {
         return <NotFound />;
     }
 
