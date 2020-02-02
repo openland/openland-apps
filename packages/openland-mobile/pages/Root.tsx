@@ -7,6 +7,8 @@ import { randomKey } from 'react-native-s/utils/randomKey';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { hexToRgba } from 'openland-y-utils/hexToRgba';
+import { HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 
 export interface RootProps {
     width: number;
@@ -68,7 +70,7 @@ class RootContainer extends React.PureComponent<RootProps & { theme: ThemeGlobal
             keyboardAppearance: this.props.theme.keyboardAppearance,
             searchBackground: this.props.theme.backgroundTertiaryTrans,
             searchColor: this.props.theme.foregroundTertiary,
-            selectionColor: this.props.theme.accentPrimary
+            selectionColor: Platform.OS === 'android' ? hexToRgba(this.props.theme.accentPrimary, HighlightAlpha) : this.props.theme.accentPrimary
         };
 
         if (this.isIPad && this.props.width > 375 * 2) {

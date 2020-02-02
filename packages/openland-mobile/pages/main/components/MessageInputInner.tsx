@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { View, TouchableOpacity, Image, TextInput, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform } from 'react-native';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
+import { hexToRgba } from 'openland-y-utils/hexToRgba';
 
 export interface MessageInputBarProps {
     onAttachPress?: () => void;
@@ -89,7 +90,7 @@ export const MessageInputInner = React.forwardRef((props: MessageInputBarProps &
             {Platform.OS === 'android' && (
                 <TextInput
                     ref={ref}
-                    selectionColor={theme.accentPrimary}
+                    selectionColor={hexToRgba(theme.accentPrimary, HighlightAlpha)}
                     style={{
                         color: theme.foregroundPrimary,
                         maxHeight: 100,

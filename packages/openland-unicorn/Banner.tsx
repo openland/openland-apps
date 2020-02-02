@@ -44,7 +44,7 @@ const bannerButton = css`
 
 const buttonsContainer = css`
     display: flex;
-    flex-direction: 'row';
+    flex-direction: row;
 `;
 
 const bannerContentWrapper = css`
@@ -67,7 +67,7 @@ const bannerMobileApps = css`
 
 const bannerNotification = css`
     display: flex;
-    flex-direction: 'row';
+    flex-direction: row;
     align-items: center;
     justify-content: center;
 `;
