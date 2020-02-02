@@ -38,10 +38,6 @@ const contentStyle = css`
     contain: content;
 `;
 
-const contentStyleCss = css`
-    transition: transform 250ms cubic-bezier(.29, .09, .24, .99);
-`;
-
 const contentWrapperStyle = css`
     position: relative;
     flex-grow: 1;
@@ -67,7 +63,7 @@ const shadowStyle = css`
     pointer-events: none;
 
     background-color: black;
-    transition: opacity 250ms cubic-bezier(.29, .09, .24, .99);
+    transition: opacity 200ms cubic-bezier(.29, .09, .24, .99);
     will-change: opacity;
 `;
 
@@ -105,7 +101,7 @@ export const PageLayout = (props: {
     return (
         <div className={containerStyle}>
             <div className={cx(shadowStyle, shadowStateStyles[props.state])} />
-            <FastAnimatedContainer className={contentStyle} translateX={offset}>
+            <FastAnimatedContainer className={contentStyle} translateX={offset} duration={200} easing="cubic-bezier(0.4, 0.0, 0.2, 1)">
                 <HeaderComponent visible={props.visible}>
                     <Deferred>
                         <div className={contentWrapperStyle}>
