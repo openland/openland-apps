@@ -2,15 +2,16 @@ import * as React from 'react';
 import { PageProps } from '../../../components/PageProps';
 import { withApp } from '../../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
-import { View, StyleSheet, ViewStyle, ImageStyle, Image, TextInput, TextStyle, ScrollView } from 'react-native';
+import { View, StyleSheet, ViewStyle, ImageStyle, Image, TextInput, TextStyle, ScrollView, Platform } from 'react-native';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { SlideInputLocalAttachment } from 'openland-engines/feed/types';
+import { hexToRgba } from 'openland-y-utils/hexToRgba';
 
 const styles = StyleSheet.create({
     searchBox: {
@@ -96,7 +97,7 @@ const PostMentionPickerComponent = XMemo<PageProps>((props) => {
                         placeholder="Search"
                         placeholderTextColor={theme.foregroundTertiary}
                         keyboardAppearance={theme.keyboardAppearance}
-                        selectionColor={theme.accentPrimary}
+                        selectionColor={Platform.OS === 'android' ? hexToRgba(theme.accentPrimary, HighlightAlpha) : theme.accentPrimary}
                         allowFontScaling={false}
                     />
                 </View>

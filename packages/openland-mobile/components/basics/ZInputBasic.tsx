@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { TextInput, View, TextInputProps, Text, StyleSheet, ViewStyle, TextStyle, NativeSyntheticEvent, TextInputFocusEventData, LayoutChangeEvent, Platform, Animated, Easing } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TextStyles, HighlightAlpha } from 'openland-mobile/styles/AppStyles';
+import { hexToRgba } from 'openland-y-utils/hexToRgba';
 
 const DURATION_PLACEHOLDER_ANIMATION = 100;
 const PLACEHOLDER_SCALE_RATIO = 0.8;
@@ -155,7 +156,7 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     allowFontScaling={false}
-                    selectionColor={theme.accentPrimary}
+                    selectionColor={Platform.OS === 'android' ? hexToRgba(theme.accentPrimary, HighlightAlpha) : theme.accentPrimary}
                     style={[props.style, {
                         ...TextStyles.Densed,
                         color: theme.foregroundPrimary,

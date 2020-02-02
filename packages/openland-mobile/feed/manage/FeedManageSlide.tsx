@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, TouchableWithoutFeedback, Image, Platform } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { FeedItemShadow } from '../FeedItemShadow';
-import { RadiusStyles, TextStyles, SecondarinessAlpha } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TextStyles, SecondarinessAlpha, HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 import { SlideCoverAlign, ImageRefInput } from 'openland-api/Types';
 import { ZIconButton } from 'openland-mobile/components/ZIconButton';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
@@ -23,6 +23,7 @@ import { FeedManageSlideAttachment } from './FeedManageSlideAttachment';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
+import { hexToRgba } from 'openland-y-utils/hexToRgba';
 
 const styles = StyleSheet.create({
     box: {
@@ -360,7 +361,7 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
                 keyboardAppearance={theme.keyboardAppearance}
                 allowFontScaling={false}
                 maxLength={MAX_INPUT_LENGTH}
-                selectionColor={theme.accentPrimary}
+                selectionColor={Platform.OS === 'android' ? hexToRgba(theme.accentPrimary, HighlightAlpha) : theme.accentPrimary}
                 {...{ scrollEnabled: false }}
             />
         </View>

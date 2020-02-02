@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SHeader } from 'react-native-s/SHeader';
-import { View, StyleSheet, ViewStyle, ImageStyle, Image, TextInput, TextStyle, ScrollView } from 'react-native';
+import { View, StyleSheet, ViewStyle, ImageStyle, Image, TextInput, TextStyle, ScrollView, Platform } from 'react-native';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
@@ -11,6 +11,7 @@ import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
 import { FeedChannelSubscriberRole } from 'openland-api/Types';
 import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
+import { hexToRgba } from 'openland-y-utils/hexToRgba';
 
 const styles = StyleSheet.create({
     searchBox: {
@@ -97,7 +98,7 @@ const FeedChannelAddWriterComponent = React.memo((props: PageProps) => {
                         placeholder="Search"
                         placeholderTextColor={theme.foregroundTertiary}
                         keyboardAppearance={theme.keyboardAppearance}
-                        selectionColor={theme.accentPrimary}
+                        selectionColor={Platform.OS === 'android' ? hexToRgba(theme.accentPrimary, HighlightAlpha) : theme.accentPrimary}
                         allowFontScaling={false}
                     />
                 </View>
