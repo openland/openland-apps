@@ -12,7 +12,7 @@ import {
     GraphqlSubscription,
     GraphqlActiveSubscription
 } from 'openland-graphql/GraphqlClient';
-import { SpaceXTransport } from './transport/SpaceXTransport';
+import { SpaceXTransport, TransportResult } from './transport/SpaceXTransport';
 import { SpaceXStore } from './store/SpaceXStore';
 
 class QueryWatchState {
@@ -281,13 +281,20 @@ export class SpaceXWebClient implements GraphqlClient {
                 runningOperation = null;
             }
             let v = variables;
+            let localQueue = new Queue();
             runningOperation = this.transport.subscription(operation, v, (s) => {
-                if (s.type === 'error') {
-                    if (!completed) {
-                        restart();
-                    }
-                } else if (s.type === 'result') {
-                    (async () => {
+                localQueue.post(s);
+            });
+
+            (async () => {
+                while (!completed) {
+                    let s: TransportResult = await localQueue.get();
+                    if (s.type === 'error') {
+                        if (!completed) {
+                            restart();
+                        }
+                        return;
+                    } else if (s.type === 'result') {
                         try {
                             await this.store.mergeResponse(operation, v, s.value);
                         } catch (e) {
@@ -298,13 +305,14 @@ export class SpaceXWebClient implements GraphqlClient {
                             return;
                         }
                         queue.post(s.value);
-                    })();
-                } else {
-                    if (!completed) {
-                        restart();
+                    } else {
+                        if (!completed) {
+                            restart();
+                        }
+                        return;
                     }
                 }
-            });
+            })();
         };
         restart();
 
