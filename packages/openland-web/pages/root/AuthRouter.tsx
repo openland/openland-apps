@@ -2,16 +2,16 @@ import * as React from 'react';
 import { UserInfoContext } from '../../components/UserInfo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { GetUser } from 'openland-api/Types';
+import { GetUser_user } from 'openland-api/Types';
 import { extractRedirect } from './router/extractRedirect';
 import { isRootPath } from './router/isRootPath';
 import { redirectSuffix } from './router/redirectSuffix';
 import { isPublicPath } from './router/isPublicPath';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useClient } from 'openland-web/utils/useClient';
-import { XMemo } from 'openland-y-utils/XMemo';
+import { AuthProfileFragment } from './AuthProfileFragment';
 
-export const AuthRouter = XMemo<{ children?: any }>(props => {
+export const AuthRouter = React.memo((props: { children: any }) => {
     const router = React.useContext(XRouterContext)!;
     const userInfo = React.useContext(UserInfoContext)!;
     let redirectPath: string = extractRedirect(router);
@@ -20,10 +20,10 @@ export const AuthRouter = XMemo<{ children?: any }>(props => {
     const { hostName, path, routeQuery } = router;
 
     const shortName = routeQuery && routeQuery.shortname ? routeQuery.shortname : null;
-    let usr: GetUser | null = null;
+    let user: GetUser_user | null = null;
 
     if (!userInfo.isLoggedIn && shortName) {
-        usr = client.useGetUser({ id: shortName });
+        user = client.useGetUser({ id: shortName }).user;
     }
 
     if (hostName === 'app.openland.com') {
@@ -32,10 +32,6 @@ export const AuthRouter = XMemo<{ children?: any }>(props => {
         }
 
         return null;
-    }
-
-    if (!userInfo.isLoggedIn && usr) {
-        return <div>future user page</div>;
     }
 
     const defaultRoute = <>{props.children}</>;
@@ -84,6 +80,10 @@ export const AuthRouter = XMemo<{ children?: any }>(props => {
         } else {
             return defaultRoute;
         }
+    }
+
+    if (!userInfo.isLoggedIn && user) {
+        return <AuthProfileFragment user={user} />;
     }
 
     // Redirect to Signup/Signin pages
