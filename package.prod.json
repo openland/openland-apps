@@ -109,6 +109,7 @@
         "react-pdf": "^4.1.0",
         "@bugsnag/js": "^6.5.0",
         "@bugsnag/plugin-react": "^6.5.0",
-        "canvas-confetti": "^1.0.3"
+        "canvas-confetti": "^1.0.3",
+        "fast-animations": "1.0.2"
     }
 }

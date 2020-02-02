@@ -3,6 +3,7 @@ import { css, cx } from 'linaria';
 import { Deferred } from './Deferred';
 import { XLoader } from 'openland-x/XLoader';
 import { HeaderComponent } from './HeaderComponent';
+import { FastAnimatedContainer } from 'fast-animations';
 
 //
 // Container style
@@ -90,53 +91,21 @@ export const PageLayout = (props: {
     container: React.RefObject<HTMLDivElement>;
     visible: boolean;
 }) => {
-    const isChrome = !!(window as any).chrome && (!!(window as any).chrome.webstore || !!(window as any).chrome.runtime);
-    const ref = React.useRef<HTMLDivElement>(null);
     let offset: number = 0;
-    if (isChrome) {
-        React.useLayoutEffect(() => {
-            if (props.state === 'mounting') {
-                ref.current!.animate([
-                    {
-                        transform: `translateX(${props.container.current!.clientWidth}px)`
-                    }, {
-                        transform: `translateX(0px)`
-                    }
-                ], { duration: 240, fill: 'forwards', composite: 'add', easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)' });
-            } else if (props.state === 'entering') {
-                // Nothing to do
-            } else if (props.state === 'visible') {
-                // ref.current!.style.transform = `translateX(0px)`;
-            } else if (props.state === 'exiting') {
-                ref.current!.animate([
-                    {
-                        transform: `translateX(0px)`
-                    }, {
-                        transform: `translateX(${props.container.current!.clientWidth}px)`
-                    }
-                ], { duration: 240, fill: 'forwards', composite: 'add', easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)' });
-            }
-        }, [props.state]);
-    } else {
-        if (props.state === 'mounting') {
-            offset = props.container.current!.clientWidth;
-        } else if (props.state === 'entering') {
-            offset = 0;
-        } else if (props.state === 'visible') {
-            offset = 0;
-        } else if (props.state === 'exiting') {
-            offset = props.container.current!.clientWidth;
-        }
+    if (props.state === 'mounting') {
+        offset = props.container.current!.clientWidth;
+    } else if (props.state === 'entering') {
+        offset = 0;
+    } else if (props.state === 'visible') {
+        offset = 0;
+    } else if (props.state === 'exiting') {
+        offset = props.container.current!.clientWidth;
     }
 
     return (
         <div className={containerStyle}>
             <div className={cx(shadowStyle, shadowStateStyles[props.state])} />
-            <div
-                ref={ref}
-                className={cx(contentStyle, !isChrome && contentStyleCss)}
-                style={isChrome ? {} : { transform: offset ? `translateX(${offset}px)` : undefined }}
-            >
+            <FastAnimatedContainer className={contentStyle} translateX={offset}>
                 <HeaderComponent visible={props.visible}>
                     <Deferred>
                         <div className={contentWrapperStyle}>
@@ -146,7 +115,7 @@ export const PageLayout = (props: {
                         </div>
                     </Deferred>
                 </HeaderComponent>
-            </div>
+            </FastAnimatedContainer>
         </div>
     );
 };
