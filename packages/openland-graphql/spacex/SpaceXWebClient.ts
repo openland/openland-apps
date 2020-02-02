@@ -81,7 +81,12 @@ export class SpaceXWebClient implements GraphqlClient {
 
         let r = await this.transport.operation(operation, vars);
         if (r.type === 'result') {
-            await this.store.mergeResponse(operation, vars, r.value);
+            try {
+                await this.store.mergeResponse(operation, vars, r.value);
+            } catch (e) {
+                console.warn('Mailformed response: ', r.value);
+                throw Error('Mailformed response');
+            }
             return r.value;
         } else if (r.type === 'error') {
             throw r.errors;
@@ -172,7 +177,17 @@ export class SpaceXWebClient implements GraphqlClient {
             wasLoadedFromNetwork = true;
             let it = await this.transport.operation(operation, vars);
             if (it.type === 'result') {
-                await this.store.mergeResponse(operation, vars, it.value);
+                try {
+                    await this.store.mergeResponse(operation, vars, it.value);
+                } catch (e) {
+                    console.warn('Mailformed response: ', it.value);
+                    if (completed) {
+                        return;
+                    }
+                    if (reload) {
+                        onError(e);
+                    }
+                }
 
                 if (completed) {
                     return;
@@ -233,7 +248,12 @@ export class SpaceXWebClient implements GraphqlClient {
         }
         let r = await this.transport.operation(operation, vars);
         if (r.type === 'result') {
-            await this.store.mergeResponse(operation, vars, r.value);
+            try {
+                await this.store.mergeResponse(operation, vars, r.value);
+            } catch (e) {
+                console.warn('Mailformed response: ', r.value);
+                throw Error('Mailformed response');
+            }
             return r.value;
         } else if (r.type === 'error') {
             throw r.errors;
@@ -268,7 +288,15 @@ export class SpaceXWebClient implements GraphqlClient {
                     }
                 } else if (s.type === 'result') {
                     (async () => {
-                        await this.store.mergeResponse(operation, v, s.value);
+                        try {
+                            await this.store.mergeResponse(operation, v, s.value);
+                        } catch (e) {
+                            console.warn('Mailformed response: ', s.value);
+                            if (!completed) {
+                                restart();
+                            }
+                            return;
+                        }
                         queue.post(s.value);
                     })();
                 } else {
