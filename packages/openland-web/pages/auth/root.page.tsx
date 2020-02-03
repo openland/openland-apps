@@ -272,7 +272,7 @@ export default () => {
     }, []);
 
     const completeGoogleSignin = React.useCallback(async (user: gapi.auth2.GoogleUser) => {
-        var uploaded = await (await fetch(API_AUTH_ENDPOINT + '/google/getAccessToken', {
+        let uploaded = await (await fetch(API_AUTH_ENDPOINT + '/google/getAccessToken', {
             method: 'POST',
             headers: [['Content-Type', 'application/json']],
             body: JSON.stringify({ idToken: user.getAuthResponse().id_token })
