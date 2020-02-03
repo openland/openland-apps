@@ -245,14 +245,13 @@ const JoinButton = ({ roomId, text }: { roomId: string; text: string }) => {
 
 const JoinLinkButton = (props: {
     invite: string;
-    refetchVars: { conversationId: string };
+    conversationId: string;
     text: string;
     onAccept: (data: boolean) => void;
     matchmaking?: boolean;
 }) => {
     const client = useClient();
     const router = React.useContext(XViewRouterContext);
-
     return (
         <UButton
             style="primary"
@@ -264,6 +263,7 @@ const JoinLinkButton = (props: {
                 trackEvent('invite_button_clicked');
                 props.onAccept(true);
                 let res = await client.mutateRoomJoinInviteLink({ invite: props.invite });
+                await client.refetchRoomWithoutMembers({ id: props.conversationId });
                 if (props.matchmaking) {
                     router!.navigate(`/matchmaking/${res.join.id}/start`);
                 } else {
@@ -407,7 +407,7 @@ const resolveRoomButton = (
         return (
             <JoinLinkButton
                 invite={key}
-                refetchVars={{ conversationId: room.id! }}
+                conversationId={room.id}
                 onAccept={setLoading}
                 text={buttonText}
                 matchmaking={matchmaking}
