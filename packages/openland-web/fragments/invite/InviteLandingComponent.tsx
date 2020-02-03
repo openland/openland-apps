@@ -245,13 +245,28 @@ const JoinButton = ({ roomId, text }: { roomId: string; text: string }) => {
 
 const JoinLinkButton = (props: {
     invite: string;
-    conversationId: string;
     text: string;
     onAccept: (data: boolean) => void;
     matchmaking?: boolean;
 }) => {
     const client = useClient();
     const router = React.useContext(XViewRouterContext);
+
+    const onAccept = React.useCallback(async () => {
+        let timer: any;
+        trackEvent('invite_button_clicked');
+        props.onAccept(true);
+        const res = await client.mutateRoomJoinInviteLink({ invite: props.invite });
+        if (props.matchmaking) {
+            router!.navigate(`/matchmaking/${res.join.id}/start`, true);
+        } else {
+            router!.navigate(`/mail/${res.join.id}`, true);
+        }
+        setTimeout(() => props.onAccept(false), 500);
+
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
         <UButton
             style="primary"
@@ -259,17 +274,7 @@ const JoinLinkButton = (props: {
             text={props.text}
             alignSelf="center"
             flexShrink={0}
-            action={async () => {
-                trackEvent('invite_button_clicked');
-                props.onAccept(true);
-                let res = await client.mutateRoomJoinInviteLink({ invite: props.invite });
-                await client.refetchRoomWithoutMembers({ id: props.conversationId });
-                if (props.matchmaking) {
-                    router!.navigate(`/matchmaking/${res.join.id}/start`);
-                } else {
-                    router!.navigate(`/mail/${res.join.id}`);
-                }
-            }}
+            action={onAccept}
         />
     );
 };
@@ -407,7 +412,6 @@ const resolveRoomButton = (
         return (
             <JoinLinkButton
                 invite={key}
-                conversationId={room.id}
                 onAccept={setLoading}
                 text={buttonText}
                 matchmaking={matchmaking}
