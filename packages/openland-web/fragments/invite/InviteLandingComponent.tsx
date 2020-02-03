@@ -68,11 +68,7 @@ const bigAvatarWrapper = css`
 `;
 
 const smallAvatarWrapper = css`
-    flex-shrink: 0;
-    margin: 0 -3px;
-    border-radius: 100%;
-    border: 1px solid var(--backgroundPrimary);
-    z-index: 1;
+    margin: 0 -4px;
 `;
 
 const titleStyle = css`
@@ -192,7 +188,10 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
                             <div className={membersContainer}>
                                 <div className={membersAvatarsContainer}>
                                     {avatars.map(i => (
-                                        <div key={i.id} className={smallAvatarWrapper}>
+                                        <div
+                                            key={i.id}
+                                            className={cx(bigAvatarWrapper, smallAvatarWrapper)}
+                                        >
                                             <UAvatar
                                                 title={i.name}
                                                 id={i.id}
