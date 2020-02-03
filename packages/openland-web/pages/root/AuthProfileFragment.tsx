@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { GetUser_user } from 'openland-api/Types';
+import { GetUser_user_User } from 'openland-api/Types';
 import Logo from 'openland-unicorn/components/Logo';
 import IcArrow from 'openland-icons/s/ic-chevron-16.svg';
 import IcIos from 'openland-icons/s/ic-apple-16.svg';
@@ -121,7 +121,7 @@ const DownloadButton = (props: { ios?: boolean }) => (
     </div>
 );
 
-export const AuthProfileFragment = React.memo((props: { user: GetUser_user }) => {
+export const AuthProfileFragment = React.memo((props: { user: GetUser_user_User }) => {
     return (
         <div className={rootContainer}>
             <div className={sidebarContainer}>
@@ -151,7 +151,7 @@ export const AuthProfileFragment = React.memo((props: { user: GetUser_user }) =>
                     {props.user.firstName} uses Openland. Want to reach them? Join Openland and
                     write a message
                 </div>
-                <UButton text={`Message ${props.user.firstName}`} size="large"/>
+                <UButton text={`Message ${props.user.firstName}`} size="large" path={`/signin?redirect=%2Fmail%2F${props.user.id}`}/>
             </div>
         </div>
     );

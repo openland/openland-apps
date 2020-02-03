@@ -78,6 +78,7 @@ fragment RoomFull on Room {
     previewMembers {
       __typename
       id
+      name
       photo
     }
     requests {

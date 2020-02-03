@@ -11,6 +11,7 @@ query ChatJoin($id: ID!) {
       previewMembers {
         __typename
         id
+        name
         photo
       }
       title

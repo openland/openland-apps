@@ -1,6 +1,8 @@
-query GetUser($id: ID!) {
-  user: user(id: $id) {
+query GetUser($shortname: String!) {
+  user: alphaResolveShortName(shortname: $shortname) {
     __typename
-    ...UserNano
+    ... on User {
+      ...UserNano
+    }
   }
 }

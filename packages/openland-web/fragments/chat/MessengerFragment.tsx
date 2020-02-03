@@ -26,7 +26,7 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
     );
 
     // Pin message
-    let pinMessage =
+    const pinMessage =
         chat.pinnedMessage && chat.pinnedMessage.__typename === 'GeneralMessage'
             ? chat.pinnedMessage
             : null;

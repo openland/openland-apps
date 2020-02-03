@@ -28,6 +28,7 @@ query RoomChat($id: ID!) {
     }
     ... on SharedRoom {
       canEdit
+      description
       id
       isChannel
       isPremium
@@ -38,6 +39,7 @@ query RoomChat($id: ID!) {
       }
       membersCount
       membership
+      onlineMembersCount
       organization {
         __typename
         ...OrganizationMedium
@@ -58,6 +60,12 @@ query RoomChat($id: ID!) {
         __typename
         id
         state
+      }
+      previewMembers {
+        __typename
+        id
+        name
+        photo
       }
       role
       settings {

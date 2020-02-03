@@ -17,6 +17,7 @@ internal val ChatJoinSelector = obj(
                         field("previewMembers", "previewMembers", notNull(list(notNull(obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
                                 field("id", "id", notNull(scalar("ID"))),
+                                field("name", "name", notNull(scalar("String"))),
                                 field("photo", "photo", scalar("String"))
                             ))))),
                         field("title", "title", notNull(scalar("String")))
@@ -26,6 +27,6 @@ internal val ChatJoinSelector = obj(
 val ChatJoin = object: OperationDefinition {
     override val name = "ChatJoin"
     override val kind = OperationKind.QUERY
-    override val body = "query ChatJoin(\$id:ID!){room(id:\$id){__typename ... on SharedRoom{description id isChannel membersCount onlineMembersCount photo previewMembers{__typename id photo}title}}}"
+    override val body = "query ChatJoin(\$id:ID!){room(id:\$id){__typename ... on SharedRoom{description id isChannel membersCount onlineMembersCount photo previewMembers{__typename id name photo}title}}}"
     override val selector = ChatJoinSelector
 }

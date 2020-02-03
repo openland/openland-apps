@@ -62,6 +62,7 @@ query ResolvedInvite($key: String!) {
           previewMembers {
             __typename
             id
+            name
             photo
           }
           socialImage

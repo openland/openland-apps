@@ -23,7 +23,11 @@ export const AuthRouter = React.memo((props: { children: any }) => {
     let user: GetUser_user | null = null;
 
     if (!userInfo.isLoggedIn && shortName) {
-        user = client.useGetUser({ id: shortName }).user;
+        const item = client.useGetUser({ shortname: shortName }).user;
+
+        if (item && item.__typename === 'User') {
+            user = item;
+        }
     }
 
     if (hostName === 'app.openland.com') {

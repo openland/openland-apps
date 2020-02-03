@@ -40,6 +40,7 @@ export const RoomFull = gql`
             previewMembers {
                 id
                 photo
+                name
             }
             members {
                 role

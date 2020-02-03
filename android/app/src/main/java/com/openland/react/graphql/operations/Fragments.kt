@@ -1659,6 +1659,7 @@ internal val RoomFullSelector = obj(
                 field("previewMembers", "previewMembers", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("id", "id", notNull(scalar("ID"))),
+                        field("name", "name", notNull(scalar("String"))),
                         field("photo", "photo", scalar("String"))
                     ))))),
                 field("requests", "requests", list(notNull(obj(

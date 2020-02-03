@@ -275,6 +275,13 @@ export const RoomChatQuery = gql`
                     id
                     mute
                 }
+                description
+                onlineMembersCount
+                previewMembers {
+                    id
+                    photo
+                    name
+                }
                 isPremium
                 premiumPassIsActive
                 premiumSubscription {
@@ -840,6 +847,7 @@ export const RoomInviteInfoQuery = gql`
                     previewMembers {
                         id
                         photo
+                        name
                     }
                     matchmaking {
                         enabled
@@ -912,6 +920,7 @@ export const ResolvedInviteQuery = gql`
                         previewMembers {
                             id
                             photo
+                            name
                         }
                         matchmaking {
                             enabled
@@ -1147,6 +1156,7 @@ export const ChatJoinQuery = gql`
                 previewMembers { 
                     id
                     photo
+                    name
                 }
                 isChannel
             }

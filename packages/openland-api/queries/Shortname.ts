@@ -20,9 +20,11 @@ export const ResolveShortNameQuery = gql`
 `;
 
 export const GetUserQuery = gql`
-    query GetUser($id: ID!) {
-        user: user(id: $id) {
-            ...UserNano
+    query GetUser($shortname: String!) {
+        user: alphaResolveShortName(shortname: $shortname) {
+            ... on User {
+                ...UserNano
+            }
         }
     }
     ${UserNano}

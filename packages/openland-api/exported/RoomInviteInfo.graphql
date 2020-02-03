@@ -41,6 +41,7 @@ query RoomInviteInfo($invite: String!) {
         previewMembers {
           __typename
           id
+          name
           photo
         }
         socialImage
