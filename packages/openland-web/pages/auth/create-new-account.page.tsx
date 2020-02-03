@@ -69,14 +69,19 @@ export const SignUpAuthMechanism = ({
 };
 
 export const CreateNewAccountPage = (props: AuthMechanism) => {
-    let router = React.useContext(XRouterContext)!;
+    const router = React.useContext(XRouterContext)!;
+    const isInvite = router.query && router.query.redirect && router.query.redirect.includes('acceptChannelInvite');
     return (
         <XView backgroundColor="white" flexGrow={1} flexShrink={1}>
             <XDocumentHead title="Login" />
             {!isElectron && (
                 <AuthHeaderConfig
                     onBack={() => {
-                        router.replace('/');
+                        if (isInvite) {
+                            router.replace('/joinChannel/' + router.query.redirect.split('/')[2]);
+                        } else {
+                            router.replace('/');
+                        }
                     }}
                 />
             )}
