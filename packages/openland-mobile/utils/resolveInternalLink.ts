@@ -103,7 +103,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
                             await joinOraganizaion(info.invite, genericInviteMatch.invite);
                         }
                     } else {
-                        Alert.alert('Invite not found');
+                        Alert.alert('This invitation has been revoked');
                     }
                 } catch (e) {
                     Alert.alert(e.message);
@@ -439,7 +439,7 @@ export const joinInviteIfHave = async () => {
                 }
             } else {
                 stopLoader();
-                Alert.alert('Invite not found');
+                Alert.alert('This invitation has been revoked');
             }
         } catch (e) {
             stopLoader();
