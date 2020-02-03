@@ -11,7 +11,7 @@ import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 export const JoinFragment = ({ inviteKey }: { inviteKey: string }) => {
     const client = useClient();
-    let userCtx = React.useContext(UserInfoContext)!!;
+    const userCtx = React.useContext(UserInfoContext)!!;
     const data = client.useWithoutLoaderAccountInviteInfo({
         inviteKey,
     });

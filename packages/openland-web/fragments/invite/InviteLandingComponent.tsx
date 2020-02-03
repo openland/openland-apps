@@ -21,7 +21,16 @@ import { trackEvent } from 'openland-x-analytics';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { showPayConfirm } from '../wallet/components/showPayConfirm';
+import { AuthSidebarComponent } from 'openland-web/pages/root/AuthSidebarComponent';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { TextCaption, TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
+
+const container = css`
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 1;
+`;
 
 const rootClassName = css`
     position: relative;
@@ -118,10 +127,12 @@ interface InviteLandingComponentLayoutProps {
     membersCount?: number | null;
     description?: string | null;
     button: any;
-    room?: ResolvedInvite_invite_RoomInvite_room;
+    noLigin: boolean;
+    room?: ResolvedInvite_invite_RoomInvite_room | RoomChat_room_SharedRoom;
 }
 
 const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLayoutProps) => {
+    const isMobile = useIsMobile();
     const {
         invitedByUser,
         whereToInvite,
@@ -136,9 +147,9 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
 
     const avatars = room
         ? room.previewMembers
-            .map(x => x)
-            .filter(x => !!x)
-            .slice(0, 5)
+              .map(x => x)
+              .filter(x => !!x)
+              .slice(0, 5)
         : [];
 
     const showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
@@ -149,60 +160,65 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
         : title;
 
     return (
-        <div className={rootClassName}>
-            <div className={mainContainer}>
-                {invitedByUser ? (
-                    <div className={avatarsContainer}>
-                        <div className={bigAvatarWrapper}>
-                            <UAvatar
-                                photo={invitedByUser.photo}
-                                title={invitedByUser.name}
-                                id={invitedByUser.id}
-                                size="x-large"
-                            />
+        <div className={container}>
+            {props.noLigin && !isMobile && <AuthSidebarComponent />}
+            <div className={rootClassName}>
+                <div className={mainContainer}>
+                    {invitedByUser ? (
+                        <div className={avatarsContainer}>
+                            <div className={bigAvatarWrapper}>
+                                <UAvatar
+                                    photo={invitedByUser.photo}
+                                    title={invitedByUser.name}
+                                    id={invitedByUser.id}
+                                    size="x-large"
+                                />
+                            </div>
+                            <div className={bigAvatarWrapper}>
+                                <UAvatar photo={photo} title={title} id={id} size="x-large" />
+                            </div>
                         </div>
-                        <div className={bigAvatarWrapper}>
-                            <UAvatar photo={photo} title={title} id={id} size="x-large" />
-                        </div>
-                    </div>
-                ) : (
+                    ) : (
                         <div className={avatarsContainer}>
                             <UAvatar photo={photo} title={title} id={id} size="xx-large" />
                         </div>
                     )}
-                <div className={cx(TextTitle1, titleStyle)}>{joinTitle}</div>
-                {!!description && (
-                    <div className={cx(TextBody, descriptionStyle)}>{description}</div>
-                )}
-                {showMembers &&
-                    room && (
-                        <div className={membersContainer}>
-                            <div className={membersAvatarsContainer}>
-                                {avatars.map(i => (
-                                    <div key={i.id} className={smallAvatarWrapper}>
-                                        <UAvatar
-                                            title={''}
-                                            id={i.id}
-                                            photo={i.photo}
-                                            size="small"
-                                        />
-                                    </div>
-                                ))}
+                    <div className={cx(TextTitle1, titleStyle)}>{joinTitle}</div>
+                    {!!description && (
+                        <div className={cx(TextBody, descriptionStyle)}>{description}</div>
+                    )}
+                    {showMembers &&
+                        room && (
+                            <div className={membersContainer}>
+                                <div className={membersAvatarsContainer}>
+                                    {avatars.map(i => (
+                                        <div key={i.id} className={smallAvatarWrapper}>
+                                            <UAvatar
+                                                title={i.name}
+                                                id={i.id}
+                                                photo={i.photo}
+                                                size="small"
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className={cx(TextBody, descriptionStyle)}>
+                                    {membersCount} members
+                                    {room &&
+                                        showOnlineMembers &&
+                                        `, ${room.onlineMembersCount} online`}
+                                </div>
                             </div>
+                        )}
+                    {!showMembers &&
+                        !description && (
                             <div className={cx(TextBody, descriptionStyle)}>
-                                {membersCount} members
-                                {room && showOnlineMembers && `, ${room.onlineMembersCount} online`}
+                                New {whereToInvite.toLocaleLowerCase()}
                             </div>
-                        </div>
-                    )}
-                {!showMembers &&
-                    !description && (
-                        <div className={cx(TextBody, descriptionStyle)}>
-                            New {whereToInvite.toLocaleLowerCase()}
-                        </div>
-                    )}
+                        )}
 
-                <div className={buttonContainer}>{button}</div>
+                    <div className={buttonContainer}>{button}</div>
+                </div>
             </div>
         </div>
     );
@@ -263,33 +279,30 @@ const BuyPaidChatPassButton = (props: {
     id: string;
     premiumSettings: { price: number; interval: WalletSubscriptionInterval };
     title: string;
-    photo?: string
+    photo?: string;
 }) => {
     const client = useClient();
     let router = React.useContext(XViewRouterContext)!;
     const [loading, setLoading] = React.useState(false);
     const buyPaidChatPass = React.useCallback(async () => {
-        showPayConfirm(
-            {
-                amount: props.premiumSettings.price,
-                type: 'subscription',
-                interval: props.premiumSettings.interval,
-                productTitle: props.title,
-                productDescription: 'Subscription',
-                productPicture: (<UAvatar title={props.title} id={props.id} photo={props.photo} />),
-                action: async () => {
-                    try {
-                        let res = await client.mutateBuyPremiumChatSubscription({ chatId: props.id });
-                        if (res.betaBuyPremiumChatSubscription.premiumPassIsActive) {
-                            router.navigate('/mail/' + props.id);
-                        }
-                    } catch (e) {
-                        setLoading(false);
+        showPayConfirm({
+            amount: props.premiumSettings.price,
+            type: 'subscription',
+            interval: props.premiumSettings.interval,
+            productTitle: props.title,
+            productDescription: 'Subscription',
+            productPicture: <UAvatar title={props.title} id={props.id} photo={props.photo} />,
+            action: async () => {
+                try {
+                    let res = await client.mutateBuyPremiumChatSubscription({ chatId: props.id });
+                    if (res.betaBuyPremiumChatSubscription.premiumPassIsActive) {
+                        router.navigate('/mail/' + props.id);
                     }
-                },
-            }
-
-        );
+                } catch (e) {
+                    setLoading(false);
+                }
+            },
+        });
     }, []);
     return (
         <>
@@ -303,7 +316,14 @@ const BuyPaidChatPassButton = (props: {
                 marginBottom={16}
                 width={240}
             />
-            <UButton text="Get help" path="/yury" shape="square" size="large" style="secondary" width={240} />
+            <UButton
+                text="Get help"
+                path="/yury"
+                shape="square"
+                size="large"
+                style="secondary"
+                width={240}
+            />
         </>
     );
 };
@@ -318,21 +338,40 @@ const resolveRoomButton = (
         title: string;
         photo?: string;
     },
+    buttonText: string,
     key?: string,
     matchmaking?: boolean,
 ) => {
     const [loading, setLoading] = React.useState(false);
     if (room && room.premiumSettings && !room.premiumPassIsActive) {
-        if (room.premiumSubscription && (room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED)) {
+        if (
+            room.premiumSubscription &&
+            room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED
+        ) {
             // pass is not active, but user have non-expired subscription - looks like some problems with subscriptions payment - open wallet
             // TODO: show transaction if ACTION_REQUIRED?
             return (
                 <>
                     <div className={TextCaption}>
-                        To keep your access to the group by subscription you need to complete payment
+                        To keep your access to the group by subscription you need to complete
+                        payment
                     </div>
-                    <UButton text="Open wallet" path="/wallet" shape="square" size="large" marginBottom={16} width={240} />
-                    <UButton text="Get help" path="/yury" shape="square" size="large" style="secondary" width={240} />
+                    <UButton
+                        text="Open wallet"
+                        path="/wallet"
+                        shape="square"
+                        size="large"
+                        marginBottom={16}
+                        width={240}
+                    />
+                    <UButton
+                        text="Get help"
+                        path="/yury"
+                        shape="square"
+                        size="large"
+                        style="secondary"
+                        width={240}
+                    />
                 </>
             );
         } else {
@@ -352,7 +391,7 @@ const resolveRoomButton = (
             room.membership === 'LEFT') &&
         !key
     ) {
-        return <JoinButton roomId={room.id!} text="Join group" />;
+        return <JoinButton roomId={room.id!} text={buttonText} />;
     } else if (room && room.membership === 'MEMBER') {
         return (
             <UButton
@@ -371,7 +410,7 @@ const resolveRoomButton = (
                 invite={key}
                 refetchVars={{ conversationId: room.id! }}
                 onAccept={setLoading}
-                text="Join group"
+                text={buttonText}
                 matchmaking={matchmaking}
             />
         );
@@ -390,14 +429,18 @@ const resolveRoomButton = (
 };
 
 export const SharedRoomPlaceholder = ({ room }: { room: RoomChat_room_SharedRoom }) => {
+    const buttonText = room.isChannel ? 'Join channel' : 'Join group';
     return (
         <InviteLandingComponentLayout
-            button={resolveRoomButton(room)}
+            button={resolveRoomButton(room, buttonText)}
             whereToInvite="Group"
             photo={room.photo}
             title={room.title}
             id={room.id}
             membersCount={room.membersCount}
+            description={room.description}
+            room={room}
+            noLigin={false}
         />
     );
 };
@@ -446,6 +489,8 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
             ? 'Community'
             : 'Organization';
 
+    const buttonText = 'Join ' + whereToInvite.toLocaleLowerCase();
+
     if (!loggedIn) {
         button = (
             <UButton
@@ -455,7 +500,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 text={
                     room && room.premiumSettings
                         ? `Pay ${formatMoney(room.premiumSettings.price)}`
-                        : `Join ${whereToInvite.toLocaleLowerCase()}`
+                        : buttonText
                 }
                 alignSelf="center"
                 flexShrink={0}
@@ -463,23 +508,23 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 onClick={
                     matchmaking && signupRedirect
                         ? () => {
-                            showModalBox({ fullScreen: true, useTopCloser: false }, () => (
-                                <MatchmakingStartComponent
-                                    onStart={() => router!.navigate(signupRedirect)}
-                                />
-                            ));
-                        }
+                              showModalBox({ fullScreen: true, useTopCloser: false }, () => (
+                                  <MatchmakingStartComponent
+                                      onStart={() => router!.navigate(signupRedirect)}
+                                  />
+                              ));
+                          }
                         : undefined
                 }
                 zIndex={2}
             />
         );
     } else if (room) {
-        button = resolveRoomButton(room, key, matchmaking);
+        button = resolveRoomButton(room, buttonText, key, matchmaking);
     } else if (organization) {
         button = (
             <UButton
-                text={`Join ${whereToInvite.toLocaleLowerCase()}`}
+                text={buttonText}
                 action={async () => {
                     trackEvent('invite_button_clicked');
                     await client.mutateAccountInviteJoin({
@@ -511,6 +556,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 membersCount={room ? room.membersCount : organization!.membersCount}
                 description={room ? room.description : organization!.about}
                 room={room}
+                noLigin={!loggedIn}
             />
         </>
     );
