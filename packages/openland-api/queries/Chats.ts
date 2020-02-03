@@ -1133,3 +1133,23 @@ export const MessagesSearchQuery = gql`
     ${DaialogListMessage}
     ${UserBadge}
 `;
+
+export const ChatJoinQuery = gql`
+    query ChatJoin ($id: ID!) {
+        room(id: $id) {
+            ... on SharedRoom {
+                id
+                title
+                description
+                photo
+                membersCount
+                onlineMembersCount
+                previewMembers { 
+                    id
+                    photo
+                }
+                isChannel
+            }
+        }
+    }
+`;

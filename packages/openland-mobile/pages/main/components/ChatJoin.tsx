@@ -2,12 +2,13 @@ import * as React from 'react';
 import { View, Text, Alert, StyleSheet, ViewStyle, TextStyle, Platform } from 'react-native';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { Room_room_SharedRoom } from 'openland-api/Types';
+import { Room_room_SharedRoom, ChatJoin_room_SharedRoom } from 'openland-api/Types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { useClient } from 'openland-mobile/utils/useClient';
 
 const styles = StyleSheet.create({
     container: {
@@ -42,7 +43,8 @@ interface ChatJoinProps {
 }
 
 interface ChatJoinComponentProps {
-    room: Pick<Room_room_SharedRoom, 'id' | 'title' | 'photo' | 'description' | 'membersCount' | 'onlineMembersCount' | 'previewMembers' | 'isChannel'>;
+    // room: Pick<Room_room_SharedRoom, 'id' | 'title' | 'photo' | 'description' | 'membersCount' | 'onlineMembersCount' | 'previewMembers' | 'isChannel'>;
+    roomId: string;
     theme: ThemeGlobal;
     action: () => void;
     invitedBy?: { id: string, name: string, photo: string | null };
@@ -50,7 +52,9 @@ interface ChatJoinComponentProps {
 
 export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
     const area = React.useContext(ASSafeAreaContext);
-    const { room, theme, action, invitedBy } = props;
+    const client = useClient();
+    const { theme, action, invitedBy, roomId } = props;
+    const room = client.useChatJoin({id: roomId}).room as ChatJoin_room_SharedRoom;
     const { id, title, photo, description, membersCount, onlineMembersCount, previewMembers = [], isChannel } = room;
     const typeStr = isChannel ? 'channel' : 'group';
     const paddingBottom = Platform.OS === 'ios' ? (area.bottom || 16) : area.bottom + 16;
@@ -153,5 +157,5 @@ export const ChatJoin = React.memo((props: ChatJoinProps) => {
         }
     }, [props.room.id]);
 
-    return <ChatJoinComponent {...props} action={action} />;
+    return <ChatJoinComponent roomId={props.room.id} theme={props.theme} action={action} />;
 });

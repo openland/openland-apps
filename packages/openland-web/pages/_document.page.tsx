@@ -137,7 +137,7 @@ export default class OpenlandDocument extends Document {
                 // room meta tags
                 const resolvedInvite = await openland.queryResolvedInvite({
                     key: inviteKey,
-                });
+                }, {fetchPolicy: 'network-only'});
 
                 if (
                     resolvedInvite &&

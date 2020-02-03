@@ -30,7 +30,7 @@ const GroupInviteContent = XMemo<PageProps>((props) => {
         stopLoader();
     }, [inviteId, room.id]);
 
-    return <ChatJoinComponent theme={theme} room={room} invitedBy={user} action={action} />;
+    return <ChatJoinComponent theme={theme} roomId={room.id} invitedBy={user} action={action} />;
 });
 
 export const GroupInvite = withApp(GroupInviteContent, { navigationAppearance: 'small' });

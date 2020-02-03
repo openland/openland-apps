@@ -244,7 +244,7 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
         let finalLink = link;
 
         if (isInviteLink) {
-            const invite = await client.queryResolvedInvite({ key });
+            const invite = await client.queryResolvedInvite({ key }, {fetchPolicy: 'network-only'});
 
             if (!invite.invite) {
                 showRevokedInviteModal();

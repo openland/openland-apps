@@ -12,7 +12,7 @@ import { XViewRouter } from 'react-mental';
 const resolveInvite = async (url: string, client: OpenlandClient, router: XViewRouter, fallback?: () => void) => {
     let split = url.split('/');
     let key = split[split.length - 1];
-    let invite = await client.queryResolvedInvite({ key });
+    let invite = await client.queryResolvedInvite({ key }, {fetchPolicy: 'network-only'});
     // must show prview on matchmaking, just join/open in other cases
     if (invite.invite && invite.invite.__typename === 'RoomInvite' && (!invite.invite.room.matchmaking || !invite.invite.room.matchmaking.enabled)) {
         if (invite.invite.room.membership !== 'MEMBER') {

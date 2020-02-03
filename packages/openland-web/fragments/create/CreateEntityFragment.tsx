@@ -184,7 +184,7 @@ const CreateEntityComponent = React.memo((props: CreateEntityInterface & { hide:
                                                 subtitle: isCommunity
                                                     ? 'Anyone can find and join this community'
                                                     : `${
-                                                    props.entityType
+                                                    props.entityType.slice(0, 1).toUpperCase() + props.entityType.slice(1)
                                                     } where your organization or community members communicate`,
                                             },
                                             {

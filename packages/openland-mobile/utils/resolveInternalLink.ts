@@ -95,7 +95,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
             if (genericInviteMatch && genericInviteMatch.invite) {
                 startLoader();
                 try {
-                    let info = await getMessenger().engine.client.queryResolvedInvite({ key: genericInviteMatch.invite });
+                    let info = await getMessenger().engine.client.queryResolvedInvite({ key: genericInviteMatch.invite }, {fetchPolicy: 'network-only'});
                     if (info.invite) {
                         if (info.invite.__typename === 'RoomInvite') {
                             await joinRoom(info.invite, genericInviteMatch.invite);
@@ -424,7 +424,7 @@ export const joinInviteIfHave = async () => {
     if (matchGlobal && matchGlobal.invite) {
         try {
             startLoader();
-            let info = await getMessenger().engine.client.queryResolvedInvite({ key: matchGlobal.invite });
+            let info = await getMessenger().engine.client.queryResolvedInvite({ key: matchGlobal.invite }, {fetchPolicy: 'network-only'});
             if (info.invite) {
                 if (info.invite.__typename === 'AppInvite') {
                     await getMessenger().engine.client.mutateOrganizationActivateByInvite({ inviteKey: matchGlobal.invite });

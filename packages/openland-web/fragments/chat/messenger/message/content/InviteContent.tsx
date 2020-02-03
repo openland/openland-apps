@@ -26,7 +26,7 @@ export const InviteLink = React.memo((link: Link) => {
     const resolveInvite = async () => {
         const linkSegments = link.link.split('/');
         const key = linkSegments[linkSegments.length - 1];
-        const invite = await client.queryResolvedInvite({ key });
+        const invite = await client.queryResolvedInvite({ key }, {fetchPolicy: 'network-only'});
 
         if (!invite.invite) {
             showRevokedInviteModal();

@@ -1,0 +1,19 @@
+query ChatJoin($id: ID!) {
+  room(id: $id) {
+    __typename
+    ... on SharedRoom {
+      description
+      id
+      isChannel
+      membersCount
+      onlineMembersCount
+      photo
+      previewMembers {
+        __typename
+        id
+        photo
+      }
+      title
+    }
+  }
+}

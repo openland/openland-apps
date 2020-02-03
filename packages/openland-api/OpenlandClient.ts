@@ -415,6 +415,18 @@ export class OpenlandClient extends BaseApiClient {
     useWithoutLoaderMessagesSearch(variables: Types.MessagesSearchVariables, opts?: QueryWatchParameters): Types.MessagesSearch | null {
         return this.useQuery(Source.MessagesSearchQuery, variables, opts);
     }
+    async queryChatJoin(variables: Types.ChatJoinVariables, opts?: OperationParameters): Promise<Types.ChatJoin> {
+        return this.client.query(Source.ChatJoinQuery, variables, opts);
+    }
+    async refetchChatJoin(variables: Types.ChatJoinVariables): Promise<Types.ChatJoin> {
+        return this.refetch(Source.ChatJoinQuery, variables);
+    }
+    useChatJoin(variables: Types.ChatJoinVariables, opts?: QueryWatchParameters): Types.ChatJoin {
+        return this.useQuerySuspense(Source.ChatJoinQuery, variables, opts);
+    }
+    useWithoutLoaderChatJoin(variables: Types.ChatJoinVariables, opts?: QueryWatchParameters): Types.ChatJoin | null {
+        return this.useQuery(Source.ChatJoinQuery, variables, opts);
+    }
     async queryComments(variables: Types.CommentsVariables, opts?: OperationParameters): Promise<Types.Comments> {
         return this.client.query(Source.CommentsQuery, variables, opts);
     }

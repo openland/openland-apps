@@ -15,6 +15,7 @@ object Operations {
         if (name == "AvailableRooms") return AvailableRooms
         if (name == "ChatInit") return ChatInit
         if (name == "ChatInitFromUnread") return ChatInitFromUnread
+        if (name == "ChatJoin") return ChatJoin
         if (name == "ChatMembersSearch") return ChatMembersSearch
         if (name == "ChatMentionSearch") return ChatMentionSearch
         if (name == "Comments") return Comments

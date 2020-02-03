@@ -36,7 +36,6 @@ fragment RoomShort on Room {
       __typename
       ...UserBadge
     }
-    onlineMembersCount
     organization {
       __typename
       ...OrganizationShort
@@ -45,11 +44,6 @@ fragment RoomShort on Room {
     pinnedMessage {
       __typename
       ...FullMessage
-    }
-    previewMembers {
-      __typename
-      id
-      photo
     }
     role
     settings {
