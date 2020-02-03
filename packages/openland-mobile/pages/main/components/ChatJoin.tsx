@@ -8,7 +8,6 @@ import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoade
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { useClient } from 'openland-mobile/utils/useClient';
 
 const styles = StyleSheet.create({
     container: {
