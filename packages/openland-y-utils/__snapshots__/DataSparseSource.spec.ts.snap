@@ -1,0 +1,237 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DataSparseSource should append and prepend new items 1`] = `
+Object {
+  "last": Object {
+    "items": Array [
+      Object {
+        "key": "1",
+        "seq": NaN,
+      },
+      Object {
+        "key": "2",
+        "seq": 1,
+      },
+      Object {
+        "key": "3",
+        "seq": 2,
+      },
+      Object {
+        "key": "4",
+        "seq": 3,
+      },
+    ],
+    "start": 1,
+  },
+}
+`;
+
+exports[`DataSparseSource should append and prepend new items 2`] = `
+Object {
+  "first": Object {
+    "end": -1,
+    "items": Array [
+      Object {
+        "key": "8",
+        "seq": -3,
+      },
+      Object {
+        "key": "7",
+        "seq": -2,
+      },
+      Object {
+        "key": "6",
+        "seq": -1,
+      },
+      Object {
+        "key": "5",
+        "seq": NaN,
+      },
+    ],
+  },
+  "last": Object {
+    "items": Array [
+      Object {
+        "key": "1",
+        "seq": NaN,
+      },
+      Object {
+        "key": "2",
+        "seq": 1,
+      },
+      Object {
+        "key": "3",
+        "seq": 2,
+      },
+      Object {
+        "key": "4",
+        "seq": 3,
+      },
+    ],
+    "start": 1,
+  },
+}
+`;
+
+exports[`DataSparseSource should append and prepend new items 3`] = `
+Object {
+  "last": Object {
+    "items": Array [
+      Object {
+        "key": "8",
+        "seq": -3,
+      },
+      Object {
+        "key": "7",
+        "seq": -2,
+      },
+      Object {
+        "key": "6",
+        "seq": -1,
+      },
+      Object {
+        "key": "5",
+        "seq": NaN,
+      },
+      Object {
+        "key": "1",
+        "seq": NaN,
+      },
+      Object {
+        "key": "2",
+        "seq": 1,
+      },
+      Object {
+        "key": "3",
+        "seq": 2,
+      },
+      Object {
+        "key": "4",
+        "seq": 3,
+      },
+      Object {
+        "key": "9",
+        "seq": -4,
+      },
+    ],
+  },
+}
+`;
+
+exports[`DataSparseSource should merge prepend new items 1`] = `
+Object {
+  "last": Object {
+    "items": Array [
+      Object {
+        "key": "1",
+        "seq": NaN,
+      },
+      Object {
+        "key": "2",
+        "seq": 1,
+      },
+      Object {
+        "key": "3",
+        "seq": 2,
+      },
+      Object {
+        "key": "4",
+        "seq": 3,
+      },
+    ],
+    "start": 1,
+  },
+}
+`;
+
+exports[`DataSparseSource should merge prepend new items 2`] = `
+Object {
+  "first": Object {
+    "end": -1,
+    "items": Array [
+      Object {
+        "key": "8",
+        "seq": -3,
+      },
+      Object {
+        "key": "7",
+        "seq": -2,
+      },
+      Object {
+        "key": "6",
+        "seq": -1,
+      },
+      Object {
+        "key": "5",
+        "seq": NaN,
+      },
+    ],
+  },
+  "last": Object {
+    "items": Array [
+      Object {
+        "key": "1",
+        "seq": NaN,
+      },
+      Object {
+        "key": "2",
+        "seq": 1,
+      },
+      Object {
+        "key": "3",
+        "seq": 2,
+      },
+      Object {
+        "key": "4",
+        "seq": 3,
+      },
+    ],
+    "start": 1,
+  },
+}
+`;
+
+exports[`DataSparseSource should merge prepend new items 3`] = `
+Object {
+  "last": Object {
+    "items": Array [
+      Object {
+        "key": "9",
+        "seq": 4,
+      },
+      Object {
+        "key": "8",
+        "seq": -3,
+      },
+      Object {
+        "key": "7",
+        "seq": -2,
+      },
+      Object {
+        "key": "6",
+        "seq": -1,
+      },
+      Object {
+        "key": "5",
+        "seq": NaN,
+      },
+      Object {
+        "key": "1",
+        "seq": NaN,
+      },
+      Object {
+        "key": "2",
+        "seq": 1,
+      },
+      Object {
+        "key": "3",
+        "seq": 2,
+      },
+      Object {
+        "key": "4",
+        "seq": 3,
+      },
+    ],
+  },
+}
+`;
