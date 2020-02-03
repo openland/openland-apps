@@ -43,8 +43,7 @@ interface ChatJoinProps {
 }
 
 interface ChatJoinComponentProps {
-    // room: Pick<Room_room_SharedRoom, 'id' | 'title' | 'photo' | 'description' | 'membersCount' | 'onlineMembersCount' | 'previewMembers' | 'isChannel'>;
-    roomId: string;
+    room: Pick<Room_room_SharedRoom, 'id' | 'title' | 'photo' | 'description' | 'membersCount' | 'onlineMembersCount' | 'previewMembers' | 'isChannel'>;
     theme: ThemeGlobal;
     action: () => void;
     invitedBy?: { id: string, name: string, photo: string | null };
@@ -52,9 +51,7 @@ interface ChatJoinComponentProps {
 
 export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
     const area = React.useContext(ASSafeAreaContext);
-    const client = useClient();
-    const { theme, action, invitedBy, roomId } = props;
-    const room = client.useChatJoin({id: roomId}).room as ChatJoin_room_SharedRoom;
+    const { theme, action, invitedBy, room } = props;
     const { id, title, photo, description, membersCount, onlineMembersCount, previewMembers = [], isChannel } = room;
     const typeStr = isChannel ? 'channel' : 'group';
     const paddingBottom = Platform.OS === 'ios' ? (area.bottom || 16) : area.bottom + 16;
@@ -145,6 +142,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
 
 export const ChatJoin = React.memo((props: ChatJoinProps) => {
     const client = getClient();
+    const room = client.useChatJoin({id: props.room.id}).room as ChatJoin_room_SharedRoom;
     const action = React.useCallback(async () => {
         startLoader();
         try {
@@ -157,5 +155,5 @@ export const ChatJoin = React.memo((props: ChatJoinProps) => {
         }
     }, [props.room.id]);
 
-    return <ChatJoinComponent roomId={props.room.id} theme={props.theme} action={action} />;
+    return <ChatJoinComponent room={room} theme={props.theme} action={action} />;
 });
