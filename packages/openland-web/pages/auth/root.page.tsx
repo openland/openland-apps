@@ -503,7 +503,7 @@ export default () => {
 
     return (
         <div className={outerContainer}>
-            <AuthHeader ref={headerRef} />
+            {page !== 'acceptInvite' && <AuthHeader ref={headerRef} />}
 
             <AuthHeaderConfigContex.Provider
                 value={{
