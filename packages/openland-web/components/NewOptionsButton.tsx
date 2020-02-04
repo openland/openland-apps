@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
-import { css } from 'linaria';
-import CreateCommunityIcon from 'openland-icons/ic-community (1).svg';
-import OrganizationIcon from 'openland-icons/ic-cell-organization.svg';
-import CellRoomIcon from 'openland-icons/ic-cell-room.svg';
-import CreateChannelIcon from 'openland-icons/ic-cell-channel.svg';
+import { css, cx } from 'linaria';
+import GroupIcon from 'openland-icons/s/ic-group-24.svg';
+import ChannelIcon from 'openland-icons/s/ic-channel-24.svg';
+import CommunityIcon from 'openland-icons/s/ic-community-24.svg';
+import OrganizationIcon from 'openland-icons/s/ic-organization-24.svg';
 import PlusIcon from 'openland-icons/ic-add.svg';
 import NotificationIcon from 'openland-icons/s/ic-notifications-24.svg';
 import { UIconButton } from './unicorn/UIconButton';
@@ -13,6 +13,7 @@ import { showCreatingFragment } from 'openland-web/fragments/create/CreateEntity
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { Placement } from 'popper.js';
+import { TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
 
 const dotClass = css`
     position: absolute;
@@ -54,15 +55,12 @@ const iconContainerClass = css`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 24px;
+    height: 24px;
     flex-shrink: 0;
-    border-radius: 100%;
-    background-color: rgba(23, 144, 255, 0.1);
 
-    & > svg path {
-        fill: #1a90ff;
-        opacity: 1;
+    & svg {
+        fill: var(--foregroundSecondary);
     }
 `;
 
@@ -75,10 +73,7 @@ const itemContainerClass = css`
     flex-direction: row;
     align-items: center;
     cursor: pointer;
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 6px 16px;
 
     &:hover {
         background-color: var(--backgroundPrimaryHover);
@@ -90,17 +85,11 @@ const itemTextContainer = css`
     flex-grow: 1;
     flex-shrink: 1;
     flex-direction: column;
-    margin-left: 18px;
-`;
-
-const itemTitleClass = css`
-    font-size: 14px;
-    font-weight: 600;
+    margin-left: 16px;
 `;
 
 const itemDescriptionClass = css`
-    font-size: 13px;
-    opacity: 0.5;
+    color: var(--foregroundSecondary);
 `;
 
 interface ItemProps {
@@ -114,8 +103,8 @@ const Item = ({ title, description, onClick, icon }: ItemProps) => (
     <div className={itemContainerClass} onClick={onClick}>
         {icon}
         <div className={itemTextContainer}>
-            <div className={itemTitleClass}>{title}</div>
-            <div className={itemDescriptionClass}>{description}</div>
+            <div className={TextLabel1}>{title}</div>
+            <div className={cx(TextDensed, itemDescriptionClass)}>{description}</div>
         </div>
     </div>
 );
@@ -128,7 +117,7 @@ const NewOptionsMenu = React.memo(() => (
             }}
             icon={
                 <Icon>
-                    <CellRoomIcon />
+                    <GroupIcon />
                 </Icon>
             }
             title="New group"
@@ -140,7 +129,7 @@ const NewOptionsMenu = React.memo(() => (
             }}
             icon={
                 <Icon>
-                    <CreateChannelIcon />
+                    <ChannelIcon />
                 </Icon>
             }
             title="New channel"
@@ -152,7 +141,7 @@ const NewOptionsMenu = React.memo(() => (
             }}
             icon={
                 <Icon>
-                    <CreateCommunityIcon />
+                    <CommunityIcon />
                 </Icon>
             }
             title="New community"
