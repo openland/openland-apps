@@ -15,7 +15,6 @@ export function emojiChecker(messageText: string) {
     }
 
     const messageArray = Array.from(messageText.replace(whiteSpaceRegEx, ''));
-    let emojiCount = 0;
     let isPrevZeroJoiner;
 
     for (let i = 0; i < messageArray.length; i++) {
@@ -35,16 +34,11 @@ export function emojiChecker(messageText: string) {
         if (emojiModifierRegEx.test(item)) {
             continue;
         }
-        if (isEmoji(item)) {
-            emojiCount++;
-        } else {
+        if (!isEmoji(item)) {
             return false;
         }
-        if (emojiCount > 3) {
-            return false;
-        }   
     }
-    return emojiCount > 0;
+    return true;
 }
 
 interface CheckSpanRootSizeResult {
