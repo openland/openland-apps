@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
+import { css, cx } from 'linaria';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
@@ -10,11 +11,28 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useClient } from 'openland-web/utils/useClient';
 import * as Cookie from 'js-cookie';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, FormLayout, AuthActionButton, AuthInputWrapper, useShake } from './components/authComponents';
+import { Title, Subtitle, FormLayout, AuthActionButton, AuthInputWrapper, useShake, textClassName } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import { AuthHeaderConfig } from './root.page';
+import { ULink } from 'openland-web/components/unicorn/ULink';
+import { TextCaption } from 'openland-web/utils/TextStyles';
+
+const captionText = css`
+    color: var(--foregroundTertiary);
+    text-align: center;
+    margin-top: 32px;
+`;
+
+const captionLink = css`
+    font-weight: 600;
+    color: var(--foregroundTertiary);
+
+    &:hover {
+        color: var(--foregroundTertiary);
+    }
+`;
 
 export type ProfileFormData = {
     firstName: string | null;
@@ -134,9 +152,9 @@ const CreateProfileFormInnerWeb = (
 
     return (
         <FormLayout>
-            <Title text={InitTexts.create_profile.title} />
+            <Title text="New account" />
             <Subtitle
-                text={InitTexts.create_profile.subTitle}
+                text="Introduce yourself"
                 maxWidth={props.isMobile ? 230 : undefined}
             />
             <XView marginTop={32} marginBottom={16} alignSelf="center">
@@ -170,6 +188,7 @@ const CreateProfileFormInnerWeb = (
                 </AuthInputWrapper>
             </XView>
             <AuthActionButton loading={sending} text={InitTexts.create_profile.next} onClick={handleNext} />
+            <p className={cx(TextCaption, captionText, textClassName)}>By creating an account you are accepting our <ULink path="/terms" className={captionLink}>Terms&nbsp;of&nbsp;service</ULink> and <ULink path="/privacy" className={captionLink}>Privacy&nbsp;policy</ULink></p>
         </FormLayout>
 
     );
@@ -199,13 +218,14 @@ export const IntroduceYourselfPageInner = ({ isMobile }: IntroduceYourselfPageOu
 
     return (
         <Wrapper>
-            <XDocumentHead title="What’s your name?" />
+            <XDocumentHead title="New account" />
             <AuthHeaderConfig
                 onBack={
                     () => {
                         router.replace('/auth/logout');
                     }
                 }
+                mobileTransparent={true}
             />
             <CreateProfileFormInnerWeb
                 prefill={prefill}

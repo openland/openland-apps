@@ -16,7 +16,7 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
 import { completeAuth } from './complete.page';
 import { css, cx } from 'linaria';
-import { BackSkipLogo } from '../components/BackSkipLogo';
+import { BackSkipLogo, BackSkipLogoProps } from '../components/BackSkipLogo';
 import { XView } from 'react-mental';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 
@@ -119,14 +119,15 @@ const backwardOut = css`
     pointer-events: none;
 `;
 
-const AuthHeaderConfigContex = React.createContext<{ setOnBack: (f?: (event: React.MouseEvent) => void) => void, setOnSkip: (f?: (event: React.MouseEvent) => void) => void }>({ setOnBack: () => {/**/ }, setOnSkip: () => {/**/ } });
-export const AuthHeaderConfig = React.memo((props: { onBack?: () => void, onSkip?: () => void }) => {
+const AuthHeaderConfigContex = React.createContext<{ setOnBack: (f?: (event: React.MouseEvent) => void) => void, setOnSkip: (f?: (event: React.MouseEvent) => void) => void, setMobileTransparent: (value?: boolean) => void }>({ setOnBack: () => {/**/ }, setOnSkip: () => {/**/ }, setMobileTransparent: () => {/**/ } });
+export const AuthHeaderConfig = React.memo((props: BackSkipLogoProps) => {
     const authHeaderConfigContex = React.useContext(AuthHeaderConfigContex);
     React.useEffect(() => {
         authHeaderConfigContex.setOnBack(props.onBack);
         authHeaderConfigContex.setOnSkip(props.onSkip);
+        authHeaderConfigContex.setMobileTransparent(props.mobileTransparent);
 
-        console.warn('setting header', props.onBack, props.onSkip);
+        console.warn('setting header', props.onBack, props.onSkip, props.mobileTransparent);
     }, []);
     return <></>;
 });
@@ -134,6 +135,7 @@ export const AuthHeaderConfig = React.memo((props: { onBack?: () => void, onSkip
 interface AuthHeaderInstance {
     setOnBack: (callback?: (event: React.MouseEvent) => void) => void;
     setOnSkip: (callback?: (event: React.MouseEvent) => void) => void;
+    setMobileTransparent: (value?: boolean) => void;
 }
 const AuthHeader = React.memo(React.forwardRef((props: {}, ref: React.Ref<AuthHeaderInstance>) => {
     const [onBack, setOnBack] = React.useState<{ callback?: (event: React.MouseEvent) => void }>({
@@ -142,10 +144,12 @@ const AuthHeader = React.memo(React.forwardRef((props: {}, ref: React.Ref<AuthHe
         }
     });
     const [onSkip, setOnSkip] = React.useState<{ callback?: (event: React.MouseEvent) => void }>({ callback: undefined });
+    const [mobileTransparent, setMobileTransparent] = React.useState(false);
 
     React.useImperativeHandle(ref, () => ({
         setOnBack: (callback) => setOnBack({ callback }),
-        setOnSkip: (callback) => setOnSkip({ callback })
+        setOnSkip: (callback) => setOnSkip({ callback }),
+        setMobileTransparent: (value: boolean) => setMobileTransparent(value),
     }));
 
     const onBackPressed = React.useCallback((event: React.MouseEvent) => {
@@ -163,7 +167,7 @@ const AuthHeader = React.memo(React.forwardRef((props: {}, ref: React.Ref<AuthHe
 
     return (
         <XView position="absolute" width="100%">
-            <BackSkipLogo onBack={onBackPressed} onSkip={onSkip.callback ? onSkipPressed : undefined} />
+            <BackSkipLogo onBack={onBackPressed} onSkip={onSkip.callback ? onSkipPressed : undefined} mobileTransparent={mobileTransparent} />
         </XView>
     );
 }));
@@ -500,6 +504,11 @@ export default () => {
             headerRef.current.setOnSkip(callback);
         }
     }, []);
+    const setMobileTransparent = React.useCallback((value?: boolean) => {
+        if (headerRef.current) {
+            headerRef.current.setMobileTransparent(value);
+        }
+    }, []);
 
     return (
         <div className={outerContainer}>
@@ -509,6 +518,7 @@ export default () => {
                 value={{
                     setOnBack,
                     setOnSkip,
+                    setMobileTransparent,
                 }}
             >
 

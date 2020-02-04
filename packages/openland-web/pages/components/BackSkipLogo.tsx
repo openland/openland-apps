@@ -16,6 +16,9 @@ const wrapper = css`
 `;
 const mobileWrapper = css`
     height: 56px;
+`;
+
+const bgPrimary = css`
     background-color: var(--backgroundPrimary);
 `;
 
@@ -33,17 +36,22 @@ const Skip = ({ onClick }: { onClick: (event: React.MouseEvent) => void }) => {
     );
 };
 
+export interface BackSkipLogoProps {
+    onSkip?: (event: React.MouseEvent) => void;
+    onBack?: (event: React.MouseEvent) => void;
+    mobileTransparent?: boolean;
+}
+
 export const BackSkipLogo = ({
     onBack,
     onSkip,
-}: {
-    onSkip?: (event: React.MouseEvent) => void;
-    onBack?: (event: React.MouseEvent) => void;
-}) => {
+    mobileTransparent = false,
+}: BackSkipLogoProps) => {
     const isMobile = useIsMobile();
     const modalBox = React.useContext(XModalBoxContext);
+    const bg = !mobileTransparent && isMobile && bgPrimary;
     return (
-        <div className={cx(wrapper, isMobile && mobileWrapper)}>
+        <div className={cx(wrapper, isMobile && mobileWrapper, bg)}>
             {onBack && !modalBox ? (
                 <UIconButton position="absolute" top={isMobile ? 4 : 12} left={isMobile ? 4 : 12} size="large" cursor="pointer" onClick={onBack} icon={<IcBack />} />
             ) : (
