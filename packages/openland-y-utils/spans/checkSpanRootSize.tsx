@@ -1,18 +1,56 @@
 import { isEmoji } from 'openland-y-utils/isEmoji';
 import { SpanType } from './Span';
 
-function emojiChecker(messageText: string) {
+const whiteSpaceRegEx = /\s/g;
+const zeroWidthJoinerRegEx = /\u200D/;
+
+// https://github.com/mathiasbynens/unicode-12.1.0/blob/master/Binary_Property/Emoji_Modifier_Base/regex.js
+const emojiModifierBaseRegEx = /[\u261D\u26F9\u270A-\u270D]|\uD83C[\uDF85\uDFC2-\uDFC4\uDFC7\uDFCA-\uDFCC]|\uD83D[\uDC42\uDC43\uDC46-\uDC50\uDC66-\uDC78\uDC7C\uDC81-\uDC83\uDC85-\uDC87\uDC8F\uDC91\uDCAA\uDD74\uDD75\uDD7A\uDD90\uDD95\uDD96\uDE45-\uDE47\uDE4B-\uDE4F\uDEA3\uDEB4-\uDEB6\uDEC0\uDECC]|\uD83E[\uDD0F\uDD18-\uDD1F\uDD26\uDD30-\uDD39\uDD3C-\uDD3E\uDDB5\uDDB6\uDDB8\uDDB9\uDDBB\uDDCD-\uDDCF\uDDD1-\uDDDD]/;
+// Modified version of: https://github.com/mathiasbynens/unicode-12.1.0/tree/master/Binary_Property/Emoji_Modifier/regex.js, https://github.com/mathiasbynens/unicode-12.1.0/tree/master/Binary_Property/Emoji_Component/regex.js
+const emojiModifierRegEx = /[\u2640\u2642\u26A2-\u26A7]|\uD83C[\uDFFB-\uDFFF]|[\u200D\u20E3\uFE0F]|\uD83C[\uDDE6-\uDDFF\uDFFB-\uDFFF]|\uD83E[\uDDB0-\uDDB3]|\uDB40[\uDC20-\uDC7F]/;
+
+export function emojiChecker(messageText: string) {
     if (isEmoji(messageText)) {
         return true;
     }
-    const messageArray = Array.from(messageText);
-    const pattern = /^([a-zа-яё\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]+|\d+)$/i;
+
+    const messageArray = Array.from(messageText.replace(whiteSpaceRegEx, ''));
+    let emojiCount = 0;
+    let isPrevModifierBase;
+    let isPrevModifier;
+    let isPrevZeroJoiner;
+
     for (let i = 0; i < messageArray.length; i++) {
-        if (messageArray[i].match(pattern) && messageArray[i] !== '‍' && messageArray[i] !== '️') {
+        let item = messageArray[i];
+        if (emojiModifierBaseRegEx.test(item)) {
+            isPrevModifierBase = true;
+            if (isPrevZeroJoiner) {
+                isPrevZeroJoiner = false;
+                continue;
+            }
+        }
+        if (zeroWidthJoinerRegEx.test(item)) {
+            isPrevZeroJoiner = true;
+            continue;
+        } else {
+            isPrevZeroJoiner = false;
+        }
+        if (emojiModifierRegEx.test(item)) {
+            isPrevModifier = true;
+            continue;
+        } else {
+            isPrevModifier = false;
+        }
+        if (isEmoji(item)) {
+            emojiCount++;
+        } else {
             return false;
         }
+        if (emojiCount > 3) {
+            return false;
+        }   
     }
-    return true;
+    return emojiCount > 0;
 }
 
 interface CheckSpanRootSizeResult {
