@@ -16,14 +16,11 @@ export function emojiChecker(messageText: string) {
 
     const messageArray = Array.from(messageText.replace(whiteSpaceRegEx, ''));
     let emojiCount = 0;
-    let isPrevModifierBase;
-    let isPrevModifier;
     let isPrevZeroJoiner;
 
     for (let i = 0; i < messageArray.length; i++) {
         let item = messageArray[i];
         if (emojiModifierBaseRegEx.test(item)) {
-            isPrevModifierBase = true;
             if (isPrevZeroJoiner) {
                 isPrevZeroJoiner = false;
                 continue;
@@ -36,10 +33,7 @@ export function emojiChecker(messageText: string) {
             isPrevZeroJoiner = false;
         }
         if (emojiModifierRegEx.test(item)) {
-            isPrevModifier = true;
             continue;
-        } else {
-            isPrevModifier = false;
         }
         if (isEmoji(item)) {
             emojiCount++;
