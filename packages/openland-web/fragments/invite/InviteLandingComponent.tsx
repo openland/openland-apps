@@ -21,9 +21,12 @@ import { trackEvent } from 'openland-x-analytics';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { showPayConfirm } from '../wallet/components/showPayConfirm';
-import { AuthSidebarComponent } from 'openland-web/pages/root/AuthSidebarComponent';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { TextCaption, TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
+import {
+    AuthSidebarComponent,
+    AuthMobileHeader,
+} from 'openland-web/pages/root/AuthSidebarComponent';
 
 const container = css`
     display: flex;
@@ -38,12 +41,12 @@ const rootClassName = css`
     flex-direction: column;
     flex-grow: 1;
     background-color: var(--backgroundPrimary);
-    padding: 0 32px 32px;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
 `;
 
 const mainContainer = css`
+    padding: 0 32px 32px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -159,6 +162,7 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
         <div className={container}>
             {props.noLigin && !isMobile && <AuthSidebarComponent />}
             <div className={rootClassName}>
+                {props.noLigin && isMobile && <AuthMobileHeader />}
                 <div className={mainContainer}>
                     {invitedByUser ? (
                         <div className={avatarsContainer}>

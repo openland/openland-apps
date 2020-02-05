@@ -6,7 +6,9 @@ import IcArrow from 'openland-icons/s/ic-chevron-16.svg';
 import IcIos from 'openland-icons/s/ic-apple-16.svg';
 import IcAndroid from 'openland-icons/s/ic-playmarket-24.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextTitle1, TextBody, TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
+import { detectOS } from 'openland-x-utils/detectOS';
 
 const sidebarContainer = css`
     display: flex;
@@ -23,7 +25,6 @@ const logoContainer = css`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
 `;
 
 const logoTitleContainer = css`
@@ -103,7 +104,7 @@ const DownloadButton = (props: { ios?: boolean }) => (
 
 export const AuthSidebarComponent = React.memo(() => (
     <div className={sidebarContainer}>
-        <XView path={'/'} hoverTextDecoration="none">
+        <XView path={'/'} hoverTextDecoration="none" cursor="pointer">
             <div className={logoContainer}>
                 <Logo className={logoStyle} />
                 <div className={logoTitleContainer}>
@@ -119,3 +120,38 @@ export const AuthSidebarComponent = React.memo(() => (
         <DownloadButton />
     </div>
 ));
+
+const mobileHeaderContainer = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 15px;
+    flex-shrink: 0;
+    align-self: stretch;
+`;
+
+export const AuthMobileHeader = React.memo(() => {
+    const os = detectOS();
+    let path = 'https://oplnd.com/ios';
+    if (os === 'Android') {
+        path = 'https://oplnd.com/android';
+    }
+    return (
+        <div className={mobileHeaderContainer}>
+            <XView path={'/'} cursor="pointer">
+                <img src="/static/landing/logo.svg" width={130} height={44} />
+            </XView>
+            <UButton
+                text="Install the app"
+                size="small"
+                style="secondary"
+                marginBottom={-4}
+                href={path}
+                hoverTextDecoration="none"
+                target="_blank"
+                as="a"
+            />
+        </div>
+    );
+});
