@@ -90,9 +90,9 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
             <KeyboardAvoidingView
                 behavior="padding"
                 flex={1}
-                keyboardVerticalOffset={isIos && theme.type === 'Dark' ? 88 : undefined}
             >
                 <ScrollView
+                    flex={1}
                     paddingTop={isIos ? area.top + 16 : undefined}
                     ref={scrollRef}
                 >

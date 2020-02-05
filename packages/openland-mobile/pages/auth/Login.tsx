@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, Text, ViewStyle, Platform, Linking } from 'react-native';
+import { View, StyleSheet, Image, Text, ViewStyle, Platform, Dimensions } from 'react-native';
 import RNRestart from 'react-native-restart';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
@@ -24,21 +24,13 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingBottom: 45,
+        paddingBottom: 60,
     } as ViewStyle,
     buttons: {
-        paddingTop: 16,
         paddingHorizontal: 16,
         maxWidth: 424,
         alignSelf: 'center',
         width: '100%',
-    } as ViewStyle,
-    privacy: {
-        paddingTop: 16,
-        paddingBottom: 16,
-        paddingHorizontal: 16,
-        alignItems: 'center',
-        justifyContent: 'center',
     } as ViewStyle,
 });
 
@@ -70,35 +62,33 @@ const Logo = React.memo(() => {
     );
 });
 
-const PrivacyText = React.memo(() => {
-    const theme = React.useContext(ThemeContext);
+interface ButtonProps {
+    loading: boolean;
+    onGooglePress: () => void;
+    onMailPress: () => void;
+}
+
+const Buttons = React.memo((props: ButtonProps) => {
+    const isIos = Platform.OS === 'ios';
+    const isXGen = isIos && Dimensions.get('window').height > 800;
+    const defaultIosPadding = isXGen ? 0 : 16;
 
     return (
-        <View style={styles.privacy}>
-            <Text
-                allowFontScaling={false}
-                style={{
-                    ...TextStyles.Caption,
-                    textAlign: 'center',
-                    color: theme.foregroundTertiary,
-                }}
-            >
-                By creating an account you are accepting our
-                {'\n'}
-                <Text
-                    style={{ ...TextStyles.Label3 }}
-                    onPress={() => Linking.openURL('https://openland.com/terms')}
-                >
-                    Terms of service
-                </Text>{' '}
-                and{' '}
-                <Text
-                    style={{ ...TextStyles.Label3 }}
-                    onPress={() => Linking.openURL('https://openland.com/privacy')}
-                >
-                    Privacy policy
-                </Text>
-            </Text>
+        <View style={styles.buttons} paddingBottom={isIos ? defaultIosPadding : 16}>
+            <ZButton
+                title="Continue with Google"
+                loading={props.loading}
+                onPress={props.onGooglePress}
+                size="large"
+            />
+            <View height={16} />
+            <ZButton
+                title="Continue with Email"
+                enabled={!props.loading}
+                onPress={props.onMailPress}
+                style="secondary"
+                size="large"
+            />
         </View>
     );
 });
@@ -171,23 +161,11 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean; load
                 <ASSafeAreaView style={{ flexGrow: 1 }}>
                     <View style={styles.container}>
                         <Logo />
-                        <View style={styles.buttons}>
-                            <ZButton
-                                title="Continue with Google"
-                                loading={this.state.loading}
-                                onPress={this.handleGoogleAuth}
-                                size="large"
-                            />
-                            <View height={16} />
-                            <ZButton
-                                title="Continue with Email"
-                                enabled={!this.state.loading}
-                                onPress={this.handleEmailPress}
-                                style="secondary"
-                                size="large"
-                            />
-                        </View>
-                        <PrivacyText />
+                        <Buttons
+                            loading={this.state.loading}
+                            onGooglePress={this.handleGoogleAuth}
+                            onMailPress={this.handleEmailPress}
+                        />
                     </View>
                 </ASSafeAreaView>
             </ZTrack>

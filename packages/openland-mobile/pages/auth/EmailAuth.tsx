@@ -265,6 +265,7 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
                 )}
                 <Animated.View
                     style={{
+                        paddingBottom: avatarSrc ? 70 : undefined,
                         transform: [
                             {
                                 translateX: shakeAnimation.interpolate({
