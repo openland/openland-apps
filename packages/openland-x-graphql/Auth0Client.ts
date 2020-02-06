@@ -10,25 +10,3 @@ export function createAuth0Client() {
         scope: 'openid profile email'
     });
 }
-
-// export function createAuth0Passwordless() {
-//     return new auth0.Auth0LockPasswordless()
-// }
-
-export function startAuthGoogle(redirect?: string | null) {
-    if (redirect) {
-        localStorage.setItem('redirect_path', redirect);
-    } else {
-        localStorage.removeItem('redirect_path');
-    }
-    createAuth0Client().authorize({ connection: 'google-oauth2' });
-}
-
-export function startEmailAuth(redirect?: string | null) {
-    if (redirect) {
-        localStorage.setItem('redirect_path', redirect);
-    } else {
-        localStorage.removeItem('redirect_path');
-    }
-    createAuth0Client().authorize({ connection: 'email' });
-}
