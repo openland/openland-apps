@@ -122,19 +122,33 @@ export class TypingsWatcher {
         }
 
         return {
-            typing: this.pluralizeTypingUsers(usersTyping),
+            typing: this.pluralizeTypingUsers(usersTyping, TypingType.TEXT),
             users: usersTyping,
         };
     }
 
-    pluralizeTypingUsers = (users: TypingsUser[]) => {
+    pluralizeTypingUsers = (users: TypingsUser[], action: TypingType) => {
         const userNames = users.map(user => user!.userName);
 
+        let actionString;
+
+        switch (action) {
+            case TypingType.TEXT: actionString = 'typing'; break;
+            case TypingType.FILE: actionString = 'sending file'; break;
+            case TypingType.PHOTO: actionString = 'sending photo'; break;
+            case TypingType.STICKER: actionString = 'picking sticker'; break;
+            case TypingType.VIDEO: actionString = 'uploading video'; break;
+
+            default: return ((invalidAction: TypingType): never => {
+                throw new TypeError(`Invalid typing action: ${invalidAction}`);
+            })(action);
+        }
+
         switch (userNames.length) {
-            case 1: return `${userNames[0]} is typing`;
-            case 2: return `${userNames[0]} and ${userNames[1]} are typing`;
-            case 3: return `${userNames[0]}, ${userNames[1]} and ${userNames[2]} are typing`;
-            default: return `${userNames[0]}, ${userNames[1]} and ${userNames.length - 2} more are typing`;
+            case 1: return `${userNames[0]} is ${actionString}`;
+            case 2: return `${userNames[0]} and ${userNames[1]} are ${actionString}`;
+            case 3: return `${userNames[0]}, ${userNames[1]} and ${userNames[2]} are ${actionString}`;
+            default: return `${userNames[0]}, ${userNames[1]} and ${userNames.length - 2} more are ${actionString}`;
         }
     }
 
