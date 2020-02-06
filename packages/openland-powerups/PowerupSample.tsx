@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PView } from 'openland-pegasus/PView';
 import { PHeader } from 'openland-pegasus/PHeader';
 import { PMap, PMyLocation } from 'openland-pegasus/PMap';
-import { useClient } from 'openland-y-graphql/GQLClientContext';
+import { useClient } from 'openland-api/GQLClientContext';
 import { AppGeolocation } from 'openland-y-runtime/AppGeolocation';
 import { AppAlertBlanket } from 'openland-y-runtime/AppAlertBlanket';
 import { PText } from 'openland-pegasus/PText';

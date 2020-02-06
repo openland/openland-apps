@@ -1,5 +1,5 @@
 import { Watcher } from 'openland-y-utils/Watcher';
-import { Queue } from 'openland-graphql/utils/Queue';
+import { Queue } from 'openland-y-utils/Queue';
 import { randomKey } from 'openland-graphql/utils/randomKey';
 import { Operations } from './types';
 import {

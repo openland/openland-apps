@@ -1,7 +1,7 @@
 import { NativeModules, DeviceEventEmitter, NativeEventEmitter, Platform } from 'react-native';
 import { GraphqlBridgedEngine, OperationParameters } from '@openland/spacex';
 import { randomKey } from 'openland-graphql/utils/randomKey';
-import { convertError } from 'openland-graphql/direct/convertError';
+import { convertError } from 'openland-graphql/convertError';
 import { API_HOST } from 'openland-y-utils/api';
 
 const NativeGraphQL = NativeModules.RNGraphQL as {

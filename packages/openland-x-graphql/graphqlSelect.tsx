@@ -3,22 +3,18 @@ import { XSelectAsync } from 'openland-x/XSelect';
 import { useClient } from 'openland-web/utils/useClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 
-export function graphqlSelect<V = {}>(query: (query: string, src: OpenlandClient) => Promise<any>) {
+export function graphqlSelect(query: (query: string, src: OpenlandClient) => Promise<any>) {
     return (
         props: {
             onChange: (value: any) => void;
             value: string;
-        } & { variables?: V }, // &  Partial<XSelectAsyncProps>
+        }
     ) => {
         let client = useClient();
         return (
             <XSelectAsync
                 {...props}
                 loadOptions={async (input: string) => {
-                    let vars = { query: input };
-                    if (props.variables) {
-                        vars = { query: input, ...(props.variables as any) };
-                    }
                     let res = await query(input, client);
                     let items = (res as any).items as [
                         { id: string; title: string; subtitle?: string | null } | string

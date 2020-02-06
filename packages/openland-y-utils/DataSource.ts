@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { WatchSubscription } from './Watcher';
-import { Queue } from 'openland-graphql/utils/Queue';
+import { Queue } from 'openland-y-utils/Queue';
 
 async function throttle() {
     return new Promise(r => {

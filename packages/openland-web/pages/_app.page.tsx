@@ -67,7 +67,7 @@ import { AppContainer } from './root/AppContainer';
 import { EnvironmentContext } from './root/EnvironmentContext';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { OpenlandApiContext } from 'openland-web/utils/OpenlandApiProvider';
-import { GQLClientContext } from 'openland-y-graphql/GQLClientContext';
+import { GQLClientContext } from 'openland-api/GQLClientContext';
 
 const ErrorBoundary = bugsnagClient.getPlugin('react');
 
