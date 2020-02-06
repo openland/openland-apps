@@ -34,10 +34,9 @@ const styleSpansMessageContainer = css`
 const cropTextStyle = css`
     max-width: 100%;
     overflow: hidden;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+    white-space: nowrap;
     text-overflow: ellipsis;
-    max-height: 20px;
+    max-height: 24px;
 `;
 
 const EditLabelStyle = css`
