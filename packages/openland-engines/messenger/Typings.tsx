@@ -9,45 +9,59 @@ export interface TypingsUser {
     userId: string;
 }
 
-export class TypingsWatcher {
-    private typings: {
-        [conversationId: string]: {
-            [userId: string]: {
-                userName: string,
-                userPic: string | null,
-                userId: string
-            } | undefined
-        } | undefined
-    } = {};
-    private timeouts: {
-        [conversationId: string]: {
-            [userId: string]: number | undefined
-        } | undefined
-    } = {};
-    private subscription: GraphqlActiveSubscription<TypingsWatch, {}>;
-    private onChange: (conversationId: string, data?: { typing: string, users: TypingsUser[] }) => void;
+interface Conversation {
+    [userId: string]: TypingsUser | undefined;
+}
 
-    constructor(client: OpenlandClient, onChange: (conversationId: string, data?: { typing: string, users: TypingsUser[] }) => void, currentuserId: string) {
+interface Typings {
+    [conversationId: string]: Conversation | undefined;
+}
+
+interface ConversationTimeouts {
+    [userId: string]: number | undefined;
+}
+
+interface Timeouts {
+    [conversationId: string]: ConversationTimeouts | undefined;
+}
+
+interface TypingsData {
+    typing: string;
+    users: TypingsUser[];
+}
+
+type TypingsListener = (
+    typing: string | undefined,
+    users: TypingsUser[] | undefined,
+    conversationId: string
+) => void;
+
+export class TypingsWatcher {
+    private typings: Typings = {};
+    private timeouts: Timeouts = {};
+    private subscription: GraphqlActiveSubscription<TypingsWatch, {}>;
+    private onChange: (conversationId: string, data?: TypingsData) => void;
+
+    constructor(client: OpenlandClient, onChange: (conversationId: string, data?: TypingsData) => void, currentUserId: string) {
         this.onChange = onChange;
         this.subscription = client.subscribeTypingsWatch();
-
-        this.start(currentuserId);
+        this.start(currentUserId);
     }
 
-    private start(currentuserId: string) {
+    private start(currentUserId: string) {
         forever(async () => {
             let event = await this.subscription.get();
             if (event) {
-                if (event.typings.user.id === currentuserId) {
+                if (event.typings.user.id === currentUserId) {
                     return;
                 }
-                let cId: string = event.typings.conversation.id;
+                let conversationId: string = event.typings.conversation.id;
                 let type: string = event.typings.conversation.__typename;
 
                 console.log(event.typings.type);
 
                 // add new typings
-                let existing = this.typings[cId] || {};
+                let existing = this.typings[conversationId] || {};
 
                 if (!event.typings.cancel) {
                     existing[event.typings.user.id] = {
@@ -55,87 +69,73 @@ export class TypingsWatcher {
                         userPic: event.typings.user.photo,
                         userId: event.typings.user.id
                     };
-                    this.typings[cId] = existing;
+                    this.typings[conversationId] = existing;
 
-                    this.onChange(cId, this.renderTypings(cId, type));
+                    this.onChange(conversationId, this.renderTypings(conversationId, type));
                 }
 
                 // clear scehduled typing clear
-                let existingTimeouts = this.timeouts[cId] || {};
+                let existingTimeouts = this.timeouts[conversationId] || {};
                 clearTimeout(existingTimeouts[event.typings.user.id]);
                 // schedule typing clear
                 existingTimeouts[event.typings.user.id] = window.setTimeout(
                     () => {
                         existing[event.typings.user.id] = undefined;
-                        this.onChange(cId, this.renderTypings(cId));
+                        this.onChange(conversationId, this.renderTypings(conversationId));
                     },
                     event.typings.cancel ? 0 : 4000);
-                this.timeouts[cId] = existingTimeouts;
+                this.timeouts[conversationId] = existingTimeouts;
             }
         });
     }
 
-    clearTyping = (cid: string, uid: string) => {
-        let existing = this.typings[cid] || {};
-        let existingTimeouts = this.timeouts[cid] || {};
-        clearTimeout(existingTimeouts[uid]);
-        existingTimeouts[uid] = window.setTimeout(
+    clearTyping = (conversationId: string, userId: string) => {
+        let existing = this.typings[conversationId] || {};
+        let existingTimeouts = this.timeouts[conversationId] || {};
+        clearTimeout(existingTimeouts[userId]);
+        existingTimeouts[userId] = window.setTimeout(
             () => {
-                existing[uid] = undefined;
-                this.onChange(cid, this.renderTypings(cid));
+                existing[userId] = undefined;
+                this.onChange(conversationId, this.renderTypings(conversationId));
             }, 0);
     }
 
-    renderTypings = (cId: string, type?: string) => {
-        let t = this.typings[cId];
-        if (!t) {
-            return undefined;
+    renderTypings = (conversationId: string, type?: string) => {
+        const typings = this.typings[conversationId];
+
+        if (!typings) {
+            return;
         }
 
-        let isPrivate = type === 'PrivateConversation';
-
-        let usersTyping: TypingsUser[] = Object.keys(t).map(
-            userId => (t![userId])
-        ).filter(
-            u => !!(u)
-        ).map(
+        let usersTyping: TypingsUser[] = Object.values(typings).filter(Boolean).map(
             u => ({
-                userName: isPrivate ? u!.userName.split(' ')[0] : u!.userName,
                 userPic: u!.userPic,
-                userId: u!.userId
+                userId: u!.userId,
+                userName: type === 'PrivateConversation'
+                    ? u!.userName.split(' ')[0] 
+                    : u!.userName
             })
         );
 
         if (usersTyping.length === 0) {
-            return undefined;
+            return;
         }
-
-        let userNames = usersTyping.map(u => u!.userName);
-
-        let userNamesTyping = '';
-
-        switch (userNames.length) {
-            case 1:
-                userNamesTyping = userNames[0];
-                break;
-            case 2:
-                userNamesTyping = `${userNames[0]} and ${userNames[1]}`;
-                break;
-            case 3:
-                userNamesTyping = `${userNames[0]}, ${userNames[1]} and ${userNames[2]}`;
-                break;
-            default:
-                userNamesTyping = `${userNames[0]}, ${userNames[1]} and ${userNames.length - 2} more`;
-        }
-
-        let verb = userNames.length === 1 ? 'is' : 'are';
-
-        let typing = `${userNamesTyping} ${verb} typing`;
 
         return {
-            typing,
+            typing: this.pluralizeTypingUsers(usersTyping),
             users: usersTyping,
         };
+    }
+
+    pluralizeTypingUsers = (users: TypingsUser[]) => {
+        const userNames = users.map(user => user!.userName);
+
+        switch (userNames.length) {
+            case 1: return `${userNames[0]} is typing`;
+            case 2: return `${userNames[0]} and ${userNames[1]} are typing`;
+            case 3: return `${userNames[0]}, ${userNames[1]} and ${userNames[2]} are typing`;
+            default: return `${userNames[0]}, ${userNames[1]} and ${userNames.length - 2} more are typing`;
+        }
     }
 
     destroy = () => {
@@ -144,19 +144,20 @@ export class TypingsWatcher {
 }
 
 export class TypingEngine {
-    listeners: ((typing: string | undefined, users: TypingsUser[] | undefined, conversationId: string) => void)[] = [];
+    listeners: TypingsListener[] = [];
+
     typing?: string;
     users?: TypingsUser[];
 
-    onTyping = (data: { typing: string, users: TypingsUser[] } | undefined, conversationId: string) => {
+    onTyping = (data: TypingsData | undefined, conversationId: string) => {
         this.typing = data !== undefined ? data.typing : undefined;
         this.users = data !== undefined ? data.users : undefined;
-        for (let l of this.listeners) {
-            l(this.typing, this.users, conversationId);
+        for (let listener of this.listeners) {
+            listener(this.typing, this.users, conversationId);
         }
     }
 
-    subcribe = (listener: (typing: string | undefined, users: TypingsUser[] | undefined, conversationId: string) => void) => {
+    subcribe = (listener: TypingsListener) => {
         this.listeners.push(listener);
         return () => {
             let index = this.listeners.indexOf(listener);
