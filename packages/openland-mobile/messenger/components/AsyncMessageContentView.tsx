@@ -35,6 +35,7 @@ interface AsyncMessageTextViewProps {
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onLongPress: (e: ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
+    onReplyPress?: () => void;
 }
 
 export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageItem, theme: ThemeGlobal, onUserPress: (id: string) => void, onGroupPress: (id: string) => void, onOrganizationPress: (id: string) => void) => {
@@ -97,7 +98,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
 };
 
 export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number, compensateBubble?: boolean) => {
-    const { theme, message, onUserPress, onGroupPress, onOrganizationPress, onMediaPress, onDocumentPress, onLongPress } = props;
+    const { theme, message, onUserPress, onGroupPress, onOrganizationPress, onMediaPress, onDocumentPress, onLongPress, onReplyPress } = props;
 
     // todo: handle multiple attaches
     const attaches = (message.attachments || []);
@@ -131,7 +132,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     const textSize = !compensateBubble ? maxSize : undefined;
 
     if (hasReply) {
-        topContent.push(<ReplyContent key="msg-reply" compensateBubble={compensateBubble} width={textSize} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onMediaPress={onMediaPress} />);
+        topContent.push(<ReplyContent key="msg-reply" compensateBubble={compensateBubble} width={textSize} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onMediaPress={onMediaPress} onPress={onReplyPress} />);
     }
     if (hasImage && imageLayout) {
         topContent.push(<MediaContent key="msg-media" theme={theme} compensateBubble={compensateBubble} layout={imageLayout} message={message} attach={fileAttach!} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onLongPress={onLongPress} hasTopContent={hasReply} hasBottomContent={hasText || hasUrlAug} />);

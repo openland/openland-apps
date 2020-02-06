@@ -11,17 +11,19 @@ import { Platform } from 'react-native';
 
 interface TextWrapperProps extends ASTextProps {
     color: string;
+    numberOfLines?: number;
     children?: any;
 }
 
 const TextWrapper = (props: TextWrapperProps) => {
-    const { children, ...other } = props;
+    const { children, numberOfLines, ...other } = props;
 
     return (
         <ASText
             key={'text-' + props.color}
             {...other}
             fontWeight={FontStyles.Weight.Regular}
+            numberOfLines={numberOfLines}
         >
             {children}
         </ASText>
@@ -40,6 +42,7 @@ interface RenderSpansProps {
     insetRight: number;
     insetVertical: number;
     textAlign?: 'left' | 'right' | 'center';
+    numberOfLines?: number;
     emojiOnly?: boolean;
 
     onUserPress: (id: string) => void;
@@ -70,7 +73,7 @@ const letterSpacing = {
 
 export class RenderSpans extends React.PureComponent<RenderSpansProps> {
     render() {
-        const { emojiOnly, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetVertical, onUserPress, onGroupPress, onOrganizationPress } = this.props;
+        const { emojiOnly, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetVertical, numberOfLines, onUserPress, onGroupPress, onOrganizationPress } = this.props;
 
         const bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
         const bubbleBackgroundSecondary = message.isOut ? theme.outgoingBackgroundSecondary : theme.incomingBackgroundSecondary;
@@ -96,6 +99,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                     textAlign={textAlign}
                                     maxWidth={!width ? maxWidth : undefined}
                                     width={width}
+                                    numberOfLines={numberOfLines}
                                 >
                                     {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress, onOrganizationPress)}
                                     {c.padded && paddedText(message.isEdited)}
@@ -118,6 +122,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                     fontSize={fontSize[c.type]}
                                     lineHeight={lineHeight[c.type]}
                                     letterSpacing={letterSpacing[c.type]}
+                                    numberOfLines={numberOfLines}
                                     color={color}
                                     maxWidth={!width ? maxWidth : undefined}
                                     width={width}
