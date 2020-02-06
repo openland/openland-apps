@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { withApp } from '../../components/withApp';
 import { XLoader } from 'openland-x/XLoader';
-import { UserSelect } from '../../components/UserSelect';
+// import { UserSelect } from '../../components/UserSelect';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { UButton } from 'openland-web/components/unicorn/UButton';
@@ -218,7 +218,7 @@ const AddMemberForm = ({ hide, accountId }: { accountId: string; hide: () => voi
         <XView borderRadius={8}>
             <XModalContent>
                 <XVertical flexGrow={1} separator={8}>
-                    <UserSelect value={userField.input.value} onChange={userField.input.onChange} />
+                    {/* <UserSelect value={userField.input.value} onChange={userField.input.onChange} /> */}
                 </XVertical>
             </XModalContent>
             <XModalFooter>
@@ -272,7 +272,7 @@ const RemoveMemberForm = ({ hide, accountId }: { accountId: string; hide: () => 
         <XView borderRadius={8}>
             <XModalContent>
                 <XVertical flexGrow={1} separator={8}>
-                    <UserSelect value={userField.input.value} onChange={userField.input.onChange} />
+                    {/* <UserSelect value={userField.input.value} onChange={userField.input.onChange} /> */}
                 </XVertical>
             </XModalContent>
             <XModalFooter>
