@@ -1,6 +1,6 @@
 import { GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-import { TypingsWatch } from 'openland-api/Types';
+import { TypingsWatch, TypingType } from 'openland-api/Types';
 import { forever } from 'openland-engines/utils/forever';
 
 export interface TypingsUser {
