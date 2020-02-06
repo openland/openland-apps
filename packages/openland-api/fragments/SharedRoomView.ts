@@ -6,6 +6,5 @@ export const SharedRoomView = gql`
         title
         photo
         membersCount
-        photo
     }
 `;

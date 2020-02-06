@@ -3,7 +3,7 @@ import { View, StyleSheet, TextInput, Dimensions, ViewStyle, TextStyle, Touchabl
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { FeedItemShadow } from '../FeedItemShadow';
 import { RadiusStyles, TextStyles, SecondarinessAlpha, HighlightAlpha } from 'openland-mobile/styles/AppStyles';
-import { SlideCoverAlign, ImageRefInput } from 'openland-api/Types';
+import { SlideCoverAlign, ImageRefInput } from 'openland-api/spacex.types';
 import { ZIconButton } from 'openland-mobile/components/ZIconButton';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';

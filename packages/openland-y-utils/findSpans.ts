@@ -1,4 +1,4 @@
-import { MessageSpanInput, FullMessage_GeneralMessage_spans } from 'openland-api/Types';
+import { MessageSpanInput, SpanFragment } from 'openland-api/spacex.types';
 import { SpanSymbolToType, SpanSymbolToTypeT } from './spans/Span';
 
 const _sc = (charCode: number) => String.fromCharCode(charCode);
@@ -119,15 +119,15 @@ export const findSpans = (text: string, allowedSpans?: SpanSymbolToTypeT): Messa
     return res;
 };
 
-export const prepareLegacySpans = (spans: MessageSpanInput[]): FullMessage_GeneralMessage_spans[] => {
-    let res: FullMessage_GeneralMessage_spans[] = [];
+export const prepareLegacySpans = (spans: MessageSpanInput[]): SpanFragment[] => {
+    let res: SpanFragment[] = [];
 
     spans.map(span => {
         res.push({
             __typename: spanInputMap[span.type] as any,
             offset: span.offset,
             length: span.length
-        });
+        } as any);
     });
 
     return res;

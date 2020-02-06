@@ -4,7 +4,7 @@ import { Platform } from 'react-native';
 import { backoff } from 'openland-y-utils/timer';
 import { AppNotifications } from 'openland-y-runtime-native/AppNotifications';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-import { PushType } from 'openland-api/Types';
+import { PushType } from 'openland-api/spacex.types';
 import { createLogger } from 'mental-log';
 
 const log = createLogger('Engine-Push');

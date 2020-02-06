@@ -4,7 +4,6 @@ fragment QuotedMessage on ModernMessage {
   fallback
   id
   message
-  message
   sender {
     __typename
     ...UserShort

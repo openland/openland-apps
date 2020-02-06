@@ -31,7 +31,7 @@ import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import IcSticker from 'openland-icons/s/ic-sticker-24.svg';
 import { StickerComponent } from '../stickers/StickerPicker';
 import { XLoader } from 'openland-x/XLoader';
-import { StickerFragment } from 'openland-api/Types';
+import { StickerFragment } from 'openland-api/spacex.types';
 import { findEmoji } from 'openland-y-utils/emojiSuggest';
 import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
 import { ChangeEvent } from 'react';

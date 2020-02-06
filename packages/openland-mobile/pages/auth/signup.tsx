@@ -1,4 +1,4 @@
-import { SessionStateFull } from 'openland-api/Types';
+import { SessionStateFull } from 'openland-api/spacex.types';
 import { SRouter } from 'react-native-s/SRouter';
 import { backoff } from 'openland-y-utils/timer';
 import { getClient } from '../../utils/graphqlClient';

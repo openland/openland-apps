@@ -17,6 +17,6 @@ internal val OrganizationPublicRoomsSelector = obj(
 val OrganizationPublicRooms = object: OperationDefinition {
     override val name = "OrganizationPublicRooms"
     override val kind = OperationKind.QUERY
-    override val body = "query OrganizationPublicRooms(\$after:ID,\$first:Int!,\$organizationId:ID!){organizationPublicRooms(after:\$after,first:\$first,id:\$organizationId){__typename cursor items{__typename ...SharedRoomView}}}fragment SharedRoomView on SharedRoom{__typename id membersCount photo photo title}"
+    override val body = "query OrganizationPublicRooms(\$after:ID,\$first:Int!,\$organizationId:ID!){organizationPublicRooms(after:\$after,first:\$first,id:\$organizationId){__typename cursor items{__typename ...SharedRoomView}}}fragment SharedRoomView on SharedRoom{__typename id membersCount photo title}"
     override val selector = OrganizationPublicRoomsSelector
 }

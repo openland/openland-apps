@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Types from '../../../openland-api/Types';
+import * as Types from '../../../openland-api/spacex.types';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
@@ -9,7 +9,7 @@ import { SFlatList } from 'react-native-s/SFlatList';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 
 const GroupListComponent = React.memo<PageProps>((props) => {
-    let initial = props.router.params.initial as Types.AvailableRooms_availableChats[];
+    let initial = props.router.params.initial as Types.AvailableRooms['availableChats'];
     let isChannel = props.router.params.isChannel;
 
     let [rooms, setRooms] = React.useState(initial);

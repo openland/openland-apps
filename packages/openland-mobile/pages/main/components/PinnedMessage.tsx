@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
-import { FullMessage } from 'openland-api/Types';
+import { FullMessage } from 'openland-api/spacex.types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 import { useClient } from 'openland-mobile/utils/useClient';

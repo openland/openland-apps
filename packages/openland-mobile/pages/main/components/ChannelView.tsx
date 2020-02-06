@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FeedChannelFull } from 'openland-api/Types';
+import { FeedChannelFull } from 'openland-api/spacex.types';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';

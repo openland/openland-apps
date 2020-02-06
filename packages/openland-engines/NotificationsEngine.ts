@@ -1,5 +1,4 @@
 import { MessengerEngine } from './MessengerEngine';
-import { SettingsQuery, RoomTinyQuery } from 'openland-api';
 import {
     RoomTiny_room_SharedRoom,
     RoomTiny_room_PrivateRoom,
@@ -36,7 +35,7 @@ export class NotificationsEngine {
     }
 
     handleIncomingNotification = async (comment: NotificationsDataSourceItem) => {
-        let settings = (await this.engine.client.client.readQuery(SettingsQuery))!.settings;
+        let settings = (await this.engine.client.querySettings())!.settings;
 
         if (AppConfig.getPlatform() === 'mobile' && !settings.mobile.comments.showNotification) {
             return;
@@ -69,7 +68,7 @@ export class NotificationsEngine {
 
     handleIncomingMessage = async (cid: string, event: NewMessageEvent) => {
         const msg = event.message;
-        let room = (await this.engine.client.client.query(RoomTinyQuery, { id: cid })).room!;
+        let room = (await this.engine.client.queryRoomTiny({ id: cid })).room!;
         let sharedRoom =
             room.__typename === 'SharedRoom' ? (room as RoomTiny_room_SharedRoom) : null;
         let privateRoom =

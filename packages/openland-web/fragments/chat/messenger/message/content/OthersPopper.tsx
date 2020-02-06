@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UserForMention } from 'openland-api/Types';
+import { UserForMention } from 'openland-api/spacex.types';
 import { css } from 'linaria';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { MentionItemComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';

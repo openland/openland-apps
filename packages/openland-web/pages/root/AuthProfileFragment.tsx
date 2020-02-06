@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { GetUser_user } from 'openland-api/Types';
+import { GetUser } from 'openland-api/spacex.types';
 import Logo from 'openland-unicorn/components/Logo';
 import IcArrow from 'openland-icons/s/ic-chevron-16.svg';
 import IcIos from 'openland-icons/s/ic-apple-16.svg';
@@ -121,7 +121,7 @@ const DownloadButton = (props: { ios?: boolean }) => (
     </div>
 );
 
-export const AuthProfileFragment = React.memo((props: { user: GetUser_user }) => {
+export const AuthProfileFragment = React.memo((props: { user: GetUser['user'] }) => {
     return (
         <div className={rootContainer}>
             <div className={sidebarContainer}>

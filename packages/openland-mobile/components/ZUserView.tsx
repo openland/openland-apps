@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UserForMention } from 'openland-api/Types';
+import { UserForMention } from 'openland-api/spacex.types';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { View, Text, Dimensions } from 'react-native';
 import { ZAvatar } from './ZAvatar';

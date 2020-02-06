@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { UListItem, UListItemProps } from 'openland-web/components/unicorn/UListItem';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
-import { UserShort, UserBadge, OrganizationMemberRole, RoomMemberRole } from 'openland-api/Types';
+import { UserShort, UserBadge, OrganizationMemberRole, RoomMemberRole } from 'openland-api/spacex.types';
 import { UPresence } from '../UPresence';
 import { XView } from 'react-mental';
 import CrownIcon from 'openland-icons/ic-crown-4.svg';

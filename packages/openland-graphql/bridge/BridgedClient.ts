@@ -40,7 +40,7 @@ export abstract class BridgedClient implements GraphqlClient {
     // Query
     //
 
-    async query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): Promise<TQuery> {
+    async query<TQuery, TVars>(query: string, vars?: TVars, params?: OperationParameters): Promise<TQuery> {
         // if (__DEV__) {
         //     log.log('Query ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ', ' + JSON.stringify(params || {}) + ')');
         // }
@@ -64,7 +64,7 @@ export abstract class BridgedClient implements GraphqlClient {
         }
     }
 
-    queryWatch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): GraphqlQueryWatch<TQuery> {
+    queryWatch<TQuery, TVars>(query: string, vars?: TVars, params?: OperationParameters): GraphqlQueryWatch<TQuery> {
         // if (__DEV__) {
         //     log.log('Query Watch ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ', ' + JSON.stringify(params || {}) + ')');
         // }
@@ -169,7 +169,7 @@ export abstract class BridgedClient implements GraphqlClient {
     // Mutation
     //
 
-    async mutate<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
+    async mutate<TQuery, TVars>(query: string, vars?: TVars): Promise<TQuery> {
         // if (__DEV__) {
         //     log.log('Mutate ' + getQueryName(query) + '(' + JSON.stringify(vars || {}) + ')');
         // }
@@ -195,7 +195,7 @@ export abstract class BridgedClient implements GraphqlClient {
     // Subscription
     //
 
-    subscribe<TSubscription, TVars>(subscription: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): GraphqlActiveSubscription<TSubscription, TVars> {
+    subscribe<TSubscription, TVars>(subscription: string, vars?: TVars): GraphqlActiveSubscription<TSubscription, TVars> {
         let id = this.nextKey();
         let queue = new Queue();
         var variables = vars;
@@ -220,7 +220,6 @@ export abstract class BridgedClient implements GraphqlClient {
             },
             updateVariables: (vars2: TVars) => {
                 variables = vars2;
-                this.postSubscribeUpdate(id, vars2);
             },
             destroy: () => {
                 this.handlersMap.delete(currentId);
@@ -234,8 +233,8 @@ export abstract class BridgedClient implements GraphqlClient {
     // Store
     // 
 
-    async updateQuery<TQuery, TVars>(updater: (data: TQuery) => TQuery | null, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<boolean> {
-        let r = await this.readQuery(query, vars);
+    async updateQuery<TQuery, TVars>(updater: (data: TQuery) => TQuery | null, query: string, vars?: TVars): Promise<boolean> {
+        let r = await this.readQuery<TQuery, TVars>(query, vars);
         if (r) {
             let udpated = updater(r);
             if (udpated) {
@@ -246,14 +245,14 @@ export abstract class BridgedClient implements GraphqlClient {
         return false;
     }
 
-    async readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
+    async readQuery<TQuery, TVars>(query: string, vars?: TVars): Promise<TQuery> {
         let id = this.nextKey();
         let res = this.registerPromiseHandler<TQuery>(id);
-        this.postReadQuery(id, query, vars);
+        this.postReadQuery<TQuery, TVars>(id, query, vars);
         return await res;
     }
 
-    async writeQuery<TQuery, TVars>(data: TQuery, query: GraphqlQuery<TQuery, TVars>, vars?: TVars) {
+    async writeQuery<TQuery, TVars>(data: TQuery, query: string, vars?: TVars) {
         let id = this.nextKey();
         let res = this.registerPromiseHandler<void>(id);
         this.postWriteQuery(id, data, query, vars);
@@ -285,20 +284,17 @@ export abstract class BridgedClient implements GraphqlClient {
         }
     }
 
-    protected abstract postQuery<TQuery, TVars>(id: string, query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): void;
-    protected abstract postQueryWatch<TQuery, TVars>(id: string, query: GraphqlQuery<TQuery, TVars>, vars?: TVars, params?: OperationParameters): void;
+    protected abstract postQuery<TQuery, TVars>(id: string, query: string, vars?: TVars, params?: OperationParameters): void;
+    protected abstract postQueryWatch<TQuery, TVars>(id: string, query: string, vars?: TVars, params?: OperationParameters): void;
     protected abstract postQueryWatchEnd(id: string): void;
 
-    protected abstract postMutation<TMutation, TVars>(id: string, query: GraphqlMutation<TMutation, TVars>, vars?: TVars): void;
+    protected abstract postMutation<TMutation, TVars>(id: string, query: string, vars?: TVars): void;
 
-    protected abstract postSubscribe<TSubscription, TVars>(id: string, query: GraphqlSubscription<TSubscription, TVars>, vars?: TVars): void;
-    protected abstract postSubscribeUpdate(id: string, vars: any): void;
+    protected abstract postSubscribe<TSubscription, TVars>(id: string, query: string, vars?: TVars): void;
     protected abstract postUnsubscribe(id: string): void;
 
-    protected abstract postReadQuery<TQuery, TVars>(id: string, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): void;
-    protected abstract postWriteQuery<TQuery, TVars>(id: string, data: any, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): void;
-
-    protected abstract postWriteFragment<TFragment>(id: string, data: any, query: GraphqlFragment<TFragment>): void;
+    protected abstract postReadQuery<TQuery, TVars>(id: string, query: string, vars?: TVars): void;
+    protected abstract postWriteQuery<TQuery, TVars>(id: string, data: any, query: string, vars?: TVars): void;
 
     private nextKey() {
         return randomKey();

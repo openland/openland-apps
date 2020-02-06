@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SharedRoomView } from 'openland-api/Types';
+import { SharedRoomView } from 'openland-api/spacex.types';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { View, Text } from 'react-native';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';

@@ -10,7 +10,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SNativeConfig } from 'react-native-s/SNativeConfig';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { GlobalSearchEntryKind } from 'openland-api/Types';
+import { GlobalSearchEntryKind } from 'openland-api/spacex.types';
 import { SDeferred } from 'react-native-s/SDeferred';
 
 interface GlobalSearchProps {

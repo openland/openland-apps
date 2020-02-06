@@ -10,7 +10,7 @@ import { MobileMessenger } from '../messenger/MobileMessenger';
 import { SRouting } from 'react-native-s/SRouting';
 import { Root } from './Root';
 import { PageProps } from '../components/PageProps';
-import { SessionStateFull } from 'openland-api/Types';
+import { SessionStateFull } from 'openland-api/spacex.types';
 import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
 import { resolveInternalLink, saveLinkIfInvite, joinInviteIfHave } from '../utils/resolveInternalLink';
 import { ZModalProvider } from 'openland-mobile/components/ZModal';

@@ -1,6 +1,9 @@
 
+import WebSocket from 'isomorphic-ws';
+
 export type ThrusterConfig = { url: string, timeout: number };
 
+const empty = () => {/*  */ };
 /**
  * This class provides a factory for rapid WebSocket connection establishing by using several 
  * parallel attempts with different settings. First success wins.
@@ -35,10 +38,14 @@ export class Thruster {
         if (this.bucketSockets[bucket]) {
             let ex = this.bucketSockets[bucket]!;
             this.bucketSockets[bucket] = null;
-            ex.onclose = null;
-            ex.onopen = null;
-            ex.onmessage = null;
-            ex.close();
+            ex.onclose = empty;
+            ex.onopen = empty;
+            ex.onmessage = empty;
+            try {
+                ex.close();
+            } catch (e) {
+                // Ignore error
+            }
         }
 
         // Clear timeout
@@ -58,8 +65,8 @@ export class Thruster {
             this.close();
 
             // Remove callbacks and invoke onSuccess callback
-            ws.onopen = null;
-            ws.onclose = null;
+            ws.onopen = empty;
+            ws.onclose = empty;
             this.onSuccess(ws);
         };
 
@@ -90,10 +97,14 @@ export class Thruster {
             let ex = this.bucketSockets[i];
             this.bucketSockets[i] = null;
             if (ex) {
-                ex.onclose = null;
-                ex.onopen = null;
-                ex.onmessage = null;
-                ex.close();
+                ex.onclose = empty;
+                ex.onopen = empty;
+                ex.onmessage = empty;
+                try {
+                    ex.close();
+                } catch (e) {
+                    // Ignore error
+                }
             }
 
             // Clear Timeout

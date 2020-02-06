@@ -3,7 +3,7 @@ import { withApp } from '../../components/withApp';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 
-import { DebugEmailType } from 'openland-api/Types';
+import { DebugEmailType } from 'openland-api/spacex.types';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XContent } from 'openland-x-layout/XContent';
 import { useClient } from 'openland-web/utils/useClient';

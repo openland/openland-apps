@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XView, XViewRouterContext } from 'react-mental';
-import { UserForMention } from 'openland-api/Types';
+import { UserForMention } from 'openland-api/spacex.types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XDate } from 'openland-x/XDate';
 import { UAvatar } from './unicorn/UAvatar';

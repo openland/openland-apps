@@ -15,7 +15,7 @@ import { UListText } from 'openland-web/components/unicorn/UListText';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import MoreHIcon from 'openland-icons/s/ic-more-h-24.svg';
 import { CreateGroupButton } from './components/CreateGroupButton';
-import { OrganizationMembers_organization_members, OrganizationMemberRole } from 'openland-api/Types';
+import { OrganizationMembers, OrganizationMemberRole } from 'openland-api/spacex.types';
 import { PrivateCommunityView } from '../account/components/PrivateCommunityView';
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
@@ -68,7 +68,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
         setGroupsLoading(false);
     }, [props.id, groupsAfter, groupsLoading, displayGroups, roomsCount]);
 
-    const handleAddMembers = React.useCallback((addedMembers: OrganizationMembers_organization_members[]) => {
+    const handleAddMembers = React.useCallback((addedMembers: OrganizationMembers['organization']['members']) => {
         setMembers(current => [...current, ...addedMembers]);
     }, [members]);
 

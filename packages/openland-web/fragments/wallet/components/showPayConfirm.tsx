@@ -9,7 +9,7 @@ import { showAddCard } from './showAddCard';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { Alert } from 'react-native';
 import { TextStyles } from 'openland-web/utils/TextStyles';
-import { WalletSubscriptionInterval } from 'openland-api/Types';
+import { WalletSubscriptionInterval } from 'openland-api/spacex.types';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import AddIcon from 'openland-icons/s/ic-add-24.svg';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';

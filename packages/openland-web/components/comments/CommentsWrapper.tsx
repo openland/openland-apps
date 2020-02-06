@@ -8,7 +8,7 @@ import { URickTextValue, convertFromInputValue } from 'openland-web/components/u
 import { findSpans } from 'openland-y-utils/findSpans';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import UUID from 'uuid/v4';
-import { StickerFragment } from 'openland-api/Types';
+import { StickerFragment } from 'openland-api/spacex.types';
 import { showAttachConfirm } from 'openland-web/fragments/chat/components/AttachConfirm';
 import { DropZone } from 'openland-web/fragments/chat/components/DropZone';
 import { showNoiseWarning } from 'openland-web/fragments/chat/components/NoiseWarning';

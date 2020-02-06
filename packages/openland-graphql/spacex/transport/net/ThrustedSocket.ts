@@ -1,5 +1,6 @@
 import { WatchDogTimer } from './WatchDogTimer';
 import { Thruster } from './Thruster';
+import WebSocket from 'isomorphic-ws';
 
 const CONNECTION_BUCKETS = [1000, 5000, 30000];
 
@@ -50,9 +51,9 @@ export class ThrustedSocket {
         if (!this.closed) {
             this.closed = true;
             if (this.socket) {
-                this.socket.onmessage = null;
-                this.socket.onclose = null;
-                this.socket.onopen = null;
+                // this.socket.onmessage = null;
+                // this.socket.onclose = null;
+                // this.socket.onopen = null;
                 this.socket.close();
                 this.socket = null;
             }
@@ -87,9 +88,9 @@ export class ThrustedSocket {
 
         // Stop Socket
         if (this.socket) {
-            this.socket.onmessage = null;
-            this.socket.onclose = null;
-            this.socket.onopen = null;
+            // this.socket.onmessage = null;
+            // this.socket.onclose = null;
+            // this.socket.onopen = null;
             this.socket.close();
             this.socket = null;
         }

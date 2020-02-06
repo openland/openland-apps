@@ -1,7 +1,7 @@
 import { GraphQLError } from 'graphql';
 import { ApiError, InvalidField, UnknownError } from 'openland-graphql/GraphqlClient';
 
-export function convertError(errors: GraphQLError[]) {
+export function convertError(errors: any) {
     if (Array.isArray(errors) && errors.length > 0) {
         let message = errors[0].message;
         let invalidFields: InvalidField[] = [];

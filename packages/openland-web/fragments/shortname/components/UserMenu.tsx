@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { User_user } from 'openland-api/Types';
+import { User } from 'openland-api/Types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import copy from 'copy-to-clipboard';
 import EditIcon from 'openland-icons/s/ic-edit-24.svg';
@@ -8,7 +8,7 @@ import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 
 interface UserMenuProps {
-    user: User_user;
+    user: User['user'];
     marginLeft?: number;
 }
 

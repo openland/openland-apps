@@ -2,7 +2,7 @@ import * as React from 'react';
 import { UserInfoContext } from '../../components/UserInfo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { GetUser_user } from 'openland-api/Types';
+import { GetUser } from 'openland-api/spacex.types';
 import { extractRedirect } from './router/extractRedirect';
 import { isRootPath } from './router/isRootPath';
 import { redirectSuffix } from './router/redirectSuffix';
@@ -20,7 +20,7 @@ export const AuthRouter = React.memo((props: { children: any }) => {
     const { hostName, path, routeQuery } = router;
 
     const shortName = routeQuery && routeQuery.shortname ? routeQuery.shortname : null;
-    let user: GetUser_user | null = null;
+    let user: GetUser['user'] | null = null;
 
     if (!userInfo.isLoggedIn && shortName) {
         user = client.useGetUser({ id: shortName }).user;

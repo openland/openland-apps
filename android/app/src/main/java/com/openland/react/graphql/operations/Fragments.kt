@@ -171,7 +171,6 @@ internal val QuotedMessageSelector = obj(
             field("fallback", "fallback", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             field("message", "message", scalar("String")),
-            field("message", "message", scalar("String")),
             field("sender", "sender", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("User", UserShortSelector)
@@ -567,20 +566,6 @@ internal val FullMessageSelector = obj(
                 field("senderBadge", "senderBadge", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("UserBadge", UserBadgeSelector)
-                    )),
-                field("source", "source", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        inline("MessageSourceChat", obj(
-                            field("chat", "chat", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    inline("PrivateRoom", obj(
-                                        field("id", "id", notNull(scalar("ID")))
-                                    )),
-                                    inline("SharedRoom", obj(
-                                        field("id", "id", notNull(scalar("ID")))
-                                    ))
-                                )))
-                        ))
                     )),
                 field("sticker", "sticker", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -1794,7 +1779,6 @@ internal val SharedRoomViewSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
-            field("photo", "photo", notNull(scalar("String"))),
             field("photo", "photo", notNull(scalar("String"))),
             field("title", "title", notNull(scalar("String")))
         )

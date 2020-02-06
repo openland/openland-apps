@@ -148,7 +148,6 @@ export const QuotedMessage = gql`
         senderBadge {
             ...UserBadge
         }
-        message
         fallback
         source {
             ... on MessageSourceChat {
@@ -452,18 +451,6 @@ export const FullMessage = gql`
             }
             senderBadge {
                 ...UserBadge
-            }
-            source {
-                ... on MessageSourceChat {
-                    chat {
-                        ... on PrivateRoom {
-                            id
-                        }
-                        ... on SharedRoom {
-                            id
-                        }
-                    }
-                }
             }
             quotedMessages {
                 ...QuotedMessage

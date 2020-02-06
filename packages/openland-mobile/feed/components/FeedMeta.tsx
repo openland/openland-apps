@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, ViewStyle, LayoutChangeEvent } from 'react-native';
-import { FeedPostAuthorFragment, FeedPostSourceFragment } from 'openland-api/Types';
+import { FeedPostAuthorFragment, FeedPostSourceFragment } from 'openland-api/spacex.types';
 import { FeedAuthorView } from './FeedAuthorView';
 import { FeedSlideIndicator } from './FeedSlideIndicator';
 import LinearGradient from 'react-native-linear-gradient';

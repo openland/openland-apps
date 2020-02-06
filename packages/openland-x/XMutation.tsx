@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { MutationFunc } from 'react-apollo';
 
 interface XMutationProps {
-    mutation?: MutationFunc<{}>;
+    mutation?: () => Promise<any>;
     active?: boolean;
     variables?: any;
     className?: string;
@@ -27,11 +26,7 @@ export class XMutation extends React.Component<XMutationProps, { loading: boolea
             if (this.props.action) {
                 await this.props.action();
             } else if (this.props.mutation) {
-                if (this.props.variables) {
-                    await this.props.mutation({ variables: this.props.variables });
-                } else {
-                    await this.props.mutation({});
-                }
+                await this.props.mutation();
             }
         } catch (e) {
             console.warn(e);

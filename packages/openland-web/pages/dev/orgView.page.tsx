@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { withApp } from '../../components/withApp';
 import { XLoader } from 'openland-x/XLoader';
-import { UserSelect } from '../../components/UserSelect';
+// import { UserSelect } from '../../components/UserSelect';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { UButton } from 'openland-web/components/unicorn/UButton';
@@ -15,7 +15,7 @@ import { useField } from 'openland-form/useField';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SelectWithDropdown } from '../components/SelectWithDropdown';
-import { FeatureFlags_featureFlags } from 'openland-api/Types';
+import { FeatureFlags } from 'openland-api/spacex.types';
 import { XInput } from 'openland-x/XInput';
 
 const ActivateButton = ({ accountId }: { accountId: string }) => {
@@ -218,7 +218,7 @@ const AddMemberForm = ({ hide, accountId }: { accountId: string; hide: () => voi
         <XView borderRadius={8}>
             <XModalContent>
                 <XVertical flexGrow={1} separator={8}>
-                    <UserSelect value={userField.input.value} onChange={userField.input.onChange} />
+                    {/* <UserSelect value={userField.input.value} onChange={userField.input.onChange} /> */}
                 </XVertical>
             </XModalContent>
             <XModalFooter>
@@ -272,7 +272,7 @@ const RemoveMemberForm = ({ hide, accountId }: { accountId: string; hide: () => 
         <XView borderRadius={8}>
             <XModalContent>
                 <XVertical flexGrow={1} separator={8}>
-                    <UserSelect value={userField.input.value} onChange={userField.input.onChange} />
+                    {/* <UserSelect value={userField.input.value} onChange={userField.input.onChange} /> */}
                 </XVertical>
             </XModalContent>
             <XModalFooter>
@@ -309,7 +309,7 @@ const AddFeatureModal = ({ accountId, hide }: { accountId: string; hide: () => v
 
     const featureIdField = useField(
         'input.featureId',
-        null as FeatureFlags_featureFlags | null,
+        null as FeatureFlags['featureFlags'][0] | null,
         form,
     );
 
@@ -395,7 +395,7 @@ const RemoveFeatureModal = ({ accountId, hide }: { accountId: string; hide: () =
 
     const featureIdField = useField(
         'input.featureId',
-        null as FeatureFlags_featureFlags | null,
+        null as FeatureFlags['featureFlags'][0] | null,
         form,
     );
 

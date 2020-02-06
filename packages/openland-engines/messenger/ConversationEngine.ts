@@ -1,5 +1,4 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { RoomReadMutation, RoomWithoutMembersQuery, ChatInitQuery, ChatInitFromUnreadQuery, MessagesBatchQuery } from 'openland-api';
 import { MessageReactionType } from 'openland-api/Types';
 import { backoff, delay } from 'openland-y-utils/timer';
 import {
@@ -121,7 +120,7 @@ type RecursivePartial<T> = {
     [P in keyof T]?: RecursivePartial<T[P]>;
 };
 
-export function convertPartialMessage(src: RecursivePartial<FullMessage> & { id: string } , chatId: string, engine: MessengerEngine): DataSourceMessageItem {
+export function convertPartialMessage(src: RecursivePartial<FullMessage> & { id: string }, chatId: string, engine: MessengerEngine): DataSourceMessageItem {
     const genericGeneralMessage: FullMessage = {
         __typename: "GeneralMessage",
         id: 'will_be_overriten',
@@ -321,12 +320,12 @@ export class ConversationEngine implements MessageSendHandler {
             try {
                 let history;
                 if (this.loadFrom === 'unread') {
-                    history = await this.engine.client.client.query(ChatInitFromUnreadQuery, { chatId: this.conversationId, first: this.engine.options.conversationBatchSize }, { fetchPolicy: 'network-only' });
+                    history = await this.engine.client.queryChatInitFromUnread({ chatId: this.conversationId, first: this.engine.options.conversationBatchSize }, { fetchPolicy: 'network-only' });
                     history = { ...history, messages: history.gammaMessages!.messages };
                     this.historyFullyLoaded = !history.gammaMessages!.haveMoreBackward;
                     this.forwardFullyLoaded = !history.gammaMessages!.haveMoreForward;
                 } else {
-                    history = await this.engine.client.client.query(ChatInitQuery, { chatId: this.conversationId, first: this.engine.options.conversationBatchSize }, { fetchPolicy: 'network-only' });
+                    history = await this.engine.client.queryChatInit({ chatId: this.conversationId, first: this.engine.options.conversationBatchSize }, { fetchPolicy: 'network-only' });
                     this.historyFullyLoaded = this.historyFullyLoaded || history.messages.length < this.engine.options.conversationBatchSize;
                     this.forwardFullyLoaded = true;
                 }
@@ -498,7 +497,7 @@ export class ConversationEngine implements MessageSendHandler {
         };
         this.onMessagesUpdated();
         let gen = this.gen;
-        let loaded = await backoff(() => this.engine.client.client.query(MessagesBatchQuery, { chatId: this.conversationId, first: this.engine.options.conversationBatchSize, ...direction === 'backward' ? { before: id } : { after: id } }));
+        let loaded = await backoff(() => this.engine.client.queryMessagesBatch({ chatId: this.conversationId, first: this.engine.options.conversationBatchSize, ...direction === 'backward' ? { before: id } : { after: id } }));
         if (gen !== this.gen) {
             return;
         }
@@ -835,17 +834,17 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     handleMuteUpdated = async (mute: boolean) => {
-        await this.engine.client.client.updateQuery((data) => {
+        await this.engine.client.updateQueryRoomWithoutMembers((data) => {
             if (data.room) {
                 data.room.settings.mute = mute;
                 return data;
             }
             return null;
-        }, RoomWithoutMembersQuery, { id: this.conversationId });
+        }, { id: this.conversationId });
     }
 
     handlePeerUpdated = async (peer: DialogUpdateFragment_DialogPeerUpdated_peer) => {
-        await this.engine.client.client.updateQuery((data) => {
+        await this.engine.client.updateQueryRoomWithoutMembers((data) => {
             if (data.room) {
                 if (peer.__typename === 'SharedRoom' && data.room.__typename === 'SharedRoom') {
                     data.room.title = peer.title;
@@ -860,17 +859,17 @@ export class ConversationEngine implements MessageSendHandler {
             }
 
             return null;
-        }, RoomWithoutMembersQuery, { id: this.conversationId });
+        }, { id: this.conversationId });
     }
 
     handlePhotoUpdated = async (photo: string) => {
-        await this.engine.client.client.updateQuery((data) => {
+        await this.engine.client.updateQueryRoomWithoutMembers((data) => {
             if (data.room && data.room.__typename === 'SharedRoom') {
                 data.room.photo = photo;
                 return data;
             }
             return null;
-        }, RoomWithoutMembersQuery, { id: this.conversationId });
+        }, { id: this.conversationId });
     }
 
     private onMessagesUpdated = () => {
@@ -901,7 +900,7 @@ export class ConversationEngine implements MessageSendHandler {
         }
         if (id !== null && id !== this.lastTopMessageRead) {
             this.lastTopMessageRead = id;
-            this.engine.client.client.mutate(RoomReadMutation, {
+            this.engine.client.mutateRoomRead({
                 id: this.conversationId,
                 mid: id
             });

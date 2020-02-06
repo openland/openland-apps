@@ -84,54 +84,32 @@ export class NativeSpaceXClient extends BridgedClient {
         NativeGraphQL.closeClient(this.key);
     }
 
-    protected postQuery(id: string, query: any, vars: any, params?: OperationParameters) {
-        // log.log('postQuery');
-        let name = query.document.definitions[0].name.value;
-        NativeGraphQL.query(this.key, id, name, vars ? vars : {}, params ? params : {});
+    protected postQuery(id: string, query: string, vars: any, params?: OperationParameters) {
+        NativeGraphQL.query(this.key, id, query, vars ? vars : {}, params ? params : {});
     }
-    protected postQueryWatch(id: string, query: any, vars: any, params?: OperationParameters) {
-        // log.log('postQueryWatch');
-        let name = query.document.definitions[0].name.value;
-        NativeGraphQL.watch(this.key, id, name, vars ? vars : {}, params ? params : {});
+    protected postQueryWatch(id: string, query: string, vars: any, params?: OperationParameters) {
+        NativeGraphQL.watch(this.key, id, query, vars ? vars : {}, params ? params : {});
     }
     protected postQueryWatchEnd(id: string) {
-        // log.log('postQueryWatchEnd');
         NativeGraphQL.watchEnd(this.key, id);
     }
 
-    protected postMutation(id: string, query: any, vars: any) {
-        // log.log('postMutation');
-        let name = query.document.definitions[0].name.value;
-        NativeGraphQL.mutate(this.key, id, name, vars ? vars : {});
+    protected postMutation(id: string, query: string, vars: any) {
+        NativeGraphQL.mutate(this.key, id, query, vars ? vars : {});
     }
 
-    protected postSubscribe(id: string, query: any, vars: any) {
-        // log.log('postSubscribe');
-        let name = query.document.definitions[0].name.value;
-        NativeGraphQL.subscribe(this.key, id, name, vars ? vars : {});
-    }
-    protected postSubscribeUpdate(id: string, vars: any) {
-        // Not supported
+    protected postSubscribe(id: string, query: string, vars: any) {
+        NativeGraphQL.subscribe(this.key, id, query, vars ? vars : {});
     }
     protected postUnsubscribe(id: string) {
         // log.log('postUnsubscribe');
         NativeGraphQL.unsubscribe(this.key, id);
     }
 
-    protected postReadQuery(id: string, query: any, vars: any) {
-        // log.log('postReadQuery');
-        let name = query.document.definitions[0].name.value;
-        NativeGraphQL.read(this.key, id, name, vars ? vars : {});
+    protected postReadQuery(id: string, query: string, vars: any) {
+        NativeGraphQL.read(this.key, id, query, vars ? vars : {});
     }
-    protected postWriteQuery(id: string, data: any, query: any, vars: any) {
-        // log.log('postWriteQuery');
-        let name = query.document.definitions[0].name.value;
-        NativeGraphQL.write(this.key, id, data, name, vars ? vars : {});
-    }
-
-    protected postWriteFragment(id: string, data: any, fragment: any) {
-        // log.log('postWriteFragment');
-        let name = fragment.document.definitions[0].name.value;
-        NativeGraphQL.writeFragment(this.key, id, data, name);
+    protected postWriteQuery(id: string, data: any, query: string, vars: any) {
+        NativeGraphQL.write(this.key, id, data, query, vars ? vars : {});
     }
 }

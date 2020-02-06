@@ -12,7 +12,6 @@ export type WorkerRequest = {
         { type: 'watch-destroy' } |
 
         { type: 'subscribe', body: any, variables: any } |
-        { type: 'subscribe-update', variables: any } |
         { type: 'subscribe-destroy' } |
 
         { type: 'read', body: any, variables: any } |

@@ -6,7 +6,7 @@ import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { NotificationPreview, UpdateSettingsInput } from 'openland-api/Types';
+import { NotificationPreview, UpdateSettingsInput } from 'openland-api/spacex.types';
 import { ZCheckmarkGroup } from 'openland-mobile/components/ZCheckmarkGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { backoff, debounce } from 'openland-y-utils/timer';

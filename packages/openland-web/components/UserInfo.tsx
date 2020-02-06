@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Types from 'openland-api/Types';
+import * as Types from 'openland-api/spacex.types';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 

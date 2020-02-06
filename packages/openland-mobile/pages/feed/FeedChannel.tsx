@@ -7,7 +7,7 @@ import { EntityHeader } from '../main/components/EntityHeader';
 import { plural } from 'openland-y-utils/plural';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
-import { FeedChannelSubscriberRole } from 'openland-api/Types';
+import { FeedChannelSubscriberRole } from 'openland-api/spacex.types';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { DataSourceFeedItem } from 'openland-engines/feed/types';
 import { FeedPostView } from 'openland-mobile/feed/FeedPostView';

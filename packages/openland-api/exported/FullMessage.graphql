@@ -182,20 +182,6 @@ fragment FullMessage on ModernMessage {
       __typename
       ...UserBadge
     }
-    source {
-      __typename
-      ... on MessageSourceChat {
-        chat {
-          __typename
-          ... on PrivateRoom {
-            id
-          }
-          ... on SharedRoom {
-            id
-          }
-        }
-      }
-    }
     sticker {
       __typename
       ...StickerFragment

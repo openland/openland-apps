@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as QuillType from 'quill';
 import { css, cx } from 'linaria';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
-import { StickerFragment, UserForMention, RoomSharedNano } from 'openland-api/Types';
+import { StickerFragment, UserForMention, RoomSharedNano } from 'openland-api/spacex.types';
 import { emojiLink } from 'openland-y-utils/emojiLink';
 import { EmojiPicker } from './emoji/EmojiPicker';
 import { ShortcutButton } from './shortcuts/ShortcutsButton';

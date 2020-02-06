@@ -9,9 +9,7 @@ import Document, {
 import { renderStaticOptimized } from 'glamor/server';
 import { buildConfig } from '../config';
 import { saveConfig } from 'openland-x-config';
-import { buildClient } from 'openland-y-graphql/apolloClient';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
-import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient';
+import { apolloClient } from 'openland-x-graphql/apolloClient';
 
 // const perfMeasure = require('../perf/measure.json');
 
@@ -20,24 +18,7 @@ import { DirectApollolClient } from 'openland-graphql/direct/DirectApolloClient'
 // Load Configuration
 let config = buildConfig();
 
-const buildSimpleHttpOpenlandClient = () => {
-    return new OpenlandClient(
-        new DirectApollolClient(
-            buildClient({
-                endpoint: process.env.API_ENDPOINT
-                    ? process.env.API_ENDPOINT + '/api'
-                    : 'http://localhost:9000/api',
-                wsEndpoint: undefined,
-                initialState: {},
-                token: undefined,
-                ssrMode: true,
-                fetch: require('node-fetch'),
-            }),
-        ),
-    );
-};
-
-const openland = buildSimpleHttpOpenlandClient();
+const openland = apolloClient();
 
 type MetaTagsInfoT = {
     title?: string;

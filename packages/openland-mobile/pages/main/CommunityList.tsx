@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Types from '../../../openland-api/Types';
+import * as Types from '../../../openland-api/spacex.types';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
@@ -10,7 +10,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { Text } from 'react-native';
 
 const CommunityListComponent = React.memo<PageProps>((props) => {
-    let initial = props.router.params.initial as Types.ExploreCommunity_items_edges_node[];
+    let initial = props.router.params.initial as Types.ExploreCommunity['items']['edges'][0]['node'][];
 
     let [communities, setCommunities] = React.useState(initial);
     const [loading, setLoading] = React.useState(false);

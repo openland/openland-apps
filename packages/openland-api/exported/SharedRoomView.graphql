@@ -3,6 +3,5 @@ fragment SharedRoomView on SharedRoom {
   id
   membersCount
   photo
-  photo
   title
 }

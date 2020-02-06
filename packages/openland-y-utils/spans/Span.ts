@@ -1,6 +1,5 @@
 import {
-    FullMessage_GeneralMessage_spans,
-    FullMessage_ServiceMessage_spans,
+    SpanFragment,
     UserForMention,
     MessageSpanType,
     RoomNano,
@@ -137,7 +136,7 @@ export interface SpanOrganization extends SpanAbs {
     organization: OrganizationShort;
 }
 
-export type ServerSpan = FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans;
+export type ServerSpan = SpanFragment;
 
 export type SpanSymbolToTypeT = {
     [key: string]: { type: MessageSpanType; master?: boolean; lined?: boolean };

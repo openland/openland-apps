@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
-import { MutationFunc } from 'react-apollo';
 import {
     RoomMemberRole,
     RoomAddMembers,
@@ -26,6 +25,8 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { OwnerLinkComponent } from 'openland-web/fragments/invite/OwnerLinkComponent';
 import { ExplorePeople } from 'openland-web/fragments/create/ExplorePeople';
 import { SearchBox } from 'openland-web/fragments/create/SearchBox';
+
+type MutationFunc<R, V> = (args: { variables: V }) => Promise<R>;
 
 type RoomAddMembersType = MutationFunc<RoomAddMembers, Partial<RoomAddMembersVariables>>;
 type OrganizationAddMembersType = MutationFunc<
@@ -176,29 +177,29 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                     onClick={
                         !!options.length
                             ? async () => {
-                                  if (props.isGroup) {
-                                      await (props.addMembers as RoomAddMembersType)({
-                                          variables: {
-                                              roomId: props.id,
-                                              invites: options.map(i => ({
-                                                  userId: i.value,
-                                                  role: RoomMemberRole.MEMBER,
-                                              })),
-                                          },
-                                      });
-                                  } else if (props.isOrganization) {
-                                      await (props.addMembers as OrganizationAddMembersType)({
-                                          variables: {
-                                              organizationId: props.id,
-                                              userIds: options.map(i => i.value),
-                                          },
-                                      });
-                                  }
-                                  setSelectedUsers(null);
-                                  if (props.hide) {
-                                      props.hide();
-                                  }
-                              }
+                                if (props.isGroup) {
+                                    await (props.addMembers as RoomAddMembersType)({
+                                        variables: {
+                                            roomId: props.id,
+                                            invites: options.map(i => ({
+                                                userId: i.value,
+                                                role: RoomMemberRole.MEMBER,
+                                            })),
+                                        },
+                                    });
+                                } else if (props.isOrganization) {
+                                    await (props.addMembers as OrganizationAddMembersType)({
+                                        variables: {
+                                            organizationId: props.id,
+                                            userIds: options.map(i => i.value),
+                                        },
+                                    });
+                                }
+                                setSelectedUsers(null);
+                                if (props.hide) {
+                                    props.hide();
+                                }
+                            }
                             : undefined
                     }
                 />
@@ -283,7 +284,7 @@ export const AddMembersModal = React.memo(
         return (
             <AddMemberModalInner
                 hide={hide}
-                addMembers={isOrganization ? addMembersToOrganization : addMembersToRoom}
+                addMembers={(isOrganization ? addMembersToOrganization : addMembersToRoom) as any}
                 id={id}
                 members={
                     isOrganization

@@ -1,7 +1,5 @@
 import {
-    Room_room_SharedRoom_members,
-    Room_room_SharedRoom,
-    UserShort,
+    UserShort, Room_room_SharedRoom_members, Room_room_SharedRoom
 } from 'openland-api/Types';
 
 const containsMember = (

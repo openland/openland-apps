@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CommentEntryFragment_comment, MessageReactionType } from 'openland-api/Types';
+import { CommentEntryFragment, MessageReactionType } from 'openland-api/spacex.types';
 import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, LayoutChangeEvent, TouchableOpacity, ScrollView } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles, HighlightAlpha, CompensationAlpha } from 'openland-mobile/styles/AppStyles';
@@ -38,15 +38,15 @@ const styles = StyleSheet.create({
 });
 
 export interface CommentViewProps {
-    comment: CommentEntryFragment_comment;
+    comment: CommentEntryFragment['comment'];
     depth: number;
     deleted: boolean;
     highlighted: boolean;
     theme: ThemeGlobal;
     scrollRef?: React.RefObject<ScrollView>;
 
-    onReplyPress: (comment: CommentEntryFragment_comment) => void;
-    onLongPress: (comment: CommentEntryFragment_comment) => void;
+    onReplyPress: (comment: CommentEntryFragment['comment']) => void;
+    onLongPress: (comment: CommentEntryFragment['comment']) => void;
 }
 
 export const CommentView = React.memo<CommentViewProps>((props) => {

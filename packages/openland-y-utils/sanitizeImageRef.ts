@@ -1,5 +1,5 @@
 import { UImageCropT } from 'openland-web/components/unicorn/UFileUpload';
-import { ImageRefInput } from 'openland-api/Types';
+import { ImageRefInput } from 'openland-api/spacex.types';
 
 export function sanitizeImageRef(
     src: { uuid: string; crop?: UImageCropT | null } | null | undefined,

@@ -4,12 +4,12 @@ import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { Settings_settings, EmailFrequency } from 'openland-api/Types';
+import { EmailFrequency, Settings } from 'openland-api/spacex.types';
 import { ZCheckmarkGroup } from 'openland-mobile/components/ZCheckmarkGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { backoff, debounce } from 'openland-y-utils/timer';
 
-const sendMutate = debounce(async (state: Settings_settings) => {
+const sendMutate = debounce(async (state: Settings['settings']) => {
     const input = {
         emailFrequency: state.emailFrequency,
     };
@@ -21,7 +21,7 @@ const sendMutate = debounce(async (state: Settings_settings) => {
 
 const SettingsEmailContent = XMemo<PageProps>(props => {
     const settingsData = getClient().useSettings({ fetchPolicy: 'network-only' }).settings;
-    const [settings, setSettings] = React.useState<Settings_settings>(settingsData);
+    const [settings, setSettings] = React.useState<Settings['settings']>(settingsData);
 
     const handleSave: <T>(field: string, value: T) => void = (field, value) => {
         setSettings((prevState) => ({ ...prevState, [field]: value }));

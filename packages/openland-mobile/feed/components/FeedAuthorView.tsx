@@ -3,7 +3,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles, SecondarinessAlpha } from 'openland-mobile/styles/AppStyles';
 import { View, Text, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { FeedPostAuthorFragment, FeedPostSourceFragment } from 'openland-api/Types';
+import { FeedPostAuthorFragment, FeedPostSourceFragment } from 'openland-api/spacex.types';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 
 const styles = StyleSheet.create({

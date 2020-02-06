@@ -3,7 +3,7 @@ import { XView } from 'react-mental';
 import { XViewRouterContext, XViewRouteContext, XViewRoute } from 'react-mental';
 import { css } from 'linaria';
 import { DialogSearchInput } from './DialogSearchInput';
-import { GlobalSearch_items } from 'openland-api/Types';
+import { GlobalSearch } from 'openland-api/spacex.types';
 import { XListView } from 'openland-web/components/XListView';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DialogView } from './DialogView';
@@ -29,7 +29,7 @@ export const dialogSearchWrapperClassName = css`
 export interface DialogListViewProps {
     onDialogClick?: (id: string) => void;
     onSearchItemPress?: (a: string) => void;
-    onSearchItemSelected: (a: GlobalSearch_items | null) => void;
+    onSearchItemSelected: (a: GlobalSearch['items'][0] | null) => void;
 }
 
 let ds: DataSource<DialogListWebItem> | undefined;
@@ -142,7 +142,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
         { keys: ['Control', 's'], callback: handleCtrlS },
     ]);
 
-    const onPick = React.useCallback((item: GlobalSearch_items) => {
+    const onPick = React.useCallback((item: GlobalSearch['items'][0]) => {
         setQuery('');
         if (item.__typename === 'Organization') {
             router!.navigate(`/${item.shortname || item.id}`);
@@ -186,3 +186,27 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
 });
 
 DialogListView.displayName = 'DialogListView';
+
+type A1 = { a: 1 } | { a: 2, b: 1 };
+type B1 = { a: 2 } | { a: 1, c: 1 };
+type C = A1 & B1;
+const v: C = { a: 1, c: 1} as any;
+if (v.a === 1) {
+    console.log(v.c);
+    // v.c <-- error
+}
+
+type Inline<E, V> = { __typename: E; } | V;
+type CatSmall = Inline<'Dog', { __typename: 'Cat', age: number, name: string }>;
+type DocSmall = Inline<'Cat', { __typename: 'Dog', height: number }>;
+type CatOwner = Inline<'Dog', { __typename: 'Cat', owner: { id: string, name: string } }>;
+type DogOwner = Inline<'Cat', { __typename: 'Dog', weight: number }>;
+type Cat = (
+    & { __typename: 'Dog' | 'Cat' }
+    & CatSmall & DocSmall & CatOwner & DogOwner
+);
+
+const C: Cat = { __typename: 'Dog', height: 10, weight: 10 } as any;
+// if (C.__typename === 'Dog') {
+//     C.
+// }

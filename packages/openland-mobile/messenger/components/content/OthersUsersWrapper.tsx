@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ASText } from 'react-native-async-view/ASText';
-import { UserForMention } from 'openland-api/Types';
+import { UserForMention } from 'openland-api/spacex.types';
 import { Text, View } from 'react-native';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { ZUserView } from 'openland-mobile/components/ZUserView';

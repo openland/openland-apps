@@ -36,7 +36,6 @@ export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> 
     private start() {
         (async () => {
             while (true) {
-
                 let update = await this.subscription.get();
                 this.handleUpdate(update);
             }

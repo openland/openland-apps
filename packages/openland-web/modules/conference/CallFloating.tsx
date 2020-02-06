@@ -8,7 +8,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { css } from 'linaria';
 import { debounce } from 'openland-y-utils/timer';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
-import { Conference_conference_peers } from 'openland-api/Types';
+import { Conference } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { MediaStreamManager } from 'openland-engines/media/MediaStreamManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
@@ -174,7 +174,7 @@ const useJsDrag = (
 
 const Avatar = React.memo(
     (props: {
-        peers: Conference_conference_peers[];
+        peers: Conference['conference']['peers'];
         mediaSessionManager?: MediaSessionManager;
         fallback: { id: string; title: string; picture?: string | null };
     }) => {

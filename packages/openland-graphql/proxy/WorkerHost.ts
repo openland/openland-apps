@@ -85,8 +85,6 @@ export class WorkerHost {
                     this.postResult(id, v);
                 }
             })();
-        } else if (msg.type === 'subscribe-update') {
-            this.subscriptions.get(msg.id)!!.updateVariables(msg.variables);
         } else if (msg.type === 'subscribe-destroy') {
             this.subscriptions.get(msg.id)!!.destroy();
             this.subscriptions.delete(msg.id);

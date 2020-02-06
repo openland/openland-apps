@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MyCards_myCards } from 'openland-api/Types';
+import { MyCards } from 'openland-api/spacex.types';
 import { css, cx } from 'linaria';
 import { TextBody, TextStyles } from 'openland-web/utils/TextStyles';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
@@ -40,7 +40,7 @@ const brandLogo = css`
 `;
 
 interface CardViewProps {
-    item: MyCards_myCards;
+    item: MyCards['myCards'][0];
 }
 
 const CardMenu = React.memo((props: CardViewProps & { ctx: UPopperController }) => {

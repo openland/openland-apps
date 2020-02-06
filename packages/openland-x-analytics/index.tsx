@@ -1,6 +1,6 @@
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { Track, TrackPlatform } from 'openland-engines/Tracking';
-import { EventPlatform } from 'openland-api/Types';
+import { EventPlatform } from 'openland-api/spacex.types';
 import { isMobile } from 'openland-web/hooks/useIsMobile';
 import { detectOS } from 'openland-x-utils/detectOS';
 import { CrashReporting } from 'openland-engines/CrashReporting';

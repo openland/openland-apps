@@ -8,7 +8,7 @@ import { XSwitcher } from 'openland-x/XSwitcher';
 import { XView } from 'react-mental';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { useClient } from 'openland-web/utils/useClient';
-import { SuperAccounts_superAccounts } from 'openland-api/Types';
+import { SuperAccounts } from 'openland-api/spacex.types';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -100,7 +100,7 @@ const SearchInput = (props: { onClick: (data: string) => void }) => {
 };
 
 interface FilteredOptionsProps {
-    orgsCurrentTab: SuperAccounts_superAccounts[];
+    orgsCurrentTab: SuperAccounts['superAccounts'];
     searchValue: string;
 }
 
@@ -129,7 +129,7 @@ const FilteredOptions = (props: FilteredOptionsProps) => {
         };
     }, []);
 
-    let renderItem = (item: SuperAccounts_superAccounts & { key: string }) => {
+    let renderItem = (item: SuperAccounts['superAccounts'][0] & { key: string }) => {
         return (
             <XView maxWidth={600} flexDirection="row">
                 <XView flexGrow={1}>

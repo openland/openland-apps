@@ -5,7 +5,7 @@ import { ASText } from 'react-native-async-view/ASText';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { ASImage } from 'react-native-async-view/ASImage';
-import { MessageReactionType } from 'openland-api/Types';
+import { MessageReactionType } from 'openland-api/spacex.types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
 

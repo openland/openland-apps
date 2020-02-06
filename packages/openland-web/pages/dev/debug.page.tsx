@@ -10,7 +10,7 @@ import { XView } from 'react-mental';
 import { XSelect } from 'openland-x/XSelect';
 import { useClient } from '../../utils/useClient';
 import { GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
-import * as Types from 'openland-api/Types';
+import * as Types from 'openland-api/spacex.types';
 import { foreverBreakable } from 'openland-engines/utils/forever';
 
 class DebugEventsInner extends React.Component<

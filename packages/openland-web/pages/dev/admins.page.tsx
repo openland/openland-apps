@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { UserSelect } from '../../components/UserSelect';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { useClient } from 'openland-web/utils/useClient';
-import { SuperAdminRole } from 'openland-api/Types';
+import { SuperAdminRole } from 'openland-api/spacex.types';
 import { XView } from 'react-mental';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -43,7 +42,7 @@ export const AddSuperAdminForm = ({ hide }: { hide: () => void }) => {
         <XView borderRadius={8}>
             <XModalContent>
                 <XVertical flexGrow={1} separator={8}>
-                    <UserSelect value={userField.input.value} onChange={userField.input.onChange} />
+                    {/* <UserSelect value={userField.input.value} onChange={userField.input.onChange} /> */}
                     <SelectWithDropdown
                         {...roleField.input}
                         size="large"
@@ -108,7 +107,7 @@ const RemoveSuperAdminForm = ({ hide }: { hide: () => void }) => {
         <XView borderRadius={8}>
             <XModalContent>
                 <XVertical flexGrow={1} separator={8}>
-                    <UserSelect value={userField.input.value} onChange={userField.input.onChange} />
+                    {/* <UserSelect value={userField.input.value} onChange={userField.input.onChange} /> */}
                 </XVertical>
             </XModalContent>
             <XModalFooter>

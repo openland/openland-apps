@@ -9,7 +9,6 @@ import { DataSourceFeedItem } from './types';
 import { convertItems, convertPost } from './convert';
 import UUID from 'uuid/v4';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
-import { InitFeedQuery, FeedLoadMoreQuery } from 'openland-api';
 
 const log = createLogger('Engine-Feed');
 
@@ -44,7 +43,7 @@ export class FeedEngine {
 
         const initData = await backoff(async () => {
             try {
-                return (await this.engine.client.client.query(InitFeedQuery, { first: this.engine.options.feedBatchSize }, { fetchPolicy: 'network-only' }));
+                return (await this.engine.client.queryInitFeed({ first: this.engine.options.feedBatchSize }, { fetchPolicy: 'network-only' }));
             } catch (e) {
                 log.warn(e);
                 throw e;
@@ -75,7 +74,7 @@ export class FeedEngine {
 
         this.loading = true;
 
-        const loaded = (await backoff(() => this.engine.client.client.query(FeedLoadMoreQuery, { first: this.engine.options.feedBatchSize, after: this.lastCursor }, { fetchPolicy: 'network-only' }))).feed;
+        const loaded = (await backoff(() => this.engine.client.queryFeedLoadMore({ first: this.engine.options.feedBatchSize, after: this.lastCursor }, { fetchPolicy: 'network-only' }))).feed;
 
         this.lastCursor = loaded.cursor;
         this.fullyLoaded = typeof this.lastCursor !== 'string';

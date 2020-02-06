@@ -78,3 +78,15 @@ export function delayBreakable(ms: number) {
     });
     return { promise, resolver };
 }
+
+type Inline<T extends string, V extends { __typename: string }> = (V extends { __typename: T } ? V : never) | {};
+
+type Dialog = (
+    & { __typename: 'Dialog' | 'Smialog' }
+    & Inline<'Dialog', {
+        __typename: 'Dialog'
+        hey: string;
+    }>
+);
+
+const d: Dialog = { __typename: 'Dialog' };

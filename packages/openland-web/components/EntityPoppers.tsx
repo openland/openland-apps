@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UserForMention } from 'openland-api/Types';
+import { UserForMention } from 'openland-api/spacex.types';
 import { UserPopperContent, EntityPopperContent } from './EntityPopperContent';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 
