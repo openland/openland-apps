@@ -39,6 +39,7 @@ const userName = css`
     color: var(--foregroundPrimary);
     margin-top: 32px;
     margin-bottom: 8px;
+    text-align: center;
 `;
 
 const userSubtitle = css`
@@ -66,8 +67,7 @@ export const AuthProfileFragment = React.memo((props: { user: GetUser_user_User 
                     />
                     <div className={cx(userName, TextTitle1)}>{emoji(props.user.name)}</div>
                     <div className={cx(userSubtitle, TextBody)}>
-                        {props.user.firstName} uses Openland. Want to reach them? Join Openland and
-                        write a message
+    {props.user.firstName} uses Openland. Want to reach them?<br/>Join Openland and write a message
                     </div>
                     <UButton
                         text={`Message ${props.user.firstName}`}
