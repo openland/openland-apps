@@ -122,7 +122,7 @@ export function buildClient(config: { endpoint: string, wsEndpoint?: string, tok
             uri: config.endpoint,
             headers: headers,
             fetch: config.fetch
-        });
+        }) as any;
     } else {
 
         // 
@@ -176,7 +176,7 @@ export function buildClient(config: { endpoint: string, wsEndpoint?: string, tok
         //     wsLink,
         //     httpLink,
         // );
-        link = wsLink;
+        link = wsLink as any;
     }
 
     //
@@ -184,7 +184,7 @@ export function buildClient(config: { endpoint: string, wsEndpoint?: string, tok
     //
 
     let client = new ApolloClient({
-        link: link,
+        link: link as any,
         // cache: new LogCache(cache, { logger: msg => console.log(msg) }),
         cache,
         ssrMode: config.ssrMode,

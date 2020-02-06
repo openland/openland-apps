@@ -13,7 +13,7 @@ export const ReloadFromBottomButton = (props: { conversation: ConversationEngine
     const theme = React.useContext(ThemeContext);
     const [animated] = React.useState(new SAnimatedShadowView(UUID(), { translateY: 68 }));
     const [show, setShow] = React.useState(!props.conversation.dataSource.isCompletedForward());
-    const [loading, setLoading] = React.useState();
+    const [loading, setLoading] = React.useState<boolean>(false);
     React.useEffect(() => {
         setShow(!props.conversation.dataSource.isCompletedForward());
         let sub = props.conversation.dataSource.dumbWatch(() => {

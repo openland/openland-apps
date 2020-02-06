@@ -1,4 +1,3 @@
-import { TabHistoryRecord } from './history';
 export interface TabHistoryRecord {
     id: string;
     tab: number;

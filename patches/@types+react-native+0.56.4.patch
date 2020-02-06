@@ -1,5 +1,5 @@
 diff --git a/node_modules/@types/react-native/globals.d.ts b/node_modules/@types/react-native/globals.d.ts
-index 2110ab7..42f346a 100644
+index 2110ab7..e22e232 100644
 --- a/node_modules/@types/react-native/globals.d.ts
 +++ b/node_modules/@types/react-native/globals.d.ts
 @@ -1,121 +1,121 @@
@@ -29,11 +29,37 @@ index 2110ab7..42f346a 100644
 -//
 -// Fetch API
 -//
--
--declare interface GlobalFetch {
--  fetch(input: RequestInfo, init?: RequestInit): Promise<Response>;
--}
--
++// /*
++//  * This file is necessary to declare global functions that might also be included by `--lib dom`.
++//  * Due to a TypeScript bug, these cannot be placed inside a `declare global` block in index.d.ts.
++//  * https://github.com/Microsoft/TypeScript/issues/16430
++//  */
++
++// //
++// // Timer Functions
++// //
++// declare function clearInterval(handle: number): void;
++// declare function clearTimeout(handle: number): void;
++// declare function setInterval(handler: (...args: any[]) => void, timeout: number): number;
++// declare function setInterval(handler: any, timeout?: any, ...args: any[]): number;
++// declare function setTimeout(handler: (...args: any[]) => void, timeout: number): number;
++// declare function setTimeout(handler: any, timeout?: any, ...args: any[]): number;
++// declare function clearImmediate(handle: number): void;
++// declare function setImmediate(handler: (...args: any[]) => void): number;
++
++// declare function cancelAnimationFrame(handle: number): void;
++// declare function requestAnimationFrame(callback: (time: number) => void): number;
++
++// declare function fetchBundle(bundleId: number, callback: (error?: Error | null) => void): void;
++
++// //
++// // Fetch API
++// //
+ 
+ declare interface GlobalFetch {
+   fetch(input: RequestInfo, init?: RequestInit): Promise<Response>;
+ }
+ 
 -declare function fetch(input: RequestInfo, init?: RequestInit): Promise<Response>;
 -
 -interface Blob {}
@@ -124,37 +150,6 @@ index 2110ab7..42f346a 100644
 -type RequestCredentials_ = "omit" | "same-origin" | "include";
 -type RequestMode_ = "navigate" | "same-origin" | "no-cors" | "cors";
 -type ResponseType_ = "basic" | "cors" | "default" | "error" | "opaque" | "opaqueredirect";
-+// /*
-+//  * This file is necessary to declare global functions that might also be included by `--lib dom`.
-+//  * Due to a TypeScript bug, these cannot be placed inside a `declare global` block in index.d.ts.
-+//  * https://github.com/Microsoft/TypeScript/issues/16430
-+//  */
-+
-+// //
-+// // Timer Functions
-+// //
-+// declare function clearInterval(handle: number): void;
-+// declare function clearTimeout(handle: number): void;
-+// declare function setInterval(handler: (...args: any[]) => void, timeout: number): number;
-+// declare function setInterval(handler: any, timeout?: any, ...args: any[]): number;
-+// declare function setTimeout(handler: (...args: any[]) => void, timeout: number): number;
-+// declare function setTimeout(handler: any, timeout?: any, ...args: any[]): number;
-+// declare function clearImmediate(handle: number): void;
-+// declare function setImmediate(handler: (...args: any[]) => void): number;
-+
-+// declare function cancelAnimationFrame(handle: number): void;
-+// declare function requestAnimationFrame(callback: (time: number) => void): number;
-+
-+// declare function fetchBundle(bundleId: number, callback: (error?: Error | null) => void): void;
-+
-+// //
-+// // Fetch API
-+// //
-+
-+// declare interface GlobalFetch {
-+//   fetch(input: RequestInfo, init?: RequestInit): Promise<Response>;
-+// }
-+
 +// declare function fetch(input: RequestInfo, init?: RequestInit): Promise<Response>;
 +
 +// interface Blob {}

@@ -69,7 +69,7 @@ const iconRotation = css`
 `;
 export const ReloadFromEndButton = React.memo((props: { conversation: ConversationEngine, showInput: boolean }) => {
     const [show, setShow] = React.useState<boolean | null>(!props.conversation.dataSource.isCompletedForward());
-    const [loading, setLoading] = React.useState();
+    const [loading, setLoading] = React.useState<boolean>(false);
     React.useEffect(() => {
         setShow(!props.conversation.dataSource.isCompletedForward());
         let sub = props.conversation.dataSource.dumbWatch(async () => {

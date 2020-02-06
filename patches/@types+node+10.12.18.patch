@@ -1,0 +1,12 @@
+diff --git a/node_modules/@types/node/index.d.ts b/node_modules/@types/node/index.d.ts
+index c63b6c8..2750c41 100644
+--- a/node_modules/@types/node/index.d.ts
++++ b/node_modules/@types/node/index.d.ts
+@@ -197,7 +197,6 @@ interface Iterable<T> { }
+ interface Iterator<T> {
+     next(value?: any): IteratorResult<T>;
+ }
+-interface IteratorResult<T> { }
+ interface AsyncIterableIterator<T> {}
+ interface SymbolConstructor {
+     readonly observable: symbol;

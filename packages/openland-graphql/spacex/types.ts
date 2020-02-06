@@ -1,4 +1,3 @@
-import { OperationDefinition } from './types';
 // Output Type
 
 export type OutputTypeNotNull = {
