@@ -3,10 +3,6 @@ import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import {
     RoomMemberRole,
-    RoomAddMembers,
-    RoomAddMembersVariables,
-    OrganizationAddMember,
-    OrganizationAddMemberVariables,
     OrganizationMembersShort,
     RoomMembersShort,
     OrganizationMembers_organization_members,
