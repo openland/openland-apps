@@ -94,7 +94,17 @@ export class TypingsWatcher {
 
         let isPrivate = type === 'PrivateConversation';
 
-        let usersTyping: TypingsUser[] = Object.keys(t).map(userId => (t![userId])).filter(u => !!(u)).map(u => ({ userName: isPrivate ? u!.userName.split(' ')[0] : u!.userName, userPic: u!.userPic, userId: u!.userId }));
+        let usersTyping: TypingsUser[] = Object.keys(t).map(
+            userId => (t![userId])
+        ).filter(
+            u => !!(u)
+        ).map(
+            u => ({
+                userName: isPrivate ? u!.userName.split(' ')[0] : u!.userName,
+                userPic: u!.userPic,
+                userId: u!.userId
+            })
+        );
 
         if (usersTyping.length === 0) {
             return undefined;
