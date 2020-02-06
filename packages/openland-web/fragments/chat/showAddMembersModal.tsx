@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
-import { MutationFunc } from 'react-apollo';
 import {
     RoomMemberRole,
     RoomAddMembers,
@@ -27,15 +26,9 @@ import { OwnerLinkComponent } from 'openland-web/fragments/invite/OwnerLinkCompo
 import { ExplorePeople } from 'openland-web/fragments/create/ExplorePeople';
 import { SearchBox } from 'openland-web/fragments/create/SearchBox';
 
-type RoomAddMembersType = MutationFunc<RoomAddMembers, Partial<RoomAddMembersVariables>>;
-type OrganizationAddMembersType = MutationFunc<
-    OrganizationAddMember,
-    Partial<OrganizationAddMemberVariables>
->;
-
 interface InviteModalProps extends XModalProps {
     id: string;
-    addMembers: RoomAddMembersType | OrganizationAddMembersType;
+    addMembers: any;
     members: {
         user: {
             id: string;
@@ -177,7 +170,7 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                         !!options.length
                             ? async () => {
                                   if (props.isGroup) {
-                                      await (props.addMembers as RoomAddMembersType)({
+                                      await (props.addMembers as any)({
                                           variables: {
                                               roomId: props.id,
                                               invites: options.map(i => ({
@@ -187,7 +180,7 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                                           },
                                       });
                                   } else if (props.isOrganization) {
-                                      await (props.addMembers as OrganizationAddMembersType)({
+                                      await (props.addMembers as any)({
                                           variables: {
                                               organizationId: props.id,
                                               userIds: options.map(i => i.value),
