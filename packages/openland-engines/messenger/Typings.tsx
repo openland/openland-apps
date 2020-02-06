@@ -7,6 +7,7 @@ export interface TypingsUser {
     userName: string;
     userPic: string | null;
     userId: string;
+    typingType: TypingType;
 }
 
 interface Conversation {
@@ -28,11 +29,13 @@ interface Timeouts {
 interface TypingsData {
     typing: string;
     users: TypingsUser[];
+    typingType: TypingType;
 }
 
 type TypingsListener = (
     typing: string | undefined,
     users: TypingsUser[] | undefined,
+    typingType: TypingType | undefined,
     conversationId: string
 ) => void;
 
@@ -67,7 +70,8 @@ export class TypingsWatcher {
                     existing[event.typings.user.id] = {
                         userName: event.typings.user.firstName,
                         userPic: event.typings.user.photo,
-                        userId: event.typings.user.id
+                        userId: event.typings.user.id,
+                        typingType: event.typings.type
                     };
                     this.typings[conversationId] = existing;
 
@@ -111,6 +115,7 @@ export class TypingsWatcher {
             u => ({
                 userPic: u!.userPic,
                 userId: u!.userId,
+                typingType: u!.typingType,
                 userName: type === 'PrivateConversation'
                     ? u!.userName.split(' ')[0] 
                     : u!.userName
@@ -121,9 +126,19 @@ export class TypingsWatcher {
             return;
         }
 
+        const typingTypes = Object.values(typings).filter(Boolean).map(typingUser => {
+            const typingType = typingUser!.typingType;
+            return typingType;
+        });
+
+        // O(n^2) fml
+        const allTypingsAreEqual = typingTypes.every(typing => typing === typingTypes[0]);
+        const resultingTypingType = allTypingsAreEqual ? typingTypes[0] : TypingType.TEXT;
+
         return {
             typing: this.pluralizeTypingUsers(usersTyping, TypingType.TEXT),
             users: usersTyping,
+            typingType: resultingTypingType
         };
     }
 
@@ -132,6 +147,7 @@ export class TypingsWatcher {
 
         let actionString;
 
+        // future legacy, to be moved to the view layer
         switch (action) {
             case TypingType.TEXT: actionString = 'typing'; break;
             case TypingType.FILE: actionString = 'sending file'; break;
@@ -162,12 +178,15 @@ export class TypingEngine {
 
     typing?: string;
     users?: TypingsUser[];
+    typingType?: TypingType;
 
     onTyping = (data: TypingsData | undefined, conversationId: string) => {
         this.typing = data !== undefined ? data.typing : undefined;
         this.users = data !== undefined ? data.users : undefined;
+        this.typingType = data !== undefined ? data.typingType : undefined;
+
         for (let listener of this.listeners) {
-            listener(this.typing, this.users, conversationId);
+            listener(this.typing, this.users, this.typingType, conversationId);
         }
     }
 

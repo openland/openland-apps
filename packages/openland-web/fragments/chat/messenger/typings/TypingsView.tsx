@@ -62,11 +62,14 @@ const UserLink = (props: TypingsUser) => {
 export const TypingsView = XMemo<TypingsViewProps>(props => {
     let messeger = React.useContext(MessengerContext);
     const [typingArr, setTypingArr] = React.useState<TypingsUser[]>([]);
+    // TODO remove any
+    const [typingType, setTypingType] = React.useState<any>('');
 
     React.useEffect(
         () => {
-            return messeger.getTypings(props.conversationId).subcribe((_, users) => {
+            return messeger.getTypings(props.conversationId).subcribe((_, users, typingType) => {
                 setTypingArr(users || []);
+                setTypingType(typingType);
             });
         },
         [props.conversationId],
@@ -95,7 +98,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                     <>
                         { dots }
                         <UserLink {...typingArr[0]} />
-                        &nbsp;is typing
+                        &nbsp;is {typingType}
                     </>
                 )}
 
@@ -105,7 +108,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                         <UserLink {...typingArr[0]} />
                         &nbsp;and&nbsp;
                         <UserLink {...typingArr[1]} />
-                        &nbsp;are typing
+                        &nbsp;are {typingType}
                     </>
                 )}
 
@@ -117,7 +120,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                         <UserLink {...typingArr[1]} />
                         &nbsp;and&nbsp;
                         <UserLink {...typingArr[2]} />
-                        &nbsp;are typing
+                        &nbsp;are {typingType}
                     </>
                 )}
 
@@ -129,7 +132,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                         <UserLink {...typingArr[1]} />
                         &nbsp;and&nbsp;
                         {typingArr.length - 2}
-                        &nbsp;more are typing
+                        &nbsp;more are {typingType}
                     </>
                 )}
             </div>
