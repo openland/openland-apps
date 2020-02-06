@@ -530,7 +530,7 @@ export const BuyPremiumChatSubscriptionMutation = gql`
             premiumSubscription {
                 id
                 state
-            }            
+            }
         }
     }
 `;

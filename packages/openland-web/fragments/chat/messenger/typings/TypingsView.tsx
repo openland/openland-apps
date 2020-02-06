@@ -11,6 +11,7 @@ import Lottie from 'react-lottie';
 import { XView } from 'react-mental';
 
 import { getJSON } from 'openland-y-utils/lottie/getJSON';
+import { TypingType } from 'openland-api/Types';
 
 const typingWrapper = css`
     display: flex;
@@ -62,11 +63,25 @@ const UserLink = (props: TypingsUser) => {
 export const TypingsView = XMemo<TypingsViewProps>(props => {
     let messeger = React.useContext(MessengerContext);
     const [typingArr, setTypingArr] = React.useState<TypingsUser[]>([]);
+    const [typingType, setTypingType] = React.useState<string>('');
 
     React.useEffect(
         () => {
-            return messeger.getTypings(props.conversationId).subcribe((_, users) => {
+            return messeger.getTypings(props.conversationId).subcribe((_, users, typingAction) => {
                 setTypingArr(users || []);
+
+                let typingActionString = 'typing';
+
+                switch (typingAction) {
+                    case TypingType.TEXT: typingActionString = 'typing'; break;
+                    case TypingType.FILE: typingActionString = 'sending file'; break;
+                    case TypingType.PHOTO: typingActionString = 'sending photo'; break;
+                    case TypingType.STICKER: typingActionString = 'picking a sticker'; break;
+                    case TypingType.VIDEO: typingActionString = 'uploading video'; break;
+                    default: typingActionString = 'typing'; break;
+                }
+
+                setTypingType(typingActionString);
             });
         },
         [props.conversationId],
@@ -95,7 +110,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                     <>
                         { dots }
                         <UserLink {...typingArr[0]} />
-                        &nbsp;is typing
+                        &nbsp;is {typingType}
                     </>
                 )}
 
@@ -105,7 +120,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                         <UserLink {...typingArr[0]} />
                         &nbsp;and&nbsp;
                         <UserLink {...typingArr[1]} />
-                        &nbsp;are typing
+                        &nbsp;are {typingType}
                     </>
                 )}
 
@@ -117,7 +132,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                         <UserLink {...typingArr[1]} />
                         &nbsp;and&nbsp;
                         <UserLink {...typingArr[2]} />
-                        &nbsp;are typing
+                        &nbsp;are {typingType}
                     </>
                 )}
 
@@ -129,7 +144,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                         <UserLink {...typingArr[1]} />
                         &nbsp;and&nbsp;
                         {typingArr.length - 2}
-                        &nbsp;more are typing
+                        &nbsp;more are {typingType}
                     </>
                 )}
             </div>

@@ -209,7 +209,7 @@ export class DialogListEngine {
             onlineAugmentator.setAugmentation(conversationId, { online });
         });
 
-        engine.getTypings().subcribe((typing, users, conversationId) => {
+        engine.getTypings().subcribe((typing, users, _, conversationId) => {
             if (typing) {
                 typingsAugmentator.setAugmentation(conversationId, { typing });
             } else {

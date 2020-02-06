@@ -148,31 +148,31 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
 
     // uncomment this all when you need to handle sticker picking
 
-    // private setStickerPicking = () => {
-    //     this.props.messenger.client.mutateSetTyping({
-    //         conversationId: this.props.conversationId,
-    //         type: TypingType.STICKER
-    //     });
-    // }
+    private setStickerPicking = () => {
+        this.props.messenger.client.mutateSetTyping({
+            conversationId: this.props.conversationId,
+            type: TypingType.STICKER
+        });
+    }
 
-    // private unsetTyping = () => {
-    //     this.props.messenger.client.mutateUnsetTyping({
-    //         conversationId: this.props.conversationId
-    //     });
-    // }
+    private unsetTyping = () => {
+        this.props.messenger.client.mutateUnsetTyping({
+            conversationId: this.props.conversationId
+        });
+    }
 
     // TODO remove any
-    // private stickerPickingMutationIntervals: any[] = [];
+    private stickerPickingMutationIntervals: any[] = [];
     private startStickerPicking = () => {
-        // this.setStickerPicking();
-        // this.stickerPickingMutationIntervals.push(setInterval(() => {
-        //     console.log('From the interval');
-        //     this.setStickerPicking();
-        // }, 3000));
+        this.setStickerPicking();
+        this.stickerPickingMutationIntervals.push(setInterval(() => {
+            console.log('From the interval');
+            this.setStickerPicking();
+        }, 3000));
     }
     private finishStickerPicking = () => {
-        // this.stickerPickingMutationIntervals.forEach(clearInterval);
-        // this.unsetTyping();
+        this.stickerPickingMutationIntervals.forEach(clearInterval);
+        this.unsetTyping();
     }
 
     activeSubscription?: () => void;

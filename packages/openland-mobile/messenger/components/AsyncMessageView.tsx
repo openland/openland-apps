@@ -62,11 +62,12 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
         }
     };
     const handleLongPress = React.useCallback(() => onMessageLongPress(message), [message]);
+    const handleCommentPress = React.useCallback(() => onCommentsPress(message), [message]);
 
     let res;
 
     if (message.text || message.reply || (message.attachments && message.attachments.length) || message.sticker) {
-        res = <AsyncMessageContentView theme={theme} key={'message-content'} message={message} onMediaPress={onMediaPress} onLongPress={handleLongPress} onDocumentPress={onDocumentPress} onUserPress={onUserPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} />;
+        res = <AsyncMessageContentView theme={theme} key={'message-content'} message={message} onMediaPress={onMediaPress} onLongPress={handleLongPress} onDocumentPress={onDocumentPress} onUserPress={onUserPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onReplyPress={handleCommentPress} />;
     }
 
     if (!res) {
@@ -111,7 +112,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     <ASFlex key="margin-right" width={12} />
                 </ASFlex>
 
-                {showReactions && <AsyncMessageReactionsView theme={theme} message={message} isChannel={engine.isChannel} onCommentsPress={() => onCommentsPress(message)} onReactionsPress={() => onReactionsPress(message)} />}
+                {showReactions && <AsyncMessageReactionsView theme={theme} message={message} isChannel={engine.isChannel} onCommentsPress={handleCommentPress} onReactionsPress={() => onReactionsPress(message)} />}
             </ASFlex>
 
             <ASFlex key="margin-bottom" height={marginBottom} />

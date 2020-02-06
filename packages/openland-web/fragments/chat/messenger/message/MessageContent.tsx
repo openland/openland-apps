@@ -16,12 +16,19 @@ import { RichAttachContent } from './content/RichAttachContent';
 import { StickerContent } from './content/StickerContent';
 import { css, cx } from 'linaria';
 import { createSimpleSpan } from 'openland-y-utils/spans/processSpans';
+import { XViewRouterContext } from 'react-mental';
 
 const textWrapper = css`
     margin-top: 4px;
 
     &:first-child {
         margin-top: 0;
+    }
+`;
+
+const replyContentWrapper = css`
+    &:hover {
+        cursor: pointer;
     }
 `;
 
@@ -36,9 +43,23 @@ const extraInCompactWrapper = css`
     }
 `;
 
-const replyWrapper = css`
+const replySectionWrapper = css`
     padding: 0;
 `;
+
+const ContentWrapper = (props: {wrapperKey: string, className: string, isReply?: boolean, id?: string, children: any }) => {
+    const router = React.useContext(XViewRouterContext)!;
+    const onContentClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+        router.navigate(`/message/${props.id}`);
+    };
+
+    return (
+        <div key={props.wrapperKey} className={cx(props.className, props.isReply && replyContentWrapper)} onClick={props.isReply ? onContentClick : undefined}>
+            {props.children}
+        </div>
+    );
+};
 
 interface MessageContentProps {
     id?: string;
@@ -56,6 +77,7 @@ interface MessageContentProps {
     senderNameEmojify?: string | JSX.Element;
     date?: number;
     fileProgress?: number;
+    isReply?: boolean;
 }
 
 export const MessageContent = (props: MessageContentProps) => {
@@ -70,7 +92,8 @@ export const MessageContent = (props: MessageContentProps) => {
         fallback,
         isOut = false,
         attachTop = false,
-        fileProgress
+        fileProgress,
+        isReply = false,
     } = props;
 
     const imageAttaches =
@@ -96,28 +119,28 @@ export const MessageContent = (props: MessageContentProps) => {
 
     imageAttaches.map(file => {
         content.push(
-            <div key={'msg-' + id + '-media-' + file.fileId} className={extraClassName}>
+            <ContentWrapper wrapperKey={'msg-' + id + '-media-' + file.fileId} className={extraClassName} id={id} isReply={isReply}>
                 <ImageContent
                     file={file}
                     sender={props.sender}
                     senderNameEmojify={props.senderNameEmojify}
                     date={props.date}
                 />
-            </div>,
+            </ContentWrapper>,
         );
     });
 
     if (hasText) {
         content.push(
-            <div key="msg-text" className={textClassName}>
-                <MessageTextComponent spans={textSpans} edited={!!edited} />
-            </div>,
+            <ContentWrapper wrapperKey="msg-text" className={textClassName} id={id} isReply={isReply}>
+                <MessageTextComponent spans={textSpans} edited={!!edited} shouldCrop={isReply} />
+            </ContentWrapper>,
         );
     }
 
     documentsAttaches.map(file => {
         content.push(
-            <div key={'msg-' + id + '-document-' + file.fileId} className={extraClassName}>
+            <ContentWrapper wrapperKey={'msg-' + id + '-document-' + file.fileId} className={extraClassName} id={id} isReply={isReply}>
                 <DocumentContent
                     file={file}
                     sender={props.sender}
@@ -126,29 +149,29 @@ export const MessageContent = (props: MessageContentProps) => {
                     progress={fileProgress}
                     inlineVideo={true}
                 />
-            </div>,
+            </ContentWrapper>,
         );
     });
 
     augmenationAttaches.map(attach => {
         content.push(
-            <div key={'msg-' + id + '-rich-' + attach.id} className={extraClassName}>
+            <ContentWrapper wrapperKey={'msg-' + id + '-rich-' + attach.id} className={extraClassName} id={id} isReply={isReply}>
                 <RichAttachContent attach={attach} canDelete={isOut} messageId={id} />
-            </div>,
+            </ContentWrapper>,
         );
     });
 
     if (sticker) {
         content.push(
-            <div key={'msg-' + id + '-sticker-' + sticker.id} className={extraClassName}>
+            <ContentWrapper wrapperKey={'msg-' + id + '-sticker-' + sticker.id} className={extraClassName} id={id} isReply={isReply}>
                 <StickerContent sticker={sticker} />
-            </div>,
+            </ContentWrapper>,
         );
     }
 
     if (reply && reply.length) {
-        const replyContent = (
-            <div key={'msg-' + id + '-forward'} className={cx(extraClassName, replyWrapper)}>
+        const replySection = (
+            <div key={'msg-' + id + '-forward'} className={cx(extraClassName, replySectionWrapper)}>
                 <ReplyContent quotedMessages={reply} />
             </div>
         );
@@ -157,9 +180,9 @@ export const MessageContent = (props: MessageContentProps) => {
             props.chatId && reply[0].source && reply[0].source.chat.id !== props.chatId;
 
         if (isForward) {
-            content.push(replyContent);
+            content.push(replySection);
         } else {
-            content.unshift(replyContent);
+            content.unshift(replySection);
         }
     }
 
@@ -167,9 +190,9 @@ export const MessageContent = (props: MessageContentProps) => {
         const unsupportedText = 'Unsupported content' + (fallback ? ': ' + fallback : '');
 
         content.push(
-            <div key="msg-text-unsupported" className={textClassName}>
+            <ContentWrapper wrapperKey="msg-text-unsupported" className={textClassName}>
                 <MessageTextComponent spans={createSimpleSpan(unsupportedText, SpanType.italic)} />
-            </div>,
+            </ContentWrapper>,
         );
     }
 

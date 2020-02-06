@@ -177,12 +177,14 @@ export const NewOptionsButton = React.memo(() => {
         [isMobile],
     );
 
-    const [, show] = usePopper(
+    const [isVisible, show] = usePopper(
         {
             placement: menuPlacement,
             hideOnEsc: true,
             hideOnChildClick: true,
             showTimeout: 100,
+            marginTop: -4,
+            marginRight: 4,
         },
         () => (
             <XView paddingVertical={8}>
@@ -193,7 +195,7 @@ export const NewOptionsButton = React.memo(() => {
 
     return (
         <div onClick={show}>
-            <UIconButton icon={<PlusIcon />} size="large" />
+            <UIconButton active={isVisible} icon={<PlusIcon />} size="large" />
         </div>
     );
 });

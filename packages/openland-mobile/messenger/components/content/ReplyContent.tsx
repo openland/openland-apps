@@ -23,12 +23,13 @@ interface ReplyContentProps {
     onOrganizationPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
+    onPress?: () => void;
     theme: ThemeGlobal;
 }
 export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
     render() {
-        let { message, maxWidth, width, compensateBubble, theme } = this.props;
+        let { message, maxWidth, width, compensateBubble, theme, onPress } = this.props;
 
         let lineBackgroundPatch: any;
         let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
@@ -54,7 +55,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                             const sticker = m.sticker && m.sticker.__typename === 'ImageSticker' ? m.sticker : undefined;
 
                             return (
-                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={bubbleForegroundTertiary}>
+                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={bubbleForegroundTertiary} onPress={onPress}>
                                     <ASText
                                         key={'reply-author-' + m.id}
                                         marginTop={-2}
@@ -72,7 +73,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                     </ASText>
 
                                     {repliedMessage.textSpans.length > 0 && (
-                                        <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10}>
+                                        <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10} onPress={onPress}>
                                             <RenderSpans
                                                 spans={repliedMessage.textSpans}
                                                 message={message}
@@ -83,6 +84,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                                 insetLeft={8}
                                                 insetRight={contentInsetsHorizontal}
                                                 insetVertical={4}
+                                                numberOfLines={1}
 
                                                 onUserPress={this.props.onUserPress}
                                                 onGroupPress={this.props.onGroupPress}
