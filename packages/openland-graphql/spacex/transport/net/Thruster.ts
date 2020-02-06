@@ -1,3 +1,6 @@
+import WebSocket from 'isomorphic-ws';
+
+const empty = () => { /* */ };
 
 export type ThrusterConfig = { url: string, timeout: number };
 
@@ -35,10 +38,14 @@ export class Thruster {
         if (this.bucketSockets[bucket]) {
             let ex = this.bucketSockets[bucket]!;
             this.bucketSockets[bucket] = null;
-            ex.onclose = null;
-            ex.onopen = null;
-            ex.onmessage = null;
-            ex.close();
+            ex.onclose = empty;
+            ex.onopen = empty;
+            ex.onmessage = empty;
+            try {
+                ex.close();
+            } catch (e) {
+                // Ignore
+            }
         }
 
         // Clear timeout
@@ -55,11 +62,15 @@ export class Thruster {
             this.bucketSockets[bucket] = null;
 
             // Close all other sockets
-            this.close();
+            try {
+                this.close();
+            } catch (e) {
+                // Ignore
+            }
 
             // Remove callbacks and invoke onSuccess callback
-            ws.onopen = null;
-            ws.onclose = null;
+            ws.onopen = empty;
+            ws.onclose = empty;
             this.onSuccess(ws);
         };
 
@@ -90,10 +101,14 @@ export class Thruster {
             let ex = this.bucketSockets[i];
             this.bucketSockets[i] = null;
             if (ex) {
-                ex.onclose = null;
-                ex.onopen = null;
-                ex.onmessage = null;
-                ex.close();
+                ex.onclose = empty;
+                ex.onopen = empty;
+                ex.onmessage = empty;
+                try {
+                    ex.close();
+                } catch (e) {
+                    // Ignore
+                }
             }
 
             // Clear Timeout

@@ -1,4 +1,4 @@
-const W = require('./apollo.worker');
+const W = require('./spacex.worker');
 import { WorkerInterface } from 'openland-graphql/proxy/WorkerInterface';
 import { WorkerClient } from 'openland-graphql/proxy/WorkerClient';
 

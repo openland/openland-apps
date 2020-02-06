@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NextAppContext } from 'next/app';
 import { getToken } from 'openland-x-graphql/auth';
-import { apolloClient } from 'openland-x-graphql/apolloClient';
+import { spaceClient } from 'openland-x-graphql/spaceClient';
 import { SharedStorage, getServerStorage, getClientStorage } from 'openland-x-utils/SharedStorage';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 
@@ -36,7 +36,7 @@ export function withData(App: React.ComponentType<any>) {
             }
 
             let token = getToken(ctx.ctx.req);
-            apolloClient(token);
+            spaceClient(token);
             await null;
             return {
                 ...appProps,
@@ -51,7 +51,7 @@ export function withData(App: React.ComponentType<any>) {
         private apollo: OpenlandClient;
         constructor(props: any) {
             super(props);
-            this.apollo = apolloClient(props.token);
+            this.apollo = spaceClient(props.token);
         }
 
         render() {

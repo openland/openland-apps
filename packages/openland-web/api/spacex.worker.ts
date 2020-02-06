@@ -1,5 +1,5 @@
-import { Operations } from './../../openland-api/Client';
-import { SpaceXWebClient } from './../../openland-graphql/spacex/SpaceXWebClient';
+import { Operations } from '../../openland-api/Client';
+import { SpaceXWebClient } from '../../openland-graphql/spacex/SpaceXWebClient';
 import { disableTag, disableAll } from 'mental-log';
 disableAll();
 disableTag('GraphQL-Direct');

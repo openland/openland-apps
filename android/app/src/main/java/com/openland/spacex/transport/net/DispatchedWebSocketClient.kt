@@ -20,7 +20,7 @@ class DispatchedWebSocketClient(val url: String, val queue: DispatchQueue) {
 
     val callback = object : WebSocketListener() {
         override fun onOpen(webSocket: WebSocket, response: Response?) {
-            xLog("SpaceX-Apollo", "Socket:onOpen")
+            xLog("SpaceX", "Socket:onOpen")
             queue.async {
                 if (!this@DispatchedWebSocketClient.isClosed) {
                     this@DispatchedWebSocketClient.isStarted = true
@@ -30,7 +30,7 @@ class DispatchedWebSocketClient(val url: String, val queue: DispatchQueue) {
         }
 
         override fun onMessage(webSocket: WebSocket, text: String) {
-            xLog("SpaceX-Apollo", "Socket:onMessage")
+            xLog("SpaceX", "Socket:onMessage")
             queue.async {
                 if (!this@DispatchedWebSocketClient.isClosed && this@DispatchedWebSocketClient.isStarted) {
                     this@DispatchedWebSocketClient.onMessage?.invoke(text)
@@ -39,7 +39,7 @@ class DispatchedWebSocketClient(val url: String, val queue: DispatchQueue) {
         }
 
         override fun onClosed(webSocket: WebSocket, code: Int, reason: String?) {
-            xLog("SpaceX-Apollo", "Socket:onClosed")
+            xLog("SpaceX", "Socket:onClosed")
             queue.async {
                 if (!this@DispatchedWebSocketClient.isClosed) {
                     this@DispatchedWebSocketClient.isClosed = true
@@ -50,7 +50,7 @@ class DispatchedWebSocketClient(val url: String, val queue: DispatchQueue) {
         }
 
         override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-            xLog("SpaceX-Apollo", "Socket:onFailure")
+            xLog("SpaceX", "Socket:onFailure")
             queue.async {
                 if (!this@DispatchedWebSocketClient.isClosed) {
                     this@DispatchedWebSocketClient.isClosed = true
