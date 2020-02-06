@@ -3,7 +3,7 @@ import * as React from 'react';
 import { MessageSender } from './messenger/MessageSender';
 import { ConversationEngine, DataSourceMessageItem } from './messenger/ConversationEngine';
 import { GlobalStateEngine } from './messenger/GlobalStateEngine';
-import { UserShort, ChatUpdateFragment_ChatMessageReceived } from 'openland-api/Types';
+import { UserShort, ChatUpdateFragment_ChatMessageReceived, TypingType } from 'openland-api/Types';
 import { NotificationsEngine } from './NotificationsEngine';
 import { CreateEntityEngine } from './createEntity/CreateEntityState';
 import { NotificationCenterEngine } from './NotificationCenterEngine';
@@ -110,7 +110,8 @@ export class MessengerEngine {
         conversationId: string,
         data?: {
             typing: string;
-            users: { userName: string; userPic: string | null; userId: string }[];
+            users: { userName: string; userPic: string | null; userId: string; typingType: TypingType; }[];
+            typingType: TypingType;
         },
     ) => {
         this.getTypings(conversationId).onTyping(data, conversationId);

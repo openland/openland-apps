@@ -11,6 +11,7 @@ import Lottie from 'react-lottie';
 import { XView } from 'react-mental';
 
 import { getJSON } from 'openland-y-utils/lottie/getJSON';
+import { TypingType } from 'openland-api/Types';
 
 const typingWrapper = css`
     display: flex;
@@ -62,14 +63,25 @@ const UserLink = (props: TypingsUser) => {
 export const TypingsView = XMemo<TypingsViewProps>(props => {
     let messeger = React.useContext(MessengerContext);
     const [typingArr, setTypingArr] = React.useState<TypingsUser[]>([]);
-    // TODO remove any
-    const [typingType, setTypingType] = React.useState<any>('');
+    const [typingType, setTypingType] = React.useState<string>('');
 
     React.useEffect(
         () => {
-            return messeger.getTypings(props.conversationId).subcribe((_, users, typingType) => {
+            return messeger.getTypings(props.conversationId).subcribe((_, users, typingAction) => {
                 setTypingArr(users || []);
-                setTypingType(typingType);
+
+                let typingActionString = 'typing';
+
+                switch (typingAction) {
+                    case TypingType.TEXT: typingActionString = 'typing'; break;
+                    case TypingType.FILE: typingActionString = 'sending file'; break;
+                    case TypingType.PHOTO: typingActionString = 'sending photo'; break;
+                    case TypingType.STICKER: typingActionString = 'picking a sticker'; break;
+                    case TypingType.VIDEO: typingActionString = 'uploading video'; break;
+                    default: typingActionString = 'typing'; break;
+                }
+
+                setTypingType(typingActionString);
             });
         },
         [props.conversationId],

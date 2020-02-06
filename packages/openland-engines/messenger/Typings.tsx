@@ -152,7 +152,7 @@ export class TypingsWatcher {
             case TypingType.TEXT: actionString = 'typing'; break;
             case TypingType.FILE: actionString = 'sending file'; break;
             case TypingType.PHOTO: actionString = 'sending photo'; break;
-            case TypingType.STICKER: actionString = 'picking sticker'; break;
+            case TypingType.STICKER: actionString = 'picking a sticker'; break;
             case TypingType.VIDEO: actionString = 'uploading video'; break;
 
             default: return ((invalidAction: TypingType): never => {
