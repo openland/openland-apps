@@ -1,1531 +1,1809 @@
-import * as Source from './index';
 import * as Types from './Types';
-import { GraphqlClient, GraphqlActiveSubscription, OperationParameters, QueryWatchParameters } from 'openland-graphql/GraphqlClient';
+import { GraphqlEngine, GraphqlActiveSubscription, OperationParameters, QueryWatchParameters } from '@openland/spacex';
 import { BaseApiClient } from 'openland-graphql/BaseApiClient';
 
 export class OpenlandClient extends BaseApiClient {
-    constructor(client: GraphqlClient) {
-        super(client);
+    constructor(engine: GraphqlEngine) {
+        super(engine);
     }
     async queryAccount(opts?: OperationParameters): Promise<Types.Account> {
-        return this.client.query(Source.AccountQuery, undefined, opts);
+        return this.engine.query('Account', undefined, opts);
     }
     async refetchAccount(): Promise<Types.Account> {
-        return this.refetch(Source.AccountQuery);
+        return this.refetch('Account');
     }
     useAccount(opts?: QueryWatchParameters): Types.Account {
-        return this.useQuerySuspense(Source.AccountQuery, undefined, opts);
+        return this.useQuerySuspense('Account', undefined, opts);
     }
     useWithoutLoaderAccount(opts?: QueryWatchParameters): Types.Account | null {
-        return this.useQuery(Source.AccountQuery, undefined, opts);
+        return this.useQuery('Account', undefined, opts);
+    }
+    async updateAccount(updater: (data: Types.Account) => Types.Account | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'Account');
     }
     async queryAccountSettings(opts?: OperationParameters): Promise<Types.AccountSettings> {
-        return this.client.query(Source.AccountSettingsQuery, undefined, opts);
+        return this.engine.query('AccountSettings', undefined, opts);
     }
     async refetchAccountSettings(): Promise<Types.AccountSettings> {
-        return this.refetch(Source.AccountSettingsQuery);
+        return this.refetch('AccountSettings');
     }
     useAccountSettings(opts?: QueryWatchParameters): Types.AccountSettings {
-        return this.useQuerySuspense(Source.AccountSettingsQuery, undefined, opts);
+        return this.useQuerySuspense('AccountSettings', undefined, opts);
     }
     useWithoutLoaderAccountSettings(opts?: QueryWatchParameters): Types.AccountSettings | null {
-        return this.useQuery(Source.AccountSettingsQuery, undefined, opts);
+        return this.useQuery('AccountSettings', undefined, opts);
+    }
+    async updateAccountSettings(updater: (data: Types.AccountSettings) => Types.AccountSettings | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'AccountSettings');
     }
     async queryAccountInviteInfo(variables: Types.AccountInviteInfoVariables, opts?: OperationParameters): Promise<Types.AccountInviteInfo> {
-        return this.client.query(Source.AccountInviteInfoQuery, variables, opts);
+        return this.engine.query('AccountInviteInfo', variables, opts);
     }
     async refetchAccountInviteInfo(variables: Types.AccountInviteInfoVariables): Promise<Types.AccountInviteInfo> {
-        return this.refetch(Source.AccountInviteInfoQuery, variables);
+        return this.refetch('AccountInviteInfo', variables);
     }
     useAccountInviteInfo(variables: Types.AccountInviteInfoVariables, opts?: QueryWatchParameters): Types.AccountInviteInfo {
-        return this.useQuerySuspense(Source.AccountInviteInfoQuery, variables, opts);
+        return this.useQuerySuspense('AccountInviteInfo', variables, opts);
     }
     useWithoutLoaderAccountInviteInfo(variables: Types.AccountInviteInfoVariables, opts?: QueryWatchParameters): Types.AccountInviteInfo | null {
-        return this.useQuery(Source.AccountInviteInfoQuery, variables, opts);
+        return this.useQuery('AccountInviteInfo', variables, opts);
+    }
+    async updateAccountInviteInfo(variables: Types.AccountInviteInfoVariables, updater: (data: Types.AccountInviteInfo) => Types.AccountInviteInfo | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'AccountInviteInfo', variables);
     }
     async queryAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, opts?: OperationParameters): Promise<Types.AccountAppInviteInfo> {
-        return this.client.query(Source.AccountAppInviteInfoQuery, variables, opts);
+        return this.engine.query('AccountAppInviteInfo', variables, opts);
     }
     async refetchAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables): Promise<Types.AccountAppInviteInfo> {
-        return this.refetch(Source.AccountAppInviteInfoQuery, variables);
+        return this.refetch('AccountAppInviteInfo', variables);
     }
     useAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, opts?: QueryWatchParameters): Types.AccountAppInviteInfo {
-        return this.useQuerySuspense(Source.AccountAppInviteInfoQuery, variables, opts);
+        return this.useQuerySuspense('AccountAppInviteInfo', variables, opts);
     }
     useWithoutLoaderAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, opts?: QueryWatchParameters): Types.AccountAppInviteInfo | null {
-        return this.useQuery(Source.AccountAppInviteInfoQuery, variables, opts);
+        return this.useQuery('AccountAppInviteInfo', variables, opts);
+    }
+    async updateAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, updater: (data: Types.AccountAppInviteInfo) => Types.AccountAppInviteInfo | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'AccountAppInviteInfo', variables);
     }
     async queryAccountAppInvite(opts?: OperationParameters): Promise<Types.AccountAppInvite> {
-        return this.client.query(Source.AccountAppInviteQuery, undefined, opts);
+        return this.engine.query('AccountAppInvite', undefined, opts);
     }
     async refetchAccountAppInvite(): Promise<Types.AccountAppInvite> {
-        return this.refetch(Source.AccountAppInviteQuery);
+        return this.refetch('AccountAppInvite');
     }
     useAccountAppInvite(opts?: QueryWatchParameters): Types.AccountAppInvite {
-        return this.useQuerySuspense(Source.AccountAppInviteQuery, undefined, opts);
+        return this.useQuerySuspense('AccountAppInvite', undefined, opts);
     }
     useWithoutLoaderAccountAppInvite(opts?: QueryWatchParameters): Types.AccountAppInvite | null {
-        return this.useQuery(Source.AccountAppInviteQuery, undefined, opts);
+        return this.useQuery('AccountAppInvite', undefined, opts);
+    }
+    async updateAccountAppInvite(updater: (data: Types.AccountAppInvite) => Types.AccountAppInvite | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'AccountAppInvite');
     }
     async queryProfilePrefill(opts?: OperationParameters): Promise<Types.ProfilePrefill> {
-        return this.client.query(Source.ProfilePrefillQuery, undefined, opts);
+        return this.engine.query('ProfilePrefill', undefined, opts);
     }
     async refetchProfilePrefill(): Promise<Types.ProfilePrefill> {
-        return this.refetch(Source.ProfilePrefillQuery);
+        return this.refetch('ProfilePrefill');
     }
     useProfilePrefill(opts?: QueryWatchParameters): Types.ProfilePrefill {
-        return this.useQuerySuspense(Source.ProfilePrefillQuery, undefined, opts);
+        return this.useQuerySuspense('ProfilePrefill', undefined, opts);
     }
     useWithoutLoaderProfilePrefill(opts?: QueryWatchParameters): Types.ProfilePrefill | null {
-        return this.useQuery(Source.ProfilePrefillQuery, undefined, opts);
+        return this.useQuery('ProfilePrefill', undefined, opts);
+    }
+    async updateProfilePrefill(updater: (data: Types.ProfilePrefill) => Types.ProfilePrefill | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'ProfilePrefill');
     }
     async queryFetchPushSettings(opts?: OperationParameters): Promise<Types.FetchPushSettings> {
-        return this.client.query(Source.FetchPushSettingsQuery, undefined, opts);
+        return this.engine.query('FetchPushSettings', undefined, opts);
     }
     async refetchFetchPushSettings(): Promise<Types.FetchPushSettings> {
-        return this.refetch(Source.FetchPushSettingsQuery);
+        return this.refetch('FetchPushSettings');
     }
     useFetchPushSettings(opts?: QueryWatchParameters): Types.FetchPushSettings {
-        return this.useQuerySuspense(Source.FetchPushSettingsQuery, undefined, opts);
+        return this.useQuerySuspense('FetchPushSettings', undefined, opts);
     }
     useWithoutLoaderFetchPushSettings(opts?: QueryWatchParameters): Types.FetchPushSettings | null {
-        return this.useQuery(Source.FetchPushSettingsQuery, undefined, opts);
+        return this.useQuery('FetchPushSettings', undefined, opts);
+    }
+    async updateFetchPushSettings(updater: (data: Types.FetchPushSettings) => Types.FetchPushSettings | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'FetchPushSettings');
     }
     async queryMyApps(opts?: OperationParameters): Promise<Types.MyApps> {
-        return this.client.query(Source.MyAppsQuery, undefined, opts);
+        return this.engine.query('MyApps', undefined, opts);
     }
     async refetchMyApps(): Promise<Types.MyApps> {
-        return this.refetch(Source.MyAppsQuery);
+        return this.refetch('MyApps');
     }
     useMyApps(opts?: QueryWatchParameters): Types.MyApps {
-        return this.useQuerySuspense(Source.MyAppsQuery, undefined, opts);
+        return this.useQuerySuspense('MyApps', undefined, opts);
     }
     useWithoutLoaderMyApps(opts?: QueryWatchParameters): Types.MyApps | null {
-        return this.useQuery(Source.MyAppsQuery, undefined, opts);
+        return this.useQuery('MyApps', undefined, opts);
+    }
+    async updateMyApps(updater: (data: Types.MyApps) => Types.MyApps | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'MyApps');
     }
     async queryUserStorage(variables: Types.UserStorageVariables, opts?: OperationParameters): Promise<Types.UserStorage> {
-        return this.client.query(Source.UserStorageQuery, variables, opts);
+        return this.engine.query('UserStorage', variables, opts);
     }
     async refetchUserStorage(variables: Types.UserStorageVariables): Promise<Types.UserStorage> {
-        return this.refetch(Source.UserStorageQuery, variables);
+        return this.refetch('UserStorage', variables);
     }
     useUserStorage(variables: Types.UserStorageVariables, opts?: QueryWatchParameters): Types.UserStorage {
-        return this.useQuerySuspense(Source.UserStorageQuery, variables, opts);
+        return this.useQuerySuspense('UserStorage', variables, opts);
     }
     useWithoutLoaderUserStorage(variables: Types.UserStorageVariables, opts?: QueryWatchParameters): Types.UserStorage | null {
-        return this.useQuery(Source.UserStorageQuery, variables, opts);
+        return this.useQuery('UserStorage', variables, opts);
+    }
+    async updateUserStorage(variables: Types.UserStorageVariables, updater: (data: Types.UserStorage) => Types.UserStorage | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'UserStorage', variables);
     }
     async querySuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: OperationParameters): Promise<Types.SuperBadgeInRoom> {
-        return this.client.query(Source.SuperBadgeInRoomQuery, variables, opts);
+        return this.engine.query('SuperBadgeInRoom', variables, opts);
     }
     async refetchSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables): Promise<Types.SuperBadgeInRoom> {
-        return this.refetch(Source.SuperBadgeInRoomQuery, variables);
+        return this.refetch('SuperBadgeInRoom', variables);
     }
     useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: QueryWatchParameters): Types.SuperBadgeInRoom {
-        return this.useQuerySuspense(Source.SuperBadgeInRoomQuery, variables, opts);
+        return this.useQuerySuspense('SuperBadgeInRoom', variables, opts);
     }
     useWithoutLoaderSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: QueryWatchParameters): Types.SuperBadgeInRoom | null {
-        return this.useQuery(Source.SuperBadgeInRoomQuery, variables, opts);
+        return this.useQuery('SuperBadgeInRoom', variables, opts);
+    }
+    async updateSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, updater: (data: Types.SuperBadgeInRoom) => Types.SuperBadgeInRoom | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'SuperBadgeInRoom', variables);
     }
     async queryDialogs(variables: Types.DialogsVariables, opts?: OperationParameters): Promise<Types.Dialogs> {
-        return this.client.query(Source.DialogsQuery, variables, opts);
+        return this.engine.query('Dialogs', variables, opts);
     }
     async refetchDialogs(variables: Types.DialogsVariables): Promise<Types.Dialogs> {
-        return this.refetch(Source.DialogsQuery, variables);
+        return this.refetch('Dialogs', variables);
     }
     useDialogs(variables: Types.DialogsVariables, opts?: QueryWatchParameters): Types.Dialogs {
-        return this.useQuerySuspense(Source.DialogsQuery, variables, opts);
+        return this.useQuerySuspense('Dialogs', variables, opts);
     }
     useWithoutLoaderDialogs(variables: Types.DialogsVariables, opts?: QueryWatchParameters): Types.Dialogs | null {
-        return this.useQuery(Source.DialogsQuery, variables, opts);
+        return this.useQuery('Dialogs', variables, opts);
+    }
+    async updateDialogs(variables: Types.DialogsVariables, updater: (data: Types.Dialogs) => Types.Dialogs | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'Dialogs', variables);
     }
     async queryRoom(variables: Types.RoomVariables, opts?: OperationParameters): Promise<Types.Room> {
-        return this.client.query(Source.RoomQuery, variables, opts);
+        return this.engine.query('Room', variables, opts);
     }
     async refetchRoom(variables: Types.RoomVariables): Promise<Types.Room> {
-        return this.refetch(Source.RoomQuery, variables);
+        return this.refetch('Room', variables);
     }
     useRoom(variables: Types.RoomVariables, opts?: QueryWatchParameters): Types.Room {
-        return this.useQuerySuspense(Source.RoomQuery, variables, opts);
+        return this.useQuerySuspense('Room', variables, opts);
     }
     useWithoutLoaderRoom(variables: Types.RoomVariables, opts?: QueryWatchParameters): Types.Room | null {
-        return this.useQuery(Source.RoomQuery, variables, opts);
+        return this.useQuery('Room', variables, opts);
+    }
+    async updateRoom(variables: Types.RoomVariables, updater: (data: Types.Room) => Types.Room | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'Room', variables);
     }
     async queryRoomPico(variables: Types.RoomPicoVariables, opts?: OperationParameters): Promise<Types.RoomPico> {
-        return this.client.query(Source.RoomPicoQuery, variables, opts);
+        return this.engine.query('RoomPico', variables, opts);
     }
     async refetchRoomPico(variables: Types.RoomPicoVariables): Promise<Types.RoomPico> {
-        return this.refetch(Source.RoomPicoQuery, variables);
+        return this.refetch('RoomPico', variables);
     }
     useRoomPico(variables: Types.RoomPicoVariables, opts?: QueryWatchParameters): Types.RoomPico {
-        return this.useQuerySuspense(Source.RoomPicoQuery, variables, opts);
+        return this.useQuerySuspense('RoomPico', variables, opts);
     }
     useWithoutLoaderRoomPico(variables: Types.RoomPicoVariables, opts?: QueryWatchParameters): Types.RoomPico | null {
-        return this.useQuery(Source.RoomPicoQuery, variables, opts);
+        return this.useQuery('RoomPico', variables, opts);
+    }
+    async updateRoomPico(variables: Types.RoomPicoVariables, updater: (data: Types.RoomPico) => Types.RoomPico | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'RoomPico', variables);
     }
     async queryRoomChat(variables: Types.RoomChatVariables, opts?: OperationParameters): Promise<Types.RoomChat> {
-        return this.client.query(Source.RoomChatQuery, variables, opts);
+        return this.engine.query('RoomChat', variables, opts);
     }
     async refetchRoomChat(variables: Types.RoomChatVariables): Promise<Types.RoomChat> {
-        return this.refetch(Source.RoomChatQuery, variables);
+        return this.refetch('RoomChat', variables);
     }
     useRoomChat(variables: Types.RoomChatVariables, opts?: QueryWatchParameters): Types.RoomChat {
-        return this.useQuerySuspense(Source.RoomChatQuery, variables, opts);
+        return this.useQuerySuspense('RoomChat', variables, opts);
     }
     useWithoutLoaderRoomChat(variables: Types.RoomChatVariables, opts?: QueryWatchParameters): Types.RoomChat | null {
-        return this.useQuery(Source.RoomChatQuery, variables, opts);
+        return this.useQuery('RoomChat', variables, opts);
+    }
+    async updateRoomChat(variables: Types.RoomChatVariables, updater: (data: Types.RoomChat) => Types.RoomChat | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'RoomChat', variables);
     }
     async queryRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, opts?: OperationParameters): Promise<Types.RoomWithoutMembers> {
-        return this.client.query(Source.RoomWithoutMembersQuery, variables, opts);
+        return this.engine.query('RoomWithoutMembers', variables, opts);
     }
     async refetchRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables): Promise<Types.RoomWithoutMembers> {
-        return this.refetch(Source.RoomWithoutMembersQuery, variables);
+        return this.refetch('RoomWithoutMembers', variables);
     }
     useRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, opts?: QueryWatchParameters): Types.RoomWithoutMembers {
-        return this.useQuerySuspense(Source.RoomWithoutMembersQuery, variables, opts);
+        return this.useQuerySuspense('RoomWithoutMembers', variables, opts);
     }
     useWithoutLoaderRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, opts?: QueryWatchParameters): Types.RoomWithoutMembers | null {
-        return this.useQuery(Source.RoomWithoutMembersQuery, variables, opts);
+        return this.useQuery('RoomWithoutMembers', variables, opts);
+    }
+    async updateRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, updater: (data: Types.RoomWithoutMembers) => Types.RoomWithoutMembers | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'RoomWithoutMembers', variables);
     }
     async queryRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, opts?: OperationParameters): Promise<Types.RoomFeaturedMembers> {
-        return this.client.query(Source.RoomFeaturedMembersQuery, variables, opts);
+        return this.engine.query('RoomFeaturedMembers', variables, opts);
     }
     async refetchRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables): Promise<Types.RoomFeaturedMembers> {
-        return this.refetch(Source.RoomFeaturedMembersQuery, variables);
+        return this.refetch('RoomFeaturedMembers', variables);
     }
     useRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, opts?: QueryWatchParameters): Types.RoomFeaturedMembers {
-        return this.useQuerySuspense(Source.RoomFeaturedMembersQuery, variables, opts);
+        return this.useQuerySuspense('RoomFeaturedMembers', variables, opts);
     }
     useWithoutLoaderRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, opts?: QueryWatchParameters): Types.RoomFeaturedMembers | null {
-        return this.useQuery(Source.RoomFeaturedMembersQuery, variables, opts);
+        return this.useQuery('RoomFeaturedMembers', variables, opts);
+    }
+    async updateRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, updater: (data: Types.RoomFeaturedMembers) => Types.RoomFeaturedMembers | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'RoomFeaturedMembers', variables);
     }
     async queryRoomTiny(variables: Types.RoomTinyVariables, opts?: OperationParameters): Promise<Types.RoomTiny> {
-        return this.client.query(Source.RoomTinyQuery, variables, opts);
+        return this.engine.query('RoomTiny', variables, opts);
     }
     async refetchRoomTiny(variables: Types.RoomTinyVariables): Promise<Types.RoomTiny> {
-        return this.refetch(Source.RoomTinyQuery, variables);
+        return this.refetch('RoomTiny', variables);
     }
     useRoomTiny(variables: Types.RoomTinyVariables, opts?: QueryWatchParameters): Types.RoomTiny {
-        return this.useQuerySuspense(Source.RoomTinyQuery, variables, opts);
+        return this.useQuerySuspense('RoomTiny', variables, opts);
     }
     useWithoutLoaderRoomTiny(variables: Types.RoomTinyVariables, opts?: QueryWatchParameters): Types.RoomTiny | null {
-        return this.useQuery(Source.RoomTinyQuery, variables, opts);
+        return this.useQuery('RoomTiny', variables, opts);
+    }
+    async updateRoomTiny(variables: Types.RoomTinyVariables, updater: (data: Types.RoomTiny) => Types.RoomTiny | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'RoomTiny', variables);
     }
     async queryRoomSuper(variables: Types.RoomSuperVariables, opts?: OperationParameters): Promise<Types.RoomSuper> {
-        return this.client.query(Source.RoomSuperQuery, variables, opts);
+        return this.engine.query('RoomSuper', variables, opts);
     }
     async refetchRoomSuper(variables: Types.RoomSuperVariables): Promise<Types.RoomSuper> {
-        return this.refetch(Source.RoomSuperQuery, variables);
+        return this.refetch('RoomSuper', variables);
     }
     useRoomSuper(variables: Types.RoomSuperVariables, opts?: QueryWatchParameters): Types.RoomSuper {
-        return this.useQuerySuspense(Source.RoomSuperQuery, variables, opts);
+        return this.useQuerySuspense('RoomSuper', variables, opts);
     }
     useWithoutLoaderRoomSuper(variables: Types.RoomSuperVariables, opts?: QueryWatchParameters): Types.RoomSuper | null {
-        return this.useQuery(Source.RoomSuperQuery, variables, opts);
+        return this.useQuery('RoomSuper', variables, opts);
+    }
+    async updateRoomSuper(variables: Types.RoomSuperVariables, updater: (data: Types.RoomSuper) => Types.RoomSuper | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'RoomSuper', variables);
     }
     async queryGlobalCounter(opts?: OperationParameters): Promise<Types.GlobalCounter> {
-        return this.client.query(Source.GlobalCounterQuery, undefined, opts);
+        return this.engine.query('GlobalCounter', undefined, opts);
     }
     async refetchGlobalCounter(): Promise<Types.GlobalCounter> {
-        return this.refetch(Source.GlobalCounterQuery);
+        return this.refetch('GlobalCounter');
     }
     useGlobalCounter(opts?: QueryWatchParameters): Types.GlobalCounter {
-        return this.useQuerySuspense(Source.GlobalCounterQuery, undefined, opts);
+        return this.useQuerySuspense('GlobalCounter', undefined, opts);
     }
     useWithoutLoaderGlobalCounter(opts?: QueryWatchParameters): Types.GlobalCounter | null {
-        return this.useQuery(Source.GlobalCounterQuery, undefined, opts);
+        return this.useQuery('GlobalCounter', undefined, opts);
+    }
+    async updateGlobalCounter(updater: (data: Types.GlobalCounter) => Types.GlobalCounter | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'GlobalCounter');
     }
     async queryMessagesBatch(variables: Types.MessagesBatchVariables, opts?: OperationParameters): Promise<Types.MessagesBatch> {
-        return this.client.query(Source.MessagesBatchQuery, variables, opts);
+        return this.engine.query('MessagesBatch', variables, opts);
     }
     async refetchMessagesBatch(variables: Types.MessagesBatchVariables): Promise<Types.MessagesBatch> {
-        return this.refetch(Source.MessagesBatchQuery, variables);
+        return this.refetch('MessagesBatch', variables);
     }
     useMessagesBatch(variables: Types.MessagesBatchVariables, opts?: QueryWatchParameters): Types.MessagesBatch {
-        return this.useQuerySuspense(Source.MessagesBatchQuery, variables, opts);
+        return this.useQuerySuspense('MessagesBatch', variables, opts);
     }
     useWithoutLoaderMessagesBatch(variables: Types.MessagesBatchVariables, opts?: QueryWatchParameters): Types.MessagesBatch | null {
-        return this.useQuery(Source.MessagesBatchQuery, variables, opts);
+        return this.useQuery('MessagesBatch', variables, opts);
+    }
+    async updateMessagesBatch(variables: Types.MessagesBatchVariables, updater: (data: Types.MessagesBatch) => Types.MessagesBatch | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'MessagesBatch', variables);
     }
     async queryChatInit(variables: Types.ChatInitVariables, opts?: OperationParameters): Promise<Types.ChatInit> {
-        return this.client.query(Source.ChatInitQuery, variables, opts);
+        return this.engine.query('ChatInit', variables, opts);
     }
     async refetchChatInit(variables: Types.ChatInitVariables): Promise<Types.ChatInit> {
-        return this.refetch(Source.ChatInitQuery, variables);
+        return this.refetch('ChatInit', variables);
     }
     useChatInit(variables: Types.ChatInitVariables, opts?: QueryWatchParameters): Types.ChatInit {
-        return this.useQuerySuspense(Source.ChatInitQuery, variables, opts);
+        return this.useQuerySuspense('ChatInit', variables, opts);
     }
     useWithoutLoaderChatInit(variables: Types.ChatInitVariables, opts?: QueryWatchParameters): Types.ChatInit | null {
-        return this.useQuery(Source.ChatInitQuery, variables, opts);
+        return this.useQuery('ChatInit', variables, opts);
+    }
+    async updateChatInit(variables: Types.ChatInitVariables, updater: (data: Types.ChatInit) => Types.ChatInit | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'ChatInit', variables);
     }
     async queryChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, opts?: OperationParameters): Promise<Types.ChatInitFromUnread> {
-        return this.client.query(Source.ChatInitFromUnreadQuery, variables, opts);
+        return this.engine.query('ChatInitFromUnread', variables, opts);
     }
     async refetchChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables): Promise<Types.ChatInitFromUnread> {
-        return this.refetch(Source.ChatInitFromUnreadQuery, variables);
+        return this.refetch('ChatInitFromUnread', variables);
     }
     useChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, opts?: QueryWatchParameters): Types.ChatInitFromUnread {
-        return this.useQuerySuspense(Source.ChatInitFromUnreadQuery, variables, opts);
+        return this.useQuerySuspense('ChatInitFromUnread', variables, opts);
     }
     useWithoutLoaderChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, opts?: QueryWatchParameters): Types.ChatInitFromUnread | null {
-        return this.useQuery(Source.ChatInitFromUnreadQuery, variables, opts);
+        return this.useQuery('ChatInitFromUnread', variables, opts);
+    }
+    async updateChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, updater: (data: Types.ChatInitFromUnread) => Types.ChatInitFromUnread | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'ChatInitFromUnread', variables);
     }
     async queryRoomSearch(variables: Types.RoomSearchVariables, opts?: OperationParameters): Promise<Types.RoomSearch> {
-        return this.client.query(Source.RoomSearchQuery, variables, opts);
+        return this.engine.query('RoomSearch', variables, opts);
     }
     async refetchRoomSearch(variables: Types.RoomSearchVariables): Promise<Types.RoomSearch> {
-        return this.refetch(Source.RoomSearchQuery, variables);
+        return this.refetch('RoomSearch', variables);
     }
     useRoomSearch(variables: Types.RoomSearchVariables, opts?: QueryWatchParameters): Types.RoomSearch {
-        return this.useQuerySuspense(Source.RoomSearchQuery, variables, opts);
+        return this.useQuerySuspense('RoomSearch', variables, opts);
     }
     useWithoutLoaderRoomSearch(variables: Types.RoomSearchVariables, opts?: QueryWatchParameters): Types.RoomSearch | null {
-        return this.useQuery(Source.RoomSearchQuery, variables, opts);
+        return this.useQuery('RoomSearch', variables, opts);
+    }
+    async updateRoomSearch(variables: Types.RoomSearchVariables, updater: (data: Types.RoomSearch) => Types.RoomSearch | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'RoomSearch', variables);
     }
     async queryRoomMembersShort(variables: Types.RoomMembersShortVariables, opts?: OperationParameters): Promise<Types.RoomMembersShort> {
-        return this.client.query(Source.RoomMembersShortQuery, variables, opts);
+        return this.engine.query('RoomMembersShort', variables, opts);
     }
     async refetchRoomMembersShort(variables: Types.RoomMembersShortVariables): Promise<Types.RoomMembersShort> {
-        return this.refetch(Source.RoomMembersShortQuery, variables);
+        return this.refetch('RoomMembersShort', variables);
     }
     useRoomMembersShort(variables: Types.RoomMembersShortVariables, opts?: QueryWatchParameters): Types.RoomMembersShort {
-        return this.useQuerySuspense(Source.RoomMembersShortQuery, variables, opts);
+        return this.useQuerySuspense('RoomMembersShort', variables, opts);
     }
     useWithoutLoaderRoomMembersShort(variables: Types.RoomMembersShortVariables, opts?: QueryWatchParameters): Types.RoomMembersShort | null {
-        return this.useQuery(Source.RoomMembersShortQuery, variables, opts);
+        return this.useQuery('RoomMembersShort', variables, opts);
+    }
+    async updateRoomMembersShort(variables: Types.RoomMembersShortVariables, updater: (data: Types.RoomMembersShort) => Types.RoomMembersShort | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'RoomMembersShort', variables);
     }
     async queryRoomMembers(variables: Types.RoomMembersVariables, opts?: OperationParameters): Promise<Types.RoomMembers> {
-        return this.client.query(Source.RoomMembersQuery, variables, opts);
+        return this.engine.query('RoomMembers', variables, opts);
     }
     async refetchRoomMembers(variables: Types.RoomMembersVariables): Promise<Types.RoomMembers> {
-        return this.refetch(Source.RoomMembersQuery, variables);
+        return this.refetch('RoomMembers', variables);
     }
     useRoomMembers(variables: Types.RoomMembersVariables, opts?: QueryWatchParameters): Types.RoomMembers {
-        return this.useQuerySuspense(Source.RoomMembersQuery, variables, opts);
+        return this.useQuerySuspense('RoomMembers', variables, opts);
     }
     useWithoutLoaderRoomMembers(variables: Types.RoomMembersVariables, opts?: QueryWatchParameters): Types.RoomMembers | null {
-        return this.useQuery(Source.RoomMembersQuery, variables, opts);
+        return this.useQuery('RoomMembers', variables, opts);
+    }
+    async updateRoomMembers(variables: Types.RoomMembersVariables, updater: (data: Types.RoomMembers) => Types.RoomMembers | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'RoomMembers', variables);
     }
     async queryRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: OperationParameters): Promise<Types.RoomMembersTiny> {
-        return this.client.query(Source.RoomMembersTinyQuery, variables, opts);
+        return this.engine.query('RoomMembersTiny', variables, opts);
     }
     async refetchRoomMembersTiny(variables: Types.RoomMembersTinyVariables): Promise<Types.RoomMembersTiny> {
-        return this.refetch(Source.RoomMembersTinyQuery, variables);
+        return this.refetch('RoomMembersTiny', variables);
     }
     useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: QueryWatchParameters): Types.RoomMembersTiny {
-        return this.useQuerySuspense(Source.RoomMembersTinyQuery, variables, opts);
+        return this.useQuerySuspense('RoomMembersTiny', variables, opts);
     }
     useWithoutLoaderRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: QueryWatchParameters): Types.RoomMembersTiny | null {
-        return this.useQuery(Source.RoomMembersTinyQuery, variables, opts);
+        return this.useQuery('RoomMembersTiny', variables, opts);
+    }
+    async updateRoomMembersTiny(variables: Types.RoomMembersTinyVariables, updater: (data: Types.RoomMembersTiny) => Types.RoomMembersTiny | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'RoomMembersTiny', variables);
     }
     async queryChatMembersSearch(variables: Types.ChatMembersSearchVariables, opts?: OperationParameters): Promise<Types.ChatMembersSearch> {
-        return this.client.query(Source.ChatMembersSearchQuery, variables, opts);
+        return this.engine.query('ChatMembersSearch', variables, opts);
     }
     async refetchChatMembersSearch(variables: Types.ChatMembersSearchVariables): Promise<Types.ChatMembersSearch> {
-        return this.refetch(Source.ChatMembersSearchQuery, variables);
+        return this.refetch('ChatMembersSearch', variables);
     }
     useChatMembersSearch(variables: Types.ChatMembersSearchVariables, opts?: QueryWatchParameters): Types.ChatMembersSearch {
-        return this.useQuerySuspense(Source.ChatMembersSearchQuery, variables, opts);
+        return this.useQuerySuspense('ChatMembersSearch', variables, opts);
     }
     useWithoutLoaderChatMembersSearch(variables: Types.ChatMembersSearchVariables, opts?: QueryWatchParameters): Types.ChatMembersSearch | null {
-        return this.useQuery(Source.ChatMembersSearchQuery, variables, opts);
+        return this.useQuery('ChatMembersSearch', variables, opts);
+    }
+    async updateChatMembersSearch(variables: Types.ChatMembersSearchVariables, updater: (data: Types.ChatMembersSearch) => Types.ChatMembersSearch | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'ChatMembersSearch', variables);
     }
     async queryRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts?: OperationParameters): Promise<Types.RoomOrganizationAdminMembers> {
-        return this.client.query(Source.RoomOrganizationAdminMembersQuery, variables, opts);
+        return this.engine.query('RoomOrganizationAdminMembers', variables, opts);
     }
     async refetchRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables): Promise<Types.RoomOrganizationAdminMembers> {
-        return this.refetch(Source.RoomOrganizationAdminMembersQuery, variables);
+        return this.refetch('RoomOrganizationAdminMembers', variables);
     }
     useRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts?: QueryWatchParameters): Types.RoomOrganizationAdminMembers {
-        return this.useQuerySuspense(Source.RoomOrganizationAdminMembersQuery, variables, opts);
+        return this.useQuerySuspense('RoomOrganizationAdminMembers', variables, opts);
     }
     useWithoutLoaderRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts?: QueryWatchParameters): Types.RoomOrganizationAdminMembers | null {
-        return this.useQuery(Source.RoomOrganizationAdminMembersQuery, variables, opts);
+        return this.useQuery('RoomOrganizationAdminMembers', variables, opts);
+    }
+    async updateRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, updater: (data: Types.RoomOrganizationAdminMembers) => Types.RoomOrganizationAdminMembers | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'RoomOrganizationAdminMembers', variables);
     }
     async queryRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, opts?: OperationParameters): Promise<Types.RoomMembersPaginated> {
-        return this.client.query(Source.RoomMembersPaginatedQuery, variables, opts);
+        return this.engine.query('RoomMembersPaginated', variables, opts);
     }
     async refetchRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables): Promise<Types.RoomMembersPaginated> {
-        return this.refetch(Source.RoomMembersPaginatedQuery, variables);
+        return this.refetch('RoomMembersPaginated', variables);
     }
     useRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, opts?: QueryWatchParameters): Types.RoomMembersPaginated {
-        return this.useQuerySuspense(Source.RoomMembersPaginatedQuery, variables, opts);
+        return this.useQuerySuspense('RoomMembersPaginated', variables, opts);
     }
     useWithoutLoaderRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, opts?: QueryWatchParameters): Types.RoomMembersPaginated | null {
-        return this.useQuery(Source.RoomMembersPaginatedQuery, variables, opts);
+        return this.useQuery('RoomMembersPaginated', variables, opts);
+    }
+    async updateRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, updater: (data: Types.RoomMembersPaginated) => Types.RoomMembersPaginated | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'RoomMembersPaginated', variables);
     }
     async queryRoomInviteLink(variables: Types.RoomInviteLinkVariables, opts?: OperationParameters): Promise<Types.RoomInviteLink> {
-        return this.client.query(Source.RoomInviteLinkQuery, variables, opts);
+        return this.engine.query('RoomInviteLink', variables, opts);
     }
     async refetchRoomInviteLink(variables: Types.RoomInviteLinkVariables): Promise<Types.RoomInviteLink> {
-        return this.refetch(Source.RoomInviteLinkQuery, variables);
+        return this.refetch('RoomInviteLink', variables);
     }
     useRoomInviteLink(variables: Types.RoomInviteLinkVariables, opts?: QueryWatchParameters): Types.RoomInviteLink {
-        return this.useQuerySuspense(Source.RoomInviteLinkQuery, variables, opts);
+        return this.useQuerySuspense('RoomInviteLink', variables, opts);
     }
     useWithoutLoaderRoomInviteLink(variables: Types.RoomInviteLinkVariables, opts?: QueryWatchParameters): Types.RoomInviteLink | null {
-        return this.useQuery(Source.RoomInviteLinkQuery, variables, opts);
+        return this.useQuery('RoomInviteLink', variables, opts);
+    }
+    async updateRoomInviteLink(variables: Types.RoomInviteLinkVariables, updater: (data: Types.RoomInviteLink) => Types.RoomInviteLink | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'RoomInviteLink', variables);
     }
     async queryRoomInviteInfo(variables: Types.RoomInviteInfoVariables, opts?: OperationParameters): Promise<Types.RoomInviteInfo> {
-        return this.client.query(Source.RoomInviteInfoQuery, variables, opts);
+        return this.engine.query('RoomInviteInfo', variables, opts);
     }
     async refetchRoomInviteInfo(variables: Types.RoomInviteInfoVariables): Promise<Types.RoomInviteInfo> {
-        return this.refetch(Source.RoomInviteInfoQuery, variables);
+        return this.refetch('RoomInviteInfo', variables);
     }
     useRoomInviteInfo(variables: Types.RoomInviteInfoVariables, opts?: QueryWatchParameters): Types.RoomInviteInfo {
-        return this.useQuerySuspense(Source.RoomInviteInfoQuery, variables, opts);
+        return this.useQuerySuspense('RoomInviteInfo', variables, opts);
     }
     useWithoutLoaderRoomInviteInfo(variables: Types.RoomInviteInfoVariables, opts?: QueryWatchParameters): Types.RoomInviteInfo | null {
-        return this.useQuery(Source.RoomInviteInfoQuery, variables, opts);
+        return this.useQuery('RoomInviteInfo', variables, opts);
+    }
+    async updateRoomInviteInfo(variables: Types.RoomInviteInfoVariables, updater: (data: Types.RoomInviteInfo) => Types.RoomInviteInfo | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'RoomInviteInfo', variables);
     }
     async queryResolvedInvite(variables: Types.ResolvedInviteVariables, opts?: OperationParameters): Promise<Types.ResolvedInvite> {
-        return this.client.query(Source.ResolvedInviteQuery, variables, opts);
+        return this.engine.query('ResolvedInvite', variables, opts);
     }
     async refetchResolvedInvite(variables: Types.ResolvedInviteVariables): Promise<Types.ResolvedInvite> {
-        return this.refetch(Source.ResolvedInviteQuery, variables);
+        return this.refetch('ResolvedInvite', variables);
     }
     useResolvedInvite(variables: Types.ResolvedInviteVariables, opts?: QueryWatchParameters): Types.ResolvedInvite {
-        return this.useQuerySuspense(Source.ResolvedInviteQuery, variables, opts);
+        return this.useQuerySuspense('ResolvedInvite', variables, opts);
     }
     useWithoutLoaderResolvedInvite(variables: Types.ResolvedInviteVariables, opts?: QueryWatchParameters): Types.ResolvedInvite | null {
-        return this.useQuery(Source.ResolvedInviteQuery, variables, opts);
+        return this.useQuery('ResolvedInvite', variables, opts);
+    }
+    async updateResolvedInvite(variables: Types.ResolvedInviteVariables, updater: (data: Types.ResolvedInvite) => Types.ResolvedInvite | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'ResolvedInvite', variables);
     }
     async queryMessage(variables: Types.MessageVariables, opts?: OperationParameters): Promise<Types.Message> {
-        return this.client.query(Source.MessageQuery, variables, opts);
+        return this.engine.query('Message', variables, opts);
     }
     async refetchMessage(variables: Types.MessageVariables): Promise<Types.Message> {
-        return this.refetch(Source.MessageQuery, variables);
+        return this.refetch('Message', variables);
     }
     useMessage(variables: Types.MessageVariables, opts?: QueryWatchParameters): Types.Message {
-        return this.useQuerySuspense(Source.MessageQuery, variables, opts);
+        return this.useQuerySuspense('Message', variables, opts);
     }
     useWithoutLoaderMessage(variables: Types.MessageVariables, opts?: QueryWatchParameters): Types.Message | null {
-        return this.useQuery(Source.MessageQuery, variables, opts);
+        return this.useQuery('Message', variables, opts);
+    }
+    async updateMessage(variables: Types.MessageVariables, updater: (data: Types.Message) => Types.Message | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'Message', variables);
     }
     async queryMessagesSearch(variables: Types.MessagesSearchVariables, opts?: OperationParameters): Promise<Types.MessagesSearch> {
-        return this.client.query(Source.MessagesSearchQuery, variables, opts);
+        return this.engine.query('MessagesSearch', variables, opts);
     }
     async refetchMessagesSearch(variables: Types.MessagesSearchVariables): Promise<Types.MessagesSearch> {
-        return this.refetch(Source.MessagesSearchQuery, variables);
+        return this.refetch('MessagesSearch', variables);
     }
     useMessagesSearch(variables: Types.MessagesSearchVariables, opts?: QueryWatchParameters): Types.MessagesSearch {
-        return this.useQuerySuspense(Source.MessagesSearchQuery, variables, opts);
+        return this.useQuerySuspense('MessagesSearch', variables, opts);
     }
     useWithoutLoaderMessagesSearch(variables: Types.MessagesSearchVariables, opts?: QueryWatchParameters): Types.MessagesSearch | null {
-        return this.useQuery(Source.MessagesSearchQuery, variables, opts);
+        return this.useQuery('MessagesSearch', variables, opts);
+    }
+    async updateMessagesSearch(variables: Types.MessagesSearchVariables, updater: (data: Types.MessagesSearch) => Types.MessagesSearch | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'MessagesSearch', variables);
     }
     async queryChatJoin(variables: Types.ChatJoinVariables, opts?: OperationParameters): Promise<Types.ChatJoin> {
-        return this.client.query(Source.ChatJoinQuery, variables, opts);
+        return this.engine.query('ChatJoin', variables, opts);
     }
     async refetchChatJoin(variables: Types.ChatJoinVariables): Promise<Types.ChatJoin> {
-        return this.refetch(Source.ChatJoinQuery, variables);
+        return this.refetch('ChatJoin', variables);
     }
     useChatJoin(variables: Types.ChatJoinVariables, opts?: QueryWatchParameters): Types.ChatJoin {
-        return this.useQuerySuspense(Source.ChatJoinQuery, variables, opts);
+        return this.useQuerySuspense('ChatJoin', variables, opts);
     }
     useWithoutLoaderChatJoin(variables: Types.ChatJoinVariables, opts?: QueryWatchParameters): Types.ChatJoin | null {
-        return this.useQuery(Source.ChatJoinQuery, variables, opts);
+        return this.useQuery('ChatJoin', variables, opts);
+    }
+    async updateChatJoin(variables: Types.ChatJoinVariables, updater: (data: Types.ChatJoin) => Types.ChatJoin | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'ChatJoin', variables);
     }
     async queryComments(variables: Types.CommentsVariables, opts?: OperationParameters): Promise<Types.Comments> {
-        return this.client.query(Source.CommentsQuery, variables, opts);
+        return this.engine.query('Comments', variables, opts);
     }
     async refetchComments(variables: Types.CommentsVariables): Promise<Types.Comments> {
-        return this.refetch(Source.CommentsQuery, variables);
+        return this.refetch('Comments', variables);
     }
     useComments(variables: Types.CommentsVariables, opts?: QueryWatchParameters): Types.Comments {
-        return this.useQuerySuspense(Source.CommentsQuery, variables, opts);
+        return this.useQuerySuspense('Comments', variables, opts);
     }
     useWithoutLoaderComments(variables: Types.CommentsVariables, opts?: QueryWatchParameters): Types.Comments | null {
-        return this.useQuery(Source.CommentsQuery, variables, opts);
+        return this.useQuery('Comments', variables, opts);
+    }
+    async updateComments(variables: Types.CommentsVariables, updater: (data: Types.Comments) => Types.Comments | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'Comments', variables);
     }
     async queryConference(variables: Types.ConferenceVariables, opts?: OperationParameters): Promise<Types.Conference> {
-        return this.client.query(Source.ConferenceQuery, variables, opts);
+        return this.engine.query('Conference', variables, opts);
     }
     async refetchConference(variables: Types.ConferenceVariables): Promise<Types.Conference> {
-        return this.refetch(Source.ConferenceQuery, variables);
+        return this.refetch('Conference', variables);
     }
     useConference(variables: Types.ConferenceVariables, opts?: QueryWatchParameters): Types.Conference {
-        return this.useQuerySuspense(Source.ConferenceQuery, variables, opts);
+        return this.useQuerySuspense('Conference', variables, opts);
     }
     useWithoutLoaderConference(variables: Types.ConferenceVariables, opts?: QueryWatchParameters): Types.Conference | null {
-        return this.useQuery(Source.ConferenceQuery, variables, opts);
+        return this.useQuery('Conference', variables, opts);
+    }
+    async updateConference(variables: Types.ConferenceVariables, updater: (data: Types.Conference) => Types.Conference | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'Conference', variables);
     }
     async queryConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: OperationParameters): Promise<Types.ConferenceMedia> {
-        return this.client.query(Source.ConferenceMediaQuery, variables, opts);
+        return this.engine.query('ConferenceMedia', variables, opts);
     }
     async refetchConferenceMedia(variables: Types.ConferenceMediaVariables): Promise<Types.ConferenceMedia> {
-        return this.refetch(Source.ConferenceMediaQuery, variables);
+        return this.refetch('ConferenceMedia', variables);
     }
     useConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: QueryWatchParameters): Types.ConferenceMedia {
-        return this.useQuerySuspense(Source.ConferenceMediaQuery, variables, opts);
+        return this.useQuerySuspense('ConferenceMedia', variables, opts);
     }
     useWithoutLoaderConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: QueryWatchParameters): Types.ConferenceMedia | null {
-        return this.useQuery(Source.ConferenceMediaQuery, variables, opts);
+        return this.useQuery('ConferenceMedia', variables, opts);
+    }
+    async updateConferenceMedia(variables: Types.ConferenceMediaVariables, updater: (data: Types.ConferenceMedia) => Types.ConferenceMedia | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'ConferenceMedia', variables);
     }
     async queryAvailableRooms(opts?: OperationParameters): Promise<Types.AvailableRooms> {
-        return this.client.query(Source.AvailableRoomsQuery, undefined, opts);
+        return this.engine.query('AvailableRooms', undefined, opts);
     }
     async refetchAvailableRooms(): Promise<Types.AvailableRooms> {
-        return this.refetch(Source.AvailableRoomsQuery);
+        return this.refetch('AvailableRooms');
     }
     useAvailableRooms(opts?: QueryWatchParameters): Types.AvailableRooms {
-        return this.useQuerySuspense(Source.AvailableRoomsQuery, undefined, opts);
+        return this.useQuerySuspense('AvailableRooms', undefined, opts);
     }
     useWithoutLoaderAvailableRooms(opts?: QueryWatchParameters): Types.AvailableRooms | null {
-        return this.useQuery(Source.AvailableRoomsQuery, undefined, opts);
+        return this.useQuery('AvailableRooms', undefined, opts);
+    }
+    async updateAvailableRooms(updater: (data: Types.AvailableRooms) => Types.AvailableRooms | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'AvailableRooms');
     }
     async querySuggestedRooms(opts?: OperationParameters): Promise<Types.SuggestedRooms> {
-        return this.client.query(Source.SuggestedRoomsQuery, undefined, opts);
+        return this.engine.query('SuggestedRooms', undefined, opts);
     }
     async refetchSuggestedRooms(): Promise<Types.SuggestedRooms> {
-        return this.refetch(Source.SuggestedRoomsQuery);
+        return this.refetch('SuggestedRooms');
     }
     useSuggestedRooms(opts?: QueryWatchParameters): Types.SuggestedRooms {
-        return this.useQuerySuspense(Source.SuggestedRoomsQuery, undefined, opts);
+        return this.useQuerySuspense('SuggestedRooms', undefined, opts);
     }
     useWithoutLoaderSuggestedRooms(opts?: QueryWatchParameters): Types.SuggestedRooms | null {
-        return this.useQuery(Source.SuggestedRoomsQuery, undefined, opts);
+        return this.useQuery('SuggestedRooms', undefined, opts);
+    }
+    async updateSuggestedRooms(updater: (data: Types.SuggestedRooms) => Types.SuggestedRooms | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'SuggestedRooms');
     }
     async queryUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, opts?: OperationParameters): Promise<Types.UserAvailableRooms> {
-        return this.client.query(Source.UserAvailableRoomsQuery, variables, opts);
+        return this.engine.query('UserAvailableRooms', variables, opts);
     }
     async refetchUserAvailableRooms(variables: Types.UserAvailableRoomsVariables): Promise<Types.UserAvailableRooms> {
-        return this.refetch(Source.UserAvailableRoomsQuery, variables);
+        return this.refetch('UserAvailableRooms', variables);
     }
     useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, opts?: QueryWatchParameters): Types.UserAvailableRooms {
-        return this.useQuerySuspense(Source.UserAvailableRoomsQuery, variables, opts);
+        return this.useQuerySuspense('UserAvailableRooms', variables, opts);
     }
     useWithoutLoaderUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, opts?: QueryWatchParameters): Types.UserAvailableRooms | null {
-        return this.useQuery(Source.UserAvailableRoomsQuery, variables, opts);
+        return this.useQuery('UserAvailableRooms', variables, opts);
+    }
+    async updateUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, updater: (data: Types.UserAvailableRooms) => Types.UserAvailableRooms | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'UserAvailableRooms', variables);
     }
     async queryGlobalSearch(variables: Types.GlobalSearchVariables, opts?: OperationParameters): Promise<Types.GlobalSearch> {
-        return this.client.query(Source.GlobalSearchQuery, variables, opts);
+        return this.engine.query('GlobalSearch', variables, opts);
     }
     async refetchGlobalSearch(variables: Types.GlobalSearchVariables): Promise<Types.GlobalSearch> {
-        return this.refetch(Source.GlobalSearchQuery, variables);
+        return this.refetch('GlobalSearch', variables);
     }
     useGlobalSearch(variables: Types.GlobalSearchVariables, opts?: QueryWatchParameters): Types.GlobalSearch {
-        return this.useQuerySuspense(Source.GlobalSearchQuery, variables, opts);
+        return this.useQuerySuspense('GlobalSearch', variables, opts);
     }
     useWithoutLoaderGlobalSearch(variables: Types.GlobalSearchVariables, opts?: QueryWatchParameters): Types.GlobalSearch | null {
-        return this.useQuery(Source.GlobalSearchQuery, variables, opts);
+        return this.useQuery('GlobalSearch', variables, opts);
+    }
+    async updateGlobalSearch(variables: Types.GlobalSearchVariables, updater: (data: Types.GlobalSearch) => Types.GlobalSearch | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'GlobalSearch', variables);
     }
     async queryDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: OperationParameters): Promise<Types.DiscoverNextPage> {
-        return this.client.query(Source.DiscoverNextPageQuery, variables, opts);
+        return this.engine.query('DiscoverNextPage', variables, opts);
     }
     async refetchDiscoverNextPage(variables: Types.DiscoverNextPageVariables): Promise<Types.DiscoverNextPage> {
-        return this.refetch(Source.DiscoverNextPageQuery, variables);
+        return this.refetch('DiscoverNextPage', variables);
     }
     useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: QueryWatchParameters): Types.DiscoverNextPage {
-        return this.useQuerySuspense(Source.DiscoverNextPageQuery, variables, opts);
+        return this.useQuerySuspense('DiscoverNextPage', variables, opts);
     }
     useWithoutLoaderDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: QueryWatchParameters): Types.DiscoverNextPage | null {
-        return this.useQuery(Source.DiscoverNextPageQuery, variables, opts);
+        return this.useQuery('DiscoverNextPage', variables, opts);
+    }
+    async updateDiscoverNextPage(variables: Types.DiscoverNextPageVariables, updater: (data: Types.DiscoverNextPage) => Types.DiscoverNextPage | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'DiscoverNextPage', variables);
     }
     async queryDiscoverIsDone(opts?: OperationParameters): Promise<Types.DiscoverIsDone> {
-        return this.client.query(Source.DiscoverIsDoneQuery, undefined, opts);
+        return this.engine.query('DiscoverIsDone', undefined, opts);
     }
     async refetchDiscoverIsDone(): Promise<Types.DiscoverIsDone> {
-        return this.refetch(Source.DiscoverIsDoneQuery);
+        return this.refetch('DiscoverIsDone');
     }
     useDiscoverIsDone(opts?: QueryWatchParameters): Types.DiscoverIsDone {
-        return this.useQuerySuspense(Source.DiscoverIsDoneQuery, undefined, opts);
+        return this.useQuerySuspense('DiscoverIsDone', undefined, opts);
     }
     useWithoutLoaderDiscoverIsDone(opts?: QueryWatchParameters): Types.DiscoverIsDone | null {
-        return this.useQuery(Source.DiscoverIsDoneQuery, undefined, opts);
+        return this.useQuery('DiscoverIsDone', undefined, opts);
+    }
+    async updateDiscoverIsDone(updater: (data: Types.DiscoverIsDone) => Types.DiscoverIsDone | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'DiscoverIsDone');
     }
     async queryDiscoverState(opts?: OperationParameters): Promise<Types.DiscoverState> {
-        return this.client.query(Source.DiscoverStateQuery, undefined, opts);
+        return this.engine.query('DiscoverState', undefined, opts);
     }
     async refetchDiscoverState(): Promise<Types.DiscoverState> {
-        return this.refetch(Source.DiscoverStateQuery);
+        return this.refetch('DiscoverState');
     }
     useDiscoverState(opts?: QueryWatchParameters): Types.DiscoverState {
-        return this.useQuerySuspense(Source.DiscoverStateQuery, undefined, opts);
+        return this.useQuerySuspense('DiscoverState', undefined, opts);
     }
     useWithoutLoaderDiscoverState(opts?: QueryWatchParameters): Types.DiscoverState | null {
-        return this.useQuery(Source.DiscoverStateQuery, undefined, opts);
+        return this.useQuery('DiscoverState', undefined, opts);
+    }
+    async updateDiscoverState(updater: (data: Types.DiscoverState) => Types.DiscoverState | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'DiscoverState');
     }
     async queryFeatureFlags(opts?: OperationParameters): Promise<Types.FeatureFlags> {
-        return this.client.query(Source.FeatureFlagsQuery, undefined, opts);
+        return this.engine.query('FeatureFlags', undefined, opts);
     }
     async refetchFeatureFlags(): Promise<Types.FeatureFlags> {
-        return this.refetch(Source.FeatureFlagsQuery);
+        return this.refetch('FeatureFlags');
     }
     useFeatureFlags(opts?: QueryWatchParameters): Types.FeatureFlags {
-        return this.useQuerySuspense(Source.FeatureFlagsQuery, undefined, opts);
+        return this.useQuerySuspense('FeatureFlags', undefined, opts);
     }
     useWithoutLoaderFeatureFlags(opts?: QueryWatchParameters): Types.FeatureFlags | null {
-        return this.useQuery(Source.FeatureFlagsQuery, undefined, opts);
+        return this.useQuery('FeatureFlags', undefined, opts);
+    }
+    async updateFeatureFlags(updater: (data: Types.FeatureFlags) => Types.FeatureFlags | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'FeatureFlags');
     }
     async queryInitFeed(variables: Types.InitFeedVariables, opts?: OperationParameters): Promise<Types.InitFeed> {
-        return this.client.query(Source.InitFeedQuery, variables, opts);
+        return this.engine.query('InitFeed', variables, opts);
     }
     async refetchInitFeed(variables: Types.InitFeedVariables): Promise<Types.InitFeed> {
-        return this.refetch(Source.InitFeedQuery, variables);
+        return this.refetch('InitFeed', variables);
     }
     useInitFeed(variables: Types.InitFeedVariables, opts?: QueryWatchParameters): Types.InitFeed {
-        return this.useQuerySuspense(Source.InitFeedQuery, variables, opts);
+        return this.useQuerySuspense('InitFeed', variables, opts);
     }
     useWithoutLoaderInitFeed(variables: Types.InitFeedVariables, opts?: QueryWatchParameters): Types.InitFeed | null {
-        return this.useQuery(Source.InitFeedQuery, variables, opts);
+        return this.useQuery('InitFeed', variables, opts);
+    }
+    async updateInitFeed(variables: Types.InitFeedVariables, updater: (data: Types.InitFeed) => Types.InitFeed | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'InitFeed', variables);
     }
     async queryFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts?: OperationParameters): Promise<Types.FeedLoadMore> {
-        return this.client.query(Source.FeedLoadMoreQuery, variables, opts);
+        return this.engine.query('FeedLoadMore', variables, opts);
     }
     async refetchFeedLoadMore(variables: Types.FeedLoadMoreVariables): Promise<Types.FeedLoadMore> {
-        return this.refetch(Source.FeedLoadMoreQuery, variables);
+        return this.refetch('FeedLoadMore', variables);
     }
     useFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts?: QueryWatchParameters): Types.FeedLoadMore {
-        return this.useQuerySuspense(Source.FeedLoadMoreQuery, variables, opts);
+        return this.useQuerySuspense('FeedLoadMore', variables, opts);
     }
     useWithoutLoaderFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts?: QueryWatchParameters): Types.FeedLoadMore | null {
-        return this.useQuery(Source.FeedLoadMoreQuery, variables, opts);
+        return this.useQuery('FeedLoadMore', variables, opts);
+    }
+    async updateFeedLoadMore(variables: Types.FeedLoadMoreVariables, updater: (data: Types.FeedLoadMore) => Types.FeedLoadMore | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'FeedLoadMore', variables);
     }
     async queryFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, opts?: OperationParameters): Promise<Types.FeedSubscriptions> {
-        return this.client.query(Source.FeedSubscriptionsQuery, variables, opts);
+        return this.engine.query('FeedSubscriptions', variables, opts);
     }
     async refetchFeedSubscriptions(variables: Types.FeedSubscriptionsVariables): Promise<Types.FeedSubscriptions> {
-        return this.refetch(Source.FeedSubscriptionsQuery, variables);
+        return this.refetch('FeedSubscriptions', variables);
     }
     useFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, opts?: QueryWatchParameters): Types.FeedSubscriptions {
-        return this.useQuerySuspense(Source.FeedSubscriptionsQuery, variables, opts);
+        return this.useQuerySuspense('FeedSubscriptions', variables, opts);
     }
     useWithoutLoaderFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, opts?: QueryWatchParameters): Types.FeedSubscriptions | null {
-        return this.useQuery(Source.FeedSubscriptionsQuery, variables, opts);
+        return this.useQuery('FeedSubscriptions', variables, opts);
+    }
+    async updateFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, updater: (data: Types.FeedSubscriptions) => Types.FeedSubscriptions | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'FeedSubscriptions', variables);
     }
     async queryFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts?: OperationParameters): Promise<Types.FeedWritableChannels> {
-        return this.client.query(Source.FeedWritableChannelsQuery, variables, opts);
+        return this.engine.query('FeedWritableChannels', variables, opts);
     }
     async refetchFeedWritableChannels(variables: Types.FeedWritableChannelsVariables): Promise<Types.FeedWritableChannels> {
-        return this.refetch(Source.FeedWritableChannelsQuery, variables);
+        return this.refetch('FeedWritableChannels', variables);
     }
     useFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts?: QueryWatchParameters): Types.FeedWritableChannels {
-        return this.useQuerySuspense(Source.FeedWritableChannelsQuery, variables, opts);
+        return this.useQuerySuspense('FeedWritableChannels', variables, opts);
     }
     useWithoutLoaderFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts?: QueryWatchParameters): Types.FeedWritableChannels | null {
-        return this.useQuery(Source.FeedWritableChannelsQuery, variables, opts);
+        return this.useQuery('FeedWritableChannels', variables, opts);
+    }
+    async updateFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, updater: (data: Types.FeedWritableChannels) => Types.FeedWritableChannels | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'FeedWritableChannels', variables);
     }
     async queryFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts?: OperationParameters): Promise<Types.FeedChannelsSearch> {
-        return this.client.query(Source.FeedChannelsSearchQuery, variables, opts);
+        return this.engine.query('FeedChannelsSearch', variables, opts);
     }
     async refetchFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables): Promise<Types.FeedChannelsSearch> {
-        return this.refetch(Source.FeedChannelsSearchQuery, variables);
+        return this.refetch('FeedChannelsSearch', variables);
     }
     useFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts?: QueryWatchParameters): Types.FeedChannelsSearch {
-        return this.useQuerySuspense(Source.FeedChannelsSearchQuery, variables, opts);
+        return this.useQuerySuspense('FeedChannelsSearch', variables, opts);
     }
     useWithoutLoaderFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts?: QueryWatchParameters): Types.FeedChannelsSearch | null {
-        return this.useQuery(Source.FeedChannelsSearchQuery, variables, opts);
+        return this.useQuery('FeedChannelsSearch', variables, opts);
+    }
+    async updateFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, updater: (data: Types.FeedChannelsSearch) => Types.FeedChannelsSearch | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'FeedChannelsSearch', variables);
     }
     async queryFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, opts?: OperationParameters): Promise<Types.FeedRecommendedChannels> {
-        return this.client.query(Source.FeedRecommendedChannelsQuery, variables, opts);
+        return this.engine.query('FeedRecommendedChannels', variables, opts);
     }
     async refetchFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables): Promise<Types.FeedRecommendedChannels> {
-        return this.refetch(Source.FeedRecommendedChannelsQuery, variables);
+        return this.refetch('FeedRecommendedChannels', variables);
     }
     useFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, opts?: QueryWatchParameters): Types.FeedRecommendedChannels {
-        return this.useQuerySuspense(Source.FeedRecommendedChannelsQuery, variables, opts);
+        return this.useQuerySuspense('FeedRecommendedChannels', variables, opts);
     }
     useWithoutLoaderFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, opts?: QueryWatchParameters): Types.FeedRecommendedChannels | null {
-        return this.useQuery(Source.FeedRecommendedChannelsQuery, variables, opts);
+        return this.useQuery('FeedRecommendedChannels', variables, opts);
+    }
+    async updateFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, updater: (data: Types.FeedRecommendedChannels) => Types.FeedRecommendedChannels | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'FeedRecommendedChannels', variables);
     }
     async queryFeedChannel(variables: Types.FeedChannelVariables, opts?: OperationParameters): Promise<Types.FeedChannel> {
-        return this.client.query(Source.FeedChannelQuery, variables, opts);
+        return this.engine.query('FeedChannel', variables, opts);
     }
     async refetchFeedChannel(variables: Types.FeedChannelVariables): Promise<Types.FeedChannel> {
-        return this.refetch(Source.FeedChannelQuery, variables);
+        return this.refetch('FeedChannel', variables);
     }
     useFeedChannel(variables: Types.FeedChannelVariables, opts?: QueryWatchParameters): Types.FeedChannel {
-        return this.useQuerySuspense(Source.FeedChannelQuery, variables, opts);
+        return this.useQuerySuspense('FeedChannel', variables, opts);
     }
     useWithoutLoaderFeedChannel(variables: Types.FeedChannelVariables, opts?: QueryWatchParameters): Types.FeedChannel | null {
-        return this.useQuery(Source.FeedChannelQuery, variables, opts);
+        return this.useQuery('FeedChannel', variables, opts);
+    }
+    async updateFeedChannel(variables: Types.FeedChannelVariables, updater: (data: Types.FeedChannel) => Types.FeedChannel | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'FeedChannel', variables);
     }
     async queryFeedChannelWriters(variables: Types.FeedChannelWritersVariables, opts?: OperationParameters): Promise<Types.FeedChannelWriters> {
-        return this.client.query(Source.FeedChannelWritersQuery, variables, opts);
+        return this.engine.query('FeedChannelWriters', variables, opts);
     }
     async refetchFeedChannelWriters(variables: Types.FeedChannelWritersVariables): Promise<Types.FeedChannelWriters> {
-        return this.refetch(Source.FeedChannelWritersQuery, variables);
+        return this.refetch('FeedChannelWriters', variables);
     }
     useFeedChannelWriters(variables: Types.FeedChannelWritersVariables, opts?: QueryWatchParameters): Types.FeedChannelWriters {
-        return this.useQuerySuspense(Source.FeedChannelWritersQuery, variables, opts);
+        return this.useQuerySuspense('FeedChannelWriters', variables, opts);
     }
     useWithoutLoaderFeedChannelWriters(variables: Types.FeedChannelWritersVariables, opts?: QueryWatchParameters): Types.FeedChannelWriters | null {
-        return this.useQuery(Source.FeedChannelWritersQuery, variables, opts);
+        return this.useQuery('FeedChannelWriters', variables, opts);
+    }
+    async updateFeedChannelWriters(variables: Types.FeedChannelWritersVariables, updater: (data: Types.FeedChannelWriters) => Types.FeedChannelWriters | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'FeedChannelWriters', variables);
     }
     async queryFeedChannelSubscribers(variables: Types.FeedChannelSubscribersVariables, opts?: OperationParameters): Promise<Types.FeedChannelSubscribers> {
-        return this.client.query(Source.FeedChannelSubscribersQuery, variables, opts);
+        return this.engine.query('FeedChannelSubscribers', variables, opts);
     }
     async refetchFeedChannelSubscribers(variables: Types.FeedChannelSubscribersVariables): Promise<Types.FeedChannelSubscribers> {
-        return this.refetch(Source.FeedChannelSubscribersQuery, variables);
+        return this.refetch('FeedChannelSubscribers', variables);
     }
     useFeedChannelSubscribers(variables: Types.FeedChannelSubscribersVariables, opts?: QueryWatchParameters): Types.FeedChannelSubscribers {
-        return this.useQuerySuspense(Source.FeedChannelSubscribersQuery, variables, opts);
+        return this.useQuerySuspense('FeedChannelSubscribers', variables, opts);
     }
     useWithoutLoaderFeedChannelSubscribers(variables: Types.FeedChannelSubscribersVariables, opts?: QueryWatchParameters): Types.FeedChannelSubscribers | null {
-        return this.useQuery(Source.FeedChannelSubscribersQuery, variables, opts);
+        return this.useQuery('FeedChannelSubscribers', variables, opts);
+    }
+    async updateFeedChannelSubscribers(variables: Types.FeedChannelSubscribersVariables, updater: (data: Types.FeedChannelSubscribers) => Types.FeedChannelSubscribers | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'FeedChannelSubscribers', variables);
     }
     async queryFeedChannelContent(variables: Types.FeedChannelContentVariables, opts?: OperationParameters): Promise<Types.FeedChannelContent> {
-        return this.client.query(Source.FeedChannelContentQuery, variables, opts);
+        return this.engine.query('FeedChannelContent', variables, opts);
     }
     async refetchFeedChannelContent(variables: Types.FeedChannelContentVariables): Promise<Types.FeedChannelContent> {
-        return this.refetch(Source.FeedChannelContentQuery, variables);
+        return this.refetch('FeedChannelContent', variables);
     }
     useFeedChannelContent(variables: Types.FeedChannelContentVariables, opts?: QueryWatchParameters): Types.FeedChannelContent {
-        return this.useQuerySuspense(Source.FeedChannelContentQuery, variables, opts);
+        return this.useQuerySuspense('FeedChannelContent', variables, opts);
     }
     useWithoutLoaderFeedChannelContent(variables: Types.FeedChannelContentVariables, opts?: QueryWatchParameters): Types.FeedChannelContent | null {
-        return this.useQuery(Source.FeedChannelContentQuery, variables, opts);
+        return this.useQuery('FeedChannelContent', variables, opts);
+    }
+    async updateFeedChannelContent(variables: Types.FeedChannelContentVariables, updater: (data: Types.FeedChannelContent) => Types.FeedChannelContent | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'FeedChannelContent', variables);
     }
     async queryFeedItem(variables: Types.FeedItemVariables, opts?: OperationParameters): Promise<Types.FeedItem> {
-        return this.client.query(Source.FeedItemQuery, variables, opts);
+        return this.engine.query('FeedItem', variables, opts);
     }
     async refetchFeedItem(variables: Types.FeedItemVariables): Promise<Types.FeedItem> {
-        return this.refetch(Source.FeedItemQuery, variables);
+        return this.refetch('FeedItem', variables);
     }
     useFeedItem(variables: Types.FeedItemVariables, opts?: QueryWatchParameters): Types.FeedItem {
-        return this.useQuerySuspense(Source.FeedItemQuery, variables, opts);
+        return this.useQuerySuspense('FeedItem', variables, opts);
     }
     useWithoutLoaderFeedItem(variables: Types.FeedItemVariables, opts?: QueryWatchParameters): Types.FeedItem | null {
-        return this.useQuery(Source.FeedItemQuery, variables, opts);
+        return this.useQuery('FeedItem', variables, opts);
+    }
+    async updateFeedItem(variables: Types.FeedItemVariables, updater: (data: Types.FeedItem) => Types.FeedItem | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'FeedItem', variables);
     }
     async queryMyCards(opts?: OperationParameters): Promise<Types.MyCards> {
-        return this.client.query(Source.MyCardsQuery, undefined, opts);
+        return this.engine.query('MyCards', undefined, opts);
     }
     async refetchMyCards(): Promise<Types.MyCards> {
-        return this.refetch(Source.MyCardsQuery);
+        return this.refetch('MyCards');
     }
     useMyCards(opts?: QueryWatchParameters): Types.MyCards {
-        return this.useQuerySuspense(Source.MyCardsQuery, undefined, opts);
+        return this.useQuerySuspense('MyCards', undefined, opts);
     }
     useWithoutLoaderMyCards(opts?: QueryWatchParameters): Types.MyCards | null {
-        return this.useQuery(Source.MyCardsQuery, undefined, opts);
+        return this.useQuery('MyCards', undefined, opts);
+    }
+    async updateMyCards(updater: (data: Types.MyCards) => Types.MyCards | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'MyCards');
     }
     async queryMyWallet(opts?: OperationParameters): Promise<Types.MyWallet> {
-        return this.client.query(Source.MyWalletQuery, undefined, opts);
+        return this.engine.query('MyWallet', undefined, opts);
     }
     async refetchMyWallet(): Promise<Types.MyWallet> {
-        return this.refetch(Source.MyWalletQuery);
+        return this.refetch('MyWallet');
     }
     useMyWallet(opts?: QueryWatchParameters): Types.MyWallet {
-        return this.useQuerySuspense(Source.MyWalletQuery, undefined, opts);
+        return this.useQuerySuspense('MyWallet', undefined, opts);
     }
     useWithoutLoaderMyWallet(opts?: QueryWatchParameters): Types.MyWallet | null {
-        return this.useQuery(Source.MyWalletQuery, undefined, opts);
+        return this.useQuery('MyWallet', undefined, opts);
+    }
+    async updateMyWallet(updater: (data: Types.MyWallet) => Types.MyWallet | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'MyWallet');
     }
     async queryMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: OperationParameters): Promise<Types.MatchmakingRoom> {
-        return this.client.query(Source.MatchmakingRoomQuery, variables, opts);
+        return this.engine.query('MatchmakingRoom', variables, opts);
     }
     async refetchMatchmakingRoom(variables: Types.MatchmakingRoomVariables): Promise<Types.MatchmakingRoom> {
-        return this.refetch(Source.MatchmakingRoomQuery, variables);
+        return this.refetch('MatchmakingRoom', variables);
     }
     useMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: QueryWatchParameters): Types.MatchmakingRoom {
-        return this.useQuerySuspense(Source.MatchmakingRoomQuery, variables, opts);
+        return this.useQuerySuspense('MatchmakingRoom', variables, opts);
     }
     useWithoutLoaderMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: QueryWatchParameters): Types.MatchmakingRoom | null {
-        return this.useQuery(Source.MatchmakingRoomQuery, variables, opts);
+        return this.useQuery('MatchmakingRoom', variables, opts);
+    }
+    async updateMatchmakingRoom(variables: Types.MatchmakingRoomVariables, updater: (data: Types.MatchmakingRoom) => Types.MatchmakingRoom | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'MatchmakingRoom', variables);
     }
     async queryMatchmakingProfile(variables: Types.MatchmakingProfileVariables, opts?: OperationParameters): Promise<Types.MatchmakingProfile> {
-        return this.client.query(Source.MatchmakingProfileQuery, variables, opts);
+        return this.engine.query('MatchmakingProfile', variables, opts);
     }
     async refetchMatchmakingProfile(variables: Types.MatchmakingProfileVariables): Promise<Types.MatchmakingProfile> {
-        return this.refetch(Source.MatchmakingProfileQuery, variables);
+        return this.refetch('MatchmakingProfile', variables);
     }
     useMatchmakingProfile(variables: Types.MatchmakingProfileVariables, opts?: QueryWatchParameters): Types.MatchmakingProfile {
-        return this.useQuerySuspense(Source.MatchmakingProfileQuery, variables, opts);
+        return this.useQuerySuspense('MatchmakingProfile', variables, opts);
     }
     useWithoutLoaderMatchmakingProfile(variables: Types.MatchmakingProfileVariables, opts?: QueryWatchParameters): Types.MatchmakingProfile | null {
-        return this.useQuery(Source.MatchmakingProfileQuery, variables, opts);
+        return this.useQuery('MatchmakingProfile', variables, opts);
+    }
+    async updateMatchmakingProfile(variables: Types.MatchmakingProfileVariables, updater: (data: Types.MatchmakingProfile) => Types.MatchmakingProfile | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'MatchmakingProfile', variables);
     }
     async queryChatMentionSearch(variables: Types.ChatMentionSearchVariables, opts?: OperationParameters): Promise<Types.ChatMentionSearch> {
-        return this.client.query(Source.ChatMentionSearchQuery, variables, opts);
+        return this.engine.query('ChatMentionSearch', variables, opts);
     }
     async refetchChatMentionSearch(variables: Types.ChatMentionSearchVariables): Promise<Types.ChatMentionSearch> {
-        return this.refetch(Source.ChatMentionSearchQuery, variables);
+        return this.refetch('ChatMentionSearch', variables);
     }
     useChatMentionSearch(variables: Types.ChatMentionSearchVariables, opts?: QueryWatchParameters): Types.ChatMentionSearch {
-        return this.useQuerySuspense(Source.ChatMentionSearchQuery, variables, opts);
+        return this.useQuerySuspense('ChatMentionSearch', variables, opts);
     }
     useWithoutLoaderChatMentionSearch(variables: Types.ChatMentionSearchVariables, opts?: QueryWatchParameters): Types.ChatMentionSearch | null {
-        return this.useQuery(Source.ChatMentionSearchQuery, variables, opts);
+        return this.useQuery('ChatMentionSearch', variables, opts);
+    }
+    async updateChatMentionSearch(variables: Types.ChatMentionSearchVariables, updater: (data: Types.ChatMentionSearch) => Types.ChatMentionSearch | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'ChatMentionSearch', variables);
     }
     async queryMyNotifications(variables: Types.MyNotificationsVariables, opts?: OperationParameters): Promise<Types.MyNotifications> {
-        return this.client.query(Source.MyNotificationsQuery, variables, opts);
+        return this.engine.query('MyNotifications', variables, opts);
     }
     async refetchMyNotifications(variables: Types.MyNotificationsVariables): Promise<Types.MyNotifications> {
-        return this.refetch(Source.MyNotificationsQuery, variables);
+        return this.refetch('MyNotifications', variables);
     }
     useMyNotifications(variables: Types.MyNotificationsVariables, opts?: QueryWatchParameters): Types.MyNotifications {
-        return this.useQuerySuspense(Source.MyNotificationsQuery, variables, opts);
+        return this.useQuerySuspense('MyNotifications', variables, opts);
     }
     useWithoutLoaderMyNotifications(variables: Types.MyNotificationsVariables, opts?: QueryWatchParameters): Types.MyNotifications | null {
-        return this.useQuery(Source.MyNotificationsQuery, variables, opts);
+        return this.useQuery('MyNotifications', variables, opts);
+    }
+    async updateMyNotifications(variables: Types.MyNotificationsVariables, updater: (data: Types.MyNotifications) => Types.MyNotifications | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'MyNotifications', variables);
     }
     async queryMyNotificationCenter(opts?: OperationParameters): Promise<Types.MyNotificationCenter> {
-        return this.client.query(Source.MyNotificationCenterQuery, undefined, opts);
+        return this.engine.query('MyNotificationCenter', undefined, opts);
     }
     async refetchMyNotificationCenter(): Promise<Types.MyNotificationCenter> {
-        return this.refetch(Source.MyNotificationCenterQuery);
+        return this.refetch('MyNotificationCenter');
     }
     useMyNotificationCenter(opts?: QueryWatchParameters): Types.MyNotificationCenter {
-        return this.useQuerySuspense(Source.MyNotificationCenterQuery, undefined, opts);
+        return this.useQuerySuspense('MyNotificationCenter', undefined, opts);
     }
     useWithoutLoaderMyNotificationCenter(opts?: QueryWatchParameters): Types.MyNotificationCenter | null {
-        return this.useQuery(Source.MyNotificationCenterQuery, undefined, opts);
+        return this.useQuery('MyNotificationCenter', undefined, opts);
+    }
+    async updateMyNotificationCenter(updater: (data: Types.MyNotificationCenter) => Types.MyNotificationCenter | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'MyNotificationCenter');
     }
     async queryOauthContext(variables: Types.OauthContextVariables, opts?: OperationParameters): Promise<Types.OauthContext> {
-        return this.client.query(Source.OauthContextQuery, variables, opts);
+        return this.engine.query('OauthContext', variables, opts);
     }
     async refetchOauthContext(variables: Types.OauthContextVariables): Promise<Types.OauthContext> {
-        return this.refetch(Source.OauthContextQuery, variables);
+        return this.refetch('OauthContext', variables);
     }
     useOauthContext(variables: Types.OauthContextVariables, opts?: QueryWatchParameters): Types.OauthContext {
-        return this.useQuerySuspense(Source.OauthContextQuery, variables, opts);
+        return this.useQuerySuspense('OauthContext', variables, opts);
     }
     useWithoutLoaderOauthContext(variables: Types.OauthContextVariables, opts?: QueryWatchParameters): Types.OauthContext | null {
-        return this.useQuery(Source.OauthContextQuery, variables, opts);
+        return this.useQuery('OauthContext', variables, opts);
+    }
+    async updateOauthContext(variables: Types.OauthContextVariables, updater: (data: Types.OauthContext) => Types.OauthContext | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'OauthContext', variables);
     }
     async queryMyOrganizations(opts?: OperationParameters): Promise<Types.MyOrganizations> {
-        return this.client.query(Source.MyOrganizationsQuery, undefined, opts);
+        return this.engine.query('MyOrganizations', undefined, opts);
     }
     async refetchMyOrganizations(): Promise<Types.MyOrganizations> {
-        return this.refetch(Source.MyOrganizationsQuery);
+        return this.refetch('MyOrganizations');
     }
     useMyOrganizations(opts?: QueryWatchParameters): Types.MyOrganizations {
-        return this.useQuerySuspense(Source.MyOrganizationsQuery, undefined, opts);
+        return this.useQuerySuspense('MyOrganizations', undefined, opts);
     }
     useWithoutLoaderMyOrganizations(opts?: QueryWatchParameters): Types.MyOrganizations | null {
-        return this.useQuery(Source.MyOrganizationsQuery, undefined, opts);
+        return this.useQuery('MyOrganizations', undefined, opts);
+    }
+    async updateMyOrganizations(updater: (data: Types.MyOrganizations) => Types.MyOrganizations | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'MyOrganizations');
     }
     async queryOrganization(variables: Types.OrganizationVariables, opts?: OperationParameters): Promise<Types.Organization> {
-        return this.client.query(Source.OrganizationQuery, variables, opts);
+        return this.engine.query('Organization', variables, opts);
     }
     async refetchOrganization(variables: Types.OrganizationVariables): Promise<Types.Organization> {
-        return this.refetch(Source.OrganizationQuery, variables);
+        return this.refetch('Organization', variables);
     }
     useOrganization(variables: Types.OrganizationVariables, opts?: QueryWatchParameters): Types.Organization {
-        return this.useQuerySuspense(Source.OrganizationQuery, variables, opts);
+        return this.useQuerySuspense('Organization', variables, opts);
     }
     useWithoutLoaderOrganization(variables: Types.OrganizationVariables, opts?: QueryWatchParameters): Types.Organization | null {
-        return this.useQuery(Source.OrganizationQuery, variables, opts);
+        return this.useQuery('Organization', variables, opts);
+    }
+    async updateOrganization(variables: Types.OrganizationVariables, updater: (data: Types.Organization) => Types.Organization | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'Organization', variables);
     }
     async queryOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, opts?: OperationParameters): Promise<Types.OrganizationWithoutMembers> {
-        return this.client.query(Source.OrganizationWithoutMembersQuery, variables, opts);
+        return this.engine.query('OrganizationWithoutMembers', variables, opts);
     }
     async refetchOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables): Promise<Types.OrganizationWithoutMembers> {
-        return this.refetch(Source.OrganizationWithoutMembersQuery, variables);
+        return this.refetch('OrganizationWithoutMembers', variables);
     }
     useOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, opts?: QueryWatchParameters): Types.OrganizationWithoutMembers {
-        return this.useQuerySuspense(Source.OrganizationWithoutMembersQuery, variables, opts);
+        return this.useQuerySuspense('OrganizationWithoutMembers', variables, opts);
     }
     useWithoutLoaderOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, opts?: QueryWatchParameters): Types.OrganizationWithoutMembers | null {
-        return this.useQuery(Source.OrganizationWithoutMembersQuery, variables, opts);
+        return this.useQuery('OrganizationWithoutMembers', variables, opts);
+    }
+    async updateOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, updater: (data: Types.OrganizationWithoutMembers) => Types.OrganizationWithoutMembers | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'OrganizationWithoutMembers', variables);
     }
     async queryOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, opts?: OperationParameters): Promise<Types.OrganizationMembersShort> {
-        return this.client.query(Source.OrganizationMembersShortQuery, variables, opts);
+        return this.engine.query('OrganizationMembersShort', variables, opts);
     }
     async refetchOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables): Promise<Types.OrganizationMembersShort> {
-        return this.refetch(Source.OrganizationMembersShortQuery, variables);
+        return this.refetch('OrganizationMembersShort', variables);
     }
     useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, opts?: QueryWatchParameters): Types.OrganizationMembersShort {
-        return this.useQuerySuspense(Source.OrganizationMembersShortQuery, variables, opts);
+        return this.useQuerySuspense('OrganizationMembersShort', variables, opts);
     }
     useWithoutLoaderOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, opts?: QueryWatchParameters): Types.OrganizationMembersShort | null {
-        return this.useQuery(Source.OrganizationMembersShortQuery, variables, opts);
+        return this.useQuery('OrganizationMembersShort', variables, opts);
+    }
+    async updateOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, updater: (data: Types.OrganizationMembersShort) => Types.OrganizationMembersShort | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'OrganizationMembersShort', variables);
     }
     async queryOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: OperationParameters): Promise<Types.OrganizationMembers> {
-        return this.client.query(Source.OrganizationMembersQuery, variables, opts);
+        return this.engine.query('OrganizationMembers', variables, opts);
     }
     async refetchOrganizationMembers(variables: Types.OrganizationMembersVariables): Promise<Types.OrganizationMembers> {
-        return this.refetch(Source.OrganizationMembersQuery, variables);
+        return this.refetch('OrganizationMembers', variables);
     }
     useOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: QueryWatchParameters): Types.OrganizationMembers {
-        return this.useQuerySuspense(Source.OrganizationMembersQuery, variables, opts);
+        return this.useQuerySuspense('OrganizationMembers', variables, opts);
     }
     useWithoutLoaderOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: QueryWatchParameters): Types.OrganizationMembers | null {
-        return this.useQuery(Source.OrganizationMembersQuery, variables, opts);
+        return this.useQuery('OrganizationMembers', variables, opts);
+    }
+    async updateOrganizationMembers(variables: Types.OrganizationMembersVariables, updater: (data: Types.OrganizationMembers) => Types.OrganizationMembers | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'OrganizationMembers', variables);
     }
     async queryOrganizationProfile(variables: Types.OrganizationProfileVariables, opts?: OperationParameters): Promise<Types.OrganizationProfile> {
-        return this.client.query(Source.OrganizationProfileQuery, variables, opts);
+        return this.engine.query('OrganizationProfile', variables, opts);
     }
     async refetchOrganizationProfile(variables: Types.OrganizationProfileVariables): Promise<Types.OrganizationProfile> {
-        return this.refetch(Source.OrganizationProfileQuery, variables);
+        return this.refetch('OrganizationProfile', variables);
     }
     useOrganizationProfile(variables: Types.OrganizationProfileVariables, opts?: QueryWatchParameters): Types.OrganizationProfile {
-        return this.useQuerySuspense(Source.OrganizationProfileQuery, variables, opts);
+        return this.useQuerySuspense('OrganizationProfile', variables, opts);
     }
     useWithoutLoaderOrganizationProfile(variables: Types.OrganizationProfileVariables, opts?: QueryWatchParameters): Types.OrganizationProfile | null {
-        return this.useQuery(Source.OrganizationProfileQuery, variables, opts);
+        return this.useQuery('OrganizationProfile', variables, opts);
+    }
+    async updateOrganizationProfile(variables: Types.OrganizationProfileVariables, updater: (data: Types.OrganizationProfile) => Types.OrganizationProfile | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'OrganizationProfile', variables);
     }
     async queryExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: OperationParameters): Promise<Types.ExploreCommunity> {
-        return this.client.query(Source.ExploreCommunityQuery, variables, opts);
+        return this.engine.query('ExploreCommunity', variables, opts);
     }
     async refetchExploreCommunity(variables: Types.ExploreCommunityVariables): Promise<Types.ExploreCommunity> {
-        return this.refetch(Source.ExploreCommunityQuery, variables);
+        return this.refetch('ExploreCommunity', variables);
     }
     useExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: QueryWatchParameters): Types.ExploreCommunity {
-        return this.useQuerySuspense(Source.ExploreCommunityQuery, variables, opts);
+        return this.useQuerySuspense('ExploreCommunity', variables, opts);
     }
     useWithoutLoaderExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: QueryWatchParameters): Types.ExploreCommunity | null {
-        return this.useQuery(Source.ExploreCommunityQuery, variables, opts);
+        return this.useQuery('ExploreCommunity', variables, opts);
+    }
+    async updateExploreCommunity(variables: Types.ExploreCommunityVariables, updater: (data: Types.ExploreCommunity) => Types.ExploreCommunity | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'ExploreCommunity', variables);
     }
     async queryOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, opts?: OperationParameters): Promise<Types.OrganizationPublicInvite> {
-        return this.client.query(Source.OrganizationPublicInviteQuery, variables, opts);
+        return this.engine.query('OrganizationPublicInvite', variables, opts);
     }
     async refetchOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables): Promise<Types.OrganizationPublicInvite> {
-        return this.refetch(Source.OrganizationPublicInviteQuery, variables);
+        return this.refetch('OrganizationPublicInvite', variables);
     }
     useOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, opts?: QueryWatchParameters): Types.OrganizationPublicInvite {
-        return this.useQuerySuspense(Source.OrganizationPublicInviteQuery, variables, opts);
+        return this.useQuerySuspense('OrganizationPublicInvite', variables, opts);
     }
     useWithoutLoaderOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, opts?: QueryWatchParameters): Types.OrganizationPublicInvite | null {
-        return this.useQuery(Source.OrganizationPublicInviteQuery, variables, opts);
+        return this.useQuery('OrganizationPublicInvite', variables, opts);
+    }
+    async updateOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, updater: (data: Types.OrganizationPublicInvite) => Types.OrganizationPublicInvite | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'OrganizationPublicInvite', variables);
     }
     async queryOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables, opts?: OperationParameters): Promise<Types.OrganizationByPrefix> {
-        return this.client.query(Source.OrganizationByPrefixQuery, variables, opts);
+        return this.engine.query('OrganizationByPrefix', variables, opts);
     }
     async refetchOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables): Promise<Types.OrganizationByPrefix> {
-        return this.refetch(Source.OrganizationByPrefixQuery, variables);
+        return this.refetch('OrganizationByPrefix', variables);
     }
     useOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables, opts?: QueryWatchParameters): Types.OrganizationByPrefix {
-        return this.useQuerySuspense(Source.OrganizationByPrefixQuery, variables, opts);
+        return this.useQuerySuspense('OrganizationByPrefix', variables, opts);
     }
     useWithoutLoaderOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables, opts?: QueryWatchParameters): Types.OrganizationByPrefix | null {
-        return this.useQuery(Source.OrganizationByPrefixQuery, variables, opts);
+        return this.useQuery('OrganizationByPrefix', variables, opts);
+    }
+    async updateOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables, updater: (data: Types.OrganizationByPrefix) => Types.OrganizationByPrefix | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'OrganizationByPrefix', variables);
     }
     async queryOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: OperationParameters): Promise<Types.OrganizationPublicRooms> {
-        return this.client.query(Source.OrganizationPublicRoomsQuery, variables, opts);
+        return this.engine.query('OrganizationPublicRooms', variables, opts);
     }
     async refetchOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables): Promise<Types.OrganizationPublicRooms> {
-        return this.refetch(Source.OrganizationPublicRoomsQuery, variables);
+        return this.refetch('OrganizationPublicRooms', variables);
     }
     useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: QueryWatchParameters): Types.OrganizationPublicRooms {
-        return this.useQuerySuspense(Source.OrganizationPublicRoomsQuery, variables, opts);
+        return this.useQuerySuspense('OrganizationPublicRooms', variables, opts);
     }
     useWithoutLoaderOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: QueryWatchParameters): Types.OrganizationPublicRooms | null {
-        return this.useQuery(Source.OrganizationPublicRoomsQuery, variables, opts);
+        return this.useQuery('OrganizationPublicRooms', variables, opts);
+    }
+    async updateOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, updater: (data: Types.OrganizationPublicRooms) => Types.OrganizationPublicRooms | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'OrganizationPublicRooms', variables);
     }
     async queryPermissions(opts?: OperationParameters): Promise<Types.Permissions> {
-        return this.client.query(Source.PermissionsQuery, undefined, opts);
+        return this.engine.query('Permissions', undefined, opts);
     }
     async refetchPermissions(): Promise<Types.Permissions> {
-        return this.refetch(Source.PermissionsQuery);
+        return this.refetch('Permissions');
     }
     usePermissions(opts?: QueryWatchParameters): Types.Permissions {
-        return this.useQuerySuspense(Source.PermissionsQuery, undefined, opts);
+        return this.useQuerySuspense('Permissions', undefined, opts);
     }
     useWithoutLoaderPermissions(opts?: QueryWatchParameters): Types.Permissions | null {
-        return this.useQuery(Source.PermissionsQuery, undefined, opts);
+        return this.useQuery('Permissions', undefined, opts);
+    }
+    async updatePermissions(updater: (data: Types.Permissions) => Types.Permissions | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'Permissions');
     }
     async querySuperAdmins(opts?: OperationParameters): Promise<Types.SuperAdmins> {
-        return this.client.query(Source.SuperAdminsQuery, undefined, opts);
+        return this.engine.query('SuperAdmins', undefined, opts);
     }
     async refetchSuperAdmins(): Promise<Types.SuperAdmins> {
-        return this.refetch(Source.SuperAdminsQuery);
+        return this.refetch('SuperAdmins');
     }
     useSuperAdmins(opts?: QueryWatchParameters): Types.SuperAdmins {
-        return this.useQuerySuspense(Source.SuperAdminsQuery, undefined, opts);
+        return this.useQuerySuspense('SuperAdmins', undefined, opts);
     }
     useWithoutLoaderSuperAdmins(opts?: QueryWatchParameters): Types.SuperAdmins | null {
-        return this.useQuery(Source.SuperAdminsQuery, undefined, opts);
+        return this.useQuery('SuperAdmins', undefined, opts);
+    }
+    async updateSuperAdmins(updater: (data: Types.SuperAdmins) => Types.SuperAdmins | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'SuperAdmins');
     }
     async querySuperAccounts(opts?: OperationParameters): Promise<Types.SuperAccounts> {
-        return this.client.query(Source.SuperAccountsQuery, undefined, opts);
+        return this.engine.query('SuperAccounts', undefined, opts);
     }
     async refetchSuperAccounts(): Promise<Types.SuperAccounts> {
-        return this.refetch(Source.SuperAccountsQuery);
+        return this.refetch('SuperAccounts');
     }
     useSuperAccounts(opts?: QueryWatchParameters): Types.SuperAccounts {
-        return this.useQuerySuspense(Source.SuperAccountsQuery, undefined, opts);
+        return this.useQuerySuspense('SuperAccounts', undefined, opts);
     }
     useWithoutLoaderSuperAccounts(opts?: QueryWatchParameters): Types.SuperAccounts | null {
-        return this.useQuery(Source.SuperAccountsQuery, undefined, opts);
+        return this.useQuery('SuperAccounts', undefined, opts);
+    }
+    async updateSuperAccounts(updater: (data: Types.SuperAccounts) => Types.SuperAccounts | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'SuperAccounts');
     }
     async querySuperAccount(variables: Types.SuperAccountVariables, opts?: OperationParameters): Promise<Types.SuperAccount> {
-        return this.client.query(Source.SuperAccountQuery, variables, opts);
+        return this.engine.query('SuperAccount', variables, opts);
     }
     async refetchSuperAccount(variables: Types.SuperAccountVariables): Promise<Types.SuperAccount> {
-        return this.refetch(Source.SuperAccountQuery, variables);
+        return this.refetch('SuperAccount', variables);
     }
     useSuperAccount(variables: Types.SuperAccountVariables, opts?: QueryWatchParameters): Types.SuperAccount {
-        return this.useQuerySuspense(Source.SuperAccountQuery, variables, opts);
+        return this.useQuerySuspense('SuperAccount', variables, opts);
     }
     useWithoutLoaderSuperAccount(variables: Types.SuperAccountVariables, opts?: QueryWatchParameters): Types.SuperAccount | null {
-        return this.useQuery(Source.SuperAccountQuery, variables, opts);
+        return this.useQuery('SuperAccount', variables, opts);
+    }
+    async updateSuperAccount(variables: Types.SuperAccountVariables, updater: (data: Types.SuperAccount) => Types.SuperAccount | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'SuperAccount', variables);
     }
     async queryProfile(opts?: OperationParameters): Promise<Types.Profile> {
-        return this.client.query(Source.ProfileQuery, undefined, opts);
+        return this.engine.query('Profile', undefined, opts);
     }
     async refetchProfile(): Promise<Types.Profile> {
-        return this.refetch(Source.ProfileQuery);
+        return this.refetch('Profile');
     }
     useProfile(opts?: QueryWatchParameters): Types.Profile {
-        return this.useQuerySuspense(Source.ProfileQuery, undefined, opts);
+        return this.useQuerySuspense('Profile', undefined, opts);
     }
     useWithoutLoaderProfile(opts?: QueryWatchParameters): Types.Profile | null {
-        return this.useQuery(Source.ProfileQuery, undefined, opts);
+        return this.useQuery('Profile', undefined, opts);
+    }
+    async updateProfile(updater: (data: Types.Profile) => Types.Profile | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'Profile');
     }
     async querySettings(opts?: OperationParameters): Promise<Types.Settings> {
-        return this.client.query(Source.SettingsQuery, undefined, opts);
+        return this.engine.query('Settings', undefined, opts);
     }
     async refetchSettings(): Promise<Types.Settings> {
-        return this.refetch(Source.SettingsQuery);
+        return this.refetch('Settings');
     }
     useSettings(opts?: QueryWatchParameters): Types.Settings {
-        return this.useQuerySuspense(Source.SettingsQuery, undefined, opts);
+        return this.useQuerySuspense('Settings', undefined, opts);
     }
     useWithoutLoaderSettings(opts?: QueryWatchParameters): Types.Settings | null {
-        return this.useQuery(Source.SettingsQuery, undefined, opts);
+        return this.useQuery('Settings', undefined, opts);
+    }
+    async updateSettings(updater: (data: Types.Settings) => Types.Settings | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'Settings');
     }
     async querySharedMedia(variables: Types.SharedMediaVariables, opts?: OperationParameters): Promise<Types.SharedMedia> {
-        return this.client.query(Source.SharedMediaQuery, variables, opts);
+        return this.engine.query('SharedMedia', variables, opts);
     }
     async refetchSharedMedia(variables: Types.SharedMediaVariables): Promise<Types.SharedMedia> {
-        return this.refetch(Source.SharedMediaQuery, variables);
+        return this.refetch('SharedMedia', variables);
     }
     useSharedMedia(variables: Types.SharedMediaVariables, opts?: QueryWatchParameters): Types.SharedMedia {
-        return this.useQuerySuspense(Source.SharedMediaQuery, variables, opts);
+        return this.useQuerySuspense('SharedMedia', variables, opts);
     }
     useWithoutLoaderSharedMedia(variables: Types.SharedMediaVariables, opts?: QueryWatchParameters): Types.SharedMedia | null {
-        return this.useQuery(Source.SharedMediaQuery, variables, opts);
+        return this.useQuery('SharedMedia', variables, opts);
+    }
+    async updateSharedMedia(variables: Types.SharedMediaVariables, updater: (data: Types.SharedMedia) => Types.SharedMedia | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'SharedMedia', variables);
     }
     async querySharedMediaCounters(variables: Types.SharedMediaCountersVariables, opts?: OperationParameters): Promise<Types.SharedMediaCounters> {
-        return this.client.query(Source.SharedMediaCountersQuery, variables, opts);
+        return this.engine.query('SharedMediaCounters', variables, opts);
     }
     async refetchSharedMediaCounters(variables: Types.SharedMediaCountersVariables): Promise<Types.SharedMediaCounters> {
-        return this.refetch(Source.SharedMediaCountersQuery, variables);
+        return this.refetch('SharedMediaCounters', variables);
     }
     useSharedMediaCounters(variables: Types.SharedMediaCountersVariables, opts?: QueryWatchParameters): Types.SharedMediaCounters {
-        return this.useQuerySuspense(Source.SharedMediaCountersQuery, variables, opts);
+        return this.useQuerySuspense('SharedMediaCounters', variables, opts);
     }
     useWithoutLoaderSharedMediaCounters(variables: Types.SharedMediaCountersVariables, opts?: QueryWatchParameters): Types.SharedMediaCounters | null {
-        return this.useQuery(Source.SharedMediaCountersQuery, variables, opts);
+        return this.useQuery('SharedMediaCounters', variables, opts);
+    }
+    async updateSharedMediaCounters(variables: Types.SharedMediaCountersVariables, updater: (data: Types.SharedMediaCounters) => Types.SharedMediaCounters | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'SharedMediaCounters', variables);
     }
     async queryResolveShortName(variables: Types.ResolveShortNameVariables, opts?: OperationParameters): Promise<Types.ResolveShortName> {
-        return this.client.query(Source.ResolveShortNameQuery, variables, opts);
+        return this.engine.query('ResolveShortName', variables, opts);
     }
     async refetchResolveShortName(variables: Types.ResolveShortNameVariables): Promise<Types.ResolveShortName> {
-        return this.refetch(Source.ResolveShortNameQuery, variables);
+        return this.refetch('ResolveShortName', variables);
     }
     useResolveShortName(variables: Types.ResolveShortNameVariables, opts?: QueryWatchParameters): Types.ResolveShortName {
-        return this.useQuerySuspense(Source.ResolveShortNameQuery, variables, opts);
+        return this.useQuerySuspense('ResolveShortName', variables, opts);
     }
     useWithoutLoaderResolveShortName(variables: Types.ResolveShortNameVariables, opts?: QueryWatchParameters): Types.ResolveShortName | null {
-        return this.useQuery(Source.ResolveShortNameQuery, variables, opts);
+        return this.useQuery('ResolveShortName', variables, opts);
+    }
+    async updateResolveShortName(variables: Types.ResolveShortNameVariables, updater: (data: Types.ResolveShortName) => Types.ResolveShortName | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'ResolveShortName', variables);
     }
     async queryGetUser(variables: Types.GetUserVariables, opts?: OperationParameters): Promise<Types.GetUser> {
-        return this.client.query(Source.GetUserQuery, variables, opts);
+        return this.engine.query('GetUser', variables, opts);
     }
     async refetchGetUser(variables: Types.GetUserVariables): Promise<Types.GetUser> {
-        return this.refetch(Source.GetUserQuery, variables);
+        return this.refetch('GetUser', variables);
     }
     useGetUser(variables: Types.GetUserVariables, opts?: QueryWatchParameters): Types.GetUser {
-        return this.useQuerySuspense(Source.GetUserQuery, variables, opts);
+        return this.useQuerySuspense('GetUser', variables, opts);
     }
     useWithoutLoaderGetUser(variables: Types.GetUserVariables, opts?: QueryWatchParameters): Types.GetUser | null {
-        return this.useQuery(Source.GetUserQuery, variables, opts);
+        return this.useQuery('GetUser', variables, opts);
+    }
+    async updateGetUser(variables: Types.GetUserVariables, updater: (data: Types.GetUser) => Types.GetUser | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'GetUser', variables);
     }
     async queryMyStickers(opts?: OperationParameters): Promise<Types.MyStickers> {
-        return this.client.query(Source.MyStickersQuery, undefined, opts);
+        return this.engine.query('MyStickers', undefined, opts);
     }
     async refetchMyStickers(): Promise<Types.MyStickers> {
-        return this.refetch(Source.MyStickersQuery);
+        return this.refetch('MyStickers');
     }
     useMyStickers(opts?: QueryWatchParameters): Types.MyStickers {
-        return this.useQuerySuspense(Source.MyStickersQuery, undefined, opts);
+        return this.useQuerySuspense('MyStickers', undefined, opts);
     }
     useWithoutLoaderMyStickers(opts?: QueryWatchParameters): Types.MyStickers | null {
-        return this.useQuery(Source.MyStickersQuery, undefined, opts);
+        return this.useQuery('MyStickers', undefined, opts);
+    }
+    async updateMyStickers(updater: (data: Types.MyStickers) => Types.MyStickers | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'MyStickers');
     }
     async queryStickerPack(variables: Types.StickerPackVariables, opts?: OperationParameters): Promise<Types.StickerPack> {
-        return this.client.query(Source.StickerPackQuery, variables, opts);
+        return this.engine.query('StickerPack', variables, opts);
     }
     async refetchStickerPack(variables: Types.StickerPackVariables): Promise<Types.StickerPack> {
-        return this.refetch(Source.StickerPackQuery, variables);
+        return this.refetch('StickerPack', variables);
     }
     useStickerPack(variables: Types.StickerPackVariables, opts?: QueryWatchParameters): Types.StickerPack {
-        return this.useQuerySuspense(Source.StickerPackQuery, variables, opts);
+        return this.useQuerySuspense('StickerPack', variables, opts);
     }
     useWithoutLoaderStickerPack(variables: Types.StickerPackVariables, opts?: QueryWatchParameters): Types.StickerPack | null {
-        return this.useQuery(Source.StickerPackQuery, variables, opts);
+        return this.useQuery('StickerPack', variables, opts);
+    }
+    async updateStickerPack(variables: Types.StickerPackVariables, updater: (data: Types.StickerPack) => Types.StickerPack | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'StickerPack', variables);
     }
     async queryUsers(variables: Types.UsersVariables, opts?: OperationParameters): Promise<Types.Users> {
-        return this.client.query(Source.UsersQuery, variables, opts);
+        return this.engine.query('Users', variables, opts);
     }
     async refetchUsers(variables: Types.UsersVariables): Promise<Types.Users> {
-        return this.refetch(Source.UsersQuery, variables);
+        return this.refetch('Users', variables);
     }
     useUsers(variables: Types.UsersVariables, opts?: QueryWatchParameters): Types.Users {
-        return this.useQuerySuspense(Source.UsersQuery, variables, opts);
+        return this.useQuerySuspense('Users', variables, opts);
     }
     useWithoutLoaderUsers(variables: Types.UsersVariables, opts?: QueryWatchParameters): Types.Users | null {
-        return this.useQuery(Source.UsersQuery, variables, opts);
+        return this.useQuery('Users', variables, opts);
+    }
+    async updateUsers(variables: Types.UsersVariables, updater: (data: Types.Users) => Types.Users | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'Users', variables);
     }
     async queryUser(variables: Types.UserVariables, opts?: OperationParameters): Promise<Types.User> {
-        return this.client.query(Source.UserQuery, variables, opts);
+        return this.engine.query('User', variables, opts);
     }
     async refetchUser(variables: Types.UserVariables): Promise<Types.User> {
-        return this.refetch(Source.UserQuery, variables);
+        return this.refetch('User', variables);
     }
     useUser(variables: Types.UserVariables, opts?: QueryWatchParameters): Types.User {
-        return this.useQuerySuspense(Source.UserQuery, variables, opts);
+        return this.useQuerySuspense('User', variables, opts);
     }
     useWithoutLoaderUser(variables: Types.UserVariables, opts?: QueryWatchParameters): Types.User | null {
-        return this.useQuery(Source.UserQuery, variables, opts);
+        return this.useQuery('User', variables, opts);
+    }
+    async updateUser(variables: Types.UserVariables, updater: (data: Types.User) => Types.User | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'User', variables);
     }
     async queryUserPico(variables: Types.UserPicoVariables, opts?: OperationParameters): Promise<Types.UserPico> {
-        return this.client.query(Source.UserPicoQuery, variables, opts);
+        return this.engine.query('UserPico', variables, opts);
     }
     async refetchUserPico(variables: Types.UserPicoVariables): Promise<Types.UserPico> {
-        return this.refetch(Source.UserPicoQuery, variables);
+        return this.refetch('UserPico', variables);
     }
     useUserPico(variables: Types.UserPicoVariables, opts?: QueryWatchParameters): Types.UserPico {
-        return this.useQuerySuspense(Source.UserPicoQuery, variables, opts);
+        return this.useQuerySuspense('UserPico', variables, opts);
     }
     useWithoutLoaderUserPico(variables: Types.UserPicoVariables, opts?: QueryWatchParameters): Types.UserPico | null {
-        return this.useQuery(Source.UserPicoQuery, variables, opts);
+        return this.useQuery('UserPico', variables, opts);
+    }
+    async updateUserPico(variables: Types.UserPicoVariables, updater: (data: Types.UserPico) => Types.UserPico | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'UserPico', variables);
     }
     async queryOnline(variables: Types.OnlineVariables, opts?: OperationParameters): Promise<Types.Online> {
-        return this.client.query(Source.OnlineQuery, variables, opts);
+        return this.engine.query('Online', variables, opts);
     }
     async refetchOnline(variables: Types.OnlineVariables): Promise<Types.Online> {
-        return this.refetch(Source.OnlineQuery, variables);
+        return this.refetch('Online', variables);
     }
     useOnline(variables: Types.OnlineVariables, opts?: QueryWatchParameters): Types.Online {
-        return this.useQuerySuspense(Source.OnlineQuery, variables, opts);
+        return this.useQuerySuspense('Online', variables, opts);
     }
     useWithoutLoaderOnline(variables: Types.OnlineVariables, opts?: QueryWatchParameters): Types.Online | null {
-        return this.useQuery(Source.OnlineQuery, variables, opts);
+        return this.useQuery('Online', variables, opts);
+    }
+    async updateOnline(variables: Types.OnlineVariables, updater: (data: Types.Online) => Types.Online | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'Online', variables);
     }
     async queryExplorePeople(variables: Types.ExplorePeopleVariables, opts?: OperationParameters): Promise<Types.ExplorePeople> {
-        return this.client.query(Source.ExplorePeopleQuery, variables, opts);
+        return this.engine.query('ExplorePeople', variables, opts);
     }
     async refetchExplorePeople(variables: Types.ExplorePeopleVariables): Promise<Types.ExplorePeople> {
-        return this.refetch(Source.ExplorePeopleQuery, variables);
+        return this.refetch('ExplorePeople', variables);
     }
     useExplorePeople(variables: Types.ExplorePeopleVariables, opts?: QueryWatchParameters): Types.ExplorePeople {
-        return this.useQuerySuspense(Source.ExplorePeopleQuery, variables, opts);
+        return this.useQuerySuspense('ExplorePeople', variables, opts);
     }
     useWithoutLoaderExplorePeople(variables: Types.ExplorePeopleVariables, opts?: QueryWatchParameters): Types.ExplorePeople | null {
-        return this.useQuery(Source.ExplorePeopleQuery, variables, opts);
+        return this.useQuery('ExplorePeople', variables, opts);
+    }
+    async updateExplorePeople(variables: Types.ExplorePeopleVariables, updater: (data: Types.ExplorePeople) => Types.ExplorePeople | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'ExplorePeople', variables);
     }
     async queryMySuccessfulInvitesCount(opts?: OperationParameters): Promise<Types.MySuccessfulInvitesCount> {
-        return this.client.query(Source.MySuccessfulInvitesCountQuery, undefined, opts);
+        return this.engine.query('MySuccessfulInvitesCount', undefined, opts);
     }
     async refetchMySuccessfulInvitesCount(): Promise<Types.MySuccessfulInvitesCount> {
-        return this.refetch(Source.MySuccessfulInvitesCountQuery);
+        return this.refetch('MySuccessfulInvitesCount');
     }
     useMySuccessfulInvitesCount(opts?: QueryWatchParameters): Types.MySuccessfulInvitesCount {
-        return this.useQuerySuspense(Source.MySuccessfulInvitesCountQuery, undefined, opts);
+        return this.useQuerySuspense('MySuccessfulInvitesCount', undefined, opts);
     }
     useWithoutLoaderMySuccessfulInvitesCount(opts?: QueryWatchParameters): Types.MySuccessfulInvitesCount | null {
-        return this.useQuery(Source.MySuccessfulInvitesCountQuery, undefined, opts);
+        return this.useQuery('MySuccessfulInvitesCount', undefined, opts);
+    }
+    async updateMySuccessfulInvitesCount(updater: (data: Types.MySuccessfulInvitesCount) => Types.MySuccessfulInvitesCount | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'MySuccessfulInvitesCount');
     }
     async mutateCreateOrganization(variables: Types.CreateOrganizationVariables): Promise<Types.CreateOrganization> {
-        return this.client.mutate(Source.CreateOrganizationMutation, variables);
+        return this.engine.mutate('CreateOrganization', variables);
     }
     async mutateAccountInviteJoin(variables: Types.AccountInviteJoinVariables): Promise<Types.AccountInviteJoin> {
-        return this.client.mutate(Source.AccountInviteJoinMutation, variables);
+        return this.engine.mutate('AccountInviteJoin', variables);
     }
     async mutateCreateUserProfileAndOrganization(variables: Types.CreateUserProfileAndOrganizationVariables): Promise<Types.CreateUserProfileAndOrganization> {
-        return this.client.mutate(Source.CreateUserProfileAndOrganizationMutation, variables);
+        return this.engine.mutate('CreateUserProfileAndOrganization', variables);
     }
     async mutateReportOnline(variables: Types.ReportOnlineVariables): Promise<Types.ReportOnline> {
-        return this.client.mutate(Source.ReportOnlineMutation, variables);
+        return this.engine.mutate('ReportOnline', variables);
     }
     async mutateRegisterPush(variables: Types.RegisterPushVariables): Promise<Types.RegisterPush> {
-        return this.client.mutate(Source.RegisterPushMutation, variables);
+        return this.engine.mutate('RegisterPush', variables);
     }
     async mutateRegisterWebPush(variables: Types.RegisterWebPushVariables): Promise<Types.RegisterWebPush> {
-        return this.client.mutate(Source.RegisterWebPushMutation, variables);
+        return this.engine.mutate('RegisterWebPush', variables);
     }
     async mutateCreateApp(variables: Types.CreateAppVariables): Promise<Types.CreateApp> {
-        return this.client.mutate(Source.CreateAppMutation, variables);
+        return this.engine.mutate('CreateApp', variables);
     }
     async mutateUpdateApp(variables: Types.UpdateAppVariables): Promise<Types.UpdateApp> {
-        return this.client.mutate(Source.UpdateAppMutation, variables);
+        return this.engine.mutate('UpdateApp', variables);
     }
     async mutateRefreshAppToken(variables: Types.RefreshAppTokenVariables): Promise<Types.RefreshAppToken> {
-        return this.client.mutate(Source.RefreshAppTokenMutation, variables);
+        return this.engine.mutate('RefreshAppToken', variables);
     }
     async mutateAddAppToChat(variables: Types.AddAppToChatVariables): Promise<Types.AddAppToChat> {
-        return this.client.mutate(Source.AddAppToChatMutation, variables);
+        return this.engine.mutate('AddAppToChat', variables);
     }
     async mutateUserStorageSet(variables: Types.UserStorageSetVariables): Promise<Types.UserStorageSet> {
-        return this.client.mutate(Source.UserStorageSetMutation, variables);
+        return this.engine.mutate('UserStorageSet', variables);
     }
     async mutateSuperBadgeCreateToRoom(variables: Types.SuperBadgeCreateToRoomVariables): Promise<Types.SuperBadgeCreateToRoom> {
-        return this.client.mutate(Source.SuperBadgeCreateToRoomMutation, variables);
+        return this.engine.mutate('SuperBadgeCreateToRoom', variables);
     }
     async mutateSuperBadgeUnsetToRoom(variables: Types.SuperBadgeUnsetToRoomVariables): Promise<Types.SuperBadgeUnsetToRoom> {
-        return this.client.mutate(Source.SuperBadgeUnsetToRoomMutation, variables);
+        return this.engine.mutate('SuperBadgeUnsetToRoom', variables);
     }
     async mutatePinMessage(variables: Types.PinMessageVariables): Promise<Types.PinMessage> {
-        return this.client.mutate(Source.PinMessageMutation, variables);
+        return this.engine.mutate('PinMessage', variables);
     }
     async mutateUnpinMessage(variables: Types.UnpinMessageVariables): Promise<Types.UnpinMessage> {
-        return this.client.mutate(Source.UnpinMessageMutation, variables);
+        return this.engine.mutate('UnpinMessage', variables);
     }
     async mutateMessageSetReaction(variables: Types.MessageSetReactionVariables): Promise<Types.MessageSetReaction> {
-        return this.client.mutate(Source.MessageSetReactionMutation, variables);
+        return this.engine.mutate('MessageSetReaction', variables);
     }
     async mutateMessageUnsetReaction(variables: Types.MessageUnsetReactionVariables): Promise<Types.MessageUnsetReaction> {
-        return this.client.mutate(Source.MessageUnsetReactionMutation, variables);
+        return this.engine.mutate('MessageUnsetReaction', variables);
     }
     async mutateSendMessage(variables: Types.SendMessageVariables): Promise<Types.SendMessage> {
-        return this.client.mutate(Source.SendMessageMutation, variables);
+        return this.engine.mutate('SendMessage', variables);
     }
     async mutateRoomRead(variables: Types.RoomReadVariables): Promise<Types.RoomRead> {
-        return this.client.mutate(Source.RoomReadMutation, variables);
+        return this.engine.mutate('RoomRead', variables);
     }
     async mutateRoomCreate(variables: Types.RoomCreateVariables): Promise<Types.RoomCreate> {
-        return this.client.mutate(Source.RoomCreateMutation, variables);
+        return this.engine.mutate('RoomCreate', variables);
     }
     async mutateBuyPremiumChatSubscription(variables: Types.BuyPremiumChatSubscriptionVariables): Promise<Types.BuyPremiumChatSubscription> {
-        return this.client.mutate(Source.BuyPremiumChatSubscriptionMutation, variables);
+        return this.engine.mutate('BuyPremiumChatSubscription', variables);
     }
     async mutateSetTyping(variables: Types.SetTypingVariables): Promise<Types.SetTyping> {
-        return this.client.mutate(Source.SetTypingMutation, variables);
+        return this.engine.mutate('SetTyping', variables);
     }
     async mutateUnsetTyping(variables: Types.UnsetTypingVariables): Promise<Types.UnsetTyping> {
-        return this.client.mutate(Source.UnsetTypingMutation, variables);
+        return this.engine.mutate('UnsetTyping', variables);
     }
     async mutateRoomAddMembers(variables: Types.RoomAddMembersVariables): Promise<Types.RoomAddMembers> {
-        return this.client.mutate(Source.RoomAddMembersMutation, variables);
+        return this.engine.mutate('RoomAddMembers', variables);
     }
     async mutateRoomKick(variables: Types.RoomKickVariables): Promise<Types.RoomKick> {
-        return this.client.mutate(Source.RoomKickMutation, variables);
+        return this.engine.mutate('RoomKick', variables);
     }
     async mutateRoomChangeRole(variables: Types.RoomChangeRoleVariables): Promise<Types.RoomChangeRole> {
-        return this.client.mutate(Source.RoomChangeRoleMutation, variables);
+        return this.engine.mutate('RoomChangeRole', variables);
     }
     async mutateRoomLeave(variables: Types.RoomLeaveVariables): Promise<Types.RoomLeave> {
-        return this.client.mutate(Source.RoomLeaveMutation, variables);
+        return this.engine.mutate('RoomLeave', variables);
     }
     async mutateRoomAlterFeatured(variables: Types.RoomAlterFeaturedVariables): Promise<Types.RoomAlterFeatured> {
-        return this.client.mutate(Source.RoomAlterFeaturedMutation, variables);
+        return this.engine.mutate('RoomAlterFeatured', variables);
     }
     async mutateRoomAlterHidden(variables: Types.RoomAlterHiddenVariables): Promise<Types.RoomAlterHidden> {
-        return this.client.mutate(Source.RoomAlterHiddenMutation, variables);
+        return this.engine.mutate('RoomAlterHidden', variables);
     }
     async mutateRoomSettingsUpdate(variables: Types.RoomSettingsUpdateVariables): Promise<Types.RoomSettingsUpdate> {
-        return this.client.mutate(Source.RoomSettingsUpdateMutation, variables);
+        return this.engine.mutate('RoomSettingsUpdate', variables);
     }
     async mutateRoomJoin(variables: Types.RoomJoinVariables): Promise<Types.RoomJoin> {
-        return this.client.mutate(Source.RoomJoinMutation, variables);
+        return this.engine.mutate('RoomJoin', variables);
     }
     async mutateRoomsJoin(variables: Types.RoomsJoinVariables): Promise<Types.RoomsJoin> {
-        return this.client.mutate(Source.RoomsJoinMutation, variables);
+        return this.engine.mutate('RoomsJoin', variables);
     }
     async mutateRoomsInviteUser(variables: Types.RoomsInviteUserVariables): Promise<Types.RoomsInviteUser> {
-        return this.client.mutate(Source.RoomsInviteUserMutation, variables);
+        return this.engine.mutate('RoomsInviteUser', variables);
     }
     async mutateRoomJoinInviteLink(variables: Types.RoomJoinInviteLinkVariables): Promise<Types.RoomJoinInviteLink> {
-        return this.client.mutate(Source.RoomJoinInviteLinkMutation, variables);
+        return this.engine.mutate('RoomJoinInviteLink', variables);
     }
     async mutateRoomRenewInviteLink(variables: Types.RoomRenewInviteLinkVariables): Promise<Types.RoomRenewInviteLink> {
-        return this.client.mutate(Source.RoomRenewInviteLinkMutation, variables);
+        return this.engine.mutate('RoomRenewInviteLink', variables);
     }
     async mutateRoomUpdate(variables: Types.RoomUpdateVariables): Promise<Types.RoomUpdate> {
-        return this.client.mutate(Source.RoomUpdateMutation, variables);
+        return this.engine.mutate('RoomUpdate', variables);
     }
     async mutateRoomDeleteMessage(variables: Types.RoomDeleteMessageVariables): Promise<Types.RoomDeleteMessage> {
-        return this.client.mutate(Source.RoomDeleteMessageMutation, variables);
+        return this.engine.mutate('RoomDeleteMessage', variables);
     }
     async mutateRoomDeleteMessages(variables: Types.RoomDeleteMessagesVariables): Promise<Types.RoomDeleteMessages> {
-        return this.client.mutate(Source.RoomDeleteMessagesMutation, variables);
+        return this.engine.mutate('RoomDeleteMessages', variables);
     }
     async mutateRoomDeleteUrlAugmentation(variables: Types.RoomDeleteUrlAugmentationVariables): Promise<Types.RoomDeleteUrlAugmentation> {
-        return this.client.mutate(Source.RoomDeleteUrlAugmentationMutation, variables);
+        return this.engine.mutate('RoomDeleteUrlAugmentation', variables);
     }
     async mutateEditMessage(variables: Types.EditMessageVariables): Promise<Types.EditMessage> {
-        return this.client.mutate(Source.EditMessageMutation, variables);
+        return this.engine.mutate('EditMessage', variables);
     }
     async mutateMarkSequenceRead(variables: Types.MarkSequenceReadVariables): Promise<Types.MarkSequenceRead> {
-        return this.client.mutate(Source.MarkSequenceReadMutation, variables);
+        return this.engine.mutate('MarkSequenceRead', variables);
     }
     async mutateUpdateWelcomeMessage(variables: Types.UpdateWelcomeMessageVariables): Promise<Types.UpdateWelcomeMessage> {
-        return this.client.mutate(Source.UpdateWelcomeMessageMutation, variables);
+        return this.engine.mutate('UpdateWelcomeMessage', variables);
     }
     async mutateDeleteComment(variables: Types.DeleteCommentVariables): Promise<Types.DeleteComment> {
-        return this.client.mutate(Source.DeleteCommentMutation, variables);
+        return this.engine.mutate('DeleteComment', variables);
     }
     async mutateCommentSetReaction(variables: Types.CommentSetReactionVariables): Promise<Types.CommentSetReaction> {
-        return this.client.mutate(Source.CommentSetReactionMutation, variables);
+        return this.engine.mutate('CommentSetReaction', variables);
     }
     async mutateCommentUnsetReaction(variables: Types.CommentUnsetReactionVariables): Promise<Types.CommentUnsetReaction> {
-        return this.client.mutate(Source.CommentUnsetReactionMutation, variables);
+        return this.engine.mutate('CommentUnsetReaction', variables);
     }
     async mutateDeleteNotification(variables: Types.DeleteNotificationVariables): Promise<Types.DeleteNotification> {
-        return this.client.mutate(Source.DeleteNotificationMutation, variables);
+        return this.engine.mutate('DeleteNotification', variables);
     }
     async mutateSubscribeToComments(variables: Types.SubscribeToCommentsVariables): Promise<Types.SubscribeToComments> {
-        return this.client.mutate(Source.SubscribeToCommentsMutation, variables);
+        return this.engine.mutate('SubscribeToComments', variables);
     }
     async mutateUnSubscribeFromComments(variables: Types.UnSubscribeFromCommentsVariables): Promise<Types.UnSubscribeFromComments> {
-        return this.client.mutate(Source.UnSubscribeFromCommentsMutation, variables);
+        return this.engine.mutate('UnSubscribeFromComments', variables);
     }
     async mutateAddComment(variables: Types.AddCommentVariables): Promise<Types.AddComment> {
-        return this.client.mutate(Source.AddCommentMutation, variables);
+        return this.engine.mutate('AddComment', variables);
     }
     async mutateEditComment(variables: Types.EditCommentVariables): Promise<Types.EditComment> {
-        return this.client.mutate(Source.EditCommentMutation, variables);
+        return this.engine.mutate('EditComment', variables);
     }
     async mutateConferenceJoin(variables: Types.ConferenceJoinVariables): Promise<Types.ConferenceJoin> {
-        return this.client.mutate(Source.ConferenceJoinMutation, variables);
+        return this.engine.mutate('ConferenceJoin', variables);
     }
     async mutateConferenceLeave(variables: Types.ConferenceLeaveVariables): Promise<Types.ConferenceLeave> {
-        return this.client.mutate(Source.ConferenceLeaveMutation, variables);
+        return this.engine.mutate('ConferenceLeave', variables);
     }
     async mutateConferenceKeepAlive(variables: Types.ConferenceKeepAliveVariables): Promise<Types.ConferenceKeepAlive> {
-        return this.client.mutate(Source.ConferenceKeepAliveMutation, variables);
+        return this.engine.mutate('ConferenceKeepAlive', variables);
     }
     async mutateConferenceOffer(variables: Types.ConferenceOfferVariables): Promise<Types.ConferenceOffer> {
-        return this.client.mutate(Source.ConferenceOfferMutation, variables);
+        return this.engine.mutate('ConferenceOffer', variables);
     }
     async mutateConferenceAnswer(variables: Types.ConferenceAnswerVariables): Promise<Types.ConferenceAnswer> {
-        return this.client.mutate(Source.ConferenceAnswerMutation, variables);
+        return this.engine.mutate('ConferenceAnswer', variables);
     }
     async mutateConferenceCandidate(variables: Types.ConferenceCandidateVariables): Promise<Types.ConferenceCandidate> {
-        return this.client.mutate(Source.ConferenceCandidateMutation, variables);
+        return this.engine.mutate('ConferenceCandidate', variables);
     }
     async mutateMediaOffer(variables: Types.MediaOfferVariables): Promise<Types.MediaOffer> {
-        return this.client.mutate(Source.MediaOfferMutation, variables);
+        return this.engine.mutate('MediaOffer', variables);
     }
     async mutateMediaNegotiationNeeded(variables: Types.MediaNegotiationNeededVariables): Promise<Types.MediaNegotiationNeeded> {
-        return this.client.mutate(Source.MediaNegotiationNeededMutation, variables);
+        return this.engine.mutate('MediaNegotiationNeeded', variables);
     }
     async mutateMediaFailed(variables: Types.MediaFailedVariables): Promise<Types.MediaFailed> {
-        return this.client.mutate(Source.MediaFailedMutation, variables);
+        return this.engine.mutate('MediaFailed', variables);
     }
     async mutateMediaAnswer(variables: Types.MediaAnswerVariables): Promise<Types.MediaAnswer> {
-        return this.client.mutate(Source.MediaAnswerMutation, variables);
+        return this.engine.mutate('MediaAnswer', variables);
     }
     async mutateMediaCandidate(variables: Types.MediaCandidateVariables): Promise<Types.MediaCandidate> {
-        return this.client.mutate(Source.MediaCandidateMutation, variables);
+        return this.engine.mutate('MediaCandidate', variables);
     }
     async mutateBetaSubmitNextDiscover(variables: Types.BetaSubmitNextDiscoverVariables): Promise<Types.BetaSubmitNextDiscover> {
-        return this.client.mutate(Source.BetaSubmitNextDiscoverMutation, variables);
+        return this.engine.mutate('BetaSubmitNextDiscover', variables);
     }
     async mutateBetaDiscoverSkip(variables: Types.BetaDiscoverSkipVariables): Promise<Types.BetaDiscoverSkip> {
-        return this.client.mutate(Source.BetaDiscoverSkipMutation, variables);
+        return this.engine.mutate('BetaDiscoverSkip', variables);
     }
     async mutateFeatureFlagAdd(variables: Types.FeatureFlagAddVariables): Promise<Types.FeatureFlagAdd> {
-        return this.client.mutate(Source.FeatureFlagAddMutation, variables);
+        return this.engine.mutate('FeatureFlagAdd', variables);
     }
     async mutateFeatureFlagEnable(variables: Types.FeatureFlagEnableVariables): Promise<Types.FeatureFlagEnable> {
-        return this.client.mutate(Source.FeatureFlagEnableMutation, variables);
+        return this.engine.mutate('FeatureFlagEnable', variables);
     }
     async mutateFeatureFlagDisable(variables: Types.FeatureFlagDisableVariables): Promise<Types.FeatureFlagDisable> {
-        return this.client.mutate(Source.FeatureFlagDisableMutation, variables);
+        return this.engine.mutate('FeatureFlagDisable', variables);
     }
     async mutateFeedChannelCreate(variables: Types.FeedChannelCreateVariables): Promise<Types.FeedChannelCreate> {
-        return this.client.mutate(Source.FeedChannelCreateMutation, variables);
+        return this.engine.mutate('FeedChannelCreate', variables);
     }
     async mutateFeedChannelUpdate(variables: Types.FeedChannelUpdateVariables): Promise<Types.FeedChannelUpdate> {
-        return this.client.mutate(Source.FeedChannelUpdateMutation, variables);
+        return this.engine.mutate('FeedChannelUpdate', variables);
     }
     async mutateFeedChannelSubscribe(variables: Types.FeedChannelSubscribeVariables): Promise<Types.FeedChannelSubscribe> {
-        return this.client.mutate(Source.FeedChannelSubscribeMutation, variables);
+        return this.engine.mutate('FeedChannelSubscribe', variables);
     }
     async mutateFeedChannelUnsubscribe(variables: Types.FeedChannelUnsubscribeVariables): Promise<Types.FeedChannelUnsubscribe> {
-        return this.client.mutate(Source.FeedChannelUnsubscribeMutation, variables);
+        return this.engine.mutate('FeedChannelUnsubscribe', variables);
     }
     async mutateFeedChannelAddWriter(variables: Types.FeedChannelAddWriterVariables): Promise<Types.FeedChannelAddWriter> {
-        return this.client.mutate(Source.FeedChannelAddWriterMutation, variables);
+        return this.engine.mutate('FeedChannelAddWriter', variables);
     }
     async mutateFeedChannelRemoveWriter(variables: Types.FeedChannelRemoveWriterVariables): Promise<Types.FeedChannelRemoveWriter> {
-        return this.client.mutate(Source.FeedChannelRemoveWriterMutation, variables);
+        return this.engine.mutate('FeedChannelRemoveWriter', variables);
     }
     async mutateFeedEditPost(variables: Types.FeedEditPostVariables): Promise<Types.FeedEditPost> {
-        return this.client.mutate(Source.FeedEditPostMutation, variables);
+        return this.engine.mutate('FeedEditPost', variables);
     }
     async mutateFeedCreatePost(variables: Types.FeedCreatePostVariables): Promise<Types.FeedCreatePost> {
-        return this.client.mutate(Source.FeedCreatePostMutation, variables);
+        return this.engine.mutate('FeedCreatePost', variables);
     }
     async mutateFeedReactionAdd(variables: Types.FeedReactionAddVariables): Promise<Types.FeedReactionAdd> {
-        return this.client.mutate(Source.FeedReactionAddMutation, variables);
+        return this.engine.mutate('FeedReactionAdd', variables);
     }
     async mutateFeedReactionRemove(variables: Types.FeedReactionRemoveVariables): Promise<Types.FeedReactionRemove> {
-        return this.client.mutate(Source.FeedReactionRemoveMutation, variables);
+        return this.engine.mutate('FeedReactionRemove', variables);
     }
     async mutateFeedDeletePost(variables: Types.FeedDeletePostVariables): Promise<Types.FeedDeletePost> {
-        return this.client.mutate(Source.FeedDeletePostMutation, variables);
+        return this.engine.mutate('FeedDeletePost', variables);
     }
     async mutateCreateCardSetupIntent(variables: Types.CreateCardSetupIntentVariables): Promise<Types.CreateCardSetupIntent> {
-        return this.client.mutate(Source.CreateCardSetupIntentMutation, variables);
+        return this.engine.mutate('CreateCardSetupIntent', variables);
     }
     async mutateCommitCardSetupIntent(variables: Types.CommitCardSetupIntentVariables): Promise<Types.CommitCardSetupIntent> {
-        return this.client.mutate(Source.CommitCardSetupIntentMutation, variables);
+        return this.engine.mutate('CommitCardSetupIntent', variables);
     }
     async mutateRemoveCard(variables: Types.RemoveCardVariables): Promise<Types.RemoveCard> {
-        return this.client.mutate(Source.RemoveCardMutation, variables);
+        return this.engine.mutate('RemoveCard', variables);
     }
     async mutateMakeCardDefault(variables: Types.MakeCardDefaultVariables): Promise<Types.MakeCardDefault> {
-        return this.client.mutate(Source.MakeCardDefaultMutation, variables);
+        return this.engine.mutate('MakeCardDefault', variables);
     }
     async mutateCreateDepositIntent(variables: Types.CreateDepositIntentVariables): Promise<Types.CreateDepositIntent> {
-        return this.client.mutate(Source.CreateDepositIntentMutation, variables);
+        return this.engine.mutate('CreateDepositIntent', variables);
     }
     async mutatePaymentIntentCommit(variables: Types.PaymentIntentCommitVariables): Promise<Types.PaymentIntentCommit> {
-        return this.client.mutate(Source.PaymentIntentCommitMutation, variables);
+        return this.engine.mutate('PaymentIntentCommit', variables);
     }
     async mutatePaymentIntentCancel(variables: Types.PaymentIntentCancelVariables): Promise<Types.PaymentIntentCancel> {
-        return this.client.mutate(Source.PaymentIntentCancelMutation, variables);
+        return this.engine.mutate('PaymentIntentCancel', variables);
     }
     async mutateDonate(variables: Types.DonateVariables): Promise<Types.Donate> {
-        return this.client.mutate(Source.DonateMutation, variables);
+        return this.engine.mutate('Donate', variables);
     }
     async mutateMatchmakingRoomSave(variables: Types.MatchmakingRoomSaveVariables): Promise<Types.MatchmakingRoomSave> {
-        return this.client.mutate(Source.MatchmakingRoomSaveMutation, variables);
+        return this.engine.mutate('MatchmakingRoomSave', variables);
     }
     async mutateMatchmakingProfileFill(variables: Types.MatchmakingProfileFillVariables): Promise<Types.MatchmakingProfileFill> {
-        return this.client.mutate(Source.MatchmakingProfileFillMutation, variables);
+        return this.engine.mutate('MatchmakingProfileFill', variables);
     }
     async mutateMatchmakingConnect(variables: Types.MatchmakingConnectVariables): Promise<Types.MatchmakingConnect> {
-        return this.client.mutate(Source.MatchmakingConnectMutation, variables);
+        return this.engine.mutate('MatchmakingConnect', variables);
     }
     async mutateMyNotificationCenterMarkSeqRead(variables: Types.MyNotificationCenterMarkSeqReadVariables): Promise<Types.MyNotificationCenterMarkSeqRead> {
-        return this.client.mutate(Source.MyNotificationCenterMarkSeqReadMutation, variables);
+        return this.engine.mutate('MyNotificationCenterMarkSeqRead', variables);
     }
     async mutateReadNotification(variables: Types.ReadNotificationVariables): Promise<Types.ReadNotification> {
-        return this.client.mutate(Source.ReadNotificationMutation, variables);
+        return this.engine.mutate('ReadNotification', variables);
     }
     async mutateUpdateOrganization(variables: Types.UpdateOrganizationVariables): Promise<Types.UpdateOrganization> {
-        return this.client.mutate(Source.UpdateOrganizationMutation, variables);
+        return this.engine.mutate('UpdateOrganization', variables);
     }
     async mutateOrganizationChangeMemberRole(variables: Types.OrganizationChangeMemberRoleVariables): Promise<Types.OrganizationChangeMemberRole> {
-        return this.client.mutate(Source.OrganizationChangeMemberRoleMutation, variables);
+        return this.engine.mutate('OrganizationChangeMemberRole', variables);
     }
     async mutateOrganizationAddMember(variables: Types.OrganizationAddMemberVariables): Promise<Types.OrganizationAddMember> {
-        return this.client.mutate(Source.OrganizationAddMemberMutation, variables);
+        return this.engine.mutate('OrganizationAddMember', variables);
     }
     async mutateOrganizationCreatePublicInvite(variables: Types.OrganizationCreatePublicInviteVariables): Promise<Types.OrganizationCreatePublicInvite> {
-        return this.client.mutate(Source.OrganizationCreatePublicInviteMutation, variables);
+        return this.engine.mutate('OrganizationCreatePublicInvite', variables);
     }
     async mutateDeleteOrganization(variables: Types.DeleteOrganizationVariables): Promise<Types.DeleteOrganization> {
-        return this.client.mutate(Source.DeleteOrganizationMutation, variables);
+        return this.engine.mutate('DeleteOrganization', variables);
     }
     async mutateOrganizationMemberRemove(variables: Types.OrganizationMemberRemoveVariables): Promise<Types.OrganizationMemberRemove> {
-        return this.client.mutate(Source.OrganizationMemberRemoveMutation, variables);
+        return this.engine.mutate('OrganizationMemberRemove', variables);
     }
     async mutateOrganizationActivateByInvite(variables: Types.OrganizationActivateByInviteVariables): Promise<Types.OrganizationActivateByInvite> {
-        return this.client.mutate(Source.OrganizationActivateByInviteMutation, variables);
+        return this.engine.mutate('OrganizationActivateByInvite', variables);
     }
     async mutateOrganizationAlterPublished(variables: Types.OrganizationAlterPublishedVariables): Promise<Types.OrganizationAlterPublished> {
-        return this.client.mutate(Source.OrganizationAlterPublishedMutation, variables);
+        return this.engine.mutate('OrganizationAlterPublished', variables);
     }
     async mutateDebugMails(variables: Types.DebugMailsVariables): Promise<Types.DebugMails> {
-        return this.client.mutate(Source.DebugMailsMutation, variables);
+        return this.engine.mutate('DebugMails', variables);
     }
     async mutateSuperAccountRename(variables: Types.SuperAccountRenameVariables): Promise<Types.SuperAccountRename> {
-        return this.client.mutate(Source.SuperAccountRenameMutation, variables);
+        return this.engine.mutate('SuperAccountRename', variables);
     }
     async mutateSuperAccountActivate(variables: Types.SuperAccountActivateVariables): Promise<Types.SuperAccountActivate> {
-        return this.client.mutate(Source.SuperAccountActivateMutation, variables);
+        return this.engine.mutate('SuperAccountActivate', variables);
     }
     async mutateSuperAccountSuspend(variables: Types.SuperAccountSuspendVariables): Promise<Types.SuperAccountSuspend> {
-        return this.client.mutate(Source.SuperAccountSuspendMutation, variables);
+        return this.engine.mutate('SuperAccountSuspend', variables);
     }
     async mutateSuperAccountPend(variables: Types.SuperAccountPendVariables): Promise<Types.SuperAccountPend> {
-        return this.client.mutate(Source.SuperAccountPendMutation, variables);
+        return this.engine.mutate('SuperAccountPend', variables);
     }
     async mutateSuperAccountAdd(variables: Types.SuperAccountAddVariables): Promise<Types.SuperAccountAdd> {
-        return this.client.mutate(Source.SuperAccountAddMutation, variables);
+        return this.engine.mutate('SuperAccountAdd', variables);
     }
     async mutateSuperAccountMemberAdd(variables: Types.SuperAccountMemberAddVariables): Promise<Types.SuperAccountMemberAdd> {
-        return this.client.mutate(Source.SuperAccountMemberAddMutation, variables);
+        return this.engine.mutate('SuperAccountMemberAdd', variables);
     }
     async mutateSuperAccountMemberRemove(variables: Types.SuperAccountMemberRemoveVariables): Promise<Types.SuperAccountMemberRemove> {
-        return this.client.mutate(Source.SuperAccountMemberRemoveMutation, variables);
+        return this.engine.mutate('SuperAccountMemberRemove', variables);
     }
     async mutateSuperAdminAdd(variables: Types.SuperAdminAddVariables): Promise<Types.SuperAdminAdd> {
-        return this.client.mutate(Source.SuperAdminAddMutation, variables);
+        return this.engine.mutate('SuperAdminAdd', variables);
     }
     async mutateSuperAdminRemove(variables: Types.SuperAdminRemoveVariables): Promise<Types.SuperAdminRemove> {
-        return this.client.mutate(Source.SuperAdminRemoveMutation, variables);
+        return this.engine.mutate('SuperAdminRemove', variables);
     }
     async mutateReportContent(variables: Types.ReportContentVariables): Promise<Types.ReportContent> {
-        return this.client.mutate(Source.ReportContentMutation, variables);
+        return this.engine.mutate('ReportContent', variables);
     }
     async mutateProfileUpdate(variables: Types.ProfileUpdateVariables): Promise<Types.ProfileUpdate> {
-        return this.client.mutate(Source.ProfileUpdateMutation, variables);
+        return this.engine.mutate('ProfileUpdate', variables);
     }
     async mutateProfileCreate(variables: Types.ProfileCreateVariables): Promise<Types.ProfileCreate> {
-        return this.client.mutate(Source.ProfileCreateMutation, variables);
+        return this.engine.mutate('ProfileCreate', variables);
     }
     async mutateSettingsUpdate(variables: Types.SettingsUpdateVariables): Promise<Types.SettingsUpdate> {
-        return this.client.mutate(Source.SettingsUpdateMutation, variables);
+        return this.engine.mutate('SettingsUpdate', variables);
     }
     async mutateSetOrgShortname(variables: Types.SetOrgShortnameVariables): Promise<Types.SetOrgShortname> {
-        return this.client.mutate(Source.SetOrgShortnameMutation, variables);
+        return this.engine.mutate('SetOrgShortname', variables);
     }
     async mutateSetUserShortname(variables: Types.SetUserShortnameVariables): Promise<Types.SetUserShortname> {
-        return this.client.mutate(Source.SetUserShortnameMutation, variables);
+        return this.engine.mutate('SetUserShortname', variables);
     }
     async mutateSetFeedChannelShortname(variables: Types.SetFeedChannelShortnameVariables): Promise<Types.SetFeedChannelShortname> {
-        return this.client.mutate(Source.SetFeedChannelShortnameMutation, variables);
+        return this.engine.mutate('SetFeedChannelShortname', variables);
     }
     async mutateStickerPackAddToCollection(variables: Types.StickerPackAddToCollectionVariables): Promise<Types.StickerPackAddToCollection> {
-        return this.client.mutate(Source.StickerPackAddToCollectionMutation, variables);
+        return this.engine.mutate('StickerPackAddToCollection', variables);
     }
     async mutateStickerPackRemoveFromCollection(variables: Types.StickerPackRemoveFromCollectionVariables): Promise<Types.StickerPackRemoveFromCollection> {
-        return this.client.mutate(Source.StickerPackRemoveFromCollectionMutation, variables);
+        return this.engine.mutate('StickerPackRemoveFromCollection', variables);
     }
     async mutateSendSticker(variables: Types.SendStickerVariables): Promise<Types.SendSticker> {
-        return this.client.mutate(Source.SendStickerMutation, variables);
+        return this.engine.mutate('SendSticker', variables);
     }
     async mutateAddStickerComment(variables: Types.AddStickerCommentVariables): Promise<Types.AddStickerComment> {
-        return this.client.mutate(Source.AddStickerCommentMutation, variables);
+        return this.engine.mutate('AddStickerComment', variables);
     }
     async mutatePersistEvents(variables: Types.PersistEventsVariables): Promise<Types.PersistEvents> {
-        return this.client.mutate(Source.PersistEventsMutation, variables);
+        return this.engine.mutate('PersistEvents', variables);
     }
     async mutateDeleteUser(variables: Types.DeleteUserVariables): Promise<Types.DeleteUser> {
-        return this.client.mutate(Source.DeleteUserMutation, variables);
+        return this.engine.mutate('DeleteUser', variables);
     }
     async mutateBetaNextDiscoverReset(): Promise<Types.BetaNextDiscoverReset> {
-        return this.client.mutate(Source.BetaNextDiscoverResetMutation);
+        return this.engine.mutate('BetaNextDiscoverReset');
     }
     subscribeSettingsWatch(): GraphqlActiveSubscription<Types.SettingsWatch, {}> {
-        return this.client.subscribe(Source.SettingsWatchSubscription);
+        return this.engine.subscribe('SettingsWatch');
     }
     subscribeChatWatch(variables: Types.ChatWatchVariables): GraphqlActiveSubscription<Types.ChatWatch, Types.ChatWatchVariables> {
-        return this.client.subscribe(Source.ChatWatchSubscription, variables);
+        return this.engine.subscribe('ChatWatch', variables);
     }
     subscribeDialogsWatch(variables: Types.DialogsWatchVariables): GraphqlActiveSubscription<Types.DialogsWatch, Types.DialogsWatchVariables> {
-        return this.client.subscribe(Source.DialogsWatchSubscription, variables);
+        return this.engine.subscribe('DialogsWatch', variables);
     }
     subscribeTypingsWatch(): GraphqlActiveSubscription<Types.TypingsWatch, {}> {
-        return this.client.subscribe(Source.TypingsWatchSubscription);
+        return this.engine.subscribe('TypingsWatch');
     }
     subscribeChatOnlinesCountWatch(variables: Types.ChatOnlinesCountWatchVariables): GraphqlActiveSubscription<Types.ChatOnlinesCountWatch, Types.ChatOnlinesCountWatchVariables> {
-        return this.client.subscribe(Source.ChatOnlinesCountWatchSubscription, variables);
+        return this.engine.subscribe('ChatOnlinesCountWatch', variables);
     }
     subscribeCommentWatch(variables: Types.CommentWatchVariables): GraphqlActiveSubscription<Types.CommentWatch, Types.CommentWatchVariables> {
-        return this.client.subscribe(Source.CommentWatchSubscription, variables);
+        return this.engine.subscribe('CommentWatch', variables);
     }
     subscribeConferenceMediaWatch(variables: Types.ConferenceMediaWatchVariables): GraphqlActiveSubscription<Types.ConferenceMediaWatch, Types.ConferenceMediaWatchVariables> {
-        return this.client.subscribe(Source.ConferenceMediaWatchSubscription, variables);
+        return this.engine.subscribe('ConferenceMediaWatch', variables);
     }
     subscribeConferenceWatch(variables: Types.ConferenceWatchVariables): GraphqlActiveSubscription<Types.ConferenceWatch, Types.ConferenceWatchVariables> {
-        return this.client.subscribe(Source.ConferenceWatchSubscription, variables);
+        return this.engine.subscribe('ConferenceWatch', variables);
     }
     subscribeFeedUpdates(variables: Types.FeedUpdatesVariables): GraphqlActiveSubscription<Types.FeedUpdates, Types.FeedUpdatesVariables> {
-        return this.client.subscribe(Source.FeedUpdatesSubscription, variables);
+        return this.engine.subscribe('FeedUpdates', variables);
     }
     subscribeWalletUpdates(variables: Types.WalletUpdatesVariables): GraphqlActiveSubscription<Types.WalletUpdates, Types.WalletUpdatesVariables> {
-        return this.client.subscribe(Source.WalletUpdatesSubscription, variables);
+        return this.engine.subscribe('WalletUpdates', variables);
     }
     subscribeMyNotificationsCenter(variables: Types.MyNotificationsCenterVariables): GraphqlActiveSubscription<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables> {
-        return this.client.subscribe(Source.MyNotificationsCenterSubscription, variables);
+        return this.engine.subscribe('MyNotificationsCenter', variables);
     }
     subscribeDebugEventsWatch(variables: Types.DebugEventsWatchVariables): GraphqlActiveSubscription<Types.DebugEventsWatch, Types.DebugEventsWatchVariables> {
-        return this.client.subscribe(Source.DebugEventsWatchSubscription, variables);
+        return this.engine.subscribe('DebugEventsWatch', variables);
     }
     subscribeOnlineWatch(variables: Types.OnlineWatchVariables): GraphqlActiveSubscription<Types.OnlineWatch, Types.OnlineWatchVariables> {
-        return this.client.subscribe(Source.OnlineWatchSubscription, variables);
+        return this.engine.subscribe('OnlineWatch', variables);
     }
 }

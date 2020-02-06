@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GraphqlQuery, GraphqlClient, GraphqlQueryWatch, GraphqlQueryResult, QueryWatchParameters } from './GraphqlClient';
+import { GraphqlEngine, GraphqlQueryWatch, GraphqlQueryResult, QueryWatchParameters } from '@openland/spacex';
 import { keyFromObject } from './utils/keyFromObject';
 import { ClientCacheContext } from './ClientCache';
 import { createLogger } from 'mental-log';
@@ -7,24 +7,24 @@ import { createLogger } from 'mental-log';
 const log = createLogger('API');
 
 export class BaseApiClient {
-    readonly client: GraphqlClient;
+    readonly engine: GraphqlEngine;
     private queries = new Map<String, GraphqlQueryWatch<{}>>();
 
-    constructor(client: GraphqlClient) {
-        this.client = client;
+    constructor(engine: GraphqlEngine) {
+        this.engine = engine;
     }
 
     close = () => {
-        this.client.close();
+        this.engine.close();
     }
 
-    protected refetch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
-        return this.client.query(query, vars, { fetchPolicy: 'network-only' });
+    protected refetch<TQuery, TVars>(query: string, vars?: TVars): Promise<TQuery> {
+        return this.engine.query<TQuery, TVars>(query, vars, { fetchPolicy: 'network-only' });
     }
 
-    protected useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, opts?: QueryWatchParameters): TQuery | null {
+    protected useQuery<TQuery, TVars>(query: string, vars?: TVars, opts?: QueryWatchParameters): TQuery | null {
         // tslint:disable-next-line
-        const [observableQuery, currentResult] = this.useObservableQuery(query, vars, opts);
+        const [observableQuery, currentResult] = this.useObservableQuery<TQuery, TVars>(query, vars, opts);
 
         if (currentResult && currentResult.error) {
             throw currentResult.error!!;
@@ -35,8 +35,8 @@ export class BaseApiClient {
         }
     }
 
-    protected useQuerySuspense<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, opts?: QueryWatchParameters): TQuery {
-        const [observableQuery, currentResult] = this.useObservableQuery(query, vars, opts);
+    protected useQuerySuspense<TQuery, TVars>(query: string, vars?: TVars, opts?: QueryWatchParameters): TQuery {
+        const [observableQuery, currentResult] = this.useObservableQuery<TQuery, TVars>(query, vars, opts);
         if (currentResult && currentResult.error) {
             throw currentResult.error!!;
         } else if (currentResult && currentResult.data) {
@@ -46,7 +46,7 @@ export class BaseApiClient {
         }
     }
 
-    private useObservableQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars, opts?: QueryWatchParameters): [GraphqlQueryWatch<TQuery>, GraphqlQueryResult<TQuery> | undefined] {
+    private useObservableQuery<TQuery, TVars>(query: string, vars?: TVars, opts?: QueryWatchParameters): [GraphqlQueryWatch<TQuery>, GraphqlQueryResult<TQuery> | undefined] {
         log.log('useQuery: ' + JSON.stringify(opts));
         const clientCache = React.useContext(ClientCacheContext);
 
@@ -56,7 +56,7 @@ export class BaseApiClient {
         if (clientCache) {
             log.log('Found cache ' + clientCache.key);
         }
-        const observableQuery = this.getQueryWatch(clientCache ? clientCache.queries : this.queries, query, vars, opts);
+        const observableQuery = this.getQueryWatch<TQuery, TVars>(clientCache ? clientCache.queries : this.queries, query, vars, opts);
 
         // Value Holder
         const [responseId, setResponseId] = React.useState(0);
@@ -74,20 +74,20 @@ export class BaseApiClient {
         return [observableQuery, currentResult];
     }
 
-    private getQueryWatch<TQuery, TVars>(cache: Map<String, GraphqlQueryWatch<{}>>, query: GraphqlQuery<TQuery, TVars>, vars?: TVars, opts?: QueryWatchParameters): GraphqlQueryWatch<TQuery> {
+    private getQueryWatch<TQuery, TVars>(cache: Map<String, GraphqlQueryWatch<{}>>, query: string, vars?: TVars, opts?: QueryWatchParameters): GraphqlQueryWatch<TQuery> {
         let shouldBeScoped = opts && opts.fetchPolicy && (opts.fetchPolicy === 'cache-and-network' || opts.fetchPolicy === 'network-only');
         let cacheKey = (opts && opts.fetchPolicy && opts.fetchPolicy) || 'cache-first';
         let q = cache;
         if (!shouldBeScoped) {
             q = this.queries;
         }
-        let key = query.document.definitions[0].name.value + '$' + keyFromObject(vars) + '$' + cacheKey;
+        let key = query + '$' + keyFromObject(vars) + '$' + cacheKey;
         if (q.has(key)) {
             // SpaceX QueryWatch fetches new data itself (see usage of doRequest on SpaceXWebClient.ts, line 167)
             // so there is no need to refetch data manually here
             return q.get(key)!! as GraphqlQueryWatch<TQuery>;
         } else {
-            let res = this.client.queryWatch(query, vars, opts);
+            let res = this.engine.queryWatch<TQuery, TVars>(query, vars, opts);
             q.set(key, res);
             return res;
         }

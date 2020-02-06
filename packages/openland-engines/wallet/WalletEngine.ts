@@ -33,7 +33,7 @@ export class WalletEngine {
             historyTransactionsCursor: wallet.transactionsHistory.cursor
         });
 
-        this.sequence = new SequenceModernWatcher('wallet', this.messenger.client.subscribeWalletUpdates({ state: wallet.myWallet.state }), this.messenger.client.client, async (src) => {
+        this.sequence = new SequenceModernWatcher('wallet', this.messenger.client.subscribeWalletUpdates({ state: wallet.myWallet.state }), this.messenger.client.engine, async (src) => {
             let update = src as WalletUpdates_event_WalletUpdateBatch_updates;
             await this.handleUpdate(update);
         }, undefined, undefined, wallet.myWallet.state);

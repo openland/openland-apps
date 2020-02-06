@@ -307,7 +307,7 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
     };
 
     React.useEffect(() => {
-        const watcher = new SequenceModernWatcher('comment peerId:' + peerId, client.subscribeCommentWatch({ peerId }), client.client, updateHandler, undefined, { peerId }, null);
+        const watcher = new SequenceModernWatcher('comment peerId:' + peerId, client.subscribeCommentWatch({ peerId }), client.engine, updateHandler, undefined, { peerId }, null);
 
         return () => {
             watcher.destroy();

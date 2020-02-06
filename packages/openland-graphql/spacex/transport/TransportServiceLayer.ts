@@ -1,7 +1,7 @@
 import { StableSocket, StableApolloSocket } from './StableSocket';
 import { OperationDefinition } from './../types';
 import { TransportResult } from './SpaceXTransport';
-import { GraphqlClientStatus } from 'openland-graphql/GraphqlClient';
+import { GraphqlEngineStatus } from '@openland/spacex';
 
 type PendingOperation = { id: string, reqiestId: string, operation: OperationDefinition, variables: any, callback: (result: TransportResult) => void };
 
@@ -10,7 +10,7 @@ export class TransportServiceLayer {
     private readonly liveOperations = new Map<string, PendingOperation>();
     private readonly liveOperationsIds = new Map<string, string>();
     private readonly socket: StableSocket<any>;
-    onStatusChanged: ((status: GraphqlClientStatus) => void) | null = null;
+    onStatusChanged: ((status: GraphqlEngineStatus) => void) | null = null;
 
     constructor(endpoint: string, token?: string) {
         this.socket = new StableApolloSocket(endpoint, token ? { 'x-openland-token': token } : {});

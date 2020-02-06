@@ -1,6 +1,6 @@
 import { TransportServiceLayer } from './TransportServiceLayer';
 import { OperationDefinition } from './../types';
-import { GraphqlClientStatus } from 'openland-graphql/GraphqlClient';
+import { GraphqlEngineStatus } from '@openland/spacex';
 
 export type TransportResult = { type: 'result', value: any } | { type: 'error', errors: any[] } | { type: 'completed' };
 
@@ -9,7 +9,7 @@ export class SpaceXTransport {
     readonly token?: string;
     readonly endpoint: string;
     private readonly serviceLayer: TransportServiceLayer;
-    onStatusChanged: ((status: GraphqlClientStatus) => void) | null = null;
+    onStatusChanged: ((status: GraphqlEngineStatus) => void) | null = null;
 
     constructor(endpoint: string, token?: string) {
         this.endpoint = endpoint;

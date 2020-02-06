@@ -243,7 +243,7 @@ const connectingWrapperClass = css`
 `;
 
 const ConnectionStatus = () => {
-    const client = useClient().client;
+    const client = useClient().engine;
     const [isVisible, setVisible] = React.useState(false);
     React.useEffect(() => {
         const setStatusDebounced = debounce(setVisible, 1000);

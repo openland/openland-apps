@@ -16,14 +16,13 @@ function generateApi() {
     };
 
     let output = '';
-    output += 'import * as Source from \'./index\';\n';
     output += 'import * as Types from \'./Types\';\n';
-    output += 'import { GraphqlClient, GraphqlActiveSubscription, OperationParameters, QueryWatchParameters } from \'openland-graphql/GraphqlClient\';\n';
+    output += 'import { GraphqlEngine, GraphqlActiveSubscription, OperationParameters, QueryWatchParameters } from \'@openland/spacex\';\n';
     output += 'import { BaseApiClient } from \'openland-graphql/BaseApiClient\';\n';
     output += '\n';
     output += 'export class OpenlandClient extends BaseApiClient {\n';
-    output += '    constructor(client: GraphqlClient) {\n';
-    output += '        super(client);\n';
+    output += '    constructor(engine: GraphqlEngine) {\n';
+    output += '        super(engine);\n';
     output += '    }\n';
 
     for (let op of queries.operations) {
@@ -35,29 +34,36 @@ function generateApi() {
 
             if (op.variables.length > 0) {
                 output += '    async query' + name + '(variables: Types.' + name + 'Variables, opts?: OperationParameters): Promise<Types.' + name + '> {\n';
-                output += '        return this.client.query(Source.' + op.operationName + 'Query, variables, opts);\n';
+                output += '        return this.engine.query(\'' + op.operationName + '\', variables, opts);\n';
                 output += '    }\n';
                 output += '    async refetch' + name + '(variables: Types.' + name + 'Variables): Promise<Types.' + name + '> {\n';
-                output += '        return this.refetch(Source.' + op.operationName + 'Query, variables);\n';
+                output += '        return this.refetch(\'' + op.operationName + '\', variables);\n';
                 output += '    }\n';
                 output += '    use' + name + '(variables: Types.' + name + 'Variables, opts?: QueryWatchParameters): Types.' + name + ' {\n';
-                output += '        return this.useQuerySuspense(Source.' + op.operationName + 'Query, variables, opts);\n';
+                output += '        return this.useQuerySuspense(\'' + op.operationName + '\', variables, opts);\n';
                 output += '    }\n';
                 output += '    useWithoutLoader' + name + '(variables: Types.' + name + 'Variables, opts?: QueryWatchParameters): Types.' + name + ' | null {\n';
-                output += '        return this.useQuery(Source.' + op.operationName + 'Query, variables, opts);\n';
+                output += '        return this.useQuery(\'' + op.operationName + '\', variables, opts);\n';
+                output += '    }\n';
+
+                output += '    async update' + name + '(variables: Types.' + name + 'Variables, updater: (data: Types.' + name + ') => Types.' + name + ' | null): Promise<boolean> {\n';
+                output += '        return this.engine.updateQuery(updater, \'' + op.operationName + '\', variables);\n';
                 output += '    }\n';
             } else {
                 output += '    async query' + name + '(opts?: OperationParameters): Promise<Types.' + name + '> {\n';
-                output += '        return this.client.query(Source.' + op.operationName + 'Query, undefined, opts);\n';
+                output += '        return this.engine.query(\'' + op.operationName + '\', undefined, opts);\n';
                 output += '    }\n';
                 output += '    async refetch' + name + '(): Promise<Types.' + name + '> {\n';
-                output += '        return this.refetch(Source.' + op.operationName + 'Query);\n';
+                output += '        return this.refetch(\'' + op.operationName + '\');\n';
                 output += '    }\n';
                 output += '    use' + name + '(opts?: QueryWatchParameters): Types.' + name + ' {\n';
-                output += '        return this.useQuerySuspense(Source.' + op.operationName + 'Query, undefined, opts);\n';
+                output += '        return this.useQuerySuspense(\'' + op.operationName + '\', undefined, opts);\n';
                 output += '    }\n';
                 output += '    useWithoutLoader' + name + '(opts?: QueryWatchParameters): Types.' + name + ' | null {\n';
-                output += '        return this.useQuery(Source.' + op.operationName + 'Query, undefined, opts);\n';
+                output += '        return this.useQuery(\'' + op.operationName + '\', undefined, opts);\n';
+                output += '    }\n';
+                output += '    async update' + name + '(updater: (data: Types.' + name + ') => Types.' + name + ' | null): Promise<boolean> {\n';
+                output += '        return this.engine.updateQuery(updater, \'' + op.operationName + '\');\n';
                 output += '    }\n';
             }
         }
@@ -72,11 +78,11 @@ function generateApi() {
 
             if (op.variables.length > 0) {
                 output += '    async mutate' + name + '(variables: Types.' + name + 'Variables): Promise<Types.' + name + '> {\n';
-                output += '        return this.client.mutate(Source.' + op.operationName + 'Mutation, variables);\n';
+                output += '        return this.engine.mutate(\'' + op.operationName + '\', variables);\n';
                 output += '    }\n';
             } else {
                 output += '    async mutate' + name + '(): Promise<Types.' + name + '> {\n';
-                output += '        return this.client.mutate(Source.' + op.operationName + 'Mutation);\n';
+                output += '        return this.engine.mutate(\'' + op.operationName + '\');\n';
                 output += '    }\n';
             }
         }
@@ -91,11 +97,11 @@ function generateApi() {
 
             if (op.variables.length > 0) {
                 output += '    subscribe' + name + '(variables: Types.' + name + 'Variables): GraphqlActiveSubscription<Types.' + name + ', Types.' + name + 'Variables> {\n';
-                output += '        return this.client.subscribe(Source.' + op.operationName + 'Subscription, variables);\n';
+                output += '        return this.engine.subscribe(\'' + op.operationName + '\', variables);\n';
                 output += '    }\n';
             } else {
                 output += '    subscribe' + name + '(): GraphqlActiveSubscription<Types.' + name + ', {}> {\n';
-                output += '        return this.client.subscribe(Source.' + op.operationName + 'Subscription);\n';
+                output += '        return this.engine.subscribe(\'' + op.operationName + '\');\n';
                 output += '    }\n';
             }
         }

@@ -5,8 +5,7 @@ disableAll();
 disableTag('GraphQL-Direct');
 
 import { throwFatalError } from 'openland-y-utils/throwFatalError';
-import { WorkerHost } from 'openland-graphql/proxy/WorkerHost';
-import { WorkerInterface } from 'openland-graphql/proxy/WorkerInterface';
+import { WorkerInterface, WorkerHost } from '@openland/spacex';
 
 const ctx = self as any;
 
@@ -29,7 +28,10 @@ const initHandler = (ev: MessageEvent) => {
     };
 
     // Create Host
-    host = new WorkerHost(new SpaceXWebClient(Operations, msg.wsEndpoint, msg.token), workerInterface);
+    host = new WorkerHost({
+        engine: new SpaceXWebClient(Operations, msg.wsEndpoint, msg.token),
+        worker: workerInterface
+    });
 };
 
 ctx.addEventListener('message', initHandler);

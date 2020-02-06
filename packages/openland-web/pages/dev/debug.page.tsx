@@ -9,7 +9,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XView } from 'react-mental';
 import { XSelect } from 'openland-x/XSelect';
 import { useClient } from '../../utils/useClient';
-import { GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
+import { GraphqlActiveSubscription } from '@openland/spacex';
 import * as Types from 'openland-api/Types';
 import { foreverBreakable } from 'openland-engines/utils/forever';
 

@@ -6,7 +6,6 @@ import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/Dat
 import { createLogger } from 'mental-log';
 import { DataSourceMessageItem } from './messenger/ConversationEngine';
 import * as Types from 'openland-api/Types';
-import { ReadNotificationMutation, MyNotificationCenterMarkSeqReadMutation } from 'openland-api';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { SequenceModernWatcher } from './core/SequenceModernWatcher';
 import { backoff } from 'openland-y-utils/timer';
@@ -223,7 +222,7 @@ export class NotificationCenterEngine {
             onStarted: (state: string, items: NotificationsDataSourceItem[]) => {
                 log.log('onStarted');
 
-                this.watcher = new SequenceModernWatcher('notificationCenter', this.engine.client.subscribeMyNotificationsCenter({ state }), this.engine.client.client, this.handleEvent, this.handleSeqUpdated, undefined, state, async (st) => {
+                this.watcher = new SequenceModernWatcher('notificationCenter', this.engine.client.subscribeMyNotificationsCenter({ state }), this.engine.client.engine, this.handleEvent, this.handleSeqUpdated, undefined, state, async (st) => {
                     await this.handleStateProcessed(st);
                 });
 
@@ -278,9 +277,7 @@ export class NotificationCenterEngine {
 
             if (id !== this.lastNotificationRead) {
                 this.lastNotificationRead = id;
-                this.engine.client.client.mutate(ReadNotificationMutation, {
-                    notificationId: id
-                });
+                this.engine.client.mutateReadNotification({ notificationId: id });
             }
         }
     }
@@ -296,7 +293,7 @@ export class NotificationCenterEngine {
             this.lastReportedSeq = this.maxSeq;
             let seq = this.maxSeq;
             (async () => {
-                backoff(() => this.engine.client.client.mutate(MyNotificationCenterMarkSeqReadMutation, { seq }));
+                backoff(() => this.engine.client.mutateMyNotificationCenterMarkSeqRead({ seq }));
             })();
         }
     }

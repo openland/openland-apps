@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GraphqlQueryWatch } from './GraphqlClient';
+import { GraphqlQueryWatch } from '@openland/spacex';
 import { randomKey } from './utils/randomKey';
 
 export class ClientCache {

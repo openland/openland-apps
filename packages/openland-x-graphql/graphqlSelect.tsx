@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { XSelectAsync } from 'openland-x/XSelect';
-import { GraphqlTypedQuery } from 'openland-y-graphql/typed';
 import { useClient } from 'openland-web/utils/useClient';
+import { OpenlandClient } from 'openland-api/OpenlandClient';
 
-export function graphqlSelect<V = {}>(query: GraphqlTypedQuery<any, any>) {
+export function graphqlSelect<V = {}>(query: (query: string, src: OpenlandClient) => Promise<any>) {
     return (
         props: {
             onChange: (value: any) => void;
@@ -19,7 +19,7 @@ export function graphqlSelect<V = {}>(query: GraphqlTypedQuery<any, any>) {
                     if (props.variables) {
                         vars = { query: input, ...(props.variables as any) };
                     }
-                    let res = await client.client.query(query, vars);
+                    let res = await query(input, client);
                     let items = (res as any).items as [
                         { id: string; title: string; subtitle?: string | null } | string
                     ];

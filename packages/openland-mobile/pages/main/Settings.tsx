@@ -16,9 +16,9 @@ import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoade
 import { trackEvent } from 'openland-mobile/analytics';
 
 let useOnlineState = () => {
-    let [status, setStatus] = React.useState(useClient().client.status);
+    let [status, setStatus] = React.useState(useClient().engine.status);
     React.useEffect(() => {
-        return useClient().client.watchStatus((s) => {
+        return useClient().engine.watchStatus((s) => {
             setStatus(s);
         });
     }, []);

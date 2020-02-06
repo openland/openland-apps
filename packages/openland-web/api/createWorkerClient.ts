@@ -1,6 +1,6 @@
+import { WorkerInterface, WorkerEngine } from '@openland/spacex';
+
 const W = require('./spacex.worker');
-import { WorkerInterface } from 'openland-graphql/proxy/WorkerInterface';
-import { WorkerClient } from 'openland-graphql/proxy/WorkerClient';
 
 export function createWorkerClient(endpoint: string, wsEndpoint: string, token?: string) {
     console.log('creating client');
@@ -17,7 +17,7 @@ export function createWorkerClient(endpoint: string, wsEndpoint: string, token?:
                 handler(src.data);
             }),
     };
-    let res = new WorkerClient(threadInterface);
+    let res = new WorkerEngine({ worker: threadInterface });
     console.log('completed');
     return res;
 }

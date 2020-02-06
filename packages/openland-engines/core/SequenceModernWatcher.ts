@@ -1,9 +1,9 @@
 import { SequenceHandler } from './SequenceHandler';
-import { GraphqlClient, GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
+import { GraphqlEngine, GraphqlActiveSubscription } from '@openland/spacex';
 
 export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> {
     readonly name: string;
-    readonly client: GraphqlClient;
+    readonly engine: GraphqlEngine;
     private readonly handler: (src: any) => void;
     private readonly seqHandler?: (seq: number) => void;
     private readonly stateHandler?: (seq: string) => void;
@@ -12,11 +12,11 @@ export class SequenceModernWatcher<TSubscription extends { event: any }, TVars> 
     private currentState: string | null;
     private subscription: GraphqlActiveSubscription<TSubscription, TVars>;
 
-    constructor(name: string, subscription: GraphqlActiveSubscription<TSubscription, TVars>, client: GraphqlClient, handler: (src: any) => void | Promise<void>, seqHandler?: (seq: number) => void, variables?: TVars, state?: string | null, stateHandler?: (seq: string) => void) {
+    constructor(name: string, subscription: GraphqlActiveSubscription<TSubscription, TVars>, engine: GraphqlEngine, handler: (src: any) => void | Promise<void>, seqHandler?: (seq: number) => void, variables?: TVars, state?: string | null, stateHandler?: (seq: string) => void) {
         this.name = name;
         this.handler = handler;
         this.seqHandler = seqHandler;
-        this.client = client;
+        this.engine = engine;
         this.currentState = null;
         this.variables = variables;
         this.sequenceHandler = new SequenceHandler(this.handleInternal);

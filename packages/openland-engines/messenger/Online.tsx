@@ -1,4 +1,4 @@
-import { GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
+import { GraphqlActiveSubscription } from '@openland/spacex';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { OnlineWatch, OnlineWatchVariables } from 'openland-api/Types';
 import { forever } from 'openland-engines/utils/forever';

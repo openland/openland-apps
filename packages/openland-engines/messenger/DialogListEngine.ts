@@ -15,7 +15,6 @@ import { DataSource } from 'openland-y-utils/DataSource';
 import { createLogger } from 'mental-log';
 import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';
 import { DataSourceAugmentor } from 'openland-y-utils/DataSourceAugmentor';
-import { RoomPicoQuery } from 'openland-api';
 
 const log = createLogger('Engine-Dialogs');
 
@@ -360,7 +359,7 @@ export class DialogListEngine {
                 return;
             }
 
-            let info = await this.engine.client.client.query(RoomPicoQuery, {
+            let info = await this.engine.client.queryRoomPico({
                 id: conversationId,
             });
 

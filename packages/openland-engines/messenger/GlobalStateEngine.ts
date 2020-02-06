@@ -1,8 +1,6 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { backoff } from 'openland-y-utils/timer';
-import { GlobalCounterQuery } from 'openland-api';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
-import { MarkSequenceReadMutation } from 'openland-api';
 import * as Types from 'openland-api/Types';
 import { createLogger } from 'mental-log';
 import { currentTimeMillis } from 'openland-y-utils/currentTime';
@@ -64,7 +62,7 @@ export class GlobalStateEngine {
     }
 
     handleDialogsStarted = (state: string) => {
-        this.watcher = new SequenceModernWatcher('global', this.engine.client.subscribeDialogsWatch({ state }), this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, state, async (st) => {
+        this.watcher = new SequenceModernWatcher('global', this.engine.client.subscribeDialogsWatch({ state }), this.engine.client.engine, this.handleGlobalEvent, this.handleSeqUpdated, undefined, state, async (st) => {
             await this.engine.dialogList.handleStateProcessed(st);
         });
     }
@@ -112,7 +110,7 @@ export class GlobalStateEngine {
             this.lastReportedSeq = this.maxSeq;
             let seq = this.maxSeq;
             (async () => {
-                backoff(() => this.engine.client.client.mutate(MarkSequenceReadMutation, { seq }));
+                backoff(() => this.engine.client.mutateMarkSequenceRead({ seq }));
             })();
         }
     }
@@ -239,6 +237,11 @@ export class GlobalStateEngine {
     }
 
     private flushGlobalCounter = async () => {
-        await this.engine.client.client.writeQuery(JSON.parse(JSON.stringify(this.counterState)), GlobalCounterQuery);
+        await this.engine.client.updateGlobalCounter((data) => ({
+            ...data, alphaNotificationCounter: {
+                ...data.alphaNotificationCounter,
+                unreadCount: this.counterState.alphaNotificationCounter.unreadCount
+            }
+        }));
     }
 }

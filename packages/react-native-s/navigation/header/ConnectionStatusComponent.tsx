@@ -50,7 +50,7 @@ export const ConnectionStatusComponent = (props: { k: string }) => {
 
         // timeout to prevent showing "connecting" on app start
         setTimeout(() => {
-            return client.client.watchStatus(s => {
+            return client.engine.watchStatus(s => {
                 showStatusDebaunced(s.status === 'connecting');
             });
         }, 1000);
