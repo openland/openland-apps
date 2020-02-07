@@ -191,7 +191,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
         res.item({
             title: 'Leave chat',
             icon: <LeaveIcon />,
-            action: () => showLeaveChatConfirmation(client, chat.id),
+            action: () => showLeaveChatConfirmation(client, chat.id, router),
         });
     }
 

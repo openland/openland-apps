@@ -46,7 +46,7 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
     builder.item({
         title: `Leave ${typeString}`,
         icon: <LeaveIcon />,
-        onClick: () => showLeaveChatConfirmation(client, id)
+        onClick: () => showLeaveChatConfirmation(client, id, router)
     });
 
     if (useRole('super-admin')) {
@@ -59,6 +59,7 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
                     .message(`Are you sure you want to delete ${title}? This cannot be undone.`)
                     .action('Delete', async () => {
                         await client.mutateRoomLeave({ roomId: id });
+                        router.navigate('/mail');
                     }, 'danger')
                     .show();
             }
