@@ -7,8 +7,8 @@ import { USelect } from 'openland-web/components/unicorn/USelect';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
-import { XTextArea } from 'openland-x/XTextArea';
-import { InputField } from 'openland-web/components/InputField';
+import { UInputField } from 'openland-web/components/unicorn/UInput';
+import { UTextAreaField } from 'openland-web/components/unicorn/UTextArea';
 import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
 import { FormFooter } from './components/FormFooter';
@@ -138,14 +138,13 @@ export const SettingsProfileFragment = React.memo(() => {
                         )}
                         <FormSection title="Info">
                             <XView marginBottom={16}>
-                                <InputField
-                                    title="First name"
+                                <UInputField
+                                    label="First name"
                                     field={firstNameField}
-                                    size="large"
                                 />
                             </XView>
                             <XView marginBottom={16}>
-                                <InputField title="Last name" field={lastNameField} size="large" />
+                                <UInputField label="Last name" field={lastNameField} />
                             </XView>
                             <XView marginBottom={16}>
                                 <USelect
@@ -161,49 +160,45 @@ export const SettingsProfileFragment = React.memo(() => {
                                 />
                             </XView>
                             <XView marginBottom={16}>
-                                <XTextArea
-                                    mode="modern"
-                                    title="About"
-                                    size="large"
-                                    {...aboutField.input}
+                                <UTextAreaField
+                                    placeholder="About"
+                                    field={aboutField}
                                     resize={false}
                                 />
                             </XView>
-                            <InputField title="Location" field={locationField} size="large" />
+                            <UInputField label="Location" field={locationField} />
                         </FormSection>
                         <FormSection title="Username">
-                            <InputField
-                                title="Username"
+                            <UInputField
+                                label="Username"
                                 field={usernameField}
-                                size="large"
                                 invalid={!!form.error}
                                 errorText={form.error}
                             />
                         </FormSection>
                         <FormSection title="Contacts">
                             <XView marginBottom={16}>
-                                <InputField
-                                    title="Phone number"
+                                <UInputField
+                                    label="Phone number"
                                     field={phoneNumberField}
-                                    size="large"
                                 />
                             </XView>
                             <XView marginBottom={16}>
-                                <InputField title="Email" field={emailField} size="large" />
+                                <UInputField label="Email" field={emailField} />
                             </XView>
                             <XView marginBottom={16}>
-                                <InputField title="Website" field={websiteField} size="large" />
+                                <UInputField label="Website" field={websiteField} />
                             </XView>
                             <XView marginBottom={16}>
-                                <InputField title="Instagram" field={instagramField} size="large" />
+                                <UInputField label="Instagram" field={instagramField} />
                             </XView>
                             <XView marginBottom={16}>
-                                <InputField title="Twitter" field={twitterField} size="large" />
+                                <UInputField label="Twitter" field={twitterField} />
                             </XView>
                             <XView marginBottom={16}>
-                                <InputField title="Facebook" field={facebookField} size="large" />
+                                <UInputField label="Facebook" field={facebookField} />
                             </XView>
-                            <InputField title="LinkedIn" field={linkedinField} size="large" />
+                            <UInputField label="LinkedIn" field={linkedinField} />
                         </FormSection>
                         <FormFooter>
                             <UButton

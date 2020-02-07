@@ -302,11 +302,11 @@ export class NotificationCenterEngine {
         }
     }
 
-    private handleSeqUpdated = (seq: number) => {
-        this.maxSeq = Math.max(seq, this.maxSeq);
+    // private handleSeqUpdated = (seq: number) => {
+    //     this.maxSeq = Math.max(seq, this.maxSeq);
 
-        this.reportSeqIfNeeded();
-    }
+    //     this.reportSeqIfNeeded();
+    // }
 
     private reportSeqIfNeeded = () => {
         if (this.isVisible && this.lastReportedSeq < this.maxSeq) {
@@ -318,59 +318,59 @@ export class NotificationCenterEngine {
         }
     }
 
-    private handleEvent = async (event: Types.NotificationCenterUpdateFragment) => {
-        log.log('Event Recieved: ' + event.__typename);
+    // private handleEvent = async (event: Types.NotificationCenterUpdateFragment) => {
+    //     log.log('Event Recieved: ' + event.__typename);
 
-        if (event.__typename === 'NotificationReceived') {
-            const converted = convertNotification(event.notification);
+    //     if (event.__typename === 'NotificationReceived') {
+    //         const converted = convertNotification(event.notification);
 
-            await this._dataSourceStored.addItem(converted, 0);
+    //         await this._dataSourceStored.addItem(converted, 0);
 
-            if (converted.notificationType === 'new_comment' || converted.notificationType === 'mm') {
-                this.engine.notifications.handleIncomingNotification(converted);
-            }
-            this.onNotificationsUpdated();
-        } else if (event.__typename === 'NotificationDeleted') {
-            const id = event.notification.id;
+    //         if (converted.notificationType === 'new_comment' || converted.notificationType === 'mm') {
+    //             this.engine.notifications.handleIncomingNotification(converted);
+    //         }
+    //         this.onNotificationsUpdated();
+    //     } else if (event.__typename === 'NotificationDeleted') {
+    //         const id = event.notification.id;
 
-            if (await this._dataSourceStored.hasItem(id)) {
-                await this._dataSourceStored.removeItem(id);
+    //         if (await this._dataSourceStored.hasItem(id)) {
+    //             await this._dataSourceStored.removeItem(id);
 
-                this.onNotificationsUpdated();
-            }
-        } else if (event.__typename === 'NotificationUpdated') {
-            const id = event.notification.id;
-            const converted = convertNotification(event.notification);
+    //             this.onNotificationsUpdated();
+    //         }
+    //     } else if (event.__typename === 'NotificationUpdated') {
+    //         const id = event.notification.id;
+    //         const converted = convertNotification(event.notification);
 
-            if (await this._dataSourceStored.hasItem(id)) {
-                await this._dataSourceStored.updateItem(converted);
-                this.onNotificationsUpdated();
-            }
-        } else if (event.__typename === 'NotificationContentUpdated') {
-            if (event.content.__typename === 'UpdatedNotificationContentComment') {
-                const peer = event.content.peer;
-                const peerRoot = peer.peerRoot;
-                const peerRootId = peerRoot.__typename === 'CommentPeerRootMessage' ? peerRoot.message.id : peerRoot.item.id;
-                const comment = event.content.comment;
-                const subscription = !!event.content.peer.subscription;
+    //         if (await this._dataSourceStored.hasItem(id)) {
+    //             await this._dataSourceStored.updateItem(converted);
+    //             this.onNotificationsUpdated();
+    //         }
+    //     } else if (event.__typename === 'NotificationContentUpdated') {
+    //         if (event.content.__typename === 'UpdatedNotificationContentComment') {
+    //             const peer = event.content.peer;
+    //             const peerRoot = peer.peerRoot;
+    //             const peerRootId = peerRoot.__typename === 'CommentPeerRootMessage' ? peerRoot.message.id : peerRoot.item.id;
+    //             const comment = event.content.comment;
+    //             const subscription = !!event.content.peer.subscription;
 
-                await this._dataSourceStored.updateAllItems(oldItem => {
-                    if (comment && (oldItem.id === comment.comment.id)) {
-                        return convertCommentNotification(oldItem.key, peer, comment);
-                    }
-                    if (oldItem.peerRootId === peerRootId) {
-                        oldItem.replyQuoteText = peerRoot.__typename === 'CommentPeerRootMessage' ? (peerRoot.message.message || peerRoot.message.fallback) : undefined;
-                        oldItem.isSubscribedMessageComments = subscription;
+    //             await this._dataSourceStored.updateAllItems(oldItem => {
+    //                 if (comment && (oldItem.id === comment.comment.id)) {
+    //                     return convertCommentNotification(oldItem.key, peer, comment);
+    //                 }
+    //                 if (oldItem.peerRootId === peerRootId) {
+    //                     oldItem.replyQuoteText = peerRoot.__typename === 'CommentPeerRootMessage' ? (peerRoot.message.message || peerRoot.message.fallback) : undefined;
+    //                     oldItem.isSubscribedMessageComments = subscription;
 
-                        return oldItem;
-                    }
-                    return undefined;
-                });
-            }
-        } else if (event.__typename === 'NotificationRead') {
-            // Ignore.
-        } else {
-            log.log('Unhandled update');
-        }
-    }
+    //                     return oldItem;
+    //                 }
+    //                 return undefined;
+    //             });
+    //         }
+    //     } else if (event.__typename === 'NotificationRead') {
+    //         // Ignore.
+    //     } else {
+    //         log.log('Unhandled update');
+    //     }
+    // }
 }

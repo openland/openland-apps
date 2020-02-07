@@ -4,35 +4,45 @@ import { RoomShort } from 'openland-api/fragments/RoomShort';
 import { CommunitySearch } from 'openland-api/fragments/CommunitySearch';
 
 export const AvailableRoomsQuery = gql`
-    query AvailableRooms {
-        availableChats: betaUserAvailableRooms(limit: 3, isChannel: false) {
-            ... on SharedRoom {
-                id
-                kind
-                title
-                photo
-                membersCount
-                membership
-                organization {
-                    id
-                    name
-                    photo
+    query AvailableRooms($chatsQuery: String, $channelsQuery: String) {
+        availableChats: alphaUserAvailableRooms(first: 3, query: $chatsQuery) {
+            edges {
+                node {
+                    ... on SharedRoom {
+                        id
+                        kind
+                        title
+                        photo
+                        membersCount
+                        membership
+                        organization {
+                            id
+                            name
+                            photo
+                        }
+                    }       
                 }
+                cursor
             }
         }
-        availableChannels: betaUserAvailableRooms(limit: 3, isChannel: true) {
-            ... on SharedRoom {
-                id
-                kind
-                title
-                photo
-                membersCount
-                membership
-                organization {
-                    id
-                    name
-                    photo
+        availableChannels: alphaUserAvailableRooms(first: 3, query: $channelsQuery) {
+            edges {
+                node {
+                    ... on SharedRoom {
+                        id
+                        kind
+                        title
+                        photo
+                        membersCount
+                        membership
+                        organization {
+                            id
+                            name
+                            photo
+                        }
+                    }
                 }
+                cursor
             }
         }
         suggestedRooms: betaSuggestedRooms {
@@ -85,21 +95,30 @@ export const SuggestedRoomsQuery = gql`
 `;
 
 export const UserAvailableRoomsQuery = gql`
-    query UserAvailableRooms($limit: Int!, $after: ID, $isChannel: Boolean) {
-        betaUserAvailableRooms(limit: $limit, after: $after, isChannel: $isChannel) {
-            ... on SharedRoom {
-                id
-                kind
-                title
-                photo
-                membersCount
-                membership
-                organization {
-                    id
-                    name
-                    photo
+    query UserAvailableRooms($first: Int!, $after: String, $query: String) {
+        alphaUserAvailableRooms(first: $first, after: $after, query: $query) {
+            edges {
+                node {
+                    ... on SharedRoom {
+                        id
+                        kind
+                        title
+                        photo
+                        membersCount
+                        membership
+                        organization {
+                            id
+                            name
+                            photo
+                        }
+                    }
                 }
+                cursor
             }
+            pageInfo {
+                hasNextPage
+            }
+            
         }
     }
 `;

@@ -28,11 +28,12 @@ interface GroupsListProps {
 }
 
 const GroupsList = XMemo<GroupsListProps>((props) => {
-    let groups = getClient().useUserAvailableRooms({ limit: 100 }, { fetchPolicy: 'cache-and-network' }).betaUserAvailableRooms;
+    let groups = getClient().useUserAvailableRooms({ first: 100 }, { fetchPolicy: 'cache-and-network' }).alphaUserAvailableRooms;
 
     return (
         <>
-            {groups.map((group, i) => {
+            {groups.edges.map((e, i) => {
+                let group = e.node;
 
                 return (
                     <CheckListBoxWraper key={'group-' + i} checked={!!props.groups.find((u: any) => u.id === group.id)}>

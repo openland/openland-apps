@@ -1,4 +1,4 @@
-query AvailableRooms {
+query AvailableRooms($channelsQuery: String, $chatsQuery: String) {
   communities: alphaComunityPrefixSearch(first: 3) {
     __typename
     edges {
@@ -9,42 +9,56 @@ query AvailableRooms {
       }
     }
   }
+  availableChats: alphaUserAvailableRooms(first: 3, query: $chatsQuery) {
+    __typename
+    edges {
+      __typename
+      cursor
+      node {
+        __typename
+        ... on SharedRoom {
+          id
+          kind
+          membersCount
+          membership
+          organization {
+            __typename
+            id
+            name
+            photo
+          }
+          photo
+          title
+        }
+      }
+    }
+  }
+  availableChannels: alphaUserAvailableRooms(first: 3, query: $channelsQuery) {
+    __typename
+    edges {
+      __typename
+      cursor
+      node {
+        __typename
+        ... on SharedRoom {
+          id
+          kind
+          membersCount
+          membership
+          organization {
+            __typename
+            id
+            name
+            photo
+          }
+          photo
+          title
+        }
+      }
+    }
+  }
   isDiscoverDone: betaIsDiscoverDone
   suggestedRooms: betaSuggestedRooms {
-    __typename
-    ... on SharedRoom {
-      id
-      kind
-      membersCount
-      membership
-      organization {
-        __typename
-        id
-        name
-        photo
-      }
-      photo
-      title
-    }
-  }
-  availableChats: betaUserAvailableRooms(isChannel: false, limit: 3) {
-    __typename
-    ... on SharedRoom {
-      id
-      kind
-      membersCount
-      membership
-      organization {
-        __typename
-        id
-        name
-        photo
-      }
-      photo
-      title
-    }
-  }
-  availableChannels: betaUserAvailableRooms(isChannel: true, limit: 3) {
     __typename
     ... on SharedRoom {
       id

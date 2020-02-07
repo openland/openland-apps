@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
+import { XView, XViewRouter } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 import { showModalBox } from 'openland-x/showModalBox';
 import { Room_room_SharedRoom } from 'openland-api/Types';
@@ -130,7 +130,7 @@ export const showRoomEditModal = (chatId: string) => {
     );
 };
 
-export const showLeaveChatConfirmation = (client: OpenlandClient, chatId: string) => {
+export const showLeaveChatConfirmation = (client: OpenlandClient, chatId: string, router: XViewRouter) => {
     const builder = new AlertBlanketBuilder();
 
     builder.title('Leave chat');
@@ -141,6 +141,7 @@ export const showLeaveChatConfirmation = (client: OpenlandClient, chatId: string
         'Leave',
         async () => {
             await client.mutateRoomLeave({ roomId: chatId });
+            router.navigate('/mail');
         },
         'danger',
     );

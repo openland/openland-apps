@@ -19,10 +19,16 @@ import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 
 export const RoomsList = (props: { router: SRouter }) => {
-    let rooms = getClient().useAvailableRooms({ fetchPolicy: 'network-only' });
+    const chatsQuery = JSON.stringify({ isChannel: false });
+    const channelsQuery = JSON.stringify({ isChannel: true });
+    let rooms = getClient().useAvailableRooms({chatsQuery, channelsQuery}, { fetchPolicy: 'network-only' });
 
-    let availableChats = rooms.availableChats || [];
-    let availableChannels = rooms.availableChannels || [];
+    let chatsEdges = (rooms.availableChats.edges || []);
+    let availableChats = chatsEdges.map(x => x.node);
+    let chatsCursor = (rooms.availableChats.edges || []).map(x => x.cursor)[chatsEdges.length - 1];
+    let channelsEdges = (rooms.availableChannels.edges || []);
+    let availableChannels = channelsEdges.map(x => x.node);
+    let channelsCursor = channelsEdges.map(x => x.cursor)[channelsEdges.length - 1];
     let suggestedRooms = rooms.suggestedRooms || [];
     let communities = rooms.communities || [];
 
@@ -33,8 +39,8 @@ export const RoomsList = (props: { router: SRouter }) => {
                 headerMarginTop={0}
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('GroupList', {
-                        query: 'available',
-                        isChannel: false,
+                        after: chatsCursor,
+                        query: chatsQuery,
                         initial: availableChats,
                         title: 'Top groups',
                     })
@@ -60,8 +66,8 @@ export const RoomsList = (props: { router: SRouter }) => {
                 header="Top channels"
                 actionRight={{
                     title: 'See all', onPress: () => props.router.push('GroupList', {
-                        query: 'available',
-                        isChannel: true,
+                        after: channelsCursor,
+                        query: channelsQuery,
                         initial: availableChannels,
                         title: 'Top channels',
                     })

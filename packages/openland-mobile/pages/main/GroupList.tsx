@@ -9,22 +9,23 @@ import { SFlatList } from 'react-native-s/SFlatList';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 
 const GroupListComponent = React.memo<PageProps>((props) => {
-    let initial = props.router.params.initial as Types.AvailableRooms_availableChats[];
-    let isChannel = props.router.params.isChannel;
+    let initial = props.router.params.initial as Types.AvailableRooms_availableChats_edges_node[];
+    let {query} = props.router.params;
 
     let [rooms, setRooms] = React.useState(initial);
     const [loading, setLoading] = React.useState(false);
-    const [needMore, setNeedMore] = React.useState(!!props.router.params.query);
+    const [after, setAfter] = React.useState(props.router.params.after as string);
     let handleLoadMore = React.useCallback(async () => {
-        if (!loading && needMore) {
+        if (!loading && !!after) {
             setLoading(true);
-            let res;
-            res = (await getClient().queryUserAvailableRooms({ after: rooms[rooms.length - 1].id, limit: 10, isChannel: isChannel }, { fetchPolicy: 'network-only' })).betaUserAvailableRooms;
-
-            if (!res.length) {
-                setNeedMore(false);
+            let res = (await getClient().queryUserAvailableRooms({ after, first: 10, query }, { fetchPolicy: 'network-only' })).alphaUserAvailableRooms;
+            let newAfter = res.edges[res.edges.length - 1].cursor;
+            if (res.pageInfo.hasNextPage) {
+                setAfter(newAfter);
+            } else {
+                setAfter('');
             }
-            setRooms([...rooms, ...res]);
+            setRooms([...rooms, ...res.edges.map(x => x.node)]);
             setLoading(false);
         }
 

@@ -751,10 +751,10 @@
       }
     },
     {
-      "signature": "4bc1cda4e6996739e174939f01cdb5274faa321249b4a8f5739be188a2978e94",
-      "document": "fragment CommunitySearch on Organization{__typename about featured:alphaFeatured roomsCount:betaPublicRoomsCount id isMine membersCount name photo status superAccountId}query AvailableRooms{communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChats:betaUserAvailableRooms(isChannel:false,limit:3){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChannels:betaUserAvailableRooms(isChannel:true,limit:3){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
+      "signature": "c2666a12cbf880c4b2fbc956c4eff0d5748b4519e1da358a382d326f7ff88494",
+      "document": "fragment CommunitySearch on Organization{__typename about featured:alphaFeatured roomsCount:betaPublicRoomsCount id isMine membersCount name photo status superAccountId}query AvailableRooms($channelsQuery:String,$chatsQuery:String){communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename...CommunitySearch}}}availableChats:alphaUserAvailableRooms(first:3,query:$chatsQuery){__typename edges{__typename cursor node{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}}availableChannels:alphaUserAvailableRooms(first:3,query:$channelsQuery){__typename edges{__typename cursor node{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
       "metadata": {
-        "engineSignature": "fragment CommunitySearch on Organization{__typename about alphaFeatured betaPublicRoomsCount id isMine membersCount name photo status superAccountId}query AvailableRooms{alphaComunityPrefixSearch(first:0){__typename edges{__typename node{__typename...CommunitySearch}}}betaIsDiscoverDone betaSuggestedRooms{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}betaUserAvailableRooms(isChannel:false,limit:0){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}betaUserAvailableRooms(isChannel:true,limit:0){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+        "engineSignature": "fragment CommunitySearch on Organization{__typename about alphaFeatured betaPublicRoomsCount id isMine membersCount name photo status superAccountId}query AvailableRooms($channelsQuery:String,$chatsQuery:String){alphaComunityPrefixSearch(first:0){__typename edges{__typename node{__typename...CommunitySearch}}}alphaUserAvailableRooms(first:0,query:$chatsQuery){__typename edges{__typename cursor node{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}}alphaUserAvailableRooms(first:0,query:$channelsQuery){__typename edges{__typename cursor node{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}}betaIsDiscoverDone betaSuggestedRooms{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
       }
     },
     {
@@ -765,10 +765,10 @@
       }
     },
     {
-      "signature": "92741f93ecb41a486567c4c638293230070835b7f9372be12c1ebb818f88588f",
-      "document": "query UserAvailableRooms($after:ID,$isChannel:Boolean,$limit:Int!){betaUserAvailableRooms(after:$after,isChannel:$isChannel,limit:$limit){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}",
+      "signature": "b40a40a5558987e8751032d73883d1e0b8f273602e4e76045dc0f0579e411b9f",
+      "document": "query UserAvailableRooms($after:String,$first:Int!,$query:String){alphaUserAvailableRooms(after:$after,first:$first,query:$query){__typename edges{__typename cursor node{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}pageInfo{__typename hasNextPage}}}",
       "metadata": {
-        "engineSignature": "query UserAvailableRooms($after:ID,$isChannel:Boolean,$limit:Int!){betaUserAvailableRooms(after:$after,isChannel:$isChannel,limit:$limit){__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}"
+        "engineSignature": "query UserAvailableRooms($after:String,$first:Int!,$query:String){alphaUserAvailableRooms(after:$after,first:$first,query:$query){__typename edges{__typename cursor node{__typename...on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}pageInfo{__typename hasNextPage}}}"
       }
     },
     {

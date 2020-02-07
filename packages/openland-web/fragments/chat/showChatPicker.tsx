@@ -3,10 +3,10 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { XModalController } from 'openland-x/showModal';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { XView } from 'react-mental';
-import { DialogSearchInput } from '../dialogs/components/DialogSearchInput';
 import { DialogSearchResults } from '../dialogs/components/DialogSearchResults';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { GlobalSearch_items, GlobalSearchEntryKind } from 'openland-api/Types';
+import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
 
 const ChatPickerComponent = (props: {
     onSelect: (selecedChatId: string) => void;
@@ -32,11 +32,13 @@ const ChatPickerComponent = (props: {
             }}
         >
             <XView flexGrow={1} flexBasis={0} minHeight={0} flexShrink={1}>
-                <DialogSearchInput
+                <USearchInput
                     value={query}
                     onChange={setQuery}
-                    modal={true}
-                    autofocus={true}
+                    autoFocus={true}
+                    marginHorizontal={23}
+                    marginBottom={12}
+                    marginTop={8}
                 />
                 <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
                     <DialogSearchResults

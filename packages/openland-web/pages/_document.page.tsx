@@ -139,21 +139,28 @@ export default class OpenlandDocument extends Document {
             } else {
                 // probably user meta tags needed
                 const linkSegments = originalUrl.split('/');
+
                 if (linkSegments.length === 2) {
-                    const shortname = linkSegments[1];
-                    try {
-                        const { user } = await openland.queryUserPico({ userId: shortname });
+                    const probableShortname = linkSegments[1];
 
-                        metaTagsInfo = {
-                            title: `${user.name} on Openland`,
-                            url: urlPrefix + originalUrl,
-                            description: `${user.firstName} uses Openland. Want to reach them? Join Openland and write a message `,
-                            image: user.photo || 'https://cdn.openland.com/shared/og/og-global.png',
-                        };
+                    const shortnameData = await openland.queryResolveShortName({ shortname: probableShortname });
 
-                    } catch (e) {
-                        // default meta tags
-                        metaTagsInfo = matchMetaTags[originalUrl] || {};
+                    if (shortnameData.item) {
+                        // user or organization exists
+                        try {
+                            const { user } = await openland.queryUserPico({ userId: probableShortname });
+
+                            metaTagsInfo = {
+                                title: `${user.name} on Openland`,
+                                url: urlPrefix + originalUrl,
+                                description: `${user.firstName} uses Openland. Want to reach them? Join Openland and write a message `,
+                                image: user.photo || 'https://cdn.openland.com/shared/og/og-global.png',
+                            };
+
+                        } catch (e) {
+                            // default meta tags
+                            metaTagsInfo = matchMetaTags[originalUrl] || {};
+                        }
                     }
                 }
             }
