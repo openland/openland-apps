@@ -88,7 +88,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
     );
 
     const dots = (
-        <XView width={20} marginRight={8} alignItems="center">
+        <XView width={20} marginRight={8} marginTop={1} alignItems="center">
             <Lottie
                 isStopped={false}
                 isPaused={false}
