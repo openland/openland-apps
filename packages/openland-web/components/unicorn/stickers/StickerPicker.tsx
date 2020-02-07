@@ -1,13 +1,15 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
 import { ListOnScrollProps, VariableSizeList } from 'react-window';
 import { MyStickers_stickers_packs, StickerFragment } from 'openland-api/Types';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { showStickerStickerPackModal } from 'openland-web/fragments/chat/messenger/message/content/StickerContent';
-import { TextLabel1 } from 'openland-web/utils/TextStyles';
+import { TextLabel1, TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
+import AlertBlanket from 'openland-x/AlertBlanket';
 import IcArrow from 'openland-icons/s/ic-chevron-16.svg';
 import IcDelete from 'openland-icons/s/ic-close-16.svg';
 
@@ -23,6 +25,27 @@ const container = css`
     flex-shrink: 1;
     flex-basis: 0;
     overflow: hidden;
+`;
+
+const stubContainer = css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+`;
+
+const stubTitle = css`
+    text-align: center;
+    color: var(--foregroundPrimary);
+    margin-bottom: 4px;
+`;
+
+const stubSubtitle = css`
+    text-align: center;
+    color: var(--foregroundSecondary);
+    margin-bottom: 16px;
+    max-width: 280px;
 `;
 
 const stickersContainer = css`
@@ -153,12 +176,24 @@ const InnerElementType = React.forwardRef<HTMLDivElement>((props: any, ref) => {
         marginRight: -2,
         scope: 'stickers-deleting',
     });
-    const removePack = async (packId: string) => {
-        await client.mutateStickerPackRemoveFromCollection({
-            id: packId,
-        });
-        await client.refetchMyStickers();
+
+    const removePack = (packId: string) => {
+        AlertBlanket.builder()
+            .title(`Delete stickerpack?`)
+            .message(`Are you sure you want to delete stickerpack? This cannot be undone.`)
+            .action(
+                'Delete',
+                async () => {
+                    await client.mutateStickerPackRemoveFromCollection({
+                        id: packId,
+                    });
+                    await client.refetchMyStickers();
+                },
+                'danger',
+            )
+            .show();
     };
+
     return (
         <div {...rest} ref={ref}>
             {sections.map((pack: StickerPack, i: number) => (
@@ -265,7 +300,7 @@ export const StickerComponent = React.memo<{
 
     React.useEffect(
         () => {
-            if (stickers.packs) {
+            if (!!stickers.packs.length) {
                 let totalCount = 0;
                 let totalPack: StickerPack[] = [];
                 for (let p of stickers.packs) {
@@ -312,6 +347,18 @@ export const StickerComponent = React.memo<{
             props.onStickerSent(item);
         }
     };
+
+    if (!stickers.packs.length) {
+        return (
+            <div className={stubContainer}>
+                <div className={cx(TextTitle3, stubTitle)}>No stickers</div>
+                <div className={cx(TextBody, stubSubtitle)}>
+                    Communication is more fun with stickers. Let’s find cool sticker pack for you!
+                </div>
+                <UButton text="Find stickers" />
+            </div>
+        );
+    }
 
     return (
         <div className={container}>
