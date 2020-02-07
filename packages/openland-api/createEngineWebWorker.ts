@@ -2,13 +2,13 @@ import { WorkerInterface, WorkerEngine } from '@openland/spacex';
 
 const W = require('./spacex.worker');
 
-export function createWorkerClient(endpoint: string, wsEndpoint: string, token?: string) {
+export function createEngineWebWorker(endpoint: string, token?: string) {
     console.log('creating client');
     let thread: Worker = new W();
     thread.onerror = e => {
         console.error(e);
     };
-    thread.postMessage({ type: 'init', token, endpoint, wsEndpoint });
+    thread.postMessage({ type: 'init', token, endpoint });
     let threadInterface: WorkerInterface = {
         post: src => thread.postMessage(src),
         setHandler: handler =>

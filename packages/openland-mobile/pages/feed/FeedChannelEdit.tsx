@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
-import { useClient } from 'openland-mobile/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';

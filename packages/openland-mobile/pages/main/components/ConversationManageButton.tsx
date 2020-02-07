@@ -6,7 +6,7 @@ import { Modals } from '../modals/Modals';
 import { SRouter } from 'react-native-s/SRouter';
 import { RoomMemberRole, Room_room, Room_room_SharedRoom } from 'openland-api/Types';
 import Alert from 'openland-mobile/components/AlertBlanket';
-import { useClient } from 'openland-mobile/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 interface ConversationManageButtonProps {

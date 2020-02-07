@@ -1,8 +1,7 @@
 import { ApiError, InvalidField } from 'openland-api/ApiError';
-import { RetryEngine } from './../openland-graphql/RetryEngine';
-import { GraphqlEngine, GraphqlError } from '@openland/spacex';
+import { GraphqlEngine, GraphqlError, RetryEngine } from '@openland/spacex';
 
-export function createGraphqlEngine(engine: GraphqlEngine): GraphqlEngine {
+export function createEngineRetry(engine: GraphqlEngine): GraphqlEngine {
     return new RetryEngine({
         engine: engine,
         errorHandler: (src) => {

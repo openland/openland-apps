@@ -8,7 +8,7 @@ import { plural } from 'openland-y-utils/plural';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import { useClient } from 'openland-mobile/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import LinearGradient from 'react-native-linear-gradient';
 

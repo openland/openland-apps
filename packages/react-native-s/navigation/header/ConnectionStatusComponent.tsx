@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useClient } from 'openland-mobile/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { debounce } from 'openland-y-utils/timer';
 import { SAnimated } from 'react-native-s/SAnimated';
 import { Text, Platform } from 'react-native';
@@ -11,7 +11,7 @@ import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 export const ConnectionStatusComponent = (props: { k: string }) => {
     let animate = new SAnimatedShadowView(`header-connecting-status-content-${props.k}`, { opacity: 0, translateY: -8, scale: 0.84 });
 
-    const client = useClient(true);
+    const client = useClient();
     const theme = useTheme();
     React.useEffect(() => {
         if (!client) {

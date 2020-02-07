@@ -21,7 +21,7 @@ import { getDepthOfCommentByID } from 'openland-y-utils/sortComments';
 import UUID from 'uuid/v4';
 import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
-import { useClient } from 'openland-mobile/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { showNoiseWarning } from 'openland-mobile/messenger/components/showNoiseWarning';
 import { plural } from 'openland-y-utils/plural';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';

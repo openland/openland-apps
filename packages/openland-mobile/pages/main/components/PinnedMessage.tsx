@@ -6,7 +6,7 @@ import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { FullMessage } from 'openland-api/Types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
-import { useClient } from 'openland-mobile/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 
 interface PinnedMessageProps {

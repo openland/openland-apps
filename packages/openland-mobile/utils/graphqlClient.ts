@@ -1,7 +1,7 @@
-import { createGraphqlEngine } from 'openland-api/createGraphqlEngine';
 import { Track } from 'openland-engines/Tracking';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { NativeSpaceXClient } from 'openland-mobile/spacex/NativeSpaceXClient';
+import { createEngineRetry } from 'openland-api/createEngineRetry';
 
 let cachedClient: OpenlandClient | null;
 
@@ -32,5 +32,5 @@ export function resetClient() {
 }
 
 export function buildNativeClient(storage?: string, token?: string) {
-    return new OpenlandClient(createGraphqlEngine(new NativeSpaceXClient(storage, token)));
+    return new OpenlandClient(createEngineRetry(new NativeSpaceXClient(storage, token)));
 }

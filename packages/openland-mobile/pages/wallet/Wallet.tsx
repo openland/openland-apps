@@ -3,7 +3,7 @@ import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { useClient } from 'openland-mobile/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { BalanceView } from './components/BalanceView';
 import { CardView } from './components/CardView';

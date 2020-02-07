@@ -1730,18 +1730,20 @@
     sharp "^0.23.0"
     tmp "^0.1.0"
 
-"@openland/spacex-cli@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@openland/spacex-cli/-/spacex-cli-1.0.1.tgz#a4c964fcfcd81c68bb10f615482fa8f9e26c94a8"
-  integrity sha512-N50PJfYc0h2AJ7E25LOR2kN+cfJkbJUmV0b3v01t3L5qgqj8+xf5pR6pPuo9lX/gHvgX/wIsLLySfykT+SdvFA==
+"@openland/spacex-cli@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@openland/spacex-cli/-/spacex-cli-1.0.3.tgz#2bd6844683345b0c41763cd9a70c7975af324d1d"
+  integrity sha512-Us8YsKM8X4hpYrSenAYcfb8dahSF5tuMul9OyFtaiHT1V8bIuCsoUkEcA4risPomtcqNLdvJS6jGqjOeWE34Yw==
 
-"@openland/spacex@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@openland/spacex/-/spacex-0.0.6.tgz#af333fab060989b9e036c7fa4af62a7f2023b7b9"
-  integrity sha512-t2p0AjBmoUDFy+CXL1FxHSJyy75QM2mrnsfyGyrdYUr0iWlBOjpjEBZ+wF1x+1SZSXyoJfMoIyLuc2xj/U9adw==
+"@openland/spacex@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@openland/spacex/-/spacex-0.0.9.tgz#e89463e2840a15eefa64b1a45698f2dd51db8713"
+  integrity sha512-8N9j2FAaS2GNkVdPV+17P2qRw1zuXh2MCebPwZn6/GAaxaqUhaaFIK6BsLh8ywSpH0a4Tq83/DJoprQd1ycYVQ==
   dependencies:
-    "@openland/spacex-cli" "1.0.1"
+    "@openland/spacex-cli" "1.0.3"
+    isomorphic-ws "4.0.1"
     uuid "3.4.0"
+    ws "7.2.1"
 
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
@@ -9469,7 +9471,7 @@ isomorphic-fetch@^2.1.1:
     node-fetch "^1.0.1"
     whatwg-fetch ">=0.10.0"
 
-isomorphic-ws@^4.0.1:
+isomorphic-ws@4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/isomorphic-ws/-/isomorphic-ws-4.0.1.tgz#55fd4cd6c5e6491e76dc125938dd863f5cd4f2dc"
   integrity sha512-BhBvN2MBpWTaSHdWRb/bwdZJ1WaehQ2L1KngkCkfLUGF0mAWAT1sQUQacEmQ0jXkFw/czDXPNQSL5u2/Krsz1w==
@@ -17388,6 +17390,11 @@ write-file-atomic@^2.0.0, write-file-atomic@^2.1.0, write-file-atomic@^2.3.0:
     imurmurhash "^0.1.4"
     signal-exit "^3.0.2"
 
+ws@7.2.1:
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.2.1.tgz#03ed52423cd744084b2cf42ed197c8b65a936b8e"
+  integrity sha512-sucePNSafamSKoOqoNfBd8V0StlkzJKL2ZAhGQinCfNQ+oacw+Pk7lcdAElecBF2VkLNZRiIb5Oi1Q5lVUVt2A==
+
 ws@^1.1.0, ws@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/ws/-/ws-1.1.5.tgz#cbd9e6e75e09fc5d2c90015f21f0c40875e0dd51"
@@ -17429,11 +17436,6 @@ ws@^6.0.0, ws@^6.1.0:
   integrity sha512-deZYUNlt2O4buFCa3t5bKLf8A7FPP/TVjwOeVNpw818Ma5nk4MLXls2eoEGS39o8119QIYxTrTDoPQ5B/gTD6w==
   dependencies:
     async-limiter "~1.0.0"
-
-ws@^7.2.1:
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-7.2.1.tgz#03ed52423cd744084b2cf42ed197c8b65a936b8e"
-  integrity sha512-sucePNSafamSKoOqoNfBd8V0StlkzJKL2ZAhGQinCfNQ+oacw+Pk7lcdAElecBF2VkLNZRiIb5Oi1Q5lVUVt2A==
 
 ws@~6.1.0:
   version "6.1.2"

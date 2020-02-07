@@ -1,5 +1,6 @@
 // @ts-ignore
-import { list, notNull, scalar, field, obj, inline, fragment, args, fieldValue, refValue, intValue, floatValue, stringValue, boolValue, listValue, objectValue, OperationDefinition } from 'openland-graphql/spacex/types';
+import { Definitions, OperationDefinition, Definitions as AllDefinitions } from '@openland/spacex';
+const { list, notNull, scalar, field, obj, inline, fragment, args, fieldValue, refValue, intValue, floatValue, stringValue, boolValue, listValue, objectValue, OperationDefinition } = WebDefinitions;
 
 const AppChatSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5846,3 +5847,4 @@ export const Operations: { [key: string]: OperationDefinition } = {
         selector: WalletUpdatesSelector
     },
 };
+export const Definitions: AllDefinitions = { operations: Operations };

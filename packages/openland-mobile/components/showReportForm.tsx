@@ -1,5 +1,5 @@
 import { ActionSheetBuilder } from './ActionSheet';
-import { useClient } from 'openland-mobile/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { startLoader, stopLoader } from './ZGlobalLoader';
 import Toast from './Toast';
 

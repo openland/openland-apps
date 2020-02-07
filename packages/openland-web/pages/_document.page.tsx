@@ -9,10 +9,10 @@ import Document, {
 import { renderStaticOptimized } from 'glamor/server';
 import { buildConfig } from '../config';
 import { saveConfig } from 'openland-x-config';
-import { spaceClient } from 'openland-x-graphql/spaceClient';
+import { createClientWeb } from 'openland-api/createClientWeb';
 
 let config = buildConfig();
-const openland = spaceClient();
+const openland = createClientWeb();
 
 type MetaTagsInfoT = {
     title?: string;

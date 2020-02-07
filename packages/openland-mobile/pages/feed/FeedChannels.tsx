@@ -5,7 +5,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { FeedChannelsSearch } from '../main/components/FeedChannelsSearch';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
-import { useClient } from 'openland-mobile/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';

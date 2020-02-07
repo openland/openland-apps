@@ -10,7 +10,7 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { AppStorage as Storage } from 'openland-y-runtime/AppStorage';
-import { useClient } from 'openland-mobile/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 
 const Logo = React.memo(() => {
     const theme = React.useContext(ThemeContext);

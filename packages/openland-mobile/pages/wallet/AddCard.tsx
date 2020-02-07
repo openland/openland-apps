@@ -5,7 +5,7 @@ import { View, Text } from 'react-native';
 import { StripeInputView, StripeInputViewInstance } from './stripe/StripeInputView';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZButton } from 'openland-mobile/components/ZButton';
-import { useClient } from 'openland-mobile/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import uuid from 'uuid';
 import { backoff } from 'openland-y-utils/timer';
 

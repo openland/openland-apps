@@ -28,7 +28,7 @@ import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { BottomSheetProvider } from 'openland-mobile/components/BottomSheet';
 import { AndroidSplashView } from '../components/AndroidSplashView';
 import { initialMode } from 'react-native-dark-mode';
-import { GQLClientContext } from 'openland-api/GQLClientContext';
+import { GQLClientContext } from 'openland-api/useClient';
 import { AppStorage as Storage } from 'openland-y-runtime/AppStorage';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {

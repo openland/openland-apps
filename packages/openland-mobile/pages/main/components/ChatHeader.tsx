@@ -7,7 +7,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
-import { useClient } from 'openland-mobile/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { useLastSeen } from 'openland-y-utils/LastSeen';
 import { TextStyles, CompensationAlpha } from 'openland-mobile/styles/AppStyles';

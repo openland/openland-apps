@@ -8,7 +8,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import LinearGradient from 'react-native-linear-gradient';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { BrandLogo } from './BrandLogo';
-import { useClient } from 'openland-mobile/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import { stopLoader, startLoader } from 'openland-mobile/components/ZGlobalLoader';
 

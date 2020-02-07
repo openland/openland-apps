@@ -3,7 +3,7 @@ import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { Platform } from 'react-native';
-import { useClient } from 'openland-mobile/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ZListHero } from 'openland-mobile/components/ZListHero';
 import { ZListItem } from 'openland-mobile/components/ZListItem';

@@ -55,7 +55,6 @@
         "popper.js": "^1.14.3",
         "prop-types": "^15.6.0",
         "query-string": "^5.0.1",
-        "isomorphic-ws": "^4.0.1",
         "react": "16.8.4",
         "react-burger-menu": "^2.2.3",
         "react-chartjs-2": "^2.6.4",
@@ -107,7 +106,6 @@
         "@bugsnag/plugin-react": "^6.5.0",
         "canvas-confetti": "^1.0.3",
         "fast-animations": "1.0.2",
-        "ws": "^7.2.1",
-        "@openland/spacex": "0.0.6"
+        "@openland/spacex": "0.0.9"
     }
 }

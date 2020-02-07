@@ -14,7 +14,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { trackEvent } from 'openland-mobile/analytics';
 import { AppStorage as Storage } from 'openland-y-runtime/AppStorage';
-import { useClient } from 'openland-mobile/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 
 interface ChatProps {
     item: RoomShort_SharedRoom;

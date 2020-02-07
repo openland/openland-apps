@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, LayoutChangeEvent } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
-import { useClient } from 'openland-mobile/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { withApp } from 'openland-mobile/components/withApp';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';

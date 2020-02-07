@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
-import { useClient } from 'openland-mobile/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { UserView } from '../main/components/UserView';
 import { SHeader } from 'react-native-s/SHeader';
