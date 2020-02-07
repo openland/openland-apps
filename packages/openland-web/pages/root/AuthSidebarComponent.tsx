@@ -9,6 +9,8 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextTitle1, TextBody, TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { detectOS } from 'openland-x-utils/detectOS';
+import { trackEvent } from 'openland-x-analytics';
+import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 
 const sidebarContainer = css`
     display: flex;
@@ -88,11 +90,20 @@ const buttonTextContainer = css`
     flex-direction: column;
 `;
 
-const DownloadButton = (props: { ios?: boolean }) => (
+interface DownloadButtonProps {
+    ios?: boolean;
+    analyticsEvent?: {
+        name: string;
+        params: object;
+    };
+}
+
+const DownloadButton = (props: DownloadButtonProps) => (
     <a
         className={buttonContainer}
         target="_blank"
         href={props.ios ? 'https://oplnd.com/ios' : 'https://oplnd.com/android'}
+        onClick={() => props.analyticsEvent && trackEvent(props.analyticsEvent.name, props.analyticsEvent.params)}
     >
         {props.ios ? <IcIos className={buttonIcon} /> : <IcAndroid className={buttonIcon} />}
         <div className={buttonTextContainer}>
@@ -102,24 +113,33 @@ const DownloadButton = (props: { ios?: boolean }) => (
     </a>
 );
 
-export const AuthSidebarComponent = React.memo(() => (
-    <div className={sidebarContainer}>
-        <XView path={'/'} hoverTextDecoration="none" cursor="pointer">
-            <div className={logoContainer}>
-                <Logo className={logoStyle} />
-                <div className={logoTitleContainer}>
-                    <div className={cx(logoTitle, TextTitle1)}>Openland</div>
-                    <UIcon icon={<IcArrow />} color="var(--foregroundTertiary)" />
+export const AuthSidebarComponent = React.memo(() => {
+    const appPlatform = useLayout();
+    
+    return (
+        <div className={sidebarContainer}>
+            <XView path={'/'} hoverTextDecoration="none" cursor="pointer">
+                <div className={logoContainer}>
+                    <Logo className={logoStyle} />
+                    <div className={logoTitleContainer}>
+                        <div className={cx(logoTitle, TextTitle1)}>Openland</div>
+                        <UIcon icon={<IcArrow />} color="var(--foregroundTertiary)" />
+                    </div>
                 </div>
+            </XView>
+            <div className={cx(logoSubtitle, TextBody)}>
+                The best place to find and build inspiring communities
             </div>
-        </XView>
-        <div className={cx(logoSubtitle, TextBody)}>
-            The best place to find and build inspiring communities
+            <DownloadButton
+                ios={true}
+                analyticsEvent={{ name: 'app_download_action', params: { os: 'ios', app_platform: appPlatform }}}
+            />
+            <DownloadButton
+                analyticsEvent={{ name: 'app_download_action', params: { os: 'android', app_platform: appPlatform }}}
+            />
         </div>
-        <DownloadButton ios={true} />
-        <DownloadButton />
-    </div>
-));
+    );
+});
 
 const mobileHeaderContainer = css`
     display: flex;
