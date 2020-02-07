@@ -1,5 +1,5 @@
-import React, { FC, ChangeEvent } from 'react';
-import { XView } from 'react-mental';
+import React from 'react';
+import { XView, XViewProps } from 'react-mental';
 import { css, cx } from 'linaria';
 import SearchIcon from 'openland-icons/ic-search-16.svg';
 import ClearIcon from 'openland-icons/ic-close-16.svg';
@@ -42,12 +42,12 @@ const reset = css`
 
     & svg * {
         fill: var(--foregroundTertiary);
-        transition: fill 0.2s cubic-bezier(.25, .8, .25, 1);
+        transition: fill 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     &:hover svg *,
     &:focus svg * {
-        transition: fill 0.01s cubic-bezier(.25, .8, .25, 1);
+        transition: fill 0.01s cubic-bezier(0.25, 0.8, 0.25, 1);
         fill: var(--foregroundSecondary);
     }
 `;
@@ -69,50 +69,54 @@ const searchIconWrapper = css`
     }
 `;
 
-interface USearchInputProps {
+interface USearchInputProps extends XViewProps {
     value?: string;
-    onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-    onReset?: () => void;
+    onChange?: (e: string) => void;
     autoFocus?: boolean;
     placeholder?: string;
 }
 
-export const USearchInput: FC<USearchInputProps> = (props) => {
-    const inputRef = React.createRef<HTMLInputElement>();
+export const USearchInput = React.forwardRef(
+    (props: USearchInputProps, ref: React.RefObject<HTMLInputElement>) => {
+        const { value, onChange, autoFocus, placeholder = 'Search', ...other } = props;
 
-    const resetAndRefocus = () => {
-        if (inputRef.current) {
-            inputRef.current.focus();
-        }
+        const [val, setValue] = React.useState(value || '');
 
-        if (props.onReset) {
-            props.onReset();
-        }
-    };
+        const handleChange = (v: string) => {
+            setValue(v);
+            if (onChange) {
+                onChange(v);
+            }
+        };
 
-    return (
-        <XView position="relative">
-            <input
-                type="search"
-                className={cx(TextBody, field)}
-                value={props.value}
-                onChange={props.onChange}
-                autoFocus={props.autoFocus}
-                placeholder={props.placeholder}
-                ref={inputRef}
-            />
-            <div className={searchIconWrapper}>
-                <SearchIcon />
-            </div>
-            {props.value && props.value.length > 0 && (
-                <button className={reset} onClick={resetAndRefocus}>
-                    <ClearIcon />
-                </button>
-            )}
-        </XView>
-    );
-};
+        const resetAndRefocus = () => {
+            setValue('');
+            if (onChange) {
+                onChange('');
+            }
+        };
 
-USearchInput.defaultProps = {
-    placeholder: 'Search'
-};
+        return (
+            <XView position="relative" {...other}>
+                <input
+                    type="search"
+                    className={cx(TextBody, field)}
+                    value={val || ''}
+                    onChange={e => handleChange(e.target.value)}
+                    autoFocus={autoFocus}
+                    placeholder={placeholder}
+                    ref={ref}
+                />
+                <div className={searchIconWrapper}>
+                    <SearchIcon />
+                </div>
+                {props.value &&
+                    props.value.length > 0 && (
+                        <button className={reset} onClick={resetAndRefocus}>
+                            <ClearIcon />
+                        </button>
+                    )}
+            </XView>
+        );
+    },
+);

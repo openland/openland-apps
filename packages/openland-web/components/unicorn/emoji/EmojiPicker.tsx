@@ -397,13 +397,9 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
     const [stickers, setStickers] = React.useState(false);
     const [searchInput, setSearchInput] = React.useState<string>('');
     const [foundEmoji, setFoundEmoji] = React.useState<Emoji[]>([]);
-    const onSearch = (e: ChangeEvent<HTMLInputElement>) => {
-        const searchValue = e.target.value;
-        setSearchInput(searchValue);
-        setFoundEmoji(findEmoji(searchValue));
-    };
-    const onReset = () => {
-        setSearchInput('');
+    const onSearch = (e: string) => {
+        setSearchInput(e);
+        setFoundEmoji(findEmoji(e));
     };
 
     const onScroll = React.useCallback((s: ListOnScrollProps) => {
@@ -446,7 +442,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
                 <>
                     <XWithRole role="super-admin">
                         <XView paddingLeft={16} paddingRight={16} paddingBottom={8}>
-                            <USearchInput value={searchInput} onChange={onSearch} onReset={onReset} />
+                            <USearchInput value={searchInput} onChange={onSearch} />
                         </XView>
                     </XWithRole>
                     {searchInput.length > 0 && foundEmoji.length > 0 && (
