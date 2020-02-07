@@ -147,10 +147,7 @@ export class TypingsWatcher {
             case TypingType.PHOTO: actionString = 'sending photo'; break;
             case TypingType.STICKER: actionString = 'picking a sticker'; break;
             case TypingType.VIDEO: actionString = 'uploading video'; break;
-
-            default: return ((invalidAction: TypingType): never => {
-                throw new TypeError(`Invalid typing action: ${invalidAction}`);
-            })(action);
+            default: actionString = 'typing'; break;
         }
 
         switch (userNames.length) {
