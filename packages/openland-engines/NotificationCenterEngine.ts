@@ -231,14 +231,17 @@ export class NotificationCenterEngine {
                         for (let u of update.event.updates) {
                             queue.post(u);
                         }
+                        this.handleSeqUpdated(update.event.seq);
                     } else if (update.event.__typename === 'NotificationCenterUpdateSingle') {
                         queue.post(update.event.update);
+                        this.handleSeqUpdated(update.event.seq);
                     }
                     return update.event.state;
                 });
                 (async () => {
                     while (true) {
                         let st = await queue.get();
+                        await this.handleEvent(st);
                         await this.handleStateProcessed(st);
                     }
                 })();
