@@ -114,8 +114,6 @@ const DownloadButton = (props: DownloadButtonProps) => (
 );
 
 export const AuthSidebarComponent = React.memo(() => {
-    const appPlatform = useLayout();
-    
     return (
         <div className={sidebarContainer}>
             <XView path={'/'} hoverTextDecoration="none" cursor="pointer">
@@ -132,10 +130,10 @@ export const AuthSidebarComponent = React.memo(() => {
             </div>
             <DownloadButton
                 ios={true}
-                analyticsEvent={{ name: 'app_download_action', params: { os: 'ios', app_platform: appPlatform }}}
+                analyticsEvent={{ name: 'app_download_action', params: { os: 'ios' }}}
             />
             <DownloadButton
-                analyticsEvent={{ name: 'app_download_action', params: { os: 'android', app_platform: appPlatform }}}
+                analyticsEvent={{ name: 'app_download_action', params: { os: 'android' }}}
             />
         </div>
     );
