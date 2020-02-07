@@ -106,6 +106,6 @@
         "@bugsnag/plugin-react": "^6.5.0",
         "canvas-confetti": "^1.0.3",
         "fast-animations": "1.0.2",
-        "@openland/spacex": "0.0.9"
+        "@openland/spacex": "0.0.11"
     }
 }

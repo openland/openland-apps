@@ -1,6 +1,9 @@
+/* tslint:disable */
+/* eslint-disable */
 // @ts-ignore
-import { Definitions, OperationDefinition, Definitions as AllDefinitions } from '@openland/spacex';
-const { list, notNull, scalar, field, obj, inline, fragment, args, fieldValue, refValue, intValue, floatValue, stringValue, boolValue, listValue, objectValue, OperationDefinition } = WebDefinitions;
+import { WebDefinitions, OperationDefinition, Definitions as AllDefinitions } from '@openland/spacex';
+// @ts-ignore
+const { list, notNull, scalar, field, obj, inline, fragment, args, fieldValue, refValue, intValue, floatValue, stringValue, boolValue, listValue, objectValue } = WebDefinitions;
 
 const AppChatSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
