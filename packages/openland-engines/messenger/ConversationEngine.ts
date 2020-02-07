@@ -1,5 +1,7 @@
+import { Queue } from 'openland-y-utils/Queue';
 import { MessengerEngine } from '../MessengerEngine';
 import { MessageReactionType } from 'openland-api/Types';
+import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 import { backoff, delay } from 'openland-y-utils/timer';
 import {
     UserBadge,
@@ -15,7 +17,6 @@ import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler, MentionToSend } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
-import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
 import * as Types from 'openland-api/Types';
 import { createLogger } from 'mental-log';
@@ -29,6 +30,7 @@ import { ReactionReduced } from 'openland-engines/reactions/types';
 import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
 import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
+import { GraphqlActiveSubscription } from '@openland/spacex';
 
 const log = createLogger('Engine-Messages');
 
@@ -250,7 +252,8 @@ export class ConversationEngine implements MessageSendHandler {
     private isStarting = false;
     private gen = 0;
     private loadFrom: 'unread' | 'end' = 'unread';
-    private watcher: SequenceModernWatcher<Types.ChatWatch, Types.ChatWatchVariables> | null = null;
+    private watcher: GraphqlActiveSubscription<Types.ChatWatch> | null = null;
+    private updateQueue = new Queue();
     private isOpen = false;
     private messages: (FullMessage | PendingMessage)[] = [];
     private state: ConversationState;
@@ -290,6 +293,13 @@ export class ConversationEngine implements MessageSendHandler {
         this.matchmakingEngine = new MatchmakingEngine();
         this.sharedMediaEngines = {};
         this.onNewMessage = onNewMessage;
+        
+        (async () => {
+            while (true) {
+                let m = await this.updateQueue.get();
+                await backoff(() => this.updateHandler(m));
+            }
+        })();
     }
 
     restart = async (from: 'end' | 'unread') => {
@@ -368,7 +378,7 @@ export class ConversationEngine implements MessageSendHandler {
         log.log('Initial state for ' + this.conversationId);
         let startSubscription = this.forwardFullyLoaded;
         if (startSubscription) {
-            this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, this.engine.client.subscribeChatWatch({ chatId: this.conversationId, state: initialChat.state.state }), this.engine.client.engine, this.updateHandler, undefined, { chatId: this.conversationId }, initialChat.state.state);
+            sequenceWatcher<Types.ChatWatch>(initialChat.state.state, (state, handler) => this.engine.client.subscribeChatWatch({ chatId: this.conversationId, state }, handler), this.updateBaseHandler);
         }
         this.onMessagesUpdated();
 
@@ -564,7 +574,7 @@ export class ConversationEngine implements MessageSendHandler {
 
             this.dataSource.loadedMoreForward(dsItems, !!this.forwardFullyLoaded);
             if (!this.watcher && this.forwardFullyLoaded) {
-                this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, this.engine.client.subscribeChatWatch({ chatId: this.conversationId, state: loaded.state.state }), this.engine.client.engine, this.updateHandler, undefined, { chatId: this.conversationId }, loaded.state.state);
+                sequenceWatcher<Types.ChatWatch>(loaded.state.state, (state, handler) => this.engine.client.subscribeChatWatch({ chatId: this.conversationId, state }, handler), this.updateBaseHandler);
             }
         }
     }
@@ -907,6 +917,19 @@ export class ConversationEngine implements MessageSendHandler {
 
             this.moveOrDeletelastReadedDivider();
         }
+    }
+
+    private updateBaseHandler = (update: Types.ChatWatch): string | null => {
+        if (update.event.__typename === 'ChatUpdateBatch') {
+            for (let u of update.event.updates) {
+                this.updateQueue.post(u);
+            }
+            return update.event.state;
+        } else if (update.event.__typename === 'ChatUpdateSingle') {
+            this.updateQueue.post(update.event.update);
+            return update.event.state;
+        }
+        return null;
     }
 
     private updateHandler = async (event: any) => {

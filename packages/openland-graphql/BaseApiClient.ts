@@ -47,7 +47,6 @@ export class BaseApiClient {
     }
 
     private useObservableQuery<TQuery, TVars>(query: string, vars?: TVars, opts?: QueryWatchParameters): [GraphqlQueryWatch<TQuery>, GraphqlQueryResult<TQuery> | undefined] {
-        log.log('useQuery: ' + JSON.stringify(opts));
         const clientCache = React.useContext(ClientCacheContext);
 
         if (!clientCache && (opts && opts.fetchPolicy && (opts.fetchPolicy === 'cache-and-network' || opts.fetchPolicy === 'network-only'))) {

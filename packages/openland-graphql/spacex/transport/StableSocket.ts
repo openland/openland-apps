@@ -1,4 +1,5 @@
 import { ThrustedSocket } from './net/ThrustedSocket';
+import { GraphqlUnknownError } from '@openland/spacex';
 
 export interface StableSocket<T> {
     onConnected: (() => void) | null;
@@ -71,7 +72,7 @@ export class StableApolloSocket implements StableSocket<any> {
         } else if (this.state === 'completed') {
             // Silently ignore if connection is completed
         } else {
-            throw Error('Unknown state: ' + this.state);
+            throw new GraphqlUnknownError('Unknown state: ' + this.state);
         }
     }
 
@@ -95,7 +96,7 @@ export class StableApolloSocket implements StableSocket<any> {
         } else if (this.state === 'completed') {
             // Silently ignore if connection is completed
         } else {
-            throw Error('Unknown state: ' + this.state);
+            throw new GraphqlUnknownError('Unknown state: ' + this.state);
         }
     }
 
@@ -112,7 +113,7 @@ export class StableApolloSocket implements StableSocket<any> {
             return;
         }
         if (!this.isStarted) {
-            throw Error('Socket was not started');
+            throw new GraphqlUnknownError('Socket was not started');
         }
         this.isStopped = true;
         this.pending.clear();

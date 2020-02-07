@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { useClient } from 'openland-web/utils/useClient';
 import { CommentView } from './CommentView';
-import { StickerFragment, CommentWatch_event_CommentUpdateSingle_update, CommentEntryFragment, MessageReactionType, CommentEntryFragment_comment } from 'openland-api/Types';
-import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
+import { StickerFragment, CommentWatch, CommentWatch_event_CommentUpdateSingle_update, CommentEntryFragment, MessageReactionType, CommentEntryFragment_comment } from 'openland-api/Types';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
@@ -11,6 +10,7 @@ import { css } from 'linaria';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
+import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
 const wrapper = css`
     padding-bottom: 32px;
@@ -112,10 +112,22 @@ export const CommentsList = React.memo((props: CommentsListProps) => {
     };
 
     React.useEffect(() => {
-        const watcher = new SequenceModernWatcher('comment peerId:' + peerId, client.subscribeCommentWatch({ peerId }), client.engine, updateHandler, undefined, { peerId }, null);
+
+        let watcher = sequenceWatcher<CommentWatch>(null, (state, handler) => client.subscribeCommentWatch({ peerId, fromState: state }, handler), (s) => {
+            if (s.event && s.event.__typename === 'CommentUpdateBatch') {
+                for (let u of s.event.updates) {
+                    updateHandler(u);
+                }
+                return s.event.state;
+            } else if (s.event && s.event.__typename === 'CommentUpdateSingle') {
+                updateHandler(s.event.update);
+                return s.event.state;
+            }
+            return null;
+        });
 
         return () => {
-            watcher.destroy();
+            watcher();
         };
     });
 

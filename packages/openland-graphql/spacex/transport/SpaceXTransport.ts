@@ -25,6 +25,7 @@ export class SpaceXTransport {
     operation = async (operation: OperationDefinition, vars: any): Promise<TransportResult> => {
         let completed = false;
         return await new Promise<TransportResult>((resolve, reject) => this.serviceLayer.operation(operation, vars, (res) => {
+            // Errors will be handled somewhere else
             if (res.type === 'result' || res.type === 'error') {
                 if (!completed) {
                     completed = true;

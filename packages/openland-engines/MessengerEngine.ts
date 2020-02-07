@@ -236,7 +236,6 @@ export class MessengerEngine {
             return;
         }
         this.isVisible = isVisible;
-        this.global.onVisible(isVisible);
         if (this.isVisible) {
             if (this.close) {
                 this.close.close();

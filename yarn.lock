@@ -1735,10 +1735,10 @@
   resolved "https://registry.yarnpkg.com/@openland/spacex-cli/-/spacex-cli-1.0.1.tgz#a4c964fcfcd81c68bb10f615482fa8f9e26c94a8"
   integrity sha512-N50PJfYc0h2AJ7E25LOR2kN+cfJkbJUmV0b3v01t3L5qgqj8+xf5pR6pPuo9lX/gHvgX/wIsLLySfykT+SdvFA==
 
-"@openland/spacex@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@openland/spacex/-/spacex-0.0.1.tgz#0ac3bd5aed695918a8f0dbac0e5673a870e1c2fc"
-  integrity sha512-b/DeTgX5CPLZnjKD5VqOX1gTSJT+Xf+seKGSbtnskvG91o8MYJX1r9NT9wYgq1JPgy8XP0h6jwibJjDBbRIQbA==
+"@openland/spacex@0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@openland/spacex/-/spacex-0.0.6.tgz#af333fab060989b9e036c7fa4af62a7f2023b7b9"
+  integrity sha512-t2p0AjBmoUDFy+CXL1FxHSJyy75QM2mrnsfyGyrdYUr0iWlBOjpjEBZ+wF1x+1SZSXyoJfMoIyLuc2xj/U9adw==
   dependencies:
     "@openland/spacex-cli" "1.0.1"
     uuid "3.4.0"

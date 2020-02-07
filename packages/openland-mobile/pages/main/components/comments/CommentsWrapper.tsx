@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform, ScrollView, Keyboard, TextInput } from 'react-native';
 import { MessageInputBar } from '../MessageInputBar';
-import { CommentEntryFragment_comment, FileAttachmentInput, Message_message_GeneralMessage_source_MessageSourceChat_chat, CommentEntryFragment, CommentWatch_event_CommentUpdateSingle_update } from 'openland-api/Types';
+import { CommentEntryFragment_comment, FileAttachmentInput, Message_message_GeneralMessage_source_MessageSourceChat_chat, CommentEntryFragment, CommentWatch_event_CommentUpdateSingle_update, CommentWatch } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { EmojiSuggestions, EmojiSuggestionsRow } from '../suggestions/EmojiSuggestions';
@@ -22,9 +22,9 @@ import UUID from 'uuid/v4';
 import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
 import { useClient } from 'openland-mobile/utils/useClient';
-import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { showNoiseWarning } from 'openland-mobile/messenger/components/showNoiseWarning';
 import { plural } from 'openland-y-utils/plural';
+import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
 interface CommentsWrapperProps {
     peerView: JSX.Element;
@@ -302,17 +302,20 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
     const { peerId } = props;
     const comments = client.useComments({ peerId }, { fetchPolicy: 'cache-and-network' }).comments.comments;
 
-    const updateHandler = async (event: CommentWatch_event_CommentUpdateSingle_update) => {
+    const updateHandler = async () => {
         await client.refetchComments({ peerId });
     };
 
     React.useEffect(() => {
-        const watcher = new SequenceModernWatcher('comment peerId:' + peerId, client.subscribeCommentWatch({ peerId }), client.engine, updateHandler, undefined, { peerId }, null);
-
-        return () => {
-            watcher.destroy();
-        };
-    });
+        return sequenceWatcher<CommentWatch>(null, (state, handler) => client.subscribeCommentWatch({ peerId, fromState: state }, handler), (updates) => {
+            if (updates.event) {
+                updateHandler();
+                return updates.event.state;
+            } else {
+                return null;
+            }
+        });
+    }, [props.peerId]);
 
     return <CommentsWrapperInner {...props} comments={comments} />;
 });

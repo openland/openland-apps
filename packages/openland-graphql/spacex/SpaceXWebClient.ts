@@ -1,5 +1,4 @@
 import { Watcher } from 'openland-y-utils/Watcher';
-import { Queue } from 'openland-y-utils/Queue';
 import { randomKey } from 'openland-graphql/utils/randomKey';
 import { Operations } from './types';
 import {
@@ -8,9 +7,12 @@ import {
     OperationParameters,
     GraphqlQueryWatch,
     GraphqlQueryResult,
-    GraphqlActiveSubscription
+    GraphqlActiveSubscription,
+    GraphqlUnknownError,
+    GraphqlError,
+    GraphqlSubscriptionHandler
 } from '@openland/spacex';
-import { SpaceXTransport, TransportResult } from './transport/SpaceXTransport';
+import { SpaceXTransport } from './transport/SpaceXTransport';
 import { SpaceXStore } from './store/SpaceXStore';
 
 class QueryWatchState {
@@ -41,7 +43,7 @@ export class SpaceXWebClient implements GraphqlEngine {
     }
 
     close() {
-        throw new Error('not yet implemented');
+        throw new GraphqlUnknownError('not yet implemented');
     }
 
     watchStatus(handler: (status: GraphqlEngineStatus) => void) {
@@ -55,10 +57,10 @@ export class SpaceXWebClient implements GraphqlEngine {
     async query<TQuery, TVars>(query: string, vars?: TVars, params?: OperationParameters): Promise<TQuery> {
         let operation = this.operations[query];
         if (!operation) {
-            throw Error('Unknown operation');
+            throw new GraphqlUnknownError('Unknown operation');
         }
         if (operation.kind !== 'query') {
-            throw Error('Invalid operation kind');
+            throw new GraphqlUnknownError('Invalid operation kind');
         }
 
         let fetchPolicy: 'cache-first' | 'network-only' | 'cache-and-network' | 'no-cache' = 'cache-first';
@@ -67,7 +69,7 @@ export class SpaceXWebClient implements GraphqlEngine {
         }
 
         if (fetchPolicy === 'cache-and-network') {
-            throw Error('Unable to use CACHE_AND_NETWORK policy for non watchable query');
+            throw new GraphqlUnknownError('Unable to use CACHE_AND_NETWORK policy for non watchable query');
         }
 
         if (fetchPolicy === 'cache-first') {
@@ -83,13 +85,13 @@ export class SpaceXWebClient implements GraphqlEngine {
                 await this.store.mergeResponse(operation, vars, r.value);
             } catch (e) {
                 console.warn('Mailformed response: ', r.value);
-                throw Error('Mailformed response');
+                throw new GraphqlUnknownError('Mailformed response');
             }
             return r.value;
         } else if (r.type === 'error') {
-            throw r.errors;
+            throw new GraphqlError(r.errors);
         } else {
-            throw Error('Internal error');
+            throw new GraphqlUnknownError('Internal error');
         }
     }
     queryWatch<TQuery, TVars>(query: string, vars?: TVars, params?: OperationParameters): GraphqlQueryWatch<TQuery> {
@@ -99,10 +101,10 @@ export class SpaceXWebClient implements GraphqlEngine {
             fetchPolicy = params.fetchPolicy;
         }
         if (!operation) {
-            throw Error('Unknown operation');
+            throw new GraphqlUnknownError('Unknown operation');
         }
         if (operation.kind !== 'query') {
-            throw Error('Invalid operation kind: ' + operation.kind);
+            throw new GraphqlUnknownError('Invalid operation kind: ' + operation.kind);
         }
 
         let state = new QueryWatchState();
@@ -122,6 +124,9 @@ export class SpaceXWebClient implements GraphqlEngine {
         let doReloadFromCache: () => Promise<void>;
 
         let onResult = (v: any) => {
+            if (completed) {
+                return;
+            }
             state.hasError = false;
             state.hasValue = true;
             state.value = v;
@@ -137,7 +142,10 @@ export class SpaceXWebClient implements GraphqlEngine {
             }
         };
 
-        let onError = (e: any) => {
+        let onError = (e: Error) => {
+            if (completed) {
+                return;
+            }
             state.hasError = true;
             state.hasValue = false;
             state.value = undefined;
@@ -183,7 +191,7 @@ export class SpaceXWebClient implements GraphqlEngine {
                         return;
                     }
                     if (reload) {
-                        onError(e);
+                        onError(new GraphqlUnknownError('Mailformed response'));
                     }
                 }
 
@@ -195,10 +203,10 @@ export class SpaceXWebClient implements GraphqlEngine {
                 }
             } else if (it.type === 'error') {
                 if (reload) {
-                    onError(it.errors);
+                    onError(new GraphqlError(it.errors));
                 }
             } else {
-                throw Error('Internal Error');
+                throw new GraphqlUnknownError('Internal Error');
             }
         };
 
@@ -239,10 +247,10 @@ export class SpaceXWebClient implements GraphqlEngine {
     async mutate<TMutation, TVars>(mutation: string, vars?: TVars): Promise<TMutation> {
         let operation = this.operations[mutation];
         if (!operation) {
-            throw Error('Unknown operation');
+            throw new GraphqlUnknownError('Unknown operation');
         }
         if (operation.kind !== 'mutation') {
-            throw Error('Invalid operation kind');
+            throw new GraphqlUnknownError('Invalid operation kind');
         }
         let r = await this.transport.operation(operation, vars);
         if (r.type === 'result') {
@@ -250,81 +258,49 @@ export class SpaceXWebClient implements GraphqlEngine {
                 await this.store.mergeResponse(operation, vars, r.value);
             } catch (e) {
                 console.warn('Mailformed response: ', r.value);
-                throw Error('Mailformed response');
+                throw new GraphqlUnknownError('Mailformed response');
             }
             return r.value;
         } else if (r.type === 'error') {
-            throw r.errors;
+            throw new GraphqlError(r.errors);
         } else {
-            throw Error('Internal Error');
+            throw new GraphqlUnknownError('Internal Error');
         }
     }
 
-    subscribe<TSubscription, TVars>(subscription: string, vars?: TVars): GraphqlActiveSubscription<TSubscription, TVars> {
+    subscribe<TSubscription, TVars>(handler: GraphqlSubscriptionHandler<TSubscription>, subscription: string, vars?: TVars): GraphqlActiveSubscription<TSubscription> {
         let operation = this.operations[subscription];
         if (!operation) {
-            throw Error('Unknown operation');
+            throw new GraphqlUnknownError('Unknown operation');
         }
         if (operation.kind !== 'subscription') {
-            throw Error('Invalid operation kind');
+            throw new GraphqlUnknownError('Invalid operation kind');
         }
-        let queue = new Queue();
-        let runningOperation: (() => void) | null = null;
-        let variables = vars;
         let completed = false;
-
-        let restart = () => {
-            if (runningOperation) {
-                runningOperation();
-                runningOperation = null;
+        let runningOperation = this.transport.subscription(operation, vars, (s) => {
+            if (completed) {
+                return;
             }
-            let v = variables;
-            let localQueue = new Queue();
-            runningOperation = this.transport.subscription(operation, v, (s) => {
-                localQueue.post(s);
-            });
-
-            (async () => {
-                while (!completed) {
-                    let s: TransportResult = await localQueue.get();
-                    if (s.type === 'error') {
-                        if (!completed) {
-                            restart();
-                        }
-                        return;
-                    } else if (s.type === 'result') {
-                        try {
-                            await this.store.mergeResponse(operation, v, s.value);
-                        } catch (e) {
-                            console.warn('Mailformed response: ', s.value);
-                            if (!completed) {
-                                restart();
-                            }
-                            return;
-                        }
-                        queue.post(s.value);
-                    } else {
-                        if (!completed) {
-                            restart();
-                        }
-                        return;
-                    }
-                }
-            })();
-        };
-        restart();
+            if (s.type === 'completed') {
+                completed = true;
+                runningOperation();
+                handler({ type: 'stopped', error: new GraphqlUnknownError('Subscription stopped') });
+            } else if (s.type === 'error') {
+                completed = true;
+                runningOperation();
+                handler({ type: 'stopped', error: new GraphqlError(s.errors) });
+            } else if (s.type === 'result') {
+                handler({ type: 'message', message: s.value });
+            } else {
+                throw new GraphqlUnknownError('Internal Error');
+            }
+        });
 
         return {
-            get: () => {
-                return queue.get();
-            },
-            updateVariables: (vars2: TVars) => {
-                variables = vars2;
-            },
             destroy: () => {
-                if (runningOperation) {
+                if (!completed) {
+                    completed = true;
                     runningOperation();
-                    runningOperation = null;
                 }
             }
         };

@@ -1,9 +1,9 @@
-import { MyWallet_transactionsPending } from './../../openland-api/Types';
+import { MyWallet_transactionsPending, WalletUpdates } from 'openland-api/Types';
 import { backoff } from 'openland-y-utils/timer';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
-import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { WalletUpdates_event_WalletUpdateBatch_updates } from 'openland-api/Types';
 import { StateStore } from 'openland-engines/utils/StateStore';
+import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
 export interface WalletState {
     balance: number;
@@ -16,8 +16,6 @@ export interface WalletState {
 export class WalletEngine {
     readonly messenger: MessengerEngine;
     readonly state: StateStore<WalletState> = new StateStore();
-    // tslint:disable-next-line
-    private sequence: SequenceModernWatcher<any, any> | null = null;
 
     constructor(messenger: MessengerEngine) {
         this.messenger = messenger;
@@ -33,13 +31,19 @@ export class WalletEngine {
             historyTransactionsCursor: wallet.transactionsHistory.cursor
         });
 
-        this.sequence = new SequenceModernWatcher('wallet', this.messenger.client.subscribeWalletUpdates({ state: wallet.myWallet.state }), this.messenger.client.engine, async (src) => {
-            let update = src as WalletUpdates_event_WalletUpdateBatch_updates;
-            await this.handleUpdate(update);
-        }, undefined, undefined, wallet.myWallet.state);
+        sequenceWatcher<WalletUpdates>(wallet.myWallet.state, (state, handler) => this.messenger.client.subscribeWalletUpdates({ state: state! }, handler), (update) => {
+            if (update.event.__typename === 'WalletUpdateBatch') {
+                for (let u of update.event.updates) {
+                    this.handleUpdate(u);
+                }
+            } else if (update.event.__typename === 'WalletUpdateSingle') {
+                this.handleUpdate(update.event.update);
+            }
+            return update.event.state;
+        });
     }
 
-    private handleUpdate = async (event: WalletUpdates_event_WalletUpdateBatch_updates) => {
+    private handleUpdate = (event: WalletUpdates_event_WalletUpdateBatch_updates) => {
         console.log(event);
         if (event.__typename === 'WalletUpdateBalance') {
             // Update State

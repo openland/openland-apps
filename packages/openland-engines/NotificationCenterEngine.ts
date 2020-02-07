@@ -1,3 +1,4 @@
+import { Queue } from 'openland-y-utils/Queue';
 import { MessengerEngine } from './MessengerEngine';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { DataSource } from 'openland-y-utils/DataSource';
@@ -7,9 +8,10 @@ import { createLogger } from 'mental-log';
 import { DataSourceMessageItem } from './messenger/ConversationEngine';
 import * as Types from 'openland-api/Types';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
-import { SequenceModernWatcher } from './core/SequenceModernWatcher';
 import { backoff } from 'openland-y-utils/timer';
 import { prepareLegacyMentions } from './legacy/legacymentions';
+import { MyNotificationsCenter } from 'openland-api/Types';
+import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
 const log = createLogger('Engine-NotificationCenter');
 
@@ -182,8 +184,6 @@ export class NotificationCenterEngine {
     readonly dataSource: DataSource<NotificationsDataSourceItem>;
     private lastNotificationRead: string | null = null;
     private isVisible: boolean = true;
-    // tslint:disable-next-line
-    private watcher: SequenceModernWatcher<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables> | null = null;
     private maxSeq = 0;
     private lastReportedSeq = 0;
     private listenersCount = 0;
@@ -222,9 +222,26 @@ export class NotificationCenterEngine {
             onStarted: (state: string, items: NotificationsDataSourceItem[]) => {
                 log.log('onStarted');
 
-                this.watcher = new SequenceModernWatcher('notificationCenter', this.engine.client.subscribeMyNotificationsCenter({ state }), this.engine.client.engine, this.handleEvent, this.handleSeqUpdated, undefined, state, async (st) => {
-                    await this.handleStateProcessed(st);
+                let queue = new Queue();
+                sequenceWatcher<MyNotificationsCenter>(state, (s, handler) => this.engine.client.subscribeMyNotificationsCenter({ state }, handler), (update) => {
+                    if (!update.event) {
+                        return null;
+                    }
+                    if (update.event.__typename === 'NotificationCenterUpdateBatch') {
+                        for (let u of update.event.updates) {
+                            queue.post(u);
+                        }
+                    } else if (update.event.__typename === 'NotificationCenterUpdateSingle') {
+                        queue.post(update.event.update);
+                    }
+                    return update.event.state;
                 });
+                (async () => {
+                    while (true) {
+                        let st = await queue.get();
+                        await this.handleStateProcessed(st);
+                    }
+                })();
 
                 this.onNotificationsUpdated();
             },

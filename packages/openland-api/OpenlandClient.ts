@@ -1,5 +1,5 @@
 import * as Types from './Types';
-import { GraphqlEngine, GraphqlActiveSubscription, OperationParameters, QueryWatchParameters } from '@openland/spacex';
+import { GraphqlEngine, GraphqlActiveSubscription, OperationParameters, QueryWatchParameters, GraphqlSubscriptionHandler } from '@openland/spacex';
 import { BaseApiClient } from 'openland-graphql/BaseApiClient';
 
 export class OpenlandClient extends BaseApiClient {
@@ -1767,43 +1767,43 @@ export class OpenlandClient extends BaseApiClient {
     async mutateBetaNextDiscoverReset(): Promise<Types.BetaNextDiscoverReset> {
         return this.engine.mutate('BetaNextDiscoverReset');
     }
-    subscribeSettingsWatch(): GraphqlActiveSubscription<Types.SettingsWatch, {}> {
-        return this.engine.subscribe('SettingsWatch');
+    subscribeSettingsWatch(handler: GraphqlSubscriptionHandler<Types.SettingsWatch>): GraphqlActiveSubscription<Types.SettingsWatch> {
+        return this.engine.subscribe(handler, 'SettingsWatch');
     }
-    subscribeChatWatch(variables: Types.ChatWatchVariables): GraphqlActiveSubscription<Types.ChatWatch, Types.ChatWatchVariables> {
-        return this.engine.subscribe('ChatWatch', variables);
+    subscribeChatWatch(variables: Types.ChatWatchVariables, handler: GraphqlSubscriptionHandler<Types.ChatWatch>): GraphqlActiveSubscription<Types.ChatWatch> {
+        return this.engine.subscribe(handler, 'ChatWatch', variables);
     }
-    subscribeDialogsWatch(variables: Types.DialogsWatchVariables): GraphqlActiveSubscription<Types.DialogsWatch, Types.DialogsWatchVariables> {
-        return this.engine.subscribe('DialogsWatch', variables);
+    subscribeDialogsWatch(variables: Types.DialogsWatchVariables, handler: GraphqlSubscriptionHandler<Types.DialogsWatch>): GraphqlActiveSubscription<Types.DialogsWatch> {
+        return this.engine.subscribe(handler, 'DialogsWatch', variables);
     }
-    subscribeTypingsWatch(): GraphqlActiveSubscription<Types.TypingsWatch, {}> {
-        return this.engine.subscribe('TypingsWatch');
+    subscribeTypingsWatch(handler: GraphqlSubscriptionHandler<Types.TypingsWatch>): GraphqlActiveSubscription<Types.TypingsWatch> {
+        return this.engine.subscribe(handler, 'TypingsWatch');
     }
-    subscribeChatOnlinesCountWatch(variables: Types.ChatOnlinesCountWatchVariables): GraphqlActiveSubscription<Types.ChatOnlinesCountWatch, Types.ChatOnlinesCountWatchVariables> {
-        return this.engine.subscribe('ChatOnlinesCountWatch', variables);
+    subscribeChatOnlinesCountWatch(variables: Types.ChatOnlinesCountWatchVariables, handler: GraphqlSubscriptionHandler<Types.ChatOnlinesCountWatch>): GraphqlActiveSubscription<Types.ChatOnlinesCountWatch> {
+        return this.engine.subscribe(handler, 'ChatOnlinesCountWatch', variables);
     }
-    subscribeCommentWatch(variables: Types.CommentWatchVariables): GraphqlActiveSubscription<Types.CommentWatch, Types.CommentWatchVariables> {
-        return this.engine.subscribe('CommentWatch', variables);
+    subscribeCommentWatch(variables: Types.CommentWatchVariables, handler: GraphqlSubscriptionHandler<Types.CommentWatch>): GraphqlActiveSubscription<Types.CommentWatch> {
+        return this.engine.subscribe(handler, 'CommentWatch', variables);
     }
-    subscribeConferenceMediaWatch(variables: Types.ConferenceMediaWatchVariables): GraphqlActiveSubscription<Types.ConferenceMediaWatch, Types.ConferenceMediaWatchVariables> {
-        return this.engine.subscribe('ConferenceMediaWatch', variables);
+    subscribeConferenceMediaWatch(variables: Types.ConferenceMediaWatchVariables, handler: GraphqlSubscriptionHandler<Types.ConferenceMediaWatch>): GraphqlActiveSubscription<Types.ConferenceMediaWatch> {
+        return this.engine.subscribe(handler, 'ConferenceMediaWatch', variables);
     }
-    subscribeConferenceWatch(variables: Types.ConferenceWatchVariables): GraphqlActiveSubscription<Types.ConferenceWatch, Types.ConferenceWatchVariables> {
-        return this.engine.subscribe('ConferenceWatch', variables);
+    subscribeConferenceWatch(variables: Types.ConferenceWatchVariables, handler: GraphqlSubscriptionHandler<Types.ConferenceWatch>): GraphqlActiveSubscription<Types.ConferenceWatch> {
+        return this.engine.subscribe(handler, 'ConferenceWatch', variables);
     }
-    subscribeFeedUpdates(variables: Types.FeedUpdatesVariables): GraphqlActiveSubscription<Types.FeedUpdates, Types.FeedUpdatesVariables> {
-        return this.engine.subscribe('FeedUpdates', variables);
+    subscribeFeedUpdates(variables: Types.FeedUpdatesVariables, handler: GraphqlSubscriptionHandler<Types.FeedUpdates>): GraphqlActiveSubscription<Types.FeedUpdates> {
+        return this.engine.subscribe(handler, 'FeedUpdates', variables);
     }
-    subscribeWalletUpdates(variables: Types.WalletUpdatesVariables): GraphqlActiveSubscription<Types.WalletUpdates, Types.WalletUpdatesVariables> {
-        return this.engine.subscribe('WalletUpdates', variables);
+    subscribeWalletUpdates(variables: Types.WalletUpdatesVariables, handler: GraphqlSubscriptionHandler<Types.WalletUpdates>): GraphqlActiveSubscription<Types.WalletUpdates> {
+        return this.engine.subscribe(handler, 'WalletUpdates', variables);
     }
-    subscribeMyNotificationsCenter(variables: Types.MyNotificationsCenterVariables): GraphqlActiveSubscription<Types.MyNotificationsCenter, Types.MyNotificationsCenterVariables> {
-        return this.engine.subscribe('MyNotificationsCenter', variables);
+    subscribeMyNotificationsCenter(variables: Types.MyNotificationsCenterVariables, handler: GraphqlSubscriptionHandler<Types.MyNotificationsCenter>): GraphqlActiveSubscription<Types.MyNotificationsCenter> {
+        return this.engine.subscribe(handler, 'MyNotificationsCenter', variables);
     }
-    subscribeDebugEventsWatch(variables: Types.DebugEventsWatchVariables): GraphqlActiveSubscription<Types.DebugEventsWatch, Types.DebugEventsWatchVariables> {
-        return this.engine.subscribe('DebugEventsWatch', variables);
+    subscribeDebugEventsWatch(variables: Types.DebugEventsWatchVariables, handler: GraphqlSubscriptionHandler<Types.DebugEventsWatch>): GraphqlActiveSubscription<Types.DebugEventsWatch> {
+        return this.engine.subscribe(handler, 'DebugEventsWatch', variables);
     }
-    subscribeOnlineWatch(variables: Types.OnlineWatchVariables): GraphqlActiveSubscription<Types.OnlineWatch, Types.OnlineWatchVariables> {
-        return this.engine.subscribe('OnlineWatch', variables);
+    subscribeOnlineWatch(variables: Types.OnlineWatchVariables, handler: GraphqlSubscriptionHandler<Types.OnlineWatch>): GraphqlActiveSubscription<Types.OnlineWatch> {
+        return this.engine.subscribe(handler, 'OnlineWatch', variables);
     }
 }

@@ -4,8 +4,11 @@ import { backoff } from 'openland-y-utils/timer';
 import { MediaStreamManager } from './MediaStreamManager';
 import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
-import { ConferenceMediaWatch_media_streams } from 'openland-api/Types';
+import { ConferenceMediaWatch, ConferenceMediaWatch_media_streams } from 'openland-api/Types';
 import { AppBackgroundTask } from 'openland-y-runtime/AppBackgroundTask';
+import { Queue } from 'openland-y-utils/Queue';
+import { reliableWatcher } from 'openland-api/reliableWatcher';
+import { ConferenceWatch } from 'openland-api/Types';
 
 export class MediaSessionManager {
     readonly conversationId: string;
@@ -136,11 +139,14 @@ export class MediaSessionManager {
     }
 
     private detectOwnPeerRemoved = async () => {
-        let subscription = this.client.subscribeConferenceWatch({ id: this.conferenceId });
+        let queue = new Queue();
+        let subscription = reliableWatcher<ConferenceWatch>((handler) => this.client.subscribeConferenceWatch({ id: this.conferenceId }, handler), (src) => {
+            queue.post(src);
+        });
         while (!this.destroyed) {
             try {
-                let peers = (await subscription.get()).alphaConferenceWatch.peers;
-                let ownPeerDetected = !!peers.find(p => p.id === this.peerId);
+                let peers = (await queue.get()).alphaConferenceWatch.peers;
+                let ownPeerDetected = !!(peers as any[]).find(p => p.id === this.peerId);
                 if (this.ownPeerDetected && !ownPeerDetected) {
                     this.onDestroyRequested();
                 }
@@ -149,7 +155,7 @@ export class MediaSessionManager {
                 console.warn(e);
             }
         }
-        subscription.destroy();
+        subscription();
     }
 
     private doStart = () => {
@@ -173,12 +179,15 @@ export class MediaSessionManager {
             });
 
         // Load media streams
-        let subscription = this.client.subscribeConferenceMediaWatch({ peerId: this.peerId, id: this.conferenceId });
+        let queue = new Queue();
+        let subscription = reliableWatcher<ConferenceMediaWatch>((handler) => this.client.subscribeConferenceMediaWatch({ peerId: this.peerId, id: this.conferenceId }, handler), (src) => {
+            queue.post(src);
+        });
 
         (async () => {
             while (!this.destroyed) {
                 try {
-                    let state = (await subscription.get()).media;
+                    let state = (await queue.get()).media;
                     let streams = state.streams;
                     this.streamConfigs = streams;
                     this.handleState();
@@ -186,6 +195,7 @@ export class MediaSessionManager {
                     console.warn(e);
                 }
             }
+            subscription();
         })();
 
     }

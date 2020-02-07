@@ -108,6 +108,6 @@
         "canvas-confetti": "^1.0.3",
         "fast-animations": "1.0.2",
         "ws": "^7.2.1",
-        "@openland/spacex": "0.0.1"
+        "@openland/spacex": "0.0.6"
     }
 }

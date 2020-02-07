@@ -1,11 +1,10 @@
-import { GraphqlActiveSubscription } from '@openland/spacex';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
-import { OnlineWatch, OnlineWatchVariables } from 'openland-api/Types';
-import { forever } from 'openland-engines/utils/forever';
+import { OnlineWatch } from 'openland-api/Types';
+import { reliableWatcher } from 'openland-api/reliableWatcher';
 
 export class OnlineWatcher {
     private onlinesData = new Map<string, boolean>();
-    private sub?: GraphqlActiveSubscription<OnlineWatch, OnlineWatchVariables> = undefined;
+    private sub?: () => void = undefined;
 
     private users: string[] = [];
     private privateChats: string[] = [];
@@ -21,19 +20,13 @@ export class OnlineWatcher {
         this.destroy();
         let toSubscrive = [...this.users, ...this.privateChats.filter(uid => !this.users.includes(uid))];
 
-        let s = this.client.subscribeOnlineWatch({ users: toSubscrive });
-        this.sub = s;
-
-        forever(async () => {
-            let event = await s.get();
-
-            let evData = event.alphaSubscribeOnline;
-
-            this.onlinesData.set(evData.user.id, evData.user.online);
-            this.singleChangeListeners.forEach(l => l(evData.user.id, evData.user.online));
-
+        let s = reliableWatcher<OnlineWatch>((handler) => this.client.subscribeOnlineWatch({ users: toSubscrive }, handler), (update) => {
+            let event = update.alphaSubscribeOnline;
+            this.onlinesData.set(event.user.id, event.user.online);
+            this.singleChangeListeners.forEach(l => l(event.user.id, event.user.online));
             this.listeners.forEach(l => l(this.onlinesData));
         });
+        this.sub = s;
     }
 
     onPrivateChatAppears = (uid: string) => {
@@ -77,7 +70,8 @@ export class OnlineWatcher {
 
     destroy = () => {
         if (this.sub) {
-            this.sub.destroy();
+            this.sub();
+            this.sub = undefined;
         }
     }
 }

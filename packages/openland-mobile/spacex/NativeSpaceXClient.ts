@@ -1,8 +1,8 @@
 import { NativeModules, DeviceEventEmitter, NativeEventEmitter, Platform } from 'react-native';
 import { GraphqlBridgedEngine, OperationParameters } from '@openland/spacex';
 import { randomKey } from 'openland-graphql/utils/randomKey';
-import { convertError } from 'openland-graphql/convertError';
 import { API_HOST } from 'openland-y-utils/api';
+import { GraphqlUnknownError, GraphqlError } from '@openland/spacex';
 
 const NativeGraphQL = NativeModules.RNGraphQL as {
     createClient: (key: string, endpoint: string, token?: string, storage?: string) => void
@@ -23,7 +23,6 @@ const NativeGraphQL = NativeModules.RNGraphQL as {
 };
 
 const RNGraphQLEmitter = new NativeEventEmitter(NativeModules.RNGraphQL);
-// const log = createLogger('GraphQL-Native');
 
 export class NativeSpaceXClient extends GraphqlBridgedEngine {
     private key: string = randomKey();
@@ -35,9 +34,9 @@ export class NativeSpaceXClient extends GraphqlBridgedEngine {
                 if (src.key === this.key) {
                     if (src.type === 'failure') {
                         if (src.kind === 'graphql') {
-                            this.operationFailed(src.id, convertError(src.data));
+                            this.operationFailed(src.id, new GraphqlError(src.data));
                         } else {
-                            this.operationFailed(src.id, Error('Unknown error'));
+                            this.operationFailed(src.id, new GraphqlUnknownError('Unknown error'));
                         }
                     } else if (src.type === 'response') {
                         this.operationUpdated(src.id, src.data);
@@ -51,9 +50,9 @@ export class NativeSpaceXClient extends GraphqlBridgedEngine {
                 if (src.key === this.key) {
                     if (src.type === 'failure') {
                         if (src.kind === 'graphql') {
-                            this.operationFailed(src.id, convertError(src.data));
+                            this.operationFailed(src.id, new GraphqlError(src.data));
                         } else {
-                            this.operationFailed(src.id, Error('Unknown error'));
+                            this.operationFailed(src.id, new GraphqlUnknownError('Unknown error'));
                         }
                     } else if (src.type === 'response') {
                         this.operationUpdated(src.id, src.data);
@@ -90,9 +89,6 @@ export class NativeSpaceXClient extends GraphqlBridgedEngine {
 
     protected postSubscribe(id: string, query: string, vars: any) {
         NativeGraphQL.subscribe(this.key, id, query, vars ? vars : {});
-    }
-    protected postSubscribeUpdate(id: string, vars: any) {
-        // Not supported
     }
     protected postUnsubscribe(id: string) {
         NativeGraphQL.unsubscribe(this.key, id);

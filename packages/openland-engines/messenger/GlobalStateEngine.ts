@@ -1,23 +1,21 @@
+import { reliableWatcher } from 'openland-api/reliableWatcher';
+import { Queue } from 'openland-y-utils/Queue';
 import { MessengerEngine } from '../MessengerEngine';
 import { backoff } from 'openland-y-utils/timer';
-import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import * as Types from 'openland-api/Types';
 import { createLogger } from 'mental-log';
 import { currentTimeMillis } from 'openland-y-utils/currentTime';
 import { InvalidationQueue } from 'openland-y-utils/InvalidationQueue';
+import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
 const log = createLogger('Engine-Global');
 
 export class GlobalStateEngine {
     readonly engine: MessengerEngine;
-    // tslint:disable-next-line
-    private watcher: SequenceModernWatcher<Types.DialogsWatch, Types.DialogsWatchVariables> | null = null;
     private visibleConversations = new Set<string>();
-    private isVisible = true;
-    private maxSeq = 0;
-    private lastReportedSeq = 0;
     private counterQueue: InvalidationQueue;
     private counterState!: Types.GlobalCounter;
+    private queue = new Queue();
 
     constructor(engine: MessengerEngine) {
         this.engine = engine;
@@ -32,13 +30,9 @@ export class GlobalStateEngine {
             return await this.engine.client.querySettings({ fetchPolicy: 'cache-first' });
         });
         this.engine.client.querySettings({ fetchPolicy: 'network-only' });
-        let settingsSubscription = this.engine.client.subscribeSettingsWatch();
-        (async () => {
-            while (true) {
-                await settingsSubscription.get();
-                log.log('New settings received');
-            }
-        })();
+        reliableWatcher(handler => this.engine.client.subscribeSettingsWatch(handler), () => {
+            log.log('New settings received');
+        });
 
         // Global Counter
         let counter = backoff(async () => {
@@ -47,6 +41,13 @@ export class GlobalStateEngine {
         this.counterState = await counter;
         // Why?
         this.engine.notifications.handleGlobalCounterChanged(this.counterState.alphaNotificationCounter.unreadCount);
+
+        (async () => {
+            while (true) {
+                let update = await this.queue.get();
+                await backoff(() => this.handleGlobalEvent(update));
+            }
+        })();
 
         // Loading initial chat state
         // let start = Date.now();
@@ -62,8 +63,17 @@ export class GlobalStateEngine {
     }
 
     handleDialogsStarted = (state: string) => {
-        this.watcher = new SequenceModernWatcher('global', this.engine.client.subscribeDialogsWatch({ state }), this.engine.client.engine, this.handleGlobalEvent, this.handleSeqUpdated, undefined, state, async (st) => {
-            await this.engine.dialogList.handleStateProcessed(st);
+        sequenceWatcher<Types.DialogsWatch>(state, (s, handler) => this.engine.client.subscribeDialogsWatch({ state: s }, handler), (src) => {
+            if (src.event.__typename === 'DialogUpdateSingle') {
+                this.queue.post(src.event.update);
+                return src.event.state;
+            } else if (src.event.__typename === 'DialogUpdateBatch') {
+                for (let u of src.event.updates) {
+                    this.queue.post(u);
+                }
+                return src.event.state;
+            }
+            return null;
         });
     }
 
@@ -89,30 +99,6 @@ export class GlobalStateEngine {
         //     this.watcher.destroy();
         //     this.watcher = null;
         // }
-    }
-
-    onVisible = (isVisible: boolean) => {
-        this.isVisible = isVisible;
-        if (isVisible) {
-            this.reportSeqIfNeeded();
-        }
-    }
-
-    private handleSeqUpdated = (seq: number) => {
-        this.maxSeq = Math.max(seq, this.maxSeq);
-        if (this.isVisible) {
-            this.reportSeqIfNeeded();
-        }
-    }
-
-    private reportSeqIfNeeded = () => {
-        if (this.lastReportedSeq < this.maxSeq) {
-            this.lastReportedSeq = this.maxSeq;
-            let seq = this.maxSeq;
-            (async () => {
-                backoff(() => this.engine.client.mutateMarkSequenceRead({ seq }));
-            })();
-        }
     }
 
     private handleGlobalEvent = async (event: Types.DialogUpdateFragment) => {

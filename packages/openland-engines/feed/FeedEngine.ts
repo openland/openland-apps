@@ -3,12 +3,12 @@ import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { createLogger } from 'mental-log';
 import * as Types from 'openland-api/Types';
-import { SequenceModernWatcher } from '../core/SequenceModernWatcher';
 import { backoff } from 'openland-y-utils/timer';
 import { DataSourceFeedItem } from './types';
 import { convertItems, convertPost } from './convert';
 import UUID from 'uuid/v4';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
+import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
 const log = createLogger('Engine-Feed');
 
@@ -16,8 +16,6 @@ export class FeedEngine {
     readonly engine: MessengerEngine;
     readonly client: OpenlandClient;
     readonly dataSource: DataSource<DataSourceFeedItem>;
-    // tslint:disable-next-line
-    private watcher: SequenceModernWatcher<Types.FeedUpdates, {}> | null = null;
     private lastCursor: string | null = null;
     private fullyLoaded: boolean = false;
     private loading: boolean = false;
@@ -58,7 +56,16 @@ export class FeedEngine {
 
         const dsItems = convertItems(initialFeed.items, this.engine);
 
-        this.watcher = new SequenceModernWatcher('feed', this.engine.client.subscribeFeedUpdates({}), this.engine.client.engine, this.handleEvent, undefined, {});
+        sequenceWatcher<Types.FeedUpdates>(null, (state, handler) => this.engine.client.subscribeFeedUpdates({ state }, handler), (e) => {
+            if (e.event.__typename === 'FeedUpdateContainer') {
+                for (let u of e.event.updates) {
+                    this.handleEvent(u);
+                }
+                return e.event.state;
+            } else {
+                return null;
+            }
+        });
 
         this.dataSource.initialize(dsItems, this.fullyLoaded, true);
 

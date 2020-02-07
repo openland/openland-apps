@@ -17,7 +17,7 @@ function generateApi() {
 
     let output = '';
     output += 'import * as Types from \'./Types\';\n';
-    output += 'import { GraphqlEngine, GraphqlActiveSubscription, OperationParameters, QueryWatchParameters } from \'@openland/spacex\';\n';
+    output += 'import { GraphqlEngine, GraphqlActiveSubscription, OperationParameters, QueryWatchParameters, GraphqlSubscriptionHandler } from \'@openland/spacex\';\n';
     output += 'import { BaseApiClient } from \'openland-graphql/BaseApiClient\';\n';
     output += '\n';
     output += 'export class OpenlandClient extends BaseApiClient {\n';
@@ -96,12 +96,12 @@ function generateApi() {
             }
 
             if (op.variables.length > 0) {
-                output += '    subscribe' + name + '(variables: Types.' + name + 'Variables): GraphqlActiveSubscription<Types.' + name + ', Types.' + name + 'Variables> {\n';
-                output += '        return this.engine.subscribe(\'' + op.operationName + '\', variables);\n';
+                output += '    subscribe' + name + '(variables: Types.' + name + 'Variables, handler: GraphqlSubscriptionHandler<Types.' + name + '>): GraphqlActiveSubscription<Types.' + name + '> {\n';
+                output += '        return this.engine.subscribe(handler, \'' + op.operationName + '\', variables);\n';
                 output += '    }\n';
             } else {
-                output += '    subscribe' + name + '(): GraphqlActiveSubscription<Types.' + name + ', {}> {\n';
-                output += '        return this.engine.subscribe(\'' + op.operationName + '\');\n';
+                output += '    subscribe' + name + '(handler: GraphqlSubscriptionHandler<Types.' + name + '>): GraphqlActiveSubscription<Types.' + name + '> {\n';
+                output += '        return this.engine.subscribe(handler, \'' + op.operationName + '\');\n';
                 output += '    }\n';
             }
         }
