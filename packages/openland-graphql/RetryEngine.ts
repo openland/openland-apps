@@ -1,7 +1,7 @@
 import { randomKey } from 'openland-graphql/utils/randomKey';
 import { backoff } from 'openland-y-utils/timer';
 import { Watcher } from 'openland-y-utils/Watcher';
-import { GraphqlEngine, GraphqlEngineStatus, OperationParameters, GraphqlSubscriptionHandler, GraphqlActiveSubscription, GraphqlQueryWatch, GraphqlQueryResult } from '@openland/spacex';
+import { GraphqlEngine, GraphqlEngineStatus, OperationParameters, GraphqlSubscriptionHandler, GraphqlQueryWatch, GraphqlQueryResult } from '@openland/spacex';
 
 export class RetryEngine implements GraphqlEngine {
 
