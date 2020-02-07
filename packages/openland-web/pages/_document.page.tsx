@@ -138,24 +138,24 @@ export default class OpenlandDocument extends Document {
                 }
             } else {
                 // probably user meta tags needed
-                const linkSegments = originalUrl.split('/');
-                if (linkSegments.length === 2) {
-                    const shortname = linkSegments[1];
-                    try {
-                        const { user } = await openland.queryUserPico({ userId: shortname });
+                // const linkSegments = originalUrl.split('/');
+                // if (linkSegments.length === 2) {
+                //     const shortname = linkSegments[1];
+                //     try {
+                //         const { user } = await openland.queryUserPico({ userId: shortname });
 
-                        metaTagsInfo = {
-                            title: `${user.name} on Openland`,
-                            url: urlPrefix + originalUrl,
-                            description: `${user.firstName} uses Openland. Want to reach them? Join Openland and write a message `,
-                            image: user.photo || 'https://cdn.openland.com/shared/og/og-global.png',
-                        };
+                //         metaTagsInfo = {
+                //             title: `${user.name} on Openland`,
+                //             url: urlPrefix + originalUrl,
+                //             description: `${user.firstName} uses Openland. Want to reach them? Join Openland and write a message `,
+                //             image: user.photo || 'https://cdn.openland.com/shared/og/og-global.png',
+                //         };
 
-                    } catch (e) {
-                        // default meta tags
-                        metaTagsInfo = matchMetaTags[originalUrl] || {};
-                    }
-                }
+                //     } catch (e) {
+                //         // default meta tags
+                //         metaTagsInfo = matchMetaTags[originalUrl] || {};
+                //     }
+                // }
             }
         }
 
