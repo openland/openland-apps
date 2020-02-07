@@ -244,22 +244,9 @@ class NetworkingApollo(
             val payload = parsed.getJSONObject("payload")
             val errors = payload.optJSONArray("errors")
             if (errors != null) {
-                var shouldRetry = false
-                for (i in 0 until errors.length()) {
-                    if (errors.getJSONObject(i).optBoolean("shouldRetry", false)) {
-                        shouldRetry = true
-                        break
-                    }
-                }
-
                 this.handlerQueue.async {
-                    if (shouldRetry) {
-                        xLog("SpaceX-Apollo", "Should Retry ($id)")
-                        this.handler.onTryAgain(id, 5)
-                    } else {
-                        xLog("SpaceX-Apollo", "Error ($id)")
-                        this.handler.onError(id, errors)
-                    }
+                    xLog("SpaceX-Apollo", "Error ($id)")
+                    this.handler.onError(id, errors)
                 }
             } else {
                 val data = payload.getJSONObject("data")
@@ -270,10 +257,10 @@ class NetworkingApollo(
             }
         } else if (type == "error") {
             val id = parsed.getString("id")
-            this.handlerQueue.async {
-                xLog("SpaceX-Apollo", "Critical Error ($id): Retrying")
-                this.handler.onCompleted(id)
-            }
+//            this.handlerQueue.async {
+//                xLog("SpaceX-Apollo", "Critical Error ($id): Retrying")
+//                this.handler.onCompleted(id)
+//            }
         } else if (type == "ping") {
 
             this.writeToSocket(JSONObject(mapOf(

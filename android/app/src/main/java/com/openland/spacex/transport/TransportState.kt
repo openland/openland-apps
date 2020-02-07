@@ -113,30 +113,30 @@ class TransportState : NetworkingHandler {
         }
     }
 
-    override fun onTryAgain(id: String, delay: Int) {
-        val rid = this.liveOperationsIds[id]
-        if (rid != null) {
-            val op = liveOperations[rid]
-            if (op != null) {
-
-                // Stop existing
-                this.flushQueryStop(op)
-
-                // Regenerate ID
-                val nid = nextId.getAndIncrement().toString()
-                op.requestId = nid
-                this.liveOperationsIds.remove(id)
-                this.liveOperationsIds[nid] = op.id
-
-                // Schedule restart
-                this.queue.asyncDelayed(delay * 1000) {
-                    if (this.liveOperationsIds.containsKey(nid)) {
-                        this.flushQueryStart(op)
-                    }
-                }
-            }
-        }
-    }
+//    override fun onTryAgain(id: String, delay: Int) {
+//        val rid = this.liveOperationsIds[id]
+//        if (rid != null) {
+//            val op = liveOperations[rid]
+//            if (op != null) {
+//
+//                // Stop existing
+//                this.flushQueryStop(op)
+//
+//                // Regenerate ID
+//                val nid = nextId.getAndIncrement().toString()
+//                op.requestId = nid
+//                this.liveOperationsIds.remove(id)
+//                this.liveOperationsIds[nid] = op.id
+//
+//                // Schedule restart
+//                this.queue.asyncDelayed(delay * 1000) {
+//                    if (this.liveOperationsIds.containsKey(nid)) {
+//                        this.flushQueryStart(op)
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     //
     // Sessions

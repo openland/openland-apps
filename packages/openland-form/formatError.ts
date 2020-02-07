@@ -1,4 +1,4 @@
-import { ApiError } from 'openland-graphql/GraphqlClient';
+import { ApiError } from 'openland-api/ApiError';
 import { trackError } from 'openland-x-analytics';
 
 export function formatError(error: any): string {

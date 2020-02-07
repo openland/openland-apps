@@ -5,6 +5,7 @@ import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { createWorkerClient } from 'openland-web/api/createWorkerClient';
 import { SpaceXWebClient } from 'openland-graphql/spacex/SpaceXWebClient';
 import { Operations } from 'openland-api/Client';
+import { createGraphqlEngine } from 'openland-api/createGraphqlEngine';
 
 let cachedClient: OpenlandClient | undefined = undefined;
 
@@ -14,7 +15,8 @@ export const spaceClient = (token?: string) => {
             let httpEndpoint = '/graphql';
             let wsEndpoint = loadConfig().webSocketEndpoint!;
             const client = createWorkerClient(httpEndpoint, wsEndpoint, token);
-            cachedClient = new OpenlandClient(client);
+            cachedClient = new OpenlandClient(createGraphqlEngine(client));
+            // cachedClient = new OpenlandClient(createGraphqlEngine(new SpaceXWebClient(Operations, wsEndpoint, token)));
             Track.setClient(cachedClient);
         }
         return cachedClient!!;
@@ -28,6 +30,6 @@ export const spaceClient = (token?: string) => {
                 : 'ws://localhost:9000/api';
         }
         console.warn(wsEndpoint);
-        return new OpenlandClient(new SpaceXWebClient(Operations, wsEndpoint, token));
+        return new OpenlandClient(createGraphqlEngine(new SpaceXWebClient(Operations, wsEndpoint, token)));
     }
 };

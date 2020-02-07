@@ -7,7 +7,6 @@ export interface StableSocket<T> {
 
     onReceiveData: ((id: string, message: T) => void) | null;
     onReceiveError: ((id: string, error: any[]) => void) | null;
-    onReceiveTryAgain: ((id: string, delay: number) => void) | null;
     onReceiveCompleted: ((id: string) => void) | null;
 
     onSessionLost: (() => void) | null;
@@ -28,7 +27,6 @@ export class StableApolloSocket implements StableSocket<any> {
 
     onReceiveData: ((id: string, message: any) => void) | null = null;
     onReceiveError: ((id: string, error: any[]) => void) | null = null;
-    onReceiveTryAgain: ((id: string, delay: number) => void) | null = null;
     onReceiveCompleted: ((id: string) => void) | null = null;
 
     onSessionLost: (() => void) | null = null;
@@ -120,7 +118,7 @@ export class StableApolloSocket implements StableSocket<any> {
     }
 
     private onMessage(src: any) {
-        // console.log('[WS] <<< ' + JSON.stringify(src));
+        console.log('[WS] <<< ' + JSON.stringify(src));
         if (src.type === 'ka') {
             // Ignore
         } else if (src.type === 'connection_ack') {
@@ -167,24 +165,10 @@ export class StableApolloSocket implements StableSocket<any> {
         } else if (src.type === 'data') {
             let id = src.id as string;
             let payload = src.payload as any;
-            let errors = src.errors as any;
+            let errors = payload.errors as any;
             if (errors) {
-                let shouldRetry = false;
-                for (let e of errors) {
-                    if (e.shouldRetry === true) {
-                        shouldRetry = true;
-                        break;
-                    }
-                }
-
-                if (shouldRetry) {
-                    if (this.onReceiveTryAgain) {
-                        this.onReceiveTryAgain(id, 5000);
-                    }
-                } else {
-                    if (this.onReceiveError) {
-                        this.onReceiveError(id, errors);
-                    }
+                if (this.onReceiveError) {
+                    this.onReceiveError(id, errors);
                 }
             } else {
                 let data = payload.data;
@@ -194,10 +178,10 @@ export class StableApolloSocket implements StableSocket<any> {
             }
         } else if (src.type === 'error') {
             // Critical error
-            let id = src.id as string;
-            if (this.onReceiveTryAgain) {
-                this.onReceiveTryAgain(id, 5000);
-            }
+            // let id = src.id as string;
+            // if (this.onReceiveTryAgain) {
+            //     this.onReceiveTryAgain(id, 5000);
+            // }
         }
     }
 

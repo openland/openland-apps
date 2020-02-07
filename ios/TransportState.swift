@@ -145,28 +145,28 @@ class TransportState: NetworkingDelegate {
     }
   }
   
-  func onTryAgain(id: String, delay: Int) {
-    if let rid = self.liveOperationsIds[id] {
-      if let op = self.liveOperations[rid] {
-        
-        // Stop existing
-        self.flushQueryStop(operation: op)
-        
-        // Regenerate ID
-        let retryId = "\(nextId.getAndIncrement())"
-        op.requestId = retryId
-        self.liveOperationsIds.removeValue(forKey: id)
-        self.liveOperationsIds[retryId] = rid
-        
-        // Schedule restart
-        self.queue.asyncAfter(deadline: .now() + Double(delay)) {
-          if self.liveOperationsIds[retryId] != nil {
-            self.flushQueryStart(operation: op)
-          }
-        }
-      }
-    }
-  }
+//  func onTryAgain(id: String, delay: Int) {
+//    if let rid = self.liveOperationsIds[id] {
+//      if let op = self.liveOperations[rid] {
+//
+//        // Stop existing
+//        self.flushQueryStop(operation: op)
+//
+//        // Regenerate ID
+//        let retryId = "\(nextId.getAndIncrement())"
+//        op.requestId = retryId
+//        self.liveOperationsIds.removeValue(forKey: id)
+//        self.liveOperationsIds[retryId] = rid
+//
+//        // Schedule restart
+//        self.queue.asyncAfter(deadline: .now() + Double(delay)) {
+//          if self.liveOperationsIds[retryId] != nil {
+//            self.flushQueryStart(operation: op)
+//          }
+//        }
+//      }
+//    }
+//  }
   
   //
   // Session Callbacks

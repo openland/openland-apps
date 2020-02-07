@@ -11,7 +11,7 @@ interface NetworkingHandler {
     fun onResponse(id: String, data: JSONObject)
     fun onError(id: String, data: JSONArray)
     fun onCompleted(id: String)
-    fun onTryAgain(id: String, delay: Int)
+//    fun onTryAgain(id: String, delay: Int)
 
     // Session State
 

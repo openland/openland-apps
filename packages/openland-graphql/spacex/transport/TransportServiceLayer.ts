@@ -34,6 +34,7 @@ export class TransportServiceLayer {
                 let op = this.liveOperations.get(rid);
                 if (op) {
                     op.callback({ type: 'result', value: msg });
+                    console.log(msg);
                     if (['query', 'mutation'].includes(op.operation.kind)) {
                         this.liveOperations.delete(rid);
                         this.liveOperationsIds.delete(id);
@@ -63,30 +64,30 @@ export class TransportServiceLayer {
                 }
             }
         };
-        this.socket.onReceiveTryAgain = (id, delay) => {
-            let rid = this.liveOperationsIds.get(id);
-            if (rid) {
-                let op = this.liveOperations.get(rid);
-                if (op) {
+        // this.socket.onReceiveTryAgain = (id, delay) => {
+        //     let rid = this.liveOperationsIds.get(id);
+        //     if (rid) {
+        //         let op = this.liveOperations.get(rid);
+        //         if (op) {
 
-                    // Stop Existing
-                    this.flushQueryStop(op);
+        //             // Stop Existing
+        //             this.flushQueryStop(op);
 
-                    // Regenerate ID
-                    let nid = (this.nextId++).toString();
-                    op.reqiestId = nid;
-                    this.liveOperationsIds.delete(id);
-                    this.liveOperationsIds.set(nid, id);
+        //             // Regenerate ID
+        //             let nid = (this.nextId++).toString();
+        //             op.reqiestId = nid;
+        //             this.liveOperationsIds.delete(id);
+        //             this.liveOperationsIds.set(nid, id);
 
-                    // Schedule restart
-                    setTimeout(() => {
-                        if (this.liveOperationsIds.has(nid)) {
-                            this.flushQueryStart(op!);
-                        }
-                    }, delay);
-                }
-            }
-        };
+        //             // Schedule restart
+        //             setTimeout(() => {
+        //                 if (this.liveOperationsIds.has(nid)) {
+        //                     this.flushQueryStart(op!);
+        //                 }
+        //             }, delay);
+        //         }
+        //     }
+        // };
 
         this.socket.onSessionLost = () => {
             console.log('[TX] Session lost');

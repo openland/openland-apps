@@ -213,22 +213,22 @@ class ApolloNetworking {
       let errors = payload["errors"]
       let data = payload["data"]
       if errors.exists() {
-        var shouldRetry = false
-        if let arr = errors.array {
-          for a in arr {
-            if a["shouldRetry"].bool == true {
-              shouldRetry = true
-            }
-          }
-        }
+//        var shouldRetry = false
+//        if let arr = errors.array {
+//          for a in arr {
+//            if a["shouldRetry"].bool == true {
+//              shouldRetry = true
+//            }
+//          }
+//        }
         self.callbackQueue.async {
-          if shouldRetry {
-            NSLog("[SpaceX-Apollo]: Should Retry (" + id + ")")
-            self.delegate?.onTryAgain(id: id, delay: 5)
-          } else {
+//          if shouldRetry {
+//            NSLog("[SpaceX-Apollo]: Should Retry (" + id + ")")
+//            self.delegate?.onTryAgain(id: id, delay: 5)
+//          } else {
             NSLog("[SpaceX-Apollo]: Error (" + id + ")")
             self.delegate?.onError(id: id, error: errors)
-          }
+//          }
         }
       } else {
         NSLog("[SpaceX-Apollo]: Data (" + id + ")")
@@ -239,9 +239,9 @@ class ApolloNetworking {
     } else if type == "error" {
       let id = parsed["id"].stringValue
       NSLog("[SpaceX-Apollo]: Critical Error (" + id + "): Retrying")
-      self.callbackQueue.async {
-        self.delegate?.onTryAgain(id: id, delay: 5)
-      }
+//      self.callbackQueue.async {
+//        self.delegate?.onTryAgain(id: id, delay: 5)
+//      }
     } else if type == "ping" {
       self.queue.async {
         if (self.state == .started) {
