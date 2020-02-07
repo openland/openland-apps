@@ -34,7 +34,6 @@ import { XLoader } from 'openland-x/XLoader';
 import { StickerFragment } from 'openland-api/Types';
 import { findEmoji } from 'openland-y-utils/emojiSuggest';
 import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
-import { ChangeEvent } from 'react';
 
 const popperContainerClass = css`
     display: flex;
