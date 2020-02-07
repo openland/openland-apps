@@ -402,11 +402,27 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         }
     }
 
+    refreshFileUploadingTyping = () => {
+        this.props.messenger.client.mutateSetTyping({
+            conversationId: this.props.conversationId,
+            type: TypingType.FILE
+        });
+    }
+
+    endFileUploadingTyping = () => {
+        this.props.messenger.client.mutateUnsetTyping({
+            conversationId: this.props.conversationId,
+        });
+    }
+
     onAttach = (files: File[]) => {
         if (files.length) {
-            showAttachConfirm(files, res => {
-                res.map(this.conversation!.sendFile);
-            });
+            showAttachConfirm(
+                files,
+                res => res.map(this.conversation!.sendFile),
+                this.refreshFileUploadingTyping,
+                this.endFileUploadingTyping
+            );
         }
     }
 
