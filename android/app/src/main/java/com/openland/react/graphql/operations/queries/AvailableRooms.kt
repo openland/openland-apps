@@ -15,42 +15,56 @@ internal val AvailableRoomsSelector = obj(
                                 )))
                         )))))
                 ))),
+            field("alphaUserAvailableRooms", "availableChats", arguments(fieldValue("first", intValue(3)), fieldValue("query", refValue("chatsQuery"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("cursor", "cursor", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    inline("SharedRoom", obj(
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("kind", "kind", notNull(scalar("String"))),
+                                        field("membersCount", "membersCount", notNull(scalar("Int"))),
+                                        field("membership", "membership", notNull(scalar("String"))),
+                                        field("organization", "organization", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                field("id", "id", notNull(scalar("ID"))),
+                                                field("name", "name", notNull(scalar("String"))),
+                                                field("photo", "photo", scalar("String"))
+                                            )),
+                                        field("photo", "photo", notNull(scalar("String"))),
+                                        field("title", "title", notNull(scalar("String")))
+                                    ))
+                                )))
+                        )))))
+                ))),
+            field("alphaUserAvailableRooms", "availableChannels", arguments(fieldValue("first", intValue(3)), fieldValue("query", refValue("channelsQuery"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("edges", "edges", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("cursor", "cursor", notNull(scalar("String"))),
+                            field("node", "node", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    inline("SharedRoom", obj(
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("kind", "kind", notNull(scalar("String"))),
+                                        field("membersCount", "membersCount", notNull(scalar("Int"))),
+                                        field("membership", "membership", notNull(scalar("String"))),
+                                        field("organization", "organization", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                field("id", "id", notNull(scalar("ID"))),
+                                                field("name", "name", notNull(scalar("String"))),
+                                                field("photo", "photo", scalar("String"))
+                                            )),
+                                        field("photo", "photo", notNull(scalar("String"))),
+                                        field("title", "title", notNull(scalar("String")))
+                                    ))
+                                )))
+                        )))))
+                ))),
             field("betaIsDiscoverDone", "isDiscoverDone", notNull(scalar("Boolean"))),
             field("betaSuggestedRooms", "suggestedRooms", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    inline("SharedRoom", obj(
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("kind", "kind", notNull(scalar("String"))),
-                        field("membersCount", "membersCount", notNull(scalar("Int"))),
-                        field("membership", "membership", notNull(scalar("String"))),
-                        field("organization", "organization", obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("id", "id", notNull(scalar("ID"))),
-                                field("name", "name", notNull(scalar("String"))),
-                                field("photo", "photo", scalar("String"))
-                            )),
-                        field("photo", "photo", notNull(scalar("String"))),
-                        field("title", "title", notNull(scalar("String")))
-                    ))
-                ))))),
-            field("betaUserAvailableRooms", "availableChats", arguments(fieldValue("isChannel", boolValue(false)), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    inline("SharedRoom", obj(
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("kind", "kind", notNull(scalar("String"))),
-                        field("membersCount", "membersCount", notNull(scalar("Int"))),
-                        field("membership", "membership", notNull(scalar("String"))),
-                        field("organization", "organization", obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("id", "id", notNull(scalar("ID"))),
-                                field("name", "name", notNull(scalar("String"))),
-                                field("photo", "photo", scalar("String"))
-                            )),
-                        field("photo", "photo", notNull(scalar("String"))),
-                        field("title", "title", notNull(scalar("String")))
-                    ))
-                ))))),
-            field("betaUserAvailableRooms", "availableChannels", arguments(fieldValue("isChannel", boolValue(true)), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
                         field("id", "id", notNull(scalar("ID"))),
@@ -71,6 +85,6 @@ internal val AvailableRoomsSelector = obj(
 val AvailableRooms = object: OperationDefinition {
     override val name = "AvailableRooms"
     override val kind = OperationKind.QUERY
-    override val body = "query AvailableRooms{communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChats:betaUserAvailableRooms(isChannel:false,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChannels:betaUserAvailableRooms(isChannel:true,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured roomsCount:betaPublicRoomsCount id isMine membersCount name photo status superAccountId}"
+    override val body = "query AvailableRooms(\$channelsQuery:String,\$chatsQuery:String){communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}availableChats:alphaUserAvailableRooms(first:3,query:\$chatsQuery){__typename edges{__typename cursor node{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}}availableChannels:alphaUserAvailableRooms(first:3,query:\$channelsQuery){__typename edges{__typename cursor node{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured roomsCount:betaPublicRoomsCount id isMine membersCount name photo status superAccountId}"
     override val selector = AvailableRoomsSelector
 }

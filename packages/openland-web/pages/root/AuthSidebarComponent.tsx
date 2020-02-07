@@ -10,7 +10,6 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextTitle1, TextBody, TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { detectOS } from 'openland-x-utils/detectOS';
 import { trackEvent } from 'openland-x-analytics';
-import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 
 const sidebarContainer = css`
     display: flex;

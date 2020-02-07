@@ -1,19 +1,30 @@
-query UserAvailableRooms($after: ID, $isChannel: Boolean, $limit: Int!) {
-  betaUserAvailableRooms(after: $after, isChannel: $isChannel, limit: $limit) {
+query UserAvailableRooms($after: String, $first: Int!, $query: String) {
+  alphaUserAvailableRooms(after: $after, first: $first, query: $query) {
     __typename
-    ... on SharedRoom {
-      id
-      kind
-      membersCount
-      membership
-      organization {
+    edges {
+      __typename
+      cursor
+      node {
         __typename
-        id
-        name
-        photo
+        ... on SharedRoom {
+          id
+          kind
+          membersCount
+          membership
+          organization {
+            __typename
+            id
+            name
+            photo
+          }
+          photo
+          title
+        }
       }
-      photo
-      title
+    }
+    pageInfo {
+      __typename
+      hasNextPage
     }
   }
 }

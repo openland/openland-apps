@@ -576,20 +576,20 @@ export class OpenlandClient extends BaseApiClient {
     async updateConferenceMedia(variables: Types.ConferenceMediaVariables, updater: (data: Types.ConferenceMedia) => Types.ConferenceMedia | null): Promise<boolean> {
         return this.engine.updateQuery(updater, 'ConferenceMedia', variables);
     }
-    async queryAvailableRooms(opts?: OperationParameters): Promise<Types.AvailableRooms> {
-        return this.engine.query('AvailableRooms', undefined, opts);
+    async queryAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: OperationParameters): Promise<Types.AvailableRooms> {
+        return this.engine.query('AvailableRooms', variables, opts);
     }
-    async refetchAvailableRooms(): Promise<Types.AvailableRooms> {
-        return this.refetch('AvailableRooms');
+    async refetchAvailableRooms(variables: Types.AvailableRoomsVariables): Promise<Types.AvailableRooms> {
+        return this.refetch('AvailableRooms', variables);
     }
-    useAvailableRooms(opts?: QueryWatchParameters): Types.AvailableRooms {
-        return this.useQuerySuspense('AvailableRooms', undefined, opts);
+    useAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: QueryWatchParameters): Types.AvailableRooms {
+        return this.useQuerySuspense('AvailableRooms', variables, opts);
     }
-    useWithoutLoaderAvailableRooms(opts?: QueryWatchParameters): Types.AvailableRooms | null {
-        return this.useQuery('AvailableRooms', undefined, opts);
+    useWithoutLoaderAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: QueryWatchParameters): Types.AvailableRooms | null {
+        return this.useQuery('AvailableRooms', variables, opts);
     }
-    async updateAvailableRooms(updater: (data: Types.AvailableRooms) => Types.AvailableRooms | null): Promise<boolean> {
-        return this.engine.updateQuery(updater, 'AvailableRooms');
+    async updateAvailableRooms(variables: Types.AvailableRoomsVariables, updater: (data: Types.AvailableRooms) => Types.AvailableRooms | null): Promise<boolean> {
+        return this.engine.updateQuery(updater, 'AvailableRooms', variables);
     }
     async querySuggestedRooms(opts?: OperationParameters): Promise<Types.SuggestedRooms> {
         return this.engine.query('SuggestedRooms', undefined, opts);

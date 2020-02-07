@@ -1988,42 +1988,56 @@ const AvailableRoomsSelector = obj(
                                 )))
                         )))))
                 ))),
+            field('alphaUserAvailableRooms', 'availableChats', args(fieldValue("first", intValue(3)), fieldValue("query", refValue('chatsQuery'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('edges', 'edges', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('cursor', 'cursor', args(), notNull(scalar('String'))),
+                            field('node', 'node', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    inline('SharedRoom', obj(
+                                        field('id', 'id', args(), notNull(scalar('ID'))),
+                                        field('kind', 'kind', args(), notNull(scalar('String'))),
+                                        field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
+                                        field('membership', 'membership', args(), notNull(scalar('String'))),
+                                        field('organization', 'organization', args(), obj(
+                                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                field('id', 'id', args(), notNull(scalar('ID'))),
+                                                field('name', 'name', args(), notNull(scalar('String'))),
+                                                field('photo', 'photo', args(), scalar('String'))
+                                            )),
+                                        field('photo', 'photo', args(), notNull(scalar('String'))),
+                                        field('title', 'title', args(), notNull(scalar('String')))
+                                    ))
+                                )))
+                        )))))
+                ))),
+            field('alphaUserAvailableRooms', 'availableChannels', args(fieldValue("first", intValue(3)), fieldValue("query", refValue('channelsQuery'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('edges', 'edges', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('cursor', 'cursor', args(), notNull(scalar('String'))),
+                            field('node', 'node', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    inline('SharedRoom', obj(
+                                        field('id', 'id', args(), notNull(scalar('ID'))),
+                                        field('kind', 'kind', args(), notNull(scalar('String'))),
+                                        field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
+                                        field('membership', 'membership', args(), notNull(scalar('String'))),
+                                        field('organization', 'organization', args(), obj(
+                                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                field('id', 'id', args(), notNull(scalar('ID'))),
+                                                field('name', 'name', args(), notNull(scalar('String'))),
+                                                field('photo', 'photo', args(), scalar('String'))
+                                            )),
+                                        field('photo', 'photo', args(), notNull(scalar('String'))),
+                                        field('title', 'title', args(), notNull(scalar('String')))
+                                    ))
+                                )))
+                        )))))
+                ))),
             field('betaIsDiscoverDone', 'isDiscoverDone', args(), notNull(scalar('Boolean'))),
             field('betaSuggestedRooms', 'suggestedRooms', args(), notNull(list(notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    inline('SharedRoom', obj(
-                        field('id', 'id', args(), notNull(scalar('ID'))),
-                        field('kind', 'kind', args(), notNull(scalar('String'))),
-                        field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
-                        field('membership', 'membership', args(), notNull(scalar('String'))),
-                        field('organization', 'organization', args(), obj(
-                                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                field('id', 'id', args(), notNull(scalar('ID'))),
-                                field('name', 'name', args(), notNull(scalar('String'))),
-                                field('photo', 'photo', args(), scalar('String'))
-                            )),
-                        field('photo', 'photo', args(), notNull(scalar('String'))),
-                        field('title', 'title', args(), notNull(scalar('String')))
-                    ))
-                ))))),
-            field('betaUserAvailableRooms', 'availableChats', args(fieldValue("isChannel", boolValue(false)), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    inline('SharedRoom', obj(
-                        field('id', 'id', args(), notNull(scalar('ID'))),
-                        field('kind', 'kind', args(), notNull(scalar('String'))),
-                        field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
-                        field('membership', 'membership', args(), notNull(scalar('String'))),
-                        field('organization', 'organization', args(), obj(
-                                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                field('id', 'id', args(), notNull(scalar('ID'))),
-                                field('name', 'name', args(), notNull(scalar('String'))),
-                                field('photo', 'photo', args(), scalar('String'))
-                            )),
-                        field('photo', 'photo', args(), notNull(scalar('String'))),
-                        field('title', 'title', args(), notNull(scalar('String')))
-                    ))
-                ))))),
-            field('betaUserAvailableRooms', 'availableChannels', args(fieldValue("isChannel", boolValue(true)), fieldValue("limit", intValue(3))), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     inline('SharedRoom', obj(
                         field('id', 'id', args(), notNull(scalar('ID'))),
@@ -3459,23 +3473,34 @@ const UserSelector = obj(
                 )))
         );
 const UserAvailableRoomsSelector = obj(
-            field('betaUserAvailableRooms', 'betaUserAvailableRooms', args(fieldValue("after", refValue('after')), fieldValue("isChannel", refValue('isChannel')), fieldValue("limit", refValue('limit'))), notNull(list(notNull(obj(
+            field('alphaUserAvailableRooms', 'alphaUserAvailableRooms', args(fieldValue("after", refValue('after')), fieldValue("first", refValue('first')), fieldValue("query", refValue('query'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    inline('SharedRoom', obj(
-                        field('id', 'id', args(), notNull(scalar('ID'))),
-                        field('kind', 'kind', args(), notNull(scalar('String'))),
-                        field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
-                        field('membership', 'membership', args(), notNull(scalar('String'))),
-                        field('organization', 'organization', args(), obj(
-                                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                field('id', 'id', args(), notNull(scalar('ID'))),
-                                field('name', 'name', args(), notNull(scalar('String'))),
-                                field('photo', 'photo', args(), scalar('String'))
-                            )),
-                        field('photo', 'photo', args(), notNull(scalar('String'))),
-                        field('title', 'title', args(), notNull(scalar('String')))
-                    ))
-                )))))
+                    field('edges', 'edges', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('cursor', 'cursor', args(), notNull(scalar('String'))),
+                            field('node', 'node', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    inline('SharedRoom', obj(
+                                        field('id', 'id', args(), notNull(scalar('ID'))),
+                                        field('kind', 'kind', args(), notNull(scalar('String'))),
+                                        field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
+                                        field('membership', 'membership', args(), notNull(scalar('String'))),
+                                        field('organization', 'organization', args(), obj(
+                                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                field('id', 'id', args(), notNull(scalar('ID'))),
+                                                field('name', 'name', args(), notNull(scalar('String'))),
+                                                field('photo', 'photo', args(), scalar('String'))
+                                            )),
+                                        field('photo', 'photo', args(), notNull(scalar('String'))),
+                                        field('title', 'title', args(), notNull(scalar('String')))
+                                    ))
+                                )))
+                        ))))),
+                    field('pageInfo', 'pageInfo', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('hasNextPage', 'hasNextPage', args(), notNull(scalar('Boolean')))
+                        )))
+                )))
         );
 const UserPicoSelector = obj(
             field('user', 'user', args(fieldValue("id", refValue('userId'))), notNull(obj(
@@ -4485,7 +4510,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     AvailableRooms: {
         kind: 'query',
         name: 'AvailableRooms',
-        body: 'query AvailableRooms{communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChats:betaUserAvailableRooms(isChannel:false,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}availableChannels:betaUserAvailableRooms(isChannel:true,limit:3){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured roomsCount:betaPublicRoomsCount id isMine membersCount name photo status superAccountId}',
+        body: 'query AvailableRooms($channelsQuery:String,$chatsQuery:String){communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}availableChats:alphaUserAvailableRooms(first:3,query:$chatsQuery){__typename edges{__typename cursor node{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}}availableChannels:alphaUserAvailableRooms(first:3,query:$channelsQuery){__typename edges{__typename cursor node{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}}isDiscoverDone:betaIsDiscoverDone suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}fragment CommunitySearch on Organization{__typename about featured:alphaFeatured roomsCount:betaPublicRoomsCount id isMine membersCount name photo status superAccountId}',
         selector: AvailableRoomsSelector
     },
     ChatInit: {
@@ -4989,7 +5014,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     UserAvailableRooms: {
         kind: 'query',
         name: 'UserAvailableRooms',
-        body: 'query UserAvailableRooms($after:ID,$isChannel:Boolean,$limit:Int!){betaUserAvailableRooms(after:$after,isChannel:$isChannel,limit:$limit){__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}',
+        body: 'query UserAvailableRooms($after:String,$first:Int!,$query:String){alphaUserAvailableRooms(after:$after,first:$first,query:$query){__typename edges{__typename cursor node{__typename ... on SharedRoom{id kind membersCount membership organization{__typename id name photo}photo title}}}pageInfo{__typename hasNextPage}}}',
         selector: UserAvailableRoomsSelector
     },
     UserPico: {
