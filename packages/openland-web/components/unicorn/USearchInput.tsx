@@ -89,13 +89,6 @@ export const USearchInput = React.forwardRef(
             }
         };
 
-        const resetAndRefocus = () => {
-            setValue('');
-            if (onChange) {
-                onChange('');
-            }
-        };
-
         return (
             <XView position="relative" {...other}>
                 <input
@@ -112,7 +105,7 @@ export const USearchInput = React.forwardRef(
                 </div>
                 {props.value &&
                     props.value.length > 0 && (
-                        <button className={reset} onClick={resetAndRefocus}>
+                        <button className={reset} onClick={() => handleChange('')}>
                             <ClearIcon />
                         </button>
                     )}
