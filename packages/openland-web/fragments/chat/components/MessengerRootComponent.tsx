@@ -402,10 +402,23 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         }
     }
 
-    refreshFileUploadingTyping = () => {
+    refreshFileUploadingTyping = (filename?: string) => {
+        const lowercaseFilename = filename && filename.toLowerCase();
+        let typingType = TypingType.FILE;
+
+        if (lowercaseFilename) {
+            if (lowercaseFilename.endsWith('.jpg') || lowercaseFilename.endsWith('.jpeg') || lowercaseFilename.endsWith('.png')) {
+                typingType = TypingType.PHOTO;
+            }
+
+            if (lowercaseFilename.endsWith('.mp4') || lowercaseFilename.endsWith('.mov')) {
+                typingType = TypingType.VIDEO;
+            }
+        }
+
         this.props.messenger.client.mutateSetTyping({
             conversationId: this.props.conversationId,
-            type: TypingType.FILE
+            type: typingType
         });
     }
 

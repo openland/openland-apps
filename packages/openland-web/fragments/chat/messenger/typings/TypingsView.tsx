@@ -74,10 +74,10 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
 
                 switch (typingAction) {
                     case TypingType.TEXT: typingActionString = 'typing'; break;
-                    case TypingType.FILE: typingActionString = 'sending file'; break;
-                    case TypingType.PHOTO: typingActionString = 'sending photo'; break;
+                    case TypingType.FILE: typingActionString = 'sending a file'; break;
+                    case TypingType.PHOTO: typingActionString = 'sending a photo'; break;
                     case TypingType.STICKER: typingActionString = 'picking a sticker'; break;
-                    case TypingType.VIDEO: typingActionString = 'uploading video'; break;
+                    case TypingType.VIDEO: typingActionString = 'uploading a video'; break;
                     default: typingActionString = 'typing'; break;
                 }
 

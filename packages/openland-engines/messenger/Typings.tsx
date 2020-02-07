@@ -141,10 +141,10 @@ export class TypingsWatcher {
         // future legacy, to be moved to the view layer
         switch (action) {
             case TypingType.TEXT: actionString = 'typing'; break;
-            case TypingType.FILE: actionString = 'sending file'; break;
-            case TypingType.PHOTO: actionString = 'sending photo'; break;
+            case TypingType.FILE: actionString = 'sending a file'; break;
+            case TypingType.PHOTO: actionString = 'sending a photo'; break;
             case TypingType.STICKER: actionString = 'picking a sticker'; break;
-            case TypingType.VIDEO: actionString = 'uploading video'; break;
+            case TypingType.VIDEO: actionString = 'uploading a video'; break;
             default: actionString = 'typing'; break;
         }
 

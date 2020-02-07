@@ -108,7 +108,7 @@ const MAX_FILE_SIZE = 1e8;
 export const showAttachConfirm = (
     files: File[],
     callback: (files: UploadCareUploading[]) => void,
-    onFileUploadingProgress?: () => void,
+    onFileUploadingProgress?: (filename?: string) => void,
     onFileUploadingEnd?: () => void,
 ) => {
     let tooBig = false;
@@ -127,11 +127,13 @@ export const showAttachConfirm = (
             .action('Send', async () => {
                 await callback(uploading.filter(u => filesRes[0].includes(u.getSourceFile())));
 
+                const { name } = await uploading[0].fetchInfo();
+
                 // TODO watch all the uploadings, not just the first one
                 uploading[0].watch(({ status }) => {
                     if (status === 0) {
                         if (onFileUploadingProgress) {
-                            onFileUploadingProgress();
+                            onFileUploadingProgress(name);
                         }
                     }
                     if (status === 2) {
