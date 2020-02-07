@@ -1,14 +1,27 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { XView, XViewProps } from 'react-mental';
 import { FormField } from 'openland-form/useField';
+
+const textareaContainer = css`
+    display: flex;
+    align-items: stretch;
+    position: relative;
+
+    &:focus-within div.textarea-label {
+        font-size: 13px;
+        line-height: 18px;
+        color: var(--accentPrimary);
+        top: 8px;
+    }
+`;
 
 const textAreaStyle = css`
     width: 100%;
     height: 100%;
     padding-left: 16px;
     padding-right: 16px;
-    padding-top: 16px;
+    padding-top: 22px;
     padding-bottom: 16px;
     font-size: 15px;
     color: var(--foregroundPrimary);
@@ -18,6 +31,29 @@ const textAreaStyle = css`
     &::placeholder {
         color: #9d9fa3;
     }
+`;
+
+const placeholderStyle = css`
+    pointer-events: none;
+    position: absolute;
+    padding-left: 16px;
+    padding-right: 16px;
+    font-size: 15px;
+    color: var(--foregroundTertiary);
+    line-height: 24px;
+    top: 14px;
+    transition: all 0.15s ease;
+`;
+
+const placeholderValueStyle = css`
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--foregroundSecondary);
+    top: 8px;
+`;
+
+const placeholderInvalidStyle = css`
+    color: var(--accentNegative) !important;
 `;
 
 export interface UTextAreaProps extends XViewProps {
@@ -61,16 +97,29 @@ export const UTextArea = (props: UTextAreaProps) => {
     );
 
     return (
-        <XView {...other}>
-            <textarea
-                className={textAreaStyle}
-                value={val}
-                placeholder={placeholder}
-                autoFocus={autofocus}
-                onChange={e => handleChange(e.target.value)}
-                disabled={disabled}
-                style={{ resize: resizing }}
-            />
+        <XView {...other} position="relative">
+            <div className={textareaContainer}>
+                <textarea
+                    className={textAreaStyle}
+                    value={val}
+                    autoFocus={autofocus}
+                    onChange={e => handleChange(e.target.value)}
+                    disabled={disabled}
+                    style={{ resize: resizing }}
+                />
+                {placeholder && (
+                    <div
+                        className={cx(
+                            placeholderStyle,
+                            val && placeholderValueStyle,
+                            invalid && placeholderInvalidStyle,
+                            'textarea-label',
+                        )}
+                    >
+                        {placeholder}
+                    </div>
+                )}
+            </div>
         </XView>
     );
 };

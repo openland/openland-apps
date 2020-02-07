@@ -2,33 +2,12 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 
-export const SubTitle = Glamorous.div({
-    opacity: 0.7,
-    textAlign: 'center',
-    fontSize: 16,
-    fontWeight: 'normal',
-    fontStyle: 'normal',
-    fontStretch: 'normal',
-    lineHeight: 1.5,
-    color: '#000',
-    marginTop: 0,
-    letterSpacing: -0.1,
-});
-
 interface ButtonProps extends XLinkProps {
     primary?: boolean;
     children: any;
     rounded?: boolean;
     dataTestId?: string;
 }
-
-export const ErrorText = Glamorous.div({
-    fontSize: 12,
-    color: '#d75454',
-    paddingLeft: 17,
-    paddingRight: 17,
-    whiteSpace: 'pre-line',
-});
 
 const StyledButton = Glamorous(XLink)<{ primary?: boolean; rounded?: boolean }>([
     props => ({
@@ -157,151 +136,6 @@ export const Title = Glamorous.div<{ roomView: boolean }>(({ roomView }) => {
     };
 });
 
-export type PageModeT =
-    | 'ActivationCode'
-    | 'CreateFromEmail'
-    | 'Loading'
-    | 'AuthMechanism'
-    | 'CreateOrganization'
-    | 'CreateProfile'
-    | 'SignInInvite';
-
-// RoomSignup start
-
-export const ButtonsWrapper = Glamorous.div<{
-    marginTop?: number;
-    marginBottom?: number;
-    width?: number | string;
-    maxWidth?: number | string;
-}>(props => ({
-    marginTop: props.marginTop,
-    marginBottom: props.marginBottom,
-    maxWidth: props.maxWidth ? props.maxWidth : props.width,
-    width: props.width,
-    marginLeft: props.width ? 'auto' : undefined,
-    marginRight: props.width ? 'auto' : undefined,
-    '@media(max-width: 1300px)': {
-        marginBottom: props.marginBottom !== undefined ? 40 : undefined,
-    },
-    '@media(max-width: 500px)': {
-        marginBottom: props.marginBottom !== undefined ? 25 : undefined,
-    },
-}));
-
-const RoomSignupWrapper = Glamorous.div({
-    flexGrow: 1,
-    position: 'relative',
-    background:
-        'rgba(255, 255, 255, 0.8) url(/static/X/signup/background-blur-light.jpg) no-repeat',
-    backgroundSize: 'cover',
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'column',
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 20,
-    paddingBottom: 20,
-});
-
-const RoomSignupBox = Glamorous.div({
-    background: '#ffffff',
-    borderRadius: 10,
-    maxWidth: 650,
-    width: '100%',
-    margin: 'auto',
-});
-
-const RoomSignupHeader = Glamorous.div<{
-    headerStyle: 'signin' | 'signup' | 'profile' | 'organization';
-}>([
-    {
-        height: 130,
-        position: 'relative',
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        '&:before': {
-            content: ' ',
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-        },
-        '@media(max-width: 500px)': {
-            height: 80,
-        },
-    },
-    props =>
-        props.headerStyle === 'signin'
-            ? {
-                  backgroundImage: 'linear-gradient(103deg, #7f30fd, #ff801b)',
-                  '&:before': {
-                      background: 'url(/static/X/signup/header-sign.png) no-repeat',
-                      backgroundImage:
-                          '-webkit-image-set(url(/static/X/signup/header-sign.png) 1x, url(/static/X/signup/header-sign@2x.png) 2x)',
-                      backgroundSize: '100% auto',
-                      backgroundPositionY: 'center',
-                  },
-              }
-            : {},
-    props =>
-        props.headerStyle === 'signup'
-            ? {
-                  backgroundImage: 'linear-gradient(103deg, #33c3ff, #1790ff)',
-                  '&:before': {
-                      background: 'url(/static/X/signup/header-sign.png) no-repeat',
-                      backgroundImage:
-                          '-webkit-image-set(url(/static/X/signup/header-sign.png) 1x, url(/static/X/signup/header-sign@2x.png) 2x)',
-                      backgroundSize: '100% auto',
-                      backgroundPositionY: 'center',
-                  },
-              }
-            : {},
-    props =>
-        props.headerStyle === 'profile'
-            ? {
-                  backgroundImage: 'linear-gradient(102deg, #12ffe7, #8b17ff)',
-                  '&:before': {
-                      background: 'url(/static/X/signup/header-profile.png) no-repeat',
-                      backgroundImage:
-                          '-webkit-image-set(url(/static/X/signup/header-profile.png) 1x, url(/static/X/signup/header-profile@2x.png) 2x)',
-                      backgroundSize: '100% auto',
-                      backgroundPositionY: 'center',
-                  },
-              }
-            : {},
-    props =>
-        props.headerStyle === 'organization'
-            ? {
-                  backgroundImage: 'linear-gradient(103deg, #337eff, #b317ff)',
-                  '&:before': {
-                      background: 'url(/static/X/signup/header-organization.png) no-repeat',
-                      backgroundImage:
-                          '-webkit-image-set(url(/static/X/signup/header-organization.png) 1x, url(/static/X/signup/header-organization@2x.png) 2x)',
-                      backgroundSize: '100% auto',
-                      backgroundPositionY: 'center',
-                  },
-              }
-            : {},
-]);
-
-interface RoomSignupContainerProps {
-    pageMode: PageModeT;
-    headerStyle?: 'signin' | 'signup' | 'profile' | 'organization';
-    onClick: (event: React.MouseEvent<any, MouseEvent>) => void;
-    children?: any;
-}
-
-export const RoomSignupContainer = (props: RoomSignupContainerProps) => (
-    <RoomSignupWrapper>
-        <RoomSignupBox>
-            <RoomSignupHeader headerStyle={props.headerStyle || 'signin'} />
-            {props.children}
-        </RoomSignupBox>
-    </RoomSignupWrapper>
-);
-
 // RoomSignup end
 
 export const GoogleButton = (props: {
@@ -364,12 +198,3 @@ export const EmailButton = (props: {
         </ImgButton>
     );
 };
-
-// AuthMechanism start
-
-export const ContentWrapper = Glamorous.div<{ noPadding?: boolean }>(props => ({
-    paddingLeft: props.noPadding === true ? 0 : 15,
-    paddingRight: props.noPadding === true ? 0 : 15,
-}));
-
-// AuthMechanism end

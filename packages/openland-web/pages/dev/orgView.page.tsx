@@ -16,7 +16,7 @@ import { XModalContent } from 'openland-web/components/XModalContent';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SelectWithDropdown } from '../components/SelectWithDropdown';
 import { FeatureFlags_featureFlags } from 'openland-api/Types';
-import { XInput } from 'openland-x/XInput';
+import { UInput } from 'openland-web/components/unicorn/UInput';
 
 const ActivateButton = ({ accountId }: { accountId: string }) => {
     const client = useClient();
@@ -503,7 +503,7 @@ const EditOrganizationModal = ({
         <XView borderRadius={8}>
             <XModalContent>
                 <XVertical flexGrow={1} separator={8}>
-                    <XInput placeholder={'Organization Name'} {...titleField.input} size="large" />
+                    <UInput label={'Organization Name'} {...titleField.input} />
                 </XVertical>
             </XModalContent>
             <XModalFooter>

@@ -16,7 +16,7 @@ import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { XView } from 'react-mental';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
-import { InputField } from 'openland-web/components/InputField';
+import { UInputField } from 'openland-web/components/unicorn/UInput';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XCheckbox } from 'openland-x/XCheckbox';
@@ -81,10 +81,9 @@ const MakeFeaturedModal = (props: {
                     />
                     {featured && (
                         <XView marginTop={20}>
-                            <InputField
-                                title="Description"
+                            <UInputField
+                                label="Description"
                                 field={descriptionField}
-                                setFocusOnError={true}
                                 maxLength={40}
                             />
                         </XView>
