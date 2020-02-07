@@ -35,7 +35,7 @@ const AsyncFileItem = React.memo(({ message, attachment, index, imageSize, chatI
         const d = DownloadManagerInstance.watch(attachment.fileId, fullScreenSize, state => {
 
             if (state.path) {
-                fsPathRef.current = state.path;
+                fsPathRef.current = Platform.select({ios: state.path, android: 'file://' + state.path});
             }
         });
         const srcImgSize = Math.round(imageSize * PixelRatio.get());
@@ -101,7 +101,7 @@ const AsyncFileItem = React.memo(({ message, attachment, index, imageSize, chatI
     }, []);
 
     const handleLongPress = React.useCallback(() => {
-        onLongPress({ filePath: previewPath, message, chatId });
+        onLongPress({ filePath: Platform.select({ios: previewPath, android: 'file://' + previewPath }), message, chatId });
     }, [previewPath]);
 
     const url = 'file://' + previewPath || attachment.filePreview || undefined;
