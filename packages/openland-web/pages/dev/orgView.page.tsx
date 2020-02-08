@@ -15,7 +15,7 @@ import { useField } from 'openland-form/useField';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SelectWithDropdown } from '../components/SelectWithDropdown';
-import { FeatureFlags_featureFlags } from 'openland-api/Types';
+import { FeatureFlags_featureFlags } from 'openland-api/spacex.types';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 
 const ActivateButton = ({ accountId }: { accountId: string }) => {

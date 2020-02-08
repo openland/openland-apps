@@ -2,7 +2,7 @@ import {
     Room_room_SharedRoom_members,
     Room_room_SharedRoom,
     UserShort,
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 
 const containsMember = (
     members: Room_room_SharedRoom_members[],

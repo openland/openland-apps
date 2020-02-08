@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { RoomInviteInfo_invite } from 'openland-api/Types';
+import { RoomInviteInfo_invite } from 'openland-api/spacex.types';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import Alert from 'openland-mobile/components/AlertBlanket';

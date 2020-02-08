@@ -4,7 +4,7 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { Modals } from '../modals/Modals';
 import { SRouter } from 'react-native-s/SRouter';
-import { RoomMemberRole, Room_room, Room_room_SharedRoom } from 'openland-api/Types';
+import { RoomMemberRole, Room_room, Room_room_SharedRoom } from 'openland-api/spacex.types';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
 import { XMemo } from 'openland-y-utils/XMemo';

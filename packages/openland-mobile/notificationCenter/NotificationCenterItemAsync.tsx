@@ -11,7 +11,7 @@ import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { AsyncAvatar } from 'openland-mobile/messenger/components/AsyncAvatar';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { isPad } from 'openland-mobile/pages/Root';
-import { RoomNano_SharedRoom } from 'openland-api/Types';
+import { RoomNano_SharedRoom } from 'openland-api/spacex.types';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { NotificationCenterHandlers } from './NotificationCenterHandlers';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';

@@ -7,7 +7,7 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import { next } from 'openland-mobile/pages/auth/signup';
 import UrlPattern from 'url-pattern';
 import UrlParse from 'url-parse';
-import { ResolvedInvite_invite_RoomInvite, AccountInviteInfo_invite } from 'openland-api/Types';
+import { ResolvedInvite_invite_RoomInvite, AccountInviteInfo_invite } from 'openland-api/spacex.types';
 import { publicPaths } from 'openland-y-utils/publicPaths';
 
 export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?: boolean) => {

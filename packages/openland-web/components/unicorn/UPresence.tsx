@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useLastSeen } from 'openland-y-utils/LastSeen';
-import { UserShort } from 'openland-api/Types';
+import { UserShort } from 'openland-api/spacex.types';
 import { XViewSelectedContext } from 'react-mental';
 
 interface UPresenceProps {

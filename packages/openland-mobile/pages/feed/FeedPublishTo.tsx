@@ -8,7 +8,7 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { CheckListBoxWraper } from '../main/modals/UserMultiplePicker';
 import { View } from 'react-native';
-import { FeedChannelFull } from 'openland-api/Types';
+import { FeedChannelFull } from 'openland-api/spacex.types';
 
 const FeedPublishToComponent = React.memo((props: PageProps) => {
     const { router } = props;

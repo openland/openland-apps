@@ -1,5 +1,5 @@
 import { MessengerEngine } from '../MessengerEngine';
-import * as Types from 'openland-api/Types';
+import * as Types from 'openland-api/spacex.types';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
 import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';

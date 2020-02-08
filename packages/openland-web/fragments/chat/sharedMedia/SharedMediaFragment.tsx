@@ -2,7 +2,7 @@ import * as React from 'react';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { useClient } from 'openland-web/utils/useClient';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
-import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile, SharedMediaType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_sender, SharedMedia_sharedMedia_edges_node_message } from 'openland-api/Types';
+import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile, SharedMediaType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_sender, SharedMedia_sharedMedia_edges_node_message } from 'openland-api/spacex.types';
 import { Page } from 'openland-unicorn/Page';
 import { XScrollValues } from 'openland-x/XScrollView3';
 import { XView, XViewRouter } from 'react-mental';

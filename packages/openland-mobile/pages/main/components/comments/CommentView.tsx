@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CommentEntryFragment_comment, MessageReactionType } from 'openland-api/Types';
+import { CommentEntryFragment_comment, MessageReactionType } from 'openland-api/spacex.types';
 import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback, Dimensions, LayoutChangeEvent, TouchableOpacity, ScrollView } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles, HighlightAlpha, CompensationAlpha } from 'openland-mobile/styles/AppStyles';

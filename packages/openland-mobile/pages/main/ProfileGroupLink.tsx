@@ -12,7 +12,7 @@ import Toast from 'openland-mobile/components/Toast';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
-import { RoomWithoutMembers_room_SharedRoom } from 'openland-api/Types';
+import { RoomWithoutMembers_room_SharedRoom } from 'openland-api/spacex.types';
 import { trackEvent } from 'openland-mobile/analytics';
 import { InviteLinkView } from './components/InviteLinkView';
 import { formatError } from 'openland-y-forms/errorHandling';

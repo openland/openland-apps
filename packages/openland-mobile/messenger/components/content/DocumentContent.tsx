@@ -11,7 +11,7 @@ import { ASImage } from 'react-native-async-view/ASImage';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { bubbleMaxWidth } from '../AsyncBubbleView';
 import { formatBytes } from 'openland-mobile/utils/formatBytes';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 interface DocumentContentProps {

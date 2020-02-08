@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FullMessage_GeneralMessage_sender } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_sender } from 'openland-api/spacex.types';
 import { View, Text, TouchableWithoutFeedback, Platform } from 'react-native';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';

@@ -6,7 +6,7 @@ import LikeFilledIcon from 'openland-icons/s/ic-like-filled-16.svg';
 import ReplyIcon from 'openland-icons/s/ic-reply-16.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-16.svg';
 import EditIcon from 'openland-icons/s/ic-edit-16.svg';
-import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_reactions } from 'openland-api/spacex.types';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { plural } from 'openland-y-utils/plural';
 import { extractReactionsUsers } from 'openland-engines/reactions/extractReactionsUsers';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { View, Text, Dimensions } from 'react-native';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage, FullMessage_GeneralMessage_quotedMessages } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage, FullMessage_GeneralMessage_quotedMessages } from 'openland-api/spacex.types';
 import { TextContent } from './TextContent';
 import { MediaContent } from './MediaContent';
 import { DocumentContent } from './DocumentContent';

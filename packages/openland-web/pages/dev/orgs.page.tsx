@@ -8,7 +8,7 @@ import { XSwitcher } from 'openland-x/XSwitcher';
 import { XView } from 'react-mental';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { useClient } from 'openland-web/utils/useClient';
-import { SuperAccounts_superAccounts } from 'openland-api/Types';
+import { SuperAccounts_superAccounts } from 'openland-api/spacex.types';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { XVertical } from 'openland-x-layout/XVertical';

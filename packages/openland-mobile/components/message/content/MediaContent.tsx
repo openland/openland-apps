@@ -4,7 +4,7 @@ import { DownloadState } from '../../../files/DownloadManagerInterface';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from '../../../files/DownloadManager';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage } from 'openland-api/spacex.types';
 import FastImage from 'react-native-fast-image';
 import { PreviewWrapper } from './PreviewWrapper';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';

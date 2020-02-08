@@ -1,5 +1,5 @@
 import { TextRenderProccessor } from 'openland-y-runtime/TextRenderProcessor';
-import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_reactions } from 'openland-api/spacex.types';
 import { extractReactionsUsers } from './extractReactionsUsers';
 
 export const getReactionsLabel = (reactions: FullMessage_GeneralMessage_reactions[], myID: string) => {

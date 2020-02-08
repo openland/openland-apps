@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, StyleSheet, TextStyle, Image } from 'react-native';
 import { SRouter } from 'react-native-s/SRouter';
 import { getMessenger } from '../../../utils/messenger';
-import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
+import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { Text, TextStyle, View, TextProps } from 'react-native';
-import { FullMessage_GeneralMessage_quotedMessages, FullMessage } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_quotedMessages, FullMessage } from 'openland-api/spacex.types';
 import { renderPreprocessedText } from '../renderPreprocessedText';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { getSpansSlices } from 'openland-y-utils/spans/utils';

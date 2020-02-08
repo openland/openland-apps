@@ -1,6 +1,6 @@
 import { Queue } from 'openland-y-utils/Queue';
 import { MessengerEngine } from '../MessengerEngine';
-import { MessageReactionType } from 'openland-api/Types';
+import { MessageReactionType } from 'openland-api/spacex.types';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 import { backoff, delay } from 'openland-y-utils/timer';
 import {
@@ -12,13 +12,13 @@ import {
     FullMessage_GeneralMessage_spans,
     UserShort,
     DialogUpdateFragment_DialogPeerUpdated_peer,
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler, MentionToSend } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
-import * as Types from 'openland-api/Types';
+import * as Types from 'openland-api/spacex.types';
 import { createLogger } from 'mental-log';
 import { MessagesActionsStateEngine } from './MessagesActionsState';
 import { MatchmakingEngine } from 'openland-engines/matchmaking/MatchmakingState';

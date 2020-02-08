@@ -9,7 +9,7 @@ import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { buildMessageMenu } from './MessageMenu';
 import { XViewRouterContext } from 'react-mental';
-import { MessageReactionType } from 'openland-api/Types';
+import { MessageReactionType } from 'openland-api/spacex.types';
 import { ReactionPicker, ReactionPickerInstance } from '../reactions/ReactionPicker';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-web/utils/useClient';

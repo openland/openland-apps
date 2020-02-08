@@ -1,4 +1,4 @@
-import { MessageSpanInput, FullMessage_GeneralMessage_spans } from 'openland-api/Types';
+import { MessageSpanInput, FullMessage_GeneralMessage_spans } from 'openland-api/spacex.types';
 import { SpanSymbolToType, SpanSymbolToTypeT } from './spans/Span';
 
 const _sc = (charCode: number) => String.fromCharCode(charCode);

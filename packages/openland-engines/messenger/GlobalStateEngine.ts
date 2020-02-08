@@ -2,7 +2,7 @@ import { reliableWatcher } from 'openland-api/reliableWatcher';
 import { Queue } from 'openland-y-utils/Queue';
 import { MessengerEngine } from '../MessengerEngine';
 import { backoff } from 'openland-y-utils/timer';
-import * as Types from 'openland-api/Types';
+import * as Types from 'openland-api/spacex.types';
 import { createLogger } from 'mental-log';
 import { currentTimeMillis } from 'openland-y-utils/currentTime';
 import { InvalidationQueue } from 'openland-y-utils/InvalidationQueue';

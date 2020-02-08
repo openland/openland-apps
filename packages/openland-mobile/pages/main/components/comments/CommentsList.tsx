@@ -7,7 +7,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { CommentEntryFragment, CommentEntryFragment_comment } from 'openland-api/Types';
+import { CommentEntryFragment, CommentEntryFragment_comment } from 'openland-api/spacex.types';
 
 interface CommentsListProps {
     comments: CommentEntryFragment[];

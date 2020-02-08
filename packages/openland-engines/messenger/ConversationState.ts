@@ -1,4 +1,4 @@
-import { UserShort } from 'openland-api/Types';
+import { UserShort } from 'openland-api/spacex.types';
 import { ModelMessage } from './types';
 
 export interface Day {

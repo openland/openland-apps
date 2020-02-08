@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useUserPopper, useEntityPopper } from 'openland-web/components/EntityPoppers';
-import { UserForMention, OrganizationShort, RoomNano } from 'openland-api/Types';
+import { UserForMention, OrganizationShort, RoomNano } from 'openland-api/spacex.types';
 import { css, cx } from 'linaria';
 import { Span } from 'openland-y-utils/spans/Span';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';

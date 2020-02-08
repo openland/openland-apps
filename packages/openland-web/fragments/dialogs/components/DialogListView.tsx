@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { XViewRouterContext, XViewRouteContext, XViewRoute } from 'react-mental';
 import { css } from 'linaria';
-import { GlobalSearch_items } from 'openland-api/Types';
+import { GlobalSearch_items } from 'openland-api/spacex.types';
 import { XListView } from 'openland-web/components/XListView';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DialogView } from './DialogView';

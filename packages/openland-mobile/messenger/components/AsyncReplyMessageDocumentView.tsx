@@ -9,7 +9,7 @@ import { DownloadManagerInstance } from '../../../openland-mobile/files/Download
 import { WatchSubscription } from '../../../openland-y-utils/Watcher';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { DownloadState } from '../../files/DownloadManagerInterface';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 const paddedText = '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));

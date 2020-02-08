@@ -7,7 +7,7 @@ import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
 import { AsyncReplyMessageMediaView } from '../AsyncReplyMessageMediaView';
 import { AsyncReplyMessageDocumentView } from '../AsyncReplyMessageDocumentView';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { RenderSpans } from './AsyncRenderSpans';
 import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from '../AsyncBubbleView';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';

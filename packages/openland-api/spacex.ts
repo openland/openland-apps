@@ -1,4 +1,4 @@
-import * as Types from './Types';
+import * as Types from './spacex.types';
 import { GraphqlEngine, GraphqlActiveSubscription, OperationParameters, GraphqlSubscriptionHandler } from '@openland/spacex';
 import { BaseApiClient, ApiQueryWatchParameters } from 'openland-graphql/BaseApiClient';
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FullMessage_GeneralMessage_reactions, UserShort, MessageReactionType } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_reactions, UserShort, MessageReactionType } from 'openland-api/spacex.types';
 import { ActionSheetBuilder } from '../ActionSheet';
 import { ZModalController } from '../ZModal';
 import { View, Image, Text } from 'react-native';

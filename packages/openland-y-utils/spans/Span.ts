@@ -5,7 +5,7 @@ import {
     MessageSpanType,
     RoomNano,
     OrganizationShort,
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 
 export enum SpanType {
     root = 'root',

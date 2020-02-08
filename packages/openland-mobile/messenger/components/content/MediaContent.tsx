@@ -11,7 +11,7 @@ import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { contentInsetsHorizontal, contentInsetsBottom, contentInsetsTop } from '../AsyncBubbleView';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { AsyncBubbleMediaView } from '../AsyncBubbleMediaView';
 

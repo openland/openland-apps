@@ -2,7 +2,7 @@ import * as React from 'react';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 import { convertMessage } from 'openland-engines/messenger/ConversationEngine';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { FullMessage, Message_message_GeneralMessage, Message_message_StickerMessage } from 'openland-api/Types';
+import { FullMessage, Message_message_GeneralMessage, Message_message_StickerMessage } from 'openland-api/spacex.types';
 import { MessageContent } from 'openland-web/fragments/chat/messenger/message/MessageContent';
 import { convertDsMessage, DataSourceWebMessageItem, emojifyReactions } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { Span } from 'openland-y-utils/spans/Span';

@@ -1,5 +1,5 @@
 import { OpenlandClient } from 'openland-api/spacex';
-import { TypingsWatch, TypingType } from 'openland-api/Types';
+import { TypingsWatch, TypingType } from 'openland-api/spacex.types';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 
 export interface TypingsUser {

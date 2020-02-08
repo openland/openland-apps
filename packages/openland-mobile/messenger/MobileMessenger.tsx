@@ -15,7 +15,7 @@ import { SRouting } from 'react-native-s/SRouting';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, MessageReactionType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, MessageReactionType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage } from 'openland-api/spacex.types';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { reactionsImagesMap } from './components/AsyncMessageReactionsView';
 import { getMessenger } from 'openland-mobile/utils/messenger';

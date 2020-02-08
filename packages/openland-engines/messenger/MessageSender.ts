@@ -7,7 +7,7 @@ import {
     MyStickers_stickers_packs_stickers,
     StickerFragment,
     ChatMentionSearch_mentions_globalItems
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 import { OpenlandClient } from 'openland-api/spacex';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 

@@ -10,7 +10,7 @@ import {
     ChatUpdateFragment_ChatMessageReceived,
     DialogUpdateFragment_DialogPeerUpdated_peer,
     RoomPico_room_SharedRoom,
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { createLogger } from 'mental-log';
 import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';

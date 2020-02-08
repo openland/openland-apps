@@ -31,19 +31,6 @@ function generateApi() {
 
     let doc = graphql.parse(definitions);
 
-    // let queries = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../openland-api/queries.json'), 'utf-8')) as {
-    //     operations: {
-    //         filePath: string,
-    //         operationName: string,
-    //         operationType: 'query' | 'mutation' | 'subscription',
-    //         variables: any[]
-    //     }[],
-    //     fragments: {
-    //         fragmentName: string,
-    //         filePath: string
-    //     }[]
-    // };
-
     function forEachMutation(callback: (name: string, hasVariables: boolean) => void) {
         for (let op of doc.definitions) {
             if (op.kind === 'OperationDefinition') {
@@ -78,7 +65,7 @@ function generateApi() {
     }
 
     let output = '';
-    output += 'import * as Types from \'./Types\';\n';
+    output += 'import * as Types from \'./spacex.types\';\n';
     output += 'import { GraphqlEngine, GraphqlActiveSubscription, OperationParameters, GraphqlSubscriptionHandler } from \'@openland/spacex\';\n';
     output += 'import { BaseApiClient, ApiQueryWatchParameters } from \'openland-graphql/BaseApiClient\';\n';
     output += '\n';

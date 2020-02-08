@@ -11,7 +11,7 @@ import { Platform } from 'react-native';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
 import { UserView } from '../main/components/UserView';
-import { FeedChannelSubscribers_subscribers, FeedChannelSubscriberRole } from 'openland-api/Types';
+import { FeedChannelSubscribers_subscribers, FeedChannelSubscriberRole } from 'openland-api/spacex.types';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';
 

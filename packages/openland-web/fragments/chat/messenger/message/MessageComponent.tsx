@@ -8,7 +8,7 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
 import StarIcon from 'openland-icons/s/ic-star-16.svg';
 import { formatTime } from 'openland-y-utils/formatTime';
-import { UserShort_primaryOrganization, UserShort } from 'openland-api/Types';
+import { UserShort_primaryOrganization, UserShort } from 'openland-api/spacex.types';
 import { HoverMenu } from './Menu/HoverMenu';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';

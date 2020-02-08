@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UserShort, RoomMemberRole, OrganizationMemberRole, UserBadge, FeedChannelSubscriberRole } from 'openland-api/Types';
+import { UserShort, RoomMemberRole, OrganizationMemberRole, UserBadge, FeedChannelSubscriberRole } from 'openland-api/spacex.types';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { View, Text, Image } from 'react-native';
 import { PresenceComponent } from './PresenceComponent';

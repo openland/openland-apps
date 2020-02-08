@@ -4,7 +4,7 @@ import { MAvatar } from 'openland-web/fragments/chat/messenger/message/MAvatar';
 import { css, cx } from 'linaria';
 import { DataSourceWebMessageItem } from 'openland-web/fragments/chat/messenger/data/WebMessageItemDataSource';
 import { NotificationSender, linkClass } from './NotificationSender';
-import { RoomNano_SharedRoom, CommentSubscriptionType, RoomShort_SharedRoom } from 'openland-api/Types';
+import { RoomNano_SharedRoom, CommentSubscriptionType, RoomShort_SharedRoom } from 'openland-api/spacex.types';
 import { UIconLabeled } from 'openland-web/components/unicorn/UIconLabeled';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { useClient } from 'openland-web/utils/useClient';

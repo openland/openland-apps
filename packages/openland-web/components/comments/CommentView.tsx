@@ -11,7 +11,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useRole } from 'openland-x-permissions/XWithRole';
-import { CommentEntryFragment_comment, StickerFragment } from 'openland-api/Types';
+import { CommentEntryFragment_comment, StickerFragment } from 'openland-api/spacex.types';
 import { CommentEditInput } from './CommentEditInput';
 import { useClient } from 'openland-web/utils/useClient';
 import { findSpans } from 'openland-y-utils/findSpans';

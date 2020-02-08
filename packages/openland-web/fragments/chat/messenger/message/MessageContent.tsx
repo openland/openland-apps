@@ -5,7 +5,7 @@ import {
     FullMessage_GeneralMessage_attachments,
     MyStickers_stickers_packs_stickers,
     UserShort,
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 import { MessageTextComponent } from './content/MessageTextComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
 import { SpanType, Span } from 'openland-y-utils/spans/Span';

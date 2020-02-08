@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { useClient } from 'openland-web/utils/useClient';
 import { ListOnScrollProps, VariableSizeList } from 'react-window';
-import { MyStickers_stickers_packs, StickerFragment } from 'openland-api/Types';
+import { MyStickers_stickers_packs, StickerFragment } from 'openland-api/spacex.types';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UButton } from 'openland-web/components/unicorn/UButton';

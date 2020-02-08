@@ -1,5 +1,5 @@
 import { OpenlandClient } from 'openland-api/spacex';
-import { OnlineWatch } from 'openland-api/Types';
+import { OnlineWatch } from 'openland-api/spacex.types';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 
 export class OnlineWatcher {

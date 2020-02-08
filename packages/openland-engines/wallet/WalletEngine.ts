@@ -1,7 +1,7 @@
-import { MyWallet_transactionsPending, WalletUpdates } from 'openland-api/Types';
+import { MyWallet_transactionsPending, WalletUpdates } from 'openland-api/spacex.types';
 import { backoff } from 'openland-y-utils/timer';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
-import { WalletUpdates_event_WalletUpdateBatch_updates } from 'openland-api/Types';
+import { WalletUpdates_event_WalletUpdateBatch_updates } from 'openland-api/spacex.types';
 import { StateStore } from 'openland-engines/utils/StateStore';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 

@@ -1,5 +1,5 @@
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
-import { OrganizationWithoutMembers_organization } from 'openland-api/Types';
+import { OrganizationWithoutMembers_organization } from 'openland-api/spacex.types';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 
 export const showLeaveConfirmation = (organization: OrganizationWithoutMembers_organization, messenger: MessengerEngine, onLeave: (id: string) => void) => {

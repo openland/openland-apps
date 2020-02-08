@@ -4,7 +4,7 @@ import { XViewRouterContext } from 'react-mental';
 import {
     FullMessage_GeneralMessage_attachments_MessageRichAttachment,
     FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard,
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
 import { UButton, UButtonProps } from 'openland-web/components/unicorn/UButton';
 import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';

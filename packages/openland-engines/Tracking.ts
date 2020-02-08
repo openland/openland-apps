@@ -2,7 +2,7 @@ import { AppStorage } from 'openland-y-runtime-native/AppStorage';
 import uuid from 'uuid/v4';
 import { backoff } from 'openland-y-utils/timer';
 import { OpenlandClient } from 'openland-api/spacex';
-import { EventPlatform, Event } from 'openland-api/Types';
+import { EventPlatform, Event } from 'openland-api/spacex.types';
 import { createLogger } from 'mental-log';
 import { AppStorageQueued } from 'openland-y-utils/AppStorageQueued';
 

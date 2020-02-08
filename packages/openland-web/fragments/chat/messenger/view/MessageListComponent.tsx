@@ -6,7 +6,7 @@ import {
     DataSourceDateItem,
     DataSourceNewDividerItem,
 } from 'openland-engines/messenger/ConversationEngine';
-import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/Types';
+import { UserShort, SharedRoomKind, RoomChat_room } from 'openland-api/spacex.types';
 import { css } from 'linaria';
 import { DataSourceRender } from './DataSourceRender';
 import { DataSource } from 'openland-y-utils/DataSource';

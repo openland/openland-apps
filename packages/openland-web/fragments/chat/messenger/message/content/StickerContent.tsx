@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
-import { StickerFragment } from 'openland-api/Types';
+import { StickerFragment } from 'openland-api/spacex.types';
 import { showModalBox } from 'openland-x/showModalBox';
 import { useClient } from 'openland-web/utils/useClient';
 import { XLoader } from 'openland-x/XLoader';

@@ -5,7 +5,7 @@ import { useClient } from 'openland-web/utils/useClient';
 import { SearchBox } from './SearchBox';
 import { XLoader } from 'openland-x/XLoader';
 import { ExplorePeople } from './ExplorePeople';
-import { SharedRoomKind, ImageRefInput, WalletSubscriptionInterval } from 'openland-api/Types';
+import { SharedRoomKind, ImageRefInput, WalletSubscriptionInterval } from 'openland-api/spacex.types';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 
 const headerContainer = css`

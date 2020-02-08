@@ -12,7 +12,7 @@ import { TextContent } from './content/TextContent';
 import { RichAttachContent, richAttachImageShouldBeCompact } from './content/RichAttachContent';
 import { MediaContent, layoutImage } from './content/MediaContent';
 import { DocumentContent } from './content/DocumentContent';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/spacex.types';
 import { OthersUsersWrapper } from './content/OthersUsersWrapper';
 import { openCalendar } from 'openland-mobile/utils/openCalendar';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';

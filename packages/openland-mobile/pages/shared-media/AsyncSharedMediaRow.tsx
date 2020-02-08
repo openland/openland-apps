@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Platform, PixelRatio } from 'react-native';
-import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';

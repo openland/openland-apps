@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MyCards_myCards } from 'openland-api/Types';
+import { MyCards_myCards } from 'openland-api/spacex.types';
 import { css, cx } from 'linaria';
 import { TextBody, TextStyles } from 'openland-web/utils/TextStyles';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';

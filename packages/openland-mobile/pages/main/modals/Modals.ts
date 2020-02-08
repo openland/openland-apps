@@ -1,5 +1,5 @@
 import { SRouter } from 'react-native-s/SRouter';
-import { UserShort } from 'openland-api/Types';
+import { UserShort } from 'openland-api/spacex.types';
 import { SlideInputLocalAttachment } from 'openland-engines/feed/types';
 
 export const Modals = {

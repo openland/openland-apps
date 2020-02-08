@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, ViewStyle, Text, TextStyle, TouchableOpacity } from 'react-native';
-import { MessageReactionType } from 'openland-api/Types';
+import { MessageReactionType } from 'openland-api/spacex.types';
 import { plural } from 'openland-y-utils/plural';
 import { ZIconButton } from 'openland-mobile/components/ZIconButton';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';

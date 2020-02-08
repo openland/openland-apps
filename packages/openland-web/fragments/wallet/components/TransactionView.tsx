@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { WalletTransactionFragment } from 'openland-api/Types';
+import { WalletTransactionFragment } from 'openland-api/spacex.types';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { Money } from 'openland-y-utils/wallet/Money';
 

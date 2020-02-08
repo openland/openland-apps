@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { formatBytes } from 'openland-mobile/utils/formatBytes';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';

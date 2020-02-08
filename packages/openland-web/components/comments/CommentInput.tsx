@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { URickInputInstance, URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { SendMessageComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';
-import { StickerFragment } from 'openland-api/Types';
+import { StickerFragment } from 'openland-api/spacex.types';
 
 const wrapperClass = css`
     padding: 16px;

@@ -5,7 +5,7 @@ import { XView } from 'react-mental';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-web/utils/useClient';
 import { ChatInfo } from 'openland-web/fragments/chat/types';
-import { Conference_conference_peers } from 'openland-api/Types';
+import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { useStream, MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { css } from 'linaria';

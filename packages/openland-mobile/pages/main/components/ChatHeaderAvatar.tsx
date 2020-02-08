@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, TouchableOpacity, Platform } from 'react-native';
 import { SRouter } from 'react-native-s/SRouter';
-import { Room_room_SharedRoom, Room_room_PrivateRoom, RoomTiny_room } from 'openland-api/Types';
+import { Room_room_SharedRoom, Room_room_PrivateRoom, RoomTiny_room } from 'openland-api/spacex.types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';

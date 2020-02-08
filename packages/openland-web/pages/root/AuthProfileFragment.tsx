@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { GetUser_user_User } from 'openland-api/Types';
+import { GetUser_user_User } from 'openland-api/spacex.types';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { emoji } from 'openland-y-utils/emoji';

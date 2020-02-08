@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/spacex.types';
 import { layoutMedia, MediaLayout } from 'openland-y-utils/MediaLayout';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { TextTitle3, TextBody, TextLabel2 } from 'openland-web/utils/TextStyles';

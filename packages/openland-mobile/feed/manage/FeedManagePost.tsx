@@ -3,7 +3,7 @@ import { View, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { SlideType, SlideCoverAlign, ImageRefInput } from 'openland-api/Types';
+import { SlideType, SlideCoverAlign, ImageRefInput } from 'openland-api/spacex.types';
 import { FeedManageSlide } from './FeedManageSlide';
 import UUID from 'uuid/v4';
 import { SlideInputLocal, SlideInputLocalAttachment } from 'openland-engines/feed/types';

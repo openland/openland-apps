@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { SlideFragment_attachments, SlideFragment_attachments_SharedRoom, SlideFragment_attachments_User, SlideFragment_attachments_Organization, SharedRoomMembershipStatus } from 'openland-api/Types';
+import { SlideFragment_attachments, SlideFragment_attachments_SharedRoom, SlideFragment_attachments_User, SlideFragment_attachments_Organization, SharedRoomMembershipStatus } from 'openland-api/spacex.types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { plural } from 'openland-y-utils/plural';

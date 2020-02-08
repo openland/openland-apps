@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
-import { FullMessage_GeneralMessage_sender, RoomNano_SharedRoom } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_sender, RoomNano_SharedRoom } from 'openland-api/spacex.types';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { formatTime } from 'openland-y-utils/formatTime';
 import GroupReplyIcon from 'openland-icons/s/ic-chevron-16.svg';

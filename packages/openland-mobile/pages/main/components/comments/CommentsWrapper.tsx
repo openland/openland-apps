@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, NativeSyntheticEvent, TextInputSelectionChangeEventData, Platform, ScrollView, Keyboard, TextInput } from 'react-native';
 import { MessageInputBar } from '../MessageInputBar';
-import { CommentEntryFragment_comment, FileAttachmentInput, Message_message_GeneralMessage_source_MessageSourceChat_chat, CommentEntryFragment, CommentWatch } from 'openland-api/Types';
+import { CommentEntryFragment_comment, FileAttachmentInput, Message_message_GeneralMessage_source_MessageSourceChat_chat, CommentEntryFragment, CommentWatch } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { EmojiSuggestions, EmojiSuggestionsRow } from '../suggestions/EmojiSuggestions';

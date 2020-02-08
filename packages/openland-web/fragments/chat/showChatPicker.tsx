@@ -5,7 +5,7 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { XView } from 'react-mental';
 import { DialogSearchResults } from '../dialogs/components/DialogSearchResults';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { GlobalSearch_items, GlobalSearchEntryKind } from 'openland-api/Types';
+import { GlobalSearch_items, GlobalSearchEntryKind } from 'openland-api/spacex.types';
 import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
 
 const ChatPickerComponent = (props: {

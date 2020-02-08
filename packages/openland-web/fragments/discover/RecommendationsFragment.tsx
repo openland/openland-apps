@@ -5,7 +5,7 @@ import { DiscoverOnLocalState } from 'openland-web/pages/onboarding/discover.pag
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
-import { RoomShort_SharedRoom } from 'openland-api/Types';
+import { RoomShort_SharedRoom } from 'openland-api/spacex.types';
 import { DiscoverRecommendationsStart } from './components/DiscoverRecommendationsStart';
 
 export const RecommendationsFragment = React.memo(() => {

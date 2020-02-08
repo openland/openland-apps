@@ -1,5 +1,5 @@
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { FullMessage } from 'openland-api/Types';
+import { FullMessage } from 'openland-api/spacex.types';
 import { processSpans } from 'openland-y-utils/spans/processSpans';
 
 export const convertMessage = (

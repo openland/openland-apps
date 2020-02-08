@@ -3,7 +3,7 @@ import * as React from 'react';
 import { MessageSender } from './messenger/MessageSender';
 import { ConversationEngine, DataSourceMessageItem } from './messenger/ConversationEngine';
 import { GlobalStateEngine } from './messenger/GlobalStateEngine';
-import { UserShort, ChatUpdateFragment_ChatMessageReceived, TypingType } from 'openland-api/Types';
+import { UserShort, ChatUpdateFragment_ChatMessageReceived, TypingType } from 'openland-api/spacex.types';
 import { NotificationsEngine } from './NotificationsEngine';
 import { CreateEntityEngine } from './createEntity/CreateEntityState';
 import { NotificationCenterEngine } from './NotificationCenterEngine';

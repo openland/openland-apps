@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { OpenlandClient } from 'openland-api/spacex';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
-import { ChatOnlinesCountWatch } from 'openland-api/Types';
+import { ChatOnlinesCountWatch } from 'openland-api/spacex.types';
 
 export const getChatOnlinesCount = (chatId: string, client: OpenlandClient, callback: (count: number) => void) => {
     React.useEffect(() => {

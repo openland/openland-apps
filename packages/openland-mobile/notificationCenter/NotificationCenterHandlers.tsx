@@ -2,7 +2,7 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import { CommentSubscriptionType } from 'openland-api/Types';
+import { CommentSubscriptionType } from 'openland-api/spacex.types';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 
 class NotificationCenterHandlersClass {

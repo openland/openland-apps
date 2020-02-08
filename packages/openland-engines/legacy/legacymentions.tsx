@@ -6,7 +6,7 @@ import {
     FullMessage_GeneralMessage_spans_MessageSpanOrganizationMention,
     FullMessage_GeneralMessage_spans_MessageSpanRoomMention,
     ChatMentionSearch_mentions_globalItems_SharedRoom,
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 
 export const prepareLegacyMentions = (

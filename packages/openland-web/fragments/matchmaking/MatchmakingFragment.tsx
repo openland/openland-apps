@@ -14,7 +14,7 @@ import {
     MatchmakingRoom_matchmakingRoom_questions,
     MatchmakingRoom_matchmakingRoom_questions_TextMatchmakingQuestion,
     MatchmakingRoom_matchmakingRoom_questions_MultiselectMatchmakingQuestion,
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 
 interface TextComponentProps {

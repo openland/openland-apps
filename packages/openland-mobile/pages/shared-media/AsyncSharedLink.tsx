@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataSourceSharedLinkItem } from 'openland-engines/messenger/SharedMediaEngine';
-import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage } from 'openland-api/Types';
+import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage } from 'openland-api/spacex.types';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { Linking, Image } from 'react-native';
 import { ASAvatar } from 'openland-mobile/messenger/components/ASAvatar';

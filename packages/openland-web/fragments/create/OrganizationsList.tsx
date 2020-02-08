@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
-import { MyOrganizations_myOrganizations } from 'openland-api/Types';
+import { MyOrganizations_myOrganizations } from 'openland-api/spacex.types';
 import { useClient } from 'openland-web/utils/useClient';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { UOrganizationView } from 'openland-web/components/unicorn/templates/UOrganizationView';

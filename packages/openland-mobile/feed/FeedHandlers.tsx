@@ -4,7 +4,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { showReportForm } from 'openland-mobile/components/showReportForm';
 import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
-import { MessageReactionType, FeedChannelFull, FeedChannelSubscriberRole, FeedChannelWriters_writers_items, FeedChannelSubscribers_subscribers_edges_node } from 'openland-api/Types';
+import { MessageReactionType, FeedChannelFull, FeedChannelSubscriberRole, FeedChannelWriters_writers_items, FeedChannelSubscribers_subscribers_edges_node } from 'openland-api/spacex.types';
 import { Share } from 'react-native';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 

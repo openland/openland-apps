@@ -1,5 +1,5 @@
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
-import { UserShort } from 'openland-api/Types';
+import { UserShort } from 'openland-api/spacex.types';
 import { MobileMessenger } from '../messenger/MobileMessenger';
 import { OpenlandClient } from 'openland-api/spacex';
 import { Platform } from 'react-native';

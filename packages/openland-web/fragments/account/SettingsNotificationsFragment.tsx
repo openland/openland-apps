@@ -4,7 +4,7 @@ import { useForm } from 'openland-form/useForm';
 import { useClient } from 'openland-web/utils/useClient';
 import { useField } from 'openland-form/useField';
 import { RadioButtonsSelect } from './components/RadioButtonsSelect';
-import { UpdateSettingsInput, NotificationPreview } from 'openland-api/Types';
+import { UpdateSettingsInput, NotificationPreview } from 'openland-api/spacex.types';
 import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
 import { UHeader } from 'openland-unicorn/UHeader';

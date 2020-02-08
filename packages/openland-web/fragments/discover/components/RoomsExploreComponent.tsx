@@ -6,7 +6,7 @@ import {
 } from 'openland-web/fragments/discover/components/DiscoverNavigation';
 import { useClient } from 'openland-web/utils/useClient';
 import { EmptySearchBlock } from './EmptySearchBlock';
-import { RoomShort_SharedRoom } from 'openland-api/Types';
+import { RoomShort_SharedRoom } from 'openland-api/spacex.types';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 
 interface WithChatSearchRoomsProps {

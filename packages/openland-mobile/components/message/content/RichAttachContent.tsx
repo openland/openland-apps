@@ -5,7 +5,7 @@ import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { resolveInternalLink } from 'openland-mobile/utils/resolveInternalLink';
-import { FullMessage_GeneralMessage_attachments_MessageRichAttachment, FullMessage_GeneralMessage } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageRichAttachment, FullMessage_GeneralMessage } from 'openland-api/spacex.types';
 import { richAttachImageShouldBeCompact, isInvite } from 'openland-mobile/messenger/components/content/RichAttachContent';
 import FastImage from 'react-native-fast-image';
 import { PreviewWrapper } from './PreviewWrapper';

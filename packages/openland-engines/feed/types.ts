@@ -1,5 +1,5 @@
 import { DataSourceItem } from 'openland-y-utils/DataSource';
-import * as Types from 'openland-api/Types';
+import * as Types from 'openland-api/spacex.types';
 import { Span } from 'openland-y-utils/spans/Span';
 import { ReactionReduced } from 'openland-engines/reactions/types';
 

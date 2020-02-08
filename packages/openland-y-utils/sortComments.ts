@@ -1,4 +1,4 @@
-import { CommentEntryFragment } from 'openland-api/Types';
+import { CommentEntryFragment } from 'openland-api/spacex.types';
 
 export const sortComments = (
     comments: CommentEntryFragment[],

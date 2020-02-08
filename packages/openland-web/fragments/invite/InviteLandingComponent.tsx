@@ -7,7 +7,7 @@ import {
     RoomChat_room_SharedRoom,
     WalletSubscriptionInterval,
     WalletSubscriptionState,
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 import { XViewRouterContext } from 'react-mental';
 import { useClient } from 'openland-web/utils/useClient';
 import { switchOrganization } from 'openland-web/utils/switchOrganization';

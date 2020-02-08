@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
-import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_reactions } from 'openland-api/spacex.types';
 import { View, Image, Text, TouchableWithoutFeedback } from 'react-native';
 import { reactionsImagesMap } from 'openland-mobile/messenger/components/AsyncMessageReactionsView';
 import { showReactionsList } from '../showReactionsList';

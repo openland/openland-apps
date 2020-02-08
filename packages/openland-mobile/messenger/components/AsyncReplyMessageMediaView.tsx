@@ -7,7 +7,7 @@ import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { DownloadState } from '../../files/DownloadManagerInterface';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 
 export interface AsyncMessageMediaViewProps {
     message: DataSourceMessageItem;

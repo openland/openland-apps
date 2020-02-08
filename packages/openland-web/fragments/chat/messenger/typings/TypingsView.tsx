@@ -11,7 +11,7 @@ import Lottie from 'react-lottie';
 import { XView } from 'react-mental';
 
 import { getJSON } from 'openland-y-utils/lottie/getJSON';
-import { TypingType } from 'openland-api/Types';
+import { TypingType } from 'openland-api/spacex.types';
 
 const typingWrapper = css`
     display: flex;

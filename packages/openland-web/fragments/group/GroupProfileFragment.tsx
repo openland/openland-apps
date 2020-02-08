@@ -16,7 +16,7 @@ import { showAddMembersModal } from '../chat/showAddMembersModal';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { UListText } from 'openland-web/components/unicorn/UListText';
 import { GroupMemberMenu } from './components/GroupMemberMenu';
-import { RoomMembersPaginated_members } from 'openland-api/Types';
+import { RoomMembersPaginated_members } from 'openland-api/spacex.types';
 import IcUser from 'openland-icons/s/ic-user-24.svg';
 import IcCopy from 'openland-icons/s/ic-copy-24.svg';
 

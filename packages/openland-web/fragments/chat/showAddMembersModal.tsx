@@ -7,7 +7,7 @@ import {
     RoomMembersShort,
     OrganizationMembers_organization_members,
     RoomMembersPaginated_members,
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 import { XModalProps } from 'openland-x-modal/XModal';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-web/utils/useClient';

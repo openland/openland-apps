@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { DialogListView } from './components/DialogListView';
-import { GlobalSearch_items } from 'openland-api/Types';
+import { GlobalSearch_items } from 'openland-api/spacex.types';
 
 interface DialogListFragmentProps {
     onSearchItemSelected: (a: GlobalSearch_items) => void;

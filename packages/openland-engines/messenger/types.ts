@@ -3,7 +3,7 @@ import {
     FullMessage_GeneralMessage_spans,
     MyStickers_stickers_packs_stickers,
     UserBadge,
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 import { DataSourceMessageItem } from './ConversationEngine';
 
 export interface PendingMessage {

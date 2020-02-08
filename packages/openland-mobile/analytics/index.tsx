@@ -1,6 +1,6 @@
 import { Track, TrackPlatform } from 'openland-engines/Tracking';
 import { Platform, AsyncStorage } from 'react-native';
-import { EventPlatform } from 'openland-api/Types';
+import { EventPlatform } from 'openland-api/spacex.types';
 
 const platform: TrackPlatform = {
     name: Platform.OS === 'ios' ? EventPlatform.iOS : EventPlatform.Android,

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { User_user } from 'openland-api/Types';
+import { User_user } from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import copy from 'copy-to-clipboard';
 import EditIcon from 'openland-icons/s/ic-edit-24.svg';

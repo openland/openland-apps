@@ -7,7 +7,7 @@ import { ZListItem } from '../../components/ZListItem';
 import { Modals } from './modals/Modals';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
-import { RoomMemberRole, UserShort, Room_room_SharedRoom_members, RoomWithoutMembers_room_SharedRoom, RoomMembersPaginated_members } from 'openland-api/Types';
+import { RoomMemberRole, UserShort, Room_room_SharedRoom_members, RoomWithoutMembers_room_SharedRoom, RoomMembersPaginated_members } from 'openland-api/spacex.types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { UserView } from './components/UserView';

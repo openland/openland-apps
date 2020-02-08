@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { UListItem, UListItemProps } from 'openland-web/components/unicorn/UListItem';
-import { OrganizationShort } from 'openland-api/Types';
+import { OrganizationShort } from 'openland-api/spacex.types';
 
 interface UOrganizationViewProps {
     organization: OrganizationShort;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MyStickers_stickers_packs_stickers } from 'openland-api/Types';
+import { MyStickers_stickers_packs_stickers } from 'openland-api/spacex.types';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { View, Platform } from 'react-native';

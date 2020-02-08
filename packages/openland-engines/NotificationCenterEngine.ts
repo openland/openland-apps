@@ -6,11 +6,11 @@ import { convertMessage } from 'openland-engines/utils/convertMessage';
 import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';
 import { createLogger } from 'mental-log';
 import { DataSourceMessageItem } from './messenger/ConversationEngine';
-import * as Types from 'openland-api/Types';
+import * as Types from 'openland-api/spacex.types';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { backoff } from 'openland-y-utils/timer';
 import { prepareLegacyMentions } from './legacy/legacymentions';
-import { MyNotificationsCenter } from 'openland-api/Types';
+import { MyNotificationsCenter } from 'openland-api/spacex.types';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
 const log = createLogger('Engine-NotificationCenter');

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, ScrollView, Text, Platform, Dimensions } from 'react-native';
-import { RoomShort, RoomShort_SharedRoom } from 'openland-api/Types';
+import { RoomShort, RoomShort_SharedRoom } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';

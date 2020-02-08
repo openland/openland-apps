@@ -9,7 +9,7 @@ import { emoji } from 'openland-y-utils/emoji';
 import {
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { defaultHover } from 'openland-web/utils/Styles';

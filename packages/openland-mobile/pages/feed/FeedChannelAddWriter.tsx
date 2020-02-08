@@ -9,7 +9,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
-import { FeedChannelSubscriberRole } from 'openland-api/Types';
+import { FeedChannelSubscriberRole } from 'openland-api/spacex.types';
 import { FeedHandlers } from 'openland-mobile/feed/FeedHandlers';
 import { hexToRgba } from 'openland-y-utils/hexToRgba';
 

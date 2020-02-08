@@ -7,7 +7,7 @@ import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import FastImage from 'react-native-fast-image';
-import { SlideCoverAlign } from 'openland-api/Types';
+import { SlideCoverAlign } from 'openland-api/spacex.types';
 import { renderPreprocessedText } from 'openland-mobile/components/message/renderPreprocessedText';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { FeedSlideAttachment } from './FeedSlideAttachment';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RoomFullWithoutMembers_SharedRoom, RoomMembersPaginated_members } from 'openland-api/Types';
+import { RoomFullWithoutMembers_SharedRoom, RoomMembersPaginated_members } from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XViewRouterContext } from 'react-mental';
-import { RoomFullWithoutMembers_SharedRoom } from 'openland-api/Types';
+import { RoomFullWithoutMembers_SharedRoom } from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { showRoomEditModal, showLeaveChatConfirmation } from 'openland-web/fragments/account/components/groupProfileModals';
 import SettingsIcon from 'openland-icons/s/ic-settings-24.svg';

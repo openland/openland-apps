@@ -3,7 +3,7 @@ import { css, cx } from 'linaria';
 import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     UserShort,
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 import { layoutMedia, uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
 import { showModalBox } from 'openland-x/showModalBox';

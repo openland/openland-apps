@@ -3,7 +3,7 @@ import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { SharedRoomKind, RoomMemberRole, RoomCreate } from 'openland-api/Types';
+import { SharedRoomKind, RoomMemberRole, RoomCreate } from 'openland-api/spacex.types';
 import { Modals } from '../main/modals/Modals';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZInput } from 'openland-mobile/components/ZInput';

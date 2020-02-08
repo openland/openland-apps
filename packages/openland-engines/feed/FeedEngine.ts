@@ -2,7 +2,7 @@ import { MessengerEngine } from '../MessengerEngine';
 import { OpenlandClient } from 'openland-api/spacex';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { createLogger } from 'mental-log';
-import * as Types from 'openland-api/Types';
+import * as Types from 'openland-api/spacex.types';
 import { backoff } from 'openland-y-utils/timer';
 import { DataSourceFeedItem } from './types';
 import { convertItems, convertPost } from './convert';

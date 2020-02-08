@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FullMessage } from 'openland-api/Types';
+import { FullMessage } from 'openland-api/spacex.types';
 import { formatMessage } from 'openland-engines/messenger/DialogListEngine';
 import { InputTopView } from './InputTopView';
 

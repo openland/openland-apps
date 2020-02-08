@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MessageReactionType, FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
+import { MessageReactionType, FullMessage_GeneralMessage_reactions } from 'openland-api/spacex.types';
 import { css, cx } from 'linaria';
 import { reactionImage } from './MessageReactions';
 import { MessengerContext } from 'openland-engines/MessengerEngine';

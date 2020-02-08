@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/spacex.types';
 import { View, Dimensions } from 'react-native';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';

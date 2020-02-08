@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
-import { GlobalSearch_items_User, GlobalSearch_items_Organization, GlobalSearch_items_SharedRoom } from 'openland-api/Types';
+import { GlobalSearch_items_User, GlobalSearch_items_Organization, GlobalSearch_items_SharedRoom } from 'openland-api/spacex.types';
 import { ASAvatar } from 'openland-mobile/messenger/components/ASAvatar';
 import { UserAvatar } from 'openland-mobile/messenger/components/UserAvatar';
 import { XMemo } from 'openland-y-utils/XMemo';

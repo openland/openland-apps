@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView, XViewRouter } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 import { showModalBox } from 'openland-x/showModalBox';
-import { Room_room_SharedRoom } from 'openland-api/Types';
+import { Room_room_SharedRoom } from 'openland-api/spacex.types';
 import { useClient } from 'openland-web/utils/useClient';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';

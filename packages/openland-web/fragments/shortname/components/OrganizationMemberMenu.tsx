@@ -3,7 +3,7 @@ import {
     OrganizationMembers_organization_members,
     OrganizationWithoutMembers_organization,
     OrganizationMemberRole,
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';

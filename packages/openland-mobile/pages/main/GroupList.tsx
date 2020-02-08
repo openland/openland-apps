@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Types from '../../../openland-api/Types';
+import * as Types from '../../../openland-api/spacex.types';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';

@@ -1,4 +1,4 @@
-import { MessageReactionType } from 'openland-api/Types';
+import { MessageReactionType } from 'openland-api/spacex.types';
 
 export interface ReactionUser {
     id: string;

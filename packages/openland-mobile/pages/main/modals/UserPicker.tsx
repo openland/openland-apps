@@ -3,7 +3,7 @@ import { PageProps } from '../../../components/PageProps';
 import { withApp } from '../../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { View } from 'react-native';
-import { UserShort } from 'openland-api/Types';
+import { UserShort } from 'openland-api/spacex.types';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { UserView } from '../components/UserView';
 import { XMemo } from 'openland-y-utils/XMemo';

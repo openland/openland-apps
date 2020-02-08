@@ -4,7 +4,7 @@ import { withApp } from '../../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { View, LayoutChangeEvent, Image, Dimensions } from 'react-native';
-import { UserShort } from 'openland-api/Types';
+import { UserShort } from 'openland-api/spacex.types';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ZBlurredView } from '../../../components/ZBlurredView';

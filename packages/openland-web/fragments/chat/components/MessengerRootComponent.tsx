@@ -15,7 +15,7 @@ import {
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
     StickerFragment,
     TypingType,
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 import { trackEvent } from 'openland-x-analytics';
 import { throttle, delay } from 'openland-y-utils/timer';
 import { SendMessageComponent } from './SendMessageComponent';

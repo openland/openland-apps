@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, Alert, StyleSheet, ViewStyle, TextStyle, Platform } from 'react-native';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { Room_room_SharedRoom, ChatJoin_room_SharedRoom } from 'openland-api/Types';
+import { Room_room_SharedRoom, ChatJoin_room_SharedRoom } from 'openland-api/spacex.types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';

@@ -4,11 +4,11 @@ import { backoff } from 'openland-y-utils/timer';
 import { MediaStreamManager } from './MediaStreamManager';
 import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
-import { ConferenceMediaWatch, ConferenceMediaWatch_media_streams } from 'openland-api/Types';
+import { ConferenceMediaWatch, ConferenceMediaWatch_media_streams } from 'openland-api/spacex.types';
 import { AppBackgroundTask } from 'openland-y-runtime/AppBackgroundTask';
 import { Queue } from 'openland-y-utils/Queue';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
-import { ConferenceWatch } from 'openland-api/Types';
+import { ConferenceWatch } from 'openland-api/spacex.types';
 
 export class MediaSessionManager {
     readonly conversationId: string;

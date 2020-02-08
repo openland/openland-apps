@@ -14,7 +14,7 @@ import { showAddMembersModal } from 'openland-web/fragments/chat/showAddMembersM
 import {
     MatchmakingRoom_matchmakingRoom_profiles,
     MatchmakingProfile_matchmakingProfile,
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 
 const secondaryCardContainer = css`
     display: flex;

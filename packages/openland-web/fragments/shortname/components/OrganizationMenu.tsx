@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { OrganizationWithoutMembers_organization } from 'openland-api/Types';
+import { OrganizationWithoutMembers_organization } from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { showLeaveConfirmation } from 'openland-web/fragments/org/showLeaveConfirmation';
 import { showEditCommunityModal } from 'openland-web/fragments/account/components/showEditCommunityModal';

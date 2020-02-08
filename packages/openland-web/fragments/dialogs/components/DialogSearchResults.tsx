@@ -10,7 +10,7 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { plural } from 'openland-y-utils/plural';
-import { GlobalSearch_items, GlobalSearchVariables } from 'openland-api/Types';
+import { GlobalSearch_items, GlobalSearchVariables } from 'openland-api/spacex.types';
 
 const NoResultWrapper = Glamorous(XVertical)({
     marginTop: 34,

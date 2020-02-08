@@ -1,4 +1,4 @@
-import { FullMessage_GeneralMessage_reactions } from 'openland-api/Types';
+import { FullMessage_GeneralMessage_reactions } from 'openland-api/spacex.types';
 import { ReactionReduced } from './types';
 
 export const reduceReactions = (reactions: FullMessage_GeneralMessage_reactions[], myID: string) => {

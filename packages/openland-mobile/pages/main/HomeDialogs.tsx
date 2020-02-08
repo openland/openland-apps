@@ -15,7 +15,7 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { GlobalSearchEntryKind } from 'openland-api/Types';
+import { GlobalSearchEntryKind } from 'openland-api/spacex.types';
 
 const DialogsComponent = XMemo<PageProps>((props) => {
     const handlePress = React.useCallback((id: string, title: string) => {

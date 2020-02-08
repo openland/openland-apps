@@ -14,7 +14,7 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { View, Platform, Text } from 'react-native';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { OrganizationMemberRole, OrganizationWithoutMembers_organization, OrganizationMembers_organization_members, OrganizationMembers_organization_members_user } from 'openland-api/Types';
+import { OrganizationMemberRole, OrganizationWithoutMembers_organization, OrganizationMembers_organization_members, OrganizationMembers_organization_members_user } from 'openland-api/spacex.types';
 import { GroupView } from './components/GroupView';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { XMemo } from 'openland-y-utils/XMemo';

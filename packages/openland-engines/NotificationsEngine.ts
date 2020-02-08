@@ -3,7 +3,7 @@ import {
     RoomTiny_room_SharedRoom,
     RoomTiny_room_PrivateRoom,
     DialogsWatch_event_DialogUpdateSingle_update_DialogMessageReceived,
-} from 'openland-api/Types';
+} from 'openland-api/spacex.types';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { AppNotifications } from 'openland-y-runtime/AppNotifications';
 import { doSimpleHash } from 'openland-y-utils/hash';
