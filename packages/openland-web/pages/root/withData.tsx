@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NextAppContext } from 'next/app';
-import { getToken } from 'openland-x-graphql/auth';
+import { getToken } from 'openland-api/auth';
 import { SharedStorage, getServerStorage, getClientStorage } from 'openland-x-utils/SharedStorage';
 import { OpenlandClient } from 'openland-api/spacex';
 import { createClientWeb } from 'openland-api/createClientWeb';

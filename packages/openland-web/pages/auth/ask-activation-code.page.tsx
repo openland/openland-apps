@@ -9,7 +9,7 @@ import { Wrapper } from '../onboarding/components/wrapper';
 import { Title, Subtitle, FormLayout, AuthActionButton, AuthInputWrapper, AuthToastWrapper, AuthInput, useShake } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { completeAuth } from './complete.page';
-import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
+import { API_AUTH_ENDPOINT } from 'openland-api/endpoint';
 import { XImage } from 'react-mental';
 import { AuthHeaderConfig } from './root.page';
 import { ULink } from 'openland-web/components/unicorn/ULink';

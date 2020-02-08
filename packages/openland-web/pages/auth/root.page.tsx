@@ -13,7 +13,7 @@ import * as Cookie from 'js-cookie';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XLoader } from 'openland-x/XLoader';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { API_AUTH_ENDPOINT } from 'openland-x-graphql/endpoint';
+import { API_AUTH_ENDPOINT } from 'openland-api/endpoint';
 import { completeAuth } from './complete.page';
 import { css, cx } from 'linaria';
 import { BackSkipLogo, BackSkipLogoProps } from '../components/BackSkipLogo';
