@@ -22,7 +22,7 @@
         "@mapbox/geo-viewport": "^0.2.2",
         "@mapbox/mapbox-gl-geocoder": "^2.2.0",
         "@openland/react-video-renderer": "1.2.1",
-        "@openland/spacex": "0.0.13",
+        "@openland/spacex": "0.0.14",
         "@playlyfe/gql": "^2.6.2",
         "@react-native-community/cameraroll": "^1.3.0",
         "@react-native-community/google-signin": "^3.0.3",
