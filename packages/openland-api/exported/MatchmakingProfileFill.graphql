@@ -1,6 +1,0 @@
-mutation MatchmakingProfileFill($input: MatchmakingProfileFillInput!, $peerId: ID!) {
-  matchmakingProfileFill(input: $input, peerId: $peerId) {
-    __typename
-    ...MatchmakingProfileFragment
-  }
-}

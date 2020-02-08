@@ -1,6 +1,0 @@
-query RoomPico($id: ID!) {
-  room(id: $id) {
-    __typename
-    ...RoomNano
-  }
-}

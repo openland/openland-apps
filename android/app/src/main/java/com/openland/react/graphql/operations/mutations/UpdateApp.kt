@@ -13,6 +13,6 @@ internal val UpdateAppSelector = obj(
 val UpdateApp = object: OperationDefinition {
     override val name = "UpdateApp"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation UpdateApp(\$appId:ID!,\$input:AppProfileInput!){updateAppProfile(appId:\$appId,input:\$input){__typename ...AppFull}}fragment AppFull on AppProfile{__typename about id name photoRef{__typename crop{__typename h w x y}uuid}shortname token{__typename salt}}"
+    override val body = "mutation UpdateApp(\$appId:ID!,\$input:AppProfileInput!){updateAppProfile(appId:\$appId,input:\$input){__typename ...AppFull}}fragment AppFull on AppProfile{__typename id name shortname photoRef{__typename uuid crop{__typename x y w h}}about token{__typename salt}}"
     override val selector = UpdateAppSelector
 }

@@ -8,16 +8,16 @@ internal val MyNotificationCenterSelector = obj(
             field("myNotificationCenter", "myNotificationCenter", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
+                    field("unread", "unread", notNull(scalar("Int"))),
                     field("state", "state", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("state", "state", scalar("String"))
-                        ))),
-                    field("unread", "unread", notNull(scalar("Int")))
+                        )))
                 )))
         )
 val MyNotificationCenter = object: OperationDefinition {
     override val name = "MyNotificationCenter"
     override val kind = OperationKind.QUERY
-    override val body = "query MyNotificationCenter{myNotificationCenter{__typename id state{__typename state}unread}}"
+    override val body = "query MyNotificationCenter{myNotificationCenter{__typename id unread state{__typename state}}}"
     override val selector = MyNotificationCenterSelector
 }

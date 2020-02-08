@@ -1,6 +1,0 @@
-mutation OrganizationAlterPublished($organizationId: ID!, $published: Boolean!) {
-  alphaAlterPublished(id: $organizationId, published: $published) {
-    __typename
-    ...OrganizationSearch
-  }
-}

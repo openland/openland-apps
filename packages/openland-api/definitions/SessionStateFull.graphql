@@ -1,0 +1,10 @@
+fragment SessionStateFull on SessionState {
+    isLoggedIn
+    isActivated
+    isProfileCreated
+    isAccountActivated
+    isAccountExists
+    isAccountPicked
+    isCompleted
+    isBlocked
+}

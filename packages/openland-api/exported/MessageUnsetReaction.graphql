@@ -1,3 +1,0 @@
-mutation MessageUnsetReaction($messageId: ID!, $reaction: MessageReactionType!) {
-  messageReactionRemove(messageId: $messageId, reaction: $reaction)
-}

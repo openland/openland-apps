@@ -1,6 +1,0 @@
-query Room($id: ID!) {
-  room(id: $id) {
-    __typename
-    ...RoomFull
-  }
-}

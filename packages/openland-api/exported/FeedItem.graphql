@@ -1,6 +1,0 @@
-query FeedItem($id: ID!) {
-  item: alphaFeedItem(id: $id) {
-    __typename
-    ...FeedItemFull
-  }
-}

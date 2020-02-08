@@ -1,9 +1,0 @@
-query Online($userId: ID!) {
-  user: user(id: $userId) {
-    __typename
-    id
-    isBot
-    lastSeen
-    online
-  }
-}

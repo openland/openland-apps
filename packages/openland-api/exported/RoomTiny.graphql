@@ -1,6 +1,0 @@
-query RoomTiny($id: ID!) {
-  room(id: $id) {
-    __typename
-    ...RoomShort
-  }
-}

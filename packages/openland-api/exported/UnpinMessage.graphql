@@ -1,6 +1,0 @@
-mutation UnpinMessage($chatId: ID!) {
-  unpinMessage: gammaUnpinMessage(chatId: $chatId) {
-    __typename
-    ...RoomShort
-  }
-}

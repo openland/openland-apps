@@ -7,11 +7,11 @@ import org.json.*
 internal val AccountAppInviteInfoSelector = obj(
             field("alphaInviteInfo", "invite", arguments(fieldValue("key", refValue("inviteKey"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
                     field("creator", "creator", obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
-                        )),
-                    field("id", "id", notNull(scalar("ID")))
+                        ))
                 )),
             field("appInviteInfo", "appInvite", arguments(fieldValue("key", refValue("inviteKey"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -24,6 +24,6 @@ internal val AccountAppInviteInfoSelector = obj(
 val AccountAppInviteInfo = object: OperationDefinition {
     override val name = "AccountAppInviteInfo"
     override val kind = OperationKind.QUERY
-    override val body = "query AccountAppInviteInfo(\$inviteKey:String!){invite:alphaInviteInfo(key:\$inviteKey){__typename creator{__typename ...UserShort}id}appInvite:appInviteInfo(key:\$inviteKey){__typename inviter{__typename ...UserShort}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}"
+    override val body = "query AccountAppInviteInfo(\$inviteKey:String!){invite:alphaInviteInfo(key:\$inviteKey){__typename id creator{__typename ...UserShort}}appInvite:appInviteInfo(key:\$inviteKey){__typename inviter{__typename ...UserShort}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}"
     override val selector = AccountAppInviteInfoSelector
 }

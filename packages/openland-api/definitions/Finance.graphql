@@ -1,0 +1,161 @@
+query MyCards {
+    myCards {
+        id
+        pmid
+        last4
+        brand
+        expYear
+        expMonth
+        isDefault
+        deleted
+    }
+}
+mutation CreateCardSetupIntent($retryKey: String!) {
+    cardCreateSetupIntent(retryKey: $retryKey) {
+        id
+        clientSecret
+    }
+}
+mutation CommitCardSetupIntent($id: ID!, $pmid: ID!) {
+    cardCommitSetupIntent(id: $id, pmid: $pmid) {
+        id
+    }
+}
+mutation RemoveCard($id: ID!) {
+    cardRemove(id: $id) {
+        id
+        deleted
+    }
+}
+mutation MakeCardDefault($id: ID!) {
+    cardMakeDefault(id: $id) {
+        id
+        isDefault
+    }
+}
+mutation CreateDepositIntent($cardId: ID!, $amount: Int!, $retryKey: String!) {
+    cardDepositIntent(id: $cardId, amount: $amount, retryKey: $retryKey) {
+        id
+        clientSecret
+    }
+}
+mutation PaymentIntentCommit($id: ID!) {
+    paymentIntentCommit(id: $id)
+}
+mutation PaymentIntentCancel($id: ID!) {
+    paymentCancel(id: $id)
+}
+mutation Donate($id: ID!) {
+    donateToUser(id: $id, amount: 100)
+}
+fragment WalletTransactionFragment on WalletTransaction {
+    id
+    status
+    operation {
+        ... on WalletTransactionDeposit {
+            amount
+            payment {
+                id
+                status
+                intent {
+                    id
+                    clientSecret
+                }
+            }
+        }
+        ... on WalletTransactionSubscription {
+            amount
+            payment {
+                id
+                status
+                intent {
+                    id
+                    clientSecret
+                }
+            }
+        }
+        ... on WalletTransactionTransferOut {
+            walletAmount
+            chargeAmount
+            payment {
+                id
+                status
+                intent {
+                    id
+                    clientSecret
+                }
+            }
+            toUser {
+                ...UserShort
+            }
+        }
+        ... on WalletTransactionTransferIn {
+            amount
+            fromUser {
+                ...UserShort
+            }
+        }
+    }
+}
+query MyWallet {
+    myWallet {
+        id
+        balance
+        state
+    }
+    transactionsPending {
+        ...WalletTransactionFragment
+    }
+    transactionsHistory(first: 20) {
+        items {
+            ...WalletTransactionFragment
+        }
+        cursor
+    }
+}
+fragment WalletUpdateFragment on WalletUpdate {
+    ... on WalletUpdateBalance {
+        amount
+    }
+    ... on WalletUpdateTransactionSuccess {
+        transaction {
+            ...WalletTransactionFragment
+        }
+    }
+    ... on WalletUpdateTransactionCanceled {
+        transaction {
+            ...WalletTransactionFragment
+        }
+    }
+    ... on WalletUpdateTransactionPending {
+        transaction {
+            ...WalletTransactionFragment
+        }
+    }
+    ... on WalletUpdatePaymentStatus {
+        payment {
+            id
+            status
+            intent {
+                id
+                clientSecret
+            }
+        }
+    }
+}
+subscription WalletUpdates($state: String!) {
+    event: walletUpdates(fromState: $state) {
+        ... on WalletUpdateSingle {
+            state
+            update {
+                ...WalletUpdateFragment
+            }
+        }
+        ... on WalletUpdateBatch {
+            state
+            updates {
+                ...WalletUpdateFragment
+            }
+        }
+    }
+}

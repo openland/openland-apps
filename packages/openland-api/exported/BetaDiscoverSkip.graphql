@@ -1,9 +1,0 @@
-mutation BetaDiscoverSkip($selectedTagsIds: [String!]!) {
-  betaDiscoverSkip(selectedTagsIds: $selectedTagsIds) {
-    __typename
-    tagGroup {
-      __typename
-      id
-    }
-  }
-}

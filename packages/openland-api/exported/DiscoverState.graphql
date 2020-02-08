@@ -1,9 +1,0 @@
-query DiscoverState {
-  dialogs(first: 1) {
-    __typename
-    items {
-      __typename
-      id
-    }
-  }
-}

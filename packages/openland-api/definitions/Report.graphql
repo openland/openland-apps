@@ -1,0 +1,3 @@
+mutation ReportContent($contentId: ID!, $type: String!, $message: String) {
+    reportContent(contentId: $contentId, type: $type, message: $message)
+}

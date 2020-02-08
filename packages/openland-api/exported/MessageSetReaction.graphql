@@ -1,3 +1,0 @@
-mutation MessageSetReaction($messageId: ID!, $reaction: MessageReactionType!) {
-  messageReactionAdd(messageId: $messageId, reaction: $reaction)
-}

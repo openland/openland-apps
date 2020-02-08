@@ -1,6 +1,0 @@
-query Conference($id: ID!) {
-  conference(id: $id) {
-    __typename
-    ...ConferenceFull
-  }
-}

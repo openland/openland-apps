@@ -1,3 +1,0 @@
-mutation ReportOnline($active: Boolean, $platform: String) {
-  presenceReportOnline(active: $active, platform: $platform, timeout: 5000)
-}

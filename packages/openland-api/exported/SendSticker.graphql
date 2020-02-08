@@ -1,3 +1,0 @@
-mutation SendSticker($chatId: ID!, $repeatKey: String, $replyMessages: [ID!], $stickerId: ID!) {
-  sendSticker(chatId: $chatId, repeatKey: $repeatKey, replyMessages: $replyMessages, stickerId: $stickerId)
-}

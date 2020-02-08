@@ -1,3 +1,0 @@
-mutation SubscribeToComments($peerId: ID!, $type: CommentSubscriptionType!) {
-  subscribeToComments(peerId: $peerId, type: $type)
-}

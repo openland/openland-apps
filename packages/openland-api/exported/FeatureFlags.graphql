@@ -1,8 +1,0 @@
-query FeatureFlags {
-  featureFlags {
-    __typename
-    id
-    key
-    title
-  }
-}

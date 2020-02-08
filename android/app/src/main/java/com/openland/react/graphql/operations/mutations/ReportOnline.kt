@@ -5,11 +5,11 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val ReportOnlineSelector = obj(
-            field("presenceReportOnline", "presenceReportOnline", arguments(fieldValue("active", refValue("active")), fieldValue("platform", refValue("platform")), fieldValue("timeout", intValue(5000))), notNull(scalar("String")))
+            field("presenceReportOnline", "presenceReportOnline", arguments(fieldValue("timeout", intValue(5000)), fieldValue("active", refValue("active")), fieldValue("platform", refValue("platform"))), notNull(scalar("String")))
         )
 val ReportOnline = object: OperationDefinition {
     override val name = "ReportOnline"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation ReportOnline(\$active:Boolean,\$platform:String){presenceReportOnline(active:\$active,platform:\$platform,timeout:5000)}"
+    override val body = "mutation ReportOnline(\$active:Boolean,\$platform:String){presenceReportOnline(timeout:5000,active:\$active,platform:\$platform)}"
     override val selector = ReportOnlineSelector
 }

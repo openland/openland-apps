@@ -1,0 +1,40 @@
+query MyStickers {
+    stickers: myStickers {
+        packs {
+            id
+            title
+            stickers {
+                ...StickerFragment
+            }
+        }
+    }
+}
+query StickerPack($id: ID!) {
+    stickerPack(id: $id) {
+        ...StickerPackFragment
+    }
+}
+mutation StickerPackAddToCollection($id: ID!) {
+    stickerPackAddToCollection: stickerPackAddToCollection(id: $id)
+}
+mutation StickerPackRemoveFromCollection($id: ID!) {
+    stickerPackRemoveFromCollection: stickerPackRemoveFromCollection(id: $id)
+}
+mutation SendSticker($chatId: ID!, $stickerId: ID!, $replyMessages: [ID!], $repeatKey: String) {
+    sendSticker(
+        chatId: $chatId
+        stickerId: $stickerId
+        replyMessages: $replyMessages
+        repeatKey: $repeatKey
+    )
+}
+mutation AddStickerComment($peerId: ID!, $stickerId: ID!, $replyComment: ID, $repeatKey: String) {
+    addStickerComment: betaAddStickerComment(
+        peerId: $peerId
+        stickerId: $stickerId
+        replyComment: $replyComment
+        repeatKey: $repeatKey
+    ) {
+        id
+    }
+}

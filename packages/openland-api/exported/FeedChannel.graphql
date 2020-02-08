@@ -1,6 +1,0 @@
-query FeedChannel($id: ID!) {
-  channel: alphaFeedChannel(id: $id) {
-    __typename
-    ...FeedChannelFull
-  }
-}

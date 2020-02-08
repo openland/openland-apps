@@ -1,6 +1,0 @@
-query StickerPack($id: ID!) {
-  stickerPack(id: $id) {
-    __typename
-    ...StickerPackFragment
-  }
-}

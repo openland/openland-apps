@@ -1,6 +1,0 @@
-mutation AddStickerComment($peerId: ID!, $repeatKey: String, $replyComment: ID, $stickerId: ID!) {
-  addStickerComment: betaAddStickerComment(peerId: $peerId, repeatKey: $repeatKey, replyComment: $replyComment, stickerId: $stickerId) {
-    __typename
-    id
-  }
-}

@@ -1,0 +1,97 @@
+mutation DeleteComment($id: ID!) {
+    deleteComment(id: $id)
+}
+query Comments($peerId: ID!) {
+    comments(peerId: $peerId) {
+        id
+        state {
+            state
+        }
+        count
+        comments {
+            ...CommentEntryFragment
+        }
+    }
+}
+mutation CommentSetReaction($commentId: ID!, $reaction: MessageReactionType!) {
+    commentReactionAdd(commentId: $commentId, reaction: $reaction)
+}
+mutation CommentUnsetReaction($commentId: ID!, $reaction: MessageReactionType!) {
+    commentReactionRemove(commentId: $commentId, reaction: $reaction)
+}
+mutation DeleteNotification($notificationId: ID!) {
+    deleteNotification(notificationId: $notificationId)
+}
+mutation SubscribeToComments($peerId: ID!, $type: CommentSubscriptionType!) {
+    subscribeToComments(peerId: $peerId, type: $type)
+}
+mutation UnSubscribeFromComments($peerId: ID!) {
+    unsubscribeFromComments(peerId: $peerId)
+}
+mutation AddComment(
+    $repeatKey: String
+    $peerId: ID!
+    $message: String
+    $replyComment: ID
+    $mentions: [MentionInput!]
+    $fileAttachments: [FileAttachmentInput!]
+    $spans: [MessageSpanInput!]
+) {
+    betaAddComment(
+        repeatKey: $repeatKey
+        peerId: $peerId
+        message: $message
+        replyComment: $replyComment
+        mentions: $mentions
+        fileAttachments: $fileAttachments
+        spans: $spans
+    ) {
+        id
+    }
+}
+mutation EditComment(
+    $id: ID!
+    $message: String
+    $mentions: [MentionInput!]
+    $fileAttachments: [FileAttachmentInput!]
+    $spans: [MessageSpanInput!]
+) {
+    editComment(
+        id: $id
+        message: $message
+        mentions: $mentions
+        fileAttachments: $fileAttachments
+        spans: $spans
+    )
+}
+fragment CommentUpdateFragment on CommentUpdate {
+    ... on CommentReceived {
+        comment {
+            ...CommentEntryFragment
+        }
+    }
+    ... on CommentUpdated {
+        comment {
+            ...CommentEntryFragment
+        }
+    }
+}
+subscription CommentWatch($peerId: ID!, $fromState: String) {
+    event: commentUpdates(peerId: $peerId, fromState: $fromState) {
+        ... on CommentUpdateSingle {
+            seq
+            state
+            update {
+                ...CommentUpdateFragment
+            }
+        }
+        ... on CommentUpdateBatch {
+            fromSeq
+            seq
+            state
+            updates {
+                ...CommentUpdateFragment
+            }
+        }
+    }
+}

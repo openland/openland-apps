@@ -1,0 +1,84 @@
+query Users($query: String!) {
+    items: users(query: $query) {
+        id
+        title: name
+        subtitle: email
+    }
+}
+query User($userId: ID!) {
+    user: user(id: $userId) {
+        ...UserFull
+
+        chatsWithBadge {
+            chat {
+                ...RoomShort
+            }
+            badge {
+                ...UserBadge
+            }
+        }
+    }
+    conversation: room(id: $userId) {
+        ... on PrivateRoom {
+            id
+            settings {
+                id
+                mute
+            }
+        }
+    }
+}
+query UserPico($userId: ID!) {
+    user: user(id: $userId) {
+        id
+        name
+        firstName
+        photo
+    }
+}
+query Online($userId: ID!) {
+    user: user(id: $userId) {
+        id
+        online
+        lastSeen
+        isBot
+    }
+}
+subscription OnlineWatch($users: [ID!]!) {
+    alphaSubscribeOnline(users: $users) {
+        user {
+            id
+            online
+            lastSeen
+        }
+        timeout
+    }
+}
+query ExplorePeople($query: String, $sort: String, $page: Int, $after: String) {
+    items: userSearch(query: $query, sort: $sort, page: $page, first: 25, after: $after) {
+        edges {
+            node {
+                ...UserShort
+                isYou
+            }
+            cursor
+        }
+        pageInfo {
+            hasNextPage
+            hasPreviousPage
+            itemsCount
+            currentPage
+            pagesCount
+            openEnded
+        }
+    }
+}
+mutation DeleteUser($id: ID!) {
+    superDeleteUser(id: $id)
+}
+mutation BetaNextDiscoverReset {
+    betaNextDiscoverReset
+}
+query MySuccessfulInvitesCount {
+    mySuccessfulInvitesCount
+}

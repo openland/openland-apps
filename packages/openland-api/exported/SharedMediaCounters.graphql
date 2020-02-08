@@ -1,9 +1,0 @@
-query SharedMediaCounters($chatId: ID!) {
-  counters: chatSharedMediaCounters(chatId: $chatId) {
-    __typename
-    documents
-    images
-    links
-    videos
-  }
-}

@@ -1,0 +1,115 @@
+query Permissions {
+    myPermissions {
+        roles
+    }
+}
+mutation DebugMails($type: DebugEmailType!) {
+    debugSendEmail(type: $type)
+}
+query SuperAdmins {
+    superAdmins {
+        role
+        user {
+            ...UserShort
+        }
+        email
+    }
+}
+query SuperAccounts {
+    superAccounts {
+        id
+        orgId
+        title
+        state
+        createdAt
+    }
+}
+query SuperAccount($accountId: ID!, $viaOrgId: Boolean) {
+    superAccount(id: $accountId, viaOrgId: $viaOrgId) {
+        id
+        title
+        state
+        members {
+            ...UserShort
+        }
+        features {
+            id
+            key
+            title
+        }
+        orgId
+        createdAt
+        createdBy {
+            id
+            name
+        }
+        published: alphaPublished
+    }
+}
+mutation SuperAccountRename($accountId: ID!, $title: String!) {
+    superAccountRename(id: $accountId, title: $title) {
+        id
+        title
+    }
+}
+mutation SuperAccountActivate($accountId: ID!) {
+    superAccountActivate(id: $accountId) {
+        id
+        state
+    }
+}
+mutation SuperAccountSuspend($accountId: ID!) {
+    superAccountSuspend(id: $accountId) {
+        id
+        state
+    }
+}
+mutation SuperAccountPend($accountId: ID!) {
+    superAccountPend(id: $accountId) {
+        id
+        state
+    }
+}
+mutation SuperAccountAdd($title: String!) {
+    superAccountAdd(title: $title) {
+        id
+    }
+}
+mutation SuperAccountMemberAdd($accountId: ID!, $userId: ID!) {
+    superAccountMemberAdd(id: $accountId, userId: $userId) {
+        id
+        members {
+            ...UserShort
+        }
+    }
+}
+mutation SuperAccountMemberRemove($accountId: ID!, $userId: ID!) {
+    superAccountMemberRemove(id: $accountId, userId: $userId) {
+        id
+        members {
+            ...UserShort
+        }
+    }
+}
+mutation SuperAdminAdd($userId: ID!, $role: SuperAdminRole!) {
+    superAdminAdd(userId: $userId, role: $role)
+}
+mutation SuperAdminRemove($userId: ID!) {
+    superAdminRemove(userId: $userId)
+}
+subscription DebugEventsWatch(
+    $fromState: String
+    $eventsCount: Int!
+    $randomDelays: Boolean!
+    $seed: String!
+) {
+    debugEvents(
+        fromState: $fromState
+        eventsCount: $eventsCount
+        randomDelays: $randomDelays
+        seed: $seed
+    ) {
+        seq
+        key
+    }
+}

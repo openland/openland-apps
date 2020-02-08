@@ -13,6 +13,6 @@ internal val ConferenceKeepAliveSelector = obj(
 val ConferenceKeepAlive = object: OperationDefinition {
     override val name = "ConferenceKeepAlive"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation ConferenceKeepAlive(\$id:ID!,\$peerId:ID!){conferenceKeepAlive(id:\$id,peerId:\$peerId){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}"
+    override val body = "mutation ConferenceKeepAlive(\$id:ID!,\$peerId:ID!){conferenceKeepAlive(id:\$id,peerId:\$peerId){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}"
     override val selector = ConferenceKeepAliveSelector
 }

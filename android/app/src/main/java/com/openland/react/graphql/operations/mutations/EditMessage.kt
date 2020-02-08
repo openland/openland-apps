@@ -5,11 +5,11 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val EditMessageSelector = obj(
-            field("editMessage", "editMessage", arguments(fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("mentions", refValue("mentions")), fieldValue("message", refValue("message")), fieldValue("messageId", refValue("messageId")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
+            field("editMessage", "editMessage", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("message", refValue("message")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("mentions", refValue("mentions")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
         )
 val EditMessage = object: OperationDefinition {
     override val name = "EditMessage"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation EditMessage(\$fileAttachments:[FileAttachmentInput!],\$mentions:[MentionInput!],\$message:String,\$messageId:ID!,\$replyMessages:[ID!],\$spans:[MessageSpanInput!]){editMessage(fileAttachments:\$fileAttachments,mentions:\$mentions,message:\$message,messageId:\$messageId,replyMessages:\$replyMessages,spans:\$spans)}"
+    override val body = "mutation EditMessage(\$messageId:ID!,\$message:String,\$replyMessages:[ID!],\$mentions:[MentionInput!],\$fileAttachments:[FileAttachmentInput!],\$spans:[MessageSpanInput!]){editMessage(messageId:\$messageId,message:\$message,replyMessages:\$replyMessages,mentions:\$mentions,fileAttachments:\$fileAttachments,spans:\$spans)}"
     override val selector = EditMessageSelector
 }

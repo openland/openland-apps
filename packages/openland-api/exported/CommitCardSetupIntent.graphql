@@ -1,6 +1,0 @@
-mutation CommitCardSetupIntent($id: ID!, $pmid: ID!) {
-  cardCommitSetupIntent(id: $id, pmid: $pmid) {
-    __typename
-    id
-  }
-}

@@ -1,0 +1,13 @@
+mutation SuperBadgeCreateToRoom($roomId: ID!, $userId: ID!, $name: String!) {
+    superBadgeCreateToRoom(roomId: $roomId, userId: $userId, name: $name) {
+        ...UserBadge
+    }
+}
+mutation SuperBadgeUnsetToRoom($roomId: ID!, $userId: ID!, $badgeId: ID!) {
+    superBadgeUnsetToRoom(roomId: $roomId, userId: $userId, badgeId: $badgeId)
+}
+query SuperBadgeInRoom($roomId: ID!, $userId: ID!) {
+    superBadgeInRoom(roomId: $roomId, userId: $userId) {
+        ...UserBadge
+    }
+}

@@ -1,0 +1,83 @@
+fragment FeedPostAuthorFragment on FeedPostAuthor {
+    ... on User {
+        ...UserShort
+    }
+}
+
+fragment FeedPostSourceFragment on FeedPostSource {
+    ... on FeedChannel {
+        ...FeedChannelFull
+    }
+}
+
+fragment SlideFragment on Slide {
+    ... on TextSlide {
+        id
+        text
+        spans {
+            ...SpanFragment
+        }
+        cover {
+            url
+            metadata {
+                name
+                mimeType
+                size
+                isImage
+                imageWidth
+                imageHeight
+                imageFormat
+            }
+        }
+        coverAlign
+        attachments {
+            ... on User {
+                ...UserShort
+            }
+            ... on SharedRoom {
+                id
+                kind
+                title
+                roomPhoto: photo
+                membersCount
+                membership
+                canSendMessage
+                organization {
+                    id
+                    name
+                    photo
+                }
+            }
+            ... on Organization {
+                ...OrganizationShort
+            }
+        }
+    }
+}
+
+fragment FeedItemFull on FeedItem {
+    ... on FeedPost {
+        id
+        date
+        author {
+            ...FeedPostAuthorFragment
+        }
+        source {
+            ...FeedPostSourceFragment
+        }
+        edited
+        canEdit
+        commentsCount
+        message
+        fallback
+        reactions {
+            user {
+                ...UserShort
+            }
+            reaction
+        }
+        slides {
+            ...SlideFragment
+        }
+    }
+}

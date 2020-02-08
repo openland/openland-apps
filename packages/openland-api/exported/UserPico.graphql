@@ -1,9 +1,0 @@
-query UserPico($userId: ID!) {
-  user: user(id: $userId) {
-    __typename
-    firstName
-    id
-    name
-    photo
-  }
-}

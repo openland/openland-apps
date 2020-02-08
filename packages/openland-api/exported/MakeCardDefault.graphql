@@ -1,7 +1,0 @@
-mutation MakeCardDefault($id: ID!) {
-  cardMakeDefault(id: $id) {
-    __typename
-    id
-    isDefault
-  }
-}

@@ -1,3 +1,0 @@
-mutation SetFeedChannelShortname($id: ID!, $shortname: String!) {
-  alphaSetFeedChannelShortName(id: $id, shortname: $shortname)
-}

@@ -1,3 +1,0 @@
-mutation ReportContent($contentId: ID!, $message: String, $type: String!) {
-  reportContent(contentId: $contentId, message: $message, type: $type)
-}

@@ -7,20 +7,20 @@ import org.json.*
 internal val OrganizationMembersSelector = obj(
             field("organization", "organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    field("alphaOrganizationMembers", "members", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first"))), notNull(list(notNull(obj(
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("alphaOrganizationMembers", "members", arguments(fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("role", "role", notNull(scalar("String"))),
                             field("user", "user", notNull(obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),
                                     fragment("User", UserShortSelector)
                                 )))
-                        ))))),
-                    field("id", "id", notNull(scalar("ID")))
+                        )))))
                 )))
         )
 val OrganizationMembers = object: OperationDefinition {
     override val name = "OrganizationMembers"
     override val kind = OperationKind.QUERY
-    override val body = "query OrganizationMembers(\$after:ID,\$first:Int,\$organizationId:ID!){organization(id:\$organizationId){__typename members:alphaOrganizationMembers(after:\$after,first:\$first){__typename role user{__typename ...UserShort}}id}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}"
+    override val body = "query OrganizationMembers(\$organizationId:ID!,\$first:Int,\$after:ID){organization(id:\$organizationId){__typename id members:alphaOrganizationMembers(first:\$first,after:\$after){__typename role user{__typename ...UserShort}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}"
     override val selector = OrganizationMembersSelector
 }

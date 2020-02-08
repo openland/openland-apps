@@ -539,21 +539,21 @@ export type AppChat = (
 );
 export type AppFull = (
     & { __typename: 'AppProfile' }
-    & { about: Maybe<string>}
     & { id: string}
     & { name: string}
+    & { shortname: Maybe<string>}
     & { photoRef: Maybe<(
         & { __typename: 'ImageRef' }
+        & { uuid: string}
         & { crop: Maybe<(
             & { __typename: 'ImageCrop' }
-            & { h: number}
-            & { w: number}
             & { x: number}
             & { y: number}
+            & { w: number}
+            & { h: number}
         )>}
-        & { uuid: string}
     )>}
-    & { shortname: Maybe<string>}
+    & { about: Maybe<string>}
     & { token: (
         & { __typename: 'AppToken' }
         & { salt: string}
@@ -561,31 +561,31 @@ export type AppFull = (
 );
 export type OrganizationShort = (
     & { __typename: 'Organization' }
-    & { about: Maybe<string>}
-    & { isCommunity: boolean}
     & { id: string}
-    & { membersCount: number}
     & { name: string}
     & { photo: Maybe<string>}
     & { shortname: Maybe<string>}
+    & { about: Maybe<string>}
+    & { isCommunity: boolean}
+    & { membersCount: number}
 );
 export type UserShort = (
     & { __typename: 'User' }
-    & { email: Maybe<string>}
-    & { firstName: string}
     & { id: string}
-    & { isBot: boolean}
-    & { isYou: boolean}
-    & { lastName: Maybe<string>}
-    & { lastSeen: Maybe<string>}
     & { name: string}
-    & { online: boolean}
+    & { firstName: string}
+    & { lastName: Maybe<string>}
     & { photo: Maybe<string>}
+    & { email: Maybe<string>}
+    & { online: boolean}
+    & { lastSeen: Maybe<string>}
+    & { isYou: boolean}
+    & { isBot: boolean}
+    & { shortname: Maybe<string>}
     & { primaryOrganization: Maybe<(
         & { __typename: 'Organization' }
         & OrganizationShort
     )>}
-    & { shortname: Maybe<string>}
 );
 export type UserBadge = (
     & { __typename: 'UserBadge' }
@@ -595,47 +595,47 @@ export type UserBadge = (
 );
 export type UserForMention = (
     & { __typename: 'User' }
-    & { id: string}
-    & { isBot: boolean}
     & { isYou: boolean}
+    & { id: string}
     & { name: string}
     & { photo: Maybe<string>}
+    & { shortname: Maybe<string>}
+    & { isBot: boolean}
     & { primaryOrganization: Maybe<(
         & { __typename: 'Organization' }
         & { id: string}
         & { name: string}
     )>}
-    & { shortname: Maybe<string>}
 );
 export type RoomSharedNano = (
     & { __typename: 'SharedRoom' }
     & { id: string}
-    & { isChannel: boolean}
     & { kind: SharedRoomKind}
-    & { membersCount: number}
+    & { isChannel: boolean}
+    & { title: string}
     & { roomPhoto: string}
+    & { membersCount: number}
     & { settings: (
         & { __typename: 'RoomUserNotificaionSettings' }
         & { id: string}
         & { mute: Maybe<boolean>}
     )}
-    & { title: string}
 );
 export type RoomNano = (
     & { __typename: 'PrivateRoom' | 'SharedRoom' }
     & Inline<'SharedRoom',(
         & { __typename: 'PrivateRoom' }
         & { id: string}
-        & { settings: (
-            & { __typename: 'RoomUserNotificaionSettings' }
-            & { id: string}
-            & { mute: Maybe<boolean>}
-        )}
         & { user: (
             & { __typename: 'User' }
             & { id: string}
             & { name: string}
             & { photo: Maybe<string>}
+        )}
+        & { settings: (
+            & { __typename: 'RoomUserNotificaionSettings' }
+            & { id: string}
+            & { mute: Maybe<boolean>}
         )}
     )>
     & Inline<'PrivateRoom',(
@@ -645,8 +645,8 @@ export type RoomNano = (
 );
 export type SpanFragment = (
     & { __typename: 'MessageSpanAllMention' | 'MessageSpanBold' | 'MessageSpanCodeBlock' | 'MessageSpanDate' | 'MessageSpanInlineCode' | 'MessageSpanInsane' | 'MessageSpanIrony' | 'MessageSpanItalic' | 'MessageSpanLink' | 'MessageSpanLoud' | 'MessageSpanMultiUserMention' | 'MessageSpanOrganizationMention' | 'MessageSpanRoomMention' | 'MessageSpanRotating' | 'MessageSpanUserMention' }
-    & { length: number}
     & { offset: number}
+    & { length: number}
     & Inline<'MessageSpanAllMention' | 'MessageSpanBold' | 'MessageSpanCodeBlock' | 'MessageSpanDate' | 'MessageSpanInlineCode' | 'MessageSpanInsane' | 'MessageSpanIrony' | 'MessageSpanItalic' | 'MessageSpanLink' | 'MessageSpanLoud' | 'MessageSpanMultiUserMention' | 'MessageSpanOrganizationMention' | 'MessageSpanRoomMention' | 'MessageSpanRotating',(
         & { __typename: 'MessageSpanUserMention' }
         & { user: (
@@ -686,9 +686,8 @@ export type SpanFragment = (
 );
 export type QuotedMessage = (
     & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
-    & { date: string}
-    & { fallback: string}
     & { id: string}
+    & { date: string}
     & { message: Maybe<string>}
     & { sender: (
         & { __typename: 'User' }
@@ -698,6 +697,7 @@ export type QuotedMessage = (
         & { __typename: 'UserBadge' }
         & UserBadge
     )>}
+    & { fallback: string}
     & { source: Maybe<(
         & { __typename: 'MessageSourceChat' | 'MessageSourceComment' }
         & Inline<'MessageSourceComment',(
@@ -721,119 +721,111 @@ export type QuotedMessage = (
     ))[]}
     & Inline<'ServiceMessage' | 'StickerMessage',(
         & { __typename: 'GeneralMessage' }
+        & { id: string}
+        & { overrideName: Maybe<string>}
+        & { overrideAvatar: Maybe<(
+            & { __typename: 'ImageRef' }
+            & { uuid: string}
+            & { crop: Maybe<(
+                & { __typename: 'ImageCrop' }
+                & { x: number}
+                & { y: number}
+                & { w: number}
+                & { h: number}
+            )>}
+        )>}
+        & { commentsCount: number}
+        & { edited: boolean}
         & { attachments: ((
             & { __typename: 'MessageAttachmentFile' | 'MessageAttachmentPost' | 'MessageRichAttachment' }
             & { fallback: string}
             & Inline<'MessageAttachmentPost' | 'MessageRichAttachment',(
                 & { __typename: 'MessageAttachmentFile' }
+                & { id: string}
                 & { fileId: string}
                 & { fileMetadata: (
                     & { __typename: 'FileMetadata' }
-                    & { imageFormat: Maybe<string>}
-                    & { imageHeight: Maybe<number>}
-                    & { imageWidth: Maybe<number>}
-                    & { isImage: boolean}
-                    & { mimeType: Maybe<string>}
                     & { name: string}
+                    & { mimeType: Maybe<string>}
                     & { size: number}
+                    & { isImage: boolean}
+                    & { imageWidth: Maybe<number>}
+                    & { imageHeight: Maybe<number>}
+                    & { imageFormat: Maybe<string>}
                 )}
                 & { filePreview: Maybe<string>}
-                & { id: string}
             )>
             & Inline<'MessageAttachmentFile' | 'MessageAttachmentPost',(
                 & { __typename: 'MessageRichAttachment' }
-                & { fallback: string}
+                & { id: string}
+                & { title: Maybe<string>}
+                & { subTitle: Maybe<string>}
+                & { titleLink: Maybe<string>}
+                & { titleLinkHostname: Maybe<string>}
+                & { text: Maybe<string>}
                 & { icon: Maybe<(
                     & { __typename: 'Image' }
+                    & { url: string}
                     & { metadata: Maybe<(
                         & { __typename: 'FileMetadata' }
-                        & { imageFormat: Maybe<string>}
-                        & { imageHeight: Maybe<number>}
-                        & { imageWidth: Maybe<number>}
-                        & { isImage: boolean}
-                        & { mimeType: Maybe<string>}
                         & { name: string}
+                        & { mimeType: Maybe<string>}
                         & { size: number}
+                        & { isImage: boolean}
+                        & { imageWidth: Maybe<number>}
+                        & { imageHeight: Maybe<number>}
+                        & { imageFormat: Maybe<string>}
                     )>}
-                    & { url: string}
                 )>}
-                & { id: string}
                 & { image: Maybe<(
                     & { __typename: 'Image' }
+                    & { url: string}
                     & { metadata: Maybe<(
                         & { __typename: 'FileMetadata' }
-                        & { imageFormat: Maybe<string>}
-                        & { imageHeight: Maybe<number>}
-                        & { imageWidth: Maybe<number>}
-                        & { isImage: boolean}
-                        & { mimeType: Maybe<string>}
                         & { name: string}
+                        & { mimeType: Maybe<string>}
                         & { size: number}
+                        & { isImage: boolean}
+                        & { imageWidth: Maybe<number>}
+                        & { imageHeight: Maybe<number>}
+                        & { imageFormat: Maybe<string>}
                     )>}
-                    & { url: string}
-                )>}
-                & { imageFallback: Maybe<(
-                    & { __typename: 'ImageFallback' }
-                    & { photo: string}
-                    & { text: string}
                 )>}
                 & { keyboard: Maybe<(
                     & { __typename: 'MessageKeyboard' }
                     & { buttons: (Maybe<((
                         & { __typename: 'ModernMessageButton' }
                         & { id: string}
-                        & { style: ModernMessageButtonStyle}
                         & { title: string}
+                        & { style: ModernMessageButtonStyle}
                         & { url: Maybe<string>}
                     ))[]>)[]}
                 )>}
-                & { subTitle: Maybe<string>}
-                & { text: Maybe<string>}
-                & { title: Maybe<string>}
-                & { titleLink: Maybe<string>}
-                & { titleLinkHostname: Maybe<string>}
+                & { imageFallback: Maybe<(
+                    & { __typename: 'ImageFallback' }
+                    & { photo: string}
+                    & { text: string}
+                )>}
+                & { fallback: string}
             )>
         ))[]}
-        & { commentsCount: number}
-        & { edited: boolean}
-        & { id: string}
-        & { overrideAvatar: Maybe<(
-            & { __typename: 'ImageRef' }
-            & { crop: Maybe<(
-                & { __typename: 'ImageCrop' }
-                & { h: number}
-                & { w: number}
-                & { x: number}
-                & { y: number}
-            )>}
-            & { uuid: string}
-        )>}
-        & { overrideName: Maybe<string>}
     )>
     & Inline<'GeneralMessage' | 'ServiceMessage',(
         & { __typename: 'StickerMessage' }
-        & { date: string}
         & { id: string}
+        & { date: string}
+        & { overrideName: Maybe<string>}
         & { overrideAvatar: Maybe<(
             & { __typename: 'ImageRef' }
+            & { uuid: string}
             & { crop: Maybe<(
                 & { __typename: 'ImageCrop' }
-                & { h: number}
-                & { w: number}
                 & { x: number}
                 & { y: number}
+                & { w: number}
+                & { h: number}
             )>}
-            & { uuid: string}
         )>}
-        & { overrideName: Maybe<string>}
-        & { reactions: ((
-            & { __typename: 'ModernMessageReaction' }
-            & { reaction: MessageReactionType}
-            & { user: (
-                & { __typename: 'User' }
-                & UserShort
-            )}
-        ))[]}
         & { sender: (
             & { __typename: 'User' }
             & UserShort
@@ -859,24 +851,32 @@ export type QuotedMessage = (
                 )}
             )>
         )>}
+        & { reactions: ((
+            & { __typename: 'ModernMessageReaction' }
+            & { user: (
+                & { __typename: 'User' }
+                & UserShort
+            )}
+            & { reaction: MessageReactionType}
+        ))[]}
         & { sticker: (
             & { __typename: 'ImageSticker' }
             & Inline<never,(
                 & { __typename: 'ImageSticker' }
                 & { id: string}
-                & { image: (
-                    & { __typename: 'ImageRef' }
-                    & Inline<never,(
-                        & { __typename: 'ImageRef' }
-                        & { uuid: string}
-                    )>
-                )}
                 & { pack: (
                     & { __typename: 'StickerPack' }
                     & Inline<never,(
                         & { __typename: 'StickerPack' }
                         & { id: string}
                         & { title: string}
+                    )>
+                )}
+                & { image: (
+                    & { __typename: 'ImageRef' }
+                    & Inline<never,(
+                        & { __typename: 'ImageRef' }
+                        & { uuid: string}
                     )>
                 )}
             )>
@@ -888,37 +888,35 @@ export type StickerFragment = (
     & Inline<never,(
         & { __typename: 'ImageSticker' }
         & { id: string}
-        & { image: (
-            & { __typename: 'ImageRef' }
-            & { uuid: string}
-        )}
         & { pack: (
             & { __typename: 'StickerPack' }
             & { id: string}
             & { title: string}
         )}
+        & { image: (
+            & { __typename: 'ImageRef' }
+            & { uuid: string}
+        )}
     )>
 );
 export type UserTiny = (
     & { __typename: 'User' }
-    & { firstName: string}
     & { id: string}
     & { isYou: boolean}
-    & { lastName: Maybe<string>}
     & { name: string}
+    & { firstName: string}
+    & { lastName: Maybe<string>}
     & { photo: Maybe<string>}
+    & { shortname: Maybe<string>}
     & { primaryOrganization: Maybe<(
         & { __typename: 'Organization' }
         & OrganizationShort
     )>}
-    & { shortname: Maybe<string>}
 );
 export type FullMessage = (
     & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
-    & { date: string}
-    & { fallback: string}
     & { id: string}
-    & { message: Maybe<string>}
+    & { date: string}
     & { sender: (
         & { __typename: 'User' }
         & UserShort
@@ -927,6 +925,8 @@ export type FullMessage = (
         & { __typename: 'UserBadge' }
         & UserBadge
     )>}
+    & { message: Maybe<string>}
+    & { fallback: string}
     & { source: Maybe<(
         & { __typename: 'MessageSourceChat' | 'MessageSourceComment' }
         & Inline<'MessageSourceComment',(
@@ -952,56 +952,89 @@ export type FullMessage = (
     ))[]}
     & Inline<'ServiceMessage' | 'StickerMessage',(
         & { __typename: 'GeneralMessage' }
+        & { id: string}
+        & { overrideName: Maybe<string>}
+        & { overrideAvatar: Maybe<(
+            & { __typename: 'ImageRef' }
+            & { uuid: string}
+            & { crop: Maybe<(
+                & { __typename: 'ImageCrop' }
+                & { x: number}
+                & { y: number}
+                & { w: number}
+                & { h: number}
+            )>}
+        )>}
+        & { edited: boolean}
+        & { commentsCount: number}
         & { attachments: ((
             & { __typename: 'MessageAttachmentFile' | 'MessageAttachmentPost' | 'MessageRichAttachment' }
             & { fallback: string}
             & Inline<'MessageAttachmentPost' | 'MessageRichAttachment',(
                 & { __typename: 'MessageAttachmentFile' }
+                & { id: string}
                 & { fileId: string}
                 & { fileMetadata: (
                     & { __typename: 'FileMetadata' }
-                    & { imageFormat: Maybe<string>}
-                    & { imageHeight: Maybe<number>}
-                    & { imageWidth: Maybe<number>}
-                    & { isImage: boolean}
-                    & { mimeType: Maybe<string>}
                     & { name: string}
+                    & { mimeType: Maybe<string>}
                     & { size: number}
+                    & { isImage: boolean}
+                    & { imageWidth: Maybe<number>}
+                    & { imageHeight: Maybe<number>}
+                    & { imageFormat: Maybe<string>}
                 )}
                 & { filePreview: Maybe<string>}
-                & { id: string}
             )>
             & Inline<'MessageAttachmentFile' | 'MessageAttachmentPost',(
                 & { __typename: 'MessageRichAttachment' }
-                & { fallback: string}
+                & { id: string}
+                & { title: Maybe<string>}
+                & { subTitle: Maybe<string>}
+                & { titleLink: Maybe<string>}
+                & { titleLinkHostname: Maybe<string>}
+                & { text: Maybe<string>}
                 & { icon: Maybe<(
                     & { __typename: 'Image' }
+                    & { url: string}
                     & { metadata: Maybe<(
                         & { __typename: 'FileMetadata' }
-                        & { imageFormat: Maybe<string>}
-                        & { imageHeight: Maybe<number>}
-                        & { imageWidth: Maybe<number>}
-                        & { isImage: boolean}
-                        & { mimeType: Maybe<string>}
                         & { name: string}
+                        & { mimeType: Maybe<string>}
                         & { size: number}
+                        & { isImage: boolean}
+                        & { imageWidth: Maybe<number>}
+                        & { imageHeight: Maybe<number>}
+                        & { imageFormat: Maybe<string>}
                     )>}
-                    & { url: string}
                 )>}
-                & { id: string}
                 & { image: Maybe<(
                     & { __typename: 'Image' }
+                    & { url: string}
                     & { metadata: Maybe<(
                         & { __typename: 'FileMetadata' }
-                        & { imageFormat: Maybe<string>}
-                        & { imageHeight: Maybe<number>}
-                        & { imageWidth: Maybe<number>}
-                        & { isImage: boolean}
-                        & { mimeType: Maybe<string>}
                         & { name: string}
+                        & { mimeType: Maybe<string>}
                         & { size: number}
+                        & { isImage: boolean}
+                        & { imageWidth: Maybe<number>}
+                        & { imageHeight: Maybe<number>}
+                        & { imageFormat: Maybe<string>}
                     )>}
+                )>}
+                & { socialImage: Maybe<(
+                    & { __typename: 'Image' }
                     & { url: string}
+                    & { metadata: Maybe<(
+                        & { __typename: 'FileMetadata' }
+                        & { name: string}
+                        & { mimeType: Maybe<string>}
+                        & { size: number}
+                        & { isImage: boolean}
+                        & { imageWidth: Maybe<number>}
+                        & { imageHeight: Maybe<number>}
+                        & { imageFormat: Maybe<string>}
+                    )>}
                 )>}
                 & { imageFallback: Maybe<(
                     & { __typename: 'ImageFallback' }
@@ -1013,89 +1046,44 @@ export type FullMessage = (
                     & { buttons: (Maybe<((
                         & { __typename: 'ModernMessageButton' }
                         & { id: string}
-                        & { style: ModernMessageButtonStyle}
                         & { title: string}
+                        & { style: ModernMessageButtonStyle}
                         & { url: Maybe<string>}
                     ))[]>)[]}
                 )>}
-                & { socialImage: Maybe<(
-                    & { __typename: 'Image' }
-                    & { metadata: Maybe<(
-                        & { __typename: 'FileMetadata' }
-                        & { imageFormat: Maybe<string>}
-                        & { imageHeight: Maybe<number>}
-                        & { imageWidth: Maybe<number>}
-                        & { isImage: boolean}
-                        & { mimeType: Maybe<string>}
-                        & { name: string}
-                        & { size: number}
-                    )>}
-                    & { url: string}
-                )>}
-                & { subTitle: Maybe<string>}
-                & { text: Maybe<string>}
-                & { title: Maybe<string>}
-                & { titleLink: Maybe<string>}
-                & { titleLinkHostname: Maybe<string>}
+                & { fallback: string}
             )>
         ))[]}
-        & { commentsCount: number}
-        & { edited: boolean}
-        & { id: string}
-        & { overrideAvatar: Maybe<(
-            & { __typename: 'ImageRef' }
-            & { crop: Maybe<(
-                & { __typename: 'ImageCrop' }
-                & { h: number}
-                & { w: number}
-                & { x: number}
-                & { y: number}
-            )>}
-            & { uuid: string}
-        )>}
-        & { overrideName: Maybe<string>}
         & { quotedMessages: ((
             & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
             & QuotedMessage
         ))[]}
         & { reactions: ((
             & { __typename: 'ModernMessageReaction' }
-            & { reaction: MessageReactionType}
             & { user: (
                 & { __typename: 'User' }
                 & UserShort
             )}
+            & { reaction: MessageReactionType}
         ))[]}
     )>
     & Inline<'GeneralMessage' | 'ServiceMessage',(
         & { __typename: 'StickerMessage' }
-        & { commentsCount: number}
-        & { date: string}
         & { id: string}
+        & { overrideName: Maybe<string>}
         & { overrideAvatar: Maybe<(
             & { __typename: 'ImageRef' }
+            & { uuid: string}
             & { crop: Maybe<(
                 & { __typename: 'ImageCrop' }
-                & { h: number}
-                & { w: number}
                 & { x: number}
                 & { y: number}
+                & { w: number}
+                & { h: number}
             )>}
-            & { uuid: string}
         )>}
-        & { overrideName: Maybe<string>}
-        & { quotedMessages: ((
-            & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
-            & QuotedMessage
-        ))[]}
-        & { reactions: ((
-            & { __typename: 'ModernMessageReaction' }
-            & { reaction: MessageReactionType}
-            & { user: (
-                & { __typename: 'User' }
-                & UserShort
-            )}
-        ))[]}
+        & { date: string}
+        & { commentsCount: number}
         & { sender: (
             & { __typename: 'User' }
             & UserShort
@@ -1121,6 +1109,18 @@ export type FullMessage = (
                 )}
             )>
         )>}
+        & { quotedMessages: ((
+            & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
+            & QuotedMessage
+        ))[]}
+        & { reactions: ((
+            & { __typename: 'ModernMessageReaction' }
+            & { user: (
+                & { __typename: 'User' }
+                & UserShort
+            )}
+            & { reaction: MessageReactionType}
+        ))[]}
         & { sticker: (
             & { __typename: 'ImageSticker' }
             & StickerFragment
@@ -1129,38 +1129,38 @@ export type FullMessage = (
     & Inline<'GeneralMessage' | 'StickerMessage',(
         & { __typename: 'ServiceMessage' }
         & { id: string}
+        & { overrideName: Maybe<string>}
         & { overrideAvatar: Maybe<(
             & { __typename: 'ImageRef' }
+            & { uuid: string}
             & { crop: Maybe<(
                 & { __typename: 'ImageCrop' }
-                & { h: number}
-                & { w: number}
                 & { x: number}
                 & { y: number}
+                & { w: number}
+                & { h: number}
             )>}
-            & { uuid: string}
         )>}
-        & { overrideName: Maybe<string>}
         & { serviceMetadata: Maybe<(
             & { __typename: 'InviteServiceMetadata' | 'KickServiceMetadata' | 'TitleChangeServiceMetadata' | 'PhotoChangeServiceMetadata' | 'PostRespondServiceMetadata' }
             & Inline<'KickServiceMetadata' | 'TitleChangeServiceMetadata' | 'PhotoChangeServiceMetadata' | 'PostRespondServiceMetadata',(
                 & { __typename: 'InviteServiceMetadata' }
-                & { invitedBy: (
-                    & { __typename: 'User' }
-                    & UserTiny
-                )}
                 & { users: Maybe<((
                     & { __typename: 'User' }
                     & UserTiny
                 ))[]>}
-            )>
-            & Inline<'InviteServiceMetadata' | 'TitleChangeServiceMetadata' | 'PhotoChangeServiceMetadata' | 'PostRespondServiceMetadata',(
-                & { __typename: 'KickServiceMetadata' }
-                & { kickedBy: (
+                & { invitedBy: (
                     & { __typename: 'User' }
                     & UserTiny
                 )}
+            )>
+            & Inline<'InviteServiceMetadata' | 'TitleChangeServiceMetadata' | 'PhotoChangeServiceMetadata' | 'PostRespondServiceMetadata',(
+                & { __typename: 'KickServiceMetadata' }
                 & { user: (
+                    & { __typename: 'User' }
+                    & UserTiny
+                )}
+                & { kickedBy: (
                     & { __typename: 'User' }
                     & UserTiny
                 )}
@@ -1182,47 +1182,63 @@ export type FullMessage = (
 );
 export type MatchmakingProfileFragment = (
     & { __typename: 'MatchmakingProfile' }
-    & { answers: ((
-        & { __typename: 'TextMatchmakingAnswer' | 'MultiselectMatchmakingAnswer' }
-        & Inline<'MultiselectMatchmakingAnswer',(
-            & { __typename: 'TextMatchmakingAnswer' }
-            & { answer: string}
-            & { question: (
-                & { __typename: 'TextMatchmakingQuestion' }
-                & { id: string}
-                & { subtitle: string}
-                & { title: string}
-            )}
-        )>
-        & Inline<'TextMatchmakingAnswer',(
-            & { __typename: 'MultiselectMatchmakingAnswer' }
-            & { question: (
-                & { __typename: 'MultiselectMatchmakingQuestion' }
-                & { id: string}
-                & { subtitle: string}
-                & { title: string}
-            )}
-            & { tags: (string)[]}
-        )>
-    ))[]}
     & { chatCreated: boolean}
     & { user: (
         & { __typename: 'User' }
         & { id: string}
-        & { isBot: boolean}
         & { isYou: boolean}
         & { name: string}
         & { photo: Maybe<string>}
+        & { isBot: boolean}
         & { primaryOrganization: Maybe<(
             & { __typename: 'Organization' }
             & { id: string}
             & { name: string}
         )>}
     )}
+    & { answers: ((
+        & { __typename: 'TextMatchmakingAnswer' | 'MultiselectMatchmakingAnswer' }
+        & Inline<'MultiselectMatchmakingAnswer',(
+            & { __typename: 'TextMatchmakingAnswer' }
+            & { question: (
+                & { __typename: 'TextMatchmakingQuestion' }
+                & { id: string}
+                & { title: string}
+                & { subtitle: string}
+            )}
+            & { answer: string}
+        )>
+        & Inline<'TextMatchmakingAnswer',(
+            & { __typename: 'MultiselectMatchmakingAnswer' }
+            & { question: (
+                & { __typename: 'MultiselectMatchmakingQuestion' }
+                & { id: string}
+                & { title: string}
+                & { subtitle: string}
+            )}
+            & { tags: (string)[]}
+        )>
+    ))[]}
 );
 export type MatchmakingRoomFragment = (
     & { __typename: 'MatchmakingRoom' }
     & { enabled: boolean}
+    & { questions: Maybe<((
+        & { __typename: 'TextMatchmakingQuestion' | 'MultiselectMatchmakingQuestion' }
+        & Inline<'MultiselectMatchmakingQuestion',(
+            & { __typename: 'TextMatchmakingQuestion' }
+            & { id: string}
+            & { title: string}
+            & { subtitle: string}
+        )>
+        & Inline<'TextMatchmakingQuestion',(
+            & { __typename: 'MultiselectMatchmakingQuestion' }
+            & { id: string}
+            & { title: string}
+            & { subtitle: string}
+            & { tags: (string)[]}
+        )>
+    ))[]>}
     & { myProfile: Maybe<(
         & { __typename: 'MatchmakingProfile' }
         & MatchmakingProfileFragment
@@ -1231,79 +1247,63 @@ export type MatchmakingRoomFragment = (
         & { __typename: 'MatchmakingProfile' }
         & MatchmakingProfileFragment
     ))[]>}
-    & { questions: Maybe<((
-        & { __typename: 'TextMatchmakingQuestion' | 'MultiselectMatchmakingQuestion' }
-        & Inline<'MultiselectMatchmakingQuestion',(
-            & { __typename: 'TextMatchmakingQuestion' }
-            & { id: string}
-            & { subtitle: string}
-            & { title: string}
-        )>
-        & Inline<'TextMatchmakingQuestion',(
-            & { __typename: 'MultiselectMatchmakingQuestion' }
-            & { id: string}
-            & { subtitle: string}
-            & { tags: (string)[]}
-            & { title: string}
-        )>
-    ))[]>}
 );
 export type RoomShort = (
     & { __typename: 'PrivateRoom' | 'SharedRoom' }
     & Inline<'SharedRoom',(
         & { __typename: 'PrivateRoom' }
         & { id: string}
-        & { myBadge: Maybe<(
-            & { __typename: 'UserBadge' }
-            & UserBadge
-        )>}
-        & { pinnedMessage: Maybe<(
-            & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
-            & FullMessage
-        )>}
+        & { user: (
+            & { __typename: 'User' }
+            & UserShort
+        )}
         & { settings: (
             & { __typename: 'RoomUserNotificaionSettings' }
             & { id: string}
             & { mute: Maybe<boolean>}
         )}
-        & { user: (
-            & { __typename: 'User' }
-            & UserShort
-        )}
-    )>
-    & Inline<'PrivateRoom',(
-        & { __typename: 'SharedRoom' }
-        & { canEdit: boolean}
-        & { canSendMessage: boolean}
-        & { id: string}
-        & { isChannel: boolean}
-        & { kind: SharedRoomKind}
-        & { matchmaking: Maybe<(
-            & { __typename: 'MatchmakingRoom' }
-            & MatchmakingRoomFragment
+        & { pinnedMessage: Maybe<(
+            & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
+            & FullMessage
         )>}
-        & { membersCount: number}
-        & { membership: SharedRoomMembershipStatus}
         & { myBadge: Maybe<(
             & { __typename: 'UserBadge' }
             & UserBadge
+        )>}
+    )>
+    & Inline<'PrivateRoom',(
+        & { __typename: 'SharedRoom' }
+        & { id: string}
+        & { kind: SharedRoomKind}
+        & { isChannel: boolean}
+        & { title: string}
+        & { photo: string}
+        & { membership: SharedRoomMembershipStatus}
+        & { role: RoomMemberRole}
+        & { canEdit: boolean}
+        & { canSendMessage: boolean}
+        & { membersCount: number}
+        & { pinnedMessage: Maybe<(
+            & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
+            & FullMessage
+        )>}
+        & { matchmaking: Maybe<(
+            & { __typename: 'MatchmakingRoom' }
+            & MatchmakingRoomFragment
         )>}
         & { organization: Maybe<(
             & { __typename: 'Organization' }
             & OrganizationShort
         )>}
-        & { photo: string}
-        & { pinnedMessage: Maybe<(
-            & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
-            & FullMessage
-        )>}
-        & { role: RoomMemberRole}
         & { settings: (
             & { __typename: 'RoomUserNotificaionSettings' }
             & { id: string}
             & { mute: Maybe<boolean>}
         )}
-        & { title: string}
+        & { myBadge: Maybe<(
+            & { __typename: 'UserBadge' }
+            & UserBadge
+        )>}
     )>
 );
 export type ChatUpdateFragment = (
@@ -1344,17 +1344,13 @@ export type ChatUpdateFragment = (
 );
 export type CommentEntryFragment = (
     & { __typename: 'CommentEntry' }
+    & { id: string}
+    & { deleted: boolean}
     & { comment: (
         & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
         & { id: string}
         & FullMessage
     )}
-    & { childComments: ((
-        & { __typename: 'CommentEntry' }
-        & { id: string}
-    ))[]}
-    & { deleted: boolean}
-    & { id: string}
     & { parentComment: Maybe<(
         & { __typename: 'CommentEntry' }
         & { comment: (
@@ -1364,6 +1360,10 @@ export type CommentEntryFragment = (
         )}
         & { id: string}
     )>}
+    & { childComments: ((
+        & { __typename: 'CommentEntry' }
+        & { id: string}
+    ))[]}
 );
 export type CommentUpdateFragment = (
     & { __typename: 'CommentReceived' | 'CommentUpdated' }
@@ -1384,99 +1384,99 @@ export type CommentUpdateFragment = (
 );
 export type CommunitySearch = (
     & { __typename: 'Organization' }
-    & { about: Maybe<string>}
-    & { featured: boolean}
-    & { roomsCount: number}
     & { id: string}
-    & { isMine: boolean}
-    & { membersCount: number}
+    & { superAccountId: string}
     & { name: string}
     & { photo: Maybe<string>}
+    & { isMine: boolean}
+    & { about: Maybe<string>}
     & { status: string}
-    & { superAccountId: string}
+    & { featured: boolean}
+    & { membersCount: number}
+    & { roomsCount: number}
 );
 export type ConferenceFull = (
     & { __typename: 'Conference' }
-    & { iceServers: ((
-        & { __typename: 'ICEServer' }
-        & { credential: Maybe<string>}
-        & { urls: (string)[]}
-        & { username: Maybe<string>}
-    ))[]}
     & { id: string}
+    & { startTime: Maybe<string>}
     & { peers: ((
         & { __typename: 'ConferencePeer' }
-        & { connection: Maybe<(
-            & { __typename: 'ConferencePeerConnection' }
-            & { ice: (string)[]}
-            & { sdp: Maybe<string>}
-            & { state: ConferencePeerConnectionState}
-        )>}
         & { id: string}
         & { user: (
             & { __typename: 'User' }
             & UserShort
         )}
+        & { connection: Maybe<(
+            & { __typename: 'ConferencePeerConnection' }
+            & { state: ConferencePeerConnectionState}
+            & { sdp: Maybe<string>}
+            & { ice: (string)[]}
+        )>}
     ))[]}
-    & { startTime: Maybe<string>}
+    & { iceServers: ((
+        & { __typename: 'ICEServer' }
+        & { urls: (string)[]}
+        & { username: Maybe<string>}
+        & { credential: Maybe<string>}
+    ))[]}
 );
 export type ConferenceShort = (
     & { __typename: 'Conference' }
-    & { iceServers: ((
-        & { __typename: 'ICEServer' }
-        & { credential: Maybe<string>}
-        & { urls: (string)[]}
-        & { username: Maybe<string>}
-    ))[]}
     & { id: string}
     & { startTime: Maybe<string>}
+    & { iceServers: ((
+        & { __typename: 'ICEServer' }
+        & { urls: (string)[]}
+        & { username: Maybe<string>}
+        & { credential: Maybe<string>}
+    ))[]}
 );
 export type DaialogListMessage = (
     & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
-    & { date: string}
-    & { fallback: string}
     & { id: string}
-    & { message: Maybe<string>}
+    & { date: string}
     & { sender: (
         & { __typename: 'User' }
-        & { firstName: string}
         & { id: string}
         & { name: string}
+        & { firstName: string}
     )}
     & { senderBadge: Maybe<(
         & { __typename: 'UserBadge' }
         & UserBadge
     )>}
+    & { message: Maybe<string>}
+    & { fallback: string}
     & Inline<'ServiceMessage' | 'StickerMessage',(
         & { __typename: 'GeneralMessage' }
+        & { id: string}
+        & { overrideName: Maybe<string>}
+        & { overrideAvatar: Maybe<(
+            & { __typename: 'ImageRef' }
+            & { uuid: string}
+            & { crop: Maybe<(
+                & { __typename: 'ImageCrop' }
+                & { x: number}
+                & { y: number}
+                & { w: number}
+                & { h: number}
+            )>}
+        )>}
         & { attachments: ((
             & { __typename: 'MessageAttachmentFile' | 'MessageAttachmentPost' | 'MessageRichAttachment' }
-            & { fallback: string}
             & { id: string}
+            & { fallback: string}
             & Inline<'MessageAttachmentPost' | 'MessageRichAttachment',(
                 & { __typename: 'MessageAttachmentFile' }
+                & { id: string}
                 & { fileId: string}
                 & { fileMetadata: (
                     & { __typename: 'FileMetadata' }
-                    & { imageFormat: Maybe<string>}
                     & { isImage: boolean}
+                    & { imageFormat: Maybe<string>}
                 )}
-                & { id: string}
             )>
         ))[]}
-        & { id: string}
-        & { overrideAvatar: Maybe<(
-            & { __typename: 'ImageRef' }
-            & { crop: Maybe<(
-                & { __typename: 'ImageCrop' }
-                & { h: number}
-                & { w: number}
-                & { x: number}
-                & { y: number}
-            )>}
-            & { uuid: string}
-        )>}
-        & { overrideName: Maybe<string>}
         & { quotedMessages: ((
             & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
             & { id: string}
@@ -1485,10 +1485,8 @@ export type DaialogListMessage = (
 );
 export type TinyMessage = (
     & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
-    & { date: string}
-    & { fallback: string}
     & { id: string}
-    & { message: Maybe<string>}
+    & { date: string}
     & { sender: (
         & { __typename: 'User' }
         & UserTiny
@@ -1497,39 +1495,41 @@ export type TinyMessage = (
         & { __typename: 'UserBadge' }
         & UserBadge
     )>}
+    & { message: Maybe<string>}
+    & { fallback: string}
     & Inline<'ServiceMessage' | 'StickerMessage',(
         & { __typename: 'GeneralMessage' }
+        & { id: string}
+        & { overrideName: Maybe<string>}
+        & { overrideAvatar: Maybe<(
+            & { __typename: 'ImageRef' }
+            & { uuid: string}
+            & { crop: Maybe<(
+                & { __typename: 'ImageCrop' }
+                & { x: number}
+                & { y: number}
+                & { w: number}
+                & { h: number}
+            )>}
+        )>}
+        & { isMentioned: boolean}
+        & { commentsCount: number}
         & { attachments: ((
             & { __typename: 'MessageAttachmentFile' | 'MessageAttachmentPost' | 'MessageRichAttachment' }
-            & { fallback: string}
             & { id: string}
+            & { fallback: string}
             & Inline<'MessageAttachmentPost' | 'MessageRichAttachment',(
                 & { __typename: 'MessageAttachmentFile' }
+                & { id: string}
                 & { fileId: string}
                 & { fileMetadata: (
                     & { __typename: 'FileMetadata' }
-                    & { imageFormat: Maybe<string>}
                     & { isImage: boolean}
+                    & { imageFormat: Maybe<string>}
                 )}
                 & { filePreview: Maybe<string>}
-                & { id: string}
             )>
         ))[]}
-        & { commentsCount: number}
-        & { id: string}
-        & { isMentioned: boolean}
-        & { overrideAvatar: Maybe<(
-            & { __typename: 'ImageRef' }
-            & { crop: Maybe<(
-                & { __typename: 'ImageCrop' }
-                & { h: number}
-                & { w: number}
-                & { x: number}
-                & { y: number}
-            )>}
-            & { uuid: string}
-        )>}
-        & { overrideName: Maybe<string>}
         & { quotedMessages: ((
             & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
             & { id: string}
@@ -1540,36 +1540,37 @@ export type DialogUpdateFragment = (
     & { __typename: 'DialogMessageReceived' | 'DialogMessageUpdated' | 'DialogMessageDeleted' | 'DialogMessageRead' | 'DialogTitleUpdated' | 'DialogDeleted' | 'DialogPhotoUpdated' | 'DialogMuteChanged' | 'DialogMentionedChanged' | 'DialogBump' | 'DialogPeerUpdated' }
     & Inline<'DialogMessageUpdated' | 'DialogMessageDeleted' | 'DialogMessageRead' | 'DialogTitleUpdated' | 'DialogDeleted' | 'DialogPhotoUpdated' | 'DialogMuteChanged' | 'DialogMentionedChanged' | 'DialogBump' | 'DialogPeerUpdated',(
         & { __typename: 'DialogMessageReceived' }
+        & { cid: string}
+        & { unread: number}
+        & { globalUnread: number}
         & { message: (
             & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
             & TinyMessage
         )}
-        & { cid: string}
-        & { globalUnread: number}
         & { haveMention: boolean}
-        & { showNotification: (
-            & { __typename: 'SilentMessageInfo' }
-            & { desktop: boolean}
-            & { mobile: boolean}
-        )}
         & { silent: (
             & { __typename: 'SilentMessageInfo' }
-            & { desktop: boolean}
             & { mobile: boolean}
+            & { desktop: boolean}
         )}
-        & { unread: number}
+        & { showNotification: (
+            & { __typename: 'SilentMessageInfo' }
+            & { mobile: boolean}
+            & { desktop: boolean}
+        )}
     )>
     & Inline<'DialogMessageReceived' | 'DialogMessageDeleted' | 'DialogMessageRead' | 'DialogTitleUpdated' | 'DialogDeleted' | 'DialogPhotoUpdated' | 'DialogMuteChanged' | 'DialogMentionedChanged' | 'DialogBump' | 'DialogPeerUpdated',(
         & { __typename: 'DialogMessageUpdated' }
+        & { cid: string}
         & { message: (
             & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
             & TinyMessage
         )}
-        & { cid: string}
         & { haveMention: boolean}
     )>
     & Inline<'DialogMessageReceived' | 'DialogMessageUpdated' | 'DialogMessageRead' | 'DialogTitleUpdated' | 'DialogDeleted' | 'DialogPhotoUpdated' | 'DialogMuteChanged' | 'DialogMentionedChanged' | 'DialogBump' | 'DialogPeerUpdated',(
         & { __typename: 'DialogMessageDeleted' }
+        & { cid: string}
         & { message: (
             & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
             & TinyMessage
@@ -1578,18 +1579,17 @@ export type DialogUpdateFragment = (
             & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
             & TinyMessage
         )>}
-        & { cid: string}
+        & { unread: number}
         & { globalUnread: number}
         & { haveMention: boolean}
-        & { unread: number}
     )>
     & Inline<'DialogMessageReceived' | 'DialogMessageUpdated' | 'DialogMessageDeleted' | 'DialogTitleUpdated' | 'DialogDeleted' | 'DialogPhotoUpdated' | 'DialogMuteChanged' | 'DialogMentionedChanged' | 'DialogBump' | 'DialogPeerUpdated',(
         & { __typename: 'DialogMessageRead' }
         & { cid: string}
-        & { globalUnread: number}
-        & { haveMention: boolean}
         & { mid: Maybe<string>}
         & { unread: number}
+        & { globalUnread: number}
+        & { haveMention: boolean}
     )>
     & Inline<'DialogMessageReceived' | 'DialogMessageUpdated' | 'DialogMessageDeleted' | 'DialogMessageRead' | 'DialogTitleUpdated' | 'DialogDeleted' | 'DialogPhotoUpdated' | 'DialogMentionedChanged' | 'DialogBump' | 'DialogPeerUpdated',(
         & { __typename: 'DialogMuteChanged' }
@@ -1614,8 +1614,8 @@ export type DialogUpdateFragment = (
             & Inline<'PrivateRoom',(
                 & { __typename: 'SharedRoom' }
                 & { id: string}
-                & { photo: string}
                 & { title: string}
+                & { photo: string}
             )>
         )}
     )>
@@ -1628,87 +1628,33 @@ export type DialogUpdateFragment = (
         & { __typename: 'DialogBump' }
         & { cid: string}
         & { globalUnread: number}
-        & { haveMention: boolean}
+        & { unread: number}
         & { topMessage: Maybe<(
             & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
             & TinyMessage
         )>}
-        & { unread: number}
+        & { haveMention: boolean}
     )>
 );
 export type FeedChannelFull = (
     & { __typename: 'FeedChannel' }
-    & { about: Maybe<string>}
     & { id: string}
-    & { isGlobal: boolean}
-    & { myRole: FeedChannelSubscriberRole}
-    & { photo: Maybe<string>}
-    & { postsCount: number}
-    & { shortname: Maybe<string>}
-    & { socialImage: Maybe<string>}
-    & { subscribed: boolean}
-    & { subscribersCount: number}
     & { title: string}
+    & { about: Maybe<string>}
+    & { photo: Maybe<string>}
+    & { subscribed: boolean}
+    & { myRole: FeedChannelSubscriberRole}
+    & { subscribersCount: number}
+    & { shortname: Maybe<string>}
+    & { isGlobal: boolean}
+    & { socialImage: Maybe<string>}
+    & { postsCount: number}
 );
 export type FeedPostAuthorFragment = (
     & { __typename: 'User' }
     & Inline<never,(
         & { __typename: 'User' }
         & UserShort
-    )>
-);
-export type SlideFragment = (
-    & { __typename: 'TextSlide' }
-    & Inline<never,(
-        & { __typename: 'TextSlide' }
-        & { attachments: ((
-            & { __typename: 'User' | 'SharedRoom' | 'Organization' }
-            & Inline<'SharedRoom' | 'Organization',(
-                & { __typename: 'User' }
-                & UserShort
-            )>
-            & Inline<'User' | 'Organization',(
-                & { __typename: 'SharedRoom' }
-                & { canSendMessage: boolean}
-                & { id: string}
-                & { kind: SharedRoomKind}
-                & { membersCount: number}
-                & { membership: SharedRoomMembershipStatus}
-                & { organization: Maybe<(
-                    & { __typename: 'Organization' }
-                    & { id: string}
-                    & { name: string}
-                    & { photo: Maybe<string>}
-                )>}
-                & { roomPhoto: string}
-                & { title: string}
-            )>
-            & Inline<'User' | 'SharedRoom',(
-                & { __typename: 'Organization' }
-                & OrganizationShort
-            )>
-        ))[]}
-        & { cover: Maybe<(
-            & { __typename: 'Image' }
-            & { metadata: Maybe<(
-                & { __typename: 'FileMetadata' }
-                & { imageFormat: Maybe<string>}
-                & { imageHeight: Maybe<number>}
-                & { imageWidth: Maybe<number>}
-                & { isImage: boolean}
-                & { mimeType: Maybe<string>}
-                & { name: string}
-                & { size: number}
-            )>}
-            & { url: string}
-        )>}
-        & { coverAlign: Maybe<SlideCoverAlign>}
-        & { id: string}
-        & { spans: ((
-            & { __typename: 'MessageSpanAllMention' | 'MessageSpanBold' | 'MessageSpanCodeBlock' | 'MessageSpanDate' | 'MessageSpanInlineCode' | 'MessageSpanInsane' | 'MessageSpanIrony' | 'MessageSpanItalic' | 'MessageSpanLink' | 'MessageSpanLoud' | 'MessageSpanMultiUserMention' | 'MessageSpanOrganizationMention' | 'MessageSpanRoomMention' | 'MessageSpanRotating' | 'MessageSpanUserMention' }
-            & SpanFragment
-        ))[]}
-        & { text: string}
     )>
 );
 export type FeedPostSourceFragment = (
@@ -1718,37 +1664,91 @@ export type FeedPostSourceFragment = (
         & FeedChannelFull
     )>
 );
+export type SlideFragment = (
+    & { __typename: 'TextSlide' }
+    & Inline<never,(
+        & { __typename: 'TextSlide' }
+        & { id: string}
+        & { text: string}
+        & { spans: ((
+            & { __typename: 'MessageSpanAllMention' | 'MessageSpanBold' | 'MessageSpanCodeBlock' | 'MessageSpanDate' | 'MessageSpanInlineCode' | 'MessageSpanInsane' | 'MessageSpanIrony' | 'MessageSpanItalic' | 'MessageSpanLink' | 'MessageSpanLoud' | 'MessageSpanMultiUserMention' | 'MessageSpanOrganizationMention' | 'MessageSpanRoomMention' | 'MessageSpanRotating' | 'MessageSpanUserMention' }
+            & SpanFragment
+        ))[]}
+        & { cover: Maybe<(
+            & { __typename: 'Image' }
+            & { url: string}
+            & { metadata: Maybe<(
+                & { __typename: 'FileMetadata' }
+                & { name: string}
+                & { mimeType: Maybe<string>}
+                & { size: number}
+                & { isImage: boolean}
+                & { imageWidth: Maybe<number>}
+                & { imageHeight: Maybe<number>}
+                & { imageFormat: Maybe<string>}
+            )>}
+        )>}
+        & { coverAlign: Maybe<SlideCoverAlign>}
+        & { attachments: ((
+            & { __typename: 'User' | 'SharedRoom' | 'Organization' }
+            & Inline<'SharedRoom' | 'Organization',(
+                & { __typename: 'User' }
+                & UserShort
+            )>
+            & Inline<'User' | 'Organization',(
+                & { __typename: 'SharedRoom' }
+                & { id: string}
+                & { kind: SharedRoomKind}
+                & { title: string}
+                & { roomPhoto: string}
+                & { membersCount: number}
+                & { membership: SharedRoomMembershipStatus}
+                & { canSendMessage: boolean}
+                & { organization: Maybe<(
+                    & { __typename: 'Organization' }
+                    & { id: string}
+                    & { name: string}
+                    & { photo: Maybe<string>}
+                )>}
+            )>
+            & Inline<'User' | 'SharedRoom',(
+                & { __typename: 'Organization' }
+                & OrganizationShort
+            )>
+        ))[]}
+    )>
+);
 export type FeedItemFull = (
     & { __typename: 'FeedPost' }
     & Inline<never,(
         & { __typename: 'FeedPost' }
+        & { id: string}
+        & { date: string}
         & { author: (
             & { __typename: 'User' }
             & FeedPostAuthorFragment
         )}
+        & { source: Maybe<(
+            & { __typename: 'FeedChannel' }
+            & FeedPostSourceFragment
+        )>}
+        & { edited: boolean}
         & { canEdit: boolean}
         & { commentsCount: number}
-        & { date: string}
-        & { edited: boolean}
-        & { fallback: string}
-        & { id: string}
         & { message: Maybe<string>}
+        & { fallback: string}
         & { reactions: ((
             & { __typename: 'ModernMessageReaction' }
-            & { reaction: MessageReactionType}
             & { user: (
                 & { __typename: 'User' }
                 & UserShort
             )}
+            & { reaction: MessageReactionType}
         ))[]}
         & { slides: ((
             & { __typename: 'TextSlide' }
             & SlideFragment
         ))[]}
-        & { source: Maybe<(
-            & { __typename: 'FeedChannel' }
-            & FeedPostSourceFragment
-        )>}
     )>
 );
 export type FeedUpdateFragment = (
@@ -1778,16 +1778,18 @@ export type FeedUpdateFragment = (
         & { __typename: 'FeedRebuildNeeded' }
         & { feed: (
             & { __typename: 'FeedItemConnection' }
-            & { cursor: Maybe<string>}
             & { items: ((
                 & { __typename: 'FeedPost' }
                 & FeedItemFull
             ))[]}
+            & { cursor: Maybe<string>}
         )}
     )>
 );
 export type NotificationFragment = (
     & { __typename: 'Notification' }
+    & { id: string}
+    & { text: Maybe<string>}
     & { content: ((
         & { __typename: 'NewCommentNotification' | 'NewMatchmakingProfilesNotification' | 'MentionNotification' }
         & Inline<'NewMatchmakingProfilesNotification' | 'MentionNotification',(
@@ -1803,16 +1805,12 @@ export type NotificationFragment = (
                     & { __typename: 'CommentPeerRootMessage' | 'CommentPeerRootFeedItem' }
                     & Inline<'CommentPeerRootFeedItem',(
                         & { __typename: 'CommentPeerRootMessage' }
-                        & { chat: (
-                            & { __typename: 'PrivateRoom' | 'SharedRoom' }
-                            & RoomNano
-                        )}
                         & { message: (
                             & { __typename: 'GeneralMessage' }
                             & Inline<never,(
                                 & { __typename: 'GeneralMessage' }
-                                & { fallback: string}
                                 & { id: string}
+                                & { fallback: string}
                                 & { message: Maybe<string>}
                                 & { sender: (
                                     & { __typename: 'User' }
@@ -1824,6 +1822,10 @@ export type NotificationFragment = (
                                     & UserBadge
                                 )>}
                             )>
+                        )}
+                        & { chat: (
+                            & { __typename: 'PrivateRoom' | 'SharedRoom' }
+                            & RoomNano
                         )}
                     )>
                     & Inline<'CommentPeerRootMessage',(
@@ -1842,10 +1844,6 @@ export type NotificationFragment = (
         )>
         & Inline<'NewCommentNotification' | 'MentionNotification',(
             & { __typename: 'NewMatchmakingProfilesNotification' }
-            & { profiles: ((
-                & { __typename: 'MatchmakingProfile' }
-                & MatchmakingProfileFragment
-            ))[]}
             & { room: (
                 & { __typename: 'MatchmakingRoom' }
                 & { peer: (
@@ -1856,10 +1854,12 @@ export type NotificationFragment = (
                     )>
                 )}
             )}
+            & { profiles: ((
+                & { __typename: 'MatchmakingProfile' }
+                & MatchmakingProfileFragment
+            ))[]}
         )>
     ))[]}
-    & { id: string}
-    & { text: Maybe<string>}
 );
 export type NotificationCenterUpdateFragment = (
     & { __typename: 'NotificationReceived' | 'NotificationRead' | 'NotificationDeleted' | 'NotificationUpdated' | 'NotificationContentUpdated' }
@@ -1913,27 +1913,18 @@ export type NotificationCenterUpdateFragment = (
             & { __typename: 'UpdatedNotificationContentComment' }
             & Inline<never,(
                 & { __typename: 'UpdatedNotificationContentComment' }
-                & { comment: Maybe<(
-                    & { __typename: 'CommentEntry' }
-                    & CommentEntryFragment
-                )>}
                 & { peer: (
                     & { __typename: 'CommentsPeer' }
-                    & { id: string}
                     & { peerRoot: (
                         & { __typename: 'CommentPeerRootMessage' | 'CommentPeerRootFeedItem' }
                         & Inline<'CommentPeerRootFeedItem',(
                             & { __typename: 'CommentPeerRootMessage' }
-                            & { chat: (
-                                & { __typename: 'PrivateRoom' | 'SharedRoom' }
-                                & RoomNano
-                            )}
                             & { message: (
                                 & { __typename: 'GeneralMessage' }
                                 & Inline<never,(
                                     & { __typename: 'GeneralMessage' }
-                                    & { fallback: string}
                                     & { id: string}
+                                    & { fallback: string}
                                     & { message: Maybe<string>}
                                     & { sender: (
                                         & { __typename: 'User' }
@@ -1946,6 +1937,10 @@ export type NotificationCenterUpdateFragment = (
                                     )>}
                                 )>
                             )}
+                            & { chat: (
+                                & { __typename: 'PrivateRoom' | 'SharedRoom' }
+                                & RoomNano
+                            )}
                         )>
                         & Inline<'CommentPeerRootMessage',(
                             & { __typename: 'CommentPeerRootFeedItem' }
@@ -1955,56 +1950,67 @@ export type NotificationCenterUpdateFragment = (
                             )}
                         )>
                     )}
+                    & { id: string}
                     & { subscription: Maybe<(
                         & { __typename: 'CommentSubscription' }
                         & { type: Maybe<CommentSubscriptionType>}
                     )>}
                 )}
+                & { comment: Maybe<(
+                    & { __typename: 'CommentEntry' }
+                    & CommentEntryFragment
+                )>}
             )>
         )}
     )>
 );
 export type UserFull = (
     & { __typename: 'User' }
-    & { about: Maybe<string>}
-    & { audienceSize: number}
-    & { email: Maybe<string>}
-    & { facebook: Maybe<string>}
-    & { firstName: string}
     & { id: string}
-    & { instagram: Maybe<string>}
+    & { name: string}
+    & { firstName: string}
+    & { lastName: Maybe<string>}
+    & { photo: Maybe<string>}
+    & { phone: Maybe<string>}
+    & { email: Maybe<string>}
+    & { website: Maybe<string>}
+    & { about: Maybe<string>}
+    & { location: Maybe<string>}
     & { isBot: boolean}
     & { isYou: boolean}
-    & { lastName: Maybe<string>}
+    & { online: boolean}
     & { lastSeen: Maybe<string>}
     & { linkedin: Maybe<string>}
-    & { location: Maybe<string>}
-    & { name: string}
-    & { online: boolean}
-    & { phone: Maybe<string>}
-    & { photo: Maybe<string>}
+    & { instagram: Maybe<string>}
+    & { twitter: Maybe<string>}
+    & { facebook: Maybe<string>}
+    & { shortname: Maybe<string>}
+    & { audienceSize: number}
     & { primaryOrganization: Maybe<(
         & { __typename: 'Organization' }
         & OrganizationShort
     )>}
-    & { shortname: Maybe<string>}
-    & { twitter: Maybe<string>}
-    & { website: Maybe<string>}
 );
 export type OrganizationFull = (
     & { __typename: 'Organization' }
-    & { about: Maybe<string>}
+    & { id: string}
+    & { superAccountId: string}
+    & { isMine: boolean}
+    & { isPrivate: boolean}
+    & { isOwner: boolean}
+    & { isAdmin: boolean}
     & { featured: boolean}
     & { isCommunity: boolean}
-    & { isPrivate: boolean}
-    & { requests: ((
-        & { __typename: 'OrganizationRequestedMember' }
-        & { role: OrganizationMemberRole}
-        & { user: (
-            & { __typename: 'User' }
-            & UserFull
-        )}
-    ))[]}
+    & { name: string}
+    & { photo: Maybe<string>}
+    & { shortname: Maybe<string>}
+    & { website: Maybe<string>}
+    & { about: Maybe<string>}
+    & { twitter: Maybe<string>}
+    & { facebook: Maybe<string>}
+    & { linkedin: Maybe<string>}
+    & { instagram: Maybe<string>}
+    & { membersCount: number}
     & { members: ((
         & { __typename: 'OrganizationJoinedMember' }
         & { role: OrganizationMemberRole}
@@ -2013,65 +2019,66 @@ export type OrganizationFull = (
             & UserFull
         )}
     ))[]}
-    & { isAdmin: boolean}
-    & { isOwner: boolean}
-    & { facebook: Maybe<string>}
-    & { id: string}
-    & { instagram: Maybe<string>}
-    & { isMine: boolean}
-    & { linkedin: Maybe<string>}
-    & { membersCount: number}
-    & { name: string}
-    & { photo: Maybe<string>}
-    & { shortname: Maybe<string>}
-    & { superAccountId: string}
-    & { twitter: Maybe<string>}
-    & { website: Maybe<string>}
+    & { requests: ((
+        & { __typename: 'OrganizationRequestedMember' }
+        & { role: OrganizationMemberRole}
+        & { user: (
+            & { __typename: 'User' }
+            & UserFull
+        )}
+    ))[]}
 );
 export type OrganizationMedium = (
     & { __typename: 'Organization' }
-    & { about: Maybe<string>}
-    & { isCommunity: boolean}
-    & { isAdmin: boolean}
-    & { isOwner: boolean}
     & { id: string}
-    & { isMine: boolean}
-    & { membersCount: number}
     & { name: string}
     & { photo: Maybe<string>}
+    & { isMine: boolean}
+    & { membersCount: number}
     & { shortname: Maybe<string>}
+    & { about: Maybe<string>}
+    & { isOwner: boolean}
+    & { isAdmin: boolean}
+    & { isCommunity: boolean}
 );
 export type OrganizationProfileFull = (
     & { __typename: 'OrganizationProfile' }
-    & { about: Maybe<string>}
-    & { editorial: boolean}
-    & { featured: boolean}
-    & { private: boolean}
-    & { published: boolean}
-    & { facebook: Maybe<string>}
     & { id: string}
-    & { instagram: Maybe<string>}
-    & { linkedin: Maybe<string>}
     & { name: string}
     & { photoRef: Maybe<(
         & { __typename: 'ImageRef' }
+        & { uuid: string}
         & { crop: Maybe<(
             & { __typename: 'ImageCrop' }
-            & { h: number}
-            & { w: number}
             & { x: number}
             & { y: number}
+            & { w: number}
+            & { h: number}
         )>}
-        & { uuid: string}
     )>}
-    & { shortname: Maybe<string>}
-    & { twitter: Maybe<string>}
     & { website: Maybe<string>}
     & { websiteTitle: Maybe<string>}
+    & { about: Maybe<string>}
+    & { twitter: Maybe<string>}
+    & { facebook: Maybe<string>}
+    & { linkedin: Maybe<string>}
+    & { instagram: Maybe<string>}
+    & { shortname: Maybe<string>}
+    & { private: boolean}
+    & { featured: boolean}
+    & { published: boolean}
+    & { editorial: boolean}
 );
 export type OrganizationSearch = (
     & { __typename: 'Organization' }
+    & { id: string}
+    & { superAccountId: string}
+    & { name: string}
+    & { photo: Maybe<string>}
+    & { isMine: boolean}
     & { about: Maybe<string>}
+    & { status: string}
+    & { membersCount: number}
     & { featured: boolean}
     & { members: ((
         & { __typename: 'OrganizationJoinedMember' }
@@ -2082,20 +2089,27 @@ export type OrganizationSearch = (
             & { photo: Maybe<string>}
         )}
     ))[]}
-    & { id: string}
-    & { isMine: boolean}
-    & { membersCount: number}
-    & { name: string}
-    & { photo: Maybe<string>}
-    & { status: string}
-    & { superAccountId: string}
 );
 export type OrganizationWithoutMembersFragment = (
     & { __typename: 'Organization' }
-    & { about: Maybe<string>}
+    & { id: string}
+    & { superAccountId: string}
+    & { isMine: boolean}
+    & { isPrivate: boolean}
+    & { isOwner: boolean}
+    & { isAdmin: boolean}
     & { featured: boolean}
     & { isCommunity: boolean}
-    & { isPrivate: boolean}
+    & { name: string}
+    & { photo: Maybe<string>}
+    & { shortname: Maybe<string>}
+    & { website: Maybe<string>}
+    & { about: Maybe<string>}
+    & { twitter: Maybe<string>}
+    & { facebook: Maybe<string>}
+    & { linkedin: Maybe<string>}
+    & { instagram: Maybe<string>}
+    & { membersCount: number}
     & { requests: ((
         & { __typename: 'OrganizationRequestedMember' }
         & { role: OrganizationMemberRole}
@@ -2104,41 +2118,11 @@ export type OrganizationWithoutMembersFragment = (
             & UserFull
         )}
     ))[]}
-    & { isAdmin: boolean}
-    & { isOwner: boolean}
     & { roomsCount: number}
-    & { facebook: Maybe<string>}
-    & { id: string}
-    & { instagram: Maybe<string>}
-    & { isMine: boolean}
-    & { linkedin: Maybe<string>}
-    & { membersCount: number}
-    & { name: string}
-    & { photo: Maybe<string>}
-    & { shortname: Maybe<string>}
-    & { superAccountId: string}
-    & { twitter: Maybe<string>}
-    & { website: Maybe<string>}
 );
 export type PlatformNotificationSettingsFull = (
     & { __typename: 'PlatformNotificationSettings' }
-    & { comments: (
-        & { __typename: 'ChatTypeNotificationSettings' }
-        & { showNotification: boolean}
-        & { sound: boolean}
-    )}
-    & { communityChat: (
-        & { __typename: 'ChatTypeNotificationSettings' }
-        & { showNotification: boolean}
-        & { sound: boolean}
-    )}
     & { direct: (
-        & { __typename: 'ChatTypeNotificationSettings' }
-        & { showNotification: boolean}
-        & { sound: boolean}
-    )}
-    & { notificationPreview: NotificationPreview}
-    & { organizationChat: (
         & { __typename: 'ChatTypeNotificationSettings' }
         & { showNotification: boolean}
         & { sound: boolean}
@@ -2148,91 +2132,83 @@ export type PlatformNotificationSettingsFull = (
         & { showNotification: boolean}
         & { sound: boolean}
     )}
+    & { organizationChat: (
+        & { __typename: 'ChatTypeNotificationSettings' }
+        & { showNotification: boolean}
+        & { sound: boolean}
+    )}
+    & { communityChat: (
+        & { __typename: 'ChatTypeNotificationSettings' }
+        & { showNotification: boolean}
+        & { sound: boolean}
+    )}
+    & { comments: (
+        & { __typename: 'ChatTypeNotificationSettings' }
+        & { showNotification: boolean}
+        & { sound: boolean}
+    )}
+    & { notificationPreview: NotificationPreview}
 );
 export type RoomFull = (
     & { __typename: 'PrivateRoom' | 'SharedRoom' }
     & Inline<'SharedRoom',(
         & { __typename: 'PrivateRoom' }
         & { id: string}
-        & { myBadge: Maybe<(
-            & { __typename: 'UserBadge' }
-            & UserBadge
-        )>}
-        & { pinnedMessage: Maybe<(
-            & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
-            & FullMessage
-        )>}
+        & { user: (
+            & { __typename: 'User' }
+            & UserShort
+        )}
         & { settings: (
             & { __typename: 'RoomUserNotificaionSettings' }
             & { id: string}
             & { mute: Maybe<boolean>}
         )}
-        & { user: (
-            & { __typename: 'User' }
-            & UserShort
-        )}
-    )>
-    & Inline<'PrivateRoom',(
-        & { __typename: 'SharedRoom' }
-        & { canEdit: boolean}
-        & { canSendMessage: boolean}
-        & { description: Maybe<string>}
-        & { featuredMembersCount: number}
-        & { id: string}
-        & { isChannel: boolean}
-        & { isPremium: boolean}
-        & { kind: SharedRoomKind}
-        & { matchmaking: Maybe<(
-            & { __typename: 'MatchmakingRoom' }
-            & MatchmakingRoomFragment
-        )>}
-        & { members: ((
-            & { __typename: 'RoomMember' }
-            & { badge: Maybe<(
-                & { __typename: 'UserBadge' }
-                & UserBadge
-            )>}
-            & { canKick: boolean}
-            & { membership: SharedRoomMembershipStatus}
-            & { role: RoomMemberRole}
-            & { user: (
-                & { __typename: 'User' }
-                & UserShort
-            )}
-        ))[]}
-        & { membersCount: number}
-        & { membership: SharedRoomMembershipStatus}
-        & { myBadge: Maybe<(
-            & { __typename: 'UserBadge' }
-            & UserBadge
-        )>}
-        & { onlineMembersCount: number}
-        & { organization: Maybe<(
-            & { __typename: 'Organization' }
-            & OrganizationMedium
-        )>}
-        & { photo: string}
         & { pinnedMessage: Maybe<(
             & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
             & FullMessage
         )>}
-        & { premiumPassIsActive: boolean}
-        & { premiumSettings: Maybe<(
-            & { __typename: 'PremiumChatSettings' }
-            & { id: string}
-            & { interval: WalletSubscriptionInterval}
-            & { price: number}
+        & { myBadge: Maybe<(
+            & { __typename: 'UserBadge' }
+            & UserBadge
         )>}
-        & { premiumSubscription: Maybe<(
-            & { __typename: 'WalletSubscription' }
-            & { id: string}
-            & { state: WalletSubscriptionState}
+    )>
+    & Inline<'PrivateRoom',(
+        & { __typename: 'SharedRoom' }
+        & { id: string}
+        & { kind: SharedRoomKind}
+        & { isChannel: boolean}
+        & { title: string}
+        & { photo: string}
+        & { socialImage: Maybe<string>}
+        & { description: Maybe<string>}
+        & { organization: Maybe<(
+            & { __typename: 'Organization' }
+            & OrganizationMedium
         )>}
+        & { membership: SharedRoomMembershipStatus}
+        & { role: RoomMemberRole}
+        & { membersCount: number}
+        & { featuredMembersCount: number}
+        & { onlineMembersCount: number}
         & { previewMembers: ((
             & { __typename: 'User' }
             & { id: string}
-            & { name: string}
             & { photo: Maybe<string>}
+            & { name: string}
+        ))[]}
+        & { members: ((
+            & { __typename: 'RoomMember' }
+            & { role: RoomMemberRole}
+            & { membership: SharedRoomMembershipStatus}
+            & { user: (
+                & { __typename: 'User' }
+                & UserShort
+            )}
+            & { canKick: boolean}
+            & { badge: Maybe<(
+                & { __typename: 'UserBadge' }
+                & UserBadge
+            )>}
         ))[]}
         & { requests: Maybe<((
             & { __typename: 'RoomMember' }
@@ -2241,23 +2217,47 @@ export type RoomFull = (
                 & UserShort
             )}
         ))[]>}
-        & { role: RoomMemberRole}
         & { settings: (
             & { __typename: 'RoomUserNotificaionSettings' }
             & { id: string}
             & { mute: Maybe<boolean>}
         )}
-        & { socialImage: Maybe<string>}
-        & { title: string}
+        & { canEdit: boolean}
+        & { canSendMessage: boolean}
         & { welcomeMessage: Maybe<(
             & { __typename: 'WelcomeMessage' }
             & { isOn: boolean}
-            & { message: Maybe<string>}
             & { sender: Maybe<(
                 & { __typename: 'User' }
                 & { id: string}
                 & { name: string}
             )>}
+            & { message: Maybe<string>}
+        )>}
+        & { matchmaking: Maybe<(
+            & { __typename: 'MatchmakingRoom' }
+            & MatchmakingRoomFragment
+        )>}
+        & { pinnedMessage: Maybe<(
+            & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
+            & FullMessage
+        )>}
+        & { myBadge: Maybe<(
+            & { __typename: 'UserBadge' }
+            & UserBadge
+        )>}
+        & { isPremium: boolean}
+        & { premiumPassIsActive: boolean}
+        & { premiumSubscription: Maybe<(
+            & { __typename: 'WalletSubscription' }
+            & { id: string}
+            & { state: WalletSubscriptionState}
+        )>}
+        & { premiumSettings: Maybe<(
+            & { __typename: 'PremiumChatSettings' }
+            & { id: string}
+            & { price: number}
+            & { interval: WalletSubscriptionInterval}
         )>}
     )>
 );
@@ -2266,123 +2266,124 @@ export type RoomFullWithoutMembers = (
     & Inline<'SharedRoom',(
         & { __typename: 'PrivateRoom' }
         & { id: string}
-        & { myBadge: Maybe<(
-            & { __typename: 'UserBadge' }
-            & UserBadge
-        )>}
-        & { settings: (
-            & { __typename: 'RoomUserNotificaionSettings' }
-            & { id: string}
-            & { mute: Maybe<boolean>}
-        )}
         & { user: (
             & { __typename: 'User' }
             & UserShort
         )}
-    )>
-    & Inline<'PrivateRoom',(
-        & { __typename: 'SharedRoom' }
-        & { canEdit: boolean}
-        & { canSendMessage: boolean}
-        & { description: Maybe<string>}
-        & { featuredMembersCount: number}
-        & { id: string}
-        & { isChannel: boolean}
-        & { kind: SharedRoomKind}
-        & { matchmaking: Maybe<(
-            & { __typename: 'MatchmakingRoom' }
-            & MatchmakingRoomFragment
-        )>}
-        & { membersCount: number}
-        & { membership: SharedRoomMembershipStatus}
-        & { myBadge: Maybe<(
-            & { __typename: 'UserBadge' }
-            & UserBadge
-        )>}
-        & { organization: Maybe<(
-            & { __typename: 'Organization' }
-            & OrganizationMedium
-        )>}
-        & { photo: string}
-        & { pinnedMessage: Maybe<(
-            & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
-            & FullMessage
-        )>}
-        & { role: RoomMemberRole}
         & { settings: (
             & { __typename: 'RoomUserNotificaionSettings' }
             & { id: string}
             & { mute: Maybe<boolean>}
         )}
-        & { socialImage: Maybe<string>}
+        & { myBadge: Maybe<(
+            & { __typename: 'UserBadge' }
+            & UserBadge
+        )>}
+    )>
+    & Inline<'PrivateRoom',(
+        & { __typename: 'SharedRoom' }
+        & { id: string}
+        & { kind: SharedRoomKind}
+        & { isChannel: boolean}
         & { title: string}
+        & { photo: string}
+        & { socialImage: Maybe<string>}
+        & { description: Maybe<string>}
+        & { organization: Maybe<(
+            & { __typename: 'Organization' }
+            & OrganizationMedium
+        )>}
+        & { membership: SharedRoomMembershipStatus}
+        & { role: RoomMemberRole}
+        & { membersCount: number}
+        & { featuredMembersCount: number}
+        & { settings: (
+            & { __typename: 'RoomUserNotificaionSettings' }
+            & { id: string}
+            & { mute: Maybe<boolean>}
+        )}
+        & { matchmaking: Maybe<(
+            & { __typename: 'MatchmakingRoom' }
+            & MatchmakingRoomFragment
+        )>}
+        & { canEdit: boolean}
+        & { canSendMessage: boolean}
         & { welcomeMessage: Maybe<(
             & { __typename: 'WelcomeMessage' }
             & { isOn: boolean}
-            & { message: Maybe<string>}
             & { sender: Maybe<(
                 & { __typename: 'User' }
                 & { id: string}
                 & { name: string}
             )>}
+            & { message: Maybe<string>}
+        )>}
+        & { pinnedMessage: Maybe<(
+            & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
+            & FullMessage
+        )>}
+        & { myBadge: Maybe<(
+            & { __typename: 'UserBadge' }
+            & UserBadge
         )>}
     )>
 );
 export type SessionStateFull = (
     & { __typename: 'SessionState' }
+    & { isLoggedIn: boolean}
+    & { isActivated: boolean}
+    & { isProfileCreated: boolean}
     & { isAccountActivated: boolean}
     & { isAccountExists: boolean}
     & { isAccountPicked: boolean}
-    & { isActivated: boolean}
-    & { isBlocked: boolean}
     & { isCompleted: boolean}
-    & { isLoggedIn: boolean}
-    & { isProfileCreated: boolean}
+    & { isBlocked: boolean}
 );
 export type SettingsFull = (
     & { __typename: 'Settings' }
+    & { id: string}
+    & { primaryEmail: string}
+    & { emailFrequency: EmailFrequency}
+    & { excludeMutedChats: boolean}
     & { countUnreadChats: boolean}
     & { desktop: (
         & { __typename: 'PlatformNotificationSettings' }
         & PlatformNotificationSettingsFull
     )}
-    & { emailFrequency: EmailFrequency}
-    & { excludeMutedChats: boolean}
-    & { id: string}
     & { mobile: (
         & { __typename: 'PlatformNotificationSettings' }
         & PlatformNotificationSettingsFull
     )}
-    & { primaryEmail: string}
 );
 export type SharedRoomView = (
     & { __typename: 'SharedRoom' }
     & { id: string}
-    & { membersCount: number}
-    & { photo: string}
     & { title: string}
+    & { photo: string}
+    & { membersCount: number}
 );
 export type StickerPackFragment = (
     & { __typename: 'StickerPack' }
     & { id: string}
+    & { title: string}
     & { stickers: ((
         & { __typename: 'ImageSticker' }
         & StickerFragment
     ))[]}
-    & { title: string}
 );
 export type UserNano = (
     & { __typename: 'User' }
-    & { firstName: string}
     & { id: string}
-    & { lastName: Maybe<string>}
     & { name: string}
-    & { online: boolean}
+    & { firstName: string}
+    & { lastName: Maybe<string>}
     & { photo: Maybe<string>}
+    & { online: boolean}
 );
 export type WalletTransactionFragment = (
     & { __typename: 'WalletTransaction' }
     & { id: string}
+    & { status: WalletTransactionStatus}
     & { operation: (
         & { __typename: 'WalletTransactionDeposit' | 'WalletTransactionSubscription' | 'WalletTransactionTransferOut' | 'WalletTransactionTransferIn' }
         & Inline<'WalletTransactionSubscription' | 'WalletTransactionTransferOut' | 'WalletTransactionTransferIn',(
@@ -2391,12 +2392,12 @@ export type WalletTransactionFragment = (
             & { payment: Maybe<(
                 & { __typename: 'Payment' }
                 & { id: string}
+                & { status: PaymentStatus}
                 & { intent: Maybe<(
                     & { __typename: 'PaymentIntent' }
-                    & { clientSecret: string}
                     & { id: string}
+                    & { clientSecret: string}
                 )>}
-                & { status: PaymentStatus}
             )>}
         )>
         & Inline<'WalletTransactionDeposit' | 'WalletTransactionTransferOut' | 'WalletTransactionTransferIn',(
@@ -2405,32 +2406,32 @@ export type WalletTransactionFragment = (
             & { payment: Maybe<(
                 & { __typename: 'Payment' }
                 & { id: string}
+                & { status: PaymentStatus}
                 & { intent: Maybe<(
                     & { __typename: 'PaymentIntent' }
-                    & { clientSecret: string}
                     & { id: string}
+                    & { clientSecret: string}
                 )>}
-                & { status: PaymentStatus}
             )>}
         )>
         & Inline<'WalletTransactionDeposit' | 'WalletTransactionSubscription' | 'WalletTransactionTransferIn',(
             & { __typename: 'WalletTransactionTransferOut' }
+            & { walletAmount: number}
             & { chargeAmount: number}
             & { payment: Maybe<(
                 & { __typename: 'Payment' }
                 & { id: string}
+                & { status: PaymentStatus}
                 & { intent: Maybe<(
                     & { __typename: 'PaymentIntent' }
-                    & { clientSecret: string}
                     & { id: string}
+                    & { clientSecret: string}
                 )>}
-                & { status: PaymentStatus}
             )>}
             & { toUser: (
                 & { __typename: 'User' }
                 & UserShort
             )}
-            & { walletAmount: number}
         )>
         & Inline<'WalletTransactionDeposit' | 'WalletTransactionSubscription' | 'WalletTransactionTransferOut',(
             & { __typename: 'WalletTransactionTransferIn' }
@@ -2441,7 +2442,6 @@ export type WalletTransactionFragment = (
             )}
         )>
     )}
-    & { status: WalletTransactionStatus}
 );
 export type WalletUpdateFragment = (
     & { __typename: 'WalletUpdateBalance' | 'WalletUpdateTransactionSuccess' | 'WalletUpdateTransactionCanceled' | 'WalletUpdateTransactionPending' | 'WalletUpdatePaymentStatus' }
@@ -2475,12 +2475,12 @@ export type WalletUpdateFragment = (
         & { payment: (
             & { __typename: 'Payment' }
             & { id: string}
+            & { status: PaymentStatus}
             & { intent: Maybe<(
                 & { __typename: 'PaymentIntent' }
-                & { clientSecret: string}
                 & { id: string}
+                & { clientSecret: string}
             )>}
-            & { status: PaymentStatus}
         )}
     )>
 );
@@ -2491,13 +2491,13 @@ export type Account = (
         & { __typename: 'User' }
         & UserShort
     )>}
-    & { myPermissions: (
-        & { __typename: 'Permissions' }
-        & { roles: (string)[]}
-    )}
     & { sessionState: (
         & { __typename: 'SessionState' }
         & SessionStateFull
+    )}
+    & { myPermissions: (
+        & { __typename: 'Permissions' }
+        & { roles: (string)[]}
     )}
 );
 export type AccountAppInvite = (
@@ -2509,11 +2509,11 @@ export interface AccountAppInviteInfoVariables {
 export type AccountAppInviteInfo = (
     & { invite: Maybe<(
         & { __typename: 'InviteInfo' }
+        & { id: string}
         & { creator: Maybe<(
             & { __typename: 'User' }
             & UserShort
         )>}
-        & { id: string}
     )>}
     & { appInvite: Maybe<(
         & { __typename: 'AppInvite' }
@@ -2529,25 +2529,25 @@ export interface AccountInviteInfoVariables {
 export type AccountInviteInfo = (
     & { invite: Maybe<(
         & { __typename: 'InviteInfo' }
+        & { id: string}
+        & { key: string}
+        & { orgId: string}
+        & { title: string}
+        & { photo: Maybe<string>}
+        & { joined: boolean}
         & { creator: Maybe<(
             & { __typename: 'User' }
             & UserShort
         )>}
         & { forEmail: Maybe<string>}
         & { forName: Maybe<string>}
-        & { id: string}
-        & { joined: boolean}
-        & { key: string}
         & { membersCount: Maybe<number>}
-        & { orgId: string}
         & { organization: Maybe<(
             & { __typename: 'Organization' }
-            & { about: Maybe<string>}
-            & { isCommunity: boolean}
             & { id: string}
+            & { isCommunity: boolean}
+            & { about: Maybe<string>}
         )>}
-        & { photo: Maybe<string>}
-        & { title: string}
     )>}
 );
 export type AccountSettings = (
@@ -2562,10 +2562,78 @@ export type AccountSettings = (
     ))[]}
 );
 export interface AvailableRoomsVariables {
-    channelsQuery?: MaybeInput<string>;
     chatsQuery?: MaybeInput<string>;
+    channelsQuery?: MaybeInput<string>;
 }
 export type AvailableRooms = (
+    & { availableChats: (
+        & { __typename: 'RoomConnection' }
+        & { edges: ((
+            & { __typename: 'RoomConnectionEdge' }
+            & { node: (
+                & { __typename: 'SharedRoom' }
+                & Inline<never,(
+                    & { __typename: 'SharedRoom' }
+                    & { id: string}
+                    & { kind: SharedRoomKind}
+                    & { title: string}
+                    & { photo: string}
+                    & { membersCount: number}
+                    & { membership: SharedRoomMembershipStatus}
+                    & { organization: Maybe<(
+                        & { __typename: 'Organization' }
+                        & { id: string}
+                        & { name: string}
+                        & { photo: Maybe<string>}
+                    )>}
+                )>
+            )}
+            & { cursor: string}
+        ))[]}
+    )}
+    & { availableChannels: (
+        & { __typename: 'RoomConnection' }
+        & { edges: ((
+            & { __typename: 'RoomConnectionEdge' }
+            & { node: (
+                & { __typename: 'SharedRoom' }
+                & Inline<never,(
+                    & { __typename: 'SharedRoom' }
+                    & { id: string}
+                    & { kind: SharedRoomKind}
+                    & { title: string}
+                    & { photo: string}
+                    & { membersCount: number}
+                    & { membership: SharedRoomMembershipStatus}
+                    & { organization: Maybe<(
+                        & { __typename: 'Organization' }
+                        & { id: string}
+                        & { name: string}
+                        & { photo: Maybe<string>}
+                    )>}
+                )>
+            )}
+            & { cursor: string}
+        ))[]}
+    )}
+    & { suggestedRooms: ((
+        & { __typename: 'PrivateRoom' | 'SharedRoom' }
+        & Inline<'PrivateRoom',(
+            & { __typename: 'SharedRoom' }
+            & { id: string}
+            & { kind: SharedRoomKind}
+            & { title: string}
+            & { photo: string}
+            & { membersCount: number}
+            & { membership: SharedRoomMembershipStatus}
+            & { organization: Maybe<(
+                & { __typename: 'Organization' }
+                & { id: string}
+                & { name: string}
+                & { photo: Maybe<string>}
+            )>}
+        )>
+    ))[]}
     & { communities: (
         & { __typename: 'OrganizationsConnection' }
         & { edges: ((
@@ -2576,125 +2644,57 @@ export type AvailableRooms = (
             )}
         ))[]}
     )}
-    & { availableChats: (
-        & { __typename: 'RoomConnection' }
-        & { edges: ((
-            & { __typename: 'RoomConnectionEdge' }
-            & { cursor: string}
-            & { node: (
-                & { __typename: 'SharedRoom' }
-                & Inline<never,(
-                    & { __typename: 'SharedRoom' }
-                    & { id: string}
-                    & { kind: SharedRoomKind}
-                    & { membersCount: number}
-                    & { membership: SharedRoomMembershipStatus}
-                    & { organization: Maybe<(
-                        & { __typename: 'Organization' }
-                        & { id: string}
-                        & { name: string}
-                        & { photo: Maybe<string>}
-                    )>}
-                    & { photo: string}
-                    & { title: string}
-                )>
-            )}
-        ))[]}
-    )}
-    & { availableChannels: (
-        & { __typename: 'RoomConnection' }
-        & { edges: ((
-            & { __typename: 'RoomConnectionEdge' }
-            & { cursor: string}
-            & { node: (
-                & { __typename: 'SharedRoom' }
-                & Inline<never,(
-                    & { __typename: 'SharedRoom' }
-                    & { id: string}
-                    & { kind: SharedRoomKind}
-                    & { membersCount: number}
-                    & { membership: SharedRoomMembershipStatus}
-                    & { organization: Maybe<(
-                        & { __typename: 'Organization' }
-                        & { id: string}
-                        & { name: string}
-                        & { photo: Maybe<string>}
-                    )>}
-                    & { photo: string}
-                    & { title: string}
-                )>
-            )}
-        ))[]}
-    )}
     & { isDiscoverDone: boolean}
-    & { suggestedRooms: ((
-        & { __typename: 'PrivateRoom' | 'SharedRoom' }
-        & Inline<'PrivateRoom',(
-            & { __typename: 'SharedRoom' }
-            & { id: string}
-            & { kind: SharedRoomKind}
-            & { membersCount: number}
-            & { membership: SharedRoomMembershipStatus}
-            & { organization: Maybe<(
-                & { __typename: 'Organization' }
-                & { id: string}
-                & { name: string}
-                & { photo: Maybe<string>}
-            )>}
-            & { photo: string}
-            & { title: string}
-        )>
-    ))[]}
 );
 export interface ChatInitVariables {
-    before?: MaybeInput<string>;
     chatId: string;
+    before?: MaybeInput<string>;
     first: number;
 }
 export type ChatInit = (
-    & { state: (
-        & { __typename: 'ConversationUpdateState' }
-        & { state: Maybe<string>}
-    )}
-    & { lastReadedMessage: Maybe<(
-        & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
-        & { id: string}
-    )>}
     & { messages: ((
         & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
         & FullMessage
     ))[]}
-    & { room: Maybe<(
-        & { __typename: 'PrivateRoom' | 'SharedRoom' }
-        & RoomShort
-    )>}
-);
-export interface ChatInitFromUnreadVariables {
-    before?: MaybeInput<string>;
-    chatId: string;
-    first: number;
-}
-export type ChatInitFromUnread = (
     & { state: (
         & { __typename: 'ConversationUpdateState' }
         & { state: Maybe<string>}
     )}
-    & { gammaMessages: Maybe<(
-        & { __typename: 'GammaMessagesBatch' }
-        & { haveMoreBackward: Maybe<boolean>}
-        & { haveMoreForward: Maybe<boolean>}
-        & { messages: ((
-            & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
-            & FullMessage
-        ))[]}
+    & { room: Maybe<(
+        & { __typename: 'PrivateRoom' | 'SharedRoom' }
+        & RoomShort
     )>}
     & { lastReadedMessage: Maybe<(
         & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
         & { id: string}
     )>}
+);
+export interface ChatInitFromUnreadVariables {
+    chatId: string;
+    before?: MaybeInput<string>;
+    first: number;
+}
+export type ChatInitFromUnread = (
+    & { gammaMessages: Maybe<(
+        & { __typename: 'GammaMessagesBatch' }
+        & { messages: ((
+            & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
+            & FullMessage
+        ))[]}
+        & { haveMoreForward: Maybe<boolean>}
+        & { haveMoreBackward: Maybe<boolean>}
+    )>}
+    & { state: (
+        & { __typename: 'ConversationUpdateState' }
+        & { state: Maybe<string>}
+    )}
     & { room: Maybe<(
         & { __typename: 'PrivateRoom' | 'SharedRoom' }
         & RoomShort
+    )>}
+    & { lastReadedMessage: Maybe<(
+        & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
+        & { id: string}
     )>}
 );
 export interface ChatJoinVariables {
@@ -2705,46 +2705,46 @@ export type ChatJoin = (
         & { __typename: 'PrivateRoom' | 'SharedRoom' }
         & Inline<'PrivateRoom',(
             & { __typename: 'SharedRoom' }
-            & { description: Maybe<string>}
             & { id: string}
-            & { isChannel: boolean}
+            & { title: string}
+            & { description: Maybe<string>}
+            & { photo: string}
             & { membersCount: number}
             & { onlineMembersCount: number}
-            & { photo: string}
             & { previewMembers: ((
                 & { __typename: 'User' }
                 & { id: string}
-                & { name: string}
                 & { photo: Maybe<string>}
+                & { name: string}
             ))[]}
-            & { title: string}
+            & { isChannel: boolean}
         )>
     )>}
 );
 export interface ChatMembersSearchVariables {
-    after?: MaybeInput<string>;
     cid: string;
-    first: number;
     query?: MaybeInput<string>;
+    first: number;
+    after?: MaybeInput<string>;
 }
 export type ChatMembersSearch = (
     & { members: (
         & { __typename: 'UserConnection' }
         & { edges: ((
             & { __typename: 'UserEdge' }
-            & { cursor: string}
             & { user: (
                 & { __typename: 'User' }
                 & { id: string}
                 & { name: string}
+                & { shortname: Maybe<string>}
                 & { photo: Maybe<string>}
                 & { primaryOrganization: Maybe<(
                     & { __typename: 'Organization' }
                     & { id: string}
                     & { name: string}
                 )>}
-                & { shortname: Maybe<string>}
             )}
+            & { cursor: string}
         ))[]}
         & { pageInfo: (
             & { __typename: 'PageInfo' }
@@ -2753,15 +2753,14 @@ export type ChatMembersSearch = (
     )}
 );
 export interface ChatMentionSearchVariables {
-    after?: MaybeInput<string>;
     cid: string;
-    first: number;
     query?: MaybeInput<string>;
+    first: number;
+    after?: MaybeInput<string>;
 }
 export type ChatMentionSearch = (
     & { mentions: (
         & { __typename: 'GlobalSearchConnection' }
-        & { cursor: Maybe<string>}
         & { globalItems: ((
             & { __typename: 'Organization' | 'User' | 'SharedRoom' }
             & Inline<'User' | 'SharedRoom',(
@@ -2781,6 +2780,7 @@ export type ChatMentionSearch = (
             & { __typename: 'User' }
             & UserForMention
         ))[]}
+        & { cursor: Maybe<string>}
     )}
 );
 export interface CommentsVariables {
@@ -2789,16 +2789,16 @@ export interface CommentsVariables {
 export type Comments = (
     & { comments: (
         & { __typename: 'CommentsPeer' }
-        & { comments: ((
-            & { __typename: 'CommentEntry' }
-            & CommentEntryFragment
-        ))[]}
-        & { count: number}
         & { id: string}
         & { state: (
             & { __typename: 'CommentUpdatesState' }
             & { state: Maybe<string>}
         )}
+        & { count: number}
+        & { comments: ((
+            & { __typename: 'CommentEntry' }
+            & CommentEntryFragment
+        ))[]}
     )}
 );
 export interface ConferenceVariables {
@@ -2817,20 +2817,20 @@ export interface ConferenceMediaVariables {
 export type ConferenceMedia = (
     & { conferenceMedia: (
         & { __typename: 'ConferenceMedia' }
-        & { iceServers: ((
-            & { __typename: 'ICEServer' }
-            & { credential: Maybe<string>}
-            & { urls: (string)[]}
-            & { username: Maybe<string>}
-        ))[]}
         & { id: string}
         & { streams: ((
             & { __typename: 'MediaStream' }
-            & { ice: (string)[]}
             & { id: string}
             & { peerId: Maybe<string>}
-            & { sdp: Maybe<string>}
             & { state: MediaStreamState}
+            & { sdp: Maybe<string>}
+            & { ice: (string)[]}
+        ))[]}
+        & { iceServers: ((
+            & { __typename: 'ICEServer' }
+            & { urls: (string)[]}
+            & { username: Maybe<string>}
+            & { credential: Maybe<string>}
         ))[]}
     )}
 );
@@ -2838,43 +2838,43 @@ export interface DialogsVariables {
     after?: MaybeInput<string>;
 }
 export type Dialogs = (
-    & { counter: (
-        & { __typename: 'NotificationCounter' }
-        & { id: string}
-        & { unreadCount: number}
-    )}
     & { dialogs: (
         & { __typename: 'DialogsConnection' }
-        & { cursor: Maybe<string>}
         & { items: ((
             & { __typename: 'Dialog' }
+            & { id: string}
+            & { cid: string}
+            & { fid: string}
+            & { kind: DialogKind}
+            & { isChannel: boolean}
+            & { title: string}
+            & { photo: string}
+            & { unreadCount: number}
+            & { isMuted: boolean}
+            & { haveMention: boolean}
             & { topMessage: Maybe<(
                 & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
                 & DaialogListMessage
             )>}
-            & { cid: string}
-            & { fid: string}
-            & { haveMention: boolean}
-            & { id: string}
-            & { isChannel: boolean}
-            & { isMuted: boolean}
-            & { kind: DialogKind}
-            & { photo: string}
-            & { title: string}
-            & { unreadCount: number}
         ))[]}
+        & { cursor: Maybe<string>}
     )}
     & { state: (
         & { __typename: 'DialogUpdateState' }
         & { state: Maybe<string>}
+    )}
+    & { counter: (
+        & { __typename: 'NotificationCounter' }
+        & { id: string}
+        & { unreadCount: number}
     )}
 );
 export type DiscoverIsDone = (
     & { betaIsDiscoverDone: boolean}
 );
 export interface DiscoverNextPageVariables {
-    excudedGroupsIds: (string)[];
     selectedTagsIds: (string)[];
+    excudedGroupsIds: (string)[];
 }
 export type DiscoverNextPage = (
     & { betaNextDiscoverPage: Maybe<(
@@ -2886,13 +2886,13 @@ export type DiscoverNextPage = (
         & { tagGroup: Maybe<(
             & { __typename: 'TagGroup' }
             & { id: string}
+            & { title: Maybe<string>}
             & { subtitle: Maybe<string>}
             & { tags: ((
                 & { __typename: 'Tag' }
                 & { id: string}
                 & { title: string}
             ))[]}
-            & { title: Maybe<string>}
         )>}
     )>}
 );
@@ -2906,60 +2906,60 @@ export type DiscoverState = (
     )}
 );
 export interface ExploreCommunityVariables {
-    after?: MaybeInput<string>;
-    featuredIfEmptyQuery?: MaybeInput<boolean>;
-    page?: MaybeInput<number>;
     query?: MaybeInput<string>;
     sort?: MaybeInput<string>;
+    page?: MaybeInput<number>;
+    after?: MaybeInput<string>;
+    featuredIfEmptyQuery?: MaybeInput<boolean>;
 }
 export type ExploreCommunity = (
     & { items: (
         & { __typename: 'OrganizationsConnection' }
         & { edges: ((
             & { __typename: 'OrganizationsEdge' }
-            & { cursor: string}
             & { node: (
                 & { __typename: 'Organization' }
                 & CommunitySearch
             )}
+            & { cursor: string}
         ))[]}
         & { pageInfo: (
             & { __typename: 'PageInfo' }
-            & { currentPage: number}
             & { hasNextPage: boolean}
             & { hasPreviousPage: boolean}
             & { itemsCount: number}
-            & { openEnded: boolean}
+            & { currentPage: number}
             & { pagesCount: number}
+            & { openEnded: boolean}
         )}
     )}
 );
 export interface ExplorePeopleVariables {
-    after?: MaybeInput<string>;
-    page?: MaybeInput<number>;
     query?: MaybeInput<string>;
     sort?: MaybeInput<string>;
+    page?: MaybeInput<number>;
+    after?: MaybeInput<string>;
 }
 export type ExplorePeople = (
     & { items: (
         & { __typename: 'UserConnection' }
         & { edges: ((
             & { __typename: 'UserEdge' }
-            & { cursor: string}
             & { node: (
                 & { __typename: 'User' }
                 & { isYou: boolean}
                 & UserShort
             )}
+            & { cursor: string}
         ))[]}
         & { pageInfo: (
             & { __typename: 'PageInfo' }
-            & { currentPage: number}
             & { hasNextPage: boolean}
             & { hasPreviousPage: boolean}
             & { itemsCount: number}
-            & { openEnded: boolean}
+            & { currentPage: number}
             & { pagesCount: number}
+            & { openEnded: boolean}
         )}
     )}
 );
@@ -2981,96 +2981,96 @@ export type FeedChannel = (
     )}
 );
 export interface FeedChannelContentVariables {
-    after?: MaybeInput<string>;
-    first: number;
     id: string;
+    first: number;
+    after?: MaybeInput<string>;
 }
 export type FeedChannelContent = (
     & { content: (
         & { __typename: 'FeedItemConnection' }
-        & { cursor: Maybe<string>}
         & { items: ((
             & { __typename: 'FeedPost' }
             & FeedItemFull
         ))[]}
+        & { cursor: Maybe<string>}
     )}
 );
 export interface FeedChannelSubscribersVariables {
-    after?: MaybeInput<string>;
     channelId: string;
-    first: number;
     query?: MaybeInput<string>;
+    first: number;
+    after?: MaybeInput<string>;
 }
 export type FeedChannelSubscribers = (
     & { subscribers: (
         & { __typename: 'FeedChannelSubscriberConnection' }
         & { edges: ((
             & { __typename: 'FeedChannelSubscriberEdge' }
-            & { cursor: string}
             & { node: (
                 & { __typename: 'FeedChannelSubscriber' }
-                & { role: FeedChannelSubscriberRole}
                 & { user: (
                     & { __typename: 'User' }
                     & UserShort
                 )}
+                & { role: FeedChannelSubscriberRole}
             )}
+            & { cursor: string}
         ))[]}
         & { pageInfo: (
             & { __typename: 'PageInfo' }
-            & { currentPage: number}
             & { hasNextPage: boolean}
             & { hasPreviousPage: boolean}
             & { itemsCount: number}
-            & { openEnded: boolean}
             & { pagesCount: number}
+            & { currentPage: number}
+            & { openEnded: boolean}
         )}
     )}
 );
 export interface FeedChannelWritersVariables {
-    after?: MaybeInput<string>;
-    first: number;
     id: string;
+    first: number;
+    after?: MaybeInput<string>;
 }
 export type FeedChannelWriters = (
     & { writers: (
         & { __typename: 'FeedChannelAdminConnection' }
-        & { cursor: Maybe<string>}
         & { items: ((
             & { __typename: 'FeedChannelAdmin' }
-            & { role: FeedChannelSubscriberRole}
             & { user: (
                 & { __typename: 'User' }
                 & UserShort
             )}
+            & { role: FeedChannelSubscriberRole}
         ))[]}
+        & { cursor: Maybe<string>}
     )}
 );
 export interface FeedChannelsSearchVariables {
-    after?: MaybeInput<string>;
-    first: number;
     query?: MaybeInput<string>;
     sort?: MaybeInput<string>;
+    first: number;
+    after?: MaybeInput<string>;
 }
 export type FeedChannelsSearch = (
     & { search: (
         & { __typename: 'FeedChannelSearchConnection' }
         & { edges: ((
             & { __typename: 'FeedChannelEdge' }
-            & { cursor: string}
             & { node: (
                 & { __typename: 'FeedChannel' }
                 & FeedChannelFull
             )}
+            & { cursor: string}
         ))[]}
         & { pageInfo: (
             & { __typename: 'PageInfo' }
-            & { currentPage: number}
             & { hasNextPage: boolean}
             & { hasPreviousPage: boolean}
             & { itemsCount: number}
-            & { openEnded: boolean}
             & { pagesCount: number}
+            & { currentPage: number}
+            & { openEnded: boolean}
         )}
     )}
 );
@@ -3084,71 +3084,71 @@ export type FeedItem = (
     )>}
 );
 export interface FeedLoadMoreVariables {
-    after?: MaybeInput<string>;
     first: number;
+    after?: MaybeInput<string>;
 }
 export type FeedLoadMore = (
     & { feed: (
         & { __typename: 'FeedItemConnection' }
-        & { cursor: Maybe<string>}
         & { items: ((
             & { __typename: 'FeedPost' }
             & FeedItemFull
         ))[]}
+        & { cursor: Maybe<string>}
     )}
 );
 export interface FeedRecommendedChannelsVariables {
-    after?: MaybeInput<string>;
     first: number;
+    after?: MaybeInput<string>;
 }
 export type FeedRecommendedChannels = (
     & { search: (
         & { __typename: 'FeedChannelSearchConnection' }
         & { edges: ((
             & { __typename: 'FeedChannelEdge' }
-            & { cursor: string}
             & { node: (
                 & { __typename: 'FeedChannel' }
                 & FeedChannelFull
             )}
+            & { cursor: string}
         ))[]}
         & { pageInfo: (
             & { __typename: 'PageInfo' }
-            & { currentPage: number}
             & { hasNextPage: boolean}
             & { hasPreviousPage: boolean}
             & { itemsCount: number}
-            & { openEnded: boolean}
             & { pagesCount: number}
+            & { currentPage: number}
+            & { openEnded: boolean}
         )}
     )}
 );
 export interface FeedSubscriptionsVariables {
-    after?: MaybeInput<string>;
     first: number;
+    after?: MaybeInput<string>;
 }
 export type FeedSubscriptions = (
     & { channels: (
         & { __typename: 'FeedChannelConnection' }
-        & { cursor: Maybe<string>}
         & { items: ((
             & { __typename: 'FeedChannel' }
             & FeedChannelFull
         ))[]}
+        & { cursor: Maybe<string>}
     )}
 );
 export interface FeedWritableChannelsVariables {
-    after?: MaybeInput<string>;
     first: number;
+    after?: MaybeInput<string>;
 }
 export type FeedWritableChannels = (
     & { channels: (
         & { __typename: 'FeedChannelConnection' }
-        & { cursor: Maybe<string>}
         & { items: ((
             & { __typename: 'FeedChannel' }
             & FeedChannelFull
         ))[]}
+        & { cursor: Maybe<string>}
     )}
 );
 export type FetchPushSettings = (
@@ -3177,20 +3177,20 @@ export type GlobalCounter = (
     )}
 );
 export interface GlobalSearchVariables {
-    kinds?: MaybeInput<(GlobalSearchEntryKind)[]>;
     query: string;
+    kinds?: MaybeInput<(GlobalSearchEntryKind)[]>;
 }
 export type GlobalSearch = (
     & { items: ((
         & { __typename: 'Organization' | 'User' | 'SharedRoom' }
         & Inline<'User' | 'SharedRoom',(
             & { __typename: 'Organization' }
-            & { about: Maybe<string>}
-            & { isCommunity: boolean}
             & { id: string}
             & { name: string}
+            & { about: Maybe<string>}
             & { photo: Maybe<string>}
             & { shortname: Maybe<string>}
+            & { isCommunity: boolean}
         )>
         & Inline<'Organization' | 'SharedRoom',(
             & { __typename: 'User' }
@@ -3198,9 +3198,11 @@ export type GlobalSearch = (
         )>
         & Inline<'Organization' | 'User',(
             & { __typename: 'SharedRoom' }
-            & { canSendMessage: boolean}
             & { id: string}
             & { kind: SharedRoomKind}
+            & { title: string}
+            & { canSendMessage: boolean}
+            & { roomPhoto: string}
             & { membersCount: number}
             & { membership: SharedRoomMembershipStatus}
             & { organization: Maybe<(
@@ -3209,8 +3211,6 @@ export type GlobalSearch = (
                 & { name: string}
                 & { photo: Maybe<string>}
             )>}
-            & { roomPhoto: string}
-            & { title: string}
         )>
     ))[]}
 );
@@ -3218,17 +3218,17 @@ export interface InitFeedVariables {
     first: number;
 }
 export type InitFeed = (
-    & { drafts: (
-        & { __typename: 'FeedChannel' }
-        & FeedChannelFull
-    )}
     & { feed: (
         & { __typename: 'FeedItemConnection' }
-        & { cursor: Maybe<string>}
         & { items: ((
             & { __typename: 'FeedPost' }
             & FeedItemFull
         ))[]}
+        & { cursor: Maybe<string>}
+    )}
+    & { drafts: (
+        & { __typename: 'FeedChannel' }
+        & FeedChannelFull
     )}
 );
 export interface MatchmakingProfileVariables {
@@ -3260,38 +3260,37 @@ export type Message = (
     )>}
 );
 export interface MessagesBatchVariables {
-    after?: MaybeInput<string>;
-    before?: MaybeInput<string>;
     chatId: string;
     first: number;
+    before?: MaybeInput<string>;
+    after?: MaybeInput<string>;
 }
 export type MessagesBatch = (
-    & { state: (
-        & { __typename: 'ConversationUpdateState' }
-        & { state: Maybe<string>}
-    )}
     & { gammaMessages: Maybe<(
         & { __typename: 'GammaMessagesBatch' }
-        & { haveMoreBackward: Maybe<boolean>}
-        & { haveMoreForward: Maybe<boolean>}
         & { messages: ((
             & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
             & FullMessage
         ))[]}
+        & { haveMoreForward: Maybe<boolean>}
+        & { haveMoreBackward: Maybe<boolean>}
     )>}
+    & { state: (
+        & { __typename: 'ConversationUpdateState' }
+        & { state: Maybe<string>}
+    )}
 );
 export interface MessagesSearchVariables {
-    after?: MaybeInput<string>;
-    first: number;
     query: string;
     sort?: MaybeInput<string>;
+    first: number;
+    after?: MaybeInput<string>;
 }
 export type MessagesSearch = (
     & { messagesSearch: (
         & { __typename: 'MessageConnection' }
         & { edges: ((
             & { __typename: 'MessageEdge' }
-            & { cursor: string}
             & { node: (
                 & { __typename: 'MessageWithChat' }
                 & { chat: (
@@ -3299,70 +3298,70 @@ export type MessagesSearch = (
                     & Inline<'SharedRoom',(
                         & { __typename: 'PrivateRoom' }
                         & { id: string}
-                        & { settings: (
-                            & { __typename: 'RoomUserNotificaionSettings' }
-                            & { id: string}
-                            & { mute: Maybe<boolean>}
-                        )}
                         & { user: (
                             & { __typename: 'User' }
                             & { id: string}
                             & { name: string}
                             & { photo: Maybe<string>}
                         )}
-                    )>
-                    & Inline<'PrivateRoom',(
-                        & { __typename: 'SharedRoom' }
-                        & { canEdit: boolean}
-                        & { id: string}
-                        & { isChannel: boolean}
-                        & { kind: SharedRoomKind}
-                        & { membership: SharedRoomMembershipStatus}
-                        & { photo: string}
-                        & { role: RoomMemberRole}
                         & { settings: (
                             & { __typename: 'RoomUserNotificaionSettings' }
                             & { id: string}
                             & { mute: Maybe<boolean>}
                         )}
+                    )>
+                    & Inline<'PrivateRoom',(
+                        & { __typename: 'SharedRoom' }
+                        & { id: string}
+                        & { kind: SharedRoomKind}
                         & { title: string}
+                        & { membership: SharedRoomMembershipStatus}
+                        & { isChannel: boolean}
+                        & { role: RoomMemberRole}
+                        & { canEdit: boolean}
+                        & { photo: string}
+                        & { settings: (
+                            & { __typename: 'RoomUserNotificaionSettings' }
+                            & { id: string}
+                            & { mute: Maybe<boolean>}
+                        )}
                     )>
                 )}
                 & { message: (
                     & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
-                    & { date: string}
-                    & { fallback: string}
                     & { id: string}
-                    & { message: Maybe<string>}
+                    & { date: string}
                     & { sender: (
                         & { __typename: 'User' }
-                        & { firstName: string}
                         & { id: string}
                         & { name: string}
+                        & { firstName: string}
                         & { photo: Maybe<string>}
                     )}
                     & { senderBadge: Maybe<(
                         & { __typename: 'UserBadge' }
                         & UserBadge
                     )>}
+                    & { message: Maybe<string>}
+                    & { fallback: string}
                     & Inline<'ServiceMessage' | 'StickerMessage',(
                         & { __typename: 'GeneralMessage' }
+                        & { id: string}
                         & { attachments: ((
                             & { __typename: 'MessageAttachmentFile' | 'MessageAttachmentPost' | 'MessageRichAttachment' }
-                            & { fallback: string}
                             & { id: string}
+                            & { fallback: string}
                             & Inline<'MessageAttachmentPost' | 'MessageRichAttachment',(
                                 & { __typename: 'MessageAttachmentFile' }
+                                & { id: string}
                                 & { fileId: string}
                                 & { fileMetadata: (
                                     & { __typename: 'FileMetadata' }
-                                    & { imageFormat: Maybe<string>}
                                     & { isImage: boolean}
+                                    & { imageFormat: Maybe<string>}
                                 )}
-                                & { id: string}
                             )>
                         ))[]}
-                        & { id: string}
                         & { quotedMessages: ((
                             & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
                             & { id: string}
@@ -3370,15 +3369,16 @@ export type MessagesSearch = (
                     )>
                 )}
             )}
+            & { cursor: string}
         ))[]}
         & { pageInfo: (
             & { __typename: 'PageInfo' }
-            & { currentPage: number}
             & { hasNextPage: boolean}
             & { hasPreviousPage: boolean}
             & { itemsCount: number}
-            & { openEnded: boolean}
+            & { currentPage: number}
             & { pagesCount: number}
+            & { openEnded: boolean}
         )}
     )}
 );
@@ -3391,39 +3391,39 @@ export type MyApps = (
 export type MyCards = (
     & { myCards: ((
         & { __typename: 'CreditCard' }
-        & { brand: string}
-        & { deleted: boolean}
-        & { expMonth: number}
-        & { expYear: number}
         & { id: string}
-        & { isDefault: boolean}
-        & { last4: string}
         & { pmid: string}
+        & { last4: string}
+        & { brand: string}
+        & { expYear: number}
+        & { expMonth: number}
+        & { isDefault: boolean}
+        & { deleted: boolean}
     ))[]}
 );
 export type MyNotificationCenter = (
     & { myNotificationCenter: (
         & { __typename: 'NotificationCenter' }
         & { id: string}
+        & { unread: number}
         & { state: (
             & { __typename: 'NotificationCenterUpdatesState' }
             & { state: Maybe<string>}
         )}
-        & { unread: number}
     )}
 );
 export interface MyNotificationsVariables {
-    before?: MaybeInput<string>;
     first: number;
+    before?: MaybeInput<string>;
 }
 export type MyNotifications = (
     & { myNotifications: (
         & { __typename: 'NotificationConnection' }
-        & { cursor: Maybe<string>}
         & { items: ((
             & { __typename: 'Notification' }
             & NotificationFragment
         ))[]}
+        & { cursor: Maybe<string>}
     )}
 );
 export type MyOrganizations = (
@@ -3439,11 +3439,11 @@ export type MyStickers = (
         & { packs: ((
             & { __typename: 'StickerPack' }
             & { id: string}
+            & { title: string}
             & { stickers: ((
                 & { __typename: 'ImageSticker' }
                 & StickerFragment
             ))[]}
-            & { title: string}
         ))[]}
     )}
 );
@@ -3453,22 +3453,22 @@ export type MySuccessfulInvitesCount = (
 export type MyWallet = (
     & { myWallet: (
         & { __typename: 'WalletAccount' }
-        & { balance: number}
         & { id: string}
+        & { balance: number}
         & { state: string}
-    )}
-    & { transactionsHistory: (
-        & { __typename: 'WalletTransactionConnection' }
-        & { cursor: Maybe<string>}
-        & { items: ((
-            & { __typename: 'WalletTransaction' }
-            & WalletTransactionFragment
-        ))[]}
     )}
     & { transactionsPending: ((
         & { __typename: 'WalletTransaction' }
         & WalletTransactionFragment
     ))[]}
+    & { transactionsHistory: (
+        & { __typename: 'WalletTransactionConnection' }
+        & { items: ((
+            & { __typename: 'WalletTransaction' }
+            & WalletTransactionFragment
+        ))[]}
+        & { cursor: Maybe<string>}
+    )}
 );
 export interface OauthContextVariables {
     code: string;
@@ -3479,23 +3479,23 @@ export type OauthContext = (
         & { app: (
             & { __typename: 'OauthApp' }
             & { id: string}
+            & { title: string}
+            & { scopes: Maybe<(OauthScope)[]>}
             & { image: Maybe<(
                 & { __typename: 'ImageRef' }
+                & { uuid: string}
                 & { crop: Maybe<(
                     & { __typename: 'ImageCrop' }
-                    & { h: number}
-                    & { w: number}
                     & { x: number}
                     & { y: number}
+                    & { w: number}
+                    & { h: number}
                 )>}
-                & { uuid: string}
             )>}
-            & { scopes: Maybe<(OauthScope)[]>}
-            & { title: string}
         )}
-        & { code: string}
-        & { redirectUrl: string}
         & { state: string}
+        & { redirectUrl: string}
+        & { code: string}
     )>}
 );
 export interface OnlineVariables {
@@ -3505,9 +3505,9 @@ export type Online = (
     & { user: (
         & { __typename: 'User' }
         & { id: string}
-        & { isBot: boolean}
-        & { lastSeen: Maybe<string>}
         & { online: boolean}
+        & { lastSeen: Maybe<string>}
+        & { isBot: boolean}
     )}
 );
 export interface OrganizationVariables {
@@ -3529,13 +3529,14 @@ export type OrganizationByPrefix = (
     )>}
 );
 export interface OrganizationMembersVariables {
-    after?: MaybeInput<string>;
-    first?: MaybeInput<number>;
     organizationId: string;
+    first?: MaybeInput<number>;
+    after?: MaybeInput<string>;
 }
 export type OrganizationMembers = (
     & { organization: (
         & { __typename: 'Organization' }
+        & { id: string}
         & { members: ((
             & { __typename: 'OrganizationJoinedMember' }
             & { role: OrganizationMemberRole}
@@ -3544,7 +3545,6 @@ export type OrganizationMembers = (
                 & UserShort
             )}
         ))[]}
-        & { id: string}
     )}
 );
 export interface OrganizationMembersShortVariables {
@@ -3584,18 +3584,18 @@ export type OrganizationPublicInvite = (
     )>}
 );
 export interface OrganizationPublicRoomsVariables {
-    after?: MaybeInput<string>;
-    first: number;
     organizationId: string;
+    first: number;
+    after?: MaybeInput<string>;
 }
 export type OrganizationPublicRooms = (
     & { organizationPublicRooms: (
         & { __typename: 'SharedRoomConnection' }
-        & { cursor: Maybe<string>}
         & { items: ((
             & { __typename: 'SharedRoom' }
             & SharedRoomView
         ))[]}
+        & { cursor: Maybe<string>}
     )}
 );
 export interface OrganizationWithoutMembersVariables {
@@ -3621,42 +3621,42 @@ export type Profile = (
     )>}
     & { profile: Maybe<(
         & { __typename: 'Profile' }
+        & { id: string}
+        & { firstName: Maybe<string>}
+        & { lastName: Maybe<string>}
+        & { photoRef: Maybe<(
+            & { __typename: 'ImageRef' }
+            & { uuid: string}
+            & { crop: Maybe<(
+                & { __typename: 'ImageCrop' }
+                & { x: number}
+                & { y: number}
+                & { w: number}
+                & { h: number}
+            )>}
+        )>}
+        & { email: Maybe<string>}
+        & { phone: Maybe<string>}
+        & { website: Maybe<string>}
         & { about: Maybe<string>}
+        & { location: Maybe<string>}
+        & { role: Maybe<string>}
+        & { linkedin: Maybe<string>}
+        & { instagram: Maybe<string>}
+        & { facebook: Maybe<string>}
+        & { twitter: Maybe<string>}
+        & { primaryOrganization: Maybe<(
+            & { __typename: 'Organization' }
+            & { id: string}
+            & { name: string}
+            & { membersCount: number}
+        )>}
+        & { joinedAt: Maybe<string>}
         & { invitedBy: Maybe<(
             & { __typename: 'User' }
             & { id: string}
             & { name: string}
         )>}
-        & { joinedAt: Maybe<string>}
-        & { role: Maybe<string>}
-        & { email: Maybe<string>}
-        & { facebook: Maybe<string>}
-        & { firstName: Maybe<string>}
-        & { id: string}
-        & { instagram: Maybe<string>}
-        & { lastName: Maybe<string>}
-        & { linkedin: Maybe<string>}
-        & { location: Maybe<string>}
-        & { phone: Maybe<string>}
-        & { photoRef: Maybe<(
-            & { __typename: 'ImageRef' }
-            & { crop: Maybe<(
-                & { __typename: 'ImageCrop' }
-                & { h: number}
-                & { w: number}
-                & { x: number}
-                & { y: number}
-            )>}
-            & { uuid: string}
-        )>}
-        & { primaryOrganization: Maybe<(
-            & { __typename: 'Organization' }
-            & { id: string}
-            & { membersCount: number}
-            & { name: string}
-        )>}
-        & { twitter: Maybe<string>}
-        & { website: Maybe<string>}
     )>}
 );
 export type ProfilePrefill = (
@@ -3697,22 +3697,22 @@ export type ResolvedInvite = (
         & { __typename: 'InviteInfo' | 'AppInvite' | 'RoomInvite' }
         & Inline<'AppInvite' | 'RoomInvite',(
             & { __typename: 'InviteInfo' }
+            & { id: string}
+            & { orgId: string}
+            & { title: string}
             & { creator: Maybe<(
                 & { __typename: 'User' }
                 & UserShort
             )>}
-            & { id: string}
-            & { orgId: string}
             & { organization: Maybe<(
                 & { __typename: 'Organization' }
+                & { id: string}
+                & { photo: Maybe<string>}
+                & { name: string}
+                & { membersCount: number}
                 & { about: Maybe<string>}
                 & { isCommunity: boolean}
-                & { id: string}
-                & { membersCount: number}
-                & { name: string}
-                & { photo: Maybe<string>}
             )>}
-            & { title: string}
         )>
         & Inline<'InviteInfo' | 'RoomInvite',(
             & { __typename: 'AppInvite' }
@@ -3732,39 +3732,39 @@ export type ResolvedInvite = (
                 & { __typename: 'SharedRoom' }
                 & Inline<never,(
                     & { __typename: 'SharedRoom' }
-                    & { description: Maybe<string>}
                     & { id: string}
-                    & { isChannel: boolean}
-                    & { isPremium: boolean}
                     & { kind: SharedRoomKind}
+                    & { isChannel: boolean}
+                    & { title: string}
+                    & { photo: string}
+                    & { socialImage: Maybe<string>}
+                    & { description: Maybe<string>}
+                    & { membership: SharedRoomMembershipStatus}
+                    & { membersCount: number}
+                    & { onlineMembersCount: number}
+                    & { previewMembers: ((
+                        & { __typename: 'User' }
+                        & { id: string}
+                        & { photo: Maybe<string>}
+                        & { name: string}
+                    ))[]}
                     & { matchmaking: Maybe<(
                         & { __typename: 'MatchmakingRoom' }
                         & { enabled: boolean}
                     )>}
-                    & { membersCount: number}
-                    & { membership: SharedRoomMembershipStatus}
-                    & { onlineMembersCount: number}
-                    & { photo: string}
+                    & { isPremium: boolean}
                     & { premiumPassIsActive: boolean}
-                    & { premiumSettings: Maybe<(
-                        & { __typename: 'PremiumChatSettings' }
-                        & { id: string}
-                        & { interval: WalletSubscriptionInterval}
-                        & { price: number}
-                    )>}
                     & { premiumSubscription: Maybe<(
                         & { __typename: 'WalletSubscription' }
                         & { id: string}
                         & { state: WalletSubscriptionState}
                     )>}
-                    & { previewMembers: ((
-                        & { __typename: 'User' }
+                    & { premiumSettings: Maybe<(
+                        & { __typename: 'PremiumChatSettings' }
                         & { id: string}
-                        & { name: string}
-                        & { photo: Maybe<string>}
-                    ))[]}
-                    & { socialImage: Maybe<string>}
-                    & { title: string}
+                        & { price: number}
+                        & { interval: WalletSubscriptionInterval}
+                    )>}
                 )>
             )}
         )>
@@ -3788,78 +3788,78 @@ export type RoomChat = (
         & Inline<'SharedRoom',(
             & { __typename: 'PrivateRoom' }
             & { id: string}
-            & { pinnedMessage: Maybe<(
-                & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
-                & FullMessage
-            )>}
-            & { settings: (
-                & { __typename: 'RoomUserNotificaionSettings' }
-                & { id: string}
-                & { mute: Maybe<boolean>}
-            )}
             & { user: (
                 & { __typename: 'User' }
                 & { id: string}
-                & { isBot: boolean}
                 & { name: string}
                 & { photo: Maybe<string>}
+                & { shortname: Maybe<string>}
                 & { primaryOrganization: Maybe<(
                     & { __typename: 'Organization' }
                     & { id: string}
                     & { name: string}
                 )>}
-                & { shortname: Maybe<string>}
+                & { isBot: boolean}
             )}
-        )>
-        & Inline<'PrivateRoom',(
-            & { __typename: 'SharedRoom' }
-            & { canEdit: boolean}
-            & { description: Maybe<string>}
-            & { id: string}
-            & { isChannel: boolean}
-            & { isPremium: boolean}
-            & { kind: SharedRoomKind}
-            & { matchmaking: Maybe<(
-                & { __typename: 'MatchmakingRoom' }
-                & MatchmakingRoomFragment
-            )>}
-            & { membersCount: number}
-            & { membership: SharedRoomMembershipStatus}
-            & { onlineMembersCount: number}
-            & { organization: Maybe<(
-                & { __typename: 'Organization' }
-                & OrganizationMedium
-            )>}
-            & { photo: string}
             & { pinnedMessage: Maybe<(
                 & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
                 & FullMessage
             )>}
-            & { premiumPassIsActive: boolean}
-            & { premiumSettings: Maybe<(
-                & { __typename: 'PremiumChatSettings' }
-                & { id: string}
-                & { interval: WalletSubscriptionInterval}
-                & { price: number}
-            )>}
-            & { premiumSubscription: Maybe<(
-                & { __typename: 'WalletSubscription' }
-                & { id: string}
-                & { state: WalletSubscriptionState}
-            )>}
-            & { previewMembers: ((
-                & { __typename: 'User' }
-                & { id: string}
-                & { name: string}
-                & { photo: Maybe<string>}
-            ))[]}
-            & { role: RoomMemberRole}
             & { settings: (
                 & { __typename: 'RoomUserNotificaionSettings' }
                 & { id: string}
                 & { mute: Maybe<boolean>}
             )}
+        )>
+        & Inline<'PrivateRoom',(
+            & { __typename: 'SharedRoom' }
+            & { id: string}
+            & { kind: SharedRoomKind}
             & { title: string}
+            & { membership: SharedRoomMembershipStatus}
+            & { isChannel: boolean}
+            & { role: RoomMemberRole}
+            & { canEdit: boolean}
+            & { photo: string}
+            & { membersCount: number}
+            & { organization: Maybe<(
+                & { __typename: 'Organization' }
+                & OrganizationMedium
+            )>}
+            & { matchmaking: Maybe<(
+                & { __typename: 'MatchmakingRoom' }
+                & MatchmakingRoomFragment
+            )>}
+            & { pinnedMessage: Maybe<(
+                & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
+                & FullMessage
+            )>}
+            & { settings: (
+                & { __typename: 'RoomUserNotificaionSettings' }
+                & { id: string}
+                & { mute: Maybe<boolean>}
+            )}
+            & { description: Maybe<string>}
+            & { onlineMembersCount: number}
+            & { previewMembers: ((
+                & { __typename: 'User' }
+                & { id: string}
+                & { photo: Maybe<string>}
+                & { name: string}
+            ))[]}
+            & { isPremium: boolean}
+            & { premiumPassIsActive: boolean}
+            & { premiumSubscription: Maybe<(
+                & { __typename: 'WalletSubscription' }
+                & { id: string}
+                & { state: WalletSubscriptionState}
+            )>}
+            & { premiumSettings: Maybe<(
+                & { __typename: 'PremiumChatSettings' }
+                & { id: string}
+                & { price: number}
+                & { interval: WalletSubscriptionInterval}
+            )>}
         )>
     )>}
 );
@@ -3869,17 +3869,17 @@ export interface RoomFeaturedMembersVariables {
 export type RoomFeaturedMembers = (
     & { roomFeaturedMembers: ((
         & { __typename: 'RoomMember' }
-        & { badge: Maybe<(
-            & { __typename: 'UserBadge' }
-            & UserBadge
-        )>}
-        & { canKick: boolean}
-        & { membership: SharedRoomMembershipStatus}
-        & { role: RoomMemberRole}
         & { user: (
             & { __typename: 'User' }
             & UserShort
         )}
+        & { role: RoomMemberRole}
+        & { membership: SharedRoomMembershipStatus}
+        & { canKick: boolean}
+        & { badge: Maybe<(
+            & { __typename: 'UserBadge' }
+            & UserBadge
+        )>}
     ))[]}
 );
 export interface RoomInviteInfoVariables {
@@ -3889,52 +3889,52 @@ export type RoomInviteInfo = (
     & { invite: Maybe<(
         & { __typename: 'RoomInvite' }
         & { id: string}
-        & { invitedByUser: (
-            & { __typename: 'User' }
-            & UserShort
-        )}
         & { room: (
             & { __typename: 'SharedRoom' }
             & Inline<never,(
                 & { __typename: 'SharedRoom' }
-                & { description: Maybe<string>}
                 & { id: string}
-                & { isChannel: boolean}
-                & { isPremium: boolean}
                 & { kind: SharedRoomKind}
-                & { matchmaking: Maybe<(
-                    & { __typename: 'MatchmakingRoom' }
-                    & { enabled: boolean}
-                )>}
-                & { membersCount: number}
-                & { membership: SharedRoomMembershipStatus}
-                & { onlineMembersCount: number}
+                & { isChannel: boolean}
+                & { title: string}
+                & { photo: string}
+                & { socialImage: Maybe<string>}
+                & { description: Maybe<string>}
                 & { organization: Maybe<(
                     & { __typename: 'Organization' }
                     & OrganizationShort
                 )>}
-                & { photo: string}
-                & { premiumPassIsActive: boolean}
-                & { premiumSettings: Maybe<(
-                    & { __typename: 'PremiumChatSettings' }
+                & { membership: SharedRoomMembershipStatus}
+                & { membersCount: number}
+                & { onlineMembersCount: number}
+                & { previewMembers: ((
+                    & { __typename: 'User' }
                     & { id: string}
-                    & { interval: WalletSubscriptionInterval}
-                    & { price: number}
+                    & { photo: Maybe<string>}
+                    & { name: string}
+                ))[]}
+                & { matchmaking: Maybe<(
+                    & { __typename: 'MatchmakingRoom' }
+                    & { enabled: boolean}
                 )>}
+                & { isPremium: boolean}
+                & { premiumPassIsActive: boolean}
                 & { premiumSubscription: Maybe<(
                     & { __typename: 'WalletSubscription' }
                     & { id: string}
                     & { state: WalletSubscriptionState}
                 )>}
-                & { previewMembers: ((
-                    & { __typename: 'User' }
+                & { premiumSettings: Maybe<(
+                    & { __typename: 'PremiumChatSettings' }
                     & { id: string}
-                    & { name: string}
-                    & { photo: Maybe<string>}
-                ))[]}
-                & { socialImage: Maybe<string>}
-                & { title: string}
+                    & { price: number}
+                    & { interval: WalletSubscriptionInterval}
+                )>}
             )>
+        )}
+        & { invitedByUser: (
+            & { __typename: 'User' }
+            & UserShort
         )}
     )>}
 );
@@ -3950,34 +3950,34 @@ export interface RoomMembersVariables {
 export type RoomMembers = (
     & { members: ((
         & { __typename: 'RoomMember' }
-        & { canKick: boolean}
-        & { membership: SharedRoomMembershipStatus}
-        & { role: RoomMemberRole}
         & { user: (
             & { __typename: 'User' }
             & UserShort
         )}
+        & { role: RoomMemberRole}
+        & { membership: SharedRoomMembershipStatus}
+        & { canKick: boolean}
     ))[]}
 );
 export interface RoomMembersPaginatedVariables {
-    after?: MaybeInput<string>;
-    first?: MaybeInput<number>;
     roomId: string;
+    first?: MaybeInput<number>;
+    after?: MaybeInput<string>;
 }
 export type RoomMembersPaginated = (
     & { members: ((
         & { __typename: 'RoomMember' }
-        & { badge: Maybe<(
-            & { __typename: 'UserBadge' }
-            & UserBadge
-        )>}
-        & { canKick: boolean}
-        & { membership: SharedRoomMembershipStatus}
-        & { role: RoomMemberRole}
         & { user: (
             & { __typename: 'User' }
             & UserShort
         )}
+        & { role: RoomMemberRole}
+        & { membership: SharedRoomMembershipStatus}
+        & { canKick: boolean}
+        & { badge: Maybe<(
+            & { __typename: 'UserBadge' }
+            & UserBadge
+        )>}
     ))[]}
 );
 export interface RoomMembersShortVariables {
@@ -4002,13 +4002,13 @@ export type RoomMembersTiny = (
             & { __typename: 'User' }
             & { id: string}
             & { name: string}
+            & { shortname: Maybe<string>}
             & { photo: Maybe<string>}
             & { primaryOrganization: Maybe<(
                 & { __typename: 'Organization' }
                 & { id: string}
                 & { name: string}
             )>}
-            & { shortname: Maybe<string>}
         )}
     ))[]}
 );
@@ -4023,6 +4023,7 @@ export type RoomOrganizationAdminMembers = (
             & { id: string}
             & { organization: Maybe<(
                 & { __typename: 'Organization' }
+                & { id: string}
                 & { adminMembers: ((
                     & { __typename: 'OrganizationJoinedMember' }
                     & { role: OrganizationMemberRole}
@@ -4031,7 +4032,6 @@ export type RoomOrganizationAdminMembers = (
                         & UserShort
                     )}
                 ))[]}
-                & { id: string}
             )>}
         )>
     )>}
@@ -4046,44 +4046,44 @@ export type RoomPico = (
     )>}
 );
 export interface RoomSearchVariables {
-    page?: MaybeInput<number>;
     query?: MaybeInput<string>;
     sort?: MaybeInput<string>;
+    page?: MaybeInput<number>;
 }
 export type RoomSearch = (
     & { items: (
         & { __typename: 'RoomConnection' }
         & { edges: ((
             & { __typename: 'RoomConnectionEdge' }
-            & { cursor: string}
             & { node: (
                 & { __typename: 'SharedRoom' }
                 & Inline<never,(
                     & { __typename: 'SharedRoom' }
                     & { id: string}
-                    & { isChannel: boolean}
                     & { kind: SharedRoomKind}
-                    & { membersCount: number}
+                    & { isChannel: boolean}
+                    & { title: string}
+                    & { photo: string}
                     & { membership: SharedRoomMembershipStatus}
+                    & { membersCount: number}
                     & { organization: Maybe<(
                         & { __typename: 'Organization' }
                         & { id: string}
-                        & { name: string}
                         & { photo: Maybe<string>}
+                        & { name: string}
                     )>}
-                    & { photo: string}
-                    & { title: string}
                 )>
             )}
+            & { cursor: string}
         ))[]}
         & { pageInfo: (
             & { __typename: 'PageInfo' }
-            & { currentPage: number}
             & { hasNextPage: boolean}
             & { hasPreviousPage: boolean}
             & { itemsCount: number}
-            & { openEnded: boolean}
+            & { currentPage: number}
             & { pagesCount: number}
+            & { openEnded: boolean}
         )}
     )}
 );
@@ -4093,8 +4093,8 @@ export interface RoomSuperVariables {
 export type RoomSuper = (
     & { roomSuper: Maybe<(
         & { __typename: 'RoomSuper' }
-        & { featured: boolean}
         & { id: string}
+        & { featured: boolean}
         & { listed: boolean}
     )>}
 );
@@ -4123,45 +4123,61 @@ export type Settings = (
     )}
 );
 export interface SharedMediaVariables {
-    after?: MaybeInput<string>;
     chatId: string;
-    first: number;
     mediaTypes: (SharedMediaType)[];
+    first: number;
+    after?: MaybeInput<string>;
 }
 export type SharedMedia = (
     & { sharedMedia: (
         & { __typename: 'MessageConnection' }
+        & { pageInfo: (
+            & { __typename: 'PageInfo' }
+            & { hasNextPage: boolean}
+            & { currentPage: number}
+        )}
         & { edges: ((
             & { __typename: 'MessageEdge' }
-            & { cursor: string}
             & { node: (
                 & { __typename: 'MessageWithChat' }
                 & { message: (
                     & { __typename: 'GeneralMessage' | 'ServiceMessage' | 'StickerMessage' }
                     & Inline<'ServiceMessage' | 'StickerMessage',(
                         & { __typename: 'GeneralMessage' }
+                        & { id: string}
+                        & { fallback: string}
+                        & { date: string}
+                        & { sender: (
+                            & { __typename: 'User' }
+                            & { id: string}
+                            & { name: string}
+                        )}
                         & { attachments: ((
                             & { __typename: 'MessageAttachmentFile' | 'MessageAttachmentPost' | 'MessageRichAttachment' }
                             & Inline<'MessageAttachmentPost' | 'MessageRichAttachment',(
                                 & { __typename: 'MessageAttachmentFile' }
-                                & { fallback: string}
-                                & { fileId: string}
+                                & { id: string}
                                 & { fileMetadata: (
                                     & { __typename: 'FileMetadata' }
-                                    & { imageFormat: Maybe<string>}
-                                    & { imageHeight: Maybe<number>}
-                                    & { imageWidth: Maybe<number>}
-                                    & { isImage: boolean}
-                                    & { mimeType: Maybe<string>}
                                     & { name: string}
+                                    & { isImage: boolean}
+                                    & { imageFormat: Maybe<string>}
+                                    & { mimeType: Maybe<string>}
+                                    & { imageWidth: Maybe<number>}
+                                    & { imageHeight: Maybe<number>}
                                     & { size: number}
                                 )}
                                 & { filePreview: Maybe<string>}
-                                & { id: string}
+                                & { fileId: string}
+                                & { fallback: string}
                             )>
                             & Inline<'MessageAttachmentFile' | 'MessageAttachmentPost',(
                                 & { __typename: 'MessageRichAttachment' }
                                 & { id: string}
+                                & { title: Maybe<string>}
+                                & { text: Maybe<string>}
+                                & { titleLink: Maybe<string>}
+                                & { imagePreview: Maybe<string>}
                                 & { image: Maybe<(
                                     & { __typename: 'Image' }
                                     & { url: string}
@@ -4170,7 +4186,6 @@ export type SharedMedia = (
                                     & { __typename: 'ImageFallback' }
                                     & { photo: string}
                                 )>}
-                                & { imagePreview: Maybe<string>}
                                 & { keyboard: Maybe<(
                                     & { __typename: 'MessageKeyboard' }
                                     & { buttons: (Maybe<((
@@ -4180,28 +4195,13 @@ export type SharedMedia = (
                                         & { url: Maybe<string>}
                                     ))[]>)[]}
                                 )>}
-                                & { text: Maybe<string>}
-                                & { title: Maybe<string>}
-                                & { titleLink: Maybe<string>}
                             )>
                         ))[]}
-                        & { date: string}
-                        & { fallback: string}
-                        & { id: string}
-                        & { sender: (
-                            & { __typename: 'User' }
-                            & { id: string}
-                            & { name: string}
-                        )}
                     )>
                 )}
             )}
+            & { cursor: string}
         ))[]}
-        & { pageInfo: (
-            & { __typename: 'PageInfo' }
-            & { currentPage: number}
-            & { hasNextPage: boolean}
-        )}
     )}
 );
 export interface SharedMediaCountersVariables {
@@ -4210,9 +4210,9 @@ export interface SharedMediaCountersVariables {
 export type SharedMediaCounters = (
     & { counters: (
         & { __typename: 'SharedMediaCounters' }
-        & { documents: number}
-        & { images: number}
         & { links: number}
+        & { images: number}
+        & { documents: number}
         & { videos: number}
     )}
 );
@@ -4226,13 +4226,14 @@ export type StickerPack = (
     )>}
 );
 export type SuggestedRooms = (
-    & { isDiscoverDone: boolean}
     & { suggestedRooms: ((
         & { __typename: 'PrivateRoom' | 'SharedRoom' }
         & Inline<'PrivateRoom',(
             & { __typename: 'SharedRoom' }
             & { id: string}
             & { kind: SharedRoomKind}
+            & { title: string}
+            & { photo: string}
             & { membersCount: number}
             & { membership: SharedRoomMembershipStatus}
             & { organization: Maybe<(
@@ -4241,10 +4242,9 @@ export type SuggestedRooms = (
                 & { name: string}
                 & { photo: Maybe<string>}
             )>}
-            & { photo: string}
-            & { title: string}
         )>
     ))[]}
+    & { isDiscoverDone: boolean}
 );
 export interface SuperAccountVariables {
     accountId: string;
@@ -4253,48 +4253,48 @@ export interface SuperAccountVariables {
 export type SuperAccount = (
     & { superAccount: (
         & { __typename: 'SuperAccount' }
-        & { published: boolean}
-        & { createdAt: Maybe<string>}
-        & { createdBy: Maybe<(
+        & { id: string}
+        & { title: string}
+        & { state: SuperAccountState}
+        & { members: ((
             & { __typename: 'User' }
-            & { id: string}
-            & { name: string}
-        )>}
+            & UserShort
+        ))[]}
         & { features: ((
             & { __typename: 'FeatureFlag' }
             & { id: string}
             & { key: string}
             & { title: string}
         ))[]}
-        & { id: string}
-        & { members: ((
-            & { __typename: 'User' }
-            & UserShort
-        ))[]}
         & { orgId: string}
-        & { state: SuperAccountState}
-        & { title: string}
+        & { createdAt: Maybe<string>}
+        & { createdBy: Maybe<(
+            & { __typename: 'User' }
+            & { id: string}
+            & { name: string}
+        )>}
+        & { published: boolean}
     )}
 );
 export type SuperAccounts = (
     & { superAccounts: ((
         & { __typename: 'SuperAccount' }
-        & { createdAt: Maybe<string>}
         & { id: string}
         & { orgId: string}
-        & { state: SuperAccountState}
         & { title: string}
+        & { state: SuperAccountState}
+        & { createdAt: Maybe<string>}
     ))[]}
 );
 export type SuperAdmins = (
     & { superAdmins: ((
         & { __typename: 'SuperAdmin' }
-        & { email: Maybe<string>}
         & { role: SuperAdminRole}
         & { user: (
             & { __typename: 'User' }
             & UserShort
         )}
+        & { email: Maybe<string>}
     ))[]}
 );
 export interface SuperBadgeInRoomVariables {
@@ -4311,6 +4311,21 @@ export interface UserVariables {
     userId: string;
 }
 export type User = (
+    & { user: (
+        & { __typename: 'User' }
+        & { chatsWithBadge: ((
+            & { __typename: 'UserChatWithBadge' }
+            & { chat: (
+                & { __typename: 'PrivateRoom' | 'SharedRoom' }
+                & RoomShort
+            )}
+            & { badge: (
+                & { __typename: 'UserBadge' }
+                & UserBadge
+            )}
+        ))[]}
+        & UserFull
+    )}
     & { conversation: Maybe<(
         & { __typename: 'PrivateRoom' | 'SharedRoom' }
         & Inline<'SharedRoom',(
@@ -4323,25 +4338,10 @@ export type User = (
             )}
         )>
     )>}
-    & { user: (
-        & { __typename: 'User' }
-        & { chatsWithBadge: ((
-            & { __typename: 'UserChatWithBadge' }
-            & { badge: (
-                & { __typename: 'UserBadge' }
-                & UserBadge
-            )}
-            & { chat: (
-                & { __typename: 'PrivateRoom' | 'SharedRoom' }
-                & RoomShort
-            )}
-        ))[]}
-        & UserFull
-    )}
 );
 export interface UserAvailableRoomsVariables {
-    after?: MaybeInput<string>;
     first: number;
+    after?: MaybeInput<string>;
     query?: MaybeInput<string>;
 }
 export type UserAvailableRooms = (
@@ -4349,13 +4349,14 @@ export type UserAvailableRooms = (
         & { __typename: 'RoomConnection' }
         & { edges: ((
             & { __typename: 'RoomConnectionEdge' }
-            & { cursor: string}
             & { node: (
                 & { __typename: 'SharedRoom' }
                 & Inline<never,(
                     & { __typename: 'SharedRoom' }
                     & { id: string}
                     & { kind: SharedRoomKind}
+                    & { title: string}
+                    & { photo: string}
                     & { membersCount: number}
                     & { membership: SharedRoomMembershipStatus}
                     & { organization: Maybe<(
@@ -4364,10 +4365,9 @@ export type UserAvailableRooms = (
                         & { name: string}
                         & { photo: Maybe<string>}
                     )>}
-                    & { photo: string}
-                    & { title: string}
                 )>
             )}
+            & { cursor: string}
         ))[]}
         & { pageInfo: (
             & { __typename: 'PageInfo' }
@@ -4381,15 +4381,15 @@ export interface UserPicoVariables {
 export type UserPico = (
     & { user: (
         & { __typename: 'User' }
-        & { firstName: string}
         & { id: string}
         & { name: string}
+        & { firstName: string}
         & { photo: Maybe<string>}
     )}
 );
 export interface UserStorageVariables {
-    keys: (string)[];
     namespace: string;
+    keys: (string)[];
 }
 export type UserStorage = (
     & { userStorage: ((
@@ -4405,9 +4405,9 @@ export interface UsersVariables {
 export type Users = (
     & { items: ((
         & { __typename: 'User' }
-        & { subtitle: Maybe<string>}
         & { id: string}
         & { title: string}
+        & { subtitle: Maybe<string>}
     ))[]}
 );
 
@@ -4429,12 +4429,12 @@ export type AddAppToChat = (
     )}
 );
 export interface AddCommentVariables {
-    fileAttachments?: MaybeInput<(FileAttachmentInput)[]>;
-    mentions?: MaybeInput<(MentionInput)[]>;
-    message?: MaybeInput<string>;
-    peerId: string;
     repeatKey?: MaybeInput<string>;
+    peerId: string;
+    message?: MaybeInput<string>;
     replyComment?: MaybeInput<string>;
+    mentions?: MaybeInput<(MentionInput)[]>;
+    fileAttachments?: MaybeInput<(FileAttachmentInput)[]>;
     spans?: MaybeInput<(MessageSpanInput)[]>;
 }
 export type AddComment = (
@@ -4445,9 +4445,9 @@ export type AddComment = (
 );
 export interface AddStickerCommentVariables {
     peerId: string;
-    repeatKey?: MaybeInput<string>;
-    replyComment?: MaybeInput<string>;
     stickerId: string;
+    replyComment?: MaybeInput<string>;
+    repeatKey?: MaybeInput<string>;
 }
 export type AddStickerComment = (
     & { addStickerComment: (
@@ -4471,8 +4471,8 @@ export type BetaNextDiscoverReset = (
     & { betaNextDiscoverReset: boolean}
 );
 export interface BetaSubmitNextDiscoverVariables {
-    excudedGroupsIds: (string)[];
     selectedTagsIds: (string)[];
+    excudedGroupsIds: (string)[];
 }
 export type BetaSubmitNextDiscover = (
     & { betaSubmitNextDiscover: Maybe<(
@@ -4523,10 +4523,10 @@ export type CommitCardSetupIntent = (
     )}
 );
 export interface ConferenceAnswerVariables {
-    answer: string;
     id: string;
     ownPeerId: string;
     peerId: string;
+    answer: string;
 }
 export type ConferenceAnswer = (
     & { peerConnectionAnswer: (
@@ -4535,10 +4535,10 @@ export type ConferenceAnswer = (
     )}
 );
 export interface ConferenceCandidateVariables {
-    candidate: string;
     id: string;
     ownPeerId: string;
     peerId: string;
+    candidate: string;
 }
 export type ConferenceCandidate = (
     & { peerConnectionCandidate: (
@@ -4552,11 +4552,11 @@ export interface ConferenceJoinVariables {
 export type ConferenceJoin = (
     & { conferenceJoin: (
         & { __typename: 'ConferenceJoinResult' }
+        & { peerId: string}
         & { conference: (
             & { __typename: 'Conference' }
             & ConferenceShort
         )}
-        & { peerId: string}
     )}
 );
 export interface ConferenceKeepAliveVariables {
@@ -4581,9 +4581,9 @@ export type ConferenceLeave = (
 );
 export interface ConferenceOfferVariables {
     id: string;
-    offer: string;
     ownPeerId: string;
     peerId: string;
+    offer: string;
 }
 export type ConferenceOffer = (
     & { peerConnectionOffer: (
@@ -4592,10 +4592,10 @@ export type ConferenceOffer = (
     )}
 );
 export interface CreateAppVariables {
-    about?: MaybeInput<string>;
     name: string;
-    photoRef?: MaybeInput<ImageRefInput>;
     shortname?: MaybeInput<string>;
+    photoRef?: MaybeInput<ImageRefInput>;
+    about?: MaybeInput<string>;
 }
 export type CreateApp = (
     & { createApp: (
@@ -4609,20 +4609,20 @@ export interface CreateCardSetupIntentVariables {
 export type CreateCardSetupIntent = (
     & { cardCreateSetupIntent: (
         & { __typename: 'CardSetupIntent' }
-        & { clientSecret: string}
         & { id: string}
+        & { clientSecret: string}
     )}
 );
 export interface CreateDepositIntentVariables {
-    amount: number;
     cardId: string;
+    amount: number;
     retryKey: string;
 }
 export type CreateDepositIntent = (
     & { cardDepositIntent: (
         & { __typename: 'PaymentIntent' }
-        & { clientSecret: string}
         & { id: string}
+        & { clientSecret: string}
     )}
 );
 export interface CreateOrganizationVariables {
@@ -4636,20 +4636,20 @@ export type CreateOrganization = (
     )}
 );
 export interface CreateUserProfileAndOrganizationVariables {
-    organization: CreateOrganizationInput;
     user: ProfileInput;
+    organization: CreateOrganizationInput;
 }
 export type CreateUserProfileAndOrganization = (
     & { alphaCreateUserProfileAndOrganization: (
         & { __typename: 'AlphaSignupData' }
+        & { user: Maybe<(
+            & { __typename: 'User' }
+            & UserFull
+        )>}
         & { organization: Maybe<(
             & { __typename: 'Organization' }
             & { id: string}
             & { name: string}
-        )>}
-        & { user: Maybe<(
-            & { __typename: 'User' }
-            & UserFull
         )>}
     )}
 );
@@ -4690,21 +4690,21 @@ export type Donate = (
     & { donateToUser: boolean}
 );
 export interface EditCommentVariables {
-    fileAttachments?: MaybeInput<(FileAttachmentInput)[]>;
     id: string;
-    mentions?: MaybeInput<(MentionInput)[]>;
     message?: MaybeInput<string>;
+    mentions?: MaybeInput<(MentionInput)[]>;
+    fileAttachments?: MaybeInput<(FileAttachmentInput)[]>;
     spans?: MaybeInput<(MessageSpanInput)[]>;
 }
 export type EditComment = (
     & { editComment: boolean}
 );
 export interface EditMessageVariables {
-    fileAttachments?: MaybeInput<(FileAttachmentInput)[]>;
-    mentions?: MaybeInput<(MentionInput)[]>;
-    message?: MaybeInput<string>;
     messageId: string;
+    message?: MaybeInput<string>;
     replyMessages?: MaybeInput<(string)[]>;
+    mentions?: MaybeInput<(MentionInput)[]>;
+    fileAttachments?: MaybeInput<(FileAttachmentInput)[]>;
     spans?: MaybeInput<(MessageSpanInput)[]>;
 }
 export type EditMessage = (
@@ -4729,13 +4729,13 @@ export interface FeatureFlagDisableVariables {
 export type FeatureFlagDisable = (
     & { superAccountFeatureRemove: (
         & { __typename: 'SuperAccount' }
+        & { id: string}
         & { features: ((
             & { __typename: 'FeatureFlag' }
             & { id: string}
             & { key: string}
             & { title: string}
         ))[]}
-        & { id: string}
     )}
 );
 export interface FeatureFlagEnableVariables {
@@ -4745,13 +4745,13 @@ export interface FeatureFlagEnableVariables {
 export type FeatureFlagEnable = (
     & { superAccountFeatureAdd: (
         & { __typename: 'SuperAccount' }
+        & { id: string}
         & { features: ((
             & { __typename: 'FeatureFlag' }
             & { id: string}
             & { key: string}
             & { title: string}
         ))[]}
-        & { id: string}
     )}
 );
 export interface FeedChannelAddWriterVariables {
@@ -4762,10 +4762,10 @@ export type FeedChannelAddWriter = (
     & { alphaFeedChannelAddEditor: boolean}
 );
 export interface FeedChannelCreateVariables {
-    about?: MaybeInput<string>;
-    global?: MaybeInput<boolean>;
-    photoRef?: MaybeInput<ImageRefInput>;
     title: string;
+    about?: MaybeInput<string>;
+    photoRef?: MaybeInput<ImageRefInput>;
+    global?: MaybeInput<boolean>;
 }
 export type FeedChannelCreate = (
     & { channel: (
@@ -4793,11 +4793,11 @@ export type FeedChannelUnsubscribe = (
     & { alphaFeedChannelUnsubscribe: boolean}
 );
 export interface FeedChannelUpdateVariables {
-    about?: MaybeInput<string>;
-    global?: MaybeInput<boolean>;
     id: string;
-    photoRef?: MaybeInput<ImageRefInput>;
     title: string;
+    about?: MaybeInput<string>;
+    photoRef?: MaybeInput<ImageRefInput>;
+    global?: MaybeInput<boolean>;
 }
 export type FeedChannelUpdate = (
     & { channel: (
@@ -4807,8 +4807,8 @@ export type FeedChannelUpdate = (
 );
 export interface FeedCreatePostVariables {
     channel: string;
-    repeatKey?: MaybeInput<string>;
     slides: (SlideInput)[];
+    repeatKey?: MaybeInput<string>;
 }
 export type FeedCreatePost = (
     & { post: (
@@ -4870,8 +4870,8 @@ export type MatchmakingConnect = (
     & { matchmakingConnect: boolean}
 );
 export interface MatchmakingProfileFillVariables {
-    input: MatchmakingProfileFillInput;
     peerId: string;
+    input: MatchmakingProfileFillInput;
 }
 export type MatchmakingProfileFill = (
     & { matchmakingProfileFill: (
@@ -4880,8 +4880,8 @@ export type MatchmakingProfileFill = (
     )}
 );
 export interface MatchmakingRoomSaveVariables {
-    input: MatchmakingRoomInput;
     peerId: string;
+    input: MatchmakingRoomInput;
 }
 export type MatchmakingRoomSave = (
     & { matchmakingRoomSave: (
@@ -4890,9 +4890,9 @@ export type MatchmakingRoomSave = (
     )}
 );
 export interface MediaAnswerVariables {
-    answer: string;
     id: string;
     peerId: string;
+    answer: string;
 }
 export type MediaAnswer = (
     & { mediaStreamAnswer: (
@@ -4900,18 +4900,18 @@ export type MediaAnswer = (
         & { id: string}
         & { streams: ((
             & { __typename: 'MediaStream' }
-            & { ice: (string)[]}
             & { id: string}
             & { peerId: Maybe<string>}
-            & { sdp: Maybe<string>}
             & { state: MediaStreamState}
+            & { sdp: Maybe<string>}
+            & { ice: (string)[]}
         ))[]}
     )}
 );
 export interface MediaCandidateVariables {
-    candidate: string;
     id: string;
     peerId: string;
+    candidate: string;
 }
 export type MediaCandidate = (
     & { mediaStreamCandidate: (
@@ -4919,11 +4919,11 @@ export type MediaCandidate = (
         & { id: string}
         & { streams: ((
             & { __typename: 'MediaStream' }
-            & { ice: (string)[]}
             & { id: string}
             & { peerId: Maybe<string>}
-            & { sdp: Maybe<string>}
             & { state: MediaStreamState}
+            & { sdp: Maybe<string>}
+            & { ice: (string)[]}
         ))[]}
     )}
 );
@@ -4937,11 +4937,11 @@ export type MediaFailed = (
         & { id: string}
         & { streams: ((
             & { __typename: 'MediaStream' }
-            & { ice: (string)[]}
             & { id: string}
             & { peerId: Maybe<string>}
-            & { sdp: Maybe<string>}
             & { state: MediaStreamState}
+            & { sdp: Maybe<string>}
+            & { ice: (string)[]}
         ))[]}
     )}
 );
@@ -4955,18 +4955,18 @@ export type MediaNegotiationNeeded = (
         & { id: string}
         & { streams: ((
             & { __typename: 'MediaStream' }
-            & { ice: (string)[]}
             & { id: string}
             & { peerId: Maybe<string>}
-            & { sdp: Maybe<string>}
             & { state: MediaStreamState}
+            & { sdp: Maybe<string>}
+            & { ice: (string)[]}
         ))[]}
     )}
 );
 export interface MediaOfferVariables {
     id: string;
-    offer: string;
     peerId: string;
+    offer: string;
 }
 export type MediaOffer = (
     & { mediaStreamOffer: (
@@ -4974,11 +4974,11 @@ export type MediaOffer = (
         & { id: string}
         & { streams: ((
             & { __typename: 'MediaStream' }
-            & { ice: (string)[]}
             & { id: string}
             & { peerId: Maybe<string>}
-            & { sdp: Maybe<string>}
             & { state: MediaStreamState}
+            & { sdp: Maybe<string>}
+            & { ice: (string)[]}
         ))[]}
     )}
 );
@@ -5009,8 +5009,8 @@ export type OrganizationActivateByInvite = (
     & { joinAppInvite: string}
 );
 export interface OrganizationAddMemberVariables {
-    organizationId: string;
     userIds?: MaybeInput<(string)[]>;
+    organizationId: string;
 }
 export type OrganizationAddMember = (
     & { alphaOrganizationMemberAdd: ((
@@ -5053,8 +5053,8 @@ export type OrganizationCreatePublicInvite = (
     )}
 );
 export interface OrganizationMemberRemoveVariables {
-    organizationId: string;
     userId: string;
+    organizationId: string;
 }
 export type OrganizationMemberRemove = (
     & { betaOrganizationMemberRemove: (
@@ -5099,66 +5099,66 @@ export interface ProfileCreateVariables {
 export type ProfileCreate = (
     & { profileCreate: (
         & { __typename: 'Profile' }
-        & { about: Maybe<string>}
-        & { email: Maybe<string>}
-        & { firstName: Maybe<string>}
         & { id: string}
+        & { firstName: Maybe<string>}
         & { lastName: Maybe<string>}
-        & { location: Maybe<string>}
-        & { phone: Maybe<string>}
         & { photoRef: Maybe<(
             & { __typename: 'ImageRef' }
+            & { uuid: string}
             & { crop: Maybe<(
                 & { __typename: 'ImageCrop' }
-                & { h: number}
-                & { w: number}
                 & { x: number}
                 & { y: number}
+                & { w: number}
+                & { h: number}
             )>}
-            & { uuid: string}
         )>}
+        & { email: Maybe<string>}
+        & { phone: Maybe<string>}
         & { website: Maybe<string>}
+        & { about: Maybe<string>}
+        & { location: Maybe<string>}
     )}
 );
 export interface ProfileUpdateVariables {
     input: ProfileInput;
-    inviteKey?: MaybeInput<string>;
     uid?: MaybeInput<string>;
+    inviteKey?: MaybeInput<string>;
 }
 export type ProfileUpdate = (
     & { profileUpdate: (
         & { __typename: 'Profile' }
+        & { id: string}
+        & { firstName: Maybe<string>}
+        & { lastName: Maybe<string>}
+        & { photoRef: Maybe<(
+            & { __typename: 'ImageRef' }
+            & { uuid: string}
+            & { crop: Maybe<(
+                & { __typename: 'ImageCrop' }
+                & { x: number}
+                & { y: number}
+                & { w: number}
+                & { h: number}
+            )>}
+        )>}
+        & { email: Maybe<string>}
+        & { phone: Maybe<string>}
+        & { website: Maybe<string>}
         & { about: Maybe<string>}
+        & { location: Maybe<string>}
+        & { role: Maybe<string>}
+        & { linkedin: Maybe<string>}
+        & { instagram: Maybe<string>}
+        & { facebook: Maybe<string>}
+        & { twitter: Maybe<string>}
+        & { primaryOrganizationId: Maybe<string>}
+        & { joinedAt: Maybe<string>}
         & { invitedBy: Maybe<(
             & { __typename: 'User' }
             & { id: string}
             & { name: string}
         )>}
-        & { joinedAt: Maybe<string>}
-        & { primaryOrganizationId: Maybe<string>}
-        & { role: Maybe<string>}
-        & { email: Maybe<string>}
-        & { facebook: Maybe<string>}
-        & { firstName: Maybe<string>}
-        & { id: string}
-        & { instagram: Maybe<string>}
-        & { lastName: Maybe<string>}
-        & { linkedin: Maybe<string>}
-        & { location: Maybe<string>}
-        & { phone: Maybe<string>}
-        & { photoRef: Maybe<(
-            & { __typename: 'ImageRef' }
-            & { crop: Maybe<(
-                & { __typename: 'ImageCrop' }
-                & { h: number}
-                & { w: number}
-                & { x: number}
-                & { y: number}
-            )>}
-            & { uuid: string}
-        )>}
-        & { twitter: Maybe<string>}
-        & { website: Maybe<string>}
     )}
 );
 export interface ReadNotificationVariables {
@@ -5199,14 +5199,14 @@ export interface RemoveCardVariables {
 export type RemoveCard = (
     & { cardRemove: (
         & { __typename: 'CreditCard' }
-        & { deleted: boolean}
         & { id: string}
+        & { deleted: boolean}
     )}
 );
 export interface ReportContentVariables {
     contentId: string;
-    message?: MaybeInput<string>;
     type: string;
+    message?: MaybeInput<string>;
 }
 export type ReportContent = (
     & { reportContent: Maybe<boolean>}
@@ -5219,53 +5219,53 @@ export type ReportOnline = (
     & { presenceReportOnline: string}
 );
 export interface RoomAddMembersVariables {
-    invites: (RoomInviteInput)[];
     roomId: string;
+    invites: (RoomInviteInput)[];
 }
 export type RoomAddMembers = (
     & { alphaRoomInvite: ((
         & { __typename: 'RoomMember' }
-        & { badge: Maybe<(
-            & { __typename: 'UserBadge' }
-            & UserBadge
-        )>}
-        & { canKick: boolean}
-        & { membership: SharedRoomMembershipStatus}
-        & { role: RoomMemberRole}
         & { user: (
             & { __typename: 'User' }
             & UserShort
         )}
+        & { role: RoomMemberRole}
+        & { membership: SharedRoomMembershipStatus}
+        & { canKick: boolean}
+        & { badge: Maybe<(
+            & { __typename: 'UserBadge' }
+            & UserBadge
+        )>}
     ))[]}
 );
 export interface RoomAlterFeaturedVariables {
-    featured: boolean;
     roomId: string;
+    featured: boolean;
 }
 export type RoomAlterFeatured = (
     & { betaRoomAlterFeatured: (
         & { __typename: 'RoomSuper' }
-        & { featured: boolean}
         & { id: string}
         & { listed: boolean}
+        & { featured: boolean}
     )}
 );
 export interface RoomAlterHiddenVariables {
-    listed: boolean;
     roomId: string;
+    listed: boolean;
 }
 export type RoomAlterHidden = (
     & { betaRoomAlterListed: (
         & { __typename: 'RoomSuper' }
-        & { featured: boolean}
         & { id: string}
         & { listed: boolean}
+        & { featured: boolean}
     )}
 );
 export interface RoomChangeRoleVariables {
-    newRole: RoomMemberRole;
     roomId: string;
     userId: string;
+    newRole: RoomMemberRole;
 }
 export type RoomChangeRole = (
     & { betaRoomChangeRole: (
@@ -5274,16 +5274,16 @@ export type RoomChangeRole = (
     )}
 );
 export interface RoomCreateVariables {
-    channel: boolean;
-    description?: MaybeInput<string>;
-    interval?: MaybeInput<WalletSubscriptionInterval>;
     kind: SharedRoomKind;
     members: (string)[];
     message?: MaybeInput<string>;
-    organizationId?: MaybeInput<string>;
-    photoRef?: MaybeInput<ImageRefInput>;
-    price?: MaybeInput<number>;
     title?: MaybeInput<string>;
+    description?: MaybeInput<string>;
+    photoRef?: MaybeInput<ImageRefInput>;
+    organizationId?: MaybeInput<string>;
+    channel: boolean;
+    price?: MaybeInput<number>;
+    interval?: MaybeInput<WalletSubscriptionInterval>;
 }
 export type RoomCreate = (
     & { room: (
@@ -5367,8 +5367,8 @@ export type RoomRenewInviteLink = (
     & { link: string}
 );
 export interface RoomSettingsUpdateVariables {
-    roomId: string;
     settings: RoomUserNotificaionSettingsInput;
+    roomId: string;
 }
 export type RoomSettingsUpdate = (
     & { betaRoomUpdateUserNotificationSettings: (
@@ -5378,8 +5378,8 @@ export type RoomSettingsUpdate = (
     )}
 );
 export interface RoomUpdateVariables {
-    input: RoomUpdateInput;
     roomId: string;
+    input: RoomUpdateInput;
 }
 export type RoomUpdate = (
     & { betaRoomUpdate: (
@@ -5390,17 +5390,17 @@ export type RoomUpdate = (
         )>
         & Inline<'PrivateRoom',(
             & { __typename: 'SharedRoom' }
-            & { description: Maybe<string>}
             & { id: string}
-            & { photo: string}
-            & { socialImage: Maybe<string>}
             & { title: string}
+            & { photo: string}
+            & { description: Maybe<string>}
+            & { socialImage: Maybe<string>}
         )>
     )}
 );
 export interface RoomsInviteUserVariables {
-    roomIds: (string)[];
     userId: string;
+    roomIds: (string)[];
 }
 export type RoomsInviteUser = (
     & { rooms: ((
@@ -5426,21 +5426,21 @@ export type RoomsJoin = (
 );
 export interface SendMessageVariables {
     chatId: string;
-    fileAttachments?: MaybeInput<(FileAttachmentInput)[]>;
-    mentions?: MaybeInput<(MentionInput)[]>;
     message?: MaybeInput<string>;
-    repeatKey?: MaybeInput<string>;
     replyMessages?: MaybeInput<(string)[]>;
+    mentions?: MaybeInput<(MentionInput)[]>;
+    fileAttachments?: MaybeInput<(FileAttachmentInput)[]>;
     spans?: MaybeInput<(MessageSpanInput)[]>;
+    repeatKey?: MaybeInput<string>;
 }
 export type SendMessage = (
     & { sentMessage: boolean}
 );
 export interface SendStickerVariables {
     chatId: string;
-    repeatKey?: MaybeInput<string>;
-    replyMessages?: MaybeInput<(string)[]>;
     stickerId: string;
+    replyMessages?: MaybeInput<(string)[]>;
+    repeatKey?: MaybeInput<string>;
 }
 export type SendSticker = (
     & { sendSticker: boolean}
@@ -5579,8 +5579,8 @@ export type SuperAccountSuspend = (
     )}
 );
 export interface SuperAdminAddVariables {
-    role: SuperAdminRole;
     userId: string;
+    role: SuperAdminRole;
 }
 export type SuperAdminAdd = (
     & { superAdminAdd: string}
@@ -5592,9 +5592,9 @@ export type SuperAdminRemove = (
     & { superAdminRemove: string}
 );
 export interface SuperBadgeCreateToRoomVariables {
-    name: string;
     roomId: string;
     userId: string;
+    name: string;
 }
 export type SuperBadgeCreateToRoom = (
     & { superBadgeCreateToRoom: (
@@ -5603,9 +5603,9 @@ export type SuperBadgeCreateToRoom = (
     )}
 );
 export interface SuperBadgeUnsetToRoomVariables {
-    badgeId: string;
     roomId: string;
     userId: string;
+    badgeId: string;
 }
 export type SuperBadgeUnsetToRoom = (
     & { superBadgeUnsetToRoom: boolean}
@@ -5661,8 +5661,8 @@ export type UpdateWelcomeMessage = (
     & { updateWelcomeMessage: boolean}
 );
 export interface UserStorageSetVariables {
-    data: (AppStorageValueInput)[];
     namespace: string;
+    data: (AppStorageValueInput)[];
 }
 export type UserStorageSet = (
     & { userStorageSet: ((
@@ -5712,8 +5712,8 @@ export type ChatWatch = (
     )}
 );
 export interface CommentWatchVariables {
-    fromState?: MaybeInput<string>;
     peerId: string;
+    fromState?: MaybeInput<string>;
 }
 export type CommentWatch = (
     & { event: Maybe<(
@@ -5749,11 +5749,11 @@ export type ConferenceMediaWatch = (
         & { id: string}
         & { streams: ((
             & { __typename: 'MediaStream' }
-            & { ice: (string)[]}
             & { id: string}
             & { peerId: Maybe<string>}
-            & { sdp: Maybe<string>}
             & { state: MediaStreamState}
+            & { sdp: Maybe<string>}
+            & { ice: (string)[]}
         ))[]}
     )}
 );
@@ -5767,16 +5767,16 @@ export type ConferenceWatch = (
     )}
 );
 export interface DebugEventsWatchVariables {
-    eventsCount: number;
     fromState?: MaybeInput<string>;
+    eventsCount: number;
     randomDelays: boolean;
     seed: string;
 }
 export type DebugEventsWatch = (
     & { debugEvents: (
         & { __typename: 'DebugEvent' }
-        & { key: string}
         & { seq: number}
+        & { key: string}
     )}
 );
 export interface DialogsWatchVariables {
@@ -5812,11 +5812,11 @@ export interface FeedUpdatesVariables {
 export type FeedUpdates = (
     & { event: (
         & { __typename: 'FeedUpdateContainer' }
-        & { state: string}
         & { updates: ((
             & { __typename: 'FeedItemReceived' | 'FeedItemUpdated' | 'FeedItemDeleted' | 'FeedRebuildNeeded' }
             & FeedUpdateFragment
         ))[]}
+        & { state: string}
     )}
 );
 export interface MyNotificationsCenterVariables {
@@ -5852,13 +5852,13 @@ export interface OnlineWatchVariables {
 export type OnlineWatch = (
     & { alphaSubscribeOnline: (
         & { __typename: 'OnlineEvent' }
-        & { timeout: number}
         & { user: (
             & { __typename: 'User' }
             & { id: string}
-            & { lastSeen: Maybe<string>}
             & { online: boolean}
+            & { lastSeen: Maybe<string>}
         )}
+        & { timeout: number}
     )}
 );
 export type SettingsWatch = (
@@ -5870,7 +5870,6 @@ export type SettingsWatch = (
 export type TypingsWatch = (
     & { typings: (
         & { __typename: 'TypingEvent' }
-        & { cancel: boolean}
         & { conversation: (
             & { __typename: 'PrivateRoom' | 'SharedRoom' }
             & Inline<'SharedRoom',(
@@ -5882,13 +5881,14 @@ export type TypingsWatch = (
                 & { id: string}
             )>
         )}
-        & { type: TypingType}
         & { user: (
             & { __typename: 'User' }
-            & { firstName: string}
             & { id: string}
             & { photo: Maybe<string>}
+            & { firstName: string}
         )}
+        & { cancel: boolean}
+        & { type: TypingType}
     )}
 );
 export interface WalletUpdatesVariables {

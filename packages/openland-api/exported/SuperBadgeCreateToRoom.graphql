@@ -1,6 +1,0 @@
-mutation SuperBadgeCreateToRoom($name: String!, $roomId: ID!, $userId: ID!) {
-  superBadgeCreateToRoom(name: $name, roomId: $roomId, userId: $userId) {
-    __typename
-    ...UserBadge
-  }
-}

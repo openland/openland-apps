@@ -1,0 +1,12 @@
+fragment CommunitySearch on Organization {
+    id
+    superAccountId
+    name
+    photo
+    isMine
+    about
+    status
+    featured: alphaFeatured
+    membersCount
+    roomsCount: betaPublicRoomsCount
+}

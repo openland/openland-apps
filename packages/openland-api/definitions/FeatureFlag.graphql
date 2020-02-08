@@ -1,0 +1,34 @@
+query FeatureFlags {
+    featureFlags {
+        id
+        key
+        title
+    }
+}
+mutation FeatureFlagAdd($key: String!, $title: String!) {
+    featureFlagAdd(key: $key, title: $title) {
+        id
+        key
+        title
+    }
+}
+mutation FeatureFlagEnable($accountId: ID!, $featureId: ID!) {
+    superAccountFeatureAdd(id: $accountId, featureId: $featureId) {
+        id
+        features {
+            id
+            key
+            title
+        }
+    }
+}
+mutation FeatureFlagDisable($accountId: ID!, $featureId: ID!) {
+    superAccountFeatureRemove(id: $accountId, featureId: $featureId) {
+        id
+        features {
+            id
+            key
+            title
+        }
+    }
+}

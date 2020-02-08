@@ -1,8 +1,0 @@
-mutation RoomAlterHidden($listed: Boolean!, $roomId: ID!) {
-  betaRoomAlterListed(listed: $listed, roomId: $roomId) {
-    __typename
-    featured
-    id
-    listed
-  }
-}

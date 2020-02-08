@@ -1,6 +1,0 @@
-fragment FeedPostSourceFragment on FeedPostSource {
-  __typename
-  ... on FeedChannel {
-    ...FeedChannelFull
-  }
-}

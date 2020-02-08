@@ -1,8 +1,0 @@
-mutation RoomAlterFeatured($featured: Boolean!, $roomId: ID!) {
-  betaRoomAlterFeatured(featured: $featured, roomId: $roomId) {
-    __typename
-    featured
-    id
-    listed
-  }
-}

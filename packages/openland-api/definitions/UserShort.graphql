@@ -1,0 +1,16 @@
+fragment UserShort on User {
+    id
+    name
+    firstName
+    lastName
+    photo
+    email
+    online
+    lastSeen
+    isYou
+    isBot
+    shortname
+    primaryOrganization {
+        ...OrganizationShort
+    }
+}

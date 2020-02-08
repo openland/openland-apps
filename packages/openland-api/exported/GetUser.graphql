@@ -1,8 +1,0 @@
-query GetUser($shortname: String!) {
-  user: alphaResolveShortName(shortname: $shortname) {
-    __typename
-    ... on User {
-      ...UserNano
-    }
-  }
-}

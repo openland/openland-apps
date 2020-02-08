@@ -1,3 +1,0 @@
-mutation FeedDeletePost($feedItemId: ID!) {
-  alphaDeleteFeedPost(feedItemId: $feedItemId)
-}

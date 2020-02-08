@@ -1,6 +1,0 @@
-mutation RoomKick($roomId: ID!, $userId: ID!) {
-  betaRoomKick(roomId: $roomId, userId: $userId) {
-    __typename
-    ...RoomFull
-  }
-}

@@ -8,9 +8,11 @@ internal val RoomOrganizationAdminMembersSelector = obj(
             field("room", "room", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         field("id", "id", notNull(scalar("ID"))),
                         field("organization", "organization", obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
                                 field("alphaOrganizationAdminMembers", "adminMembers", notNull(list(notNull(obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
                                         field("role", "role", notNull(scalar("String"))),
@@ -18,8 +20,7 @@ internal val RoomOrganizationAdminMembersSelector = obj(
                                                 field("__typename", "__typename", notNull(scalar("String"))),
                                                 fragment("User", UserShortSelector)
                                             )))
-                                    ))))),
-                                field("id", "id", notNull(scalar("ID")))
+                                    )))))
                             ))
                     ))
                 ))
@@ -27,6 +28,6 @@ internal val RoomOrganizationAdminMembersSelector = obj(
 val RoomOrganizationAdminMembers = object: OperationDefinition {
     override val name = "RoomOrganizationAdminMembers"
     override val kind = OperationKind.QUERY
-    override val body = "query RoomOrganizationAdminMembers(\$id:ID!){room(id:\$id){__typename ... on SharedRoom{id organization{__typename adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserShort}}id}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}"
+    override val body = "query RoomOrganizationAdminMembers(\$id:ID!){room(id:\$id){__typename ... on SharedRoom{__typename id organization{__typename id adminMembers:alphaOrganizationAdminMembers{__typename role user{__typename ...UserShort}}}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}"
     override val selector = RoomOrganizationAdminMembersSelector
 }

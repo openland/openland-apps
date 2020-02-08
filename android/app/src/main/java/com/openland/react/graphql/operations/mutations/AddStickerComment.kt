@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val AddStickerCommentSelector = obj(
-            field("betaAddStickerComment", "addStickerComment", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("repeatKey", refValue("repeatKey")), fieldValue("replyComment", refValue("replyComment")), fieldValue("stickerId", refValue("stickerId"))), notNull(obj(
+            field("betaAddStickerComment", "addStickerComment", arguments(fieldValue("peerId", refValue("peerId")), fieldValue("stickerId", refValue("stickerId")), fieldValue("replyComment", refValue("replyComment")), fieldValue("repeatKey", refValue("repeatKey"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID")))
                 )))
@@ -13,6 +13,6 @@ internal val AddStickerCommentSelector = obj(
 val AddStickerComment = object: OperationDefinition {
     override val name = "AddStickerComment"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation AddStickerComment(\$peerId:ID!,\$repeatKey:String,\$replyComment:ID,\$stickerId:ID!){addStickerComment:betaAddStickerComment(peerId:\$peerId,repeatKey:\$repeatKey,replyComment:\$replyComment,stickerId:\$stickerId){__typename id}}"
+    override val body = "mutation AddStickerComment(\$peerId:ID!,\$stickerId:ID!,\$replyComment:ID,\$repeatKey:String){addStickerComment:betaAddStickerComment(peerId:\$peerId,stickerId:\$stickerId,replyComment:\$replyComment,repeatKey:\$repeatKey){__typename id}}"
     override val selector = AddStickerCommentSelector
 }

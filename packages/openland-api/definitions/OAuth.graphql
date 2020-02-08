@@ -1,0 +1,21 @@
+query OauthContext($code: String!) {
+    context: oauthContext(code: $code) {
+        app {
+            id
+            title
+            scopes
+            image {
+                uuid
+                crop {
+                    x
+                    y
+                    w
+                    h
+                }
+            }
+        }
+        state
+        redirectUrl
+        code
+    }
+}

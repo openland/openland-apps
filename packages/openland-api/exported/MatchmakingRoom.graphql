@@ -1,6 +1,0 @@
-query MatchmakingRoom($peerId: ID!) {
-  matchmakingRoom(peerId: $peerId) {
-    __typename
-    ...MatchmakingRoomFragment
-  }
-}

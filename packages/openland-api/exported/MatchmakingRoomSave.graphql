@@ -1,6 +1,0 @@
-mutation MatchmakingRoomSave($input: MatchmakingRoomInput!, $peerId: ID!) {
-  matchmakingRoomSave(input: $input, peerId: $peerId) {
-    __typename
-    ...MatchmakingRoomFragment
-  }
-}

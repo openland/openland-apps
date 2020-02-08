@@ -1,3 +1,0 @@
-mutation UnSubscribeFromComments($peerId: ID!) {
-  unsubscribeFromComments(peerId: $peerId)
-}

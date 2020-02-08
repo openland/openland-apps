@@ -1,6 +1,0 @@
-query MatchmakingProfile($peerId: ID!, $uid: ID!) {
-  matchmakingProfile(peerId: $peerId, uid: $uid) {
-    __typename
-    ...MatchmakingProfileFragment
-  }
-}

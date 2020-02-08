@@ -1,7 +1,0 @@
-mutation CreateDepositIntent($amount: Int!, $cardId: ID!, $retryKey: String!) {
-  cardDepositIntent(amount: $amount, id: $cardId, retryKey: $retryKey) {
-    __typename
-    clientSecret
-    id
-  }
-}

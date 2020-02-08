@@ -8,57 +8,58 @@ internal val RoomInviteInfoSelector = obj(
             field("betaRoomInviteInfo", "invite", arguments(fieldValue("invite", refValue("invite"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
-                    field("invitedByUser", "invitedByUser", notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("User", UserShortSelector)
-                        ))),
                     field("room", "room", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             inline("SharedRoom", obj(
-                                field("description", "description", scalar("String")),
+                                field("__typename", "__typename", notNull(scalar("String"))),
                                 field("id", "id", notNull(scalar("ID"))),
-                                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
-                                field("isPremium", "isPremium", notNull(scalar("Boolean"))),
                                 field("kind", "kind", notNull(scalar("String"))),
-                                field("matchmaking", "matchmaking", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("enabled", "enabled", notNull(scalar("Boolean")))
-                                    )),
-                                field("membersCount", "membersCount", notNull(scalar("Int"))),
-                                field("membership", "membership", notNull(scalar("String"))),
-                                field("onlineMembersCount", "onlineMembersCount", notNull(scalar("Int"))),
+                                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                                field("title", "title", notNull(scalar("String"))),
+                                field("photo", "photo", notNull(scalar("String"))),
+                                field("socialImage", "socialImage", scalar("String")),
+                                field("description", "description", scalar("String")),
                                 field("organization", "organization", obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
                                         fragment("Organization", OrganizationShortSelector)
                                     )),
-                                field("photo", "photo", notNull(scalar("String"))),
-                                field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean"))),
-                                field("premiumSettings", "premiumSettings", obj(
+                                field("membership", "membership", notNull(scalar("String"))),
+                                field("membersCount", "membersCount", notNull(scalar("Int"))),
+                                field("onlineMembersCount", "onlineMembersCount", notNull(scalar("Int"))),
+                                field("previewMembers", "previewMembers", notNull(list(notNull(obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
                                         field("id", "id", notNull(scalar("ID"))),
-                                        field("interval", "interval", notNull(scalar("String"))),
-                                        field("price", "price", notNull(scalar("Int")))
+                                        field("photo", "photo", scalar("String")),
+                                        field("name", "name", notNull(scalar("String")))
+                                    ))))),
+                                field("matchmaking", "matchmaking", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("enabled", "enabled", notNull(scalar("Boolean")))
                                     )),
+                                field("isPremium", "isPremium", notNull(scalar("Boolean"))),
+                                field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean"))),
                                 field("premiumSubscription", "premiumSubscription", obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
                                         field("id", "id", notNull(scalar("ID"))),
                                         field("state", "state", notNull(scalar("String")))
                                     )),
-                                field("previewMembers", "previewMembers", notNull(list(notNull(obj(
+                                field("premiumSettings", "premiumSettings", obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
                                         field("id", "id", notNull(scalar("ID"))),
-                                        field("name", "name", notNull(scalar("String"))),
-                                        field("photo", "photo", scalar("String"))
-                                    ))))),
-                                field("socialImage", "socialImage", scalar("String")),
-                                field("title", "title", notNull(scalar("String")))
+                                        field("price", "price", notNull(scalar("Int"))),
+                                        field("interval", "interval", notNull(scalar("String")))
+                                    ))
                             ))
+                        ))),
+                    field("invitedByUser", "invitedByUser", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("User", UserShortSelector)
                         )))
                 ))
         )
 val RoomInviteInfo = object: OperationDefinition {
     override val name = "RoomInviteInfo"
     override val kind = OperationKind.QUERY
-    override val body = "query RoomInviteInfo(\$invite:String!){invite:betaRoomInviteInfo(invite:\$invite){__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{description id isChannel isPremium kind matchmaking{__typename enabled}membersCount membership onlineMembersCount organization{__typename ...OrganizationShort}photo premiumPassIsActive premiumSettings{__typename id interval price}premiumSubscription{__typename id state}previewMembers{__typename id name photo}socialImage title}}}}fragment UserShort on User{__typename email firstName id isBot isYou lastName lastSeen name online photo primaryOrganization{__typename ...OrganizationShort}shortname}fragment OrganizationShort on Organization{__typename about isCommunity:alphaIsCommunity id membersCount name photo shortname}"
+    override val body = "query RoomInviteInfo(\$invite:String!){invite:betaRoomInviteInfo(invite:\$invite){__typename id room{__typename ... on SharedRoom{__typename id kind isChannel title photo socialImage description organization{__typename ...OrganizationShort}membership membersCount onlineMembersCount previewMembers{__typename id photo name}matchmaking{__typename enabled}isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}}}invitedByUser{__typename ...UserShort}}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}"
     override val selector = RoomInviteInfoSelector
 }

@@ -5,100 +5,104 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val MessagesSearchSelector = obj(
-            field("messagesSearch", "messagesSearch", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort"))), notNull(obj(
+            field("messagesSearch", "messagesSearch", arguments(fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort")), fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("edges", "edges", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("cursor", "cursor", notNull(scalar("String"))),
                             field("node", "node", notNull(obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),
                                     field("chat", "chat", notNull(obj(
                                             field("__typename", "__typename", notNull(scalar("String"))),
                                             inline("PrivateRoom", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
                                                 field("id", "id", notNull(scalar("ID"))),
-                                                field("settings", "settings", notNull(obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        field("id", "id", notNull(scalar("ID"))),
-                                                        field("mute", "mute", scalar("Boolean"))
-                                                    ))),
                                                 field("user", "user", notNull(obj(
                                                         field("__typename", "__typename", notNull(scalar("String"))),
                                                         field("id", "id", notNull(scalar("ID"))),
                                                         field("name", "name", notNull(scalar("String"))),
                                                         field("photo", "photo", scalar("String"))
-                                                    )))
-                                            )),
-                                            inline("SharedRoom", obj(
-                                                field("canEdit", "canEdit", notNull(scalar("Boolean"))),
-                                                field("id", "id", notNull(scalar("ID"))),
-                                                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
-                                                field("kind", "kind", notNull(scalar("String"))),
-                                                field("membership", "membership", notNull(scalar("String"))),
-                                                field("photo", "photo", notNull(scalar("String"))),
-                                                field("role", "role", notNull(scalar("String"))),
+                                                    ))),
                                                 field("settings", "settings", notNull(obj(
                                                         field("__typename", "__typename", notNull(scalar("String"))),
                                                         field("id", "id", notNull(scalar("ID"))),
                                                         field("mute", "mute", scalar("Boolean"))
-                                                    ))),
-                                                field("title", "title", notNull(scalar("String")))
+                                                    )))
+                                            )),
+                                            inline("SharedRoom", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                field("id", "id", notNull(scalar("ID"))),
+                                                field("kind", "kind", notNull(scalar("String"))),
+                                                field("title", "title", notNull(scalar("String"))),
+                                                field("membership", "membership", notNull(scalar("String"))),
+                                                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                                                field("role", "role", notNull(scalar("String"))),
+                                                field("canEdit", "canEdit", notNull(scalar("Boolean"))),
+                                                field("photo", "photo", notNull(scalar("String"))),
+                                                field("settings", "settings", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
+                                                        field("mute", "mute", scalar("Boolean"))
+                                                    )))
                                             ))
                                         ))),
                                     field("message", "message", notNull(obj(
                                             field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("date", "date", notNull(scalar("Date"))),
-                                            field("fallback", "fallback", notNull(scalar("String"))),
                                             field("id", "id", notNull(scalar("ID"))),
-                                            field("message", "message", scalar("String")),
+                                            field("date", "date", notNull(scalar("Date"))),
                                             field("sender", "sender", notNull(obj(
                                                     field("__typename", "__typename", notNull(scalar("String"))),
-                                                    field("firstName", "firstName", notNull(scalar("String"))),
                                                     field("id", "id", notNull(scalar("ID"))),
                                                     field("name", "name", notNull(scalar("String"))),
+                                                    field("firstName", "firstName", notNull(scalar("String"))),
                                                     field("photo", "photo", scalar("String"))
                                                 ))),
                                             field("senderBadge", "senderBadge", obj(
                                                     field("__typename", "__typename", notNull(scalar("String"))),
                                                     fragment("UserBadge", UserBadgeSelector)
                                                 )),
+                                            field("message", "message", scalar("String")),
+                                            field("fallback", "fallback", notNull(scalar("String"))),
                                             inline("GeneralMessage", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                field("id", "id", notNull(scalar("ID"))),
                                                 field("attachments", "attachments", notNull(list(notNull(obj(
                                                         field("__typename", "__typename", notNull(scalar("String"))),
-                                                        field("fallback", "fallback", notNull(scalar("String"))),
                                                         field("id", "id", notNull(scalar("ID"))),
+                                                        field("fallback", "fallback", notNull(scalar("String"))),
                                                         inline("MessageAttachmentFile", obj(
+                                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                                            field("id", "id", notNull(scalar("ID"))),
                                                             field("fileId", "fileId", notNull(scalar("String"))),
                                                             field("fileMetadata", "fileMetadata", notNull(obj(
                                                                     field("__typename", "__typename", notNull(scalar("String"))),
-                                                                    field("imageFormat", "imageFormat", scalar("String")),
-                                                                    field("isImage", "isImage", notNull(scalar("Boolean")))
-                                                                ))),
-                                                            field("id", "id", notNull(scalar("ID")))
+                                                                    field("isImage", "isImage", notNull(scalar("Boolean"))),
+                                                                    field("imageFormat", "imageFormat", scalar("String"))
+                                                                )))
                                                         ))
                                                     ))))),
-                                                field("id", "id", notNull(scalar("ID"))),
                                                 field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
                                                         field("__typename", "__typename", notNull(scalar("String"))),
                                                         field("id", "id", notNull(scalar("ID")))
                                                     )))))
                                             ))
                                         )))
-                                )))
+                                ))),
+                            field("cursor", "cursor", notNull(scalar("String")))
                         ))))),
                     field("pageInfo", "pageInfo", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("currentPage", "currentPage", notNull(scalar("Int"))),
                             field("hasNextPage", "hasNextPage", notNull(scalar("Boolean"))),
                             field("hasPreviousPage", "hasPreviousPage", notNull(scalar("Boolean"))),
                             field("itemsCount", "itemsCount", notNull(scalar("Int"))),
-                            field("openEnded", "openEnded", notNull(scalar("Boolean"))),
-                            field("pagesCount", "pagesCount", notNull(scalar("Int")))
+                            field("currentPage", "currentPage", notNull(scalar("Int"))),
+                            field("pagesCount", "pagesCount", notNull(scalar("Int"))),
+                            field("openEnded", "openEnded", notNull(scalar("Boolean")))
                         )))
                 )))
         )
 val MessagesSearch = object: OperationDefinition {
     override val name = "MessagesSearch"
     override val kind = OperationKind.QUERY
-    override val body = "query MessagesSearch(\$after:String,\$first:Int!,\$query:String!,\$sort:String){messagesSearch(after:\$after,first:\$first,query:\$query,sort:\$sort){__typename edges{__typename cursor node{__typename chat{__typename ... on PrivateRoom{id settings{__typename id mute}user{__typename id name photo}}... on SharedRoom{canEdit id isChannel kind membership photo role settings{__typename id mute}title}}message{__typename date fallback id message sender{__typename firstName id name photo}senderBadge{__typename ...UserBadge}... on GeneralMessage{attachments{__typename fallback id ... on MessageAttachmentFile{fileId fileMetadata{__typename imageFormat isImage}id}}id quotedMessages{__typename id}}}}}pageInfo{__typename currentPage hasNextPage hasPreviousPage itemsCount openEnded pagesCount}}}fragment UserBadge on UserBadge{__typename id name verified}"
+    override val body = "query MessagesSearch(\$query:String!,\$sort:String,\$first:Int!,\$after:String){messagesSearch(query:\$query,sort:\$sort,first:\$first,after:\$after){__typename edges{__typename node{__typename chat{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename id kind title membership isChannel role canEdit photo settings{__typename id mute}}}message{__typename id date sender{__typename id name firstName photo}senderBadge{__typename ...UserBadge}message fallback ... on GeneralMessage{__typename id attachments{__typename id fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename isImage imageFormat}}}quotedMessages{__typename id}}}}cursor}pageInfo{__typename hasNextPage hasPreviousPage itemsCount currentPage pagesCount openEnded}}}fragment UserBadge on UserBadge{__typename id name verified}"
     override val selector = MessagesSearchSelector
 }

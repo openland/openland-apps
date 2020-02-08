@@ -1,0 +1,29 @@
+fragment ConferenceFull on Conference {
+    id
+    startTime
+    peers {
+        id
+        user {
+            ...UserShort
+        }
+        connection {
+            state
+            sdp
+            ice
+        }
+    }
+    iceServers {
+        urls
+        username
+        credential
+    }
+}
+fragment ConferenceShort on Conference {
+    id
+    startTime
+    iceServers {
+        urls
+        username
+        credential
+    }
+}

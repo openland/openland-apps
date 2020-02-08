@@ -1,3 +1,0 @@
-mutation SetTyping($conversationId: ID!, $type: TypingType!) {
-  typingSend(conversationId: $conversationId, type: $type)
-}

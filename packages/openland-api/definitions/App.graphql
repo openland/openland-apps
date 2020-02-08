@@ -1,0 +1,39 @@
+query MyApps {
+    apps: myApps {
+        ...AppFull
+    }
+}
+mutation CreateApp($name: String!, $shortname: String, $photoRef: ImageRefInput, $about: String) {
+    createApp(name: $name, shortname: $shortname, photoRef: $photoRef, about: $about) {
+        ...AppFull
+    }
+}
+mutation UpdateApp($appId: ID!, $input: AppProfileInput!) {
+    updateAppProfile(appId: $appId, input: $input) {
+        ...AppFull
+    }
+}
+mutation RefreshAppToken($appId: ID!) {
+    refreshAppToken(appId: $appId) {
+        ...AppFull
+    }
+}
+mutation AddAppToChat($appId: ID!, $chatId: ID!) {
+    addAppToChat(appId: $appId, chatId: $chatId) {
+        ...AppChat
+    }
+}
+query UserStorage($namespace: String!, $keys: [String!]!) {
+    userStorage(namespace: $namespace, keys: $keys) {
+        id
+        key
+        value
+    }
+}
+mutation UserStorageSet($namespace: String!, $data: [AppStorageValueInput!]!) {
+    userStorageSet(namespace: $namespace, data: $data) {
+        id
+        key
+        value
+    }
+}

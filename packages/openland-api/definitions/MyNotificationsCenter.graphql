@@ -1,0 +1,178 @@
+fragment NotificationFragment on Notification {
+    id
+    text
+    content {
+        ... on NewCommentNotification {
+            comment {
+                ...CommentEntryFragment
+            }
+            peer {
+                id
+                peerRoot {
+                    ... on CommentPeerRootMessage {
+                        message {
+                            ... on GeneralMessage {
+                                id
+                                fallback
+                                message
+                                sender {
+                                    id
+                                    name
+                                }
+                                senderBadge {
+                                    ...UserBadge
+                                }
+                            }
+                        }
+                        chat {
+                            ...RoomNano
+                        }
+                    }
+                    ... on CommentPeerRootFeedItem {
+                        item {
+                            ...FeedItemFull
+                        }
+                    }
+                }
+                subscription {
+                    type
+                }
+            }
+        }
+        ... on NewMatchmakingProfilesNotification {
+            room {
+                peer {
+                    ... on SharedRoom {
+                        ...RoomNano
+                    }
+                }
+            }
+            profiles {
+                ...MatchmakingProfileFragment
+            }
+        }
+    }
+}
+query MyNotifications($first: Int!, $before: ID) {
+    myNotifications(first: $first, before: $before) {
+        items {
+            ...NotificationFragment
+        }
+
+        cursor
+    }
+}
+fragment NotificationCenterUpdateFragment on NotificationCenterUpdate {
+    ... on NotificationReceived {
+        center {
+            id
+            unread
+        }
+        notification {
+            ...NotificationFragment
+        }
+    }
+    ... on NotificationUpdated {
+        center {
+            id
+            unread
+        }
+        notification {
+            ...NotificationFragment
+        }
+    }
+    ... on NotificationDeleted {
+        center {
+            id
+            unread
+        }
+        notification {
+            id
+        }
+    }
+    ... on NotificationRead {
+        center {
+            id
+            unread
+        }
+    }
+    ... on NotificationContentUpdated {
+        content {
+            ... on UpdatedNotificationContentComment {
+                peer {
+                    peerRoot {
+                        ... on CommentPeerRootMessage {
+                            message {
+                                ... on GeneralMessage {
+                                    id
+                                    fallback
+                                    message
+                                    sender {
+                                        id
+                                        name
+                                    }
+                                    senderBadge {
+                                        ...UserBadge
+                                    }
+                                }
+                            }
+                            chat {
+                                ...RoomNano
+                            }
+                        }
+                        ... on CommentPeerRootFeedItem {
+                            item {
+                                ...FeedItemFull
+                            }
+                        }
+                    }
+                    id
+                    subscription {
+                        type
+                    }
+                }
+                comment {
+                    ...CommentEntryFragment
+                }
+            }
+        }
+    }
+}
+subscription MyNotificationsCenter($state: String) {
+    event: notificationCenterUpdates(fromState: $state) {
+        ... on NotificationCenterUpdateSingle {
+            seq
+            state
+            update {
+                ...NotificationCenterUpdateFragment
+            }
+        }
+        ... on NotificationCenterUpdateBatch {
+            fromSeq
+            seq
+            state
+            updates {
+                ...NotificationCenterUpdateFragment
+            }
+        }
+    }
+}
+query MyNotificationCenter {
+    myNotificationCenter {
+        id
+        unread
+        state {
+            state
+        }
+    }
+}
+mutation MyNotificationCenterMarkSeqRead($seq: Int!) {
+    notificationCenterMarkSeqRead(toSeq: $seq)
+}
+mutation ReadNotification($notificationId: ID!) {
+    readNotification(notificationId: $notificationId) {
+        id
+        unread
+        # state
+    }
+}

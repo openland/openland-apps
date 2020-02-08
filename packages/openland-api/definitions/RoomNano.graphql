@@ -1,0 +1,29 @@
+fragment RoomSharedNano on SharedRoom {
+    id
+    kind
+    isChannel
+    title
+    roomPhoto: photo
+    membersCount
+    settings {
+        id
+        mute
+    }
+}
+fragment RoomNano on Room {
+    ... on PrivateRoom {
+        id
+        user {
+            id
+            name
+            photo
+        }
+        settings {
+            id
+            mute
+        }
+    }
+    ... on SharedRoom {
+        ...RoomSharedNano
+    }
+}

@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val BetaSubmitNextDiscoverSelector = obj(
-            field("betaSubmitNextDiscover", "betaSubmitNextDiscover", arguments(fieldValue("excudedGroupsIds", refValue("excudedGroupsIds")), fieldValue("selectedTagsIds", refValue("selectedTagsIds"))), obj(
+            field("betaSubmitNextDiscover", "betaSubmitNextDiscover", arguments(fieldValue("selectedTagsIds", refValue("selectedTagsIds")), fieldValue("excudedGroupsIds", refValue("excudedGroupsIds"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("tagGroup", "tagGroup", obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
@@ -16,6 +16,6 @@ internal val BetaSubmitNextDiscoverSelector = obj(
 val BetaSubmitNextDiscover = object: OperationDefinition {
     override val name = "BetaSubmitNextDiscover"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation BetaSubmitNextDiscover(\$excudedGroupsIds:[String!]!,\$selectedTagsIds:[String!]!){betaSubmitNextDiscover(excudedGroupsIds:\$excudedGroupsIds,selectedTagsIds:\$selectedTagsIds){__typename tagGroup{__typename id}}}"
+    override val body = "mutation BetaSubmitNextDiscover(\$selectedTagsIds:[String!]!,\$excudedGroupsIds:[String!]!){betaSubmitNextDiscover(selectedTagsIds:\$selectedTagsIds,excudedGroupsIds:\$excudedGroupsIds){__typename tagGroup{__typename id}}}"
     override val selector = BetaSubmitNextDiscoverSelector
 }

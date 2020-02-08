@@ -1,3 +1,0 @@
-mutation FeedReactionRemove($feedItemId: ID!, $reaction: MessageReactionType!) {
-  feedReactionRemove(feedItemId: $feedItemId, reaction: $reaction)
-}

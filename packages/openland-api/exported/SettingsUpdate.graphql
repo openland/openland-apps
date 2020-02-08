@@ -1,6 +1,0 @@
-mutation SettingsUpdate($input: UpdateSettingsInput) {
-  updateSettings(settings: $input) {
-    __typename
-    ...SettingsFull
-  }
-}

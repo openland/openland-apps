@@ -13,6 +13,6 @@ internal val ConferenceLeaveSelector = obj(
 val ConferenceLeave = object: OperationDefinition {
     override val name = "ConferenceLeave"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation ConferenceLeave(\$id:ID!,\$peerId:ID!){conferenceLeave(id:\$id,peerId:\$peerId){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename iceServers{__typename credential urls username}id startTime}"
+    override val body = "mutation ConferenceLeave(\$id:ID!,\$peerId:ID!){conferenceLeave(id:\$id,peerId:\$peerId){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}"
     override val selector = ConferenceLeaveSelector
 }

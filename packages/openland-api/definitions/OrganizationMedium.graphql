@@ -1,0 +1,12 @@
+fragment OrganizationMedium on Organization {
+    id
+    name
+    photo
+    isMine
+    membersCount
+    shortname
+    about
+    isOwner: betaIsOwner
+    isAdmin: betaIsAdmin
+    isCommunity: alphaIsCommunity
+}

@@ -1,3 +1,0 @@
-mutation RoomDeleteUrlAugmentation($messageId: ID!) {
-  betaMessageDeleteAugmentation(mid: $messageId)
-}

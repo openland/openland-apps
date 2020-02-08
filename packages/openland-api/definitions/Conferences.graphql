@@ -1,0 +1,137 @@
+query Conference($id: ID!) {
+    conference(id: $id) {
+        ...ConferenceFull
+    }
+}
+query ConferenceMedia($id: ID!, $peerId: ID!) {
+    conferenceMedia(id: $id, peerId: $peerId) {
+        id
+        streams {
+            id
+            peerId
+            state
+            sdp
+            ice
+        }
+        iceServers {
+            urls
+            username
+            credential
+        }
+    }
+}
+mutation ConferenceJoin($id: ID!) {
+    conferenceJoin(id: $id) {
+        peerId
+        conference {
+            ...ConferenceShort
+        }
+    }
+}
+mutation ConferenceLeave($id: ID!, $peerId: ID!) {
+    conferenceLeave(id: $id, peerId: $peerId) {
+        ...ConferenceShort
+    }
+}
+mutation ConferenceKeepAlive($id: ID!, $peerId: ID!) {
+    conferenceKeepAlive(id: $id, peerId: $peerId) {
+        ...ConferenceShort
+    }
+}
+mutation ConferenceOffer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $offer: String!) {
+    peerConnectionOffer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, offer: $offer) {
+        ...ConferenceShort
+    }
+}
+mutation ConferenceAnswer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $answer: String!) {
+    peerConnectionAnswer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, answer: $answer) {
+        ...ConferenceShort
+    }
+}
+mutation ConferenceCandidate($id: ID!, $ownPeerId: ID!, $peerId: ID!, $candidate: String!) {
+    peerConnectionCandidate(
+        id: $id
+        peerId: $peerId
+        ownPeerId: $ownPeerId
+        candidate: $candidate
+    ) {
+        ...ConferenceShort
+    }
+}
+mutation MediaOffer($id: ID!, $peerId: ID!, $offer: String!) {
+    mediaStreamOffer(id: $id, peerId: $peerId, offer: $offer) {
+        id
+        streams {
+            id
+            peerId
+            state
+            sdp
+            ice
+        }
+    }
+}
+mutation MediaNegotiationNeeded($id: ID!, $peerId: ID!) {
+    mediaStreamNegotiationNeeded(id: $id, peerId: $peerId) {
+        id
+        streams {
+            id
+            peerId
+            state
+            sdp
+            ice
+        }
+    }
+}
+mutation MediaFailed($id: ID!, $peerId: ID!) {
+    mediaStreamFailed(id: $id, peerId: $peerId) {
+        id
+        streams {
+            id
+            peerId
+            state
+            sdp
+            ice
+        }
+    }
+}
+mutation MediaAnswer($id: ID!, $peerId: ID!, $answer: String!) {
+    mediaStreamAnswer(id: $id, peerId: $peerId, answer: $answer) {
+        id
+        streams {
+            id
+            peerId
+            state
+            sdp
+            ice
+        }
+    }
+}
+mutation MediaCandidate($id: ID!, $peerId: ID!, $candidate: String!) {
+    mediaStreamCandidate(id: $id, peerId: $peerId, candidate: $candidate) {
+        id
+        streams {
+            id
+            peerId
+            state
+            sdp
+            ice
+        }
+    }
+}
+subscription ConferenceMediaWatch($id: ID!, $peerId: ID!) {
+    media: alphaConferenceMediaWatch(id: $id, peerId: $peerId) {
+        id
+        streams {
+            id
+            peerId
+            state
+            sdp
+            ice
+        }
+    }
+}
+subscription ConferenceWatch($id: ID!) {
+    alphaConferenceWatch(id: $id) {
+        ...ConferenceFull
+    }
+}

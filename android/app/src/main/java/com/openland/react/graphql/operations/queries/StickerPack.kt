@@ -13,6 +13,6 @@ internal val StickerPackSelector = obj(
 val StickerPack = object: OperationDefinition {
     override val name = "StickerPack"
     override val kind = OperationKind.QUERY
-    override val body = "query StickerPack(\$id:ID!){stickerPack(id:\$id){__typename ...StickerPackFragment}}fragment StickerPackFragment on StickerPack{__typename id stickers{__typename ...StickerFragment}title}fragment StickerFragment on Sticker{__typename ... on ImageSticker{id image{__typename uuid}pack{__typename id title}}}"
+    override val body = "query StickerPack(\$id:ID!){stickerPack(id:\$id){__typename ...StickerPackFragment}}fragment StickerPackFragment on StickerPack{__typename id title stickers{__typename ...StickerFragment}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}"
     override val selector = StickerPackSelector
 }

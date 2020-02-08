@@ -13,6 +13,6 @@ internal val AddAppToChatSelector = obj(
 val AddAppToChat = object: OperationDefinition {
     override val name = "AddAppToChat"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation AddAppToChat(\$appId:ID!,\$chatId:ID!){addAppToChat(appId:\$appId,chatId:\$chatId){__typename ...AppChat}}fragment AppChat on AppChat{__typename chat{__typename ... on PrivateRoom{id}... on SharedRoom{id}}webhook}"
+    override val body = "mutation AddAppToChat(\$appId:ID!,\$chatId:ID!){addAppToChat(appId:\$appId,chatId:\$chatId){__typename ...AppChat}}fragment AppChat on AppChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}webhook}"
     override val selector = AddAppToChatSelector
 }

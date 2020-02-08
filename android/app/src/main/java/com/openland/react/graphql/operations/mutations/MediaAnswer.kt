@@ -5,22 +5,22 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val MediaAnswerSelector = obj(
-            field("mediaStreamAnswer", "mediaStreamAnswer", arguments(fieldValue("answer", refValue("answer")), fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+            field("mediaStreamAnswer", "mediaStreamAnswer", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId")), fieldValue("answer", refValue("answer"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
                     field("streams", "streams", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("ice", "ice", notNull(list(notNull(scalar("String"))))),
                             field("id", "id", notNull(scalar("ID"))),
                             field("peerId", "peerId", scalar("ID")),
+                            field("state", "state", notNull(scalar("String"))),
                             field("sdp", "sdp", scalar("String")),
-                            field("state", "state", notNull(scalar("String")))
+                            field("ice", "ice", notNull(list(notNull(scalar("String")))))
                         )))))
                 )))
         )
 val MediaAnswer = object: OperationDefinition {
     override val name = "MediaAnswer"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation MediaAnswer(\$answer:String!,\$id:ID!,\$peerId:ID!){mediaStreamAnswer(answer:\$answer,id:\$id,peerId:\$peerId){__typename id streams{__typename ice id peerId sdp state}}}"
+    override val body = "mutation MediaAnswer(\$id:ID!,\$peerId:ID!,\$answer:String!){mediaStreamAnswer(id:\$id,peerId:\$peerId,answer:\$answer){__typename id streams{__typename id peerId state sdp ice}}}"
     override val selector = MediaAnswerSelector
 }

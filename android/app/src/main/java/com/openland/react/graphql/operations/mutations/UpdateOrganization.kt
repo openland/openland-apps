@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val UpdateOrganizationSelector = obj(
-            field("updateOrganizationProfile", "updateOrganizationProfile", arguments(fieldValue("id", refValue("organizationId")), fieldValue("input", refValue("input"))), notNull(obj(
+            field("updateOrganizationProfile", "updateOrganizationProfile", arguments(fieldValue("input", refValue("input")), fieldValue("id", refValue("organizationId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("OrganizationProfile", OrganizationProfileFullSelector)
                 )))
@@ -13,6 +13,6 @@ internal val UpdateOrganizationSelector = obj(
 val UpdateOrganization = object: OperationDefinition {
     override val name = "UpdateOrganization"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation UpdateOrganization(\$input:UpdateOrganizationProfileInput!,\$organizationId:ID){updateOrganizationProfile(id:\$organizationId,input:\$input){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename about editorial:alphaEditorial featured:alphaFeatured private:alphaIsPrivate published:alphaPublished facebook id instagram linkedin name photoRef{__typename crop{__typename h w x y}uuid}shortname twitter website websiteTitle}"
+    override val body = "mutation UpdateOrganization(\$input:UpdateOrganizationProfileInput!,\$organizationId:ID){updateOrganizationProfile(input:\$input,id:\$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename id name photoRef{__typename uuid crop{__typename x y w h}}website websiteTitle about twitter facebook linkedin instagram shortname private:alphaIsPrivate featured:alphaFeatured published:alphaPublished editorial:alphaEditorial}"
     override val selector = UpdateOrganizationSelector
 }

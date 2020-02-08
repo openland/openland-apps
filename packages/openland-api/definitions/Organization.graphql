@@ -1,0 +1,144 @@
+query MyOrganizations {
+    myOrganizations {
+        ...OrganizationShort
+
+        isPrimary: betaIsPrimary
+    }
+}
+mutation UpdateOrganization($input: UpdateOrganizationProfileInput!, $organizationId: ID) {
+    updateOrganizationProfile(input: $input, id: $organizationId) {
+        ...OrganizationProfileFull
+    }
+}
+query Organization($organizationId: ID!) {
+    organization(id: $organizationId) {
+        ...OrganizationFull
+    }
+}
+query OrganizationWithoutMembers($organizationId: ID!) {
+    organization(id: $organizationId) {
+        ...OrganizationWithoutMembersFragment
+    }
+}
+query OrganizationMembersShort($organizationId: ID!) {
+    organization(id: $organizationId) {
+        ...OrganizationWithoutMembersFragment
+        members: alphaOrganizationMembers {
+            user {
+                id
+            }
+        }
+    }
+}
+query OrganizationMembers($organizationId: ID!, $first: Int, $after: ID) {
+    organization(id: $organizationId) {
+        id
+        members: alphaOrganizationMembers(first: $first, after: $after) {
+            role
+            user {
+                ...UserShort
+            }
+        }
+    }
+}
+query OrganizationProfile($organizationId: ID!) {
+    organizationProfile(id: $organizationId) {
+        ...OrganizationProfileFull
+    }
+}
+query ExploreCommunity(
+    $query: String
+    $sort: String
+    $page: Int
+    $after: String
+    $featuredIfEmptyQuery: Boolean
+) {
+    items: alphaComunityPrefixSearch(
+        query: $query
+        sort: $sort
+        page: $page
+        first: 25
+        after: $after
+        featuredIfEmptyQuery: $featuredIfEmptyQuery
+    ) {
+        edges {
+            node {
+                ...CommunitySearch
+            }
+            cursor
+        }
+        pageInfo {
+            hasNextPage
+            hasPreviousPage
+            itemsCount
+            currentPage
+            pagesCount
+            openEnded
+        }
+    }
+}
+mutation OrganizationChangeMemberRole(
+    $memberId: ID!
+    $newRole: OrganizationMemberRole!
+    $organizationId: ID!
+) {
+    alphaOrganizationChangeMemberRole(
+        memberId: $memberId
+        newRole: $newRole
+        organizationId: $organizationId
+    )
+}
+mutation OrganizationAddMember($userIds: [ID!], $organizationId: ID!) {
+    alphaOrganizationMemberAdd(userIds: $userIds, organizationId: $organizationId) {
+        role
+        user {
+            ...UserShort
+        }
+    }
+}
+query OrganizationPublicInvite($organizationId: ID) {
+    publicInvite: alphaOrganizationInviteLink(organizationId: $organizationId) {
+        id
+        key
+        ttl
+    }
+}
+mutation OrganizationCreatePublicInvite($expirationDays: Int, $organizationId: ID) {
+    alphaOrganizationRefreshInviteLink(
+        expirationDays: $expirationDays
+        organizationId: $organizationId
+    ) {
+        id
+        key
+        ttl
+    }
+}
+mutation DeleteOrganization($organizationId: ID!) {
+    deleteOrganization(id: $organizationId)
+}
+mutation OrganizationMemberRemove($userId: ID!, $organizationId: ID!) {
+    betaOrganizationMemberRemove(userId: $userId, organizationId: $organizationId) {
+        id
+    }
+}
+mutation OrganizationActivateByInvite($inviteKey: String!) {
+    joinAppInvite(key: $inviteKey)
+}
+mutation OrganizationAlterPublished($organizationId: ID!, $published: Boolean!) {
+    alphaAlterPublished(id: $organizationId, published: $published) {
+        ...OrganizationSearch
+    }
+}
+query OrganizationByPrefix($query: String!) {
+    organizationByPrefix: alphaOrganizationByPrefix(query: $query) {
+        ...OrganizationSearch
+    }
+}
+query OrganizationPublicRooms($organizationId: ID!, $first: Int!, $after: ID) {
+    organizationPublicRooms(id: $organizationId, first: $first, after: $after) {
+        items {
+            ...SharedRoomView
+        }
+        cursor
+    }
+}

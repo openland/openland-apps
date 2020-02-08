@@ -1,0 +1,19 @@
+fragment CommentEntryFragment on CommentEntry {
+    id
+    deleted
+    comment: betaComment {
+        ...FullMessage
+        id
+    }
+    parentComment {
+        comment: betaComment {
+            id
+            message
+        }
+
+        id
+    }
+    childComments {
+        id
+    }
+}

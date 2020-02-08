@@ -1,0 +1,111 @@
+query Account {
+    me: me {
+        ...UserShort
+    }
+    sessionState: sessionState {
+        ...SessionStateFull
+    }
+    myPermissions {
+        roles
+    }
+}
+
+query AccountSettings {
+    me: me {
+        ...UserShort
+        audienceSize
+    }
+    organizations: myOrganizations {
+        ...OrganizationShort
+    }
+}
+
+subscription SettingsWatch {
+    watchSettings {
+        ...SettingsFull
+    }
+}
+
+mutation CreateOrganization($input: CreateOrganizationInput!) {
+    organization: createOrganization(input: $input) {
+        id
+        name
+    }
+}
+
+query AccountInviteInfo($inviteKey: String!) {
+    invite: alphaInviteInfo(key: $inviteKey) {
+        id
+        key
+        orgId
+        title
+        photo
+        joined
+        creator {
+            ...UserShort
+        }
+        forEmail
+        forName
+        membersCount
+        organization {
+            id
+            isCommunity: alphaIsCommunity
+            about
+        }
+    }
+}
+
+query AccountAppInviteInfo($inviteKey: String!) {
+    invite: alphaInviteInfo(key: $inviteKey) {
+        id
+        creator {
+            ...UserShort
+        }
+    }
+    appInvite: appInviteInfo(key: $inviteKey) {
+        inviter {
+            ...UserShort
+        }
+    }
+}
+query AccountAppInvite {
+    invite: appInvite
+}
+mutation AccountInviteJoin($inviteKey: String!) {
+    alphaJoinInvite(key: $inviteKey)
+}
+query ProfilePrefill {
+    prefill: myProfilePrefill {
+        firstName
+        lastName
+        picture
+    }
+}
+mutation CreateUserProfileAndOrganization(
+    $user: ProfileInput!
+    $organization: CreateOrganizationInput!
+) {
+    alphaCreateUserProfileAndOrganization(user: $user, organization: $organization) {
+        user {
+            ...UserFull
+        }
+        organization {
+            id
+            name
+        }
+    }
+}
+mutation ReportOnline($active: Boolean, $platform: String) {
+    presenceReportOnline(timeout: 5000, active: $active, platform: $platform)
+}
+mutation RegisterPush($endpoint: String!, $type: PushType!) {
+    registerPush(endpoint: $endpoint, type: $type)
+}
+query FetchPushSettings {
+    pushSettings {
+        webPushKey
+    }
+}
+mutation RegisterWebPush($endpoint: String!) {
+    registerWebPush(endpoint: $endpoint)
+}

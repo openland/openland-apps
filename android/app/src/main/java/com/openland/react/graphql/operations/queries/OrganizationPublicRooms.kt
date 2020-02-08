@@ -5,18 +5,18 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val OrganizationPublicRoomsSelector = obj(
-            field("organizationPublicRooms", "organizationPublicRooms", arguments(fieldValue("after", refValue("after")), fieldValue("first", refValue("first")), fieldValue("id", refValue("organizationId"))), notNull(obj(
+            field("organizationPublicRooms", "organizationPublicRooms", arguments(fieldValue("id", refValue("organizationId")), fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    field("cursor", "cursor", scalar("String")),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("SharedRoom", SharedRoomViewSelector)
-                        )))))
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
                 )))
         )
 val OrganizationPublicRooms = object: OperationDefinition {
     override val name = "OrganizationPublicRooms"
     override val kind = OperationKind.QUERY
-    override val body = "query OrganizationPublicRooms(\$after:ID,\$first:Int!,\$organizationId:ID!){organizationPublicRooms(after:\$after,first:\$first,id:\$organizationId){__typename cursor items{__typename ...SharedRoomView}}}fragment SharedRoomView on SharedRoom{__typename id membersCount photo photo title}"
+    override val body = "query OrganizationPublicRooms(\$organizationId:ID!,\$first:Int!,\$after:ID){organizationPublicRooms(id:\$organizationId,first:\$first,after:\$after){__typename items{__typename ...SharedRoomView}cursor}}fragment SharedRoomView on SharedRoom{__typename id title photo membersCount photo}"
     override val selector = OrganizationPublicRoomsSelector
 }

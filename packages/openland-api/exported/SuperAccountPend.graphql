@@ -1,7 +1,0 @@
-mutation SuperAccountPend($accountId: ID!) {
-  superAccountPend(id: $accountId) {
-    __typename
-    id
-    state
-  }
-}

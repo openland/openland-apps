@@ -1,0 +1,5 @@
+fragment UserBadge on UserBadge {
+    id
+    name
+    verified
+}

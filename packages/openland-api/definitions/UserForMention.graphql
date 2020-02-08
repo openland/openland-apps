@@ -1,0 +1,12 @@
+fragment UserForMention on User {
+    isYou
+    id
+    name
+    photo
+    shortname
+    isBot
+    primaryOrganization {
+        id
+        name
+    }
+}

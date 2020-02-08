@@ -1,0 +1,19 @@
+fragment StickerFragment on Sticker {
+    ... on ImageSticker {
+        id
+        pack {
+            id
+            title
+        }
+        image {
+            uuid
+        }
+    }
+}
+fragment StickerPackFragment on StickerPack {
+    id
+    title
+    stickers {
+        ...StickerFragment
+    }
+}

@@ -5,7 +5,7 @@ module.exports = {
         name: "Openland",
         localSchemaFile: "schema.json"
       },
-      includes: ['./packages/openland-api/*/*.ts']
+      includes: ['./packages/openland-api/definitions/**/*.graphql']
     }
   };
   

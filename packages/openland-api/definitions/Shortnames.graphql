@@ -1,0 +1,31 @@
+query ResolveShortName($shortname: String!) {
+    item: alphaResolveShortName(shortname: $shortname) {
+        ... on User {
+            id
+            isDeleted
+        }
+        ... on Organization {
+            id
+            isDeleted
+        }
+        ... on FeedChannel {
+            id
+        }
+    }
+}
+query GetUser($shortname: String!) {
+    user: alphaResolveShortName(shortname: $shortname) {
+        ... on User {
+            ...UserNano
+        }
+    }
+}
+mutation SetOrgShortname($organizationId: ID!, $shortname: String!) {
+    alphaSetOrgShortName(id: $organizationId, shortname: $shortname)
+}
+mutation SetUserShortname($shortname: String!) {
+    alphaSetUserShortName(shortname: $shortname)
+}
+mutation SetFeedChannelShortname($id: ID!, $shortname: String!) {
+    alphaSetFeedChannelShortName(id: $id, shortname: $shortname)
+}

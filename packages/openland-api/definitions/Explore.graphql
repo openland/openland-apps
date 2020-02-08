@@ -1,0 +1,180 @@
+query AvailableRooms($chatsQuery: String, $channelsQuery: String) {
+    availableChats: alphaUserAvailableRooms(first: 3, query: $chatsQuery) {
+        edges {
+            node {
+                ... on SharedRoom {
+                    id
+                    kind
+                    title
+                    photo
+                    membersCount
+                    membership
+                    organization {
+                        id
+                        name
+                        photo
+                    }
+                }
+            }
+            cursor
+        }
+    }
+    availableChannels: alphaUserAvailableRooms(first: 3, query: $channelsQuery) {
+        edges {
+            node {
+                ... on SharedRoom {
+                    id
+                    kind
+                    title
+                    photo
+                    membersCount
+                    membership
+                    organization {
+                        id
+                        name
+                        photo
+                    }
+                }
+            }
+            cursor
+        }
+    }
+    suggestedRooms: betaSuggestedRooms {
+        ... on SharedRoom {
+            id
+            kind
+            title
+            photo
+            membersCount
+            membership
+            organization {
+                id
+                name
+                photo
+            }
+        }
+    }
+    communities: alphaComunityPrefixSearch(first: 3) {
+        edges {
+            node {
+                ...CommunitySearch
+            }
+        }
+    }
+    isDiscoverDone: betaIsDiscoverDone
+}
+query SuggestedRooms {
+    suggestedRooms: betaSuggestedRooms {
+        ... on SharedRoom {
+            id
+            kind
+            title
+            photo
+            membersCount
+            membership
+            organization {
+                id
+                name
+                photo
+            }
+        }
+    }
+    isDiscoverDone: betaIsDiscoverDone
+}
+query UserAvailableRooms($first: Int!, $after: String, $query: String) {
+    alphaUserAvailableRooms(first: $first, after: $after, query: $query) {
+        edges {
+            node {
+                ... on SharedRoom {
+                    id
+                    kind
+                    title
+                    photo
+                    membersCount
+                    membership
+                    organization {
+                        id
+                        name
+                        photo
+                    }
+                }
+            }
+            cursor
+        }
+        pageInfo {
+            hasNextPage
+        }
+    }
+}
+query GlobalSearch($query: String!, $kinds: [GlobalSearchEntryKind!]) {
+    items: alphaGlobalSearch(query: $query, kinds: $kinds) {
+        ... on Organization {
+            id
+            name
+            about
+            photo
+            shortname
+            isCommunity: alphaIsCommunity
+        }
+        ... on User {
+            ...UserShort
+        }
+        ... on SharedRoom {
+            id
+            kind
+            title
+            canSendMessage
+            roomPhoto: photo
+            membersCount
+            membership
+            organization {
+                id
+                name
+                photo
+            }
+        }
+    }
+}
+query DiscoverNextPage($selectedTagsIds: [String!]!, $excudedGroupsIds: [String!]!) {
+    betaNextDiscoverPage: gammaNextDiscoverPage(
+        selectedTagsIds: $selectedTagsIds
+        excudedGroupsIds: $excudedGroupsIds
+    ) {
+        chats {
+            ...RoomShort
+        }
+        tagGroup {
+            id
+            title
+            subtitle
+            tags {
+                id
+                title
+            }
+        }
+    }
+}
+mutation BetaSubmitNextDiscover($selectedTagsIds: [String!]!, $excudedGroupsIds: [String!]!) {
+    betaSubmitNextDiscover(selectedTagsIds: $selectedTagsIds, excudedGroupsIds: $excudedGroupsIds) {
+        tagGroup {
+            id
+        }
+    }
+}
+mutation BetaDiscoverSkip($selectedTagsIds: [String!]!) {
+    betaDiscoverSkip(selectedTagsIds: $selectedTagsIds) {
+        tagGroup {
+            id
+        }
+    }
+}
+query DiscoverIsDone {
+    betaIsDiscoverDone
+}
+query DiscoverState {
+    dialogs(first: 1) {
+        items {
+            id
+        }
+    }
+}

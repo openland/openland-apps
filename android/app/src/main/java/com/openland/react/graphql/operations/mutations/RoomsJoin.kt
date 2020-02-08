@@ -8,9 +8,11 @@ internal val RoomsJoinSelector = obj(
             field("betaRoomsJoin", "join", arguments(fieldValue("roomsIds", refValue("roomsIds"))), notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     inline("PrivateRoom", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         field("id", "id", notNull(scalar("ID")))
                     )),
                     inline("SharedRoom", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
                         field("id", "id", notNull(scalar("ID")))
                     ))
                 )))))
@@ -18,6 +20,6 @@ internal val RoomsJoinSelector = obj(
 val RoomsJoin = object: OperationDefinition {
     override val name = "RoomsJoin"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation RoomsJoin(\$roomsIds:[ID!]!){join:betaRoomsJoin(roomsIds:\$roomsIds){__typename ... on PrivateRoom{id}... on SharedRoom{id}}}"
+    override val body = "mutation RoomsJoin(\$roomsIds:[ID!]!){join:betaRoomsJoin(roomsIds:\$roomsIds){__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}}"
     override val selector = RoomsJoinSelector
 }

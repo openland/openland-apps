@@ -1,3 +1,0 @@
-mutation SetOrgShortname($organizationId: ID!, $shortname: String!) {
-  alphaSetOrgShortName(id: $organizationId, shortname: $shortname)
-}

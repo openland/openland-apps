@@ -1,0 +1,11 @@
+fragment AppChat on AppChat {
+    chat {
+        ... on PrivateRoom {
+            id
+        }
+        ... on SharedRoom {
+            id
+        }
+    }
+    webhook
+}

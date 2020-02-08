@@ -1,6 +1,0 @@
-query Organization($organizationId: ID!) {
-  organization(id: $organizationId) {
-    __typename
-    ...OrganizationFull
-  }
-}

@@ -13,6 +13,6 @@ internal val OrganizationAlterPublishedSelector = obj(
 val OrganizationAlterPublished = object: OperationDefinition {
     override val name = "OrganizationAlterPublished"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation OrganizationAlterPublished(\$organizationId:ID!,\$published:Boolean!){alphaAlterPublished(id:\$organizationId,published:\$published){__typename ...OrganizationSearch}}fragment OrganizationSearch on Organization{__typename about featured:alphaFeatured members:alphaOrganizationMembers{__typename user{__typename id name photo}}id isMine membersCount name photo status superAccountId}"
+    override val body = "mutation OrganizationAlterPublished(\$organizationId:ID!,\$published:Boolean!){alphaAlterPublished(id:\$organizationId,published:\$published){__typename ...OrganizationSearch}}fragment OrganizationSearch on Organization{__typename id superAccountId name photo isMine about status membersCount featured:alphaFeatured members:alphaOrganizationMembers{__typename user{__typename id name photo}}}"
     override val selector = OrganizationAlterPublishedSelector
 }

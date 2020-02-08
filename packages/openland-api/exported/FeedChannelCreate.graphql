@@ -1,6 +1,0 @@
-mutation FeedChannelCreate($about: String, $global: Boolean, $photoRef: ImageRefInput, $title: String!) {
-  channel: alphaFeedCreateChannel(about: $about, global: $global, photoRef: $photoRef, title: $title) {
-    __typename
-    ...FeedChannelFull
-  }
-}
