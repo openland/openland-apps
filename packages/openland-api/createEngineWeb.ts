@@ -9,7 +9,8 @@ export const createEngineWeb = (endpoint: string, token?: string) => {
     } else {
         return new WebEngine(Definitions, {
             endpoint: endpoint,
-            connectionParams: { ['x-openland-token']: token }
+            connectionParams: { ['x-openland-token']: token },
+            protocol: 'openland'
         });
     }
 };
