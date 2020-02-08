@@ -7442,10 +7442,10 @@ fancy-log@^1.3.2:
     parse-node-version "^1.0.0"
     time-stamp "^1.0.0"
 
-fast-animations@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/fast-animations/-/fast-animations-1.0.2.tgz#03a1609fdd107b756621ec3ef6b66a9f906f42fb"
-  integrity sha512-Sz9cLC+3uPeBdXDllPq1AcHSJUBeFOa4YtP6+9b92c8wtRit2jYDWm7iur1L8sIaKG71+UQpCh6uQflqnO116A==
+fast-animations@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/fast-animations/-/fast-animations-1.0.4.tgz#9cc282c0f5624abaf085e0cb90f722e81c036745"
+  integrity sha512-l5Rf0l2kft1lM2ATb7KadFH64j9asKPFyZYPiKVNGlkC5/5lLQY9pX9BxiPCRsAHUQ7hw94bPaq+K3k2xN+BjQ==
 
 fast-deep-equal@^1.0.0:
   version "1.1.0"
