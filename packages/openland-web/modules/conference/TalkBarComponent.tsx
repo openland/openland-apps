@@ -84,8 +84,8 @@ export const CallPeer = (props: CallPeerProps) => {
                         dataArray.reduce((res, x) => {
                             return res + x;
                         }, 0) /
-                            dataArray.length /
-                            10,
+                        dataArray.length /
+                        10,
                     );
                     if (speaking < 0.2) {
                         speaking = 0;
@@ -131,7 +131,7 @@ export const CallPeer = (props: CallPeerProps) => {
                         callState.conversationId && ['connected', 'completed'].indexOf(s) === -1
                             ? 100
                             : 0
-                    }%)`;
+                        }%)`;
                 }
             });
             return () => {
@@ -198,9 +198,9 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
     let calls = React.useContext(MessengerContext).calls;
     let callState = calls.useState();
     let client = useClient();
-    let data = client.useWithoutLoaderConference(
+    let data = client.useConference(
         { id: props.chat.id },
-        { fetchPolicy: 'network-only' },
+        { fetchPolicy: 'network-only', suspense: false },
     );
     if (!data) {
         return null;
@@ -273,21 +273,21 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                                     callState.conversationId
                                         ? () => calls.leaveCall()
                                         : () =>
-                                              calls.joinCall(
-                                                  props.chat.id,
-                                                  props.chat.__typename === 'PrivateRoom',
-                                                  props.chat.__typename === 'PrivateRoom'
-                                                      ? {
-                                                            id: props.chat.user.id,
-                                                            title: props.chat.user.name,
-                                                            picture: props.chat.user.photo,
-                                                        }
-                                                      : {
-                                                            id: props.chat.id,
-                                                            title: props.chat.title,
-                                                            picture: props.chat.photo,
-                                                        },
-                                              )
+                                            calls.joinCall(
+                                                props.chat.id,
+                                                props.chat.__typename === 'PrivateRoom',
+                                                props.chat.__typename === 'PrivateRoom'
+                                                    ? {
+                                                        id: props.chat.user.id,
+                                                        title: props.chat.user.name,
+                                                        picture: props.chat.user.photo,
+                                                    }
+                                                    : {
+                                                        id: props.chat.id,
+                                                        title: props.chat.title,
+                                                        picture: props.chat.photo,
+                                                    },
+                                            )
                                 }
                             />
                         )}

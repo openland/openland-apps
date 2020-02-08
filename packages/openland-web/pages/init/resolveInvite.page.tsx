@@ -16,9 +16,7 @@ export const ResolveInviteComponent = () => {
 
     inviteKey = Cookie.get('x-openland-app-invite') || Cookie.get('x-openland-org-invite') || inviteKey;
 
-    const resolvedInvite = client.useWithoutLoaderResolvedInvite({
-        key: inviteKey,
-    });
+    const resolvedInvite = client.useResolvedInvite({ key: inviteKey }, { suspense: false });
 
     if (resolvedInvite && resolvedInvite.invite) {
         if (resolvedInvite.invite.__typename === 'AppInvite') {

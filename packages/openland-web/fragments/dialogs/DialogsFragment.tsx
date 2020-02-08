@@ -10,7 +10,7 @@ import { trackEvent } from 'openland-x-analytics';
 
 const DialogsCounter = React.memo(() => {
     const client = useClient();
-    let counter = client.useWithoutLoaderGlobalCounter({ fetchPolicy: 'cache-first' });
+    let counter = client.useGlobalCounter({ fetchPolicy: 'cache-first', suspense: false });
     if (counter) {
         return <UCounter value={counter.alphaNotificationCounter.unreadCount} />;
     }
@@ -19,7 +19,7 @@ const DialogsCounter = React.memo(() => {
 
 const BotActivator = () => {
     const client = useClient();
-    const discoverState = client.useWithoutLoaderDiscoverState();
+    const discoverState = client.useDiscoverState({ suspense: false });
     if (!discoverState) {
         return null;
     }

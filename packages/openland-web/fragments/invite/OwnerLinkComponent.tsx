@@ -154,9 +154,9 @@ export const OwnerLinkComponent = (props: OwnerLinkT) => {
         data = client.useRoomInviteLink({ roomId: props.id });
         link = data.link;
     } else if (props.id && props.isOrganization) {
-        data = client.useWithoutLoaderOrganizationPublicInvite({
+        data = client.useOrganizationPublicInvite({
             organizationId: props.id,
-        });
+        }, { suspense: false });
         link = data && data.publicInvite ? data.publicInvite.key : undefined;
     }
 

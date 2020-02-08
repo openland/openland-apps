@@ -334,11 +334,11 @@ const AutoCompleteComponent = React.memo(
             let matched: ListItem[] | undefined = [];
             if (props.groupId) {
                 let query = word && word.startsWith('@') ? word.substring(1) : undefined;
-                const mentions = client.useWithoutLoaderChatMentionSearch({
+                const mentions = client.useChatMentionSearch({
                     cid: props.groupId,
                     query,
                     first: 20,
-                });
+                }, { suspense: false });
 
                 if (mentions && query !== lastQuery.current) {
                     lastQuery.current = query;

@@ -22,7 +22,7 @@ const InvitesComponent = XMemo<PageProps>((props) => {
     const invite = getClient().useAccountAppInvite();
     let link = 'https://openland.com/invite/' + invite.invite;
 
-    let invitesCount = getClient().useWithoutLoaderMySuccessfulInvitesCount();
+    let invitesCount = getClient().useMySuccessfulInvitesCount({ suspense: false });
 
     let text = "Check out Openland, a new community app. There are groups for almost every industry, professional role, skill, interest, and location. Openland is a great place to make new friends, expand your professional network, learn from pros, and get help for any challenge you face. Invite to join:\n" + link;
     let shareCallback = React.useCallback(() => {

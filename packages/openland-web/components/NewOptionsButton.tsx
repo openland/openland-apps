@@ -37,8 +37,8 @@ const wrapperClass = css`
 
 export const NotificationsButton = React.memo(() => {
     const client = useClient();
-    const notificationsCenter = client.useWithoutLoaderMyNotificationCenter({
-        fetchPolicy: 'network-only',
+    const notificationsCenter = client.useMyNotificationCenter({
+        fetchPolicy: 'network-only', suspense: false
     });
 
     return (

@@ -54,7 +54,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let calls = getMessenger().engine.calls;
     let callsState = calls.useState();
 
-    let conference = getClient().useWithoutLoaderConference({ id: props.id });
+    let conference = getClient().useConference({ id: props.id }, { suspense: false });
     useWatchCall(conference && conference.conference.id);
 
     let onCallEnd = React.useCallback(() => {

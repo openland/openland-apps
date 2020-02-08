@@ -217,7 +217,7 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
     return (
         <div className={cx(SharedMediaContainerClass, layout === 'mobile' && SharedMediaContainerMobileClass, !props.active && SharedMediaContainerHiddenClass)}>
             {items}
-            {initialLoading && <XView flexGrow={1} height="calc(100vh - 56px)"><XLoader loading={true}/></XView>}
+            {initialLoading && <XView flexGrow={1} height="calc(100vh - 56px)"><XLoader loading={true} /></XView>}
             {isEmpty && <Placeholder mediaTypes={props.mediaTypes} />}
             {!initialLoading && !isEmpty && <Footer useCorners={props.mediaTypes.includes(SharedMediaType.IMAGE)}>
                 {loading && <XLoader loading={true} />}
@@ -251,7 +251,7 @@ const loadMoreThreshold = 200;
 export const SharedMediaFragment = () => {
     const client = useClient();
     const unicorn = useUnicorn();
-    const counters = client.useWithoutLoaderSharedMediaCounters({ chatId: unicorn.id });
+    const counters = client.useSharedMediaCounters({ chatId: unicorn.id }, { suspense: false });
     const [items, selected, setSelected] = useTabs([
         ['Media', counters && (counters.counters.images)],
         ['Files', counters && counters.counters.documents + counters.counters.videos],

@@ -25,9 +25,7 @@ const InviteInfoInner = (props: any) => {
         loading,
     }: InviteInfoInnerT & { data: any; loading: any } = props;
     const client = useClient();
-    const data = client.useWithoutLoaderRoomInviteInfo({
-        invite: props.variables.invite,
-    });
+    const data = client.useRoomInviteInfo({ invite: props.variables.invite }, { suspense: false });
 
     if (data === null) {
         return null;

@@ -12,9 +12,9 @@ import { UserInfoContext } from 'openland-web/components/UserInfo';
 export const JoinFragment = ({ inviteKey }: { inviteKey: string }) => {
     const client = useClient();
     const userCtx = React.useContext(UserInfoContext)!!;
-    const data = client.useWithoutLoaderAccountInviteInfo({
-        inviteKey,
-    });
+    const data = client.useAccountInviteInfo({
+        inviteKey
+    }, { suspense: false });
 
     if (userCtx.isLoggedIn && userCtx.isCompleted) {
         return <XPageRedirect path={`/mail/join/${inviteKey}`} />;

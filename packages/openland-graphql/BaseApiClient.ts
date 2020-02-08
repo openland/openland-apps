@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { GraphqlEngine, GraphqlQueryWatch, GraphqlQueryResult, QueryWatchParameters } from '@openland/spacex';
+import { GraphqlEngine, GraphqlQueryWatch, GraphqlQueryResult, QueryWatchParameters, OperationParameters, GraphqlSubscriptionHandler, GraphqlActiveSubscription } from '@openland/spacex';
 import { keyFromObject } from './utils/keyFromObject';
 import { ClientCacheContext } from './ClientCache';
 import { createLogger } from 'mental-log';
 
 const log = createLogger('API');
+
+export type ApiQueryWatchParameters = QueryWatchParameters & { suspense?: boolean };
 
 export class BaseApiClient {
     readonly engine: GraphqlEngine;
@@ -18,11 +20,37 @@ export class BaseApiClient {
         this.engine.close();
     }
 
+    protected query<TQuery, TVars>(query: string, vars: TVars, opts?: OperationParameters): Promise<TQuery> {
+        return this.engine.query<TQuery, TVars>(query, vars, opts);
+    }
+
     protected refetch<TQuery, TVars>(query: string, vars?: TVars): Promise<TQuery> {
         return this.engine.query<TQuery, TVars>(query, vars, { fetchPolicy: 'network-only' });
     }
 
-    protected useQuery<TQuery, TVars>(query: string, vars?: TVars, opts?: QueryWatchParameters): TQuery | null {
+    protected updateQuery<TQuery, TVars>(updater: (data: TQuery) => TQuery | null, query: string, vars?: TVars): Promise<boolean> {
+        return this.engine.updateQuery<TQuery, TVars>(updater, query, vars);
+    }
+
+    protected mutate<TQuery, TVars>(mutation: string, vars?: TVars): Promise<TQuery> {
+        return this.engine.mutate<TQuery, TVars>(mutation, vars);
+    }
+
+    protected subscribe<TSubscription, TVars>(handler: GraphqlSubscriptionHandler<TSubscription>, subscription: string, vars?: TVars): GraphqlActiveSubscription<TSubscription> {
+        return this.engine.subscribe<TSubscription, TVars>(handler, subscription, vars);
+    }
+
+    protected useQuery<TQuery, TVars>(query: string, vars: TVars, opts: ApiQueryWatchParameters & { suspense: false }): TQuery | null;
+    protected useQuery<TQuery, TVars>(query: string, vars: TVars, opts?: ApiQueryWatchParameters): TQuery;
+    protected useQuery<TQuery, TVars>(query: string, vars: TVars, opts?: ApiQueryWatchParameters): TQuery | null {
+        if (opts && opts.suspense === false) {
+            return this.useQueryNonSuspense(query, vars, opts);
+        } else {
+            return this.useQuerySuspense(query, vars, opts);
+        }
+    }
+
+    private useQueryNonSuspense<TQuery, TVars>(query: string, vars?: TVars, opts?: QueryWatchParameters): TQuery | null {
         // tslint:disable-next-line
         const [observableQuery, currentResult] = this.useObservableQuery<TQuery, TVars>(query, vars, opts);
 
@@ -35,7 +63,7 @@ export class BaseApiClient {
         }
     }
 
-    protected useQuerySuspense<TQuery, TVars>(query: string, vars?: TVars, opts?: QueryWatchParameters): TQuery {
+    private useQuerySuspense<TQuery, TVars>(query: string, vars?: TVars, opts?: QueryWatchParameters): TQuery {
         const [observableQuery, currentResult] = this.useObservableQuery<TQuery, TVars>(query, vars, opts);
         if (currentResult && currentResult.error) {
             throw currentResult.error!!;

@@ -38,7 +38,7 @@ interface AdminToolsProps {
 const AdminTools = (props: AdminToolsProps) => {
     const client = useClient();
 
-    const data = client.useWithoutLoaderSuperAccount({ accountId: props.id, viaOrgId: true });
+    const data = client.useSuperAccount({ accountId: props.id, viaOrgId: true }, { suspense: false });
 
     if (!(data && data.superAccount)) {
         return null;

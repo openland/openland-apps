@@ -305,7 +305,7 @@ export const showRemoveMemberFormModal = (accountId: string) => {
 const AddFeatureModal = ({ accountId, hide }: { accountId: string; hide: () => void }) => {
     const client = useClient();
     const form = useForm();
-    const data = client.useWithoutLoaderFeatureFlags();
+    const data = client.useFeatureFlags({ suspense: false });
 
     const featureIdField = useField(
         'input.featureId',
@@ -391,7 +391,7 @@ export const showAddFeatureModal = (accountId: string) => {
 const RemoveFeatureModal = ({ accountId, hide }: { accountId: string; hide: () => void }) => {
     const client = useClient();
     const form = useForm();
-    const data = client.useWithoutLoaderFeatureFlags();
+    const data = client.useFeatureFlags({ suspense: false });
 
     const featureIdField = useField(
         'input.featureId',

@@ -102,9 +102,9 @@ export const AcceptInvitePage = (props: {
 }) => {
     const client = useClient();
 
-    const resolvedInvite = client.useWithoutLoaderResolvedInvite({
+    const resolvedInvite = client.useResolvedInvite({
         key: props.variables.inviteKey,
-    });
+    }, { suspense: false });
 
     if (!resolvedInvite) {
         return <XLoader />;

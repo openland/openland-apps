@@ -7,7 +7,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { showCallModal } from 'openland-mobile/pages/main/Call';
 
 export const CallBarComponent = XMemo<{ id: string }>((props) => {
-    let conference = getClient().useWithoutLoaderConference({ id: props.id });
+    let conference = getClient().useConference({ id: props.id }, { suspense: false });
 
     useWatchCall(conference && conference.conference.id);
 

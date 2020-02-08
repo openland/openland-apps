@@ -126,7 +126,7 @@ class ScaffoldContent extends React.Component<{
 
 const NotificationCounter = () => {
     const client = useClient();
-    const data = client.useWithoutLoaderGlobalCounter();
+    const data = client.useGlobalCounter({ suspense: false });
     return (
         <>
             {data &&

@@ -132,7 +132,7 @@ const useJsDrag = (
                 if (container) {
                     container.style.transform = `translate(${positionShift[0]}px, ${
                         positionShift[1]
-                    }px)`;
+                        }px)`;
                 }
             }
             prev = current;
@@ -259,8 +259,8 @@ const Avatar = React.memo(
                             buffer.reduce((res, x) => {
                                 return res + x;
                             }, 0) /
-                                buffer.length /
-                                10,
+                            buffer.length /
+                            10,
                         );
                         if (val < 0.2) {
                             val = 0;
@@ -327,7 +327,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
     let callState = calls.useState();
 
     let client = useClient();
-    let data = client.useWithoutLoaderConference({ id: props.id }, { fetchPolicy: 'network-only' });
+    let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
 
     const onClick = React.useCallback(
         () => {
@@ -385,7 +385,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
 
 const CallFloatingInner = React.memo((props: { id: string; private: boolean }) => {
     let client = useClient();
-    let data = client.useWithoutLoaderConference({ id: props.id }, { fetchPolicy: 'network-only' });
+    let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
     if (!data) {
         return null;
     }

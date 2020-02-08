@@ -31,9 +31,9 @@ const AcceptInviteComponent = ({ inviteKey }: { inviteKey: string }) => {
 
 export const AppJoinComponent = ({ inviteKey }: { inviteKey: string }) => {
     const client = useClient();
-    const data = client.useWithoutLoaderAccountAppInviteInfo({
+    const data = client.useAccountAppInviteInfo({
         inviteKey,
-    });
+    }, { suspense: false });
 
     if (data === null) {
         return null;

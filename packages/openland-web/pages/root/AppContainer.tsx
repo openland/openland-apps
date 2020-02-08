@@ -10,7 +10,7 @@ import { UnicornSplash } from 'openland-x/XLoader';
 export const AppContainer = (props: { children: any }) => {
     const client = useClient();
 
-    const data = client.useWithoutLoaderAccount();
+    const data = client.useAccount({ suspense: false });
 
     if (!data) {
         return <UnicornSplash />;

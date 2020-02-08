@@ -5,7 +5,7 @@ import { useClient } from 'openland-web/utils/useClient';
 
 export const UserPopup = XMemo<{ id: string }>(props => {
     let client = useClient();
-    let profile = client.useWithoutLoaderUser({ userId: props.id });
+    let profile = client.useUser({ userId: props.id }, { suspense: false });
     if (!profile) {
         return <XLoader />;
     }

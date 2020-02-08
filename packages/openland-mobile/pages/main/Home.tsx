@@ -24,9 +24,9 @@ const DEFAULT_TAB = 1;
 export const Home = XMemo<PageProps>((props) => {
     const router = React.useContext(SRouterContext);
     const [tab, setTab] = React.useState(router && router.params && typeof router.params.initialTab === 'number' ? router.params.initialTab : DEFAULT_TAB);
-    const counter = getClient().useWithoutLoaderGlobalCounter();
-    const notificationsCounter = getClient().useWithoutLoaderMyNotificationCenter();
-    const discoverDone = getClient().useWithoutLoaderDiscoverIsDone();
+    const counter = getClient().useGlobalCounter({ suspense: false });
+    const notificationsCounter = getClient().useMyNotificationCenter({ suspense: false });
+    const discoverDone = getClient().useDiscoverIsDone({ suspense: false });
     // const showFeed = NON_PRODUCTION && !isPad;
     const showFeed = false;
 
