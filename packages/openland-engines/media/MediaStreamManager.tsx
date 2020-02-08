@@ -1,4 +1,4 @@
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 import { ConferenceMedia_conferenceMedia_streams, ConferenceMedia_conferenceMedia_iceServers } from 'openland-api/Types';
 import { AppPeerConnectionFactory } from 'openland-y-runtime/AppPeerConnection';
 import { AppPeerConnection, IceState } from 'openland-y-runtime-api/AppPeerConnectionApi';

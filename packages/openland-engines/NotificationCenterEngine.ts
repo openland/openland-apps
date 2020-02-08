@@ -1,6 +1,6 @@
 import { Queue } from 'openland-y-utils/Queue';
 import { MessengerEngine } from './MessengerEngine';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { convertMessage } from 'openland-engines/utils/convertMessage';
 import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';

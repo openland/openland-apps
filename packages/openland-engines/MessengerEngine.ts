@@ -12,7 +12,7 @@ import { TypingEngine, TypingsWatcher } from './messenger/Typings';
 import { OnlineWatcher } from './messenger/Online';
 import { DialogListEngine } from './messenger/DialogListEngine';
 import { OnlineReportEngine } from './OnlineReportEngine';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 import { CallsEngine } from './CallsEngine';
 import { createLogger } from 'mental-log';
 import { UserStorageEngine } from './UserStorageEngine';

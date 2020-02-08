@@ -2,7 +2,7 @@ import * as React from 'react';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { initPushEngine } from './PushEngine';
 import { useClient } from 'openland-web/utils/useClient';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 
 class PushEngineComponentMounted extends React.PureComponent<{
     client: OpenlandClient;

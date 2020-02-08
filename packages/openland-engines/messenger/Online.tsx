@@ -1,4 +1,4 @@
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 import { OnlineWatch } from 'openland-api/Types';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 

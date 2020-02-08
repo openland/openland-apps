@@ -1,5 +1,5 @@
 import { Track } from 'openland-engines/Tracking';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 import { NativeSpaceXClient } from 'openland-mobile/spacex/NativeSpaceXClient';
 import { createEngineRetry } from 'openland-api/createEngineRetry';
 

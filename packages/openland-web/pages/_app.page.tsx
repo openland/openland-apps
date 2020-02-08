@@ -65,7 +65,7 @@ import { XRouterProvider } from 'openland-x-routing/XRouterProvider';
 import { Routes } from '../routes';
 import { AppContainer } from './root/AppContainer';
 import { EnvironmentContext } from './root/EnvironmentContext';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 import { OpenlandApiContext } from 'openland-web/utils/OpenlandApiProvider';
 import { GQLClientContext } from 'openland-api/useClient';
 

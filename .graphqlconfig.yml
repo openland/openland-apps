@@ -1,0 +1,4 @@
+projects:
+  app:
+    schemaPath: ./schema.graphql
+    includes: ["packages/openland-api/definitions/**/*.graphql"]

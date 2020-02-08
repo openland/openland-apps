@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 
 export const GQLClientContext = React.createContext<OpenlandClient | undefined>(undefined);
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XSelectAsync } from 'openland-x/XSelect';
 import { useClient } from 'openland-web/utils/useClient';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 
 export function graphqlSelect(query: (query: string, src: OpenlandClient) => Promise<any>) {
     return (

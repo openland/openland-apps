@@ -1,7 +1,7 @@
 import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage, SharedMediaType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageAttachmentFile, SharedMedia_sharedMedia_edges_node_message_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/Types';
 import * as humanize from 'humanize';
 import { DataSource } from 'openland-y-utils/DataSource';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 
 export enum SharedMediaItemType {
     MEDIA = 'MEDIA',

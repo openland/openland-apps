@@ -11,7 +11,7 @@ import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder, MenuItem } from 'openland-web/components/unicorn/UPopperMenuBuilder';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 import { useClient } from 'openland-web/utils/useClient';
 
 interface MenuContentOpts {

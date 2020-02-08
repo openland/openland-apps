@@ -6,7 +6,7 @@ import { showWriteFirstMessageModal } from 'openland-web/fragments/onboarding/sh
 import { InviteFriendsComponent } from 'openland-web/fragments/account/SettingsInviteFriendsFragment';
 import { DownloadAppsComponent } from 'openland-web/fragments/account/SettingsDownloadAppsFragment';
 import { trackEvent } from 'openland-x-analytics';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 import { XViewRouter } from 'react-mental';
 
 const resolveInvite = async (url: string, client: OpenlandClient, router: XViewRouter, fallback?: () => void) => {

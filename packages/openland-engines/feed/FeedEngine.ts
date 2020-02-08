@@ -1,5 +1,5 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { createLogger } from 'mental-log';
 import * as Types from 'openland-api/Types';

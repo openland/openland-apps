@@ -37,7 +37,7 @@ import { findSpans } from 'openland-y-utils/findSpans';
 import { DropZone } from './DropZone';
 import { showAttachConfirm } from './AttachConfirm';
 import AlertBlanket from 'openland-x/AlertBlanket';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 import { ReloadFromEndButton } from './ReloadFromEndButton';
 import { showNoiseWarning } from './NoiseWarning';
 

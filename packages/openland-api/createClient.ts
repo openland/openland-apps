@@ -1,4 +1,4 @@
-import { OpenlandClient } from './OpenlandClient';
+import { OpenlandClient } from './spacex';
 import { GraphqlEngine } from '@openland/spacex';
 import { createEngineRetry } from './createEngineRetry';
 

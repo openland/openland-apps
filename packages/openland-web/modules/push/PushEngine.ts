@@ -3,7 +3,7 @@ import { AppNotifications } from 'openland-y-runtime/AppNotifications';
 import { AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';
 import { backoff } from 'openland-y-utils/timer';
 import { logger } from 'openland-y-utils/logger';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 
 const log = logger('push');
 

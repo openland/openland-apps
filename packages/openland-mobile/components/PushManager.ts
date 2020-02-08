@@ -3,7 +3,7 @@ import DeviceInfo from 'react-native-device-info';
 import { Platform } from 'react-native';
 import { backoff } from 'openland-y-utils/timer';
 import { AppNotifications } from 'openland-y-runtime-native/AppNotifications';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 import { PushType } from 'openland-api/Types';
 import { createLogger } from 'mental-log';
 

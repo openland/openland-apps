@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MessengerEngine } from './MessengerEngine';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 import { MediaSessionManager } from './media/MediaSessionManager';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 

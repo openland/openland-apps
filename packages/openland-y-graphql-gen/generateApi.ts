@@ -1,28 +1,78 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import * as graphql from 'graphql';
 
 function generateApi() {
-    let queries = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../openland-api/queries.json'), 'utf-8')) as {
-        operations: {
-            filePath: string,
-            operationName: string,
-            operationType: 'query' | 'mutation' | 'subscription',
-            variables: any[]
-        }[],
-        fragments: {
-            fragmentName: string,
-            filePath: string
-        }[]
+
+    var walk = function (dir: string, ext: string) {
+        var results: string[] = [];
+        var list = fs.readdirSync(dir);
+        list.forEach(function (file: string) {
+            file = dir + '/' + file;
+            var stat = fs.statSync(file);
+            if (stat && stat.isDirectory()) {
+                /* Recurse into a subdirectory */
+                results = results.concat(walk(file, ext));
+            } else {
+                /* Is a file */
+                if (file.endsWith(ext)) {
+                    results.push(file);
+                }
+            }
+        });
+        return results;
     };
 
-    function forEachQuery(callback: (id: string, name: string, hasVariables: boolean) => void) {
-        for (let op of queries.operations) {
-            if (op.operationType === 'query') {
-                let name = op.operationName;
-                if (name.endsWith('Query')) {
-                    name = name.substring(0, name.length - 'Query'.length);
+    let definitionFiles = walk(path.resolve(__dirname, '../openland-api/definitions/'), '.graphql');
+    let definitions: string = '';
+    for (let f of definitionFiles) {
+        definitions += fs.readFileSync(f, 'utf-8') + '\n';
+    }
+
+    let doc = graphql.parse(definitions);
+
+    // let queries = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../openland-api/queries.json'), 'utf-8')) as {
+    //     operations: {
+    //         filePath: string,
+    //         operationName: string,
+    //         operationType: 'query' | 'mutation' | 'subscription',
+    //         variables: any[]
+    //     }[],
+    //     fragments: {
+    //         fragmentName: string,
+    //         filePath: string
+    //     }[]
+    // };
+
+    function forEachMutation(callback: (name: string, hasVariables: boolean) => void) {
+        for (let op of doc.definitions) {
+            if (op.kind === 'OperationDefinition') {
+                let name = op.name!.value;
+                if (op.operation === 'mutation') {
+                    callback(name, op.variableDefinitions && op.variableDefinitions.length > 0 || false);
                 }
-                callback(op.operationName, name, op.variables.length > 0);
+            }
+        }
+    }
+
+    function forEachQuery(callback: (name: string, hasVariables: boolean) => void) {
+        for (let op of doc.definitions) {
+            if (op.kind === 'OperationDefinition') {
+                let name = op.name!.value;
+                if (op.operation === 'query') {
+                    callback(name, op.variableDefinitions && op.variableDefinitions.length > 0 || false);
+                }
+            }
+        }
+    }
+
+    function forEachSubscription(callback: (name: string, hasVariables: boolean) => void) {
+        for (let op of doc.definitions) {
+            if (op.kind === 'OperationDefinition') {
+                let name = op.name!.value;
+                if (op.operation === 'subscription') {
+                    callback(name, op.variableDefinitions && op.variableDefinitions.length > 0 || false);
+                }
             }
         }
     }
@@ -38,104 +88,90 @@ function generateApi() {
     output += '    }\n';
 
     // Queries
-    forEachQuery((id, name, hasVariables) => {
+    forEachQuery((name, hasVariables) => {
         if (hasVariables) {
             output += '    async query' + name + '(variables: Types.' + name + 'Variables, opts?: OperationParameters): Promise<Types.' + name + '> {\n';
-            output += '        return this.query(\'' + id + '\', variables, opts);\n';
+            output += '        return this.query(\'' + name + '\', variables, opts);\n';
             output += '    }\n';
         } else {
             output += '    async query' + name + '(opts?: OperationParameters): Promise<Types.' + name + '> {\n';
-            output += '        return this.query(\'' + id + '\', undefined, opts);\n';
+            output += '        return this.query(\'' + name + '\', undefined, opts);\n';
             output += '    }\n';
         }
     });
 
     // Refetch
-    forEachQuery((id, name, hasVariables) => {
+    forEachQuery((name, hasVariables) => {
         if (hasVariables) {
             output += '    async refetch' + name + '(variables: Types.' + name + 'Variables): Promise<Types.' + name + '> {\n';
-            output += '        return this.refetch(\'' + id + '\', variables);\n';
+            output += '        return this.refetch(\'' + name + '\', variables);\n';
             output += '    }\n';
         } else {
             output += '    async refetch' + name + '(): Promise<Types.' + name + '> {\n';
-            output += '        return this.refetch(\'' + id + '\');\n';
+            output += '        return this.refetch(\'' + name + '\');\n';
             output += '    }\n';
         }
     });
 
     // Update
-    forEachQuery((id, name, hasVariables) => {
+    forEachQuery((name, hasVariables) => {
         if (hasVariables) {
             output += '    async update' + name + '(variables: Types.' + name + 'Variables, updater: (data: Types.' + name + ') => Types.' + name + ' | null): Promise<boolean> {\n';
-            output += '        return this.updateQuery(updater, \'' + id + '\', variables);\n';
+            output += '        return this.updateQuery(updater, \'' + name + '\', variables);\n';
             output += '    }\n';
         } else {
             output += '    async update' + name + '(updater: (data: Types.' + name + ') => Types.' + name + ' | null): Promise<boolean> {\n';
-            output += '        return this.updateQuery(updater, \'' + id + '\');\n';
+            output += '        return this.updateQuery(updater, \'' + name + '\');\n';
             output += '    }\n';
         }
     });
 
     // Hooks
-    forEachQuery((id, name, hasVariables) => {
+    forEachQuery((name, hasVariables) => {
         if (hasVariables) {
             output += '    use' + name + '(variables: Types.' + name + 'Variables, opts: ApiQueryWatchParameters & { suspense: false }): Types.' + name + ' | null;\n';
             output += '    use' + name + '(variables: Types.' + name + 'Variables, opts?: ApiQueryWatchParameters): Types.' + name + ';\n';
             output += '    use' + name + '(variables: Types.' + name + 'Variables, opts?: ApiQueryWatchParameters): Types.' + name + ' | null {\n';
-            output += '        return this.useQuery(\'' + id + '\', variables, opts);\n';
+            output += '        return this.useQuery(\'' + name + '\', variables, opts);\n';
             output += '    }\n';
         } else {
             output += '    use' + name + '(opts: ApiQueryWatchParameters & { suspense: false }): Types.' + name + ' | null;\n';
             output += '    use' + name + '(opts?: ApiQueryWatchParameters): Types.' + name + ';\n';
             output += '    use' + name + '(opts?: ApiQueryWatchParameters): Types.' + name + ' | null {\n';
-            output += '        return this.useQuery(\'' + id + '\', undefined, opts);\n';
+            output += '        return this.useQuery(\'' + name + '\', undefined, opts);\n';
             output += '    }\n';
         }
     });
 
     // Mutations
-    for (let op of queries.operations) {
-        if (op.operationType === 'mutation') {
-            let name = op.operationName as string;
-            if (name.endsWith('Mutation')) {
-                name = name.substring(0, name.length - 'Mutation'.length);
-            }
-
-            if (op.variables.length > 0) {
-                output += '    async mutate' + name + '(variables: Types.' + name + 'Variables): Promise<Types.' + name + '> {\n';
-                output += '        return this.mutate(\'' + op.operationName + '\', variables);\n';
-                output += '    }\n';
-            } else {
-                output += '    async mutate' + name + '(): Promise<Types.' + name + '> {\n';
-                output += '        return this.mutate(\'' + op.operationName + '\');\n';
-                output += '    }\n';
-            }
+    forEachMutation((name, hasVariables) => {
+        if (hasVariables) {
+            output += '    async mutate' + name + '(variables: Types.' + name + 'Variables): Promise<Types.' + name + '> {\n';
+            output += '        return this.mutate(\'' + name + '\', variables);\n';
+            output += '    }\n';
+        } else {
+            output += '    async mutate' + name + '(): Promise<Types.' + name + '> {\n';
+            output += '        return this.mutate(\'' + name + '\');\n';
+            output += '    }\n';
         }
-    }
+    });
 
     // Subscriptions
-    for (let op of queries.operations) {
-        if (op.operationType === 'subscription') {
-            let name = op.operationName;
-            if (name.endsWith('Subscription')) {
-                name = name.substring(0, name.length - 'Subscription'.length);
-            }
-
-            if (op.variables.length > 0) {
-                output += '    subscribe' + name + '(variables: Types.' + name + 'Variables, handler: GraphqlSubscriptionHandler<Types.' + name + '>): GraphqlActiveSubscription<Types.' + name + '> {\n';
-                output += '        return this.subscribe(handler, \'' + op.operationName + '\', variables);\n';
-                output += '    }\n';
-            } else {
-                output += '    subscribe' + name + '(handler: GraphqlSubscriptionHandler<Types.' + name + '>): GraphqlActiveSubscription<Types.' + name + '> {\n';
-                output += '        return this.subscribe(handler, \'' + op.operationName + '\');\n';
-                output += '    }\n';
-            }
+    forEachSubscription((name, hasVariables) => {
+        if (hasVariables) {
+            output += '    subscribe' + name + '(variables: Types.' + name + 'Variables, handler: GraphqlSubscriptionHandler<Types.' + name + '>): GraphqlActiveSubscription<Types.' + name + '> {\n';
+            output += '        return this.subscribe(handler, \'' + name + '\', variables);\n';
+            output += '    }\n';
+        } else {
+            output += '    subscribe' + name + '(handler: GraphqlSubscriptionHandler<Types.' + name + '>): GraphqlActiveSubscription<Types.' + name + '> {\n';
+            output += '        return this.subscribe(handler, \'' + name + '\');\n';
+            output += '    }\n';
         }
-    }
+    });
 
     output += '}\n';
 
-    fs.writeFileSync(path.resolve(__dirname + '/../openland-api/OpenlandClient.ts'), output, 'utf-8');
+    fs.writeFileSync(path.resolve(__dirname + '/../openland-api/spacex.ts'), output, 'utf-8');
 }
 
 generateApi();

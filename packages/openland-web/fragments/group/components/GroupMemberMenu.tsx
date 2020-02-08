@@ -6,7 +6,7 @@ import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import { MenuItem, UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { showLeaveChatConfirmation } from 'openland-web/fragments/account/components/groupProfileModals';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 import { useClient } from 'openland-web/utils/useClient';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UButton } from 'openland-web/components/unicorn/UButton';

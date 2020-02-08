@@ -2,7 +2,7 @@ import { createEngineWeb } from './createEngineWeb';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { loadConfig } from 'openland-x-config';
 import { Track } from 'openland-engines/Tracking';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 import { createEngineWebWorker } from 'openland-api/createEngineWebWorker';
 import { createClient } from './createClient';
 

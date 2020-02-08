@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 import { ChatOnlinesCountWatch } from 'openland-api/Types';
 

@@ -8,7 +8,7 @@ import {
     StickerFragment,
     ChatMentionSearch_mentions_globalItems
 } from 'openland-api/Types';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 
 export type MentionToSend =

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { NextAppContext } from 'next/app';
 import { getToken } from 'openland-x-graphql/auth';
 import { SharedStorage, getServerStorage, getClientStorage } from 'openland-x-utils/SharedStorage';
-import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { OpenlandClient } from 'openland-api/spacex';
 import { createClientWeb } from 'openland-api/createClientWeb';
 
 export function withData(App: React.ComponentType<any>) {
