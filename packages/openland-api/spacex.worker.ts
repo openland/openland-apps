@@ -30,7 +30,7 @@ const initHandler = (ev: MessageEvent) => {
     host = new WorkerHost({
         engine: new WebEngine(Definitions, {
             endpoint: msg.endpoint,
-            connectionParams: msg.token && { ['openland-x-token']: msg.token }
+            connectionParams: msg.token && { ['x-openland-token']: msg.token }
         }),
         worker: workerInterface
     });
