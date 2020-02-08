@@ -9,7 +9,7 @@ import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { useRole } from 'openland-x-permissions/XWithRole';
 import AlertBlanket from 'openland-x/AlertBlanket';
 

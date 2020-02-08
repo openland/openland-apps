@@ -14,7 +14,7 @@ import InfoIcon from 'openland-icons/s/ic-info-24.svg';
 import WalletIcon from 'openland-icons/s/ic-wallet-24.svg';
 import { withUserInfo } from 'openland-web/components/UserInfo';
 import { XLoader } from 'openland-x/XLoader';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { showLogoutConfirmation } from './LogoutFragment';

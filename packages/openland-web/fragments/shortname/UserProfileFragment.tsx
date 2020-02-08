@@ -3,7 +3,7 @@ import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { UListHero } from 'openland-web/components/unicorn/UListHero';
 import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { UListField } from 'openland-web/components/unicorn/UListField';
 import { UOrganizationView } from 'openland-web/components/unicorn/templates/UOrganizationView';
 import { UButton } from 'openland-web/components/unicorn/UButton';

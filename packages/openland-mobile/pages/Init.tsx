@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Linking, LayoutChangeEvent, Platform, Dimensions, LayoutAnimation, Image } from 'react-native';
-import { buildNativeClient, saveClient, getClient, hasClient } from '../utils/graphqlClient';
+import { saveClient, getClient, hasClient } from '../utils/graphqlClient';
 import { buildMessenger, setMessenger, getMessenger, getMessengerNullable } from '../utils/messenger';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { backoff } from 'openland-y-utils/timer';
@@ -30,6 +30,7 @@ import { AndroidSplashView } from '../components/AndroidSplashView';
 import { initialMode } from 'react-native-dark-mode';
 import { GQLClientContext } from 'openland-api/useClient';
 import { AppStorage as Storage } from 'openland-y-runtime/AppStorage';
+import { createClientNative } from 'openland-api/createClientNative';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(() => new SAnimatedShadowView('app-placeholder-' + randomKey(), { opacity: 1 }), []);
@@ -222,7 +223,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                     let authenticated = false;
                     if (AppStorage.token) {
                         this.setState({ state: 'loading' });
-                        let client = buildNativeClient(AppStorage.storage, AppStorage.token);
+                        let client = createClientNative(AppStorage.storage, AppStorage.token);
                         saveClient(client);
                         res = await (useAccountReefetchNeeded ? client.refetchAccount() : client.queryAccount());
                         console.warn(JSON.stringify(res.me, undefined, 4));
@@ -258,7 +259,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                             authenticated = true;
                         }
                     } else {
-                        let client = buildNativeClient(AppStorage.storage, undefined);
+                        let client = createClientNative(AppStorage.storage, undefined);
                         Track.setClient(client);
                     }
 

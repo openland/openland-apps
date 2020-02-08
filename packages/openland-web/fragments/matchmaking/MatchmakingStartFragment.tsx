@@ -6,7 +6,7 @@ import { UHeader } from 'openland-unicorn/UHeader';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 const outerContainer = css`

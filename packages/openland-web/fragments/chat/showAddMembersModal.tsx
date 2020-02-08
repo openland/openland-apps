@@ -10,7 +10,7 @@ import {
 } from 'openland-api/spacex.types';
 import { XModalProps } from 'openland-x-modal/XModal';
 import { XLoader } from 'openland-x/XLoader';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { showModalBox } from 'openland-x/showModalBox';

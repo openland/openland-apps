@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MessengerRootComponent } from './components/MessengerRootComponent';
 import { XView } from 'react-mental';
 import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarComponent';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { SharedRoomPlaceholder } from '../invite/InviteLandingComponent';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { ChatHeader } from './header/ChatHeader';

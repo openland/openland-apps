@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { MyOrganizations_myOrganizations } from 'openland-api/spacex.types';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { UOrganizationView } from 'openland-web/components/unicorn/templates/UOrganizationView';
 import { CheckComponent } from 'openland-web/components/unicorn/UCheckbox';

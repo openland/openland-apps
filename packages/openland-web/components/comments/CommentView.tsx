@@ -13,7 +13,7 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useRole } from 'openland-x-permissions/XWithRole';
 import { CommentEntryFragment_comment, StickerFragment } from 'openland-api/spacex.types';
 import { CommentEditInput } from './CommentEditInput';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { findSpans } from 'openland-y-utils/findSpans';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';

@@ -5,7 +5,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { MessagePageContent } from 'openland-web/components/MessagePageContent';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { InitTexts } from '../_text';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { UserInfoContext } from 'openland-web/components/UserInfo';

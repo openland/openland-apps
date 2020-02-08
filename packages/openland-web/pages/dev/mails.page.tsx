@@ -6,7 +6,7 @@ import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { DebugEmailType } from 'openland-api/spacex.types';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XContent } from 'openland-x-layout/XContent';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { XVertical2 } from 'openland-x/XVertical2';
 
 interface DebugMailButtonProps {

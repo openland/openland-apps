@@ -2,7 +2,7 @@ import * as React from 'react';
 import copy from 'copy-to-clipboard';
 import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { XImage } from 'react-mental';
 import LinkedInIcon from 'openland-icons/linkedin-2.svg';
 import TwitterIcon from 'openland-icons/twitter-2.svg';

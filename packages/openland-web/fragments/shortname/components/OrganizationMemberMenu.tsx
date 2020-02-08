@@ -12,7 +12,7 @@ import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder, MenuItem } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { OpenlandClient } from 'openland-api/spacex';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 
 interface MenuContentOpts {
     organization: OrganizationWithoutMembers_organization;

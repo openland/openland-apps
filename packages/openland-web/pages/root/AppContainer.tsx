@@ -4,7 +4,7 @@ import { UserInfoProvider } from 'openland-web/components/UserInfo';
 import { MessengerProvider } from 'openland-web/fragments/chat/messenger/MessengerProvider';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { PushEngineComponent } from 'openland-web/modules/push/PushEngineComponent';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { UnicornSplash } from 'openland-x/XLoader';
 
 export const AppContainer = (props: { children: any }) => {

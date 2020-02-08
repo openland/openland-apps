@@ -10,7 +10,7 @@ import { getPaymentMethodName } from 'openland-y-utils/wallet/brands';
 import { BrandLogo } from './BrandLogo';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import AlertBlanket from 'openland-x/AlertBlanket';
 
 const box = css`

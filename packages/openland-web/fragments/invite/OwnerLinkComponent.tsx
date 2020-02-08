@@ -2,7 +2,7 @@ import * as React from 'react';
 import copy from 'copy-to-clipboard';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { XMutation } from 'openland-x/XMutation';
 import { trackEvent } from 'openland-x-analytics';
 import { TextBody } from 'openland-web/utils/TextStyles';

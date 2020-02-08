@@ -3,7 +3,7 @@ import { withApp } from '../../components/withApp';
 import { UserSelect } from '../../components/UserSelect';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { SuperAdminRole } from 'openland-api/spacex.types';
 import { XView } from 'react-mental';
 import { XModalContent } from 'openland-web/components/XModalContent';

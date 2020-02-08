@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { css } from 'linaria';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { CommentInput } from './CommentInput';

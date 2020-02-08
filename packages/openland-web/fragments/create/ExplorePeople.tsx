@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { CheckComponent } from 'openland-web/components/unicorn/UCheckbox';
 import { UserInfoContext } from 'openland-web/components/UserInfo';

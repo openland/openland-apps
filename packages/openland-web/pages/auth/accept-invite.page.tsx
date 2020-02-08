@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XLoader } from 'openland-x/XLoader';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XView } from 'react-mental';
 import { UButton } from 'openland-web/components/unicorn/UButton';

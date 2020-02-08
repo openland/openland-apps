@@ -24,7 +24,7 @@ const NativeGraphQL = NativeModules.RNGraphQL as {
 
 const RNGraphQLEmitter = new NativeEventEmitter(NativeModules.RNGraphQL);
 
-export class NativeSpaceXClient extends GraphqlBridgedEngine {
+export class NativeEngine extends GraphqlBridgedEngine {
     private key: string = randomKey();
 
     constructor(storageKey?: string, token?: string) {

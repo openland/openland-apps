@@ -66,7 +66,6 @@ import { Routes } from '../routes';
 import { AppContainer } from './root/AppContainer';
 import { EnvironmentContext } from './root/EnvironmentContext';
 import { OpenlandClient } from 'openland-api/spacex';
-import { OpenlandApiContext } from 'openland-web/utils/OpenlandApiProvider';
 import { GQLClientContext } from 'openland-api/useClient';
 
 const ErrorBoundary = bugsnagClient.getPlugin('react');
@@ -113,21 +112,19 @@ export default withData(
                                     protocol={this.props.protocol}
                                 >
                                     <ClientCacheProvider>
-                                        <OpenlandApiContext.Provider value={this.props.client}>
-                                            <GQLClientContext.Provider value={this.props.client}>
-                                                <RootErrorBoundary>
-                                                    <AppContainer>
-                                                        {/* <XView justifyContent="center" width="50%">
+                                        <GQLClientContext.Provider value={this.props.client}>
+                                            <RootErrorBoundary>
+                                                <AppContainer>
+                                                    {/* <XView justifyContent="center" width="50%">
                                                     <TestCommentsComponent />
                                                 </XView> */}
-                                                        {/* <XView justifyContent="center" width="50%">
+                                                    {/* <XView justifyContent="center" width="50%">
                                                     <TestMessengerComponent />
                                                 </XView> */}
-                                                        <Component {...pageProps} />
-                                                    </AppContainer>
-                                                </RootErrorBoundary>
-                                            </GQLClientContext.Provider>
-                                        </OpenlandApiContext.Provider>
+                                                    <Component {...pageProps} />
+                                                </AppContainer>
+                                            </RootErrorBoundary>
+                                        </GQLClientContext.Provider>
                                     </ClientCacheProvider>
                                 </XRouterProvider>
                             </XStorageProvider>

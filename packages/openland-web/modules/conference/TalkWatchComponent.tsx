@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 
 export const TalkWatchComponent = React.memo<{ id: string }>(props => {

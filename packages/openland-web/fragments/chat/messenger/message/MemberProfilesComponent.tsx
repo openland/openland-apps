@@ -5,7 +5,7 @@ import { TextBody } from 'openland-web/utils/TextStyles';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { defaultHover } from 'openland-web/utils/Styles';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import IcCopy from 'openland-icons/s/ic-copy-24.svg';
 import IcArrow from 'openland-icons/s/ic-chevron-16.svg';
 

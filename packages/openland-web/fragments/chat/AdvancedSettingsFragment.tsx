@@ -6,7 +6,7 @@ import { UHeader } from 'openland-unicorn/UHeader';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { USelectField } from 'openland-web/components/unicorn/USelect';
 import { UTextAreaField } from 'openland-web/components/unicorn/UTextArea';
@@ -41,7 +41,7 @@ const imageUploadStyle = css`
     margin-top: 16px;
     & > .avatar-container {
         width: 240px;
-        height: 120px
+        height: 120px;
         border-radius: 8px;
     }
 `;

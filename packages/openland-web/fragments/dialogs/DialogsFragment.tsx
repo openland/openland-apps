@@ -3,7 +3,7 @@ import { XViewRouterContext, XView } from 'react-mental';
 import { NotificationsButton, NewOptionsButton } from 'openland-web/components/NewOptionsButton';
 import { DialogListFragment } from './DialogListFragment';
 import { UCounter } from 'openland-unicorn/UCounter';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { trackEvent } from 'openland-x-analytics';

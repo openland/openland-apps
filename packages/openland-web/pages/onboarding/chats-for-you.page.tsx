@@ -3,7 +3,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { BackSkipLogo } from '../components/BackSkipLogo';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { SuggestedRooms_suggestedRooms_SharedRoom } from 'openland-api/spacex.types';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XLoader } from 'openland-x/XLoader';

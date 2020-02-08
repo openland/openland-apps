@@ -13,7 +13,7 @@ import { findChild } from '../utils';
 import { DesktopScaffold, DesktopScafoldMenuItem } from './DesktopScaffold';
 import { MobileScaffold, MobileScafoldMenuItem } from './MobileComponents';
 import { MobileSidebarContext } from './MobileSidebarContext';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { IsMobileContext } from './IsMobileContext';
 import { RenderedOnceContext } from './RenderedOnceContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';

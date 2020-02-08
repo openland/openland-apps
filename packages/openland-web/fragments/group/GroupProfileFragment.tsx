@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { UListHero } from 'openland-web/components/unicorn/UListHero';
 import { plural } from 'openland-y-utils/plural';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';

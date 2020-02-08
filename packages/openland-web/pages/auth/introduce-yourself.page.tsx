@@ -8,7 +8,7 @@ import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import * as Cookie from 'js-cookie';
 import { Wrapper } from '../onboarding/components/wrapper';
 import { Title, Subtitle, FormLayout, AuthActionButton, AuthInputWrapper, useShake, textClassName } from './components/authComponents';

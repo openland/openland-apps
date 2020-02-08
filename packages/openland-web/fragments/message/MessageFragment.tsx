@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { MessageView } from './components/MessageView';
 import { UHeader } from 'openland-unicorn/UHeader';

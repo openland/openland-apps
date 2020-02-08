@@ -5,7 +5,7 @@ import { XView } from 'react-mental';
 import ImgUnboardingStart from 'openland-icons/img-onboarding-start.svg';
 import { BackSkipLogo } from '../components/BackSkipLogo';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { FormLayout, Title, Subtitle, AuthActionButton } from '../auth/components/authComponents';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';

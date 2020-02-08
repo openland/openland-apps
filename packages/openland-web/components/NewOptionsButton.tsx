@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { css, cx } from 'linaria';
 import GroupIcon from 'openland-icons/s/ic-group-24.svg';
 import ChannelIcon from 'openland-icons/s/ic-channel-24.svg';

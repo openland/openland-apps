@@ -13,7 +13,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import AlertBlanket from 'openland-x/AlertBlanket';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { useStackRouter, StackRouter } from 'openland-unicorn/components/StackRouter';
 
 interface OrganizationMenuProps {

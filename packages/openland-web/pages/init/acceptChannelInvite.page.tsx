@@ -4,7 +4,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { AuthRouter } from 'openland-web/pages/root/AuthRouter';
 import { InitTexts } from './_text';
 import { XLoader } from 'openland-x/XLoader';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
 let AcceptInviteComponent = () => {

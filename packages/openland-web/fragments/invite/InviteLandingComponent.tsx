@@ -9,7 +9,7 @@ import {
     WalletSubscriptionState,
 } from 'openland-api/spacex.types';
 import { XViewRouterContext } from 'react-mental';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { switchOrganization } from 'openland-web/utils/switchOrganization';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UserInfoContext } from 'openland-web/components/UserInfo';

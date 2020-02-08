@@ -5,7 +5,7 @@ import { XViewRouterContext } from 'react-mental';
 import { Page } from 'openland-unicorn/Page';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextBody, TextTitle1 } from 'openland-web/utils/TextStyles';
 import PicConfeti from './components/confeti.svg';

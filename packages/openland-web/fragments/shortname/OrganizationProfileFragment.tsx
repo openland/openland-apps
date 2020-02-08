@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { UListHero } from 'openland-web/components/unicorn/UListHero';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { UListField } from 'openland-web/components/unicorn/UListField';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';

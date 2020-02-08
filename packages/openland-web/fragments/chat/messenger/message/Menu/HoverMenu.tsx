@@ -12,7 +12,7 @@ import { XViewRouterContext } from 'react-mental';
 import { MessageReactionType } from 'openland-api/spacex.types';
 import { ReactionPicker, ReactionPickerInstance } from '../reactions/ReactionPicker';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { trackEvent } from 'openland-x-analytics';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';

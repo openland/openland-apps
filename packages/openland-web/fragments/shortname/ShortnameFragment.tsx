@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NotFound } from 'openland-unicorn/NotFound';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UserProfileFragment } from './UserProfileFragment';
 import { OrganizationProfileFragment } from './OrganizationProfileFragment';

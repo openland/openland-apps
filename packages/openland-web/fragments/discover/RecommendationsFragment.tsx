@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { showModalBox } from 'openland-x/showModalBox';
 import { DiscoverOnLocalState } from 'openland-web/pages/onboarding/discover.page';
 import { UHeader } from 'openland-unicorn/UHeader';

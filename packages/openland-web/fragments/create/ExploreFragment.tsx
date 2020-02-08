@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XView, XViewRouterContext } from 'react-mental';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { SearchBox } from './SearchBox';
 import { XLoader } from 'openland-x/XLoader';
 import { ExplorePeople } from './ExplorePeople';

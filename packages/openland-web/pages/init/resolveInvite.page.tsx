@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withAppBase } from '../../components/withAppBase';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { SignInInvite } from './components/signChannelInvite';
 import { JoinFragment } from './JoinFragment';

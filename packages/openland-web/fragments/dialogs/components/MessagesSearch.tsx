@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { XLoader } from 'openland-x/XLoader';
 import { DialogView } from './DialogView';
 import { emoji } from '../../../../openland-y-utils/emoji';

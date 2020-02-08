@@ -7,7 +7,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 import { XView } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';

@@ -3,7 +3,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { XModalController } from 'openland-x/showModal';
 import uuid from 'uuid';
 import { backoff } from 'openland-y-utils/timer';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { StripeCardComponent } from './StripeCardComponent';
 
 const AddCardComponent = React.memo((props: { ctx: XModalController }) => {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { withApp } from 'openland-web/components/withApp';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { UserInfoContext } from 'openland-web/components/UserInfo';

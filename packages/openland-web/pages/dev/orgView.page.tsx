@@ -6,7 +6,7 @@ import { UserSelect } from '../../components/UserSelect';
 import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { XModalFooter } from 'openland-x-modal/XModal';
 import { showModalBox } from 'openland-x/showModalBox';

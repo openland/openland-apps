@@ -7,7 +7,7 @@ import { UHeader } from 'openland-unicorn/UHeader';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import AlertBlanket from 'openland-x/AlertBlanket';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextBody, TextTitle1, TextTitle2, TextTitle3 } from 'openland-web/utils/TextStyles';
 import { showAddMembersModal } from 'openland-web/fragments/chat/showAddMembersModal';

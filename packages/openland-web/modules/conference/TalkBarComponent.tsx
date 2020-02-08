@@ -3,7 +3,7 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TalkWatchComponent } from './TalkWatchComponent';
 import { XView } from 'react-mental';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { ChatInfo } from 'openland-web/fragments/chat/types';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { useStream, MediaSessionManager } from 'openland-engines/media/MediaSessionManager';

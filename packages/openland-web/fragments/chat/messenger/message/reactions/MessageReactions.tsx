@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MessageReactionType } from 'openland-api/spacex.types';
 import { css, cx } from 'linaria';
 import { TextDensed } from 'openland-web/utils/TextStyles';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { trackEvent } from 'openland-x-analytics';
 import { ReactionReducedEmojify } from 'openland-engines/reactions/types';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';

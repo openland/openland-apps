@@ -4,7 +4,7 @@ import { MessagePage } from 'openland-web/components/MessagePage';
 import { MessagePageContent } from 'openland-web/components/MessagePageContent';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { InitTexts } from '../_text';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { XLoader } from 'openland-x/XLoader';
 import { AuthRouter } from 'openland-web/pages/root/AuthRouter';
 import { XTrack } from 'openland-x-analytics/XTrack';

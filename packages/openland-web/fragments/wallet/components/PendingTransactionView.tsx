@@ -2,7 +2,7 @@ import * as React from 'react';
 import { WalletTransactionFragment } from 'openland-api/spacex.types';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { Money } from 'openland-y-utils/wallet/Money';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { showConfirmPayment } from './showConfirmPayment';
 
 interface PendingTransactionViewProps {

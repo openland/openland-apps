@@ -3,7 +3,7 @@ import { ChatInfo } from '../types';
 import { XView, XViewRouterContext } from 'react-mental';
 import { css, cx } from 'linaria';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MessagesActionsHeader } from './MessagesActionsHeader';

@@ -1,6 +1,6 @@
 import React from 'react';
 import AlertBlanket from 'openland-x/AlertBlanket';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { XViewRouterContext } from 'react-mental';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';

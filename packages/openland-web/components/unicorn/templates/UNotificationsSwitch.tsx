@@ -1,7 +1,7 @@
 import * as React from 'react';
 import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
 import NotificationsOffIcon from 'openland-icons/s/ic-notifications-off-24.svg';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { XViewProps } from 'react-mental';
 import { UIconButton } from '../UIconButton';
 

@@ -7,7 +7,7 @@ import { NotificationSender, linkClass } from './NotificationSender';
 import { RoomNano_SharedRoom, CommentSubscriptionType, RoomShort_SharedRoom } from 'openland-api/spacex.types';
 import { UIconLabeled } from 'openland-web/components/unicorn/UIconLabeled';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import ReplyIcon from 'openland-icons/s/ic-reply-24.svg';
 import CopyIcon from 'openland-icons/s/ic-copy-24.svg';
 import ClearIcon from 'openland-icons/s/ic-delete-24.svg';

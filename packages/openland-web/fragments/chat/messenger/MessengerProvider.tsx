@@ -2,7 +2,7 @@ import * as React from 'react';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { UserShort } from 'openland-api/spacex.types';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 
 let cachedMessenger: MessengerEngine | null = null;
 

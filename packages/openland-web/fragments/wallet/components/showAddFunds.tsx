@@ -3,7 +3,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { XModalController } from 'openland-x/showModal';
 import { XView } from 'react-mental';
 import { USelect } from 'openland-web/components/unicorn/USelect';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import uuid from 'uuid';
 import { backoff } from 'openland-y-utils/timer';

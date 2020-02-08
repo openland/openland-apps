@@ -7,7 +7,7 @@ import { MenuItem, UPopperMenuBuilder } from 'openland-web/components/unicorn/UP
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { showLeaveChatConfirmation } from 'openland-web/fragments/account/components/groupProfileModals';
 import { OpenlandClient } from 'openland-api/spacex';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';

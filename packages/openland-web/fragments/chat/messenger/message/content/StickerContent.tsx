@@ -3,7 +3,7 @@ import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { StickerFragment } from 'openland-api/spacex.types';
 import { showModalBox } from 'openland-x/showModalBox';
-import { useClient } from 'openland-web/utils/useClient';
+import { useClient } from 'openland-api/useClient';
 import { XLoader } from 'openland-x/XLoader';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { XScrollView3 } from 'openland-x/XScrollView3';
