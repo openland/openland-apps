@@ -73,7 +73,7 @@ const ErrorBoundary = bugsnagClient.getPlugin('react');
 
 export default withData(
     class MyApp extends App<{
-        apollo: OpenlandClient;
+        client: OpenlandClient;
         storage: SharedStorage;
         host: string;
         protocol: string;
@@ -82,7 +82,7 @@ export default withData(
 
         constructor(
             props: {
-                apollo: OpenlandClient;
+                client: OpenlandClient;
                 storage: SharedStorage;
                 host: string;
                 protocol: string;
@@ -113,8 +113,8 @@ export default withData(
                                     protocol={this.props.protocol}
                                 >
                                     <ClientCacheProvider>
-                                        <OpenlandApiContext.Provider value={this.props.apollo}>
-                                            <GQLClientContext.Provider value={this.props.apollo}>
+                                        <OpenlandApiContext.Provider value={this.props.client}>
+                                            <GQLClientContext.Provider value={this.props.client}>
                                                 <RootErrorBoundary>
                                                     <AppContainer>
                                                         {/* <XView justifyContent="center" width="50%">

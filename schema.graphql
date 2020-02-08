@@ -1,0 +1,3119 @@
+directive @withAuth on FIELD_DEFINITION
+
+directive @withPermissions(permission: [String!]!) on FIELD_DEFINITION
+
+directive @withPermission(permission: String!) on FIELD_DEFINITION
+
+directive @disabled on FIELD_DEFINITION
+
+type AlphaSignupData {
+  user: User
+  organization: Organization
+}
+
+type AnonymousConversation implements Conversation {
+  id: ID!
+  flexibleId: ID!
+  title: String!
+  photos: [String!]!
+  unreadCount: Int!
+  topMessage: ConversationMessage
+  settings: ConversationSettings!
+}
+
+type AppChat {
+  chat: Room!
+  webhook: String!
+}
+
+type AppInvite {
+  inviter: User!
+}
+
+type AppInviteInfo {
+  inviter: User!
+}
+
+type AppProfile {
+  id: ID!
+  name: String!
+  photoRef: ImageRef
+  about: String
+  shortname: String
+  token: AppToken!
+}
+
+input AppProfileInput {
+  name: String
+  shortname: String
+  photoRef: ImageRefInput
+  about: String
+}
+
+type AppStorageValue {
+  id: ID!
+  key: String!
+  value: String
+}
+
+input AppStorageValueInput {
+  key: String!
+  value: String
+}
+
+type AppToken {
+  salt: String!
+}
+
+type CardSetupIntent {
+  id: ID!
+  clientSecret: String!
+}
+
+type ChannelConversation implements Conversation {
+  id: ID!
+  flexibleId: ID!
+  title: String!
+  photos: [String!]!
+  members: [User!]!
+  unreadCount: Int!
+  topMessage: ConversationMessage
+  settings: ConversationSettings!
+}
+
+type ChatLostAccess {
+  lostAccess: Boolean!
+}
+
+type ChatMessageDeleted {
+  message: ModernMessage!
+}
+
+type ChatMessageReceived {
+  message: ModernMessage!
+  repeatKey: String
+}
+
+type ChatMessageUpdated {
+  message: ModernMessage!
+}
+
+type ChatOnlineEvent {
+  onlineMembers: Int!
+}
+
+type ChatReadResult {
+  conversation: Conversation!
+  counter: NotificationCounter!
+}
+
+type ChatTypeNotificationSettings {
+  showNotification: Boolean!
+  sound: Boolean!
+}
+
+input ChatTypeNotificationSettingsInput {
+  showNotification: Boolean!
+  sound: Boolean!
+}
+
+union ChatUpdate = ChatUpdated | ChatMessageReceived | ChatMessageUpdated | ChatMessageDeleted | ChatLostAccess
+
+type ChatUpdateBatch {
+  seq: Int!
+  state: String!
+  fromSeq: Int!
+  updates: [ChatUpdate!]!
+}
+
+union ChatUpdateContainer = ChatUpdateSingle | ChatUpdateBatch
+
+type ChatUpdated {
+  chat: Room!
+  by: User!
+}
+
+type ChatUpdateSingle {
+  seq: Int!
+  state: String!
+  update: ChatUpdate!
+}
+
+type ChatUpdateState {
+  state: String
+}
+
+type ChatUserConnection {
+  edges: [ChatUserEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ChatUserEdge {
+  node: User!
+  isMember: Boolean!
+  cursor: String!
+}
+
+type CommentEntry {
+  id: ID!
+  deleted: Boolean!
+  comment: GeneralMessage!
+  betaComment: ModernMessage!
+  parentComment: CommentEntry
+  childComments: [CommentEntry!]!
+}
+
+union CommentGlobalUpdate = CommentPeerUpdated
+
+type CommentGlobalUpdateBatch {
+  seq: Int!
+  state: String!
+  fromSeq: Int!
+  updates: [CommentGlobalUpdate!]!
+}
+
+union CommentGlobalUpdateContainer = CommentGlobalUpdateSingle | CommentGlobalUpdateBatch
+
+type CommentGlobalUpdateSingle {
+  seq: Int!
+  state: String!
+  update: CommentGlobalUpdate!
+}
+
+"""DEPRECATED START"""
+type CommentGlobalUpdatesState {
+  state: String
+}
+
+union CommentPeerRoot = CommentPeerRootMessage | CommentPeerRootFeedItem
+
+type CommentPeerRootFeedItem {
+  item: FeedItem!
+}
+
+type CommentPeerRootMessage {
+  message: GeneralMessage!
+  chat: Room!
+}
+
+type CommentPeerUpdated {
+  seq: Int!
+  peer: CommentsPeer!
+}
+
+type CommentReceived {
+  comment: CommentEntry!
+  repeatKey: String
+}
+
+enum CommentsNotificationDelivery {
+  ALL
+  NONE
+}
+
+type CommentsPeer {
+  id: ID!
+  state: CommentUpdatesState!
+  count: Int!
+  comments: [CommentEntry!]!
+  peerRoot: CommentPeerRoot!
+  subscription: CommentSubscription
+}
+
+type CommentSubscription {
+  type: CommentSubscriptionType
+}
+
+enum CommentSubscriptionType {
+  ALL
+  DIRECT
+}
+
+union CommentUpdate = CommentReceived | CommentUpdated
+
+type CommentUpdateBatch {
+  seq: Int!
+  state: String!
+  fromSeq: Int!
+  updates: [CommentUpdate!]!
+}
+
+union CommentUpdateContainer = CommentUpdateSingle | CommentUpdateBatch
+
+type CommentUpdated {
+  comment: CommentEntry!
+}
+
+type CommentUpdateSingle {
+  seq: Int!
+  state: String!
+  update: CommentUpdate!
+}
+
+type CommentUpdatesState {
+  state: String
+}
+
+union ComposeSearchResult = User | Organization
+
+type Conference {
+  id: ID!
+  startTime: Date
+  peers: [ConferencePeer!]!
+  iceServers: [ICEServer!]!
+}
+
+type ConferenceJoinResult {
+  peerId: ID!
+  conference: Conference!
+}
+
+type ConferenceMedia {
+  id: ID!
+  streams: [MediaStream!]!
+  iceServers: [ICEServer!]!
+}
+
+type ConferencePeer {
+  id: ID!
+  user: User!
+  connection: ConferencePeerConnection
+}
+
+"""Deprecated"""
+type ConferencePeerConnection {
+  state: ConferencePeerConnectionState!
+  sdp: String
+  ice: [String!]!
+}
+
+"""Deprecated"""
+enum ConferencePeerConnectionState {
+  WAIT_OFFER
+  NEED_OFFER
+  WAIT_ANSWER
+  NEED_ANSWER
+  READY
+}
+
+input ContactPersonInput {
+  name: String!
+  photoRef: ImageRefInput
+  position: String
+  email: String
+  phone: String
+  link: String
+  twitter: String
+}
+
+interface Conversation {
+  id: ID!
+  flexibleId: ID!
+  title: String!
+  photos: [String!]!
+  unreadCount: Int!
+  topMessage: ConversationMessage
+  settings: ConversationSettings!
+}
+
+type ConversationBlockedUser {
+  user: User!
+  blockedBy: User!
+}
+
+type ConversationConnection {
+  conversations: [Conversation!]!
+  counter: NotificationCounter!
+  seq: Int!
+  next: String
+}
+
+interface ConversationEvent {
+  seq: Int!
+}
+
+type ConversationEventDelete implements ConversationEvent {
+  seq: Int!
+  messageId: ID!
+}
+
+type ConversationEventEditMessage implements ConversationEvent {
+  seq: Int!
+  message: ConversationMessage!
+}
+
+type ConversationEventKick implements ConversationEvent {
+  seq: Int!
+  user: User!
+  kickedBy: User!
+}
+
+type ConversationEventMessage implements ConversationEvent {
+  seq: Int!
+  message: ConversationMessage!
+}
+
+type ConversationEventNewMembers implements ConversationEvent {
+  seq: Int!
+  users: [User!]
+  invitedBy: User!
+}
+
+type ConversationEventSimpleBatch {
+  events: [ConversationEvent!]!
+}
+
+type ConversationEventTitle implements ConversationEvent {
+  seq: Int!
+  title: String!
+}
+
+type ConversationEventUpdate implements ConversationEvent {
+  seq: Int!
+  chat: Conversation!
+}
+
+type ConversationEventUpdateRole implements ConversationEvent {
+  seq: Int!
+  user: User!
+  newRole: String!
+}
+
+type ConversationMessage {
+  id: ID!
+  message: String
+  file: String
+  fileMetadata: FileMetadata
+  filePreview: String
+  sender: User!
+  date: Date!
+  repeatKey: String
+  isService: Boolean!
+  serviceMetadata: ServiceMetadata
+  urlAugmentation: UrlAugmentation
+  edited: Boolean!
+  reactions: [MessageReaction!]!
+  replyMessages: [ConversationMessage!]
+  plainText: String
+  mentions: [User!]
+  alphaAttachments: [MessageAttachment!]!
+  alphaButtons: [[MessageButton!]]!
+  alphaType: MessageType!
+  alphaTitle: String
+  postType: String
+  alphaMentions: [Mention!]
+}
+
+type ConversationSettings {
+  id: ID!
+  mobileNotifications: NotificationMessages!
+  mute: Boolean!
+}
+
+type ConversationState {
+  seq: Int!
+  messages: [ConversationMessage!]!
+}
+
+type ConversationUpdateResponse {
+  chat: Conversation!
+  curSeq: Int!
+}
+
+type ConversationUpdateState {
+  state: String
+}
+
+input CreateOrganizationInput {
+  id: ID
+  name: String!
+  website: String
+  personal: Boolean!
+  photoRef: ImageRefInput
+  about: String
+  isCommunity: Boolean
+  isPrivate: Boolean
+}
+
+"""Deprecated"""
+input CreateProfileInput {
+  firstName: String!
+  lastName: String
+  photoRef: ImageRefInput
+  phone: String
+  email: String
+  about: String
+  location: String
+  website: String
+  linkedin: String
+  twitter: String
+  facebook: String
+  primaryOrganization: ID
+}
+
+type CreditCard {
+  id: ID!
+  pmid: ID!
+  brand: String!
+  last4: String!
+  expMonth: Int!
+  expYear: Int!
+  deleted: Boolean!
+  isDefault: Boolean!
+}
+
+"""Date type format, serialized as UNIX-time in string"""
+scalar Date
+
+enum DebugEmailType {
+  WELCOME
+  ACCOUNT_ACTIVATED
+  ACCOUNT_DEACTIVATED
+  MEMBER_REMOVED
+  MEMBERSHIP_LEVEL_CHANGED
+  INVITE
+  MEMBER_JOINED
+  SIGNUP_CODE
+  SIGIN_CODE
+  UNREAD_MESSAGE
+  UNREAD_MESSAGES
+  PUBLIC_ROOM_INVITE
+  PRIVATE_ROOM_INVITE
+  ROOM_INVITE_ACCEPTED
+  WEEKLY_DIGEST
+}
+
+type DebugEvent {
+  seq: Int!
+  key: String!
+}
+
+type DebugEventsState {
+  state: String
+}
+
+type DebugGlobalCounters {
+  allUnreadMessages: Int!
+  unreadMessagesWithoutMuted: Int!
+  allUnreadChats: Int!
+  unreadChatsWithoutMuted: Int!
+}
+
+type DebugID {
+  numberID: Int
+  stringID: String
+  type: String!
+}
+
+type DebugUserMetrics {
+  messagesSent: Int!
+  messagesReceived: Int!
+  totalChatsCount: Int!
+  directChatsCount: Int!
+  direct2WayChatsCount: Int!
+  directMessagesSent: Int!
+  successfulInvitesCount: Int!
+  audienceCount: Int!
+}
+
+type DebugUserPresence {
+  user: User!
+  lastSeen: Date!
+  lastSeenStr: String!
+  lastSeenTimeout: Int!
+  platform: String
+  active: Boolean
+}
+
+type Dialog {
+  id: ID!
+  cid: ID!
+  fid: ID!
+  kind: DialogKind!
+  isChannel: Boolean!
+  title: String!
+  photo: String!
+  unreadCount: Int!
+  topMessage: Message
+  betaTopMessage: RoomMessage
+  alphaTopMessage: ModernMessage
+  isMuted: Boolean!
+  haveMention: Boolean!
+}
+
+type DialogBump {
+  cid: ID!
+  globalUnread: Int!
+  unread: Int!
+  topMessage: ModernMessage
+  haveMention: Boolean!
+}
+
+type DialogDeleted {
+  cid: ID!
+  globalUnread: Int!
+}
+
+enum DialogKind {
+  PRIVATE
+  INTERNAL
+  PUBLIC
+  GROUP
+}
+
+"""depricated"""
+type DialogMentionedChanged {
+  cid: ID!
+  haveMention: Boolean!
+}
+
+type DialogMessageDeleted {
+  cid: ID!
+  message: ConversationMessage!
+  betaMessage: RoomMessage!
+  prevMessage: RoomMessage
+  alphaPrevMessage: ModernMessage
+  alphaMessage: ModernMessage!
+  unread: Int!
+  globalUnread: Int!
+  haveMention: Boolean!
+}
+
+type DialogMessageRead {
+  cid: ID!
+  mid: ID
+  unread: Int!
+  globalUnread: Int!
+  haveMention: Boolean!
+}
+
+type DialogMessageReceived {
+  cid: ID!
+  message: ConversationMessage!
+  betaMessage: RoomMessage!
+  alphaMessage: ModernMessage!
+  unread: Int!
+  globalUnread: Int!
+  haveMention: Boolean!
+  silent: SilentMessageInfo!
+  showNotification: SilentMessageInfo!
+}
+
+type DialogMessageUpdated {
+  cid: ID!
+  message: ConversationMessage!
+  betaMessage: RoomMessage!
+  alphaMessage: ModernMessage!
+  haveMention: Boolean!
+}
+
+type DialogMuteChanged {
+  cid: ID!
+  mute: Boolean!
+  globalUnread: Int!
+}
+
+type DialogPeerUpdated {
+  cid: ID!
+  peer: Room!
+}
+
+type DialogPhotoUpdated {
+  cid: ID!
+  photo: String
+}
+
+type DialogsConnection {
+  items: [Dialog!]!
+  cursor: String
+}
+
+type DialogTitleUpdated {
+  cid: ID!
+  title: String!
+}
+
+union DialogUpdate = DialogMessageReceived | DialogMessageUpdated | DialogMessageDeleted | DialogMessageRead | DialogTitleUpdated | DialogDeleted | DialogPhotoUpdated | DialogMuteChanged | DialogMentionedChanged | DialogBump | DialogPeerUpdated
+
+type DialogUpdateBatch {
+  updates: [DialogUpdate!]!
+  fromSeq: Int!
+  seq: Int!
+  state: String!
+}
+
+union DialogUpdateContainer = DialogUpdateSingle | DialogUpdateBatch
+
+type DialogUpdateSingle {
+  seq: Int!
+  state: String!
+  update: DialogUpdate!
+}
+
+type DialogUpdateState {
+  state: String
+}
+
+type DiscoverPage {
+  chats: [Room!]
+  tagGroup: TagGroup
+}
+
+enum EmailFrequency {
+  NEVER
+  MIN_15
+  HOUR_1
+  HOUR_24
+  WEEK_1
+}
+
+type EnvVar {
+  name: String!
+  value: String!
+}
+
+input Event {
+  id: String!
+  event: String!
+  params: String
+  time: Date
+  os: String
+  deviceModel: String
+  platform: EventPlatform
+}
+
+enum EventPlatform {
+  Android
+  iOS
+  WEB
+  MobileWeb
+}
+
+type FeatureFlag {
+  id: ID!
+  key: String!
+  title: String!
+}
+
+type FeedChannel {
+  id: ID!
+  title: String!
+  about: String
+  photo: String
+  socialImage: String
+  subscribersCount: Int!
+  postsCount: Int!
+  isGlobal: Boolean!
+  isHidden: Boolean!
+  subscribed: Boolean!
+  myRole: FeedChannelSubscriberRole!
+  shortname: String
+}
+
+type FeedChannelAdmin {
+  user: User!
+  role: FeedChannelSubscriberRole!
+  promoter: User
+}
+
+type FeedChannelAdminConnection {
+  items: [FeedChannelAdmin!]!
+  cursor: String
+}
+
+type FeedChannelConnection {
+  items: [FeedChannel!]!
+  cursor: String
+}
+
+type FeedChannelEdge {
+  node: FeedChannel!
+  cursor: String!
+}
+
+type FeedChannelSearchConnection {
+  edges: [FeedChannelEdge!]!
+  pageInfo: PageInfo!
+}
+
+type FeedChannelSubscriber {
+  user: User!
+  role: FeedChannelSubscriberRole!
+}
+
+type FeedChannelSubscriberConnection {
+  edges: [FeedChannelSubscriberEdge!]!
+  pageInfo: PageInfo!
+}
+
+type FeedChannelSubscriberEdge {
+  node: FeedChannelSubscriber!
+  cursor: String!
+}
+
+enum FeedChannelSubscriberRole {
+  Creator
+  Editor
+  Subscriber
+  None
+}
+
+union FeedItem = FeedPost
+
+type FeedItemConnection {
+  items: [FeedItem!]!
+  cursor: String
+}
+
+type FeedItemDeleted {
+  item: FeedItem!
+}
+
+type FeedItemReceived {
+  item: FeedItem!
+}
+
+type FeedItemUpdated {
+  item: FeedItem!
+}
+
+type FeedPost {
+  """State"""
+  id: ID!
+  date: Date!
+  author: FeedPostAuthor!
+  source: FeedPostSource
+  canEdit: Boolean!
+  edited: Boolean!
+  reactions: [ModernMessageReaction!]!
+  isMentioned: Boolean!
+
+  """Content"""
+  message: String
+  spans: [MessageSpan!]!
+  attachments: [ModernMessageAttachment!]!
+  commentsCount: Int!
+  slides: [Slide!]!
+  fallback: String!
+}
+
+union FeedPostAuthor = User
+
+union FeedPostSource = FeedChannel
+
+type FeedRebuildNeeded {
+  homeFeed: FeedItemConnection!
+}
+
+union FeedSubscription = FeedChannel
+
+union FeedUpdate = FeedItemReceived | FeedItemUpdated | FeedItemDeleted | FeedRebuildNeeded
+
+type FeedUpdateContainer {
+  updates: [FeedUpdate!]!
+  state: String!
+}
+
+input FileAttachmentInput {
+  fileId: String!
+}
+
+type FileMetadata {
+  name: String!
+  mimeType: String
+  size: Int!
+  isImage: Boolean!
+  imageWidth: Int
+  imageHeight: Int
+  imageFormat: String
+}
+
+type GammaMessagesBatch {
+  messages: [ModernMessage!]!
+  haveMoreForward: Boolean
+  haveMoreBackward: Boolean
+}
+
+type GeneralMessage implements ModernMessage {
+  """State"""
+  id: ID!
+  seq: Int
+  date: Date!
+  sender: User!
+  senderBadge: UserBadge
+  edited: Boolean!
+  reactions: [ModernMessageReaction!]!
+  isMentioned: Boolean!
+  source: MessageSource
+
+  """Content"""
+  message: String
+  spans: [MessageSpan!]!
+  attachments: [ModernMessageAttachment!]!
+  quotedMessages: [ModernMessage!]!
+  commentsCount: Int!
+  fallback: String!
+
+  """Overrides"""
+  overrideAvatar: ImageRef
+  overrideName: String
+}
+
+type GeoLocation {
+  long: Float!
+  lat: Float!
+}
+
+input GeoLocationInput {
+  long: Float!
+  lat: Float!
+}
+
+type GlobalSearchConnection {
+  globalItems: [GlobalSearchEntry!]!
+  localItems: [User!]!
+  cursor: String
+}
+
+union GlobalSearchEntry = Organization | User | SharedRoom
+
+enum GlobalSearchEntryKind {
+  ORGANIZATION
+  USER
+  SHAREDROOM
+}
+
+type GroupChatUpdateResponse {
+  chat: Conversation!
+  chatEventMessage: ConversationEventMessage
+  chatEvent: ConversationEvent
+}
+
+type GroupConversation implements Conversation {
+  id: ID!
+  flexibleId: ID!
+  title: String!
+  photos: [String!]!
+  members: [User!]!
+  unreadCount: Int!
+  topMessage: ConversationMessage
+  membersCount: Int!
+  settings: ConversationSettings!
+  photo: String
+  photoRef: ImageRef
+  description: String
+  longDescription: String
+  pinnedMessage: ConversationMessage
+  membersOnline: Int!
+  myRole: String
+}
+
+input GroupConversationInvite {
+  userId: ID!
+  role: String!
+}
+
+type GroupConversationMember {
+  user: User!
+  role: String!
+}
+
+type ICEServer {
+  urls: [String!]!
+  username: String
+  credential: String
+}
+
+type Image {
+  url: String!
+  metadata: FileMetadata
+}
+
+type ImageCrop {
+  x: Int!
+  y: Int!
+  w: Int!
+  h: Int!
+}
+
+input ImageCropInput {
+  x: Int!
+  y: Int!
+  w: Int!
+  h: Int!
+}
+
+type ImageFallback {
+  photo: String!
+  text: String!
+}
+
+type ImageRef {
+  uuid: String!
+  crop: ImageCrop
+}
+
+input ImageRefInput {
+  uuid: String!
+  crop: ImageCropInput
+}
+
+type ImageSticker {
+  id: ID!
+  image: ImageRef!
+  pack: StickerPack!
+  emoji: String!
+}
+
+type Invite {
+  id: ID!
+  key: String!
+  ttl: String
+}
+
+type InviteHistotyInfo {
+  acceptedBy: User
+  forEmail: String!
+  isGlobal: Boolean!
+}
+
+type InviteInfo {
+  id: ID!
+  key: String!
+  orgId: ID!
+  title: String!
+  photo: String
+  photoRef: ImageRef
+  joined: Boolean!
+  creator: User
+  forEmail: String
+  forName: String
+  description: String
+  membersCount: Int
+  organization: Organization
+}
+
+input InviteRequest {
+  email: String!
+  emailText: String
+  role: OrganizationMemberRole!
+  firstName: String
+  lastName: String
+}
+
+type InviteServiceMetadata {
+  users: [User!]
+  invitedBy: User!
+}
+
+type IsAppInstalledResponse {
+  installed: Boolean!
+  installedAt: Date
+}
+
+type KickServiceMetadata {
+  user: User!
+  kickedBy: User!
+}
+
+union MatchmakingAnswer = TextMatchmakingAnswer | MultiselectMatchmakingAnswer
+
+input MatchmakingAnswerInput {
+  questionId: ID!
+  text: String
+  tags: [String!]
+}
+
+union MatchmakingPeer = SharedRoom
+
+type MatchmakingProfile {
+  user: User!
+  answers: [MatchmakingAnswer!]!
+  chatCreated: Boolean!
+}
+
+input MatchmakingProfileFillInput {
+  answers: [MatchmakingAnswerInput!]!
+}
+
+union MatchmakingQuestion = TextMatchmakingQuestion | MultiselectMatchmakingQuestion
+
+input MatchmakingQuestionInput {
+  id: ID
+  type: MatchmakingQuestionType!
+  title: String!
+  subtitle: String
+  tags: [String!]
+}
+
+enum MatchmakingQuestionType {
+  Text
+  Multiselect
+}
+
+type MatchmakingRoom {
+  enabled: Boolean!
+  questions: [MatchmakingQuestion!]
+  profiles: [MatchmakingProfile!]
+  myProfile: MatchmakingProfile
+  peer: MatchmakingPeer!
+}
+
+input MatchmakingRoomInput {
+  enabled: Boolean
+  questions: [MatchmakingQuestionInput!]
+}
+
+type MediaStream {
+  id: ID!
+  peerId: ID
+  state: MediaStreamState!
+  sdp: String
+  ice: [String!]!
+}
+
+enum MediaStreamState {
+  WAIT_OFFER
+  NEED_OFFER
+  WAIT_ANSWER
+  NEED_ANSWER
+  READY
+}
+
+union Mention = UserMention | SharedRoomMention
+
+input MentionInput {
+  chatId: ID
+  userId: ID
+  userIds: [ID!]
+  orgId: ID
+  all: Boolean
+  offset: Int!
+  length: Int!
+}
+
+type MentionNotification {
+  peer: MentionPeer!
+  message: MessageWithMention!
+}
+
+union MentionPeer = SharedRoom | Organization | User
+
+type Message {
+  id: ID!
+  date: Date!
+  sender: User!
+  edited: Boolean!
+
+  """Content"""
+  text: String
+
+  """References"""
+  quoted: [Message!]!
+
+  """Reactions"""
+  alphaReactions: [Reaction!]!
+}
+
+type MessageAttachment {
+  fileId: String!
+  fileMetadata: FileMetadata
+  filePreview: String
+}
+
+type MessageAttachmentFile implements ModernMessageAttachment {
+  id: ID!
+  fileId: String!
+  fileMetadata: FileMetadata!
+  filePreview: String
+  fallback: String!
+}
+
+type MessageAttachmentPost implements ModernMessageAttachment {
+  id: ID!
+  post: FeedItem!
+  fallback: String!
+}
+
+type MessageButton {
+  title: String!
+  style: MessageButtonStyle!
+  id: ID!
+}
+
+input MessageButtonInput {
+  title: String!
+  style: MessageButtonStyle!
+  id: ID!
+}
+
+enum MessageButtonStyle {
+  DEFAULT
+  LIGHT
+}
+
+type MessageConnection {
+  edges: [MessageEdge!]!
+  pageInfo: PageInfo!
+}
+
+type MessageEdge {
+  node: MessageWithChat!
+  cursor: String!
+}
+
+type MessageKeyboard {
+  buttons: [[ModernMessageButton!]]!
+}
+
+input MessageKeyboardInput {
+  buttons: [[ModernMessageButtonInput!]]!
+}
+
+type MessageReaction {
+  user: User!
+  reaction: String!
+}
+
+enum MessageReactionType {
+  LIKE
+  THUMB_UP
+  JOY
+  SCREAM
+  CRYING
+  ANGRY
+}
+
+type MessageRichAttachment implements ModernMessageAttachment {
+  id: ID!
+  title: String
+  subTitle: String
+  titleLink: String
+  titleLinkHostname: String
+  text: String
+  icon: Image
+  image: Image
+  imagePreview: String
+  imageFallback: ImageFallback
+  socialImage: Image
+  socialImagePreview: String
+  keyboard: MessageKeyboard
+  fallback: String!
+}
+
+union MessageSource = MessageSourceChat | MessageSourceComment
+
+type MessageSourceChat {
+  chat: Room!
+}
+
+type MessageSourceComment {
+  peer: CommentsPeer!
+}
+
+interface MessageSpan {
+  offset: Int!
+  length: Int!
+}
+
+type MessageSpanAllMention implements MessageSpan {
+  offset: Int!
+  length: Int!
+}
+
+type MessageSpanBold implements MessageSpan {
+  offset: Int!
+  length: Int!
+}
+
+type MessageSpanCodeBlock implements MessageSpan {
+  offset: Int!
+  length: Int!
+}
+
+type MessageSpanDate implements MessageSpan {
+  offset: Int!
+  length: Int!
+  date: Date!
+}
+
+type MessageSpanInlineCode implements MessageSpan {
+  offset: Int!
+  length: Int!
+}
+
+input MessageSpanInput {
+  offset: Int!
+  length: Int!
+  type: MessageSpanType!
+  url: String
+}
+
+type MessageSpanInsane implements MessageSpan {
+  offset: Int!
+  length: Int!
+}
+
+type MessageSpanIrony implements MessageSpan {
+  offset: Int!
+  length: Int!
+}
+
+type MessageSpanItalic implements MessageSpan {
+  offset: Int!
+  length: Int!
+}
+
+type MessageSpanLink implements MessageSpan {
+  offset: Int!
+  length: Int!
+  url: String!
+}
+
+type MessageSpanLoud implements MessageSpan {
+  offset: Int!
+  length: Int!
+}
+
+type MessageSpanMultiUserMention implements MessageSpan {
+  offset: Int!
+  length: Int!
+  users: [User!]!
+}
+
+type MessageSpanOrganizationMention implements MessageSpan {
+  offset: Int!
+  length: Int!
+  organization: Organization!
+}
+
+type MessageSpanRoomMention implements MessageSpan {
+  offset: Int!
+  length: Int!
+  room: Room!
+}
+
+type MessageSpanRotating implements MessageSpan {
+  offset: Int!
+  length: Int!
+}
+
+enum MessageSpanType {
+  Bold
+  Italic
+  Irony
+  InlineCode
+  CodeBlock
+  Insane
+  Loud
+  Rotating
+  Link
+}
+
+type MessageSpanUserMention implements MessageSpan {
+  offset: Int!
+  length: Int!
+  user: User!
+}
+
+enum MessageType {
+  MESSAGE
+  POST
+}
+
+type MessageWithChat {
+  message: ModernMessage!
+  chat: Room!
+}
+
+union MessageWithMention = FeedPost | Message
+
+interface ModernMessage {
+  """State"""
+  id: ID!
+  seq: Int
+  date: Date!
+  sender: User!
+  senderBadge: UserBadge
+  source: MessageSource
+
+  """Content"""
+  message: String
+  spans: [MessageSpan!]!
+  fallback: String!
+}
+
+interface ModernMessageAttachment {
+  id: ID!
+  fallback: String!
+}
+
+type ModernMessageButton {
+  id: ID!
+  title: String!
+  style: ModernMessageButtonStyle!
+  url: String
+}
+
+input ModernMessageButtonInput {
+  id: ID!
+  title: String!
+  style: ModernMessageButtonStyle!
+}
+
+enum ModernMessageButtonStyle {
+  DEFAULT
+  LIGHT
+}
+
+type ModernMessageReaction {
+  user: User!
+  reaction: MessageReactionType!
+}
+
+type MultiselectMatchmakingAnswer {
+  question: MultiselectMatchmakingQuestion!
+  tags: [String!]!
+}
+
+type MultiselectMatchmakingQuestion {
+  id: ID!
+  title: String!
+  subtitle: String!
+  tags: [String!]!
+}
+
+type Mutation {
+  lifecheck: String
+  alphaSendMessage(conversationId: ID!, message: String, file: String, repeatKey: String, replyMessages: [ID!], mentions: [ID!]): ConversationEventMessage!
+  alphaReadChat(conversationId: ID!, messageId: ID!): ChatReadResult!
+  alphaEditMessage(messageId: ID!, message: String, file: String, replyMessages: [ID!], mentions: [ID!]): ConversationEventEditMessage!
+  alphaSendIntro(conversationId: ID!, userId: ID!, about: String, message: String, file: String, repeatKey: String): ConversationEventMessage!
+  alphaEditIntro(messageId: ID!, userId: ID!, about: String, message: String, file: String): ConversationEventMessage!
+  alphaDeleteMessageUrlAugmentation(messageId: ID!): ConversationEventMessage!
+  alphaDeleteMessage(messageId: ID!): ConversationEventDelete!
+  alphaChatSetReaction(messageId: ID!, reaction: String!): String!
+  alphaChatUnsetReaction(messageId: ID!, reaction: String!): String!
+  alphaGlobalRead(toSeq: Int!): String!
+  alphaBlockUser(userId: ID!): String!
+  alphaUnblockUser(userId: ID!, conversationId: ID): String!
+  alphaChatCreateGroup(title: String, photoRef: ImageRefInput, members: [ID!]!, message: String): Conversation!
+  alphaChatUpdateGroup(conversationId: ID!, input: UpdateGroupInput!): ConversationUpdateResponse!
+  alphaChatChangeGroupTitle(conversationId: ID!, title: String!): GroupChatUpdateResponse!
+  alphaChatInviteToGroup(conversationId: ID!, invites: [GroupConversationInvite!]!): GroupChatUpdateResponse!
+  alphaChatKickFromGroup(conversationId: ID!, userId: ID!): GroupChatUpdateResponse!
+  alphaChatChangeRoleInGroup(conversationId: ID!, userId: ID!, newRole: String!): GroupChatUpdateResponse!
+  alphaChatCopyGroup(conversationId: ID!, title: String, extraMembers: [ID!], message: String!): GroupChatUpdateResponse!
+  alphaChatLeave(conversationId: ID!): ConversationUpdateResponse!
+  alphaUpdateConversationSettings(settings: UpdateConversationSettingsInput!, conversationId: ID!): ConversationSettings!
+  profileCreate(input: ProfileInput!, inviteKey: String): Profile!
+  profileUpdate(input: ProfileInput!, uid: ID, inviteKey: String): Profile!
+
+  """Deprecated"""
+  createProfile(input: CreateProfileInput!): Profile!
+  updateProfile(input: UpdateProfileInput!, uid: ID): Profile!
+  alphaCreateUserProfileAndOrganization(user: ProfileInput!, organization: CreateOrganizationInput!): AlphaSignupData!
+
+  """Payment Method management"""
+  cardCreateSetupIntent(retryKey: String!): CardSetupIntent!
+  cardCommitSetupIntent(id: ID!, pmid: ID!): CreditCard!
+  cardRemove(id: ID!): CreditCard!
+  cardMakeDefault(id: ID!): CreditCard!
+  cardDepositEnqueue(amount: Int!, retryKey: String!): Boolean!
+  cardDepositIntent(id: ID!, amount: Int!, retryKey: String!): PaymentIntent!
+  paymentIntentCommit(id: ID!): Boolean!
+  paymentCancel(id: ID!): Boolean!
+  donateToUser(amount: Int!, id: ID!): Boolean!
+  alphaCreateInvite: Invite!
+  alphaDeleteInvite(id: ID!): String!
+  alphaJoinInvite(key: String!, isNewUser: Boolean): ID!
+  joinAppInvite(key: String!, isNewUser: Boolean): ID!
+  debugSerializeId(id: Int!, type: String!): ID!
+  debugSendEmail(type: DebugEmailType!): Boolean
+  debugCreateTestUser(key: String!, name: String!): User!
+  debugDeleteUrlInfoCache(url: String!): Boolean
+  debugDeleteUrlInfoCacheAll: Boolean
+  debugSuperNotifications(type: SuperNotificationType!): Boolean!
+  debugCalcUsersMessagingStats: Boolean!
+  debugCalcUsersChatsStats: Boolean!
+  debugConvertOrgChatToNormal(orgId: ID!): Boolean!
+  debugDeleteEmptyOrgChats: Boolean!
+  debugFixCommentsVisibility: Boolean!
+  debugSetCommentVisibility(commentId: ID!, visible: Boolean!): Boolean!
+  debugRemoveDeletedDialogs: Boolean!
+  debugReindexOrgs(marActivatedOrgsListed: Boolean!): Boolean!
+  debugCalcRoomsActiveMembers: Boolean!
+  debugCalcOrgsActiveMembers: Boolean!
+  debugCreateCommentSubscriptions: Boolean!
+  debugDeveloperInit: Boolean!
+  debugResetAudienceCounter(uid: ID): Boolean!
+  debugCalcUsersAudienceCounter: Boolean!
+  debugCalcUsers2WayDirectChatsCounter: Boolean!
+  debugFixMessage(id: Int!): Boolean!
+  debugEnableNotificationCenterForAll: Boolean!
+  debugResetGlobalCounters: Boolean!
+  debugCalcGlobalCountersForAll: Boolean!
+  debugValidateGlobalCountersForAll: Boolean!
+  debugCreateBigChat(membersCount: Int!): Boolean!
+  debugFlood(chat: ID!, messagesCount: Int!): Boolean!
+  debugQueueDailyEngagementReport: Boolean!
+  debugQueueDailyOnboardingReport: Boolean!
+  debugQueueWeeklyEngagementReport: Boolean!
+  debugQueueWeeklyOnboardingReport: Boolean!
+  debugQueueWeeklyUserLeaderboard: Boolean!
+  debugQueueWeeklyRoomLeaderboard: Boolean!
+  debugQueueWeeklyRoomByMessagesLeaderboard: Boolean!
+  debugReindexUserProfiles: Boolean!
+  debugReindexRoomProfiles: Boolean!
+  debugSendPush(id: ID!, message: String!): Boolean!
+  debugReindexPrivateDialogs: Boolean!
+  debugReindexUsersDialogs: Boolean!
+  debugReindexFeedEvents: Boolean!
+  debugChangeUserEmail(uid: ID!, email: String!): Boolean!
+  debugSwapUserEmails(uid1: ID!, uid2: ID!): Boolean!
+  debugFindUsefulCommunities: Boolean!
+  debugFixStickerPack(id: ID!, stickers: [StickerInput!]!): StickerPack
+  debugReverseStickers: Boolean!
+  debugReindexShortnames: Boolean!
+  debugFixHyperlogEvent(eventId: String!): Boolean!
+  debugReindexFeedChannelAdmins: Boolean!
+  debugReindexFeedChannels: Boolean!
+  debugReindexFeedTopics: Boolean!
+  debugCalcChannelPostsCount: Boolean!
+  debugCalcChannelsSubscribersCount: Boolean!
+  debugResetUrlInfoFreshness: Boolean!
+  debugFixUsersPrimaryOrganization: Boolean!
+  debugResetPushDelivery: Boolean!
+  debugAddStickerPackToAll(packId: ID!): Boolean!
+  debugReplaceCommunityForChat(chatId: ID!, newCommunityId: ID!): Boolean!
+  debugRecountSeqForMessages: Boolean!
+  settingsUpdate(settings: UpdateSettingsInput): Settings!
+
+  """Deprecated"""
+  updateSettings(settings: UpdateSettingsInput): Settings!
+  createOauthApp(input: OauthAppInput!): OauthApp!
+  updateOauthApp(id: ID!, input: OauthAppInput!): OauthApp!
+  betaOrganizationMemberRequestApprove(userId: ID!, organizationId: ID!): Organization!
+  betaOrganizationMemberRemove(userId: ID!, organizationId: ID!): Organization!
+  betaOrganizationMemberAdd(userId: ID, userIds: [ID!], organizationId: ID!): Organization!
+  alphaOrganizationMemberAdd(userId: ID, userIds: [ID!], organizationId: ID!): [OrganizationJoinedMember!]!
+  alphaOrganizationChangeMemberRole(memberId: ID!, newRole: OrganizationMemberRole!, organizationId: ID!): String!
+  alphaOrganizationInviteMembers(inviteRequests: [InviteRequest!]!, organizationId: ID): String!
+  alphaOrganizationRefreshInviteLink(expirationDays: Int, organizationId: ID): Invite!
+
+  """deprecated"""
+  alphaOrganizationCreatePublicInvite(expirationDays: Int, organizationId: ID): Invite!
+  alphaOrganizationRemoveMember(memberId: ID!, organizationId: ID!): String!
+  alphaOrganizationDeletePublicInvite(organizationId: ID): String!
+  presenceReportOnline(timeout: Int!, platform: String, active: Boolean): String!
+  presenceReportOffline(platform: Platform): String!
+  alphaReportActive(timeout: Int!, platform: Platform): String!
+  alphaSetDesktopInstalled(at: Date!): Boolean!
+  alphaSetMobileInstalled(at: Date!): Boolean!
+  superAccountAdd(title: String!): SuperAccount!
+  superAccountRename(id: ID!, title: String!): SuperAccount!
+  superAccountActivate(id: ID!): SuperAccount!
+  superAccountSuspend(id: ID!): SuperAccount!
+  superAccountPend(id: ID!): SuperAccount!
+  superAccountMemberAdd(id: ID!, userId: ID!): SuperAccount!
+  superAccountMemberRemove(id: ID!, userId: ID!): SuperAccount!
+  superAccountChannelMemberAdd(id: ID!, userId: ID!): String!
+  superDeleteUser(id: ID!): Boolean!
+  superAdminAdd(userId: ID!, role: SuperAdminRole!): String!
+  superAdminRemove(userId: ID!): String!
+  alphaAlterPublished(id: ID!, published: Boolean!): Organization!
+  alphaRenderVideo(name: String!): String!
+  betaFixCounter(uid: ID!): Boolean!
+  betaFixCountersForAll: Boolean!
+  deliverCountersForAll: Boolean!
+  conversationDraftUpdate(conversationId: ID!, message: String): String!
+  alphaSaveDraftMessage(conversationId: ID!, message: String): String!
+  track(did: String!, events: [Event!]!, platform: EventPlatform, isProd: Boolean): String!
+  createPowerup(input: PowerupInput!): Powerup!
+  updatePowerup(id: ID!, input: PowerupInput!): Powerup!
+  addPowerupToChat(id: ID!, powerupId: ID!): Boolean!
+  removePowerupFromChat(id: ID!, powerupId: ID!): Boolean!
+  updatePowerupUserSettingsInChat(id: ID!, powerupId: ID!, settings: PowerupUserSettingsInput!): PowerupUserSettings!
+  createApp(name: String!, photoRef: ImageRefInput, about: String, shortname: String): AppProfile!
+  createSuperApp(name: String!, photoRef: ImageRefInput, about: String, shortname: String): AppProfile!
+  refreshAppToken(appId: ID!): AppProfile!
+  updateAppProfile(appId: ID!, input: AppProfileInput!): AppProfile!
+  deleteApp(appId: ID!): Boolean!
+  addAppToChat(appId: ID!, chatId: ID!): AppChat!
+  userStorageSet(namespace: String!, data: [AppStorageValueInput!]!): [AppStorageValue!]!
+  betaAddComment(peerId: ID!, message: String, replyComment: ID, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!], repeatKey: String): CommentEntry!
+  betaAddStickerComment(peerId: ID!, stickerId: ID!, replyComment: ID, repeatKey: String): CommentEntry!
+  editComment(id: ID!, message: String, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!]): Boolean!
+  deleteComment(id: ID!): Boolean!
+  deleteCommentAugmentation(id: ID!): Boolean!
+  commentReactionAdd(commentId: ID!, reaction: MessageReactionType!): Boolean!
+  commentReactionRemove(commentId: ID!, reaction: MessageReactionType!): Boolean!
+  subscribeToComments(peerId: ID!, type: CommentSubscriptionType!): Boolean!
+  unsubscribeFromComments(peerId: ID!): Boolean!
+
+  """Deprecated"""
+  addMessageComment(messageId: ID!, message: String, replyComment: ID, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!]): Boolean!
+  betaAddMessageComment(messageId: ID!, message: String, replyComment: ID, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!], repeatKey: String): CommentEntry!
+  betaAddFeedComment(feedItemId: ID!, message: String, replyComment: ID, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!], repeatKey: String): CommentEntry!
+  subscribeMessageComments(messageId: ID!, type: CommentSubscriptionType!): Boolean!
+  unSubscribeMessageComments(messageId: ID!): Boolean!
+  setEnvVar(name: String!, value: String!): Boolean!
+  setEnvVarString(name: String!, value: String!): Boolean!
+  setEnvVarNumber(name: String!, value: Int!): Boolean!
+  setEnvVarBoolean(name: String!, value: Boolean!): Boolean!
+  featureFlagAdd(key: String!, title: String!): FeatureFlag!
+  superAccountFeatureAdd(id: ID!, featureId: ID!): SuperAccount!
+  superAccountFeatureRemove(id: ID!, featureId: ID!): SuperAccount!
+  shareLocation(location: GeoLocationInput!): Boolean!
+  conferenceJoin(id: ID!): ConferenceJoinResult!
+  conferenceKeepAlive(id: ID!, peerId: ID!): Conference!
+  conferenceLeave(id: ID!, peerId: ID!): Conference!
+  mediaStreamOffer(id: ID!, peerId: ID!, offer: String!): ConferenceMedia!
+  mediaStreamNegotiationNeeded(id: ID!, peerId: ID!): ConferenceMedia!
+  mediaStreamAnswer(id: ID!, peerId: ID!, answer: String!): ConferenceMedia!
+  mediaStreamCandidate(id: ID!, peerId: ID!, candidate: String!): ConferenceMedia!
+  mediaStreamFailed(id: ID!, peerId: ID!): ConferenceMedia!
+  peerConnectionOffer(id: ID!, ownPeerId: ID!, peerId: ID!, offer: String!): Conference!
+  peerConnectionAnswer(id: ID!, ownPeerId: ID!, peerId: ID!, answer: String!): Conference!
+  peerConnectionCandidate(id: ID!, ownPeerId: ID!, peerId: ID!, candidate: String!): Conference!
+  stickerPackCreate(title: String!, stickers: [StickerInput!]): StickerPack!
+  stickerPackUpdate(id: ID!, input: StickerPackInput!): StickerPack!
+  stickerPackAddSticker(id: ID!, input: StickerInput!): Sticker!
+  stickerPackRemoveSticker(id: ID!): Boolean!
+  stickerPackAddToCollection(id: ID!): Boolean!
+  stickerPackRemoveFromCollection(id: ID!): Boolean!
+  stickerAddToFavorites(id: ID!): Boolean!
+  stickerRemoveFromFavorites(id: ID!): Boolean!
+  roomRead(id: ID!, mid: ID!): Boolean!
+  betaMessageSend(message: String, file: String, repeatKey: String, replyMessages: [ID!], mentions: [ID!], room: ID!): Boolean!
+  betaMessageEdit(mid: ID!, message: String, file: String, replyMessages: [ID!], mentions: [ID!]): Boolean!
+  betaMessageDeleteAugmentation(mid: ID!): Boolean!
+  betaMessageDelete(mid: ID, mids: [ID!]): Boolean!
+  betaReactionSet(mid: ID!, reaction: String!): Boolean!
+  betaReactionRemove(mid: ID!, reaction: String!): Boolean!
+  betaIntroSend(room: ID!, uid: ID!, about: String, message: String, file: String, repeatKey: String): Boolean!
+  betaIntroEdit(mid: ID!, uid: ID!, about: String, message: String, file: String): Boolean!
+  readNotification(notificationId: ID!): NotificationCenter!
+  deleteNotification(notificationId: ID!): Boolean!
+  notificationCenterMarkSeqRead(toSeq: Int!): Boolean!
+  debugCreateNotification(uid: ID!, text: String!): Boolean!
+  createOrganization(input: CreateOrganizationInput!): OrganizationProfile!
+  updateOrganizationProfile(input: UpdateOrganizationProfileInput!, id: ID): OrganizationProfile!
+  deleteOrganization(id: ID!): Boolean!
+  registerWebPush(endpoint: String!): String!
+  registerPush(endpoint: String!, type: PushType!): String!
+  debugSendAndroidDataPush(uid: ID!, message: String!): Boolean!
+  debugSendAppleDataPush(uid: ID!, message: String!): Boolean!
+  betaDiscoverSkip(selectedTagsIds: [String!]!): DiscoverPage
+  betaNextDiscoverReset: Boolean!
+  betaNextDiscoverPageOrChats(selectedTagsIds: [String!]!, excudedGroupsIds: [String!]!): DiscoverPage
+  betaSaveSelectedTags(selectedTagsIds: [String!]!): DiscoverPage
+  betaSubmitNextDiscover(selectedTagsIds: [String!]!, excudedGroupsIds: [String!]!): DiscoverPage
+  matchmakingRoomSave(peerId: ID!, input: MatchmakingRoomInput!): MatchmakingRoom!
+  matchmakingProfileFill(peerId: ID!, input: MatchmakingProfileFillInput!): MatchmakingProfile!
+  matchmakingConnect(peerId: ID!, uid: ID!): Boolean!
+  createHistoricUserMetricsReport: Boolean!
+  typingSend(conversationId: ID!, type: TypingType!): String!
+  typingCancel(conversationId: ID!): String!
+
+  """Deprecated"""
+  alphaSetTyping(conversationId: ID!, type: String): String!
+  reportContent(contentId: ID!, type: String!, message: String): Boolean
+  deleteMyAccount: Boolean!
+  superBadgeCreateToRoom(roomId: ID!, userId: ID!, name: String!): UserBadge!
+  superBadgeUnsetToRoom(roomId: ID!, badgeId: ID!, userId: ID!): Boolean!
+
+  """deprecated"""
+  badgeCreate(name: String!): User!
+  badgeCreateToRoom(roomId: ID!, name: String!): UserBadge!
+  badgeSetToRoom(roomId: ID!, badgeId: ID!): UserBadge!
+  badgeUnsetToRoom(roomId: ID!): Boolean!
+  badgeDelete(badgeId: ID!): User!
+  badgeSetPrimary(badgeId: ID!): User!
+  badgeUnsetPrimary: User!
+  superBadgeCreate(userId: ID!, name: String!): User!
+  superBadgeSetToRoom(roomId: ID!, badgeId: ID!, userId: ID!): UserBadge!
+  superBadgeDelete(badgeId: ID!, userId: ID!): User!
+  superBadgeVerify(badgeId: ID!, userId: ID!): User!
+  superBadgeUnverify(badgeId: ID!, userId: ID!): User!
+  alphaCreateFeedPost(channel: ID!, message: String, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!], slides: [SlideInput!], repeatKey: String): FeedItem!
+  alphaEditFeedPost(feedItemId: ID!, message: String, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!], slides: [SlideInput!]): FeedItem!
+  alphaDeleteFeedPost(feedItemId: ID!): Boolean!
+  feedReactionAdd(feedItemId: ID!, reaction: MessageReactionType!): Boolean!
+  feedReactionRemove(feedItemId: ID!, reaction: MessageReactionType!): Boolean!
+  alphaFeedCreateChannel(title: String!, about: String, photoRef: ImageRefInput, socialImageRef: ImageRefInput, global: Boolean): FeedChannel!
+  alphaFeedUpdateChannel(id: ID!, title: String, about: String, photoRef: ImageRefInput, socialImageRef: ImageRefInput, global: Boolean): FeedChannel!
+  alphaFeedChannelSubscribe(id: ID!): Boolean!
+  alphaFeedChannelUnsubscribe(id: ID!): Boolean!
+  alphaFeedChannelAddEditor(id: ID!, userId: ID!): Boolean!
+  alphaFeedChannelRemoveEditor(id: ID!, userId: ID!): Boolean!
+  alphaFeedChannelEnableRoomAutoSubscription(channelId: ID!, roomId: ID!): Boolean!
+  alphaFeedChannelDisableRoomAutoSubscription(channelId: ID!, roomId: ID!): Boolean!
+  alphaFeedChannelEnableCommunityAutoSubscription(channelId: ID!, roomId: ID!): Boolean!
+  alphaFeedChannelDisableCommunityAutoSubscription(channelId: ID!, roomId: ID!): Boolean!
+  sendMessage(chatId: ID!, message: String, replyMessages: [ID!], mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!], repeatKey: String): Boolean!
+  sendSticker(chatId: ID!, stickerId: ID!, replyMessages: [ID!], repeatKey: String): Boolean!
+  editMessage(messageId: ID!, message: String, replyMessages: [ID!], mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!]): Boolean!
+  pinMessage(chatId: ID!, messageId: ID!): Boolean!
+  unpinMessage(chatId: ID!): Boolean!
+  betaPinMessage(chatId: ID!, messageId: ID!): SharedRoom!
+  betaUnpinMessage(chatId: ID!): SharedRoom!
+  gammaPinMessage(chatId: ID!, messageId: ID!): Room!
+  gammaUnpinMessage(chatId: ID!): Room!
+  messageReactionAdd(messageId: ID!, reaction: MessageReactionType!): Boolean!
+  messageReactionRemove(messageId: ID!, reaction: MessageReactionType!): Boolean!
+  deleteChat(chatId: ID!): Boolean!
+  archiveChat(chatId: ID!): Boolean!
+
+  """Room mgmt"""
+  betaRoomCreate(kind: SharedRoomKind!, title: String, description: String, photoRef: ImageRefInput, members: [ID!]!, message: String, listed: Boolean, organizationId: ID, channel: Boolean, price: Int, interval: WalletSubscriptionInterval): SharedRoom!
+  betaRoomUpdate(roomId: ID!, input: RoomUpdateInput!): Room!
+  betaRoomMove(roomId: ID!, toOrg: ID!): Room!
+
+  """Members mgmt"""
+  betaRoomInvite(roomId: ID!, invites: [RoomInviteInput!]!): Room!
+  alphaRoomInvite(roomId: ID!, invites: [RoomInviteInput!]!): [RoomMember!]!
+  betaRoomKick(roomId: ID!, userId: ID!): Room!
+  betaRoomLeave(roomId: ID!): Room!
+  betaRoomChangeRole(roomId: ID!, userId: ID!, newRole: RoomMemberRole!): Room!
+  betaRoomJoin(roomId: ID!): Room!
+  betaRoomsJoin(roomsIds: [ID!]!): [Room!]!
+  betaRoomDeclineJoinRequest(roomId: ID!, userId: ID!): Room!
+  betaBuyPremiumChatSubscription(chatId: ID!): SharedRoom!
+
+  """Invite links"""
+  betaRoomInviteLinkSendEmail(roomId: ID!, inviteRequests: [RoomInviteEmailRequest!]!): String!
+  betaRoomInviteLinkJoin(invite: String!, isNewUser: Boolean): Room!
+  betaRoomInviteLinkRenew(roomId: ID!): String!
+
+  """User settings"""
+  betaRoomUpdateUserNotificationSettings(settings: RoomUserNotificaionSettingsInput!, roomId: ID!): RoomUserNotificaionSettings!
+
+  """Admin tools"""
+  betaRoomsInviteUser(userId: ID!, roomIds: [ID!]!): [Room!]!
+  betaRoomAlterFeatured(roomId: ID!, featured: Boolean!): RoomSuper!
+  betaRoomAlterListed(roomId: ID!, listed: Boolean!): RoomSuper!
+  updateWelcomeMessage(roomId: ID!, welcomeMessageIsOn: Boolean!, welcomeMessageSender: ID, welcomeMessageText: String): Boolean!
+  alphaSetUserShortName(shortname: String!): String
+  alphaSetOrgShortName(id: ID!, shortname: String!): String
+  alphaSetFeedChannelShortName(id: ID!, shortname: String!): String
+  alphaSetRoomShortName(id: ID!, shortname: String!): String
+}
+
+type NewCommentNotification {
+  peer: CommentsPeer!
+  comment: CommentEntry!
+}
+
+type NewMatchmakingProfilesNotification {
+  room: MatchmakingRoom!
+  profiles: [MatchmakingProfile!]!
+}
+
+type Notification {
+  id: ID!
+  text: String
+  content: [NotificationContent!]!
+}
+
+type NotificationCenter {
+  id: ID!
+  unread: Int!
+  state: NotificationCenterUpdatesState!
+}
+
+union NotificationCenterUpdate = NotificationReceived | NotificationRead | NotificationDeleted | NotificationUpdated | NotificationContentUpdated
+
+type NotificationCenterUpdateBatch {
+  seq: Int!
+  state: String!
+  fromSeq: Int!
+  updates: [NotificationCenterUpdate!]!
+}
+
+union NotificationCenterUpdateContainer = NotificationCenterUpdateSingle | NotificationCenterUpdateBatch
+
+type NotificationCenterUpdateSingle {
+  seq: Int!
+  state: String!
+  update: NotificationCenterUpdate!
+}
+
+type NotificationCenterUpdatesState {
+  state: String
+}
+
+enum NotificationComments {
+  ALL
+  DIRECT
+  NONE
+}
+
+type NotificationConnection {
+  items: [Notification!]!
+  cursor: String
+}
+
+union NotificationContent = NewCommentNotification | NewMatchmakingProfilesNotification | MentionNotification
+
+type NotificationContentUpdated {
+  center: NotificationCenter!
+  content: UpdatedNotificationContent!
+}
+
+type NotificationCounter {
+  id: ID!
+  unreadCount: Int!
+}
+
+type NotificationDeleted {
+  center: NotificationCenter!
+  notification: Notification!
+  unread: Int!
+}
+
+enum NotificationMessages {
+  ALL
+  DIRECT
+  NONE
+}
+
+enum NotificationPreview {
+  NAME_TEXT
+  NAME
+}
+
+type NotificationRead {
+  center: NotificationCenter!
+  unread: Int!
+}
+
+type NotificationReceived {
+  center: NotificationCenter!
+  notification: Notification!
+  unread: Int!
+}
+
+enum NotificationsDelay {
+  NONE
+  MIN_1
+  MIN_15
+}
+
+type NotificationUpdated {
+  center: NotificationCenter!
+  notification: Notification!
+  unread: Int!
+}
+
+type OauthApp {
+  id: ID!
+  title: String!
+  clientId: String
+  clientSecret: String
+  scopes: [OauthScope!]
+  owner: User!
+  image: ImageRef
+  redirectUrls: [String!]
+}
+
+input OauthAppInput {
+  title: String
+  scopes: [OauthScope!]
+  redirectUrls: [String!]
+  image: ImageRefInput
+}
+
+type OauthContext {
+  app: OauthApp!
+  state: String!
+  redirectUrl: String!
+  code: String!
+}
+
+enum OauthScope {
+  All
+  Zapier
+}
+
+type OnlineEvent {
+  userId: ID!
+  timeout: Int!
+  online: Boolean!
+  active: Boolean!
+  lastSeen: String!
+
+  """Deprecated"""
+  type: String!
+  user: User!
+}
+
+type Organization {
+  id: ID!
+  isMine: Boolean!
+  isDeleted: Boolean!
+  name: String!
+  photo: String
+  website: String
+  websiteTitle: String
+  about: String
+  twitter: String
+  facebook: String
+  linkedin: String
+  instagram: String
+  location: String
+  betaIsOwner: Boolean!
+  betaIsAdmin: Boolean!
+  betaIsPrimary: Boolean!
+
+  """# Refactor?"""
+  superAccountId: ID!
+  alphaIsOwner: Boolean!
+  alphaOrganizationMembers(first: Int, after: ID): [OrganizationJoinedMember!]!
+  alphaOrganizationAdminMembers(first: Int, after: ID): [OrganizationJoinedMember!]!
+  alphaOrganizationMemberRequests: [OrganizationRequestedMember!]!
+  alphaFeatured: Boolean!
+  alphaIsCommunity: Boolean!
+  alphaIsPrivate: Boolean!
+  betaPublicRooms: [SharedRoom!]!
+  betaPublicRoomsCount: Int!
+  status: String!
+  membersCount: Int!
+  personal: Boolean!
+  linkedFeedChannels: [FeedChannel!]!
+  shortname: String
+}
+
+type OrganizationChatStats {
+  org: Organization!
+  chat: SharedRoom!
+  messagesCount: Int!
+  lastMessageDate: String!
+}
+
+type OrganizationContact {
+  name: String!
+  photo: String
+  photoRef: ImageRef
+  position: String
+  email: String
+  phone: String
+  link: String
+  twitter: String
+}
+
+type OrganizationIvitedMember implements OrganizationMember {
+  email: String!
+  role: OrganizationMemberRole!
+  firstName: String
+  lastName: String
+  inviteId: ID!
+}
+
+type OrganizationJoinedMember implements OrganizationMember {
+  email: String!
+  role: OrganizationMemberRole!
+  user: User!
+  joinedAt: String
+  showInContacts: Boolean!
+}
+
+interface OrganizationMember {
+  email: String!
+  role: OrganizationMemberRole!
+}
+
+enum OrganizationMemberRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+type OrganizationProfile {
+  id: ID!
+  name: String!
+  photoRef: ImageRef
+  website: String
+  websiteTitle: String
+  about: String
+  twitter: String
+  facebook: String
+  linkedin: String
+  instagram: String
+  contacts: [OrganizationContact!]!
+  location: String
+  alphaPublished: Boolean!
+  alphaEditorial: Boolean!
+  alphaFeatured: Boolean!
+  alphaIsCommunity: Boolean!
+  alphaIsPrivate: Boolean!
+  shortname: String
+}
+
+type OrganizationRequestedMember implements OrganizationMember {
+  email: String!
+  role: OrganizationMemberRole!
+  user: User!
+  joinedAt: String
+}
+
+type OrganizationsConnection {
+  edges: [OrganizationsEdge!]!
+  pageInfo: PageInfo!
+}
+
+type OrganizationsEdge {
+  node: Organization!
+  cursor: String!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  itemsCount: Int!
+  pagesCount: Int!
+  currentPage: Int!
+  openEnded: Boolean!
+}
+
+type Payment {
+  id: ID!
+  status: PaymentStatus!
+  intent: PaymentIntent
+}
+
+type PaymentIntent {
+  id: ID!
+  clientSecret: String!
+}
+
+enum PaymentStatus {
+  PENDING
+  CANCELED
+  FAILING
+  ACTION_REQUIRED
+  SUCCESS
+}
+
+enum PermissionAppType {
+  POWERUP
+}
+
+type PermissionGroup {
+  id: ID!
+  name: String!
+  description: String!
+  requests: [PermissionRequest!]!
+}
+
+type PermissionRequest {
+  id: ID!
+  group: PermissionGroup!
+  appType: PermissionAppType!
+  powerup: Powerup
+  scope: PermissionScope!
+  chat: Room
+}
+
+type Permissions {
+  roles: [String!]!
+}
+
+enum PermissionScope {
+  GLOBAL
+  CHAT
+}
+
+type PhotoChangeServiceMetadata {
+  photo: String
+  photoRef: ImageRef
+}
+
+enum Platform {
+  WEB
+  IOS
+  ANDROID
+}
+
+type PlatformNotificationSettings {
+  direct: ChatTypeNotificationSettings!
+  secretChat: ChatTypeNotificationSettings!
+  organizationChat: ChatTypeNotificationSettings!
+  communityChat: ChatTypeNotificationSettings!
+  comments: ChatTypeNotificationSettings!
+  notificationPreview: NotificationPreview!
+}
+
+input PlatformNotificationSettingsInput {
+  direct: ChatTypeNotificationSettingsInput
+  secretChat: ChatTypeNotificationSettingsInput
+  organizationChat: ChatTypeNotificationSettingsInput
+  communityChat: ChatTypeNotificationSettingsInput
+  comments: ChatTypeNotificationSettingsInput
+  notificationPreview: NotificationPreview
+}
+
+enum PostMessageType {
+  BLANK
+  JOB_OPPORTUNITY
+  OFFICE_HOURS
+  REQUEST_FOR_STARTUPS
+}
+
+type PostRespondServiceMetadata {
+  post: RoomMessage!
+  postRoom: Room!
+  responder: User!
+  respondType: ID!
+}
+
+type Powerup {
+  id: ID!
+  name: String!
+  description: String!
+  image: ImageRef
+}
+
+input PowerupInput {
+  name: String
+  description: String
+  image: ImageRefInput
+}
+
+type PowerupUserSettings {
+  enabled: Boolean!
+}
+
+input PowerupUserSettingsInput {
+  enabled: Boolean!
+}
+
+type PremiumChatSettings {
+  id: ID!
+  price: Int!
+  interval: WalletSubscriptionInterval!
+}
+
+type PrivateConversation implements Conversation {
+  id: ID!
+  flexibleId: ID!
+  title: String!
+  photos: [String!]!
+  user: User!
+  unreadCount: Int!
+  topMessage: ConversationMessage
+  blocked: Boolean!
+  settings: ConversationSettings!
+}
+
+type PrivateRoom {
+  id: ID!
+  user: User!
+  settings: RoomUserNotificaionSettings!
+  pinnedMessage: ModernMessage
+  myBadge: UserBadge
+}
+
+type Profile {
+  id: ID!
+  firstName: String
+  lastName: String
+  photoRef: ImageRef
+  phone: String
+  email: String
+  website: String
+  about: String
+  location: String
+  linkedin: String
+  instagram: String
+  twitter: String
+  facebook: String
+
+  """Deprecated"""
+  alphaLinkedin: String
+  alphaTwitter: String
+  alphaJoinedAt: String
+  alphaInvitedBy: User
+  alphaRole: String
+  alphaLocations: [String!]
+  primaryOrganization: Organization
+
+  """Deprecated"""
+  alphaPrimaryOrganizationId: ID
+  alphaPrimaryOrganization: Organization
+
+  """deprecated"""
+  primaryBadge: UserBadge
+  shortname: String
+}
+
+input ProfileInput {
+  firstName: String
+  lastName: String
+  photoRef: ImageRefInput
+  phone: String
+  email: String
+  website: String
+  about: String
+  location: String
+  linkedin: String
+  instagram: String
+  twitter: String
+  facebook: String
+  primaryOrganization: ID
+}
+
+type ProfilePrefill {
+  firstName: String
+  lastName: String
+  picture: String
+}
+
+type PushSettings {
+  webPushKey: String
+}
+
+enum PushType {
+  WEB_PUSH
+  IOS
+  ANDROID
+  SAFARI
+}
+
+type Query {
+  lifecheck: String
+  alphaNotificationCounter: NotificationCounter!
+  alphaChat(conversationId: ID, shortName: String): Conversation!
+  alphaLoadMessages(conversationId: ID!, first: Int, before: ID, after: ID): ConversationState!
+  alphaChatsSearchForCompose(query: String, organizations: Boolean, limit: Int): [ComposeSearchResult!]!
+  alphaChatSearch(members: [ID!]!): Conversation
+  alphaGroupConversationMembers(conversationId: ID!): [GroupConversationMember!]!
+  myProfile: Profile
+  myCards: [CreditCard!]!
+  myWallet: WalletAccount!
+  transactionsPending: [WalletTransaction!]!
+  transactionsHistory(first: Int!, after: String): WalletTransactionConnection!
+  alphaInvites: [Invite!]
+  alphaInviteInfo(key: String!): InviteInfo
+  appInvite: String!
+  appInviteFromUser(shortname: String!): String!
+  appInviteInfo(key: String!): AppInvite
+  alphaAppInvite: String! @deprecated(reason: "renamed to 'appInvite'")
+  alphaAppInviteInfo(key: String!): AppInviteInfo @deprecated(reason: "renamed to 'appInviteInfo'")
+  alphaInvitesHistory: [InviteHistotyInfo!]
+  alphaResolveInvite(key: String!): ResolveInviteEntry
+  commentGlobalUpdatesState: CommentGlobalUpdatesState!
+  debugParseID(id: ID!): DebugID!
+  debugCrashQuery: String!
+  debugUrlInfo(url: String!): UrlAugmentation
+  userPresence(uid: ID!, lastSeenFiveMinute: Boolean): [DebugUserPresence!]!
+  debugValidateMessages: String!
+  organizationChatsStats: [OrganizationChatStats!]!
+  debugEventsState: DebugEventsState!
+  debugCheckTasksIndex: String!
+  debug2WayDirectChatsCounter: Int!
+  debugUserMetrics(id: ID!): DebugUserMetrics!
+  debugGlobalCounters: DebugGlobalCounters!
+  debugServerId: String!
+  dialogs(first: Int!, after: String): DialogsConnection!
+  settings: Settings!
+  myOauthApps: [OauthApp!]!
+  oauthContext(code: String!): OauthContext
+  alphaOrganizationMembers(orgId: ID!, first: Int, after: ID): [OrganizationMember!]!
+  alphaOrganizationInviteLink(organizationId: ID): Invite
+
+  """deprecated"""
+  alphaOrganizationPublicInvite(organizationId: ID): Invite
+  permissionGroups: [PermissionGroup!]!
+  waitingPermissionRequests: [PermissionRequest!]!
+  isDesktopInstalled: IsAppInstalledResponse!
+  isMobileInstalled: IsAppInstalledResponse!
+  superAccounts: [SuperAccount!]!
+  superAccount(id: ID!, viaOrgId: Boolean): SuperAccount!
+  superAdmins: [SuperAdmin!]!
+  chatLocations(id: ID!): [UserLocation!]!
+  alphaChatTextSearch(query: String!): [Conversation!]!
+  betaDialogTextSearch(query: String!): [Dialog!]!
+  conversationDraft(conversationId: ID!): String
+  alphaDraftMessage(conversationId: ID!): String
+  powerups: [Powerup!]!
+  chatsWithPowerup(id: ID!): [Room!]!
+  chatPowerups(id: ID!): [RoomPowerup!]!
+  myApps: [AppProfile!]!
+  userStorage(namespace: String!, keys: [String!]!): [AppStorageValue!]!
+  chatState(chatId: ID!): ChatUpdateState!
+  conversationState(id: ID!): ConversationUpdateState!
+  messageComments(messageId: ID!): CommentsPeer!
+  feedItemComments(feedItemId: ID!): CommentsPeer!
+  comments(peerId: ID!): CommentsPeer!
+  dialogsState: DialogUpdateState!
+  envVars: [EnvVar!]
+  envVar(name: String!): EnvVar
+  featureFlags: [FeatureFlag!]!
+  myLocation: UserLocation!
+  shouldShareLocation: Boolean!
+  conference(id: ID!): Conference!
+  conferenceMedia(id: ID!, peerId: ID!): ConferenceMedia!
+  myStickers: UserStickers!
+  createdStickerPacks: [StickerPack!]!
+  stickersByEmoji(emoji: String!): [Sticker!]!
+  stickerPack(id: ID!): StickerPack
+  myNotificationCenter: NotificationCenter!
+  myNotifications(first: Int!, before: ID): NotificationConnection!
+  myOrganization: Organization
+  myOrganizations: [Organization!]!
+  organization(id: ID!): Organization!
+  organizationPublicRooms(id: ID!, first: Int!, after: ID): SharedRoomConnection!
+  myOrganizationProfile: OrganizationProfile!
+  organizationProfile(id: ID!): OrganizationProfile!
+  alphaOrganizations(query: String, all: Boolean, prefix: String, sort: String, first: Int!, after: String, page: Int): OrganizationsConnection!
+  alphaOrganizationByPrefix(query: String): Organization
+  alphaComunityPrefixSearch(query: String, sort: String, first: Int!, after: String, page: Int, featuredIfEmptyQuery: Boolean): OrganizationsConnection!
+  myPermissions: Permissions!
+
+  """Deprecated"""
+  users(query: String!): [User!]!
+  myProfilePrefill: ProfilePrefill
+  pushSettings: PushSettings!
+  sessionState: SessionState!
+
+  """deprecated"""
+  betaNextDiscoverPage(selectedTagsIds: [String!]!, excudedGroupsIds: [String!]!): DiscoverPage
+  gammaNextDiscoverPage(selectedTagsIds: [String!]!, excudedGroupsIds: [String!]!): DiscoverPage
+  betaSuggestedRooms: [Room!]!
+  betaIsDiscoverDone: Boolean!
+  isDiscoverSkipped: Boolean!
+  matchmakingRoom(peerId: ID!): MatchmakingRoom
+  matchmakingProfile(peerId: ID!, uid: ID!): MatchmakingProfile
+  trendingRoomsByMessages(from: Date!, to: Date!, size: Int): [TrendingRoom!]!
+  me: User
+  user(id: ID!): User!
+  mySuccessfulInvitesCount: Int!
+  superBadgeInRoom(roomId: ID!, userId: ID!): UserBadge
+
+  """deprecated"""
+  badgeInRoom(roomId: ID!): UserBadge
+  userSearch(query: String, first: Int!, after: String, page: Int, sort: String): UserConnection!
+  userSearchForChat(chatId: ID!, query: String, first: Int!, after: String, page: Int, sort: String): ChatUserConnection!
+
+  """Deprecated"""
+  alphaProfiles(query: String, first: Int!, after: String, page: Int, sort: String): UserConnection!
+  alphaHomeFeed(first: Int!, after: String): FeedItemConnection!
+  alphaFeedItem(id: ID!): FeedItem
+  alphaFeedChannel(id: ID!): FeedChannel!
+  alphaFeedMyDraftsChannel: FeedChannel!
+  alphaFeedChannelContent(id: ID!, first: Int!, after: String): FeedItemConnection!
+  alphaFeedMySubscriptions(first: Int!, after: ID): FeedChannelConnection!
+  alphaFeedMyChannels(first: Int!, after: ID): FeedChannelConnection!
+  alphaWritableChannels(first: Int!, after: ID): FeedChannelConnection!
+  alphaFeedChannelAdmins(id: ID!, first: Int!, after: ID): FeedChannelAdminConnection!
+  alphaFeedChannelSearch(query: String, sort: String, first: Int!, after: String): FeedChannelSearchConnection!
+  alphaFeedChannelSubscribers(channelId: ID!, query: String, first: Int!, after: String): FeedChannelSubscriberConnection!
+  alphaRecommendedChannels(first: Int!, after: String): FeedChannelSearchConnection!
+  alphaGlobalSearch(query: String!, kinds: [GlobalSearchEntryKind!]): [GlobalSearchEntry!]!
+  featuredGroups: [SharedRoom!]
+  featuredCommunities: [Organization!]
+  messagesSearch(query: String!, sort: String, first: Int!, after: String): MessageConnection!
+  chatMembersSearch(cid: ID!, query: String, first: Int!, after: String, page: Int): UserConnection!
+  chatMentionSearch(cid: ID!, query: String, first: Int!, after: String): GlobalSearchConnection!
+  messages(chatId: ID!, first: Int!, before: ID): [ModernMessage!]!
+  gammaMessages(chatId: ID!, first: Int!, before: ID, after: ID, around: ID): GammaMessagesBatch
+  message(messageId: ID!): ModernMessage
+  lastReadedMessage(chatId: ID!): ModernMessage
+  chatSharedMedia(chatId: ID!, mediaTypes: [SharedMediaType!]!, first: Int!, after: String): MessageConnection!
+  chatSharedMediaCounters(chatId: ID!): SharedMediaCounters!
+  room(id: ID!): Room
+  rooms(ids: [ID!]!): [Room!]!
+  roomSuper(id: ID!): RoomSuper
+  roomMessages(roomId: ID!, first: Int, before: ID): [RoomMessage!]!
+  roomMembers(roomId: ID!, first: Int, after: ID): [RoomMember!]!
+  roomFeaturedMembers(roomId: ID!, first: Int): [RoomMember!]!
+  roomMember(roomId: ID!, memberId: ID!): RoomMember
+  betaRoomSearch(query: String, first: Int!, after: String, page: Int, sort: String): RoomConnection!
+  betaRoomInviteInfo(invite: String!): RoomInvite
+  betaRoomInviteLink(roomId: ID!): String!
+  betaAvailableRooms: [SharedRoom!]!
+  betaUserRooms(limit: Int, after: ID): [SharedRoom!]!
+  betaUserAvailableRooms(isChannel: Boolean, limit: Int, after: ID): [SharedRoom!]!
+  alphaUserAvailableRooms(query: String, first: Int!, after: String): RoomConnection!
+  alphaResolveShortName(shortname: String!): ShortNameDestination
+}
+
+type Range {
+  from: Int
+  to: Int
+}
+
+input RangeInput {
+  from: Int
+  to: Int
+}
+
+type Reaction {
+  user: User!
+  reaction: String!
+}
+
+union ResolveInviteEntry = InviteInfo | AppInvite | RoomInvite
+
+union Room = PrivateRoom | SharedRoom
+
+type RoomConnection {
+  edges: [RoomConnectionEdge!]!
+  pageInfo: PageInfo!
+}
+
+type RoomConnectionEdge {
+  node: SharedRoom!
+  cursor: String!
+}
+
+type RoomInvite {
+  id: ID!
+  room: SharedRoom!
+  invitedByUser: User!
+}
+
+input RoomInviteEmailRequest {
+  email: String!
+  emailText: String
+  firstName: String
+  lastName: String
+}
+
+input RoomInviteInput {
+  userId: ID!
+  role: RoomMemberRole!
+}
+
+type RoomMember {
+  user: User!
+  role: RoomMemberRole!
+  badge: UserBadge
+  membership: SharedRoomMembershipStatus!
+  invitedBy: User!
+  canKick: Boolean!
+}
+
+enum RoomMemberRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+type RoomMessage {
+  id: ID!
+  message: String
+  file: String
+  fileMetadata: FileMetadata
+  filePreview: String
+  sender: User!
+  date: Date!
+  repeatKey: String
+  isService: Boolean!
+  serviceMetadata: ServiceMetadata
+  urlAugmentation: UrlAugmentation
+  edited: Boolean!
+  reactions: [MessageReaction!]!
+  replyMessages: [RoomMessage!]
+  plainText: String
+  mentions: [User!]
+  alphaAttachments: [MessageAttachment!]!
+  alphaButtons: [[MessageButton!]]!
+  alphaType: MessageType!
+  alphaTitle: String
+  alphaPostType: PostMessageType
+  alphaMentions: [Mention!]
+}
+
+type RoomPowerup {
+  id: ID!
+  powerup: Powerup!
+  userSettings: PowerupUserSettings!
+}
+
+type RoomSuper {
+  id: ID!
+  featured: Boolean!
+  listed: Boolean!
+}
+
+input RoomUpdateInput {
+  title: String
+  photoRef: ImageRefInput
+  description: String
+  socialImageRef: ImageRefInput
+  kind: SharedRoomKind
+}
+
+type RoomUserNotificaionSettings {
+  id: ID!
+  mute: Boolean
+}
+
+input RoomUserNotificaionSettingsInput {
+  mute: Boolean
+}
+
+type ServiceMessage implements ModernMessage {
+  """State"""
+  id: ID!
+  seq: Int
+  date: Date!
+  sender: User!
+  senderBadge: UserBadge
+  isMentioned: Boolean!
+  source: MessageSource
+
+  """Content"""
+  message: String
+  spans: [MessageSpan!]!
+  serviceMetadata: ServiceMetadata
+  fallback: String!
+
+  """Overrides"""
+  overrideAvatar: ImageRef
+  overrideName: String
+}
+
+union ServiceMetadata = InviteServiceMetadata | KickServiceMetadata | TitleChangeServiceMetadata | PhotoChangeServiceMetadata | PostRespondServiceMetadata
+
+type SessionState {
+  isLoggedIn: Boolean!
+  isProfileCreated: Boolean!
+  isActivated: Boolean!
+  isAccountExists: Boolean!
+  isCompleted: Boolean!
+  isBlocked: Boolean!
+
+  """deprecated"""
+  isAccountPicked: Boolean!
+  isAccountActivated: Boolean!
+}
+
+type Settings {
+  id: ID!
+  primaryEmail: String!
+  emailFrequency: EmailFrequency!
+  desktop: PlatformNotificationSettings!
+  mobile: PlatformNotificationSettings!
+  countUnreadChats: Boolean!
+  excludeMutedChats: Boolean!
+
+  """Deprecated"""
+  notificationsDelay: NotificationsDelay!
+  desktopNotifications: NotificationMessages!
+  mobileNotifications: NotificationMessages!
+  commentNotifications: NotificationComments!
+  commentNotificationsDelivery: CommentsNotificationDelivery!
+  mobileAlert: Boolean!
+  mobileIncludeText: Boolean!
+  mute: Boolean
+}
+
+type SharedConversation implements Conversation {
+  id: ID!
+  flexibleId: ID!
+  title: String!
+  photos: [String!]!
+  organizations: [Organization!]!
+  unreadCount: Int!
+  topMessage: ConversationMessage
+  organization: Organization
+  settings: ConversationSettings!
+}
+
+type SharedMediaCounters {
+  links: Int!
+  images: Int!
+  documents: Int!
+  videos: Int!
+}
+
+enum SharedMediaType {
+  LINK
+  IMAGE
+  DOCUMENT
+  VIDEO
+}
+
+type SharedRoom {
+  id: ID!
+  kind: SharedRoomKind!
+  isChannel: Boolean!
+  title: String!
+  photo: String!
+  socialImage: String
+  description: String
+  pinnedMessage: ModernMessage
+  welcomeMessage: WelcomeMessage
+  organization: Organization
+  membersCount: Int!
+  onlineMembersCount: Int!
+  featuredMembersCount: Int!
+  previewMembers: [User!]!
+  members(first: Int, after: ID): [RoomMember!]!
+  requests: [RoomMember!]
+  membership: SharedRoomMembershipStatus!
+  role: RoomMemberRole!
+  settings: RoomUserNotificaionSettings!
+  canEdit: Boolean!
+  canSendMessage: Boolean!
+  archived: Boolean!
+  myBadge: UserBadge
+  matchmaking: MatchmakingRoom
+  isPremium: Boolean!
+  premiumPassIsActive: Boolean!
+  premiumSubscription: WalletSubscription
+  premiumSettings: PremiumChatSettings
+  linkedFeedChannels: [FeedChannel!]!
+  shortname: String
+}
+
+type SharedRoomConnection {
+  items: [SharedRoom!]!
+  cursor: String
+}
+
+enum SharedRoomKind {
+  INTERNAL
+  PUBLIC
+  GROUP
+}
+
+enum SharedRoomMembershipStatus {
+  MEMBER
+  REQUESTED
+  LEFT
+  KICKED
+  NONE
+}
+
+type SharedRoomMention {
+  sharedRoom: SharedRoom!
+}
+
+union ShortNameDestination = User | Organization | FeedChannel | SharedRoom
+
+type ShowNotificationMessageInfo {
+  mobile: Boolean!
+  desktop: Boolean!
+}
+
+type SilentMessageInfo {
+  mobile: Boolean!
+  desktop: Boolean!
+}
+
+union Slide = TextSlide
+
+union SlideAttachment = User | SharedRoom | Organization
+
+enum SlideCoverAlign {
+  Top
+  Bottom
+  Cover
+}
+
+input SlideInput {
+  type: SlideType!
+  text: String
+  spans: [MessageSpanInput!]
+  mentions: [MentionInput!]
+  cover: ImageRefInput
+  coverAlign: SlideCoverAlign
+  attachments: [ID!]
+}
+
+enum SlideType {
+  Text
+}
+
+union Sticker = ImageSticker
+
+input StickerInput {
+  image: ImageRefInput!
+  emoji: String!
+}
+
+type StickerMessage implements ModernMessage {
+  """State"""
+  id: ID!
+  seq: Int
+  date: Date!
+  sender: User!
+  senderBadge: UserBadge
+  source: MessageSource
+
+  """Content"""
+  message: String
+  spans: [MessageSpan!]!
+  reactions: [ModernMessageReaction!]!
+  fallback: String!
+  quotedMessages: [ModernMessage!]!
+  commentsCount: Int!
+  sticker: Sticker!
+
+  """Overrides"""
+  overrideAvatar: ImageRef
+  overrideName: String
+}
+
+type StickerPack {
+  id: ID!
+  title: String!
+  stickers: [Sticker!]!
+  author: User!
+  usesCount: Int!
+  published: Boolean!
+}
+
+input StickerPackInput {
+  title: String
+  published: Boolean
+}
+
+type Subscription {
+  lifecheck: String
+  walletUpdates(fromState: String!): WalletUpdateContainer!
+  commentUpdatesGlobal(fromState: String): CommentGlobalUpdateContainer
+  debugEvents(fromState: String, eventsCount: Int!, randomDelays: Boolean!, seed: String!): DebugEvent!
+  debugReaderState(reader: String!): String
+  debugServerId: String!
+  settingsWatch: Settings!
+
+  """Deprecated"""
+  watchSettings: Settings!
+  permissionsUpdates: PermissionRequest!
+  waitingPermissionRequestsUpdates: PermissionRequest!
+  alphaSubscribeChatOnline(conversations: [ID!]!): OnlineEvent!
+  alphaSubscribeOnline(users: [ID!]!): OnlineEvent!
+  chatOnlinesCount(chatId: ID!): ChatOnlineEvent!
+  chatLocationUpdates(id: ID!): UserLocation!
+  chatUpdates(chatId: ID!, fromState: String): ChatUpdateContainer!
+  commentUpdates(peerId: ID!, fromState: String): CommentUpdateContainer
+  dialogsUpdates(fromState: String): DialogUpdateContainer!
+  homeFeedUpdates(fromState: String): FeedUpdateContainer!
+  shouldShareLocationUpdates: Boolean!
+  alphaConferenceWatch(id: ID!): Conference!
+  alphaConferenceMediaWatch(id: ID!, peerId: ID!): ConferenceMedia!
+  notificationCenterUpdates(fromState: String): NotificationCenterUpdateContainer
+  typings: TypingEvent!
+  conversationTypings(conversationId: ID!): TypingEvent!
+
+  """Deprecated"""
+  alphaSubscribeTypings: TypingEvent!
+  alphaSubscribeChatTypings(conversationId: ID!): TypingEvent!
+}
+
+type SuperAccount {
+  id: ID!
+  orgId: ID!
+  title: String!
+  name: String!
+  state: SuperAccountState!
+  members: [User!]!
+  features: [FeatureFlag!]!
+  alphaPublished: Boolean!
+  createdAt: String
+  createdBy: User
+}
+
+enum SuperAccountState {
+  PENDING
+  ACTIVATED
+  SUSPENDED
+  DELETED
+}
+
+type SuperAdmin {
+  user: User!
+  role: SuperAdminRole!
+  email: String
+}
+
+enum SuperAdminRole {
+  SUPER_ADMIN
+  SOFTWARE_DEVELOPER
+  EDITOR
+}
+
+enum SuperNotificationType {
+  ON_SIGN_UP
+  ON_USER_PROFILE_CREATED
+  ON_ORG_ACTIVATED_BY_ADMIN
+  ON_ORG_ACTIVATED_VIA_INVITE
+  ON_ORG_SUSPEND
+}
+
+type Tag {
+  id: String!
+  title: String!
+}
+
+type TagGroup {
+  id: String!
+  title: String
+  subtitle: String
+  tags: [Tag!]!
+}
+
+type Task {
+  id: ID!
+  status: TaskStatus!
+  result: String
+}
+
+enum TaskStatus {
+  IN_PROGRESS
+  FAILED
+  COMPLETED
+}
+
+type TextMatchmakingAnswer {
+  question: TextMatchmakingQuestion!
+  answer: String!
+}
+
+type TextMatchmakingQuestion {
+  id: ID!
+  title: String!
+  subtitle: String!
+}
+
+type TextSlide {
+  id: ID!
+  text: String!
+  spans: [MessageSpan!]!
+  cover: Image
+  coverAlign: SlideCoverAlign
+  attachments: [SlideAttachment!]!
+}
+
+type TitleChangeServiceMetadata {
+  title: String!
+}
+
+type TrendingRoom {
+  room: Room!
+  messagesDelta: Int!
+}
+
+type TypingEvent {
+  conversation: Conversation!
+  chat: Room!
+  user: User!
+  type: TypingType!
+  cancel: Boolean!
+}
+
+enum TypingType {
+  TEXT
+  PHOTO
+  FILE
+  STICKER
+  VIDEO
+}
+
+input UpdateConversationSettingsInput {
+  mobileNotifications: NotificationMessages
+  mute: Boolean
+}
+
+union UpdatedNotificationContent = UpdatedNotificationContentComment
+
+type UpdatedNotificationContentComment {
+  peer: CommentsPeer!
+  comment: CommentEntry
+}
+
+input UpdateGroupInput {
+  title: String
+  photoRef: ImageRefInput
+  description: String
+  longDescription: String
+  socialImageRef: ImageRefInput
+}
+
+input UpdateOrganizationProfileInput {
+  name: String
+  photoRef: ImageRefInput
+  website: String
+  websiteTitle: String
+  about: String
+  twitter: String
+  facebook: String
+  linkedin: String
+  instagram: String
+  location: String
+  contacts: [ContactPersonInput!]
+  alphaPublished: Boolean
+  alphaEditorial: Boolean
+  alphaFeatured: Boolean
+  alphaIsPrivate: Boolean
+}
+
+"""Deprecated"""
+input UpdateProfileInput {
+  firstName: String
+  lastName: String
+  photoRef: ImageRefInput
+  phone: String
+  email: String
+  website: String
+  about: String
+  location: String
+  linkedin: String
+  instagram: String
+  twitter: String
+  facebook: String
+  primaryOrganization: ID
+  alphaRole: String
+  alphaLocations: [String!]
+  alphaLinkedin: String
+  alphaTwitter: String
+  alphaPrimaryOrganizationId: ID
+}
+
+input UpdateSettingsInput {
+  emailFrequency: EmailFrequency
+  desktop: PlatformNotificationSettingsInput
+  mobile: PlatformNotificationSettingsInput
+  countUnreadChats: Boolean
+  excludeMutedChats: Boolean
+
+  """Deprecated"""
+  notificationsDelay: NotificationsDelay
+  desktopNotifications: NotificationMessages
+  mobileNotifications: NotificationMessages
+  commentNotifications: NotificationComments
+  commentNotificationsDelivery: CommentsNotificationDelivery
+  mobileAlert: Boolean
+  mobileIncludeText: Boolean
+  mute: Boolean
+}
+
+type UrlAugmentation {
+  url: String!
+  title: String
+  date: String
+  subtitle: String
+  description: String
+  photo: ImageRef
+  imageInfo: FileMetadata
+  imageURL: String
+  iconRef: ImageRef
+  iconInfo: FileMetadata
+  hostname: String
+  type: String
+  extra: UrlAugmentationExtra
+}
+
+union UrlAugmentationExtra = User | Organization | ChannelConversation
+
+type User {
+  id: ID!
+  isYou: Boolean!
+  isBot: Boolean!
+  isDeleted: Boolean!
+  name: String!
+  firstName: String!
+  lastName: String
+  photo: String
+  phone: String
+  email: String
+  website: String
+  about: String
+  location: String
+  linkedin: String
+  instagram: String
+  twitter: String
+  facebook: String
+  audienceSize: Int!
+
+  """TODO: Refactor"""
+  channelsJoined: [ChannelConversation!]!
+
+  """Deprecated: Will be removed soon"""
+  photoRef: ImageRef
+  picture: String
+  pictureRef: ImageRef
+  alphaRole: String
+  alphaLinkedin: String
+  alphaTwitter: String
+  alphaLocations: [String!]
+  chatsWithBadge: [UserChatWithBadge!]!
+  online: Boolean!
+  active: Boolean!
+  lastSeen: String
+  organizations: [Organization!]!
+  primaryOrganization: Organization
+
+  """Deprecated"""
+  alphaPrimaryOrganization: Organization
+
+  """deprecated"""
+  badges: [UserBadge!]!
+  primaryBadge: UserBadge
+  shortname: String
+}
+
+type UserBadge {
+  id: ID!
+  name: String!
+  verified: Boolean!
+}
+
+type UserChatWithBadge {
+  badge: UserBadge!
+  chat: Room!
+}
+
+type UserConnection {
+  edges: [UserEdge!]!
+  pageInfo: PageInfo!
+}
+
+type UserEdge {
+  node: User!
+  cursor: String!
+}
+
+type UserLocation {
+  id: ID!
+  isSharing: Boolean!
+  user: User!
+  lastLocations: [GeoLocation!]!
+}
+
+type UserMention {
+  user: User!
+}
+
+type UserStickers {
+  packs: [StickerPack!]!
+  favorites: [Sticker!]!
+}
+
+type WalletAccount {
+  id: ID!
+  balance: Int!
+  state: String!
+}
+
+"""Wallet Subscriptions"""
+type WalletSubscription {
+  id: ID!
+  state: WalletSubscriptionState!
+  amount: Int!
+  interval: WalletSubscriptionInterval!
+  product: WalletSubscriptionProduct!
+  expires: Date!
+}
+
+enum WalletSubscriptionInterval {
+  MONTH
+  WEEK
+}
+
+union WalletSubscriptionProduct = WalletSubscriptionProductGroup | WalletSubscriptionProductDonation
+
+type WalletSubscriptionProductDonation {
+  user: User!
+}
+
+type WalletSubscriptionProductGroup {
+  group: SharedRoom!
+}
+
+enum WalletSubscriptionState {
+  STARTED
+  GRACE_PERIOD
+  RETRYING
+  CANCELED
+  EXPIRED
+}
+
+type WalletTransaction {
+  id: ID!
+  date: String!
+  status: WalletTransactionStatus!
+  operation: WalletTransactionOperation!
+}
+
+type WalletTransactionConnection {
+  items: [WalletTransaction!]!
+  cursor: String
+}
+
+type WalletTransactionDeposit {
+  amount: Int!
+  payment: Payment
+}
+
+union WalletTransactionOperation = WalletTransactionDeposit | WalletTransactionSubscription | WalletTransactionTransferOut | WalletTransactionTransferIn
+
+enum WalletTransactionStatus {
+  PENDING
+  CANCELING
+  CANCELED
+  SUCCESS
+}
+
+type WalletTransactionSubscription {
+  amount: Int!
+  payment: Payment
+}
+
+type WalletTransactionTransferIn {
+  amount: Int!
+  fromUser: User!
+}
+
+type WalletTransactionTransferOut {
+  walletAmount: Int!
+  chargeAmount: Int!
+  payment: Payment
+  toUser: User!
+}
+
+union WalletUpdate = WalletUpdateBalance | WalletUpdateTransactionSuccess | WalletUpdateTransactionCanceled | WalletUpdateTransactionPending | WalletUpdatePaymentStatus
+
+type WalletUpdateBalance {
+  amount: Int!
+}
+
+type WalletUpdateBatch {
+  state: String!
+  updates: [WalletUpdate!]!
+}
+
+union WalletUpdateContainer = WalletUpdateSingle | WalletUpdateBatch
+
+type WalletUpdatePaymentStatus {
+  payment: Payment!
+}
+
+type WalletUpdateSingle {
+  state: String!
+  update: WalletUpdate!
+}
+
+type WalletUpdateTransactionCanceled {
+  transaction: WalletTransaction!
+}
+
+type WalletUpdateTransactionPending {
+  transaction: WalletTransaction!
+}
+
+type WalletUpdateTransactionSuccess {
+  transaction: WalletTransaction!
+}
+
+type WelcomeMessage {
+  isOn: Boolean!
+  sender: User
+  message: String
+}
+

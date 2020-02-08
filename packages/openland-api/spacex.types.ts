@@ -237,14 +237,14 @@ export enum TypingType {
 export enum SlideType {
     Text = 'Text',
 }
-export enum ModernMessageButtonStyle {
-    DEFAULT = 'DEFAULT',
-    LIGHT = 'LIGHT',
-}
 export enum TaskStatus {
     IN_PROGRESS = 'IN_PROGRESS',
     FAILED = 'FAILED',
     COMPLETED = 'COMPLETED',
+}
+export enum ModernMessageButtonStyle {
+    DEFAULT = 'DEFAULT',
+    LIGHT = 'LIGHT',
 }
 
 // Input Types
@@ -503,6 +503,10 @@ export interface RoomInviteEmailRequest {
 export interface RoomUserNotificaionSettingsInput {
     mute?: MaybeInput<boolean>;
 }
+export interface RangeInput {
+    from?: MaybeInput<number>;
+    to?: MaybeInput<number>;
+}
 export interface MessageButtonInput {
     title: string;
     style: MessageButtonStyle;
@@ -515,10 +519,6 @@ export interface ModernMessageButtonInput {
     id: string;
     title: string;
     style: ModernMessageButtonStyle;
-}
-export interface RangeInput {
-    from?: MaybeInput<number>;
-    to?: MaybeInput<number>;
 }
 
 // Fragments
@@ -644,42 +644,42 @@ export type RoomNano = (
     )>
 );
 export type SpanFragment = (
-    & { __typename: 'MessageSpanAllMention' | 'MessageSpanBold' | 'MessageSpanCodeBlock' | 'MessageSpanDate' | 'MessageSpanInlineCode' | 'MessageSpanInsane' | 'MessageSpanIrony' | 'MessageSpanItalic' | 'MessageSpanLink' | 'MessageSpanLoud' | 'MessageSpanMultiUserMention' | 'MessageSpanOrganizationMention' | 'MessageSpanRoomMention' | 'MessageSpanRotating' | 'MessageSpanUserMention' }
+    & { __typename: 'MessageSpanUserMention' | 'MessageSpanMultiUserMention' | 'MessageSpanRoomMention' | 'MessageSpanOrganizationMention' | 'MessageSpanLink' | 'MessageSpanBold' | 'MessageSpanItalic' | 'MessageSpanIrony' | 'MessageSpanInlineCode' | 'MessageSpanCodeBlock' | 'MessageSpanInsane' | 'MessageSpanLoud' | 'MessageSpanRotating' | 'MessageSpanDate' | 'MessageSpanAllMention' }
     & { offset: number}
     & { length: number}
-    & Inline<'MessageSpanAllMention' | 'MessageSpanBold' | 'MessageSpanCodeBlock' | 'MessageSpanDate' | 'MessageSpanInlineCode' | 'MessageSpanInsane' | 'MessageSpanIrony' | 'MessageSpanItalic' | 'MessageSpanLink' | 'MessageSpanLoud' | 'MessageSpanMultiUserMention' | 'MessageSpanOrganizationMention' | 'MessageSpanRoomMention' | 'MessageSpanRotating',(
+    & Inline<'MessageSpanMultiUserMention' | 'MessageSpanRoomMention' | 'MessageSpanOrganizationMention' | 'MessageSpanLink' | 'MessageSpanBold' | 'MessageSpanItalic' | 'MessageSpanIrony' | 'MessageSpanInlineCode' | 'MessageSpanCodeBlock' | 'MessageSpanInsane' | 'MessageSpanLoud' | 'MessageSpanRotating' | 'MessageSpanDate' | 'MessageSpanAllMention',(
         & { __typename: 'MessageSpanUserMention' }
         & { user: (
             & { __typename: 'User' }
             & UserForMention
         )}
     )>
-    & Inline<'MessageSpanAllMention' | 'MessageSpanBold' | 'MessageSpanCodeBlock' | 'MessageSpanDate' | 'MessageSpanInlineCode' | 'MessageSpanInsane' | 'MessageSpanIrony' | 'MessageSpanItalic' | 'MessageSpanLink' | 'MessageSpanLoud' | 'MessageSpanOrganizationMention' | 'MessageSpanRoomMention' | 'MessageSpanRotating' | 'MessageSpanUserMention',(
+    & Inline<'MessageSpanUserMention' | 'MessageSpanRoomMention' | 'MessageSpanOrganizationMention' | 'MessageSpanLink' | 'MessageSpanBold' | 'MessageSpanItalic' | 'MessageSpanIrony' | 'MessageSpanInlineCode' | 'MessageSpanCodeBlock' | 'MessageSpanInsane' | 'MessageSpanLoud' | 'MessageSpanRotating' | 'MessageSpanDate' | 'MessageSpanAllMention',(
         & { __typename: 'MessageSpanMultiUserMention' }
         & { users: ((
             & { __typename: 'User' }
             & UserForMention
         ))[]}
     )>
-    & Inline<'MessageSpanAllMention' | 'MessageSpanBold' | 'MessageSpanCodeBlock' | 'MessageSpanDate' | 'MessageSpanInlineCode' | 'MessageSpanInsane' | 'MessageSpanIrony' | 'MessageSpanItalic' | 'MessageSpanLink' | 'MessageSpanLoud' | 'MessageSpanMultiUserMention' | 'MessageSpanRoomMention' | 'MessageSpanRotating' | 'MessageSpanUserMention',(
+    & Inline<'MessageSpanUserMention' | 'MessageSpanMultiUserMention' | 'MessageSpanRoomMention' | 'MessageSpanLink' | 'MessageSpanBold' | 'MessageSpanItalic' | 'MessageSpanIrony' | 'MessageSpanInlineCode' | 'MessageSpanCodeBlock' | 'MessageSpanInsane' | 'MessageSpanLoud' | 'MessageSpanRotating' | 'MessageSpanDate' | 'MessageSpanAllMention',(
         & { __typename: 'MessageSpanOrganizationMention' }
         & { organization: (
             & { __typename: 'Organization' }
             & OrganizationShort
         )}
     )>
-    & Inline<'MessageSpanAllMention' | 'MessageSpanBold' | 'MessageSpanCodeBlock' | 'MessageSpanDate' | 'MessageSpanInlineCode' | 'MessageSpanInsane' | 'MessageSpanIrony' | 'MessageSpanItalic' | 'MessageSpanLink' | 'MessageSpanLoud' | 'MessageSpanMultiUserMention' | 'MessageSpanOrganizationMention' | 'MessageSpanRotating' | 'MessageSpanUserMention',(
+    & Inline<'MessageSpanUserMention' | 'MessageSpanMultiUserMention' | 'MessageSpanOrganizationMention' | 'MessageSpanLink' | 'MessageSpanBold' | 'MessageSpanItalic' | 'MessageSpanIrony' | 'MessageSpanInlineCode' | 'MessageSpanCodeBlock' | 'MessageSpanInsane' | 'MessageSpanLoud' | 'MessageSpanRotating' | 'MessageSpanDate' | 'MessageSpanAllMention',(
         & { __typename: 'MessageSpanRoomMention' }
         & { room: (
             & { __typename: 'PrivateRoom' | 'SharedRoom' }
             & RoomNano
         )}
     )>
-    & Inline<'MessageSpanAllMention' | 'MessageSpanBold' | 'MessageSpanCodeBlock' | 'MessageSpanDate' | 'MessageSpanInlineCode' | 'MessageSpanInsane' | 'MessageSpanIrony' | 'MessageSpanItalic' | 'MessageSpanLoud' | 'MessageSpanMultiUserMention' | 'MessageSpanOrganizationMention' | 'MessageSpanRoomMention' | 'MessageSpanRotating' | 'MessageSpanUserMention',(
+    & Inline<'MessageSpanUserMention' | 'MessageSpanMultiUserMention' | 'MessageSpanRoomMention' | 'MessageSpanOrganizationMention' | 'MessageSpanBold' | 'MessageSpanItalic' | 'MessageSpanIrony' | 'MessageSpanInlineCode' | 'MessageSpanCodeBlock' | 'MessageSpanInsane' | 'MessageSpanLoud' | 'MessageSpanRotating' | 'MessageSpanDate' | 'MessageSpanAllMention',(
         & { __typename: 'MessageSpanLink' }
         & { url: string}
     )>
-    & Inline<'MessageSpanAllMention' | 'MessageSpanBold' | 'MessageSpanCodeBlock' | 'MessageSpanInlineCode' | 'MessageSpanInsane' | 'MessageSpanIrony' | 'MessageSpanItalic' | 'MessageSpanLink' | 'MessageSpanLoud' | 'MessageSpanMultiUserMention' | 'MessageSpanOrganizationMention' | 'MessageSpanRoomMention' | 'MessageSpanRotating' | 'MessageSpanUserMention',(
+    & Inline<'MessageSpanUserMention' | 'MessageSpanMultiUserMention' | 'MessageSpanRoomMention' | 'MessageSpanOrganizationMention' | 'MessageSpanLink' | 'MessageSpanBold' | 'MessageSpanItalic' | 'MessageSpanIrony' | 'MessageSpanInlineCode' | 'MessageSpanCodeBlock' | 'MessageSpanInsane' | 'MessageSpanLoud' | 'MessageSpanRotating' | 'MessageSpanAllMention',(
         & { __typename: 'MessageSpanDate' }
         & { date: string}
     )>
@@ -716,7 +716,7 @@ export type QuotedMessage = (
         )>
     )>}
     & { spans: ((
-        & { __typename: 'MessageSpanAllMention' | 'MessageSpanBold' | 'MessageSpanCodeBlock' | 'MessageSpanDate' | 'MessageSpanInlineCode' | 'MessageSpanInsane' | 'MessageSpanIrony' | 'MessageSpanItalic' | 'MessageSpanLink' | 'MessageSpanLoud' | 'MessageSpanMultiUserMention' | 'MessageSpanOrganizationMention' | 'MessageSpanRoomMention' | 'MessageSpanRotating' | 'MessageSpanUserMention' }
+        & { __typename: 'MessageSpanUserMention' | 'MessageSpanMultiUserMention' | 'MessageSpanRoomMention' | 'MessageSpanOrganizationMention' | 'MessageSpanLink' | 'MessageSpanBold' | 'MessageSpanItalic' | 'MessageSpanIrony' | 'MessageSpanInlineCode' | 'MessageSpanCodeBlock' | 'MessageSpanInsane' | 'MessageSpanLoud' | 'MessageSpanRotating' | 'MessageSpanDate' | 'MessageSpanAllMention' }
         & SpanFragment
     ))[]}
     & Inline<'ServiceMessage' | 'StickerMessage',(
@@ -737,9 +737,9 @@ export type QuotedMessage = (
         & { commentsCount: number}
         & { edited: boolean}
         & { attachments: ((
-            & { __typename: 'MessageAttachmentFile' | 'MessageAttachmentPost' | 'MessageRichAttachment' }
+            & { __typename: 'MessageRichAttachment' | 'MessageAttachmentFile' | 'MessageAttachmentPost' }
             & { fallback: string}
-            & Inline<'MessageAttachmentPost' | 'MessageRichAttachment',(
+            & Inline<'MessageRichAttachment' | 'MessageAttachmentPost',(
                 & { __typename: 'MessageAttachmentFile' }
                 & { id: string}
                 & { fileId: string}
@@ -947,7 +947,7 @@ export type FullMessage = (
         )>
     )>}
     & { spans: ((
-        & { __typename: 'MessageSpanAllMention' | 'MessageSpanBold' | 'MessageSpanCodeBlock' | 'MessageSpanDate' | 'MessageSpanInlineCode' | 'MessageSpanInsane' | 'MessageSpanIrony' | 'MessageSpanItalic' | 'MessageSpanLink' | 'MessageSpanLoud' | 'MessageSpanMultiUserMention' | 'MessageSpanOrganizationMention' | 'MessageSpanRoomMention' | 'MessageSpanRotating' | 'MessageSpanUserMention' }
+        & { __typename: 'MessageSpanUserMention' | 'MessageSpanMultiUserMention' | 'MessageSpanRoomMention' | 'MessageSpanOrganizationMention' | 'MessageSpanLink' | 'MessageSpanBold' | 'MessageSpanItalic' | 'MessageSpanIrony' | 'MessageSpanInlineCode' | 'MessageSpanCodeBlock' | 'MessageSpanInsane' | 'MessageSpanLoud' | 'MessageSpanRotating' | 'MessageSpanDate' | 'MessageSpanAllMention' }
         & SpanFragment
     ))[]}
     & Inline<'ServiceMessage' | 'StickerMessage',(
@@ -968,9 +968,9 @@ export type FullMessage = (
         & { edited: boolean}
         & { commentsCount: number}
         & { attachments: ((
-            & { __typename: 'MessageAttachmentFile' | 'MessageAttachmentPost' | 'MessageRichAttachment' }
+            & { __typename: 'MessageRichAttachment' | 'MessageAttachmentFile' | 'MessageAttachmentPost' }
             & { fallback: string}
-            & Inline<'MessageAttachmentPost' | 'MessageRichAttachment',(
+            & Inline<'MessageRichAttachment' | 'MessageAttachmentPost',(
                 & { __typename: 'MessageAttachmentFile' }
                 & { id: string}
                 & { fileId: string}
@@ -1463,10 +1463,10 @@ export type DaialogListMessage = (
             )>}
         )>}
         & { attachments: ((
-            & { __typename: 'MessageAttachmentFile' | 'MessageAttachmentPost' | 'MessageRichAttachment' }
+            & { __typename: 'MessageRichAttachment' | 'MessageAttachmentFile' | 'MessageAttachmentPost' }
             & { id: string}
             & { fallback: string}
-            & Inline<'MessageAttachmentPost' | 'MessageRichAttachment',(
+            & Inline<'MessageRichAttachment' | 'MessageAttachmentPost',(
                 & { __typename: 'MessageAttachmentFile' }
                 & { id: string}
                 & { fileId: string}
@@ -1515,10 +1515,10 @@ export type TinyMessage = (
         & { isMentioned: boolean}
         & { commentsCount: number}
         & { attachments: ((
-            & { __typename: 'MessageAttachmentFile' | 'MessageAttachmentPost' | 'MessageRichAttachment' }
+            & { __typename: 'MessageRichAttachment' | 'MessageAttachmentFile' | 'MessageAttachmentPost' }
             & { id: string}
             & { fallback: string}
-            & Inline<'MessageAttachmentPost' | 'MessageRichAttachment',(
+            & Inline<'MessageRichAttachment' | 'MessageAttachmentPost',(
                 & { __typename: 'MessageAttachmentFile' }
                 & { id: string}
                 & { fileId: string}
@@ -1671,7 +1671,7 @@ export type SlideFragment = (
         & { id: string}
         & { text: string}
         & { spans: ((
-            & { __typename: 'MessageSpanAllMention' | 'MessageSpanBold' | 'MessageSpanCodeBlock' | 'MessageSpanDate' | 'MessageSpanInlineCode' | 'MessageSpanInsane' | 'MessageSpanIrony' | 'MessageSpanItalic' | 'MessageSpanLink' | 'MessageSpanLoud' | 'MessageSpanMultiUserMention' | 'MessageSpanOrganizationMention' | 'MessageSpanRoomMention' | 'MessageSpanRotating' | 'MessageSpanUserMention' }
+            & { __typename: 'MessageSpanUserMention' | 'MessageSpanMultiUserMention' | 'MessageSpanRoomMention' | 'MessageSpanOrganizationMention' | 'MessageSpanLink' | 'MessageSpanBold' | 'MessageSpanItalic' | 'MessageSpanIrony' | 'MessageSpanInlineCode' | 'MessageSpanCodeBlock' | 'MessageSpanInsane' | 'MessageSpanLoud' | 'MessageSpanRotating' | 'MessageSpanDate' | 'MessageSpanAllMention' }
             & SpanFragment
         ))[]}
         & { cover: Maybe<(
@@ -3348,10 +3348,10 @@ export type MessagesSearch = (
                         & { __typename: 'GeneralMessage' }
                         & { id: string}
                         & { attachments: ((
-                            & { __typename: 'MessageAttachmentFile' | 'MessageAttachmentPost' | 'MessageRichAttachment' }
+                            & { __typename: 'MessageRichAttachment' | 'MessageAttachmentFile' | 'MessageAttachmentPost' }
                             & { id: string}
                             & { fallback: string}
-                            & Inline<'MessageAttachmentPost' | 'MessageRichAttachment',(
+                            & Inline<'MessageRichAttachment' | 'MessageAttachmentPost',(
                                 & { __typename: 'MessageAttachmentFile' }
                                 & { id: string}
                                 & { fileId: string}
@@ -4153,8 +4153,8 @@ export type SharedMedia = (
                             & { name: string}
                         )}
                         & { attachments: ((
-                            & { __typename: 'MessageAttachmentFile' | 'MessageAttachmentPost' | 'MessageRichAttachment' }
-                            & Inline<'MessageAttachmentPost' | 'MessageRichAttachment',(
+                            & { __typename: 'MessageRichAttachment' | 'MessageAttachmentFile' | 'MessageAttachmentPost' }
+                            & Inline<'MessageRichAttachment' | 'MessageAttachmentPost',(
                                 & { __typename: 'MessageAttachmentFile' }
                                 & { id: string}
                                 & { fileMetadata: (

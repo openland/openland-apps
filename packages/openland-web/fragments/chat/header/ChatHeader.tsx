@@ -60,10 +60,10 @@ const mutedIcon = css`
 
 const HeaderLastSeen = (props: { id: string }) => {
     const client = useClient();
-    const data = client.useOnline({ userId: props.id },{
-            fetchPolicy: 'network-only',
-            suspense:false
-        });
+    const data = client.useOnline({ userId: props.id }, {
+        fetchPolicy: 'network-only',
+        suspense: false
+    });
 
     const [sub, accent] = useLastSeen(data ? data.user : null);
 

@@ -188,8 +188,7 @@ export class GlobalStateEngine {
         log.log('Event Processed in ' + (currentTimeMillis() - start) + ' ms');
     }
 
-    // looks like thmth is broken in apollo query with react alpha - Query not updated  after writeQuery
-    // temp solution - use listener
+    // Some old hack for apollo, shouldn't need today
     private counterListeners: ((count: number, visible: boolean) => void)[] = [];
     subcribeCounter = (listener: (count: number, visible: boolean) => void) => {
         this.counterListeners.push(listener);

@@ -69,6 +69,7 @@
         "@zeit/next-typescript": "^1.1.1",
         "@zeit/next-workers": "^1.0.0",
         "add": "^2.0.6",
+        "apollo": "^2.22.0",
         "apollo-server-express": "1.3.6",
         "appcenter": "1.12.0",
         "appcenter-analytics": "1.12.0",
@@ -100,11 +101,10 @@
         "fluent-ffmpeg": "^2.1.2",
         "form-data": "^2.5.0",
         "geolib": "^2.0.24",
+        "get-graphql-schema": "^2.1.2",
         "glamor": "^2.20.40",
         "glamorous": "^4.13.0",
         "google-maps": "^3.2.1",
-        "graphql": "^14.1.1",
-        "graphql-tag": "^2.10.1",
         "howler": "^2.0.15",
         "html-webpack-plugin": "^3.2.0",
         "http-proxy-middleware": "^0.17.4",
@@ -276,7 +276,6 @@
         "@zeit/next-bundle-analyzer": "0.1.2",
         "@zeit/next-css": "^1.0.1",
         "@zeit/next-source-maps": "0.0.3",
-        "apollo": "^2.6.2",
         "babel-plugin-glamorous-displayname": "^2.2.0",
         "babel-plugin-graphql-tag": "^2.0.0",
         "babel-plugin-inline-import-graphql-ast": "^2.1.2",
@@ -309,7 +308,6 @@
     "resolutions": {
         "**/@types/react": "16.8.8",
         "**/@types/react-native": "0.56.4",
-        "**/apollo-utilities": "1.2.1",
         "**/@babel/core": "7.0.0"
     },
     "scripts": {

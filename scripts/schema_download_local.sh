@@ -1,4 +1,5 @@
 #!/bin/sh
 set -e
 
-yarn apollo schema:download --config=apollo.local.config.js
+get-graphql-schema http://localhost:9000/api > schema.graphql
+get-graphql-schema http://localhost:9000/api --json > schema.json

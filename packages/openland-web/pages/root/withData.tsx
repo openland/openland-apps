@@ -6,7 +6,7 @@ import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { createClientWeb } from 'openland-api/createClientWeb';
 
 export function withData(App: React.ComponentType<any>) {
-    return class WithData extends React.Component<{ apolloState: any }> {
+    return class WithData extends React.Component {
         static async getInitialProps(ctx: NextAppContext) {
             let appProps = {};
             try {
@@ -48,14 +48,14 @@ export function withData(App: React.ComponentType<any>) {
             };
         }
 
-        private apollo: OpenlandClient;
+        private client: OpenlandClient;
         constructor(props: any) {
             super(props);
-            this.apollo = createClientWeb(props.token);
+            this.client = createClientWeb(props.token);
         }
 
         render() {
-            return <App {...this.props} apollo={this.apollo} />;
+            return <App {...this.props} client={this.client} />;
         }
     };
 }
