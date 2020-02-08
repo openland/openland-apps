@@ -4,7 +4,7 @@ import { withAppBase } from './withAppBase';
 import { AuthRouter } from '../pages/root/AuthRouter';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { UnicornSplash } from 'openland-x/XLoader';
-import { ClientCacheProvider } from 'openland-graphql/ClientCache';
+import { QueryCacheProvider } from '@openland/spacex';
 
 export function withApp(
     name: string,
@@ -14,7 +14,7 @@ export function withApp(
 ) {
     return withAppBase(name, () => {
         return (
-            <ClientCacheProvider>
+            <QueryCacheProvider>
                 <AuthRouter>
                     {(canUseDOM || forceSSR) && (
                         <XWithRole role={role}>
@@ -27,7 +27,7 @@ export function withApp(
                         </XWithRole>
                     )}
                 </AuthRouter>
-            </ClientCacheProvider>
+            </QueryCacheProvider>
         );
     });
 }

@@ -1,7 +1,7 @@
 import { AppPeerConnectionApi, AppPeerConnectionConfiguration, AppPeerConnection } from 'openland-y-runtime-api/AppPeerConnectionApi';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { AppUserMediaStreamWeb } from './AppUserMedia';
-import { randomKey } from 'openland-graphql/utils/randomKey';
+import { randomKey } from 'openland-y-utils/randomKey';
 
 export class AppPeerConnectionWeb implements AppPeerConnection {
     private id = randomKey();

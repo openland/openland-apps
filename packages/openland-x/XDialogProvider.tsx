@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XModalProvider, XModal, registerModalProvider, XModalController } from './showModal';
-import { randomKey } from 'openland-graphql/utils/randomKey';
+import { randomKey } from 'openland-y-utils/randomKey';
 import * as ReactModal from 'react-modal';
 import {
     UPopperProvider,

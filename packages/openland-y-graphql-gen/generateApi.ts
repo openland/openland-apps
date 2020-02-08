@@ -66,10 +66,9 @@ function generateApi() {
 
     let output = '';
     output += 'import * as Types from \'./spacex.types\';\n';
-    output += 'import { GraphqlEngine, GraphqlActiveSubscription, OperationParameters, GraphqlSubscriptionHandler } from \'@openland/spacex\';\n';
-    output += 'import { BaseApiClient, ApiQueryWatchParameters } from \'openland-graphql/BaseApiClient\';\n';
+    output += 'import { GraphqlEngine, GraphqlActiveSubscription, OperationParameters, GraphqlSubscriptionHandler, BaseSpaceXClient, SpaceQueryWatchParameters } from \'@openland/spacex\';\n';
     output += '\n';
-    output += 'export class OpenlandClient extends BaseApiClient {\n';
+    output += 'export class OpenlandClient extends BaseSpaceXClient {\n';
     output += '    constructor(engine: GraphqlEngine) {\n';
     output += '        super(engine);\n';
     output += '    }\n';
@@ -116,15 +115,15 @@ function generateApi() {
     // Hooks
     forEachQuery((name, hasVariables) => {
         if (hasVariables) {
-            output += '    use' + name + '(variables: Types.' + name + 'Variables, opts: ApiQueryWatchParameters & { suspense: false }): Types.' + name + ' | null;\n';
-            output += '    use' + name + '(variables: Types.' + name + 'Variables, opts?: ApiQueryWatchParameters): Types.' + name + ';\n';
-            output += '    use' + name + '(variables: Types.' + name + 'Variables, opts?: ApiQueryWatchParameters): Types.' + name + ' | null {\n';
+            output += '    use' + name + '(variables: Types.' + name + 'Variables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.' + name + ' | null;\n';
+            output += '    use' + name + '(variables: Types.' + name + 'Variables, opts?: SpaceQueryWatchParameters): Types.' + name + ';\n';
+            output += '    use' + name + '(variables: Types.' + name + 'Variables, opts?: SpaceQueryWatchParameters): Types.' + name + ' | null {\n';
             output += '        return this.useQuery(\'' + name + '\', variables, opts);\n';
             output += '    }\n';
         } else {
-            output += '    use' + name + '(opts: ApiQueryWatchParameters & { suspense: false }): Types.' + name + ' | null;\n';
-            output += '    use' + name + '(opts?: ApiQueryWatchParameters): Types.' + name + ';\n';
-            output += '    use' + name + '(opts?: ApiQueryWatchParameters): Types.' + name + ' | null {\n';
+            output += '    use' + name + '(opts: SpaceQueryWatchParameters & { suspense: false }): Types.' + name + ' | null;\n';
+            output += '    use' + name + '(opts?: SpaceQueryWatchParameters): Types.' + name + ';\n';
+            output += '    use' + name + '(opts?: SpaceQueryWatchParameters): Types.' + name + ' | null {\n';
             output += '        return this.useQuery(\'' + name + '\', undefined, opts);\n';
             output += '    }\n';
         }

@@ -5,13 +5,13 @@ import { withRouter } from 'react-native-s/withRouter';
 import { SHeaderAppearance, SHeader } from 'react-native-s/SHeader';
 import { SHeaderSafeArea } from 'react-native-s/SHeaderSafeArea';
 import { ZLoader } from './ZLoader';
-import { ClientCacheProvider } from 'openland-graphql/ClientCache';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { View, Image, Text } from 'react-native';
 import { ZButton } from './ZButton';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
+import { QueryCacheProvider } from '@openland/spacex';
 
 function PageError(props: { refresh: () => void }) {
     let theme = React.useContext(ThemeContext);
@@ -70,13 +70,13 @@ export const withApp = (Wrapped: React.ComponentType<PageProps>, args?: { naviga
             return (
                 <SHeaderSafeArea appearance={args && args.navigationAppearance || 'large'}>
                     {args && (args.hideBackText || args.hideHairline || args.backButtonRootFallback) && <SHeader hideBackText={args.hideBackText} hairline={args.hideHairline ? 'hidden' : undefined} backButtonRootFallback={args.backButtonRootFallback} />}
-                    <ClientCacheProvider>
+                    <QueryCacheProvider>
                         <PageErrorBoundary>
                             <React.Suspense fallback={<ZLoader />} >
                                 <Wrapped {...this.props} />
                             </React.Suspense>
                         </PageErrorBoundary>
-                    </ClientCacheProvider>
+                    </QueryCacheProvider>
                 </SHeaderSafeArea>
             );
         }

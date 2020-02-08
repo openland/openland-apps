@@ -1,6 +1,6 @@
 import { NativeModules, DeviceEventEmitter, NativeEventEmitter, Platform } from 'react-native';
 import { GraphqlBridgedEngine, OperationParameters } from '@openland/spacex';
-import { randomKey } from 'openland-graphql/utils/randomKey';
+import { randomKey } from 'openland-y-utils/randomKey';
 import { API_HOST } from 'openland-y-utils/api';
 import { GraphqlUnknownError, GraphqlError } from '@openland/spacex';
 

@@ -13,7 +13,6 @@ if (canUseDOM) {
 
 import { XStyleFactoryRegistry } from 'react-mental';
 import { css, rehydrate } from 'glamor';
-import { ClientCacheProvider } from 'openland-graphql/ClientCache';
 if (canUseDOM) {
     rehydrate(JSON.parse((window as any).GLAMOR_IDS));
 }
@@ -67,6 +66,7 @@ import { AppContainer } from './root/AppContainer';
 import { EnvironmentContext } from './root/EnvironmentContext';
 import { OpenlandClient } from 'openland-api/spacex';
 import { GQLClientContext } from 'openland-api/useClient';
+import { QueryCacheProvider } from '@openland/spacex';
 
 const ErrorBoundary = bugsnagClient.getPlugin('react');
 
@@ -111,7 +111,7 @@ export default withData(
                                     hostName={this.props.host}
                                     protocol={this.props.protocol}
                                 >
-                                    <ClientCacheProvider>
+                                    <QueryCacheProvider>
                                         <GQLClientContext.Provider value={this.props.client}>
                                             <RootErrorBoundary>
                                                 <AppContainer>
@@ -125,7 +125,7 @@ export default withData(
                                                 </AppContainer>
                                             </RootErrorBoundary>
                                         </GQLClientContext.Provider>
-                                    </ClientCacheProvider>
+                                    </QueryCacheProvider>
                                 </XRouterProvider>
                             </XStorageProvider>
                         </EnvironmentContext.Provider>

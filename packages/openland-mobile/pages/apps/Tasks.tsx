@@ -5,7 +5,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { PromptBuilder } from 'openland-mobile/components/Prompt';
-import { randomKey } from 'openland-graphql/utils/randomKey';
+import { randomKey } from 'openland-y-utils/randomKey';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';

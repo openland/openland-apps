@@ -1,8 +1,7 @@
 import * as Types from './spacex.types';
-import { GraphqlEngine, GraphqlActiveSubscription, OperationParameters, GraphqlSubscriptionHandler } from '@openland/spacex';
-import { BaseApiClient, ApiQueryWatchParameters } from 'openland-graphql/BaseApiClient';
+import { GraphqlEngine, GraphqlActiveSubscription, OperationParameters, GraphqlSubscriptionHandler, BaseSpaceXClient, SpaceQueryWatchParameters } from '@openland/spacex';
 
-export class OpenlandClient extends BaseApiClient {
+export class OpenlandClient extends BaseSpaceXClient {
     constructor(engine: GraphqlEngine) {
         super(engine);
     }
@@ -843,469 +842,469 @@ export class OpenlandClient extends BaseApiClient {
     async updateMySuccessfulInvitesCount(updater: (data: Types.MySuccessfulInvitesCount) => Types.MySuccessfulInvitesCount | null): Promise<boolean> {
         return this.updateQuery(updater, 'MySuccessfulInvitesCount');
     }
-    useAccount(opts: ApiQueryWatchParameters & { suspense: false }): Types.Account | null;
-    useAccount(opts?: ApiQueryWatchParameters): Types.Account;
-    useAccount(opts?: ApiQueryWatchParameters): Types.Account | null {
+    useAccount(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Account | null;
+    useAccount(opts?: SpaceQueryWatchParameters): Types.Account;
+    useAccount(opts?: SpaceQueryWatchParameters): Types.Account | null {
         return this.useQuery('Account', undefined, opts);
     }
-    useAccountSettings(opts: ApiQueryWatchParameters & { suspense: false }): Types.AccountSettings | null;
-    useAccountSettings(opts?: ApiQueryWatchParameters): Types.AccountSettings;
-    useAccountSettings(opts?: ApiQueryWatchParameters): Types.AccountSettings | null {
+    useAccountSettings(opts: SpaceQueryWatchParameters & { suspense: false }): Types.AccountSettings | null;
+    useAccountSettings(opts?: SpaceQueryWatchParameters): Types.AccountSettings;
+    useAccountSettings(opts?: SpaceQueryWatchParameters): Types.AccountSettings | null {
         return this.useQuery('AccountSettings', undefined, opts);
     }
-    useAccountInviteInfo(variables: Types.AccountInviteInfoVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.AccountInviteInfo | null;
-    useAccountInviteInfo(variables: Types.AccountInviteInfoVariables, opts?: ApiQueryWatchParameters): Types.AccountInviteInfo;
-    useAccountInviteInfo(variables: Types.AccountInviteInfoVariables, opts?: ApiQueryWatchParameters): Types.AccountInviteInfo | null {
+    useAccountInviteInfo(variables: Types.AccountInviteInfoVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.AccountInviteInfo | null;
+    useAccountInviteInfo(variables: Types.AccountInviteInfoVariables, opts?: SpaceQueryWatchParameters): Types.AccountInviteInfo;
+    useAccountInviteInfo(variables: Types.AccountInviteInfoVariables, opts?: SpaceQueryWatchParameters): Types.AccountInviteInfo | null {
         return this.useQuery('AccountInviteInfo', variables, opts);
     }
-    useAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.AccountAppInviteInfo | null;
-    useAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, opts?: ApiQueryWatchParameters): Types.AccountAppInviteInfo;
-    useAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, opts?: ApiQueryWatchParameters): Types.AccountAppInviteInfo | null {
+    useAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.AccountAppInviteInfo | null;
+    useAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, opts?: SpaceQueryWatchParameters): Types.AccountAppInviteInfo;
+    useAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, opts?: SpaceQueryWatchParameters): Types.AccountAppInviteInfo | null {
         return this.useQuery('AccountAppInviteInfo', variables, opts);
     }
-    useAccountAppInvite(opts: ApiQueryWatchParameters & { suspense: false }): Types.AccountAppInvite | null;
-    useAccountAppInvite(opts?: ApiQueryWatchParameters): Types.AccountAppInvite;
-    useAccountAppInvite(opts?: ApiQueryWatchParameters): Types.AccountAppInvite | null {
+    useAccountAppInvite(opts: SpaceQueryWatchParameters & { suspense: false }): Types.AccountAppInvite | null;
+    useAccountAppInvite(opts?: SpaceQueryWatchParameters): Types.AccountAppInvite;
+    useAccountAppInvite(opts?: SpaceQueryWatchParameters): Types.AccountAppInvite | null {
         return this.useQuery('AccountAppInvite', undefined, opts);
     }
-    useProfilePrefill(opts: ApiQueryWatchParameters & { suspense: false }): Types.ProfilePrefill | null;
-    useProfilePrefill(opts?: ApiQueryWatchParameters): Types.ProfilePrefill;
-    useProfilePrefill(opts?: ApiQueryWatchParameters): Types.ProfilePrefill | null {
+    useProfilePrefill(opts: SpaceQueryWatchParameters & { suspense: false }): Types.ProfilePrefill | null;
+    useProfilePrefill(opts?: SpaceQueryWatchParameters): Types.ProfilePrefill;
+    useProfilePrefill(opts?: SpaceQueryWatchParameters): Types.ProfilePrefill | null {
         return this.useQuery('ProfilePrefill', undefined, opts);
     }
-    useFetchPushSettings(opts: ApiQueryWatchParameters & { suspense: false }): Types.FetchPushSettings | null;
-    useFetchPushSettings(opts?: ApiQueryWatchParameters): Types.FetchPushSettings;
-    useFetchPushSettings(opts?: ApiQueryWatchParameters): Types.FetchPushSettings | null {
+    useFetchPushSettings(opts: SpaceQueryWatchParameters & { suspense: false }): Types.FetchPushSettings | null;
+    useFetchPushSettings(opts?: SpaceQueryWatchParameters): Types.FetchPushSettings;
+    useFetchPushSettings(opts?: SpaceQueryWatchParameters): Types.FetchPushSettings | null {
         return this.useQuery('FetchPushSettings', undefined, opts);
     }
-    useMyApps(opts: ApiQueryWatchParameters & { suspense: false }): Types.MyApps | null;
-    useMyApps(opts?: ApiQueryWatchParameters): Types.MyApps;
-    useMyApps(opts?: ApiQueryWatchParameters): Types.MyApps | null {
+    useMyApps(opts: SpaceQueryWatchParameters & { suspense: false }): Types.MyApps | null;
+    useMyApps(opts?: SpaceQueryWatchParameters): Types.MyApps;
+    useMyApps(opts?: SpaceQueryWatchParameters): Types.MyApps | null {
         return this.useQuery('MyApps', undefined, opts);
     }
-    useUserStorage(variables: Types.UserStorageVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.UserStorage | null;
-    useUserStorage(variables: Types.UserStorageVariables, opts?: ApiQueryWatchParameters): Types.UserStorage;
-    useUserStorage(variables: Types.UserStorageVariables, opts?: ApiQueryWatchParameters): Types.UserStorage | null {
+    useUserStorage(variables: Types.UserStorageVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.UserStorage | null;
+    useUserStorage(variables: Types.UserStorageVariables, opts?: SpaceQueryWatchParameters): Types.UserStorage;
+    useUserStorage(variables: Types.UserStorageVariables, opts?: SpaceQueryWatchParameters): Types.UserStorage | null {
         return this.useQuery('UserStorage', variables, opts);
     }
-    useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.SuperBadgeInRoom | null;
-    useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: ApiQueryWatchParameters): Types.SuperBadgeInRoom;
-    useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: ApiQueryWatchParameters): Types.SuperBadgeInRoom | null {
+    useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.SuperBadgeInRoom | null;
+    useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: SpaceQueryWatchParameters): Types.SuperBadgeInRoom;
+    useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: SpaceQueryWatchParameters): Types.SuperBadgeInRoom | null {
         return this.useQuery('SuperBadgeInRoom', variables, opts);
     }
-    useDialogs(variables: Types.DialogsVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.Dialogs | null;
-    useDialogs(variables: Types.DialogsVariables, opts?: ApiQueryWatchParameters): Types.Dialogs;
-    useDialogs(variables: Types.DialogsVariables, opts?: ApiQueryWatchParameters): Types.Dialogs | null {
+    useDialogs(variables: Types.DialogsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Dialogs | null;
+    useDialogs(variables: Types.DialogsVariables, opts?: SpaceQueryWatchParameters): Types.Dialogs;
+    useDialogs(variables: Types.DialogsVariables, opts?: SpaceQueryWatchParameters): Types.Dialogs | null {
         return this.useQuery('Dialogs', variables, opts);
     }
-    useRoom(variables: Types.RoomVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.Room | null;
-    useRoom(variables: Types.RoomVariables, opts?: ApiQueryWatchParameters): Types.Room;
-    useRoom(variables: Types.RoomVariables, opts?: ApiQueryWatchParameters): Types.Room | null {
+    useRoom(variables: Types.RoomVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Room | null;
+    useRoom(variables: Types.RoomVariables, opts?: SpaceQueryWatchParameters): Types.Room;
+    useRoom(variables: Types.RoomVariables, opts?: SpaceQueryWatchParameters): Types.Room | null {
         return this.useQuery('Room', variables, opts);
     }
-    useRoomPico(variables: Types.RoomPicoVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.RoomPico | null;
-    useRoomPico(variables: Types.RoomPicoVariables, opts?: ApiQueryWatchParameters): Types.RoomPico;
-    useRoomPico(variables: Types.RoomPicoVariables, opts?: ApiQueryWatchParameters): Types.RoomPico | null {
+    useRoomPico(variables: Types.RoomPicoVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomPico | null;
+    useRoomPico(variables: Types.RoomPicoVariables, opts?: SpaceQueryWatchParameters): Types.RoomPico;
+    useRoomPico(variables: Types.RoomPicoVariables, opts?: SpaceQueryWatchParameters): Types.RoomPico | null {
         return this.useQuery('RoomPico', variables, opts);
     }
-    useRoomChat(variables: Types.RoomChatVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.RoomChat | null;
-    useRoomChat(variables: Types.RoomChatVariables, opts?: ApiQueryWatchParameters): Types.RoomChat;
-    useRoomChat(variables: Types.RoomChatVariables, opts?: ApiQueryWatchParameters): Types.RoomChat | null {
+    useRoomChat(variables: Types.RoomChatVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomChat | null;
+    useRoomChat(variables: Types.RoomChatVariables, opts?: SpaceQueryWatchParameters): Types.RoomChat;
+    useRoomChat(variables: Types.RoomChatVariables, opts?: SpaceQueryWatchParameters): Types.RoomChat | null {
         return this.useQuery('RoomChat', variables, opts);
     }
-    useRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.RoomWithoutMembers | null;
-    useRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, opts?: ApiQueryWatchParameters): Types.RoomWithoutMembers;
-    useRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, opts?: ApiQueryWatchParameters): Types.RoomWithoutMembers | null {
+    useRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomWithoutMembers | null;
+    useRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomWithoutMembers;
+    useRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomWithoutMembers | null {
         return this.useQuery('RoomWithoutMembers', variables, opts);
     }
-    useRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.RoomFeaturedMembers | null;
-    useRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, opts?: ApiQueryWatchParameters): Types.RoomFeaturedMembers;
-    useRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, opts?: ApiQueryWatchParameters): Types.RoomFeaturedMembers | null {
+    useRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomFeaturedMembers | null;
+    useRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomFeaturedMembers;
+    useRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomFeaturedMembers | null {
         return this.useQuery('RoomFeaturedMembers', variables, opts);
     }
-    useRoomTiny(variables: Types.RoomTinyVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.RoomTiny | null;
-    useRoomTiny(variables: Types.RoomTinyVariables, opts?: ApiQueryWatchParameters): Types.RoomTiny;
-    useRoomTiny(variables: Types.RoomTinyVariables, opts?: ApiQueryWatchParameters): Types.RoomTiny | null {
+    useRoomTiny(variables: Types.RoomTinyVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomTiny | null;
+    useRoomTiny(variables: Types.RoomTinyVariables, opts?: SpaceQueryWatchParameters): Types.RoomTiny;
+    useRoomTiny(variables: Types.RoomTinyVariables, opts?: SpaceQueryWatchParameters): Types.RoomTiny | null {
         return this.useQuery('RoomTiny', variables, opts);
     }
-    useRoomSuper(variables: Types.RoomSuperVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.RoomSuper | null;
-    useRoomSuper(variables: Types.RoomSuperVariables, opts?: ApiQueryWatchParameters): Types.RoomSuper;
-    useRoomSuper(variables: Types.RoomSuperVariables, opts?: ApiQueryWatchParameters): Types.RoomSuper | null {
+    useRoomSuper(variables: Types.RoomSuperVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomSuper | null;
+    useRoomSuper(variables: Types.RoomSuperVariables, opts?: SpaceQueryWatchParameters): Types.RoomSuper;
+    useRoomSuper(variables: Types.RoomSuperVariables, opts?: SpaceQueryWatchParameters): Types.RoomSuper | null {
         return this.useQuery('RoomSuper', variables, opts);
     }
-    useGlobalCounter(opts: ApiQueryWatchParameters & { suspense: false }): Types.GlobalCounter | null;
-    useGlobalCounter(opts?: ApiQueryWatchParameters): Types.GlobalCounter;
-    useGlobalCounter(opts?: ApiQueryWatchParameters): Types.GlobalCounter | null {
+    useGlobalCounter(opts: SpaceQueryWatchParameters & { suspense: false }): Types.GlobalCounter | null;
+    useGlobalCounter(opts?: SpaceQueryWatchParameters): Types.GlobalCounter;
+    useGlobalCounter(opts?: SpaceQueryWatchParameters): Types.GlobalCounter | null {
         return this.useQuery('GlobalCounter', undefined, opts);
     }
-    useMessagesBatch(variables: Types.MessagesBatchVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.MessagesBatch | null;
-    useMessagesBatch(variables: Types.MessagesBatchVariables, opts?: ApiQueryWatchParameters): Types.MessagesBatch;
-    useMessagesBatch(variables: Types.MessagesBatchVariables, opts?: ApiQueryWatchParameters): Types.MessagesBatch | null {
+    useMessagesBatch(variables: Types.MessagesBatchVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.MessagesBatch | null;
+    useMessagesBatch(variables: Types.MessagesBatchVariables, opts?: SpaceQueryWatchParameters): Types.MessagesBatch;
+    useMessagesBatch(variables: Types.MessagesBatchVariables, opts?: SpaceQueryWatchParameters): Types.MessagesBatch | null {
         return this.useQuery('MessagesBatch', variables, opts);
     }
-    useChatInit(variables: Types.ChatInitVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.ChatInit | null;
-    useChatInit(variables: Types.ChatInitVariables, opts?: ApiQueryWatchParameters): Types.ChatInit;
-    useChatInit(variables: Types.ChatInitVariables, opts?: ApiQueryWatchParameters): Types.ChatInit | null {
+    useChatInit(variables: Types.ChatInitVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ChatInit | null;
+    useChatInit(variables: Types.ChatInitVariables, opts?: SpaceQueryWatchParameters): Types.ChatInit;
+    useChatInit(variables: Types.ChatInitVariables, opts?: SpaceQueryWatchParameters): Types.ChatInit | null {
         return this.useQuery('ChatInit', variables, opts);
     }
-    useChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.ChatInitFromUnread | null;
-    useChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, opts?: ApiQueryWatchParameters): Types.ChatInitFromUnread;
-    useChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, opts?: ApiQueryWatchParameters): Types.ChatInitFromUnread | null {
+    useChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ChatInitFromUnread | null;
+    useChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, opts?: SpaceQueryWatchParameters): Types.ChatInitFromUnread;
+    useChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, opts?: SpaceQueryWatchParameters): Types.ChatInitFromUnread | null {
         return this.useQuery('ChatInitFromUnread', variables, opts);
     }
-    useRoomSearch(variables: Types.RoomSearchVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.RoomSearch | null;
-    useRoomSearch(variables: Types.RoomSearchVariables, opts?: ApiQueryWatchParameters): Types.RoomSearch;
-    useRoomSearch(variables: Types.RoomSearchVariables, opts?: ApiQueryWatchParameters): Types.RoomSearch | null {
+    useRoomSearch(variables: Types.RoomSearchVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomSearch | null;
+    useRoomSearch(variables: Types.RoomSearchVariables, opts?: SpaceQueryWatchParameters): Types.RoomSearch;
+    useRoomSearch(variables: Types.RoomSearchVariables, opts?: SpaceQueryWatchParameters): Types.RoomSearch | null {
         return this.useQuery('RoomSearch', variables, opts);
     }
-    useRoomMembersShort(variables: Types.RoomMembersShortVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.RoomMembersShort | null;
-    useRoomMembersShort(variables: Types.RoomMembersShortVariables, opts?: ApiQueryWatchParameters): Types.RoomMembersShort;
-    useRoomMembersShort(variables: Types.RoomMembersShortVariables, opts?: ApiQueryWatchParameters): Types.RoomMembersShort | null {
+    useRoomMembersShort(variables: Types.RoomMembersShortVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMembersShort | null;
+    useRoomMembersShort(variables: Types.RoomMembersShortVariables, opts?: SpaceQueryWatchParameters): Types.RoomMembersShort;
+    useRoomMembersShort(variables: Types.RoomMembersShortVariables, opts?: SpaceQueryWatchParameters): Types.RoomMembersShort | null {
         return this.useQuery('RoomMembersShort', variables, opts);
     }
-    useRoomMembers(variables: Types.RoomMembersVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.RoomMembers | null;
-    useRoomMembers(variables: Types.RoomMembersVariables, opts?: ApiQueryWatchParameters): Types.RoomMembers;
-    useRoomMembers(variables: Types.RoomMembersVariables, opts?: ApiQueryWatchParameters): Types.RoomMembers | null {
+    useRoomMembers(variables: Types.RoomMembersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMembers | null;
+    useRoomMembers(variables: Types.RoomMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomMembers;
+    useRoomMembers(variables: Types.RoomMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomMembers | null {
         return this.useQuery('RoomMembers', variables, opts);
     }
-    useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.RoomMembersTiny | null;
-    useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: ApiQueryWatchParameters): Types.RoomMembersTiny;
-    useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: ApiQueryWatchParameters): Types.RoomMembersTiny | null {
+    useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMembersTiny | null;
+    useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: SpaceQueryWatchParameters): Types.RoomMembersTiny;
+    useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: SpaceQueryWatchParameters): Types.RoomMembersTiny | null {
         return this.useQuery('RoomMembersTiny', variables, opts);
     }
-    useChatMembersSearch(variables: Types.ChatMembersSearchVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.ChatMembersSearch | null;
-    useChatMembersSearch(variables: Types.ChatMembersSearchVariables, opts?: ApiQueryWatchParameters): Types.ChatMembersSearch;
-    useChatMembersSearch(variables: Types.ChatMembersSearchVariables, opts?: ApiQueryWatchParameters): Types.ChatMembersSearch | null {
+    useChatMembersSearch(variables: Types.ChatMembersSearchVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ChatMembersSearch | null;
+    useChatMembersSearch(variables: Types.ChatMembersSearchVariables, opts?: SpaceQueryWatchParameters): Types.ChatMembersSearch;
+    useChatMembersSearch(variables: Types.ChatMembersSearchVariables, opts?: SpaceQueryWatchParameters): Types.ChatMembersSearch | null {
         return this.useQuery('ChatMembersSearch', variables, opts);
     }
-    useRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.RoomOrganizationAdminMembers | null;
-    useRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts?: ApiQueryWatchParameters): Types.RoomOrganizationAdminMembers;
-    useRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts?: ApiQueryWatchParameters): Types.RoomOrganizationAdminMembers | null {
+    useRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomOrganizationAdminMembers | null;
+    useRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomOrganizationAdminMembers;
+    useRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomOrganizationAdminMembers | null {
         return this.useQuery('RoomOrganizationAdminMembers', variables, opts);
     }
-    useRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.RoomMembersPaginated | null;
-    useRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, opts?: ApiQueryWatchParameters): Types.RoomMembersPaginated;
-    useRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, opts?: ApiQueryWatchParameters): Types.RoomMembersPaginated | null {
+    useRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMembersPaginated | null;
+    useRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, opts?: SpaceQueryWatchParameters): Types.RoomMembersPaginated;
+    useRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, opts?: SpaceQueryWatchParameters): Types.RoomMembersPaginated | null {
         return this.useQuery('RoomMembersPaginated', variables, opts);
     }
-    useRoomInviteLink(variables: Types.RoomInviteLinkVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.RoomInviteLink | null;
-    useRoomInviteLink(variables: Types.RoomInviteLinkVariables, opts?: ApiQueryWatchParameters): Types.RoomInviteLink;
-    useRoomInviteLink(variables: Types.RoomInviteLinkVariables, opts?: ApiQueryWatchParameters): Types.RoomInviteLink | null {
+    useRoomInviteLink(variables: Types.RoomInviteLinkVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomInviteLink | null;
+    useRoomInviteLink(variables: Types.RoomInviteLinkVariables, opts?: SpaceQueryWatchParameters): Types.RoomInviteLink;
+    useRoomInviteLink(variables: Types.RoomInviteLinkVariables, opts?: SpaceQueryWatchParameters): Types.RoomInviteLink | null {
         return this.useQuery('RoomInviteLink', variables, opts);
     }
-    useRoomInviteInfo(variables: Types.RoomInviteInfoVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.RoomInviteInfo | null;
-    useRoomInviteInfo(variables: Types.RoomInviteInfoVariables, opts?: ApiQueryWatchParameters): Types.RoomInviteInfo;
-    useRoomInviteInfo(variables: Types.RoomInviteInfoVariables, opts?: ApiQueryWatchParameters): Types.RoomInviteInfo | null {
+    useRoomInviteInfo(variables: Types.RoomInviteInfoVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomInviteInfo | null;
+    useRoomInviteInfo(variables: Types.RoomInviteInfoVariables, opts?: SpaceQueryWatchParameters): Types.RoomInviteInfo;
+    useRoomInviteInfo(variables: Types.RoomInviteInfoVariables, opts?: SpaceQueryWatchParameters): Types.RoomInviteInfo | null {
         return this.useQuery('RoomInviteInfo', variables, opts);
     }
-    useResolvedInvite(variables: Types.ResolvedInviteVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.ResolvedInvite | null;
-    useResolvedInvite(variables: Types.ResolvedInviteVariables, opts?: ApiQueryWatchParameters): Types.ResolvedInvite;
-    useResolvedInvite(variables: Types.ResolvedInviteVariables, opts?: ApiQueryWatchParameters): Types.ResolvedInvite | null {
+    useResolvedInvite(variables: Types.ResolvedInviteVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ResolvedInvite | null;
+    useResolvedInvite(variables: Types.ResolvedInviteVariables, opts?: SpaceQueryWatchParameters): Types.ResolvedInvite;
+    useResolvedInvite(variables: Types.ResolvedInviteVariables, opts?: SpaceQueryWatchParameters): Types.ResolvedInvite | null {
         return this.useQuery('ResolvedInvite', variables, opts);
     }
-    useMessage(variables: Types.MessageVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.Message | null;
-    useMessage(variables: Types.MessageVariables, opts?: ApiQueryWatchParameters): Types.Message;
-    useMessage(variables: Types.MessageVariables, opts?: ApiQueryWatchParameters): Types.Message | null {
+    useMessage(variables: Types.MessageVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Message | null;
+    useMessage(variables: Types.MessageVariables, opts?: SpaceQueryWatchParameters): Types.Message;
+    useMessage(variables: Types.MessageVariables, opts?: SpaceQueryWatchParameters): Types.Message | null {
         return this.useQuery('Message', variables, opts);
     }
-    useMessagesSearch(variables: Types.MessagesSearchVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.MessagesSearch | null;
-    useMessagesSearch(variables: Types.MessagesSearchVariables, opts?: ApiQueryWatchParameters): Types.MessagesSearch;
-    useMessagesSearch(variables: Types.MessagesSearchVariables, opts?: ApiQueryWatchParameters): Types.MessagesSearch | null {
+    useMessagesSearch(variables: Types.MessagesSearchVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.MessagesSearch | null;
+    useMessagesSearch(variables: Types.MessagesSearchVariables, opts?: SpaceQueryWatchParameters): Types.MessagesSearch;
+    useMessagesSearch(variables: Types.MessagesSearchVariables, opts?: SpaceQueryWatchParameters): Types.MessagesSearch | null {
         return this.useQuery('MessagesSearch', variables, opts);
     }
-    useChatJoin(variables: Types.ChatJoinVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.ChatJoin | null;
-    useChatJoin(variables: Types.ChatJoinVariables, opts?: ApiQueryWatchParameters): Types.ChatJoin;
-    useChatJoin(variables: Types.ChatJoinVariables, opts?: ApiQueryWatchParameters): Types.ChatJoin | null {
+    useChatJoin(variables: Types.ChatJoinVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ChatJoin | null;
+    useChatJoin(variables: Types.ChatJoinVariables, opts?: SpaceQueryWatchParameters): Types.ChatJoin;
+    useChatJoin(variables: Types.ChatJoinVariables, opts?: SpaceQueryWatchParameters): Types.ChatJoin | null {
         return this.useQuery('ChatJoin', variables, opts);
     }
-    useComments(variables: Types.CommentsVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.Comments | null;
-    useComments(variables: Types.CommentsVariables, opts?: ApiQueryWatchParameters): Types.Comments;
-    useComments(variables: Types.CommentsVariables, opts?: ApiQueryWatchParameters): Types.Comments | null {
+    useComments(variables: Types.CommentsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Comments | null;
+    useComments(variables: Types.CommentsVariables, opts?: SpaceQueryWatchParameters): Types.Comments;
+    useComments(variables: Types.CommentsVariables, opts?: SpaceQueryWatchParameters): Types.Comments | null {
         return this.useQuery('Comments', variables, opts);
     }
-    useConference(variables: Types.ConferenceVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.Conference | null;
-    useConference(variables: Types.ConferenceVariables, opts?: ApiQueryWatchParameters): Types.Conference;
-    useConference(variables: Types.ConferenceVariables, opts?: ApiQueryWatchParameters): Types.Conference | null {
+    useConference(variables: Types.ConferenceVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Conference | null;
+    useConference(variables: Types.ConferenceVariables, opts?: SpaceQueryWatchParameters): Types.Conference;
+    useConference(variables: Types.ConferenceVariables, opts?: SpaceQueryWatchParameters): Types.Conference | null {
         return this.useQuery('Conference', variables, opts);
     }
-    useConferenceMedia(variables: Types.ConferenceMediaVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.ConferenceMedia | null;
-    useConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: ApiQueryWatchParameters): Types.ConferenceMedia;
-    useConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: ApiQueryWatchParameters): Types.ConferenceMedia | null {
+    useConferenceMedia(variables: Types.ConferenceMediaVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ConferenceMedia | null;
+    useConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: SpaceQueryWatchParameters): Types.ConferenceMedia;
+    useConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: SpaceQueryWatchParameters): Types.ConferenceMedia | null {
         return this.useQuery('ConferenceMedia', variables, opts);
     }
-    useAvailableRooms(variables: Types.AvailableRoomsVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.AvailableRooms | null;
-    useAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: ApiQueryWatchParameters): Types.AvailableRooms;
-    useAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: ApiQueryWatchParameters): Types.AvailableRooms | null {
+    useAvailableRooms(variables: Types.AvailableRoomsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.AvailableRooms | null;
+    useAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: SpaceQueryWatchParameters): Types.AvailableRooms;
+    useAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: SpaceQueryWatchParameters): Types.AvailableRooms | null {
         return this.useQuery('AvailableRooms', variables, opts);
     }
-    useSuggestedRooms(opts: ApiQueryWatchParameters & { suspense: false }): Types.SuggestedRooms | null;
-    useSuggestedRooms(opts?: ApiQueryWatchParameters): Types.SuggestedRooms;
-    useSuggestedRooms(opts?: ApiQueryWatchParameters): Types.SuggestedRooms | null {
+    useSuggestedRooms(opts: SpaceQueryWatchParameters & { suspense: false }): Types.SuggestedRooms | null;
+    useSuggestedRooms(opts?: SpaceQueryWatchParameters): Types.SuggestedRooms;
+    useSuggestedRooms(opts?: SpaceQueryWatchParameters): Types.SuggestedRooms | null {
         return this.useQuery('SuggestedRooms', undefined, opts);
     }
-    useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.UserAvailableRooms | null;
-    useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, opts?: ApiQueryWatchParameters): Types.UserAvailableRooms;
-    useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, opts?: ApiQueryWatchParameters): Types.UserAvailableRooms | null {
+    useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.UserAvailableRooms | null;
+    useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, opts?: SpaceQueryWatchParameters): Types.UserAvailableRooms;
+    useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, opts?: SpaceQueryWatchParameters): Types.UserAvailableRooms | null {
         return this.useQuery('UserAvailableRooms', variables, opts);
     }
-    useGlobalSearch(variables: Types.GlobalSearchVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.GlobalSearch | null;
-    useGlobalSearch(variables: Types.GlobalSearchVariables, opts?: ApiQueryWatchParameters): Types.GlobalSearch;
-    useGlobalSearch(variables: Types.GlobalSearchVariables, opts?: ApiQueryWatchParameters): Types.GlobalSearch | null {
+    useGlobalSearch(variables: Types.GlobalSearchVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.GlobalSearch | null;
+    useGlobalSearch(variables: Types.GlobalSearchVariables, opts?: SpaceQueryWatchParameters): Types.GlobalSearch;
+    useGlobalSearch(variables: Types.GlobalSearchVariables, opts?: SpaceQueryWatchParameters): Types.GlobalSearch | null {
         return this.useQuery('GlobalSearch', variables, opts);
     }
-    useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.DiscoverNextPage | null;
-    useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: ApiQueryWatchParameters): Types.DiscoverNextPage;
-    useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: ApiQueryWatchParameters): Types.DiscoverNextPage | null {
+    useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverNextPage | null;
+    useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverNextPage;
+    useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverNextPage | null {
         return this.useQuery('DiscoverNextPage', variables, opts);
     }
-    useDiscoverIsDone(opts: ApiQueryWatchParameters & { suspense: false }): Types.DiscoverIsDone | null;
-    useDiscoverIsDone(opts?: ApiQueryWatchParameters): Types.DiscoverIsDone;
-    useDiscoverIsDone(opts?: ApiQueryWatchParameters): Types.DiscoverIsDone | null {
+    useDiscoverIsDone(opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverIsDone | null;
+    useDiscoverIsDone(opts?: SpaceQueryWatchParameters): Types.DiscoverIsDone;
+    useDiscoverIsDone(opts?: SpaceQueryWatchParameters): Types.DiscoverIsDone | null {
         return this.useQuery('DiscoverIsDone', undefined, opts);
     }
-    useDiscoverState(opts: ApiQueryWatchParameters & { suspense: false }): Types.DiscoverState | null;
-    useDiscoverState(opts?: ApiQueryWatchParameters): Types.DiscoverState;
-    useDiscoverState(opts?: ApiQueryWatchParameters): Types.DiscoverState | null {
+    useDiscoverState(opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverState | null;
+    useDiscoverState(opts?: SpaceQueryWatchParameters): Types.DiscoverState;
+    useDiscoverState(opts?: SpaceQueryWatchParameters): Types.DiscoverState | null {
         return this.useQuery('DiscoverState', undefined, opts);
     }
-    useFeatureFlags(opts: ApiQueryWatchParameters & { suspense: false }): Types.FeatureFlags | null;
-    useFeatureFlags(opts?: ApiQueryWatchParameters): Types.FeatureFlags;
-    useFeatureFlags(opts?: ApiQueryWatchParameters): Types.FeatureFlags | null {
+    useFeatureFlags(opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeatureFlags | null;
+    useFeatureFlags(opts?: SpaceQueryWatchParameters): Types.FeatureFlags;
+    useFeatureFlags(opts?: SpaceQueryWatchParameters): Types.FeatureFlags | null {
         return this.useQuery('FeatureFlags', undefined, opts);
     }
-    useInitFeed(variables: Types.InitFeedVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.InitFeed | null;
-    useInitFeed(variables: Types.InitFeedVariables, opts?: ApiQueryWatchParameters): Types.InitFeed;
-    useInitFeed(variables: Types.InitFeedVariables, opts?: ApiQueryWatchParameters): Types.InitFeed | null {
+    useInitFeed(variables: Types.InitFeedVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.InitFeed | null;
+    useInitFeed(variables: Types.InitFeedVariables, opts?: SpaceQueryWatchParameters): Types.InitFeed;
+    useInitFeed(variables: Types.InitFeedVariables, opts?: SpaceQueryWatchParameters): Types.InitFeed | null {
         return this.useQuery('InitFeed', variables, opts);
     }
-    useFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.FeedLoadMore | null;
-    useFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts?: ApiQueryWatchParameters): Types.FeedLoadMore;
-    useFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts?: ApiQueryWatchParameters): Types.FeedLoadMore | null {
+    useFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedLoadMore | null;
+    useFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts?: SpaceQueryWatchParameters): Types.FeedLoadMore;
+    useFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts?: SpaceQueryWatchParameters): Types.FeedLoadMore | null {
         return this.useQuery('FeedLoadMore', variables, opts);
     }
-    useFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.FeedSubscriptions | null;
-    useFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, opts?: ApiQueryWatchParameters): Types.FeedSubscriptions;
-    useFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, opts?: ApiQueryWatchParameters): Types.FeedSubscriptions | null {
+    useFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedSubscriptions | null;
+    useFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, opts?: SpaceQueryWatchParameters): Types.FeedSubscriptions;
+    useFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, opts?: SpaceQueryWatchParameters): Types.FeedSubscriptions | null {
         return this.useQuery('FeedSubscriptions', variables, opts);
     }
-    useFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.FeedWritableChannels | null;
-    useFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts?: ApiQueryWatchParameters): Types.FeedWritableChannels;
-    useFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts?: ApiQueryWatchParameters): Types.FeedWritableChannels | null {
+    useFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedWritableChannels | null;
+    useFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts?: SpaceQueryWatchParameters): Types.FeedWritableChannels;
+    useFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts?: SpaceQueryWatchParameters): Types.FeedWritableChannels | null {
         return this.useQuery('FeedWritableChannels', variables, opts);
     }
-    useFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.FeedChannelsSearch | null;
-    useFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts?: ApiQueryWatchParameters): Types.FeedChannelsSearch;
-    useFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts?: ApiQueryWatchParameters): Types.FeedChannelsSearch | null {
+    useFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedChannelsSearch | null;
+    useFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannelsSearch;
+    useFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannelsSearch | null {
         return this.useQuery('FeedChannelsSearch', variables, opts);
     }
-    useFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.FeedRecommendedChannels | null;
-    useFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, opts?: ApiQueryWatchParameters): Types.FeedRecommendedChannels;
-    useFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, opts?: ApiQueryWatchParameters): Types.FeedRecommendedChannels | null {
+    useFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedRecommendedChannels | null;
+    useFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, opts?: SpaceQueryWatchParameters): Types.FeedRecommendedChannels;
+    useFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, opts?: SpaceQueryWatchParameters): Types.FeedRecommendedChannels | null {
         return this.useQuery('FeedRecommendedChannels', variables, opts);
     }
-    useFeedChannel(variables: Types.FeedChannelVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.FeedChannel | null;
-    useFeedChannel(variables: Types.FeedChannelVariables, opts?: ApiQueryWatchParameters): Types.FeedChannel;
-    useFeedChannel(variables: Types.FeedChannelVariables, opts?: ApiQueryWatchParameters): Types.FeedChannel | null {
+    useFeedChannel(variables: Types.FeedChannelVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedChannel | null;
+    useFeedChannel(variables: Types.FeedChannelVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannel;
+    useFeedChannel(variables: Types.FeedChannelVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannel | null {
         return this.useQuery('FeedChannel', variables, opts);
     }
-    useFeedChannelWriters(variables: Types.FeedChannelWritersVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.FeedChannelWriters | null;
-    useFeedChannelWriters(variables: Types.FeedChannelWritersVariables, opts?: ApiQueryWatchParameters): Types.FeedChannelWriters;
-    useFeedChannelWriters(variables: Types.FeedChannelWritersVariables, opts?: ApiQueryWatchParameters): Types.FeedChannelWriters | null {
+    useFeedChannelWriters(variables: Types.FeedChannelWritersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedChannelWriters | null;
+    useFeedChannelWriters(variables: Types.FeedChannelWritersVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannelWriters;
+    useFeedChannelWriters(variables: Types.FeedChannelWritersVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannelWriters | null {
         return this.useQuery('FeedChannelWriters', variables, opts);
     }
-    useFeedChannelSubscribers(variables: Types.FeedChannelSubscribersVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.FeedChannelSubscribers | null;
-    useFeedChannelSubscribers(variables: Types.FeedChannelSubscribersVariables, opts?: ApiQueryWatchParameters): Types.FeedChannelSubscribers;
-    useFeedChannelSubscribers(variables: Types.FeedChannelSubscribersVariables, opts?: ApiQueryWatchParameters): Types.FeedChannelSubscribers | null {
+    useFeedChannelSubscribers(variables: Types.FeedChannelSubscribersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedChannelSubscribers | null;
+    useFeedChannelSubscribers(variables: Types.FeedChannelSubscribersVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannelSubscribers;
+    useFeedChannelSubscribers(variables: Types.FeedChannelSubscribersVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannelSubscribers | null {
         return this.useQuery('FeedChannelSubscribers', variables, opts);
     }
-    useFeedChannelContent(variables: Types.FeedChannelContentVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.FeedChannelContent | null;
-    useFeedChannelContent(variables: Types.FeedChannelContentVariables, opts?: ApiQueryWatchParameters): Types.FeedChannelContent;
-    useFeedChannelContent(variables: Types.FeedChannelContentVariables, opts?: ApiQueryWatchParameters): Types.FeedChannelContent | null {
+    useFeedChannelContent(variables: Types.FeedChannelContentVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedChannelContent | null;
+    useFeedChannelContent(variables: Types.FeedChannelContentVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannelContent;
+    useFeedChannelContent(variables: Types.FeedChannelContentVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannelContent | null {
         return this.useQuery('FeedChannelContent', variables, opts);
     }
-    useFeedItem(variables: Types.FeedItemVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.FeedItem | null;
-    useFeedItem(variables: Types.FeedItemVariables, opts?: ApiQueryWatchParameters): Types.FeedItem;
-    useFeedItem(variables: Types.FeedItemVariables, opts?: ApiQueryWatchParameters): Types.FeedItem | null {
+    useFeedItem(variables: Types.FeedItemVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedItem | null;
+    useFeedItem(variables: Types.FeedItemVariables, opts?: SpaceQueryWatchParameters): Types.FeedItem;
+    useFeedItem(variables: Types.FeedItemVariables, opts?: SpaceQueryWatchParameters): Types.FeedItem | null {
         return this.useQuery('FeedItem', variables, opts);
     }
-    useMyCards(opts: ApiQueryWatchParameters & { suspense: false }): Types.MyCards | null;
-    useMyCards(opts?: ApiQueryWatchParameters): Types.MyCards;
-    useMyCards(opts?: ApiQueryWatchParameters): Types.MyCards | null {
+    useMyCards(opts: SpaceQueryWatchParameters & { suspense: false }): Types.MyCards | null;
+    useMyCards(opts?: SpaceQueryWatchParameters): Types.MyCards;
+    useMyCards(opts?: SpaceQueryWatchParameters): Types.MyCards | null {
         return this.useQuery('MyCards', undefined, opts);
     }
-    useMyWallet(opts: ApiQueryWatchParameters & { suspense: false }): Types.MyWallet | null;
-    useMyWallet(opts?: ApiQueryWatchParameters): Types.MyWallet;
-    useMyWallet(opts?: ApiQueryWatchParameters): Types.MyWallet | null {
+    useMyWallet(opts: SpaceQueryWatchParameters & { suspense: false }): Types.MyWallet | null;
+    useMyWallet(opts?: SpaceQueryWatchParameters): Types.MyWallet;
+    useMyWallet(opts?: SpaceQueryWatchParameters): Types.MyWallet | null {
         return this.useQuery('MyWallet', undefined, opts);
     }
-    useMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.MatchmakingRoom | null;
-    useMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: ApiQueryWatchParameters): Types.MatchmakingRoom;
-    useMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: ApiQueryWatchParameters): Types.MatchmakingRoom | null {
+    useMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.MatchmakingRoom | null;
+    useMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: SpaceQueryWatchParameters): Types.MatchmakingRoom;
+    useMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: SpaceQueryWatchParameters): Types.MatchmakingRoom | null {
         return this.useQuery('MatchmakingRoom', variables, opts);
     }
-    useMatchmakingProfile(variables: Types.MatchmakingProfileVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.MatchmakingProfile | null;
-    useMatchmakingProfile(variables: Types.MatchmakingProfileVariables, opts?: ApiQueryWatchParameters): Types.MatchmakingProfile;
-    useMatchmakingProfile(variables: Types.MatchmakingProfileVariables, opts?: ApiQueryWatchParameters): Types.MatchmakingProfile | null {
+    useMatchmakingProfile(variables: Types.MatchmakingProfileVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.MatchmakingProfile | null;
+    useMatchmakingProfile(variables: Types.MatchmakingProfileVariables, opts?: SpaceQueryWatchParameters): Types.MatchmakingProfile;
+    useMatchmakingProfile(variables: Types.MatchmakingProfileVariables, opts?: SpaceQueryWatchParameters): Types.MatchmakingProfile | null {
         return this.useQuery('MatchmakingProfile', variables, opts);
     }
-    useChatMentionSearch(variables: Types.ChatMentionSearchVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.ChatMentionSearch | null;
-    useChatMentionSearch(variables: Types.ChatMentionSearchVariables, opts?: ApiQueryWatchParameters): Types.ChatMentionSearch;
-    useChatMentionSearch(variables: Types.ChatMentionSearchVariables, opts?: ApiQueryWatchParameters): Types.ChatMentionSearch | null {
+    useChatMentionSearch(variables: Types.ChatMentionSearchVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ChatMentionSearch | null;
+    useChatMentionSearch(variables: Types.ChatMentionSearchVariables, opts?: SpaceQueryWatchParameters): Types.ChatMentionSearch;
+    useChatMentionSearch(variables: Types.ChatMentionSearchVariables, opts?: SpaceQueryWatchParameters): Types.ChatMentionSearch | null {
         return this.useQuery('ChatMentionSearch', variables, opts);
     }
-    useMyNotifications(variables: Types.MyNotificationsVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.MyNotifications | null;
-    useMyNotifications(variables: Types.MyNotificationsVariables, opts?: ApiQueryWatchParameters): Types.MyNotifications;
-    useMyNotifications(variables: Types.MyNotificationsVariables, opts?: ApiQueryWatchParameters): Types.MyNotifications | null {
+    useMyNotifications(variables: Types.MyNotificationsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.MyNotifications | null;
+    useMyNotifications(variables: Types.MyNotificationsVariables, opts?: SpaceQueryWatchParameters): Types.MyNotifications;
+    useMyNotifications(variables: Types.MyNotificationsVariables, opts?: SpaceQueryWatchParameters): Types.MyNotifications | null {
         return this.useQuery('MyNotifications', variables, opts);
     }
-    useMyNotificationCenter(opts: ApiQueryWatchParameters & { suspense: false }): Types.MyNotificationCenter | null;
-    useMyNotificationCenter(opts?: ApiQueryWatchParameters): Types.MyNotificationCenter;
-    useMyNotificationCenter(opts?: ApiQueryWatchParameters): Types.MyNotificationCenter | null {
+    useMyNotificationCenter(opts: SpaceQueryWatchParameters & { suspense: false }): Types.MyNotificationCenter | null;
+    useMyNotificationCenter(opts?: SpaceQueryWatchParameters): Types.MyNotificationCenter;
+    useMyNotificationCenter(opts?: SpaceQueryWatchParameters): Types.MyNotificationCenter | null {
         return this.useQuery('MyNotificationCenter', undefined, opts);
     }
-    useOauthContext(variables: Types.OauthContextVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.OauthContext | null;
-    useOauthContext(variables: Types.OauthContextVariables, opts?: ApiQueryWatchParameters): Types.OauthContext;
-    useOauthContext(variables: Types.OauthContextVariables, opts?: ApiQueryWatchParameters): Types.OauthContext | null {
+    useOauthContext(variables: Types.OauthContextVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.OauthContext | null;
+    useOauthContext(variables: Types.OauthContextVariables, opts?: SpaceQueryWatchParameters): Types.OauthContext;
+    useOauthContext(variables: Types.OauthContextVariables, opts?: SpaceQueryWatchParameters): Types.OauthContext | null {
         return this.useQuery('OauthContext', variables, opts);
     }
-    useMyOrganizations(opts: ApiQueryWatchParameters & { suspense: false }): Types.MyOrganizations | null;
-    useMyOrganizations(opts?: ApiQueryWatchParameters): Types.MyOrganizations;
-    useMyOrganizations(opts?: ApiQueryWatchParameters): Types.MyOrganizations | null {
+    useMyOrganizations(opts: SpaceQueryWatchParameters & { suspense: false }): Types.MyOrganizations | null;
+    useMyOrganizations(opts?: SpaceQueryWatchParameters): Types.MyOrganizations;
+    useMyOrganizations(opts?: SpaceQueryWatchParameters): Types.MyOrganizations | null {
         return this.useQuery('MyOrganizations', undefined, opts);
     }
-    useOrganization(variables: Types.OrganizationVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.Organization | null;
-    useOrganization(variables: Types.OrganizationVariables, opts?: ApiQueryWatchParameters): Types.Organization;
-    useOrganization(variables: Types.OrganizationVariables, opts?: ApiQueryWatchParameters): Types.Organization | null {
+    useOrganization(variables: Types.OrganizationVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Organization | null;
+    useOrganization(variables: Types.OrganizationVariables, opts?: SpaceQueryWatchParameters): Types.Organization;
+    useOrganization(variables: Types.OrganizationVariables, opts?: SpaceQueryWatchParameters): Types.Organization | null {
         return this.useQuery('Organization', variables, opts);
     }
-    useOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.OrganizationWithoutMembers | null;
-    useOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, opts?: ApiQueryWatchParameters): Types.OrganizationWithoutMembers;
-    useOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, opts?: ApiQueryWatchParameters): Types.OrganizationWithoutMembers | null {
+    useOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationWithoutMembers | null;
+    useOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationWithoutMembers;
+    useOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationWithoutMembers | null {
         return this.useQuery('OrganizationWithoutMembers', variables, opts);
     }
-    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.OrganizationMembersShort | null;
-    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, opts?: ApiQueryWatchParameters): Types.OrganizationMembersShort;
-    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, opts?: ApiQueryWatchParameters): Types.OrganizationMembersShort | null {
+    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationMembersShort | null;
+    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationMembersShort;
+    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationMembersShort | null {
         return this.useQuery('OrganizationMembersShort', variables, opts);
     }
-    useOrganizationMembers(variables: Types.OrganizationMembersVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.OrganizationMembers | null;
-    useOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: ApiQueryWatchParameters): Types.OrganizationMembers;
-    useOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: ApiQueryWatchParameters): Types.OrganizationMembers | null {
+    useOrganizationMembers(variables: Types.OrganizationMembersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationMembers | null;
+    useOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationMembers;
+    useOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationMembers | null {
         return this.useQuery('OrganizationMembers', variables, opts);
     }
-    useOrganizationProfile(variables: Types.OrganizationProfileVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.OrganizationProfile | null;
-    useOrganizationProfile(variables: Types.OrganizationProfileVariables, opts?: ApiQueryWatchParameters): Types.OrganizationProfile;
-    useOrganizationProfile(variables: Types.OrganizationProfileVariables, opts?: ApiQueryWatchParameters): Types.OrganizationProfile | null {
+    useOrganizationProfile(variables: Types.OrganizationProfileVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationProfile | null;
+    useOrganizationProfile(variables: Types.OrganizationProfileVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationProfile;
+    useOrganizationProfile(variables: Types.OrganizationProfileVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationProfile | null {
         return this.useQuery('OrganizationProfile', variables, opts);
     }
-    useExploreCommunity(variables: Types.ExploreCommunityVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.ExploreCommunity | null;
-    useExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: ApiQueryWatchParameters): Types.ExploreCommunity;
-    useExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: ApiQueryWatchParameters): Types.ExploreCommunity | null {
+    useExploreCommunity(variables: Types.ExploreCommunityVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ExploreCommunity | null;
+    useExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: SpaceQueryWatchParameters): Types.ExploreCommunity;
+    useExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: SpaceQueryWatchParameters): Types.ExploreCommunity | null {
         return this.useQuery('ExploreCommunity', variables, opts);
     }
-    useOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.OrganizationPublicInvite | null;
-    useOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, opts?: ApiQueryWatchParameters): Types.OrganizationPublicInvite;
-    useOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, opts?: ApiQueryWatchParameters): Types.OrganizationPublicInvite | null {
+    useOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationPublicInvite | null;
+    useOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationPublicInvite;
+    useOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationPublicInvite | null {
         return this.useQuery('OrganizationPublicInvite', variables, opts);
     }
-    useOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.OrganizationByPrefix | null;
-    useOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables, opts?: ApiQueryWatchParameters): Types.OrganizationByPrefix;
-    useOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables, opts?: ApiQueryWatchParameters): Types.OrganizationByPrefix | null {
+    useOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationByPrefix | null;
+    useOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationByPrefix;
+    useOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationByPrefix | null {
         return this.useQuery('OrganizationByPrefix', variables, opts);
     }
-    useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.OrganizationPublicRooms | null;
-    useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: ApiQueryWatchParameters): Types.OrganizationPublicRooms;
-    useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: ApiQueryWatchParameters): Types.OrganizationPublicRooms | null {
+    useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationPublicRooms | null;
+    useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationPublicRooms;
+    useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationPublicRooms | null {
         return this.useQuery('OrganizationPublicRooms', variables, opts);
     }
-    usePermissions(opts: ApiQueryWatchParameters & { suspense: false }): Types.Permissions | null;
-    usePermissions(opts?: ApiQueryWatchParameters): Types.Permissions;
-    usePermissions(opts?: ApiQueryWatchParameters): Types.Permissions | null {
+    usePermissions(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Permissions | null;
+    usePermissions(opts?: SpaceQueryWatchParameters): Types.Permissions;
+    usePermissions(opts?: SpaceQueryWatchParameters): Types.Permissions | null {
         return this.useQuery('Permissions', undefined, opts);
     }
-    useSuperAdmins(opts: ApiQueryWatchParameters & { suspense: false }): Types.SuperAdmins | null;
-    useSuperAdmins(opts?: ApiQueryWatchParameters): Types.SuperAdmins;
-    useSuperAdmins(opts?: ApiQueryWatchParameters): Types.SuperAdmins | null {
+    useSuperAdmins(opts: SpaceQueryWatchParameters & { suspense: false }): Types.SuperAdmins | null;
+    useSuperAdmins(opts?: SpaceQueryWatchParameters): Types.SuperAdmins;
+    useSuperAdmins(opts?: SpaceQueryWatchParameters): Types.SuperAdmins | null {
         return this.useQuery('SuperAdmins', undefined, opts);
     }
-    useSuperAccounts(opts: ApiQueryWatchParameters & { suspense: false }): Types.SuperAccounts | null;
-    useSuperAccounts(opts?: ApiQueryWatchParameters): Types.SuperAccounts;
-    useSuperAccounts(opts?: ApiQueryWatchParameters): Types.SuperAccounts | null {
+    useSuperAccounts(opts: SpaceQueryWatchParameters & { suspense: false }): Types.SuperAccounts | null;
+    useSuperAccounts(opts?: SpaceQueryWatchParameters): Types.SuperAccounts;
+    useSuperAccounts(opts?: SpaceQueryWatchParameters): Types.SuperAccounts | null {
         return this.useQuery('SuperAccounts', undefined, opts);
     }
-    useSuperAccount(variables: Types.SuperAccountVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.SuperAccount | null;
-    useSuperAccount(variables: Types.SuperAccountVariables, opts?: ApiQueryWatchParameters): Types.SuperAccount;
-    useSuperAccount(variables: Types.SuperAccountVariables, opts?: ApiQueryWatchParameters): Types.SuperAccount | null {
+    useSuperAccount(variables: Types.SuperAccountVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.SuperAccount | null;
+    useSuperAccount(variables: Types.SuperAccountVariables, opts?: SpaceQueryWatchParameters): Types.SuperAccount;
+    useSuperAccount(variables: Types.SuperAccountVariables, opts?: SpaceQueryWatchParameters): Types.SuperAccount | null {
         return this.useQuery('SuperAccount', variables, opts);
     }
-    useProfile(opts: ApiQueryWatchParameters & { suspense: false }): Types.Profile | null;
-    useProfile(opts?: ApiQueryWatchParameters): Types.Profile;
-    useProfile(opts?: ApiQueryWatchParameters): Types.Profile | null {
+    useProfile(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Profile | null;
+    useProfile(opts?: SpaceQueryWatchParameters): Types.Profile;
+    useProfile(opts?: SpaceQueryWatchParameters): Types.Profile | null {
         return this.useQuery('Profile', undefined, opts);
     }
-    useSettings(opts: ApiQueryWatchParameters & { suspense: false }): Types.Settings | null;
-    useSettings(opts?: ApiQueryWatchParameters): Types.Settings;
-    useSettings(opts?: ApiQueryWatchParameters): Types.Settings | null {
+    useSettings(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Settings | null;
+    useSettings(opts?: SpaceQueryWatchParameters): Types.Settings;
+    useSettings(opts?: SpaceQueryWatchParameters): Types.Settings | null {
         return this.useQuery('Settings', undefined, opts);
     }
-    useSharedMedia(variables: Types.SharedMediaVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.SharedMedia | null;
-    useSharedMedia(variables: Types.SharedMediaVariables, opts?: ApiQueryWatchParameters): Types.SharedMedia;
-    useSharedMedia(variables: Types.SharedMediaVariables, opts?: ApiQueryWatchParameters): Types.SharedMedia | null {
+    useSharedMedia(variables: Types.SharedMediaVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.SharedMedia | null;
+    useSharedMedia(variables: Types.SharedMediaVariables, opts?: SpaceQueryWatchParameters): Types.SharedMedia;
+    useSharedMedia(variables: Types.SharedMediaVariables, opts?: SpaceQueryWatchParameters): Types.SharedMedia | null {
         return this.useQuery('SharedMedia', variables, opts);
     }
-    useSharedMediaCounters(variables: Types.SharedMediaCountersVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.SharedMediaCounters | null;
-    useSharedMediaCounters(variables: Types.SharedMediaCountersVariables, opts?: ApiQueryWatchParameters): Types.SharedMediaCounters;
-    useSharedMediaCounters(variables: Types.SharedMediaCountersVariables, opts?: ApiQueryWatchParameters): Types.SharedMediaCounters | null {
+    useSharedMediaCounters(variables: Types.SharedMediaCountersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.SharedMediaCounters | null;
+    useSharedMediaCounters(variables: Types.SharedMediaCountersVariables, opts?: SpaceQueryWatchParameters): Types.SharedMediaCounters;
+    useSharedMediaCounters(variables: Types.SharedMediaCountersVariables, opts?: SpaceQueryWatchParameters): Types.SharedMediaCounters | null {
         return this.useQuery('SharedMediaCounters', variables, opts);
     }
-    useResolveShortName(variables: Types.ResolveShortNameVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.ResolveShortName | null;
-    useResolveShortName(variables: Types.ResolveShortNameVariables, opts?: ApiQueryWatchParameters): Types.ResolveShortName;
-    useResolveShortName(variables: Types.ResolveShortNameVariables, opts?: ApiQueryWatchParameters): Types.ResolveShortName | null {
+    useResolveShortName(variables: Types.ResolveShortNameVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ResolveShortName | null;
+    useResolveShortName(variables: Types.ResolveShortNameVariables, opts?: SpaceQueryWatchParameters): Types.ResolveShortName;
+    useResolveShortName(variables: Types.ResolveShortNameVariables, opts?: SpaceQueryWatchParameters): Types.ResolveShortName | null {
         return this.useQuery('ResolveShortName', variables, opts);
     }
-    useGetUser(variables: Types.GetUserVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.GetUser | null;
-    useGetUser(variables: Types.GetUserVariables, opts?: ApiQueryWatchParameters): Types.GetUser;
-    useGetUser(variables: Types.GetUserVariables, opts?: ApiQueryWatchParameters): Types.GetUser | null {
+    useGetUser(variables: Types.GetUserVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.GetUser | null;
+    useGetUser(variables: Types.GetUserVariables, opts?: SpaceQueryWatchParameters): Types.GetUser;
+    useGetUser(variables: Types.GetUserVariables, opts?: SpaceQueryWatchParameters): Types.GetUser | null {
         return this.useQuery('GetUser', variables, opts);
     }
-    useMyStickers(opts: ApiQueryWatchParameters & { suspense: false }): Types.MyStickers | null;
-    useMyStickers(opts?: ApiQueryWatchParameters): Types.MyStickers;
-    useMyStickers(opts?: ApiQueryWatchParameters): Types.MyStickers | null {
+    useMyStickers(opts: SpaceQueryWatchParameters & { suspense: false }): Types.MyStickers | null;
+    useMyStickers(opts?: SpaceQueryWatchParameters): Types.MyStickers;
+    useMyStickers(opts?: SpaceQueryWatchParameters): Types.MyStickers | null {
         return this.useQuery('MyStickers', undefined, opts);
     }
-    useStickerPack(variables: Types.StickerPackVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.StickerPack | null;
-    useStickerPack(variables: Types.StickerPackVariables, opts?: ApiQueryWatchParameters): Types.StickerPack;
-    useStickerPack(variables: Types.StickerPackVariables, opts?: ApiQueryWatchParameters): Types.StickerPack | null {
+    useStickerPack(variables: Types.StickerPackVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.StickerPack | null;
+    useStickerPack(variables: Types.StickerPackVariables, opts?: SpaceQueryWatchParameters): Types.StickerPack;
+    useStickerPack(variables: Types.StickerPackVariables, opts?: SpaceQueryWatchParameters): Types.StickerPack | null {
         return this.useQuery('StickerPack', variables, opts);
     }
-    useUsers(variables: Types.UsersVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.Users | null;
-    useUsers(variables: Types.UsersVariables, opts?: ApiQueryWatchParameters): Types.Users;
-    useUsers(variables: Types.UsersVariables, opts?: ApiQueryWatchParameters): Types.Users | null {
+    useUsers(variables: Types.UsersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Users | null;
+    useUsers(variables: Types.UsersVariables, opts?: SpaceQueryWatchParameters): Types.Users;
+    useUsers(variables: Types.UsersVariables, opts?: SpaceQueryWatchParameters): Types.Users | null {
         return this.useQuery('Users', variables, opts);
     }
-    useUser(variables: Types.UserVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.User | null;
-    useUser(variables: Types.UserVariables, opts?: ApiQueryWatchParameters): Types.User;
-    useUser(variables: Types.UserVariables, opts?: ApiQueryWatchParameters): Types.User | null {
+    useUser(variables: Types.UserVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.User | null;
+    useUser(variables: Types.UserVariables, opts?: SpaceQueryWatchParameters): Types.User;
+    useUser(variables: Types.UserVariables, opts?: SpaceQueryWatchParameters): Types.User | null {
         return this.useQuery('User', variables, opts);
     }
-    useUserPico(variables: Types.UserPicoVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.UserPico | null;
-    useUserPico(variables: Types.UserPicoVariables, opts?: ApiQueryWatchParameters): Types.UserPico;
-    useUserPico(variables: Types.UserPicoVariables, opts?: ApiQueryWatchParameters): Types.UserPico | null {
+    useUserPico(variables: Types.UserPicoVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.UserPico | null;
+    useUserPico(variables: Types.UserPicoVariables, opts?: SpaceQueryWatchParameters): Types.UserPico;
+    useUserPico(variables: Types.UserPicoVariables, opts?: SpaceQueryWatchParameters): Types.UserPico | null {
         return this.useQuery('UserPico', variables, opts);
     }
-    useOnline(variables: Types.OnlineVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.Online | null;
-    useOnline(variables: Types.OnlineVariables, opts?: ApiQueryWatchParameters): Types.Online;
-    useOnline(variables: Types.OnlineVariables, opts?: ApiQueryWatchParameters): Types.Online | null {
+    useOnline(variables: Types.OnlineVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Online | null;
+    useOnline(variables: Types.OnlineVariables, opts?: SpaceQueryWatchParameters): Types.Online;
+    useOnline(variables: Types.OnlineVariables, opts?: SpaceQueryWatchParameters): Types.Online | null {
         return this.useQuery('Online', variables, opts);
     }
-    useExplorePeople(variables: Types.ExplorePeopleVariables, opts: ApiQueryWatchParameters & { suspense: false }): Types.ExplorePeople | null;
-    useExplorePeople(variables: Types.ExplorePeopleVariables, opts?: ApiQueryWatchParameters): Types.ExplorePeople;
-    useExplorePeople(variables: Types.ExplorePeopleVariables, opts?: ApiQueryWatchParameters): Types.ExplorePeople | null {
+    useExplorePeople(variables: Types.ExplorePeopleVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ExplorePeople | null;
+    useExplorePeople(variables: Types.ExplorePeopleVariables, opts?: SpaceQueryWatchParameters): Types.ExplorePeople;
+    useExplorePeople(variables: Types.ExplorePeopleVariables, opts?: SpaceQueryWatchParameters): Types.ExplorePeople | null {
         return this.useQuery('ExplorePeople', variables, opts);
     }
-    useMySuccessfulInvitesCount(opts: ApiQueryWatchParameters & { suspense: false }): Types.MySuccessfulInvitesCount | null;
-    useMySuccessfulInvitesCount(opts?: ApiQueryWatchParameters): Types.MySuccessfulInvitesCount;
-    useMySuccessfulInvitesCount(opts?: ApiQueryWatchParameters): Types.MySuccessfulInvitesCount | null {
+    useMySuccessfulInvitesCount(opts: SpaceQueryWatchParameters & { suspense: false }): Types.MySuccessfulInvitesCount | null;
+    useMySuccessfulInvitesCount(opts?: SpaceQueryWatchParameters): Types.MySuccessfulInvitesCount;
+    useMySuccessfulInvitesCount(opts?: SpaceQueryWatchParameters): Types.MySuccessfulInvitesCount | null {
         return this.useQuery('MySuccessfulInvitesCount', undefined, opts);
     }
     async mutateCreateOrganization(variables: Types.CreateOrganizationVariables): Promise<Types.CreateOrganization> {
