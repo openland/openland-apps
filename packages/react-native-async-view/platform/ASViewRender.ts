@@ -6,6 +6,7 @@ export const ASViewListRender = Animated.createAnimatedComponent(requireNativeCo
     style?: StyleProp<ViewStyle>,
     dataViewKey: string,
     inverted?: boolean,
+    animated?: boolean,
     contentPaddingTop?: number,
     contentPaddingBottom?: number,
     headerPadding?: number,

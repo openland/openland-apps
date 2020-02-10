@@ -46,6 +46,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var overscrollCompensation = false
   private var isApplying = false
   private var didRenderContent = false
+  private var animated = false
   
   private var applyModes: [String] = []
   
@@ -202,6 +203,10 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   func setInverted(inverted: Bool) {
     self.node.inverted = inverted
+  }
+  
+  func setAnimated(animated: Bool) {
+    self.animated = animated
   }
   
   func setContentPaddingTop(value: Float) {
@@ -465,7 +470,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       self.activeCellsStrong[state.items[index].key] = cell
       
       DispatchQueue.main.async {
-        self.node.performBatch(animated: false, updates: {
+        self.node.performBatch(animated: self.animated, updates: {
           self.state = state
           self.activeCells.set(key: state.items[index].key, value: cell)
           self.node.insertItems(at: [IndexPath(row: index, section: 1)])
@@ -478,7 +483,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   func onMoved(from: Int, to: Int, state: RNAsyncDataViewState) {
     self.queue.async {
       DispatchQueue.main.async {
-        self.node.performBatch(animated: false, updates: {
+        self.node.performBatch(animated: self.animated, updates: {
           self.state = state
           self.node.moveItem(at: IndexPath(item: from, section: 1), to: IndexPath(item: to, section: 1))
         }, completion: nil)
@@ -599,7 +604,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.queue.async {
       self.activeCells.remove(key: self.state.items[index].key)
       DispatchQueue.main.async {
-        self.node.performBatch(animated: false, updates: {
+        self.node.performBatch(animated: self.animated, updates: {
           self.state = state
           self.node.deleteItems(at: [IndexPath(item: index, section: 1)])
           self.checkTopLoader()

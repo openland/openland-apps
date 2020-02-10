@@ -11,7 +11,7 @@ import SwiftyJSON
 import Starscream
 import Reachability
 
-enum ApolloNetworkingState {
+enum TransportSocketState {
   case waiting
   case connecting
   case starting
@@ -19,7 +19,7 @@ enum ApolloNetworkingState {
   case completed
 }
 
-class ApolloNetworking {
+class TransportSocket {
   
   private static var nextId: AtomicInteger = AtomicInteger(value: 1)
   private static let PING_INTERVAL = 30
@@ -33,9 +33,9 @@ class ApolloNetworking {
   weak var delegate: NetworkingDelegate? = nil
   var callbackQueue: DispatchQueue
   private let reachability: Reachability
-  private var client: WebSocket? = nil
+  private var socket: ThrustedSocket? = nil
   private var pending: [String: JSON] = [:]
-  private var state: ApolloNetworkingState = .waiting
+  private var state: TransportSocketState = .waiting
   private var failuresCount = 0
   private var reachable = false
   private var started = false
@@ -44,19 +44,19 @@ class ApolloNetworking {
   
   init(url: String, params: [String: String?]) {
     self.callbackQueue = self.queue
-    self.id = ApolloNetworking.nextId.getAndIncrement()
+    self.id = TransportSocket.nextId.getAndIncrement()
     self.url = url
     self.params = params
     self.reachability = Reachability()!
     self.reachability.whenReachable = { r in
       self.queue.async {
-        NSLog("[SpaceX-Apollo]: Reachable \(r.connection)")
+        NSLog("[SpaceX-WS]: Reachable \(r.connection)")
        self.onReachable()
       }
     }
     self.reachability.whenUnreachable = { _ in
       self.queue.async {
-        NSLog("[SpaceX-Apollo]: Unreachable")
+        NSLog("[SpaceX-WS]: Unreachable")
         self.onUnreachable()
       }
     }
@@ -64,7 +64,7 @@ class ApolloNetworking {
   }
   
   func connect() {
-    NSLog("[SpaceX-Apollo]: Starting")
+    NSLog("[SpaceX-WS]: Starting")
     queue.async {
       self.started = true
       if self.reachable {
@@ -74,24 +74,24 @@ class ApolloNetworking {
   }
   
   func startRequest(id: String, body: JSON) {
-    NSLog("[SpaceX-Apollo]: Start Request " + id + " [" + body["name"].stringValue + "]")
+    NSLog("[SpaceX-WS]: Start Request " + id + " [" + body["name"].stringValue + "]")
     queue.async {
       if self.state == .waiting || self.state == .connecting {
         // Add to pending buffer if we are not connected already
         self.pending[id] = body
-        NSLog("[SpaceX-Apollo]: Pending " + id)
+        NSLog("[SpaceX-WS]: Pending " + id)
       } else if self.state == .starting {
-        NSLog("[SpaceX-Apollo]: Starting " + id)
+        NSLog("[SpaceX-WS]: Starting " + id)
         // If we connected, but not started add to pending buffer (in case of failed start)
         // and send message to socket
         
         self.pending[id] = body
         self.writeToSocket(msg: JSON(["type": "start", "id": id, "payload": body]))
       } else if self.state == .started {
-        NSLog("[SpaceX-Apollo]: Started " + id)
+        NSLog("[SpaceX-WS]: Started " + id)
         self.writeToSocket(msg: JSON(["type": "start", "id": id, "payload": body]))
       } else if self.state == .completed {
-        NSLog("[SpaceX-Apollo]: Completed " + id)
+        NSLog("[SpaceX-WS]: Completed " + id)
         // Silently ignore if connection is completed
       } else {
         fatalError()
@@ -100,7 +100,7 @@ class ApolloNetworking {
   }
   
   func stopRequest(id: String) {
-    NSLog("[SpaceX-Apollo]: Stop Request " + id)
+    NSLog("[SpaceX-WS]: Stop Request " + id)
     queue.async {
       if self.state == .waiting || self.state == .connecting {
         // Remove from pending buffer if we are not connected already
@@ -121,35 +121,32 @@ class ApolloNetworking {
   }
   
   private func doConnect() {
-    NSLog("[SpaceX-Apollo]: Connecting")
+    NSLog("[SpaceX-WS]: Connecting")
     if self.state != .waiting {
       fatalError("Unexpected state")
     }
     self.state = .connecting
-    let ws = WebSocket(url: URL(string: self.url)!, protocols: ["graphql-ws"])
-    ws.callbackQueue = self.queue
+    let ws = ThrustedSocket(url: self.url, timeout: 5000, queue: self.queue)
     ws.onConnect = {
-      if self.client == ws {
+      if self.socket === ws {
         self.onConnected()
       }
     }
-    ws.onDisconnect = { err in
-      if self.client == ws {
+    ws.onDisconnect = {
+      if self.socket === ws {
         self.onDisconnected()
       }
     }
     ws.onText = { text in
-      if self.client == ws {
+      if self.socket === ws {
         self.onReceived(message: text)
       }
     }
-    self.client = ws
-    
-    ws.connect()
+    self.socket = ws
   }
   
   private func onConnected() {
-    NSLog("[SpaceX-Apollo]: onConnected")
+    NSLog("[SpaceX-WS]: onConnected")
     if self.state != .connecting {
       fatalError("Unexpected state")
     }
@@ -164,16 +161,16 @@ class ApolloNetworking {
   }
   
   private func schedulePing() {
-    NSLog("[SpaceX-Apollo]: schedule ping")
+    NSLog("[SpaceX-WS]: schedule ping")
     self.lastPingId += 1
     let pingId = self.lastPingId
-    self.queue.asyncAfter(deadline: .now() + .seconds(ApolloNetworking.PING_INTERVAL)) {
+    self.queue.asyncAfter(deadline: .now() + .seconds(TransportSocket.PING_INTERVAL)) {
       if (self.state == .started) {
-        NSLog("[SpaceX-Apollo]: sending ping")
+        NSLog("[SpaceX-WS]: sending ping")
         self.writeToSocket(msg: JSON(["type": "ping"]))
-        self.queue.asyncAfter(deadline: .now() + .seconds(ApolloNetworking.PING_TIMEOUT)) {
+        self.queue.asyncAfter(deadline: .now() + .seconds(TransportSocket.PING_TIMEOUT)) {
           if(self.state == .started && self.lastPingId == pingId) {
-            NSLog("[SpaceX-Apollo]: ping timeout")
+            NSLog("[SpaceX-WS]: ping timeout")
             self.onDisconnected()
           }
         }
@@ -186,12 +183,12 @@ class ApolloNetworking {
     
     let parsed = JSON(parseJSON: message)
     let type = parsed["type"].stringValue
-    NSLog("[SpaceX-Apollo]: <<" + type)
+    NSLog("[SpaceX-WS]: <<" + type)
     if type == "ka" {
       // TODO: Handle
     } else if type == "connection_ack" {
       if self.state == .starting {
-        NSLog("[SpaceX-Apollo]: Started")
+        NSLog("[SpaceX-WS]: Started")
         
         // Change state
         self.state = .started
@@ -213,35 +210,19 @@ class ApolloNetworking {
       let errors = payload["errors"]
       let data = payload["data"]
       if errors.exists() {
-//        var shouldRetry = false
-//        if let arr = errors.array {
-//          for a in arr {
-//            if a["shouldRetry"].bool == true {
-//              shouldRetry = true
-//            }
-//          }
-//        }
         self.callbackQueue.async {
-//          if shouldRetry {
-//            NSLog("[SpaceX-Apollo]: Should Retry (" + id + ")")
-//            self.delegate?.onTryAgain(id: id, delay: 5)
-//          } else {
-            NSLog("[SpaceX-Apollo]: Error (" + id + ")")
+            NSLog("[SpaceX-WS]: Error (" + id + ")")
             self.delegate?.onError(id: id, error: errors)
-//          }
         }
       } else {
-        NSLog("[SpaceX-Apollo]: Data (" + id + ")")
+        NSLog("[SpaceX-WS]: Data (" + id + ")")
         self.callbackQueue.async {
           self.delegate?.onResponse(id: id, data: data)
         }
       }
     } else if type == "error" {
       let id = parsed["id"].stringValue
-      NSLog("[SpaceX-Apollo]: Critical Error (" + id + "): Retrying")
-//      self.callbackQueue.async {
-//        self.delegate?.onTryAgain(id: id, delay: 5)
-//      }
+      NSLog("[SpaceX-WS]: Critical Error (" + id + "): Retrying")
     } else if type == "ping" {
       self.queue.async {
         if (self.state == .started) {
@@ -252,7 +233,7 @@ class ApolloNetworking {
       self.schedulePing()
     } else if type == "complete" {
       let id = parsed["id"].stringValue
-      NSLog("[SpaceX-Apollo]: Complete (" + id + ")")
+      NSLog("[SpaceX-WS]: Complete (" + id + ")")
       self.callbackQueue.async {
         self.delegate?.onCompleted(id: id)
       }
@@ -274,7 +255,7 @@ class ApolloNetworking {
   }
   
   private func onDisconnected() {
-    NSLog("[SpaceX-Apollo]: onDisconnected")
+    NSLog("[SpaceX-WS]: onDisconnected")
     if self.state == .started {
       self.callbackQueue.async {
         self.delegate?.onDisconnected()
@@ -285,7 +266,7 @@ class ApolloNetworking {
     self.state = .waiting
     self.failuresCount += 1
     let delay = backoffDelay(currentFailureCount: self.failuresCount, minDelay: 1000, maxDelay: 10000, maxFailureCount: 10)
-    NSLog("[SpaceX-Apollo]: Retry in \(delay) ms")
+    NSLog("[SpaceX-WS]: Retry in \(delay) ms")
     self.queue.asyncAfter(deadline: .now() + Double(delay)/1000.0) {
       if self.state == .waiting && self.reachable {
         self.doConnect()
@@ -295,7 +276,7 @@ class ApolloNetworking {
   
   func close() {
     queue.async {
-      NSLog("[SpaceX-Apollo]: Stopping")
+      NSLog("[SpaceX-WS]: Stopping")
       if self.state != .completed {
         self.state = .completed
         
@@ -313,20 +294,20 @@ class ApolloNetworking {
   
   private func stopClient() {
     // Removing client if present
-    let ws = self.client
-    self.client = nil
+    let ws = self.socket
+    self.socket = nil
     
     // Stopping client
     ws?.onText = nil
     ws?.onConnect = nil
     ws?.onDisconnect = nil
-    ws?.disconnect()
+    ws?.close()
   }
   
   private func writeToSocket(msg: JSON) {
     let txt = serializeJson(json: msg)
-    NSLog("[SpaceX-Apollo]: >>" + msg["type"].stringValue)
+    NSLog("[SpaceX-WS]: >>" + msg["type"].stringValue)
     // print("[SpaceX-Apollo]: >> \(txt)")
-    self.client!.write(string: txt)
+    self.socket!.send(msg: txt)
   }
 }

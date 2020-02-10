@@ -54,7 +54,7 @@ class TransportState: NetworkingDelegate {
   let params: [String: String?]
   var connectionCallback: ((Bool) -> Void)?
   private let nextId = AtomicInteger(value: 1)
-  fileprivate var connection: ApolloNetworking
+  fileprivate var connection: TransportSocket
   
   fileprivate var liveOperationsIds: [String: String] = [:]
   fileprivate var liveOperations: [String: PendingOperation] = [:]
@@ -65,7 +65,7 @@ class TransportState: NetworkingDelegate {
   init(url: String, params: [String: String?]) {
     self.url = url
     self.params = params
-    self.connection = ApolloNetworking(url: self.url, params: self.params)
+    self.connection = TransportSocket(url: self.url, params: self.params)
     self.connection.delegate = self
     self.connection.callbackQueue = queue
     self.connection.connect()
@@ -144,29 +144,6 @@ class TransportState: NetworkingDelegate {
       }
     }
   }
-  
-//  func onTryAgain(id: String, delay: Int) {
-//    if let rid = self.liveOperationsIds[id] {
-//      if let op = self.liveOperations[rid] {
-//
-//        // Stop existing
-//        self.flushQueryStop(operation: op)
-//
-//        // Regenerate ID
-//        let retryId = "\(nextId.getAndIncrement())"
-//        op.requestId = retryId
-//        self.liveOperationsIds.removeValue(forKey: id)
-//        self.liveOperationsIds[retryId] = rid
-//
-//        // Schedule restart
-//        self.queue.asyncAfter(deadline: .now() + Double(delay)) {
-//          if self.liveOperationsIds[retryId] != nil {
-//            self.flushQueryStart(operation: op)
-//          }
-//        }
-//      }
-//    }
-//  }
   
   //
   // Session Callbacks

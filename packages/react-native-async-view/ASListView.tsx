@@ -12,6 +12,7 @@ export interface ASListViewProps {
     loaderColor?: string;
     overflowColor?: string;
     inverted?: boolean;
+    animated?: boolean;
     dataView: ASDataView<any>;
     fluid?: boolean;
     children?: any;
@@ -31,6 +32,7 @@ export const ASListView = XMemo<ASListViewProps>((props) => {
             headerPadding={props.headerPadding}
             overscrollCompensation={props.overscrollCompensation}
             inverted={props.inverted}
+            animated={props.animated}
             onScroll={props.onScroll}
             overflowColor={props.overflowColor ? processColor(props.overflowColor) : undefined}
             loaderColor={processColor(props.loaderColor ? props.loaderColor : theme.foregroundSecondary)}

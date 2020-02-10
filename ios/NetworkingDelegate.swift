@@ -13,7 +13,6 @@ protocol NetworkingDelegate: class {
   func onResponse(id: String, data: JSON)
   func onError(id: String, error: JSON)
   func onCompleted(id: String)
-//  func onTryAgain(id: String, delay: Int)
   
   // Session state
   func onSessiontRestart()

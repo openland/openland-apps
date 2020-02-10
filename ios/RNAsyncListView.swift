@@ -55,6 +55,10 @@ class RNAsyncListView: RCTView {
     self.node.setInverted(inverted: inverted)
   }
   
+  @objc public func setAnimated(_ animated: Bool) {
+    self.node.setAnimated(animated: animated)
+  }
+  
   @objc public func setContentPaddingBottom(_ padding: NSNumber) {
     self.node.setContentPaddingBottom(value: Float(padding))
   }
@@ -84,7 +88,6 @@ class RNAsyncListView: RCTView {
   }
   
   @objc public func setApplyModes(_ applyModes: NSArray) {
-    print(applyModes)
     self.node.setApplyModes(applyModes.map({String($0 as! NSString)}).sorted())
   }
   
