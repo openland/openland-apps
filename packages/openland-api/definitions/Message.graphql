@@ -30,48 +30,6 @@ fragment SpanFragment on MessageSpan {
     }
 }
 
-fragment DaialogListMessage on ModernMessage {
-    id
-    date
-    sender {
-        id
-        name
-        firstName
-    }
-    senderBadge {
-        ...UserBadge
-    }
-    message
-    fallback
-    ... on GeneralMessage {
-        id
-        overrideName
-        overrideAvatar {
-            uuid
-            crop {
-                x
-                y
-                w
-                h
-            }
-        }
-        attachments {
-            id
-            fallback
-            ... on MessageAttachmentFile {
-                id
-                fileId
-                fileMetadata {
-                    isImage
-                    imageFormat
-                }
-            }
-        }
-        quotedMessages {
-            id
-        }
-    }
-}
 fragment TinyMessage on ModernMessage {
     id
     date

@@ -2258,6 +2258,7 @@ type Query {
   createdStickerPacks: [StickerPack!]!
   stickersByEmoji(emoji: String!): [Sticker!]!
   stickerPack(id: ID!): StickerPack
+  stickerPackCatalog: [StickerPack!]!
   myNotificationCenter: NotificationCenter!
   myNotifications(first: Int!, before: ID): NotificationConnection!
   myOrganization: Organization
@@ -2329,6 +2330,7 @@ type Query {
   roomMembers(roomId: ID!, first: Int, after: ID): [RoomMember!]!
   roomFeaturedMembers(roomId: ID!, first: Int): [RoomMember!]!
   roomMember(roomId: ID!, memberId: ID!): RoomMember
+  roomSocialImage(roomId: ID!): String
   betaRoomSearch(query: String, first: Int!, after: String, page: Int, sort: String): RoomConnection!
   betaRoomInviteInfo(invite: String!): RoomInvite
   betaRoomInviteLink(roomId: ID!): String!

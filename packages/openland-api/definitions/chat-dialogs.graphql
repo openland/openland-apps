@@ -1,0 +1,175 @@
+query Dialogs($after: String) {
+    dialogs(first: 20, after: $after) {
+        items {
+            ...DialogFragment
+        }
+        cursor
+    }
+    state: dialogsState {
+        state
+    }
+    counter: alphaNotificationCounter {
+        id
+        unreadCount
+    }
+}
+
+fragment DialogFragment on Dialog {
+    id
+    cid
+    fid
+    kind
+    isChannel
+    title
+    photo
+    unreadCount
+    isMuted
+    haveMention
+    topMessage: alphaTopMessage {
+        ...DaialogListMessage
+    }
+}
+
+fragment DaialogListMessage on ModernMessage {
+    id
+    date
+    sender {
+        id
+        name
+        firstName
+    }
+    senderBadge {
+        ...UserBadge
+    }
+    message
+    fallback
+    ... on GeneralMessage {
+        id
+        overrideName
+        overrideAvatar {
+            uuid
+            crop {
+                x
+                y
+                w
+                h
+            }
+        }
+        attachments {
+            id
+            fallback
+            ... on MessageAttachmentFile {
+                id
+                fileId
+                fileMetadata {
+                    isImage
+                    imageFormat
+                }
+            }
+        }
+        quotedMessages {
+            id
+        }
+    }
+}
+
+subscription DialogsWatch($state: String) {
+    event: dialogsUpdates(fromState: $state) {
+        ... on DialogUpdateSingle {
+            seq
+            state
+            update {
+                ...DialogUpdateFragment
+            }
+        }
+        ... on DialogUpdateBatch {
+            fromSeq
+            seq
+            state
+            updates {
+                ...DialogUpdateFragment
+            }
+        }
+    }
+}
+
+fragment DialogUpdateFragment on DialogUpdate {
+    ... on DialogMessageReceived {
+        cid
+        unread
+        globalUnread
+        message: alphaMessage {
+            ...TinyMessage
+        }
+        haveMention
+        silent {
+            mobile
+            desktop
+        }
+        showNotification {
+            mobile
+            desktop
+        }
+    }
+    ... on DialogMessageUpdated {
+        cid
+        message: alphaMessage {
+            ...TinyMessage
+        }
+        haveMention
+    }
+    ... on DialogMessageDeleted {
+        cid
+        message: alphaMessage {
+            ...TinyMessage
+        }
+        prevMessage: alphaPrevMessage {
+            ...TinyMessage
+        }
+        unread
+        globalUnread
+        haveMention
+    }
+    ... on DialogMessageRead {
+        cid
+        mid
+        unread
+        globalUnread
+        haveMention
+    }
+    ... on DialogMuteChanged {
+        cid
+        mute
+    }
+    ... on DialogPeerUpdated {
+        cid
+        peer {
+            ... on PrivateRoom {
+                id
+                user {
+                    id
+                    name
+                    photo
+                }
+            }
+            ... on SharedRoom {
+                id
+                title
+                photo
+            }
+        }
+    }
+    ... on DialogDeleted {
+        cid
+        globalUnread
+    }
+    ... on DialogBump {
+        cid
+        globalUnread
+        unread
+        topMessage {
+            ...TinyMessage
+        }
+        haveMention
+    }
+}

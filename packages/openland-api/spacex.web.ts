@@ -990,6 +990,24 @@ const DaialogListMessageSelector = obj(
             ))
         );
 
+const DialogFragmentSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('cid', 'cid', args(), notNull(scalar('ID'))),
+            field('fid', 'fid', args(), notNull(scalar('ID'))),
+            field('kind', 'kind', args(), notNull(scalar('String'))),
+            field('isChannel', 'isChannel', args(), notNull(scalar('Boolean'))),
+            field('title', 'title', args(), notNull(scalar('String'))),
+            field('photo', 'photo', args(), notNull(scalar('String'))),
+            field('unreadCount', 'unreadCount', args(), notNull(scalar('Int'))),
+            field('isMuted', 'isMuted', args(), notNull(scalar('Boolean'))),
+            field('haveMention', 'haveMention', args(), notNull(scalar('Boolean'))),
+            field('alphaTopMessage', 'topMessage', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('ModernMessage', DaialogListMessageSelector)
+                ))
+        );
+
 const TinyMessageSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -2326,20 +2344,7 @@ const DialogsSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('items', 'items', args(), notNull(list(notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('cid', 'cid', args(), notNull(scalar('ID'))),
-                            field('fid', 'fid', args(), notNull(scalar('ID'))),
-                            field('kind', 'kind', args(), notNull(scalar('String'))),
-                            field('isChannel', 'isChannel', args(), notNull(scalar('Boolean'))),
-                            field('title', 'title', args(), notNull(scalar('String'))),
-                            field('photo', 'photo', args(), notNull(scalar('String'))),
-                            field('unreadCount', 'unreadCount', args(), notNull(scalar('Int'))),
-                            field('isMuted', 'isMuted', args(), notNull(scalar('Boolean'))),
-                            field('haveMention', 'haveMention', args(), notNull(scalar('Boolean'))),
-                            field('alphaTopMessage', 'topMessage', args(), obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    fragment('ModernMessage', DaialogListMessageSelector)
-                                ))
+                            fragment('Dialog', DialogFragmentSelector)
                         ))))),
                     field('cursor', 'cursor', args(), scalar('String'))
                 ))),
@@ -4725,7 +4730,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     Dialogs: {
         kind: 'query',
         name: 'Dialogs',
-        body: 'query Dialogs($after:String){dialogs(first:20,after:$after){__typename items{__typename id cid fid kind isChannel title photo unreadCount isMuted haveMention topMessage:alphaTopMessage{__typename ...DaialogListMessage}}cursor}state:dialogsState{__typename state}counter:alphaNotificationCounter{__typename id unreadCount}}fragment DaialogListMessage on ModernMessage{__typename id date sender{__typename id name firstName}senderBadge{__typename ...UserBadge}message fallback ... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}attachments{__typename id fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename isImage imageFormat}}}quotedMessages{__typename id}}}fragment UserBadge on UserBadge{__typename id name verified}',
+        body: 'query Dialogs($after:String){dialogs(first:20,after:$after){__typename items{__typename ...DialogFragment}cursor}state:dialogsState{__typename state}counter:alphaNotificationCounter{__typename id unreadCount}}fragment DialogFragment on Dialog{__typename id cid fid kind isChannel title photo unreadCount isMuted haveMention topMessage:alphaTopMessage{__typename ...DaialogListMessage}}fragment DaialogListMessage on ModernMessage{__typename id date sender{__typename id name firstName}senderBadge{__typename ...UserBadge}message fallback ... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}attachments{__typename id fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename isImage imageFormat}}}quotedMessages{__typename id}}}fragment UserBadge on UserBadge{__typename id name verified}',
         selector: DialogsSelector
     },
     DiscoverIsDone: {

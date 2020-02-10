@@ -983,6 +983,24 @@ private let DaialogListMessageSelector = obj(
             ))
         )
 
+private let DialogFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("cid", "cid", notNull(scalar("ID"))),
+            field("fid", "fid", notNull(scalar("ID"))),
+            field("kind", "kind", notNull(scalar("String"))),
+            field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("photo", "photo", notNull(scalar("String"))),
+            field("unreadCount", "unreadCount", notNull(scalar("Int"))),
+            field("isMuted", "isMuted", notNull(scalar("Boolean"))),
+            field("haveMention", "haveMention", notNull(scalar("Boolean"))),
+            field("alphaTopMessage", "topMessage", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("ModernMessage", DaialogListMessageSelector)
+                ))
+        )
+
 private let TinyMessageSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -2319,20 +2337,7 @@ private let DialogsSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("cid", "cid", notNull(scalar("ID"))),
-                            field("fid", "fid", notNull(scalar("ID"))),
-                            field("kind", "kind", notNull(scalar("String"))),
-                            field("isChannel", "isChannel", notNull(scalar("Boolean"))),
-                            field("title", "title", notNull(scalar("String"))),
-                            field("photo", "photo", notNull(scalar("String"))),
-                            field("unreadCount", "unreadCount", notNull(scalar("Int"))),
-                            field("isMuted", "isMuted", notNull(scalar("Boolean"))),
-                            field("haveMention", "haveMention", notNull(scalar("Boolean"))),
-                            field("alphaTopMessage", "topMessage", obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    fragment("ModernMessage", DaialogListMessageSelector)
-                                ))
+                            fragment("Dialog", DialogFragmentSelector)
                         ))))),
                     field("cursor", "cursor", scalar("String"))
                 ))),
@@ -4722,7 +4727,7 @@ class Operations {
     let Dialogs = OperationDefinition(
         "Dialogs",
         .query, 
-        "query Dialogs($after:String){dialogs(first:20,after:$after){__typename items{__typename id cid fid kind isChannel title photo unreadCount isMuted haveMention topMessage:alphaTopMessage{__typename ...DaialogListMessage}}cursor}state:dialogsState{__typename state}counter:alphaNotificationCounter{__typename id unreadCount}}fragment DaialogListMessage on ModernMessage{__typename id date sender{__typename id name firstName}senderBadge{__typename ...UserBadge}message fallback ... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}attachments{__typename id fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename isImage imageFormat}}}quotedMessages{__typename id}}}fragment UserBadge on UserBadge{__typename id name verified}",
+        "query Dialogs($after:String){dialogs(first:20,after:$after){__typename items{__typename ...DialogFragment}cursor}state:dialogsState{__typename state}counter:alphaNotificationCounter{__typename id unreadCount}}fragment DialogFragment on Dialog{__typename id cid fid kind isChannel title photo unreadCount isMuted haveMention topMessage:alphaTopMessage{__typename ...DaialogListMessage}}fragment DaialogListMessage on ModernMessage{__typename id date sender{__typename id name firstName}senderBadge{__typename ...UserBadge}message fallback ... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}attachments{__typename id fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename isImage imageFormat}}}quotedMessages{__typename id}}}fragment UserBadge on UserBadge{__typename id name verified}",
         DialogsSelector
     )
     let DiscoverIsDone = OperationDefinition(

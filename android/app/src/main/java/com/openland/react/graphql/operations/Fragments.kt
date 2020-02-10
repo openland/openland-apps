@@ -989,6 +989,24 @@ internal val DaialogListMessageSelector = obj(
             ))
         )
 
+internal val DialogFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("cid", "cid", notNull(scalar("ID"))),
+            field("fid", "fid", notNull(scalar("ID"))),
+            field("kind", "kind", notNull(scalar("String"))),
+            field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("photo", "photo", notNull(scalar("String"))),
+            field("unreadCount", "unreadCount", notNull(scalar("Int"))),
+            field("isMuted", "isMuted", notNull(scalar("Boolean"))),
+            field("haveMention", "haveMention", notNull(scalar("Boolean"))),
+            field("alphaTopMessage", "topMessage", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("ModernMessage", DaialogListMessageSelector)
+                ))
+        )
+
 internal val TinyMessageSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
