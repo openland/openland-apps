@@ -108,7 +108,6 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     const hasReply = !!(message.reply && message.reply.length > 0);
     const hasText = !!(message.text);
     const hasUrlAug = !!augmenationAttach;
-
     const sticker = message.sticker && message.sticker.__typename === 'ImageSticker' ? message.sticker : undefined;
 
     const isEmojiOnly = message.textSpans.length === 1 && message.textSpans[0].type === 'emoji' && (message.attachments || []).length === 0 && (message.reply || []).length === 0;
@@ -192,6 +191,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
         hasDocument,
         hasImage,
         hasText,
+        hasReply,
         imageOnly,
         topContent,
         imageLayout,
@@ -212,7 +212,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
     const fixedSize = !imageOnly && (imageLayout || richAttachImageLayout);
     const isImageBottom = hasImage && !hasText && !hasDocument;
     // sorry
-    const shiftMeta = !!(!bottomContent.length && (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment' && a.keyboard).length);
+    const shiftMeta = !!(!bottomContent.length && (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment' && a.keyboard).length) || hasReply;
     const meta = <MetaInfoIndicator type={isImageBottom ? 'media' : 'default'} message={message} theme={theme} />;
 
     const bubbleBackgroundPrimary = message.isOut ? theme.outgoingBackgroundPrimary : theme.incomingBackgroundPrimary;
