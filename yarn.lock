@@ -1712,10 +1712,10 @@
   resolved "https://registry.yarnpkg.com/@openland/spacex-cli/-/spacex-cli-1.0.8.tgz#1346a855ed61c84017a98bb79688aedc433a9de8"
   integrity sha512-IBG2jU8ufHdMz0+QWcVi1Co8+BWE/o4PnOxEF+yEKVqp55Xj1yHWtfrz7LpxkWfGo0qCN49G8zvfbaZ/BvZnbw==
 
-"@openland/spacex@0.0.20":
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/@openland/spacex/-/spacex-0.0.20.tgz#6237dd33fa54933e6a2a1a1c2f3e139318e5c96e"
-  integrity sha512-M1Tgs9k3uHQgfPQNKch8bSCJBvH7iXg5vR1S1pABAZAAwZZuVMesRaJMF9VbgCUYACOqOyQhctI8s7uCDJk5QA==
+"@openland/spacex@0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@openland/spacex/-/spacex-0.0.22.tgz#96d25d1cb126283a5d143e74e531a72cd5d36193"
+  integrity sha512-S3AU9cEh0RofmQOqhSkN21MPUWfufpPZ9lvVfLP5W4/SgqZgR1rLsAxdFyXLnRMZlkjFuoNqvBmXve46i9XOYA==
   dependencies:
     "@openland/spacex-cli" "1.0.8"
     isomorphic-ws "4.0.1"
