@@ -209,7 +209,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let messagePattern = new UrlPattern(patternBase + 'message/:id');
         let matchMessageProfile = messagePattern.match(link);
         if (matchMessageProfile && matchMessageProfile.id) {
-            navigate('Message', { feedItemId: matchMessageProfile.id });
+            navigate('Message', { messageId: matchMessageProfile.id });
             return;
         }
 
