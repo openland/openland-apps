@@ -78,7 +78,7 @@ const DialogItemViewAsyncRender = React.memo<{ theme: ThemeGlobal, item: DialogD
                             </ASText>
                         </ASFlex>}
                         {!!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
-                            <ASText {...TextStylesAsync.Subhead} height={36} color={theme.accentPrimary} numberOfLines={2}>{item.typing}</ASText>
+                            <ASText {...TextStylesAsync.Subhead} height={36} color={theme.accentPrimary} numberOfLines={2}>{item.typing}...</ASText>
                         </ASFlex>}
                     </ASFlex>
                     {item.unread > 0 && (
