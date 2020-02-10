@@ -127,7 +127,7 @@ export class TypingsWatcher {
         const resultingTypingType = allTypingsAreEqual ? typingTypes[0] : TypingType.TEXT;
 
         return {
-            typing: this.pluralizeTypingUsers(usersTyping, TypingType.TEXT),
+            typing: this.pluralizeTypingUsers(usersTyping, resultingTypingType),
             users: usersTyping,
             typingType: resultingTypingType
         };
