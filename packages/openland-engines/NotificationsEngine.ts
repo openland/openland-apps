@@ -91,7 +91,7 @@ export class NotificationsEngine {
             AppNotifications.displayNotification({
                 title: msg.sender.name + ' @' + sharedRoom.title,
                 body: message,
-                path: AppConfig.getPlatform() === 'mobile' ? '/message/' + msg.id : '/mail/' + cid,
+                path: '/mail/' + cid,
                 image: msg.sender.photo || '',
                 id: doSimpleHash(cid).toString(),
             });
@@ -99,7 +99,7 @@ export class NotificationsEngine {
             AppNotifications.displayNotification({
                 title: msg.sender.name,
                 body: message,
-                path: AppConfig.getPlatform() === 'mobile' ? '/message/' + msg.id : '/mail/' + conversationId,
+                path: '/mail/' + conversationId,
                 image: msg.sender.photo || '',
                 id: doSimpleHash(cid).toString(),
             });
