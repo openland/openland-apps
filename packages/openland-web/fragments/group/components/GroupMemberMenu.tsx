@@ -19,7 +19,7 @@ import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { UInputField } from 'openland-web/components/unicorn/UInput';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XModalContent } from 'openland-web/components/XModalContent';
-import { XCheckbox } from 'openland-x/XCheckbox';
+import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 import { showModalBox } from 'openland-x/showModalBox';
 
 const MakeFeaturedModal = (props: {
@@ -73,11 +73,11 @@ const MakeFeaturedModal = (props: {
             {form.error && <XErrorMessage message={form.error} />}
             <XView flexDirection="column" borderRadius={8} overflow="hidden">
                 <XModalContent>
-                    <XCheckbox
+                    <UCheckbox
                         label={featured ? 'Featured' : 'Not featured'}
                         checked={featured}
                         onChange={() => setFeatured(!featured)}
-                        switcher={true}
+                        asSwitcher={true}
                     />
                     {featured && (
                         <XView marginTop={20}>

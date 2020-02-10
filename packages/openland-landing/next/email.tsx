@@ -24,7 +24,6 @@ const aboutHeader = css`
 
 const heading = css`
     font-size: 56px;
-    line-height: 67px;
     font-weight: bold;
     line-height: 1.2;
     color: #272750;

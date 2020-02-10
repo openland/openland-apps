@@ -7,7 +7,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-api/useClient';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
-let AcceptInviteComponent = () => {
+const AcceptInviteComponent = () => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 

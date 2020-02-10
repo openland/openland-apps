@@ -6,8 +6,6 @@ import { FormWrapper } from './components/FormWrapper';
 import { css } from 'linaria';
 import Logo from 'openland-unicorn/components/Logo';
 import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
-// import { isElectron } from 'openland-y-utils/isElectron';
-
 import Info from 'openland-icons/ic-info-24.svg';
 import Terms from 'openland-icons/ic-terms-24.svg';
 import Privacy from 'openland-icons/ic-lock-24.svg';

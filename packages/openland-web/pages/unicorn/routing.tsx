@@ -29,6 +29,7 @@ import { useStackRouter } from 'openland-unicorn/components/StackRouter';
 import { SharedMediaFragment } from 'openland-web/fragments/chat/sharedMedia/SharedMediaFragment';
 import { SettingsAboutFragment } from 'openland-web/fragments/account/SettingsAboutFragment';
 import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
+
 // temporary stub for /mail/ -> not found bug
 const TemporaryStub = React.memo(() => {
     const stackRouter = useStackRouter();

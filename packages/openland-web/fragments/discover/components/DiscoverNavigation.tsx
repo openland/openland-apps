@@ -1,13 +1,55 @@
 import * as React from 'react';
+import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchBox } from 'openland-web/fragments/discover/components/SearchBox';
 import { SortPicker } from 'openland-web/fragments/discover/components/sortPicker';
-import { XSubHeader } from 'openland-x/XSubHeader';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { XLoader } from 'openland-x/XLoader';
+import { TextLabel1 } from 'openland-web/utils/TextStyles';
 
-export const SearchCardsOrShowProfile = XMemo(
+const subContainer = css`
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    justify-content: space-between;
+    flex-shrink: 1;
+    flex-grow: 1;
+    padding: 12px 16px 16px;
+    width: 100%;
+`;
+
+const subTitle = css`
+    display: flex;
+    align-items: center;
+    color: var(--foregroundPrimary);
+    flex-grow: 1;
+    flex-shrink: 1;
+`;
+
+const subCounter = css`
+    color: var(--foregroundSecondary);
+    margin-left: 5px;
+`;
+
+interface SubHeaderProps {
+    title: string;
+    counter?: number;
+    right?: any;
+}
+
+const SubHeader = (props: SubHeaderProps) => {
+    return (
+        <div className={subContainer}>
+            <div className={cx(subTitle, TextLabel1)}>
+                {props.title}
+                {props.counter && <div className={cx(subCounter, TextLabel1)}>{props.counter}</div>}
+            </div>
+            {props.right && props.right}
+        </div>
+    );
+};
+
+export const SearchCardsOrShowProfile = React.memo(
     ({
         id,
         onlyFeatured,
@@ -64,7 +106,7 @@ export const SearchCardsOrShowProfile = XMemo(
                             placeholder={searchPlaceholder}
                         />
                         {query.length <= 0 && (
-                            <XSubHeader
+                            <SubHeader
                                 title={noQueryText}
                                 right={
                                     !withoutSort && (
@@ -79,7 +121,7 @@ export const SearchCardsOrShowProfile = XMemo(
                             />
                         )}
                         {query.length > 0 && itemCount > 0 && (
-                            <XSubHeader
+                            <SubHeader
                                 title={hasQueryText}
                                 counter={itemCount}
                                 right={

@@ -5,7 +5,7 @@ import { XPolitePopper } from 'openland-x/XPolitePopper';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { MultiplePicker } from './multiplePicker';
-import { XCheckboxBasic } from 'openland-x/XCheckbox';
+import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 import { delay } from 'openland-y-utils/timer';
 import { XPopperContentDEPRECATED } from 'openland-x/popper/XPopperContent';
 
@@ -86,11 +86,11 @@ export class SortPicker extends React.Component<
         });
     }
 
-    onFeturedChange = (checked: { label: string; checked: boolean }) => {
-        this.setState({ featured: checked.checked });
+    onFeturedChange = (checked: boolean) => {
+        this.setState({ featured: checked });
         delay(0).then(() => {
             this.props.onPick({
-                featured: checked.checked,
+                featured: checked,
                 orderBy: this.props.sort.orderBy,
             });
         });
@@ -117,11 +117,10 @@ export class SortPicker extends React.Component<
                 </PickerWrapper>
                 {!this.props.withoutFeatured && (
                     <CheckboxWrap>
-                        <XCheckboxBasic
+                        <UCheckbox
                             label="Featured first"
-                            rounded={true}
                             value={this.state.featured ? 'f' : ''}
-                            trueValue="f"
+                            checked={this.state.featured}
                             onChange={this.onFeturedChange}
                         />
                     </CheckboxWrap>

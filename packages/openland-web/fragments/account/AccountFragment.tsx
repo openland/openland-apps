@@ -21,7 +21,6 @@ import { showLogoutConfirmation } from './LogoutFragment';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
-// import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { showCreatingFragment } from 'openland-web/fragments/create/CreateEntityFragment';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { trackEvent } from 'openland-x-analytics';

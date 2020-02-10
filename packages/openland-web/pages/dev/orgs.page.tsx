@@ -4,7 +4,6 @@ import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInput, UInputField } from 'openland-web/components/unicorn/UInput';
-import { XSwitcher } from 'openland-x/XSwitcher';
 import { XView } from 'react-mental';
 import { useXRouter } from 'openland-x-routing/useXRouter';
 import { useClient } from 'openland-api/useClient';
@@ -201,29 +200,29 @@ export default withApp('Super Organizations', 'super-admin', () => {
             </XHeader>
             <SearchInput onClick={searchTextFilter} />
             <XView marginLeft={24}>
-                <XSwitcher style="flat">
-                    <XSwitcher.Item
-                        query={{ field: 'orgState' }}
-                        counter={orgs.filter(o => o.state === 'ACTIVATED').length}
-                    >
-                        ACTIVATED
-                    </XSwitcher.Item>
-                    <XSwitcher.Item
-                        query={{ field: 'orgState', value: 'PENDING' }}
-                        counter={orgs.filter(o => o.state === 'PENDING').length}
-                    >
-                        PENDING
-                    </XSwitcher.Item>
-                    <XSwitcher.Item
-                        query={{
-                            field: 'orgState',
-                            value: 'SUSPENDED',
-                        }}
-                        counter={orgs.filter(o => o.state === 'SUSPENDED').length}
-                    >
-                        SUSPENDED
-                    </XSwitcher.Item>
-                </XSwitcher>
+                {/*<XSwitcher style="flat">*/}
+                {/*    <XSwitcher.Item*/}
+                {/*        query={{ field: 'orgState' }}*/}
+                {/*        counter={orgs.filter(o => o.state === 'ACTIVATED').length}*/}
+                {/*    >*/}
+                {/*        ACTIVATED*/}
+                {/*    </XSwitcher.Item>*/}
+                {/*    <XSwitcher.Item*/}
+                {/*        query={{ field: 'orgState', value: 'PENDING' }}*/}
+                {/*        counter={orgs.filter(o => o.state === 'PENDING').length}*/}
+                {/*    >*/}
+                {/*        PENDING*/}
+                {/*    </XSwitcher.Item>*/}
+                {/*    <XSwitcher.Item*/}
+                {/*        query={{*/}
+                {/*            field: 'orgState',*/}
+                {/*            value: 'SUSPENDED',*/}
+                {/*        }}*/}
+                {/*        counter={orgs.filter(o => o.state === 'SUSPENDED').length}*/}
+                {/*    >*/}
+                {/*        SUSPENDED*/}
+                {/*    </XSwitcher.Item>*/}
+                {/*</XSwitcher>*/}
             </XView>
             <FilteredOptions orgsCurrentTab={orgsCurrentTab} searchValue={searchValue} />
 
