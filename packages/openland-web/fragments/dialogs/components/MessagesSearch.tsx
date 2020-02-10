@@ -55,10 +55,6 @@ const MessagesSearchInner = (props: MessagesSearchProps) => {
                             fallbackEmojify: emoji(message.fallback),
                             date: message.date,
                             photo: photo || undefined,
-                            attachments:
-                                message.__typename === 'GeneralMessage'
-                                    ? message.attachments
-                                    : undefined,
                             isService: false,
                             isOut: message.sender.id === messenger.user.id,
                             isMuted: !!chat.settings.mute,

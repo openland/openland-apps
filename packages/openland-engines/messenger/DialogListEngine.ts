@@ -3,11 +3,9 @@ import {
     Dialogs_dialogs_items,
     Dialogs_dialogs_items_topMessage,
     Room_room_PrivateRoom,
-    Dialogs_dialogs_items_topMessage_GeneralMessage_attachments,
     TinyMessage,
     DialogKind,
     FullMessage,
-    ChatUpdateFragment_ChatMessageReceived,
     DialogUpdateFragment_DialogPeerUpdated_peer,
     RoomPico_room_SharedRoom,
 } from 'openland-api/spacex.types';
@@ -19,30 +17,37 @@ import { DataSourceAugmentor } from 'openland-y-utils/DataSourceAugmentor';
 const log = createLogger('Engine-Dialogs');
 
 export interface DialogDataSourceItemStored {
+    // Chat IDs
     key: string;
     flexibleId: string;
 
+    // Chat Description
     title: string;
     kind: 'PRIVATE' | 'INTERNAL' | 'PUBLIC' | 'GROUP';
     isChannel?: boolean;
     photo?: string;
 
-    isOrganization?: boolean;
-
+    // Chat State
     unread: number;
     isMuted?: boolean;
-    haveMention?: boolean;
 
-    date?: number;
-    forward?: boolean;
-    messageId?: string;
+    // Chat Top Message
     message?: string;
+    date?: number;
     fallback: string;
+
+    // Chat Top Message Flags
+    forward?: boolean;
+    haveMention?: boolean;
     isService?: boolean;
-    sender?: string;
     isOut?: boolean;
-    attachments?: Dialogs_dialogs_items_topMessage_GeneralMessage_attachments[];
+
+    // Chat Top Message Sender
+    sender?: string;
     showSenderName?: boolean;
+
+    // Internal State
+    messageId?: string;
 }
 
 export interface DialogDataSourceItem extends DialogDataSourceItemStored {
@@ -93,11 +98,10 @@ export const extractDialog = (
         unread: unreadCount,
         message: topMessage && topMessage.message ? msg : undefined,
         fallback: msg,
-        attachments: topMessage && topMessage.__typename === 'GeneralMessage' ? topMessage.attachments : undefined,
         isOut: topMessage ? topMessage!!.sender.id === uid : undefined,
         sender: sender,
         messageId: topMessage ? topMessage.id : undefined,
-        date: topMessage ? parseInt(topMessage!!.date, 10) : undefined,
+        date: topMessage ? parseInt(topMessage.date, 10) : undefined,
         forward: topMessage ? topMessage.__typename === 'GeneralMessage' && !!topMessage.quotedMessages.length && !topMessage.message : false,
         isService,
         showSenderName: !!(msg && (isOut || kind !== 'PRIVATE') && sender) && !isService,
@@ -127,8 +131,7 @@ export class DialogListEngine {
                 };
             },
             onStarted: (state: string) => {
-                engine.global.handleDialogsStarted(state);
-
+                engine.dialogSequence.handleDialogsStarted(state);
             }
         };
         this._dataSourceStored = new DataSourceStored('dialogs', engine.options.store, 20, provider);
@@ -246,7 +249,6 @@ export class DialogListEngine {
                     ...existing,
                     message: event.message.message ? msg : undefined,
                     fallback: msg,
-                    attachments: event.message.attachments,
                     haveMention: event.haveMention
                 });
             }
@@ -316,7 +318,6 @@ export class DialogListEngine {
                 message: event.message && event.message.message ? msg : undefined,
                 fallback: msg,
                 date: parseInt(event.message.date, 10),
-                attachments: event.message.attachments,
                 forward: !event.message.message && event.message.quotedMessages && event.message.quotedMessages.length,
                 showSenderName:
                     !!(msg && (isOut || res.kind !== 'PRIVATE') && sender) &&
@@ -376,7 +377,6 @@ export class DialogListEngine {
                     fallback: msg,
                     date: parseInt(event.message.date, 10),
                     forward: event.message.quotedMessages && !!event.message.quotedMessages.length,
-                    attachments: event.message.attachments,
                     showSenderName:
                         !!(
                             msg &&

@@ -2,7 +2,7 @@ import { LocationEngine } from './location/LocationEngine';
 import * as React from 'react';
 import { MessageSender } from './messenger/MessageSender';
 import { ConversationEngine, DataSourceMessageItem } from './messenger/ConversationEngine';
-import { GlobalStateEngine } from './messenger/GlobalStateEngine';
+import { DialogSequenceEngine } from './messenger/DialogSequenceEngine';
 import { UserShort, ChatUpdateFragment_ChatMessageReceived, TypingType } from 'openland-api/spacex.types';
 import { NotificationsEngine } from './NotificationsEngine';
 import { CreateEntityEngine } from './createEntity/CreateEntityState';
@@ -30,7 +30,7 @@ export class MessengerEngine {
     readonly dialogList: DialogListEngine;
     readonly notificationCenter: NotificationCenterEngine;
     readonly feed: FeedEngine;
-    readonly global: GlobalStateEngine;
+    readonly dialogSequence: DialogSequenceEngine;
     readonly onlineReporter: OnlineReportEngine;
     readonly user: UserShort;
     readonly notifications: NotificationsEngine;
@@ -71,7 +71,7 @@ export class MessengerEngine {
         this.notificationCenter = new NotificationCenterEngine(this);
         this.feed = new FeedEngine(this);
 
-        this.global = new GlobalStateEngine(this);
+        this.dialogSequence = new DialogSequenceEngine(this);
         this.sender = new MessageSender(client);
 
         // Create entity
@@ -102,7 +102,7 @@ export class MessengerEngine {
     }
 
     private loadingSequence = async () => {
-        await this.global.start();
+        await this.dialogSequence.start();
         this.location.start();
     }
 
@@ -123,7 +123,7 @@ export class MessengerEngine {
     }
 
     destroy() {
-        this.global.destroy();
+        this.dialogSequence.destroy();
         this.onlineReporter.destroy();
         AppVisibility.unwatch(this.handleVisibleChanged);
     }
@@ -222,12 +222,12 @@ export class MessengerEngine {
 
     private handleConversationVisible = (conversationId: string) => {
         this.getConversation(conversationId).onOpen();
-        this.global.onConversationVisible(conversationId);
+        this.dialogSequence.onConversationVisible(conversationId);
     }
 
     private handleConversationHidden = (conversationId: string) => {
         this.getConversation(conversationId).onClosed();
-        this.global.onConversationHidden(conversationId);
+        this.dialogSequence.onConversationHidden(conversationId);
     }
 
     private handleVisibleChanged = (isVisible: boolean) => {

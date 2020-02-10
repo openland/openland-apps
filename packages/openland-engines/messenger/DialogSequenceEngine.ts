@@ -8,9 +8,9 @@ import { currentTimeMillis } from 'openland-y-utils/currentTime';
 import { InvalidationQueue } from 'openland-y-utils/InvalidationQueue';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
-const log = createLogger('Engine-Global');
+const log = createLogger('Engine-Dialog-Sequence');
 
-export class GlobalStateEngine {
+export class DialogSequenceEngine {
     readonly engine: MessengerEngine;
     private visibleConversations = new Set<string>();
     private counterQueue: InvalidationQueue;
@@ -39,9 +39,9 @@ export class GlobalStateEngine {
             return await this.engine.client.queryGlobalCounter({ fetchPolicy: 'cache-first' });
         });
         this.counterState = await counter;
-        // Why?
         this.engine.notifications.handleGlobalCounterChanged(this.counterState.alphaNotificationCounter.unreadCount);
 
+        // Main Sequence Updates Queue
         (async () => {
             while (true) {
                 let update = await this.queue.get();
@@ -51,18 +51,6 @@ export class GlobalStateEngine {
                 await backoff(() => this.engine.dialogList.handleStateProcessed(update.state));
             }
         })();
-
-        // Loading initial chat state
-        // let start = Date.now();
-        // let res = (await backoff(async () => {
-        //     return await this.engine.client.queryDialogs({}, { fetchPolicy: 'network-only' });
-        // }));
-        // log.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
-
-        // this.engine.dialogList.handleInitialDialogs(res.dialogs.items, res.dialogs.cursor);
-
-        // Starting Sequence Watcher
-        // this.watcher = new SequenceModernWatcher('global', this.engine.client.subscribeDialogsWatch({ state: res.state.state }), this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, res.state.state);
     }
 
     handleDialogsStarted = (state: string) => {
@@ -189,25 +177,7 @@ export class GlobalStateEngine {
         log.log('Event Processed in ' + (currentTimeMillis() - start) + ' ms');
     }
 
-    // Some old hack for apollo, shouldn't need today
-    private counterListeners: ((count: number, visible: boolean) => void)[] = [];
-    subcribeCounter = (listener: (count: number, visible: boolean) => void) => {
-        this.counterListeners.push(listener);
-        return () => {
-            let index = this.counterListeners.indexOf(listener);
-            if (index < 0) {
-                log.warn('Double unsubscribe detected!');
-            } else {
-                this.counterListeners.splice(index, 1);
-            }
-        };
-    }
-
     private writeGlobalCounter = async (counter: number, visible: boolean) => {
-
-        //
-        // Update counter anywhere in the app
-        //
         if (visible) {
             if (this.counterState.alphaNotificationCounter.unreadCount < counter) {
                 return;
@@ -215,11 +185,6 @@ export class GlobalStateEngine {
         }
         this.counterState.alphaNotificationCounter.unreadCount = counter;
         this.counterQueue.invalidate();
-
-        // Notofy listeners
-        for (let l of this.counterListeners) {
-            l(counter, visible);
-        }
     }
 
     private flushGlobalCounter = async () => {
