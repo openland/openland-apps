@@ -116,7 +116,7 @@ const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: s
                             width: 16,
                             height: 16,
                             marginRight: 8,
-                            marginTop: 0.5,
+                            marginTop: 0.3,
                         }}
                         colorFilters={[{
                             keypath: "1",
