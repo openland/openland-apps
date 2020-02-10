@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, StyleSheet, TextStyle, Image } from 'react-native';
 import { SRouter } from 'react-native-s/SRouter';
 import { getMessenger } from '../../../utils/messenger';
-import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/spacex.types';
+import { Room_room_SharedRoom, Room_room_PrivateRoom, TypingType } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -71,8 +71,8 @@ const SharedChatHeaderContent = XMemo<{ room: Room_room_SharedRoom, typing?: str
     );
 });
 
-const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: string, theme: ThemeGlobal }>((props) => {
-    const { room, typing, theme } = props;
+const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: string, typingType?: string, theme: ThemeGlobal }>((props) => {
+    const { room, typing, theme, typingType } = props;
 
     let [subtitle, accent] = useLastSeen(room.user);
 
@@ -80,7 +80,15 @@ const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: s
 
     if (typing) {
         accent = true;
-        subtitle = 'typing...';
+
+        switch (typingType) {
+            case TypingType.TEXT: subtitle = 'typing'; break;
+            case TypingType.FILE: subtitle = 'sending a file'; break;
+            case TypingType.PHOTO: subtitle = 'sending a photo'; break;
+            case TypingType.STICKER: subtitle = 'picking a sticker'; break;
+            case TypingType.VIDEO: subtitle = 'uploading a video'; break;
+            default: subtitle = 'typing'; break;
+        }
     }
 
     return (
@@ -100,7 +108,7 @@ const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: s
     );
 });
 
-const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typing?: string }>((props) => {
+const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typing?: string, typingType?: string }>((props) => {
     let theme = React.useContext(ThemeContext);
     let room = getClient().useRoomTiny({ id: props.conversationId });
 
@@ -112,13 +120,13 @@ const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typin
     }
 
     if (privateRoom) {
-        return <PrivateChatHeaderContent room={privateRoom} typing={props.typing} theme={theme} />;
+        return <PrivateChatHeaderContent room={privateRoom} typing={props.typing} typingType={props.typingType} theme={theme} />;
     }
 
     return null;
 });
 
-export class ChatHeader extends React.PureComponent<{ conversationId: string, router: SRouter }, { typing?: string }> {
+export class ChatHeader extends React.PureComponent<{ conversationId: string, router: SRouter }, { typing?: string, typingType?: string }> {
 
     disposeSubscription?: () => any;
 
@@ -128,7 +136,9 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
     }
 
     componentWillMount() {
-        this.disposeSubscription = getMessenger().engine.getTypings(this.props.conversationId).subcribe(t => this.setState({ typing: t }));
+        this.disposeSubscription = getMessenger().engine.getTypings(this.props.conversationId).subcribe(
+            (t, _, typingType) => this.setState({ typing: t, typingType })
+        );
     }
 
     componentWillUnmount() {
@@ -140,7 +150,7 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
     render() {
         return (
             <React.Suspense fallback={null}>
-                <ChatHeaderContent {...this.props} typing={this.state.typing} />
+                <ChatHeaderContent {...this.props} typing={this.state.typing} typingType={this.state.typingType} />
             </React.Suspense>
         );
     }
