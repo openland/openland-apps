@@ -141,7 +141,6 @@ export class MessengerEngine {
 
     handleNewMessage = (message: ChatUpdateFragment_ChatMessageReceived, cid: string) => {
         this.typingsWatcher.clearTyping(cid, message.message.sender.id);
-        this.dialogList.handleChatNewMessage(message, cid);
     }
 
     getEntityState() {

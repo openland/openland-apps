@@ -45,7 +45,10 @@ export class GlobalStateEngine {
         (async () => {
             while (true) {
                 let update = await this.queue.get();
-                await backoff(() => this.handleGlobalEvent(update));
+                for (let u of update.events) {
+                    await backoff(() => this.handleGlobalEvent(u));
+                }
+                await backoff(() => this.engine.dialogList.handleStateProcessed(update.state));
             }
         })();
 
@@ -65,12 +68,10 @@ export class GlobalStateEngine {
     handleDialogsStarted = (state: string) => {
         sequenceWatcher<Types.DialogsWatch>(state, (s, handler) => this.engine.client.subscribeDialogsWatch({ state: s }, handler), (src) => {
             if (src.event.__typename === 'DialogUpdateSingle') {
-                this.queue.post(src.event.update);
+                this.queue.post({ state: src.event.state, events: [src.event.update] });
                 return src.event.state;
             } else if (src.event.__typename === 'DialogUpdateBatch') {
-                for (let u of src.event.updates) {
-                    this.queue.post(u);
-                }
+                this.queue.post({ state: src.event.state, events: src.event.updates });
                 return src.event.state;
             }
             return null;
