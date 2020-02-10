@@ -17,8 +17,9 @@ import { trackEvent } from 'openland-mobile/analytics';
 
 let useOnlineState = () => {
     let [status, setStatus] = React.useState(useClient().engine.status);
+    let client = useClient();
     React.useEffect(() => {
-        return useClient().engine.watchStatus((s) => {
+        return client.engine.watchStatus((s) => {
             setStatus(s);
         });
     }, []);
