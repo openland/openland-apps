@@ -73,6 +73,12 @@ fragment DialogUpdateFragment on DialogUpdate {
         globalUnread
         message: alphaMessage {
             ...DialogMessage
+            ... on ServiceMessage {
+                id
+                serviceMetadata {
+                    __typename
+                }
+            }
         }
         haveMention
         silent {
