@@ -3500,6 +3500,26 @@ const StickerPackSelector = obj(
                     fragment('StickerPack', StickerPackFragmentSelector)
                 ))
         );
+const SubscriptionsSelector = obj(
+            field('subscriptions', 'subscriptions', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('state', 'state', args(), notNull(scalar('String'))),
+                    field('expires', 'expires', args(), notNull(scalar('Date'))),
+                    field('product', 'product', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            inline('WalletSubscriptionProductGroup', obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('group', 'group', args(), notNull(obj(
+                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                        field('id', 'id', args(), notNull(scalar('ID'))),
+                                        field('title', 'title', args(), notNull(scalar('String'))),
+                                        field('photo', 'photo', args(), notNull(scalar('String')))
+                                    )))
+                            ))
+                        )))
+                )))))
+        );
 const SuggestedRoomsSelector = obj(
             field('betaSuggestedRooms', 'suggestedRooms', args(), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5121,6 +5141,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'StickerPack',
         body: 'query StickerPack($id:ID!){stickerPack(id:$id){__typename ...StickerPackFragment}}fragment StickerPackFragment on StickerPack{__typename id title stickers{__typename ...StickerFragment}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}',
         selector: StickerPackSelector
+    },
+    Subscriptions: {
+        kind: 'query',
+        name: 'Subscriptions',
+        body: 'query Subscriptions{subscriptions{__typename id state expires product{__typename ... on WalletSubscriptionProductGroup{__typename group{__typename id title photo}}}}}',
+        selector: SubscriptionsSelector
     },
     SuggestedRooms: {
         kind: 'query',

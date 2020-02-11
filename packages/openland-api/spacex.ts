@@ -256,6 +256,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryStickerPack(variables: Types.StickerPackVariables, opts?: OperationParameters): Promise<Types.StickerPack> {
         return this.query('StickerPack', variables, opts);
     }
+    querySubscriptions(opts?: OperationParameters): Promise<Types.Subscriptions> {
+        return this.query('Subscriptions', undefined, opts);
+    }
     querySuggestedRooms(opts?: OperationParameters): Promise<Types.SuggestedRooms> {
         return this.query('SuggestedRooms', undefined, opts);
     }
@@ -535,6 +538,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchStickerPack(variables: Types.StickerPackVariables, opts?: OperationParameters): Promise<Types.StickerPack> {
         return this.refetch('StickerPack', variables);
     }
+    refetchSubscriptions(opts?: OperationParameters): Promise<Types.Subscriptions> {
+        return this.refetch('Subscriptions', undefined);
+    }
     refetchSuggestedRooms(opts?: OperationParameters): Promise<Types.SuggestedRooms> {
         return this.refetch('SuggestedRooms', undefined);
     }
@@ -813,6 +819,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateStickerPack(variables: Types.StickerPackVariables, updater: (data: Types.StickerPack) => Types.StickerPack | null): Promise<boolean> {
         return this.updateQuery(updater, 'StickerPack', variables);
+    }
+    updateSubscriptions(updater: (data: Types.Subscriptions) => Types.Subscriptions | null): Promise<boolean> {
+        return this.updateQuery(updater, 'Subscriptions', undefined);
     }
     updateSuggestedRooms(updater: (data: Types.SuggestedRooms) => Types.SuggestedRooms | null): Promise<boolean> {
         return this.updateQuery(updater, 'SuggestedRooms', undefined);
@@ -1258,6 +1267,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useStickerPack(variables: Types.StickerPackVariables, opts?: SpaceQueryWatchParameters): Types.StickerPack;
     useStickerPack(variables: Types.StickerPackVariables, opts?: SpaceQueryWatchParameters): Types.StickerPack | null {
         return this.useQuery('StickerPack', variables, opts);
+    }
+    useSubscriptions(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Subscriptions | null;
+    useSubscriptions(opts?: SpaceQueryWatchParameters): Types.Subscriptions;
+    useSubscriptions(opts?: SpaceQueryWatchParameters): Types.Subscriptions | null {
+        return this.useQuery('Subscriptions', undefined, opts);
     }
     useSuggestedRooms(opts: SpaceQueryWatchParameters & { suspense: false }): Types.SuggestedRooms | null;
     useSuggestedRooms(opts?: SpaceQueryWatchParameters): Types.SuggestedRooms;

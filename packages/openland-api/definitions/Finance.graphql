@@ -159,3 +159,19 @@ subscription WalletUpdates($state: String!) {
         }
     }
 }
+query Subscriptions {
+    subscriptions {
+        id
+        state
+        expires
+        product {
+            ... on WalletSubscriptionProductGroup {
+                group {
+                    id
+                    title
+                    photo
+                }
+            }
+        }
+    }
+}

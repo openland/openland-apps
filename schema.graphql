@@ -1424,6 +1424,7 @@ type Mutation {
   paymentIntentCommit(id: ID!): Boolean!
   paymentCancel(id: ID!): Boolean!
   donateToUser(amount: Int!, id: ID!): Boolean!
+  subscriptionCancel(id: ID!): Boolean!
   alphaCreateInvite: Invite!
   alphaDeleteInvite(id: ID!): String!
   alphaJoinInvite(key: String!, isNewUser: Boolean): ID!
@@ -2193,6 +2194,7 @@ type Query {
   myWallet: WalletAccount!
   transactionsPending: [WalletTransaction!]!
   transactionsHistory(first: Int!, after: String): WalletTransactionConnection!
+  subscriptions: [WalletSubscription!]!
   alphaInvites: [Invite!]
   alphaInviteInfo(key: String!): InviteInfo
   appInvite: String!

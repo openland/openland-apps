@@ -3493,6 +3493,26 @@ private let StickerPackSelector = obj(
                     fragment("StickerPack", StickerPackFragmentSelector)
                 ))
         )
+private let SubscriptionsSelector = obj(
+            field("subscriptions", "subscriptions", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("state", "state", notNull(scalar("String"))),
+                    field("expires", "expires", notNull(scalar("Date"))),
+                    field("product", "product", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            inline("WalletSubscriptionProductGroup", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("group", "group", notNull(obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("title", "title", notNull(scalar("String"))),
+                                        field("photo", "photo", notNull(scalar("String")))
+                                    )))
+                            ))
+                        )))
+                )))))
+        )
 private let SuggestedRoomsSelector = obj(
             field("betaSuggestedRooms", "suggestedRooms", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5119,6 +5139,12 @@ class Operations {
         "query StickerPack($id:ID!){stickerPack(id:$id){__typename ...StickerPackFragment}}fragment StickerPackFragment on StickerPack{__typename id title stickers{__typename ...StickerFragment}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}",
         StickerPackSelector
     )
+    let Subscriptions = OperationDefinition(
+        "Subscriptions",
+        .query, 
+        "query Subscriptions{subscriptions{__typename id state expires product{__typename ... on WalletSubscriptionProductGroup{__typename group{__typename id title photo}}}}}",
+        SubscriptionsSelector
+    )
     let SuggestedRooms = OperationDefinition(
         "SuggestedRooms",
         .query, 
@@ -6074,6 +6100,7 @@ class Operations {
         if name == "SharedMedia" { return SharedMedia }
         if name == "SharedMediaCounters" { return SharedMediaCounters }
         if name == "StickerPack" { return StickerPack }
+        if name == "Subscriptions" { return Subscriptions }
         if name == "SuggestedRooms" { return SuggestedRooms }
         if name == "SuperAccount" { return SuperAccount }
         if name == "SuperAccounts" { return SuperAccounts }
