@@ -1072,7 +1072,14 @@ internal val DialogUpdateFragmentSelector = obj(
                 field("unread", "unread", notNull(scalar("Int"))),
                 field("topMessage", "topMessage", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("ModernMessage", DialogMessageSelector)
+                        fragment("ModernMessage", DialogMessageSelector),
+                        inline("ServiceMessage", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("serviceMetadata", "serviceMetadata", obj(
+                                    field("__typename", "__typename", notNull(scalar("String")))
+                                ))
+                        ))
                     )),
                 field("haveMention", "haveMention", notNull(scalar("Boolean")))
             ))

@@ -142,6 +142,12 @@ fragment DialogUpdateFragment on DialogUpdate {
         unread
         topMessage {
             ...DialogMessage
+            ... on ServiceMessage {
+                id
+                serviceMetadata {
+                    __typename
+                }
+            }
         }
         haveMention
     }

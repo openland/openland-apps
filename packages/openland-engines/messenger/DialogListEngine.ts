@@ -6,11 +6,17 @@ import { formatMessage } from './formatMessage';
 import { MessengerEngine } from '../MessengerEngine';
 import {
     DialogFragment,
-    DialogMessage,
     DialogKind,
     DialogUpdateFragment,
+    DialogUpdateFragment_DialogMessageUpdated,
+    DialogUpdateFragment_DialogMessageDeleted,
+    DialogUpdateFragment_DialogMessageReceived,
+    DialogUpdateFragment_DialogBump,
+    DialogUpdateFragment_DialogPeerUpdated,
+    DialogUpdateFragment_DialogDeleted,
+    DialogUpdateFragment_DialogMuteChanged,
+    DialogUpdateFragment_DialogMessageRead,
     Room_room_PrivateRoom,
-    DialogUpdateFragment_DialogPeerUpdated_peer,
     RoomPico_room_SharedRoom,
 } from 'openland-api/spacex.types';
 
@@ -199,29 +205,22 @@ export class DialogListEngine {
 
     handleUpdate = async (update: DialogUpdateFragment): Promise<boolean> => {
         if (update.__typename === 'DialogMessageReceived') {
-            this.handleNewMessage(event, this.visibleConversations.has(update.cid));
+            await this.handleNewMessage(update, this.visibleConversations.has(update.cid));
             return true;
         } else if (update.__typename === 'DialogMessageRead') {
-            await this.handleUserRead(update.cid, update.unread, this.visibleConversations.has(update.cid), update.haveMention);
+            await this.handleUserRead(update);
             return true;
         } else if (update.__typename === 'DialogMessageDeleted') {
-            await this.handleMessageDeleted(
-                update.cid,
-                update.message.id,
-                update.prevMessage,
-                update.unread,
-                update.haveMention,
-                this.engine.user.id
-            );
+            await this.handleMessageDeleted(update);
             return true;
         } else if (update.__typename === 'DialogPeerUpdated') {
-            await this.handlePeerUpdated(update.cid, update.peer);
+            await this.handlePeerUpdated(update);
             return true;
         } else if (update.__typename === 'DialogBump') {
-            await this.handleNewMessage({ ...update, message: update.topMessage }, this.visibleConversations.has(update.cid));
+            await this.handleNewMessage(update, this.visibleConversations.has(update.cid));
             return true;
         } else if (update.__typename === 'DialogMuteChanged') {
-            await this.handleMuteUpdated(update.cid, update.mute);
+            await this.handleMuteUpdated(update);
             return true;
         } else if (update.__typename === 'DialogMessageUpdated') {
             await this.handleMessageUpdated(update);
@@ -238,96 +237,105 @@ export class DialogListEngine {
         await this._dataSourceStored.updateState(state);
     }
 
-    private handleUserRead = async (conversationId: string, unread: number, visible: boolean, haveMention: boolean) => {
+    private handleUserRead = async (update: DialogUpdateFragment_DialogMessageRead) => {
         log.log('User Read');
-        // Write counter to datasource
-        let res = await this._dataSourceStored.getItem(conversationId);
+        let res = await this._dataSourceStored.getItem(update.cid);
         if (res) {
             await this._dataSourceStored.updateItem({
                 ...res,
-                unread: unread,
-                haveMention
+                unread: update.unread,
+                haveMention: update.haveMention
             });
         }
     }
 
-    private handleDialogDeleted = async (event: any) => {
+    private handleDialogDeleted = async (update: DialogUpdateFragment_DialogDeleted) => {
         log.log('Dialog Deleted');
-        const cid = event.cid as string;
-        if (await this._dataSourceStored.hasItem(cid)) {
-            await this._dataSourceStored.removeItem(cid);
+        if (await this._dataSourceStored.hasItem(update.cid)) {
+            await this._dataSourceStored.removeItem(update.cid);
         }
     }
 
-    private handleMessageUpdated = async (event: any) => {
+    private handleMessageUpdated = async (update: DialogUpdateFragment_DialogMessageUpdated) => {
         log.log('Message Updated');
-        const conversationId = event.cid as string;
+        const conversationId = update.cid;
         let existing = await this._dataSourceStored.getItem(conversationId);
 
         if (existing) {
-            if (existing.messageId === event.message.id) {
-                const msg = formatMessage(event.message);
+            if (existing.messageId === update.message.id) {
+                const msg = formatMessage(update.message);
 
                 await this._dataSourceStored.updateItem({
                     ...existing,
-                    message: event.message.message ? msg : undefined,
+                    message: update.message.message ? msg : undefined,
                     fallback: msg,
-                    haveMention: event.haveMention
+                    haveMention: update.haveMention
                 });
             }
         }
     }
 
-    private handleMessageDeleted = async (cid: string, mid: string, prevMessage: DialogMessage | null, unread: number, haveMention: boolean, uid: string) => {
+    private handleMessageDeleted = async (update: DialogUpdateFragment_DialogMessageDeleted) => {
         log.log('Message Deleted');
-        let existing = await this._dataSourceStored.getItem(cid);
+        let existing = await this._dataSourceStored.getItem(update.cid);
 
-        if (existing && existing.messageId === mid) {
-            if (prevMessage === null) {
+        if (existing && existing.messageId === update.message.id) {
+            if (update.prevMessage === null) {
                 await this._dataSourceStored.removeItem(existing.key);
             } else {
                 await this._dataSourceStored.updateItem(extractDialog({
+                    __typename: "Dialog",
                     id: existing.key,
-                    cid: cid, fid: existing.flexibleId, kind: existing.kind as DialogKind, isChannel: !!existing.isChannel, title: existing.title, photo: existing.photo || '', unreadCount: unread, topMessage: prevMessage, isMuted: !!existing.isMuted, haveMention: haveMention, __typename: "Dialog"
-                }, uid));
+                    cid: update.cid,
+                    fid: existing.flexibleId,
+                    kind: existing.kind as DialogKind,
+                    isChannel: !!existing.isChannel,
+                    title: existing.title,
+                    photo: existing.photo || '',
+                    unreadCount: update.unread,
+                    topMessage: update.prevMessage,
+                    isMuted: !!existing.isMuted,
+                    haveMention: update.haveMention,
+                }, this.engine.user.id));
             }
         }
     }
 
-    private handlePeerUpdated = async (cid: string, peer: DialogUpdateFragment_DialogPeerUpdated_peer) => {
+    private handlePeerUpdated = async (update: DialogUpdateFragment_DialogPeerUpdated) => {
         log.log('Peer Updated');
-        let existing = await this._dataSourceStored.getItem(cid);
+        let existing = await this._dataSourceStored.getItem(update.cid);
         if (existing) {
             await this._dataSourceStored.updateItem({
                 ...existing,
-                title: peer.__typename === 'PrivateRoom' ? peer.user.name : peer.title,
-                photo: peer.__typename === 'PrivateRoom' ? peer.user.photo || undefined : peer.photo,
+                title: update.peer.__typename === 'PrivateRoom' ? update.peer.user.name : update.peer.title,
+                photo: update.peer.__typename === 'PrivateRoom' ? update.peer.user.photo || undefined : update.peer.photo,
             });
         }
     }
 
-    private handleMuteUpdated = async (cid: string, mute: boolean) => {
+    private handleMuteUpdated = async (update: DialogUpdateFragment_DialogMuteChanged) => {
         log.log('Mute Updated');
-        let existing = await this._dataSourceStored.getItem(cid);
+        let existing = await this._dataSourceStored.getItem(update.cid);
         if (existing) {
             await this._dataSourceStored.updateItem({
                 ...existing,
-                isMuted: mute,
+                isMuted: update.mute,
             });
         }
     }
 
-    private handleNewMessage = async (event: any, visible: boolean) => {
+    private handleNewMessage = async (event: DialogUpdateFragment_DialogMessageReceived | DialogUpdateFragment_DialogBump, visible: boolean) => {
         log.log('New Message');
-        const conversationId = event.cid as string;
-        const unreadCount = event.unread as number;
+        const conversationId = event.cid;
+        const unreadCount = event.unread;
+        const message = event.__typename === 'DialogMessageReceived' ? event.message : event.topMessage!;
 
         let res = await this._dataSourceStored.getItem(conversationId);
-        let isOut = event.message.sender.id === this.engine.user.id;
-        let sender = isOut ? 'You' : event.message.sender.firstName;
-        let isService = event.message.__typename === 'ServiceMessage';
+        let isOut = message.sender.id === this.engine.user.id;
+        let sender = isOut ? 'You' : message.sender.firstName;
+        let isService = message.__typename === 'ServiceMessage';
         if (res) {
-            let msg = formatMessage(event.message);
+            let msg = formatMessage(message);
 
             log.log('Update Item: ' + res.key);
             await this._dataSourceStored.updateItem({
@@ -337,11 +345,11 @@ export class DialogListEngine {
                 isOut: isOut,
                 sender: sender,
                 haveMention: event.haveMention,
-                messageId: event.message.id,
-                message: event.message && event.message.message ? msg : undefined,
+                messageId: message.id,
+                message: message && message.message ? msg : undefined,
                 fallback: msg,
-                date: parseInt(event.message.date, 10),
-                forward: !event.message.message && event.message.quotedMessages && event.message.quotedMessages.length,
+                date: parseInt(message.date, 10),
+                forward: !message.message && message.__typename === 'GeneralMessage' && message.quotedMessages && !!message.quotedMessages.length,
                 showSenderName:
                     !!(msg && (isOut || res.kind !== 'PRIVATE') && sender) &&
                     !isService,
@@ -351,8 +359,9 @@ export class DialogListEngine {
             await this._dataSourceStored.moveItem(res.key, 0);
         } else {
             if (
-                event.message.serviceMetadata &&
-                event.message.serviceMetadata.__typename === 'KickServiceMetadata'
+                message.__typename === 'ServiceMessage' &&
+                message.serviceMetadata &&
+                message.serviceMetadata.__typename === 'KickServiceMetadata'
             ) {
                 return;
             }
@@ -369,7 +378,7 @@ export class DialogListEngine {
                     : null;
             let room = (sharedRoom || privateRoom)!;
 
-            let msg = formatMessage(event.message);
+            let msg = formatMessage(message);
 
             if (privateRoom) {
                 this.userConversationMap.set(privateRoom!.user.id, privateRoom.id);
@@ -395,11 +404,11 @@ export class DialogListEngine {
                     unread: unreadCount,
                     isOut: isOut,
                     sender: sender,
-                    messageId: event.message.id,
-                    message: event.message && event.message.message ? msg : undefined,
+                    messageId: message.id,
+                    message: message && message.message ? msg : undefined,
                     fallback: msg,
-                    date: parseInt(event.message.date, 10),
-                    forward: event.message.quotedMessages && !!event.message.quotedMessages.length,
+                    date: parseInt(message.date, 10),
+                    forward: !message.message && message.__typename === 'GeneralMessage' && message.quotedMessages && !!message.quotedMessages.length,
                     showSenderName:
                         !!(
                             msg &&
