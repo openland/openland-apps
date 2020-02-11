@@ -936,7 +936,7 @@ internal val ConferenceShortSelector = obj(
                 )))))
         )
 
-internal val DaialogListMessageSelector = obj(
+internal val DialogMessageSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             field("date", "date", notNull(scalar("Date"))),
@@ -944,44 +944,14 @@ internal val DaialogListMessageSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
                     field("name", "name", notNull(scalar("String"))),
+                    field("photo", "photo", scalar("String")),
                     field("firstName", "firstName", notNull(scalar("String")))
                 ))),
-            field("senderBadge", "senderBadge", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("UserBadge", UserBadgeSelector)
-                )),
             field("message", "message", scalar("String")),
             field("fallback", "fallback", notNull(scalar("String"))),
             inline("GeneralMessage", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("id", "id", notNull(scalar("ID"))),
-                field("overrideName", "overrideName", scalar("String")),
-                field("overrideAvatar", "overrideAvatar", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("uuid", "uuid", notNull(scalar("String"))),
-                        field("crop", "crop", obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("x", "x", notNull(scalar("Int"))),
-                                field("y", "y", notNull(scalar("Int"))),
-                                field("w", "w", notNull(scalar("Int"))),
-                                field("h", "h", notNull(scalar("Int")))
-                            ))
-                    )),
-                field("attachments", "attachments", notNull(list(notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("fallback", "fallback", notNull(scalar("String"))),
-                        inline("MessageAttachmentFile", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("fileId", "fileId", notNull(scalar("String"))),
-                            field("fileMetadata", "fileMetadata", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("isImage", "isImage", notNull(scalar("Boolean"))),
-                                    field("imageFormat", "imageFormat", scalar("String"))
-                                )))
-                        ))
-                    ))))),
                 field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("id", "id", notNull(scalar("ID")))
@@ -1003,62 +973,8 @@ internal val DialogFragmentSelector = obj(
             field("haveMention", "haveMention", notNull(scalar("Boolean"))),
             field("alphaTopMessage", "topMessage", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("ModernMessage", DaialogListMessageSelector)
+                    fragment("ModernMessage", DialogMessageSelector)
                 ))
-        )
-
-internal val TinyMessageSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("date", "date", notNull(scalar("Date"))),
-            field("sender", "sender", notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("User", UserTinySelector)
-                ))),
-            field("senderBadge", "senderBadge", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("UserBadge", UserBadgeSelector)
-                )),
-            field("message", "message", scalar("String")),
-            field("fallback", "fallback", notNull(scalar("String"))),
-            inline("GeneralMessage", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                field("id", "id", notNull(scalar("ID"))),
-                field("overrideName", "overrideName", scalar("String")),
-                field("overrideAvatar", "overrideAvatar", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("uuid", "uuid", notNull(scalar("String"))),
-                        field("crop", "crop", obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("x", "x", notNull(scalar("Int"))),
-                                field("y", "y", notNull(scalar("Int"))),
-                                field("w", "w", notNull(scalar("Int"))),
-                                field("h", "h", notNull(scalar("Int")))
-                            ))
-                    )),
-                field("isMentioned", "isMentioned", notNull(scalar("Boolean"))),
-                field("commentsCount", "commentsCount", notNull(scalar("Int"))),
-                field("attachments", "attachments", notNull(list(notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("fallback", "fallback", notNull(scalar("String"))),
-                        inline("MessageAttachmentFile", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("fileId", "fileId", notNull(scalar("String"))),
-                            field("fileMetadata", "fileMetadata", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("isImage", "isImage", notNull(scalar("Boolean"))),
-                                    field("imageFormat", "imageFormat", scalar("String"))
-                                ))),
-                            field("filePreview", "filePreview", scalar("String"))
-                        ))
-                    ))))),
-                field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID")))
-                    )))))
-            ))
         )
 
 internal val DialogUpdateFragmentSelector = obj(
@@ -1070,7 +986,7 @@ internal val DialogUpdateFragmentSelector = obj(
                 field("globalUnread", "globalUnread", notNull(scalar("Int"))),
                 field("alphaMessage", "message", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("ModernMessage", TinyMessageSelector)
+                        fragment("ModernMessage", DialogMessageSelector)
                     ))),
                 field("haveMention", "haveMention", notNull(scalar("Boolean"))),
                 field("silent", "silent", notNull(obj(
@@ -1089,7 +1005,7 @@ internal val DialogUpdateFragmentSelector = obj(
                 field("cid", "cid", notNull(scalar("ID"))),
                 field("alphaMessage", "message", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("ModernMessage", TinyMessageSelector)
+                        fragment("ModernMessage", DialogMessageSelector)
                     ))),
                 field("haveMention", "haveMention", notNull(scalar("Boolean")))
             )),
@@ -1098,11 +1014,11 @@ internal val DialogUpdateFragmentSelector = obj(
                 field("cid", "cid", notNull(scalar("ID"))),
                 field("alphaMessage", "message", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("ModernMessage", TinyMessageSelector)
+                        fragment("ModernMessage", DialogMessageSelector)
                     ))),
                 field("alphaPrevMessage", "prevMessage", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("ModernMessage", TinyMessageSelector)
+                        fragment("ModernMessage", DialogMessageSelector)
                     )),
                 field("unread", "unread", notNull(scalar("Int"))),
                 field("globalUnread", "globalUnread", notNull(scalar("Int"))),
@@ -1156,7 +1072,7 @@ internal val DialogUpdateFragmentSelector = obj(
                 field("unread", "unread", notNull(scalar("Int"))),
                 field("topMessage", "topMessage", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("ModernMessage", TinyMessageSelector)
+                        fragment("ModernMessage", DialogMessageSelector)
                     )),
                 field("haveMention", "haveMention", notNull(scalar("Boolean")))
             ))
@@ -1917,6 +1833,60 @@ internal val StickerPackFragmentSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Sticker", StickerFragmentSelector)
                 )))))
+        )
+
+internal val TinyMessageSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("date", "date", notNull(scalar("Date"))),
+            field("sender", "sender", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("User", UserTinySelector)
+                ))),
+            field("senderBadge", "senderBadge", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("UserBadge", UserBadgeSelector)
+                )),
+            field("message", "message", scalar("String")),
+            field("fallback", "fallback", notNull(scalar("String"))),
+            inline("GeneralMessage", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("overrideName", "overrideName", scalar("String")),
+                field("overrideAvatar", "overrideAvatar", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("uuid", "uuid", notNull(scalar("String"))),
+                        field("crop", "crop", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("x", "x", notNull(scalar("Int"))),
+                                field("y", "y", notNull(scalar("Int"))),
+                                field("w", "w", notNull(scalar("Int"))),
+                                field("h", "h", notNull(scalar("Int")))
+                            ))
+                    )),
+                field("isMentioned", "isMentioned", notNull(scalar("Boolean"))),
+                field("commentsCount", "commentsCount", notNull(scalar("Int"))),
+                field("attachments", "attachments", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("fallback", "fallback", notNull(scalar("String"))),
+                        inline("MessageAttachmentFile", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("fileId", "fileId", notNull(scalar("String"))),
+                            field("fileMetadata", "fileMetadata", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("isImage", "isImage", notNull(scalar("Boolean"))),
+                                    field("imageFormat", "imageFormat", scalar("String"))
+                                ))),
+                            field("filePreview", "filePreview", scalar("String"))
+                        ))
+                    ))))),
+                field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
+                    )))))
+            ))
         )
 
 internal val UserNanoSelector = obj(

@@ -1,18 +1,17 @@
-import { MessengerEngine } from '../MessengerEngine';
-import {
-    Dialogs_dialogs_items,
-    Dialogs_dialogs_items_topMessage,
-    Room_room_PrivateRoom,
-    TinyMessage,
+import { createLogger } from 'mental-log';
+import type { DataSource } from 'openland-y-utils/DataSource';
+import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';
+import { DataSourceAugmentor } from 'openland-y-utils/DataSourceAugmentor';
+import type { MessengerEngine } from '../MessengerEngine';
+import type {
+    DialogFragment,
+    DialogMessage,
     DialogKind,
-    FullMessage,
+    DialogUpdateFragment,
+    Room_room_PrivateRoom,
     DialogUpdateFragment_DialogPeerUpdated_peer,
     RoomPico_room_SharedRoom,
 } from 'openland-api/spacex.types';
-import { DataSource } from 'openland-y-utils/DataSource';
-import { createLogger } from 'mental-log';
-import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';
-import { DataSourceAugmentor } from 'openland-y-utils/DataSourceAugmentor';
 
 const log = createLogger('Engine-Dialogs');
 
@@ -55,7 +54,7 @@ export interface DialogDataSourceItem extends DialogDataSourceItemStored {
     typing?: string;
 }
 
-export function formatMessage(message: Dialogs_dialogs_items_topMessage | FullMessage | null): string {
+export function formatMessage(message: { message: string | null, fallback: string } | null): string {
     if (!message) {
         return '';
     }
@@ -63,48 +62,34 @@ export function formatMessage(message: Dialogs_dialogs_items_topMessage | FullMe
     return (message.message && message.message.length > 0) ? message.message : message.fallback;
 }
 
-export const extractDialog = (
-    {
-        cid,
-        fid,
-        kind,
-        isChannel,
-        title,
-        photo,
-        unreadCount,
-        topMessage,
-        isMuted,
-        haveMention,
-    }: Dialogs_dialogs_items,
-    uid: string,
-): DialogDataSourceItemStored => {
-    let msg = formatMessage(topMessage);
-    let isOut = topMessage ? topMessage!!.sender.id === uid : undefined;
-    let sender = topMessage
-        ? topMessage!!.sender.id === uid
+export const extractDialog = (dialog: DialogFragment, uid: string): DialogDataSourceItemStored => {
+    let msg = formatMessage(dialog.topMessage);
+    let isOut = dialog.topMessage ? dialog.topMessage!!.sender.id === uid : undefined;
+    let sender = dialog.topMessage
+        ? dialog.topMessage.sender.id === uid
             ? 'You'
-            : topMessage!!.sender.firstName
+            : dialog.topMessage.sender.firstName
         : undefined;
-    let isService = (topMessage && topMessage.__typename === 'ServiceMessage') || undefined;
+    let isService = (dialog.topMessage && dialog.topMessage.__typename === 'ServiceMessage') || undefined;
     return {
-        haveMention,
-        isMuted,
-        kind,
-        isChannel,
-        title,
-        photo,
-        key: cid,
-        flexibleId: fid,
-        unread: unreadCount,
-        message: topMessage && topMessage.message ? msg : undefined,
+        haveMention: dialog.haveMention,
+        isMuted: dialog.isMuted,
+        kind: dialog.kind,
+        isChannel: dialog.isChannel,
+        title: dialog.title,
+        photo: dialog.photo,
+        key: dialog.cid,
+        flexibleId: dialog.fid,
+        unread: dialog.unreadCount,
+        message: dialog.topMessage && dialog.topMessage.message ? msg : undefined,
         fallback: msg,
-        isOut: topMessage ? topMessage!!.sender.id === uid : undefined,
+        isOut: dialog.topMessage ? dialog.topMessage.sender.id === uid : undefined,
         sender: sender,
-        messageId: topMessage ? topMessage.id : undefined,
-        date: topMessage ? parseInt(topMessage.date, 10) : undefined,
-        forward: topMessage ? topMessage.__typename === 'GeneralMessage' && !!topMessage.quotedMessages.length && !topMessage.message : false,
+        messageId: dialog.topMessage ? dialog.topMessage.id : undefined,
+        date: dialog.topMessage ? parseInt(dialog.topMessage.date, 10) : undefined,
+        forward: dialog.topMessage ? dialog.topMessage.__typename === 'GeneralMessage' && !!dialog.topMessage.quotedMessages.length && !dialog.topMessage.message : false,
         isService,
-        showSenderName: !!(msg && (isOut || kind !== 'PRIVATE') && sender) && !isService,
+        showSenderName: !!(msg && (isOut || dialog.kind !== 'PRIVATE') && sender) && !isService,
     };
 };
 
@@ -113,6 +98,7 @@ export class DialogListEngine {
     readonly _dataSourceStored: DataSourceStored<DialogDataSourceItemStored>;
     readonly dataSource: DataSource<DialogDataSourceItem>;
     private userConversationMap = new Map<string, string>();
+    private visibleConversations = new Set<string>();
 
     constructor(engine: MessengerEngine) {
         this.engine = engine;
@@ -210,12 +196,56 @@ export class DialogListEngine {
         });
     }
 
+    onConversationVisible = (conversationId: string) => {
+        this.visibleConversations.add(conversationId);
+    }
+
+    onConversationHidden = (conversationId: string) => {
+        this.visibleConversations.delete(conversationId);
+    }
+
+    handleUpdate = async (update: DialogUpdateFragment): Promise<boolean> => {
+        if (update.__typename === 'DialogMessageReceived') {
+            this.handleNewMessage(event, this.visibleConversations.has(update.cid));
+            return true;
+        } else if (update.__typename === 'DialogMessageRead') {
+            await this.handleUserRead(update.cid, update.unread, this.visibleConversations.has(update.cid), update.haveMention);
+            return true;
+        } else if (update.__typename === 'DialogMessageDeleted') {
+            await this.handleMessageDeleted(
+                update.cid,
+                update.message.id,
+                update.prevMessage,
+                update.unread,
+                update.haveMention,
+                this.engine.user.id
+            );
+            return true;
+        } else if (update.__typename === 'DialogPeerUpdated') {
+            await this.handlePeerUpdated(update.cid, update.peer);
+            return true;
+        } else if (update.__typename === 'DialogBump') {
+            await this.handleNewMessage({ ...update, message: update.topMessage }, this.visibleConversations.has(update.cid));
+            return true;
+        } else if (update.__typename === 'DialogMuteChanged') {
+            await this.handleMuteUpdated(update.cid, update.mute);
+            return true;
+        } else if (update.__typename === 'DialogMessageUpdated') {
+            await this.handleMessageUpdated(update);
+            return true;
+        } else if (update.__typename === 'DialogDeleted') {
+            await this.handleDialogDeleted(update);
+            return true;
+        }
+        return false;
+    }
+
     handleStateProcessed = async (state: string) => {
         log.log('State Processed');
         await this._dataSourceStored.updateState(state);
     }
 
-    handleUserRead = async (conversationId: string, unread: number, visible: boolean, haveMention: boolean) => {
+    private handleUserRead = async (conversationId: string, unread: number, visible: boolean, haveMention: boolean) => {
         log.log('User Read');
         // Write counter to datasource
         let res = await this._dataSourceStored.getItem(conversationId);
@@ -228,7 +258,7 @@ export class DialogListEngine {
         }
     }
 
-    handleDialogDeleted = async (event: any) => {
+    private handleDialogDeleted = async (event: any) => {
         log.log('Dialog Deleted');
         const cid = event.cid as string;
         if (await this._dataSourceStored.hasItem(cid)) {
@@ -236,7 +266,7 @@ export class DialogListEngine {
         }
     }
 
-    handleMessageUpdated = async (event: any) => {
+    private handleMessageUpdated = async (event: any) => {
         log.log('Message Updated');
         const conversationId = event.cid as string;
         let existing = await this._dataSourceStored.getItem(conversationId);
@@ -255,7 +285,7 @@ export class DialogListEngine {
         }
     }
 
-    handleMessageDeleted = async (cid: string, mid: string, prevMessage: TinyMessage | null, unread: number, haveMention: boolean, uid: string) => {
+    private handleMessageDeleted = async (cid: string, mid: string, prevMessage: DialogMessage | null, unread: number, haveMention: boolean, uid: string) => {
         log.log('Message Deleted');
         let existing = await this._dataSourceStored.getItem(cid);
 
@@ -271,7 +301,7 @@ export class DialogListEngine {
         }
     }
 
-    handlePeerUpdated = async (cid: string, peer: DialogUpdateFragment_DialogPeerUpdated_peer) => {
+    private handlePeerUpdated = async (cid: string, peer: DialogUpdateFragment_DialogPeerUpdated_peer) => {
         log.log('Peer Updated');
         let existing = await this._dataSourceStored.getItem(cid);
         if (existing) {
@@ -283,7 +313,7 @@ export class DialogListEngine {
         }
     }
 
-    handleMuteUpdated = async (cid: string, mute: boolean) => {
+    private handleMuteUpdated = async (cid: string, mute: boolean) => {
         log.log('Mute Updated');
         let existing = await this._dataSourceStored.getItem(cid);
         if (existing) {
@@ -294,7 +324,7 @@ export class DialogListEngine {
         }
     }
 
-    handleNewMessage = async (event: any, visible: boolean) => {
+    private handleNewMessage = async (event: any, visible: boolean) => {
         log.log('New Message');
         const conversationId = event.cid as string;
         const unreadCount = event.unread as number;

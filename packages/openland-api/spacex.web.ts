@@ -937,7 +937,7 @@ const ConferenceShortSelector = obj(
                 )))))
         );
 
-const DaialogListMessageSelector = obj(
+const DialogMessageSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
             field('date', 'date', args(), notNull(scalar('Date'))),
@@ -945,44 +945,14 @@ const DaialogListMessageSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('id', 'id', args(), notNull(scalar('ID'))),
                     field('name', 'name', args(), notNull(scalar('String'))),
+                    field('photo', 'photo', args(), scalar('String')),
                     field('firstName', 'firstName', args(), notNull(scalar('String')))
                 ))),
-            field('senderBadge', 'senderBadge', args(), obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('UserBadge', UserBadgeSelector)
-                )),
             field('message', 'message', args(), scalar('String')),
             field('fallback', 'fallback', args(), notNull(scalar('String'))),
             inline('GeneralMessage', obj(
                 field('__typename', '__typename', args(), notNull(scalar('String'))),
                 field('id', 'id', args(), notNull(scalar('ID'))),
-                field('overrideName', 'overrideName', args(), scalar('String')),
-                field('overrideAvatar', 'overrideAvatar', args(), obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        field('uuid', 'uuid', args(), notNull(scalar('String'))),
-                        field('crop', 'crop', args(), obj(
-                                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                field('x', 'x', args(), notNull(scalar('Int'))),
-                                field('y', 'y', args(), notNull(scalar('Int'))),
-                                field('w', 'w', args(), notNull(scalar('Int'))),
-                                field('h', 'h', args(), notNull(scalar('Int')))
-                            ))
-                    )),
-                field('attachments', 'attachments', args(), notNull(list(notNull(obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        field('id', 'id', args(), notNull(scalar('ID'))),
-                        field('fallback', 'fallback', args(), notNull(scalar('String'))),
-                        inline('MessageAttachmentFile', obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('fileId', 'fileId', args(), notNull(scalar('String'))),
-                            field('fileMetadata', 'fileMetadata', args(), notNull(obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    field('isImage', 'isImage', args(), notNull(scalar('Boolean'))),
-                                    field('imageFormat', 'imageFormat', args(), scalar('String'))
-                                )))
-                        ))
-                    ))))),
                 field('quotedMessages', 'quotedMessages', args(), notNull(list(notNull(obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
                         field('id', 'id', args(), notNull(scalar('ID')))
@@ -1004,62 +974,8 @@ const DialogFragmentSelector = obj(
             field('haveMention', 'haveMention', args(), notNull(scalar('Boolean'))),
             field('alphaTopMessage', 'topMessage', args(), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('ModernMessage', DaialogListMessageSelector)
+                    fragment('ModernMessage', DialogMessageSelector)
                 ))
-        );
-
-const TinyMessageSelector = obj(
-            field('__typename', '__typename', args(), notNull(scalar('String'))),
-            field('id', 'id', args(), notNull(scalar('ID'))),
-            field('date', 'date', args(), notNull(scalar('Date'))),
-            field('sender', 'sender', args(), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('User', UserTinySelector)
-                ))),
-            field('senderBadge', 'senderBadge', args(), obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('UserBadge', UserBadgeSelector)
-                )),
-            field('message', 'message', args(), scalar('String')),
-            field('fallback', 'fallback', args(), notNull(scalar('String'))),
-            inline('GeneralMessage', obj(
-                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                field('id', 'id', args(), notNull(scalar('ID'))),
-                field('overrideName', 'overrideName', args(), scalar('String')),
-                field('overrideAvatar', 'overrideAvatar', args(), obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        field('uuid', 'uuid', args(), notNull(scalar('String'))),
-                        field('crop', 'crop', args(), obj(
-                                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                field('x', 'x', args(), notNull(scalar('Int'))),
-                                field('y', 'y', args(), notNull(scalar('Int'))),
-                                field('w', 'w', args(), notNull(scalar('Int'))),
-                                field('h', 'h', args(), notNull(scalar('Int')))
-                            ))
-                    )),
-                field('isMentioned', 'isMentioned', args(), notNull(scalar('Boolean'))),
-                field('commentsCount', 'commentsCount', args(), notNull(scalar('Int'))),
-                field('attachments', 'attachments', args(), notNull(list(notNull(obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        field('id', 'id', args(), notNull(scalar('ID'))),
-                        field('fallback', 'fallback', args(), notNull(scalar('String'))),
-                        inline('MessageAttachmentFile', obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('fileId', 'fileId', args(), notNull(scalar('String'))),
-                            field('fileMetadata', 'fileMetadata', args(), notNull(obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    field('isImage', 'isImage', args(), notNull(scalar('Boolean'))),
-                                    field('imageFormat', 'imageFormat', args(), scalar('String'))
-                                ))),
-                            field('filePreview', 'filePreview', args(), scalar('String'))
-                        ))
-                    ))))),
-                field('quotedMessages', 'quotedMessages', args(), notNull(list(notNull(obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        field('id', 'id', args(), notNull(scalar('ID')))
-                    )))))
-            ))
         );
 
 const DialogUpdateFragmentSelector = obj(
@@ -1071,7 +987,7 @@ const DialogUpdateFragmentSelector = obj(
                 field('globalUnread', 'globalUnread', args(), notNull(scalar('Int'))),
                 field('alphaMessage', 'message', args(), notNull(obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        fragment('ModernMessage', TinyMessageSelector)
+                        fragment('ModernMessage', DialogMessageSelector)
                     ))),
                 field('haveMention', 'haveMention', args(), notNull(scalar('Boolean'))),
                 field('silent', 'silent', args(), notNull(obj(
@@ -1090,7 +1006,7 @@ const DialogUpdateFragmentSelector = obj(
                 field('cid', 'cid', args(), notNull(scalar('ID'))),
                 field('alphaMessage', 'message', args(), notNull(obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        fragment('ModernMessage', TinyMessageSelector)
+                        fragment('ModernMessage', DialogMessageSelector)
                     ))),
                 field('haveMention', 'haveMention', args(), notNull(scalar('Boolean')))
             )),
@@ -1099,11 +1015,11 @@ const DialogUpdateFragmentSelector = obj(
                 field('cid', 'cid', args(), notNull(scalar('ID'))),
                 field('alphaMessage', 'message', args(), notNull(obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        fragment('ModernMessage', TinyMessageSelector)
+                        fragment('ModernMessage', DialogMessageSelector)
                     ))),
                 field('alphaPrevMessage', 'prevMessage', args(), obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        fragment('ModernMessage', TinyMessageSelector)
+                        fragment('ModernMessage', DialogMessageSelector)
                     )),
                 field('unread', 'unread', args(), notNull(scalar('Int'))),
                 field('globalUnread', 'globalUnread', args(), notNull(scalar('Int'))),
@@ -1157,7 +1073,7 @@ const DialogUpdateFragmentSelector = obj(
                 field('unread', 'unread', args(), notNull(scalar('Int'))),
                 field('topMessage', 'topMessage', args(), obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        fragment('ModernMessage', TinyMessageSelector)
+                        fragment('ModernMessage', DialogMessageSelector)
                     )),
                 field('haveMention', 'haveMention', args(), notNull(scalar('Boolean')))
             ))
@@ -1918,6 +1834,60 @@ const StickerPackFragmentSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('Sticker', StickerFragmentSelector)
                 )))))
+        );
+
+const TinyMessageSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('date', 'date', args(), notNull(scalar('Date'))),
+            field('sender', 'sender', args(), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('User', UserTinySelector)
+                ))),
+            field('senderBadge', 'senderBadge', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('UserBadge', UserBadgeSelector)
+                )),
+            field('message', 'message', args(), scalar('String')),
+            field('fallback', 'fallback', args(), notNull(scalar('String'))),
+            inline('GeneralMessage', obj(
+                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                field('id', 'id', args(), notNull(scalar('ID'))),
+                field('overrideName', 'overrideName', args(), scalar('String')),
+                field('overrideAvatar', 'overrideAvatar', args(), obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('uuid', 'uuid', args(), notNull(scalar('String'))),
+                        field('crop', 'crop', args(), obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('x', 'x', args(), notNull(scalar('Int'))),
+                                field('y', 'y', args(), notNull(scalar('Int'))),
+                                field('w', 'w', args(), notNull(scalar('Int'))),
+                                field('h', 'h', args(), notNull(scalar('Int')))
+                            ))
+                    )),
+                field('isMentioned', 'isMentioned', args(), notNull(scalar('Boolean'))),
+                field('commentsCount', 'commentsCount', args(), notNull(scalar('Int'))),
+                field('attachments', 'attachments', args(), notNull(list(notNull(obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('id', 'id', args(), notNull(scalar('ID'))),
+                        field('fallback', 'fallback', args(), notNull(scalar('String'))),
+                        inline('MessageAttachmentFile', obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('fileId', 'fileId', args(), notNull(scalar('String'))),
+                            field('fileMetadata', 'fileMetadata', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    field('isImage', 'isImage', args(), notNull(scalar('Boolean'))),
+                                    field('imageFormat', 'imageFormat', args(), scalar('String'))
+                                ))),
+                            field('filePreview', 'filePreview', args(), scalar('String'))
+                        ))
+                    ))))),
+                field('quotedMessages', 'quotedMessages', args(), notNull(list(notNull(obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('id', 'id', args(), notNull(scalar('ID')))
+                    )))))
+            ))
         );
 
 const UserNanoSelector = obj(
@@ -4526,7 +4496,6 @@ const DialogsWatchSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     inline('DialogUpdateSingle', obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        field('seq', 'seq', args(), notNull(scalar('Int'))),
                         field('state', 'state', args(), notNull(scalar('String'))),
                         field('update', 'update', args(), notNull(obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -4535,8 +4504,6 @@ const DialogsWatchSelector = obj(
                     )),
                     inline('DialogUpdateBatch', obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        field('fromSeq', 'fromSeq', args(), notNull(scalar('Int'))),
-                        field('seq', 'seq', args(), notNull(scalar('Int'))),
                         field('state', 'state', args(), notNull(scalar('String'))),
                         field('updates', 'updates', args(), notNull(list(notNull(obj(
                                 field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -4730,7 +4697,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     Dialogs: {
         kind: 'query',
         name: 'Dialogs',
-        body: 'query Dialogs($after:String){dialogs(first:20,after:$after){__typename items{__typename ...DialogFragment}cursor}state:dialogsState{__typename state}counter:alphaNotificationCounter{__typename id unreadCount}}fragment DialogFragment on Dialog{__typename id cid fid kind isChannel title photo unreadCount isMuted haveMention topMessage:alphaTopMessage{__typename ...DaialogListMessage}}fragment DaialogListMessage on ModernMessage{__typename id date sender{__typename id name firstName}senderBadge{__typename ...UserBadge}message fallback ... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}attachments{__typename id fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename isImage imageFormat}}}quotedMessages{__typename id}}}fragment UserBadge on UserBadge{__typename id name verified}',
+        body: 'query Dialogs($after:String){dialogs(first:20,after:$after){__typename items{__typename ...DialogFragment}cursor}state:dialogsState{__typename state}counter:alphaNotificationCounter{__typename id unreadCount}}fragment DialogFragment on Dialog{__typename id cid fid kind isChannel title photo unreadCount isMuted haveMention topMessage:alphaTopMessage{__typename ...DialogMessage}}fragment DialogMessage on ModernMessage{__typename id date sender{__typename id name photo firstName}message fallback ... on GeneralMessage{__typename id quotedMessages{__typename id}}}',
         selector: DialogsSelector
     },
     DiscoverIsDone: {
@@ -5972,7 +5939,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     DialogsWatch: {
         kind: 'subscription',
         name: 'DialogsWatch',
-        body: 'subscription DialogsWatch($state:String){event:dialogsUpdates(fromState:$state){__typename ... on DialogUpdateSingle{__typename seq state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{__typename fromSeq seq state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{__typename cid unread globalUnread message:alphaMessage{__typename ...TinyMessage}haveMention silent{__typename mobile desktop}showNotification{__typename mobile desktop}}... on DialogMessageUpdated{__typename cid message:alphaMessage{__typename ...TinyMessage}haveMention}... on DialogMessageDeleted{__typename cid message:alphaMessage{__typename ...TinyMessage}prevMessage:alphaPrevMessage{__typename ...TinyMessage}unread globalUnread haveMention}... on DialogMessageRead{__typename cid mid unread globalUnread haveMention}... on DialogMuteChanged{__typename cid mute}... on DialogPeerUpdated{__typename cid peer{__typename ... on PrivateRoom{__typename id user{__typename id name photo}}... on SharedRoom{__typename id title photo}}}... on DialogDeleted{__typename cid globalUnread}... on DialogBump{__typename cid globalUnread unread topMessage{__typename ...TinyMessage}haveMention}}fragment TinyMessage on ModernMessage{__typename id date sender{__typename ...UserTiny}senderBadge{__typename ...UserBadge}message fallback ... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}isMentioned commentsCount attachments{__typename id fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename isImage imageFormat}filePreview}}quotedMessages{__typename id}}}fragment UserTiny on User{__typename id isYou name firstName lastName photo shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment UserBadge on UserBadge{__typename id name verified}',
+        body: 'subscription DialogsWatch($state:String){event:dialogsUpdates(fromState:$state){__typename ... on DialogUpdateSingle{__typename state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{__typename state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{__typename cid unread globalUnread message:alphaMessage{__typename ...DialogMessage}haveMention silent{__typename mobile desktop}showNotification{__typename mobile desktop}}... on DialogMessageUpdated{__typename cid message:alphaMessage{__typename ...DialogMessage}haveMention}... on DialogMessageDeleted{__typename cid message:alphaMessage{__typename ...DialogMessage}prevMessage:alphaPrevMessage{__typename ...DialogMessage}unread globalUnread haveMention}... on DialogMessageRead{__typename cid mid unread globalUnread haveMention}... on DialogMuteChanged{__typename cid mute}... on DialogPeerUpdated{__typename cid peer{__typename ... on PrivateRoom{__typename id user{__typename id name photo}}... on SharedRoom{__typename id title photo}}}... on DialogDeleted{__typename cid globalUnread}... on DialogBump{__typename cid globalUnread unread topMessage{__typename ...DialogMessage}haveMention}}fragment DialogMessage on ModernMessage{__typename id date sender{__typename id name photo firstName}message fallback ... on GeneralMessage{__typename id quotedMessages{__typename id}}}',
         selector: DialogsWatchSelector
     },
     FeedUpdates: {

@@ -26,47 +26,23 @@ fragment DialogFragment on Dialog {
     isMuted
     haveMention
     topMessage: alphaTopMessage {
-        ...DaialogListMessage
+        ...DialogMessage
     }
 }
 
-fragment DaialogListMessage on ModernMessage {
+fragment DialogMessage on ModernMessage {
     id
     date
     sender {
         id
         name
+        photo
         firstName
-    }
-    senderBadge {
-        ...UserBadge
     }
     message
     fallback
     ... on GeneralMessage {
         id
-        overrideName
-        overrideAvatar {
-            uuid
-            crop {
-                x
-                y
-                w
-                h
-            }
-        }
-        attachments {
-            id
-            fallback
-            ... on MessageAttachmentFile {
-                id
-                fileId
-                fileMetadata {
-                    isImage
-                    imageFormat
-                }
-            }
-        }
         quotedMessages {
             id
         }
@@ -76,15 +52,12 @@ fragment DaialogListMessage on ModernMessage {
 subscription DialogsWatch($state: String) {
     event: dialogsUpdates(fromState: $state) {
         ... on DialogUpdateSingle {
-            seq
             state
             update {
                 ...DialogUpdateFragment
             }
         }
         ... on DialogUpdateBatch {
-            fromSeq
-            seq
             state
             updates {
                 ...DialogUpdateFragment
@@ -99,7 +72,7 @@ fragment DialogUpdateFragment on DialogUpdate {
         unread
         globalUnread
         message: alphaMessage {
-            ...TinyMessage
+            ...DialogMessage
         }
         haveMention
         silent {
@@ -114,17 +87,17 @@ fragment DialogUpdateFragment on DialogUpdate {
     ... on DialogMessageUpdated {
         cid
         message: alphaMessage {
-            ...TinyMessage
+            ...DialogMessage
         }
         haveMention
     }
     ... on DialogMessageDeleted {
         cid
         message: alphaMessage {
-            ...TinyMessage
+            ...DialogMessage
         }
         prevMessage: alphaPrevMessage {
-            ...TinyMessage
+            ...DialogMessage
         }
         unread
         globalUnread
@@ -168,7 +141,7 @@ fragment DialogUpdateFragment on DialogUpdate {
         globalUnread
         unread
         topMessage {
-            ...TinyMessage
+            ...DialogMessage
         }
         haveMention
     }

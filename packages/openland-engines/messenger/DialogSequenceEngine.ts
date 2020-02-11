@@ -76,10 +76,12 @@ export class DialogSequenceEngine {
 
     onConversationVisible = (conversationId: string) => {
         this.visibleConversations.add(conversationId);
+        this.engine.dialogList.onConversationVisible(conversationId);
     }
 
     onConversationHidden = (conversationId: string) => {
         this.visibleConversations.delete(conversationId);
+        this.engine.dialogList.onConversationHidden(conversationId);
     }
 
     destroy = () => {
@@ -91,15 +93,41 @@ export class DialogSequenceEngine {
     }
 
     private handleGlobalEvent = async (event: Types.DialogUpdateFragment) => {
-        // console.log(event);
         let start = currentTimeMillis();
-        log.log('Event Received');
+
+        //
+        // Global Counter
+        //
+
+        if (event.__typename === 'DialogMessageReceived'
+            || event.__typename === 'DialogMessageRead'
+            || event.__typename === 'DialogMessageDeleted'
+            || event.__typename === 'DialogBump'
+            || event.__typename === 'DialogDeleted') {
+            let visible = this.visibleConversations.has(event.cid);
+            await this.writeGlobalCounter(event.globalUnread, visible);
+        }
+
+        //
+        // Conversation
+        //
+
+        if (event.__typename === 'DialogPeerUpdated') {
+            await this.engine.getConversation(event.cid).handlePeerUpdated(event.peer);
+        } else if (event.__typename === 'DialogMuteChanged') {
+            await this.engine.getConversation(event.cid).handleMuteUpdated(event.mute);
+        } else if (event.__typename === 'DialogMessageRead') {
+            if (event.mid) {
+                await this.engine.getConversation(event.cid).onMessageReadEvent(event.mid);
+            }
+        }
+
+        //
+        // Notifications
+        //
 
         if (event.__typename === 'DialogMessageReceived') {
             let visible = this.visibleConversations.has(event.cid);
-
-            // Global counter
-            await this.writeGlobalCounter(event.globalUnread, visible);
 
             // Notifications
             let start2 = currentTimeMillis();
@@ -109,71 +137,19 @@ export class DialogSequenceEngine {
             }
             log.log('Notifications handled in ' + (currentTimeMillis() - start2) + ' ms');
 
-            // Dialogs List
-            await this.engine.dialogList.handleNewMessage(event, visible);
-        } else if (event.__typename === 'DialogMessageRead') {
-            let visible = this.visibleConversations.has(event.cid);
-
-            // Global counter
-            await this.writeGlobalCounter(event.globalUnread, visible);
-
-            // Notifications
+        } else if (event.__typename === 'DialogMessageRead'
+            || event.__typename === 'DialogMessageDeleted'
+            || event.__typename === 'DialogBump'
+            || event.__typename === 'DialogDeleted') {
             await this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
+        }
 
-            // Dialogs List
-            await this.engine.dialogList.handleUserRead(event.cid, event.unread, visible, event.haveMention);
-            if (event.mid) {
-                await this.engine.getConversation(event.cid).onMessageReadEvent(event.mid);
-            }
-        } else if (event.__typename === 'DialogMessageDeleted') {
-            let visible = this.visibleConversations.has(event.cid);
-
-            // Global counter
-            await this.writeGlobalCounter(event.globalUnread, visible);
-
-            // Notifications
-            await this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
-
-            await this.engine.dialogList.handleMessageDeleted(event.cid, event.message.id, event.prevMessage, event.unread, event.haveMention, this.engine.user.id);
-        } else if (event.__typename === 'DialogPeerUpdated') {
-            log.warn('peer updated ' + event);
-            await this.engine.dialogList.handlePeerUpdated(event.cid, event.peer);
-            this.engine.getConversation(event.cid).handlePeerUpdated(event.peer);
-        } else if (event.__typename === 'DialogBump') {
-            let visible = this.visibleConversations.has(event.cid);
-            // Global counter
-            await this.writeGlobalCounter(event.globalUnread, visible);
-
-            // Notifications
-            let res = this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
-
-            // Dialogs List
-            let res2 = this.engine.dialogList.handleNewMessage({ ...event, message: event.topMessage }, visible);
-            await res;
-            await res2;
-        } else if (event.__typename === 'DialogMuteChanged') {
-            log.warn('new mute ' + event);
-            await this.engine.dialogList.handleMuteUpdated(event.cid, event.mute);
-            log.log(event.cid);
-            this.engine.getConversation(event.cid).handleMuteUpdated(event.mute);
-        } else if (event.__typename === 'DialogMessageUpdated') {
-            // Dialogs List
-            // console.log(event);
-            await this.engine.dialogList.handleMessageUpdated(event);
-        } else if (event.__typename === 'DialogDeleted') {
-            let visible = this.visibleConversations.has(event.cid);
-
-            // Global counter
-            await this.writeGlobalCounter(event.globalUnread, visible);
-
-            // Notifications
-            this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
-
-            // Remove dialog from lust
-            await this.engine.dialogList.handleDialogDeleted(event);
-        } else {
+        // Handle Dialog Updates
+        let processed = await this.engine.dialogList.handleUpdate(event);
+        if (!processed) {
             log.log('Unhandled update: ' + event.__typename);
         }
+
         log.log('Event Processed in ' + (currentTimeMillis() - start) + ' ms');
     }
 
