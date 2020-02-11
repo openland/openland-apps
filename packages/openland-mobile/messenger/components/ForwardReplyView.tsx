@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FullMessage } from 'openland-api/spacex.types';
-import { formatMessage } from 'openland-engines/messenger/DialogListEngine';
+import { formatMessage } from 'openland-engines/messenger/formatMessage';
 import { InputTopView } from './InputTopView';
 
 interface ForwardReplyViewProps {

@@ -1,9 +1,10 @@
 import { createLogger } from 'mental-log';
-import type { DataSource } from 'openland-y-utils/DataSource';
+import { DataSource } from 'openland-y-utils/DataSource';
 import { DataSourceStored, DataSourceStoredProvider } from 'openland-y-utils/DataSourceStored';
 import { DataSourceAugmentor } from 'openland-y-utils/DataSourceAugmentor';
-import type { MessengerEngine } from '../MessengerEngine';
-import type {
+import { formatMessage } from './formatMessage';
+import { MessengerEngine } from '../MessengerEngine';
+import {
     DialogFragment,
     DialogMessage,
     DialogKind,
@@ -54,15 +55,7 @@ export interface DialogDataSourceItem extends DialogDataSourceItemStored {
     typing?: string;
 }
 
-export function formatMessage(message: { message: string | null, fallback: string } | null): string {
-    if (!message) {
-        return '';
-    }
-
-    return (message.message && message.message.length > 0) ? message.message : message.fallback;
-}
-
-export const extractDialog = (dialog: DialogFragment, uid: string): DialogDataSourceItemStored => {
+const extractDialog = (dialog: DialogFragment, uid: string): DialogDataSourceItemStored => {
     let msg = formatMessage(dialog.topMessage);
     let isOut = dialog.topMessage ? dialog.topMessage!!.sender.id === uid : undefined;
     let sender = dialog.topMessage
