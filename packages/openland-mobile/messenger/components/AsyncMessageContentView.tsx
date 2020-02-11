@@ -232,7 +232,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                     {topContent}
                     {!shiftMeta && meta}
                     {shiftMeta && (
-                        <ASFlex marginBottom={14}>{meta}</ASFlex>
+                        <ASFlex height={14} flexShrink={0} flexGrow={2}>{meta}</ASFlex>
                     )}
                 </ASFlex>
             </AsyncBubbleView>
