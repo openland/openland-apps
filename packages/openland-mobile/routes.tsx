@@ -81,6 +81,7 @@ import { MatchmakingProfile } from './pages/matchmaking/MatchmakingProfile';
 import { SharedMedia } from './pages/shared-media/SharedMedia';
 import { PowerUps } from './pages/dev/PowerUps';
 import { Wallet } from './pages/wallet/Wallet';
+import { Subscriptions } from './pages/wallet/Subscriptions';
 import { AddCard } from './pages/wallet/AddCard';
 
 export const Routes = new SRoutesBuilder()
@@ -179,6 +180,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('SharedMedia', SharedMedia)
 
   .addRoute('Wallet', Wallet)
+  .addRoute('Subscriptions', Subscriptions)
   .addRoute('AddCard', AddCard)
 
   .build();

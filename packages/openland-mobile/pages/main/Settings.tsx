@@ -81,15 +81,24 @@ let SettingsContent = ((props: PageProps) => {
                 text="Invite friends"
                 onPress={handleGlobalInvitePress}
             />
-            <ZListGroup header="Settings">
-                {NON_PRODUCTION && (
+            { NON_PRODUCTION && (
+                <ZListGroup header="Billing">
                     <ZListItem
-                        leftIconColor={theme.tintCyan}
+                        leftIconColor={theme.tintPurple}
                         leftIcon={require('assets/ic-wallet-glyph-24.png')}
                         text="Wallet"
                         path="Wallet"
                     />
-                )}
+                    <ZListItem
+                        leftIconColor={theme.tintPink}
+                        leftIcon={require('assets/ic-wallet-glyph-24.png')}
+                        text="Subscriptions"
+                        path="Subscriptions"
+                    />
+                </ZListGroup>
+            )}
+
+            <ZListGroup header="Settings">
                 <ZListItem
                     leftIconColor={theme.tintBlue}
                     leftIcon={require('assets/ic-notifications-glyph-24.png')}
