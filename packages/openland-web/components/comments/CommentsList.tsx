@@ -105,31 +105,20 @@ export const CommentsList = React.memo((props: CommentsListProps) => {
     const client = useClient();
     const comments = client.useComments({ peerId }, { fetchPolicy: 'cache-and-network' }).comments.comments;
 
-    const updateHandler = async (event: CommentWatch_event_CommentUpdateSingle_update) => {
-        if (event.__typename === 'CommentReceived') {
-            await client.refetchComments({ peerId });
-        }
-    };
+    const updateHandler = React.useCallback(async () => {
+        await client.refetchComments({ peerId });
+    }, [peerId]);
 
     React.useEffect(() => {
-
-        let watcher = sequenceWatcher<CommentWatch>(null, (state, handler) => client.subscribeCommentWatch({ peerId, fromState: state }, handler), (s) => {
-            if (s.event && s.event.__typename === 'CommentUpdateBatch') {
-                for (let u of s.event.updates) {
-                    updateHandler(u);
-                }
-                return s.event.state;
-            } else if (s.event && s.event.__typename === 'CommentUpdateSingle') {
-                updateHandler(s.event.update);
-                return s.event.state;
+        return sequenceWatcher<CommentWatch>(null, (state, handler) => client.subscribeCommentWatch({ peerId, fromState: state }, handler), (updates) => {
+            if (updates.event) {
+                updateHandler();
+                return updates.event.state;
+            } else {
+                return null;
             }
-            return null;
         });
-
-        return () => {
-            watcher();
-        };
-    });
+    }, [peerId]);
 
     return (
         <CommentsListInner {...props} comments={comments} />
