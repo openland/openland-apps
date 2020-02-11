@@ -302,9 +302,9 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
     const { peerId } = props;
     const comments = client.useComments({ peerId }, { fetchPolicy: 'cache-and-network' }).comments.comments;
 
-    const updateHandler = async () => {
+    const updateHandler = React.useCallback(async () => {
         await client.refetchComments({ peerId });
-    };
+    }, [peerId]);
 
     React.useEffect(() => {
         return sequenceWatcher<CommentWatch>(null, (state, handler) => client.subscribeCommentWatch({ peerId, fromState: state }, handler), (updates) => {
@@ -315,7 +315,7 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                 return null;
             }
         });
-    }, [props.peerId]);
+    }, [peerId]);
 
     return <CommentsWrapperInner {...props} comments={comments} />;
 });
