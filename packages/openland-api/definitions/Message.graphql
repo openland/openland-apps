@@ -386,18 +386,6 @@ fragment FullMessage on ModernMessage {
         senderBadge {
             ...UserBadge
         }
-        source {
-            ... on MessageSourceChat {
-                chat {
-                    ... on PrivateRoom {
-                        id
-                    }
-                    ... on SharedRoom {
-                        id
-                    }
-                }
-            }
-        }
         quotedMessages {
             ...QuotedMessage
         }

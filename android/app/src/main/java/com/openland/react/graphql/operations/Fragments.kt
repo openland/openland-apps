@@ -587,23 +587,6 @@ internal val FullMessageSelector = obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("UserBadge", UserBadgeSelector)
                     )),
-                field("source", "source", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        inline("MessageSourceChat", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("chat", "chat", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    inline("PrivateRoom", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID")))
-                                    )),
-                                    inline("SharedRoom", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID")))
-                                    ))
-                                )))
-                        ))
-                    )),
                 field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", QuotedMessageSelector)
