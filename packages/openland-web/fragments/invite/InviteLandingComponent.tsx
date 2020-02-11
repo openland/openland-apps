@@ -22,7 +22,7 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { showPayConfirm } from '../wallet/components/showPayConfirm';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
-import { TextCaption, TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
+import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
 import {
     AuthSidebarComponent,
     AuthMobileHeader,
@@ -126,7 +126,7 @@ interface InviteLandingComponentLayoutProps {
     membersCount?: number | null;
     description?: string | null;
     button: any;
-    noLigin: boolean;
+    noLogin: boolean;
     room?: ResolvedInvite_invite_RoomInvite_room | RoomChat_room_SharedRoom;
 }
 
@@ -146,9 +146,9 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
 
     const avatars = room
         ? room.previewMembers
-              .map(x => x)
-              .filter(x => !!x)
-              .slice(0, 5)
+            .map(x => x)
+            .filter(x => !!x)
+            .slice(0, 5)
         : [];
 
     const showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
@@ -160,9 +160,9 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
 
     return (
         <div className={container}>
-            {props.noLigin && !isMobile && <AuthSidebarComponent />}
+            {props.noLogin && !isMobile && <AuthSidebarComponent />}
             <div className={rootClassName}>
-                {props.noLigin && isMobile && <AuthMobileHeader />}
+                {props.noLogin && isMobile && <AuthMobileHeader />}
                 <div className={mainContainer}>
                     {invitedByUser ? (
                         <div className={avatarsContainer}>
@@ -179,10 +179,10 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
                             </div>
                         </div>
                     ) : (
-                        <div className={avatarsContainer}>
-                            <UAvatar photo={photo} title={title} id={id} size="xx-large" />
-                        </div>
-                    )}
+                            <div className={avatarsContainer}>
+                                <UAvatar photo={photo} title={title} id={id} size="xx-large" />
+                            </div>
+                        )}
                     <div className={cx(TextTitle1, titleStyle)}>{joinTitle}</div>
                     {!!description && (
                         <div className={cx(TextBody, descriptionStyle)}>{description}</div>
@@ -360,10 +360,6 @@ const resolveRoomButton = (
             // TODO: show transaction if ACTION_REQUIRED?
             return (
                 <>
-                    <div className={TextCaption}>
-                        To keep your access to the group by subscription you need to complete
-                        payment
-                    </div>
                     <UButton
                         text="Open wallet"
                         path="/wallet"
@@ -447,7 +443,7 @@ export const SharedRoomPlaceholder = ({ room }: { room: RoomChat_room_SharedRoom
             membersCount={room.membersCount}
             description={room.description}
             room={room}
-            noLigin={false}
+            noLogin={false}
         />
     );
 };
@@ -515,12 +511,12 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 onClick={
                     matchmaking && signupRedirect
                         ? () => {
-                              showModalBox({ fullScreen: true, useTopCloser: false }, () => (
-                                  <MatchmakingStartComponent
-                                      onStart={() => router!.navigate(signupRedirect)}
-                                  />
-                              ));
-                          }
+                            showModalBox({ fullScreen: true, useTopCloser: false }, () => (
+                                <MatchmakingStartComponent
+                                    onStart={() => router!.navigate(signupRedirect)}
+                                />
+                            ));
+                        }
                         : undefined
                 }
                 zIndex={2}
@@ -547,24 +543,37 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
         );
     }
 
+    const premiumSuspended = room && room.isPremium && !room.premiumPassIsActive && (room.premiumSubscription && room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED);
+
     return (
         <>
             <XTrack
                 event={loggedIn ? 'invite_screen_view' : 'invite_landing_view'}
                 params={{ invite_type: whereToInvite.toLowerCase() }}
             />
-            <InviteLandingComponentLayout
-                invitedByUser={invitedByUser}
+            {premiumSuspended ? <InviteLandingComponentLayout
                 button={button}
                 whereToInvite={whereToInvite}
                 photo={room ? room.photo : organization!.photo}
-                title={room ? room.title : organization!.name}
+                title={`Your access to “${room ? room.title : organization!.name}” is suspended`}
                 id={room ? room.id : organization!.id}
-                membersCount={room ? room.membersCount : organization!.membersCount}
-                description={room ? room.description : organization!.about}
+                description={"To keep your access to the group by subscription you need to complete payment"}
                 room={room}
-                noLigin={!loggedIn}
-            />
+                noLogin={!loggedIn}
+            /> :
+                <InviteLandingComponentLayout
+                    invitedByUser={invitedByUser}
+                    button={button}
+                    whereToInvite={whereToInvite}
+                    photo={room ? room.photo : organization!.photo}
+                    title={room ? room.title : organization!.name}
+                    id={room ? room.id : organization!.id}
+                    membersCount={room ? room.membersCount : organization!.membersCount}
+                    description={room ? room.description : organization!.about}
+                    room={room}
+                    noLogin={!loggedIn}
+                />}
+
         </>
     );
 };

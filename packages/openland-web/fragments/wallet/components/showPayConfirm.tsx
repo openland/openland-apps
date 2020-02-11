@@ -13,15 +13,9 @@ import { WalletSubscriptionInterval } from 'openland-api/spacex.types';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import AddIcon from 'openland-icons/s/ic-add-24.svg';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { BrandLogo } from './BrandLogo';
-import { getPaymentMethodName } from 'openland-y-utils/wallet/brands';
-import { URadioDot } from 'openland-web/components/unicorn/URadioItem';
 const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController } & PaymentProps) => {
     let client = useClient();
     let cards = client.useMyCards({ fetchPolicy: 'cache-and-network' }).myCards;
-    // let failing = cards.find(c => c.isDefault && c.isFailng);
-    let failing = false;
-    const [selectedCard, selectCard] = React.useState<string | undefined>(undefined);
     const [cancelable, setCancelable] = React.useState<boolean>(true);
     const [loading, setLoading] = React.useState<boolean>(false);
     const onSubmit = React.useCallback(async () => {
@@ -29,9 +23,6 @@ const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController } & P
             setLoading(true);
             props.ctx.setOnEscPressed(() => false);
             setCancelable(false);
-            if (selectedCard) {
-                // TODO set selected card as default
-            }
             await props.action();
             props.ctx.hide();
         } catch (e) {
@@ -59,21 +50,10 @@ const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController } & P
                 {props.productDescription && <XView {...TextStyles.Body} color="var(--foregroundSecondary)">Amount</XView>}
 
             </XView>
-            {(cards.length === 0 || failing) && <UListGroup
+            {(cards.length === 0) && <UListGroup
                 header="Payment method"
                 action={cards.length > 0 ? { title: 'Add card', onClick: () => showAddCard() } : undefined}
             >
-                {cards.map(card => (
-                    <UListItem
-                        key={card.id}
-                        paddingHorizontal={24}
-                        title={getPaymentMethodName(card.brand)}
-                        titleStyle={TextStyles.Label1}
-                        icon={<BrandLogo brand={card.brand} />}
-                        onClick={() => selectCard(card.id)}
-                        rightElement={(<URadioDot checked={card.id === selectedCard} />)}
-                    />
-                ))}
                 <UListItem
                     key="add"
                     paddingHorizontal={24}
@@ -85,7 +65,7 @@ const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController } & P
             </UListGroup>}
             <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} backgroundColor="var(--backgroundTertiary)" justifyContent="flex-end" flexDirection="row">
                 <UButton text="Cancel" disable={!cancelable} onClick={() => props.ctx.hide()} style="secondary" size="large" />
-                <UButton disable={cards.length === 0 || (failing && !selectedCard)} text="Confirm" action={onSubmit} style="primary" size="large" loading={loading} />
+                <UButton disable={cards.length === 0} text="Confirm" action={onSubmit} style="primary" size="large" loading={loading} />
             </XView>
         </XView>
     );

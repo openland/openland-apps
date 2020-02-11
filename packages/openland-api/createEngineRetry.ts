@@ -31,7 +31,7 @@ export function createEngineRetry(engine: GraphqlEngine): GraphqlEngine {
                             }
                         }
                     }
-                    console.warn('API Error: ' + message);
+                    console.warn('API Error: ' + message, src.errors);
                     return new ApiError(message, invalidFields);
                 }
             }
