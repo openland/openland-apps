@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useClient } from 'openland-api/useClient';
 import { CommentView } from './CommentView';
-import { StickerFragment, CommentWatch, CommentWatch_event_CommentUpdateSingle_update, CommentEntryFragment, MessageReactionType, CommentEntryFragment_comment } from 'openland-api/spacex.types';
+import { StickerFragment, CommentWatch, CommentEntryFragment, MessageReactionType, CommentEntryFragment_comment } from 'openland-api/spacex.types';
 import { sortComments, getDepthOfComment } from 'openland-y-utils/sortComments';
 import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
