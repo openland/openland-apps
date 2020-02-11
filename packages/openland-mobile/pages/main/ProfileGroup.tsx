@@ -67,7 +67,9 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
             .button('Cancel', 'cancel')
             .action(`Leave`, 'destructive', async () => {
                 await client.mutateRoomLeave({ roomId });
-                props.router.pushAndResetRoot('Home');
+                setTimeout(() => {
+                    props.router.pushAndResetRoot('Home');
+                }, 100);
             })
             .show();
     }, [roomId]);
