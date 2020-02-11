@@ -239,7 +239,6 @@ class RNAsyncDataView {
   
   func watch(delegate: RNAsyncDataViewDelegate) -> ()-> Void {
     let key = UUID().uuidString
-    self.watchers.set(key: key, value: delegate)
     let st = self.state
     if st.inited {
       delegate.onInited(state: st)
@@ -252,6 +251,7 @@ class RNAsyncDataView {
         }
       }
     }
+    self.watchers.set(key: key, value: delegate)
     return {
       self.watchers.remove(key: key)
     }
