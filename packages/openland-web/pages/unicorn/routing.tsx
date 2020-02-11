@@ -18,6 +18,7 @@ import { MemberProfileEditFragment } from 'openland-web/fragments/group/MemberPr
 import { MessageFragment } from 'openland-web/fragments/message/MessageFragment';
 import { FeedFragment } from 'openland-web/fragments/feed/FeedFragment';
 import { WalletFragment } from 'openland-web/fragments/wallet/WalletFragment';
+import { SubscriptionsFragment } from 'openland-web/fragments/wallet/SubscriptionsFragment';
 import { AdvancedSettingsFragment } from 'openland-web/fragments/chat/AdvancedSettingsFragment';
 import { MatchmakingFragment } from 'openland-web/fragments/matchmaking/MatchmakingFragment';
 import { MatchmakingStartFragment } from 'openland-web/fragments/matchmaking/MatchmakingStartFragment';
@@ -79,6 +80,7 @@ routing.addRoute('/settings/about', () => SettingsAboutFragment);
 
 // Wallet
 routing.addRoute('/wallet', () => WalletFragment);
+routing.addRoute('/subscriptions', () => SubscriptionsFragment);
 
 // Profile
 routing.addRoute('/group/:id', () => GroupProfileFragment);

@@ -121,14 +121,23 @@ export const AccountFragment = React.memo(() => {
                         path="/settings/invites"
                     />
 
-                    <UListGroup header="Settings">
-                        <XWithRole role="super-admin">
+                    <XWithRole role="super-admin">
+                        <UListGroup header="Billing">
                             <UListItem
                                 title="Wallet"
                                 icon={<WalletIcon />}
                                 path="/wallet"
                             />
-                        </XWithRole>
+                            <UListItem
+                                title="Subscriptions"
+                                icon={<WalletIcon />}
+                                path="/subscriptions"
+                            />
+                        </UListGroup>
+                    </XWithRole>
+
+                    <UListGroup header="Settings">
+
                         <UListItem
                             title="Notifications"
                             icon={<NotificationsIcon />}
