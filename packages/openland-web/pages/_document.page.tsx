@@ -128,12 +128,25 @@ export default class OpenlandDocument extends Document {
                     resolvedInvite.invite.__typename === 'RoomInvite'
                 ) {
                     const room = resolvedInvite.invite.room;
+                    const roomSocialImage = await openland.queryRoomSocialImage({ roomId: room.id });
+
+                    let roomImage;
+
+                    if (room.socialImage) {
+                        roomImage = room.socialImage;
+                    } else if (roomSocialImage.roomSocialImage) {
+                        roomImage = roomSocialImage.roomSocialImage;
+                    } else if (room.photo) {
+                        roomImage = room.photo;
+                    } else {
+                        roomImage = 'https://cdn.openland.com/shared/og/og-global.png';
+                    }
 
                     metaTagsInfo = {
                         title: `${room.title} on Openland`,
                         url: urlPrefix + originalUrl,
                         description: room.description || 'Join Openland and find inspiring communities',
-                        image: room.socialImage ? room.socialImage : room.photo,
+                        image: roomImage,
                     };
                 }
             } else {

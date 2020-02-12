@@ -3359,6 +3359,9 @@ private let RoomSearchSelector = obj(
                         )))
                 )))
         )
+private let RoomSocialImageSelector = obj(
+            field("roomSocialImage", "roomSocialImage", arguments(fieldValue("roomId", refValue("roomId"))), scalar("String"))
+        )
 private let RoomSuperSelector = obj(
             field("roomSuper", "roomSuper", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5086,6 +5089,12 @@ class Operations {
         "query RoomSearch($query:String,$sort:String,$page:Int){items:betaRoomSearch(query:$query,sort:$sort,page:$page,first:25){__typename edges{__typename node{__typename ... on SharedRoom{__typename id kind isChannel title photo membership membersCount organization{__typename id photo name}}}cursor}pageInfo{__typename hasNextPage hasPreviousPage itemsCount currentPage pagesCount openEnded}}}",
         RoomSearchSelector
     )
+    let RoomSocialImage = OperationDefinition(
+        "RoomSocialImage",
+        .query, 
+        "query RoomSocialImage($roomId:ID!){roomSocialImage(roomId:$roomId)}",
+        RoomSocialImageSelector
+    )
     let RoomSuper = OperationDefinition(
         "RoomSuper",
         .query, 
@@ -6088,6 +6097,7 @@ class Operations {
         if name == "RoomOrganizationAdminMembers" { return RoomOrganizationAdminMembers }
         if name == "RoomPico" { return RoomPico }
         if name == "RoomSearch" { return RoomSearch }
+        if name == "RoomSocialImage" { return RoomSocialImage }
         if name == "RoomSuper" { return RoomSuper }
         if name == "RoomTiny" { return RoomTiny }
         if name == "RoomWithoutMembers" { return RoomWithoutMembers }

@@ -235,6 +235,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryRoomSearch(variables: Types.RoomSearchVariables, opts?: OperationParameters): Promise<Types.RoomSearch> {
         return this.query('RoomSearch', variables, opts);
     }
+    queryRoomSocialImage(variables: Types.RoomSocialImageVariables, opts?: OperationParameters): Promise<Types.RoomSocialImage> {
+        return this.query('RoomSocialImage', variables, opts);
+    }
     queryRoomSuper(variables: Types.RoomSuperVariables, opts?: OperationParameters): Promise<Types.RoomSuper> {
         return this.query('RoomSuper', variables, opts);
     }
@@ -517,6 +520,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchRoomSearch(variables: Types.RoomSearchVariables, opts?: OperationParameters): Promise<Types.RoomSearch> {
         return this.refetch('RoomSearch', variables);
     }
+    refetchRoomSocialImage(variables: Types.RoomSocialImageVariables, opts?: OperationParameters): Promise<Types.RoomSocialImage> {
+        return this.refetch('RoomSocialImage', variables);
+    }
     refetchRoomSuper(variables: Types.RoomSuperVariables, opts?: OperationParameters): Promise<Types.RoomSuper> {
         return this.refetch('RoomSuper', variables);
     }
@@ -798,6 +804,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateRoomSearch(variables: Types.RoomSearchVariables, updater: (data: Types.RoomSearch) => Types.RoomSearch | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomSearch', variables);
+    }
+    updateRoomSocialImage(variables: Types.RoomSocialImageVariables, updater: (data: Types.RoomSocialImage) => Types.RoomSocialImage | null): Promise<boolean> {
+        return this.updateQuery(updater, 'RoomSocialImage', variables);
     }
     updateRoomSuper(variables: Types.RoomSuperVariables, updater: (data: Types.RoomSuper) => Types.RoomSuper | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomSuper', variables);
@@ -1232,6 +1241,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useRoomSearch(variables: Types.RoomSearchVariables, opts?: SpaceQueryWatchParameters): Types.RoomSearch;
     useRoomSearch(variables: Types.RoomSearchVariables, opts?: SpaceQueryWatchParameters): Types.RoomSearch | null {
         return this.useQuery('RoomSearch', variables, opts);
+    }
+    useRoomSocialImage(variables: Types.RoomSocialImageVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomSocialImage | null;
+    useRoomSocialImage(variables: Types.RoomSocialImageVariables, opts?: SpaceQueryWatchParameters): Types.RoomSocialImage;
+    useRoomSocialImage(variables: Types.RoomSocialImageVariables, opts?: SpaceQueryWatchParameters): Types.RoomSocialImage | null {
+        return this.useQuery('RoomSocialImage', variables, opts);
     }
     useRoomSuper(variables: Types.RoomSuperVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomSuper | null;
     useRoomSuper(variables: Types.RoomSuperVariables, opts?: SpaceQueryWatchParameters): Types.RoomSuper;

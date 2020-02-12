@@ -3366,6 +3366,9 @@ const RoomSearchSelector = obj(
                         )))
                 )))
         );
+const RoomSocialImageSelector = obj(
+            field('roomSocialImage', 'roomSocialImage', args(fieldValue("roomId", refValue('roomId'))), scalar('String'))
+        );
 const RoomSuperSelector = obj(
             field('roomSuper', 'roomSuper', args(fieldValue("id", refValue('id'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5088,6 +5091,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'RoomSearch',
         body: 'query RoomSearch($query:String,$sort:String,$page:Int){items:betaRoomSearch(query:$query,sort:$sort,page:$page,first:25){__typename edges{__typename node{__typename ... on SharedRoom{__typename id kind isChannel title photo membership membersCount organization{__typename id photo name}}}cursor}pageInfo{__typename hasNextPage hasPreviousPage itemsCount currentPage pagesCount openEnded}}}',
         selector: RoomSearchSelector
+    },
+    RoomSocialImage: {
+        kind: 'query',
+        name: 'RoomSocialImage',
+        body: 'query RoomSocialImage($roomId:ID!){roomSocialImage(roomId:$roomId)}',
+        selector: RoomSocialImageSelector
     },
     RoomSuper: {
         kind: 'query',

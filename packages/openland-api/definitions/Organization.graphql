@@ -142,3 +142,6 @@ query OrganizationPublicRooms($organizationId: ID!, $first: Int!, $after: ID) {
         cursor
     }
 }
+query RoomSocialImage($roomId: ID!) {
+    roomSocialImage(roomId: $roomId)
+}

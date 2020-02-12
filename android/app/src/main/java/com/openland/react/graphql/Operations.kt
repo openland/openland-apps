@@ -83,6 +83,7 @@ object Operations {
         if (name == "RoomOrganizationAdminMembers") return RoomOrganizationAdminMembers
         if (name == "RoomPico") return RoomPico
         if (name == "RoomSearch") return RoomSearch
+        if (name == "RoomSocialImage") return RoomSocialImage
         if (name == "RoomSuper") return RoomSuper
         if (name == "RoomTiny") return RoomTiny
         if (name == "RoomWithoutMembers") return RoomWithoutMembers
