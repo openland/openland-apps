@@ -35,7 +35,7 @@ interface AsyncMessageTextViewProps {
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onLongPress: (e: ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
-    onReplyPress?: () => void;
+    onReplyPress?: (message: DataSourceMessageItem) => void;
 }
 
 export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageItem, theme: ThemeGlobal, onUserPress: (id: string) => void, onGroupPress: (id: string) => void, onOrganizationPress: (id: string) => void) => {

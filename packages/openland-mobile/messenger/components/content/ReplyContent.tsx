@@ -23,7 +23,7 @@ interface ReplyContentProps {
     onOrganizationPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
-    onPress?: () => void;
+    onPress?: (message: DataSourceMessageItem) => void;
     theme: ThemeGlobal;
 }
 export class ReplyContent extends React.PureComponent<ReplyContentProps> {
@@ -49,13 +49,19 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                     message.reply.map((m, i) => {
                         const needPaddedText = !message.text && !message.sticker && (i + 1 === message.reply!.length);
                         const repliedMessage = !m.isService ? m : undefined;
+                        
+                        const handlePress = () => { 
+                            if (onPress) {
+                                onPress(m);
+                            }
+                         };
 
                         if (repliedMessage) {
                             const attachFile = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
                             const sticker = m.sticker && m.sticker.__typename === 'ImageSticker' ? m.sticker : undefined;
 
                             return (
-                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={bubbleForegroundTertiary} onPress={onPress}>
+                                <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={bubbleForegroundTertiary} onPress={handlePress}>
                                     <ASText
                                         key={'reply-author-' + m.id}
                                         marginTop={-2}
@@ -73,7 +79,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                     </ASText>
 
                                     {repliedMessage.textSpans.length > 0 && (
-                                        <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10} onPress={onPress}>
+                                        <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10} onPress={handlePress}>
                                             <RenderSpans
                                                 spans={repliedMessage.textSpans}
                                                 message={message}

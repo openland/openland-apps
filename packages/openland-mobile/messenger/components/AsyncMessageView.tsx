@@ -63,11 +63,12 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     };
     const handleLongPress = React.useCallback(() => onMessageLongPress(message), [message]);
     const handleCommentPress = React.useCallback(() => onCommentsPress(message), [message]);
+    const handleReplyPress = React.useCallback((m: DataSourceMessageItem) => onCommentsPress(m), []);
 
     let res;
 
     if (message.text || message.reply || (message.attachments && message.attachments.length) || message.sticker) {
-        res = <AsyncMessageContentView theme={theme} key={'message-content'} message={message} onMediaPress={onMediaPress} onLongPress={handleLongPress} onDocumentPress={onDocumentPress} onUserPress={onUserPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onReplyPress={handleCommentPress} />;
+        res = <AsyncMessageContentView theme={theme} key={'message-content'} message={message} onMediaPress={onMediaPress} onLongPress={handleLongPress} onDocumentPress={onDocumentPress} onUserPress={onUserPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onReplyPress={handleReplyPress} />;
     }
 
     if (!res) {
