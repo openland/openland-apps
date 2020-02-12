@@ -1424,7 +1424,7 @@ type Mutation {
   paymentIntentCommit(id: ID!): Boolean!
   paymentCancel(id: ID!): Boolean!
   donateToUser(amount: Int!, id: ID!): Boolean!
-  subscriptionCancel(id: ID!): Boolean!
+  subscriptionCancel(id: ID!): WalletSubscription!
   alphaCreateInvite: Invite!
   alphaDeleteInvite(id: ID!): String!
   alphaJoinInvite(key: String!, isNewUser: Boolean): ID!

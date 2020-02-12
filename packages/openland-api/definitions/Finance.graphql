@@ -175,3 +175,8 @@ query Subscriptions {
         }
     }
 }
+mutation CancelSubscription($id: ID!) {
+    subscriptionCancel(id: $id) {
+        id
+    }
+}

@@ -3716,6 +3716,12 @@ const BuyPremiumChatSubscriptionSelector = obj(
                         ))
                 )))
         );
+const CancelSubscriptionSelector = obj(
+            field('subscriptionCancel', 'subscriptionCancel', args(fieldValue("id", refValue('id'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID')))
+                )))
+        );
 const CommentSetReactionSelector = obj(
             field('commentReactionAdd', 'commentReactionAdd', args(fieldValue("commentId", refValue('commentId')), fieldValue("reaction", refValue('reaction'))), notNull(scalar('Boolean')))
         );
@@ -5238,6 +5244,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'BuyPremiumChatSubscription',
         body: 'mutation BuyPremiumChatSubscription($chatId:ID!){betaBuyPremiumChatSubscription(chatId:$chatId){__typename id premiumPassIsActive premiumSubscription{__typename id state}}}',
         selector: BuyPremiumChatSubscriptionSelector
+    },
+    CancelSubscription: {
+        kind: 'mutation',
+        name: 'CancelSubscription',
+        body: 'mutation CancelSubscription($id:ID!){subscriptionCancel(id:$id){__typename id}}',
+        selector: CancelSubscriptionSelector
     },
     CommentSetReaction: {
         kind: 'mutation',

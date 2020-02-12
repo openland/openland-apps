@@ -18,6 +18,7 @@ interface NormalizedSubscription {
     photo: string;
     state: WalletSubscriptionState;
     expires: Date;
+    subscriptionId: string;
 }
 
 const displayDate = (date: Date) => {
@@ -79,7 +80,9 @@ const modalFooter = css`
 `;
 
 function showSubscriptionModal(props: NormalizedSubscription) {
-    showModalBox({ title: 'Subscription', useTopCloser: true }, () => {
+    showModalBox({ title: 'Subscription', useTopCloser: true }, (ctx) => {
+        const client = useClient();
+
         return (
             <>
                 <div className={props.state === WalletSubscriptionState.STARTED ? gradientModalBody : modalBody}>
@@ -113,7 +116,18 @@ function showSubscriptionModal(props: NormalizedSubscription) {
                 </div>
                 { props.state === WalletSubscriptionState.STARTED && (
                     <div className={modalFooter}>
-                        <UButton text="Cancel subscription" shape="square" size="large" style="secondary" />
+                        <UButton
+                            text="Cancel subscription"
+                            shape="square"
+                            size="large"
+                            style="secondary"
+                            onClick={() => {
+                                client.mutateCancelSubscription({ id: props.subscriptionId }).then(() => {
+                                    // TODO refetch subscriptions
+                                    ctx.hide();
+                                });
+                            }}
+                        />
                         <XView marginTop={16} color="var(--foregroundSecondary)">
                             <span className={TextCaption}>
                                 If you cancel now, you can still access<br />the group until {displayDate(props.expires)}
@@ -181,6 +195,7 @@ export const SubscriptionsFragment = React.memo(() => {
 
         return {
             ...group,
+            subscriptionId: subscription.id,
             state: subscription.state,
             expires: new Date(parseInt(subscription.expires, 10))
         };

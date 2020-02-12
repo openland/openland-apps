@@ -109,6 +109,7 @@ object Operations {
         if (name == "BetaNextDiscoverReset") return BetaNextDiscoverReset
         if (name == "BetaSubmitNextDiscover") return BetaSubmitNextDiscover
         if (name == "BuyPremiumChatSubscription") return BuyPremiumChatSubscription
+        if (name == "CancelSubscription") return CancelSubscription
         if (name == "CommentSetReaction") return CommentSetReaction
         if (name == "CommentUnsetReaction") return CommentUnsetReaction
         if (name == "CommitCardSetupIntent") return CommitCardSetupIntent
