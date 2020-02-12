@@ -5,11 +5,12 @@ import { useClient } from 'openland-api/useClient';
 import { Subscriptions_subscriptions_product_WalletSubscriptionProductGroup, WalletSubscriptionState } from 'openland-api/spacex.types';
 import { XView, XViewRouterContext } from 'react-mental';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { TextLabel1, TextSubhead, TextTitle2, TextBody } from 'openland-web/utils/TextStyles';
+import { TextLabel1, TextSubhead, TextTitle2, TextBody, TextCaption } from 'openland-web/utils/TextStyles';
 import { FormSection } from '../account/components/FormSection';
 import { FormWrapper } from '../account/components/FormWrapper';
 import { css } from 'linaria';
 import { showModalBox } from 'openland-x/showModalBox';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 
 interface NormalizedSubscription {
     id: string;
@@ -18,6 +19,15 @@ interface NormalizedSubscription {
     state: WalletSubscriptionState;
     expires: Date;
 }
+
+const displayDate = (date: Date) => {
+    const utc = date.toUTCString();
+    const segments = utc.split(' ');
+    const month = segments[2];
+    const day = segments[1];
+
+    return `${month} ${day}`;
+};
 
 const subsciptionView = css`
     color: initial;
@@ -36,46 +46,82 @@ const subsciptionView = css`
     }
 `;
 
-const displayDate = (date: Date) => {
-    const utc = date.toUTCString();
-    const segments = utc.split(' ');
-    const month = segments[2];
-    const day = segments[1];
+const gradientModalBody = css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 12px;
+    padding-bottom: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    background: linear-gradient(180deg, rgba(201, 204, 209, 0) 0%, rgba(201, 204, 209, 0.14) 100%);
+`;
 
-    return `${month} ${day}`;
-};
+const modalBody = css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 12px;
+    padding-bottom: 48px;
+    padding-left: 24px;
+    padding-right: 24px;
+`;
+
+const modalFooter = css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+`;
 
 function showSubscriptionModal(props: NormalizedSubscription) {
     showModalBox({ title: 'Subscription', useTopCloser: true }, () => {
         return (
-            <XView paddingHorizontal={24} paddingBottom={48} paddingTop={12} flexDirection="column" alignItems="center" justifyContent="center">
-                <UAvatar
-                    id={props.id}
-                    title={props.title}
-                    photo={props.photo}
-                    size='xx-large'
-                />
-                <XView marginTop={16}>
-                    <h2 className={TextTitle2}>
-                        { props.title }
-                    </h2>
-                </XView>
-                <XView marginTop={8} color="var(--foregroundSecondary)">
-                    <span className={TextBody}>
-                        { props.state === WalletSubscriptionState.STARTED && (
-                            <>Next bill on {displayDate(props.expires)}</>
-                        )}
+            <>
+                <div className={props.state === WalletSubscriptionState.STARTED ? gradientModalBody : modalBody}>
+                    <UAvatar
+                        id={props.id}
+                        title={props.title}
+                        photo={props.photo}
+                        size='xx-large'
+                    />
+                    <XView marginTop={16}>
+                        <h2 className={TextTitle2}>
+                            { props.title }
+                        </h2>
+                    </XView>
+                    <XView marginTop={8} color="var(--foregroundSecondary)">
+                        <span className={TextBody}>
+                            { props.state === WalletSubscriptionState.STARTED && (
+                                <>Next bill on {displayDate(props.expires)}</>
+                            )}
 
-                        { props.state === WalletSubscriptionState.CANCELED && (
-                            <>Expires on {displayDate(props.expires)}</>
-                        )}
+                            { props.state === WalletSubscriptionState.CANCELED && (
+                                <>Expires on {displayDate(props.expires)}</>
+                            )}
 
-                        { props.state === WalletSubscriptionState.EXPIRED && (
-                            <>Expired on {displayDate(props.expires)}</>
-                        )}
-                    </span>
-                </XView>
-            </XView>
+                            { props.state === WalletSubscriptionState.EXPIRED && (
+                                <>Expired on {displayDate(props.expires)}</>
+                            )}
+                        </span>
+                    </XView>
+                    
+                </div>
+                { props.state === WalletSubscriptionState.STARTED && (
+                    <div className={modalFooter}>
+                        <UButton text="Cancel subscription" shape="square" size="large" style="secondary" />
+                        <XView marginTop={16} color="var(--foregroundSecondary)">
+                            <span className={TextCaption}>
+                                If you cancel now, you can still access<br />the group until {displayDate(props.expires)}
+                            </span>
+                        </XView>
+                    </div>
+                )}
+            </>
         );
     });
 }
