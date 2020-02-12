@@ -19,7 +19,7 @@ const WalletComponent = React.memo<PageProps>((props) => {
     const balance = wallet.balance;
 
     const handleAddCard = React.useCallback(() => {
-        props.router.present('AddCard');
+        props.router.push('AddCard');
     }, []);
 
     return (

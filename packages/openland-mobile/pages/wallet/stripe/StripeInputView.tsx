@@ -72,7 +72,7 @@ export const StripeInputView = React.memo(React.forwardRef<StripeInputViewInstan
     }));
 
     return (
-        <View marginHorizontal={8} height={Platform.OS === 'android' ? 128 + 16 : 50}>
+        <View height={Platform.OS === 'android' ? 128 + 16 : 50}>
             <StripeInputViewNative callbackKey={callbackKey} style={{ height: '100%', width: '100%' }} />
         </View>
     );

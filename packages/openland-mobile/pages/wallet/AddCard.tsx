@@ -1,22 +1,24 @@
 import * as React from 'react';
 import { withApp } from 'openland-mobile/components/withApp';
 import { PageProps } from 'openland-mobile/components/PageProps';
-import { View, Text } from 'react-native';
 import { StripeInputView, StripeInputViewInstance } from './stripe/StripeInputView';
 import { SHeader } from 'react-native-s/SHeader';
-import { ZButton } from 'openland-mobile/components/ZButton';
 import { useClient } from 'openland-api/useClient';
 import uuid from 'uuid';
 import { backoff } from 'openland-y-utils/timer';
+import { SScrollView } from 'react-native-s/SScrollView';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
+import AlertBlanket from 'openland-mobile/components/AlertBlanket';
+import Toast from 'openland-mobile/components/Toast';
 
+let loader = Toast.loader();
 const AddCardComponent = React.memo<PageProps>((props) => {
     let client = useClient();
-    let [loading, setLoading] = React.useState(false);
-    let [error, setError] = React.useState<string | undefined>(undefined);
     let ref = React.useRef<StripeInputViewInstance>(null);
+
     let submit = React.useCallback(() => {
         (async () => {
-            setLoading(true);
+            loader.show();
             try {
                 // Create Intent
                 let retryKey = uuid();
@@ -26,7 +28,7 @@ const AddCardComponent = React.memo<PageProps>((props) => {
                 let res = await ref.current!.confirmSetupIntent(intent.clientSecret);
                 if (res.status !== 'success') {
                     if (res.message) {
-                        setError(res.message);
+                        AlertBlanket.alert(res.message);
                     }
                     return;
                 }
@@ -36,27 +38,23 @@ const AddCardComponent = React.memo<PageProps>((props) => {
 
                 // Refetch Cards
                 await backoff(() => client.refetchMyCards());
-                setError(undefined);
-                props.router.dismiss();
+                props.router.back();
             } catch (e) {
                 console.warn(e);
-                setError('Unknown error');
+                AlertBlanket.alert('Unknown error');
             } finally {
-                setLoading(false);
+                loader.hide();
             }
         })();
     }, []);
 
     return (
         <>
-            <SHeader title="Add Card" />
-            <View flexDirection="column" alignSelf="stretch" alignItems="stretch" marginTop={32}>
+            <SHeader title="New Card" />
+            <SHeaderButton title="Add" onPress={submit} />
+            <SScrollView flexDirection="column" alignSelf="stretch" alignItems="stretch" padding={16}>
                 <StripeInputView ref={ref} />
-                <View margin={16}>
-                    {error && <Text>{error}</Text>}
-                    <ZButton title="Add" onPress={submit} loading={loading} />
-                </View>
-            </View>
+            </SScrollView>
         </>
     );
 });

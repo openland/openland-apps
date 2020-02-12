@@ -1,6 +1,6 @@
 package com.openland.react.stripe
 
-import android.util.Log
+import android.view.ContextThemeWrapper
 import android.widget.FrameLayout
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
@@ -9,6 +9,7 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.openland.app.MainActivity
 import com.openland.app.MainApplication
+import com.openland.app.R
 import com.openland.react.runOnUIThread
 import com.stripe.android.model.ConfirmSetupIntentParams
 import com.stripe.android.view.CardMultilineWidget
@@ -21,7 +22,7 @@ object StripeRegistry {
 
 class StripeCardView(context: ReactContext) : FrameLayout(context) {
 
-    val input = CardMultilineWidget(context)
+    val input = CardMultilineWidget(ContextThemeWrapper(context, R.style.StripeCardTheme))
     var key: String? = null
 
     init {

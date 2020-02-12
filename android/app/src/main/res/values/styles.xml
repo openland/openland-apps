@@ -16,4 +16,9 @@
     <color name="white">#fff</color>
     <color name="black">#000</color>
     <color name="dark">#111214</color>
+
+    <style name="StripeCardTheme" parent="AppTheme">
+        <item name="colorControlActivated">@color/accent</item>
+    </style>
+
 </resources>

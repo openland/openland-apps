@@ -84,8 +84,10 @@ function build(config: ToastBuildConfig) {
             },
             { 
                 withoutWrapper: true,
-                overlayStyle: { backgroundColor: 'transparent' }
+                overlayStyle: { backgroundColor: 'transparent' },
+                cancelable: false
             },
+            
         );
 
     const hide = () => {

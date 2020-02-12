@@ -1,3 +1,4 @@
 <resources>
     <color name="splashbg">@color/dark</color>
+    <color name="accent">#fff</color>
 </resources>
