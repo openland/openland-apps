@@ -2,7 +2,7 @@ import * as React from 'react';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 import { useClient } from 'openland-api/useClient';
-import { Subscriptions_subscriptions_product_WalletSubscriptionProductGroup, WalletSubscriptionState } from 'openland-api/spacex.types';
+import { Subscriptions_subscriptions_product_WalletSubscriptionProductGroup, WalletSubscriptionState, Subscriptions } from 'openland-api/spacex.types';
 import { XView, XViewRouterContext } from 'react-mental';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextLabel1, TextSubhead, TextTitle2, TextBody, TextCaption } from 'openland-web/utils/TextStyles';
@@ -11,6 +11,7 @@ import { FormWrapper } from '../account/components/FormWrapper';
 import { css } from 'linaria';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { OpenlandClient } from 'openland-api/spacex';
 
 interface NormalizedSubscription {
     id: string;
@@ -79,10 +80,8 @@ const modalFooter = css`
     text-align: center;
 `;
 
-function showSubscriptionModal(props: NormalizedSubscription) {
+function showSubscriptionModal(props: NormalizedSubscription, client: OpenlandClient, refetchSubscriptions: () => Promise<Subscriptions>) {
     showModalBox({ title: 'Subscription', useTopCloser: true }, (ctx) => {
-        const client = useClient();
-
         return (
             <>
                 <div className={props.state === WalletSubscriptionState.STARTED ? gradientModalBody : modalBody}>
@@ -123,8 +122,9 @@ function showSubscriptionModal(props: NormalizedSubscription) {
                             style="secondary"
                             onClick={() => {
                                 client.mutateCancelSubscription({ id: props.subscriptionId }).then(() => {
-                                    // TODO refetch subscriptions
-                                    ctx.hide();
+                                    refetchSubscriptions().then(() => {
+                                        ctx.hide();
+                                    });
                                 });
                             }}
                         />
@@ -142,13 +142,15 @@ function showSubscriptionModal(props: NormalizedSubscription) {
 
 const SubscriptionView = React.memo((props: NormalizedSubscription) => {
     const router = React.useContext(XViewRouterContext)!;
+    const client = useClient();
+    const refetchSubscriptions = () => client.refetchSubscriptions();
 
     return (
         <div
             className={subsciptionView}
             onClick={() => props.state === WalletSubscriptionState.GRACE_PERIOD || props.state === WalletSubscriptionState.RETRYING
                 ? router.navigate('/wallet')
-                : showSubscriptionModal(props)
+                : showSubscriptionModal(props, client, refetchSubscriptions)
             }
         >
             <UAvatar
