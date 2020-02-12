@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInput, UInputField } from 'openland-web/components/unicorn/UInput';
@@ -9,9 +8,7 @@ import { useXRouter } from 'openland-x-routing/useXRouter';
 import { useClient } from 'openland-api/useClient';
 import { SuperAccounts_superAccounts } from 'openland-api/spacex.types';
 import { showModalBox } from 'openland-x/showModalBox';
-import { XModalContent } from 'openland-web/components/XModalContent';
-import { XVertical } from 'openland-x-layout/XVertical';
-import { XModalFooter } from 'openland-x-modal/XModal';
+import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
 import { UOrganizationView } from 'openland-web/components/unicorn/templates/UOrganizationView';
@@ -39,11 +36,9 @@ const AddAccountForm = ({ hide }: { hide: () => void }) => {
 
     return (
         <XView borderRadius={8}>
-            <XModalContent>
-                <XVertical flexGrow={1} separator={8}>
-                    <UInputField label="Organization Name" field={titleField} />
-                </XVertical>
-            </XModalContent>
+            <XView flexGrow={1}>
+                <UInputField label="Organization Name" field={titleField} />
+            </XView>
             <XModalFooter>
                 <XView marginRight={12}>
                     <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
@@ -195,9 +190,8 @@ export default withApp('Super Organizations', 'super-admin', () => {
 
     return (
         <DevToolsScaffold title="Organizations">
-            <XHeader text="Organizations" description={orgs.length + ' total'}>
-                <UButton text="Add organization" onClick={() => showAddAccountFormModal()} />
-            </XHeader>
+            <div onClick={() => showAddAccountFormModal()}>Add organization</div>
+            <UButton text="Add organization" onClick={() => showAddAccountFormModal()} />
             <SearchInput onClick={searchTextFilter} />
             <XView marginLeft={24}>
                 {/*<XSwitcher style="flat">*/}

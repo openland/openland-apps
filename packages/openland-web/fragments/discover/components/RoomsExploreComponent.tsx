@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XContentWrapper } from 'openland-x/XContentWrapper';
+import { XView } from 'react-mental';
 import {
     SearchCardsOrShowProfile,
     ComponentWithSort,
@@ -45,7 +45,7 @@ const Rooms = (props: WithChatSearchRoomsProps) => {
         tagsCount(data.items.pageInfo.itemsCount);
 
         return (
-            <XContentWrapper withPaddingBottom={true}>
+            <XView paddingBottom={20} paddingHorizontal={16}>
                 {data.items.edges.map(c => {
                     let room = c.node;
 
@@ -56,7 +56,7 @@ const Rooms = (props: WithChatSearchRoomsProps) => {
                         />
                     );
                 })}
-            </XContentWrapper>
+            </XView>
         );
     } else {
         tagsCount(0);

@@ -1,15 +1,14 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XVertical } from 'openland-x-layout/XVertical';
 
 export default withApp('Buttons', 'viewer', props => {
     return (
         <DevDocsScaffold title="Buttons">
-            <XVertical>
-                <XHorizontal>
+            <XView>
+                <XView margin={16}>
                     <UButton text="Label" size="small" shape="square" />
                     <UButton text="Label" size="small" style="secondary" />
                     <UButton text="Label" size="small" style="danger" />
@@ -18,8 +17,8 @@ export default withApp('Buttons', 'viewer', props => {
                     <UButton text="Label" size="small" style="secondary" loading={true} />
                     <UButton text="Label" size="small" style="danger" loading={true} />
                     <UButton text="Label" size="small" style="danger" loading={true} />
-                </XHorizontal>
-                <XHorizontal>
+                </XView>
+                <XView margin={16}>
                     <UButton text="Label" />
                     <UButton text="Label" style="secondary" />
                     <UButton text="Label" style="danger" />
@@ -28,8 +27,8 @@ export default withApp('Buttons', 'viewer', props => {
                     <UButton text="Label" style="secondary" loading={true} />
                     <UButton text="Label" style="danger" loading={true} />
                     <UButton text="Label" style="pay" loading={true} />
-                </XHorizontal>
-                <XHorizontal>
+                </XView>
+                <XView margin={16}>
                     <UButton text="Label" size="large" shape="round" />
                     <UButton text="Label" size="large" style="secondary" />
                     <UButton text="Label" size="large" style="danger" />
@@ -38,8 +37,8 @@ export default withApp('Buttons', 'viewer', props => {
                     <UButton text="Label" size="large" style="secondary" loading={true} />
                     <UButton text="Label" size="large" style="danger" loading={true} />
                     <UButton text="Label" size="large" style="pay" loading={true} />
-                </XHorizontal>
-            </XVertical>
+                </XView>
+            </XView>
         </DevDocsScaffold>
     );
 });

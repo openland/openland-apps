@@ -1,7 +1,5 @@
 import { withApp } from '../../components/withApp';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
-import { XHeader } from 'openland-x/XHeader';
-import { XContent } from 'openland-x-layout/XContent';
 import { XVertical2 } from 'openland-x/XVertical2';
 import * as React from 'react';
 
@@ -96,11 +94,7 @@ import * as React from 'react';
 
 export default withApp('Super Debug', ['super-admin', 'software-developer'], props => (
     <DevToolsScaffold title="Mails">
-        <XHeader text="Debug" />
-        <XContent>
-            <XVertical2>
-                {/* <DebugEvents /> */}
-            </XVertical2>
-        </XContent>
+        <div>Debug</div>
+        <XVertical2>{/* <DebugEvents /> */}</XVertical2>
     </DevToolsScaffold>
 ));

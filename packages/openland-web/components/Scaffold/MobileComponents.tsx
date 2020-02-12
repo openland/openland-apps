@@ -126,11 +126,9 @@ const MobileCustomPromoBanner = () => {
 };
 
 export const MobileScafoldMenuItem = ({
-    name,
     path,
     icon,
 }: {
-    name: string;
     path: string;
     icon: any;
 }) => {
@@ -171,9 +169,6 @@ export const MobileScafoldMenuItem = ({
                     alignItems="center"
                 >
                     {icon}
-                </XView>
-                <XView flexDirection="column" justifyContent="center" height={49} width={224}>
-                    {name}
                 </XView>
             </XView>
             <XView height={1} backgroundColor="#ececec" width="100%" />

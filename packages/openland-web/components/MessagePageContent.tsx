@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { XContent } from 'openland-x-layout/XContent';
 import { XView } from 'react-mental';
 
 export function MessagePageContent(props: { title: string; children?: any }) {
@@ -15,7 +14,9 @@ export function MessagePageContent(props: { title: string; children?: any }) {
             >
                 {props.title}
             </XView>
-            <XContent>{props.children}</XContent>
+            <XView paddingHorizontal={24}>
+                {props.children}
+            </XView>
         </>
     );
 }

@@ -8,7 +8,6 @@ import {
     OrganizationMembers_organization_members,
     RoomMembersPaginated_members,
 } from 'openland-api/spacex.types';
-import { XModalProps } from 'openland-x-modal/XModal';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-api/useClient';
 import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
@@ -22,7 +21,7 @@ import { OwnerLinkComponent } from 'openland-web/fragments/invite/OwnerLinkCompo
 import { ExplorePeople } from 'openland-web/fragments/create/ExplorePeople';
 import { SearchBox } from 'openland-web/fragments/create/SearchBox';
 
-interface InviteModalProps extends XModalProps {
+interface InviteModalProps {
     id: string;
     addMembers: any;
     members: {
@@ -231,7 +230,7 @@ export const AddMembersModal = React.memo(
         onOrganizationMembersAdd,
         onGroupMembersAdd,
         hide,
-    }: AddMemberModalT & XModalProps & { hide?: () => void }) => {
+    }: AddMemberModalT & { hide?: () => void }) => {
         const isMobile = React.useContext(IsMobileContext);
         const client = useClient();
 

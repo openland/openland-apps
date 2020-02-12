@@ -2,18 +2,15 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { withApp } from '../../components/withApp';
 import { XLoader } from 'openland-x/XLoader';
-import { UserSelect } from '../../components/UserSelect';
-import { XHeader } from 'openland-x/XHeader';
+// import { UserSelect } from '../../components/UserSelect';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useClient } from 'openland-api/useClient';
 import { useXRouter } from 'openland-x-routing/useXRouter';
-import { XModalFooter } from 'openland-x-modal/XModal';
+import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { showModalBox } from 'openland-x/showModalBox';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { XModalContent } from 'openland-web/components/XModalContent';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { SelectWithDropdown } from '../components/SelectWithDropdown';
 import { FeatureFlags_featureFlags } from 'openland-api/spacex.types';
 import { UInput } from 'openland-web/components/unicorn/UInput';
@@ -216,11 +213,9 @@ const AddMemberForm = ({ hide, accountId }: { accountId: string; hide: () => voi
 
     return (
         <XView borderRadius={8}>
-            <XModalContent>
-                <XVertical flexGrow={1} separator={8}>
-                    <UserSelect value={userField.input.value} onChange={userField.input.onChange} />
-                </XVertical>
-            </XModalContent>
+            <XView flexGrow={1}>
+                {/*<UserSelect value={userField.input.value} onChange={userField.input.onChange} />*/}
+            </XView>
             <XModalFooter>
                 <XView marginRight={12}>
                     <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
@@ -270,11 +265,9 @@ const RemoveMemberForm = ({ hide, accountId }: { accountId: string; hide: () => 
 
     return (
         <XView borderRadius={8}>
-            <XModalContent>
-                <XVertical flexGrow={1} separator={8}>
-                    <UserSelect value={userField.input.value} onChange={userField.input.onChange} />
-                </XVertical>
-            </XModalContent>
+            <XView flexGrow={1}>
+                {/*<UserSelect value={userField.input.value} onChange={userField.input.onChange} />*/}
+            </XView>
             <XModalFooter>
                 <XView marginRight={12}>
                     <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
@@ -345,22 +338,19 @@ const AddFeatureModal = ({ accountId, hide }: { accountId: string; hide: () => v
 
     return (
         <XView borderRadius={8}>
-            <XModalContent>
-                <XVertical flexGrow={1} separator={8}>
-                    {featureIdField.value && (
-                        <SelectWithDropdown
-                            {...featureIdField.input}
-                            value={featureIdField.value!.id}
-                            size="large"
-                            title={'feature'}
-                            selectOptions={data.featureFlags.map((v: any) => ({
-                                label: v.title,
-                                value: v.id,
-                            }))}
-                        />
-                    )}
-                </XVertical>
-            </XModalContent>
+            <XView flexGrow={1}>
+                {featureIdField.value && (
+                    <SelectWithDropdown
+                        {...featureIdField.input}
+                        value={featureIdField.value!.id}
+                        title={'feature'}
+                        selectOptions={data.featureFlags.map((v: any) => ({
+                            label: v.title,
+                            value: v.id,
+                        }))}
+                    />
+                )}
+            </XView>
             <XModalFooter>
                 <XView marginRight={12}>
                     <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
@@ -431,22 +421,19 @@ const RemoveFeatureModal = ({ accountId, hide }: { accountId: string; hide: () =
 
     return (
         <XView borderRadius={8}>
-            <XModalContent>
-                <XVertical flexGrow={1} separator={8}>
-                    {featureIdField.value && (
-                        <SelectWithDropdown
-                            {...featureIdField.input}
-                            value={featureIdField.value!.id}
-                            size="large"
-                            title={'feature'}
-                            selectOptions={data.featureFlags.map((v: any) => ({
-                                label: v.title,
-                                value: v.id,
-                            }))}
-                        />
-                    )}
-                </XVertical>
-            </XModalContent>
+            <XView flexGrow={1}>
+                {featureIdField.value && (
+                    <SelectWithDropdown
+                        {...featureIdField.input}
+                        value={featureIdField.value!.id}
+                        title={'feature'}
+                        selectOptions={data.featureFlags.map((v: any) => ({
+                            label: v.title,
+                            value: v.id,
+                        }))}
+                    />
+                )}
+            </XView>
             <XModalFooter>
                 <XView marginRight={12}>
                     <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
@@ -501,11 +488,9 @@ const EditOrganizationModal = ({
 
     return (
         <XView borderRadius={8}>
-            <XModalContent>
-                <XVertical flexGrow={1} separator={8}>
-                    <UInput label={'Organization Name'} {...titleField.input} />
-                </XVertical>
-            </XModalContent>
+            <XView flexGrow={1}>
+                <UInput label={'Organization Name'} {...titleField.input} />
+            </XView>
             <XModalFooter>
                 <XView marginRight={12}>
                     <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
@@ -542,7 +527,9 @@ export default withApp('Super Organization', 'super-admin', () => {
 
     return (
         <DevToolsScaffold title={superAccount.title}>
-            <XHeader text={superAccount.title} description={'Current State: ' + superAccount.state}>
+            <div>{superAccount.title}</div>
+            <div>{'Current State: ' + superAccount.state}</div>
+            <XView flexDirection="row" justifyContent="space-between">
                 <UButton
                     text="Edit"
                     flexShrink={0}
@@ -569,7 +556,7 @@ export default withApp('Super Organization', 'super-admin', () => {
                     </>
                 )}
                 {!actionsButton &&
-                    superAccount.state !== 'DELETED' && <ActivateButton accountId={accountId} />}
+                superAccount.state !== 'DELETED' && <ActivateButton accountId={accountId} />}
                 {actionsButton && <SuspendButton accountId={accountId} />}
                 {actionsButton && <PendButton accountId={accountId} />}
                 {actionsButton && <DeleteButton accountId={accountId} orgId={superAccount.orgId} />}
@@ -578,8 +565,9 @@ export default withApp('Super Organization', 'super-admin', () => {
                     orgId={superAccount.orgId}
                     published={superAccount.published}
                 />
-            </XHeader>
-            <XHeader text="Members" description={superAccount.members.length + ' total'} />
+            </XView>
+            <div>Members</div>
+            <div>{superAccount.members.length + ' total'}</div>
             {/* <XTable>
                 <XTable.Header>
                     <XTable.Cell>Name</XTable.Cell>
@@ -602,14 +590,16 @@ export default withApp('Super Organization', 'super-admin', () => {
                     ))}
                 </XTable.Body>
             </XTable> */}
-            <XHeader text="Features" description={superAccount.features.length + ' total'}>
+            <div>Features</div>
+            <div>{superAccount.features.length + ' total'}</div>
+            <XView flexDirection="row" justifyContent="space-between">
                 <UButton text="Add feature" onClick={() => showAddFeatureModal(accountId)} />
                 <UButton
                     style="danger"
                     text="Remove feature"
                     onClick={() => showRemoveFeatureModal(accountId)}
                 />
-            </XHeader>
+            </XView>
             {/* <XTable>
                 <XTable.Header>
                     <XTable.Cell>Key</XTable.Cell>

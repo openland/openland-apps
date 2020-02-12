@@ -2,7 +2,6 @@ import * as React from 'react';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { resolveActionPath } from 'openland-x-routing/resolveActionPath';
-import { XModalContext, XModalContextValue } from 'openland-x-modal/XModalContext';
 
 export interface NavigableChildProps {
     // Link
@@ -23,7 +22,6 @@ interface NavigableProps {
     path?: string;
     anchor?: string;
     query?: { field: string; value?: string; clear?: boolean; replace?: boolean };
-    autoClose?: boolean;
 
     // Activation
     activateForSubpaths?: boolean;
@@ -60,22 +58,18 @@ export function makeNavigable<T>(
 ): React.ComponentType<NavigableParentProps<T>> {
     // Actionable component
     let Actionable = class ActionableComponent extends React.PureComponent<
-        NavigableParentProps<T> & { __router: XRouter } & { __modal: XModalContextValue },
+        NavigableParentProps<T> & { __router: XRouter },
         { active: boolean }
     > {
         constructor(
-            props: NavigableParentProps<T> & { __router: XRouter } & {
-                __modal: XModalContextValue;
-            },
+            props: NavigableParentProps<T> & { __router: XRouter }
         ) {
             super(props);
             this.state = { active: this.resolveIsActive(props) };
         }
 
         componentWillReceiveProps(
-            nextProps: NavigableParentProps<T> & { __router: XRouter } & {
-                __modal: XModalContextValue;
-            },
+            nextProps: NavigableParentProps<T> & { __router: XRouter }
         ) {
             if (this.props !== nextProps) {
                 this.setState({ active: this.resolveIsActive(nextProps) });
@@ -83,9 +77,7 @@ export function makeNavigable<T>(
         }
 
         resolveIsActive(
-            props: NavigableParentProps<T> & { __router: XRouter } & {
-                __modal: XModalContextValue;
-            },
+            props: NavigableParentProps<T> & { __router: XRouter }
         ) {
             if (props.enabled === false) {
                 return false;
@@ -115,13 +107,11 @@ export function makeNavigable<T>(
         onClick: React.MouseEventHandler<any> = e => {
             const {
                 __router,
-                __modal,
                 path,
                 query,
                 anchor,
                 enabled,
                 onClick,
-                autoClose,
                 href,
             } = this.props;
 
@@ -155,10 +145,6 @@ export function makeNavigable<T>(
             // What if event was prevented on callback above?
             if (e.defaultPrevented) {
                 return;
-            }
-
-            if (autoClose && __modal && __modal.close) {
-                __modal.close();
             }
 
             // Handling click itself
@@ -218,7 +204,6 @@ export function makeNavigable<T>(
                 href,
                 path,
                 query,
-                autoClose,
                 activateForSubpaths,
                 active,
                 enabled,
@@ -235,7 +220,6 @@ export function makeNavigable<T>(
                         this.props.href ||
                         this.props.path ||
                         this.props.query ||
-                        this.props.autoClose ||
                         this.props.anchor
                             ? this.onClick
                             : onClick
@@ -250,11 +234,10 @@ export function makeNavigable<T>(
 
     const ContextWrapper = (props: NavigableParentProps<T>) => {
         const { children, ...other } = props as any;
-        const modal = React.useContext(XModalContext);
         const router = React.useContext(XRouterContext);
 
         return (
-            <Actionable {...other} __router={router!!} __modal={modal}>
+            <Actionable {...other} __router={router!!}>
                 {children}
             </Actionable>
         );

@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { UserSelect } from '../../components/UserSelect';
+// import { UserSelect } from '../../components/UserSelect';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { useClient } from 'openland-api/useClient';
 import { SuperAdminRole } from 'openland-api/spacex.types';
 import { XView } from 'react-mental';
-import { XModalContent } from 'openland-web/components/XModalContent';
-import { XVertical } from 'openland-x-layout/XVertical';
-import { XModalFooter } from 'openland-x-modal/XModal';
+import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { showModalBox } from 'openland-x/showModalBox';
 import { SelectWithDropdown } from '../components/SelectWithDropdown';
 import { useForm } from 'openland-form/useForm';
@@ -41,24 +39,21 @@ export const AddSuperAdminForm = ({ hide }: { hide: () => void }) => {
 
     return (
         <XView borderRadius={8}>
-            <XModalContent>
-                <XVertical flexGrow={1} separator={8}>
-                    <UserSelect value={userField.input.value} onChange={userField.input.onChange} />
-                    <SelectWithDropdown
-                        {...roleField.input}
-                        size="large"
-                        title={'User role'}
-                        selectOptions={[
-                            { label: 'Editor', value: 'EDITOR' },
-                            { label: 'Super Admin', value: 'SUPER_ADMIN' },
-                            {
-                                label: 'Software Developer',
-                                value: 'SOFTWARE_DEVELOPER',
-                            },
-                        ]}
-                    />
-                </XVertical>
-            </XModalContent>
+            <XView flexGrow={1}>
+                {/*<UserSelect value={userField.input.value} onChange={userField.input.onChange} />*/}
+                <SelectWithDropdown
+                    {...roleField.input}
+                    title={'User role'}
+                    selectOptions={[
+                        { label: 'Editor', value: 'EDITOR' },
+                        { label: 'Super Admin', value: 'SUPER_ADMIN' },
+                        {
+                            label: 'Software Developer',
+                            value: 'SOFTWARE_DEVELOPER',
+                        },
+                    ]}
+                />
+            </XView>
             <XModalFooter>
                 <XView marginRight={12}>
                     <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
@@ -106,11 +101,9 @@ const RemoveSuperAdminForm = ({ hide }: { hide: () => void }) => {
 
     return (
         <XView borderRadius={8}>
-            <XModalContent>
-                <XVertical flexGrow={1} separator={8}>
-                    <UserSelect value={userField.input.value} onChange={userField.input.onChange} />
-                </XVertical>
-            </XModalContent>
+            <XView flexGrow={1}>
+                {/*<UserSelect value={userField.input.value} onChange={userField.input.onChange} />*/}
+            </XView>
             <XModalFooter>
                 <XView marginRight={12}>
                     <UButton text="Cancel" style="secondary" size="large" onClick={hide} />

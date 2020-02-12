@@ -1,25 +1,9 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
+import { css } from 'linaria';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { XPolitePopper } from 'openland-x/XPolitePopper';
-import { XVertical } from 'openland-x-layout/XVertical';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { MultiplePicker } from './multiplePicker';
 import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 import { delay } from 'openland-y-utils/timer';
-import { XPopperContentDEPRECATED } from 'openland-x/popper/XPopperContent';
-
-const ContentWrapper = Glamorous(XPopperContentDEPRECATED)({
-    minWidth: 180,
-});
-
-const PickerWrapper = Glamorous(XVertical)({
-    margin: -10,
-});
-
-const PickerEntries = Glamorous(XHorizontal)({
-    margin: 0,
-});
+import { usePopper } from 'openland-web/components/unicorn/usePopper';
 
 const options = {
     label: 'Sort by',
@@ -29,127 +13,89 @@ const options = {
     ],
 };
 
-interface SortControlledPickerProps {
-    query?: string;
-    onPick: (location: { label: string; value: string }) => void;
-    options: {
-        label: string;
-        values: {
-            label: string;
-            value: string;
-        }[];
-    };
+const optionsContainer = css`
+    display: flex;
+    flex-direction: column;
+`;
+
+const optionTitle = css`
+    padding: 8px 16px 0;
+    color: var(--foregroundSecondary);
+    margin-bottom: 4px;
+`;
+
+const optionContent = css`
+    cursor: pointer;
+    padding: 16px;
+    height: 48px;
+    &:hover {
+        background-color: var(--backgroundPrimaryHover);
+    }
+`;
+
+interface SortPickerProps {
+    withoutFeatured?: boolean;
+    sort: { orderBy: string; featured: boolean };
+    onPick: (sort: { orderBy: string; featured: boolean }) => void;
+    options?: { label: string; values: { label: string; value: string }[] };
 }
 
-class SortControlledPicker extends React.Component<SortControlledPickerProps> {
-    render() {
-        return (
-            <MultiplePicker
-                options={[this.props.options]}
-                onPick={this.props.onPick}
-                query={this.props.query}
-            />
-        );
-    }
-}
+export const SortPicker = React.memo((props: SortPickerProps) => {
+    const [featured, setFeatured] = React.useState(false);
 
-const CheckboxWrap = Glamorous.div({
-    marginTop: 11,
-    marginLeft: -10,
-    marginBottom: -6,
-    marginRight: -10,
-    paddingLeft: 16,
-    paddingTop: 18,
-    paddingRight: 16,
-    borderTop: '1px solid #f1f2f5',
-});
-
-export class SortPicker extends React.Component<
-    {
-        withoutFeatured?: boolean;
-        sort: { orderBy: string; featured: boolean };
-        onPick: (sort: { orderBy: string; featured: boolean }) => void;
-        options?: { label: string; values: { label: string; value: string }[] };
-    },
-    { popper: boolean; featured: boolean }
-> {
-    constructor(props: any) {
-        super(props);
-        this.state = { popper: false, featured: props.sort.featured };
-    }
-
-    onPick = (q: { label: string; value: string }) => {
-        this.close();
-        this.props.onPick({
-            featured: this.props.sort.featured,
-            orderBy: q.value,
-        });
-    }
-
-    onFeturedChange = (checked: boolean) => {
-        this.setState({ featured: checked });
+    const onFeturedChange = (checked: boolean) => {
+        setFeatured(checked);
         delay(0).then(() => {
-            this.props.onPick({
+            props.onPick({
                 featured: checked,
-                orderBy: this.props.sort.orderBy,
+                orderBy: props.sort.orderBy,
             });
         });
-    }
+    };
 
-    switch = () => {
-        this.setState({ popper: !this.state.popper });
-    }
+    const onPick = (q: { label: string; value: string }) => {
+        props.onPick({
+            featured: props.sort.featured,
+            orderBy: q.value,
+        });
+    };
 
-    close = () => {
-        this.setState({ popper: false });
-    }
+    const totalOptions = props.options || options;
 
-    render() {
-        let content = (
+    const [, show] = usePopper(
+        {
+            placement: 'top-end',
+            hideOnLeave: false,
+            hideOnClick: true,
+            hideOnChildClick: true,
+        },
+        () => (
             <>
-                <PickerWrapper>
-                    <PickerEntries separator="none" width="100%">
-                        <SortControlledPicker
-                            onPick={this.onPick}
-                            options={this.props.options || options}
-                        />
-                    </PickerEntries>
-                </PickerWrapper>
-                {!this.props.withoutFeatured && (
-                    <CheckboxWrap>
-                        <UCheckbox
-                            label="Featured first"
-                            value={this.state.featured ? 'f' : ''}
-                            checked={this.state.featured}
-                            onChange={this.onFeturedChange}
-                        />
-                    </CheckboxWrap>
+                <div className={optionsContainer}>
+                    <div className={optionTitle}>{totalOptions.label}</div>
+                    {totalOptions.values.map(i => (
+                        <div onClick={() => onPick(i)} key={i.value} className={optionContent}>
+                            {i.label}
+                        </div>
+                    ))}
+                </div>
+                {!props.withoutFeatured && (
+                    <UCheckbox
+                        label="Featured first"
+                        value={featured ? 'f' : ''}
+                        checked={featured}
+                        onChange={onFeturedChange}
+                    />
                 )}
             </>
-        );
-        let selected = (this.props.options || options).values.find(
-            v => v.value === this.props.sort.orderBy,
-        );
-        return (
-            <XPolitePopper
-                placement="bottom-end"
-                show={this.state.popper}
-                content={content}
-                onClickOutside={this.close}
-                arrow={null}
-                marginTop={8}
-                marginRight={-1}
-                contentContainer={<ContentWrapper />}
-            >
-                <div>
-                    <UButton
-                        text={selected ? selected.label : '?'}
-                        style="secondary"
-                        onClick={this.switch}
-                        size="small"
-                    />
-                </div>
-            </XPolitePopper>
-        );
-    }
-}
+        ),
+    );
+
+    const selected = (props.options || options).values.find(v => v.value === props.sort.orderBy);
+
+    return (
+        <div onClick={show}>
+            <UButton text={selected ? selected.label : '?'} style="secondary" size="small" />
+        </div>
+    );
+});

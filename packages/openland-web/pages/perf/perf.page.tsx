@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { css } from 'linaria';
@@ -76,12 +75,12 @@ export default class Perf extends React.Component {
     render() {
         return (
             <XVertical2>
-                <XHorizontal>
+                <XView flexDirection="row">
                     <UButton text="0" path="/performance" />
                     <UButton text="1" path="/performance?tab=1" />
                     <UButton text="2" path="/performance?tab=2" />
                     <UButton text="3" path="/performance?tab=3" />
-                </XHorizontal>
+                </XView>
                 <XRouterContext.Consumer>
                     {ctx => {
                         if (ctx!.query.tab === '1') {

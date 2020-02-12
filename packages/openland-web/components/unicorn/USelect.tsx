@@ -345,7 +345,7 @@ const singleValueContainer = css`
 const SingleValueRender = (props: ValueRenderProps) => {
     return (
         <div className={singleValueContainer}>
-            {props.value.labelShort ? props.value.labelShort : props.value.label}
+            {props.value.labelShort ? props.value.labelShort : props.value.label || props.value.title}
         </div>
     );
 };

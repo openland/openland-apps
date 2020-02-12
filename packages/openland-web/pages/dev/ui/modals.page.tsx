@@ -1,16 +1,16 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { showModalBox } from 'openland-x/showModalBox';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { delay } from 'openland-y-utils/timer';
 
 export default withApp('Modals', 'viewer', props => {
     return (
         <DevDocsScaffold title="Modals">
-            <XHorizontal>
+            <XView>
                 <UButton
                     text="Simple modal"
                     onClick={() => {
@@ -46,7 +46,7 @@ export default withApp('Modals', 'viewer', props => {
                         builder.show();
                     }}
                 />
-            </XHorizontal>
+            </XView>
         </DevDocsScaffold>
     );
 });

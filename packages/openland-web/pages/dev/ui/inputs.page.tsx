@@ -1,8 +1,8 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { UInput } from 'openland-web/components/unicorn/UInput';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { USelect } from 'openland-web/components/unicorn/USelect';
 
 const SelectComponents = () => {
@@ -112,11 +112,11 @@ const SelectComponents = () => {
 export default withApp('Inputs', 'viewer', props => {
     return (
         <DevDocsScaffold title="Inputs">
-            <XVertical>
+            <XView>
                 <UInput label="Label" />
                 <UInput label="Label" value="value" />
                 <SelectComponents />
-            </XVertical>
+            </XView>
         </DevDocsScaffold>
     );
 });

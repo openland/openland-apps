@@ -1,7 +1,6 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
+import { css } from 'linaria';
 import { XView } from 'react-mental';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { useClient } from 'openland-api/useClient';
 import { XLoader } from 'openland-x/XLoader';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -12,18 +11,22 @@ import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { plural } from 'openland-y-utils/plural';
 import { GlobalSearch_items, GlobalSearchVariables } from 'openland-api/spacex.types';
 
-const NoResultWrapper = Glamorous(XVertical)({
-    marginTop: 34,
-});
+const noResultContainer = css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 34px;
+`;
 
-const Image = Glamorous.div({
-    width: 178,
-    height: 155,
-    backgroundImage: "url('/static/X/messenger/channels-search-empty.svg')",
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain',
-    backgroundPosition: 'center',
-});
+const imageStyle = css`
+    width: 178px;
+    height: 155px;
+    background-image: url(/static/X/messenger/channels-search-empty.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    margin-bottom: 20px;
+`;
 
 type DialogSearchResultsT = {
     variables: GlobalSearchVariables;
@@ -70,21 +73,22 @@ const DialogSearchResultsInner = React.memo((props: DialogSearchResultsT) => {
         { keys: ['ArrowUp'], callback: handleOptionUp },
         { keys: ['ArrowDown'], callback: handleOptionDown },
         {
-            keys: ['Enter'], callback: () => {
+            keys: ['Enter'],
+            callback: () => {
                 let d = items[selectedIndex];
                 if (d) {
                     props.onPick(d);
                 }
-            }
+            },
         },
     ]);
 
     if (items.length === 0) {
         return (
-            <NoResultWrapper separator={10} alignItems="center">
-                <Image />
+            <div className={noResultContainer}>
+                <div className={imageStyle} />
                 <XView color="rgba(0, 0, 0, 0.5)">No results</XView>
-            </NoResultWrapper>
+            </div>
         );
     }
 
@@ -94,14 +98,45 @@ const DialogSearchResultsInner = React.memo((props: DialogSearchResultsT) => {
                 let selected = index === selectedIndex;
                 if (i.__typename === 'SharedRoom') {
                     if (!props.isForwarding || i.canSendMessage) {
-                        return <UListItem key={i.id} onClick={() => props.onPick(i)} hovered={selected} title={i.title} description={plural(i.membersCount || 0, ['member', 'members'])} avatar={({ id: i.id, photo: i.roomPhoto, title: i.title })} useRadius={false} paddingHorizontal={props.paddingHorizontal} />;
+                        return (
+                            <UListItem
+                                key={i.id}
+                                onClick={() => props.onPick(i)}
+                                hovered={selected}
+                                title={i.title}
+                                description={plural(i.membersCount || 0, ['member', 'members'])}
+                                avatar={{ id: i.id, photo: i.roomPhoto, title: i.title }}
+                                useRadius={false}
+                                paddingHorizontal={props.paddingHorizontal}
+                            />
+                        );
                     }
                     return null;
                 } else if (i.__typename === 'Organization') {
-                    return <UListItem key={i.id} onClick={() => props.onPick(i)} hovered={selected} title={i.name} description={i.about} avatar={({ id: i.id, photo: i.photo, title: i.name })} useRadius={false} paddingHorizontal={props.paddingHorizontal} />;
+                    return (
+                        <UListItem
+                            key={i.id}
+                            onClick={() => props.onPick(i)}
+                            hovered={selected}
+                            title={i.name}
+                            description={i.about}
+                            avatar={{ id: i.id, photo: i.photo, title: i.name }}
+                            useRadius={false}
+                            paddingHorizontal={props.paddingHorizontal}
+                        />
+                    );
                 } else if (i.__typename === 'User') {
                     if (!props.isForwarding || !i.isBot) {
-                        return <UUserView key={i.id} onClick={() => props.onPick(i)} hovered={selected} user={i} useRadius={false} paddingHorizontal={props.paddingHorizontal} />;
+                        return (
+                            <UUserView
+                                key={i.id}
+                                onClick={() => props.onPick(i)}
+                                hovered={selected}
+                                user={i}
+                                useRadius={false}
+                                paddingHorizontal={props.paddingHorizontal}
+                            />
+                        );
                     }
                     return null;
                 } else {

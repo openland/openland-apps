@@ -3,7 +3,6 @@ import { css, cx } from 'linaria';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XView, XViewRouterContext } from 'react-mental';
 import { UserForMention } from 'openland-api/spacex.types';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XDate } from 'openland-x/XDate';
 import { UAvatar } from './unicorn/UAvatar';
 import { emoji } from 'openland-y-utils/emoji';
@@ -116,9 +115,10 @@ export const UserPopperContent = React.memo(
             }, []);
             return (
                 <div className={userContainer}>
-                    <XHorizontal>
+                    <XView flexDirection="row">
                         <XView
                             flexShrink={0}
+                            marginRight={16}
                             onClick={(e: React.MouseEvent) => {
                                 e.stopPropagation();
                                 if (router) {
@@ -176,7 +176,7 @@ export const UserPopperContent = React.memo(
                                 />
                             )}
                         </div>
-                    </XHorizontal>
+                    </XView>
                 </div>
             );
         }
@@ -219,9 +219,10 @@ export const EntityPopperContent = React.memo(
         const router = React.useContext(XViewRouterContext);
         return (
             <div className={entityContainer}>
-                <XHorizontal>
+                <XView flexDirection="row">
                     <XView
                         flexShrink={0}
+                        marginRight={16}
                         onClick={(e: React.MouseEvent) => {
                             e.stopPropagation();
                             if (router) {
@@ -266,7 +267,7 @@ export const EntityPopperContent = React.memo(
                             {subtitle}
                         </XView>
                     </XView>
-                </XHorizontal>
+                </XView>
             </div>
         );
     },

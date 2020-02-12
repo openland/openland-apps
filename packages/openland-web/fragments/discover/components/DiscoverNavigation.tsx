@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchBox } from 'openland-web/fragments/discover/components/SearchBox';
 import { SortPicker } from 'openland-web/fragments/discover/components/sortPicker';
 import { XLoader } from 'openland-x/XLoader';
@@ -99,7 +98,7 @@ export const SearchCardsOrShowProfile = React.memo(
         return (
             <>
                 {!id && (
-                    <XVertical separator={0} height="100%">
+                    <XView height="100%">
                         <SearchBox
                             value={query}
                             onChange={setQuery}
@@ -147,7 +146,7 @@ export const SearchCardsOrShowProfile = React.memo(
                                 page,
                             }}
                         />
-                    </XVertical>
+                    </XView>
                 )}
 
                 {id && ProfileComponent && <ProfileComponent id={id} />}

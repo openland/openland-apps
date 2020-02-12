@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { withApp } from '../../components/withApp';
-import { XHeader } from 'openland-x/XHeader';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInput } from 'openland-web/components/unicorn/UInput';
@@ -9,7 +8,6 @@ import { XView } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-api/useClient';
 import { showModalBox } from 'openland-x/showModalBox';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 
 interface ExplorePeopleProps {
@@ -43,7 +41,7 @@ function BlockUserModal(
             flexDirection="row"
             justifyContent="flex-end"
         >
-            <XHorizontal justifyContent="space-between">
+            <XView flexDirection="row" justifyContent="space-between">
                 <UButton text="Cancel" onClick={ctx.hide} />
                 <UButton
                     text={deleted ? 'Done!' : 'Delete'}
@@ -59,7 +57,7 @@ function BlockUserModal(
                             });
                     }}
                 />
-            </XHorizontal>
+            </XView>
         </XView>
     ));
 }
@@ -120,7 +118,7 @@ export default withApp('Super Users', 'super-admin', () => {
 
     return (
         <DevToolsScaffold title="Users" bottomOffset={false}>
-            <XHeader text="Users" />
+            <div>Users</div>
             <UInput
                 label="search"
                 onChange={onInputChange}

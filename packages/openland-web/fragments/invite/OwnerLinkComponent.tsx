@@ -3,7 +3,6 @@ import copy from 'copy-to-clipboard';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
-import { XMutation } from 'openland-x/XMutation';
 import { trackEvent } from 'openland-x-analytics';
 import { TextBody } from 'openland-web/utils/TextStyles';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
@@ -28,26 +27,21 @@ const RenewInviteLinkButton = (props: RenewInviteLinkButtonProps) => {
     const [show] = useCaptionPopper({ text: 'Revoke link' });
     const client = useClient();
     const id = props.id;
-    let renew = undefined;
 
-    if (props.isGroup) {
-        renew = async () => {
+    const renew = async () => {
+        if (props.isGroup) {
             await client.mutateRoomRenewInviteLink({ roomId: id });
             await client.refetchRoomInviteLink({ roomId: id });
-        };
-    } else if (props.isOrganization) {
-        renew = async () => {
+        } else if (props.isOrganization) {
             await client.mutateOrganizationCreatePublicInvite({ organizationId: id });
             await client.refetchOrganizationPublicInvite({ organizationId: id });
-        };
-    }
+        }
+    };
 
     return (
-        <XMutation mutation={renew}>
-            <div className={renewContainer} onMouseEnter={show}>
-                <UIcon icon={<IcRevoke />} size={20} />
-            </div>
-        </XMutation>
+        <div className={renewContainer} onMouseEnter={show} onClick={renew}>
+            <UIcon icon={<IcRevoke />} size={20} />
+        </div>
     );
 };
 

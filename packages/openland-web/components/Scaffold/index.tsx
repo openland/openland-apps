@@ -1,11 +1,7 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { XView } from 'react-mental';
-import { XVertical } from 'openland-x-layout/XVertical';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { TextAppBar } from 'openland-text/TextAppBar';
 import { XCounter } from 'openland-x/XCounter';
-import { XScrollView } from 'openland-x/XScrollView';
 import RoomIcon from 'openland-icons/channel-2.svg';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { AdaptiveHOC } from 'openland-web/components/Adaptive';
@@ -44,24 +40,6 @@ const CounterWrapper = (props: { count: number }) => (
 );
 
 //
-// Menu
-//
-
-const MenuView = Glamorous(XScrollView)({
-    width: 360,
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: '#ffffff',
-
-    '& > .simplebar-scroll-content': {
-        '& > .simplebar-content': {
-            overflowX: 'hidden',
-        },
-    },
-    borderRight: '1px solid #ececec',
-});
-
-//
 // Implementation
 //
 
@@ -73,17 +51,9 @@ class ScaffoldMenu extends React.Component {
         if (React.Children.count(this.props.children) === 0) {
             return null;
         }
-        return <MenuView>{this.props.children}</MenuView>;
+        return <div>{this.props.children}</div>;
     }
 }
-
-const PageDiv = Glamorous.div({
-    display: 'flex',
-    flexShrink: 0,
-    flexGrow: 0,
-    width: '64px',
-    height: '64px',
-});
 
 class ScaffoldContent extends React.Component<{
     padding?: boolean;
@@ -101,25 +71,55 @@ class ScaffoldContent extends React.Component<{
             return (
                 <>
                     {children}
-                    {bottomOffset !== false && <PageDiv />}
+                    {bottomOffset !== false && (
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexShrink: 0,
+                                flexGrow: 0,
+                                width: '64px',
+                                height: '64px',
+                            }}
+                        />
+                    )}
                 </>
             );
         }
         if (canUseDOM) {
             return (
                 <React.Suspense fallback={<XLoader loading={true} />}>
-                    <XVertical flexGrow={1}>
+                    <XView flexGrow={1}>
                         {children}
-                        {bottomOffset !== false && <PageDiv />}
-                    </XVertical>
+                        {bottomOffset !== false && (
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexShrink: 0,
+                                    flexGrow: 0,
+                                    width: '64px',
+                                    height: '64px',
+                                }}
+                            />
+                        )}
+                    </XView>
                 </React.Suspense>
             );
         }
         return (
-            <XVertical flexGrow={1}>
+            <XView flexGrow={1}>
                 {children}
-                {bottomOffset !== false && <PageDiv />}
-            </XVertical>
+                {bottomOffset !== false && (
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexShrink: 0,
+                            flexGrow: 0,
+                            width: '64px',
+                            height: '64px',
+                        }}
+                    />
+                )}
+            </XView>
         );
     }
 }
@@ -154,13 +154,16 @@ export const DiscoverNotDoneRedDotInner = React.memo(({ setShowDot }: { setShowD
     const client = useClient();
     const discoverDone = client.useDiscoverIsDone({ fetchPolicy: 'cache-and-network' });
 
-    React.useLayoutEffect(() => {
-        Cookie.set(
-            'x-openland-show-discover-dot',
-            !discoverDone.betaIsDiscoverDone ? 'true' : 'false',
-        );
-        setShowDot(!discoverDone.betaIsDiscoverDone);
-    }, [discoverDone.betaIsDiscoverDone]);
+    React.useLayoutEffect(
+        () => {
+            Cookie.set(
+                'x-openland-show-discover-dot',
+                !discoverDone.betaIsDiscoverDone ? 'true' : 'false',
+            );
+            setShowDot(!discoverDone.betaIsDiscoverDone);
+        },
+        [discoverDone.betaIsDiscoverDone],
+    );
 
     return null;
 });
@@ -196,12 +199,10 @@ export const DiscoverNotDoneRedDot = () => {
 };
 
 const RoutedActiveIcon = ({
-    name,
     path,
     IconComponent,
     icon,
 }: {
-    name: string;
     path: string;
     IconComponent?: any;
     icon?: any;
@@ -211,7 +212,6 @@ const RoutedActiveIcon = ({
     return (
         <UniversalScafoldMenuItem
             isActive={isActive}
-            name={name}
             path={path}
             icon={icon ? icon : <IconComponent isActive={isActive} />}
         />
@@ -286,27 +286,17 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
                     <UniversalScaffold
                         topItems={
                             <>
+                                <RoutedActiveIcon path="/mail" IconComponent={MessageActiveIcon} />
                                 <RoutedActiveIcon
-                                    name={'Messages'}
-                                    path="/mail"
-                                    IconComponent={MessageActiveIcon}
-                                />
-                                <RoutedActiveIcon
-                                    name={TextAppBar.items.discover}
                                     path="/discover"
                                     IconComponent={DiscoverActiveIcon}
                                 />
                                 <RoutedActiveIcon
-                                    name={'Account'}
                                     path="/settings"
                                     IconComponent={AccountActiveIcon}
                                 />
                                 <XWithRole role="feature-non-production">
-                                    <RoutedActiveIcon
-                                        name={TextAppBar.items.apps}
-                                        path="/apps"
-                                        icon={<RoomIcon />}
-                                    />
+                                    <RoutedActiveIcon path="/apps" icon={<RoomIcon />} />
                                 </XWithRole>
                             </>
                         }
