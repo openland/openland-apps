@@ -4,7 +4,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles, TextStyles, HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 import { hexToRgba } from 'openland-y-utils/hexToRgba';
 
-const DURATION_PLACEHOLDER_ANIMATION = 100;
+const DURATION_PLACEHOLDER_ANIMATION = 150;
 const PLACEHOLDER_SCALE_RATIO = 0.8;
 
 const styles = StyleSheet.create({
