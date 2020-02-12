@@ -286,7 +286,7 @@ class TransportSocket {
         self.stopClient()
         
         // Stopping reachability
-        self.reachability.stopNotifier()
+        // self.reachability.stopNotifier()
       }
     }
   }
