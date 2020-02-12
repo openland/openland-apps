@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 import Starscream
-import Reachability
+// import Reachability
 
 enum TransportSocketState {
   case waiting
@@ -32,12 +32,12 @@ class TransportSocket {
   let params: [String: String?]
   weak var delegate: NetworkingDelegate? = nil
   var callbackQueue: DispatchQueue
-  private let reachability: Reachability
+  // private let reachability: Reachability
   private var socket: ThrustedSocket? = nil
   private var pending: [String: JSON] = [:]
   private var state: TransportSocketState = .waiting
   private var failuresCount = 0
-  private var reachable = false
+  private var reachable = true
   private var started = false
   
   private var lastPingId = 0
@@ -47,20 +47,20 @@ class TransportSocket {
     self.id = TransportSocket.nextId.getAndIncrement()
     self.url = url
     self.params = params
-    self.reachability = Reachability()!
-    self.reachability.whenReachable = { r in
-      self.queue.async {
-        NSLog("[SpaceX-WS]: Reachable \(r.connection)")
-       self.onReachable()
-      }
-    }
-    self.reachability.whenUnreachable = { _ in
-      self.queue.async {
-        NSLog("[SpaceX-WS]: Unreachable")
-        self.onUnreachable()
-      }
-    }
-    try! self.reachability.startNotifier()
+//    self.reachability = Reachability()!
+//    self.reachability.whenReachable = { r in
+//      self.queue.async {
+//        NSLog("[SpaceX-WS]: Reachable \(r.connection)")
+//       self.onReachable()
+//      }
+//    }
+//    self.reachability.whenUnreachable = { _ in
+//      self.queue.async {
+//        NSLog("[SpaceX-WS]: Unreachable")
+//        self.onUnreachable()
+//      }
+//    }
+//    try! self.reachability.startNotifier()
   }
   
   func connect() {
