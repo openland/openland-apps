@@ -28,11 +28,6 @@ func measure<A>(_ name: String, _ f: () -> A) -> A {
   return result
 }
 
-func backoffDelay(currentFailureCount: Int, minDelay: Int, maxDelay: Int, maxFailureCount: Int) -> Int {
-  let maxDelayRet = Int(Double(minDelay) + ((Double(maxDelay) - Double(minDelay))/Double(maxFailureCount)) * Double(currentFailureCount))
-  return Int.random(in: 0..<maxDelayRet)
-}
-
 class LazyCollection<T> {
   private let queue = DispatchQueue(label: "lazy")
   private let factory: (String) -> T

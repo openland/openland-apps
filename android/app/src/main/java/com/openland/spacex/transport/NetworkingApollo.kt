@@ -305,8 +305,10 @@ class NetworkingApollo(
         this.stopClient()
         this.state = NetworkingApolloState.WAITING
         this.failuresCount += 1
-        val delay = backoffDelay(this.failuresCount, 1000, 10000, 10)
-        this.queue.asyncDelayed(delay) {
+        if (this.reachable) {
+            this.doConnect()
+        }
+        this.queue.asyncDelayed(2000) {
             if (this.state == NetworkingApolloState.WAITING && this.reachable) {
                 this.doConnect()
             }

@@ -265,9 +265,8 @@ class TransportSocket {
     self.stopClient()
     self.state = .waiting
     self.failuresCount += 1
-    let delay = backoffDelay(currentFailureCount: self.failuresCount, minDelay: 1000, maxDelay: 10000, maxFailureCount: 10)
-    NSLog("[SpaceX-WS]: Retry in \(delay) ms")
-    self.queue.asyncAfter(deadline: .now() + Double(delay)/1000.0) {
+    
+    self.queue.asyncAfter(deadline: .now() + .seconds(2)) {
       if self.state == .waiting && self.reachable {
         self.doConnect()
       }
