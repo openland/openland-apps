@@ -9,6 +9,7 @@ import { TextLabel1, TextSubhead } from 'openland-web/utils/TextStyles';
 import { FormSection } from '../account/components/FormSection';
 import { FormWrapper } from '../account/components/FormWrapper';
 import { css } from 'linaria';
+import { ULink } from 'openland-web/components/unicorn/ULink';
 
 interface NormalizedSubscription {
     id: string;
@@ -19,9 +20,6 @@ interface NormalizedSubscription {
 }
 
 const subsciptionView = css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
     padding: 8px 16px;
     margin: 0 -16px;
     border-radius: 8px;
@@ -31,6 +29,14 @@ const subsciptionView = css`
     &:focus,
     &:active {
         background-color: var(--backgroundTertiary);
+    }
+
+    & > a {
+        color: initial;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        text-decoration: none !important;
     }
 `;
 
@@ -46,21 +52,23 @@ const displayDate = (date: Date) => {
 const SubscriptionView = React.memo((props: NormalizedSubscription) => {
     return (
         <div className={subsciptionView}>
-            <UAvatar
-                id={props.id}
-                title={props.title}
-                photo={props.photo}
-            />
-            <XView marginLeft={16} flexDirection="column">
-                <span className={TextLabel1}>
-                    { props.title }
-                </span>
-                <span className={TextSubhead}>
-                    <XView color="var(--foregroundSecondary)">
-                        Expires on {displayDate(props.expires)}
-                    </XView>
-                </span>
-            </XView>
+            <ULink path={`/group/${props.id}`}>
+                <UAvatar
+                    id={props.id}
+                    title={props.title}
+                    photo={props.photo}
+                />
+                <XView marginLeft={16} flexDirection="column">
+                    <span className={TextLabel1}>
+                        { props.title }
+                    </span>
+                    <span className={TextSubhead}>
+                        <XView color="var(--foregroundSecondary)">
+                            Expires on {displayDate(props.expires)}
+                        </XView>
+                    </span>
+                </XView>
+            </ULink>
         </div>
     );
 });
