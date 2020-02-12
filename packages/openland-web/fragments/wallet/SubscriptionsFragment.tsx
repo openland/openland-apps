@@ -64,7 +64,23 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
                     </span>
                     <span className={TextSubhead}>
                         <XView color="var(--foregroundSecondary)">
-                            Expires on {displayDate(props.expires)}
+                            
+                            { props.state === WalletSubscriptionState.STARTED && (
+                                <>Next bill on {displayDate(props.expires)}</>
+                            )}
+
+                            { props.state === WalletSubscriptionState.GRACE_PERIOD || props.state === WalletSubscriptionState.RETRYING && (
+                                <>Failing</>
+                            )}
+
+                            { props.state === WalletSubscriptionState.CANCELED && (
+                                <>Expires on {displayDate(props.expires)}</>
+                            )}
+
+                            { props.state === WalletSubscriptionState.EXPIRED && (
+                                <>Expired on {displayDate(props.expires)}</>
+                            )}
+
                         </XView>
                     </span>
                 </XView>
@@ -90,12 +106,12 @@ export const SubscriptionsFragment = React.memo(() => {
     const activeSubscriptions = normalizedSubscriptions.filter(subscription =>
         subscription.state === WalletSubscriptionState.STARTED ||
         subscription.state === WalletSubscriptionState.GRACE_PERIOD ||
-        subscription.state === WalletSubscriptionState.RETRYING
+        subscription.state === WalletSubscriptionState.RETRYING ||
+        subscription.state === WalletSubscriptionState.CANCELED
     );
 
     const expiredSubscriptions = normalizedSubscriptions.filter(subscription =>
-        subscription.state === WalletSubscriptionState.EXPIRED ||
-        subscription.state === WalletSubscriptionState.CANCELED
+        subscription.state === WalletSubscriptionState.EXPIRED
     );
 
     return (
