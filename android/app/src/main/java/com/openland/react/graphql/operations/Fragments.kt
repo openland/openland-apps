@@ -1711,7 +1711,11 @@ internal val RoomFullSelector = obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("id", "id", notNull(scalar("ID"))),
                         field("price", "price", notNull(scalar("Int"))),
-                        field("interval", "interval", notNull(scalar("String")))
+                        field("interval", "interval", scalar("String"))
+                    )),
+                field("owner", "owner", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
                     ))
             ))
         )

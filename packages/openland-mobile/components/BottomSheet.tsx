@@ -8,6 +8,9 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SDevice } from 'react-native-s/SDevice';
+import { GQLClientContext } from 'openland-api/useClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
+import { ZLoader } from './ZLoader';
 
 export interface BottomSheetActions {
     hide: () => void;
@@ -162,8 +165,11 @@ class BottomSheetProviderComponent extends React.Component<
                             </Text>
                         </View>
                     )}
-
-                    {modal.view(modal.actions)}
+                    <GQLClientContext.Provider value={getClient()}>
+                        <React.Suspense fallback={<ZLoader />}>
+                            {modal.view(modal.actions)}
+                        </React.Suspense>
+                    </GQLClientContext.Provider>
                 </View>
             </Modalize>
         ));

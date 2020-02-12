@@ -27,6 +27,7 @@ import {
     AuthSidebarComponent,
     AuthMobileHeader,
 } from 'openland-web/pages/root/AuthSidebarComponent';
+import AlertBlanket from 'openland-x/AlertBlanket';
 
 const container = css`
     display: flex;
@@ -285,32 +286,37 @@ const JoinLinkButton = (props: {
 
 const BuyPaidChatPassButton = (props: {
     id: string;
-    premiumSettings: { price: number; interval: WalletSubscriptionInterval };
+    premiumSettings: { price: number; interval?: WalletSubscriptionInterval | null };
     title: string;
     photo?: string;
+    ownerId?: string | null;
 }) => {
     const client = useClient();
     let router = React.useContext(XViewRouterContext)!;
     const [loading, setLoading] = React.useState(false);
     const buyPaidChatPass = React.useCallback(async () => {
-        showPayConfirm({
-            amount: props.premiumSettings.price,
-            type: 'subscription',
-            interval: props.premiumSettings.interval,
-            productTitle: props.title,
-            productDescription: 'Subscription',
-            productPicture: <UAvatar title={props.title} id={props.id} photo={props.photo} />,
-            action: async () => {
-                try {
-                    let res = await client.mutateBuyPremiumChatSubscription({ chatId: props.id });
-                    if (res.betaBuyPremiumChatSubscription.premiumPassIsActive) {
-                        router.navigate('/mail/' + props.id);
+        if (!props.premiumSettings.interval) {
+            AlertBlanket.alert('One-time paid chats are not yet supported');
+        } else {
+            showPayConfirm({
+                amount: props.premiumSettings.price,
+                type: 'subscription',
+                interval: props.premiumSettings.interval,
+                productTitle: props.title,
+                productDescription: 'Subscription',
+                productPicture: <UAvatar title={props.title} id={props.id} photo={props.photo} />,
+                action: async () => {
+                    try {
+                        let res = await client.mutateBuyPremiumChatSubscription({ chatId: props.id });
+                        if (res.betaBuyPremiumChatSubscription.premiumPassIsActive) {
+                            router.navigate('/mail/' + props.id);
+                        }
+                    } catch (e) {
+                        setLoading(false);
                     }
-                } catch (e) {
-                    setLoading(false);
-                }
-            },
-        });
+                },
+            });
+        }
     }, []);
     return (
         <>
@@ -324,14 +330,14 @@ const BuyPaidChatPassButton = (props: {
                 marginBottom={16}
                 width={240}
             />
-            <UButton
+            {props.ownerId && <UButton
                 text="Get help"
-                path="/yury"
+                path={`/mail/${props.ownerId}`}
                 shape="square"
                 size="large"
                 style="secondary"
                 width={240}
-            />
+            />}
         </>
     );
 };
@@ -340,11 +346,12 @@ const resolveRoomButton = (
     room: {
         id: string;
         membership: SharedRoomMembershipStatus;
-        premiumSettings?: { price: number; interval: WalletSubscriptionInterval } | null;
+        premiumSettings?: { price: number; interval?: WalletSubscriptionInterval | null } | null;
         premiumPassIsActive: boolean;
         premiumSubscription?: { state: WalletSubscriptionState } | null;
         title: string;
         photo?: string;
+        owner?: { id: string } | null;
     },
     buttonText: string,
     key?: string,
@@ -385,6 +392,7 @@ const resolveRoomButton = (
                     premiumSettings={room.premiumSettings}
                     title={room.title}
                     photo={room.photo}
+                    ownerId={room.owner && room.owner.id}
                 />
             );
         }

@@ -2,12 +2,18 @@ import * as React from 'react';
 import { View, Text, Alert, StyleSheet, ViewStyle, TextStyle, Platform } from 'react-native';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { Room_room_SharedRoom, ChatJoin_room_SharedRoom } from 'openland-api/spacex.types';
+import { Room_room_SharedRoom, ChatJoin_room_SharedRoom, WalletSubscriptionState } from 'openland-api/spacex.types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { useClient } from 'openland-api/useClient';
+import { formatMoney } from 'openland-y-utils/wallet/Money';
+import { WalletSubscriptionInterval } from 'openland-api/spacex.types';
+import AlertBlanket from 'openland-mobile/components/AlertBlanket';
+import { showPayConfirm } from '../modals/PayConfirm';
+import { SRouter } from 'react-native-s/SRouter';
 
 const styles = StyleSheet.create({
     container: {
@@ -39,15 +45,73 @@ const styles = StyleSheet.create({
 interface ChatJoinProps {
     room: Room_room_SharedRoom;
     theme: ThemeGlobal;
+    router: SRouter;
 }
 
 interface ChatJoinComponentProps {
-    room: Pick<Room_room_SharedRoom, 'id' | 'title' | 'photo' | 'description' | 'membersCount' | 'onlineMembersCount' | 'previewMembers' | 'isChannel'>;
+    room: Pick<Room_room_SharedRoom, 'id' | 'title' | 'photo' | 'description' | 'membersCount' | 'onlineMembersCount' | 'previewMembers' | 'isChannel' | 'isPremium' | 'premiumPassIsActive' | 'premiumSettings' | 'premiumSubscription' | 'owner'>;
     theme: ThemeGlobal;
     action: () => void;
     invitedBy?: { id: string, name: string, photo: string | null };
+    router: SRouter;
 }
 
+const BuyPaidChatPassButton = (props: {
+    id: string;
+    premiumSettings: { price: number; interval?: WalletSubscriptionInterval | null };
+    title: string;
+    photo?: string;
+    ownerId?: string | null;
+    router: SRouter;
+}) => {
+    const client = useClient();
+    const [loading, setLoading] = React.useState(false);
+    const buyPaidChatPass = React.useCallback(async () => {
+        if (!props.premiumSettings.interval) {
+            AlertBlanket.alert('One-time paid chats are not yet supported');
+        } else {
+            showPayConfirm({
+                router: props.router,
+                amount: props.premiumSettings.price,
+                type: 'subscription',
+                interval: props.premiumSettings.interval,
+                productTitle: props.title,
+                productDescription: 'Subscription',
+                productPicture: <ZAvatar size="medium" placeholderTitle={props.title} placeholderKey={props.id} src={props.photo} />,
+                action: async () => {
+                    try {
+                        let res = await client.mutateBuyPremiumChatSubscription({ chatId: props.id });
+                        if (res.betaBuyPremiumChatSubscription.premiumPassIsActive) {
+                            props.router.pushAndRemove('Conversation', { id: props.id });
+                        }
+                    } catch (e) {
+                        AlertBlanket.alert(e.message);
+                        setLoading(false);
+                    }
+                },
+            });
+        }
+    }, []);
+    return (
+        <View style={styles.buttonWrapper}>
+            <ZButton
+                loading={loading}
+                style="pay"
+                title={`Join for ${formatMoney(props.premiumSettings.price)}`}
+                onPress={buyPaidChatPass}
+                size="large"
+            />
+            {props.ownerId && <View marginTop={8}>
+                <ZButton
+                    title="Get help"
+                    onPress={() => props.router.push('Conversation', { id: props.ownerId })}
+                    size="large"
+                    style="secondary"
+                />
+            </View>}
+        </View>
+    );
+};
 export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
     const area = React.useContext(ASSafeAreaContext);
     const { theme, action, invitedBy, room } = props;
@@ -107,6 +171,35 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
         </>
     );
 
+    let button = (
+        <View style={styles.buttonWrapper}>
+            <ZButton
+                title={`Join ${typeStr}`}
+                size="large"
+                onPress={action}
+            />
+        </View>
+    );
+    if (room.isPremium && !room.premiumPassIsActive) {
+        if (
+            room.premiumSubscription &&
+            room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED
+        ) {
+            // problems
+        } else {
+            button = (
+                <BuyPaidChatPassButton
+                    router={props.router}
+                    id={room.id}
+                    premiumSettings={room.premiumSettings!}
+                    title={room.title}
+                    photo={room.photo}
+                    ownerId={room.owner && room.owner.id}
+                />
+            );
+        }
+    }
+
     return (
         <View style={{ flexGrow: 1, paddingTop: area.top, paddingBottom }}>
             <View style={styles.container}>
@@ -128,20 +221,14 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                     </View>
                 )}
             </View>
-            <View style={styles.buttonWrapper}>
-                <ZButton
-                    title={`Join ${typeStr}`}
-                    size="large"
-                    onPress={action}
-                />
-            </View>
+            {button}
         </View>
     );
 });
 
 export const ChatJoin = React.memo((props: ChatJoinProps) => {
     const client = getClient();
-    const room = client.useChatJoin({id: props.room.id}).room as ChatJoin_room_SharedRoom;
+    const room = client.useChatJoin({ id: props.room.id }).room as ChatJoin_room_SharedRoom;
     const action = React.useCallback(async () => {
         startLoader();
         try {
@@ -154,5 +241,5 @@ export const ChatJoin = React.memo((props: ChatJoinProps) => {
         }
     }, [props.room.id]);
 
-    return <ChatJoinComponent room={room} theme={props.theme} action={action} />;
+    return <ChatJoinComponent room={room} theme={props.theme} action={action} router={props.router} />;
 });

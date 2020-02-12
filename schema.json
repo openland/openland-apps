@@ -9300,6 +9300,18 @@
             "deprecationReason": null
           },
           {
+            "name": "owner",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "linkedFeedChannels",
             "description": "",
             "args": [],
@@ -11145,13 +11157,9 @@
             "description": "",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "WalletSubscriptionInterval",
-                "ofType": null
-              }
+              "kind": "ENUM",
+              "name": "WalletSubscriptionInterval",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null

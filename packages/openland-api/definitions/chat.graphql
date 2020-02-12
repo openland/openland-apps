@@ -117,6 +117,9 @@ query RoomChat($id: ID!) {
                 price
                 interval
             }
+            owner {
+                id
+            }
         }
     }
 }
@@ -513,6 +516,9 @@ query RoomInviteInfo($invite: String!) {
                     price
                     interval
                 }
+                owner {
+                    id
+                }
             }
         }
         invitedByUser {
@@ -580,6 +586,9 @@ query ResolvedInvite($key: String!) {
                         id
                         price
                         interval
+                    }
+                    owner {
+                        id
                     }
                 }
             }
@@ -764,6 +773,20 @@ query ChatJoin($id: ID!) {
                 name
             }
             isChannel
+            isPremium
+            premiumPassIsActive
+            premiumSubscription {
+                id
+                state
+            }
+            premiumSettings {
+                id
+                price
+                interval
+            }
+            owner {
+                id
+            }
         }
     }
 }

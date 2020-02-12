@@ -2092,7 +2092,7 @@ input PowerupUserSettingsInput {
 type PremiumChatSettings {
   id: ID!
   price: Int!
-  interval: WalletSubscriptionInterval!
+  interval: WalletSubscriptionInterval
 }
 
 type PrivateConversation implements Conversation {
@@ -2570,6 +2570,7 @@ type SharedRoom {
   premiumPassIsActive: Boolean!
   premiumSubscription: WalletSubscription
   premiumSettings: PremiumChatSettings
+  owner: User
   linkedFeedChannels: [FeedChannel!]!
   shortname: String
 }
