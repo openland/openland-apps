@@ -1635,6 +1635,7 @@ internal val RoomFullSelector = obj(
                 field("photo", "photo", notNull(scalar("String"))),
                 field("socialImage", "socialImage", scalar("String")),
                 field("description", "description", scalar("String")),
+                field("shortname", "shortname", scalar("String")),
                 field("organization", "organization", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("Organization", OrganizationMediumSelector)
@@ -1748,6 +1749,7 @@ internal val RoomFullWithoutMembersSelector = obj(
                 field("photo", "photo", notNull(scalar("String"))),
                 field("socialImage", "socialImage", scalar("String")),
                 field("description", "description", scalar("String")),
+                field("shortname", "shortname", scalar("String")),
                 field("organization", "organization", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("Organization", OrganizationMediumSelector)

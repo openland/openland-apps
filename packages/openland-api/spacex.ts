@@ -1634,6 +1634,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateSetOrgShortname(variables: Types.SetOrgShortnameVariables): Promise<Types.SetOrgShortname> {
         return this.mutate('SetOrgShortname', variables);
     }
+    mutateSetRoomShortname(variables: Types.SetRoomShortnameVariables): Promise<Types.SetRoomShortname> {
+        return this.mutate('SetRoomShortname', variables);
+    }
     mutateSetTyping(variables: Types.SetTypingVariables): Promise<Types.SetTyping> {
         return this.mutate('SetTyping', variables);
     }
