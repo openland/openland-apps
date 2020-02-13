@@ -98,7 +98,7 @@ class Thruster {
         let sself = self
         if sself != nil {
           let b = sself!.bucketTimeouts[id]
-          if sself!.closed && b == t {
+          if b == t {
             sself!.restartBucket(id: id)
           }
         }
@@ -117,7 +117,7 @@ class Thruster {
       let sself = self
       if sself != nil {
         let b = sself!.bucketTimeouts[id]
-        if sself!.closed && b == t {
+        if b == t {
           sself!.restartBucket(id: id)
         }
       }
