@@ -156,7 +156,14 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
         builder.show();
     }, []);
 
-    return (
+    return props.state === WalletSubscriptionState.GRACE_PERIOD || props.state === WalletSubscriptionState.RETRYING ? (
+        <ZListItem
+            text={props.title}
+            subTitle={generateSubTitle(props)}
+            leftAvatar={{ photo: props.photo, key: props.id, title: props.title }}
+            path="Wallet"
+        />
+    ) : (
         <ZListItem
             text={props.title}
             subTitle={generateSubTitle(props)}
