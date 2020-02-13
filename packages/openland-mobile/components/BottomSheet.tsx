@@ -20,6 +20,7 @@ interface BuildConfig {
     view: (actions: BottomSheetActions) => React.ReactElement;
     cancelable?: boolean;
     title?: string;
+    buttonTitle?: string;
 }
 
 interface Modal extends BuildConfig {
@@ -116,7 +117,7 @@ class BottomSheetProviderComponent extends React.Component<
         return (
             <View padding={16} paddingBottom={SDevice.safeArea.bottom || undefined}>
                 <ZButton
-                    title={'Cancel'}
+                    title={modal.buttonTitle ? modal.buttonTitle : 'Cancel'}
                     size="large"
                     style="secondary"
                     onPress={() => this.hide(modal.key)}

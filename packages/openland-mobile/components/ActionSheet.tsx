@@ -27,9 +27,14 @@ export class ActionSheetBuilder {
     private _title: string | undefined;
     private _items: (ActionSheetBuilderActionItem | ActionSheetBuilderViewItem)[] = [];
     private _cancelable: boolean;
+    private _buttonTitle: string = 'Cancel';
 
-    constructor() {
+    constructor(buttonTitle?: string) {
         this._cancelable = Platform.OS === 'ios';
+
+        if (buttonTitle) {
+            this._buttonTitle = buttonTitle;
+        }
     }
 
     title(title: string): ActionSheetBuilder {
@@ -98,7 +103,7 @@ export class ActionSheetBuilder {
                             <View margin={16}>
                                 <ZButton
                                     size="large"
-                                    title="Cancel"
+                                    title={this._buttonTitle}
                                     style="secondary"
                                     onPress={() => { ctx.hide(); }}
                                 />
@@ -108,7 +113,7 @@ export class ActionSheetBuilder {
                 );
             }, this._title);
         } else {
-            showBottomSheet({ view: this.renderItems, cancelable: this._cancelable, title: this._title });
+            showBottomSheet({ view: this.renderItems, cancelable: this._cancelable, title: this._title, buttonTitle: this._buttonTitle });
         }
     }
 }
