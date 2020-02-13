@@ -12,17 +12,7 @@ import { PendingTransactionView } from './components/PendingTransactionView';
 import { showAddFunds } from './components/showAddFunds';
 import { Money } from 'openland-y-utils/wallet/Money';
 import { TextStyles } from 'openland-web/utils/TextStyles';
-import { css } from 'linaria';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-
-const cardContainer = css`
-    width: 50%;
-    padding: 0 8px 16px;
-
-    @media (max-width: 560px) {
-        width: 100%;
-    }
-`;
 
 export const WalletFragment = React.memo(() => {
     const client = useClient();
@@ -55,13 +45,7 @@ export const WalletFragment = React.memo(() => {
                             onClick={() => showAddCard()}
                         />
                     )}
-                    <XView paddingTop={8} paddingHorizontal={8} flexDirection="row" flexWrap="wrap">
-                        {cards.map(card => (
-                            <div className={cardContainer} key={card.id}>
-                                <CardView item={card} />
-                            </div>
-                        ))}
-                    </XView>
+                    {cards.map(card => <CardView item={card} key={card.id} />)}
                 </UListGroup>
                 <UListGroup header="Pending Transactions">
                     {wallet.pendingTransactions.map((v) => <PendingTransactionView key={v.id} item={v} />)}

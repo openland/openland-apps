@@ -44,6 +44,7 @@ export interface UListItemProps {
     iconBackground?: string;
     iconColor?: string;
     avatar?: { photo?: string | null; id: string; title: string; online?: boolean };
+    leftElement?: JSX.Element;
     onClick?: (event: React.MouseEvent) => void;
     path?: string;
     large?: boolean;
@@ -68,6 +69,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
         iconBackground,
         iconColor,
         avatar,
+        leftElement,
         onClick,
         path,
         large,
@@ -79,7 +81,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
         paddingHorizontal = 16,
         interactive = true
     } = props;
-    const height = large ? 80 : !!avatar || !!iconBackground ? 56 : 48;
+    const height = large ? 80 : !!avatar || !!leftElement || !!iconBackground ? 56 : 48;
 
     const titleFont = !!description ? TextStyles.Label1 : TextStyles.Body;
     const subtitleFont = TextStyles.Caption;
@@ -132,6 +134,12 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 !icon && (
                     <XView marginRight={16}>
                         <UAvatar {...avatar} size={large ? 'large' : 'medium'} />
+                    </XView>
+                )}
+            {!!leftElement &&
+                !icon && (
+                    <XView marginRight={16}>
+                        {leftElement}
                     </XView>
                 )}
 
