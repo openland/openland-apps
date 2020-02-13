@@ -32,24 +32,28 @@ const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMe
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
     engine: ConversationEngine;
+    onMessagePress: (message: DataSourceMessageItem) => void;
     onMessageDoublePress: (message: DataSourceMessageItem) => void;
     onMessageLongPress: (message: DataSourceMessageItem) => void;
-    onUserPress: (id: string) => void;
-    onGroupPress: (id: string) => void;
-    onOrganizationPress: (id: string) => void;
+    onUserPress: (message: DataSourceMessageItem) => (id: string) => void;
+    onGroupPress: (message: DataSourceMessageItem) => (id: string) => void;
+    onOrganizationPress: (message: DataSourceMessageItem) => (id: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
-    onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
+    onMediaPress: (message: DataSourceMessageItem) => (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
     onCommentsPress: (message: DataSourceMessageItem) => void;
+    onReplyPress: (message: DataSourceMessageItem, quotedMessage: DataSourceMessageItem) => void;
     onReactionsPress: (message: DataSourceMessageItem) => void;
 }
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const theme = useThemeGlobal();
-    const { message, engine, onMessageDoublePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReactionsPress, onOrganizationPress } = props;
+    const { message, engine, onMessageDoublePress, onMessagePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress } = props;
     const { isOut, attachTop, attachBottom, commentsCount, reactions, sender, isSending } = message;
 
     let lastTap: number;
-    const handleDoublePress = () => {
+    const handlePress = () => {
+        onMessagePress(message);
+
         if (!isSending) {
             const now = Date.now();
             const DOUBLE_PRESS_DELAY = 300;
@@ -63,12 +67,16 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     };
     const handleLongPress = React.useCallback(() => onMessageLongPress(message), [message]);
     const handleCommentPress = React.useCallback(() => onCommentsPress(message), [message]);
-    const handleReplyPress = React.useCallback((m: DataSourceMessageItem) => onCommentsPress(m), []);
+    const handleMediaPress = onMediaPress(message);
+    const handleUserPress = onUserPress(message);
+    const handleOrganizationPress = onOrganizationPress(message);
+    const handleGroupPress = onGroupPress(message);
+    const handleReplyPress = React.useCallback((quoted: DataSourceMessageItem) => onReplyPress(message, quoted), [message]);
 
     let res;
 
     if (message.text || message.reply || (message.attachments && message.attachments.length) || message.sticker) {
-        res = <AsyncMessageContentView theme={theme} key={'message-content'} message={message} onMediaPress={onMediaPress} onLongPress={handleLongPress} onDocumentPress={onDocumentPress} onUserPress={onUserPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onReplyPress={handleReplyPress} />;
+        res = <AsyncMessageContentView theme={theme} key={'message-content'} message={message} onMediaPress={handleMediaPress} onLongPress={handleLongPress} onDocumentPress={onDocumentPress} onUserPress={handleUserPress} onGroupPress={handleGroupPress} onOrganizationPress={handleOrganizationPress} onReplyPress={handleReplyPress} />;
     }
 
     if (!res) {
@@ -80,7 +88,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const marginBottom = attachBottom && showReactions ? 6 : 0;
 
     return (
-        <ASFlex flexDirection="column" alignItems="stretch" onPress={handleDoublePress} onLongPress={handleLongPress}>
+        <ASFlex flexDirection="column" alignItems="stretch" onPress={handlePress} onLongPress={handleLongPress}>
             <ASFlex key="margin-top" height={marginTop} />
 
             <ASFlex flexDirection="column" flexGrow={1} alignItems="stretch">
@@ -88,7 +96,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     <ASFlex key="margin-left" renderModes={isOut ? undefined : rm({ 'selection': { width: (attachBottom ? 44 : 0) + 42 } })} width={(attachBottom ? 44 : 0) + 12} />
 
                     {!isOut && !attachBottom &&
-                        <ASFlex marginRight={12} onPress={() => onUserPress(sender.id)} alignItems="flex-end">
+                        <ASFlex marginRight={12} onPress={() => handleUserPress(sender.id)} alignItems="flex-end">
                             <AsyncAvatar
                                 size="small"
                                 src={sender.photo}

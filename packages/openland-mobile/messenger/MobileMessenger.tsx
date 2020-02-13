@@ -91,7 +91,7 @@ export class MobileMessenger {
                     if (item.isService) {
                         return <AsyncServiceMessage message={item} onUserPress={this.handleUserClick} onGroupPress={this.handleGroupClick} onOrganizationPress={this.handleOrganizationClick} />;
                     } else {
-                        return <AsyncMessageView message={item} engine={eng} onUserPress={this.handleUserClick} onGroupPress={this.handleGroupClick} onOrganizationPress={this.handleOrganizationClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsClick} onReactionsPress={this.handleReactionsClick} />;
+                        return <AsyncMessageView message={item} engine={eng} onUserPress={this.handleMessageUserClick} onGroupPress={this.handleMessageGroupClick} onOrganizationPress={this.handleMessageOrganizationClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMessageMediaClick} onMessageLongPress={this.handleMessageLongPress} onMessagePress={this.handleMessagePress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsClick} onReplyPress={this.handleReplyClick} onReactionsPress={this.handleReactionsClick} />;
                     }
                 } else if (item.type === 'date') {
                     return <AsyncDateSeparator year={item.year} month={item.month} date={item.date} />;
@@ -169,6 +169,15 @@ export class MobileMessenger {
         this.sharedMedias.delete(id);
     }
 
+    handleMessageMediaClick = (message: DataSourceMessageItem) => (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => {
+        const [isSelecting, toogleSelect] = this.useSelectionMode(message);
+        if (isSelecting) {
+            toogleSelect();
+            return;
+        }
+        return this.handleMediaClick(fileMeta, event, radius, senderName, date);
+    }
+
     handleMediaClick = (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => {
         showPictureModal({
             title: senderName,
@@ -196,7 +205,21 @@ export class MobileMessenger {
     }
 
     handleCommentsClick = (message: DataSourceMessageItem) => {
+        const [isSelecting, toogleSelect] = this.useSelectionMode(message);
+        if (isSelecting) {
+            toogleSelect();
+            return;
+        }
         this.history.navigationManager.push('Message', { messageId: message.id });
+    }
+
+    handleReplyClick = (message: DataSourceMessageItem, quotedMessage: DataSourceMessageItem) => {
+        const [isSelecting, toogleSelect] = this.useSelectionMode(message);
+        if (isSelecting) {
+            toogleSelect();
+            return;
+        }
+        this.history.navigationManager.push('Message', { messageId: quotedMessage.id });
     }
 
     handleDocumentClick = (document: DataSourceMessageItem) => {
@@ -218,6 +241,30 @@ export class MobileMessenger {
     }
     handleOrganizationClick = (id: string) => {
         this.history.navigationManager.push('ProfileOrganization', { id });
+    }
+    handleMessageUserClick = (message: DataSourceMessageItem) => (id: string) => {
+        const [isSelecting, toogleSelect] = this.useSelectionMode(message);
+        if (isSelecting) {
+            toogleSelect();
+            return;
+        }
+        return this.handleUserClick(id);
+    }
+    handleMessageGroupClick = (message: DataSourceMessageItem) => (id: string) => {
+        const [isSelecting, toogleSelect] = this.useSelectionMode(message);
+        if (isSelecting) {
+            toogleSelect();
+            return;
+        }
+        return this.handleGroupClick(id);
+    }
+    handleMessageOrganizationClick = (message: DataSourceMessageItem) => (id: string) => {
+        const [isSelecting, toogleSelect] = this.useSelectionMode(message);
+        if (isSelecting) {
+            toogleSelect();
+            return;
+        }
+        return this.handleOrganizationClick(id);
     }
     handleConversationClick = (id: string) => {
         this.history.navigationManager.push('Conversation', { id });
@@ -242,6 +289,19 @@ export class MobileMessenger {
             }
         } catch (e) {
             Alert.alert(e.message);
+        }
+    }
+
+    private useSelectionMode = (message: DataSourceMessageItem): [boolean, Function] => {
+        let conversation: ConversationEngine = this.engine.getConversation(message.chatId);
+        const state = conversation.messagesActionsStateEngine.getState();
+        return [state.action === 'select', () => conversation.messagesActionsStateEngine.selectToggle(message)];
+    }
+
+    private handleMessagePress = (message: DataSourceMessageItem) => {
+        const [isSelecting, toogleSelect] = this.useSelectionMode(message);
+        if (isSelecting) {
+            toogleSelect();
         }
     }
 
@@ -350,6 +410,10 @@ export class MobileMessenger {
     }
 
     private handleMessageDoublePress = (message: DataSourceMessageItem) => {
+        const [isSelecting] = this.useSelectionMode(message);
+        if (isSelecting) {
+            return;
+        }
         ReactNativeHapticFeedback.trigger('impactLight', { ignoreAndroidSystemSettings: false });
 
         this.handleReactionSetUnset(message, MessageReactionType.LIKE, true);
