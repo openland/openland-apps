@@ -22,19 +22,19 @@ class ThrusterConfig {
 class Thruster {
   let queue: DispatchQueue
   let configs: [ThrusterConfig]
-  let onSuccess: (_ src: WebSocket) -> Void;
+  let onSuccess: (_ src: WrappedWebSocket) -> Void;
   
   private var bucketSockets: [WebSocket?] = []
   private var bucketTimeouts: [Int?] = []
   private var closed = false
   private var nextTimer = 0
   
-  init(configs: [ThrusterConfig], onSuccess:  @escaping (_ src: WebSocket) -> Void, queue: DispatchQueue) {
+  init(configs: [ThrusterConfig], onSuccess:  @escaping (_ src: WrappedWebSocket) -> Void, queue: DispatchQueue) {
     self.queue = queue
     self.configs = configs
     self.onSuccess = onSuccess
     
-    print("[Thruster]: New")
+    NSLog("[Thruster]: New")
     
     for _ in 0..<configs.count {
       self.bucketSockets.append(nil)
@@ -50,7 +50,7 @@ class Thruster {
     let timeout = self.configs[id].timeout
     let url = self.configs[id].url
     
-    print("[Thruster] \(url)%\(timeout): Restart")
+    NSLog("[Thruster] \(url)%\(timeout): Restart")
 
     if self.bucketSockets[id] != nil {
       let ex = self.bucketSockets[id]
@@ -63,15 +63,13 @@ class Thruster {
       self.bucketTimeouts[id] = nil
     }
     
-    let ws = WebSocket(url: URL(string: url)!, protocols: ["graphql-ws"])
-    
-    ws.callbackQueue = self.queue
+    let ws = WrappedWebSocket(ws: WebSocket(url: URL(string: url)!, protocols: ["graphql-ws"]), queue: self.queue)
     ws.onConnect = {
       if self.closed {
         return
       }
       
-      print("[Thruster] \(url)%\(timeout): Connected")
+      NSLog("[Thruster] \(url)|\(timeout): Connected")
       
       // Remove socket from buckets to avoid it's shutdown
       self.bucketSockets[id] = nil
@@ -90,7 +88,7 @@ class Thruster {
         return
       }
       
-      print("[Thruster] \(url)%\(timeout): Disconnect")
+      NSLog("[Thruster] \(url)|\(timeout): Disconnect")
       
       // Restart timer
       self.bucketTimeouts[id] = nil
@@ -107,8 +105,6 @@ class Thruster {
         }
       }
     }
-    
-    ws.connect()
     
     // Restart timer
     self.bucketTimeouts[id] = nil
@@ -132,12 +128,11 @@ class Thruster {
     }
     self.closed = true
     
-    print("[Thruster]: Close")
+    NSLog("[Thruster]: Close")
     
     for i in 0..<self.configs.count {
       let ex = self.bucketSockets[i]
       self.bucketSockets[i] = nil
-      ex?.onData=nil
       ex?.onText=nil
       ex?.onConnect=nil
       ex?.onDisconnect=nil

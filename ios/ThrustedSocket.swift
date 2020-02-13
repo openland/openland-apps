@@ -18,7 +18,7 @@ class ThrustedSocket {
   private let timeout: Int
   private let queue: DispatchQueue
   private var closed = false
-  private var socket: WebSocket?
+  private var socket: WrappedWebSocket?
   private var thruster: Thruster?
   private var watchDog: WatchDogTimer?
   
@@ -38,7 +38,7 @@ class ThrustedSocket {
     }, queue: queue)
   }
   
-  private func onConnected(ws: WebSocket) {
+  private func onConnected(ws: WrappedWebSocket) {
     self.watchDog = WatchDogTimer(timeout: self.timeout, queue: self.queue, onRestart: {
        self.onConnectionDied()
     });

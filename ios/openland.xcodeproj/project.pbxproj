@@ -92,6 +92,7 @@
 		AAB0EF91213D8CF500FBCB75 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EF90213D8CF500FBCB75 /* Utils.swift */; };
 		AAB181762284EC06008D3603 /* NormalizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB181752284EC06008D3603 /* NormalizerTests.swift */; };
 		AAC113B2213EA154002E0D18 /* RNAsyncTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */; };
+		AAC1E0CA23F5CF9B00F25B7B /* WrappedWebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC1E0C923F5CF9B00F25B7B /* WrappedWebSocket.swift */; };
 		AAC60B57215AF2D3005E09BA /* Auth0.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAC60B56215AF2D3005E09BA /* Auth0.plist */; };
 		AACF26432260A90100C565E4 /* SwiftStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACF263922609C7400C565E4 /* SwiftStore.framework */; };
 		AACF26442260A90100C565E4 /* SwiftStore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AACF263922609C7400C565E4 /* SwiftStore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -390,6 +391,7 @@
 		AAB181752284EC06008D3603 /* NormalizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalizerTests.swift; sourceTree = "<group>"; };
 		AAB181772284EDE6008D3603 /* normalizeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = normalizeData.swift; sourceTree = "<group>"; };
 		AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncTextNode.swift; sourceTree = "<group>"; };
+		AAC1E0C923F5CF9B00F25B7B /* WrappedWebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedWebSocket.swift; sourceTree = "<group>"; };
 		AAC60B56215AF2D3005E09BA /* Auth0.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Auth0.plist; sourceTree = "<group>"; };
 		AACF262A22609C7400C565E4 /* SwiftStore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftStore.xcodeproj; path = Vendor/SwiftStore/SwiftStore.xcodeproj; sourceTree = "<group>"; };
 		AACFC575210778FE00225C86 /* openland.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = openland.entitlements; path = openland/openland.entitlements; sourceTree = "<group>"; };
@@ -772,6 +774,7 @@
 				AA148B4B23F1F73F00B0EC77 /* Thruster.swift */,
 				AA148B5723F1FE4500B0EC77 /* ThrustedSocket.swift */,
 				AA148B5923F206B900B0EC77 /* WatchDogTimer.swift */,
+				AAC1E0C923F5CF9B00F25B7B /* WrappedWebSocket.swift */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
@@ -1545,6 +1548,7 @@
 				AA23655D2244EE47000AA3A7 /* RNGraphqlClient.swift in Sources */,
 				AAE50182214602D700BEAA04 /* RNSAnimatedView.swift in Sources */,
 				AAAA1DC22289FD8A0023A28F /* selectorKey.swift in Sources */,
+				AAC1E0CA23F5CF9B00F25B7B /* WrappedWebSocket.swift in Sources */,
 				AAA4DA522214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m in Sources */,
 				AA2281C6228A37F900810848 /* SpaceXPersistence.swift in Sources */,
 				AA7B7BF822860CA6001AA400 /* RecordStore.swift in Sources */,

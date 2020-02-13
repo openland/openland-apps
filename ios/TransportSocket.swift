@@ -25,7 +25,7 @@ class TransportSocket {
   private static let PING_INTERVAL = 30
   private static let PING_TIMEOUT = 10
   
-  private let queue = DispatchQueue(label: "spacex-networking-apollo")
+  private let queue = DispatchQueue(label: "spacex-networking-transport")
   
   let id: Int
   let url: String
@@ -266,10 +266,9 @@ class TransportSocket {
     self.state = .waiting
     self.failuresCount += 1
     
-    self.queue.asyncAfter(deadline: .now() + .seconds(2)) {
-      if self.state == .waiting && self.reachable {
-        self.doConnect()
-      }
+    
+    if self.reachable {
+      self.doConnect()
     }
   }
   
