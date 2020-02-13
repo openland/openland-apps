@@ -122,6 +122,8 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
                                                 textAlignVertical: 'center',
                                                 fontSize: 15
                                             }}
+                                            numberOfLines={1}
+                                            ellipsizeMode="middle"
                                         >
                                             {v.text}
                                             <Text style={{ color: this.props.theme.accentPrimary }}>,</Text>
