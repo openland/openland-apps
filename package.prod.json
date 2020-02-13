@@ -103,7 +103,7 @@
         "@bugsnag/plugin-react": "^6.5.0",
         "canvas-confetti": "^1.0.3",
         "fast-animations": "1.0.4",
-        "@openland/spacex": "0.0.23",
+        "@openland/spacex": "0.0.25",
         "graphql": "14.6.0"
     }
 }
