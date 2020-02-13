@@ -3,7 +3,7 @@ import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
-import { showCreatingFragment } from 'openland-web/fragments/create/CreateEntityFragment';
+import { showCreatingGroupFragment } from 'openland-web/fragments/create/CreateEntityFragment';
 
 interface CreateGroupButtonProps {
     id: string;
@@ -16,14 +16,14 @@ const MenuComponent = React.memo((props: CreateGroupButtonProps & { ctx: UPopper
     builder.item({
         title: 'New group',
         onClick: () => {
-            showCreatingFragment({ entityType: 'group', inOrgId: id });
+            showCreatingGroupFragment({ entityType: 'group', inOrgId: id });
         },
     });
 
     builder.item({
         title: 'New channel',
         onClick: () => {
-            showCreatingFragment({ entityType: 'channel', inOrgId: id });
+            showCreatingGroupFragment({ entityType: 'channel', inOrgId: id });
         },
     });
 

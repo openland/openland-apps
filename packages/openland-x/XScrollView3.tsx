@@ -172,7 +172,7 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
                 offset,
             });
         }
-    }
+    };
 
     public scrollToBottomOfElement = ({
         targetElem,
@@ -188,7 +188,7 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
                 offset,
             });
         }
-    }
+    };
 
     public scrollToBottom = () => {
         if (this.nativeBackendElemRef.current) {
@@ -196,17 +196,17 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
                 scrollContainer: this.nativeBackendElemRef.current,
             });
         }
-    }
+    };
 
     private onScroll = (values: XScrollValues) => {
         if (this.props.onScroll) {
             this.props.onScroll(values);
         }
-    }
+    };
 
     render() {
         const { props } = this;
-        const { onScroll, innerRef, children, useDefaultScroll, ...other } = props;
+        const { onScroll, innerRef, children, useDefaultScroll, paddingBottom, ...other } = props;
 
         // scrollbarRadius = scrollbarRadius || 4;
         // scrollbarWidth = scrollbarWidth || 8;
@@ -217,7 +217,14 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
             return (
                 <XView overflow="hidden" {...other}>
                     <NativeBackend onScroll={this.onScroll} innerRef={this.nativeBackendElemRef}>
-                        <div className={ScrollContent}>
+                        <div
+                            className={ScrollContent}
+                            style={{
+                                paddingBottom: props.paddingBottom
+                                    ? props.paddingBottom
+                                    : undefined,
+                            }}
+                        >
                             {children}
                         </div>
                     </NativeBackend>
@@ -229,7 +236,12 @@ export class XScrollView3 extends React.Component<XScrollView3Props> {
         return (
             <XView overflow="hidden" {...other}>
                 <CustomBackend onScroll={this.onScroll}>
-                    <div className={ScrollContent}>
+                    <div
+                        className={ScrollContent}
+                        style={{
+                            paddingBottom: props.paddingBottom ? props.paddingBottom : undefined,
+                        }}
+                    >
                         {children}
                     </div>
                 </CustomBackend>

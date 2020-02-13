@@ -1,14 +1,14 @@
 import React from 'react';
 import { XView } from 'react-mental';
 import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
-import { showCreatingFragment } from 'openland-web/fragments/create/CreateEntityFragment';
+import { showCreatingGroupFragment } from 'openland-web/fragments/create/CreateEntityFragment';
 import { Button } from './button';
 import Plus from './plus.svg';
 import Person from './person.svg';
 import Apps from './apps.svg';
 
 export const StackLayoutPlaceholder = React.memo(() => {
-    const createGroup = () => showCreatingFragment({ entityType: 'group' });
+    const createGroup = () => showCreatingGroupFragment({ entityType: 'group' });
     return (
         <XView
             width="100%"

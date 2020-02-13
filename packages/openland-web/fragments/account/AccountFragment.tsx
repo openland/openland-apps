@@ -21,7 +21,7 @@ import { showLogoutConfirmation } from './LogoutFragment';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
-import { showCreatingFragment } from 'openland-web/fragments/create/CreateEntityFragment';
+import { showCreatingOrgFragment } from 'openland-web/fragments/create/CreateEntityFragment';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { trackEvent } from 'openland-x-analytics';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -173,7 +173,7 @@ export const AccountFragment = React.memo(() => {
                         action={{
                             title: 'New',
                             onClick: () => {
-                                showCreatingFragment({ entityType: 'organization' });
+                                showCreatingOrgFragment({ entityType: 'organization' });
                                 // router.navigate('/new/organization')
                             },
                         }}

@@ -11,6 +11,7 @@ interface ExplorePeopleProps {
     onPick: (label: string, value: string) => void;
     selectedUsers: Map<string, string> | null;
     excludeMe?: boolean;
+    paddingBottom?: number;
     roomUsers?: {
         user: {
             id: string;
@@ -25,7 +26,7 @@ export const ExplorePeople = (props: ExplorePeopleProps) => {
     const myId = userContext!!.user!!.id!!;
 
     return (
-        <XScrollView3 flexGrow={1} flexShrink={1}>
+        <XScrollView3 flexGrow={1} flexShrink={1} paddingBottom={props.paddingBottom}>
             <XView marginTop={12} flexDirection="column" paddingHorizontal={12}>
                 {data.items.edges.map(i => {
                     if (props.excludeMe && myId === i.node.id) {

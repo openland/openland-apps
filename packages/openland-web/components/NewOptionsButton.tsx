@@ -9,7 +9,7 @@ import OrganizationIcon from 'openland-icons/s/ic-organization-2-24.svg';
 import PlusIcon from 'openland-icons/ic-add.svg';
 import NotificationIcon from 'openland-icons/s/ic-notifications-24.svg';
 import { UIconButton } from './unicorn/UIconButton';
-import { showCreatingFragment } from 'openland-web/fragments/create/CreateEntityFragment';
+import { showCreatingGroupFragment, showCreatingOrgFragment } from 'openland-web/fragments/create/CreateEntityFragment';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { Placement } from 'popper.js';
@@ -113,7 +113,7 @@ const NewOptionsMenu = React.memo(() => (
     <>
         <Item
             onClick={() => {
-                showCreatingFragment({ entityType: 'group' });
+                showCreatingGroupFragment({ entityType: 'group' });
             }}
             icon={
                 <Icon>
@@ -125,7 +125,7 @@ const NewOptionsMenu = React.memo(() => (
         />
         <Item
             onClick={() => {
-                showCreatingFragment({ entityType: 'channel' });
+                showCreatingGroupFragment({ entityType: 'channel' });
             }}
             icon={
                 <Icon>
@@ -137,7 +137,7 @@ const NewOptionsMenu = React.memo(() => (
         />
         <Item
             onClick={() => {
-                showCreatingFragment({ entityType: 'community' });
+                showCreatingOrgFragment({ entityType: 'community' });
             }}
             icon={
                 <Icon>
@@ -149,7 +149,7 @@ const NewOptionsMenu = React.memo(() => (
         />
         <Item
             onClick={() => {
-                showCreatingFragment({ entityType: 'organization' });
+                showCreatingOrgFragment({ entityType: 'organization' });
             }}
             icon={
                 <Icon>
