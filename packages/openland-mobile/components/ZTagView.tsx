@@ -130,7 +130,6 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
                                 </TouchableWithoutFeedback>
                             ))}
                             <TextInput
-
                                 padding={Platform.OS === 'android' ? 0 : undefined}
                                 ref={this.ref}
                                 minHeight={32}

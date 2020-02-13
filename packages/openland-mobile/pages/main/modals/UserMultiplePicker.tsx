@@ -3,7 +3,7 @@ import { PageProps } from '../../../components/PageProps';
 import { withApp } from '../../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { View, LayoutChangeEvent, Image, Dimensions } from 'react-native';
+import { View, LayoutChangeEvent, Image, Dimensions, ScrollView } from 'react-native';
 import { UserShort } from 'openland-api/spacex.types';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
@@ -109,6 +109,16 @@ const UserMultiplePickerComponent = XMemo<PageProps>((props) => {
     let paramsAction = props.router.params.action;
     let isEmpty = paramsAction.titleEmpty && (users.length <= 0);
     let buttonTitle = isEmpty ? paramsAction.titleEmpty : paramsAction.title + ' (' + users.length + ')';
+
+    const scrollRef = React.createRef<ScrollView>();
+
+    const handleChange = (value: string) => {
+        if (scrollRef && scrollRef.current) {
+            (scrollRef.current as any).getNode().scrollTo(0);
+        }
+        setQuery(value);
+    };
+
     return (
         <>
             <SHeader title={props.router.params.title || 'Pick members'} />
@@ -120,7 +130,7 @@ const UserMultiplePickerComponent = XMemo<PageProps>((props) => {
                 }}
             />
             <View style={{ flexDirection: 'column', width: '100%', height: '100%' }}>
-                <SScrollView>
+                <SScrollView scrollRef={scrollRef}>
                     <View paddingTop={searchHeight - 16} minHeight={Dimensions.get('screen').height - searchHeight}>
                         <React.Suspense fallback={<ZLoader />}>
                             <UsersList {...props} users={users} query={query} onAdd={handleAddUser} />
@@ -133,7 +143,7 @@ const UserMultiplePickerComponent = XMemo<PageProps>((props) => {
                     <ZBlurredView onLayout={handleSearchLayout} style={{ position: 'absolute', top: area.top, left: 0, right: 0, flexDirection: 'column', maxHeight: 44 * 4 }}>
                         <ZTagView
                             items={users.map((v) => ({ id: v.id, text: v.name }))}
-                            onChange={setQuery}
+                            onChange={handleChange}
                             onRemoved={handleRemoveUser}
                             title="Members:"
                             theme={theme}
