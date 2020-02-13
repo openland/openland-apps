@@ -24,7 +24,7 @@ class Thruster {
   let configs: [ThrusterConfig]
   let onSuccess: (_ src: WrappedWebSocket) -> Void;
   
-  private var bucketSockets: [WebSocket?] = []
+  private var bucketSockets: [WrappedWebSocket?] = []
   private var bucketTimeouts: [Int?] = []
   private var closed = false
   private var nextTimer = 0
@@ -55,7 +55,6 @@ class Thruster {
     if self.bucketSockets[id] != nil {
       let ex = self.bucketSockets[id]
       self.bucketSockets[id] = nil
-      ex?.onData=nil
       ex?.onText=nil
       ex?.onConnect=nil
       ex?.onDisconnect=nil
@@ -105,6 +104,9 @@ class Thruster {
         }
       }
     }
+    
+    // Save socket
+    self.bucketSockets[id] = ws
     
     // Restart timer
     self.bucketTimeouts[id] = nil
