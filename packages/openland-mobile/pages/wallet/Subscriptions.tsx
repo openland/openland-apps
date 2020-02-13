@@ -213,7 +213,7 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
                 )}
 
                 { expiredSubscriptions.length > 0 && (
-                    <ZListGroup header="Active">
+                    <ZListGroup header="Expired">
                         { expiredSubscriptions.map(subscription => (
                             <SubscriptionView {...subscription} />
                         ))}
