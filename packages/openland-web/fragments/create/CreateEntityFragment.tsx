@@ -428,6 +428,7 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
                     <USelectField
                         placeholder="Distribution"
                         field={distributionField as any}
+                        searchable={false}
                         options={[
                             {
                                 value: DistributionType.FREE,
@@ -461,6 +462,7 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
                         <USelectField
                             placeholder="Price"
                             field={priceField as any}
+                            searchable={false}
                             options={[
                                 {
                                     value: 5,
@@ -480,6 +482,7 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
                             <USelectField
                                 placeholder="Period"
                                 field={intervalField as any}
+                                searchable={false}
                                 options={[
                                     {
                                         value: WalletSubscriptionInterval.WEEK,
@@ -500,6 +503,7 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
                     <USelectField
                         placeholder="Visibility"
                         field={secretField as any}
+                        searchable={false}
                         options={[
                             {
                                 value: false,
@@ -584,6 +588,7 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
                     <USelectField
                         placeholder="Visibility"
                         field={secretField as any}
+                        searchable={false}
                         options={[
                             {
                                 value: false,
