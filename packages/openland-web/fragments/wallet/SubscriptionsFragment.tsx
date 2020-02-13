@@ -163,14 +163,21 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
                     { props.title }
                 </span>
                 <span className={TextSubhead}>
-                    <XView color="var(--foregroundSecondary)">
+                    <XView
+                        color={
+                            props.state === WalletSubscriptionState.GRACE_PERIOD ||
+                            props.state === WalletSubscriptionState.RETRYING
+                                ? "var(--accentNegative)"
+                                : "var(--foregroundSecondary)"
+                        }
+                    >
                         
                         { props.state === WalletSubscriptionState.STARTED && (
                             <>Next bill on {displayDate(props.expires)}</>
                         )}
 
                         { props.state === WalletSubscriptionState.GRACE_PERIOD || props.state === WalletSubscriptionState.RETRYING && (
-                            <>Failing</>
+                            <>Transaction failed</>
                         )}
 
                         { props.state === WalletSubscriptionState.CANCELED && (
