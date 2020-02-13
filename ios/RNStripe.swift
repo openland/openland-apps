@@ -76,7 +76,8 @@ class RNStripe: RCTEventEmitter, STPAuthenticationContext {
           var dict:[String:Any] = [:]
           dict["clientSecret"] = clientSecret
           dict["status"] = "failed"
-          dict["message"] = "We are unable to authenticate your payment method. Please choose a different payment method and try again."
+          let errors = [STPAPIClient.pkPaymentError(forStripeError: error)].compactMap({ $0 })
+          dict["message"] = errors.count > 0 ? errors[0] : "We are unable to authenticate your payment method. Please choose a different payment method and try again."
           self.sendEvent(withName: "setup_intent", body: dict)
           break
         case .canceled:
@@ -99,7 +100,38 @@ class RNStripe: RCTEventEmitter, STPAuthenticationContext {
     }
   }
   
+  @objc(confirmPayment:clientSecret:paymentMethod:)
+  func confirmPayment(paymentId: String, clientSecret: String, paymentMethod: String) {
+      let paymentIntentParams = STPPaymentIntentParams(clientSecret: clientSecret)
+      paymentIntentParams.paymentMethodId = paymentMethod
+
+      STPPaymentHandler.shared().confirmPayment(withParams: paymentIntentParams, authenticationContext: self) { (status, paymentIntent, error) in
+          switch (status) {
+          case .succeeded:
+              var dict:[String:Any] = [:]
+              dict["id"] = paymentId
+              dict["status"] = "success"
+              self.sendEvent(withName: "confirm_payment", body: dict)
+          case .canceled:
+              var dict:[String:Any] = [:]
+              dict["id"] = paymentId
+              dict["status"] = "failed"
+              self.sendEvent(withName: "confirm_payment", body: dict)
+          case .failed:
+              var dict:[String:Any] = [:]
+              dict["id"] = paymentId
+              dict["status"] = "failed"
+              let errors = [STPAPIClient.pkPaymentError(forStripeError: error)].compactMap({ $0 })
+              dict["message"] = errors.count > 0 ? errors[0] : "We are unable to complete payment with this payment method. Please choose a different payment method and try again."
+              self.sendEvent(withName: "confirm_payment", body: dict)
+          @unknown default:
+             fatalError()
+             break
+          }
+      }
+  }
+  
   override func supportedEvents() -> [String]! {
-    return ["setup_intent"]
+    return ["setup_intent", "confirm_payment"]
   }
 }

@@ -23,6 +23,7 @@ fragment RoomFull on Room {
         photo
         socialImage
         description
+        shortname
         organization {
             ...OrganizationMedium
         }
@@ -114,6 +115,7 @@ fragment RoomFullWithoutMembers on Room {
         photo
         socialImage
         description
+        shortname
         organization {
             ...OrganizationMedium
         }

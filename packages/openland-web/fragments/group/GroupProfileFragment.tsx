@@ -20,11 +20,12 @@ import { RoomMembersPaginated_members } from 'openland-api/spacex.types';
 import IcUser from 'openland-icons/s/ic-user-24.svg';
 import IcCopy from 'openland-icons/s/ic-copy-24.svg';
 
-export const GroupProfileFragment = React.memo(() => {
+export const GroupProfileFragment = React.memo<{id?: string}>((props) => {
     const client = useClient();
     const unicorn = useUnicorn();
+    const roomId = props.id || unicorn.id;
     const group = client.useRoomWithoutMembers(
-        { id: unicorn.id },
+        { id: roomId },
         { fetchPolicy: 'cache-and-network' },
     ).room;
 
@@ -33,11 +34,11 @@ export const GroupProfileFragment = React.memo(() => {
     }
 
     const featuredMembers = client.useRoomFeaturedMembers(
-        { roomId: unicorn.id },
+        { roomId },
         { fetchPolicy: 'cache-and-network' },
     ).roomFeaturedMembers;
     const initialMembers = client.useRoomMembersPaginated(
-        { roomId: unicorn.id, first: 15 },
+        { roomId, first: 15 },
         { fetchPolicy: 'cache-and-network' },
     ).members;
     const {

@@ -201,6 +201,7 @@ object Operations {
         if (name == "SendSticker") return SendSticker
         if (name == "SetFeedChannelShortname") return SetFeedChannelShortname
         if (name == "SetOrgShortname") return SetOrgShortname
+        if (name == "SetRoomShortname") return SetRoomShortname
         if (name == "SetTyping") return SetTyping
         if (name == "SetUserShortname") return SetUserShortname
         if (name == "SettingsUpdate") return SettingsUpdate

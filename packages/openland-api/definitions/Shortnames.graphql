@@ -11,6 +11,9 @@ query ResolveShortName($shortname: String!) {
         ... on FeedChannel {
             id
         }
+        ... on SharedRoom {
+            id
+        }
     }
 }
 query GetUser($shortname: String!) {
@@ -28,4 +31,8 @@ mutation SetUserShortname($shortname: String!) {
 }
 mutation SetFeedChannelShortname($id: ID!, $shortname: String!) {
     alphaSetFeedChannelShortName(id: $id, shortname: $shortname)
+}
+
+mutation SetRoomShortname($id: ID!, $shortname: String!) {
+    alphaSetRoomShortName(id: $id, shortname: $shortname)
 }

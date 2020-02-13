@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView, XViewRouter } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 import { showModalBox } from 'openland-x/showModalBox';
-import { Room_room_SharedRoom } from 'openland-api/spacex.types';
+import { Room_room_SharedRoom, SharedRoomKind } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
@@ -14,12 +14,15 @@ import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInputField } from 'openland-web/components/unicorn/UInput';
 import { trackEvent } from 'openland-x-analytics';
+import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 type RoomEditModalT = {
     title: string;
     photo: string;
     socialImage: string | null;
     description: string | null;
+    shortname: string | null;
+    kind: SharedRoomKind;
     roomId: string;
     isChannel: boolean;
 };
@@ -29,6 +32,10 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
     const form = useForm();
 
     const editPhotoRef = props.photo;
+    const shortnameMinLength = AppConfig.isSuperAdmin() ? 3 : 5;
+    const shortnameMaxLength = 16;
+    const initialShortname = props.shortname || '';
+    const hasShortname = props.kind === SharedRoomKind.PUBLIC;
 
     const inputLable = props.isChannel ? 'Channel name' : 'Group name';
     const avatarField = useField<StoredFileT | undefined | null>(
@@ -43,6 +50,23 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
         },
     ]);
     const descriptionField = useField('input.description', props.description || '', form);
+    const shortnameField = useField('input.shortname', initialShortname, form, [
+        {
+            checkIsValid: value =>
+                !!value && value.length > 0 ? value.length >= shortnameMinLength : true,
+            text: 'Shortname must have at least ' + shortnameMinLength + ' characters.',
+        },
+        {
+            checkIsValid: value =>
+                !!value && value.length > 0 ? value.length < shortnameMaxLength : true,
+            text: 'Shortname must have no more than ' + shortnameMaxLength + ' characters.',
+        },
+        {
+            checkIsValid: value =>
+                !!value && value.length > 0 ? !!value.match('^[a-z0-9_]+$') : true,
+            text: 'A shortname can only contain a-z, 0-9, and underscores.',
+        },
+    ]);
     const onSubmit = async () => {
         await form.doAction(async () => {
             let newPhoto = avatarField.value;
@@ -56,8 +80,16 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
                         : {}),
                 },
             };
+            const shortnameData = {
+                id: props.roomId,
+                shortname: shortnameField.value,
+            };
 
-            await client.mutateRoomUpdate(dataToSend);
+            Promise.all([
+                await client.mutateRoomUpdate(dataToSend), 
+                hasShortname && shortnameField.value !== initialShortname && await client.mutateSetRoomShortname(shortnameData),
+            ]);
+            await client.refetchRoomWithoutMembers({ id: props.roomId });
             props.onClose();
         });
     };
@@ -73,7 +105,13 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
                     marginTop={24}
                     marginBottom={16}
                 />
-                <UInputField field={descriptionField} label="Description" />
+                <UInputField field={descriptionField} label="Description" marginBottom={16} />
+                {hasShortname && (
+                    <UInputField
+                        label="Shortname"
+                        field={shortnameField}
+                    />
+                )}
             </XView>
             <XModalFooter>
                 <UButton
@@ -113,6 +151,8 @@ const RoomEditModal = ({ chatId, hide }: { chatId: string; hide: () => void }) =
             title={chat.title}
             photo={chat.photo}
             description={chat.description}
+            shortname={chat.shortname}
+            kind={chat.kind}
             socialImage={chat.socialImage}
             isChannel={isChannel}
             onClose={hide}
