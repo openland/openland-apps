@@ -41,11 +41,11 @@ const WalletComponent = React.memo<PageProps>((props) => {
                     {cards.map(card => <CardView key={card.id} item={card} />)}
                 </ZListGroup>
                 <ZListGroup header="Pending Transactions">
-                    {wallet.pendingTransactions.map((v) => <TransactionView key={v.id} item={v} />)}
+                    {wallet.pendingTransactions.map((v) => <TransactionView key={v.id} item={v} router={props.router} />)}
                 </ZListGroup>
 
                 <ZListGroup header="Latest Transactions">
-                    {wallet.historyTransactions.map((v) => <TransactionView key={v.id} item={v} />)}
+                    {wallet.historyTransactions.map((v) => <TransactionView key={v.id} item={v} router={props.router} />)}
                 </ZListGroup>
             </SScrollView>
         </>

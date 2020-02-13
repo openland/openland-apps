@@ -14,10 +14,13 @@ import { stopLoader, startLoader } from 'openland-mobile/components/ZGlobalLoade
 
 interface CardViewProps {
     item: MyCards_myCards;
+    selected?: boolean;
+    onPress?: () => void;
 }
 
 export const CardView = (props: CardViewProps) => {
     const { id, brand, last4, expMonth, expYear, isDefault } = props.item;
+    const selected = props.selected;
     const year = expYear.toString().slice(-2);
     const theme = React.useContext(ThemeContext);
     const client = useClient();
@@ -90,8 +93,9 @@ export const CardView = (props: CardViewProps) => {
         <ZListItem
             leftIconView={<BrandLogo brand={brand} />}
             text={`${getPaymentMethodName(brand)}, ${last4}`}
-            onPress={handlePress}
-            description={isDefault ? 'Primary' : undefined}
+            onPress={props.onPress || handlePress}
+            description={isDefault && selected === undefined ? 'Primary' : undefined}
+            checkmark={selected}
         />
     );
 };
