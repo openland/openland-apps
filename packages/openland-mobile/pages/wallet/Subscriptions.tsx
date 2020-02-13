@@ -56,13 +56,13 @@ const generateSubTitle = (subscription: NormalizedSubscription) => {
 };
 
 const SubscriptionView = React.memo((props: NormalizedSubscription) => {
-
     const theme = React.useContext(ThemeContext);
+    const client = useClient();
 
     const showModal = React.useCallback(() => {
         const builder = new ActionSheetBuilder('Done');
 
-        builder.view(ctx => (
+        builder.view(() => (
             <View
                 paddingTop={16}
                 paddingBottom={16}
@@ -135,7 +135,15 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
                     justifyContent="center"
                     alignItems="center"
                 >
-                    <ZButton title="Cancel subscription" style="secondary" />
+                    <ZButton
+                        title="Cancel subscription"
+                        style="secondary"
+                        onPress={() => client.mutateCancelSubscription({ id: props.subscriptionId }).then(() => {
+                            client.refetchSubscriptions().then(() => {
+                                ctx.hide();
+                            });
+                        })}
+                    />
                     <View marginTop={16}>
                         <Text allowFontScaling={false} style={{ ...TextStyles.Caption, color: theme.foregroundSecondary, textAlign: 'center' }}>
                             If you cancel now, you can still access {"\n"} the group until {displayDate(props.expires)}
