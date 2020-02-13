@@ -118,7 +118,7 @@ export class ZTagView extends React.PureComponent<ZTagViewProps, { focused?: str
                                     >
                                         <Text
                                             style={{
-                                                color: this.state.focused === v.id ? this.props.theme.foregroundContrast : this.props.theme.accentPrimary,
+                                                color: this.state.focused === v.id ? this.props.theme.foregroundInverted : this.props.theme.accentPrimary,
                                                 textAlignVertical: 'center',
                                                 fontSize: 15
                                             }}
