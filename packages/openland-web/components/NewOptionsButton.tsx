@@ -2,6 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
 import { css, cx } from 'linaria';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import GroupIcon from 'openland-icons/s/ic-group-24.svg';
 import ChannelIcon from 'openland-icons/s/ic-channel-24.svg';
 import CommunityIcon from 'openland-icons/s/ic-community-2-24.svg';
@@ -9,7 +10,10 @@ import OrganizationIcon from 'openland-icons/s/ic-organization-2-24.svg';
 import PlusIcon from 'openland-icons/ic-add.svg';
 import NotificationIcon from 'openland-icons/s/ic-notifications-24.svg';
 import { UIconButton } from './unicorn/UIconButton';
-import { showCreatingGroupFragment, showCreatingOrgFragment } from 'openland-web/fragments/create/CreateEntityFragment';
+import {
+    showCreatingGroupFragment,
+    showCreatingOrgFragment,
+} from 'openland-web/fragments/create/CreateEntityFragment';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { Placement } from 'popper.js';
@@ -38,35 +42,25 @@ const wrapperClass = css`
 export const NotificationsButton = React.memo(() => {
     const client = useClient();
     const notificationsCenter = client.useMyNotificationCenter({
-        fetchPolicy: 'network-only', suspense: false
+        fetchPolicy: 'network-only',
+        suspense: false,
     });
 
     return (
         <div className={wrapperClass}>
             <UIconButton path="/notifications" icon={<NotificationIcon />} size="large" />
-            {notificationsCenter &&
-                !!notificationsCenter.myNotificationCenter.unread && <div className={dotClass} />}
+            {notificationsCenter && !!notificationsCenter.myNotificationCenter.unread && (
+                <div className={dotClass} />
+            )}
         </div>
     );
 });
 
 const iconContainerClass = css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
     width: 24px;
     height: 24px;
-    flex-shrink: 0;
-
-    & svg {
-        fill: var(--foregroundSecondary);
-    }
+    flex-grow: 0;
 `;
-
-const Icon = (props: { children: JSX.Element }) => (
-    <div className={iconContainerClass}>{props.children}</div>
-);
 
 const itemContainerClass = css`
     display: flex;
@@ -115,11 +109,7 @@ const NewOptionsMenu = React.memo(() => (
             onClick={() => {
                 showCreatingGroupFragment({ entityType: 'group' });
             }}
-            icon={
-                <Icon>
-                    <GroupIcon />
-                </Icon>
-            }
+            icon={<UIcon icon={<GroupIcon />} className={iconContainerClass} />}
             title="New group"
             description="Chat where everyone can write"
         />
@@ -127,11 +117,7 @@ const NewOptionsMenu = React.memo(() => (
             onClick={() => {
                 showCreatingGroupFragment({ entityType: 'channel' });
             }}
-            icon={
-                <Icon>
-                    <ChannelIcon />
-                </Icon>
-            }
+            icon={<UIcon icon={<ChannelIcon />} className={iconContainerClass} />}
             title="New channel"
             description="Chat where you write, others comment"
         />
@@ -139,11 +125,7 @@ const NewOptionsMenu = React.memo(() => (
             onClick={() => {
                 showCreatingOrgFragment({ entityType: 'community' });
             }}
-            icon={
-                <Icon>
-                    <CommunityIcon />
-                </Icon>
-            }
+            icon={<UIcon icon={<CommunityIcon />} className={iconContainerClass} />}
             title="New community"
             description="A hub for chats for the same audience"
         />
@@ -151,11 +133,7 @@ const NewOptionsMenu = React.memo(() => (
             onClick={() => {
                 showCreatingOrgFragment({ entityType: 'organization' });
             }}
-            icon={
-                <Icon>
-                    <OrganizationIcon />
-                </Icon>
-            }
+            icon={<UIcon icon={<OrganizationIcon />} className={iconContainerClass} />}
             title="New organization"
             description="A hub for chats with your teammates"
         />

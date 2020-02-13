@@ -26,7 +26,12 @@ export const ExplorePeople = (props: ExplorePeopleProps) => {
     const myId = userContext!!.user!!.id!!;
 
     return (
-        <XScrollView3 flexGrow={1} flexShrink={1} paddingBottom={props.paddingBottom}>
+        <XScrollView3
+            flexGrow={1}
+            flexShrink={1}
+            paddingBottom={props.paddingBottom}
+            useDefaultScroll={true}
+        >
             <XView marginTop={12} flexDirection="column" paddingHorizontal={12}>
                 {data.items.edges.map(i => {
                     if (props.excludeMe && myId === i.node.id) {

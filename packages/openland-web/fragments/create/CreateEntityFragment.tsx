@@ -42,6 +42,7 @@ const rootHeader = css`
     height: 72px;
     padding: 10px;
     background-color: var(--foregroundContrast);
+    z-index: 2;
 `;
 
 const contentWrapper = css`
@@ -58,6 +59,11 @@ const contentWrapper = css`
     -webkit-overflow-scrolling: touch;
 `;
 
+const exploreContentWrapper = css`
+    flex-direction: column;
+    align-items: center;
+`;
+
 const gradient = css`
     position: absolute;
     width: 100%;
@@ -66,13 +72,12 @@ const gradient = css`
     right: 0;
     bottom: 0;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+    pointer-events: none;
 `;
 
 const doneButton = css`
     position: absolute;
     bottom: 72px;
-    left: 0;
-    right: 0;
     margin: auto;
     display: flex;
     justify-content: center;
@@ -87,6 +92,7 @@ const contentContainer = css`
     flex-grow: 1;
     flex-shrink: 0;
     max-width: 320px;
+    width: 100%;
     padding: 72px 0;
     margin-top: auto;
     margin-bottom: auto;
@@ -292,7 +298,7 @@ const CreatingContainer = React.memo((props: CreatingContainerProps) => {
                     size="large"
                 />
             </div>
-            <div className={contentWrapper}>
+            <div className={cx(contentWrapper, !settingsPage && exploreContentWrapper)}>
                 <div className={cx(contentContainer, !settingsPage && contentExploreContainer)}>
                     <div className={cx(TextTitle1, textTitle)}>
                         {settingsPage ? props.title : 'Invite friends'}
