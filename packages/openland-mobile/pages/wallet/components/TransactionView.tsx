@@ -16,13 +16,7 @@ export const TransactionView = (props: TransactionViewProps) => {
     const { status, operation } = props.item;
     const operationAmount = operation.__typename !== 'WalletTransactionTransferOut' ? operation.amount : undefined;
 
-    const payment =
-        (
-            operation.__typename === 'WalletTransactionDeposit'
-            || operation.__typename === 'WalletTransactionSubscription'
-            || operation.__typename === 'WalletTransactionTransferOut'
-        )
-        && operation.payment;
+    const { payment } = operation;
 
     const actionRequired = payment && payment.status === PaymentStatus.ACTION_REQUIRED && payment.intent;
     const complete = React.useCallback(() => {
@@ -48,7 +42,7 @@ export const TransactionView = (props: TransactionViewProps) => {
                 rightElement={
                     actionRequired ? <View padding={16} flexDirection="row">
                         {/* <ZButton title="Cancel" onPress={cancel} style="danger" loading={loading} enabled={!loading} /> */}
-                        <ZButton title="Complete" onPress={complete}  />
+                        <ZButton title="Complete" onPress={complete} />
                     </View>
                         : undefined
                 }
