@@ -1,29 +1,33 @@
 import * as React from 'react';
 import { WalletTransactionFragment } from 'openland-api/spacex.types';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { Money } from 'openland-y-utils/wallet/Money';
 import { showConfirmPayment } from './showConfirmPayment';
-import { showTransaction } from './showTransaction';
+import { showTransaction, normalizeTransaction } from './showTransaction';
+import { XView } from 'react-mental';
 
 interface TransactionViewProps {
     item: WalletTransactionFragment;
 }
 
 export const TransactionView = React.memo((props: TransactionViewProps) => {
-    const { status, operation } = props.item;
-    const operationPayment = operation.__typename !== 'WalletTransactionTransferIn' ? operation.payment : undefined;
-    const operationAmount = operation.__typename !== 'WalletTransactionTransferOut' ? operation.amount : undefined;
-
-    const title = operation.__typename === 'WalletTransactionDeposit' ? 'Top up balance' : status + ': ' + (operationPayment && operationPayment.status);
+    const normalized = normalizeTransaction(props.item);
+    const operation = props.item.operation;
+    const payment = operation.payment;
 
     return (
         <UListItem
-            title={title}
-            subtitle={operationAmount ? <Money amount={operationAmount} /> : undefined}
+            avatar={{ id: normalized.id, title: normalized.title, photo: normalized.photo }}
+            title={normalized.title}
+            description={normalized.type + (operation.__typename === 'WalletTransactionSubscription' ? (', ' + normalized.interval) : '')}
             useRadius={true}
+            rightElement={
+                <>
+                    <XView>{normalized.amount}</XView>
+                </>
+            }
             onClick={() => {
-                if (operationPayment && operationPayment.intent && (operationPayment.status === 'FAILING' || operationPayment.status === 'ACTION_REQUIRED')) {
-                    showConfirmPayment(operationPayment.intent.id, operationPayment.intent.clientSecret);
+                if (payment && payment.intent && (payment.status === 'FAILING' || payment.status === 'ACTION_REQUIRED')) {
+                    showConfirmPayment(payment.intent.id, payment.intent.clientSecret);
                 } else {
                     showTransaction(props.item);
                 }
