@@ -13,17 +13,20 @@ interface BalanceViewProps {
 export const BalanceView = (props: BalanceViewProps) => {
     const { amount } = props;
     const theme = React.useContext(ThemeContext);
+    let showTopUp = false;
 
     return (
-        <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} paddingTop={16} paddingBottom={24} paddingHorizontal={16}>
-            <Text style={{ ...TextStyles.Large, textAlign: 'center', color: theme.foregroundPrimary, marginBottom: 8 }} allowFontScaling={false}>
-                <Money amount={amount} />
-            </Text>
-            <Text style={{ ...TextStyles.Body, textAlign: 'center', color: theme.foregroundSecondary }} allowFontScaling={false}>
-                Your balance
-            </Text>
-            <View marginTop={24}>
-                <ZButton size="large" title="Add funds" />
+        <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} paddingTop={16} paddingBottom={32} paddingHorizontal={16} flexDirection="row">
+            <View flexGrow={1} alignItems="flex-start">
+                <Text style={{ ...TextStyles.Body, textAlign: 'center', color: theme.foregroundSecondary, marginBottom: 4 }} allowFontScaling={false}>
+                    Your balance
+                </Text>
+                <Text style={{ ...TextStyles.Title1, textAlign: 'center', color: theme.foregroundPrimary, }} allowFontScaling={false}>
+                    <Money amount={amount} />
+                </Text>
+            </View>
+            <View flexGrow={1} alignItems="flex-end" paddingTop={12}>
+                {showTopUp && <ZButton title="Top up" />}
             </View>
         </LinearGradient>
     );
