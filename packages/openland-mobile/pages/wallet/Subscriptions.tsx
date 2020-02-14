@@ -8,7 +8,7 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { useClient } from 'openland-api/useClient';
 import { WalletSubscriptionState, Subscriptions_subscriptions_product_WalletSubscriptionProductGroup } from 'openland-api/spacex.types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, Dimensions } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
@@ -267,6 +267,39 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
                             <SubscriptionView {...subscription} />
                         ))}
                     </ZListGroup>
+                )}
+
+                { activeSubscriptions.length === 0 && expiredSubscriptions.length === 0 && (
+                    <View
+                        paddingTop={64}
+                        paddingLeft={32}
+                        paddingRight={32}
+                        paddingBottom={32}
+                        alignItems="center"
+                        justifyContent="center"
+                        flexDirection="column"
+                    >
+                        <Image
+                            source={require('assets/art-empty.png')}
+                            style={{
+                                width: 240,
+                                height: 150,
+                            }}
+                        />
+                        <View marginTop={4}>
+                            <Text allowFontScaling={false} style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>
+                                No subscriptions yet
+                            </Text>
+                        </View>
+                        <View marginTop={4}>
+                            <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center'}}>
+                                Join any premium groups, and they will appear here
+                            </Text>
+                        </View>
+                        <View marginTop={16}>
+                            <ZButton title='Discover groups' path="Discover" />
+                        </View>
+                    </View>
                 )}
 
             </SScrollView>
