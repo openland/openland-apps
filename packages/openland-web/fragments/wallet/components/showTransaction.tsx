@@ -29,20 +29,31 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
             : props.transaction.operation.subscription.product.user.photo
         : myAvatar;
 
-    const type = (() => {
+    const title = (() => {
         switch (props.transaction.operation.__typename) {
-            case 'WalletTransactionDeposit': return 'Deposit';
-            case 'WalletTransactionSubscription': return 'Subscription';
-            case 'WalletTransactionTransferIn': return 'Top up';
-            case 'WalletTransactionTransferOut': return 'Withdrawal';
-            default: return 'Transaction';
+            case 'WalletTransactionDeposit': return 'Top up';
+
+            case 'WalletTransactionSubscription':
+                return props.transaction.operation.subscription.product.__typename === 'WalletSubscriptionProductGroup'
+                    ?  props.transaction.operation.subscription.product.group.title
+                    : props.transaction.operation.subscription.product.user.name;
+
+            case 'WalletTransactionTransferIn': return 'Incoming transfer';
+
+            case 'WalletTransactionTransferOut': return 'Outgoing transfer';
+            
+            default: return 'Deposit';
         }
     })();
 
+    const type = props.transaction.operation.__typename === 'WalletTransactionSubscription'
+        ? 'Subscription'
+        : 'Deposit';
+
     const interval = props.transaction.operation.__typename === 'WalletTransactionSubscription'
         ?  props.transaction.operation.subscription.interval === WalletSubscriptionInterval.WEEK
-            ? 'Weekly'
-            : 'Monthly'
+            ? 'weekly'
+            : 'monthly'
         : null;
 
     const dateTime = extractDateTime(props.transaction.date);
@@ -63,7 +74,7 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
     const normalizedTransaction = {
         id: props.transaction.id,
         photo,
-        title: '',
+        title,
         type,
         interval,
         dateTime,
@@ -86,7 +97,14 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
                     <h2 className={TextTitle2}>{normalizedTransaction.title}</h2>
                 </XView>
                 <XView marginTop={8} color="var(--foregroundSecondary)">
-                    <span className={TextBody}>{normalizedTransaction.type}</span>
+
+                    { props.transaction.operation.__typename === 'WalletTransactionSubscription' && (
+                        <span className={TextBody}>{normalizedTransaction.type}, {normalizedTransaction.interval}</span>
+                    )}
+
+                    { props.transaction.operation.__typename !== 'WalletTransactionSubscription' && (
+                        <span className={TextBody}>{normalizedTransaction.type}</span>
+                    )}
                 </XView>
             </XView>
             <XView marginTop={16}>
