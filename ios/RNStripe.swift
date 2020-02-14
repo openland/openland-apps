@@ -104,6 +104,7 @@ class RNStripe: RCTEventEmitter, STPAuthenticationContext {
   func confirmPayment(paymentId: String, clientSecret: String, paymentMethod: String) {
       let paymentIntentParams = STPPaymentIntentParams(clientSecret: clientSecret)
       paymentIntentParams.paymentMethodId = paymentMethod
+      paymentIntentParams.returnURL = "openland://deep/confirm_payment/" + paymentId
 
       STPPaymentHandler.shared().confirmPayment(withParams: paymentIntentParams, authenticationContext: self) { (status, paymentIntent, error) in
           switch (status) {
