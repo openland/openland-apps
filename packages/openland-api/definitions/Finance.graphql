@@ -51,6 +51,7 @@ mutation Donate($id: ID!) {
 fragment WalletTransactionFragment on WalletTransaction {
     id
     status
+    date
     operation {
         ... on WalletTransactionDeposit {
             amount
@@ -78,6 +79,14 @@ fragment WalletTransactionFragment on WalletTransaction {
                         group {
                             id
                             title
+                            photo
+                        }
+                    }
+
+                    ...on WalletSubscriptionProductDonation {
+                        user {
+                            id
+                            name
                             photo
                         }
                     }
