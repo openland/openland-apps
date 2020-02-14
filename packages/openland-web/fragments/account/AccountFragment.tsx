@@ -12,6 +12,7 @@ import AppearanceIcon from 'openland-icons/s/ic-appearance-24.svg';
 import AppsIcon from 'openland-icons/s/ic-apps-24.svg';
 import InfoIcon from 'openland-icons/s/ic-info-24.svg';
 import WalletIcon from 'openland-icons/s/ic-wallet-24.svg';
+import SubscriptionsIcon from 'openland-icons/s/ic-subscriptions-24.svg';
 import { withUserInfo } from 'openland-web/components/UserInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-api/useClient';
@@ -130,7 +131,7 @@ export const AccountFragment = React.memo(() => {
                             />
                             <UListItem
                                 title="Subscriptions"
-                                icon={<WalletIcon />}
+                                icon={<SubscriptionsIcon />}
                                 path="/subscriptions"
                             />
                         </UListGroup>
