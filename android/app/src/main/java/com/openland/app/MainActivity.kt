@@ -154,20 +154,20 @@ class MainActivity : ReactActivity() {
                 val status = setupIntent.status
 
                 if (status == StripeIntent.Status.Succeeded) {
-                    reportSetupIntentResult(clientSecret!!, "success", result.intent.paymentMethodId!!, null)
+                    reportSetupIntentResult(setupIntent.clientSecret!!, "success", result.intent.paymentMethodId!!, null)
                 } else {
 
                     if (result.outcome == StripeIntentResult.Outcome.CANCELED) {
                         // Special case for canceled authentication - sending failed state without
                         // error message that is not going to display error message
 
-                        reportSetupIntentResult(clientSecret!!, "failed", null, null)
+                        reportSetupIntentResult(setupIntent.clientSecret!!, "failed", null, null)
                     } else {
                         // We expect that any other state is failed with generic message
 
                         // NOTE: Error messages are not very user friendly and we use just generic
                         // error text instead
-                        reportSetupIntentResult(clientSecret!!, "failed", null, defaultError)
+                        reportSetupIntentResult(setupIntent.clientSecret!!, "failed", null, defaultError)
                     }
                 }
             }
