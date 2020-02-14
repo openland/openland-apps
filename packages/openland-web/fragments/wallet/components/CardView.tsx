@@ -36,8 +36,8 @@ const CardMenu = React.memo((props: CardViewProps & { ctx: UPopperController }) 
         icon: <DeleteIcon />,
         onClick: () => {
             AlertBlanket.builder()
-                .title('Delete card?')
-                .message('The card will be deleted')
+                .title('Delete method?')
+                .message('It cannot be undone')
                 .action('Delete', async () => {
                     await client.mutateRemoveCard({ id: item.id });
                     await client.refetchMyCards();

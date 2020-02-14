@@ -8,7 +8,6 @@ import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { CardView } from './components/CardView';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { TransactionView } from './components/TransactionView';
-import { PendingTransactionView } from './components/PendingTransactionView';
 import { showAddFunds } from './components/showAddFunds';
 import { Money } from 'openland-y-utils/wallet/Money';
 import { TextStyles } from 'openland-web/utils/TextStyles';
@@ -25,7 +24,7 @@ export const WalletFragment = React.memo(() => {
         <Page track="settings_wallet">
             <UHeader title="Wallet" />
             <XView flexDirection="column" paddingBottom={56}>
-                <UListGroup header="Your balance" action={{ title: 'Add funds', onClick: () => showAddFunds() }}>
+                <UListGroup header="Your balance" action={{ title: 'Top up', onClick: () => showAddFunds() }}>
                     <XView
                         {...TextStyles.Title1}
                         color={balance === 0 ? 'var(--foregroundTertiary)' : 'var(--accentPrimary)'}
@@ -47,11 +46,8 @@ export const WalletFragment = React.memo(() => {
                     )}
                     {cards.map(card => <CardView item={card} key={card.id} />)}
                 </UListGroup>
-                <UListGroup header="Pending Transactions">
-                    {wallet.pendingTransactions.map((v) => <PendingTransactionView key={v.id} item={v} />)}
-                </UListGroup>
-
-                <UListGroup header="Latest Transactions">
+                <UListGroup header="Transactions">
+                    {wallet.pendingTransactions.map((v) => <TransactionView key={v.id} item={v} />)}
                     {wallet.historyTransactions.map((v) => <TransactionView key={v.id} item={v} />)}
                 </UListGroup>
             </XView>
