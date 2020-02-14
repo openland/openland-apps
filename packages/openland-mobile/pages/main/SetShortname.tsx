@@ -15,18 +15,22 @@ import { SUPER_ADMIN } from '../Init';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
+import { Room_room_SharedRoom } from 'openland-api/spacex.types';
 
-const SetOrgShortnameContent = XMemo<PageProps>((props) => {
-    const organizationId = props.router.params.id;
-    const profile = getClient().useOrganizationProfile({ organizationId }, { fetchPolicy: 'network-only' }).organizationProfile;
+interface ContentProps {
+    name: string;
+    shortname: string | null;
+    onSave: (shortname: string | null) => Promise<any>;
+}
 
+const SetShortnameContent = XMemo<PageProps & ContentProps>((props) => {
     const [error, setError] = React.useState<string | undefined>(undefined);
 
     const minLength = SUPER_ADMIN ? 3 : 5;
     const maxLength = 16;
 
     const form = useForm();
-    const shortnameField = useField('shortname', profile.shortname || '', form);
+    const shortnameField = useField('shortname', props.shortname || '', form);
     
     React.useEffect(() => setError(undefined), [shortnameField.value]);
 
@@ -36,12 +40,7 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
                 try {
                     setError(undefined);
 
-                    await getClient().mutateSetOrgShortname({ 
-                        shortname: shortnameField.value, 
-                        organizationId 
-                    });
-                    await getClient().refetchOrganization({ organizationId });
-                    await getClient().refetchOrganizationProfile({ organizationId });
+                    await props.onSave(shortnameField.value);
 
                     props.router.back();
                 } catch (e) {
@@ -60,20 +59,20 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
                 <ZListGroup
                     header={null}
                     footer={{
-                        text: 'You can choose a shortname for ' + profile.name + ' in Openland.' + '\n' +
-                              'Other people will be able to find ' + profile.name + ' by this shortname.' + '\n\n' +
+                        text: 'You can choose a shortname for ' + props.name + ' in Openland.' + '\n' +
+                              'Other people will be able to find ' + props.name + ' by this shortname.' + '\n\n' +
                               'You can use a-z, 0-9 and underscores.' + '\n' +
                               'Minimum length is ' + minLength + ' characters.' + '\n\n' +
-                              'This link opens ' + profile.name + ' page:' + '\n' +
+                              'This link opens ' + props.name + ' page:' + '\n' +
                               'openland.com/' + (shortnameField.value ? shortnameField.value : ' shortname'),
 
                         onPress: (link: string) => {
-                            if (profile.shortname) {
+                            if (props.shortname) {
                                 ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-copy-24.png')).show();
                             }
                         },
                         onLongPress: (link: string) => {
-                            if (profile.shortname) {
+                            if (props.shortname) {
                                 ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-copy-24.png')).show();
                             }
                         }
@@ -95,15 +94,51 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
     );
 });
 
-class SetOrgShortnameComponent extends React.Component<PageProps> {
-    render() {
+const SetOrgShortname = XMemo<PageProps>((props) => {
+    const id = props.router.params.id;
+    const profile = getClient().useOrganizationProfile({ organizationId: id }).organizationProfile;
+    const handleSave = React.useCallback(async (shortname) => {
+        await getClient().mutateSetOrgShortname({ 
+            shortname, 
+            organizationId: id 
+        });
+        await Promise.all([
+            getClient().refetchOrganization({ organizationId: id }),
+            getClient().refetchOrganizationProfile({ organizationId: id }),
+        ]);
+    }, [id]);
+
+    return (
+        <SetShortnameContent {...props} name={profile.name} shortname={profile.shortname} onSave={handleSave} />
+    );
+});
+
+const SetGroupShortname = XMemo<PageProps>((props) => {
+    const id = props.router.params.id;
+    const profile = getClient().useRoomWithoutMembers({ id }).room as Room_room_SharedRoom;
+    const handleSave = React.useCallback(async (shortname) => {
+        await getClient().mutateSetRoomShortname({ 
+            shortname, 
+            id
+        });
+        await getClient().refetchRoomWithoutMembers({ id });
+    }, [id]);
+
+    return (
+        <SetShortnameContent {...props} name={profile.title} shortname={profile.shortname} onSave={handleSave} />
+    );
+});
+
+const SetShortnameComponent = (props: PageProps) => {
+        const isGroup = props.router.params.isGroup;
+        const Component = isGroup ? SetGroupShortname : SetOrgShortname;
+
         return (
             <>
                 <SHeader title="Shortname" />
-                <SetOrgShortnameContent {...this.props} />
+                <Component {...props} />
             </>
         );
-    }
-}
+};
 
-export const SetOrgShortname = withApp(SetOrgShortnameComponent, { navigationAppearance: 'small' });
+export const SetShortname = withApp(SetShortnameComponent, { navigationAppearance: 'small' });

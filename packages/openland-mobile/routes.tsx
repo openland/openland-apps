@@ -39,7 +39,7 @@ import { SetUserShortname } from './pages/main/SetUserShortname';
 import { SettingsAppearance } from './pages/main/SettingsAppearance';
 import { SettingsAbout } from './pages/main/SettingsAbout';
 import { HomeDialogs } from './pages/main/HomeDialogs';
-import { SetOrgShortname } from './pages/main/SetOrgShortname';
+import { SetShortname } from './pages/main/SetShortname';
 import { EditGroup } from './pages/main/EditGroup';
 import { EditGroupAdvanced } from './pages/main/EditGroupAdvanced';
 import { GroupInvite } from './pages/main/GroupInvite';
@@ -117,7 +117,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('NotificationCenter', NotificationCenter)
 
   .addRoute('SetUserShortname', SetUserShortname)
-  .addRoute('SetOrgShortname', SetOrgShortname)
+  .addRoute('SetShortname', SetShortname)
   .addRoute('SetFeedChannelShortname', SetFeedChannelShortname)
   .addRoute('SelectPrimaryOrganization', SelectPrimaryOrganization)
 

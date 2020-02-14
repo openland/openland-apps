@@ -12,7 +12,7 @@ import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 import { SharedRoomKind } from 'openland-api/spacex.types';
-import { useShortnameField } from 'openland-y-utils/form/useShortnameField';
+import { ZPickField } from 'openland-mobile/components/ZPickField';
 
 const EditGroupComponent = XMemo<PageProps>((props) => {
     const client = getClient();
@@ -28,8 +28,6 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
 
     const titleField = useField('title', group.title, form);
     const descriptionField = useField('description', group.description || '', form);
-    const initialShortname = group.shortname || '';
-    const shortnameField = useShortnameField('shortname', initialShortname, form);
 
     const currentPhoto = group.photo.startsWith('ph://') ? undefined : group.photo;
     const defaultPhotoValue = group.photo.startsWith('ph://') ? null : { uuid: group.photo };
@@ -50,16 +48,8 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
                         )
                     }
                 };
-                const shortnameData = {
-                    id: props.router.params.id,
-                    shortname: shortnameField.value,
-                };
-                const promises: Promise<any>[] = [client.mutateRoomUpdate(variables)];
-                if (hasShortname && shortnameField.value !== initialShortname) {
-                    promises.push(client.mutateSetRoomShortname(shortnameData));
-                }
                 
-                await Promise.all(promises);
+                await client.mutateRoomUpdate(variables);
                 await client.refetchRoomWithoutMembers({ id: props.router.params.id });
 
                 props.router.back();
@@ -88,10 +78,15 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
                         multiline={true}
                     />
                     {hasShortname && (
-                        <ZInput
-                            placeholder="Shortname"
-                            field={shortnameField}
-                        />
+                        <ZListGroup header="Shortname" headerMarginTop={0}>
+                            <ZPickField
+                                label="Shortname"
+                                value={group.shortname ? '@' + group.shortname : undefined}
+                                path="SetShortname"
+                                pathParams={{ id: group.id, isGroup: true }}
+                                description={`People will be able to find your ${typeString} by this shortname`}
+                            />
+                        </ZListGroup>
                     )}
                 </ZListGroup>
             </KeyboardAvoidingScrollView>

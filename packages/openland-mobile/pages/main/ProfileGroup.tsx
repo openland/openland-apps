@@ -235,6 +235,9 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                         pathParams={{ id: room.organization.id }}
                     />
                 )}
+                {!!room.shortname && (
+                    <ZListItem title="Shortname" text={'@' + room.shortname} copy={true} />
+                )}
             </ZListGroup>
 
             <ZListGroup header="Settings" headerMarginTop={!hasAbout ? 0 : undefined}>

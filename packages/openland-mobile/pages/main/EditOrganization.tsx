@@ -76,8 +76,8 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                     <ZPickField
                         label="Shortname"
                         value={profile.shortname ? '@' + profile.shortname : undefined}
-                        path="SetOrgShortname"
-                        pathParams={{ id: organizationId }}
+                        path="SetShortname"
+                        pathParams={{ id: organizationId, isGroup: false }}
                         description="People will be able to find your organization by this shortname"
                     />
                 </ZListGroup>
