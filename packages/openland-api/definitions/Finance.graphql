@@ -72,6 +72,7 @@ fragment WalletTransactionFragment on WalletTransaction {
             amount
             subscription {
                 id
+                interval
                 product {
                     ... on WalletSubscriptionProductGroup {
                         group {
@@ -179,6 +180,11 @@ fragment WalletUpdateFragment on WalletUpdate {
             intent {
                 id
                 clientSecret
+                card {
+                    id
+                    brand
+                    last4
+                }
             }
         }
     }

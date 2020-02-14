@@ -11,7 +11,8 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
 });
 
 export function showTransaction(transaction: WalletTransactionFragment) {
-    showModalBox({ title: 'Transaction' }, (ctx) => {
+    console.warn({transaction});
+    showModalBox({ title: 'Transaction', useTopCloser: true }, (ctx) => {
         return (
             <TransactionComponent ctx={ctx} transaction={transaction} />
         );
