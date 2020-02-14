@@ -4,7 +4,6 @@ import { ZButton } from 'openland-mobile/components/ZButton';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { Room_room_SharedRoom, ChatJoin_room_SharedRoom, WalletSubscriptionState } from 'openland-api/spacex.types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
@@ -51,7 +50,7 @@ interface ChatJoinProps {
 interface ChatJoinComponentProps {
     room: Pick<Room_room_SharedRoom, 'id' | 'title' | 'photo' | 'description' | 'membersCount' | 'onlineMembersCount' | 'previewMembers' | 'isChannel' | 'isPremium' | 'premiumPassIsActive' | 'premiumSettings' | 'premiumSubscription' | 'owner'>;
     theme: ThemeGlobal;
-    action: () => void;
+    action: () => Promise<any>;
     invitedBy?: { id: string, name: string, photo: string | null };
     router: SRouter;
 }
@@ -171,12 +170,24 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
         </>
     );
 
+    const [loading, setLoading] = React.useState(false);
+    const handleButtonPress = React.useCallback(async () => {
+        setLoading(true);
+        try {
+            await action();
+        } catch (e) {
+            Alert.alert(e.message);
+            setLoading(false);
+        }
+    }, [action]);
+
     let button = (
         <View style={styles.buttonWrapper}>
             <ZButton
                 title={`Join ${typeStr}`}
                 size="large"
-                onPress={action}
+                loading={loading}
+                onPress={handleButtonPress}
             />
         </View>
     );
@@ -230,15 +241,8 @@ export const ChatJoin = React.memo((props: ChatJoinProps) => {
     const client = getClient();
     const room = client.useChatJoin({ id: props.room.id }).room as ChatJoin_room_SharedRoom;
     const action = React.useCallback(async () => {
-        startLoader();
-        try {
             await client.mutateRoomJoin({ roomId: props.room.id });
-            client.refetchRoomTiny({ id: props.room.id });
-        } catch (e) {
-            Alert.alert(e.message);
-        } finally {
-            stopLoader();
-        }
+            await client.refetchRoomTiny({ id: props.room.id });
     }, [props.room.id]);
 
     return <ChatJoinComponent room={room} theme={props.theme} action={action} router={props.router} />;
