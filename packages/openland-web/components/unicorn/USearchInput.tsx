@@ -96,8 +96,8 @@ export const USearchInput = React.forwardRef(
                     className={cx(TextBody, field)}
                     value={val || ''}
                     onChange={e => handleChange(e.target.value)}
-                    autoFocus={autoFocus}
                     placeholder={placeholder}
+                    autoFocus={autoFocus}
                     ref={ref}
                 />
                 <div className={searchIconWrapper}>

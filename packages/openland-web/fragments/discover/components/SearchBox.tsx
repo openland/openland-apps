@@ -26,6 +26,16 @@ export const SearchBox = React.memo((props: SearchBoxProps) => {
         props.onChange(value);
     };
 
+    const inputRef = React.createRef<HTMLInputElement>();
+
+    React.useLayoutEffect(() => {
+        if (!isMobile && inputRef && inputRef.current) {
+            setTimeout(() => {
+                inputRef.current!.focus();
+            }, 300);
+        }
+    });
+
     return (
         <div className={searchContainer}>
             <XView paddingHorizontal={16} flexDirection="row" justifyContent="space-between" alignItems="center">
@@ -34,7 +44,7 @@ export const SearchBox = React.memo((props: SearchBoxProps) => {
                     onChange={onChange}
                     flexGrow={1}
                     placeholder={props.placeholder}
-                    autoFocus={!isMobile}
+                    ref={inputRef}
                 />
                 {layout !== 'mobile' && <UButton text="Search" style="primary" marginLeft={16} />}
             </XView>

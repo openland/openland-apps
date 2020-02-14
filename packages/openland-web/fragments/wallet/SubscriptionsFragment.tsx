@@ -3,9 +3,9 @@ import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 import { useClient } from 'openland-api/useClient';
 import { Subscriptions_subscriptions_product_WalletSubscriptionProductGroup, WalletSubscriptionState, Subscriptions } from 'openland-api/spacex.types';
-import { XView, XViewRouterContext } from 'react-mental';
+import { XView, XViewRouterContext, XImage } from 'react-mental';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { TextLabel1, TextSubhead, TextTitle2, TextTitle3, TextBody, TextCaption } from 'openland-web/utils/TextStyles';
+import { TextLabel1, TextSubhead, TextTitle1, TextTitle2, TextTitle3, TextBody, TextCaption } from 'openland-web/utils/TextStyles';
 import { FormSection } from '../account/components/FormSection';
 import { FormWrapper } from '../account/components/FormWrapper';
 import { css } from 'linaria';
@@ -99,6 +99,16 @@ const billingProblems = css`
         flex-shrink: 0;
         margin-right: 16px;
     }
+`;
+
+const empty = css`
+    height: 80vh;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 `;
 
 function showSubscriptionModal(props: NormalizedSubscription, client: OpenlandClient, refetchSubscriptions: () => Promise<Subscriptions>) {
@@ -297,7 +307,38 @@ export const SubscriptionsFragment = React.memo(() => {
                 )}
 
                 { activeSubscriptions.length === 0 && expiredSubscriptions.length === 0 && (
-                    <div>No subscriptions</div>
+                    <div className={empty}>
+                        <XView justifyContent="center" alignItems="center">
+                            <XImage
+                                marginBottom={16}
+                                width={320}
+                                height={200}
+                                src="/static/X/art-empty.png"
+                                srcSet="/static/X/art-empty@2x.png 2x"
+                            />
+                            <XView marginBottom={8}>
+                                <span className={TextTitle1}>
+                                    No subscriptions yet
+                                </span>
+                            </XView>
+                            <XView color="var(--foregroundSecondary)">
+                                <p className={TextBody}>
+                                    Join any premium groups, and they will appear here          
+                                </p>
+                            </XView>
+                            <XView marginTop={32}>
+                                <UButton
+                                    text="Discover groups"
+                                    shape="square"
+                                    size="large"
+                                    onClick={() => {
+                                        router.navigate('/discover/groups');
+                                    }}
+                                />
+
+                            </XView>
+                        </XView>
+                    </div>
                 )}
 
             </FormWrapper>
