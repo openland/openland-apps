@@ -82,8 +82,6 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
         amount,
     };
 
-    console.warn(normalizedTransaction);
-
     return (
         <XView paddingTop={20} paddingBottom={16}>
             <XView flexDirection="column" alignItems="center" justifyContent="center">
