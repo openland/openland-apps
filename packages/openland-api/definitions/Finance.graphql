@@ -58,13 +58,13 @@ fragment WalletTransactionFragment on WalletTransaction {
             payment {
                 id
                 status
+                card {
+                    id
+                    brand
+                    last4
+                }
                 intent {
                     id
-                    card {
-                        id
-                        brand
-                        last4
-                    }
                     clientSecret
                 }
             }
@@ -97,12 +97,12 @@ fragment WalletTransactionFragment on WalletTransaction {
                 status
                 intent {
                     id
-                    card {
-                        id
-                        brand
-                        last4
-                    }
                     clientSecret
+                }
+                card {
+                    id
+                    brand
+                    last4
                 }
             }
         }
@@ -112,13 +112,13 @@ fragment WalletTransactionFragment on WalletTransaction {
             payment {
                 id
                 status
+                card {
+                    id
+                    brand
+                    last4
+                }
                 intent {
                     id
-                    card {
-                        id
-                        brand
-                        last4
-                    }
                     clientSecret
                 }
             }
@@ -131,13 +131,13 @@ fragment WalletTransactionFragment on WalletTransaction {
             payment {
                 id
                 status
+                card {
+                    id
+                    brand
+                    last4
+                }
                 intent {
                     id
-                    card {
-                        id
-                        brand
-                        last4
-                    }
                     clientSecret
                 }
             }

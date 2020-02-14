@@ -20,6 +20,8 @@ const extractDateTime = (unixTime: string): string => {
 
 const TransactionComponent = React.memo((props: { ctx: XModalController, transaction: WalletTransactionFragment }) => {
 
+    console.warn(props.transaction)
+
     const client = useClient();
     const myAvatar = client.useAccount().me!.photo;
 
@@ -58,6 +60,10 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
 
     const dateTime = extractDateTime(props.transaction.date);
 
+    const paymentMethod = props.transaction.operation.payment
+        ? props.transaction.operation.payment.card!.brand + ', ' + props.transaction.operation.payment.card!.last4
+        : null;
+
     const amountValue = props.transaction.operation.__typename === 'WalletTransactionTransferOut'
         ? props.transaction.operation.walletAmount + props.transaction.operation.chargeAmount
         : props.transaction.operation.amount;
@@ -78,7 +84,7 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
         type,
         interval,
         dateTime,
-        paymentMethod: '',
+        paymentMethod,
         amount,
     };
 
@@ -116,14 +122,16 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
                     </XView>
                 </XView>
 
-                <XView flexDirection="row" justifyContent="space-between" paddingHorizontal={24} paddingVertical={12}>
-                    <span className={TextBody}>Payment method</span>
-                    <XView color="var(--foregroundSecondary)">
-                        <span className={TextBody}>
-                            { normalizedTransaction.paymentMethod }
-                        </span>
+                { normalizedTransaction.paymentMethod && (
+                    <XView flexDirection="row" justifyContent="space-between" paddingHorizontal={24} paddingVertical={12}>
+                        <span className={TextBody}>Payment method</span>
+                        <XView color="var(--foregroundSecondary)">
+                            <span className={TextBody}>
+                                { normalizedTransaction.paymentMethod }
+                            </span>
+                        </XView>
                     </XView>
-                </XView>
+                )}
 
                 <XView flexDirection="row" justifyContent="space-between" paddingHorizontal={24} paddingVertical={12}>
                     <span className={TextBody}>Total amount</span>

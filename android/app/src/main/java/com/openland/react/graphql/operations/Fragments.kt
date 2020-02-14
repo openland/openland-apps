@@ -1916,15 +1916,15 @@ internal val WalletTransactionFragmentSelector = obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
                                 field("id", "id", notNull(scalar("ID"))),
                                 field("status", "status", notNull(scalar("String"))),
+                                field("card", "card", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("brand", "brand", notNull(scalar("String"))),
+                                        field("last4", "last4", notNull(scalar("String")))
+                                    )),
                                 field("intent", "intent", obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
                                         field("id", "id", notNull(scalar("ID"))),
-                                        field("card", "card", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("id", "id", notNull(scalar("ID"))),
-                                                field("brand", "brand", notNull(scalar("String"))),
-                                                field("last4", "last4", notNull(scalar("String")))
-                                            )),
                                         field("clientSecret", "clientSecret", notNull(scalar("String")))
                                     ))
                             ))
@@ -1965,13 +1965,13 @@ internal val WalletTransactionFragmentSelector = obj(
                                 field("intent", "intent", obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
                                         field("id", "id", notNull(scalar("ID"))),
-                                        field("card", "card", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("id", "id", notNull(scalar("ID"))),
-                                                field("brand", "brand", notNull(scalar("String"))),
-                                                field("last4", "last4", notNull(scalar("String")))
-                                            )),
                                         field("clientSecret", "clientSecret", notNull(scalar("String")))
+                                    )),
+                                field("card", "card", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("brand", "brand", notNull(scalar("String"))),
+                                        field("last4", "last4", notNull(scalar("String")))
                                     ))
                             ))
                     )),
@@ -1983,15 +1983,15 @@ internal val WalletTransactionFragmentSelector = obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
                                 field("id", "id", notNull(scalar("ID"))),
                                 field("status", "status", notNull(scalar("String"))),
+                                field("card", "card", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("brand", "brand", notNull(scalar("String"))),
+                                        field("last4", "last4", notNull(scalar("String")))
+                                    )),
                                 field("intent", "intent", obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
                                         field("id", "id", notNull(scalar("ID"))),
-                                        field("card", "card", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("id", "id", notNull(scalar("ID"))),
-                                                field("brand", "brand", notNull(scalar("String"))),
-                                                field("last4", "last4", notNull(scalar("String")))
-                                            )),
                                         field("clientSecret", "clientSecret", notNull(scalar("String")))
                                     ))
                             )),
@@ -2007,15 +2007,15 @@ internal val WalletTransactionFragmentSelector = obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
                                 field("id", "id", notNull(scalar("ID"))),
                                 field("status", "status", notNull(scalar("String"))),
+                                field("card", "card", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("brand", "brand", notNull(scalar("String"))),
+                                        field("last4", "last4", notNull(scalar("String")))
+                                    )),
                                 field("intent", "intent", obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
                                         field("id", "id", notNull(scalar("ID"))),
-                                        field("card", "card", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("id", "id", notNull(scalar("ID"))),
-                                                field("brand", "brand", notNull(scalar("String"))),
-                                                field("last4", "last4", notNull(scalar("String")))
-                                            )),
                                         field("clientSecret", "clientSecret", notNull(scalar("String")))
                                     ))
                             )),
