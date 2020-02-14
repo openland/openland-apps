@@ -47,9 +47,18 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
 
     const dateTime = extractDateTime(props.transaction.date);
 
-    const amount = props.transaction.operation.__typename === 'WalletTransactionTransferOut'
-        ? formatMoney(props.transaction.operation.walletAmount + props.transaction.operation.chargeAmount)
-        : formatMoney(props.transaction.operation.amount);
+    const amountValue = props.transaction.operation.__typename === 'WalletTransactionTransferOut'
+        ? props.transaction.operation.walletAmount + props.transaction.operation.chargeAmount
+        : props.transaction.operation.amount;
+
+    const amountSign =
+        props.transaction.operation.__typename === 'WalletTransactionDeposit' || 
+        props.transaction.operation.__typename === 'WalletTransactionTransferIn' ||
+        amountValue === 0
+            ? ''
+            : '-';
+
+    const amount = amountSign + formatMoney(amountValue);
 
     const normalizedTransaction = {
         id: props.transaction.id,
