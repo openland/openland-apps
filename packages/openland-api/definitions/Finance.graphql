@@ -59,17 +59,39 @@ fragment WalletTransactionFragment on WalletTransaction {
                 status
                 intent {
                     id
+                    card {
+                        id
+                        brand
+                        last4
+                    }
                     clientSecret
                 }
             }
         }
         ... on WalletTransactionSubscription {
             amount
+            subscription {
+                id
+                product {
+                    ... on WalletSubscriptionProductGroup {
+                        group {
+                            id
+                            title
+                            photo
+                        }
+                    }
+                }
+            }
             payment {
                 id
                 status
                 intent {
                     id
+                    card {
+                        id
+                        brand
+                        last4
+                    }
                     clientSecret
                 }
             }
@@ -82,6 +104,11 @@ fragment WalletTransactionFragment on WalletTransaction {
                 status
                 intent {
                     id
+                    card {
+                        id
+                        brand
+                        last4
+                    }
                     clientSecret
                 }
             }
@@ -91,6 +118,19 @@ fragment WalletTransactionFragment on WalletTransaction {
         }
         ... on WalletTransactionTransferIn {
             amount
+            payment {
+                id
+                status
+                intent {
+                    id
+                    card {
+                        id
+                        brand
+                        last4
+                    }
+                    clientSecret
+                }
+            }
             fromUser {
                 ...UserShort
             }

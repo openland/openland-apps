@@ -1424,6 +1424,7 @@ type Mutation {
   paymentIntentCommit(id: ID!): Boolean!
   paymentCancel(id: ID!): Boolean!
   donateToUser(amount: Int!, id: ID!): Boolean!
+  donateToUser2(amount: Int!, id: ID!): Purchase!
   subscriptionCancel(id: ID!): WalletSubscription!
   alphaCreateInvite: Invite!
   alphaDeleteInvite(id: ID!): String!
@@ -1986,6 +1987,7 @@ type Payment {
 type PaymentIntent {
   id: ID!
   clientSecret: String!
+  card: CreditCard
 }
 
 enum PaymentStatus {
@@ -2168,6 +2170,18 @@ type ProfilePrefill {
   firstName: String
   lastName: String
   picture: String
+}
+
+type Purchase {
+  id: ID!
+  state: PurchaseState!
+  intent: PaymentIntent
+}
+
+enum PurchaseState {
+  PENDING
+  COMPLETED
+  CANCELED
 }
 
 type PushSettings {
@@ -3006,7 +3020,6 @@ type WalletAccount {
   state: String!
 }
 
-"""Wallet Subscriptions"""
 type WalletSubscription {
   id: ID!
   state: WalletSubscriptionState!
@@ -3068,11 +3081,13 @@ enum WalletTransactionStatus {
 type WalletTransactionSubscription {
   amount: Int!
   payment: Payment
+  subscription: WalletSubscription!
 }
 
 type WalletTransactionTransferIn {
   amount: Int!
   fromUser: User!
+  payment: Payment
 }
 
 type WalletTransactionTransferOut {
