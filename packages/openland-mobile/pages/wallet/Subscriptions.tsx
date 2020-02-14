@@ -8,7 +8,7 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { useClient } from 'openland-api/useClient';
 import { WalletSubscriptionState, Subscriptions_subscriptions_product_WalletSubscriptionProductGroup } from 'openland-api/spacex.types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
-import { View, Text, Image, Dimensions } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
