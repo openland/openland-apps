@@ -189,11 +189,11 @@ fragment WalletUpdateFragment on WalletUpdate {
             intent {
                 id
                 clientSecret
-                card {
-                    id
-                    brand
-                    last4
-                }
+            }
+            card {
+                id
+                brand
+                last4
             }
         }
     }

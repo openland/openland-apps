@@ -4,7 +4,7 @@ import { XModalController } from 'openland-x/showModal';
 import { XView } from 'react-mental';
 import { WalletTransactionFragment, WalletSubscriptionInterval } from 'openland-api/spacex.types';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
-import { useClient } from 'openland-api/useClient';
+import { getPaymentMethodName } from 'openland-y-utils/wallet/brands';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextTitle2, TextBody } from 'openland-web/utils/TextStyles';
 import Success from 'openland-icons/s/ic-success-16.svg';
@@ -18,67 +18,63 @@ const extractDateTime = (unixTime: string): string => {
     return `${segments[2]} ${segments[1]}, ${time}`;
 };
 
-const TransactionComponent = React.memo((props: { ctx: XModalController, transaction: WalletTransactionFragment }) => {
+export const normalizeTransaction = (transaction: WalletTransactionFragment) => {
+    const { id, operation, date } = transaction;
 
-    console.warn(props.transaction)
-
-    const client = useClient();
-    const myAvatar = client.useAccount().me!.photo;
-
-    const photo = props.transaction.operation.__typename === 'WalletTransactionSubscription'
-        ?  props.transaction.operation.subscription.product.__typename === 'WalletSubscriptionProductGroup'
-            ?  props.transaction.operation.subscription.product.group.photo
-            : props.transaction.operation.subscription.product.user.photo
-        : myAvatar;
+    const photo = operation.__typename === 'WalletTransactionSubscription'
+        ? operation.subscription.product.__typename === 'WalletSubscriptionProductGroup'
+            ? operation.subscription.product.group.photo
+            : operation.subscription.product.user.photo
+        : '';
 
     const title = (() => {
-        switch (props.transaction.operation.__typename) {
+        switch (operation.__typename) {
             case 'WalletTransactionDeposit': return 'Top up';
 
             case 'WalletTransactionSubscription':
-                return props.transaction.operation.subscription.product.__typename === 'WalletSubscriptionProductGroup'
-                    ?  props.transaction.operation.subscription.product.group.title
-                    : props.transaction.operation.subscription.product.user.name;
+                return operation.subscription.product.__typename === 'WalletSubscriptionProductGroup'
+                    ? operation.subscription.product.group.title
+                    : operation.subscription.product.user.name;
 
             case 'WalletTransactionTransferIn': return 'Incoming transfer';
 
             case 'WalletTransactionTransferOut': return 'Outgoing transfer';
-            
+
             default: return 'Deposit';
         }
     })();
 
-    const type = props.transaction.operation.__typename === 'WalletTransactionSubscription'
+    const type = operation.__typename === 'WalletTransactionSubscription'
         ? 'Subscription'
         : 'Deposit';
 
-    const interval = props.transaction.operation.__typename === 'WalletTransactionSubscription'
-        ?  props.transaction.operation.subscription.interval === WalletSubscriptionInterval.WEEK
+    const interval = operation.__typename === 'WalletTransactionSubscription'
+        ? operation.subscription.interval === WalletSubscriptionInterval.WEEK
             ? 'weekly'
             : 'monthly'
         : null;
 
-    const dateTime = extractDateTime(props.transaction.date);
+    const dateTime = extractDateTime(date);
 
-    const paymentMethod = props.transaction.operation.payment
-        ? props.transaction.operation.payment.card!.brand + ', ' + props.transaction.operation.payment.card!.last4
+    const paymentMethod = operation.payment && operation.payment.card
+        ? getPaymentMethodName(operation.payment.card.brand) + ', ' + operation.payment.card.last4
         : null;
 
-    const amountValue = props.transaction.operation.__typename === 'WalletTransactionTransferOut'
-        ? props.transaction.operation.walletAmount + props.transaction.operation.chargeAmount
-        : props.transaction.operation.amount;
+    const amountValue = operation.__typename === 'WalletTransactionTransferOut'
+        ? operation.walletAmount + operation.chargeAmount
+        : operation.amount;
 
     const amountSign =
-        props.transaction.operation.__typename === 'WalletTransactionDeposit' || 
-        props.transaction.operation.__typename === 'WalletTransactionTransferIn' ||
-        amountValue === 0
+        operation.__typename === 'WalletTransactionDeposit' ||
+            operation.__typename === 'WalletTransactionTransferIn' ||
+            amountValue === 0
             ? ''
             : '-';
 
     const amount = amountSign + formatMoney(amountValue);
 
-    const normalizedTransaction = {
-        id: props.transaction.id,
+    return {
+        id,
         photo,
         title,
         type,
@@ -87,27 +83,31 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
         paymentMethod,
         amount,
     };
+};
+
+const TransactionComponent = React.memo((props: { ctx: XModalController, transaction: WalletTransactionFragment }) => {
+    const normalized = normalizeTransaction(props.transaction);
 
     return (
         <XView paddingTop={20} paddingBottom={16}>
             <XView flexDirection="column" alignItems="center" justifyContent="center">
                 <UAvatar
-                    id={normalizedTransaction.id}
-                    title={normalizedTransaction.title}
-                    photo={normalizedTransaction.photo}
+                    id={normalized.id}
+                    title={normalized.title}
+                    photo={normalized.photo}
                     size='xx-large'
                 />
                 <XView marginTop={16}>
-                    <h2 className={TextTitle2}>{normalizedTransaction.title}</h2>
+                    <h2 className={TextTitle2}>{normalized.title}</h2>
                 </XView>
                 <XView marginTop={8} color="var(--foregroundSecondary)">
 
-                    { props.transaction.operation.__typename === 'WalletTransactionSubscription' && (
-                        <span className={TextBody}>{normalizedTransaction.type}, {normalizedTransaction.interval}</span>
+                    {props.transaction.operation.__typename === 'WalletTransactionSubscription' && (
+                        <span className={TextBody}>{normalized.type}, {normalized.interval}</span>
                     )}
 
-                    { props.transaction.operation.__typename !== 'WalletTransactionSubscription' && (
-                        <span className={TextBody}>{normalizedTransaction.type}</span>
+                    {props.transaction.operation.__typename !== 'WalletTransactionSubscription' && (
+                        <span className={TextBody}>{normalized.type}</span>
                     )}
                 </XView>
             </XView>
@@ -117,17 +117,17 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
                     <span className={TextBody}>Date and time</span>
                     <XView color="var(--foregroundSecondary)">
                         <span className={TextBody}>
-                            { normalizedTransaction.dateTime }
+                            {normalized.dateTime}
                         </span>
                     </XView>
                 </XView>
 
-                { normalizedTransaction.paymentMethod && (
+                {normalized.paymentMethod && (
                     <XView flexDirection="row" justifyContent="space-between" paddingHorizontal={24} paddingVertical={12}>
                         <span className={TextBody}>Payment method</span>
                         <XView color="var(--foregroundSecondary)">
                             <span className={TextBody}>
-                                { normalizedTransaction.paymentMethod }
+                                {normalized.paymentMethod}
                             </span>
                         </XView>
                     </XView>
@@ -137,7 +137,7 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
                     <span className={TextBody}>Total amount</span>
                     <XView color="var(--foregroundSecondary)">
                         <span className={TextBody}>
-                            { normalizedTransaction.amount }
+                            {normalized.amount}
                         </span>
                     </XView>
                 </XView>
@@ -160,7 +160,6 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
 });
 
 export function showTransaction(transaction: WalletTransactionFragment) {
-    console.warn({transaction});
     showModalBox({ title: 'Transaction', useTopCloser: true }, (ctx) => {
         return (
             <TransactionComponent ctx={ctx} transaction={transaction} />
