@@ -9,6 +9,8 @@ import UrlPattern from 'url-pattern';
 import UrlParse from 'url-parse';
 import { ResolvedInvite_invite_RoomInvite, AccountInviteInfo_invite } from 'openland-api/spacex.types';
 import { publicPaths } from 'openland-y-utils/publicPaths';
+import Toast from 'openland-mobile/components/Toast';
+import { AppLoader } from 'openland-y-runtime/AppLoader';
 
 export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?: boolean) => {
     return async () => {
@@ -243,7 +245,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let matchShortName = shortNamePattern.match(link);
 
         if (matchShortName && matchShortName.shortname && !webPublicPaths.includes(matchShortName.shortname)) {
-            startLoader();
+            AppLoader.start();
             try {
                 let info = await getMessenger().engine.client.queryResolveShortName({ shortname: matchShortName.shortname }, { fetchPolicy: 'network-only' });
                 if (info && info.item) {
@@ -256,15 +258,15 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
                     } else if (info.item.__typename === 'SharedRoom') {
                         getMessenger().history.navigationManager.pushAndReset('ProfileGroup', { id: info.item.id });
                     } else {
-                        Alert.alert('Nothing found');
+                        Toast.failure({text: 'Nothing found', duration: 1000}).show();
                     }
                 } else {
-                    Alert.alert('Nothing found');
+                    Toast.failure({text: 'Nothing found', duration: 1000}).show();
                 }
             } catch (e) {
-                Alert.alert(e.message);
+                Toast.failure({text: e.message, duration: 1000}).show();
             }
-            stopLoader();
+            AppLoader.stop();
             return;
         }
 
