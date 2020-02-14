@@ -380,11 +380,11 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
             }
             if (distributionField.value === DistributionType.PAID) {
                 intervalField.input.onChange(null);
-                priceField.input.onChange(5);
+                priceField.input.onChange(500);
             }
             if (distributionField.value === DistributionType.SUBSCRIPTION) {
                 intervalField.input.onChange(WalletSubscriptionInterval.MONTH);
-                priceField.input.onChange(5);
+                priceField.input.onChange(500);
             }
         },
         [distributionField.value],
@@ -465,15 +465,15 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
                             searchable={false}
                             options={[
                                 {
-                                    value: 5,
+                                    value: 500,
                                     label: '$5',
                                 },
                                 {
-                                    value: 10,
+                                    value: 1000,
                                     label: '$10',
                                 },
                                 {
-                                    value: 20,
+                                    value: 2000,
                                     label: '$20',
                                 },
                             ]}
