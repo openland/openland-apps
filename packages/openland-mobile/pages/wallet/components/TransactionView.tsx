@@ -2,7 +2,7 @@ import * as React from 'react';
 import { WalletTransactionFragment, PaymentStatus } from 'openland-api/spacex.types';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { Money } from 'openland-y-utils/wallet/Money';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { showPayComplete } from 'openland-mobile/pages/main/modals/PayComplete';
 import { SRouter } from 'react-native-s/SRouter';
