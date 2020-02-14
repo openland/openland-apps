@@ -2,7 +2,7 @@ import * as React from 'react';
 import { WalletTransactionFragment, PaymentStatus } from 'openland-api/spacex.types';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { Money } from 'openland-y-utils/wallet/Money';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { showPayComplete } from 'openland-mobile/pages/main/modals/PayComplete';
 import { SRouter } from 'react-native-s/SRouter';
@@ -18,7 +18,7 @@ export const TransactionView = (props: TransactionViewProps) => {
 
     const { payment } = operation;
 
-    const actionRequired = payment && payment.status === PaymentStatus.ACTION_REQUIRED && payment.intent;
+    const actionRequired = payment && (payment.status === PaymentStatus.ACTION_REQUIRED || payment.status === PaymentStatus.FAILING) && payment.intent;
     const complete = React.useCallback(() => {
         if (actionRequired && payment && payment.intent) {
             showPayComplete(payment.intent.id, payment.intent.clientSecret, props.router);

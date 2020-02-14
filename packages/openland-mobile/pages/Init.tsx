@@ -95,8 +95,8 @@ const AppContainer = React.memo<{ children?: any, loading: boolean, onLayout?: (
     return (
         <View style={{ width: '100%', height: '100%' }} onLayout={props.onLayout}>
             {props.children}
-            <ZModalProvider />
             <BottomSheetProvider />
+            <ZModalProvider />
             <AppPlaceholder loading={props.loading} />
         </View>
     );

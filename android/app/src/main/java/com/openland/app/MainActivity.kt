@@ -17,10 +17,8 @@ import android.net.Uri
 import android.view.WindowManager
 import android.app.NotificationManager
 import android.content.res.Configuration
-import com.stripe.android.ApiResultCallback
-import com.stripe.android.SetupIntentResult
-import com.stripe.android.Stripe
-import com.stripe.android.StripeIntentResult
+import com.openland.react.stripe.StripeModule
+import com.stripe.android.*
 import com.stripe.android.model.StripeIntent
 
 class MainActivity : ReactActivity() {
@@ -128,6 +126,22 @@ class MainActivity : ReactActivity() {
                 ?.emit("openland_stripe_setup_intent", map)
     }
 
+    private fun reportConfirmPaymentResult(id: String, status: String, message: String?) {
+        val map = WritableNativeMap()
+        map.putString("status", status)
+        map.putString("id", id)
+
+        if (message != null) {
+            map.putString("message", message)
+        }
+        (applicationContext as MainApplication)
+                .reactNativeHost
+                .reactInstanceManager
+                .currentReactContext
+                ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                ?.emit("openland_stripe_confirm_payment", map)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -162,6 +176,34 @@ class MainActivity : ReactActivity() {
                 // This is some kind of fatal error
                 e.printStackTrace()
                 reportSetupIntentResult(clientSecret!!, "failed", null, defaultError)
+            }
+        })
+
+        // Handle the result of stripe.confirmPayment
+        stripe.onPaymentResult(requestCode, data, object : ApiResultCallback<PaymentIntentResult> {
+            override fun onSuccess(result: PaymentIntentResult) {
+                val paymentIntent = result.intent
+                val status = paymentIntent.status
+                if(StripeModule.pendingConfirmPaymentId == null){
+                    Log.e("stripe onPaymentResult", "no payment id!")
+                }else{
+                    Log.w("stripe", paymentIntent.id)
+                    if (status == StripeIntent.Status.Succeeded) {
+                        reportConfirmPaymentResult(StripeModule.pendingConfirmPaymentId!!, "success", null)
+                    } else {
+                        reportConfirmPaymentResult(StripeModule.pendingConfirmPaymentId!!, "failed", defaultError)
+                    }
+                }
+
+            }
+
+            override fun onError(e: Exception) {
+                if(StripeModule.pendingConfirmPaymentId == null){
+                    Log.e("stripe onPaymentResult", "no payment id!")
+                }else{
+                    reportConfirmPaymentResult(StripeModule.pendingConfirmPaymentId!!, "failed", e.localizedMessage)
+
+                }
             }
         })
     }

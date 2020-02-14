@@ -11,6 +11,7 @@ import com.openland.app.MainActivity
 import com.openland.app.MainApplication
 import com.openland.app.R
 import com.openland.react.runOnUIThread
+import com.stripe.android.model.ConfirmPaymentIntentParams
 import com.stripe.android.model.ConfirmSetupIntentParams
 import com.stripe.android.view.CardMultilineWidget
 import java.lang.ref.WeakReference
@@ -87,6 +88,21 @@ class StripeModule(reactContext: ReactApplicationContext) : ReactContextBaseJava
             val params = ConfirmSetupIntentParams.create(pparams, clientSecret)
             activity.stripe.confirmSetupIntent(activity, params)
 
+        }
+    }
+
+    // god save us all
+    companion object {
+        var pendingConfirmPaymentId: String? = null
+    }
+    @ReactMethod
+    fun confirmPayment(paymentId: String, clientSecret: String, paymentMethod: String) {
+        runOnUIThread {
+            pendingConfirmPaymentId = paymentId
+            val activity = reactApplicationContext.currentActivity!! as MainActivity
+            val confirmParams = ConfirmPaymentIntentParams
+                    .createWithPaymentMethodId(paymentMethod, clientSecret)
+            activity.stripe.confirmPayment(activity, confirmParams)
         }
     }
 }

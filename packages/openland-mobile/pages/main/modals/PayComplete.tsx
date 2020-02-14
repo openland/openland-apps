@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { showBottomSheet, BottomSheetActions } from 'openland-mobile/components/BottomSheet';
 import { useClient } from 'openland-api/useClient';
-import { View, NativeModules, Platform, DeviceEventEmitter, NativeEventEmitter, Alert } from 'react-native';
+import { View, NativeModules, Platform, DeviceEventEmitter, NativeEventEmitter } from 'react-native';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { SRouter } from 'react-native-s/SRouter';
@@ -63,10 +63,6 @@ const CompletePaymentComponent = React.memo((props: { id: string, clientSecret: 
     const [selected, setSelected] = React.useState<string>();
     const [loading, setLoading] = React.useState<boolean>(false);
     const onSubmit = React.useCallback(async () => {
-        if (Platform.OS !== 'ios') {
-            Alert.alert('Not implemented yet');
-            return;
-        }
         if (!selected) {
             return;
         }
@@ -83,9 +79,8 @@ const CompletePaymentComponent = React.memo((props: { id: string, clientSecret: 
 
         if (message) {
             AlertBlanket.alert(message);
-        } else {
-            props.ctx.hide();
         }
+        props.ctx.hide();
     }, [selected]);
 
     const cards = client.useMyCards().myCards;
