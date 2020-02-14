@@ -245,7 +245,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         if (matchShortName && matchShortName.shortname && !webPublicPaths.includes(matchShortName.shortname)) {
             startLoader();
             try {
-                let info = await getMessenger().engine.client.queryResolveShortName({ shortname: matchShortName.shortname });
+                let info = await getMessenger().engine.client.queryResolveShortName({ shortname: matchShortName.shortname }, { fetchPolicy: 'network-only' });
                 if (info && info.item) {
                     if (info.item.__typename === 'User') {
                         getMessenger().history.navigationManager.pushAndReset('ProfileUser', { id: info.item.id });
@@ -253,11 +253,13 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
                         getMessenger().history.navigationManager.pushAndReset('ProfileOrganization', { id: info.item.id });
                     } else if (info.item.__typename === 'FeedChannel') {
                         getMessenger().history.navigationManager.pushAndReset('FeedChannel', { id: info.item.id });
+                    } else if (info.item.__typename === 'SharedRoom') {
+                        getMessenger().history.navigationManager.pushAndReset('ProfileGroup', { id: info.item.id });
                     } else {
-                        Alert.alert('No such user or organization');
+                        Alert.alert('Nothing found');
                     }
                 } else {
-                    Alert.alert('No such user or organization');
+                    Alert.alert('Nothing found');
                 }
             } catch (e) {
                 Alert.alert(e.message);

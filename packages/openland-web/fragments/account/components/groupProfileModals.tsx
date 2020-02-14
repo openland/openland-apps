@@ -14,7 +14,7 @@ import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInputField } from 'openland-web/components/unicorn/UInput';
 import { trackEvent } from 'openland-x-analytics';
-import { AppConfig } from 'openland-y-runtime/AppConfig';
+import { useShortnameField } from 'openland-y-utils/form/useShortnameField';
 
 type RoomEditModalT = {
     title: string;
@@ -32,8 +32,6 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
     const form = useForm();
 
     const editPhotoRef = props.photo;
-    const shortnameMinLength = AppConfig.isSuperAdmin() ? 3 : 5;
-    const shortnameMaxLength = 16;
     const initialShortname = props.shortname || '';
     const hasShortname = props.kind === SharedRoomKind.PUBLIC;
 
@@ -50,23 +48,7 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
         },
     ]);
     const descriptionField = useField('input.description', props.description || '', form);
-    const shortnameField = useField('input.shortname', initialShortname, form, [
-        {
-            checkIsValid: value =>
-                !!value && value.length > 0 ? value.length >= shortnameMinLength : true,
-            text: 'Shortname must have at least ' + shortnameMinLength + ' characters.',
-        },
-        {
-            checkIsValid: value =>
-                !!value && value.length > 0 ? value.length < shortnameMaxLength : true,
-            text: 'Shortname must have no more than ' + shortnameMaxLength + ' characters.',
-        },
-        {
-            checkIsValid: value =>
-                !!value && value.length > 0 ? !!value.match('^[a-z0-9_]+$') : true,
-            text: 'A shortname can only contain a-z, 0-9, and underscores.',
-        },
-    ]);
+    const shortnameField = useShortnameField('input.shortname', initialShortname, form);
     const onSubmit = async () => {
         await form.doAction(async () => {
             let newPhoto = avatarField.value;
@@ -84,11 +66,12 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
                 id: props.roomId,
                 shortname: shortnameField.value,
             };
-
-            Promise.all([
-                await client.mutateRoomUpdate(dataToSend), 
-                hasShortname && shortnameField.value !== initialShortname && await client.mutateSetRoomShortname(shortnameData),
-            ]);
+            const promises: Promise<any>[] = [client.mutateRoomUpdate(dataToSend)];
+            if (hasShortname && shortnameField.value !== initialShortname) {
+                promises.push(client.mutateSetRoomShortname(shortnameData));
+            }
+                
+            await Promise.all(promises);
             await client.refetchRoomWithoutMembers({ id: props.roomId });
             props.onClose();
         });

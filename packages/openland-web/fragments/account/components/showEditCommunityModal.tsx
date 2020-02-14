@@ -11,12 +11,12 @@ import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
 import { UInputField } from 'openland-web/components/unicorn/UInput';
 import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
-import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { USelectField } from 'openland-web/components/unicorn/USelect';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import { trackEvent } from 'openland-x-analytics';
+import { useShortnameField } from 'openland-y-utils/form/useShortnameField';
 
 enum CommunityType {
     COMMUNITY_PUBLIC = 'COMMUNITY_PUBLIC',
@@ -81,8 +81,6 @@ const EditCommunityEntity = (props: {
     const client = useClient();
     const data = client.useOrganizationProfile({ organizationId });
     const org = data.organizationProfile;
-    const shortnameMinLength = AppConfig.isSuperAdmin() ? 3 : 5;
-    const shortnameMaxLength = 16;
 
     // super account
     const [activated, setActivated] = React.useState<null | boolean>(null);
@@ -103,23 +101,8 @@ const EditCommunityEntity = (props: {
             text: 'Please enter a name',
         },
     ]);
-    const shortnameField = useField('input.username', org.shortname || '', form, [
-        {
-            checkIsValid: value =>
-                !!value && value.length > 0 ? value.length >= shortnameMinLength : true,
-            text: 'Shortname must have at least ' + shortnameMinLength + ' characters.',
-        },
-        {
-            checkIsValid: value =>
-                !!value && value.length > 0 ? value.length < shortnameMaxLength : true,
-            text: 'Shortname must have no more than ' + shortnameMaxLength + ' characters.',
-        },
-        {
-            checkIsValid: value =>
-                !!value && value.length > 0 ? !!value.match('^[a-z0-9_]+$') : true,
-            text: 'A shortname can only contain a-z, 0-9, and underscores.',
-        },
-    ]);
+    const initialOrgShortname = org.shortname || '';
+    const shortnameField = useShortnameField('input.shortname', initialOrgShortname, form);
     const aboutField = useField('input.about', org.about || '', form);
     const websiteField = useField('input.website', org.website || '', form);
     const twitterField = useField('input.twitter', org.twitter || '', form);
@@ -134,7 +117,7 @@ const EditCommunityEntity = (props: {
 
     const doConfirm = () => {
         form.doAction(async () => {
-            await client.mutateUpdateOrganization({
+            const variables = {
                 input: {
                     name: nameField.value.trim(),
                     about: aboutField.value,
@@ -150,17 +133,17 @@ const EditCommunityEntity = (props: {
                     alphaIsPrivate: typeField.value === CommunityType.COMMUNITY_PRIVATE,
                 },
                 organizationId: organizationId,
-            });
-
-            if (org.shortname !== shortnameField.value) {
-                await client.mutateSetOrgShortname({
-                    shortname: shortnameField.value,
-                    organizationId,
-                });
+            };
+            let promises: Promise<any>[] = [client.mutateUpdateOrganization(variables)];
+            if (initialOrgShortname !== shortnameField.value) {
+                promises.push(client.mutateSetOrgShortname({ shortname: shortnameField.value, organizationId }));
             }
+            await Promise.all(promises);
 
-            await client.refetchOrganization({ organizationId });
-            await client.refetchOrganizationProfile({ organizationId });
+            await Promise.all([
+                client.refetchOrganization({ organizationId }),
+                client.refetchOrganizationProfile({ organizationId }),
+            ]);
             props.modalCtx.hide();
         });
     };
