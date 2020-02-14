@@ -42,7 +42,7 @@ const generateSubTitle = (subscription: NormalizedSubscription) => {
 
         case WalletSubscriptionState.GRACE_PERIOD:
         case WalletSubscriptionState.RETRYING: 
-            return "Failing";
+            return "Payment failed";
 
         case WalletSubscriptionState.CANCELED:
             return `Expires on ${date}`;
@@ -84,7 +84,15 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
                     </Text>
                 </View>
                 <View marginTop={4}>
-                    <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundTertiary }}>
+                    <Text
+                        allowFontScaling={false}
+                        style={{
+                            ...TextStyles.Body,
+                            color: props.state === WalletSubscriptionState.GRACE_PERIOD || props.state === WalletSubscriptionState.RETRYING
+                                ? theme.accentNegative
+                                : theme.foregroundTertiary
+                        }}
+                    >
                         { generateSubTitle(props) }
                     </Text>
                 </View>
