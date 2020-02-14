@@ -8,7 +8,7 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { useClient } from 'openland-api/useClient';
 import { WalletSubscriptionState, Subscriptions_subscriptions_product_WalletSubscriptionProductGroup } from 'openland-api/spacex.types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
@@ -183,6 +183,7 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
 
 const SubscriptionsComponent = React.memo<PageProps>((props) => {
     const client = useClient();
+    const theme = React.useContext(ThemeContext);
     const subscriptions = client.useSubscriptions({ fetchPolicy: 'network-only' });
     const groupSubscriptions = subscriptions.subscriptions.filter(subscription => subscription.product.__typename === 'WalletSubscriptionProductGroup');
     const normalizedSubscriptions: NormalizedSubscription[] = groupSubscriptions.map(subscription => {
@@ -207,10 +208,50 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
         subscription.state === WalletSubscriptionState.EXPIRED
     );
 
+    const haveBillingProblems = normalizedSubscriptions.filter(
+        subscription =>
+            subscription.state === WalletSubscriptionState.RETRYING ||
+            subscription.state === WalletSubscriptionState.GRACE_PERIOD
+    ).length > 0;
+
     return (
         <>
             <SHeader title="Subscriptions" />
             <SScrollView>
+
+                { haveBillingProblems && (
+                    <LinearGradient
+                        colors={[theme.gradient0to100Start, theme.gradient0to100End]}
+                        paddingTop={16}
+                        paddingLeft={32}
+                        paddingRight={32}
+                        paddingBottom={32}
+                        alignItems="center"
+                        justifyContent="center"
+                        flexDirection="column"
+                    >
+                        <Image
+                            source={require('assets/art-error.png')}
+                            style={{
+                                width: 240,
+                                height: 150,
+                            }}
+                        />
+                        <View marginTop={4}>
+                            <Text allowFontScaling={false} style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>
+                                Billing problems
+                            </Text>
+                        </View>
+                        <View marginTop={4}>
+                            <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center'}}>
+                                Some transactions for subscriptions are failed. Complete them or add a new card to keep subscriptions ongoing
+                            </Text>
+                        </View>
+                        <View marginTop={16}>
+                            <ZButton title='Open wallet' path="Wallet" />
+                        </View>
+                    </LinearGradient>
+                )}
 
                 { activeSubscriptions.length > 0 && (
                     <ZListGroup header="Active">
