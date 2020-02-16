@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { useClient } from 'openland-api/useClient';
 import { debounce } from 'openland-y-utils/timer';
-import { SAnimated } from 'react-native-s/SAnimated';
+import { SAnimated, SAnimatedShadowView } from 'react-native-fast-animations';
 import { Text, Platform } from 'react-native';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 
 export const ConnectionStatusComponent = (props: { k: string }) => {
     let animate = new SAnimatedShadowView(`header-connecting-status-content-${props.k}`, { opacity: 0, translateY: -8, scale: 0.84 });

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, PanResponderGestureState, PanResponder, Dimensions, Platform, ScrollView, StyleSheet, ViewStyle, Image } from 'react-native';
-import { SAnimated, SAnimatedPropertyName } from 'react-native-s/SAnimated';
-import { SAnimatedView } from 'react-native-s/SAnimatedView';
+import { SAnimated, SAnimatedPropertyName } from 'react-native-fast-animations';
+import { SAnimatedView } from 'react-native-fast-animations';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 

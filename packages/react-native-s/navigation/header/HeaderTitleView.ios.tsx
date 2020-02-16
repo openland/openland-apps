@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { HeaderPage } from './HeaderPage';
-import { SAnimated } from '../../SAnimated';
+import { SAnimated } from 'react-native-fast-animations';
 import { SDevice } from '../../SDevice';
 import { View, Text, TouchableHighlight, Image, TextInput, StyleSheet, TextStyle, Dimensions, TouchableOpacity } from 'react-native';
 import { SBackButton } from '../../SBackButton';

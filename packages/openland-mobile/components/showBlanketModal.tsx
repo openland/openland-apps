@@ -8,9 +8,9 @@ import {
     Platform,
     ViewStyle,
 } from 'react-native';
-import { SAnimated } from 'react-native-s/SAnimated';
+import { SAnimated } from 'react-native-fast-animations';
 import { randomKey } from 'react-native-s/utils/randomKey';
-import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
+import { SAnimatedShadowView } from 'react-native-fast-animations';
 import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAreaContext';
 import { isPad } from 'openland-mobile/pages/Root';
 import { XMemo } from 'openland-y-utils/XMemo';

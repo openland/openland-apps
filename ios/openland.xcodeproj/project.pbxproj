@@ -51,11 +51,7 @@
 		AA300DC7220186A400C54930 /* RNBackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA300DC6220186A400C54930 /* RNBackgroundTask.swift */; };
 		AA3DDA0F2284E0AD0078A762 /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3DDA042284E0AC0078A762 /* Operations.swift */; };
 		AA3DDA112284E14E0078A762 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3DDA102284E14E0078A762 /* Types.swift */; };
-		AA627FEF214C56EB007C8200 /* RNSAnimatedEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA627FEE214C56EB007C8200 /* RNSAnimatedEventEmitter.swift */; };
 		AA6281AB2151C8BD007C8200 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = AA6281AA2151C8BC007C8200 /* VERSION */; };
-		AA67E25321492C8400AE9CAC /* RNSAnimatedViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA67E25221492C8400AE9CAC /* RNSAnimatedViewManager.swift */; };
-		AA67E25521492DBE00AE9CAC /* RNSUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA67E25421492DBE00AE9CAC /* RNSUtils.swift */; };
-		AA67E2582149318200AE9CAC /* RNSAnimated-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AA67E2572149318200AE9CAC /* RNSAnimated-Bridge.m */; };
 		AA6D99872171A2E100E04A29 /* RNLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6D99862171A2E100E04A29 /* RNLoadingCell.swift */; };
 		AA7B7BE022851C3F001AA400 /* normalizeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB181772284EDE6008D3603 /* normalizeData.swift */; };
 		AA7B7BF822860CA6001AA400 /* RecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7B7BF722860CA6001AA400 /* RecordStore.swift */; };
@@ -112,9 +108,7 @@
 		AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE5017B2145040B00BEAA04 /* RNAsyncKeyboardManager.swift */; };
 		AAE5017E2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE5017D2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift */; };
 		AAE501802145801600BEAA04 /* RNAsyncKeyboardContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE5017F2145801600BEAA04 /* RNAsyncKeyboardContext.swift */; };
-		AAE50182214602D700BEAA04 /* RNSAnimatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE50181214602D700BEAA04 /* RNSAnimatedView.swift */; };
 		AAE501842146079E00BEAA04 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC42129FA3C003706B3 /* Bridge.m */; };
-		AAE50186214607B600BEAA04 /* RNSAnimationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE50185214607B600BEAA04 /* RNSAnimationSpec.swift */; };
 		AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC42129FA3C003706B3 /* Bridge.m */; };
 		AAE56DE4212A0CDC003706B3 /* Nuke.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; };
 		AAE56DE5212A0CDC003706B3 /* Nuke.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -336,12 +330,7 @@
 		AA300DC6220186A400C54930 /* RNBackgroundTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNBackgroundTask.swift; sourceTree = "<group>"; };
 		AA3DDA042284E0AC0078A762 /* Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operations.swift; sourceTree = "<group>"; };
 		AA3DDA102284E14E0078A762 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
-		AA627FEE214C56EB007C8200 /* RNSAnimatedEventEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSAnimatedEventEmitter.swift; sourceTree = "<group>"; };
 		AA6281AA2151C8BC007C8200 /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION; sourceTree = "<group>"; };
-		AA67E25221492C8400AE9CAC /* RNSAnimatedViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSAnimatedViewManager.swift; sourceTree = "<group>"; };
-		AA67E25421492DBE00AE9CAC /* RNSUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSUtils.swift; sourceTree = "<group>"; };
-		AA67E2562149315C00AE9CAC /* RNSAnimated-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNSAnimated-Bridge.h"; sourceTree = "<group>"; };
-		AA67E2572149318200AE9CAC /* RNSAnimated-Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNSAnimated-Bridge.m"; sourceTree = "<group>"; };
 		AA6D99862171A2E100E04A29 /* RNLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNLoadingCell.swift; sourceTree = "<group>"; };
 		AA7B7BF722860CA6001AA400 /* RecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordStore.swift; sourceTree = "<group>"; };
 		AA7B7BF922860E00001AA400 /* SpaceXClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceXClient.swift; sourceTree = "<group>"; };
@@ -411,8 +400,6 @@
 		AAE5017B2145040B00BEAA04 /* RNAsyncKeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncKeyboardManager.swift; sourceTree = "<group>"; };
 		AAE5017D2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncKeyboardViewManager.swift; sourceTree = "<group>"; };
 		AAE5017F2145801600BEAA04 /* RNAsyncKeyboardContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncKeyboardContext.swift; sourceTree = "<group>"; };
-		AAE50181214602D700BEAA04 /* RNSAnimatedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSAnimatedView.swift; sourceTree = "<group>"; };
-		AAE50185214607B600BEAA04 /* RNSAnimationSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSAnimationSpec.swift; sourceTree = "<group>"; };
 		AAE56DC02129F9B8003706B3 /* openland-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "openland-Bridging-Header.h"; sourceTree = "<group>"; };
 		AAE56DC32129FA25003706B3 /* Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Bridge.h; path = openland/hacks/Bridge.h; sourceTree = "<group>"; };
 		AAE56DC42129FA3C003706B3 /* Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = Bridge.m; path = openland/hacks/Bridge.m; sourceTree = "<group>"; };
@@ -519,7 +506,6 @@
 				AA2365592244EBEE000AA3A7 /* RNGraphql */,
 				AA2FBA1E22247C61000915F7 /* RNSDevice */,
 				AAA4DA46221457BB00BB1781 /* appcenter */,
-				AAE501832146078400BEAA04 /* RNSAnimation */,
 				AAE104CF212C2A440034DA0F /* RNAsyncView */,
 				AAE56DBF2129F997003706B3 /* hacks */,
 				AAE56DC32129FA25003706B3 /* Bridge.h */,
@@ -818,20 +804,6 @@
 				AAB0EF90213D8CF500FBCB75 /* Utils.swift */,
 			);
 			name = RNAsyncView;
-			sourceTree = "<group>";
-		};
-		AAE501832146078400BEAA04 /* RNSAnimation */ = {
-			isa = PBXGroup;
-			children = (
-				AAE50181214602D700BEAA04 /* RNSAnimatedView.swift */,
-				AA67E25221492C8400AE9CAC /* RNSAnimatedViewManager.swift */,
-				AAE50185214607B600BEAA04 /* RNSAnimationSpec.swift */,
-				AA627FEE214C56EB007C8200 /* RNSAnimatedEventEmitter.swift */,
-				AA67E25421492DBE00AE9CAC /* RNSUtils.swift */,
-				AA67E2562149315C00AE9CAC /* RNSAnimated-Bridge.h */,
-				AA67E2572149318200AE9CAC /* RNSAnimated-Bridge.m */,
-			);
-			name = RNSAnimation;
 			sourceTree = "<group>";
 		};
 		AAE56DBF2129F997003706B3 /* hacks */ = {
@@ -1315,6 +1287,7 @@
 				"${BUILT_PRODUCTS_DIR}/react-native-background-timer/react_native_background_timer.framework",
 				"${BUILT_PRODUCTS_DIR}/react-native-blur/react_native_blur.framework",
 				"${BUILT_PRODUCTS_DIR}/react-native-document-picker/react_native_document_picker.framework",
+				"${BUILT_PRODUCTS_DIR}/react-native-fast-animations/react_native_fast_animations.framework",
 				"${BUILT_PRODUCTS_DIR}/react-native-haptic-feedback/react_native_haptic_feedback.framework",
 				"${BUILT_PRODUCTS_DIR}/react-native-image-picker/react_native_image_picker.framework",
 				"${BUILT_PRODUCTS_DIR}/react-native-location/react_native_location.framework",
@@ -1385,6 +1358,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_background_timer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_blur.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_document_picker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_fast_animations.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_haptic_feedback.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_image_picker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_location.framework",
@@ -1500,7 +1474,6 @@
 				AAA4DA502214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m in Sources */,
 				AA23655B2244EBFF000AA3A7 /* RNGraphqlModule.swift in Sources */,
 				AAB0EEA321349F8000FBCB75 /* RNAsyncLoadingIndicator.swift in Sources */,
-				AA67E25321492C8400AE9CAC /* RNSAnimatedViewManager.swift in Sources */,
 				AAB0EF8D21371A8B00FBCB75 /* RNAsyncListView.swift in Sources */,
 				AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */,
 				AA2281C8228A3C0400810848 /* Serialization.swift in Sources */,
@@ -1511,23 +1484,19 @@
 				AAA47DC3212CB2BC00E71A74 /* RNAsyncColor.swift in Sources */,
 				AA2281CA228A4B7F00810848 /* collectMissingKeys.swift in Sources */,
 				AAB0EF852137197B00FBCB75 /* RNAsyncConfigManager.swift in Sources */,
-				AA627FEF214C56EB007C8200 /* RNSAnimatedEventEmitter.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				AAB0EE57213438C500FBCB75 /* RNAsyncDataView.swift in Sources */,
 				AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */,
 				AAA4DA55221458CB00BB1781 /* AppCenterReactNativeAnalytics.m in Sources */,
 				AA2281CC228B3C9200810848 /* SpaceXUtils.swift in Sources */,
 				AA2281CE228B3EF600810848 /* NetworkingDelegate.swift in Sources */,
-				AAE50186214607B600BEAA04 /* RNSAnimationSpec.swift in Sources */,
 				AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */,
 				AA2FBA2B22247D0E000915F7 /* RNSDevice.swift in Sources */,
 				AA181CC823D774F400B8C633 /* RNStripe.swift in Sources */,
-				AA67E2582149318200AE9CAC /* RNSAnimated-Bridge.m in Sources */,
 				AA148B4C23F1F73F00B0EC77 /* Thruster.swift in Sources */,
 				AA181CC523D774B400B8C633 /* Stripe-Bridge.m in Sources */,
 				A099CBDC233B9CFF00A7AC8C /* ChatFlowLayout.swift in Sources */,
 				AAE501802145801600BEAA04 /* RNAsyncKeyboardContext.swift in Sources */,
-				AA67E25521492DBE00AE9CAC /* RNSUtils.swift in Sources */,
 				AAAA1DBC2289E2D70023A28F /* TransportState.swift in Sources */,
 				AA6D99872171A2E100E04A29 /* RNLoadingCell.swift in Sources */,
 				AA148B5A23F206B900B0EC77 /* WatchDogTimer.swift in Sources */,
@@ -1546,7 +1515,6 @@
 				AAB0219421429D8800927CF0 /* RNAsyncCell.swift in Sources */,
 				AAA4DA512214585E00BB1781 /* AppCenterReactNativeCrashes.m in Sources */,
 				AA23655D2244EE47000AA3A7 /* RNGraphqlClient.swift in Sources */,
-				AAE50182214602D700BEAA04 /* RNSAnimatedView.swift in Sources */,
 				AAAA1DC22289FD8A0023A28F /* selectorKey.swift in Sources */,
 				AAC1E0CA23F5CF9B00F25B7B /* WrappedWebSocket.swift in Sources */,
 				AAA4DA522214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m in Sources */,

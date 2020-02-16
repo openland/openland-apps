@@ -2,10 +2,10 @@ import { Dimensions, Platform } from 'react-native';
 import { SDevice } from '../../SDevice';
 import { NavigationPage } from '../NavigationPage';
 import { HeaderConfig } from '../HeaderConfig';
-import { SAnimatedShadowView } from '../../SAnimatedShadowView';
+import { SAnimatedShadowView } from 'react-native-fast-animations';
 import { HeaderTitleViewCoordinator } from './HeaderTitleViewCoordinator';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
-import { SAnimated } from 'react-native-s/SAnimated';
+import { SAnimated } from 'react-native-fast-animations';
 import { STrackedValue } from 'react-native-s/STrackedValue';
 
 const MAX_SIZE = Math.max(Dimensions.get('window').height, Dimensions.get('window').width);

@@ -4,7 +4,7 @@ import { SRouting } from './SRouting';
 import { NavigationContainer } from './navigation/NavigationContainer';
 import { PresentationManager } from './navigation/PresentationManager';
 import { NavigationManager } from './navigation/NavigationManager';
-import { SAnimated } from './SAnimated';
+import { SAnimated } from 'react-native-fast-animations';
 import { randomKey } from './utils/randomKey';
 
 export interface SNavigationViewProps {

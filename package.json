@@ -170,6 +170,7 @@
         "react-native-device-info": "^0.22.0",
         "react-native-document-picker": "^2.2.0",
         "react-native-extra-dimensions-android": "^1.0.0",
+        "react-native-fast-animations": "^0.0.2",
         "react-native-fast-image": "^7.0.0",
         "react-native-gesture-handler": "1.4.1",
         "react-native-haptic-feedback": "^1.7.1",

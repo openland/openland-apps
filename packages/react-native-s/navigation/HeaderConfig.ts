@@ -1,6 +1,6 @@
 import { STrackedValue } from '../STrackedValue';
 import { SHeaderAppearance, SHeaderHairline } from '../SHeader';
-import { SAnimatedShadowView } from '../SAnimatedShadowView';
+import { SAnimatedShadowView } from 'react-native-fast-animations';
 import { SNavigationViewStyle } from '../SNavigationView';
 import { SearchContext } from './SearchContext';
 

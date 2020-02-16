@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Platform, StyleSheet, ViewStyle, Keyboard, PanResponder, Image, PanResponderGestureState } from 'react-native';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { AnimatedViewKeys } from './AnimatedViewKeys';
-import { SAnimated } from 'react-native-s/SAnimated';
+import { SAnimated } from 'react-native-fast-animations';
 import { NavigationPage } from './NavigationPage';
 import { NavigationState } from './NavigationState';
 import { NavigationManagerListener, NavigationManager } from './NavigationManager';

@@ -100,6 +100,8 @@ target 'openland' do
   pod 'react-native-location', :path => '../node_modules/react-native-location'
   
   pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
+  pod 'react-native-fast-animations', :path => '../node_modules/react-native-fast-animations'
+
 end
 
 target 'openlandTests' do

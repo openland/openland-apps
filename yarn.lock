@@ -13395,6 +13395,13 @@ react-native-extra-dimensions-android@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-native-extra-dimensions-android/-/react-native-extra-dimensions-android-1.0.0.tgz#5575224ad0516293f1ee861ee81a7d05eb5aabfd"
   integrity sha512-+N8a+vAd1+PDR9XuKIpMV/jdx/zNb8kXuwcugcF/Lxb2RV0DIekmu+CQJXEHBEdCWXAsypnITw+wRiiKgC3hcw==
 
+react-native-fast-animations@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-fast-animations/-/react-native-fast-animations-0.0.2.tgz#5d71b408be0712fde44faf6e46c771f822b6ad43"
+  integrity sha512-HiwdznJcvguCgbApANyEAI7VRMGUbx1BpSItsWvcPlspVvOrgwr4/XYnNZ07rh80Hg61i2ZObt9C5pa1s/9xmQ==
+  dependencies:
+    uuid "^3.4.0"
+
 react-native-fast-image@^7.0.0:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-7.0.2.tgz#e06b21f42f4a9786eaa86f3db35d919070fb8403"
@@ -16447,7 +16454,7 @@ uuid@3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
 
-uuid@3.4.0:
+uuid@3.4.0, uuid@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==

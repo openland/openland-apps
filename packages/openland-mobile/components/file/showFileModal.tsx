@@ -3,8 +3,8 @@ import { showModal, ZModalController } from '../ZModal';
 import { ZFileModalConfig, ZFileModal } from './ZFileModal';
 import { randomKey } from 'openland-mobile/utils/randomKey';
 import { View, BackHandler, Platform, Dimensions } from 'react-native';
-import { SAnimated } from 'react-native-s/SAnimated';
-import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
+import { SAnimated } from 'react-native-fast-animations';
+import { SAnimatedShadowView } from 'react-native-fast-animations';
 
 class FileModalWithTransition extends React.PureComponent<{ config: ZFileModalConfig, ctx: ZModalController }> implements ZModalController {
     key = randomKey();

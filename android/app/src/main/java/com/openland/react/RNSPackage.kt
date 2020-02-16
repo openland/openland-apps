@@ -11,8 +11,6 @@ import com.openland.react.async.AsyncConfigManager
 import com.openland.react.async.AsyncDataViewManager
 import com.openland.react.async.AsyncListViewManager
 import com.openland.react.async.AsyncViewManager
-import com.openland.react.anim.RNSAnimatedViewManager
-import com.openland.react.anim.RNSAnimatedViewViewManager
 import com.openland.react.graphql.RNGraphQL
 import com.openland.react.stripe.StripeCardViewManager
 import com.openland.react.stripe.StripeModule
@@ -31,7 +29,6 @@ class RNSPackage : ReactPackage {
                 KeepAliveModule(reactContext),
                 AsyncConfigManager(reactContext),
                 AsyncDataViewManager(reactContext),
-                RNSAnimatedViewManager(reactContext),
                 RNSWindowManager(reactContext),
                 BottomSafeAreaProvider(reactContext),
                 BenchmarkModule(reactContext),
@@ -44,7 +41,6 @@ class RNSPackage : ReactPackage {
         return mutableListOf(
                 AsyncViewManager(),
                 AsyncListViewManager(),
-                RNSAnimatedViewViewManager.sharedInstance,
                 SplashViewManager(),
                 StripeCardViewManager()
         ) as MutableList<ViewManager<View, ReactShadowNode<*>>>

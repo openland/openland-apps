@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import com.codemotionapps.reactnativedarkmode.DarkModePackage;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import com.openland.react.animations.FastAnimationsPackage;
 import com.github.reactnativecommunity.location.RNLocationPackage;
 import com.apsl.versionnumber.RNVersionNumberPackage;
 import com.reactnativecommunity.cameraroll.CameraRollPackage;
@@ -78,6 +79,7 @@ public class MainApplication extends Application implements ShareApplication, Re
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new FastAnimationsPackage(),
                     new RNLocationPackage(),
                     new RNVersionNumberPackage(),
                     new CameraRollPackage(),

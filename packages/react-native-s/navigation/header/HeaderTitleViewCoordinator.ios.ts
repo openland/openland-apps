@@ -1,7 +1,7 @@
 import { NavigationPage } from '../NavigationPage';
 import { HeaderCoordinator } from './HeaderCoordinator';
-import { SAnimatedShadowView } from '../../SAnimatedShadowView';
-import { SAnimated } from '../../SAnimated';
+import { SAnimatedShadowView } from 'react-native-fast-animations';
+import { SAnimated } from 'react-native-fast-animations';
 import { SDevice } from '../../SDevice';
 
 export class HeaderTitleViewCoordinator {

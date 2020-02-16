@@ -4,7 +4,7 @@ import { HeaderPage } from './HeaderPage';
 import { SNavigationViewStyle } from '../../SNavigationView';
 import { SDevice } from '../../SDevice';
 import { Image, StyleSheet, ViewStyle, TextStyle, View, Text, TextInput, BackHandler, TouchableOpacity, Dimensions, Keyboard } from 'react-native';
-import { SAnimated } from '../../SAnimated';
+import { SAnimated } from 'react-native-fast-animations';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SBackButton } from 'react-native-s/SBackButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';

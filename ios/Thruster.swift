@@ -50,7 +50,7 @@ class Thruster {
     let timeout = self.configs[id].timeout
     let url = self.configs[id].url
     
-    NSLog("[Thruster] \(url)%\(timeout): Restart")
+    NSLog("[Thruster] \(url)|\(timeout): Restart")
 
     if self.bucketSockets[id] != nil {
       let ex = self.bucketSockets[id]

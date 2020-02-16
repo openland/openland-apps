@@ -2,7 +2,7 @@ import * as React from 'react';
 import { SNavigationViewStyle } from '../../SNavigationView';
 import { View, Dimensions, Platform, Image } from 'react-native';
 import { SDevice } from '../../SDevice';
-import { SAnimated } from '../../SAnimated';
+import { SAnimated } from 'react-native-fast-animations';
 import { NavigationManager } from '../NavigationManager';
 import { HeaderPage } from './HeaderPage';
 import { HeaderTitleView } from './HeaderTitleView';

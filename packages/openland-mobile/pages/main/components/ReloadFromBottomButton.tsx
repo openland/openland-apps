@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { View, Platform, Image, TouchableWithoutFeedback } from 'react-native';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { SAnimated } from 'react-native-s/SAnimated';
-import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
+import { SAnimated } from 'react-native-fast-animations';
+import { SAnimatedShadowView } from 'react-native-fast-animations';
 import UUID from 'uuid/v4';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
