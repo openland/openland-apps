@@ -20,7 +20,7 @@ const selectorStyle = css`
     will-change: transform;
 `;
 
-const counterStyle = css`
+export const counterStyle = css`
     background-color: #e62e3d;
     position: absolute;
     top: 8px;
@@ -110,7 +110,7 @@ export const TabBarDesktop = React.memo((props: TabBarDesktopProps) => {
                 cursor="pointer"
                 onClick={() => {
                     // set the active tab to /mail
-                    
+
                     if (props.router.stacks[1]) {
                         props.router.stacks[1].reset();
                         props.setSelected(1);

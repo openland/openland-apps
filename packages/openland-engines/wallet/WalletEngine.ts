@@ -7,6 +7,7 @@ import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 
 export interface WalletState {
     balance: number;
+    isLocked: boolean;
     pendingTransactions: MyWallet_transactionsPending[];
 
     historyTransactions: MyWallet_transactionsPending[];
@@ -26,6 +27,7 @@ export class WalletEngine {
         let wallet = await backoff(() => this.messenger.client.queryMyWallet({ fetchPolicy: 'network-only' }));
         this.state.setState({
             balance: wallet.myWallet.balance,
+            isLocked: false,
             pendingTransactions: wallet.transactionsPending,
             historyTransactions: wallet.transactionsHistory.items,
             historyTransactionsCursor: wallet.transactionsHistory.cursor
@@ -50,6 +52,12 @@ export class WalletEngine {
             this.state.setState({
                 ...this.state.get(),
                 balance: event.amount
+            });
+        } else if (event.__typename === 'WalletUpdateLocked') {
+            // Update State
+            this.state.setState({
+                ...this.state.get(),
+                isLocked: event.isLocked
             });
         } else if (event.__typename === 'WalletUpdateTransactionPending') {
             this.state.setState({
