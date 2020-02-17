@@ -111,7 +111,7 @@ const empty = css`
     justify-content: center;
 `;
 
-function showSubscriptionModal(props: NormalizedSubscription, client: OpenlandClient, refetchSubscriptions: () => Promise<Subscriptions>) {
+function showSubscriptionModal(props: NormalizedSubscription, client: OpenlandClient) {
     showModalBox({ title: 'Subscription', useTopCloser: true }, (ctx) => {
         return (
             <>
@@ -151,12 +151,11 @@ function showSubscriptionModal(props: NormalizedSubscription, client: OpenlandCl
                             shape="square"
                             size="large"
                             style="secondary"
-                            onClick={() => {
-                                client.mutateCancelSubscription({ id: props.subscriptionId }).then(() => {
-                                    refetchSubscriptions().then(() => {
-                                        ctx.hide();
-                                    });
-                                });
+                            action={async () => {
+                                await client.mutateCancelSubscription({ id: props.subscriptionId });
+                                await client.refetchSubscriptions();
+
+                                ctx.hide();
                             }}
                         />
                         <XView marginTop={16} color="var(--foregroundSecondary)">
@@ -174,14 +173,13 @@ function showSubscriptionModal(props: NormalizedSubscription, client: OpenlandCl
 const SubscriptionView = React.memo((props: NormalizedSubscription) => {
     const router = React.useContext(XViewRouterContext)!;
     const client = useClient();
-    const refetchSubscriptions = () => client.refetchSubscriptions();
 
     return (
         <div
             className={subsciptionView}
             onClick={() => props.state === WalletSubscriptionState.GRACE_PERIOD || props.state === WalletSubscriptionState.RETRYING
                 ? router.navigate('/wallet')
-                : showSubscriptionModal(props, client, refetchSubscriptions)
+                : showSubscriptionModal(props, client)
             }
         >
             <UAvatar
