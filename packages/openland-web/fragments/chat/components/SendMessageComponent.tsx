@@ -59,6 +59,10 @@ const userName = css`
     text-overflow: ellipsis;
     overflow: hidden;
 `;
+    
+const allMention = css`
+    font-weight: bold;
+`;
 
 const userOrg = css`
     margin-left: 8px;
@@ -279,7 +283,9 @@ const AutoCompleteComponent = React.memo(
                             <div className={mentionContainer}>
                                 <UIcon className={allMentionIcon} icon={<AllIcon />} />
                                 <span className={userName}>
-                                    @All
+                                    <span className={allMention}>
+                                        All
+                                    </span>
                                     <span style={{ opacity: 0.4, marginLeft: 7 }}>
                                         Notify everyone in this {props.isChannel ? 'channel' : 'group'}
                                     </span>
