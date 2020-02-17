@@ -8,6 +8,7 @@ import { formatDate } from 'openland-mobile/utils/formatDate';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
+import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 
 interface TransactionViewProps {
     item: WalletTransactionFragment;
@@ -141,36 +142,38 @@ export const TransactionView = (props: TransactionViewProps) => {
 
     return (
         <>
-            <View flexDirection="row" paddingVertical={6} paddingHorizontal={16}>
-                <View paddingTop={2} paddingRight={16}>
-                    {!avatar
-                        ? (
-                            <Image source={require('assets/ic-top-up-40.png')} />
-                        ) : (
-                            <ZAvatar
-                                size="medium"
-                                src={avatar.photo}
-                                placeholderKey={avatar.key}
-                                placeholderTitle={avatar.title}
-                            />
-                        )
-                    }
+            <ZListItemBase height={76} separator={false}>
+                <View flexDirection="row" paddingVertical={6} paddingHorizontal={16} flexGrow={1} width="100%">
+                    <View paddingTop={2} paddingRight={16}>
+                        {!avatar
+                            ? (
+                                <Image source={require('assets/ic-top-up-40.png')} />
+                            ) : (
+                                <ZAvatar
+                                    size="medium"
+                                    src={avatar.photo}
+                                    placeholderKey={avatar.key}
+                                    placeholderTitle={avatar.title}
+                                />
+                            )
+                        }
+                    </View>
+                    <View flexGrow={1} flexShrink={1}>
+                        <Text style={{...TextStyles.Label1, color: theme.foregroundPrimary}} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
+                        <Text style={{...TextStyles.Subhead, color: theme.foregroundTertiary}} numberOfLines={2} ellipsizeMode="tail" allowFontScaling={false}>{subtitle}</Text>
+                    </View>
+                    <View flexShrink={0} paddingLeft={16}>
+                        <Text 
+                            style={{
+                                ...TextStyles.Label1, 
+                                color: amountColor
+                            }}
+                        >
+                            {amount}
+                        </Text>
+                    </View>
                 </View>
-                <View flexGrow={1} flexShrink={1}>
-                    <Text style={{...TextStyles.Label1, color: theme.foregroundPrimary}} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
-                    <Text style={{...TextStyles.Subhead, color: theme.foregroundTertiary}} numberOfLines={2} ellipsizeMode="tail" allowFontScaling={false}>{subtitle}</Text>
-                </View>
-                <View paddingLeft={16}>
-                    <Text 
-                        style={{
-                            ...TextStyles.Label1, 
-                            color: amountColor
-                        }}
-                    >
-                        {amount}
-                    </Text>
-                </View>
-            </View>
+            </ZListItemBase>
             {actionRequired && (
                 <TouchableWithoutFeedback onPress={complete}>
                     <View marginLeft={72} marginRight={16} paddingVertical={8} alignItems="flex-start" justifyContent="flex-start" position="relative">
