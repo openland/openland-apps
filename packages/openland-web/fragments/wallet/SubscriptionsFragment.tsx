@@ -2,7 +2,7 @@ import * as React from 'react';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 import { useClient } from 'openland-api/useClient';
-import { Subscriptions_subscriptions_product_WalletSubscriptionProductGroup, WalletSubscriptionState, Subscriptions } from 'openland-api/spacex.types';
+import { Subscriptions_subscriptions_product_WalletSubscriptionProductGroup, WalletSubscriptionState } from 'openland-api/spacex.types';
 import { XView, XViewRouterContext, XImage } from 'react-mental';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextLabel1, TextSubhead, TextTitle1, TextTitle2, TextTitle3, TextBody, TextCaption } from 'openland-web/utils/TextStyles';
