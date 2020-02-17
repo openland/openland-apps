@@ -309,7 +309,12 @@ mutation RoomChangeRole($roomId: ID!, $userId: ID!, $newRole: RoomMemberRole!) {
 }
 mutation RoomLeave($roomId: ID!) {
     betaRoomLeave(roomId: $roomId) {
-        ...RoomFull
+        ... on PrivateRoom {
+            id
+        }
+        ... on SharedRoom {
+            id
+        }
     }
 }
 query RoomSearch($query: String, $sort: String, $page: Int) {
