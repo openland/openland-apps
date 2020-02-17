@@ -1025,6 +1025,7 @@
             "name": "ic-add",
             "src": "ic-add-24.svg",
             "sizes": [
+                16,
                 24
             ]
         },
@@ -1119,13 +1120,6 @@
             "src": "ic-top-up-40.svg",
             "sizes": [
                 40
-            ]
-        },
-        {
-            "name": "ic-tail",
-            "src": "ic-tail-12.svg",
-            "sizes": [
-                12
             ]
         }
     ]

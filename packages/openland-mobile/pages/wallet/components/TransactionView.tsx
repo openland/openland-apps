@@ -173,13 +173,13 @@ export const TransactionView = (props: TransactionViewProps) => {
             </View>
             {actionRequired && (
                 <TouchableWithoutFeedback onPress={complete}>
-                    <View marginLeft={72} paddingVertical={8} alignItems="flex-start" justifyContent="flex-start" position="relative">
+                    <View marginLeft={72} marginRight={16} paddingVertical={8} alignItems="flex-start" justifyContent="flex-start" position="relative">
                         <View position="absolute" top={2} left={16} width={12} height={6}>
                             <Image source={require('assets/wallet/ic-tail-12.png')} style={{width: 12, height: 6}} />
                         </View>
-                        <View paddingHorizontal={16} paddingVertical={12} borderRadius={RadiusStyles.Medium} width={287} backgroundColor={theme.accentNegative}>
+                        <View paddingHorizontal={16} paddingVertical={12} borderRadius={RadiusStyles.Medium} width={287} maxWidth="100%" backgroundColor={theme.accentNegative}>
                             <Text style={{...TextStyles.Subhead, color: theme.foregroundContrast}}>Couldn’t complete transaction</Text>
-                            <View flexDirection="row" alignItems="center">
+                            <View marginTop={4} flexDirection="row" alignItems="center">
                                 <Text style={{...TextStyles.Label2, color: theme.foregroundContrast, }}>
                                     Complete
                                 </Text>
