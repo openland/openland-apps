@@ -4,6 +4,8 @@ import { XView } from 'react-mental';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalController } from 'openland-x/showModal';
 import { TextStyles } from 'openland-web/utils/TextStyles';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import LockIcon from 'openland-icons/s/ic-lock-16.svg';
 
 const token = 'pk_test_y80EsXGYQdMKMcJ5lifEM4jx';
 let style = {
@@ -77,6 +79,12 @@ export const StripeCardComponent = React.memo((props: StripeCardProps) => {
             </XView>
             {!!modalCtx && (
                 <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} backgroundColor="var(--backgroundTertiary)" justifyContent="flex-end" flexDirection="row">
+                    <XView flexGrow={1} alignSelf="center" color="var(--accentPositive)" {...TextStyles.Subhead} flexDirection="row">
+                        <XView marginRight={8} opacity={0.72}>
+                            <UIcon icon={<LockIcon />} color="var(--accentPositive)" />
+                        </XView>
+                        Powered by Stripe
+                    </XView>
                     <UButton text="Cancel" onClick={() => modalCtx.hide()} style="secondary" size="large" />
                     <UButton text={text} onClick={handleSubmit} loading={loading} size="large" />
                 </XView>

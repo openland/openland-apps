@@ -7,7 +7,7 @@ import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { getPaymentMethodName } from 'openland-y-utils/wallet/brands';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextTitle2, TextBody } from 'openland-web/utils/TextStyles';
-import Success from 'openland-icons/s/ic-success-16.svg';
+import SuccessIcon from 'openland-icons/s/ic-success-16.svg';
 
 const extractDateTime = (unixTime: string): { date: string, time: string, isToday: boolean } => {
     const date = new Date(parseInt(unixTime, 10));
@@ -155,7 +155,7 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
                     <span className={TextBody}>Status</span>
                     <XView color="var(--accentPositive)" alignItems="center" flexDirection="row">
                         <XView marginRight={8}>
-                            <Success />
+                            <SuccessIcon />
                         </XView>
                         <span className={TextBody}>
                             Success
