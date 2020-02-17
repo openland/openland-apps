@@ -9,49 +9,65 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextTitle2, TextBody } from 'openland-web/utils/TextStyles';
 import Success from 'openland-icons/s/ic-success-16.svg';
 
-const extractDateTime = (unixTime: string): string => {
+const extractDateTime = (unixTime: string): { date: string, time: string, isToday: boolean } => {
     const date = new Date(parseInt(unixTime, 10));
     const utc = date.toUTCString();
     const segments = utc.split(' ');
     const time = segments[4].split(':').slice(0, 2).join(':');
+    const isToday = ((new Date()).toDateString() === date.toDateString());
 
-    return `${segments[2]} ${segments[1]}, ${time}`;
+    return { date: `${segments[2]} ${segments[1]}`, time, isToday };
 };
 
 export const normalizeTransaction = (transaction: WalletTransactionFragment) => {
     const { id, operation, date } = transaction;
+    let title = `Transaction ${id}`;
+    let type = '';
+    let avatar: { id: string, title: string, photo: string | null | undefined } | undefined;
 
-    const photo = operation.__typename === 'WalletTransactionSubscription'
-        ? operation.subscription.product.__typename === 'WalletSubscriptionProductGroup'
-            ? operation.subscription.product.group.photo
-            : operation.subscription.product.user.photo
-        : '';
-
-    const title = (() => {
-        switch (operation.__typename) {
-            case 'WalletTransactionDeposit': return 'Top up';
-
-            case 'WalletTransactionSubscription':
-                return operation.subscription.product.__typename === 'WalletSubscriptionProductGroup'
-                    ? operation.subscription.product.group.title
-                    : operation.subscription.product.user.name;
-
-            case 'WalletTransactionTransferIn': return 'Incoming transfer';
-
-            case 'WalletTransactionTransferOut': return 'Outgoing transfer';
-
-            default: return 'Deposit';
+    if (operation.__typename === 'WalletTransactionSubscription') {
+        if (operation.subscription.product.__typename === 'WalletSubscriptionProductGroup') {
+            title = operation.subscription.product.group.title;
+            type = 'Subscription';
+            avatar = {
+                id: operation.subscription.product.group.id,
+                title: operation.subscription.product.group.title,
+                photo: operation.subscription.product.group.photo,
+            };
+        } else if (operation.subscription.product.__typename === 'WalletSubscriptionProductDonation') {
+            title = operation.subscription.product.user.name;
+            type = 'Subscription';
+            avatar = {
+                id: operation.subscription.product.user.id,
+                title: operation.subscription.product.user.name,
+                photo: operation.subscription.product.user.photo,
+            };
         }
-    })();
-
-    const type = operation.__typename === 'WalletTransactionSubscription'
-        ? 'Subscription'
-        : 'Deposit';
+    } else if (operation.__typename === 'WalletTransactionTransferIn') {
+        title = operation.fromUser.name;
+        type = 'Transfer';
+        avatar = {
+            id: operation.fromUser.id,
+            title: operation.fromUser.name,
+            photo: operation.fromUser.photo,
+        };
+    } else if (operation.__typename === 'WalletTransactionTransferOut') {
+        title = operation.toUser.name;
+        type = 'Transfer';
+        avatar = {
+            id: operation.toUser.id,
+            title: operation.toUser.name,
+            photo: operation.toUser.photo,
+        };
+    } else if (operation.__typename === 'WalletTransactionDeposit') {
+        title = 'Top up balance';
+        type = 'Deposit';
+    }
 
     const interval = operation.__typename === 'WalletTransactionSubscription'
         ? operation.subscription.interval === WalletSubscriptionInterval.WEEK
-            ? 'weekly'
-            : 'monthly'
+            ? 'Weekly'
+            : 'Monthly'
         : null;
 
     const dateTime = extractDateTime(date);
@@ -65,17 +81,15 @@ export const normalizeTransaction = (transaction: WalletTransactionFragment) => 
         : operation.amount;
 
     const amountSign =
-        operation.__typename === 'WalletTransactionDeposit' ||
-            operation.__typename === 'WalletTransactionTransferIn' ||
-            amountValue === 0
-            ? ''
-            : '-';
+        amountValue > 0 ? (
+            operation.__typename === 'WalletTransactionDeposit' || operation.__typename === 'WalletTransactionTransferIn' ? '+' : '-'
+        ) : '';
 
-    const amount = amountSign + formatMoney(amountValue);
+    const amount = amountSign + ' ' + formatMoney(amountValue);
 
     return {
         id,
-        photo,
+        avatar,
         title,
         type,
         interval,
@@ -91,17 +105,12 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
     return (
         <XView paddingTop={20} paddingBottom={16}>
             <XView flexDirection="column" alignItems="center" justifyContent="center">
-                <UAvatar
-                    id={normalized.id}
-                    title={normalized.title}
-                    photo={normalized.photo}
-                    size='xx-large'
-                />
+                {normalized.avatar && <UAvatar {...normalized.avatar} size='xx-large' />}
+                {!normalized.avatar && <XView width={96} height={96} borderRadius={48} backgroundColor="var(--foregroundPrimary)" />}
                 <XView marginTop={16}>
                     <h2 className={TextTitle2}>{normalized.title}</h2>
                 </XView>
                 <XView marginTop={8} color="var(--foregroundSecondary)">
-
                     {props.transaction.operation.__typename === 'WalletTransactionSubscription' && (
                         <span className={TextBody}>{normalized.type}, {normalized.interval}</span>
                     )}
@@ -117,7 +126,7 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
                     <span className={TextBody}>Date and time</span>
                     <XView color="var(--foregroundSecondary)">
                         <span className={TextBody}>
-                            {normalized.dateTime}
+                            {normalized.dateTime.date}, {normalized.dateTime.time}
                         </span>
                     </XView>
                 </XView>
