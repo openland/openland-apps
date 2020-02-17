@@ -10,10 +10,13 @@ import { CardView } from './components/CardView';
 import { TransactionView } from './components/TransactionView';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { useTheme } from 'openland-mobile/themes/ThemeContext';
+import { View, Image } from 'react-native';
 
 const WalletComponent = React.memo<PageProps>((props) => {
     const client = useClient();
     const messenger = getMessenger();
+    const theme = useTheme();
     const wallet = messenger.engine.wallet.state.useState();
     const cards = client.useMyCards({ fetchPolicy: 'cache-and-network' }).myCards;
     const balance = wallet.balance;
@@ -21,6 +24,12 @@ const WalletComponent = React.memo<PageProps>((props) => {
     const handleAddCard = React.useCallback(() => {
         props.router.push('AddCard');
     }, []);
+
+    const addCardView = (
+        <View justifyContent="center" alignItems="center" backgroundColor={theme.backgroundTertiaryTrans} borderRadius={4} width={40} height={28}>
+            <Image source={require('assets/ic-add-16.png')} style={{tintColor: theme.foregroundSecondary}} />
+        </View>
+    );
 
     return (
         <>
@@ -33,7 +42,7 @@ const WalletComponent = React.memo<PageProps>((props) => {
                 >
                     {cards.length === 0 && (
                         <ZListItem
-                            leftIcon={require('assets/ic-add-glyph-24.png')}
+                            leftIconView={addCardView}
                             text="Add card"
                             onPress={handleAddCard}
                         />

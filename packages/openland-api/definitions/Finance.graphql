@@ -74,6 +74,7 @@ fragment WalletTransactionFragment on WalletTransaction {
             subscription {
                 id
                 interval
+                amount
                 product {
                     ... on WalletSubscriptionProductGroup {
                         group {

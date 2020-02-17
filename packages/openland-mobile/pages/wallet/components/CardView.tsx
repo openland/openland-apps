@@ -18,12 +18,24 @@ interface CardViewProps {
     onPress?: () => void;
 }
 
+const isCardExpired = (month: number, year: number) => {
+    let now = new Date();
+    return year === now.getFullYear() && month < now.getMonth() || year < now.getFullYear();
+};
+
 export const CardView = (props: CardViewProps) => {
     const { id, brand, last4, expMonth, expYear, isDefault } = props.item;
     const selected = props.selected;
+    const month = expMonth <= 9 ? `0${expMonth}` : expMonth;
     const year = expYear.toString().slice(-2);
     const theme = React.useContext(ThemeContext);
     const client = useClient();
+    const monthYear = `${month}/${year}`;
+    let subtitle = isCardExpired(expMonth, expYear) ? `Expired on ${monthYear}` : `Valid to ${monthYear}`;
+
+    if (isDefault && selected === undefined) {
+        subtitle += ', primary';
+    }
 
     const handlePress = React.useCallback(() => {
         const builder = new ActionSheetBuilder();
@@ -45,7 +57,7 @@ export const CardView = (props: CardViewProps) => {
 
                     <View position="absolute" bottom={20} left={24}>
                         <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} allowFontScaling={false}>
-                            •• {last4}, {expMonth}/{year}
+                            •• {last4}, {monthYear}
                         </Text>
                     </View>
 
@@ -93,8 +105,8 @@ export const CardView = (props: CardViewProps) => {
         <ZListItem
             leftIconView={<BrandLogo brand={brand} />}
             text={`${getPaymentMethodName(brand)}, ${last4}`}
+            subTitle={subtitle}
             onPress={props.onPress || handlePress}
-            description={isDefault && selected === undefined ? 'Primary' : undefined}
             checkmark={selected}
         />
     );
