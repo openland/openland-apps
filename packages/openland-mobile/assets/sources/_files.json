@@ -1113,6 +1113,20 @@
             "sizes": [
                 24
             ]
+        },
+        {
+            "name": "ic-top-up",
+            "src": "ic-top-up-40.svg",
+            "sizes": [
+                40
+            ]
+        },
+        {
+            "name": "ic-tail",
+            "src": "ic-tail-12.svg",
+            "sizes": [
+                12
+            ]
         }
     ]
 }

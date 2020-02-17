@@ -1936,6 +1936,7 @@ internal val WalletTransactionFragmentSelector = obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
                                 field("id", "id", notNull(scalar("ID"))),
                                 field("interval", "interval", notNull(scalar("String"))),
+                                field("amount", "amount", notNull(scalar("Int"))),
                                 field("product", "product", notNull(obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
                                         inline("WalletSubscriptionProductGroup", obj(
