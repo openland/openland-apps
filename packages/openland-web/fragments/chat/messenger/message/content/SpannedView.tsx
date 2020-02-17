@@ -157,7 +157,7 @@ const openEntity = async (params: OpenEntityParams) => {
 
     // get view link
     const viewLink = `/mail/${entity.id}`;
-    
+
     // get group membership
     let isMember;
     try {
@@ -176,7 +176,7 @@ const openEntity = async (params: OpenEntityParams) => {
 
 const MentionedGroup = React.memo((props: { group: RoomNano; children: any; isService?: boolean; }) => {
     const { group, children, isService } = props;
-    let subtitle = group.__typename === 'SharedRoom' ? (group.isChannel ? 'Group' : 'Channel') : 'Private chat';
+    let subtitle = group.__typename === 'SharedRoom' ? (group.isChannel ? 'Channel' : 'Group') : 'Private chat';
 
     if (group.__typename === 'SharedRoom') {
         subtitle += ', ' + plural(group.membersCount, group.isChannel ? ['follower', 'followers'] : ['member', 'members']);
