@@ -129,7 +129,6 @@ const UserMultiplePickerComponent = XMemo<PageProps>((props) => {
             <SHeaderButton
                 key={'bk-' + users.length}
                 title={buttonTitle}
-                disabled={users.length === 0}
                 onPress={isEmpty ? () => props.router.params.action.actionEmpty() : async () => {
                     await props.router.params.action.action(users);
                 }}
