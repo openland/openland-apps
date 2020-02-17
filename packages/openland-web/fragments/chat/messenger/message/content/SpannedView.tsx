@@ -134,34 +134,34 @@ const MentionedUser = React.memo((props: { user: UserForMention; children: any; 
     );
 });
 
-interface OpenGroupParams {
+interface OpenEntityParams {
     client: OpenlandClient;
     isGroup: boolean;
-    group: RoomNano | OrganizationShort;
+    entity: RoomNano | OrganizationShort;
     router: XViewRouter;
 }
 
-const openGroup = async (params: OpenGroupParams) => {
-    const { client, isGroup, group, router } = params;
+const openEntity = async (params: OpenEntityParams) => {
+    const { client, isGroup, entity, router } = params;
 
     // get invite link
     let inviteLink;
 
     if (isGroup) {
-        const data = await client.queryRoomInviteLink({ roomId: group.id });
+        const data = await client.queryRoomInviteLink({ roomId: entity.id });
         inviteLink = `/invite/${data.link}`;
     } else {
-        const data = await client.queryOrganizationPublicInvite({ organizationId: group.id });
+        const data = await client.queryOrganizationPublicInvite({ organizationId: entity.id });
         inviteLink = `/invite/${data.publicInvite!.key}`;
     }
 
     // get view link
-    const viewLink = `/mail/${group.id}`;
+    const viewLink = `/mail/${entity.id}`;
     
     // get group membership
     let isMember;
     try {
-        const roomInfo = await client.queryRoom({ id: group.id });
+        const roomInfo = await client.queryRoom({ id: entity.id });
         if (roomInfo) {
             isMember = (roomInfo!.room! as Room_room_SharedRoom).membership === 'MEMBER';
         } else {
@@ -196,10 +196,10 @@ const MentionedGroup = React.memo((props: { group: RoomNano; children: any; isSe
         <span onMouseEnter={show}>
             <ULink
                 // path={`/group/${group.id}`}
-                onClick={() => openGroup({
+                onClick={() => openEntity({
                     client,
                     isGroup: true,
-                    group,
+                    entity: group,
                     router
                 })}
                 className={cx(
@@ -228,10 +228,10 @@ const MentionedOrganization = React.memo((props: { organization: OrganizationSho
         <span onMouseEnter={show}>
             <ULink
                 // path={`/${organization.shortname || organization.id}`}
-                onClick={() => openGroup({
+                onClick={() => openEntity({
                     client,
                     isGroup: false,
-                    group: organization,
+                    entity: organization,
                     router
                 })}
                 className={cx(
