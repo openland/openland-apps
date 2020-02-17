@@ -43,8 +43,8 @@ export const TransactionView = React.memo((props: TransactionViewProps) => {
                         <XView {...TextStyles.Label1} color={color}>{normalized.amount}</XView>
                         <XView {...TextStyles.Subhead} color="var(--foregroundSecondary)">
                             {normalized.dateTime.isToday ? normalized.dateTime.time : normalized.dateTime.date}
-                            {payment && payment.intent && payment.status === PaymentStatus.FAILING && ', failed'}
-                            {payment && payment.intent && payment.status === PaymentStatus.ACTION_REQUIRED && ', action required'}
+                            {payment && payment.status === PaymentStatus.PENDING && ', pending'}
+                            {actionRequired && ', failing'}
                         </XView>
                     </XView>
                 }
