@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, Easing } from 'react-native';
+import { View } from 'react-native';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -9,12 +9,12 @@ import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { RegistrationContainer } from './RegistrationContainer';
+import { RegistrationContainer, ShakeContainer } from './RegistrationContainer';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { logout } from 'openland-mobile/utils/logout';
 
 const SignupOrgComponent = React.memo((props: PageProps) => {
-    const [shakeAnimation] = React.useState(new Animated.Value(0));
+    const ref = React.useRef<{ shake: () => void }>(null);
     const form = useForm({ disableAppLoader: true });
     const nameField = useField('name', '', form);
 
@@ -43,14 +43,9 @@ const SignupOrgComponent = React.memo((props: PageProps) => {
 
     const handleSave = () => {
         if (!nameField.value.trim()) {
-            shakeAnimation.setValue(0);
-            Animated.timing(shakeAnimation, {
-                duration: 400,
-                toValue: 3,
-                easing: Easing.bounce,
-                useNativeDriver: true,
-            }).start();
-
+            if (ref && ref.current) {
+                ref.current.shake();
+            }
             return;
         }
         form.doAction(async () => {
@@ -83,26 +78,16 @@ const SignupOrgComponent = React.memo((props: PageProps) => {
                     />
                 }
             >
-                <Animated.View
-                    marginTop={16}
-                    style={{
-                        transform: [
-                            {
-                                translateX: shakeAnimation.interpolate({
-                                    inputRange: [0, 0.5, 1, 1.5, 2, 2.5, 3],
-                                    outputRange: [0, -15, 0, 15, 0, -15, 0],
-                                }),
-                            },
-                        ],
-                    }}
-                >
-                    <ZInput
-                        placeholder="Name"
-                        autoFocus={true}
-                        description="Please, provide organization name"
-                        field={nameField}
-                    />
-                </Animated.View>
+                <View marginTop={16}>
+                    <ShakeContainer ref={ref}>
+                        <ZInput
+                            placeholder="Name"
+                            autoFocus={true}
+                            description="Please, provide organization name"
+                            field={nameField}
+                        />
+                    </ShakeContainer>
+                </View>
             </RegistrationContainer>
         </ZTrack>
     );
