@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useUserPopper, useEntityPopper } from 'openland-web/components/EntityPoppers';
-import { UserForMention, OrganizationShort, RoomNano } from 'openland-api/spacex.types';
+import { UserForMention, OrganizationShort, RoomNano, Room_room_SharedRoom } from 'openland-api/spacex.types';
 import { css, cx } from 'linaria';
 import { Span } from 'openland-y-utils/spans/Span';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
@@ -10,6 +10,9 @@ import { TextTitle2 } from 'openland-web/utils/TextStyles';
 import { defaultHover } from 'openland-web/utils/Styles';
 import { plural } from 'openland-y-utils/plural';
 import { isInviteLink, InviteLink } from './InviteContent';
+import { useClient } from 'openland-api/useClient';
+import { OpenlandClient } from 'openland-api/spacex';
+import { XViewRouterContext, XViewRouter } from 'react-mental';
 
 const boldTextClassName = css`
     font-weight: bold;
@@ -131,12 +134,52 @@ const MentionedUser = React.memo((props: { user: UserForMention; children: any; 
     );
 });
 
+interface OpenGroupParams {
+    client: OpenlandClient;
+    isGroup: boolean;
+    group: RoomNano | OrganizationShort;
+    router: XViewRouter;
+}
+
+const openGroup = async (params: OpenGroupParams) => {
+    const { client, isGroup, group, router } = params;
+
+    // get invite link
+    let inviteLink;
+
+    if (isGroup) {
+        const data = await client.queryRoomInviteLink({ roomId: group.id });
+        inviteLink = `/invite/${data.link}`;
+    } else {
+        const data = await client.queryOrganizationPublicInvite({ organizationId: group.id });
+        inviteLink = `/invite/${data.publicInvite!.key}`;
+    }
+
+    // get view link
+    const viewLink = `/mail/${group.id}`;
+    
+    // get group membership
+    let isMember;
+    try {
+        const roomInfo = await client.queryRoom({ id: group.id });
+        if (roomInfo) {
+            isMember = (roomInfo!.room! as Room_room_SharedRoom).membership === 'MEMBER';
+        } else {
+            isMember = false;
+        }
+    } catch (e) {
+        isMember = false;
+    }
+
+    router.navigate(isMember ? viewLink : inviteLink);
+};
+
 const MentionedGroup = React.memo((props: { group: RoomNano; children: any; isService?: boolean; }) => {
     const { group, children, isService } = props;
     let subtitle = group.__typename === 'SharedRoom' ? (group.isChannel ? 'Group' : 'Channel') : 'Private chat';
 
     if (group.__typename === 'SharedRoom') {
-        subtitle += ', ' + plural(group.membersCount, group.isChannel ? ['follower', 'followers'] : ['member', 'memebers']);
+        subtitle += ', ' + plural(group.membersCount, group.isChannel ? ['follower', 'followers'] : ['member', 'members']);
     }
 
     const [show] = useEntityPopper({
@@ -145,10 +188,20 @@ const MentionedGroup = React.memo((props: { group: RoomNano; children: any; isSe
         subtitle,
         id: group.id
     });
+
+    const client = useClient();
+    const router = React.useContext(XViewRouterContext)!;
+
     return (
         <span onMouseEnter={show}>
             <ULink
-                path={`/group/${group.id}`}
+                // path={`/group/${group.id}`}
+                onClick={() => openGroup({
+                    client,
+                    isGroup: true,
+                    group,
+                    router
+                })}
                 className={cx(
                     mentionClassName,
                     isService && mentionServiceClassName,
@@ -169,10 +222,18 @@ const MentionedOrganization = React.memo((props: { organization: OrganizationSho
         subtitle: (organization.isCommunity ? 'Community' : 'Organization') + ', ' + plural(organization.membersCount, ['member', 'members']),
         id: organization.id
     });
+    const client = useClient();
+    const router = React.useContext(XViewRouterContext)!;
     return (
         <span onMouseEnter={show}>
             <ULink
-                path={`/${organization.shortname || organization.id}`}
+                // path={`/${organization.shortname || organization.id}`}
+                onClick={() => openGroup({
+                    client,
+                    isGroup: false,
+                    group: organization,
+                    router
+                })}
                 className={cx(
                     mentionClassName,
                     isService && mentionServiceClassName,
