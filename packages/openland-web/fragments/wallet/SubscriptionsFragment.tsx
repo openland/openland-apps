@@ -124,27 +124,27 @@ function showSubscriptionModal(props: NormalizedSubscription, client: OpenlandCl
                     />
                     <XView marginTop={16}>
                         <h2 className={TextTitle2}>
-                            { props.title }
+                            {props.title}
                         </h2>
                     </XView>
                     <XView marginTop={8} color="var(--foregroundSecondary)">
                         <span className={TextBody}>
-                            { props.state === WalletSubscriptionState.STARTED && (
+                            {props.state === WalletSubscriptionState.STARTED && (
                                 <>Next bill on {displayDate(props.expires)}</>
                             )}
 
-                            { props.state === WalletSubscriptionState.CANCELED && (
+                            {props.state === WalletSubscriptionState.CANCELED && (
                                 <>Expires on {displayDate(props.expires)}</>
                             )}
 
-                            { props.state === WalletSubscriptionState.EXPIRED && (
+                            {props.state === WalletSubscriptionState.EXPIRED && (
                                 <>Expired on {displayDate(props.expires)}</>
                             )}
                         </span>
                     </XView>
-                    
+
                 </div>
-                { props.state === WalletSubscriptionState.STARTED && (
+                {props.state === WalletSubscriptionState.STARTED && (
                     <div className={modalFooter}>
                         <UButton
                             text="Cancel subscription"
@@ -189,31 +189,31 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
             />
             <XView marginLeft={16} flexDirection="column">
                 <span className={TextLabel1}>
-                    { props.title }
+                    {props.title}
                 </span>
                 <span className={TextSubhead}>
                     <XView
                         color={
                             props.state === WalletSubscriptionState.GRACE_PERIOD ||
-                            props.state === WalletSubscriptionState.RETRYING
+                                props.state === WalletSubscriptionState.RETRYING
                                 ? "var(--accentNegative)"
                                 : "var(--foregroundSecondary)"
                         }
                     >
-                        
-                        { props.state === WalletSubscriptionState.STARTED && (
+
+                        {props.state === WalletSubscriptionState.STARTED && (
                             <>Next bill on {displayDate(props.expires)}</>
                         )}
 
-                        { props.state === WalletSubscriptionState.GRACE_PERIOD || props.state === WalletSubscriptionState.RETRYING && (
+                        {props.state === WalletSubscriptionState.GRACE_PERIOD || props.state === WalletSubscriptionState.RETRYING && (
                             <>Transaction failed</>
                         )}
 
-                        { props.state === WalletSubscriptionState.CANCELED && (
+                        {props.state === WalletSubscriptionState.CANCELED && (
                             <>Expires on {displayDate(props.expires)}</>
                         )}
 
-                        { props.state === WalletSubscriptionState.EXPIRED && (
+                        {props.state === WalletSubscriptionState.EXPIRED && (
                             <>Expired on {displayDate(props.expires)}</>
                         )}
 
@@ -263,7 +263,7 @@ export const SubscriptionsFragment = React.memo(() => {
 
             <FormWrapper>
 
-                { haveBillingProblems && (
+                {haveBillingProblems && (
                     <div className={billingProblems}>
                         <Warning />
                         <XView flexDirection="column" alignItems="flex-start">
@@ -282,9 +282,9 @@ export const SubscriptionsFragment = React.memo(() => {
                     </div>
                 )}
 
-                { activeSubscriptions.length > 0 && (
+                {activeSubscriptions.length > 0 && (
                     <FormSection title="Active">
-                        { activeSubscriptions.map(subscription => (
+                        {activeSubscriptions.map(subscription => (
                             <SubscriptionView
                                 key={subscription.id}
                                 {...subscription}
@@ -293,9 +293,9 @@ export const SubscriptionsFragment = React.memo(() => {
                     </FormSection>
                 )}
 
-                { expiredSubscriptions.length > 0 && (
+                {expiredSubscriptions.length > 0 && (
                     <FormSection title="Expired">
-                        { expiredSubscriptions.map(subscription => (
+                        {expiredSubscriptions.map(subscription => (
                             <SubscriptionView
                                 key={subscription.id}
                                 {...subscription}
@@ -304,7 +304,7 @@ export const SubscriptionsFragment = React.memo(() => {
                     </FormSection>
                 )}
 
-                { activeSubscriptions.length === 0 && expiredSubscriptions.length === 0 && (
+                {activeSubscriptions.length === 0 && expiredSubscriptions.length === 0 && (
                     <div className={empty}>
                         <XView justifyContent="center" alignItems="center">
                             <XImage
@@ -321,7 +321,7 @@ export const SubscriptionsFragment = React.memo(() => {
                             </XView>
                             <XView color="var(--foregroundSecondary)">
                                 <p className={TextBody}>
-                                    Join any premium groups, and they will appear here          
+                                    Join any premium groups, and they will appear here
                                 </p>
                             </XView>
                             <XView marginTop={32}>
