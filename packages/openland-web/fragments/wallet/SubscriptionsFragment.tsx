@@ -4,15 +4,13 @@ import { Page } from 'openland-unicorn/Page';
 import { useClient } from 'openland-api/useClient';
 import { Subscriptions_subscriptions_product_WalletSubscriptionProductGroup, WalletSubscriptionState } from 'openland-api/spacex.types';
 import { XView, XViewRouterContext, XImage } from 'react-mental';
-import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { TextLabel1, TextSubhead, TextTitle1, TextTitle2, TextTitle3, TextBody, TextCaption } from 'openland-web/utils/TextStyles';
+import { TextTitle1, TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
 import { FormSection } from '../account/components/FormSection';
 import { FormWrapper } from '../account/components/FormWrapper';
 import { css } from 'linaria';
-import { showModalBox } from 'openland-x/showModalBox';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { OpenlandClient } from 'openland-api/spacex';
 import Warning from 'openland-icons/ic-warning-24.svg';
+import { SubscriptionView } from './components/SubscriptionView';
 
 interface NormalizedSubscription {
     id: string;
@@ -22,64 +20,6 @@ interface NormalizedSubscription {
     expires: Date;
     subscriptionId: string;
 }
-
-const displayDate = (date: Date) => {
-    const utc = date.toUTCString();
-    const segments = utc.split(' ');
-    const month = segments[2];
-    const day = segments[1];
-
-    return `${month} ${day}`;
-};
-
-const subsciptionView = css`
-    color: initial;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 8px 16px;
-    margin: 0 -16px;
-    border-radius: 8px;
-    cursor: pointer;
-
-    &:hover,
-    &:focus,
-    &:active {
-        background-color: var(--backgroundTertiary);
-    }
-`;
-
-const gradientModalBody = css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-top: 12px;
-    padding-bottom: 24px;
-    padding-left: 24px;
-    padding-right: 24px;
-    background: linear-gradient(180deg, rgba(201, 204, 209, 0) 0%, rgba(201, 204, 209, 0.14) 100%);
-`;
-
-const modalBody = css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-top: 12px;
-    padding-bottom: 48px;
-    padding-left: 24px;
-    padding-right: 24px;
-`;
-
-const modalFooter = css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    text-align: center;
-`;
 
 const billingProblems = css`
     display: flex;
@@ -110,119 +50,6 @@ const empty = css`
     align-items: center;
     justify-content: center;
 `;
-
-function showSubscriptionModal(props: NormalizedSubscription, client: OpenlandClient) {
-    showModalBox({ title: 'Subscription', useTopCloser: true }, (ctx) => {
-        return (
-            <>
-                <div className={props.state === WalletSubscriptionState.STARTED ? gradientModalBody : modalBody}>
-                    <UAvatar
-                        id={props.id}
-                        title={props.title}
-                        photo={props.photo}
-                        size='xx-large'
-                    />
-                    <XView marginTop={16}>
-                        <h2 className={TextTitle2}>
-                            {props.title}
-                        </h2>
-                    </XView>
-                    <XView marginTop={8} color="var(--foregroundSecondary)">
-                        <span className={TextBody}>
-                            {props.state === WalletSubscriptionState.STARTED && (
-                                <>Next bill on {displayDate(props.expires)}</>
-                            )}
-
-                            {props.state === WalletSubscriptionState.CANCELED && (
-                                <>Expires on {displayDate(props.expires)}</>
-                            )}
-
-                            {props.state === WalletSubscriptionState.EXPIRED && (
-                                <>Expired on {displayDate(props.expires)}</>
-                            )}
-                        </span>
-                    </XView>
-
-                </div>
-                {props.state === WalletSubscriptionState.STARTED && (
-                    <div className={modalFooter}>
-                        <UButton
-                            text="Cancel subscription"
-                            shape="square"
-                            size="large"
-                            style="secondary"
-                            action={async () => {
-                                await client.mutateCancelSubscription({ id: props.subscriptionId });
-                                await client.refetchSubscriptions();
-
-                                ctx.hide();
-                            }}
-                        />
-                        <XView marginTop={16} color="var(--foregroundSecondary)">
-                            <span className={TextCaption}>
-                                If you cancel now, you can still access<br />the group until {displayDate(props.expires)}
-                            </span>
-                        </XView>
-                    </div>
-                )}
-            </>
-        );
-    });
-}
-
-const SubscriptionView = React.memo((props: NormalizedSubscription) => {
-    const router = React.useContext(XViewRouterContext)!;
-    const client = useClient();
-
-    return (
-        <div
-            className={subsciptionView}
-            onClick={() => props.state === WalletSubscriptionState.GRACE_PERIOD || props.state === WalletSubscriptionState.RETRYING
-                ? router.navigate('/wallet')
-                : showSubscriptionModal(props, client)
-            }
-        >
-            <UAvatar
-                id={props.id}
-                title={props.title}
-                photo={props.photo}
-            />
-            <XView marginLeft={16} flexDirection="column">
-                <span className={TextLabel1}>
-                    {props.title}
-                </span>
-                <span className={TextSubhead}>
-                    <XView
-                        color={
-                            props.state === WalletSubscriptionState.GRACE_PERIOD ||
-                                props.state === WalletSubscriptionState.RETRYING
-                                ? "var(--accentNegative)"
-                                : "var(--foregroundSecondary)"
-                        }
-                    >
-
-                        {props.state === WalletSubscriptionState.STARTED && (
-                            <>Next bill on {displayDate(props.expires)}</>
-                        )}
-
-                        {props.state === WalletSubscriptionState.GRACE_PERIOD || props.state === WalletSubscriptionState.RETRYING && (
-                            <>Transaction failed</>
-                        )}
-
-                        {props.state === WalletSubscriptionState.CANCELED && (
-                            <>Expires on {displayDate(props.expires)}</>
-                        )}
-
-                        {props.state === WalletSubscriptionState.EXPIRED && (
-                            <>Expired on {displayDate(props.expires)}</>
-                        )}
-
-                    </XView>
-                </span>
-            </XView>
-        </div>
-    );
-});
 
 export const SubscriptionsFragment = React.memo(() => {
     const client = useClient();

@@ -11,7 +11,7 @@ import { TextStyles } from 'openland-web/utils/TextStyles';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import AddIcon from 'openland-icons/s/ic-add-24.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import { BrandLogo } from './BrandLogo';
+import { BrandLogo } from '../components/BrandLogo';
 import { URadioDot } from 'openland-web/components/unicorn/URadioItem';
 
 const token = 'pk_test_y80EsXGYQdMKMcJ5lifEM4jx';

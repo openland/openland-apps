@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { WalletTransactionFragment, PaymentStatus } from 'openland-api/spacex.types';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { showConfirmPayment } from './showConfirmPayment';
-import { showTransaction, normalizeTransaction } from './showTransaction';
+import { showConfirmPayment } from '../modals/showConfirmPayment';
+import { showTransaction, normalizeTransaction } from '../modals/showTransaction';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { css } from 'linaria';

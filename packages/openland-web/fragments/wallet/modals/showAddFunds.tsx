@@ -14,7 +14,7 @@ import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { BrandLogo } from './BrandLogo';
+import { BrandLogo } from '../components/BrandLogo';
 import { URadioDot } from 'openland-web/components/unicorn/URadioItem';
 
 const token = 'pk_test_y80EsXGYQdMKMcJ5lifEM4jx';

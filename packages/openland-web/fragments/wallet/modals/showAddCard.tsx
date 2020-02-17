@@ -4,7 +4,7 @@ import { XModalController } from 'openland-x/showModal';
 import uuid from 'uuid';
 import { backoff } from 'openland-y-utils/timer';
 import { useClient } from 'openland-api/useClient';
-import { StripeCardComponent } from './StripeCardComponent';
+import { StripeCardComponent } from '../components/StripeCardComponent';
 
 const AddCardComponent = React.memo((props: { ctx: XModalController }) => {
     let client = useClient();
