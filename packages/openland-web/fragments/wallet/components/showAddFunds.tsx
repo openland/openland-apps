@@ -9,10 +9,13 @@ import uuid from 'uuid';
 import { backoff } from 'openland-y-utils/timer';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { showAddCard } from './showAddCard';
-import { RadioButtonsSelect } from 'openland-web/fragments/account/components/RadioButtonsSelect';
 import { getPaymentMethodName } from 'openland-y-utils/wallet/brands';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
+import { TextStyles } from 'openland-web/utils/TextStyles';
+import { UListItem } from 'openland-web/components/unicorn/UListItem';
+import { BrandLogo } from './BrandLogo';
+import { URadioDot } from 'openland-web/components/unicorn/URadioItem';
 
 const token = 'pk_test_y80EsXGYQdMKMcJ5lifEM4jx';
 const defaultError = 'We are unable to authenticate your payment method. Please choose a different payment method and try again.';
@@ -115,18 +118,18 @@ const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
                             onClick={() => showAddCard()}
                         />
                     )}
-                    {cards.length > 0 && (
-                        <RadioButtonsSelect
-                            value={currentCard}
-                            onChange={setCurrentCard}
-                            selectOptions={cards.map(card => ({
-                                value: card.id,
-                                label: `${getPaymentMethodName(card.brand)}, ${card.last4}`,
-                            }))}
+                    {cards.map(card => (
+                        <UListItem
+                            leftElement={<BrandLogo brand={card.brand} border={true} />}
+                            title={`${getPaymentMethodName(card.brand)}, ${card.last4}`}
+                            description={`Valid to ${card.expMonth}/${card.expYear.toString().slice(-2)}`}
+                            useRadius={true}
+                            onClick={() => { setCurrentCard(card.id); }}
+                            rightElement={<XView marginRight={8}><URadioDot checked={currentCard === card.id} /></XView>}
                         />
-                    )}
+                    ))}
                 </UListGroup>
-                {error && <XView>{error}</XView>}
+                {error && (<XView marginTop={8} marginHorizontal={16} color="var(--accentNegative)" {...TextStyles.Caption}>{error}</XView>)}
             </XView>
             <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} backgroundColor="var(--backgroundTertiary)" justifyContent="flex-end" flexDirection="row">
                 <UButton text="Cancel" onClick={() => props.ctx.hide()} style="secondary" size="large" />

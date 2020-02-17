@@ -5,11 +5,14 @@ import { XView } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { backoff } from 'openland-y-utils/timer';
-import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { showAddCard } from './showAddCard';
-import { RadioButtonsSelect } from 'openland-web/fragments/account/components/RadioButtonsSelect';
 import { getPaymentMethodName } from 'openland-y-utils/wallet/brands';
-import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
+import { TextStyles } from 'openland-web/utils/TextStyles';
+import { UListItem } from 'openland-web/components/unicorn/UListItem';
+import AddIcon from 'openland-icons/s/ic-add-24.svg';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { BrandLogo } from './BrandLogo';
+import { URadioDot } from 'openland-web/components/unicorn/URadioItem';
 
 const token = 'pk_test_y80EsXGYQdMKMcJ5lifEM4jx';
 const defaultError = 'We are unable to authenticate your payment method. Please choose a different payment method and try again.';
@@ -86,41 +89,45 @@ const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController, id: 
     }, [currentCard]);
 
     return (
-        <XView flexDirection="column">
+        <>
+            <XView
+                {...TextStyles.Body}
+                marginTop={-4}
+                paddingHorizontal={24}
+                paddingBottom={20}
+            >
+                Choose correct payment method or add a new one to complete transaction
+            </XView>
             <XView paddingHorizontal={8}>
-                <UListGroup
-                    header="Payment method"
-                    action={cards.length > 0 ? { title: 'Add card', onClick: () => showAddCard() } : undefined}
-                >
-                    {cards.length === 0 && (
-                        <UAddItem
-                            title="Add card"
-                            onClick={() => showAddCard()}
-                        />
-                    )}
-                    {cards.length > 0 && (
-                        <RadioButtonsSelect
-                            value={currentCard}
-                            onChange={setCurrentCard}
-                            selectOptions={cards.map(card => ({
-                                value: card.id,
-                                label: `${getPaymentMethodName(card.brand)}, ${card.last4}`,
-                            }))}
-                        />
-                    )}
-                </UListGroup>
-                {error && <XView>{error}</XView>}
+                {cards.map(card => (
+                    <UListItem
+                        leftElement={<BrandLogo brand={card.brand} border={true} />}
+                        title={`${getPaymentMethodName(card.brand)}, ${card.last4}`}
+                        description={`Valid to ${card.expMonth}/${card.expYear.toString().slice(-2)}`}
+                        useRadius={true}
+                        onClick={() => { setCurrentCard(card.pmid); }}
+                        rightElement={<XView marginRight={8}><URadioDot checked={currentCard === card.pmid} /></XView>}
+                    />
+                ))}
+                <UListItem
+                    leftElement={<XView width={40} height={28} backgroundColor="var(--backgroundTertiaryTrans)" borderRadius={4}><UIcon icon={<AddIcon />} size={16} /></XView>}
+                    title="Add card"
+                    onClick={() => showAddCard()}
+                    useRadius={true}
+                    titleStyle={TextStyles.Label1}
+                />
+                {error && (<XView marginTop={8} marginHorizontal={16} color="var(--accentNegative)" {...TextStyles.Caption}>{error}</XView>)}
             </XView>
             <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} backgroundColor="var(--backgroundTertiary)" justifyContent="flex-end" flexDirection="row">
                 <UButton text="Cancel" onClick={() => props.ctx.hide()} style="secondary" size="large" />
-                <UButton text={`Confirm`} onClick={onSubmit} style="pay" size="large" loading={loading} />
+                <UButton text="Continue" style="pay" onClick={onSubmit} size="large" loading={loading} />
             </XView>
-        </XView>
+        </>
     );
 });
 
 export function showConfirmPayment(id: string, clientSecret: string) {
-    showModalBox({ title: 'Confirm Payment' }, (ctx) => {
+    showModalBox({ title: 'Complete transaction', width: 400 }, (ctx) => {
         return (
             <ConfirmPaymentComponent ctx={ctx} id={id} clientSecret={clientSecret} />
         );
