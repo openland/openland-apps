@@ -15,7 +15,7 @@ import { SRouting } from 'react-native-s/SRouting';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, MessageReactionType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage } from 'openland-api/spacex.types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, MessageReactionType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage, Room_room_SharedRoom } from 'openland-api/spacex.types';
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { reactionsImagesMap } from './components/AsyncMessageReactionsView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
@@ -236,11 +236,28 @@ export class MobileMessenger {
     handleUserClick = (id: string) => {
         this.history.navigationManager.push('ProfileUser', { id });
     }
+    handleEntityClick = async (id: string, isGroup: boolean) => {
+        if (isGroup) {
+            // get membership
+            const roomInfo = await this.engine.client.queryRoom({ id });
+            const isMember = (roomInfo!.room! as Room_room_SharedRoom).membership === 'MEMBER';
+
+            if (isMember) {
+                this.history.navigationManager.push('Conversation', { id });
+            } else {
+                const inviteLinkInfo = await this.engine.client.queryRoomInviteLink({ roomId: id });
+                const invite = await this.engine.client.queryResolvedInvite({ key: inviteLinkInfo.link });
+                this.history.navigationManager.push('GroupInvite', { invite: invite.invite, inviteId: inviteLinkInfo.link });
+            }
+        } else {
+            this.history.navigationManager.push('ProfileOrganization', { id });
+        }
+    }
     handleGroupClick = (id: string) => {
-        this.history.navigationManager.push('ProfileGroup', { id });
+        this.handleEntityClick(id, true);
     }
     handleOrganizationClick = (id: string) => {
-        this.history.navigationManager.push('ProfileOrganization', { id });
+        this.handleEntityClick(id, false);
     }
     handleMessageUserClick = (message: DataSourceMessageItem) => (id: string) => {
         const [isSelecting, toogleSelect] = this.useSelectionMode(message);
