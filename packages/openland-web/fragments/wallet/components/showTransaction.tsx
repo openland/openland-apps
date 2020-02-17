@@ -8,6 +8,8 @@ import { getPaymentMethodName } from 'openland-y-utils/wallet/brands';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextTitle2, TextBody } from 'openland-web/utils/TextStyles';
 import SuccessIcon from 'openland-icons/s/ic-success-16.svg';
+import WalletIcon from 'openland-icons/s/ic-wallet-24.svg';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
 const extractDateTime = (unixTime: string): { date: string, time: string, isToday: boolean } => {
     const date = new Date(parseInt(unixTime, 10));
@@ -106,7 +108,7 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
         <XView paddingTop={20} paddingBottom={16}>
             <XView flexDirection="column" alignItems="center" justifyContent="center">
                 {normalized.avatar && <UAvatar {...normalized.avatar} size='xx-large' />}
-                {!normalized.avatar && <XView width={96} height={96} borderRadius={48} backgroundColor="var(--foregroundPrimary)" />}
+                {!normalized.avatar && <XView width={96} height={96} borderRadius={48} backgroundColor="var(--backgroundTertiaryTrans)"><UIcon icon={<WalletIcon />} size={48} /></XView>}
                 <XView marginTop={16}>
                     <h2 className={TextTitle2}>{normalized.title}</h2>
                 </XView>
