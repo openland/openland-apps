@@ -8,15 +8,12 @@ import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { BalanceView } from './components/BalanceView';
 import { CardView } from './components/CardView';
 import { TransactionView } from './components/TransactionView';
-import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { useTheme } from 'openland-mobile/themes/ThemeContext';
-import { View, Image } from 'react-native';
+import { AddCardItem } from './components/AddCardItem';
 
 const WalletComponent = React.memo<PageProps>((props) => {
     const client = useClient();
     const messenger = getMessenger();
-    const theme = useTheme();
     const wallet = messenger.engine.wallet.state.useState();
     const cards = client.useMyCards({ fetchPolicy: 'cache-and-network' }).myCards;
     const balance = wallet.balance;
@@ -24,12 +21,6 @@ const WalletComponent = React.memo<PageProps>((props) => {
     const handleAddCard = React.useCallback(() => {
         props.router.push('AddCard');
     }, []);
-
-    const addCardView = (
-        <View justifyContent="center" alignItems="center" backgroundColor={theme.backgroundTertiaryTrans} borderRadius={4} width={40} height={28}>
-            <Image source={require('assets/ic-add-16.png')} style={{tintColor: theme.foregroundSecondary}} />
-        </View>
-    );
 
     return (
         <>
@@ -41,11 +32,7 @@ const WalletComponent = React.memo<PageProps>((props) => {
                     actionRight={cards.length > 0 ? { title: 'Add card', onPress: handleAddCard } : undefined}
                 >
                     {cards.length === 0 && (
-                        <ZListItem
-                            leftIconView={addCardView}
-                            text="Add card"
-                            onPress={handleAddCard}
-                        />
+                        <AddCardItem onPress={handleAddCard} />
                     )}
                     {cards.map(card => <CardView key={card.id} item={card} />)}
                 </ZListGroup>

@@ -158,7 +158,7 @@ class BottomSheetProviderComponent extends React.Component<
                 handleStyle={handleStyle}
                 FooterComponent={this.renderFooter(modal)}
             >
-                <View paddingTop={20} paddingBottom={modal.cancelable === false ? SDevice.safeArea.bottom : 0}>
+                <View paddingTop={20} paddingBottom={modal.cancelable === false ? SDevice.safeArea.bottom || 20 : 0}>
                     {!!modal.title && (
                         <View paddingTop={4} paddingBottom={30} alignItems="center">
                             <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
