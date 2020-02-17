@@ -108,7 +108,11 @@ const UserMultiplePickerComponent = XMemo<PageProps>((props) => {
 
     let paramsAction = props.router.params.action;
     let isEmpty = paramsAction.titleEmpty && (users.length <= 0);
-    let buttonTitle = isEmpty ? paramsAction.titleEmpty : paramsAction.title + ' (' + users.length + ')';
+    let buttonTitle = isEmpty
+        ? paramsAction.titleEmpty
+        : users.length > 0
+            ? paramsAction.title + ' (' + users.length + ')'
+            : paramsAction.title;
 
     const scrollRef = React.createRef<ScrollView>();
 
@@ -125,6 +129,7 @@ const UserMultiplePickerComponent = XMemo<PageProps>((props) => {
             <SHeaderButton
                 key={'bk-' + users.length}
                 title={buttonTitle}
+                disabled={users.length === 0}
                 onPress={isEmpty ? () => props.router.params.action.actionEmpty() : async () => {
                     await props.router.params.action.action(users);
                 }}
