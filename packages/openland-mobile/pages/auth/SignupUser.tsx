@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Animated, Easing, Text, Linking } from 'react-native';
+import { View, Text, Linking } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { next } from './signup';
@@ -9,7 +9,7 @@ import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
-import { RegistrationContainer } from './RegistrationContainer';
+import { RegistrationContainer, ShakeContainer } from './RegistrationContainer';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { logout } from 'openland-mobile/utils/logout';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -49,7 +49,7 @@ const PrivacyText = React.memo(() => {
 });
 
 const SignupUserComponent = React.memo((props: PageProps) => {
-    const [shakeAnimation] = React.useState(new Animated.Value(0));
+    const ref = React.useRef<{ shake: () => void }>(null);
     const prefill = getClient().useProfilePrefill().prefill;
     const form = useForm({ disableAppLoader: true });
     const photoField = useField('photoRef', null, form);
@@ -58,13 +58,9 @@ const SignupUserComponent = React.memo((props: PageProps) => {
 
     const handleSave = () => {
         if (!firstNameField.value.trim()) {
-            shakeAnimation.setValue(0);
-            Animated.timing(shakeAnimation, {
-                duration: 400,
-                toValue: 3,
-                easing: Easing.bounce,
-                useNativeDriver: true,
-            }).start();
+            if (ref && ref.current) {
+                ref.current.shake();
+            }
             return;
         }
 
@@ -103,20 +99,9 @@ const SignupUserComponent = React.memo((props: PageProps) => {
                     />
                 </View>
                 <View marginTop={16} marginBottom={100}>
-                    <Animated.View
-                        style={{
-                            transform: [
-                                {
-                                    translateX: shakeAnimation.interpolate({
-                                        inputRange: [0, 0.5, 1, 1.5, 2, 2.5, 3],
-                                        outputRange: [0, -15, 0, 15, 0, -15, 0],
-                                    }),
-                                },
-                            ],
-                        }}
-                    >
+                    <ShakeContainer ref={ref}>
                         <ZInput field={firstNameField} placeholder="First name" />
-                    </Animated.View>
+                    </ShakeContainer>
                     <ZInput
                         field={lastNameField}
                         placeholder="Last name"

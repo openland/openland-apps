@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Animated, Text, TouchableOpacity, Easing, TextStyle } from 'react-native';
+import { View, Text, TouchableOpacity, TextStyle } from 'react-native';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { ZInput } from '../../components/ZInput';
@@ -17,7 +17,7 @@ import { TrackAuthError } from './TrackAuthError';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { API_HOST } from 'openland-y-utils/api';
-import { RegistrationContainer } from './RegistrationContainer';
+import { RegistrationContainer, ShakeContainer } from './RegistrationContainer';
 import { AppStorage as Storage } from 'openland-y-runtime-native/AppStorage';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
@@ -65,19 +65,15 @@ const requestActivationCode = async () => {
 };
 
 const EmailStartComponent = React.memo((props: PageProps) => {
-    const [shakeAnimation] = React.useState(new Animated.Value(0));
+    const ref = React.useRef<{ shake: () => void }>(null);
     const form = useForm({ disableAppLoader: true });
     const emailField = useField('email', '', form);
 
     const submitForm = () => {
         if (!emailField.value.trim()) {
-            shakeAnimation.setValue(0);
-            Animated.timing(shakeAnimation, {
-                duration: 400,
-                toValue: 3,
-                easing: Easing.bounce,
-                useNativeDriver: true,
-            }).start();
+            if (ref && ref.current) {
+                ref.current.shake();
+            }
             return;
         }
         form.doAction(async () => {
@@ -105,18 +101,7 @@ const EmailStartComponent = React.memo((props: PageProps) => {
                     />
                 }
             >
-                <Animated.View
-                    style={{
-                        transform: [
-                            {
-                                translateX: shakeAnimation.interpolate({
-                                    inputRange: [0, 0.5, 1, 1.5, 2, 2.5, 3],
-                                    outputRange: [0, -15, 0, 15, 0, -15, 0],
-                                }),
-                            },
-                        ],
-                    }}
-                >
+                <ShakeContainer ref={ref}>
                     <ZInput
                         field={emailField}
                         placeholder="Email"
@@ -127,7 +112,7 @@ const EmailStartComponent = React.memo((props: PageProps) => {
                         allowFontScaling={false}
                         onSubmitEditing={submitForm}
                     />
-                </Animated.View>
+                </ShakeContainer>
             </RegistrationContainer>
         </ZTrack>
     );
@@ -170,7 +155,7 @@ const EmailCodeHeader = React.memo((props: { resendCode: () => void }) => {
 });
 
 const EmailCodeComponent = React.memo((props: PageProps) => {
-    const [shakeAnimation] = React.useState(new Animated.Value(0));
+    const ref = React.useRef<{ shake: () => void }>(null);
     const form = useForm({ disableAppLoader: true });
     const codeField = useField('code', '', form);
 
@@ -183,13 +168,9 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
 
     const submitForm = () => {
         if (!codeField.value.trim()) {
-            shakeAnimation.setValue(0);
-            Animated.timing(shakeAnimation, {
-                duration: 400,
-                toValue: 3,
-                easing: Easing.bounce,
-                useNativeDriver: true,
-            }).start();
+            if (ref && ref.current) {
+                ref.current.shake();
+            }
             return;
         }
         form.doAction(async () => {
@@ -263,31 +244,21 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
                         <ZAvatar size="xx-large" src={avatarSrc} />
                     </View>
                 )}
-                <Animated.View
-                    style={{
-                        paddingBottom: avatarSrc ? 70 : undefined,
-                        transform: [
-                            {
-                                translateX: shakeAnimation.interpolate({
-                                    inputRange: [0, 0.5, 1, 1.5, 2, 2.5, 3],
-                                    outputRange: [0, -15, 0, 15, 0, -15, 0],
-                                }),
-                            },
-                        ],
-                    }}
-                >
-                    <ZInput
-                        field={codeField}
-                        placeholder="Activation code"
-                        autoCapitalize="none"
-                        keyboardType="number-pad"
-                        autoFocus={true}
-                        returnKeyType="next"
-                        allowFontScaling={false}
-                        onSubmitEditing={submitForm}
-                        maxLength={ACTIVATION_CODE_LENGTH}
-                    />
-                </Animated.View>
+                <View paddingBottom={avatarSrc ? 70 : undefined}>
+                    <ShakeContainer ref={ref}>
+                        <ZInput
+                            field={codeField}
+                            placeholder="Activation code"
+                            autoCapitalize="none"
+                            keyboardType="number-pad"
+                            autoFocus={true}
+                            returnKeyType="next"
+                            allowFontScaling={false}
+                            onSubmitEditing={submitForm}
+                            maxLength={ACTIVATION_CODE_LENGTH}
+                        />
+                    </ShakeContainer>
+                </View>
             </RegistrationContainer>
         </ZTrack>
     );
