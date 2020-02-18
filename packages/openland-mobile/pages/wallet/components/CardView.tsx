@@ -108,6 +108,7 @@ export const CardView = (props: CardViewProps) => {
             subTitle={subtitle}
             onPress={props.onPress || handlePress}
             checkmark={selected}
+            checkmarkStyle={{ marginBottom: -20, }}
         />
     );
 };

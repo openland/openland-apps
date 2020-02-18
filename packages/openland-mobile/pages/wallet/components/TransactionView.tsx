@@ -136,7 +136,8 @@ export const TransactionView = (props: TransactionViewProps) => {
     let textBy = {
         [PaymentStatus.PENDING]: 'pending',
         [PaymentStatus.FAILING]: 'failing',
-        [PaymentStatus.CANCELED]: 'failed',
+        [PaymentStatus.ACTION_REQUIRED]: 'failing',
+        [PaymentStatus.CANCELED]: 'canceled',
     };
     let statusText = payment && textBy[payment.status] ? `, ${textBy[payment.status]}` : '';
     let fullSubtitle = `${subtitle}\n${formatDate(parseInt(date, 10))}${statusText}`;

@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { showBottomSheet, BottomSheetActions } from 'openland-mobile/components/BottomSheet';
 import { useClient } from 'openland-api/useClient';
-import { View, NativeModules, Platform, DeviceEventEmitter, NativeEventEmitter } from 'react-native';
+import { View, Text, NativeModules, Platform, DeviceEventEmitter, NativeEventEmitter } from 'react-native';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { SRouter } from 'react-native-s/SRouter';
-import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { CardView } from 'openland-mobile/pages/wallet/components/CardView';
 import { backoff } from 'openland-y-utils/timer';
+import { AddCardItem } from 'openland-mobile/pages/wallet/components/AddCardItem';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { useTheme } from 'openland-mobile/themes/ThemeContext';
 
 const StripeModule = NativeModules.RNStripe as { confirmPayment(paymentId: string, clientSecret: string, paymentMethod: string): void };
 const StripeModuleEmitter = new NativeEventEmitter(NativeModules.RNStripe);
@@ -59,7 +61,7 @@ const awaitForCompletePayment = async (id: string) => {
 
 const CompletePaymentComponent = React.memo((props: { id: string, clientSecret: string, router: SRouter, ctx: BottomSheetActions }) => {
     const client = useClient();
-    // const theme = useTheme();
+    const theme = useTheme();
     const [selected, setSelected] = React.useState<string>();
     const [loading, setLoading] = React.useState<boolean>(false);
     const onSubmit = React.useCallback(async () => {
@@ -90,15 +92,19 @@ const CompletePaymentComponent = React.memo((props: { id: string, clientSecret: 
         setSelected(defaultCard && defaultCard.pmid);
     }, [cards]);
 
+    const handleAdd = React.useCallback(() => {
+        props.router.push('AddCard');
+        props.ctx.hide();
+    }, [props.router, props.ctx]);
+
     return (
-        <View flexDirection="column" paddingHorizontal={24}>
+        <View flexDirection="column">
+            <Text style={{...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', paddingHorizontal: 32, marginBottom: 16}}>
+                Choose correct payment method or add a new one to complete transaction
+            </Text>
             {cards.map(card => <CardView key={card.id} item={card} selected={selected === card.pmid} onPress={() => setSelected(card.pmid)} />)}
-            <ZListItem
-                leftIcon={require('assets/ic-add-glyph-24.png')}
-                text="Add card"
-                onPress={() => props.router.push('AddCard')}
-            />
-            <View marginTop={8}>
+            <AddCardItem onPress={handleAdd} />
+            <View marginTop={16} paddingHorizontal={16}>
                 <ZButton enabled={!!selected} title="Complete" action={onSubmit} style="primary" size="large" loading={loading} />
             </View>
 
