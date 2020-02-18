@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TextStyle, Image } from 'react-native';
+import { View, Text, StyleSheet, TextStyle, Image, Platform } from 'react-native';
 import { SRouter } from 'react-native-s/SRouter';
 import { getMessenger } from '../../../utils/messenger';
 import { TypingType, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom } from 'openland-api/spacex.types';
@@ -58,7 +58,7 @@ const SharedChatHeaderContent = XMemo<{ room: RoomTiny_room_SharedRoom, typing?:
                         style={{ tintColor: theme.accentPositive, marginRight: 4, width: 16, height: 16 }}
                     />
                 )}
-                {room.isPremium && <View marginRight={8} alignSelf="center"><PremiumBadge /></View>}
+                {room.isPremium && <View marginRight={8} marginTop={Platform.OS === 'ios' ? 0 : 1} marginBottom={Platform.OS === 'ios' ? 0 : -1} alignSelf="center"><PremiumBadge /></View>}
                 <Text style={[styles.title, { color: highlightGroup ? theme.accentPositive : theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
                 {room.settings.mute && (
                     <Image

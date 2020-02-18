@@ -3,14 +3,15 @@ import { Text, View } from 'react-native';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { RadiusStyles, TextStylesAsync, TextStyles } from 'openland-mobile/styles/AppStyles';
+import { RadiusStyles, TextStylesAsync, TextStyles, CompensationAlpha } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { hexToRgba } from 'openland-y-utils/hexToRgba';
 
 export const PremiumBadge = React.memo(() => {
     const theme = React.useContext(ThemeContext);
 
     return (
-        <View paddingTop={1.5} paddingBottom={2.5} paddingHorizontal={4} backgroundColor={theme.accentPay} borderRadius={RadiusStyles.XSmall}>
+        <View paddingTop={1.5} paddingBottom={2.5} paddingHorizontal={4} backgroundColor={hexToRgba(theme.accentPay, CompensationAlpha)} borderRadius={RadiusStyles.XSmall}>
             <Text style={[TextStyles.Detail, { color: theme.foregroundContrast }]} allowFontScaling={false}>
                 PRO
             </Text>
@@ -19,7 +20,7 @@ export const PremiumBadge = React.memo(() => {
 });
 
 export const PremiumBadgeAsync = React.memo((props: { theme: ThemeGlobal }) => (
-    <ASFlex backgroundColor={props.theme.accentPay} borderRadius={RadiusStyles.XSmall}>
+    <ASFlex backgroundColor={hexToRgba(props.theme.accentPay, CompensationAlpha)} borderRadius={RadiusStyles.XSmall}>
         <ASFlex marginTop={1.5} marginBottom={2.5} marginLeft={4} marginRight={4}>
             <ASText {...TextStylesAsync.Detail} color={props.theme.foregroundContrast}>
                 PRO

@@ -62,7 +62,7 @@ const DialogItemViewAsyncRender = React.memo<{ theme: ThemeGlobal, item: DialogD
             <ASFlex marginLeft={paddingHorizontal} marginRight={paddingHorizontal} marginTop={6} marginBottom={6} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
                 <ASFlex height={24} alignItems="center">
                     {highlightGroup && <ASFlex alignItems="center" marginRight={4} marginTop={4}><ASImage opacity={CompensationAlpha} tintColor={theme.accentPositive} width={16} height={16} source={require('assets/ic-lock-16.png')} marginBottom={Platform.OS === 'android' ? 4 : 0} /></ASFlex>}
-                    {item.isPremium && <ASFlex marginRight={8} marginTop={5}><PremiumBadgeAsync theme={theme} /></ASFlex>}
+                    {item.isPremium && <ASFlex marginRight={8} marginTop={Platform.OS === 'ios' ? 5 : 2}><PremiumBadgeAsync theme={theme} /></ASFlex>}
                     <ASText {...TextStylesAsync.Label1} numberOfLines={1} flexShrink={1} color={highlightGroup ? theme.accentPositive : theme.foregroundPrimary}>
                         {item.title}
                     </ASText>

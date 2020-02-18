@@ -207,7 +207,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
         <>
             <ZListHero
                 titleIcon={highlightGroup ? require('assets/ic-lock-16.png') : undefined}
-                titleIconElement={room.isPremium ? <View marginRight={8} marginTop={2} alignSelf="center"><PremiumBadge /></View> : undefined}
+                titleIconElement={room.isPremium ? <View marginRight={8} marginTop={Platform.OS === 'ios' ? 2 : 4} alignSelf="center"><PremiumBadge /></View> : undefined}
                 titleColor={highlightGroup ? theme.accentPositive : undefined}
                 title={room.title}
                 subtitle={subtitle}
