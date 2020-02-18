@@ -245,8 +245,10 @@ export class MobileMessenger {
             if (isMember) {
                 this.history.navigationManager.push('Conversation', { id });
             } else {
+                startLoader();
                 const inviteLinkInfo = await this.engine.client.queryRoomInviteLink({ roomId: id });
                 const invite = await this.engine.client.queryResolvedInvite({ key: inviteLinkInfo.link });
+                stopLoader();
                 this.history.navigationManager.push('GroupInvite', { invite: invite.invite, inviteId: inviteLinkInfo.link });
             }
         } else {
