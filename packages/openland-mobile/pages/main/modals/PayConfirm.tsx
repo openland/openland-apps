@@ -2,14 +2,15 @@ import * as React from 'react';
 import { WalletSubscriptionInterval } from 'openland-api/spacex.types';
 import { showBottomSheet, BottomSheetActions } from 'openland-mobile/components/BottomSheet';
 import { useClient } from 'openland-api/useClient';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import AlertBlanket from 'openland-mobile/components/AlertBlanket';
+import AlertBlanket, { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { SRouter } from 'react-native-s/SRouter';
 import { AddCardItem } from 'openland-mobile/pages/wallet/components/AddCardItem';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 const ConfirmPaymentComponent = React.memo((props: PaymentProps & { ctx: BottomSheetActions }) => {
     const client = useClient();
@@ -43,7 +44,7 @@ const ConfirmPaymentComponent = React.memo((props: PaymentProps & { ctx: BottomS
 
             {(cards.length === 0) && (
                 <View marginTop={24}>
-                    <Text style={{...TextStyles.Title2, color: theme.foregroundPrimary, marginBottom: 8}}>Payment method</Text>
+                    <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginBottom: 8 }}>Payment method</Text>
                     <View marginHorizontal={-16}>
                         <AddCardItem
                             onPress={() => {
@@ -72,5 +73,31 @@ type PaymentProps = {
 } & ({ type: 'payment' } | { type: 'subscription', interval: WalletSubscriptionInterval });
 
 export const showPayConfirm = (props: PaymentProps) => {
-    showBottomSheet({ title: 'Payment', cancelable: false, view: (ctx) => <ConfirmPaymentComponent {...props} ctx={ctx} /> });
+    const locked = getMessenger().engine.wallet.state.get().isLocked;
+    if (!locked) {
+        showBottomSheet({ title: 'Payment', cancelable: false, view: (ctx) => <ConfirmPaymentComponent {...props} ctx={ctx} /> });
+    } else {
+        const builder = new AlertBlanketBuilder();
+
+        builder.title('You have failed transactions');
+        builder.message('Complete all failed transactions in wallet to keep subscribing to premium groups');
+
+        builder.view(
+            <View marginBottom={16} marginHorizontal={-24} overflow="hidden">
+                <Image
+                    source={require('assets/art-transactions-failing.png')}
+                    style={{
+                        width: 340,
+                        height: 200,
+                        alignSelf: 'center',
+                        resizeMode: 'contain'
+                    }}
+                />
+            </View>
+        );
+
+        builder.button('Cancel', 'cancel');
+        builder.button('Continue', 'default', () => props.router.push('Wallet'));
+        builder.show();
+    }
 };

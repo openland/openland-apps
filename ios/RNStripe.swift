@@ -123,7 +123,7 @@ class RNStripe: RCTEventEmitter, STPAuthenticationContext {
               dict["id"] = paymentId
               dict["status"] = "failed"
               let errors = [STPAPIClient.pkPaymentError(forStripeError: error)].compactMap({ $0 })
-              dict["message"] = errors.count > 0 ? errors[0] : "We are unable to complete payment with this payment method. Please choose a different payment method and try again."
+              dict["message"] = errors.count > 0 ? errors[0].localizedDescription : "We are unable to complete payment with this payment method. Please choose a different payment method and try again."
               self.sendEvent(withName: "confirm_payment", body: dict)
           @unknown default:
              fatalError()
