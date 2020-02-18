@@ -8,7 +8,7 @@ import { TextStyles } from 'openland-web/utils/TextStyles';
 import { css } from 'linaria';
 import FailureIcon from 'openland-icons/s/ic-failure-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import WalletIcon from 'openland-icons/s/ic-wallet-24.svg';
+import { DepositAvatar } from './DepositAvatar';
 
 const arrowBox = css`
     position: absolute;
@@ -33,7 +33,7 @@ export const TransactionView = React.memo((props: TransactionViewProps) => {
     return (
         <>
             <UListItem
-                leftElement={!normalized.avatar ? <XView width={40} height={40} borderRadius={20} backgroundColor="var(--backgroundTertiaryTrans)"><UIcon icon={<WalletIcon />} /></XView> : undefined}
+                leftElement={!normalized.avatar ? <DepositAvatar /> : undefined}
                 avatar={normalized.avatar}
                 title={normalized.title}
                 description={normalized.type + (operation.__typename === 'WalletTransactionSubscription' ? (', ' + normalized.interval) : '')}

@@ -15,7 +15,7 @@ import {
 } from 'openland-y-utils/themes/placeholders';
 import { useReloadImage } from 'openland-web/components/ImgWithRetry';
 
-type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'xxx-large';
+export type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'xxx-large';
 
 export interface UAvatarProps extends XViewProps {
     title: string;
@@ -38,7 +38,7 @@ export const PlaceholderColor = [
     `linear-gradient(138deg, ${PlaceholderPurple.start}, ${PlaceholderPurple.end})`,
 ];
 
-const AvatarSizes: {
+export const AvatarSizes: {
     [key in UAvatarSize]: {
         size: number;
         placeholder: number;
