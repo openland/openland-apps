@@ -14,6 +14,7 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
 import Lottie from 'react-lottie';
 import { getJSON } from 'openland-y-utils/lottie/getJSON';
+import { TypingType } from 'openland-api/spacex.types';
 
 const dialogContainer = css`
     cursor: pointer;
@@ -195,6 +196,19 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                     ''
                 );
     let message: JSX.Element | null = null;
+    
+    console.warn(dialog.typingType);
+    
+    let typingAnimation: string;
+
+    switch (dialog.typingType) {
+        case TypingType.TEXT: typingAnimation = 'typing'; break;
+        case TypingType.FILE: typingAnimation = 'file'; break;
+        case TypingType.PHOTO: typingAnimation = 'file'; break;
+        case TypingType.VIDEO: typingAnimation = 'file'; break;
+        case TypingType.STICKER: typingAnimation = 'file'; break;
+        default: typingAnimation = 'typing'; break;
+    }
 
     if (dialog.typingEmojify) {
         message = (
@@ -208,7 +222,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                 height={20}
                                 width={20}
                                 options={{
-                                    animationData: getJSON('typing', active ? '#FFFFFF' : '#878A91'),
+                                    animationData: getJSON(typingAnimation, active ? '#FFFFFF' : '#878A91'),
                                     loop: true
                                 }}
                             />

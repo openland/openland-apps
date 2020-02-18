@@ -18,6 +18,7 @@ import {
     DialogUpdateFragment_DialogMessageRead,
     Room_room_PrivateRoom,
     RoomPico_room_SharedRoom,
+    TypingType,
 } from 'openland-api/spacex.types';
 
 const log = createLogger('Engine-Dialogs');
@@ -59,6 +60,7 @@ export interface DialogDataSourceItemStored {
 export interface DialogDataSourceItem extends DialogDataSourceItemStored {
     online?: boolean;
     typing?: string;
+    typingType?: TypingType;
 }
 
 const extractDialog = (dialog: DialogFragment, uid: string): DialogDataSourceItemStored => {
@@ -120,7 +122,7 @@ export class DialogListEngine {
             }
         };
         this._dataSourceStored = new DataSourceStored('dialogs', engine.options.store, 20, provider);
-        let typingsAugmentator = new DataSourceAugmentor<DialogDataSourceItemStored, { typing: string }>(this._dataSourceStored.dataSource);
+        let typingsAugmentator = new DataSourceAugmentor<DialogDataSourceItemStored, { typing: string, typingType?: TypingType }>(this._dataSourceStored.dataSource);
         let onlineAugmentator = new DataSourceAugmentor<DialogDataSourceItemStored & { typing?: string }, { online: boolean }>(typingsAugmentator.dataSource);
         this.dataSource = onlineAugmentator.dataSource;
 
@@ -186,9 +188,9 @@ export class DialogListEngine {
         // Typings
         //
 
-        engine.getTypings().subcribe((typing, users, _, conversationId) => {
+        engine.getTypings().subcribe((typing, users, typingType, conversationId) => {
             if (typing) {
-                typingsAugmentator.setAugmentation(conversationId, { typing });
+                typingsAugmentator.setAugmentation(conversationId, { typing, typingType });
             } else {
                 typingsAugmentator.removeAugmentation(conversationId);
             }

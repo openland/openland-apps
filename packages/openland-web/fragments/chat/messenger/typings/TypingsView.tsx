@@ -102,13 +102,28 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
         </XView>
     );
 
+    const slider = (
+        <XView width={20} marginRight={8} marginTop={1} alignItems="center">
+            <Lottie
+                isStopped={false}
+                isPaused={false}
+                height={20}
+                width={20}
+                options={{
+                    animationData: getJSON('file', '#878A91'),
+                    loop: true
+                }}
+            />
+        </XView>
+    );
+
     return (
         <div className={typingWrapper}>
             <div className={cx(typingContent, TextBody)}>
 
                 {typingArr.length === 1 && (
                     <>
-                        { dots }
+                        { slider }
                         <UserLink {...typingArr[0]} />
                         &nbsp;is {typingType}
                     </>
