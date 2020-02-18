@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { SpannedView } from './SpannedView';
-import { Span } from 'openland-y-utils/spans/Span';
+import { Span, SpanType } from 'openland-y-utils/spans/Span';
 import { TextCaption } from 'openland-web/utils/TextStyles';
 
 export interface MessageTextComponentProps {
@@ -46,12 +46,23 @@ const EditLabelStyle = css`
     user-select: none;
 `;
 
+const cropBy = {
+    [SpanType.loud]: 36,
+    [SpanType.emoji]: 46,
+    [SpanType.rotating]: 28,
+    [SpanType.insane]: 28,
+};
+
 export const MessageTextComponent = React.memo<MessageTextComponentProps>(props => {
     const { shouldCrop, spans, edited } = props;
+    const [firstSpan] = spans;
+    const spanType = firstSpan && firstSpan.type;
+    const maxHeight = `${cropBy[spanType] || 24}px`;
+    const hasMaxHeight = shouldCrop && spanType !== SpanType.code_block;
 
     return (
         <div className={spansMessageWrapper}>
-            <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)}>
+            <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)} style={{maxHeight: hasMaxHeight ? maxHeight : undefined}}>
                 <span>
                     <SpannedView spans={spans} />
                     {!!edited && (
