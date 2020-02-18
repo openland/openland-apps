@@ -531,6 +531,7 @@ type Dialog {
   fid: ID!
   kind: DialogKind!
   isChannel: Boolean!
+  isPremium: Boolean!
   title: String!
   photo: String!
   unreadCount: Int!

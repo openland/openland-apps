@@ -20,6 +20,7 @@ fragment DialogFragment on Dialog {
     fid
     kind
     isChannel
+    isPremium
     title
     photo
     unreadCount

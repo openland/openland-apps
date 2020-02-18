@@ -2,6 +2,7 @@ fragment RoomSharedNano on SharedRoom {
     id
     kind
     isChannel
+    isPremium
     title
     roomPhoto: photo
     membersCount

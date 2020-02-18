@@ -32,6 +32,7 @@ export interface DialogDataSourceItemStored {
     title: string;
     kind: 'PRIVATE' | 'INTERNAL' | 'PUBLIC' | 'GROUP';
     isChannel?: boolean;
+    isPremium?: boolean;
     photo?: string;
 
     // Chat State
@@ -77,6 +78,7 @@ const extractDialog = (dialog: DialogFragment, uid: string): DialogDataSourceIte
         isMuted: dialog.isMuted,
         kind: dialog.kind,
         isChannel: dialog.isChannel,
+        isPremium: dialog.isPremium,
         title: dialog.title,
         photo: dialog.photo,
         key: dialog.cid,
@@ -292,6 +294,7 @@ export class DialogListEngine {
                     fid: existing.flexibleId,
                     kind: existing.kind as DialogKind,
                     isChannel: !!existing.isChannel,
+                    isPremium: !!existing.isPremium,
                     title: existing.title,
                     photo: existing.photo || '',
                     unreadCount: update.unread,
@@ -396,6 +399,7 @@ export class DialogListEngine {
                     flexibleId: privateRoom ? privateRoom.user.id : room.id,
                     kind: sharedRoom ? sharedRoom.kind : 'PRIVATE',
                     isChannel: sharedRoom ? sharedRoom.isChannel : false,
+                    isPremium: sharedRoom ? sharedRoom.isPremium : false,
                     title: sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '',
                     photo:
                         (sharedRoom

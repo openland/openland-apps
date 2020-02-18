@@ -26,6 +26,6 @@ internal val DialogsSelector = obj(
 val Dialogs = object: OperationDefinition {
     override val name = "Dialogs"
     override val kind = OperationKind.QUERY
-    override val body = "query Dialogs(\$after:String){dialogs(first:20,after:\$after){__typename items{__typename ...DialogFragment}cursor}state:dialogsState{__typename state}counter:alphaNotificationCounter{__typename id unreadCount}}fragment DialogFragment on Dialog{__typename id cid fid kind isChannel title photo unreadCount isMuted haveMention topMessage:alphaTopMessage{__typename ...DialogMessage}}fragment DialogMessage on ModernMessage{__typename id date sender{__typename id name photo firstName}message fallback ... on GeneralMessage{__typename id quotedMessages{__typename id}}}"
+    override val body = "query Dialogs(\$after:String){dialogs(first:20,after:\$after){__typename items{__typename ...DialogFragment}cursor}state:dialogsState{__typename state}counter:alphaNotificationCounter{__typename id unreadCount}}fragment DialogFragment on Dialog{__typename id cid fid kind isChannel isPremium title photo unreadCount isMuted haveMention topMessage:alphaTopMessage{__typename ...DialogMessage}}fragment DialogMessage on ModernMessage{__typename id date sender{__typename id name photo firstName}message fallback ... on GeneralMessage{__typename id quotedMessages{__typename id}}}"
     override val selector = DialogsSelector
 }

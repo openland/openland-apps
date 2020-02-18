@@ -102,6 +102,7 @@ export const prepareLegacyMentions = (
                         roomPhoto: mention.roomPhoto,
                         kind: mention.kind,
                         isChannel: mention.isChannel,
+                        isPremium: mention.isPremium,
                         settings: mention.settings,
                         membersCount: mention.membersCount,
                     },
