@@ -97,6 +97,7 @@ object Operations {
         if (name == "SuperAccounts") return SuperAccounts
         if (name == "SuperAdmins") return SuperAdmins
         if (name == "SuperBadgeInRoom") return SuperBadgeInRoom
+        if (name == "TransactionsHistory") return TransactionsHistory
         if (name == "User") return User
         if (name == "UserAvailableRooms") return UserAvailableRooms
         if (name == "UserPico") return UserPico

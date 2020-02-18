@@ -29,16 +29,14 @@ export const UFlatList: <T>(props: UFlatListProps<T>) => any = React.memo((props
 
     return (
         <Page onScroll={onScroll} padded={padded} track={track}>
-            <UHeader documentTitle={props.title}/>
+            <UHeader documentTitle={props.title} />
             {children}
             {items.map((item, index) => (
                 <XView key={'item-' + index}>{props.renderItem(item)}</XView>
             ))}
-            {loading && (
-                <XView height={56} alignItems="center" justifyContent="center">
-                    <XLoader />
-                </XView>
-            )}
+            <XView height={56} alignItems="center" justifyContent="center">
+                {loading && <XLoader loading={true} />}
+            </XView>
         </Page>
     );
 });

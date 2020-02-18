@@ -12,6 +12,7 @@ export interface WalletState {
 
     historyTransactions: MyWallet_transactionsPending[];
     historyTransactionsCursor: string | null;
+    historyLoading: boolean;
 }
 
 export class WalletEngine {
@@ -31,7 +32,8 @@ export class WalletEngine {
             isLocked: wallet.myWallet.isLocked,
             pendingTransactions: wallet.transactionsPending,
             historyTransactions: wallet.transactionsHistory.items,
-            historyTransactionsCursor: wallet.transactionsHistory.cursor
+            historyTransactionsCursor: wallet.transactionsHistory.cursor,
+            historyLoading: false
         });
 
         sequenceWatcher<WalletUpdates>(wallet.myWallet.state, (state, handler) => this.messenger.client.subscribeWalletUpdates({ state: state! }, handler), (update) => {
@@ -43,6 +45,26 @@ export class WalletEngine {
                 this.handleUpdate(update.event.update);
             }
             return update.event.state;
+        });
+    }
+
+    loadMoreTransactions = async () => {
+        if (this.state.get().historyLoading || !this.state.get().historyTransactionsCursor) {
+            return;
+        }
+
+        this.state.setState({
+            ...this.state.get(),
+            historyLoading: true
+        });
+
+        let transactions = (await backoff(() => this.messenger.client.queryTransactionsHistory({ first: 20, after: this.state.get().historyTransactionsCursor }, { fetchPolicy: 'network-only' }))).transactionsHistory;
+
+        this.state.setState({
+            ...this.state.get(),
+            historyTransactions: [...this.state.get().historyTransactions, ...transactions.items],
+            historyTransactionsCursor: transactions.cursor,
+            historyLoading: false
         });
     }
 

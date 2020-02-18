@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { XView } from 'react-mental';
-import { Page } from 'openland-unicorn/Page';
 import { useClient } from 'openland-api/useClient';
 import { showAddCard } from './modals/showAddCard';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
@@ -12,45 +11,51 @@ import { showAddFunds } from './modals/showAddFunds';
 import { Money } from 'openland-y-utils/wallet/Money';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
+import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 
 export const WalletFragment = React.memo(() => {
     const client = useClient();
     const messenger = React.useContext(MessengerContext);
-    const wallet = messenger.wallet.state.useState();
+    const walletEngine = messenger.wallet;
+    const walletState = walletEngine.state.useState();
     const cards = client.useMyCards({ fetchPolicy: 'cache-and-network' }).myCards;
-    const balance = wallet.balance;
+    const balance = walletState.balance;
+    const transactions = [...walletState.pendingTransactions, ...walletState.historyTransactions];
 
     return (
-        <Page track="settings_wallet">
+        <UFlatList
+            track="settings_wallet"
+            loadMore={walletEngine.loadMoreTransactions}
+            items={transactions}
+            loading={walletState.historyLoading}
+            title="Wallet"
+            renderItem={transaction => <TransactionView key={transaction.id} item={transaction} />}
+        >
             <UHeader title="Wallet" />
-            <XView flexDirection="column" paddingBottom={56}>
-                <UListGroup header="Your balance" action={{ title: 'Top up', onClick: () => showAddFunds() }}>
-                    <XView
-                        {...TextStyles.Title1}
-                        color={balance === 0 ? 'var(--foregroundTertiary)' : 'var(--accentPrimary)'}
-                        paddingHorizontal={16}
-                        paddingBottom={16}
-                    >
-                        <Money amount={balance} />
-                    </XView>
-                </UListGroup>
-                <UListGroup
-                    header="Payments methods"
-                    action={cards.length > 0 ? { title: 'Add card', onClick: () => showAddCard() } : undefined}
+            <UListGroup header="Your balance" action={{ title: 'Top up', onClick: () => showAddFunds() }}>
+                <XView
+                    {...TextStyles.Title1}
+                    color={balance === 0 ? 'var(--foregroundTertiary)' : 'var(--accentPrimary)'}
+                    paddingHorizontal={16}
+                    paddingBottom={16}
                 >
-                    {cards.length === 0 && (
-                        <UAddItem
-                            title="Add card"
-                            onClick={() => showAddCard()}
-                        />
-                    )}
-                    {cards.map(card => <CardView item={card} key={card.id} />)}
-                </UListGroup>
-                <UListGroup header="Transactions">
-                    {wallet.pendingTransactions.map((v) => <TransactionView key={v.id} item={v} />)}
-                    {wallet.historyTransactions.map((v) => <TransactionView key={v.id} item={v} />)}
-                </UListGroup>
-            </XView>
-        </Page>
+                    <Money amount={balance} />
+                </XView>
+            </UListGroup>
+            <UListGroup
+                header="Payments methods"
+                action={cards.length > 0 ? { title: 'Add card', onClick: () => showAddCard() } : undefined}
+            >
+                {cards.length === 0 && (
+                    <UAddItem
+                        title="Add card"
+                        onClick={() => showAddCard()}
+                    />
+                )}
+                {cards.map(card => <CardView item={card} key={card.id} />)}
+            </UListGroup>
+            {transactions.length > 0 && <UListHeader text="Transactions" />}
+        </UFlatList>
     );
 });

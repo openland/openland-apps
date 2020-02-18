@@ -277,6 +277,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     querySuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: OperationParameters): Promise<Types.SuperBadgeInRoom> {
         return this.query('SuperBadgeInRoom', variables, opts);
     }
+    queryTransactionsHistory(variables: Types.TransactionsHistoryVariables, opts?: OperationParameters): Promise<Types.TransactionsHistory> {
+        return this.query('TransactionsHistory', variables, opts);
+    }
     queryUser(variables: Types.UserVariables, opts?: OperationParameters): Promise<Types.User> {
         return this.query('User', variables, opts);
     }
@@ -562,6 +565,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: OperationParameters): Promise<Types.SuperBadgeInRoom> {
         return this.refetch('SuperBadgeInRoom', variables);
     }
+    refetchTransactionsHistory(variables: Types.TransactionsHistoryVariables, opts?: OperationParameters): Promise<Types.TransactionsHistory> {
+        return this.refetch('TransactionsHistory', variables);
+    }
     refetchUser(variables: Types.UserVariables, opts?: OperationParameters): Promise<Types.User> {
         return this.refetch('User', variables);
     }
@@ -846,6 +852,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, updater: (data: Types.SuperBadgeInRoom) => Types.SuperBadgeInRoom | null): Promise<boolean> {
         return this.updateQuery(updater, 'SuperBadgeInRoom', variables);
+    }
+    updateTransactionsHistory(variables: Types.TransactionsHistoryVariables, updater: (data: Types.TransactionsHistory) => Types.TransactionsHistory | null): Promise<boolean> {
+        return this.updateQuery(updater, 'TransactionsHistory', variables);
     }
     updateUser(variables: Types.UserVariables, updater: (data: Types.User) => Types.User | null): Promise<boolean> {
         return this.updateQuery(updater, 'User', variables);
@@ -1311,6 +1320,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: SpaceQueryWatchParameters): Types.SuperBadgeInRoom;
     useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: SpaceQueryWatchParameters): Types.SuperBadgeInRoom | null {
         return this.useQuery('SuperBadgeInRoom', variables, opts);
+    }
+    useTransactionsHistory(variables: Types.TransactionsHistoryVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.TransactionsHistory | null;
+    useTransactionsHistory(variables: Types.TransactionsHistoryVariables, opts?: SpaceQueryWatchParameters): Types.TransactionsHistory;
+    useTransactionsHistory(variables: Types.TransactionsHistoryVariables, opts?: SpaceQueryWatchParameters): Types.TransactionsHistory | null {
+        return this.useQuery('TransactionsHistory', variables, opts);
     }
     useUser(variables: Types.UserVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.User | null;
     useUser(variables: Types.UserVariables, opts?: SpaceQueryWatchParameters): Types.User;
