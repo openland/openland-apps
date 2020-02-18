@@ -112,7 +112,7 @@ export default class OpenlandDocument extends Document {
                 // room meta tags
                 const resolvedInvite = await openland.queryResolvedInvite({
                     key: inviteKey,
-                }, {fetchPolicy: 'network-only'});
+                }, { fetchPolicy: 'network-only' });
 
                 if (
                     resolvedInvite &&
@@ -136,7 +136,7 @@ export default class OpenlandDocument extends Document {
                         roomImage = room.socialImage;
                     } else if (roomSocialImage.roomSocialImage) {
                         roomImage = roomSocialImage.roomSocialImage;
-                    } else if (room.photo) {
+                    } else if (room.photo && !room.photo.startsWith('ph://')) {
                         roomImage = room.photo;
                     } else {
                         roomImage = 'https://cdn.openland.com/shared/og/og-global.png';
