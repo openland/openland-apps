@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ZListItemBase } from './ZListItemBase';
-import { View, Text, Switch, Image, Clipboard, TextStyle, Platform, Linking } from 'react-native';
+import { View, Text, Switch, Image, Clipboard, TextStyle, Platform, Linking, ViewStyle } from 'react-native';
 import { ZText } from './ZText';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
@@ -29,6 +29,7 @@ export interface ZListItemProps {
     toggleField?: { key: string };
     toggleDisabled?: boolean | null;
     checkmark?: boolean | null;
+    checkmarkStyle?: ViewStyle;
     checkmarkField?: { key: string, value: string };
     onToggle?: (value: boolean) => void;
     path?: string;
@@ -199,13 +200,13 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                         )}
                         {showCheckmark && (
                             <View
-                                style={{
+                                style={[{
                                     width: 22,
                                     height: 22,
                                     borderRadius: 11,
                                     borderWidth: checkmarkEnabled ? 7 : 2,
                                     borderColor: checkmarkEnabled ? theme.accentPrimary : theme.foregroundQuaternary,
-                                }}
+                                }, this.props.checkmarkStyle && this.props.checkmarkStyle]}
                             />
                         )}
                     </View>

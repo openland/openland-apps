@@ -156,12 +156,14 @@ const multiInputsContainer = css`
     & > div:first-child {
         margin-right: 8px;
         flex-grow: 1;
-        width: calc(50% - 8px);
+        flex-shrink: 0;
+        flex-basis: 0;
     }
     & > div:last-child {
         margin-left: 8px;
         flex-grow: 1;
-        width: calc(50% - 8px);
+        flex-shrink: 0;
+        flex-basis: 0;
     }
 `;
 
@@ -369,13 +371,13 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
         DistributionType.FREE,
         form,
     );
-    const priceField = useField<number | undefined>('input.price', undefined, form);
+    const priceField = useField<number | null>('input.price', null, form);
     const intervalField = useField<WalletSubscriptionInterval | null>('input.interval', null, form);
 
     React.useEffect(
         () => {
             if (distributionField.value === DistributionType.FREE) {
-                priceField.input.onChange(undefined);
+                priceField.input.onChange(null);
                 intervalField.input.onChange(null);
             }
             if (distributionField.value === DistributionType.PAID) {

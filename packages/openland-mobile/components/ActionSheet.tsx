@@ -15,6 +15,8 @@ interface ActionSheetBuilderActionItem {
     callback: () => void;
     distructive?: boolean;
     icon?: any;
+    subtitle?: string;
+    checkMark?: boolean;
 }
 
 interface ActionSheetBuilderViewItem {
@@ -43,8 +45,24 @@ export class ActionSheetBuilder {
         return this;
     }
 
-    action(name: string, callback: () => void, distructive?: boolean, icon?: any): ActionSheetBuilder {
-        let item: ActionSheetBuilderActionItem = { __typename: "ActionItem", name, callback, distructive, icon };
+    action(
+        name: string,
+        callback: () => void,
+        distructive?: boolean,
+        icon?: any,
+        subtitle?: string,
+        checkMark?: boolean
+    ): ActionSheetBuilder {
+
+        let item: ActionSheetBuilderActionItem = {
+            __typename: "ActionItem",
+            name,
+            callback,
+            distructive,
+            icon,
+            subtitle,
+            checkMark
+        };
 
         this._items.push(item);
         return this;
@@ -74,8 +92,11 @@ export class ActionSheetBuilder {
                                 leftIcon={a.icon}
                                 appearance={a.distructive ? 'danger' : 'default'}
                                 text={a.name}
+                                subTitle={a.subtitle}
                                 small={true}
                                 onPress={() => { ctx.hide(); a.callback(); }}
+                                checkmark={a.checkMark}
+                                checkmarkStyle={a.subtitle ? { marginBottom: -20 } : undefined}
                             />
                         )}
                         {a.__typename === 'ViewItem' && (
