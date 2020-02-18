@@ -91,12 +91,22 @@ const BuyPaidChatPassButton = (props: {
             });
         }
     }, []);
+
+    let buttonText = 'Join for ' + formatMoney(props.premiumSettings.price, true);
+    if (props.premiumSettings.interval) {
+        if (props.premiumSettings.interval === WalletSubscriptionInterval.WEEK) {
+            buttonText += ' / w.';
+        } else if (props.premiumSettings.interval === WalletSubscriptionInterval.MONTH) {
+            buttonText += ' / mo.';
+        }
+    }
+
     return (
         <View style={styles.buttonWrapper}>
             <ZButton
                 loading={loading}
                 style="pay"
-                title={`Join for ${formatMoney(props.premiumSettings.price)}`}
+                title={buttonText}
                 onPress={buyPaidChatPass}
                 size="large"
             />
@@ -241,8 +251,8 @@ export const ChatJoin = React.memo((props: ChatJoinProps) => {
     const client = getClient();
     const room = client.useChatJoin({ id: props.room.id }).room as ChatJoin_room_SharedRoom;
     const action = React.useCallback(async () => {
-            await client.mutateRoomJoin({ roomId: props.room.id });
-            await client.refetchRoomTiny({ id: props.room.id });
+        await client.mutateRoomJoin({ roomId: props.room.id });
+        await client.refetchRoomTiny({ id: props.room.id });
     }, [props.room.id]);
 
     return <ChatJoinComponent room={room} theme={props.theme} action={action} router={props.router} />;

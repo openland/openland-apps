@@ -318,12 +318,22 @@ const BuyPaidChatPassButton = (props: {
             });
         }
     }, []);
+
+    let buttonText = 'Join for ' + formatMoney(props.premiumSettings.price, true);
+    if (props.premiumSettings.interval) {
+        if (props.premiumSettings.interval === WalletSubscriptionInterval.WEEK) {
+            buttonText += ' / w.';
+        } else if (props.premiumSettings.interval === WalletSubscriptionInterval.MONTH) {
+            buttonText += ' / mo.';
+        }
+    }
+
     return (
         <>
             <UButton
                 loading={loading}
                 style="pay"
-                text={`Join for ${formatMoney(props.premiumSettings.price)}`}
+                text={buttonText}
                 action={buyPaidChatPass}
                 shape="square"
                 size="large"
