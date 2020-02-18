@@ -2,13 +2,14 @@ import * as React from 'react';
 import { WalletTransactionFragment, PaymentStatus } from 'openland-api/spacex.types';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { showConfirmPayment } from '../modals/showConfirmPayment';
-import { showTransaction, normalizeTransaction } from '../modals/showTransaction';
+import { showTransaction } from '../modals/showTransaction';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { css } from 'linaria';
 import FailureIcon from 'openland-icons/s/ic-failure-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { DepositAvatar } from './DepositAvatar';
+import { convertTransaction } from 'openland-y-utils/wallet/transaction';
 
 const arrowBox = css`
     position: absolute;
@@ -24,7 +25,7 @@ interface TransactionViewProps {
 }
 
 export const TransactionView = React.memo((props: TransactionViewProps) => {
-    const normalized = normalizeTransaction(props.item);
+    const converted = convertTransaction(props.item);
     const operation = props.item.operation;
     const payment = operation.payment;
     const actionRequired = payment && payment.intent && (payment.status === PaymentStatus.FAILING || payment.status === PaymentStatus.ACTION_REQUIRED);
@@ -33,16 +34,16 @@ export const TransactionView = React.memo((props: TransactionViewProps) => {
     return (
         <>
             <UListItem
-                leftElement={!normalized.avatar ? <DepositAvatar /> : undefined}
-                avatar={normalized.avatar}
-                title={normalized.title}
-                description={normalized.type + (operation.__typename === 'WalletTransactionSubscription' ? (', ' + normalized.interval) : '')}
+                leftElement={!converted.avatar ? <DepositAvatar /> : undefined}
+                avatar={converted.avatar}
+                title={converted.title}
+                description={converted.type + (operation.__typename === 'WalletTransactionSubscription' ? (', ' + converted.interval) : '')}
                 useRadius={true}
                 rightElement={
                     <XView marginRight={8} alignItems="flex-end">
-                        <XView {...TextStyles.Label1} color={color}>{normalized.amount}</XView>
+                        <XView {...TextStyles.Label1} color={color}>{converted.amount}</XView>
                         <XView {...TextStyles.Subhead} color="var(--foregroundSecondary)">
-                            {normalized.dateTime.isToday ? normalized.dateTime.time : normalized.dateTime.date}
+                            {converted.dateTime.isToday ? converted.dateTime.time : converted.dateTime.date}
                             {payment && payment.status === PaymentStatus.PENDING && ', pending'}
                             {actionRequired && ', failing'}
                         </XView>
