@@ -64,6 +64,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
     let messeger = React.useContext(MessengerContext);
     const [typingArr, setTypingArr] = React.useState<TypingsUser[]>([]);
     const [typingType, setTypingType] = React.useState<string>('');
+    const [typingAnimation, setTypingAnimation] = React.useState<string>('');
 
     React.useEffect(
         () => {
@@ -71,23 +72,48 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                 setTypingArr(users || []);
 
                 let typingActionString = 'typing';
+                let typingAnimationString = 'typing';
 
                 switch (typingAction) {
-                    case TypingType.TEXT: typingActionString = 'typing'; break;
-                    case TypingType.FILE: typingActionString = 'sending a file'; break;
-                    case TypingType.PHOTO: typingActionString = 'sending a photo'; break;
-                    case TypingType.STICKER: typingActionString = 'picking a sticker'; break;
-                    case TypingType.VIDEO: typingActionString = 'uploading a video'; break;
-                    default: typingActionString = 'typing'; break;
+                    case TypingType.TEXT:
+                        typingActionString = 'typing';
+                        typingAnimationString = 'typing';
+                        break;
+
+                    case TypingType.FILE:
+                        typingActionString = 'sending a file';
+                        typingAnimationString = 'file';
+                        break;
+
+                    case TypingType.PHOTO:
+                        typingActionString = 'sending a photo';
+                        typingAnimationString = 'file';
+                        break;
+
+                    case TypingType.STICKER:
+                        typingActionString = 'picking a sticker';
+                        typingAnimationString = 'file';
+                        break;
+
+                    case TypingType.VIDEO:
+                        typingActionString = 'uploading a video';
+                        typingAnimationString = 'file';
+                        break;
+
+                    default:
+                        typingActionString = 'typing';
+                        typingAnimationString = 'typing';
+                        break;
                 }
 
                 setTypingType(typingActionString);
+                setTypingAnimation(typingAnimationString);
             });
         },
         [props.conversationId],
     );
 
-    const dots = (
+    const animation = (
         <XView width={20} marginRight={8} marginTop={1} alignItems="center">
             <Lottie
                 isStopped={false}
@@ -95,22 +121,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                 height={20}
                 width={20}
                 options={{
-                    animationData: getJSON('typing', '#878A91'),
-                    loop: true
-                }}
-            />
-        </XView>
-    );
-
-    const slider = (
-        <XView width={20} marginRight={8} marginTop={1} alignItems="center">
-            <Lottie
-                isStopped={false}
-                isPaused={false}
-                height={20}
-                width={20}
-                options={{
-                    animationData: getJSON('file', '#878A91'),
+                    animationData: getJSON(typingAnimation, '#878A91'),
                     loop: true
                 }}
             />
@@ -123,7 +134,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
 
                 {typingArr.length === 1 && (
                     <>
-                        { slider }
+                        { animation }
                         <UserLink {...typingArr[0]} />
                         &nbsp;is {typingType}
                     </>
@@ -131,7 +142,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
 
                 {typingArr.length === 2 && (
                     <>
-                        { dots }
+                        { animation }
                         <UserLink {...typingArr[0]} />
                         &nbsp;and&nbsp;
                         <UserLink {...typingArr[1]} />
@@ -141,7 +152,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
 
                 {typingArr.length === 3 && (
                     <>
-                        { dots }
+                        { animation }
                         <UserLink {...typingArr[0]} />
                         ,&nbsp;
                         <UserLink {...typingArr[1]} />
@@ -153,7 +164,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
 
                 {typingArr.length > 3 && (
                     <>
-                        { dots }
+                        { animation }
                         <UserLink {...typingArr[0]} />
                         ,&nbsp;
                         <UserLink {...typingArr[1]} />
