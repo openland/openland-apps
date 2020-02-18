@@ -12,6 +12,7 @@ import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { DataSourceItem } from 'openland-y-utils/DataSource';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { avatarSizes } from 'openland-mobile/components/ZAvatar';
+import { PremiumBadgeAsync } from 'openland-mobile/components/PremiumBadge';
 
 const ASCounter = (props: { value: number | string, muted?: boolean, theme: ThemeGlobal }) => (
     <ASFlex borderRadius={11} backgroundColor={props.muted ? props.theme.foregroundQuaternary : props.theme.accentPrimary} height={22} minWidth={22} justifyContent="center" alignItems="center">
@@ -24,7 +25,7 @@ const ASCounter = (props: { value: number | string, muted?: boolean, theme: Them
 const DialogItemViewAsyncRender = React.memo<{ theme: ThemeGlobal, item: DialogDataSourceItem, compact?: boolean, onPress: (id: string, item: DataSourceItem) => void }>((props) => {
     const { item, theme } = props;
     const isUser = item.kind === 'PRIVATE';
-    const isGroup = item.kind === 'GROUP';
+    const highlightGroup = item.kind === 'GROUP' && !item.isPremium;
     const height = props.compact ? 48 : 80;
     const avatarSize = props.compact ? 'small' : 'large';
     const paddingHorizontal = props.compact ? 12 : 16;
@@ -60,8 +61,9 @@ const DialogItemViewAsyncRender = React.memo<{ theme: ThemeGlobal, item: DialogD
             </ASFlex>
             <ASFlex marginLeft={paddingHorizontal} marginRight={paddingHorizontal} marginTop={6} marginBottom={6} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
                 <ASFlex height={24} alignItems="center">
-                    {isGroup && <ASFlex alignItems="center" marginRight={4} marginTop={4}><ASImage opacity={CompensationAlpha} tintColor={theme.accentPositive} width={16} height={16} source={require('assets/ic-lock-16.png')} marginBottom={Platform.OS === 'android' ? 4 : 0} /></ASFlex>}
-                    <ASText {...TextStylesAsync.Label1} numberOfLines={1} flexShrink={1} color={isGroup ? theme.accentPositive : theme.foregroundPrimary}>
+                    {highlightGroup && <ASFlex alignItems="center" marginRight={4} marginTop={4}><ASImage opacity={CompensationAlpha} tintColor={theme.accentPositive} width={16} height={16} source={require('assets/ic-lock-16.png')} marginBottom={Platform.OS === 'android' ? 4 : 0} /></ASFlex>}
+                    {item.isPremium && <ASFlex marginRight={8} marginTop={5}><PremiumBadgeAsync theme={theme} /></ASFlex>}
+                    <ASText {...TextStylesAsync.Label1} numberOfLines={1} flexShrink={1} color={highlightGroup ? theme.accentPositive : theme.foregroundPrimary}>
                         {item.title}
                     </ASText>
                     {item.isMuted && <ASFlex alignItems="center" marginLeft={4} marginTop={4}><ASImage tintColor={theme.foregroundQuaternary} width={16} height={16} source={require('assets/ic-muted-16.png')} marginBottom={Platform.OS === 'android' ? 4 : 0} /></ASFlex>}

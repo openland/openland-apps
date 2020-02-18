@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { Platform, Text } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 import { ZListGroup } from '../../components/ZListGroup';
 import { ZListHero } from '../../components/ZListHero';
 import { ZListItem } from '../../components/ZListItem';
@@ -22,6 +22,7 @@ import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';
 import { trackEvent } from 'openland-mobile/analytics';
+import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
 
 const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
@@ -200,12 +201,14 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     );
 
     const hasAbout = !!room.description && !!room.organization;
+    const highlightGroup = room.kind === 'GROUP' && !room.isPremium;
 
     const content = (
         <>
             <ZListHero
-                titleIcon={room.kind === 'GROUP' ? require('assets/ic-lock-16.png') : undefined}
-                titleColor={room.kind === 'GROUP' ? theme.accentPositive : undefined}
+                titleIcon={highlightGroup ? require('assets/ic-lock-16.png') : undefined}
+                titleIconElement={room.isPremium ? <View marginRight={8} marginTop={2} alignSelf="center"><PremiumBadge /></View> : undefined}
+                titleColor={highlightGroup ? theme.accentPositive : undefined}
                 title={room.title}
                 subtitle={subtitle}
                 photo={room.photo}

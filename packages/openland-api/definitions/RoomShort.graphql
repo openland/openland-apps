@@ -19,6 +19,7 @@ fragment RoomShort on Room {
         id
         kind
         isChannel
+        isPremium
         title
         photo
         membership

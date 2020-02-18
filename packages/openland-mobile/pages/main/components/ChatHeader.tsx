@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, StyleSheet, TextStyle, Image } from 'react-native';
 import { SRouter } from 'react-native-s/SRouter';
 import { getMessenger } from '../../../utils/messenger';
-import { Room_room_SharedRoom, Room_room_PrivateRoom, TypingType } from 'openland-api/spacex.types';
+import { TypingType, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -12,6 +12,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { useLastSeen } from 'openland-y-utils/LastSeen';
 import { TextStyles, CompensationAlpha } from 'openland-mobile/styles/AppStyles';
 import Lottie from 'lottie-react-native';
+import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
 
 const styles = StyleSheet.create({
     title: {
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     } as TextStyle,
 });
 
-const SharedChatHeaderContent = XMemo<{ room: Room_room_SharedRoom, typing?: string, theme: ThemeGlobal }>((props) => {
+const SharedChatHeaderContent = XMemo<{ room: RoomTiny_room_SharedRoom, typing?: string, theme: ThemeGlobal }>((props) => {
     const { room, typing, theme } = props;
     const [onlineCount, setOnlineCount] = React.useState<number>(0);
 
@@ -44,10 +45,12 @@ const SharedChatHeaderContent = XMemo<{ room: Room_room_SharedRoom, typing?: str
         subtitle = typing;
     }
 
+    const highlightGroup = room.kind === 'GROUP' && !room.isPremium;
+
     return (
         <View flexDirection="column" alignItems="flex-start" alignSelf="center" justifyContent="center" pointerEvents="box-none" height={44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
             <View flexDirection="row">
-                {room.kind === 'GROUP' && (
+                {highlightGroup && (
                     <Image
                         alignSelf="center"
                         opacity={CompensationAlpha}
@@ -55,7 +58,8 @@ const SharedChatHeaderContent = XMemo<{ room: Room_room_SharedRoom, typing?: str
                         style={{ tintColor: theme.accentPositive, marginRight: 4, width: 16, height: 16 }}
                     />
                 )}
-                <Text style={[styles.title, { color: theme.foregroundPrimary }, room.kind === 'GROUP' && { color: theme.accentPositive }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
+                {room.isPremium && <View marginRight={8} alignSelf="center"><PremiumBadge /></View>}
+                <Text style={[styles.title, { color: highlightGroup ? theme.accentPositive : theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
                 {room.settings.mute && (
                     <Image
                         alignSelf="center"
@@ -72,7 +76,7 @@ const SharedChatHeaderContent = XMemo<{ room: Room_room_SharedRoom, typing?: str
     );
 });
 
-const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: string, typingType?: string, theme: ThemeGlobal }>((props) => {
+const PrivateChatHeaderContent = XMemo<{ room: RoomTiny_room_PrivateRoom, typing?: string, typingType?: string, theme: ThemeGlobal }>((props) => {
     const { room, typing, theme, typingType } = props;
 
     let [subtitle, accent] = useLastSeen(room.user);
@@ -104,11 +108,11 @@ const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: s
                     />
                 )}
             </View>
-            
+
             <View flexDirection="row" alignItems="center">
-                
+
                 {/* default typing */}
-                { typing && typingType === TypingType.TEXT && (
+                {typing && typingType === TypingType.TEXT && (
                     <Lottie
                         loop={true}
                         autoPlay={true}
@@ -134,7 +138,7 @@ const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: s
                 )}
 
                 {/* sticker typing */}
-                { typing && typingType === TypingType.STICKER && (
+                {typing && typingType === TypingType.STICKER && (
                     <Lottie
                         loop={true}
                         autoPlay={true}
@@ -157,7 +161,7 @@ const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: s
                 )}
 
                 {/* file typing */}
-                { typing && typingType !== TypingType.TEXT && typingType !== TypingType.STICKER && (
+                {typing && typingType !== TypingType.TEXT && typingType !== TypingType.STICKER && (
                     <Lottie
                         loop={true}
                         autoPlay={true}
@@ -193,8 +197,8 @@ const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typin
     let theme = React.useContext(ThemeContext);
     let room = getClient().useRoomTiny({ id: props.conversationId });
 
-    let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room as Room_room_SharedRoom : null;
-    let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room as Room_room_PrivateRoom : null;
+    let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room as RoomTiny_room_SharedRoom : null;
+    let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room as RoomTiny_room_PrivateRoom : null;
 
     if (sharedRoom) {
         return <SharedChatHeaderContent room={sharedRoom} typing={props.typing} theme={theme} />;

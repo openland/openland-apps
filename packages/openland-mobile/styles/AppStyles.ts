@@ -2,7 +2,8 @@ import { Platform, TextStyle } from 'react-native';
 import { ASTextProps } from 'react-native-async-view/ASText';
 
 export const RadiusStyles = {
-    Small: 6,
+    XSmall: 4,
+    Small: 8,
     Medium: 12,
     Large: 18,
 };
