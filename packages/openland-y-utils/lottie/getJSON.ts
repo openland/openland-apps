@@ -1,10 +1,7 @@
 import { getTyping } from './typing';
+import { getFileTyping } from './fileTyping';
 
 const cache = {};
-
-const assertNever = (name: string): never => {
-  throw new TypeError(`Wrong icon name: ${name}`);
-};
 
 const getHash = (name: string, color: string): string => `${name}${color}`;
 
@@ -17,10 +14,18 @@ export const getJSON = (name: string, color: string): object => {
       if (!cache[hash]) {
         cache[hash] = getTyping(color);
       }
+      return cache[hash];
 
+    case 'file':
+      if (!cache[hash]) {
+        cache[hash] = getFileTyping(color);
+      }
       return cache[hash];
 
     default:
-      return assertNever(name);
+      if (!cache[hash]) {
+        cache[hash] = getTyping(color);
+      }
+      return cache[hash];
   }
 };
