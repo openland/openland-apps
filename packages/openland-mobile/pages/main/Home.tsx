@@ -24,10 +24,10 @@ const DEFAULT_TAB = 1;
 export const Home = XMemo<PageProps>((props) => {
     const router = React.useContext(SRouterContext);
     const [tab, setTab] = React.useState(router && router.params && typeof router.params.initialTab === 'number' ? router.params.initialTab : DEFAULT_TAB);
-    const counter = getClient().useGlobalCounter({ suspense: false })?.alphaNotificationCounter.unreadCount;
-    const notificationsCounter = getClient().useMyNotificationCenter({ suspense: false })?.myNotificationCenter.unread;
+    const counter = getClient().useGlobalCounter({ suspense: false });
+    const notificationsCounter = getClient().useMyNotificationCenter({ suspense: false });
     const discoverDone = getClient().useDiscoverIsDone({ suspense: false });
-    const walletLocked = getClient().useMyWallet({ suspense: false })?.myWallet.isLocked;
+    const wallet = getClient().useMyWallet({ suspense: false });
     // const showFeed = NON_PRODUCTION && !isPad;
     const showFeed = false;
 
@@ -90,7 +90,7 @@ export const Home = XMemo<PageProps>((props) => {
                         />
                     )}
                     <AppBarBottomItem
-                        counter={counter}
+                        counter={counter && counter.alphaNotificationCounter.unreadCount || undefined}
                         icon={require('assets/ic-message-24.png')}
                         iconSelected={require('assets/ic-message-filled-24.png')}
                         iconCounter={require('assets/ic-message-counter-24.png')}
@@ -99,7 +99,7 @@ export const Home = XMemo<PageProps>((props) => {
                         onPress={() => setTab(1)}
                     />
                     <AppBarBottomItem
-                        counter={notificationsCounter}
+                        counter={notificationsCounter && notificationsCounter.myNotificationCenter.unread || undefined}
                         icon={require('assets/ic-notifications-24.png')}
                         iconSelected={require('assets/ic-notifications-filled-24.png')}
                         iconCounter={require('assets/ic-notifications-counter-24.png')}
@@ -108,7 +108,7 @@ export const Home = XMemo<PageProps>((props) => {
                         onPress={() => setTab(2)}
                     />
                     <AppBarBottomItem
-                        counter={walletLocked ? 1 : 0}
+                        counter={wallet && wallet.myWallet.isLocked ? 1 : undefined}
                         icon={require('assets/ic-user-24.png')}
                         iconSelected={require('assets/ic-user-filled-24.png')}
                         selected={tab === 3}
