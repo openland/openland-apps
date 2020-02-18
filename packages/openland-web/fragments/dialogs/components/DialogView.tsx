@@ -4,7 +4,6 @@ import { XView, XViewSelectedContext } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
 import IcLock from 'openland-icons/s/ic-lock-16.svg';
 import IcReply from 'openland-icons/s/ic-reply-16.svg';
-import IcChannel from 'openland-icons/s/ic-channel-16.svg';
 import IcMention from 'openland-icons/s/ic-mention-12.svg';
 import IcMuted from 'openland-icons/s/ic-muted-16.svg';
 import { XCounter } from 'openland-x/XCounter';
@@ -15,6 +14,7 @@ import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyl
 import Lottie from 'react-lottie';
 import { getJSON } from 'openland-y-utils/lottie/getJSON';
 import { TypingType } from 'openland-api/spacex.types';
+import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 
 const dialogContainer = css`
     cursor: pointer;
@@ -182,6 +182,7 @@ interface DialogViewProps {
 
 export const DialogView = React.memo<DialogViewProps>(props => {
     let dialog = props.item;
+    let isPremium = dialog.isPremium;
     let isMuted = dialog.isMuted;
     let isService = dialog.isService;
     let haveMention = dialog.haveMention;
@@ -268,7 +269,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     }
 
     const highlightSecretChat =
-        localStorage.getItem('highlight_secret_chat') === 'true' && dialog.kind === 'GROUP';
+        localStorage.getItem('highlight_secret_chat') === 'true' && dialog.kind === 'GROUP' && !isPremium;
 
     return (
         <XView
@@ -299,29 +300,16 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                         highlightSecretChat && highlightSecretChatColor,
                                     )}
                                 >
-                                    {highlightSecretChat &&
-                                        !dialog.isChannel && (
-                                            <div className={cx(dialogIconContainer, lockContainer)}>
-                                                <UIcon
-                                                    icon={<IcLock />}
-                                                    color={active ? '#fff' : '#36b36a'}
-                                                />
-                                            </div>
-                                        )}
-                                    {dialog.isChannel && (
-                                        <div className={dialogIconContainer}>
+                                    {isPremium && <PremiumBadge active={active} />}
+                                    {highlightSecretChat && (
+                                        <div className={cx(dialogIconContainer, lockContainer)}>
                                             <UIcon
-                                                icon={<IcChannel />}
-                                                color={
-                                                    active
-                                                        ? '#fff'
-                                                        : highlightSecretChat
-                                                            ? '#36b36a'
-                                                            : '#000'
-                                                }
+                                                icon={<IcLock />}
+                                                color={active ? '#fff' : '#36b36a'}
                                             />
                                         </div>
                                     )}
+
                                     <span className={dialogTitle}>{dialog.titleEmojify}</span>
                                     {dialog.isMuted && (
                                         <div className={cx(dialogIconContainer, mutedIcon)}>

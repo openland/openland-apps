@@ -31,6 +31,7 @@ import { TextDensed, TextStyles, HoverAlpha } from 'openland-web/utils/TextStyle
 import { emoji } from 'openland-y-utils/emoji';
 import { useLastSeen } from 'openland-y-utils/LastSeen';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 
 const secondary = css`
     color: var(--foregroundSecondary);
@@ -263,6 +264,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                             flexDirection="row"
                             alignItems="center"
                         >
+                            {chat.__typename === 'SharedRoom' && chat.isPremium && <PremiumBadge />}
                             <span className={titleStyle}>
                                 {titleEmojify}
                                 {chat.__typename === 'PrivateRoom' &&

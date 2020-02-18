@@ -19,6 +19,7 @@ import { GroupMemberMenu } from './components/GroupMemberMenu';
 import { RoomMembersPaginated_members } from 'openland-api/spacex.types';
 import IcUser from 'openland-icons/s/ic-user-24.svg';
 import IcCopy from 'openland-icons/s/ic-copy-24.svg';
+import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 
 export const GroupProfileFragment = React.memo<{id?: string}>((props) => {
     const client = useClient();
@@ -51,6 +52,7 @@ export const GroupProfileFragment = React.memo<{id?: string}>((props) => {
         organization,
         settings,
         matchmaking,
+        isPremium
     } = group;
 
     const memberProfiles = matchmaking && matchmaking.enabled;
@@ -124,6 +126,7 @@ export const GroupProfileFragment = React.memo<{id?: string}>((props) => {
         >
             <UListHero
                 title={title}
+                titleIcon={isPremium ? <PremiumBadge /> : undefined}
                 description={plural(membersCount || 0, ['member', 'members'])}
                 avatar={{ photo, id, title }}
             >

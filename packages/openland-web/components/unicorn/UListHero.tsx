@@ -7,6 +7,7 @@ import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { showAvatarModal } from '../showAvatarModal';
 import { emoji } from 'openland-y-utils/emoji';
+import { PremiumBadge } from '../PremiumBadge';
 
 const textStyle = css`
     white-space: nowrap;
@@ -45,6 +46,7 @@ const Score = (props: { value: number }) => {
 
 interface UListHeroProps {
     title: string;
+    titleIcon?: JSX.Element;
     score?: number;
     description?: string | JSX.Element;
     descriptionColor?: string;
@@ -53,7 +55,7 @@ interface UListHeroProps {
 }
 
 export const UListHero = (props: UListHeroProps) => {
-    const { title, score, description, descriptionColor, avatar, children } = props;
+    const { title, titleIcon, score, description, descriptionColor, avatar, children } = props;
     const titleEmojify = React.useMemo(() => emoji(title), [title]);
     const isMobile = useLayout() === 'mobile';
 
@@ -81,7 +83,8 @@ export const UListHero = (props: UListHeroProps) => {
                 flexDirection="column"
                 justifyContent="center"
             >
-                <XView {...TextStyles.Title3} color="var(--foregroundPrimary)">
+                <XView {...TextStyles.Title3} color="var(--foregroundPrimary)" flexDirection="row" alignItems="center">
+                    {titleIcon}
                     <span className={textStyle}>{titleEmojify}</span>
                 </XView>
 

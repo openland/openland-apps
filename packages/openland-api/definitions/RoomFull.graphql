@@ -111,6 +111,7 @@ fragment RoomFullWithoutMembers on Room {
         id
         kind
         isChannel
+        isPremium
         title
         photo
         socialImage

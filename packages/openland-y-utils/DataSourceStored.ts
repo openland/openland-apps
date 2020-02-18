@@ -13,7 +13,7 @@ export interface DataSourceStoredProvider<T extends DataSourceItem> {
 
 class KeyValueStoreVersioned implements KeyValueStore {
     source: KeyValueStore;
-    version = 10;
+    version = 11;
     versionStr = 'v' + this.version + '.';
     constructor(source: KeyValueStore) {
         this.source = source;
