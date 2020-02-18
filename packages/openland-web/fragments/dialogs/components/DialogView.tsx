@@ -197,8 +197,6 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                 );
     let message: JSX.Element | null = null;
     
-    console.warn(dialog.typingType);
-    
     let typingAnimation: string;
 
     switch (dialog.typingType) {
@@ -206,7 +204,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
         case TypingType.FILE: typingAnimation = 'file'; break;
         case TypingType.PHOTO: typingAnimation = 'file'; break;
         case TypingType.VIDEO: typingAnimation = 'file'; break;
-        case TypingType.STICKER: typingAnimation = 'file'; break;
+        case TypingType.STICKER: typingAnimation = 'sticker'; break;
         default: typingAnimation = 'typing'; break;
     }
 

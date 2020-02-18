@@ -1,5 +1,6 @@
 import { getTyping } from './typing';
 import { getFileTyping } from './fileTyping';
+import { getStickerTyping } from './stickerTyping';
 
 const cache = {};
 
@@ -19,6 +20,12 @@ export const getJSON = (name: string, color: string): object => {
     case 'file':
       if (!cache[hash]) {
         cache[hash] = getFileTyping(color);
+      }
+      return cache[hash];
+
+    case 'sticker':
+      if (!cache[hash]) {
+        cache[hash] = getStickerTyping(color);
       }
       return cache[hash];
 

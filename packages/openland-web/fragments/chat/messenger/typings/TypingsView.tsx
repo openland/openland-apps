@@ -92,7 +92,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
 
                     case TypingType.STICKER:
                         typingActionString = 'picking a sticker';
-                        typingAnimationString = 'file';
+                        typingAnimationString = 'sticker';
                         break;
 
                     case TypingType.VIDEO:
