@@ -36,8 +36,8 @@ const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController } & P
     }, []);
 
     return (
-        <XView flexDirection="column">
-            <XView paddingHorizontal={24}>
+        <XView paddingHorizontal={8}>
+            <XView paddingHorizontal={16}>
                 {props.productTitle && <XView flexDirection="row" alignItems="center">
                     <XView flexDirection="column" flexGrow={1}>
                         <XView {...TextStyles.Title3} color="var(--foregroundPrimary)" marginBottom={4}>{props.productTitle}</XView>
@@ -50,20 +50,19 @@ const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController } & P
                 {props.productDescription && <XView {...TextStyles.Body} color="var(--foregroundSecondary)">Amount</XView>}
 
             </XView>
-            {(cards.length === 0) && <UListGroup
-                header="Payment method"
-                action={cards.length > 0 ? { title: 'Add card', onClick: () => showAddCard() } : undefined}
-            >
-                <UListItem
-                    key="add"
-                    paddingHorizontal={24}
-                    title="Add card"
-                    titleStyle={TextStyles.Label1}
-                    icon={<XView backgroundColor="var(--backgroundTertiary)" width={40} height={28} borderRadius={4}><UIcon icon={<AddIcon width={16} height={16} color="var(--foregroundSecondary)" />} /></XView >}
-                    onClick={() => showAddCard()}
-                />
-            </UListGroup>}
-            <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} backgroundColor="var(--backgroundTertiary)" justifyContent="flex-end" flexDirection="row">
+            {(cards.length === 0) && (
+                <UListGroup header="Payment method">
+                    <UListItem
+                        key="add"
+                        title="Add card"
+                        titleStyle={TextStyles.Label1}
+                        leftElement={<XView width={40} height={28} backgroundColor="var(--backgroundTertiaryTrans)" borderRadius={4}><UIcon icon={<AddIcon />} size={16} /></XView>}
+                        onClick={() => showAddCard()}
+                        useRadius={true}
+                    />
+                </UListGroup>
+            )}
+            <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} marginHorizontal={-8} backgroundColor="var(--backgroundTertiary)" justifyContent="flex-end" flexDirection="row">
                 <UButton text="Cancel" disable={!cancelable} onClick={() => props.ctx.hide()} style="secondary" size="large" />
                 <UButton disable={cards.length === 0} text="Confirm" action={onSubmit} style="primary" size="large" loading={loading} />
             </XView>
