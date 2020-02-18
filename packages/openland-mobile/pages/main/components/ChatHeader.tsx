@@ -106,7 +106,9 @@ const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: s
             </View>
             
             <View flexDirection="row" alignItems="center">
-                { typing && (
+                
+                {/* default typing */}
+                { typing && typingType === TypingType.TEXT && (
                     <Lottie
                         loop={true}
                         autoPlay={true}
@@ -130,6 +132,56 @@ const PrivateChatHeaderContent = XMemo<{ room: Room_room_PrivateRoom, typing?: s
                         }]}
                     />
                 )}
+
+                {/* sticker typing */}
+                { typing && typingType === TypingType.STICKER && (
+                    <Lottie
+                        loop={true}
+                        autoPlay={true}
+                        resizeMode="contain"
+                        source={require('assets/animations/stickerTyping.json')}
+                        style={{
+                            width: 16,
+                            height: 16,
+                            marginRight: 8,
+                            marginTop: 0.3,
+                        }}
+                        colorFilters={[{
+                            keypath: "1",
+                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                        }, {
+                            keypath: "2",
+                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                        }]}
+                    />
+                )}
+
+                {/* file typing */}
+                { typing && typingType !== TypingType.TEXT && typingType !== TypingType.STICKER && (
+                    <Lottie
+                        loop={true}
+                        autoPlay={true}
+                        resizeMode="contain"
+                        source={require('assets/animations/fileTyping.json')}
+                        style={{
+                            width: 16,
+                            height: 16,
+                            marginRight: 8,
+                            marginTop: 0.3,
+                        }}
+                        colorFilters={[{
+                            keypath: "1",
+                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                        }, {
+                            keypath: "2",
+                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                        }, {
+                            keypath: "Mask",
+                            color: accent ? theme.accentPrimary : theme.foregroundSecondary
+                        }]}
+                    />
+                )}
+
                 <Text style={[styles.subTitle, { color: accent ? theme.accentPrimary : theme.foregroundSecondary }]} allowFontScaling={false}>{subtitle}</Text>
             </View>
 
