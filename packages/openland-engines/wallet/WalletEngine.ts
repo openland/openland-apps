@@ -27,7 +27,7 @@ export class WalletEngine {
         let wallet = await backoff(() => this.messenger.client.queryMyWallet({ fetchPolicy: 'network-only' }));
         this.state.setState({
             balance: wallet.myWallet.balance,
-            isLocked: false,
+            isLocked: wallet.myWallet.isLocked,
             pendingTransactions: wallet.transactionsPending,
             historyTransactions: wallet.transactionsHistory.items,
             historyTransactionsCursor: wallet.transactionsHistory.cursor

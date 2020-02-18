@@ -153,6 +153,7 @@ query MyWallet {
         id
         balance
         state
+        isLocked
     }
     transactionsPending {
         ...WalletTransactionFragment
