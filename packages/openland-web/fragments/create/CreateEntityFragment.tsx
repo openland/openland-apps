@@ -19,7 +19,6 @@ import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { showModalBox } from 'openland-x/showModalBox';
 import { trackEvent } from 'openland-x-analytics';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { TextTitle1 } from 'openland-web/utils/TextStyles';
 import { SearchBox } from './SearchBox';
 import { ExplorePeople } from './ExplorePeople';
@@ -425,81 +424,79 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
             onPeopleChange={onPeopleChange}
             handleDone={doSubmit}
         >
-            <XWithRole role="super-admin">
-                <div className={otherInputContainer}>
+            <div className={otherInputContainer}>
+                <USelectField
+                    placeholder="Distribution"
+                    field={distributionField as any}
+                    searchable={false}
+                    options={[
+                        {
+                            value: DistributionType.FREE,
+                            labelShort: 'Free',
+                            label: 'Free',
+                            subtitle: 'Available for everyone',
+                        },
+                        {
+                            value: DistributionType.PAID,
+                            labelShort: 'Paid',
+                            label: 'Paid',
+                            subtitle: 'One-time payment for join',
+                        },
+                        {
+                            value: DistributionType.SUBSCRIPTION,
+                            labelShort: 'Subscription',
+                            label: 'Subscription',
+                            subtitle: 'Recurrent payments for membership',
+                        },
+                    ]}
+                />
+            </div>
+            {distributionField.value !== DistributionType.FREE && (
+                <div
+                    className={cx(
+                        otherInputContainer,
+                        distributionField.value === DistributionType.SUBSCRIPTION &&
+                        multiInputsContainer,
+                    )}
+                >
                     <USelectField
-                        placeholder="Distribution"
-                        field={distributionField as any}
+                        placeholder="Price"
+                        field={priceField as any}
                         searchable={false}
                         options={[
                             {
-                                value: DistributionType.FREE,
-                                labelShort: 'Free',
-                                label: 'Free',
-                                subtitle: 'Available for everyone',
+                                value: 500,
+                                label: '$5',
                             },
                             {
-                                value: DistributionType.PAID,
-                                labelShort: 'Paid',
-                                label: 'Paid',
-                                subtitle: 'One-time payment for join',
+                                value: 1000,
+                                label: '$10',
                             },
                             {
-                                value: DistributionType.SUBSCRIPTION,
-                                labelShort: 'Subscription',
-                                label: 'Subscription',
-                                subtitle: 'Recurrent payments for membership',
+                                value: 2000,
+                                label: '$20',
                             },
                         ]}
                     />
-                </div>
-                {distributionField.value !== DistributionType.FREE && (
-                    <div
-                        className={cx(
-                            otherInputContainer,
-                            distributionField.value === DistributionType.SUBSCRIPTION &&
-                                multiInputsContainer,
-                        )}
-                    >
+                    {distributionField.value === DistributionType.SUBSCRIPTION && (
                         <USelectField
-                            placeholder="Price"
-                            field={priceField as any}
+                            placeholder="Period"
+                            field={intervalField as any}
                             searchable={false}
                             options={[
                                 {
-                                    value: 500,
-                                    label: '$5',
+                                    value: WalletSubscriptionInterval.WEEK,
+                                    label: 'Week',
                                 },
                                 {
-                                    value: 1000,
-                                    label: '$10',
-                                },
-                                {
-                                    value: 2000,
-                                    label: '$20',
+                                    value: WalletSubscriptionInterval.MONTH,
+                                    label: 'Month',
                                 },
                             ]}
                         />
-                        {distributionField.value === DistributionType.SUBSCRIPTION && (
-                            <USelectField
-                                placeholder="Period"
-                                field={intervalField as any}
-                                searchable={false}
-                                options={[
-                                    {
-                                        value: WalletSubscriptionInterval.WEEK,
-                                        label: 'Week',
-                                    },
-                                    {
-                                        value: WalletSubscriptionInterval.MONTH,
-                                        label: 'Month',
-                                    },
-                                ]}
-                            />
-                        )}
-                    </div>
-                )}
-            </XWithRole>
+                    )}
+                </div>
+            )}
             {!props.inOrgId && (
                 <div className={otherInputContainer}>
                     <USelectField

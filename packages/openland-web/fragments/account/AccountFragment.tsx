@@ -25,7 +25,6 @@ import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
 import { showCreatingOrgFragment } from 'openland-web/fragments/create/CreateEntityFragment';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { trackEvent } from 'openland-x-analytics';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import FailureIcon from 'openland-icons/s/ic-failure-16.svg';
 import { UIconSelectable } from 'openland-web/components/unicorn/UIcon';
@@ -134,21 +133,19 @@ export const AccountFragment = React.memo(() => {
                             path="/settings/invites"
                         />
 
-                        <XWithRole role="super-admin">
-                            <UListGroup header="Billing">
-                                <UListItem
-                                    title="Wallet"
-                                    icon={<WalletIcon />}
-                                    path="/wallet"
-                                    rightElement={walletState.isLocked ? <XView marginRight={8}><UIconSelectable size={22} icon={<FailureIcon />} color="var(--accentNegative)" selectedColor="var(--foregroundContrast)" /></XView> : undefined}
-                                />
-                                <UListItem
-                                    title="Subscriptions"
-                                    icon={<SubscriptionsIcon />}
-                                    path="/subscriptions"
-                                />
-                            </UListGroup>
-                        </XWithRole>
+                        <UListGroup header="Billing">
+                            <UListItem
+                                title="Wallet"
+                                icon={<WalletIcon />}
+                                path="/wallet"
+                                rightElement={walletState.isLocked ? <XView marginRight={8}><UIconSelectable size={22} icon={<FailureIcon />} color="var(--accentNegative)" selectedColor="var(--foregroundContrast)" /></XView> : undefined}
+                            />
+                            <UListItem
+                                title="Subscriptions"
+                                icon={<SubscriptionsIcon />}
+                                path="/subscriptions"
+                            />
+                        </UListGroup>
 
                         <UListGroup header="Settings">
 

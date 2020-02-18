@@ -3,7 +3,6 @@ import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import {
     SharedRoomKind,
     RoomMemberRole,
@@ -155,95 +154,93 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                 </ZListGroup>
                 <ZListGroup header={null}>
                     <ZInput placeholder="Name" field={titleField} autoFocus={true} />
-                    {SUPER_ADMIN && (
-                        <>
-                            <ZSelect
-                                label="Distribution"
-                                modalTitle="Distribution"
-                                field={distributionField}
-                                options={[
-                                    {
-                                        value: DistributionType.FREE,
-                                        label: 'Free',
-                                        subtitle: 'Available for everyone',
-                                    },
-                                    {
-                                        value: DistributionType.PAID,
-                                        label: 'Paid',
-                                        subtitle: 'One-time payment for join',
-                                    },
-                                    {
-                                        value: DistributionType.SUBSCRIPTION,
-                                        label: 'Subscription',
-                                        subtitle: 'Recurrent payments for membership',
-                                    },
-                                ]}
-                            />
-                            {distributionField.value !== DistributionType.FREE && (
-                                // without this shit selector dont work!
-                                <React.Suspense fallback={null}>
+                    <>
+                        <ZSelect
+                            label="Distribution"
+                            modalTitle="Distribution"
+                            field={distributionField}
+                            options={[
+                                {
+                                    value: DistributionType.FREE,
+                                    label: 'Free',
+                                    subtitle: 'Available for everyone',
+                                },
+                                {
+                                    value: DistributionType.PAID,
+                                    label: 'Paid',
+                                    subtitle: 'One-time payment for join',
+                                },
+                                {
+                                    value: DistributionType.SUBSCRIPTION,
+                                    label: 'Subscription',
+                                    subtitle: 'Recurrent payments for membership',
+                                },
+                            ]}
+                        />
+                        {distributionField.value !== DistributionType.FREE && (
+                            // without this shit selector dont work!
+                            <React.Suspense fallback={null}>
+                                <View
+                                    marginBottom={16}
+                                    paddingHorizontal={16}
+                                    flexDirection={isSubscription ? 'row' : undefined}
+                                >
                                     <View
-                                        marginBottom={16}
-                                        paddingHorizontal={16}
-                                        flexDirection={isSubscription ? 'row' : undefined}
+                                        flexGrow={1}
+                                        flexShrink={0}
+                                        flexBasis={0}
+                                        marginRight={isSubscription ? 8 : undefined}
                                     >
+                                        <ZSelect
+                                            noWrapper={true}
+                                            label="Price"
+                                            modalTitle="Price"
+                                            field={priceField}
+                                            options={[
+                                                {
+                                                    value: 500,
+                                                    label: '$5',
+                                                },
+                                                {
+                                                    value: 1000,
+                                                    label: '$10',
+                                                },
+                                                {
+                                                    value: 2000,
+                                                    label: '$20',
+                                                },
+                                            ]}
+                                        />
+                                    </View>
+                                    {isSubscription && (
                                         <View
                                             flexGrow={1}
                                             flexShrink={0}
                                             flexBasis={0}
-                                            marginRight={isSubscription ? 8 : undefined}
+                                            marginLeft={isSubscription ? 8 : undefined}
                                         >
                                             <ZSelect
                                                 noWrapper={true}
-                                                label="Price"
-                                                modalTitle="Price"
-                                                field={priceField}
+                                                label="Period"
+                                                modalTitle="Period"
+                                                field={intervalField}
                                                 options={[
                                                     {
-                                                        value: 500,
-                                                        label: '$5',
+                                                        value: WalletSubscriptionInterval.WEEK,
+                                                        label: 'Week',
                                                     },
                                                     {
-                                                        value: 1000,
-                                                        label: '$10',
-                                                    },
-                                                    {
-                                                        value: 2000,
-                                                        label: '$20',
+                                                        value: WalletSubscriptionInterval.MONTH,
+                                                        label: 'Month',
                                                     },
                                                 ]}
                                             />
                                         </View>
-                                        {isSubscription && (
-                                            <View
-                                                flexGrow={1}
-                                                flexShrink={0}
-                                                flexBasis={0}
-                                                marginLeft={isSubscription ? 8 : undefined}
-                                            >
-                                                <ZSelect
-                                                    noWrapper={true}
-                                                    label="Period"
-                                                    modalTitle="Period"
-                                                    field={intervalField}
-                                                    options={[
-                                                        {
-                                                            value: WalletSubscriptionInterval.WEEK,
-                                                            label: 'Week',
-                                                        },
-                                                        {
-                                                            value: WalletSubscriptionInterval.MONTH,
-                                                            label: 'Month',
-                                                        },
-                                                    ]}
-                                                />
-                                            </View>
-                                        )}
-                                    </View>
-                                </React.Suspense>
-                            )}
-                        </>
-                    )}
+                                    )}
+                                </View>
+                            </React.Suspense>
+                        )}
+                    </>
                     <ZSelect
                         label="Type"
                         modalTitle="Visibility"
