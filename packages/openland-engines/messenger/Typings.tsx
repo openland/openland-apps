@@ -53,8 +53,6 @@ export class TypingsWatcher {
             let conversationId: string = event.typings.conversation.id;
             let type: string = event.typings.conversation.__typename;
 
-            console.log(event.typings.type);
-
             // add new typings
             let existing = this.typings[conversationId] || {};
 
