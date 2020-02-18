@@ -1927,9 +1927,134 @@ private let WalletTransactionFragmentSelector = obj(
                                     ))
                             ))
                     )),
+                    inline("WalletTransactionIncome", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("amount", "amount", notNull(scalar("Int"))),
+                        field("payment", "payment", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("status", "status", notNull(scalar("String"))),
+                                field("card", "card", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("brand", "brand", notNull(scalar("String"))),
+                                        field("last4", "last4", notNull(scalar("String")))
+                                    )),
+                                field("intent", "intent", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
+                                    ))
+                            )),
+                        field("source", "source", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                inline("WalletSubscription", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("product", "product", notNull(obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            inline("WalletProductGroup", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                field("group", "group", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
+                                                        field("title", "title", notNull(scalar("String"))),
+                                                        field("photo", "photo", notNull(scalar("String")))
+                                                    )))
+                                            )),
+                                            inline("WalletProductDonation", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                field("user", "user", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
+                                                        field("name", "name", notNull(scalar("String"))),
+                                                        field("photo", "photo", scalar("String"))
+                                                    )))
+                                            ))
+                                        )))
+                                )),
+                                inline("Purchase", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("product", "product", notNull(obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            inline("WalletProductGroup", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                field("group", "group", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
+                                                        field("title", "title", notNull(scalar("String"))),
+                                                        field("photo", "photo", notNull(scalar("String")))
+                                                    )))
+                                            )),
+                                            inline("WalletProductDonation", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                field("user", "user", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
+                                                        field("name", "name", notNull(scalar("String"))),
+                                                        field("photo", "photo", scalar("String"))
+                                                    )))
+                                            ))
+                                        )))
+                                ))
+                            ))
+                    )),
+                    inline("WalletTransactionTransferIn", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("amount", "amount", notNull(scalar("Int"))),
+                        field("payment", "payment", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("status", "status", notNull(scalar("String"))),
+                                field("card", "card", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("brand", "brand", notNull(scalar("String"))),
+                                        field("last4", "last4", notNull(scalar("String")))
+                                    )),
+                                field("intent", "intent", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
+                                    ))
+                            )),
+                        field("fromUser", "fromUser", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("User", UserShortSelector)
+                            )))
+                    )),
+                    inline("WalletTransactionTransferOut", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("amount", "amount", notNull(scalar("Int"))),
+                        field("walletAmount", "walletAmount", notNull(scalar("Int"))),
+                        field("chargeAmount", "chargeAmount", notNull(scalar("Int"))),
+                        field("payment", "payment", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("status", "status", notNull(scalar("String"))),
+                                field("card", "card", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("brand", "brand", notNull(scalar("String"))),
+                                        field("last4", "last4", notNull(scalar("String")))
+                                    )),
+                                field("intent", "intent", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
+                                    ))
+                            )),
+                        field("toUser", "toUser", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("User", UserShortSelector)
+                            )))
+                    )),
                     inline("WalletTransactionSubscription", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("amount", "amount", notNull(scalar("Int"))),
+                        field("walletAmount", "walletAmount", notNull(scalar("Int"))),
+                        field("chargeAmount", "chargeAmount", notNull(scalar("Int"))),
                         field("subscription", "subscription", notNull(obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
                                 field("id", "id", notNull(scalar("ID"))),
@@ -1937,7 +2062,7 @@ private let WalletTransactionFragmentSelector = obj(
                                 field("amount", "amount", notNull(scalar("Int"))),
                                 field("product", "product", notNull(obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
-                                        inline("WalletSubscriptionProductGroup", obj(
+                                        inline("WalletProductGroup", obj(
                                             field("__typename", "__typename", notNull(scalar("String"))),
                                             field("group", "group", notNull(obj(
                                                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -1946,7 +2071,7 @@ private let WalletTransactionFragmentSelector = obj(
                                                     field("photo", "photo", notNull(scalar("String")))
                                                 )))
                                         )),
-                                        inline("WalletSubscriptionProductDonation", obj(
+                                        inline("WalletProductDonation", obj(
                                             field("__typename", "__typename", notNull(scalar("String"))),
                                             field("user", "user", notNull(obj(
                                                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -1974,54 +2099,52 @@ private let WalletTransactionFragmentSelector = obj(
                                     ))
                             ))
                     )),
-                    inline("WalletTransactionTransferOut", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("walletAmount", "walletAmount", notNull(scalar("Int"))),
-                        field("chargeAmount", "chargeAmount", notNull(scalar("Int"))),
-                        field("payment", "payment", obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("id", "id", notNull(scalar("ID"))),
-                                field("status", "status", notNull(scalar("String"))),
-                                field("card", "card", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("brand", "brand", notNull(scalar("String"))),
-                                        field("last4", "last4", notNull(scalar("String")))
-                                    )),
-                                field("intent", "intent", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
-                                    ))
-                            )),
-                        field("toUser", "toUser", notNull(obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                fragment("User", UserShortSelector)
-                            )))
-                    )),
-                    inline("WalletTransactionTransferIn", obj(
+                    inline("WalletTransactionPurchase", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("amount", "amount", notNull(scalar("Int"))),
+                        field("walletAmount", "walletAmount", notNull(scalar("Int"))),
+                        field("chargeAmount", "chargeAmount", notNull(scalar("Int"))),
+                        field("purchase", "purchase", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("product", "product", notNull(obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        inline("WalletProductGroup", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("group", "group", notNull(obj(
+                                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                                    field("id", "id", notNull(scalar("ID"))),
+                                                    field("title", "title", notNull(scalar("String"))),
+                                                    field("photo", "photo", notNull(scalar("String")))
+                                                )))
+                                        )),
+                                        inline("WalletProductDonation", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("user", "user", notNull(obj(
+                                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                                    field("id", "id", notNull(scalar("ID"))),
+                                                    field("name", "name", notNull(scalar("String"))),
+                                                    field("photo", "photo", scalar("String"))
+                                                )))
+                                        ))
+                                    )))
+                            ))),
                         field("payment", "payment", obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
                                 field("id", "id", notNull(scalar("ID"))),
                                 field("status", "status", notNull(scalar("String"))),
+                                field("intent", "intent", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
+                                    )),
                                 field("card", "card", obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
                                         field("id", "id", notNull(scalar("ID"))),
                                         field("brand", "brand", notNull(scalar("String"))),
                                         field("last4", "last4", notNull(scalar("String")))
-                                    )),
-                                field("intent", "intent", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
                                     ))
-                            )),
-                        field("fromUser", "fromUser", notNull(obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                fragment("User", UserShortSelector)
-                            )))
+                            ))
                     ))
                 )))
         )
@@ -3603,7 +3726,7 @@ private let SubscriptionsSelector = obj(
                     field("expires", "expires", notNull(scalar("Date"))),
                     field("product", "product", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            inline("WalletSubscriptionProductGroup", obj(
+                            inline("WalletProductGroup", obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
                                 field("group", "group", notNull(obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -5060,7 +5183,7 @@ class Operations {
     let MyWallet = OperationDefinition(
         "MyWallet",
         .query, 
-        "query MyWallet{myWallet{__typename id balance state isLocked}transactionsPending{__typename ...WalletTransactionFragment}transactionsHistory(first:20){__typename items{__typename ...WalletTransactionFragment}cursor}}fragment WalletTransactionFragment on WalletTransaction{__typename id status date operation{__typename ... on WalletTransactionDeposit{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}}... on WalletTransactionSubscription{__typename amount subscription{__typename id interval amount product{__typename ... on WalletSubscriptionProductGroup{__typename group{__typename id title photo}}... on WalletSubscriptionProductDonation{__typename user{__typename id name photo}}}}payment{__typename id status intent{__typename id clientSecret}card{__typename id brand last4}}}... on WalletTransactionTransferOut{__typename walletAmount chargeAmount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}toUser{__typename ...UserShort}}... on WalletTransactionTransferIn{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}fromUser{__typename ...UserShort}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
+        "query MyWallet{myWallet{__typename id balance state isLocked}transactionsPending{__typename ...WalletTransactionFragment}transactionsHistory(first:20){__typename items{__typename ...WalletTransactionFragment}cursor}}fragment WalletTransactionFragment on WalletTransaction{__typename id status date operation{__typename ... on WalletTransactionDeposit{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}}... on WalletTransactionIncome{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}source{__typename ... on WalletSubscription{__typename id product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}... on WalletProductDonation{__typename user{__typename id name photo}}}}... on Purchase{__typename id product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}... on WalletProductDonation{__typename user{__typename id name photo}}}}}}... on WalletTransactionTransferIn{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}fromUser{__typename ...UserShort}}... on WalletTransactionTransferOut{__typename amount walletAmount chargeAmount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}toUser{__typename ...UserShort}}... on WalletTransactionSubscription{__typename amount walletAmount chargeAmount subscription{__typename id interval amount product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}... on WalletProductDonation{__typename user{__typename id name photo}}}}payment{__typename id status intent{__typename id clientSecret}card{__typename id brand last4}}}... on WalletTransactionPurchase{__typename amount walletAmount chargeAmount purchase{__typename id product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}... on WalletProductDonation{__typename user{__typename id name photo}}}}payment{__typename id status intent{__typename id clientSecret}card{__typename id brand last4}}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
         MyWalletSelector
     )
     let OauthContext = OperationDefinition(
@@ -5276,7 +5399,7 @@ class Operations {
     let Subscriptions = OperationDefinition(
         "Subscriptions",
         .query, 
-        "query Subscriptions{subscriptions{__typename id state expires product{__typename ... on WalletSubscriptionProductGroup{__typename group{__typename id title photo}}}}}",
+        "query Subscriptions{subscriptions{__typename id state expires product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}}}}",
         SubscriptionsSelector
     )
     let SuggestedRooms = OperationDefinition(
@@ -5312,7 +5435,7 @@ class Operations {
     let TransactionsHistory = OperationDefinition(
         "TransactionsHistory",
         .query, 
-        "query TransactionsHistory($first:Int!,$after:String){transactionsHistory(first:$first,after:$after){__typename items{__typename ...WalletTransactionFragment}cursor}}fragment WalletTransactionFragment on WalletTransaction{__typename id status date operation{__typename ... on WalletTransactionDeposit{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}}... on WalletTransactionSubscription{__typename amount subscription{__typename id interval amount product{__typename ... on WalletSubscriptionProductGroup{__typename group{__typename id title photo}}... on WalletSubscriptionProductDonation{__typename user{__typename id name photo}}}}payment{__typename id status intent{__typename id clientSecret}card{__typename id brand last4}}}... on WalletTransactionTransferOut{__typename walletAmount chargeAmount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}toUser{__typename ...UserShort}}... on WalletTransactionTransferIn{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}fromUser{__typename ...UserShort}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
+        "query TransactionsHistory($first:Int!,$after:String){transactionsHistory(first:$first,after:$after){__typename items{__typename ...WalletTransactionFragment}cursor}}fragment WalletTransactionFragment on WalletTransaction{__typename id status date operation{__typename ... on WalletTransactionDeposit{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}}... on WalletTransactionIncome{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}source{__typename ... on WalletSubscription{__typename id product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}... on WalletProductDonation{__typename user{__typename id name photo}}}}... on Purchase{__typename id product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}... on WalletProductDonation{__typename user{__typename id name photo}}}}}}... on WalletTransactionTransferIn{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}fromUser{__typename ...UserShort}}... on WalletTransactionTransferOut{__typename amount walletAmount chargeAmount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}toUser{__typename ...UserShort}}... on WalletTransactionSubscription{__typename amount walletAmount chargeAmount subscription{__typename id interval amount product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}... on WalletProductDonation{__typename user{__typename id name photo}}}}payment{__typename id status intent{__typename id clientSecret}card{__typename id brand last4}}}... on WalletTransactionPurchase{__typename amount walletAmount chargeAmount purchase{__typename id product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}... on WalletProductDonation{__typename user{__typename id name photo}}}}payment{__typename id status intent{__typename id clientSecret}card{__typename id brand last4}}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
         TransactionsHistorySelector
     )
     let User = OperationDefinition(
@@ -6164,7 +6287,7 @@ class Operations {
     let WalletUpdates = OperationDefinition(
         "WalletUpdates",
         .subscription, 
-        "subscription WalletUpdates($state:String!){event:walletUpdates(fromState:$state){__typename ... on WalletUpdateSingle{__typename state update{__typename ...WalletUpdateFragment}}... on WalletUpdateBatch{__typename state updates{__typename ...WalletUpdateFragment}}}}fragment WalletUpdateFragment on WalletUpdate{__typename ... on WalletUpdateBalance{__typename amount}... on WalletUpdateLocked{__typename isLocked}... on WalletUpdateTransactionSuccess{__typename transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionCanceled{__typename transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionPending{__typename transaction{__typename ...WalletTransactionFragment}}... on WalletUpdatePaymentStatus{__typename payment{__typename id status intent{__typename id clientSecret}card{__typename id brand last4}}}}fragment WalletTransactionFragment on WalletTransaction{__typename id status date operation{__typename ... on WalletTransactionDeposit{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}}... on WalletTransactionSubscription{__typename amount subscription{__typename id interval amount product{__typename ... on WalletSubscriptionProductGroup{__typename group{__typename id title photo}}... on WalletSubscriptionProductDonation{__typename user{__typename id name photo}}}}payment{__typename id status intent{__typename id clientSecret}card{__typename id brand last4}}}... on WalletTransactionTransferOut{__typename walletAmount chargeAmount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}toUser{__typename ...UserShort}}... on WalletTransactionTransferIn{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}fromUser{__typename ...UserShort}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
+        "subscription WalletUpdates($state:String!){event:walletUpdates(fromState:$state){__typename ... on WalletUpdateSingle{__typename state update{__typename ...WalletUpdateFragment}}... on WalletUpdateBatch{__typename state updates{__typename ...WalletUpdateFragment}}}}fragment WalletUpdateFragment on WalletUpdate{__typename ... on WalletUpdateBalance{__typename amount}... on WalletUpdateLocked{__typename isLocked}... on WalletUpdateTransactionSuccess{__typename transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionCanceled{__typename transaction{__typename ...WalletTransactionFragment}}... on WalletUpdateTransactionPending{__typename transaction{__typename ...WalletTransactionFragment}}... on WalletUpdatePaymentStatus{__typename payment{__typename id status intent{__typename id clientSecret}card{__typename id brand last4}}}}fragment WalletTransactionFragment on WalletTransaction{__typename id status date operation{__typename ... on WalletTransactionDeposit{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}}... on WalletTransactionIncome{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}source{__typename ... on WalletSubscription{__typename id product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}... on WalletProductDonation{__typename user{__typename id name photo}}}}... on Purchase{__typename id product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}... on WalletProductDonation{__typename user{__typename id name photo}}}}}}... on WalletTransactionTransferIn{__typename amount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}fromUser{__typename ...UserShort}}... on WalletTransactionTransferOut{__typename amount walletAmount chargeAmount payment{__typename id status card{__typename id brand last4}intent{__typename id clientSecret}}toUser{__typename ...UserShort}}... on WalletTransactionSubscription{__typename amount walletAmount chargeAmount subscription{__typename id interval amount product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}... on WalletProductDonation{__typename user{__typename id name photo}}}}payment{__typename id status intent{__typename id clientSecret}card{__typename id brand last4}}}... on WalletTransactionPurchase{__typename amount walletAmount chargeAmount purchase{__typename id product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}... on WalletProductDonation{__typename user{__typename id name photo}}}}payment{__typename id status intent{__typename id clientSecret}card{__typename id brand last4}}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
         WalletUpdatesSelector
     )
     

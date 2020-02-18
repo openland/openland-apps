@@ -10947,7 +10947,7 @@
               "name": null,
               "ofType": {
                 "kind": "UNION",
-                "name": "WalletSubscriptionProduct",
+                "name": "WalletProduct",
                 "ofType": null
               }
             },
@@ -11042,7 +11042,7 @@
       },
       {
         "kind": "UNION",
-        "name": "WalletSubscriptionProduct",
+        "name": "WalletProduct",
         "description": "",
         "fields": null,
         "inputFields": null,
@@ -11051,19 +11051,19 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "WalletSubscriptionProductGroup",
+            "name": "WalletProductGroup",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "WalletSubscriptionProductDonation",
+            "name": "WalletProductDonation",
             "ofType": null
           }
         ]
       },
       {
         "kind": "OBJECT",
-        "name": "WalletSubscriptionProductGroup",
+        "name": "WalletProductGroup",
         "description": "",
         "fields": [
           {
@@ -11090,7 +11090,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "WalletSubscriptionProductDonation",
+        "name": "WalletProductDonation",
         "description": "",
         "fields": [
           {
@@ -13114,7 +13114,17 @@
           },
           {
             "kind": "OBJECT",
+            "name": "WalletTransactionIncome",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
             "name": "WalletTransactionSubscription",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "WalletTransactionPurchase",
             "ofType": null
           },
           {
@@ -13333,11 +13343,215 @@
       },
       {
         "kind": "OBJECT",
+        "name": "WalletTransactionIncome",
+        "description": "",
+        "fields": [
+          {
+            "name": "amount",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "payment",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Payment",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "source",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "UNION",
+              "name": "WalletIncomeSource",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "UNION",
+        "name": "WalletIncomeSource",
+        "description": "",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "WalletSubscription",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Purchase",
+            "ofType": null
+          }
+        ]
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Purchase",
+        "description": "",
+        "fields": [
+          {
+            "name": "id",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "state",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "PurchaseState",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "intent",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "PaymentIntent",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "product",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "UNION",
+                "name": "WalletProduct",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "PurchaseState",
+        "description": "",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "PENDING",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "COMPLETED",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CANCELED",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "WalletTransactionSubscription",
         "description": "",
         "fields": [
           {
             "name": "amount",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "walletAmount",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "chargeAmount",
             "description": "",
             "args": [],
             "type": {
@@ -13388,9 +13602,112 @@
       },
       {
         "kind": "OBJECT",
+        "name": "WalletTransactionPurchase",
+        "description": "",
+        "fields": [
+          {
+            "name": "amount",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "walletAmount",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "chargeAmount",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "payment",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Payment",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "purchase",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Purchase",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "WalletTransactionTransferOut",
         "description": "",
         "fields": [
+          {
+            "name": "amount",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "walletAmount",
             "description": "",
@@ -32128,6 +32445,37 @@
             "deprecationReason": null
           },
           {
+            "name": "betaBuyPremiumChatPass",
+            "description": "",
+            "args": [
+              {
+                "name": "chatId",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "SharedRoom",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "betaRoomInviteLinkSendEmail",
             "description": "Invite links",
             "args": [
@@ -33904,90 +34252,6 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "Purchase",
-        "description": "",
-        "fields": [
-          {
-            "name": "id",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "state",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "ENUM",
-                "name": "PurchaseState",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "intent",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "PaymentIntent",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "PurchaseState",
-        "description": "",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "PENDING",
-            "description": "",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "COMPLETED",
-            "description": "",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "CANCELED",
-            "description": "",
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
         "possibleTypes": null
       },
       {

@@ -1683,6 +1683,7 @@ type Mutation {
   betaRoomsJoin(roomsIds: [ID!]!): [Room!]!
   betaRoomDeclineJoinRequest(roomId: ID!, userId: ID!): Room!
   betaBuyPremiumChatSubscription(chatId: ID!): SharedRoom!
+  betaBuyPremiumChatPass(chatId: ID!): SharedRoom!
 
   """Invite links"""
   betaRoomInviteLinkSendEmail(roomId: ID!, inviteRequests: [RoomInviteEmailRequest!]!): String!
@@ -2178,6 +2179,7 @@ type Purchase {
   id: ID!
   state: PurchaseState!
   intent: PaymentIntent
+  product: WalletProduct!
 }
 
 enum PurchaseState {
@@ -3023,28 +3025,30 @@ type WalletAccount {
   isLocked: Boolean!
 }
 
+union WalletIncomeSource = WalletSubscription | Purchase
+
+union WalletProduct = WalletProductGroup | WalletProductDonation
+
+type WalletProductDonation {
+  user: User!
+}
+
+type WalletProductGroup {
+  group: SharedRoom!
+}
+
 type WalletSubscription {
   id: ID!
   state: WalletSubscriptionState!
   amount: Int!
   interval: WalletSubscriptionInterval!
-  product: WalletSubscriptionProduct!
+  product: WalletProduct!
   expires: Date!
 }
 
 enum WalletSubscriptionInterval {
   MONTH
   WEEK
-}
-
-union WalletSubscriptionProduct = WalletSubscriptionProductGroup | WalletSubscriptionProductDonation
-
-type WalletSubscriptionProductDonation {
-  user: User!
-}
-
-type WalletSubscriptionProductGroup {
-  group: SharedRoom!
 }
 
 enum WalletSubscriptionState {
@@ -3072,7 +3076,21 @@ type WalletTransactionDeposit {
   payment: Payment
 }
 
-union WalletTransactionOperation = WalletTransactionDeposit | WalletTransactionSubscription | WalletTransactionTransferOut | WalletTransactionTransferIn
+type WalletTransactionIncome {
+  amount: Int!
+  payment: Payment
+  source: WalletIncomeSource
+}
+
+union WalletTransactionOperation = WalletTransactionDeposit | WalletTransactionIncome | WalletTransactionSubscription | WalletTransactionPurchase | WalletTransactionTransferOut | WalletTransactionTransferIn
+
+type WalletTransactionPurchase {
+  amount: Int!
+  walletAmount: Int!
+  chargeAmount: Int!
+  payment: Payment
+  purchase: Purchase!
+}
 
 enum WalletTransactionStatus {
   PENDING
@@ -3083,6 +3101,8 @@ enum WalletTransactionStatus {
 
 type WalletTransactionSubscription {
   amount: Int!
+  walletAmount: Int!
+  chargeAmount: Int!
   payment: Payment
   subscription: WalletSubscription!
 }
@@ -3094,6 +3114,7 @@ type WalletTransactionTransferIn {
 }
 
 type WalletTransactionTransferOut {
+  amount: Int!
   walletAmount: Int!
   chargeAmount: Int!
   payment: Payment

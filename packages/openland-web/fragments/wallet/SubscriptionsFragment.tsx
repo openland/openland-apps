@@ -2,7 +2,7 @@ import * as React from 'react';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 import { useClient } from 'openland-api/useClient';
-import { Subscriptions_subscriptions_product_WalletSubscriptionProductGroup, WalletSubscriptionState } from 'openland-api/spacex.types';
+import { Subscriptions_subscriptions_product_WalletProductGroup, WalletSubscriptionState } from 'openland-api/spacex.types';
 import { XView, XViewRouterContext, XImage } from 'react-mental';
 import { TextTitle1, TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
 import { FormSection } from '../account/components/FormSection';
@@ -55,9 +55,9 @@ export const SubscriptionsFragment = React.memo(() => {
     const client = useClient();
     const subscriptions = client.useSubscriptions();
     const router = React.useContext(XViewRouterContext)!;
-    const groupSubscriptions = subscriptions.subscriptions.filter(subscription => subscription.product.__typename === 'WalletSubscriptionProductGroup');
+    const groupSubscriptions = subscriptions.subscriptions.filter(subscription => subscription.product.__typename === 'WalletProductGroup');
     const normalizedSubscriptions: NormalizedSubscription[] = groupSubscriptions.map(subscription => {
-        const group = (subscription.product as Subscriptions_subscriptions_product_WalletSubscriptionProductGroup).group;
+        const group = (subscription.product as Subscriptions_subscriptions_product_WalletProductGroup).group;
 
         return {
             ...group,

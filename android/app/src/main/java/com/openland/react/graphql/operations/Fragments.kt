@@ -1933,9 +1933,134 @@ internal val WalletTransactionFragmentSelector = obj(
                                     ))
                             ))
                     )),
+                    inline("WalletTransactionIncome", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("amount", "amount", notNull(scalar("Int"))),
+                        field("payment", "payment", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("status", "status", notNull(scalar("String"))),
+                                field("card", "card", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("brand", "brand", notNull(scalar("String"))),
+                                        field("last4", "last4", notNull(scalar("String")))
+                                    )),
+                                field("intent", "intent", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
+                                    ))
+                            )),
+                        field("source", "source", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                inline("WalletSubscription", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("product", "product", notNull(obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            inline("WalletProductGroup", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                field("group", "group", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
+                                                        field("title", "title", notNull(scalar("String"))),
+                                                        field("photo", "photo", notNull(scalar("String")))
+                                                    )))
+                                            )),
+                                            inline("WalletProductDonation", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                field("user", "user", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
+                                                        field("name", "name", notNull(scalar("String"))),
+                                                        field("photo", "photo", scalar("String"))
+                                                    )))
+                                            ))
+                                        )))
+                                )),
+                                inline("Purchase", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("product", "product", notNull(obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            inline("WalletProductGroup", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                field("group", "group", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
+                                                        field("title", "title", notNull(scalar("String"))),
+                                                        field("photo", "photo", notNull(scalar("String")))
+                                                    )))
+                                            )),
+                                            inline("WalletProductDonation", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                field("user", "user", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
+                                                        field("name", "name", notNull(scalar("String"))),
+                                                        field("photo", "photo", scalar("String"))
+                                                    )))
+                                            ))
+                                        )))
+                                ))
+                            ))
+                    )),
+                    inline("WalletTransactionTransferIn", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("amount", "amount", notNull(scalar("Int"))),
+                        field("payment", "payment", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("status", "status", notNull(scalar("String"))),
+                                field("card", "card", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("brand", "brand", notNull(scalar("String"))),
+                                        field("last4", "last4", notNull(scalar("String")))
+                                    )),
+                                field("intent", "intent", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
+                                    ))
+                            )),
+                        field("fromUser", "fromUser", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("User", UserShortSelector)
+                            )))
+                    )),
+                    inline("WalletTransactionTransferOut", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("amount", "amount", notNull(scalar("Int"))),
+                        field("walletAmount", "walletAmount", notNull(scalar("Int"))),
+                        field("chargeAmount", "chargeAmount", notNull(scalar("Int"))),
+                        field("payment", "payment", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("status", "status", notNull(scalar("String"))),
+                                field("card", "card", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("brand", "brand", notNull(scalar("String"))),
+                                        field("last4", "last4", notNull(scalar("String")))
+                                    )),
+                                field("intent", "intent", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
+                                    ))
+                            )),
+                        field("toUser", "toUser", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                fragment("User", UserShortSelector)
+                            )))
+                    )),
                     inline("WalletTransactionSubscription", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("amount", "amount", notNull(scalar("Int"))),
+                        field("walletAmount", "walletAmount", notNull(scalar("Int"))),
+                        field("chargeAmount", "chargeAmount", notNull(scalar("Int"))),
                         field("subscription", "subscription", notNull(obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
                                 field("id", "id", notNull(scalar("ID"))),
@@ -1943,7 +2068,7 @@ internal val WalletTransactionFragmentSelector = obj(
                                 field("amount", "amount", notNull(scalar("Int"))),
                                 field("product", "product", notNull(obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
-                                        inline("WalletSubscriptionProductGroup", obj(
+                                        inline("WalletProductGroup", obj(
                                             field("__typename", "__typename", notNull(scalar("String"))),
                                             field("group", "group", notNull(obj(
                                                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -1952,7 +2077,7 @@ internal val WalletTransactionFragmentSelector = obj(
                                                     field("photo", "photo", notNull(scalar("String")))
                                                 )))
                                         )),
-                                        inline("WalletSubscriptionProductDonation", obj(
+                                        inline("WalletProductDonation", obj(
                                             field("__typename", "__typename", notNull(scalar("String"))),
                                             field("user", "user", notNull(obj(
                                                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -1980,54 +2105,52 @@ internal val WalletTransactionFragmentSelector = obj(
                                     ))
                             ))
                     )),
-                    inline("WalletTransactionTransferOut", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("walletAmount", "walletAmount", notNull(scalar("Int"))),
-                        field("chargeAmount", "chargeAmount", notNull(scalar("Int"))),
-                        field("payment", "payment", obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("id", "id", notNull(scalar("ID"))),
-                                field("status", "status", notNull(scalar("String"))),
-                                field("card", "card", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("brand", "brand", notNull(scalar("String"))),
-                                        field("last4", "last4", notNull(scalar("String")))
-                                    )),
-                                field("intent", "intent", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
-                                    ))
-                            )),
-                        field("toUser", "toUser", notNull(obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                fragment("User", UserShortSelector)
-                            )))
-                    )),
-                    inline("WalletTransactionTransferIn", obj(
+                    inline("WalletTransactionPurchase", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("amount", "amount", notNull(scalar("Int"))),
+                        field("walletAmount", "walletAmount", notNull(scalar("Int"))),
+                        field("chargeAmount", "chargeAmount", notNull(scalar("Int"))),
+                        field("purchase", "purchase", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("product", "product", notNull(obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        inline("WalletProductGroup", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("group", "group", notNull(obj(
+                                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                                    field("id", "id", notNull(scalar("ID"))),
+                                                    field("title", "title", notNull(scalar("String"))),
+                                                    field("photo", "photo", notNull(scalar("String")))
+                                                )))
+                                        )),
+                                        inline("WalletProductDonation", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("user", "user", notNull(obj(
+                                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                                    field("id", "id", notNull(scalar("ID"))),
+                                                    field("name", "name", notNull(scalar("String"))),
+                                                    field("photo", "photo", scalar("String"))
+                                                )))
+                                        ))
+                                    )))
+                            ))),
                         field("payment", "payment", obj(
                                 field("__typename", "__typename", notNull(scalar("String"))),
                                 field("id", "id", notNull(scalar("ID"))),
                                 field("status", "status", notNull(scalar("String"))),
+                                field("intent", "intent", obj(
+                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                        field("id", "id", notNull(scalar("ID"))),
+                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
+                                    )),
                                 field("card", "card", obj(
                                         field("__typename", "__typename", notNull(scalar("String"))),
                                         field("id", "id", notNull(scalar("ID"))),
                                         field("brand", "brand", notNull(scalar("String"))),
                                         field("last4", "last4", notNull(scalar("String")))
-                                    )),
-                                field("intent", "intent", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("clientSecret", "clientSecret", notNull(scalar("String")))
                                     ))
-                            )),
-                        field("fromUser", "fromUser", notNull(obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                fragment("User", UserShortSelector)
-                            )))
+                            ))
                     ))
                 )))
         )

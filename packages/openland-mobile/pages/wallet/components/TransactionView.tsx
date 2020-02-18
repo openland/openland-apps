@@ -41,7 +41,7 @@ const getSubscriptionProps = (operation: WalletTransactionFragment_operation_Wal
     let intervalStr = interval === WalletSubscriptionInterval.WEEK ? 'weekly' : 'monthly';
     let subtitle = `Subscription, ${intervalStr}`;
     let amount = formatMoney(operation.subscription.amount);
-    return product.__typename === 'WalletSubscriptionProductGroup' ? {
+    return product.__typename === 'WalletProductGroup' ? {
         avatar: {
             src: product.group.photo,
             placeholderKey: product.group.id,

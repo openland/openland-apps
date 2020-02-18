@@ -69,14 +69,114 @@ fragment WalletTransactionFragment on WalletTransaction {
                 }
             }
         }
+        ... on WalletTransactionIncome {
+            amount
+            payment {
+                id
+                status
+                card {
+                    id
+                    brand
+                    last4
+                }
+                intent {
+                    id
+                    clientSecret
+                }
+            }
+            source {
+                ... on WalletSubscription {
+                    id
+                    product {
+                        ... on WalletProductGroup {
+                            group {
+                                id
+                                title
+                                photo
+                            }
+                        }
+
+                        ...on WalletProductDonation {
+                            user {
+                                id
+                                name
+                                photo
+                            }
+                        }
+                    }
+                }
+                ... on Purchase {
+                    id
+                    product {
+                        ... on WalletProductGroup {
+                            group {
+                                id
+                                title
+                                photo
+                            }
+                        }
+
+                        ...on WalletProductDonation {
+                            user {
+                                id
+                                name
+                                photo
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        ... on WalletTransactionTransferIn {
+            amount
+            payment {
+                id
+                status
+                card {
+                    id
+                    brand
+                    last4
+                }
+                intent {
+                    id
+                    clientSecret
+                }
+            }
+            fromUser {
+                ...UserShort
+            }
+        }
+        ... on WalletTransactionTransferOut {
+            amount
+            walletAmount
+            chargeAmount
+            payment {
+                id
+                status
+                card {
+                    id
+                    brand
+                    last4
+                }
+                intent {
+                    id
+                    clientSecret
+                }
+            }
+            toUser {
+                ...UserShort
+            }
+        }
         ... on WalletTransactionSubscription {
             amount
+            walletAmount
+            chargeAmount
             subscription {
                 id
                 interval
                 amount
                 product {
-                    ... on WalletSubscriptionProductGroup {
+                    ... on WalletProductGroup {
                         group {
                             id
                             title
@@ -84,7 +184,7 @@ fragment WalletTransactionFragment on WalletTransaction {
                         }
                     }
 
-                    ...on WalletSubscriptionProductDonation {
+                    ...on WalletProductDonation {
                         user {
                             id
                             name
@@ -107,45 +207,45 @@ fragment WalletTransactionFragment on WalletTransaction {
                 }
             }
         }
-        ... on WalletTransactionTransferOut {
+        ... on WalletTransactionPurchase {
+            amount
             walletAmount
             chargeAmount
+            purchase {
+                id
+                product {
+                    ... on WalletProductGroup {
+                        group {
+                            id
+                            title
+                            photo
+                        }
+                    }
+
+                    ...on WalletProductDonation {
+                        user {
+                            id
+                            name
+                            photo
+                        }
+                    }
+                }
+            }
             payment {
                 id
                 status
+                intent {
+                    id
+                    clientSecret
+                }
                 card {
                     id
                     brand
                     last4
                 }
-                intent {
-                    id
-                    clientSecret
-                }
-            }
-            toUser {
-                ...UserShort
             }
         }
-        ... on WalletTransactionTransferIn {
-            amount
-            payment {
-                id
-                status
-                card {
-                    id
-                    brand
-                    last4
-                }
-                intent {
-                    id
-                    clientSecret
-                }
-            }
-            fromUser {
-                ...UserShort
-            }
-        }
+        
     }
 }
 query MyWallet {
@@ -235,7 +335,7 @@ query Subscriptions {
         state
         expires
         product {
-            ... on WalletSubscriptionProductGroup {
+            ... on WalletProductGroup {
                 group {
                     id
                     title

@@ -6,7 +6,7 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { useClient } from 'openland-api/useClient';
-import { WalletSubscriptionState, Subscriptions_subscriptions_product_WalletSubscriptionProductGroup } from 'openland-api/spacex.types';
+import { WalletSubscriptionState, Subscriptions_subscriptions_product_WalletProductGroup } from 'openland-api/spacex.types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { View, Text, Image } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
@@ -185,9 +185,9 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
     const client = useClient();
     const theme = React.useContext(ThemeContext);
     const subscriptions = client.useSubscriptions({ fetchPolicy: 'network-only' });
-    const groupSubscriptions = subscriptions.subscriptions.filter(subscription => subscription.product.__typename === 'WalletSubscriptionProductGroup');
+    const groupSubscriptions = subscriptions.subscriptions.filter(subscription => subscription.product.__typename === 'WalletProductGroup');
     const normalizedSubscriptions: NormalizedSubscription[] = groupSubscriptions.map(subscription => {
-        const group = (subscription.product as Subscriptions_subscriptions_product_WalletSubscriptionProductGroup).group;
+        const group = (subscription.product as Subscriptions_subscriptions_product_WalletProductGroup).group;
 
         return {
             ...group,

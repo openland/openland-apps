@@ -18,7 +18,7 @@ export const normalizeTransaction = (transaction: WalletTransactionFragment) => 
     let avatar: { id: string, title: string, photo: string | null | undefined } | undefined;
 
     if (operation.__typename === 'WalletTransactionSubscription') {
-        if (operation.subscription.product.__typename === 'WalletSubscriptionProductGroup') {
+        if (operation.subscription.product.__typename === 'WalletProductGroup') {
             title = operation.subscription.product.group.title;
             type = 'Subscription';
             avatar = {
@@ -26,7 +26,7 @@ export const normalizeTransaction = (transaction: WalletTransactionFragment) => 
                 title: operation.subscription.product.group.title,
                 photo: operation.subscription.product.group.photo,
             };
-        } else if (operation.subscription.product.__typename === 'WalletSubscriptionProductDonation') {
+        } else if (operation.subscription.product.__typename === 'WalletProductDonation') {
             title = operation.subscription.product.user.name;
             type = 'Subscription';
             avatar = {
