@@ -168,6 +168,9 @@ fragment WalletUpdateFragment on WalletUpdate {
     ... on WalletUpdateBalance {
         amount
     }
+    ... on WalletUpdateLocked {
+        isLocked
+    }
     ... on WalletUpdateTransactionSuccess {
         transaction {
             ...WalletTransactionFragment

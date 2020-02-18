@@ -26,6 +26,10 @@ import { showCreatingOrgFragment } from 'openland-web/fragments/create/CreateEnt
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { trackEvent } from 'openland-x-analytics';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
+import FailureIcon from 'openland-icons/s/ic-failure-16.svg';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { UCounter } from 'openland-unicorn/UCounter';
 
 const UserProfileCard = withUserInfo(({ user }) => {
     if (user) {
@@ -92,6 +96,11 @@ export const Organizations = React.memo(() => {
     );
 });
 
+const AccountCounter = React.memo(() => {
+    const walletState = React.useContext(MessengerContext).wallet.state.useState();
+    return <UCounter value={walletState.isLocked ? 1 : 0} />;
+});
+
 export const AccountFragment = React.memo(() => {
     const isVisible = useVisibleTab();
     React.useEffect(
@@ -102,89 +111,94 @@ export const AccountFragment = React.memo(() => {
         },
         [isVisible],
     );
+    const walletState = React.useContext(MessengerContext).wallet.state.useState();
 
     return (
-        <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
-            <USideHeader title="Account">
-                <UIconButton icon={<LeaveIcon />} size="large" onClick={showLogoutConfirmation} />
-            </USideHeader>
-            <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} flexDirection="column">
-                <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
-                    <UserProfileCard />
-                    <UListItem
-                        title="Edit profile"
-                        icon={<EditProfileIcon />}
-                        path="/settings/profile"
-                    />
-                    <UListItem
-                        title="Invite friends"
-                        icon={<InviteFriendsIcon />}
-                        path="/settings/invites"
-                    />
+        <>
+            <AccountCounter />
+            <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
+                <USideHeader title="Account">
+                    <UIconButton icon={<LeaveIcon />} size="large" onClick={showLogoutConfirmation} />
+                </USideHeader>
+                <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} flexDirection="column">
+                    <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
+                        <UserProfileCard />
+                        <UListItem
+                            title="Edit profile"
+                            icon={<EditProfileIcon />}
+                            path="/settings/profile"
+                        />
+                        <UListItem
+                            title="Invite friends"
+                            icon={<InviteFriendsIcon />}
+                            path="/settings/invites"
+                        />
 
-                    <XWithRole role="super-admin">
-                        <UListGroup header="Billing">
+                        <XWithRole role="super-admin">
+                            <UListGroup header="Billing">
+                                <UListItem
+                                    title="Wallet"
+                                    icon={<WalletIcon />}
+                                    path="/wallet"
+                                    rightElement={walletState.isLocked ? <XView marginRight={8} > <UIcon size={22} icon={<FailureIcon />} color="var(--accentNegative)" /> </XView> : undefined}
+                                />
+                                <UListItem
+                                    title="Subscriptions"
+                                    icon={<SubscriptionsIcon />}
+                                    path="/subscriptions"
+                                />
+                            </UListGroup>
+                        </XWithRole>
+
+                        <UListGroup header="Settings">
+
                             <UListItem
-                                title="Wallet"
-                                icon={<WalletIcon />}
-                                path="/wallet"
+                                title="Notifications"
+                                icon={<NotificationsIcon />}
+                                path="/settings/notifications"
                             />
                             <UListItem
-                                title="Subscriptions"
-                                icon={<SubscriptionsIcon />}
-                                path="/subscriptions"
+                                title="Email preferences"
+                                icon={<EmailIcon />}
+                                path="/settings/email"
+                            />
+                            <UListItem
+                                title="Appearance"
+                                icon={<AppearanceIcon />}
+                                path="/settings/appearance"
                             />
                         </UListGroup>
-                    </XWithRole>
 
-                    <UListGroup header="Settings">
+                        <UListGroup header="Openland">
+                            <UListItem
+                                title="Install apps"
+                                icon={<AppsIcon />}
+                                path="/settings/download"
+                            />
+                            <UListItem
+                                title="About us"
+                                icon={<InfoIcon />}
+                                path="/settings/about"
+                            />
+                        </UListGroup>
 
-                        <UListItem
-                            title="Notifications"
-                            icon={<NotificationsIcon />}
-                            path="/settings/notifications"
-                        />
-                        <UListItem
-                            title="Email preferences"
-                            icon={<EmailIcon />}
-                            path="/settings/email"
-                        />
-                        <UListItem
-                            title="Appearance"
-                            icon={<AppearanceIcon />}
-                            path="/settings/appearance"
-                        />
-                    </UListGroup>
-
-                    <UListGroup header="Openland">
-                        <UListItem
-                            title="Install apps"
-                            icon={<AppsIcon />}
-                            path="/settings/download"
-                        />
-                        <UListItem
-                            title="About us"
-                            icon={<InfoIcon />}
-                            path="/settings/about"
-                        />
-                    </UListGroup>
-
-                    <UListGroup
-                        header="Organizations"
-                        action={{
-                            title: 'New',
-                            onClick: () => {
-                                showCreatingOrgFragment({ entityType: 'organization' });
-                                // router.navigate('/new/organization')
-                            },
-                        }}
-                    >
-                        <React.Suspense fallback={<XLoader loading={true} />}>
-                            <Organizations />
-                        </React.Suspense>
-                    </UListGroup>
-                </XScrollView3>
+                        <UListGroup
+                            header="Organizations"
+                            action={{
+                                title: 'New',
+                                onClick: () => {
+                                    showCreatingOrgFragment({ entityType: 'organization' });
+                                    // router.navigate('/new/organization')
+                                },
+                            }}
+                        >
+                            <React.Suspense fallback={<XLoader loading={true} />}>
+                                <Organizations />
+                            </React.Suspense>
+                        </UListGroup>
+                    </XScrollView3>
+                </XView>
             </XView>
-        </XView>
+        </>
     );
 });

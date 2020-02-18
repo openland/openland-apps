@@ -12965,6 +12965,22 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "isLocked",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -36925,6 +36941,11 @@
             "kind": "OBJECT",
             "name": "WalletUpdatePaymentStatus",
             "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "WalletUpdateLocked",
+            "ofType": null
           }
         ]
       },
@@ -37051,6 +37072,33 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "Payment",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "WalletUpdateLocked",
+        "description": "",
+        "fields": [
+          {
+            "name": "isLocked",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               }
             },

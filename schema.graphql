@@ -3019,6 +3019,7 @@ type WalletAccount {
   id: ID!
   balance: Int!
   state: String!
+  isLocked: Boolean!
 }
 
 type WalletSubscription {
@@ -3098,7 +3099,7 @@ type WalletTransactionTransferOut {
   toUser: User!
 }
 
-union WalletUpdate = WalletUpdateBalance | WalletUpdateTransactionSuccess | WalletUpdateTransactionCanceled | WalletUpdateTransactionPending | WalletUpdatePaymentStatus
+union WalletUpdate = WalletUpdateBalance | WalletUpdateTransactionSuccess | WalletUpdateTransactionCanceled | WalletUpdateTransactionPending | WalletUpdatePaymentStatus | WalletUpdateLocked
 
 type WalletUpdateBalance {
   amount: Int!
@@ -3110,6 +3111,10 @@ type WalletUpdateBatch {
 }
 
 union WalletUpdateContainer = WalletUpdateSingle | WalletUpdateBatch
+
+type WalletUpdateLocked {
+  isLocked: Boolean!
+}
 
 type WalletUpdatePaymentStatus {
   payment: Payment!

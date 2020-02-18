@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { WalletTransactionFragment, PaymentStatus } from 'openland-api/spacex.types';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { showConfirmPayment } from './showConfirmPayment';
-import { showTransaction, normalizeTransaction } from './showTransaction';
+import { showConfirmPayment } from '../modals/showConfirmPayment';
+import { showTransaction, normalizeTransaction } from '../modals/showTransaction';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { css } from 'linaria';
@@ -43,8 +43,8 @@ export const TransactionView = React.memo((props: TransactionViewProps) => {
                         <XView {...TextStyles.Label1} color={color}>{normalized.amount}</XView>
                         <XView {...TextStyles.Subhead} color="var(--foregroundSecondary)">
                             {normalized.dateTime.isToday ? normalized.dateTime.time : normalized.dateTime.date}
-                            {payment && payment.intent && payment.status === PaymentStatus.FAILING && ', failed'}
-                            {payment && payment.intent && payment.status === PaymentStatus.ACTION_REQUIRED && ', action required'}
+                            {payment && payment.status === PaymentStatus.PENDING && ', pending'}
+                            {actionRequired && ', failing'}
                         </XView>
                     </XView>
                 }

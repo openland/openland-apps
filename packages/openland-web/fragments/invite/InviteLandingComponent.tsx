@@ -20,7 +20,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { trackEvent } from 'openland-x-analytics';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
-import { showPayConfirm } from '../wallet/components/showPayConfirm';
+import { showPayConfirm } from '../wallet/modals/showPayConfirm';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
 import {
