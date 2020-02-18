@@ -228,21 +228,20 @@ export class NotificationCenterEngine {
                         return null;
                     }
                     if (update.event.__typename === 'NotificationCenterUpdateBatch') {
-                        for (let u of update.event.updates) {
-                            queue.post(u);
-                        }
-                        this.handleSeqUpdated(update.event.seq);
+                        queue.post({ state: update.event.state, events: update.event.updates });
                     } else if (update.event.__typename === 'NotificationCenterUpdateSingle') {
-                        queue.post(update.event.update);
-                        this.handleSeqUpdated(update.event.seq);
+                        queue.post({ state: update.event.state, events: [update.event.update] });
                     }
+                    this.handleSeqUpdated(update.event.seq);
                     return update.event.state;
                 });
                 (async () => {
                     while (true) {
-                        let st = await queue.get();
-                        await this.handleEvent(st);
-                        await this.handleStateProcessed(st);
+                        let update = await queue.get();
+                        for (let u of update.events) {
+                            await backoff(() => this.handleEvent(u));
+                        }
+                        await backoff(() => this.handleStateProcessed(update.state));
                     }
                 })();
 
@@ -251,7 +250,7 @@ export class NotificationCenterEngine {
         };
 
         this._dataSourceStored = new DataSourceStored(
-            'notifications-7',
+            'notifications-8',
             engine.options.store,
             20,
             provider,
