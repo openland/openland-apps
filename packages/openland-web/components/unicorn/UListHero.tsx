@@ -7,7 +7,6 @@ import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { showAvatarModal } from '../showAvatarModal';
 import { emoji } from 'openland-y-utils/emoji';
-import { PremiumBadge } from '../PremiumBadge';
 
 const textStyle = css`
     white-space: nowrap;
