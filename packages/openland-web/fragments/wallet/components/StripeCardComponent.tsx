@@ -6,8 +6,8 @@ import { XModalController } from 'openland-x/showModal';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import LockIcon from 'openland-icons/s/ic-lock-16.svg';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
-const token = 'pk_test_y80EsXGYQdMKMcJ5lifEM4jx';
 let style = {
     base: {
         color: '#32325d',
@@ -34,6 +34,7 @@ export interface StripeCardProps {
 
 export const StripeCardComponent = React.memo((props: StripeCardProps) => {
     const { text, error, loading, onSubmit, modalCtx } = props;
+    const token = React.useContext(MessengerContext).wallet.token;
 
     if (!canUseDOM) {
         return null;

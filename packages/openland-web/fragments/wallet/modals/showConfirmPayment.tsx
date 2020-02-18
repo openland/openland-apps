@@ -13,8 +13,8 @@ import AddIcon from 'openland-icons/s/ic-add-24.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { BrandLogo } from '../components/BrandLogo';
 import { URadioDot } from 'openland-web/components/unicorn/URadioItem';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
-const token = 'pk_test_y80EsXGYQdMKMcJ5lifEM4jx';
 const defaultError = 'We are unable to authenticate your payment method. Please choose a different payment method and try again.';
 
 const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController, id: string, clientSecret: string }) => {
@@ -23,6 +23,7 @@ const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController, id: 
     let [currentCard, setCurrentCard] = React.useState<string | undefined>(undefined);
     let [error, setError] = React.useState<string | undefined>(undefined);
     const [loading, setLoading] = React.useState(false);
+    const token = React.useContext(MessengerContext).wallet.token;
     if (currentCard === undefined) {
         if (cards.length > 0) {
             setCurrentCard(cards[0].pmid);
