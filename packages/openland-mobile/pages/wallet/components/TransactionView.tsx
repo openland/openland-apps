@@ -2,7 +2,6 @@ import * as React from 'react';
 import { WalletTransactionFragment, PaymentStatus, WalletSubscriptionInterval, WalletTransactionFragment_operation_WalletTransactionDeposit, WalletTransactionFragment_operation_WalletTransactionSubscription, WalletTransactionFragment_operation_WalletTransactionTransferOut, WalletTransactionFragment_operation_WalletTransactionTransferIn } from 'openland-api/spacex.types';
 import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { showPayComplete } from 'openland-mobile/pages/main/modals/PayComplete';
-import { SRouter } from 'react-native-s/SRouter';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { formatDate } from 'openland-mobile/utils/formatDate';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
@@ -10,10 +9,10 @@ import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { showTransactionInfo } from 'openland-mobile/pages/main/modals/TransactionInfo';
+import { SRouterContext } from 'react-native-s/SRouterContext';
 
 interface TransactionViewProps {
     item: WalletTransactionFragment;
-    router: SRouter;
 }
 
 interface OperationViewProps {
@@ -95,13 +94,14 @@ const getTransferInProps = (operation: WalletTransactionFragment_operation_Walle
 
 export const TransactionView = (props: TransactionViewProps) => {
     const theme = useTheme();
+    const router = React.useContext(SRouterContext);
     const { operation, date } = props.item;
     const { payment } = operation;
 
     const actionRequired = payment && (payment.status === PaymentStatus.ACTION_REQUIRED || payment.status === PaymentStatus.FAILING) && payment.intent;
     const complete = React.useCallback(() => {
-        if (actionRequired && payment && payment.intent) {
-            showPayComplete(payment.intent.id, payment.intent.clientSecret, props.router);
+        if (actionRequired && payment && payment.intent && router) {
+            showPayComplete(payment.intent.id, payment.intent.clientSecret, router);
         }
     }, [actionRequired]);
     // const cancel = React.useCallback(async () => {
