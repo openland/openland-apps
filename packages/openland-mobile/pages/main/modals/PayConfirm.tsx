@@ -31,6 +31,7 @@ const ConfirmPaymentComponent = React.memo((props: PaymentProps & { ctx: BottomS
 
     return (
         <View flexDirection="column" paddingHorizontal={16}>
+            <Text style={{...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 7, marginBottom: 27, textAlign: 'center', paddingHorizontal: 16}}>Payment</Text>
             {props.productTitle && <View flexDirection="row" alignItems="center">
                 <View flexDirection="column" flexGrow={1}>
                     <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginBottom: 4 }}>{props.productTitle}</Text>
@@ -75,7 +76,7 @@ type PaymentProps = {
 export const showPayConfirm = (props: PaymentProps) => {
     const locked = getMessenger().engine.wallet.state.get().isLocked;
     if (!locked) {
-        showBottomSheet({ title: 'Payment', cancelable: false, view: (ctx) => <ConfirmPaymentComponent {...props} ctx={ctx} /> });
+        showBottomSheet({ cancelable: false, view: (ctx) => <ConfirmPaymentComponent {...props} ctx={ctx} /> });
     } else {
         const builder = new AlertBlanketBuilder();
 
