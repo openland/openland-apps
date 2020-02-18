@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Share, View } from 'react-native';
+import { Share, View, Image } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListGroup } from '../../components/ZListGroup';
@@ -14,6 +14,7 @@ import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { trackEvent } from 'openland-mobile/analytics';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 let useOnlineState = () => {
     let [status, setStatus] = React.useState(useClient().engine.status);
@@ -57,6 +58,7 @@ let SettingsContent = ((props: PageProps) => {
     const primary = resp.me.primaryOrganization;
     const secondary = resp.organizations.filter((v) => v.id !== (primary && primary.id)).sort((a, b) => a.name.localeCompare(b.name));
     const status = useOnlineState();
+    const walletState = getMessenger().engine.wallet.state.useState();
 
     return (
         <SScrollView>
@@ -81,13 +83,16 @@ let SettingsContent = ((props: PageProps) => {
                 text="Invite friends"
                 onPress={handleGlobalInvitePress}
             />
-            { NON_PRODUCTION && (
+            {NON_PRODUCTION && (
                 <ZListGroup header="Billing">
                     <ZListItem
                         leftIconColor={theme.tintPurple}
                         leftIcon={require('assets/ic-wallet-glyph-24.png')}
                         text="Wallet"
                         path="Wallet"
+                        rightElement={walletState.isLocked ? (
+                            <Image source={require('assets/ic-failure-16.png')} style={{ tintColor: theme.accentNegative }} />
+                        ) : undefined}
                     />
                     <ZListItem
                         leftIconColor={theme.tintPink}

@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-failure",
+            "src": "ic-failure-16.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
             "name": "ic-wallet",
             "src": "ic-wallet-24.svg",
             "sizes": [
