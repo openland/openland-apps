@@ -1,6 +1,20 @@
 {
     "icons": [
         {
+            "name": "ic-user-counter",
+            "src": "ic-user-counter-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-user-filled-counter",
+            "src": "ic-user-filled-counter-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-failure",
             "src": "ic-failure-16.svg",
             "sizes": [

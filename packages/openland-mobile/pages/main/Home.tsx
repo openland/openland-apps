@@ -111,6 +111,8 @@ export const Home = XMemo<PageProps>((props) => {
                         counter={wallet && wallet.myWallet.isLocked ? 1 : undefined}
                         icon={require('assets/ic-user-24.png')}
                         iconSelected={require('assets/ic-user-filled-24.png')}
+                        iconCounter={require('assets/ic-user-counter-24.png')}
+                        iconSelectedCounter={require('assets/ic-user-filled-counter-24.png')}
                         selected={tab === 3}
                         onPress={() => setTab(3)}
                     />
