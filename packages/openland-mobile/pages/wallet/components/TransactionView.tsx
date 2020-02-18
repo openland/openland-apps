@@ -9,6 +9,7 @@ import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
+import { showTransactionInfo } from 'openland-mobile/pages/main/modals/TransactionInfo';
 
 interface TransactionViewProps {
     item: WalletTransactionFragment;
@@ -19,10 +20,11 @@ interface OperationViewProps {
     title: string;
     subtitle: string;
     amount: string;
+    sign: '−' | '+' | '';
     avatar?: {
-        photo: string | null;
-        key: string;
-        title: string;
+        src: string | null;
+        placeholderKey: string;
+        placeholderTitle: string;
     };
 }
 
@@ -30,7 +32,8 @@ const getDepositProps = (operation: WalletTransactionFragment_operation_WalletTr
     return {
         title: 'Top up balance',
         subtitle: 'Deposit',
-        amount: `+ ${formatMoney(operation.amount)}`,
+        amount: formatMoney(operation.amount),
+        sign: '+',
     };
 };
 
@@ -38,51 +41,55 @@ const getSubscriptionProps = (operation: WalletTransactionFragment_operation_Wal
     const {product, interval} = operation.subscription;
     let intervalStr = interval === WalletSubscriptionInterval.WEEK ? 'weekly' : 'monthly';
     let subtitle = `Subscription, ${intervalStr}`;
-    let amount = `− ${formatMoney(operation.subscription.amount)}`;
+    let amount = formatMoney(operation.subscription.amount);
     return product.__typename === 'WalletSubscriptionProductGroup' ? {
         avatar: {
-            photo: product.group.photo,
-            key: product.group.id,
-            title: product.group.title,
+            src: product.group.photo,
+            placeholderKey: product.group.id,
+            placeholderTitle: product.group.title,
         },
         title: product.group.title,
         subtitle,
-        amount
+        amount,
+        sign: '−',
     } : {
         avatar: {
-            photo: product.user.photo,
-            key: product.user.id,
-            title: product.user.name,
+            src: product.user.photo,
+            placeholderKey: product.user.id,
+            placeholderTitle: product.user.name,
         },
         title: product.user.name,
         subtitle,
-        amount
+        amount,
+        sign: '−',
     };
 };
 
 const getTransferOutProps = (operation: WalletTransactionFragment_operation_WalletTransactionTransferOut): OperationViewProps => {
     return {
         avatar: {
-            photo: operation.toUser.photo,
-            key: operation.toUser.id,
-            title: operation.toUser.name,
+            src: operation.toUser.photo,
+            placeholderKey: operation.toUser.id,
+            placeholderTitle: operation.toUser.name,
         },
         title: operation.toUser.name,
         subtitle: 'Transfer',
-        amount: `− $${formatMoney(operation.chargeAmount)}`,
+        amount: formatMoney(operation.chargeAmount),
+        sign: '−',
     };
 };
 
 const getTransferInProps = (operation: WalletTransactionFragment_operation_WalletTransactionTransferIn): OperationViewProps => {
     return {
         avatar: {
-            photo: operation.fromUser.photo,
-            key: operation.fromUser.id,
-            title: operation.fromUser.name,
+            src: operation.fromUser.photo,
+            placeholderKey: operation.fromUser.id,
+            placeholderTitle: operation.fromUser.name,
         },
         title: operation.fromUser.name,
         subtitle: 'Transfer',
-        amount: `+ $${formatMoney(operation.amount)}`,
+        amount: formatMoney(operation.amount),
+        sign: '+'
     };
 };
 
@@ -111,6 +118,7 @@ export const TransactionView = (props: TransactionViewProps) => {
         title: '',
         subtitle: '',
         amount: '',
+        sign: '',
     };
 
     if (operation.__typename === 'WalletTransactionDeposit') {
@@ -123,7 +131,7 @@ export const TransactionView = (props: TransactionViewProps) => {
         operationProps = getTransferInProps(operation);
     }
 
-    let {title, subtitle, amount, avatar} = operationProps;
+    let {title, subtitle, amount, sign, avatar} = operationProps;
 
     let textBy = {
         [PaymentStatus.PENDING]: 'pending',
@@ -131,7 +139,7 @@ export const TransactionView = (props: TransactionViewProps) => {
         [PaymentStatus.CANCELED]: 'failed',
     };
     let statusText = payment && textBy[payment.status] ? `, ${textBy[payment.status]}` : '';
-    subtitle += `\n${formatDate(parseInt(date, 10))}${statusText}`;
+    let fullSubtitle = `${subtitle}\n${formatDate(parseInt(date, 10))}${statusText}`;
     
     let amountColor: string = theme.foregroundPrimary;
     if (payment && [PaymentStatus.ACTION_REQUIRED, PaymentStatus.FAILING, PaymentStatus.CANCELED].includes(payment.status)) {
@@ -140,9 +148,24 @@ export const TransactionView = (props: TransactionViewProps) => {
         amountColor = theme.accentPositive;
     }
 
+    const handlePress = React.useCallback(() => {
+        if (actionRequired) {
+            complete();
+        } else {
+            showTransactionInfo({
+                title,
+                subtitle,
+                amount,
+                card: payment && payment.card,
+                date,
+                avatar,
+            });
+        }
+    }, []);
+
     return (
         <>
-            <ZListItemBase height={76} separator={false}>
+            <ZListItemBase height={76} separator={false} onPress={handlePress}>
                 <View flexDirection="row" paddingVertical={6} paddingHorizontal={16} flexGrow={1} width="100%">
                     <View paddingTop={2} paddingRight={16}>
                         {!avatar
@@ -151,16 +174,14 @@ export const TransactionView = (props: TransactionViewProps) => {
                             ) : (
                                 <ZAvatar
                                     size="medium"
-                                    src={avatar.photo}
-                                    placeholderKey={avatar.key}
-                                    placeholderTitle={avatar.title}
+                                    {...avatar}
                                 />
                             )
                         }
                     </View>
                     <View flexGrow={1} flexShrink={1}>
                         <Text style={{...TextStyles.Label1, color: theme.foregroundPrimary}} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
-                        <Text style={{...TextStyles.Subhead, color: theme.foregroundTertiary}} numberOfLines={2} ellipsizeMode="tail" allowFontScaling={false}>{subtitle}</Text>
+                        <Text style={{...TextStyles.Subhead, color: theme.foregroundTertiary}} numberOfLines={2} ellipsizeMode="tail" allowFontScaling={false}>{fullSubtitle}</Text>
                     </View>
                     <View flexShrink={0} paddingLeft={16}>
                         <Text 
@@ -169,7 +190,7 @@ export const TransactionView = (props: TransactionViewProps) => {
                                 color: amountColor
                             }}
                         >
-                            {amount}
+                            {sign} {amount}
                         </Text>
                     </View>
                 </View>

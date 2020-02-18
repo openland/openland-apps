@@ -9,16 +9,7 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextTitle2, TextBody } from 'openland-web/utils/TextStyles';
 import SuccessIcon from 'openland-icons/s/ic-success-16.svg';
 import { DepositAvatar } from '../components/DepositAvatar';
-
-const extractDateTime = (unixTime: string): { date: string, time: string, isToday: boolean } => {
-    const date = new Date(parseInt(unixTime, 10));
-    const utc = date.toUTCString();
-    const segments = utc.split(' ');
-    const time = segments[4].split(':').slice(0, 2).join(':');
-    const isToday = ((new Date()).toDateString() === date.toDateString());
-
-    return { date: `${segments[2]} ${segments[1]}`, time, isToday };
-};
+import { extractDateTime } from 'openland-y-utils/wallet/dateTime';
 
 export const normalizeTransaction = (transaction: WalletTransactionFragment) => {
     const { id, operation, date } = transaction;
