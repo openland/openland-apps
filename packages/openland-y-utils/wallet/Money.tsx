@@ -9,7 +9,7 @@ export const formatMoney = (amount: number, adaptiveCents?: boolean) => {
     if (c < 10) {
         cs = '0' + cs;
     }
-    return '$' + (amount < 0 ? '-' : '') + (d.toString() + ((adaptiveCents && cs === '00') ? '' : ('.' + cs)));
+    return (amount < 0 ? '- ' : '') + '$' + (d.toString() + ((adaptiveCents && cs === '00') ? '' : ('.' + cs)));
 };
 
 export const Money = React.memo((props: { amount: number, adaptiveCents?: boolean }) => <>{formatMoney(props.amount, props.adaptiveCents)}</>);
