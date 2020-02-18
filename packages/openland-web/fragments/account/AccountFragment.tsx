@@ -28,7 +28,7 @@ import { trackEvent } from 'openland-x-analytics';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import FailureIcon from 'openland-icons/s/ic-failure-16.svg';
-import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { UIconSelectable } from 'openland-web/components/unicorn/UIcon';
 import { UCounter } from 'openland-unicorn/UCounter';
 
 const UserProfileCard = withUserInfo(({ user }) => {
@@ -140,7 +140,7 @@ export const AccountFragment = React.memo(() => {
                                     title="Wallet"
                                     icon={<WalletIcon />}
                                     path="/wallet"
-                                    rightElement={walletState.isLocked ? <XView marginRight={8} > <UIcon size={22} icon={<FailureIcon />} color="var(--accentNegative)" /> </XView> : undefined}
+                                    rightElement={walletState.isLocked ? <XView marginRight={8}><UIconSelectable size={22} icon={<FailureIcon />} color="var(--accentNegative)" selectedColor="var(--foregroundContrast)" /></XView> : undefined}
                                 />
                                 <UListItem
                                     title="Subscriptions"

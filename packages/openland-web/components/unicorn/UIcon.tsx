@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
+import { XViewSelectedContext } from 'react-mental';
 
 const wrapper = css`
     display: flex;
@@ -42,5 +43,14 @@ export const UIcon = React.memo((props: UIconProps) => {
         >
             {icon}
         </div>
+    );
+});
+
+export const UIconSelectable = React.memo((props: UIconProps & { selectedColor?: string }) => {
+    const { selectedColor, color, ...other } = props;
+    const selected = React.useContext(XViewSelectedContext);
+
+    return (
+        <UIcon color={selected ? selectedColor : color} {...other} />
     );
 });
