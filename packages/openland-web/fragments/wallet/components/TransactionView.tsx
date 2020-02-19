@@ -57,8 +57,18 @@ export const TransactionView = React.memo((props: TransactionViewProps) => {
             />
 
             {actionRequired && (
-                <XView paddingVertical={8} paddingLeft={72} paddingRight={16}>
-                    <XView borderRadius={8} backgroundColor="var(--accentNegative)" color="var(--foregroundContrast)" flexDirection="row" position="relative">
+                <XView paddingVertical={8} paddingLeft={72} paddingRight={16} >
+                    <XView
+                        borderRadius={8}
+                        backgroundColor="var(--accentNegative)"
+                        color="var(--foregroundContrast)"
+                        flexDirection="row"
+                        position="relative"
+                        cursor="pointer"
+                        onClick={() => {
+                            showConfirmPayment(payment!.intent!.id, payment!.intent!.clientSecret);
+                        }}
+                    >
                         <div className={arrowBox} />
 
                         <XView flexGrow={1} paddingVertical={8} paddingLeft={16} flexDirection="row" alignItems="center">
@@ -74,10 +84,6 @@ export const TransactionView = React.memo((props: TransactionViewProps) => {
                             {...TextStyles.Label1}
                             paddingVertical={8}
                             paddingHorizontal={16}
-                            cursor="pointer"
-                            onClick={() => {
-                                showConfirmPayment(payment!.intent!.id, payment!.intent!.clientSecret);
-                            }}
                         >
                             Try again
                         </XView>
