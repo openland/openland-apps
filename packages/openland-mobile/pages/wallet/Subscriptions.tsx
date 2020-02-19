@@ -147,11 +147,12 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
                     <ZButton
                         title="Cancel subscription"
                         style="secondary"
-                        onPress={() => client.mutateCancelSubscription({ id: props.subscriptionId }).then(() => {
-                            client.refetchSubscriptions().then(() => {
-                                ctx.hide();
-                            });
-                        })}
+                        action={async () => {
+                            await client.mutateCancelSubscription({ id: props.subscriptionId });
+                            await client.refetchSubscriptions();
+
+                            ctx.hide();
+                        }}
                     />
                     <View marginTop={16}>
                         <Text allowFontScaling={false} style={{ ...TextStyles.Caption, color: theme.foregroundSecondary, textAlign: 'center' }}>
