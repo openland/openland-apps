@@ -1,4 +1,4 @@
-import { WalletTransactionFragment, WalletSubscriptionInterval } from 'openland-api/spacex.types';
+import { WalletTransactionFragment, WalletSubscriptionInterval, UserShort, RoomShort_SharedRoom, RoomTiny_room_SharedRoom } from 'openland-api/spacex.types';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { getPaymentMethodName } from 'openland-y-utils/wallet/brands';
 import { extractDateTime } from 'openland-y-utils/wallet/dateTime';
@@ -16,13 +16,17 @@ export interface TransactionConverted {
     source: WalletTransactionFragment;
 }
 
+const getAvatar = (subject: { __typename: 'User', id: string, name: string, photo: string | null } | { __typename: 'SharedRoom', id: string, title: string, photo: string }) => (subject.__typename === 'User' ? {
+    id: subject.id, title: subject.name, photo: subject.photo,
+} : { id: subject.id, title: subject.title, photo: subject.photo });
+
 export const convertTransaction = (transaction: WalletTransactionFragment) => {
     const { id, operation } = transaction;
     const converted: TransactionConverted = {
         id,
         avatar: undefined,
         title: 'Transaction',
-        type: 'Unsupported',
+        type: 'Basic',
         interval: undefined,
         dateTime: extractDateTime(transaction.date),
         paymentMethod: undefined,
@@ -38,64 +42,51 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
 
         if (product.__typename === 'WalletProductGroup') {
             converted.title = product.group.title;
-            converted.avatar = {
-                id: product.group.id,
-                title: product.group.title,
-                photo: product.group.photo,
-            };
+            converted.avatar = getAvatar(product.group);
         } else if (product.__typename === 'WalletProductDonation') {
             converted.title = product.user.name;
-            converted.avatar = {
-                id: product.user.id,
-                title: product.user.name,
-                photo: product.user.photo,
-            };
+            converted.avatar = getAvatar(product.user);
         }
     } else if (operation.__typename === 'WalletTransactionTransferIn') {
         const { fromUser } = operation;
 
         converted.title = fromUser.name;
         converted.type = 'Transfer';
-        converted.avatar = {
-            id: fromUser.id,
-            title: fromUser.name,
-            photo: fromUser.photo,
-        };
+        converted.avatar = getAvatar(fromUser);
     } else if (operation.__typename === 'WalletTransactionTransferOut') {
         const { toUser } = operation;
 
         converted.title = toUser.name;
         converted.type = 'Transfer';
-        converted.avatar = {
-            id: toUser.id,
-            title: toUser.name,
-            photo: toUser.photo,
-        };
+        converted.avatar = getAvatar(toUser);
     } else if (operation.__typename === 'WalletTransactionDeposit') {
         converted.title = 'Top up balance';
         converted.type = 'Deposit';
     } else if (operation.__typename === 'WalletTransactionIncome') {
-        converted.title = 'Income title';
-        converted.type = 'Income type';
+        converted.type = 'Income';
+
+        if (operation.source) {
+            const { product } = operation.source;
+
+            if (product.__typename === 'WalletProductGroup') {
+                converted.title = product.group.title;
+                converted.avatar = getAvatar(product.group);
+            } else if (product.__typename === 'WalletProductDonation') {
+                converted.title = product.user.name;
+                converted.avatar = getAvatar(product.user);
+            }
+        }
     } else if (operation.__typename === 'WalletTransactionPurchase') {
         const { product } = operation.purchase;
 
-        converted.type = 'Purchase';
+        converted.type = 'Payment';
 
         if (product.__typename === 'WalletProductGroup') {
             converted.title = product.group.title;
-            converted.avatar = {
-                id: product.group.id,
-                title: product.group.title,
-                photo: product.group.photo,
-            };
+            converted.avatar = getAvatar(product.group);
         } else if (product.__typename === 'WalletProductDonation') {
             converted.title = product.user.name;
-            converted.avatar = {
-                id: product.user.id,
-                title: product.user.name,
-                photo: product.user.photo,
-            };
+            converted.avatar = getAvatar(product.user);
         }
     }
 
