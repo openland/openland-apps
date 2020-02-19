@@ -9,22 +9,10 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import Rate from 'react-native-rate';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { useClient } from 'openland-api/useClient';
 import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { trackEvent } from 'openland-mobile/analytics';
-
-let useOnlineState = () => {
-    let [status, setStatus] = React.useState(useClient().engine.status);
-    let client = useClient();
-    React.useEffect(() => {
-        return client.engine.watchStatus((s) => {
-            setStatus(s);
-        });
-    }, []);
-    return status;
-};
 
 export const handleGlobalInvitePress = async () => {
     startLoader();
@@ -56,7 +44,6 @@ let SettingsContent = ((props: PageProps) => {
 
     const primary = resp.me.primaryOrganization;
     const secondary = resp.organizations.filter((v) => v.id !== (primary && primary.id)).sort((a, b) => a.name.localeCompare(b.name));
-    const status = useOnlineState();
     const wallet = getClient().useMyWallet({ suspense: false });
 
     return (
