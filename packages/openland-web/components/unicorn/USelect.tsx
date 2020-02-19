@@ -193,7 +193,7 @@ const withMenuStyle = css`
         background-color: #fff;
         box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
         border-radius: 8px;
-        max-height: 200px;
+        max-height: 268px;
         position: absolute;
         left: 0;
         margin-top: 8px;
@@ -205,7 +205,7 @@ const withMenuStyle = css`
     }
     & .Select-menu {
         padding: 8px 0;
-        max-height: 198px;
+        max-height: 266px;
         overflow-y: auto;
     }
     & .Select-option {
