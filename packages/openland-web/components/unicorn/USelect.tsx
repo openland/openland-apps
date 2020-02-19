@@ -385,7 +385,7 @@ const ArrowRender = (props: ArrowRendererProps) => {
     return (
         <UIcon
             icon={<IcDropdown className={cx(arrowStyle, isOpen && arrowOpenStyle)} />}
-            size={20}
+            size={16}
             color="var(--foregroundTertiary)"
         />
     );
