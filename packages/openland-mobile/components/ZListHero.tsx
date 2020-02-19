@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
     } as ViewStyle,
     title: {
         ...TextStyles.Title2,
-        textAlignVertical: 'center'
+        textAlignVertical: 'center',
+        flexShrink: 1,
     } as TextStyle,
     subtitle: {
         ...TextStyles.Subhead,
