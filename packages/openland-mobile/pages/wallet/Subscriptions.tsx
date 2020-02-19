@@ -41,7 +41,7 @@ const generateSubTitle = (subscription: NormalizedSubscription) => {
             return `Next bill on ${date}`;
 
         case WalletSubscriptionState.GRACE_PERIOD:
-        case WalletSubscriptionState.RETRYING: 
+        case WalletSubscriptionState.RETRYING:
             return "Payment failed";
 
         case WalletSubscriptionState.CANCELED:
@@ -80,7 +80,7 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
                 />
                 <View marginTop={16}>
                     <Text allowFontScaling={false} style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>
-                        { props.title }
+                        {props.title}
                     </Text>
                 </View>
                 <View marginTop={4}>
@@ -93,7 +93,7 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
                                 : theme.foregroundTertiary
                         }}
                     >
-                        { generateSubTitle(props) }
+                        {generateSubTitle(props)}
                     </Text>
                 </View>
             </View>
@@ -125,12 +125,12 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
                     />
                     <View marginTop={16}>
                         <Text allowFontScaling={false} style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>
-                            { props.title }
+                            {props.title}
                         </Text>
                     </View>
                     <View marginTop={4}>
                         <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundTertiary }}>
-                            { generateSubTitle(props) }
+                            {generateSubTitle(props)}
                         </Text>
                     </View>
                 </LinearGradient>
@@ -172,20 +172,20 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
             path="Wallet"
         />
     ) : (
-        <ZListItem
-            text={props.title}
-            subTitle={generateSubTitle(props)}
-            leftAvatar={{ photo: props.photo, key: props.id, title: props.title }}
-            onPress={props.state === WalletSubscriptionState.STARTED ? showModalWithCancel : showModal}
-        />
-    );
+            <ZListItem
+                text={props.title}
+                subTitle={generateSubTitle(props)}
+                leftAvatar={{ photo: props.photo, key: props.id, title: props.title }}
+                onPress={props.state === WalletSubscriptionState.STARTED ? showModalWithCancel : showModal}
+            />
+        );
 });
 
 const SubscriptionsComponent = React.memo<PageProps>((props) => {
     const client = useClient();
     const theme = React.useContext(ThemeContext);
-    const subscriptions = client.useSubscriptions({ fetchPolicy: 'network-only' });
-    const groupSubscriptions = subscriptions.subscriptions.filter(subscription => subscription.product.__typename === 'WalletProductGroup');
+    const subscriptions = client.useSubscriptions({ fetchPolicy: 'cache-and-network' }).subscriptions;
+    const groupSubscriptions = subscriptions.filter(subscription => subscription.product.__typename === 'WalletProductGroup');
     const normalizedSubscriptions: NormalizedSubscription[] = groupSubscriptions.map(subscription => {
         const group = (subscription.product as Subscriptions_subscriptions_product_WalletProductGroup).group;
 
@@ -218,8 +218,7 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
         <>
             <SHeader title="Subscriptions" />
             <SScrollView>
-
-                { haveBillingProblems && (
+                {haveBillingProblems && (
                     <LinearGradient
                         colors={[theme.gradient0to100Start, theme.gradient0to100End]}
                         paddingTop={16}
@@ -243,7 +242,7 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
                             </Text>
                         </View>
                         <View marginTop={4}>
-                            <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center'}}>
+                            <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center' }}>
                                 Some transactions for subscriptions are failed. Complete them or add a new card to keep subscriptions ongoing
                             </Text>
                         </View>
@@ -253,23 +252,15 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
                     </LinearGradient>
                 )}
 
-                { activeSubscriptions.length > 0 && (
-                    <ZListGroup header="Active">
-                        { activeSubscriptions.map(subscription => (
-                            <SubscriptionView {...subscription} />
-                        ))}
-                    </ZListGroup>
-                )}
+                <ZListGroup header="Active">
+                    {activeSubscriptions.map(subscription => <SubscriptionView key={subscription.id} {...subscription} />)}
+                </ZListGroup>
 
-                { expiredSubscriptions.length > 0 && (
-                    <ZListGroup header="Expired">
-                        { expiredSubscriptions.map(subscription => (
-                            <SubscriptionView {...subscription} />
-                        ))}
-                    </ZListGroup>
-                )}
+                <ZListGroup header="Expired">
+                    {expiredSubscriptions.map(subscription => <SubscriptionView key={subscription.id} {...subscription} />)}
+                </ZListGroup>
 
-                { activeSubscriptions.length === 0 && expiredSubscriptions.length === 0 && (
+                {activeSubscriptions.length === 0 && expiredSubscriptions.length === 0 && (
                     <View
                         paddingTop={64}
                         paddingLeft={32}
@@ -292,7 +283,7 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
                             </Text>
                         </View>
                         <View marginTop={4}>
-                            <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center'}}>
+                            <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center' }}>
                                 Join any premium groups, and they will appear here
                             </Text>
                         </View>
@@ -301,7 +292,6 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
                         </View>
                     </View>
                 )}
-
             </SScrollView>
         </>
     );

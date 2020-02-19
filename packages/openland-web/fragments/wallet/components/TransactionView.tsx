@@ -28,7 +28,7 @@ export const TransactionView = React.memo((props: TransactionViewProps) => {
     const { avatar, title, type, dateTime, status, amount, interval, source } = convertTransaction(props.item);
     const payment = source.operation.payment;
     const actionRequired = status === 'failing';
-    const color = actionRequired ? 'var(--accentNegative)' : (source.operation.amount > 0 ? 'var(--accentPositive)' : 'var(--foregroundPrimary)');
+    const color = (actionRequired || status === 'canceled') ? 'var(--accentNegative)' : (source.operation.amount > 0 ? 'var(--accentPositive)' : 'var(--foregroundPrimary)');
 
     return (
         <>
@@ -48,7 +48,11 @@ export const TransactionView = React.memo((props: TransactionViewProps) => {
                     </XView>
                 }
                 onClick={() => {
-                    showTransaction(source);
+                    if (actionRequired && payment && payment.intent) {
+                        showConfirmPayment(payment.intent.id, payment.intent.clientSecret);
+                    } else {
+                        showTransaction(source);
+                    }
                 }}
             />
 
