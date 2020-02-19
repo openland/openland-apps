@@ -278,6 +278,13 @@ mutation BuyPremiumChatSubscription($chatId: ID!) {
         }
     }
 }
+mutation BuyPremiumChatPass($chatId: ID!) {
+    betaBuyPremiumChatPass(chatId: $chatId) {
+        id
+        premiumPassIsActive
+    }
+}
+
 mutation SetTyping($conversationId: ID!, $type: TypingType!) {
     typingSend(conversationId: $conversationId, type: $type)
 }

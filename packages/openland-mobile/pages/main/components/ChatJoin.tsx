@@ -66,30 +66,32 @@ const BuyPaidChatPassButton = (props: {
     const client = useClient();
     const [loading, setLoading] = React.useState(false);
     const buyPaidChatPass = React.useCallback(async () => {
-        if (!props.premiumSettings.interval) {
-            AlertBlanket.alert('One-time paid chats are not yet supported');
-        } else {
-            showPayConfirm({
-                router: props.router,
-                amount: props.premiumSettings.price,
-                type: 'subscription',
-                interval: props.premiumSettings.interval,
-                productTitle: props.title,
-                productDescription: 'Subscription',
-                productPicture: <ZAvatar size="medium" title={props.title} id={props.id} photo={props.photo} />,
-                action: async () => {
-                    try {
-                        let res = await client.mutateBuyPremiumChatSubscription({ chatId: props.id });
-                        if (res.betaBuyPremiumChatSubscription.premiumPassIsActive) {
-                            props.router.pushAndRemove('Conversation', { id: props.id });
-                        }
-                    } catch (e) {
-                        AlertBlanket.alert(e.message);
-                        setLoading(false);
+        showPayConfirm({
+            router: props.router,
+            amount: props.premiumSettings.price,
+            ...(props.premiumSettings.interval ?
+                { type: 'subscription', interval: props.premiumSettings.interval } :
+                { type: 'payment' }),
+            productTitle: props.title,
+            productDescription: props.premiumSettings.interval ? 'Subscription' : 'Payment',
+            productPicture: <ZAvatar size="medium" title={props.title} id={props.id} photo={props.photo} />,
+            action: async () => {
+                try {
+                    let passIsActive = false;
+                    if (props.premiumSettings.interval) {
+                        passIsActive = (await client.mutateBuyPremiumChatSubscription({ chatId: props.id })).betaBuyPremiumChatSubscription.premiumPassIsActive;
+                    } else {
+                        passIsActive = (await client.mutateBuyPremiumChatPass({ chatId: props.id })).betaBuyPremiumChatPass.premiumPassIsActive;
                     }
-                },
-            });
-        }
+                    if (passIsActive) {
+                        props.router.pushAndRemove('Conversation', { id: props.id });
+                    }
+                } catch (e) {
+                    AlertBlanket.alert(e.message);
+                    setLoading(false);
+                }
+            },
+        });
     }, []);
 
     let buttonText = 'Join for ' + formatMoney(props.premiumSettings.price, true);

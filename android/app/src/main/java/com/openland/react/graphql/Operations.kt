@@ -110,6 +110,7 @@ object Operations {
         if (name == "BetaDiscoverSkip") return BetaDiscoverSkip
         if (name == "BetaNextDiscoverReset") return BetaNextDiscoverReset
         if (name == "BetaSubmitNextDiscover") return BetaSubmitNextDiscover
+        if (name == "BuyPremiumChatPass") return BuyPremiumChatPass
         if (name == "BuyPremiumChatSubscription") return BuyPremiumChatSubscription
         if (name == "CancelSubscription") return CancelSubscription
         if (name == "CommentSetReaction") return CommentSetReaction

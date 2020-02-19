@@ -27,7 +27,6 @@ import {
     AuthSidebarComponent,
     AuthMobileHeader,
 } from 'openland-web/pages/root/AuthSidebarComponent';
-import AlertBlanket from 'openland-x/AlertBlanket';
 
 const container = css`
     display: flex;
@@ -295,28 +294,30 @@ const BuyPaidChatPassButton = (props: {
     let router = React.useContext(XViewRouterContext)!;
     const [loading, setLoading] = React.useState(false);
     const buyPaidChatPass = React.useCallback(async () => {
-        if (!props.premiumSettings.interval) {
-            AlertBlanket.alert('One-time paid chats are not yet supported');
-        } else {
-            showPayConfirm({
-                amount: props.premiumSettings.price,
-                type: 'subscription',
-                interval: props.premiumSettings.interval,
-                productTitle: props.title,
-                productDescription: 'Subscription',
-                productPicture: <UAvatar title={props.title} id={props.id} photo={props.photo} />,
-                action: async () => {
-                    try {
-                        let res = await client.mutateBuyPremiumChatSubscription({ chatId: props.id });
-                        if (res.betaBuyPremiumChatSubscription.premiumPassIsActive) {
-                            router.navigate('/mail/' + props.id);
-                        }
-                    } catch (e) {
-                        setLoading(false);
+        showPayConfirm({
+            amount: props.premiumSettings.price,
+            ...(props.premiumSettings.interval ?
+                { type: 'subscription', interval: props.premiumSettings.interval } :
+                { type: 'payment' }),
+            productTitle: props.title,
+            productDescription: props.premiumSettings.interval ? 'Subscription' : 'Payment',
+            productPicture: <UAvatar title={props.title} id={props.id} photo={props.photo} />,
+            action: async () => {
+                try {
+                    let passIsActive = false;
+                    if (props.premiumSettings.interval) {
+                        passIsActive = (await client.mutateBuyPremiumChatSubscription({ chatId: props.id })).betaBuyPremiumChatSubscription.premiumPassIsActive;
+                    } else {
+                        passIsActive = (await client.mutateBuyPremiumChatPass({ chatId: props.id })).betaBuyPremiumChatPass.premiumPassIsActive;
                     }
-                },
-            });
-        }
+                    if (passIsActive) {
+                        router.navigate('/mail/' + props.id);
+                    }
+                } catch (e) {
+                    setLoading(false);
+                }
+            },
+        });
     }, []);
 
     let buttonText = 'Join for ' + formatMoney(props.premiumSettings.price, true);

@@ -3949,6 +3949,13 @@ private let BetaSubmitNextDiscoverSelector = obj(
                         ))
                 ))
         )
+private let BuyPremiumChatPassSelector = obj(
+            field("betaBuyPremiumChatPass", "betaBuyPremiumChatPass", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean")))
+                )))
+        )
 private let BuyPremiumChatSubscriptionSelector = obj(
             field("betaBuyPremiumChatSubscription", "betaBuyPremiumChatSubscription", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5510,6 +5517,12 @@ class Operations {
         "mutation BetaSubmitNextDiscover($selectedTagsIds:[String!]!,$excudedGroupsIds:[String!]!){betaSubmitNextDiscover(selectedTagsIds:$selectedTagsIds,excudedGroupsIds:$excudedGroupsIds){__typename tagGroup{__typename id}}}",
         BetaSubmitNextDiscoverSelector
     )
+    let BuyPremiumChatPass = OperationDefinition(
+        "BuyPremiumChatPass",
+        .mutation, 
+        "mutation BuyPremiumChatPass($chatId:ID!){betaBuyPremiumChatPass(chatId:$chatId){__typename id premiumPassIsActive}}",
+        BuyPremiumChatPassSelector
+    )
     let BuyPremiumChatSubscription = OperationDefinition(
         "BuyPremiumChatSubscription",
         .mutation, 
@@ -6395,6 +6408,7 @@ class Operations {
         if name == "BetaDiscoverSkip" { return BetaDiscoverSkip }
         if name == "BetaNextDiscoverReset" { return BetaNextDiscoverReset }
         if name == "BetaSubmitNextDiscover" { return BetaSubmitNextDiscover }
+        if name == "BuyPremiumChatPass" { return BuyPremiumChatPass }
         if name == "BuyPremiumChatSubscription" { return BuyPremiumChatSubscription }
         if name == "CancelSubscription" { return CancelSubscription }
         if name == "CommentSetReaction" { return CommentSetReaction }

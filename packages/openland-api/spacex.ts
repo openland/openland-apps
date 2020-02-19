@@ -1372,6 +1372,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateBetaSubmitNextDiscover(variables: Types.BetaSubmitNextDiscoverVariables): Promise<Types.BetaSubmitNextDiscover> {
         return this.mutate('BetaSubmitNextDiscover', variables);
     }
+    mutateBuyPremiumChatPass(variables: Types.BuyPremiumChatPassVariables): Promise<Types.BuyPremiumChatPass> {
+        return this.mutate('BuyPremiumChatPass', variables);
+    }
     mutateBuyPremiumChatSubscription(variables: Types.BuyPremiumChatSubscriptionVariables): Promise<Types.BuyPremiumChatSubscription> {
         return this.mutate('BuyPremiumChatSubscription', variables);
     }

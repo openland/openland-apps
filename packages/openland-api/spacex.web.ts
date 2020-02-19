@@ -3956,6 +3956,13 @@ const BetaSubmitNextDiscoverSelector = obj(
                         ))
                 ))
         );
+const BuyPremiumChatPassSelector = obj(
+            field('betaBuyPremiumChatPass', 'betaBuyPremiumChatPass', args(fieldValue("chatId", refValue('chatId'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('premiumPassIsActive', 'premiumPassIsActive', args(), notNull(scalar('Boolean')))
+                )))
+        );
 const BuyPremiumChatSubscriptionSelector = obj(
             field('betaBuyPremiumChatSubscription', 'betaBuyPremiumChatSubscription', args(fieldValue("chatId", refValue('chatId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5512,6 +5519,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'BetaSubmitNextDiscover',
         body: 'mutation BetaSubmitNextDiscover($selectedTagsIds:[String!]!,$excudedGroupsIds:[String!]!){betaSubmitNextDiscover(selectedTagsIds:$selectedTagsIds,excudedGroupsIds:$excudedGroupsIds){__typename tagGroup{__typename id}}}',
         selector: BetaSubmitNextDiscoverSelector
+    },
+    BuyPremiumChatPass: {
+        kind: 'mutation',
+        name: 'BuyPremiumChatPass',
+        body: 'mutation BuyPremiumChatPass($chatId:ID!){betaBuyPremiumChatPass(chatId:$chatId){__typename id premiumPassIsActive}}',
+        selector: BuyPremiumChatPassSelector
     },
     BuyPremiumChatSubscription: {
         kind: 'mutation',
