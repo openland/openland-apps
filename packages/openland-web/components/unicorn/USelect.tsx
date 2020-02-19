@@ -8,8 +8,8 @@ import Select, {
     ArrowRendererProps,
 } from 'react-select';
 import { TextLabel1, TextDensed, TextBody } from 'openland-web/utils/TextStyles';
-import IcBack from 'openland-icons/s/ic-back-24.svg';
 import IcClear from 'openland-icons/s/ic-close-16.svg';
+import IcDropdown from 'openland-icons/s/ic-dropdown-16.svg';
 import { UIcon } from './UIcon';
 import { FormField } from 'openland-form/useField';
 
@@ -357,18 +357,18 @@ const ClearRender = () => (
 );
 
 const arrowStyle = css`
-    transform: rotate(-90deg);
+    transform: rotate(0deg);
 `;
 
 const arrowOpenStyle = css`
-    transform: rotate(-270deg);
+    transform: rotate(180deg);
 `;
 
 const ArrowRender = (props: ArrowRendererProps) => {
     const isOpen = props.isOpen;
     return (
         <UIcon
-            icon={<IcBack className={cx(arrowStyle, isOpen && arrowOpenStyle)} />}
+            icon={<IcDropdown className={cx(arrowStyle, isOpen && arrowOpenStyle)} />}
             size={20}
             color="var(--foregroundTertiary)"
         />
@@ -413,8 +413,8 @@ export const USelect = (props: USelectBasicProps) => {
                             props.multi ? (
                                 <MultiValueRender size={size} {...valueProps} />
                             ) : (
-                                <SingleValueRender size={size} {...valueProps} />
-                            )
+                                    <SingleValueRender size={size} {...valueProps} />
+                                )
                         }
                         clearable={props.clearable || false}
                         className={cx(
@@ -439,8 +439,8 @@ export const USelect = (props: USelectBasicProps) => {
                             props.multi ? (
                                 <MultiValueRender size={size} {...valueProps} />
                             ) : (
-                                <SingleValueRender size={size} {...valueProps} />
-                            )
+                                    <SingleValueRender size={size} {...valueProps} />
+                                )
                         }
                         clearable={props.clearable || false}
                         className={cx(
