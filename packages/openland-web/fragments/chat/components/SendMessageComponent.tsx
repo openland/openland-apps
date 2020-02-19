@@ -59,7 +59,7 @@ const userName = css`
     text-overflow: ellipsis;
     overflow: hidden;
 `;
-    
+
 const allMention = css`
     font-weight: bold;
 `;
