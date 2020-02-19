@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { WalletTransactionFragment, PaymentStatus } from 'openland-api/spacex.types';
+import { WalletTransactionFragment } from 'openland-api/spacex.types';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { showConfirmPayment } from '../modals/showConfirmPayment';
 import { showTransaction } from '../modals/showTransaction';
@@ -25,36 +25,30 @@ interface TransactionViewProps {
 }
 
 export const TransactionView = React.memo((props: TransactionViewProps) => {
-    const converted = convertTransaction(props.item);
-    const operation = props.item.operation;
-    const payment = operation.payment;
-    const actionRequired = payment && payment.intent && (payment.status === PaymentStatus.FAILING || payment.status === PaymentStatus.ACTION_REQUIRED);
-    const color = actionRequired ? 'var(--accentNegative)' : (operation.__typename === 'WalletTransactionDeposit' ? 'var(--accentPositive)' : 'var(--foregroundPrimary)');
+    const { avatar, title, type, dateTime, status, amount, interval, source } = convertTransaction(props.item);
+    const payment = source.operation.payment;
+    const actionRequired = status === 'failing';
+    const color = actionRequired ? 'var(--accentNegative)' : (source.operation.amount > 0 ? 'var(--accentPositive)' : 'var(--foregroundPrimary)');
 
     return (
         <>
             <UListItem
-                leftElement={!converted.avatar ? <DepositAvatar /> : undefined}
-                avatar={converted.avatar}
-                title={converted.title}
-                description={converted.type + (operation.__typename === 'WalletTransactionSubscription' ? (', ' + converted.interval) : '')}
+                leftElement={!avatar ? <DepositAvatar /> : undefined}
+                avatar={avatar}
+                title={title}
+                description={type + (!!interval ? `, ${interval}` : '')}
                 useRadius={true}
                 rightElement={
                     <XView marginRight={8} alignItems="flex-end">
-                        <XView {...TextStyles.Label1} color={color}>{converted.amount}</XView>
+                        <XView {...TextStyles.Label1} color={color}>{amount}</XView>
                         <XView {...TextStyles.Subhead} color="var(--foregroundSecondary)">
-                            {converted.dateTime.isToday ? converted.dateTime.time : converted.dateTime.date}
-                            {payment && payment.status === PaymentStatus.PENDING && ', pending'}
-                            {actionRequired && ', failing'}
+                            {dateTime.isToday ? dateTime.time : dateTime.date}
+                            {status !== 'success' && `, ${status}`}
                         </XView>
                     </XView>
                 }
                 onClick={() => {
-                    if (actionRequired) {
-                        showConfirmPayment(payment!.intent!.id, payment!.intent!.clientSecret);
-                    } else {
-                        showTransaction(props.item);
-                    }
+                    showTransaction(source);
                 }}
             />
 

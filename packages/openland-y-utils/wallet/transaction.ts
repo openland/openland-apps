@@ -1,8 +1,9 @@
-import { WalletTransactionFragment, WalletSubscriptionInterval } from 'openland-api/spacex.types';
+import { WalletTransactionFragment, WalletSubscriptionInterval, PaymentStatus, WalletTransactionStatus } from 'openland-api/spacex.types';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { getPaymentMethodName } from 'openland-y-utils/wallet/brands';
 import { extractDateTime } from 'openland-y-utils/wallet/dateTime';
 
+export type TransactionConvertedStatus = 'pending' | 'failing' | 'canceled' | 'success';
 export interface TransactionConverted {
     id: string;
     avatar?: { id: string, title: string, photo: string | null | undefined };
@@ -12,6 +13,7 @@ export interface TransactionConverted {
     dateTime: { date: string, time: string, isToday: boolean };
     paymentMethod?: string;
     amount: string;
+    status: TransactionConvertedStatus;
 
     source: WalletTransactionFragment;
 }
@@ -31,8 +33,17 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
         dateTime: extractDateTime(transaction.date),
         paymentMethod: undefined,
         amount: formatMoney(transaction.operation.amount, false, true),
+        status: 'pending',
         source: transaction
     };
+
+    if (transaction.status === WalletTransactionStatus.SUCCESS) {
+        converted.status = 'success';
+    } else if (transaction.status === WalletTransactionStatus.CANCELED) {
+        converted.status = 'canceled';
+    } else if (operation.payment && (operation.payment.status === PaymentStatus.FAILING || operation.payment.status === PaymentStatus.ACTION_REQUIRED)) {
+        converted.status = 'failing';
+    }
 
     if (operation.__typename === 'WalletTransactionSubscription') {
         const { interval, product } = operation.subscription;
