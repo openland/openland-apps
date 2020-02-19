@@ -14,6 +14,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import LinearGradient from 'react-native-linear-gradient';
 import { ZButton } from 'openland-mobile/components/ZButton';
+import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 
 interface NormalizedSubscription {
     id: string;
@@ -220,36 +221,36 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
             <SHeader title="Subscriptions" />
 
             {activeSubscriptions.length === 0 && expiredSubscriptions.length === 0 && (
-                <View
-                    paddingLeft={32}
-                    paddingRight={32}
-                    // paddingBottom={32}
-                    flexGrow={1}
-                    alignItems="center"
-                    justifyContent="center"
-                    flexDirection="column"
-                >
-                    <Image
-                        source={require('assets/art-empty.png')}
-                        style={{
-                            width: 240,
-                            height: 150,
-                        }}
-                    />
-                    <View marginTop={4}>
-                        <Text allowFontScaling={false} style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>
-                            No subscriptions yet
-                        </Text>
+                <ASSafeAreaView flexGrow={1} alignItems="center" justifyContent="center" flexDirection="column">
+                    <View
+                        paddingLeft={32}
+                        paddingRight={32}
+                        alignItems="center"
+                        justifyContent="center"
+                        flexDirection="column"
+                    >
+                        <Image
+                            source={require('assets/art-empty.png')}
+                            style={{
+                                width: 240,
+                                height: 150,
+                            }}
+                        />
+                        <View marginTop={4}>
+                            <Text allowFontScaling={false} style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>
+                                No subscriptions yet
+                            </Text>
+                        </View>
+                        <View marginTop={4}>
+                            <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center' }}>
+                                Join any premium groups, and they will appear here
+                            </Text>
+                        </View>
+                        <View marginTop={16}>
+                            <ZButton title='Discover groups' path="Discover" />
+                        </View>
                     </View>
-                    <View marginTop={4}>
-                        <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center' }}>
-                            Join any premium groups, and they will appear here
-                        </Text>
-                    </View>
-                    <View marginTop={16}>
-                        <ZButton title='Discover groups' path="Discover" />
-                    </View>
-                </View>
+                </ASSafeAreaView>
             )}
 
             {(activeSubscriptions.length > 0 || expiredSubscriptions.length > 0) && (
