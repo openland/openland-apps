@@ -53,8 +53,9 @@ const MenuItemComponent = (props: { item: MenuItem, ctx: UPopperController }) =>
         <UListItem
             title={item.title}
             icon={loading ? <XLoader size="medium" transparentBackground={true} loading={true} /> : item.icon}
-            onClick={!item.path ? onClick : undefined}
+            onClick={!item.path ? onClick : () => { ctx.hide(); }}
             path={item.path}
+            linkSelectable={false}
         />
     );
 };

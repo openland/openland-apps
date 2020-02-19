@@ -55,6 +55,7 @@ export interface UListItemProps {
     disabled?: boolean;
     paddingHorizontal?: number;
     interactive?: boolean;
+    linkSelectable?: boolean;
 }
 
 export const UListItem = React.memo((props: UListItemProps) => {
@@ -79,7 +80,8 @@ export const UListItem = React.memo((props: UListItemProps) => {
         hovered,
         disabled,
         paddingHorizontal = 16,
-        interactive = true
+        interactive = true,
+        linkSelectable = true
     } = props;
     const height = large ? 80 : !!avatar || !!leftElement || !!iconBackground ? 56 : 48;
 
@@ -243,7 +245,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 borderRadius={useRadius ? 8 : 0}
                 onClick={onClick}
                 path={path}
-                linkSelectable={true}
+                linkSelectable={linkSelectable}
             >
                 {content}
             </XView>
