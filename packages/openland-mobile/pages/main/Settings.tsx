@@ -52,7 +52,7 @@ let SettingsContent = ((props: PageProps) => {
                 photo={resp.me.photo}
                 id={resp.me.id}
                 title={resp.me.name}
-                subtitle={resp.me.email}
+                subtitle={resp.myProfile?.authEmail}
                 path="ProfileUser"
                 pathParams={{ id: resp.me.id }}
             />

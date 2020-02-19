@@ -56,6 +56,7 @@ export default withApp('Super Debug', ['super-admin', 'software-developer'], pro
             <DebugMailButton emailType={DebugEmailType.PUBLIC_ROOM_INVITE} />
             <DebugMailButton emailType={DebugEmailType.PRIVATE_ROOM_INVITE} />
             <DebugMailButton emailType={DebugEmailType.ROOM_INVITE_ACCEPTED} />
+            <DebugMailButton emailType={DebugEmailType.GENERIC} />
         </XVertical2>
     </DevToolsScaffold>
 ));

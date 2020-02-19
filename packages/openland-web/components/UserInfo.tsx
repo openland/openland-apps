@@ -6,6 +6,7 @@ import { AppConfig } from 'openland-y-runtime/AppConfig';
 export interface UserInfo {
     user: Types.UserShort | null;
     organization: Types.OrganizationShort | null;
+    profile: Types.Account_myProfile | null;
     isLoggedIn: boolean;
     isAccountExists: boolean;
     isAccountPicked: boolean;
@@ -22,6 +23,7 @@ export interface UserInfoProps {
     organization?: Types.OrganizationShort | null;
     sessionState: Types.SessionStateFull;
     roles: string[];
+    profile: Types.Account_myProfile | null;
 }
 
 export class UserInfoProvider extends React.Component<UserInfoProps> {
@@ -36,6 +38,7 @@ export class UserInfoProvider extends React.Component<UserInfoProps> {
         this.ctx = {
             user: hasUser ? this.props.user! : null,
             organization: hasAccount ? this.props.organization! : null,
+            profile: hasUser ? this.props.profile : null,
             isLoggedIn: this.props.sessionState.isLoggedIn,
             isProfileCreated: this.props.sessionState.isProfileCreated && hasUser,
             isAccountExists: this.props.sessionState.isAccountExists,

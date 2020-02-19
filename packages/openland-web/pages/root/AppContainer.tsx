@@ -25,6 +25,7 @@ export const AppContainer = (props: { children: any }) => {
                 sessionState={data.sessionState}
                 user={data.me}
                 organization={data.me && data.me.primaryOrganization}
+                profile={data.myProfile}
                 roles={data.myPermissions.roles}
             >
                 <MessengerProvider user={hasMessenger ? data.me!! : undefined}>

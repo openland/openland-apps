@@ -960,7 +960,8 @@ internal val DialogFragmentSelector = obj(
             field("alphaTopMessage", "topMessage", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("ModernMessage", DialogMessageSelector)
-                ))
+                )),
+            field("membership", "membership", notNull(scalar("String")))
         )
 
 internal val DialogUpdateFragmentSelector = obj(
@@ -991,7 +992,8 @@ internal val DialogUpdateFragmentSelector = obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("mobile", "mobile", notNull(scalar("Boolean"))),
                         field("desktop", "desktop", notNull(scalar("Boolean")))
-                    )))
+                    ))),
+                field("membership", "membership", notNull(scalar("String")))
             )),
             inline("DialogMessageUpdated", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
@@ -1074,7 +1076,8 @@ internal val DialogUpdateFragmentSelector = obj(
                                 ))
                         ))
                     )),
-                field("haveMention", "haveMention", notNull(scalar("Boolean")))
+                field("haveMention", "haveMention", notNull(scalar("Boolean"))),
+                field("membership", "membership", notNull(scalar("String")))
             ))
         )
 
@@ -1790,6 +1793,23 @@ internal val RoomFullWithoutMembersSelector = obj(
                 field("myBadge", "myBadge", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("UserBadge", UserBadgeSelector)
+                    )),
+                field("isPremium", "isPremium", notNull(scalar("Boolean"))),
+                field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean"))),
+                field("premiumSubscription", "premiumSubscription", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("state", "state", notNull(scalar("String")))
+                    )),
+                field("premiumSettings", "premiumSettings", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("price", "price", notNull(scalar("Int"))),
+                        field("interval", "interval", scalar("String"))
+                    )),
+                field("owner", "owner", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
                     ))
             ))
         )

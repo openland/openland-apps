@@ -147,5 +147,19 @@ fragment RoomFullWithoutMembers on Room {
         myBadge {
             ...UserBadge
         }
+        isPremium
+        premiumPassIsActive
+        premiumSubscription {
+            id
+            state
+        }
+        premiumSettings {
+            id
+            price
+            interval
+        }
+        owner {
+            id
+        }
     }
 }

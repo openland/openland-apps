@@ -30,7 +30,7 @@ import FailureIcon from 'openland-icons/s/ic-failure-16.svg';
 import { UIconSelectable } from 'openland-web/components/unicorn/UIcon';
 import { UCounter } from 'openland-unicorn/UCounter';
 
-const UserProfileCard = withUserInfo(({ user }) => {
+const UserProfileCard = withUserInfo(({ user, profile }) => {
     if (user) {
         return (
             <XView
@@ -57,13 +57,15 @@ const UserProfileCard = withUserInfo(({ user }) => {
                 />
                 <XView flexGrow={1}>
                     <XView {...TextStyles.Title3}>{emoji(user.name)}</XView>
-                    <SelectableText
-                        {...TextStyles.Body}
-                        color="var(--foregroundSecondary)"
-                        selectedColor="var(--foregroundContrast)"
-                    >
-                        {user.email}
-                    </SelectableText>
+                    {profile && (
+                        <SelectableText
+                            {...TextStyles.Body}
+                            color="var(--foregroundSecondary)"
+                            selectedColor="var(--foregroundContrast)"
+                        >
+                            {profile.authEmail}
+                        </SelectableText>
+                    )}
                 </XView>
             </XView>
         );

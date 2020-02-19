@@ -59,6 +59,7 @@ const MessagesSearchInner = (props: MessagesSearchProps) => {
                             isOut: message.sender.id === messenger.user.id,
                             isMuted: !!chat.settings.mute,
                             sender: message.sender.name,
+                            membership: chat.__typename === 'SharedRoom' ? chat.membership : 'NONE'
                         }}
                         key={message.id}
                         onPress={props.onPick}

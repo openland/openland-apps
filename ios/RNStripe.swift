@@ -77,7 +77,7 @@ class RNStripe: RCTEventEmitter, STPAuthenticationContext {
           dict["clientSecret"] = clientSecret
           dict["status"] = "failed"
           let errors = [STPAPIClient.pkPaymentError(forStripeError: error)].compactMap({ $0 })
-          dict["message"] = errors.count > 0 ? errors[0] : "We are unable to authenticate your payment method. Please choose a different payment method and try again."
+          dict["message"] = errors.count > 0 ? errors[0].localizedDescription : "We are unable to authenticate your payment method. Please choose a different payment method and try again."
           self.sendEvent(withName: "setup_intent", body: dict)
           break
         case .canceled:
