@@ -91,8 +91,8 @@ const Chat = React.memo((props: ChatProps) => {
             >
                 {props.selected && (
                     <Image
-                        marginLeft={3}
-                        marginTop={3}
+                        marginLeft={2}
+                        marginTop={2}
                         source={require('assets/ic-checkmark.png')}
                         style={{ tintColor: theme.foregroundInverted }}
                     />
