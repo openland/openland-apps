@@ -76,7 +76,7 @@ const BuyPaidChatPassButton = (props: {
                 interval: props.premiumSettings.interval,
                 productTitle: props.title,
                 productDescription: 'Subscription',
-                productPicture: <ZAvatar size="medium" placeholderTitle={props.title} placeholderKey={props.id} src={props.photo} />,
+                productPicture: <ZAvatar size="medium" title={props.title} id={props.id} photo={props.photo} />,
                 action: async () => {
                     try {
                         let res = await client.mutateBuyPremiumChatSubscription({ chatId: props.id });
@@ -136,27 +136,27 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
         <View flexDirection="row" justifyContent="center">
             <View marginLeft={-14} borderRadius={100} borderColor={theme.backgroundPrimary} borderWidth={2}>
                 <ZAvatar
-                    src={invitedBy.photo}
+                    photo={invitedBy.photo}
                     size="x-large"
-                    placeholderKey={invitedBy.id}
-                    placeholderTitle={invitedBy.name}
+                    id={invitedBy.id}
+                    title={invitedBy.name}
                 />
             </View>
             <View marginLeft={-14} borderRadius={100} borderColor={theme.backgroundPrimary} borderWidth={2}>
                 <ZAvatar
-                    src={photo}
+                    photo={photo}
                     size="x-large"
-                    placeholderKey={id}
-                    placeholderTitle={title}
+                    id={id}
+                    title={title}
                 />
             </View>
         </View>
     ) : (
             <ZAvatar
-                src={photo}
+                photo={photo}
                 size="xx-large"
-                placeholderKey={id}
-                placeholderTitle={title}
+                id={id}
+                title={title}
             />
         );
 
@@ -166,7 +166,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                 {avatars.map(src => (
                     <View marginLeft={-8} borderRadius={100} borderColor={theme.backgroundPrimary} borderWidth={2}>
                         <ZAvatar
-                            src={src}
+                            photo={src}
                             size="small"
                         />
                     </View>

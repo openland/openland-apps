@@ -79,7 +79,7 @@ export const ZListHero = React.memo<ZListHeroProps>((props) => {
     const content = (
         <View style={styles.container}>
             <View style={styles.avatar}>
-                <XPAvatarWithPreview size="x-large" src={photo} placeholderKey={id} placeholderTitle={title} />
+                <XPAvatarWithPreview size="x-large" photo={photo} id={id} title={title} />
                 {score && (
                     <View position="absolute" bottom={-7} left={0} right={0} alignItems="center">
                         <View style={{ borderWidth: 3, borderColor: theme.backgroundPrimary, borderRadius: RadiusStyles.Large }}>

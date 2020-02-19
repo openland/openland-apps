@@ -57,7 +57,7 @@ const SearchList = React.memo((props: SearchListProps) => {
                     <View key={user.id} opacity={isWriter ? HighlightAlpha : undefined}>
                         <ZListItem
                             text={user.name}
-                            leftAvatar={{ photo: user.photo, key: user.id, title: user.name }}
+                            leftAvatar={{ photo: user.photo, id: user.id, title: user.name }}
                             onPress={!isWriter ? () => onSelect(user.id) : undefined}
                         />
                     </View>

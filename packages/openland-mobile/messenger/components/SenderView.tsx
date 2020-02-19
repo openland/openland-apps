@@ -24,9 +24,9 @@ export const SenderView = React.memo<SenderViewProps>((props) => {
                 <View marginRight={12}>
                     <ZAvatar
                         size="medium"
-                        src={sender.photo}
-                        placeholderKey={sender.id}
-                        placeholderTitle={sender.name}
+                        photo={sender.photo}
+                        id={sender.id}
+                        title={sender.name}
                     />
                 </View>
                 <View flexDirection="column" flexGrow={1} flexShrink={1}>

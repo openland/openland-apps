@@ -24,7 +24,7 @@ const SelectPrimaryOrganizationComponent = (props: PageProps) => {
                             text={org.name}
                             leftAvatar={{
                                 photo: org.photo,
-                                key: org.id,
+                                id: org.id,
                                 title: org.name
                             }}
                             checkmark={org.isPrimary}

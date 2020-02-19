@@ -51,7 +51,7 @@ export const EntityHeader = React.memo((props: AuthorHeaderProps) => {
     return (
         <TouchableOpacity onPress={onPress} activeOpacity={0.6}>
             <View style={styles.box}>
-                <ZAvatar size="small" src={avatar.photo} placeholderKey={avatar.id} placeholderTitle={avatar.title} />
+                <ZAvatar size="small" photo={avatar.photo} id={avatar.id} title={avatar.title} />
                 <View style={styles.info}>
                     <Text
                         style={[styles.title, { color: theme.foregroundPrimary, maxWidth: LABEL_MAX_WIDTH }]}

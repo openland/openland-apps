@@ -11,18 +11,18 @@ class XPAvatarWithPreviewComponent extends React.PureComponent<ZAvatarProps> {
     }
 
     handlePress = () => {
-        if (!this.props.src || this.props.src.startsWith('ph://')) {
+        if (!this.props.photo || this.props.photo.startsWith('ph://')) {
             return;
         }
         if (!this.ref.current) {
             return;
         }
         let view = this.ref.current!!;
-        let url = this.props.src;
+        let url = this.props.photo;
 
         view.measure((x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
             showPictureModal({
-                title: this.props.placeholderTitle || undefined,
+                title: this.props.title || undefined,
                 url,
                 width: 256,
                 height: 256,

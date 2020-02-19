@@ -20,9 +20,9 @@ export const ZUserView = XMemo<ZUserViewProps>((props) => {
             <View paddingHorizontal={16} flexDirection="row" alignItems="center">
                 <ZAvatar
                     size="x-small"
-                    src={props.user.photo}
-                    placeholderTitle={props.user.name}
-                    placeholderKey={props.user.id}
+                    photo={props.user.photo}
+                    title={props.user.name}
+                    id={props.user.id}
                 />
                 <View flexGrow={1} flexShrink={1} paddingLeft={16}>
                     <Text

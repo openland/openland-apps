@@ -38,10 +38,10 @@ const ChatHeaderAvatarContent = XMemo<{ conversationId: string, router: SRouter 
         <TouchableOpacity disabled={!path.path} onPress={() => props.router.push(path.path!!, path.pathArgs)} style={{ marginLeft: 16, marginRight: 12 }}>
             <View height={Platform.OS === 'android' ? 56 : 44} alignItems="center" justifyContent="center">
                 <ZAvatar
-                    src={privateRoom ? privateRoom.user.photo : sharedRoom!.photo}
+                    photo={privateRoom ? privateRoom.user.photo : sharedRoom!.photo}
                     size="small"
-                    placeholderKey={privateRoom ? privateRoom.user.id : sharedRoom!.id}
-                    placeholderTitle={privateRoom ? privateRoom.user.name : sharedRoom!.title}
+                    id={privateRoom ? privateRoom.user.id : sharedRoom!.id}
+                    title={privateRoom ? privateRoom.user.name : sharedRoom!.title}
                 />
             </View>
         </TouchableOpacity>

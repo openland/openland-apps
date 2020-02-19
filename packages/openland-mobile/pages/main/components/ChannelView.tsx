@@ -99,7 +99,7 @@ export const ChannelView = (props: ChannelViewProps) => {
     return (
         <ZListItemBase separator={false} height={56} onPress={handlePress}>
             <View style={styles.avatar}>
-                <ZAvatar size="medium" src={photo} placeholderKey={id} placeholderTitle={title} />
+                <ZAvatar size="medium" photo={photo} id={id} title={title} />
             </View>
             <View style={styles.info}>
                 <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }} allowFontScaling={false} numberOfLines={1} ellipsizeMode="tail">

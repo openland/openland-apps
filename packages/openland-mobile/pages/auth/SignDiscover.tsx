@@ -32,9 +32,9 @@ const Logo = React.memo(() => {
                 <View top={79} zIndex={1}>
                     <ZAvatar
                         size="medium"
-                        src={user.photo}
-                        placeholderKey={user.id}
-                        placeholderTitle={user.name}
+                        photo={user.photo}
+                        id={user.id}
+                        title={user.name}
                     />
                 </View>
                 <Image

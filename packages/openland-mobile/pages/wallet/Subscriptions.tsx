@@ -73,9 +73,9 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
                 alignItems="center"
             >
                 <ZAvatar
-                    src={props.photo}
-                    placeholderTitle={props.title}
-                    placeholderKey={props.id}
+                    photo={props.photo}
+                    title={props.title}
+                    id={props.id}
                     size='xx-large'
                 />
                 <View marginTop={16}>
@@ -118,9 +118,9 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
                     flexDirection="column"
                 >
                     <ZAvatar
-                        src={props.photo}
-                        placeholderTitle={props.title}
-                        placeholderKey={props.id}
+                        photo={props.photo}
+                        title={props.title}
+                        id={props.id}
                         size='xx-large'
                     />
                     <View marginTop={16}>
@@ -168,14 +168,14 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
         <ZListItem
             text={props.title}
             subTitle={generateSubTitle(props)}
-            leftAvatar={{ photo: props.photo, key: props.id, title: props.title }}
+            leftAvatar={{ photo: props.photo, id: props.id, title: props.title }}
             path="Wallet"
         />
     ) : (
             <ZListItem
                 text={props.title}
                 subTitle={generateSubTitle(props)}
-                leftAvatar={{ photo: props.photo, key: props.id, title: props.title }}
+                leftAvatar={{ photo: props.photo, id: props.id, title: props.title }}
                 onPress={props.state === WalletSubscriptionState.STARTED ? showModalWithCancel : showModal}
             />
         );

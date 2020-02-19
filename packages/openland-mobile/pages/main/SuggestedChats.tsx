@@ -34,10 +34,10 @@ const Chat = React.memo((props: ChatProps) => {
         <ZListItemBase height={60} onPress={onPress} separator={false}>
             <View width={72} height={56} alignItems="center" justifyContent="center">
                 <ZAvatar
-                    src={props.item.photo}
+                    photo={props.item.photo}
                     size="medium"
-                    placeholderKey={props.item.id}
-                    placeholderTitle={props.item.title}
+                    id={props.item.id}
+                    title={props.item.title}
                 />
             </View>
             <View
@@ -215,7 +215,7 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
                         selected.size === 0
                             ? 'Skip'
                             : 'Join' + (selected.size === props.chats.length ? ' all' : '')
-                    }   `}
+                        }   `}
                     onPress={onAdd}
                 />
             </View>

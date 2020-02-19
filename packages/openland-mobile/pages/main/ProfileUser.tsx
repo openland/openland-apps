@@ -117,7 +117,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                         <ZListItem
                             leftAvatar={{
                                 photo: user.primaryOrganization.photo,
-                                key: user.primaryOrganization.id,
+                                id: user.primaryOrganization.id,
                                 title: user.primaryOrganization.name,
                             }}
                             text={user.primaryOrganization.name}
@@ -149,7 +149,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                         <ZListItem
                             leftAvatar={{
                                 photo: item.chat.__typename === 'PrivateRoom' ? item.chat.user.photo : item.chat.photo,
-                                key: item.chat.id,
+                                id: item.chat.id,
                                 title: item.chat.__typename === 'PrivateRoom' ? item.chat.user.name : item.chat.title,
                             }}
                             text={item.chat.__typename === 'PrivateRoom' ? item.chat.user.name : item.chat.title}

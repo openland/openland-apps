@@ -48,11 +48,9 @@ const TransactionInfo = React.memo<TransactionInfoProps & { ctx: BottomSheetActi
                 alignItems="center"
                 marginBottom={16}
             >
-                {!avatar ? (
-                    <Image source={require('assets/ic-top-up-40.png')} style={{ width: 96, height: 96 }} />
-                ) : (
-                        <ZAvatar size="xx-large" placeholderKey={avatar.id} placeholderTitle={avatar.title} src={avatar.photo} />
-                    )}
+                {avatar && <ZAvatar size="xx-large" {...avatar.id} />}
+                {!avatar && <Image source={require('assets/ic-top-up-40.png')} style={{ width: 96, height: 96 }} />}
+
                 <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 16, marginBottom: 4 }} allowFontScaling={false}>{title}</Text>
                 <Text style={{ ...TextStyles.Body, color: theme.foregroundTertiary }} allowFontScaling={false}>
                     {type}{!!interval && `, ${interval}`}

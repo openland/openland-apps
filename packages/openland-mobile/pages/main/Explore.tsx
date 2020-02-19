@@ -21,7 +21,7 @@ import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigR
 export const RoomsList = (props: { router: SRouter }) => {
     const chatsQuery = JSON.stringify({ isChannel: false });
     const channelsQuery = JSON.stringify({ isChannel: true });
-    let rooms = getClient().useAvailableRooms({chatsQuery, channelsQuery}, { fetchPolicy: 'network-only' });
+    let rooms = getClient().useAvailableRooms({ chatsQuery, channelsQuery }, { fetchPolicy: 'network-only' });
 
     let chatsEdges = (rooms.availableChats.edges || []);
     let availableChats = chatsEdges.map(x => x.node);
@@ -52,7 +52,7 @@ export const RoomsList = (props: { router: SRouter }) => {
                         text={v.title}
                         leftAvatar={{
                             photo: v.photo,
-                            key: v.id,
+                            id: v.id,
                             title: v.title,
                         }}
                         subTitle={v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}
@@ -79,7 +79,7 @@ export const RoomsList = (props: { router: SRouter }) => {
                         text={v.title}
                         leftAvatar={{
                             photo: v.photo,
-                            key: v.id,
+                            id: v.id,
                             title: v.title,
                         }}
                         subTitle={v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}
@@ -104,7 +104,7 @@ export const RoomsList = (props: { router: SRouter }) => {
                         text={v.name}
                         leftAvatar={{
                             photo: v.photo,
-                            key: v.id,
+                            id: v.id,
                             title: v.name,
                         }}
                         subTitle={<>{v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}<Text style={{ opacity: 0.5 }}> ∙</Text> {v.roomsCount + (v.roomsCount === 1 ? ' chat' : ' chats')}</>}
@@ -129,7 +129,7 @@ export const RoomsList = (props: { router: SRouter }) => {
                         text={v.title}
                         leftAvatar={{
                             photo: v.photo,
-                            key: v.id,
+                            id: v.id,
                             title: v.title,
                         }}
                         subTitle={v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}

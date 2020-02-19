@@ -21,9 +21,9 @@ const styles = StyleSheet.create({
 
 export interface ZAvatarProps {
     size: ZAvatarSize;
-    src?: string | null;
-    placeholderKey?: string | null;
-    placeholderTitle?: string | null;
+    photo?: string | null;
+    id?: string | null;
+    title?: string | null;
     online?: boolean;
 }
 
@@ -42,11 +42,11 @@ const ZAvatarInner = XMemo<ZAvatarProps>((props) => {
     const theme = React.useContext(ThemeContext);
     const { size, placeholder: textSize, dotSize, dotPosition, dotBorderWidth } = avatarSizes[props.size];
 
-    if (props.src && !props.src.startsWith('ph://')) {
+    if (props.photo && !props.photo.startsWith('ph://')) {
         return (
             <View>
                 <View style={{ width: size, height: size, borderRadius: size / 2, backgroundColor: theme.backgroundTertiaryTrans }}>
-                    <ZImage highPriority={true} imageSize={{ width: 256, height: 256 }} width={size} height={size} source={props.src} borderRadius={size / 2} />
+                    <ZImage highPriority={true} imageSize={{ width: 256, height: 256 }} width={size} height={size} source={props.photo} borderRadius={size / 2} />
                     <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: size / 2, borderColor: theme.border, borderWidth: 0.5 }} />
                 </View>
                 {props.online && (
@@ -59,13 +59,13 @@ const ZAvatarInner = XMemo<ZAvatarProps>((props) => {
     }
 
     let placeholderIndex = 0;
-    if (props.placeholderKey) {
-        placeholderIndex = doSimpleHash(props.placeholderKey);
+    if (props.id) {
+        placeholderIndex = doSimpleHash(props.id);
     }
     let placeholderStyle = ZStyles.avatars[placeholderIndex % ZStyles.avatars.length];
     let placeholderText = '?';
-    if (props.placeholderTitle) {
-        placeholderText = extractPlaceholder(props.placeholderTitle);
+    if (props.title) {
+        placeholderText = extractPlaceholder(props.title);
     }
 
     return (

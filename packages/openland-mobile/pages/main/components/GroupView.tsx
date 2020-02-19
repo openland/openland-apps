@@ -27,10 +27,10 @@ export const GroupView = React.memo<GroupViewProps>((props) => {
         <ZListItemBase height={52} onPress={handlePress} onLongPress={onLongPress} separator={false}>
             <View marginHorizontal={16} height={52} alignItems="center" justifyContent="center">
                 <ZAvatar
-                    src={photo}
+                    photo={photo}
                     size="medium"
-                    placeholderKey={item.id}
-                    placeholderTitle={item.title}
+                    id={item.id}
+                    title={item.title}
                 />
             </View>
             <View paddingRight={paddingRight || 10} flexDirection="column" flexGrow={1} flexBasis={0} justifyContent="center">

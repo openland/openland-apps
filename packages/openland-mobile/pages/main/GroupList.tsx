@@ -10,7 +10,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 
 const GroupListComponent = React.memo<PageProps>((props) => {
     let initial = props.router.params.initial as Types.AvailableRooms_availableChats_edges_node[];
-    let {query} = props.router.params;
+    let { query } = props.router.params;
 
     let [rooms, setRooms] = React.useState(initial);
     const [loading, setLoading] = React.useState(false);
@@ -43,7 +43,7 @@ const GroupListComponent = React.memo<PageProps>((props) => {
                             text={item.title}
                             leftAvatar={{
                                 photo: item.photo,
-                                key: item.id,
+                                id: item.id,
                                 title: item.title,
                             }}
                             subTitle={item.membersCount + (item.membersCount === 1 ? ' member' : ' members')}

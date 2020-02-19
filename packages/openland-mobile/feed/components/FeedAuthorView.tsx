@@ -53,7 +53,7 @@ export const FeedAuthorView = React.memo((props: FeedAuthorViewProps) => {
     return (
         <TouchableOpacity onPress={handlePress} activeOpacity={0.6}>
             <View style={styles.sender}>
-                <ZAvatar size="x-small" src={avatarEntity.photo} placeholderKey={avatarEntity.id} placeholderTitle={title} />
+                <ZAvatar size="x-small" photo={avatarEntity.photo} id={avatarEntity.id} title={title} />
                 <Text style={[styles.senderName, { color, maxWidth: maxWidth - 32 - 24 }]} allowFontScaling={false} numberOfLines={1} ellipsizeMode="tail">
                     {title}
                     {subtitle && (

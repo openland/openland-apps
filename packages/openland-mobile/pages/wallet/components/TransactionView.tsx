@@ -43,18 +43,8 @@ export const TransactionView = (props: TransactionViewProps) => {
             <ZListItemBase height={76} separator={false} onPress={handlePress}>
                 <View flexDirection="row" paddingVertical={6} paddingHorizontal={16} flexGrow={1} width="100%">
                     <View paddingTop={2} paddingRight={16}>
-                        {!avatar
-                            ? (
-                                <Image source={require('assets/ic-top-up-40.png')} />
-                            ) : (
-                                <ZAvatar
-                                    size="medium"
-                                    placeholderKey={avatar.id}
-                                    placeholderTitle={avatar.title}
-                                    src={avatar.photo}
-                                />
-                            )
-                        }
+                        {avatar && <ZAvatar size="medium" {...avatar} />}
+                        {!avatar && <Image source={require('assets/ic-top-up-40.png')} />}
                     </View>
                     <View flexGrow={1} flexShrink={1}>
                         <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>

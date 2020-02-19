@@ -126,9 +126,9 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                     <View>
                         <ZAvatar
                             size="x-small"
-                            src={sender.photo}
-                            placeholderKey={sender.id}
-                            placeholderTitle={sender.name}
+                            photo={sender.photo}
+                            id={sender.id}
+                            title={sender.name}
                         />
                     </View>
                 </TouchableOpacity>

@@ -70,7 +70,7 @@ const FeedPublishToComponent = React.memo((props: PageProps) => {
                             text={item.title}
                             leftAvatar={{
                                 photo: item.photo,
-                                key: item.id,
+                                id: item.id,
                                 title: item.title,
                             }}
                             onPress={() => setSelected(item.id)}

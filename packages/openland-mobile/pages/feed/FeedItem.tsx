@@ -76,7 +76,7 @@ const FeedItemComponent = React.memo((props: PageProps) => {
                 <ZListItem
                     text={source.title}
                     subTitle="Channel"
-                    leftAvatar={{ photo: source.photo, key: source.id, title: source.title }}
+                    leftAvatar={{ photo: source.photo, id: source.id, title: source.title }}
                     onPress={() => {
                         ctx.hide();
 
@@ -89,7 +89,7 @@ const FeedItemComponent = React.memo((props: PageProps) => {
                 <ZListItem
                     text={author.name}
                     subTitle="Author"
-                    leftAvatar={{ photo: author.photo, key: author.id, title: author.name }}
+                    leftAvatar={{ photo: author.photo, id: author.id, title: author.name }}
                     onPress={() => {
                         ctx.hide();
 

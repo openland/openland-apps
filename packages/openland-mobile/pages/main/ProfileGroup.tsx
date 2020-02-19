@@ -231,7 +231,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                         text={room.organization.name}
                         leftAvatar={{
                             photo: room.organization.photo,
-                            key: room.organization.id,
+                            id: room.organization.id,
                             title: room.organization.name
                         }}
                         path="ProfileOrganization"

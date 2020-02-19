@@ -12,7 +12,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { preprocessText } from 'openland-y-utils/TextProcessor';
 
 export interface ZListItemProps {
-    leftAvatar?: { photo?: string | null, key: string, title: string };
+    leftAvatar?: { photo?: string | null, id: string, title: string };
     leftIcon?: any | null;
     leftIconColor?: string;
     leftIconView?: JSX.Element;
@@ -147,7 +147,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
             >
                 {this.props.leftIcon && <LeftIcon theme={theme} src={this.props.leftIcon} flatIcon={this.props.small} leftIconColor={this.props.leftIconColor} appearance={this.props.appearance} />}
                 {!!this.props.leftIconView && <LeftIconViewWrapper>{this.props.leftIconView}</LeftIconViewWrapper>}
-                {this.props.leftAvatar && <View paddingLeft={16} alignSelf="center"><ZAvatar size="medium" placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
+                {this.props.leftAvatar && <View paddingLeft={16} alignSelf="center"><ZAvatar size="medium" {...this.props.leftAvatar} /></View>}
                 <View paddingHorizontal={16} paddingVertical={this.props.multiline ? 3 : undefined} flexGrow={1} flex={1} justifyContent="center">
                     {this.props.title && <Text style={{ ...TextStyles.Caption, color: theme.foregroundSecondary, marginTop: 2, marginBottom: -2 }} allowFontScaling={false}>{this.props.title.toLocaleLowerCase()}</Text>}
                     <View flexDirection="row" alignItems="center" justifyContent="center">

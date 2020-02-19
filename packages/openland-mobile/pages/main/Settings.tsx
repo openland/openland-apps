@@ -150,7 +150,7 @@ let SettingsContent = ((props: PageProps) => {
             <ZListGroup header="Organizations" actionRight={{ title: 'New', onPress: () => props.router.push('NewOrganization') }}>
                 {primary && <ZListItem
                     text={primary.name}
-                    leftAvatar={{ photo: primary.photo, key: primary.id, title: primary.name }}
+                    leftAvatar={{ photo: primary.photo, id: primary.id, title: primary.name }}
                     description="Primary"
                     onPress={() => props.router.push('ProfileOrganization', { id: primary!.id })}
                 />}
@@ -158,7 +158,7 @@ let SettingsContent = ((props: PageProps) => {
                     <ZListItem
                         key={v.id}
                         text={v.name}
-                        leftAvatar={{ photo: v.photo, key: v.id, title: v.name }}
+                        leftAvatar={{ photo: v.photo, id: v.id, title: v.name }}
                         onPress={() => props.router.push('ProfileOrganization', { id: v.id })}
                     />
                 ))}

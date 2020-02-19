@@ -49,7 +49,7 @@ const CommunityListComponent = React.memo<PageProps>((props) => {
                             text={item.name}
                             leftAvatar={{
                                 photo: item.photo,
-                                key: item.id,
+                                id: item.id,
                                 title: item.name,
                             }}
                             subTitle={<>{item.membersCount + (item.membersCount === 1 ? ' member' : ' members')}<Text style={{ opacity: 0.5 }}> ∙</Text> {item.roomsCount + (item.roomsCount === 1 ? ' chat' : ' chats')}</>}

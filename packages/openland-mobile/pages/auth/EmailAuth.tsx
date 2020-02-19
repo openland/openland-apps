@@ -215,8 +215,8 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
     const avatarSrc =
         photoSrc && photoCrop
             ? `https://ucarecdn.com/${photoSrc}/-/crop/${photoCrop.w}x${photoCrop.h}/${
-                  photoCrop.x
-              },${photoCrop.y}/-/scale_crop/72x72/center/`
+            photoCrop.x
+            },${photoCrop.y}/-/scale_crop/72x72/center/`
             : null;
 
     return (
@@ -241,7 +241,7 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
                         flexDirection="row"
                         justifyContent="center"
                     >
-                        <ZAvatar size="xx-large" src={avatarSrc} />
+                        <ZAvatar size="xx-large" photo={avatarSrc} />
                     </View>
                 )}
                 <View paddingBottom={avatarSrc ? 70 : undefined}>

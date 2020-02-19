@@ -36,7 +36,7 @@ const PrivateProfile = XMemo<PageProps & { organization: OrganizationWithoutMemb
     return (
         <View flexGrow={1} paddingTop={area.top} paddingBottom={area.bottom + 16} paddingHorizontal={32} alignItems="center" flexDirection="column">
             <View flexGrow={1} justifyContent="center" alignItems="center">
-                <ZAvatar size="xx-large" src={organization.photo} placeholderKey={organization.id} placeholderTitle={organization.name} />
+                <ZAvatar size="xx-large" photo={organization.photo} id={organization.id} title={organization.name} />
                 <Text style={{ color: theme.foregroundPrimary, marginTop: 16, textAlign: 'center', ...TextStyles.Title2 }} allowFontScaling={false}>
                     {organization.name}
                 </Text>

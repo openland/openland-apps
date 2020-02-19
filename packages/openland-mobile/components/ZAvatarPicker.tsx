@@ -148,7 +148,7 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
                 )}
                 {!!valueUrl && (
                     <View width={size} height={size}>
-                        <ZAvatar src={valueUrl} size={props.size || 'x-large'} />
+                        <ZAvatar photo={valueUrl} size={props.size || 'x-large'} />
 
                         {!loading && (
                             <View position="absolute" bottom={2} right={2} width={28} height={28} padding={2} backgroundColor={theme.backgroundPrimary} borderRadius={14}>

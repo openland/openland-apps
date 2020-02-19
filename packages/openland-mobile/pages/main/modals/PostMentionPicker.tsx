@@ -53,14 +53,14 @@ const SearchList = XMemo<SearchListProps>((props) => {
                     {(item.__typename === 'User' || item.__typename === 'Organization') && (
                         <ZListItem
                             text={item.name}
-                            leftAvatar={{ photo: item.photo, key: item.id, title: item.name }}
+                            leftAvatar={{ photo: item.photo, id: item.id, title: item.name }}
                             onPress={() => onSelect(item)}
                         />
                     )}
                     {item.__typename === 'SharedRoom' && (
                         <ZListItem
                             text={item.title}
-                            leftAvatar={{ photo: item.roomPhoto, key: item.id, title: item.title }}
+                            leftAvatar={{ photo: item.roomPhoto, id: item.id, title: item.title }}
                             onPress={() => onSelect(item)}
                         />
                     )}

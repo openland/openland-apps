@@ -35,7 +35,7 @@ const Inner = React.memo((props: InnerProps) => {
 
     return (
         <>
-            <ZAvatar src={photo} placeholderKey={id} placeholderTitle={title} size="xx-large" />
+            <ZAvatar photo={photo} id={id} title={title} size="xx-large" />
             <Text
                 style={{ ...TextStyles.Title2, marginTop: 16, color: theme.foregroundPrimary }}
                 numberOfLines={1}

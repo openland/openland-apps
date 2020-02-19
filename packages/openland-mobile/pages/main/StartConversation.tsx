@@ -23,10 +23,10 @@ const Chat = (props: { item: DialogDataSourceItem, onPress: (key: string) => voi
     >
         <View width={72} height={56} alignItems="center" justifyContent="center">
             <ZAvatar
-                src={props.item.photo}
+                photo={props.item.photo}
                 size="medium"
-                placeholderKey={props.item.key}
-                placeholderTitle={props.item.title}
+                id={props.item.key}
+                title={props.item.title}
             />
         </View>
         <View marginRight={10} marginTop={10} marginBottom={10} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch" justifyContent="center">

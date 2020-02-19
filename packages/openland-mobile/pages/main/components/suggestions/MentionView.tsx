@@ -28,18 +28,18 @@ export const MentionView = React.memo((props: MentionViewProps) => {
                 <View paddingHorizontal={16} height={40} alignItems="center" justifyContent="center">
                     {(mention.__typename === 'User' || mention.__typename === 'Organization') && (
                         <ZAvatar
-                            src={mention.photo}
+                            photo={mention.photo}
                             size="x-small"
-                            placeholderKey={mention.id}
-                            placeholderTitle={mention.name}
+                            id={mention.id}
+                            title={mention.name}
                         />
                     )}
                     {mention.__typename === 'SharedRoom' && (
                         <ZAvatar
-                            src={mention.roomPhoto}
+                            photo={mention.roomPhoto}
                             size="x-small"
-                            placeholderKey={mention.id}
-                            placeholderTitle={mention.title}
+                            id={mention.id}
+                            title={mention.title}
                         />
                     )}
                     {mention.__typename === 'AllMention' && (
