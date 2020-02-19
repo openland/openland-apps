@@ -58,7 +58,7 @@ export const CardView = React.memo((props: CardViewProps) => {
             title={`${getPaymentMethodName(brand)}, ${last4}`}
             description={`Valid to ${expMonth}/${year}${isDefault ? ', primary' : ''}`}
             interactive={false}
-            rightElement={<UMoreButton menu={ctx => <CardMenu {...props} ctx={ctx} />} />}
+            rightElement={<UMoreButton key={`card-menu-${isDefault}`} menu={ctx => <CardMenu {...props} ctx={ctx} />} />}
         />
     );
 });
