@@ -57,7 +57,7 @@ let SettingsContent = ((props: PageProps) => {
                 pathParams={{ id: resp.me.id }}
             />
             <ZListItem
-                leftIconColor={theme.tintPurple}
+                leftIconColor={theme.tintBlue}
                 leftIcon={require('assets/ic-edit-glyph-24.png')}
                 text="Edit profile"
                 path="SettingsProfile"
@@ -125,7 +125,7 @@ let SettingsContent = ((props: PageProps) => {
                     onPress={() => props.router.push('Conversation', { flexibleId: '9KkDvyowQgcYAn0WvYgXFrdqAp' })}
                 />
                 <ZListItem
-                    leftIconColor={theme.tintBlue}
+                    leftIconColor={theme.tintGrey}
                     leftIcon={require('assets/ic-info-glyph-24.png')}
                     text="About us"
                     path="SettingsAbout"
