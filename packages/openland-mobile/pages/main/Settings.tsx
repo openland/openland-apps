@@ -14,7 +14,6 @@ import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { trackEvent } from 'openland-mobile/analytics';
-import { getMessenger } from 'openland-mobile/utils/messenger';
 
 let useOnlineState = () => {
     let [status, setStatus] = React.useState(useClient().engine.status);
@@ -58,7 +57,7 @@ let SettingsContent = ((props: PageProps) => {
     const primary = resp.me.primaryOrganization;
     const secondary = resp.organizations.filter((v) => v.id !== (primary && primary.id)).sort((a, b) => a.name.localeCompare(b.name));
     const status = useOnlineState();
-    const walletState = getMessenger().engine.wallet.state.useState();
+    const wallet = getClient().useMyWallet({ suspense: false });
 
     return (
         <SScrollView>
@@ -66,8 +65,7 @@ let SettingsContent = ((props: PageProps) => {
                 photo={resp.me.photo}
                 id={resp.me.id}
                 title={resp.me.name}
-                subtitle={status.status === 'connected' ? 'online' : 'connecting...'}
-                subtitleColor={status.status === 'connected' ? theme.accentPrimary : undefined}
+                subtitle={resp.me.email}
                 path="ProfileUser"
                 pathParams={{ id: resp.me.id }}
             />
@@ -89,7 +87,7 @@ let SettingsContent = ((props: PageProps) => {
                     leftIcon={require('assets/ic-wallet-glyph-24.png')}
                     text="Wallet"
                     path="Wallet"
-                    rightElement={walletState.isLocked ? (
+                    rightElement={wallet && wallet.myWallet.isLocked ? (
                         <Image source={require('assets/ic-failure-16.png')} style={{ tintColor: theme.accentNegative }} />
                     ) : undefined}
                 />
