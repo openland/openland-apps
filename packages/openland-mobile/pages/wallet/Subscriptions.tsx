@@ -215,85 +215,90 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
     ).length > 0;
 
     return (
-        <>
+        <View flexGrow={1}>
+
             <SHeader title="Subscriptions" />
-            <SScrollView>
-                {haveBillingProblems && (
-                    <LinearGradient
-                        colors={[theme.gradient0to100Start, theme.gradient0to100End]}
-                        paddingTop={16}
-                        paddingLeft={32}
-                        paddingRight={32}
-                        paddingBottom={32}
-                        alignItems="center"
-                        justifyContent="center"
-                        flexDirection="column"
-                    >
-                        <Image
-                            source={require('assets/art-error.png')}
-                            style={{
-                                width: 240,
-                                height: 150,
-                            }}
-                        />
-                        <View marginTop={4}>
-                            <Text allowFontScaling={false} style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>
-                                Billing problems
-                            </Text>
-                        </View>
-                        <View marginTop={4}>
-                            <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center' }}>
-                                Some transactions for subscriptions are failed. Complete them or add a new card to keep subscriptions ongoing
-                            </Text>
-                        </View>
-                        <View marginTop={16}>
-                            <ZButton title='Open wallet' path="Wallet" />
-                        </View>
-                    </LinearGradient>
-                )}
 
-                <ZListGroup header="Active">
-                    {activeSubscriptions.map(subscription => <SubscriptionView key={subscription.id} {...subscription} />)}
-                </ZListGroup>
-
-                <ZListGroup header="Expired">
-                    {expiredSubscriptions.map(subscription => <SubscriptionView key={subscription.id} {...subscription} />)}
-                </ZListGroup>
-
-                {activeSubscriptions.length === 0 && expiredSubscriptions.length === 0 && (
-                    <View
-                        paddingTop={64}
-                        paddingLeft={32}
-                        paddingRight={32}
-                        paddingBottom={32}
-                        alignItems="center"
-                        justifyContent="center"
-                        flexDirection="column"
-                    >
-                        <Image
-                            source={require('assets/art-empty.png')}
-                            style={{
-                                width: 240,
-                                height: 150,
-                            }}
-                        />
-                        <View marginTop={4}>
-                            <Text allowFontScaling={false} style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>
-                                No subscriptions yet
-                            </Text>
-                        </View>
-                        <View marginTop={4}>
-                            <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center' }}>
-                                Join any premium groups, and they will appear here
-                            </Text>
-                        </View>
-                        <View marginTop={16}>
-                            <ZButton title='Discover groups' path="Discover" />
-                        </View>
+            {activeSubscriptions.length === 0 && expiredSubscriptions.length === 0 && (
+                <View
+                    paddingLeft={32}
+                    paddingRight={32}
+                    // paddingBottom={32}
+                    flexGrow={1}
+                    alignItems="center"
+                    justifyContent="center"
+                    flexDirection="column"
+                >
+                    <Image
+                        source={require('assets/art-empty.png')}
+                        style={{
+                            width: 240,
+                            height: 150,
+                        }}
+                    />
+                    <View marginTop={4}>
+                        <Text allowFontScaling={false} style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>
+                            No subscriptions yet
+                        </Text>
                     </View>
-                )}
-            </SScrollView>
-        </>
+                    <View marginTop={4}>
+                        <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center' }}>
+                            Join any premium groups, and they will appear here
+                        </Text>
+                    </View>
+                    <View marginTop={16}>
+                        <ZButton title='Discover groups' path="Discover" />
+                    </View>
+                </View>
+            )}
+
+            {(activeSubscriptions.length > 0 || expiredSubscriptions.length > 0) && (
+                <SScrollView>
+                    {haveBillingProblems && (
+                        <LinearGradient
+                            colors={[theme.gradient0to100Start, theme.gradient0to100End]}
+                            paddingTop={16}
+                            paddingLeft={32}
+                            paddingRight={32}
+                            paddingBottom={32}
+                            alignItems="center"
+                            justifyContent="center"
+                            flexDirection="column"
+                        >
+                            <Image
+                                source={require('assets/art-error.png')}
+                                style={{
+                                    width: 240,
+                                    height: 150,
+                                }}
+                            />
+                            <View marginTop={4}>
+                                <Text allowFontScaling={false} style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>
+                                    Billing problems
+                            </Text>
+                            </View>
+                            <View marginTop={4}>
+                                <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center' }}>
+                                    Some transactions for subscriptions are failed. Complete them or add a new card to keep subscriptions ongoing
+                            </Text>
+                            </View>
+                            <View marginTop={16}>
+                                <ZButton title='Open wallet' path="Wallet" />
+                            </View>
+                        </LinearGradient>
+                    )}
+
+                    <ZListGroup header="Active">
+                        {activeSubscriptions.map(subscription => <SubscriptionView key={subscription.id} {...subscription} />)}
+                    </ZListGroup>
+
+                    <ZListGroup header="Expired">
+                        {expiredSubscriptions.map(subscription => <SubscriptionView key={subscription.id} {...subscription} />)}
+                    </ZListGroup>
+
+                </SScrollView>
+            )}
+        </View>
     );
 });
 

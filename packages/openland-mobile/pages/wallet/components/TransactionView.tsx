@@ -22,7 +22,7 @@ export const TransactionView = (props: TransactionViewProps) => {
     const payment = source.operation.payment;
     const actionRequired = status === 'failing';
     const color = (actionRequired || status === 'canceled') ? theme.accentNegative : (source.operation.amount > 0 ? theme.accentPositive : theme.foregroundPrimary);
-    const subtitle = `${type}\n${dateTime.isToday ? dateTime.time : dateTime.date}${status !== 'success' && `, ${status}`}`;
+    const subtitle = `${type}\n${dateTime.isToday ? dateTime.time : dateTime.date}${status !== 'success' ? `, ${status}` : ''}`;
 
     const complete = React.useCallback(() => {
         if (actionRequired && payment && payment.intent && router) {
