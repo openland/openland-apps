@@ -22,6 +22,7 @@ const style = css`
         background-color: var(--backgroundTertiary);
         border-radius: 8px;
         max-width: 100%;
+        cursor: pointer;
     }
     &.Select input::-webkit-contacts-auto-fill-button,
     &.Select input::-webkit-credentials-auto-fill-button,
@@ -31,7 +32,7 @@ const style = css`
     }
     &.Select.is-searchable.is-open > .Select-control,
     &.Select.is-searchable.is-focused:not(.is-open) > .Select-control {
-        cursor: text;
+        cursor: pointer;
     }
     &.Select.has-value.is-pseudo-focused .Select-input {
         opacity: 0;
@@ -43,9 +44,9 @@ const style = css`
         flex-shrink: 1;
         padding: 6px 16px;
         min-height: 56px;
-        cursor: default;
         overflow: hidden;
         position: relative;
+        cursor: pointer;
     }
     & .Select-input {
         display: flex;
