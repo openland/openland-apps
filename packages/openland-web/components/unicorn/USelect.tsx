@@ -216,7 +216,6 @@ const withMenuStyle = css`
     }
     & .Select-option.is-selected {
         position: relative;
-        background-color: var(--backgroundPrimaryHover);
     }
     & .Select-option.is-selected:after {
         display: block;
