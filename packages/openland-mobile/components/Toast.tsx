@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     } as ViewStyle,
     toastContainer: {
-        paddingVertical: 25,
-        paddingHorizontal: 30,
+        paddingVertical: 16,
+        paddingHorizontal: 24,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: RadiusStyles.Large,
