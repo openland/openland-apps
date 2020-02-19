@@ -265,12 +265,12 @@ const optionShortContainer = css`
 `;
 
 const optionLabelStyle = css`
+    font-weight: normal;
     color: var(--foregroundPrimary);
     word-wrap: break-word;
 `;
 
 const optionSubtitleStyle = css`
-    margin-top: 4px;
     color: var(--foregroundSecondary);
 `;
 
