@@ -81,7 +81,7 @@ const SignupOrgComponent = React.memo((props: PageProps) => {
                 <View marginTop={16}>
                     <ShakeContainer ref={ref}>
                         <ZInput
-                            placeholder="Name"
+                            placeholder="Organization name"
                             autoFocus={true}
                             description="Please, provide organization name"
                             field={nameField}
@@ -94,7 +94,6 @@ const SignupOrgComponent = React.memo((props: PageProps) => {
 });
 
 export const SignupOrg = withApp(SignupOrgComponent, {
-    navigationAppearance: 'small',
-    hideHairline: true,
+    navigationAppearance: 'small-hidden',
     backButtonRootFallback: logout,
 });

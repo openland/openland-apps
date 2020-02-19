@@ -15,6 +15,8 @@ import {
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { SHeader } from 'react-native-s/SHeader';
+import { SScrollView } from 'react-native-s/SScrollView';
 
 const titlesStyles = StyleSheet.create({
     title: {
@@ -33,7 +35,7 @@ const titlesStyles = StyleSheet.create({
 
 interface RegistrationContainerProps {
     header?: JSX.Element;
-    title: string | JSX.Element;
+    title: string;
     subtitle: string | JSX.Element;
     children: any;
     floatContent: JSX.Element;
@@ -55,7 +57,7 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
 
     const keyboardWillShow = (e: any) => {
         if (props.autoScrollToBottom && scrollRef.current) {
-            scrollRef.current.scrollToEnd({ animated: true });
+            (scrollRef.current as any).getNode().scrollToEnd({ animated: true });
         }
         Animated.parallel([
             Animated.timing(floatPadding, {
@@ -88,8 +90,14 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
     return (
         <>
             {props.header && props.header}
+            <SHeader title={props.title} />
             <KeyboardAvoidingView behavior="padding" flex={1}>
-                <ScrollView flex={1} paddingTop={isIos ? area.top + 16 : undefined} ref={scrollRef}>
+                <SScrollView
+                    flex={1}
+                    paddingTop={16}
+                    scrollRef={scrollRef}
+                    keyboardShouldPersistTaps="handled"
+                >
                     <Text
                         style={[titlesStyles.title, { color: theme.foregroundPrimary }]}
                         allowFontScaling={false}
@@ -107,7 +115,7 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
                         props.subtitle
                     )}
                     {props.children}
-                </ScrollView>
+                </SScrollView>
                 {isAndroid && (
                     <View paddingHorizontal={16} paddingBottom={bottomOffset + 16} paddingTop={16}>
                         {props.floatContent}

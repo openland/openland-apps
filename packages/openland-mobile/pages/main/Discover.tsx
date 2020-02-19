@@ -3,7 +3,6 @@ import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
 import {
     View,
-    ScrollView,
     Text,
     Animated,
     Platform,
@@ -19,6 +18,8 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SuggestedChats as SuggestedChatsPage } from './SuggestedChats';
+import { SHeader } from 'react-native-s/SHeader';
+import { SScrollView } from 'react-native-s/SScrollView';
 
 export type Tag = { id: string; title: string };
 export type TagGroup = { id: string; title?: string | null; subtitle?: string | null; tags: Tag[] };
@@ -179,7 +180,8 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
 
     return (
         <>
-            <ScrollView flex={1} paddingTop={isIos ? area.top + 16 : undefined}>
+            <SHeader title={subtitle || ''}/>
+            <SScrollView flex={1} paddingTop={16}>
                 {subtitle && (
                     <Text
                         allowFontScaling={false}
@@ -205,7 +207,7 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
                         onSelectedChange={onSelectedChange}
                     />
                 </View>
-            </ScrollView>
+            </SScrollView>
             <ZBlurredView
                 position="absolute"
                 bottom={0}
@@ -254,6 +256,5 @@ const DiscoverComponent = React.memo((props: PageProps) => {
 });
 
 export const Discover = withApp(DiscoverComponent, {
-    navigationAppearance: 'small',
-    hideHairline: true,
+    navigationAppearance: 'small-hidden',
 });

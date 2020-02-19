@@ -15,6 +15,8 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { trackEvent } from 'openland-mobile/analytics';
 import { AppStorage as Storage } from 'openland-y-runtime/AppStorage';
 import { useClient } from 'openland-api/useClient';
+import { SHeader } from 'react-native-s/SHeader';
+import { SScrollView } from 'react-native-s/SScrollView';
 
 interface ChatProps {
     item: RoomShort_SharedRoom;
@@ -169,8 +171,9 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
 
     return (
         <>
+            <SHeader title="What to join"/>
             <SHeaderButton title="Skip" onPress={skip} />
-            <ScrollView flex={1} paddingTop={isIos ? area.top + 16 : undefined}>
+            <SScrollView flex={1} paddingTop={16}>
                 <Text
                     allowFontScaling={false}
                     style={{
@@ -207,7 +210,7 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
                         ),
                 )}
                 <View height={120} />
-            </ScrollView>
+            </SScrollView>
             <View padding={16} paddingBottom={isIos ? defaultIosPadding : area.bottom + 16}>
                 <ZButton
                     size="large"

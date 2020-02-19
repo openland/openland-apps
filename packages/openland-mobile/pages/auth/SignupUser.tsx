@@ -19,7 +19,13 @@ const PrivacyText = React.memo(() => {
     const theme = React.useContext(ThemeContext);
 
     return (
-        <View padding={16} alignItems="center" justifyContent="center">
+        <View
+            padding={16}
+            alignItems="center"
+            alignSelf="center"
+            justifyContent="center"
+            maxWidth={310}
+        >
             <Text
                 allowFontScaling={false}
                 style={{
@@ -28,8 +34,7 @@ const PrivacyText = React.memo(() => {
                     color: theme.foregroundTertiary,
                 }}
             >
-                By creating an account you are accepting our
-                {'\n'}
+                By creating an account you are accepting our{' '}
                 <Text
                     style={{ ...TextStyles.Label3 }}
                     onPress={() => Linking.openURL('https://openland.com/terms')}
@@ -98,7 +103,7 @@ const SignupUserComponent = React.memo((props: PageProps) => {
                         size="xx-large"
                     />
                 </View>
-                <View marginTop={16} marginBottom={100}>
+                <View marginTop={16}>
                     <ShakeContainer ref={ref}>
                         <ZInput field={firstNameField} placeholder="First name" />
                     </ShakeContainer>
@@ -115,7 +120,6 @@ const SignupUserComponent = React.memo((props: PageProps) => {
 });
 
 export const SignupUser = withApp(SignupUserComponent, {
-    navigationAppearance: 'small',
-    hideHairline: true,
+    navigationAppearance: 'small-hidden',
     backButtonRootFallback: logout,
 });

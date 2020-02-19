@@ -119,8 +119,7 @@ const EmailStartComponent = React.memo((props: PageProps) => {
 });
 
 export const EmailStart = withApp(EmailStartComponent, {
-    navigationAppearance: 'small',
-    hideHairline: true,
+    navigationAppearance: 'small-hidden',
 });
 
 const EmailCodeHeader = React.memo((props: { resendCode: () => void }) => {
@@ -215,8 +214,8 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
     const avatarSrc =
         photoSrc && photoCrop
             ? `https://ucarecdn.com/${photoSrc}/-/crop/${photoCrop.w}x${photoCrop.h}/${
-            photoCrop.x
-            },${photoCrop.y}/-/scale_crop/72x72/center/`
+                  photoCrop.x
+              },${photoCrop.y}/-/scale_crop/72x72/center/`
             : null;
 
     return (
@@ -241,14 +240,14 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
                         flexDirection="row"
                         justifyContent="center"
                     >
-                        <ZAvatar size="xx-large" photo={avatarSrc} />
+                        <ZAvatar size="x-large" photo={avatarSrc} />
                     </View>
                 )}
-                <View paddingBottom={avatarSrc ? 70 : undefined}>
+                <View>
                     <ShakeContainer ref={ref}>
                         <ZInput
                             field={codeField}
-                            placeholder="Activation code"
+                            placeholder="Login code"
                             autoCapitalize="none"
                             keyboardType="number-pad"
                             autoFocus={true}
@@ -265,6 +264,5 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
 });
 
 export const EmailCode = withApp(EmailCodeComponent, {
-    navigationAppearance: 'small',
-    hideHairline: true,
+    navigationAppearance: 'small-hidden',
 });
