@@ -19,6 +19,7 @@ import {
     Room_room_PrivateRoom,
     RoomPico_room_SharedRoom,
     TypingType,
+    SharedRoomMembershipStatus,
 } from 'openland-api/spacex.types';
 
 const log = createLogger('Engine-Dialogs');
@@ -56,6 +57,8 @@ export interface DialogDataSourceItemStored {
 
     // Internal State
     messageId?: string;
+
+    membership: 'MEMBER' | 'REQUESTED' | 'LEFT' | 'KICKED' | 'NONE';
 }
 
 export interface DialogDataSourceItem extends DialogDataSourceItemStored {
@@ -72,7 +75,8 @@ const extractDialog = (dialog: DialogFragment, uid: string): DialogDataSourceIte
             ? 'You'
             : dialog.topMessage.sender.firstName
         : undefined;
-    let isService = (dialog.topMessage && dialog.topMessage.__typename === 'ServiceMessage') || undefined;
+    let kicked = dialog.membership === SharedRoomMembershipStatus.KICKED;
+    let isService = (dialog.topMessage && dialog.topMessage.__typename === 'ServiceMessage' || kicked) || undefined;
     return {
         haveMention: dialog.haveMention,
         isMuted: dialog.isMuted,
@@ -84,8 +88,8 @@ const extractDialog = (dialog: DialogFragment, uid: string): DialogDataSourceIte
         key: dialog.cid,
         flexibleId: dialog.fid,
         unread: dialog.unreadCount,
-        message: dialog.topMessage && dialog.topMessage.message ? msg : undefined,
-        fallback: msg,
+        message: kicked ? 'you were kicked' : dialog.topMessage && dialog.topMessage.message ? msg : undefined,
+        fallback: kicked ? 'you were kicked' : msg,
         isOut: dialog.topMessage ? dialog.topMessage.sender.id === uid : undefined,
         sender: sender,
         messageId: dialog.topMessage ? dialog.topMessage.id : undefined,
@@ -93,6 +97,7 @@ const extractDialog = (dialog: DialogFragment, uid: string): DialogDataSourceIte
         forward: dialog.topMessage ? dialog.topMessage.__typename === 'GeneralMessage' && !!dialog.topMessage.quotedMessages.length && !dialog.topMessage.message : false,
         isService,
         showSenderName: !!(msg && (isOut || dialog.kind !== 'PRIVATE') && sender) && !isService,
+        membership: dialog.membership
     };
 };
 
@@ -301,6 +306,7 @@ export class DialogListEngine {
                     topMessage: update.prevMessage,
                     isMuted: !!existing.isMuted,
                     haveMention: update.haveMention,
+                    membership: existing.membership as SharedRoomMembershipStatus,
                 }, this.engine.user.id));
             }
         }
@@ -338,8 +344,15 @@ export class DialogListEngine {
         let res = await this._dataSourceStored.getItem(conversationId);
         let isOut = message.sender.id === this.engine.user.id;
         let sender = isOut ? 'You' : message.sender.firstName;
-        let isService = message.__typename === 'ServiceMessage';
+        let kicked = event.membership === SharedRoomMembershipStatus.KICKED;
+        let isService = (message.__typename === 'ServiceMessage') || kicked;
         if (res) {
+            // TODO: remove. Mb implement global events seq?
+            // needed for recover chat after subscription pause
+            if (res.membership !== event.membership) {
+                this.engine.client.refetchRoom({ id: conversationId });
+            }
+
             let msg = formatMessage(message);
 
             log.log('Update Item: ' + res.key);
@@ -351,13 +364,14 @@ export class DialogListEngine {
                 sender: sender,
                 haveMention: event.haveMention,
                 messageId: message.id,
-                message: message && message.message ? msg : undefined,
-                fallback: msg,
+                message: kicked ? 'you were kicked' : message && message.message ? msg : undefined,
+                fallback: kicked ? 'you were kicked' : msg,
                 date: parseInt(message.date, 10),
                 forward: !message.message && message.__typename === 'GeneralMessage' && message.quotedMessages && !!message.quotedMessages.length,
                 showSenderName:
                     !!(msg && (isOut || res.kind !== 'PRIVATE') && sender) &&
                     !isService,
+                membership: event.membership
             });
 
             log.log('Move Item: ' + res.key);
@@ -411,7 +425,7 @@ export class DialogListEngine {
                     isOut: isOut,
                     sender: sender,
                     messageId: message.id,
-                    message: message && message.message ? msg : undefined,
+                    message: kicked ? 'you were kicked' : message && message.message ? msg : undefined,
                     fallback: msg,
                     date: parseInt(message.date, 10),
                     forward: !message.message && message.__typename === 'GeneralMessage' && message.quotedMessages && !!message.quotedMessages.length,
@@ -421,6 +435,7 @@ export class DialogListEngine {
                             (isOut || (sharedRoom ? sharedRoom.kind : 'PRIVATE') !== 'PRIVATE') &&
                             sender
                         ) && !isService,
+                    membership: event.membership
                 },
                 0
             );

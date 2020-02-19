@@ -541,6 +541,7 @@ type Dialog {
   alphaTopMessage: ModernMessage
   isMuted: Boolean!
   haveMention: Boolean!
+  membership: SharedRoomMembershipStatus!
 }
 
 type DialogBump {
@@ -549,6 +550,7 @@ type DialogBump {
   unread: Int!
   topMessage: ModernMessage
   haveMention: Boolean!
+  membership: SharedRoomMembershipStatus!
 }
 
 type DialogDeleted {
@@ -599,6 +601,7 @@ type DialogMessageReceived {
   haveMention: Boolean!
   silent: SilentMessageInfo!
   showNotification: SilentMessageInfo!
+  membership: SharedRoomMembershipStatus!
 }
 
 type DialogMessageUpdated {

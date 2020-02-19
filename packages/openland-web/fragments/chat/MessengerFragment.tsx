@@ -44,7 +44,7 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
         chat.kind !== 'INTERNAL' &&
         chat.membership !== 'MEMBER'
     ) {
-        if (chat.kind === 'PUBLIC') {
+        if (chat.kind === 'PUBLIC' || chat.isPremium) {
             return <SharedRoomPlaceholder room={chat} />;
         } else {
             return null;

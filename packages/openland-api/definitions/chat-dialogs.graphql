@@ -29,6 +29,7 @@ fragment DialogFragment on Dialog {
     topMessage: alphaTopMessage {
         ...DialogMessage
     }
+    membership
 }
 
 fragment DialogMessage on ModernMessage {
@@ -90,6 +91,7 @@ fragment DialogUpdateFragment on DialogUpdate {
             mobile
             desktop
         }
+        membership
     }
     ... on DialogMessageUpdated {
         cid
@@ -157,5 +159,6 @@ fragment DialogUpdateFragment on DialogUpdate {
             }
         }
         haveMention
+        membership
     }
 }
