@@ -322,6 +322,10 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
             navigate('Invites');
             return;
         }
+        if (link === '/wallet') {
+            navigate('Wallet');
+            return;
+        }
 
         if (fallback) {
             await fallback();
