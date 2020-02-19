@@ -2213,6 +2213,11 @@ const AccountSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('User', UserShortSelector)
                 )),
+            field('myProfile', 'myProfile', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('authEmail', 'authEmail', args(), scalar('String'))
+                )),
             field('sessionState', 'sessionState', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('SessionState', SessionStateFullSelector)
@@ -2271,6 +2276,11 @@ const AccountSettingsSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('audienceSize', 'audienceSize', args(), notNull(scalar('Int'))),
                     fragment('User', UserShortSelector)
+                )),
+            field('myProfile', 'myProfile', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('authEmail', 'authEmail', args(), scalar('String'))
                 )),
             field('myOrganizations', 'organizations', args(), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -4905,7 +4915,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     Account: {
         kind: 'query',
         name: 'Account',
-        body: 'query Account{me:me{__typename ...UserShort}sessionState:sessionState{__typename ...SessionStateFull}myPermissions{__typename roles}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment SessionStateFull on SessionState{__typename isLoggedIn isActivated isProfileCreated isAccountActivated isAccountExists isAccountPicked isCompleted isBlocked}',
+        body: 'query Account{me:me{__typename ...UserShort}myProfile{__typename id authEmail}sessionState:sessionState{__typename ...SessionStateFull}myPermissions{__typename roles}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment SessionStateFull on SessionState{__typename isLoggedIn isActivated isProfileCreated isAccountActivated isAccountExists isAccountPicked isCompleted isBlocked}',
         selector: AccountSelector
     },
     AccountAppInvite: {
@@ -4929,7 +4939,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     AccountSettings: {
         kind: 'query',
         name: 'AccountSettings',
-        body: 'query AccountSettings{me:me{__typename ...UserShort audienceSize}organizations:myOrganizations{__typename ...OrganizationShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
+        body: 'query AccountSettings{me:me{__typename ...UserShort audienceSize}myProfile{__typename id authEmail}organizations:myOrganizations{__typename ...OrganizationShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
         selector: AccountSettingsSelector
     },
     AvailableRooms: {

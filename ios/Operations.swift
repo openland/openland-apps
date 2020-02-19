@@ -2206,6 +2206,11 @@ private let AccountSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("User", UserShortSelector)
                 )),
+            field("myProfile", "myProfile", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("authEmail", "authEmail", scalar("String"))
+                )),
             field("sessionState", "sessionState", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("SessionState", SessionStateFullSelector)
@@ -2264,6 +2269,11 @@ private let AccountSettingsSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("audienceSize", "audienceSize", notNull(scalar("Int"))),
                     fragment("User", UserShortSelector)
+                )),
+            field("myProfile", "myProfile", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("authEmail", "authEmail", scalar("String"))
                 )),
             field("myOrganizations", "organizations", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -4902,7 +4912,7 @@ class Operations {
     let Account = OperationDefinition(
         "Account",
         .query, 
-        "query Account{me:me{__typename ...UserShort}sessionState:sessionState{__typename ...SessionStateFull}myPermissions{__typename roles}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment SessionStateFull on SessionState{__typename isLoggedIn isActivated isProfileCreated isAccountActivated isAccountExists isAccountPicked isCompleted isBlocked}",
+        "query Account{me:me{__typename ...UserShort}myProfile{__typename id authEmail}sessionState:sessionState{__typename ...SessionStateFull}myPermissions{__typename roles}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment SessionStateFull on SessionState{__typename isLoggedIn isActivated isProfileCreated isAccountActivated isAccountExists isAccountPicked isCompleted isBlocked}",
         AccountSelector
     )
     let AccountAppInvite = OperationDefinition(
@@ -4926,7 +4936,7 @@ class Operations {
     let AccountSettings = OperationDefinition(
         "AccountSettings",
         .query, 
-        "query AccountSettings{me:me{__typename ...UserShort audienceSize}organizations:myOrganizations{__typename ...OrganizationShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
+        "query AccountSettings{me:me{__typename ...UserShort audienceSize}myProfile{__typename id authEmail}organizations:myOrganizations{__typename ...OrganizationShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
         AccountSettingsSelector
     )
     let AvailableRooms = OperationDefinition(

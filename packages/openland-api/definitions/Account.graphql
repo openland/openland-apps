@@ -2,6 +2,10 @@ query Account {
     me: me {
         ...UserShort
     }
+    myProfile {
+        id
+        authEmail
+    }
     sessionState: sessionState {
         ...SessionStateFull
     }
@@ -14,6 +18,10 @@ query AccountSettings {
     me: me {
         ...UserShort
         audienceSize
+    }
+    myProfile {
+        id
+        authEmail
     }
     organizations: myOrganizations {
         ...OrganizationShort

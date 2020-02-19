@@ -481,6 +481,7 @@ enum DebugEmailType {
   PRIVATE_ROOM_INVITE
   ROOM_INVITE_ACCEPTED
   WEEKLY_DIGEST
+  GENERIC
 }
 
 type DebugEvent {
@@ -2134,6 +2135,7 @@ type Profile {
   instagram: String
   twitter: String
   facebook: String
+  authEmail: String
 
   """Deprecated"""
   alphaLinkedin: String
