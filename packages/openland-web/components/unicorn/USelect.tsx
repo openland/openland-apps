@@ -257,7 +257,7 @@ const hideMenuSelector = css`
 const optionContainer = css`
     display: flex;
     flex-direction: column;
-    padding: 8px 16px;
+    padding: 6px 16px;
 `;
 
 const optionShortContainer = css`
