@@ -10,9 +10,9 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const boxStyle = css`
-    overflow: visible;
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -83,6 +83,8 @@ const ModalBoxComponent = React.memo<{
     modal: XModal;
     config: XModalBoxConfig;
 }>(props => {
+    const { hideOnEsc = true } = props.config;
+
     const [state, setState] = React.useState<'showing' | 'visible' | 'hiding'>('showing');
     const [top, setTop] = React.useState(0);
     const [left, setLeft] = React.useState(0);
@@ -103,10 +105,21 @@ const ModalBoxComponent = React.memo<{
     }, []);
 
     React.useEffect(() => {
-        props.ctx.setOnEscPressed(() => {
-            tryHide();
-        });
+        if (hideOnEsc) {
+            props.ctx.setOnEscPressed(() => {
+                tryHide();
+            });
+        }
     }, []);
+
+    if (hideOnEsc) {
+        useShortcuts({
+            keys: ['Escape'],
+            callback: () => {
+                tryHide();
+            },
+        });
+    }
 
     let handleContainerClick = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         if (e.target === containerRef.current) {
@@ -217,24 +230,23 @@ const ModalBoxComponent = React.memo<{
                     )}
                     style={boxInlineStyle}
                 >
-                    {isFullscreen &&
-                        props.config.useTopCloser !== false && (
-                            <XView position="absolute" right={23} top={23} zIndex={1000}>
-                                <XView
-                                    onClick={tryHide}
-                                    cursor="pointer"
-                                    alignItems="center"
-                                    justifyContent="center"
-                                    padding={8}
-                                    width={36}
-                                    height={36}
-                                    borderRadius={50}
-                                    hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
-                                >
-                                    <UIcon icon={<IcClose />} />
-                                </XView>
+                    {isFullscreen && props.config.useTopCloser !== false && (
+                        <XView position="absolute" right={23} top={23} zIndex={1000}>
+                            <XView
+                                onClick={tryHide}
+                                cursor="pointer"
+                                alignItems="center"
+                                justifyContent="center"
+                                padding={8}
+                                width={36}
+                                height={36}
+                                borderRadius={50}
+                                hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+                            >
+                                <UIcon icon={<IcClose />} />
                             </XView>
-                        )}
+                        </XView>
+                    )}
                     {props.config.title && (
                         <XView paddingTop={24} paddingBottom={8}>
                             <XView
@@ -245,17 +257,16 @@ const ModalBoxComponent = React.memo<{
                                 {...TextStyles.Title1}
                             >
                                 {props.config.title}
-                                {!isFullscreen &&
-                                    props.config.useTopCloser && (
-                                        <UIconButton
-                                            onClick={tryHide}
-                                            icon={<UIcon icon={<IcClose />} size={16} />}
-                                            size="small"
-                                            position="absolute"
-                                            right={16}
-                                            top={0}
-                                        />
-                                    )}
+                                {!isFullscreen && props.config.useTopCloser && (
+                                    <UIconButton
+                                        onClick={tryHide}
+                                        icon={<UIcon icon={<IcClose />} size={16} />}
+                                        size="small"
+                                        position="absolute"
+                                        right={16}
+                                        top={0}
+                                    />
+                                )}
                             </XView>
                         </XView>
                     )}
@@ -275,11 +286,15 @@ export interface XModalBoxConfig {
     useTopCloser?: boolean;
     darkOverlay?: boolean;
     onCancel?: () => void;
+    hideOnEsc?: boolean;
 }
 
 export function showModalBox(config: XModalBoxConfig, modal: XModal) {
+    const { hideOnEsc = true } = config;
     showModal(ctx => {
-        ctx.setOnEscPressed(ctx.hide);
+        if (hideOnEsc) {
+            ctx.setOnEscPressed(ctx.hide);
+        }
         return <ModalBoxComponent modal={modal} ctx={ctx} config={config} />;
     });
 }

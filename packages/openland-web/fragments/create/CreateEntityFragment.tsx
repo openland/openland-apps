@@ -25,6 +25,8 @@ import { ExplorePeople } from './ExplorePeople';
 import { XLoader } from 'openland-x/XLoader';
 import BackIcon from 'openland-icons/s/ic-back-24.svg';
 import CloseIcon from 'openland-icons/s/ic-close-24.svg';
+import { XModalController } from 'openland-x/showModal';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const rootContainer = css`
     display: flex;
@@ -247,7 +249,7 @@ const ExplorePeopleFragment = React.memo((props: ExplorePeopleFragmentProps) => 
 interface CreatingContainerProps {
     children: any;
     title: string;
-    hide: () => void;
+    ctx: XModalController;
     getSettingsData: (avatar: StoredFileT | undefined | null, title: string) => void;
     onPeopleChange: (data: Map<string, string> | null) => void;
     handleDone: () => void;
@@ -256,6 +258,18 @@ interface CreatingContainerProps {
 const CreatingContainer = React.memo((props: CreatingContainerProps) => {
     const [settingsPage, setSettingsPage] = React.useState(true);
     const [loading, setLoading] = React.useState(false);
+
+    useShortcuts({
+        keys: ['Escape'],
+        callback: () => {
+            if (!settingsPage) {
+                setSettingsPage(true);
+                return;
+            }
+            props.ctx.hide();
+        },
+    });
+
     const form = useForm();
     const [shakeClassName, shake] = useShake();
 
@@ -295,7 +309,7 @@ const CreatingContainer = React.memo((props: CreatingContainerProps) => {
             <div className={rootHeader}>
                 <UIconButton
                     icon={settingsPage ? <CloseIcon /> : <BackIcon />}
-                    onClick={settingsPage ? props.hide : handleBack}
+                    onClick={settingsPage ? props.ctx.hide : handleBack}
                     size="large"
                 />
             </div>
@@ -352,7 +366,7 @@ enum DistributionType {
 interface CreateEntityGroupProps {
     entityType: 'group' | 'channel';
     inOrgId?: string;
-    hide: () => void;
+    ctx: XModalController;
 }
 
 const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) => {
@@ -412,13 +426,13 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
             interval: intervalField.value,
         })).room;
 
-        props.hide();
+        props.ctx.hide();
         router.navigate('/mail/' + group.id);
     };
 
     return (
         <CreatingContainer
-            hide={props.hide}
+            ctx={props.ctx}
             title={`New ${props.entityType}`}
             getSettingsData={getSettingsData}
             onPeopleChange={onPeopleChange}
@@ -456,7 +470,7 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
                     className={cx(
                         otherInputContainer,
                         distributionField.value === DistributionType.SUBSCRIPTION &&
-                        multiInputsContainer,
+                            multiInputsContainer,
                     )}
                 >
                     <USelectField
@@ -526,7 +540,7 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
 
 interface CreateEntityOrgProps {
     entityType: 'community' | 'organization';
-    hide: () => void;
+    ctx: XModalController;
 }
 
 const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
@@ -570,13 +584,13 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
         }
 
         await client.refetchAccount();
-        props.hide();
+        props.ctx.hide();
         router.navigate('/' + organization.id);
     };
 
     return (
         <CreatingContainer
-            hide={props.hide}
+            ctx={props.ctx}
             title={`New ${props.entityType}`}
             getSettingsData={getSettingsData}
             onPeopleChange={onPeopleChange}
@@ -616,8 +630,8 @@ export const showCreatingGroupFragment = (props: {
     entityType: 'group' | 'channel';
     inOrgId?: string;
 }) => {
-    showModalBox({ fullScreen: true, useTopCloser: false }, ctx => (
-        <CreateEntityComponentGroup {...props} hide={ctx.hide} />
+    showModalBox({ fullScreen: true, useTopCloser: false, hideOnEsc: false }, ctx => (
+        <CreateEntityComponentGroup {...props} ctx={ctx} />
     ));
 };
 
@@ -630,7 +644,7 @@ export const showCreatingOrgFragment = (props: { entityType: 'community' | 'orga
         trackEvent('navigate_new_community');
     }
 
-    showModalBox({ fullScreen: true, useTopCloser: false }, ctx => (
-        <CreateEntityComponentOrg {...props} hide={ctx.hide} />
+    showModalBox({ fullScreen: true, useTopCloser: false, hideOnEsc: false }, ctx => (
+        <CreateEntityComponentOrg {...props} ctx={ctx} />
     ));
 };

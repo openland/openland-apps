@@ -6,9 +6,9 @@ import {
     ScrollView,
     Text,
     Animated,
-    TouchableOpacity,
     Platform,
     Dimensions,
+    TouchableHighlight,
 } from 'react-native';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -57,21 +57,22 @@ const TagButton = React.memo((props: TagButtonProps) => {
     };
 
     return (
-        <TouchableOpacity onPress={callback} activeOpacity={1}>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    margin: 8,
-                    paddingVertical: 6,
-                    paddingLeft: 24,
-                    paddingRight: 24,
-                    borderRadius: 100,
-                    backgroundColor: props.selected
-                        ? theme.accentPrimary
-                        : theme.backgroundTertiary,
-                }}
-            >
+        <TouchableHighlight
+            onPress={callback}
+            activeOpacity={1}
+            underlayColor={
+                props.selected ? theme.accentPrimaryActive : theme.backgroundTertiaryActive
+            }
+            style={{
+                margin: 8,
+                paddingVertical: 6,
+                paddingLeft: 24,
+                paddingRight: 24,
+                borderRadius: 100,
+                backgroundColor: props.selected ? theme.accentPrimary : theme.backgroundTertiary,
+            }}
+        >
+            <View flexDirection="row" alignItems="center">
                 <Animated.Image
                     style={{
                         width: 16,
@@ -96,7 +97,7 @@ const TagButton = React.memo((props: TagButtonProps) => {
                     {props.tag.title}
                 </Animated.Text>
             </View>
-        </TouchableOpacity>
+        </TouchableHighlight>
     );
 });
 

@@ -31,7 +31,7 @@ const Chat = React.memo((props: ChatProps) => {
         [props.onPress],
     );
     return (
-        <ZListItemBase height={60} onPress={onPress} separator={false}>
+        <ZListItemBase height={56} onPress={onPress} separator={false}>
             <View width={72} height={56} alignItems="center" justifyContent="center">
                 <ZAvatar
                     photo={props.item.photo}
@@ -86,8 +86,8 @@ const Chat = React.memo((props: ChatProps) => {
                 borderColor={props.selected ? theme.accentPrimary : theme.foregroundTertiary}
                 borderWidth={2}
                 borderRadius={RadiusStyles.Medium}
-                width={24}
-                height={24}
+                width={22}
+                height={22}
             >
                 {props.selected && (
                     <Image
@@ -215,7 +215,7 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
                         selected.size === 0
                             ? 'Skip'
                             : 'Join' + (selected.size === props.chats.length ? ' all' : '')
-                        }   `}
+                    }   `}
                     onPress={onAdd}
                 />
             </View>

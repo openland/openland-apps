@@ -139,7 +139,7 @@ export class XDialogProviderComponent extends React.Component<{}, XDialogProvide
                     isOpen={true}
                     onRequestClose={esc}
                     shouldCloseOnOverlayClick={false}
-                    shouldCloseOnEsc={true}
+                    shouldCloseOnEsc={false}
                     ariaHideApp={false}
                     style={{
                         overlay: {
