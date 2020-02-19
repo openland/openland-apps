@@ -1,4 +1,4 @@
-import { WalletTransactionFragment, WalletSubscriptionInterval, UserShort, RoomShort_SharedRoom, RoomTiny_room_SharedRoom } from 'openland-api/spacex.types';
+import { WalletTransactionFragment, WalletSubscriptionInterval } from 'openland-api/spacex.types';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { getPaymentMethodName } from 'openland-y-utils/wallet/brands';
 import { extractDateTime } from 'openland-y-utils/wallet/dateTime';
