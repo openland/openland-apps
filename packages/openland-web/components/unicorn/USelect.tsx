@@ -215,7 +215,23 @@ const withMenuStyle = css`
         display: block;
     }
     & .Select-option.is-selected {
+        position: relative;
         background-color: var(--backgroundPrimaryHover);
+    }
+    & .Select-option.is-selected:after {
+        display: block;
+        content: '';
+
+        position: absolute;
+        top: 50%;
+        right: 16px;
+        transform: translateY(-50%);
+
+        width: 16px;
+        height: 16px;
+
+        background-image: url('https://cdn.openland.com/shared/web/ic-done-16-2.svg');
+        z-index: 2;
     }
     & .Select-option.is-focused {
         background-color: var(--backgroundPrimaryHover);
