@@ -16,7 +16,6 @@ import { defaultHover } from 'openland-web/utils/Styles';
 import { plural } from 'openland-y-utils/plural';
 import { isInviteLink, InviteLink } from './InviteContent';
 import { useClient } from 'openland-api/useClient';
-import { OpenlandClient } from 'openland-api/spacex';
 import { XViewRouterContext, XViewRouter } from 'react-mental';
 
 const boldTextClassName = css`
