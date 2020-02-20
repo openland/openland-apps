@@ -112,7 +112,7 @@ const BuyPaidChatPassButton = (props: {
                 onPress={buyPaidChatPass}
                 size="large"
             />
-            {props.ownerId && <View marginTop={8}>
+            {props.ownerId && <View marginTop={16}>
                 <ZButton
                     title="Get help"
                     onPress={() => props.router.push('Conversation', { id: props.ownerId })}
