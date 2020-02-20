@@ -84,6 +84,7 @@ export const Item = React.memo(
         onSelected: (item: any) => void;
         startScrolling?: boolean;
         selectable?: boolean;
+        onMouseEnter?: () => void;
     }) => {
         let ref = React.useRef<HTMLDivElement>(null);
         React.useLayoutEffect(
@@ -106,6 +107,7 @@ export const Item = React.memo(
                 style={props.style}
                 ref={ref}
                 onClick={props.selectable === false ? undefined : callback}
+                onMouseEnter={props.onMouseEnter}
             >
                 {props.children}
             </div>

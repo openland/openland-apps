@@ -26,21 +26,24 @@ export const UNavigableReactWindow = React.memo(
         ) => {
             let { data, itemSize, width, height, overscanCount, renderItem } = props;
 
-            const findSelectable = React.useCallback((index: number, delta: number) => {
-                let res = index;
+            const findSelectable = React.useCallback(
+                (index: number, delta: number) => {
+                    let res = index;
 
-                if (data[index].selectable === false) {
-                    const current = index + delta;
+                    if (data[index].selectable === false) {
+                        const current = index + delta;
 
-                    if ((current < 0) || (current > data.length - 1)) {
-                        res -= delta;
-                    } else {
-                        res += delta;
+                        if (current < 0 || current > data.length - 1) {
+                            res -= delta;
+                        } else {
+                            res += delta;
+                        }
                     }
-                }
 
-                return res;
-            }, [data]);
+                    return res;
+                },
+                [data],
+            );
 
             let [state, dispatch] = React.useReducer(
                 (
@@ -50,17 +53,23 @@ export const UNavigableReactWindow = React.memo(
                         length?: number;
                         reset?: boolean;
                         startScrolling?: boolean;
+                        focusedIndex?: number;
                     },
                 ) => {
                     const delta = action.delta !== undefined ? action.delta : 0;
                     const length = action.length !== undefined ? action.length : oldState.length;
                     const startScrolling = !oldState.startScrolling;
                     return {
-                        index: action.reset
+                        index: action.focusedIndex
+                            ? action.focusedIndex
+                            : action.reset
                             ? props.focusedByDefault === false
                                 ? -1
                                 : findSelectable(0, 1)
-                            : findSelectable(Math.max(Math.min(length - 1, oldState.index + delta), 0), delta),
+                            : findSelectable(
+                                  Math.max(Math.min(length - 1, oldState.index + delta), 0),
+                                  delta,
+                              ),
                         length,
                         startScrolling,
                     };
@@ -113,6 +122,7 @@ export const UNavigableReactWindow = React.memo(
                         onSelected={props.onSelected}
                         startScrolling={state.startScrolling}
                         selectable={data[pr.index].selectable}
+                        onMouseEnter={() => dispatch({ focusedIndex: pr.index })}
                     >
                         {renderItem(data[pr.index])}
                     </Item>
