@@ -27,7 +27,12 @@ const textAreaStyle = css`
     color: var(--foregroundPrimary);
     line-height: 24px;
     border-radius: 8px;
-    background-color: var(--backgroundTertiary);
+    background-color: var(--backgroundTertiaryTrans);
+
+    &:hover {
+        background-color: var(--backgroundTertiaryHoverTrans);
+    }
+
     &::placeholder {
         color: #9d9fa3;
     }

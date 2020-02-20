@@ -129,7 +129,6 @@ const emojiPickerIcon = css`
     display: flex;
     align-items: center;
     transition: opacity 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
-    background-color: var(--backgroundTertiary);
     border-radius: 8px;
     &:hover {
         opacity: 0.5;
