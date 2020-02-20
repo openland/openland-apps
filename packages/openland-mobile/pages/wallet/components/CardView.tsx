@@ -86,7 +86,7 @@ export const CardView = (props: CardViewProps) => {
         builder.action('Delete card', async () => {
             AlertBlanket.builder()
                 .title('Delete card?')
-                .message('The card will be deleted')
+                .message('It cannot be undone')
                 .button('Cancel', 'cancel')
                 .action('Delete', 'destructive', async () => {
                     try {

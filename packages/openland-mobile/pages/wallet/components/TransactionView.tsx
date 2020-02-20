@@ -31,12 +31,8 @@ export const TransactionView = (props: TransactionViewProps) => {
     }, [actionRequired]);
 
     const handlePress = React.useCallback(() => {
-        if (actionRequired) {
-            complete();
-        } else {
-            showTransactionInfo({ item: props.item });
-        }
-    }, []);
+        showTransactionInfo({ item: props.item });
+    }, [props.item]);
 
     return (
         <>
@@ -65,7 +61,7 @@ export const TransactionView = (props: TransactionViewProps) => {
                         </View>
                         <View paddingHorizontal={16} paddingVertical={12} borderRadius={RadiusStyles.Medium} width={287} maxWidth="100%" backgroundColor={theme.accentNegative}>
                             <Text style={{ ...TextStyles.Subhead, color: theme.foregroundContrast }} allowFontScaling={false}>Couldn’t complete transaction</Text>
-                            <View marginTop={4} flexDirection="row" alignItems="center">
+                            <View flexDirection="row" alignItems="center">
                                 <Text style={{ ...TextStyles.Label2, color: theme.foregroundContrast, }} allowFontScaling={false}>
                                     Complete
                                 </Text>

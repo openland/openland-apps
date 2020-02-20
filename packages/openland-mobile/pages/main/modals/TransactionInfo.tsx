@@ -6,25 +6,31 @@ import LinearGradient from 'react-native-linear-gradient';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { WalletTransactionFragment } from 'openland-api/spacex.types';
-import { convertTransaction } from 'openland-y-utils/wallet/transaction';
+import { convertTransaction, TransactionConvertedStatus } from 'openland-y-utils/wallet/transaction';
 
-const InfoItem = React.memo<{ name: string, value: string, status?: 'success' | 'failure' }>((props) => {
+const InfoItem = React.memo<{ name: string, value?: string, status?: TransactionConvertedStatus }>((props) => {
     const theme = useTheme();
     const colorBy = {
         success: theme.accentPositive,
-        failure: theme.accentNegative,
+        failing: theme.accentNegative,
+        pending: theme.foregroundTertiary,
     };
     const valueColor = !!props.status ? colorBy[props.status] : theme.foregroundTertiary;
     const iconStyle = { tintColor: valueColor, marginRight: 8, width: 16, height: 16 };
+    const value = !!props.status ? props.status.charAt(0).toUpperCase() + props.status.slice(1) : props.value;
     return (
         <View paddingHorizontal={16} paddingVertical={12} flexDirection="row" justifyContent="space-between">
             <Text style={{ ...TextStyles.Body, color: theme.foregroundPrimary }}>{props.name}</Text>
             <View flexDirection="row" alignItems="center">
                 {props.status === 'success' ? (
                     <Image source={require('assets/ic-success-16.png')} style={iconStyle} />
+                ) : props.status === 'failing' ? (
+                    <Image source={require('assets/ic-failure-stroke-16.png')} style={iconStyle} />
+                ) : props.status === 'pending' ? (
+                    <Image source={require('assets/ic-pending-16.png')} style={iconStyle} />
                 ) : null
                 }
-                <Text style={{ ...TextStyles.Body, color: valueColor }}>{props.value}</Text>
+                <Text style={{ ...TextStyles.Body, color: valueColor }}>{value}</Text>
             </View>
         </View>
     );
@@ -36,8 +42,7 @@ interface TransactionInfoProps {
 
 const TransactionInfo = React.memo<TransactionInfoProps & { ctx: BottomSheetActions }>((props) => {
     const theme = React.useContext(ThemeContext);
-    const { avatar, title, type, dateTime, amount, paymentMethod, interval } = convertTransaction(props.item);
-
+    const { avatar, title, type, dateTime, amount, paymentMethod, interval, status } = convertTransaction(props.item);
     return (
         <View>
             <LinearGradient
@@ -60,7 +65,7 @@ const TransactionInfo = React.memo<TransactionInfoProps & { ctx: BottomSheetActi
                 <InfoItem name="Date and time" value={`${dateTime.date}, ${dateTime.time}`} />
                 {paymentMethod && <InfoItem name="Payment method" value={paymentMethod} />}
                 <InfoItem name="Total amount" value={amount} />
-                <InfoItem name="Status" value="Success" status="success" />
+                <InfoItem name="Status" status={status} />
             </View>
         </View>
     );
