@@ -3754,6 +3754,8 @@ private let SubscriptionsSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("state", "state", notNull(scalar("String"))),
                     field("expires", "expires", notNull(scalar("Date"))),
+                    field("amount", "amount", notNull(scalar("Int"))),
+                    field("interval", "interval", notNull(scalar("String"))),
                     field("product", "product", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             inline("WalletProductGroup", obj(
@@ -5436,7 +5438,7 @@ class Operations {
     let Subscriptions = OperationDefinition(
         "Subscriptions",
         .query, 
-        "query Subscriptions{subscriptions{__typename id state expires product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}}}}",
+        "query Subscriptions{subscriptions{__typename id state expires amount interval product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}}}}",
         SubscriptionsSelector
     )
     let SuggestedRooms = OperationDefinition(

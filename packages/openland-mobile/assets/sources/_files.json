@@ -1144,6 +1144,20 @@
             ]
         },
         {
+            "name": "ic-failure-stroke",
+            "src": "ic-failure-stroke-16.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
+            "name": "ic-pending",
+            "src": "ic-pending-16.svg",
+            "sizes": [
+                16
+            ]
+        },
+        {
             "name": "ic-top-up",
             "src": "ic-top-up-40.svg",
             "sizes": [

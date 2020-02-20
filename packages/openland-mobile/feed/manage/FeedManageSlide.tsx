@@ -313,8 +313,8 @@ export const FeedManageSlide = React.memo((props: FeedManageSlideProps) => {
     const headerStyle = showCover && (coverAlign === SlideCoverAlign.Cover || coverAlign === SlideCoverAlign.Top) ? 'contrast' : 'default';
     const footerStyle = showCover && (coverAlign === SlideCoverAlign.Cover || coverAlign === SlideCoverAlign.Bottom) ? 'contrast' : 'default';
     const authorStyles = {
-        backgroundColor: theme.type === 'Dark' ? theme.foregroundContrast : theme.backgroundTertiary,
-        opacity: theme.type === 'Dark' ? SecondarinessAlpha : (headerStyle === 'contrast' ? SecondarinessAlpha : 1)
+        backgroundColor: theme.type === 'Light' ? theme.backgroundTertiary : theme.foregroundContrast,
+        opacity: theme.type === 'Light' ? (headerStyle === 'contrast' ? SecondarinessAlpha : 1) : SecondarinessAlpha
     } as ViewStyle;
 
     const inputCanBeDynamic = (!showCover || inputCover) && !attachmentLocal;

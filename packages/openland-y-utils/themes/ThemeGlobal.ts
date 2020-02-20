@@ -11,8 +11,9 @@ import {
     AccentCyan,
 } from './accents';
 import { SystemTheme } from 'openland-mobile/themes/ThemeContext';
+import { ThemeTrueDark } from './trueDark';
 
-export type ThemeGlobalType = 'Light' | 'Dark';
+export type ThemeGlobalType = 'Light' | 'Dark' | 'TrueDark';
 export type AccentGlobalType =
     | 'Default'
     | 'Red'
@@ -151,6 +152,8 @@ export const getThemeByType = (type: ThemeVariants) => {
         return ThemeLight;
     } else if (type === 'Dark') {
         return ThemeDark;
+    } else if (type === 'TrueDark') {
+        return ThemeTrueDark;
     } else if (type === 'System' && SystemTheme === 'dark') {
         return ThemeDark;
     }

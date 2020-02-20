@@ -14,7 +14,7 @@ class ThemePersisterImpl {
         let resolvedThemeType: ThemeVariants = 'System';
         let resolvedAccentType: AccentGlobalType = 'Default';
 
-        if (storageThemeType === 'Light' || storageThemeType === 'Dark' || storageThemeType === 'System') {
+        if (storageThemeType === 'Light' || storageThemeType === 'Dark' || storageThemeType === 'TrueDark' || storageThemeType === 'System') {
             resolvedThemeType = storageThemeType;
         }
 

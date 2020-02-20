@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useUserPopper, useEntityPopper } from 'openland-web/components/EntityPoppers';
-import { UserForMention, OrganizationShort, RoomNano, Room_room_SharedRoom } from 'openland-api/spacex.types';
+import { UserForMention, OrganizationShort, RoomNano } from 'openland-api/spacex.types';
 import { css, cx } from 'linaria';
 import { Span } from 'openland-y-utils/spans/Span';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
@@ -10,8 +10,6 @@ import { TextTitle2 } from 'openland-web/utils/TextStyles';
 import { defaultHover } from 'openland-web/utils/Styles';
 import { plural } from 'openland-y-utils/plural';
 import { isInviteLink, InviteLink } from './InviteContent';
-import { useClient } from 'openland-api/useClient';
-import { OpenlandClient } from 'openland-api/spacex';
 import { XViewRouterContext, XViewRouter } from 'react-mental';
 
 const boldTextClassName = css`
@@ -114,137 +112,132 @@ const mentionBgClassName = css`
     border-radius: 4px;
 `;
 
-const MentionedUser = React.memo((props: { user: UserForMention; children: any; isService?: boolean; }) => {
-    const { user, children, isService } = props;
-    const [show] = useUserPopper({ user, isMe: user.isYou, noCardOnMe: true });
-    return (
-        <span onMouseEnter={show}>
-            <ULink
-                path={`/${user.shortname || user.id}`}
-                className={cx(
-                    mentionClassName,
-                    user.isYou && !isService && mentionBgClassName,
-                    isService && mentionServiceClassName,
-                    isService && defaultHover,
-                )}
-            >
-                {children}
-            </ULink>
-        </span>
-    );
-});
+const MentionedUser = React.memo(
+    (props: { user: UserForMention; children: any; isService?: boolean }) => {
+        const { user, children, isService } = props;
+        const [show] = useUserPopper({ user, isMe: user.isYou, noCardOnMe: true });
+        return (
+            <span onMouseEnter={show}>
+                <ULink
+                    path={`/${user.shortname || user.id}`}
+                    className={cx(
+                        mentionClassName,
+                        user.isYou && !isService && mentionBgClassName,
+                        isService && mentionServiceClassName,
+                        isService && defaultHover,
+                    )}
+                >
+                    {children}
+                </ULink>
+            </span>
+        );
+    },
+);
 
 interface OpenEntityParams {
-    client: OpenlandClient;
     isGroup: boolean;
     entity: RoomNano | OrganizationShort;
     router: XViewRouter;
 }
 
 const openEntity = async (params: OpenEntityParams) => {
-    const { client, isGroup, entity, router } = params;
-
-    // get invite link
-    let inviteLink;
+    const { isGroup, entity, router } = params;
 
     if (isGroup) {
-        const data = await client.queryRoomInviteLink({ roomId: entity.id });
-        inviteLink = `/invite/${data.link}`;
+        router.navigate(`/mail/${entity.id}`);
     } else {
-        const data = await client.queryOrganizationPublicInvite({ organizationId: entity.id });
-        inviteLink = `/invite/${data.publicInvite!.key}`;
+        router.navigate(`/${entity.id}`);
     }
-
-    // get view link
-    const viewLink = `/mail/${entity.id}`;
-
-    // get group membership
-    let isMember;
-    try {
-        const roomInfo = await client.queryRoom({ id: entity.id });
-        if (roomInfo) {
-            isMember = (roomInfo!.room! as Room_room_SharedRoom).membership === 'MEMBER';
-        } else {
-            isMember = false;
-        }
-    } catch (e) {
-        isMember = false;
-    }
-
-    router.navigate(isMember ? viewLink : inviteLink);
 };
 
-const MentionedGroup = React.memo((props: { group: RoomNano; children: any; isService?: boolean; }) => {
-    const { group, children, isService } = props;
-    let subtitle = group.__typename === 'SharedRoom' ? (group.isChannel ? 'Channel' : 'Group') : 'Private chat';
+const MentionedGroup = React.memo(
+    (props: { group: RoomNano; children: any; isService?: boolean }) => {
+        const { group, children, isService } = props;
+        let subtitle =
+            group.__typename === 'SharedRoom'
+                ? group.isChannel
+                    ? 'Channel'
+                    : 'Group'
+                : 'Private chat';
 
-    if (group.__typename === 'SharedRoom') {
-        subtitle += ', ' + plural(group.membersCount, group.isChannel ? ['follower', 'followers'] : ['member', 'members']);
-    }
+        if (group.__typename === 'SharedRoom') {
+            subtitle +=
+                ', ' +
+                plural(
+                    group.membersCount,
+                    group.isChannel ? ['follower', 'followers'] : ['member', 'members'],
+                );
+        }
 
-    const [show] = useEntityPopper({
-        title: group.__typename === 'SharedRoom' ? group.title : group.user.name,
-        photo: group.__typename === 'SharedRoom' ? group.roomPhoto : group.user.photo,
-        subtitle,
-        id: group.id
-    });
+        const [show] = useEntityPopper({
+            title: group.__typename === 'SharedRoom' ? group.title : group.user.name,
+            photo: group.__typename === 'SharedRoom' ? group.roomPhoto : group.user.photo,
+            subtitle,
+            id: group.id,
+        });
 
-    const client = useClient();
-    const router = React.useContext(XViewRouterContext)!;
+        const router = React.useContext(XViewRouterContext)!;
 
-    return (
-        <span onMouseEnter={show}>
-            <ULink
-                // path={`/group/${group.id}`}
-                onClick={() => openEntity({
-                    client,
-                    isGroup: true,
-                    entity: group,
-                    router
-                })}
-                className={cx(
-                    mentionClassName,
-                    isService && mentionServiceClassName,
-                    isService && defaultHover,
-                )}
-            >
-                {children}
-            </ULink>
-        </span>
-    );
-});
+        return (
+            <span onMouseEnter={show}>
+                <ULink
+                    // path={`/group/${group.id}`}
+                    onClick={() =>
+                        openEntity({
+                            isGroup: true,
+                            entity: group,
+                            router,
+                        })
+                    }
+                    className={cx(
+                        mentionClassName,
+                        isService && mentionServiceClassName,
+                        isService && defaultHover,
+                    )}
+                >
+                    {children}
+                </ULink>
+            </span>
+        );
+    },
+);
 
-const MentionedOrganization = React.memo((props: { organization: OrganizationShort; children: any; isService?: boolean; }) => {
-    const { organization, children, isService } = props;
-    const [show] = useEntityPopper({
-        title: organization.name,
-        photo: organization.photo,
-        subtitle: (organization.isCommunity ? 'Community' : 'Organization') + ', ' + plural(organization.membersCount, ['member', 'members']),
-        id: organization.id
-    });
-    const client = useClient();
-    const router = React.useContext(XViewRouterContext)!;
-    return (
-        <span onMouseEnter={show}>
-            <ULink
-                // path={`/${organization.shortname || organization.id}`}
-                onClick={() => openEntity({
-                    client,
-                    isGroup: false,
-                    entity: organization,
-                    router
-                })}
-                className={cx(
-                    mentionClassName,
-                    isService && mentionServiceClassName,
-                    isService && defaultHover,
-                )}
-            >
-                {children}
-            </ULink>
-        </span>
-    );
-});
+const MentionedOrganization = React.memo(
+    (props: { organization: OrganizationShort; children: any; isService?: boolean }) => {
+        const { organization, children, isService } = props;
+        const [show] = useEntityPopper({
+            title: organization.name,
+            photo: organization.photo,
+            subtitle:
+                (organization.isCommunity ? 'Community' : 'Organization') +
+                ', ' +
+                plural(organization.membersCount, ['member', 'members']),
+            id: organization.id,
+        });
+        const router = React.useContext(XViewRouterContext)!;
+        return (
+            <span onMouseEnter={show}>
+                <ULink
+                    // path={`/${organization.shortname || organization.id}`}
+                    onClick={() =>
+                        openEntity({
+                            isGroup: false,
+                            entity: organization,
+                            router,
+                        })
+                    }
+                    className={cx(
+                        mentionClassName,
+                        isService && mentionServiceClassName,
+                        isService && defaultHover,
+                    )}
+                >
+                    {children}
+                </ULink>
+            </span>
+        );
+    },
+);
 
 export const SpanView = React.memo<{ span: Span; children?: any; isService?: boolean }>(props => {
     const { span, children } = props;

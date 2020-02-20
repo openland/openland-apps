@@ -3761,6 +3761,8 @@ const SubscriptionsSelector = obj(
                     field('id', 'id', args(), notNull(scalar('ID'))),
                     field('state', 'state', args(), notNull(scalar('String'))),
                     field('expires', 'expires', args(), notNull(scalar('Date'))),
+                    field('amount', 'amount', args(), notNull(scalar('Int'))),
+                    field('interval', 'interval', args(), notNull(scalar('String'))),
                     field('product', 'product', args(), notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             inline('WalletProductGroup', obj(
@@ -5439,7 +5441,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     Subscriptions: {
         kind: 'query',
         name: 'Subscriptions',
-        body: 'query Subscriptions{subscriptions{__typename id state expires product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}}}}',
+        body: 'query Subscriptions{subscriptions{__typename id state expires amount interval product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}}}}',
         selector: SubscriptionsSelector
     },
     SuggestedRooms: {

@@ -334,6 +334,8 @@ query Subscriptions {
         id
         state
         expires
+        amount
+        interval
         product {
             ... on WalletProductGroup {
                 group {

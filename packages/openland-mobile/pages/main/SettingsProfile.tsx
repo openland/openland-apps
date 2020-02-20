@@ -131,7 +131,7 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                         placeholder="LinkedIn"
                         field={linkedinField}
                     />
-                    {isIos && theme.type === 'Dark' && (<View height={88}/>)}
+                    {isIos && theme.type !== 'Light' && (<View height={88} />)}
                 </ZListGroup>
             </KeyboardAvoidingScrollView>
         </>

@@ -6,7 +6,7 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { useClient } from 'openland-api/useClient';
-import { WalletSubscriptionState, Subscriptions_subscriptions_product_WalletProductGroup } from 'openland-api/spacex.types';
+import { WalletSubscriptionState, WalletSubscriptionInterval } from 'openland-api/spacex.types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { View, Text, Image } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
@@ -15,48 +15,9 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import LinearGradient from 'react-native-linear-gradient';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { convertSubscription, SubscriptionConverted, displaySubscriptionDate } from 'openland-y-utils/wallet/subscription';
 
-interface NormalizedSubscription {
-    id: string;
-    title: string;
-    photo: string;
-    state: WalletSubscriptionState;
-    expires: Date;
-    subscriptionId: string;
-}
-
-const displayDate = (date: Date) => {
-    const utc = date.toUTCString();
-    const segments = utc.split(' ');
-    const month = segments[2];
-    const day = segments[1];
-
-    return `${month} ${day}`;
-};
-
-const generateSubTitle = (subscription: NormalizedSubscription) => {
-    const date = displayDate(subscription.expires);
-
-    switch (subscription.state) {
-        case WalletSubscriptionState.STARTED:
-            return `Next bill on ${date}`;
-
-        case WalletSubscriptionState.GRACE_PERIOD:
-        case WalletSubscriptionState.RETRYING:
-            return "Payment failed";
-
-        case WalletSubscriptionState.CANCELED:
-            return `Expires on ${date}`;
-
-        case WalletSubscriptionState.EXPIRED:
-            return `Expired on ${date}`;
-
-        default:
-            return `Expires on ${date}`;
-    }
-};
-
-const SubscriptionView = React.memo((props: NormalizedSubscription) => {
+const SubscriptionView = React.memo((props: SubscriptionConverted) => {
     const theme = React.useContext(ThemeContext);
     const client = useClient();
 
@@ -94,7 +55,7 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
                                 : theme.foregroundTertiary
                         }}
                     >
-                        {generateSubTitle(props)}
+                        {props.subtitle}
                     </Text>
                 </View>
             </View>
@@ -130,8 +91,9 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
                         </Text>
                     </View>
                     <View marginTop={4}>
-                        <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundTertiary }}>
-                            {generateSubTitle(props)}
+                        <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundTertiary, textAlign: 'center' }}>
+                            {props.subtitle}{'\n'}
+                            {props.amount} / {props.interval === WalletSubscriptionInterval.MONTH ? 'mo.' : 'w.'}
                         </Text>
                     </View>
                 </LinearGradient>
@@ -156,7 +118,7 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
                     />
                     <View marginTop={16}>
                         <Text allowFontScaling={false} style={{ ...TextStyles.Caption, color: theme.foregroundSecondary, textAlign: 'center' }}>
-                            If you cancel now, you can still access {"\n"} the group until {displayDate(props.expires)}
+                            If you cancel now, you can still access {"\n"} the group until {displaySubscriptionDate(props.expires)}
                         </Text>
                     </View>
                 </View>
@@ -169,14 +131,14 @@ const SubscriptionView = React.memo((props: NormalizedSubscription) => {
     return props.state === WalletSubscriptionState.GRACE_PERIOD || props.state === WalletSubscriptionState.RETRYING ? (
         <ZListItem
             text={props.title}
-            subTitle={generateSubTitle(props)}
+            subTitle={props.subtitle}
             leftAvatar={{ photo: props.photo, id: props.id, title: props.title }}
             path="Wallet"
         />
     ) : (
             <ZListItem
                 text={props.title}
-                subTitle={generateSubTitle(props)}
+                subTitle={props.subtitle}
                 leftAvatar={{ photo: props.photo, id: props.id, title: props.title }}
                 onPress={props.state === WalletSubscriptionState.STARTED ? showModalWithCancel : showModal}
             />
@@ -188,16 +150,7 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
     const subscriptions = client.useSubscriptions({ fetchPolicy: 'cache-and-network' }).subscriptions;
     const groupSubscriptions = subscriptions.filter(subscription => subscription.product.__typename === 'WalletProductGroup');
-    const normalizedSubscriptions: NormalizedSubscription[] = groupSubscriptions.map(subscription => {
-        const group = (subscription.product as Subscriptions_subscriptions_product_WalletProductGroup).group;
-
-        return {
-            ...group,
-            subscriptionId: subscription.id,
-            state: subscription.state,
-            expires: new Date(parseInt(subscription.expires, 10))
-        };
-    });
+    const normalizedSubscriptions = groupSubscriptions.map(convertSubscription);
 
     const activeSubscriptions = normalizedSubscriptions.filter(subscription =>
         subscription.state === WalletSubscriptionState.STARTED ||

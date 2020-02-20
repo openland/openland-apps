@@ -10,6 +10,8 @@ internal val SubscriptionsSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("state", "state", notNull(scalar("String"))),
                     field("expires", "expires", notNull(scalar("Date"))),
+                    field("amount", "amount", notNull(scalar("Int"))),
+                    field("interval", "interval", notNull(scalar("String"))),
                     field("product", "product", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             inline("WalletProductGroup", obj(
@@ -27,6 +29,6 @@ internal val SubscriptionsSelector = obj(
 val Subscriptions = object: OperationDefinition {
     override val name = "Subscriptions"
     override val kind = OperationKind.QUERY
-    override val body = "query Subscriptions{subscriptions{__typename id state expires product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}}}}"
+    override val body = "query Subscriptions{subscriptions{__typename id state expires amount interval product{__typename ... on WalletProductGroup{__typename group{__typename id title photo}}}}}"
     override val selector = SubscriptionsSelector
 }

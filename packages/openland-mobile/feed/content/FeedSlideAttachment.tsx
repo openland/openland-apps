@@ -157,14 +157,11 @@ export const FeedSlideAttachment = React.memo((props: FeedSlideAttachmentProps) 
         </>
     );
 
-    const useGradient = (withText && theme.type === 'Light') || (!wrapped && theme.type === 'Dark');
+    const useGradient = (withText && theme.type === 'Light') || (!wrapped && theme.type !== 'Light');
 
     if (useGradient) {
-        const gradientStart = theme.type === 'Dark' ? 'rgba(0, 0, 0, 0.56)' : 'rgba(242, 243, 245, 0.56)';
-        const gradientEnd = theme.type === 'Dark' ? 'rgba(0, 0, 0, 0)' : 'rgba(242, 243, 245, 0)';
-
         return (
-            <LinearGradient colors={[gradientStart, gradientEnd]} style={styles.box}>
+            <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} style={styles.box}>
                 {content}
             </LinearGradient>
         );

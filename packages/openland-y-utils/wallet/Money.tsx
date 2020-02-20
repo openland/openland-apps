@@ -10,7 +10,7 @@ export const formatMoney = (amount: number, adaptiveCents?: boolean, showPositiv
         cs = '0' + cs;
     }
 
-    let sign = amount < 0 ? '- ' : (showPositiveSign ? '+ ' : '');
+    let sign = amount < 0 ? '− ' : (showPositiveSign ? '+ ' : '');
 
     return sign + '$' + (d.toString() + ((adaptiveCents && cs === '00') ? '' : ('.' + cs)));
 };

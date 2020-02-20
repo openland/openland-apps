@@ -6,24 +6,7 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextLabel1, TextSubhead, } from 'openland-web/utils/TextStyles';
 import { css } from 'linaria';
 import { showSubscription } from '../modals/showSubscription';
-
-interface NormalizedSubscription {
-    id: string;
-    title: string;
-    photo: string;
-    state: WalletSubscriptionState;
-    expires: Date;
-    subscriptionId: string;
-}
-
-const displayDate = (date: Date) => {
-    const utc = date.toUTCString();
-    const segments = utc.split(' ');
-    const month = segments[2];
-    const day = segments[1];
-
-    return `${month} ${day}`;
-};
+import { SubscriptionConverted } from 'openland-y-utils/wallet/subscription';
 
 const subsciptionView = css`
     color: initial;
@@ -42,7 +25,7 @@ const subsciptionView = css`
     }
 `;
 
-export const SubscriptionView = React.memo((props: NormalizedSubscription) => {
+export const SubscriptionView = React.memo((props: SubscriptionConverted) => {
     const router = React.useContext(XViewRouterContext)!;
     const client = useClient();
 
@@ -72,23 +55,7 @@ export const SubscriptionView = React.memo((props: NormalizedSubscription) => {
                                 : "var(--foregroundSecondary)"
                         }
                     >
-
-                        {props.state === WalletSubscriptionState.STARTED && (
-                            <>Next bill on {displayDate(props.expires)}</>
-                        )}
-
-                        {props.state === WalletSubscriptionState.GRACE_PERIOD || props.state === WalletSubscriptionState.RETRYING && (
-                            <>Transaction failed</>
-                        )}
-
-                        {props.state === WalletSubscriptionState.CANCELED && (
-                            <>Expires on {displayDate(props.expires)}</>
-                        )}
-
-                        {props.state === WalletSubscriptionState.EXPIRED && (
-                            <>Expired on {displayDate(props.expires)}</>
-                        )}
-
+                        {props.subtitle}
                     </XView>
                 </span>
             </XView>

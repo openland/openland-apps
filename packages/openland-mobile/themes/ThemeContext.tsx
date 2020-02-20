@@ -25,7 +25,7 @@ export function resolveTheme(appearance: ThemeGlobalKind): ThemeGlobal {
     let resolvedThemeType: ThemeVariants = 'System';
     let resolvedAccentType: AccentGlobalType = 'Default';
 
-    if (appearance.theme === 'Light' || appearance.theme === 'Dark' || appearance.theme === 'System') {
+    if (appearance.theme === 'Light' || appearance.theme === 'Dark' || appearance.theme === 'TrueDark' || appearance.theme === 'System') {
         resolvedThemeType = appearance.theme;
     }
 

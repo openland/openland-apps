@@ -67,7 +67,7 @@ export const ZDocumentExt = (props: ZDocumentExtProps) => {
     const cornerFirstImage = size === 'large' ? require('assets/ic-file-preview-corner-1-18.png') : require('assets/ic-file-preview-corner-1-10.png');
     const cornerSecondImage = size === 'large' ? require('assets/ic-file-preview-corner-2-18.png') : require('assets/ic-file-preview-corner-2-10.png');
     const containerImage = size === 'large' ? require('assets/ic-document-preview-72.png') : require('assets/ic-document-preview-40.png');
-    const tintColor = theme.type === 'Dark' ? theme.tintInverted : (colorByExtension(ext, theme) || theme.accentPrimary);
+    const tintColor = theme.type === 'Light' ? (colorByExtension(ext, theme) || theme.accentPrimary) : theme.tintInverted;
 
     return (
         <View style={[styles.box, { width: boxSize, height: boxSize }]}>
