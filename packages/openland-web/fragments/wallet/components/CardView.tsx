@@ -50,13 +50,15 @@ const CardMenu = React.memo((props: CardViewProps & { ctx: UPopperController }) 
 
 export const CardView = React.memo((props: CardViewProps) => {
     const { brand, last4, expMonth, expYear, isDefault } = props.item;
+    const month = expMonth <= 9 ? `0${expMonth}` : expMonth;
     const year = expYear.toString().slice(-2);
+    const monthYear = `${month}/${year}`;
 
     return (
         <UListItem
             leftElement={<BrandLogo brand={brand} border={true} />}
             title={`${getPaymentMethodName(brand)}, ${last4}`}
-            description={`Valid to ${expMonth}/${year}${isDefault ? ', primary' : ''}`}
+            description={`Valid to ${monthYear}${isDefault ? ', primary' : ''}`}
             interactive={false}
             rightElement={<UMoreButton key={`card-menu-${isDefault}`} menu={ctx => <CardMenu {...props} ctx={ctx} />} />}
         />
