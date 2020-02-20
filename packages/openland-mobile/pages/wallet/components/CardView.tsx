@@ -28,9 +28,9 @@ export const CardView = (props: CardViewProps) => {
     const selected = props.selected;
     const month = expMonth <= 9 ? `0${expMonth}` : expMonth;
     const year = expYear.toString().slice(-2);
+    const monthYear = `${month}/${year}`;
     const theme = React.useContext(ThemeContext);
     const client = useClient();
-    const monthYear = `${month}/${year}`;
     let subtitle = isCardExpired(expMonth, expYear) ? `Expired on ${monthYear}` : `Valid to ${monthYear}`;
 
     if (isDefault && selected === undefined) {

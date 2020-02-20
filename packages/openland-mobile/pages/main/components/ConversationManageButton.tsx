@@ -21,27 +21,32 @@ const useSharedHandlers = (room: Room_room_SharedRoom, router: SRouter) => {
     const userId = getMessenger().engine.user.id;
 
     const onInvitePress = React.useCallback(() => {
-        Modals.showUserMuptiplePicker(router,
-            {
-                title: 'Add',
-                action: async (users) => {
-                    try {
-                        await client.mutateRoomAddMembers({
-                            invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })),
-                            roomId: room.id
-                        });
-                        client.refetchRoomTiny({ id: room.id });
-                    } catch (e) {
-                        Alert.alert(e.message);
+        if (!room.isPremium || room.role === 'OWNER') {
+            Modals.showUserMuptiplePicker(router,
+                {
+                    title: 'Add',
+                    action: async (users) => {
+                        try {
+                            await client.mutateRoomAddMembers({
+                                invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })),
+                                roomId: room.id
+                            });
+                            client.refetchRoomTiny({ id: room.id });
+                        } catch (e) {
+                            Alert.alert(e.message);
+                        }
+                        router.back();
                     }
-                    router.back();
-                }
-            },
-            'Add people',
-            [],
-            [userId],
-            { path: 'ProfileGroupLink', pathParams: { room } }
-        );
+                },
+                'Add people',
+                [],
+                [userId],
+                { path: 'ProfileGroupLink', pathParams: { room } }
+            );
+        } else {
+            router.push('ProfileGroupLink', { room });
+        }
+
     }, [room.id, userId]);
 
     const onLeavePress = React.useCallback(() => {
