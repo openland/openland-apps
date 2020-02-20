@@ -84,7 +84,7 @@ const StartConversationComponent = XMemo<PageProps>((props) => {
         <>
             <SScrollView justifyContent="flex-start" alignContent="center">
                 <Text style={{ fontSize: 34, marginHorizontal: 16, fontWeight: FontStyles.Weight.Bold, color: theme.foregroundPrimary, marginBottom: 8 }} >Get help from Openland community</Text>
-                <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.foregroundPrimary, marginTop: theme.type === 'Dark' ? 8 : 0 }}>Choose a chat and share your challenges</Text>
+                <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.foregroundPrimary, marginTop: theme.type === 'Light' ? 0 : 8 }}>Choose a chat and share your challenges</Text>
                 {items.map((item) => (
                     <Chat key={item.key} item={item} onPress={goToChat} />
                 ))}

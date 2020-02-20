@@ -11,6 +11,7 @@ import { ThemeContext, resolveTheme } from 'openland-mobile/themes/ThemeContext'
 import { ThemePreview } from './components/appearance/ThemePreview';
 import { AccentCircle } from './components/appearance/AccentCircle';
 import { ZTab } from 'openland-mobile/components/ZTab';
+import { SUPER_ADMIN } from '../Init';
 
 const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
@@ -36,6 +37,8 @@ const SettingsAppearanceComponent = React.memo<PageProps>((props) => {
                         <ZTab selected={currentTheme === 'System'} onPress={() => handleChange({ theme: 'System' })}>System</ZTab>
                         <ZTab selected={currentTheme === 'Light'} onPress={() => handleChange({ theme: 'Light' })}>Light</ZTab>
                         <ZTab selected={currentTheme === 'Dark'} onPress={() => handleChange({ theme: 'Dark' })}>Dark</ZTab>
+
+                        {SUPER_ADMIN && <ZTab selected={currentTheme === 'TrueDark'} onPress={() => handleChange({ theme: 'TrueDark' })}>True Dark</ZTab>}
                     </View>
                 </ZListGroup>
 
