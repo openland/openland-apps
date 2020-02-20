@@ -42,7 +42,12 @@ export const convertSubscription = (subscription: Subscriptions_subscriptions) =
     const expires = new Date(parseInt(subscription.expires, 10));
     const subtitle = generateSubTitle(expires, subscription.state);
     const amount = formatMoney(subscription.amount);
-    const amountInterval = `${amount} / ${subscription.interval === WalletSubscriptionInterval.MONTH ? 'mo.' : 'w.'}, `;
+    const intervalVariants: { [key in WalletSubscriptionInterval]: string } = {
+        [WalletSubscriptionInterval.MONTH]: 'mo.',
+        [WalletSubscriptionInterval.WEEK]: 'w.',
+    };
+    const interval = intervalVariants[subscription.interval] || 'period';
+    const amountInterval = `${amount} / ${interval}, `;
 
     const converted: SubscriptionConverted = {
         ...group,

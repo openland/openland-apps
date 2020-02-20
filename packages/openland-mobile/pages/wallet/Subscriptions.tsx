@@ -6,7 +6,7 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { useClient } from 'openland-api/useClient';
-import { WalletSubscriptionState, WalletSubscriptionInterval } from 'openland-api/spacex.types';
+import { WalletSubscriptionState } from 'openland-api/spacex.types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { View, Text, Image } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';

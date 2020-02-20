@@ -82,20 +82,6 @@ const warningContainer = css`
     margin: -8px 0 20px;
 `;
 
-export const showNoiseWarning = async (title: string, message: string) => {
-    return new Promise((resolve, reject) => {
-        const builder = new AlertBlanketBuilder();
-
-        builder.title(title);
-        builder.message(message);
-        builder.body(ctx => <div className={warningContainer} />);
-        builder.action('Continue', async () => { resolve(); }, 'danger');
-        builder.onCancel(reject);
-        builder.width(480);
-        builder.show();
-    });
-};
-
 const CheckLock = React.memo((props: { ctx: XModalController } & PaymentProps) => {
     let wallet = useClient().useMyWallet();
     let router = React.useContext(XViewRouterContext);

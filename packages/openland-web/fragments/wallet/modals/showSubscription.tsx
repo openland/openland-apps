@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { WalletSubscriptionState, WalletSubscriptionInterval } from 'openland-api/spacex.types';
+import { WalletSubscriptionState } from 'openland-api/spacex.types';
 import { XView } from 'react-mental';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextTitle2, TextBody, TextCaption } from 'openland-web/utils/TextStyles';
