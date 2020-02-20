@@ -2,7 +2,7 @@ import * as React from 'react';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 import { useClient } from 'openland-api/useClient';
-import { Subscriptions_subscriptions_product_WalletProductGroup, WalletSubscriptionState } from 'openland-api/spacex.types';
+import { WalletSubscriptionState } from 'openland-api/spacex.types';
 import { XView, XViewRouterContext, XImage } from 'react-mental';
 import { TextTitle1, TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
 import { FormSection } from '../account/components/FormSection';
@@ -11,15 +11,7 @@ import { css } from 'linaria';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import Warning from 'openland-icons/ic-warning-24.svg';
 import { SubscriptionView } from './components/SubscriptionView';
-
-interface NormalizedSubscription {
-    id: string;
-    title: string;
-    photo: string;
-    state: WalletSubscriptionState;
-    expires: Date;
-    subscriptionId: string;
-}
+import { convertSubscription } from 'openland-y-utils/wallet/subscription';
 
 const billingProblems = css`
     display: flex;
@@ -56,16 +48,7 @@ export const SubscriptionsFragment = React.memo(() => {
     const subscriptions = client.useSubscriptions();
     const router = React.useContext(XViewRouterContext)!;
     const groupSubscriptions = subscriptions.subscriptions.filter(subscription => subscription.product.__typename === 'WalletProductGroup');
-    const normalizedSubscriptions: NormalizedSubscription[] = groupSubscriptions.map(subscription => {
-        const group = (subscription.product as Subscriptions_subscriptions_product_WalletProductGroup).group;
-
-        return {
-            ...group,
-            subscriptionId: subscription.id,
-            state: subscription.state,
-            expires: new Date(parseInt(subscription.expires, 10))
-        };
-    });
+    const normalizedSubscriptions = groupSubscriptions.map(convertSubscription);
 
     const activeSubscriptions = normalizedSubscriptions.filter(subscription =>
         subscription.state === WalletSubscriptionState.STARTED ||

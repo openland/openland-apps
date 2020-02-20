@@ -1,30 +1,13 @@
 import * as React from 'react';
-import { WalletSubscriptionState } from 'openland-api/spacex.types';
+import { WalletSubscriptionState, WalletSubscriptionInterval } from 'openland-api/spacex.types';
 import { XView } from 'react-mental';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextTitle2, TextBody, TextCaption } from 'openland-web/utils/TextStyles';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { OpenlandClient } from 'openland-api/spacex';
-
-interface NormalizedSubscription {
-    id: string;
-    title: string;
-    photo: string;
-    state: WalletSubscriptionState;
-    expires: Date;
-    subscriptionId: string;
-}
-
-const displayDate = (date: Date) => {
-    const utc = date.toUTCString();
-    const segments = utc.split(' ');
-    const month = segments[2];
-    const day = segments[1];
-
-    return `${month} ${day}`;
-};
+import { SubscriptionConverted, displaySubscriptionDate } from 'openland-y-utils/wallet/subscription';
 
 const gradientModalBody = css`
     display: flex;
@@ -58,7 +41,11 @@ const modalFooter = css`
     text-align: center;
 `;
 
-export const showSubscription = (props: NormalizedSubscription, client: OpenlandClient) => {
+const descriptionBox = css`
+    text-align: center;
+`;
+
+export const showSubscription = (props: SubscriptionConverted, client: OpenlandClient) => {
     showModalBox({ title: 'Subscription', useTopCloser: true }, (ctx) => {
         return (
             <>
@@ -75,17 +62,10 @@ export const showSubscription = (props: NormalizedSubscription, client: Openland
                         </h2>
                     </XView>
                     <XView marginTop={8} color="var(--foregroundSecondary)">
-                        <span className={TextBody}>
+                        <span className={cx(TextBody, descriptionBox)}>
+                            {props.subtitle}
                             {props.state === WalletSubscriptionState.STARTED && (
-                                <>Next bill on {displayDate(props.expires)}</>
-                            )}
-
-                            {props.state === WalletSubscriptionState.CANCELED && (
-                                <>Expires on {displayDate(props.expires)}</>
-                            )}
-
-                            {props.state === WalletSubscriptionState.EXPIRED && (
-                                <>Expired on {displayDate(props.expires)}</>
+                                <><br />{props.amount} / {props.interval === WalletSubscriptionInterval.MONTH ? 'mo.' : 'w.'}</>
                             )}
                         </span>
                     </XView>
@@ -107,7 +87,7 @@ export const showSubscription = (props: NormalizedSubscription, client: Openland
                         />
                         <XView marginTop={16} color="var(--foregroundSecondary)">
                             <span className={TextCaption}>
-                                If you cancel now, you can still access<br />the group until {displayDate(props.expires)}
+                                If you cancel now, you can still access<br />the group until {displaySubscriptionDate(props.expires)}
                             </span>
                         </XView>
                     </div>
