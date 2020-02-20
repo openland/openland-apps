@@ -58,9 +58,9 @@ const itemStyle = css`
     display: flex;
     background-color: #fff;
     cursor: pointer;
-    &:hover {
-        background-color: #f0f2f5;
-    }
+    //&:hover {
+    //    background-color: #f0f2f5;
+    //}
     &:active {
         background-color: #ebedf0;
     }

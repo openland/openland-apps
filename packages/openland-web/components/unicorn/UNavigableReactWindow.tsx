@@ -47,37 +47,49 @@ export const UNavigableReactWindow = React.memo(
 
             let [state, dispatch] = React.useReducer(
                 (
-                    oldState: { index: number; length: number; startScrolling: boolean },
+                    oldState: {
+                        index: number;
+                        length: number;
+                        startScrolling: boolean;
+                        enterMouse: boolean;
+                    },
                     action: {
                         delta?: number;
                         length?: number;
                         reset?: boolean;
                         startScrolling?: boolean;
-                        focusedIndex?: number;
+                        focusedIndex?: number | null;
+                        stopMouse?: boolean;
                     },
                 ) => {
                     const delta = action.delta !== undefined ? action.delta : 0;
                     const length = action.length !== undefined ? action.length : oldState.length;
                     const startScrolling = !oldState.startScrolling;
+                    const enterMouse = !action.stopMouse;
+
+                    const focusIndex = action.focusedIndex
+                        ? action.focusedIndex
+                        : action.reset
+                        ? props.focusedByDefault === false
+                            ? -1
+                            : findSelectable(0, 1)
+                        : findSelectable(
+                              Math.max(Math.min(length - 1, oldState.index + delta), 0),
+                              delta,
+                          );
+
                     return {
-                        index: action.focusedIndex
-                            ? action.focusedIndex
-                            : action.reset
-                            ? props.focusedByDefault === false
-                                ? -1
-                                : findSelectable(0, 1)
-                            : findSelectable(
-                                  Math.max(Math.min(length - 1, oldState.index + delta), 0),
-                                  delta,
-                              ),
+                        index: focusIndex,
                         length,
                         startScrolling,
+                        enterMouse,
                     };
                 },
                 {
                     index: props.focusedByDefault === false ? -1 : findSelectable(0, 1),
                     length: data.length,
                     startScrolling: false,
+                    enterMouse: true,
                 },
             );
 
@@ -92,11 +104,21 @@ export const UNavigableReactWindow = React.memo(
                 ref,
                 () => ({
                     onPressUp: () => {
-                        dispatch({ delta: -1, startScrolling: false });
+                        dispatch({
+                            delta: -1,
+                            startScrolling: false,
+                            focusedIndex: null,
+                            stopMouse: true,
+                        });
                         return true;
                     },
                     onPressDown: () => {
-                        dispatch({ delta: 1, startScrolling: false });
+                        dispatch({
+                            delta: 1,
+                            startScrolling: false,
+                            focusedIndex: null,
+                            stopMouse: true,
+                        });
                         return true;
                     },
                     onPressEnter: () => {
@@ -107,7 +129,7 @@ export const UNavigableReactWindow = React.memo(
                         return false;
                     },
                     reset: () => {
-                        dispatch({ reset: true, startScrolling: false });
+                        dispatch({ reset: true, startScrolling: false, focusedIndex: null });
                     },
                 }),
                 [props.data, state],
@@ -122,7 +144,17 @@ export const UNavigableReactWindow = React.memo(
                         onSelected={props.onSelected}
                         startScrolling={state.startScrolling}
                         selectable={data[pr.index].selectable}
-                        onMouseEnter={() => dispatch({ focusedIndex: pr.index })}
+                        onMouseEnter={
+                            state.enterMouse
+                                ? () =>
+                                      dispatch({
+                                          focusedIndex: findSelectable(
+                                              pr.index,
+                                              props.focusedByDefault === false ? -1 : 1,
+                                          ),
+                                      })
+                                : undefined
+                        }
                     >
                         {renderItem(data[pr.index])}
                     </Item>
