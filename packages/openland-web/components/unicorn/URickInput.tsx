@@ -16,9 +16,13 @@ const quillStyle = css`
     border-radius: 8px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    background-color: var(--backgroundTertiaryTrans);
+
+    &:hover {
+        background-color: var(--backgroundTertiaryHoverTrans);
+    }
 
     .ql-container {
-        background-color: var(--backgroundTertiary);
         border-radius: 8px;
         font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif,
             'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';

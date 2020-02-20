@@ -19,7 +19,6 @@ const style = css`
         flex-shrink: 1;
         flex-grow: 1;
         position: relative;
-        background-color: var(--backgroundTertiary);
         border-radius: 8px;
         max-width: 100%;
         cursor: pointer;
@@ -47,6 +46,12 @@ const style = css`
         overflow: hidden;
         position: relative;
         cursor: pointer;
+        border-radius: 8px;
+        background-color: var(--backgroundTertiaryTrans);
+
+        &:hover {
+            background-color: var(--backgroundTertiaryHoverTrans);
+        }
     }
     & .Select-input {
         display: flex;

@@ -8,8 +8,12 @@ const inputWrapper = css`
     align-items: stretch;
     position: relative;
     border-radius: 8px;
-    background-color: var(--backgroundTertiary);
+    background-color: var(--backgroundTertiaryTrans);
     height: 56px;
+
+    &:hover {
+        background-color: var(--backgroundTertiaryHoverTrans);
+    }
 
     &:focus-within div.input-label {
         font-size: 13px;

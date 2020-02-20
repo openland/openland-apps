@@ -8,9 +8,13 @@ import { TextBody } from 'openland-web/utils/TextStyles';
 const field = css`
     appearance: textfield;
     position: relative;
-    background-color: var(--backgroundTertiary);
+    background-color: var(--backgroundTertiaryTrans);
     padding: 8px 40px 8px 36px;
     border-radius: 8px;
+
+    &:hover {
+        background-color: var(--backgroundTertiaryHoverTrans);
+    }
 
     &::-webkit-search-cancel-button {
         display: none;

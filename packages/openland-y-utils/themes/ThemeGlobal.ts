@@ -57,6 +57,7 @@ export type ThemeGlobal = {
     backgroundTertiaryActive: string;
 
     backgroundTertiaryTrans: string;
+    backgroundTertiaryHoverTrans: string;
 
     accentPrimary: string;
     accentPrimaryHover: string;
