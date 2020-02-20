@@ -63,14 +63,11 @@ export const showSubscription = (props: SubscriptionConverted, client: OpenlandC
                     </XView>
                     <XView marginTop={8} color="var(--foregroundSecondary)">
                         <span className={cx(TextBody, descriptionBox)}>
-                            {props.subtitle}
-                            {props.state === WalletSubscriptionState.STARTED && (
-                                <><br />{props.amount} / {props.interval === WalletSubscriptionInterval.MONTH ? 'mo.' : 'w.'}</>
-                            )}
+                            {props.amountSubtitle}
                         </span>
                     </XView>
-
                 </div>
+
                 {props.state === WalletSubscriptionState.STARTED && (
                     <div className={modalFooter}>
                         <UButton

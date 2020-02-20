@@ -5,6 +5,7 @@ export interface SubscriptionConverted {
     id: string;
     title: string;
     subtitle: string;
+    amountSubtitle: string;
     photo: string;
     state: WalletSubscriptionState;
     expires: Date;
@@ -25,32 +26,28 @@ export const displaySubscriptionDate = (date: Date) => {
 const generateSubTitle = (expires: Date, state: WalletSubscriptionState) => {
     const date = displaySubscriptionDate(expires);
 
-    switch (state) {
-        case WalletSubscriptionState.STARTED:
-            return `Next bill on ${date}`;
+    const variants: { [key in WalletSubscriptionState]: string } = {
+        [WalletSubscriptionState.STARTED]: `Next bill on ${date}`,
+        [WalletSubscriptionState.GRACE_PERIOD]: `Payment failed`,
+        [WalletSubscriptionState.RETRYING]: `Payment failed`,
+        [WalletSubscriptionState.CANCELED]: `Expires on ${date}`,
+        [WalletSubscriptionState.EXPIRED]: `Expired on ${date}`,
+    };
 
-        case WalletSubscriptionState.GRACE_PERIOD:
-        case WalletSubscriptionState.RETRYING:
-            return "Payment failed";
-
-        case WalletSubscriptionState.CANCELED:
-            return `Expires on ${date}`;
-
-        case WalletSubscriptionState.EXPIRED:
-            return `Expired on ${date}`;
-
-        default:
-            return `Expires on ${date}`;
-    }
+    return variants[state] || `Expires on ${date}`;
 };
 
 export const convertSubscription = (subscription: Subscriptions_subscriptions) => {
     const group = (subscription.product as Subscriptions_subscriptions_product_WalletProductGroup).group;
     const expires = new Date(parseInt(subscription.expires, 10));
+    const subtitle = generateSubTitle(expires, subscription.state);
+    const amount = formatMoney(subscription.amount);
+    const amountInterval = `${amount} / ${subscription.interval === WalletSubscriptionInterval.MONTH ? 'mo.' : 'w.'}, `;
 
     const converted: SubscriptionConverted = {
         ...group,
-        subtitle: generateSubTitle(expires, subscription.state),
+        subtitle,
+        amountSubtitle: amountInterval + subtitle.charAt(0).toLowerCase() + subtitle.slice(1),
         subscriptionId: subscription.id,
         state: subscription.state,
         expires,

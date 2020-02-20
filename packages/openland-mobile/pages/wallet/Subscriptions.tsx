@@ -55,7 +55,7 @@ const SubscriptionView = React.memo((props: SubscriptionConverted) => {
                                 : theme.foregroundTertiary
                         }}
                     >
-                        {props.subtitle}
+                        {props.amountSubtitle}
                     </Text>
                 </View>
             </View>
@@ -92,8 +92,7 @@ const SubscriptionView = React.memo((props: SubscriptionConverted) => {
                     </View>
                     <View marginTop={4}>
                         <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundTertiary, textAlign: 'center' }}>
-                            {props.subtitle}{'\n'}
-                            {props.amount} / {props.interval === WalletSubscriptionInterval.MONTH ? 'mo.' : 'w.'}
+                            {props.amountSubtitle}
                         </Text>
                     </View>
                 </LinearGradient>
