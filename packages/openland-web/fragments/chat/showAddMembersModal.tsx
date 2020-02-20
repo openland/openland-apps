@@ -20,6 +20,9 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { OwnerLinkComponent } from 'openland-web/fragments/invite/OwnerLinkComponent';
 import { ExplorePeople } from 'openland-web/fragments/create/ExplorePeople';
 import { SearchBox } from 'openland-web/fragments/create/SearchBox';
+import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import IcClose from 'openland-icons/s/ic-close-16.svg';
 
 interface InviteModalProps {
     id: string;
@@ -34,7 +37,8 @@ interface InviteModalProps {
     isChannel?: boolean;
     isOrganization: boolean;
     isCommunity?: boolean;
-
+    isPremium: boolean;
+    isOwner: boolean;
     hide?: () => void;
 }
 
@@ -98,21 +102,32 @@ const AddMemberModalInner = (props: InviteModalProps) => {
         setOptions(newOpts);
     };
 
+    const canAddPeople = (!props.isPremium || props.isOwner);
+
     return (
         <>
-            <XModalContent>
+            {!canAddPeople && <UIconButton
+                onClick={props.hide}
+                icon={<UIcon icon={<IcClose />} size={16} />}
+                size="small"
+                position="absolute"
+                right={26}
+                top={26}
+            />}
+            <XModalContent >
                 <XTrack event="invite_view" params={{ invite_type: objType }} />
                 <XTrack
                     event={`navigate_${objType}_add_members`}
                     params={{ invite_type: objType }}
                 />
+
                 <XView
-                    height={props.isMobile ? '100%' : '65vh'}
+                    height={canAddPeople ? (props.isMobile ? '100%' : '65vh') : undefined}
                     flexGrow={1}
                     marginBottom={-24}
                     paddingTop={8}
                 >
-                    <XView marginBottom={16}>
+                    <XView marginBottom={canAddPeople ? 16 : 24}>
                         <SectionTitle title="Share invitation link" />
                         <OwnerLinkComponent
                             id={props.id}
@@ -122,34 +137,38 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                             isCommunity={props.isCommunity}
                         />
                     </XView>
-                    <SectionTitle title="Add people directly" />
-                    <XView>
-                        <SearchBox
-                            small={true}
-                            onInputChange={onInputChange}
-                            value={options}
-                            onChange={onChange}
-                        />
-                    </XView>
-                    <React.Suspense
-                        fallback={
-                            <XView flexGrow={1} flexShrink={0}>
-                                <XLoader loading={true} />
+                    {canAddPeople &&
+                        <>
+                            <SectionTitle title="Add people directly" />
+                            <XView>
+                                <SearchBox
+                                    small={true}
+                                    onInputChange={onInputChange}
+                                    value={options}
+                                    onChange={onChange}
+                                />
                             </XView>
-                        }
-                    >
-                        <XView flexGrow={1} flexShrink={1} marginHorizontal={-24}>
-                            <ExplorePeople
-                                query={searchQuery}
-                                onPick={selectMembers}
-                                selectedUsers={selectedUsers}
-                                roomUsers={props.members}
-                            />
-                        </XView>
-                    </React.Suspense>
+                            <React.Suspense
+                                fallback={
+                                    <XView flexGrow={1} flexShrink={0}>
+                                        <XLoader loading={true} />
+                                    </XView>
+                                }
+                            >
+                                <XView flexGrow={1} flexShrink={1} marginHorizontal={-24}>
+                                    <ExplorePeople
+                                        query={searchQuery}
+                                        onPick={selectMembers}
+                                        selectedUsers={selectedUsers}
+                                        roomUsers={props.members}
+                                    />
+                                </XView>
+                            </React.Suspense>
+                        </>
+                    }
                 </XView>
             </XModalContent>
-            <XModalFooter>
+            {canAddPeople && <XModalFooter>
                 <UButton
                     text="Cancel"
                     style="secondary"
@@ -164,33 +183,33 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                     onClick={
                         !!options.length
                             ? async () => {
-                                  if (props.isGroup) {
-                                      await (props.addMembers as any)({
-                                          variables: {
-                                              roomId: props.id,
-                                              invites: options.map(i => ({
-                                                  userId: i.value,
-                                                  role: RoomMemberRole.MEMBER,
-                                              })),
-                                          },
-                                      });
-                                  } else if (props.isOrganization) {
-                                      await (props.addMembers as any)({
-                                          variables: {
-                                              organizationId: props.id,
-                                              userIds: options.map(i => i.value),
-                                          },
-                                      });
-                                  }
-                                  setSelectedUsers(null);
-                                  if (props.hide) {
-                                      props.hide();
-                                  }
-                              }
+                                if (props.isGroup) {
+                                    await (props.addMembers as any)({
+                                        variables: {
+                                            roomId: props.id,
+                                            invites: options.map(i => ({
+                                                userId: i.value,
+                                                role: RoomMemberRole.MEMBER,
+                                            })),
+                                        },
+                                    });
+                                } else if (props.isOrganization) {
+                                    await (props.addMembers as any)({
+                                        variables: {
+                                            organizationId: props.id,
+                                            userIds: options.map(i => i.value),
+                                        },
+                                    });
+                                }
+                                setSelectedUsers(null);
+                                if (props.hide) {
+                                    props.hide();
+                                }
+                            }
                             : undefined
                     }
                 />
-            </XModalFooter>
+            </XModalFooter>}
         </>
     );
 };
@@ -261,14 +280,20 @@ export const AddMembersModal = React.memo(
         };
 
         let data = null;
+        let isPremium = false;
+        let isOwner = false;
 
         if (isGroup) {
             data = client.useRoomMembersShort({ roomId: id });
+            let group = client.useRoomWithoutMembers({ id: id });
+            isPremium = group.room?.__typename === 'SharedRoom' && group.room.isPremium;
+            isOwner = group.room?.__typename === 'SharedRoom' && group.room.role === 'OWNER';
         } else if (isOrganization) {
             data = client.useOrganizationMembersShort({ organizationId: id });
         }
 
         return (
+
             <AddMemberModalInner
                 hide={hide}
                 addMembers={isOrganization ? addMembersToOrganization : addMembersToRoom}
@@ -283,6 +308,8 @@ export const AddMembersModal = React.memo(
                 isChannel={isChannel}
                 isOrganization={isOrganization}
                 isCommunity={isCommunity}
+                isPremium={isPremium}
+                isOwner={isOwner}
             />
         );
     },
