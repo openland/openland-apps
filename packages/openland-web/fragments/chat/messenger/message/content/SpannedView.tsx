@@ -10,7 +10,6 @@ import { TextTitle2 } from 'openland-web/utils/TextStyles';
 import { defaultHover } from 'openland-web/utils/Styles';
 import { plural } from 'openland-y-utils/plural';
 import { isInviteLink, InviteLink } from './InviteContent';
-import { useClient } from 'openland-api/useClient';
 import { XViewRouterContext, XViewRouter } from 'react-mental';
 
 const boldTextClassName = css`
