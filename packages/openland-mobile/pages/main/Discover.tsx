@@ -180,7 +180,7 @@ const TagsGroupPage = React.memo((props: TagsGroupPageProps) => {
 
     return (
         <>
-            <SHeader title={subtitle || ''}/>
+            {isIos && <SHeader title={subtitle || ''}/>}
             <SScrollView flex={1} paddingTop={16}>
                 {subtitle && (
                     <Text

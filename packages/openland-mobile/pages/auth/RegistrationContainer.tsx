@@ -90,7 +90,7 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
     return (
         <>
             {props.header && props.header}
-            <SHeader title={props.title} />
+            {isIos && <SHeader title={props.title} />}
             <KeyboardAvoidingView behavior="padding" flex={1}>
                 <SScrollView
                     flex={1}

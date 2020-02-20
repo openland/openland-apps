@@ -171,7 +171,7 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
 
     return (
         <>
-            <SHeader title="What to join"/>
+            {isIos && <SHeader title="What to join"/>}
             <SHeaderButton title="Skip" onPress={skip} />
             <SScrollView flex={1} paddingTop={16}>
                 <Text
