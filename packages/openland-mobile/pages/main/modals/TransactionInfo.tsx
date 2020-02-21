@@ -62,9 +62,9 @@ const TransactionInfo = React.memo<TransactionInfoProps & { ctx: BottomSheetActi
                 </Text>
             </LinearGradient>
             <View>
-                <InfoItem name="Date and time" value={`${dateTime.date}, ${dateTime.time}`} />
-                {paymentMethod && <InfoItem name="Payment method" value={paymentMethod} />}
                 <InfoItem name="Total amount" value={amount} />
+                {paymentMethod && <InfoItem name="Payment method" value={paymentMethod} />}
+                <InfoItem name="Date and time" value={`${dateTime.date}, ${dateTime.time}`} />
                 <InfoItem name="Status" status={status} />
             </View>
         </View>

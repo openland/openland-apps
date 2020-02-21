@@ -58,11 +58,11 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
                 </div>
             </XView>
             <XView marginTop={16}>
-                <InfoRow label="Date and time">{dateTime.date}, {dateTime.time}</InfoRow>
+                <InfoRow label="Total amount">{amount}</InfoRow>
 
                 {paymentMethod && <InfoRow label="Payment method">{paymentMethod}</InfoRow>}
 
-                <InfoRow label="Total amount">{amount}</InfoRow>
+                <InfoRow label="Date and time">{dateTime.date}, {dateTime.time}</InfoRow>
                 <InfoRow label="Status">
                     <XView color={StatusColor[status]} alignItems="center" flexDirection="row">
                         {status === 'success' && <UIcon icon={<SuccessIcon />} color={StatusColor[status]} />}
