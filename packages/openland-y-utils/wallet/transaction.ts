@@ -13,6 +13,8 @@ export interface TransactionConverted {
     dateTime: { date: string, time: string, isToday: boolean };
     paymentMethod?: string;
     amount: string;
+    walletAmount?: string;
+    chargeAmount?: string;
     status: TransactionConvertedStatus;
 
     source: WalletTransactionFragment;
@@ -21,6 +23,8 @@ export interface TransactionConverted {
 const getAvatar = (subject: { __typename: 'User', id: string, name: string, photo: string | null } | { __typename: 'SharedRoom', id: string, title: string, photo: string }) => (subject.__typename === 'User' ? {
     id: subject.id, title: subject.name, photo: subject.photo,
 } : { id: subject.id, title: subject.title, photo: subject.photo });
+
+const formatTransactionMoney = (amount: number) => formatMoney(amount, false, true);
 
 export const convertTransaction = (transaction: WalletTransactionFragment) => {
     const { id, operation } = transaction;
@@ -32,7 +36,7 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
         interval: undefined,
         dateTime: extractDateTime(transaction.date),
         paymentMethod: undefined,
-        amount: formatMoney(transaction.operation.amount, false, true),
+        amount: formatTransactionMoney(transaction.operation.amount),
         status: 'pending',
         source: transaction
     };
@@ -50,6 +54,11 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
 
         converted.interval = interval === WalletSubscriptionInterval.WEEK ? 'Weekly' : 'Monthly';
         converted.type = 'Subscription';
+
+        if (operation.walletAmount !== 0 && operation.chargeAmount !== 0) {
+            converted.walletAmount = formatTransactionMoney(-operation.walletAmount);
+            converted.chargeAmount = formatTransactionMoney(-operation.chargeAmount);
+        }
 
         if (product.__typename === 'WalletProductGroup') {
             converted.title = product.group.title;
@@ -70,6 +79,10 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
         converted.title = toUser.name;
         converted.type = 'Transfer';
         converted.avatar = getAvatar(toUser);
+        if (operation.walletAmount !== 0 && operation.chargeAmount !== 0) {
+            converted.walletAmount = formatTransactionMoney(-operation.walletAmount);
+            converted.chargeAmount = formatTransactionMoney(-operation.chargeAmount);
+        }
     } else if (operation.__typename === 'WalletTransactionDeposit') {
         converted.title = 'Top up balance';
         converted.type = 'Deposit';
@@ -91,6 +104,11 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
         const { product } = operation.purchase;
 
         converted.type = 'Payment';
+
+        if (operation.walletAmount !== 0 && operation.chargeAmount !== 0) {
+            converted.walletAmount = formatTransactionMoney(-operation.walletAmount);
+            converted.chargeAmount = formatTransactionMoney(-operation.chargeAmount);
+        }
 
         if (product.__typename === 'WalletProductGroup') {
             converted.title = product.group.title;

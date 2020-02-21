@@ -8,7 +8,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { WalletTransactionFragment } from 'openland-api/spacex.types';
 import { convertTransaction, TransactionConvertedStatus } from 'openland-y-utils/wallet/transaction';
 
-const InfoItem = React.memo<{ name: string, value?: string, status?: TransactionConvertedStatus }>((props) => {
+const InfoItem = React.memo<{ name: string, secondary?: boolean, value?: string, status?: TransactionConvertedStatus }>((props) => {
     const theme = useTheme();
     const colorBy = {
         success: theme.accentPositive,
@@ -19,8 +19,8 @@ const InfoItem = React.memo<{ name: string, value?: string, status?: Transaction
     const iconStyle = { tintColor: valueColor, marginRight: 8, width: 16, height: 16 };
     const value = !!props.status ? props.status.charAt(0).toUpperCase() + props.status.slice(1) : props.value;
     return (
-        <View paddingHorizontal={16} paddingVertical={12} flexDirection="row" justifyContent="space-between">
-            <Text style={{ ...TextStyles.Body, color: theme.foregroundPrimary }}>{props.name}</Text>
+        <View paddingLeft={props.secondary ? 32 : 16} paddingRight={16} paddingVertical={12} flexDirection="row" justifyContent="space-between">
+            <Text style={{ ...TextStyles.Body, color: props.secondary ? theme.foregroundTertiary : theme.foregroundPrimary }}>{props.name}</Text>
             <View flexDirection="row" alignItems="center">
                 {props.status === 'success' ? (
                     <Image source={require('assets/ic-success-16.png')} style={iconStyle} />
@@ -42,7 +42,9 @@ interface TransactionInfoProps {
 
 const TransactionInfo = React.memo<TransactionInfoProps & { ctx: BottomSheetActions }>((props) => {
     const theme = React.useContext(ThemeContext);
-    const { avatar, title, type, dateTime, amount, paymentMethod, interval, status } = convertTransaction(props.item);
+    const { avatar, title, type, dateTime, amount, walletAmount, chargeAmount, paymentMethod, interval, status } = convertTransaction(props.item);
+    const hasSplittedAmount = !!walletAmount && !!chargeAmount;
+
     return (
         <View>
             <LinearGradient
@@ -63,7 +65,13 @@ const TransactionInfo = React.memo<TransactionInfoProps & { ctx: BottomSheetActi
             </LinearGradient>
             <View>
                 <InfoItem name="Total amount" value={amount} />
-                {paymentMethod && <InfoItem name="Payment method" value={paymentMethod} />}
+                {hasSplittedAmount && (
+                    <>
+                        <InfoItem name="Your balance" value={walletAmount} secondary={true} />
+                        <InfoItem name={paymentMethod!} value={chargeAmount} secondary={true} />
+                    </>
+                )}
+                {paymentMethod && !hasSplittedAmount && <InfoItem name="Payment method" value={paymentMethod} />}
                 <InfoItem name="Date and time" value={`${dateTime.date}, ${dateTime.time}`} />
                 <InfoItem name="Status" status={status} />
             </View>

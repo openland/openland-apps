@@ -26,9 +26,13 @@ const statusBox = css`
     margin-left: 8px;
 `;
 
-const InfoRow = React.memo((props: { label: string; children: any }) => (
-    <XView flexDirection="row" justifyContent="space-between" paddingVertical={12}>
-        <span className={TextBody}>{props.label}</span>
+const infoRowSecondaryLabel = css`
+    color: var(--foregroundSecondary);
+`;
+
+const InfoRow = React.memo((props: { label: string; secondary?: boolean; children: any }) => (
+    <XView flexDirection="row" justifyContent="space-between" paddingVertical={12} paddingLeft={props.secondary ? 16 : undefined}>
+        <span className={cx(TextBody, props.secondary && infoRowSecondaryLabel)}>{props.label}</span>
         <XView {...TextStyles.Body} color="var(--foregroundSecondary)">
             {props.children}
         </XView>
@@ -43,7 +47,8 @@ const StatusColor: { [key in TransactionConvertedStatus]: string } = {
 };
 
 const TransactionComponent = React.memo((props: { ctx: XModalController, transaction: WalletTransactionFragment }) => {
-    const { avatar, title, type, dateTime, status, amount, interval, paymentMethod } = convertTransaction(props.transaction);
+    const { avatar, title, type, dateTime, status, amount, walletAmount, chargeAmount, interval, paymentMethod } = convertTransaction(props.transaction);
+    const hasSplittedAmount = !!walletAmount && !!chargeAmount;
 
     return (
         <XView paddingTop={12} paddingBottom={16} paddingHorizontal={24}>
@@ -59,8 +64,14 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
             </XView>
             <XView marginTop={16}>
                 <InfoRow label="Total amount">{amount}</InfoRow>
+                {hasSplittedAmount && (
+                    <>
+                        <InfoRow label="Your balance" secondary={true}>{walletAmount}</InfoRow>
+                        <InfoRow label={paymentMethod!} secondary={true}>{chargeAmount}</InfoRow>
+                    </>
+                )}
 
-                {paymentMethod && <InfoRow label="Payment method">{paymentMethod}</InfoRow>}
+                {paymentMethod && !hasSplittedAmount && <InfoRow label="Payment method">{paymentMethod}</InfoRow>}
 
                 <InfoRow label="Date and time">{dateTime.date}, {dateTime.time}</InfoRow>
                 <InfoRow label="Status">
