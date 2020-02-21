@@ -122,6 +122,7 @@ interface InviteLandingComponentLayoutProps {
     whereToInvite: 'Channel' | 'Group' | 'Organization' | 'Community';
     photo: string | null;
     title: string;
+    entityTitle: string;
     id: string;
     membersCount?: number | null;
     description?: string | null;
@@ -137,6 +138,7 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
         whereToInvite,
         photo,
         title,
+        entityTitle,
         id,
         membersCount,
         description,
@@ -175,12 +177,12 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
                                 />
                             </div>
                             <div className={bigAvatarWrapper}>
-                                <UAvatar photo={photo} title={title} id={id} size="x-large" />
+                                <UAvatar photo={photo} title={entityTitle} id={id} size="x-large" />
                             </div>
                         </div>
                     ) : (
                             <div className={avatarsContainer}>
-                                <UAvatar photo={photo} title={title} id={id} size="xx-large" />
+                                <UAvatar photo={photo} title={entityTitle} id={id} size="xx-large" />
                             </div>
                         )}
                     <div className={cx(TextTitle1, titleStyle)}>{joinTitle}</div>
@@ -452,15 +454,17 @@ const resolveRoomButton = (
 
 export const SharedRoomPlaceholder = ({ room }: { room: RoomChat_room_SharedRoom }) => {
     const buttonText = room.isChannel ? 'Join channel' : 'Join group';
+    const premiumSuspended = room && room.isPremium && !room.premiumPassIsActive && (room.premiumSubscription && room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED);
     return (
         <InviteLandingComponentLayout
             button={resolveRoomButton(room, buttonText)}
             whereToInvite="Group"
             photo={room.photo}
-            title={room.title}
+            title={premiumSuspended ? `Your access to “${room.title}” is suspended` : room.title}
+            entityTitle={room.title}
             id={room.id}
             membersCount={room.membersCount}
-            description={room.description}
+            description={premiumSuspended ? "To keep your access to the group by subscription you need to complete payment" : room.description}
             room={room}
             noLogin={false}
         />
@@ -570,22 +574,25 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 event={loggedIn ? 'invite_screen_view' : 'invite_landing_view'}
                 params={{ invite_type: whereToInvite.toLowerCase() }}
             />
-            {premiumSuspended ? <InviteLandingComponentLayout
-                button={button}
-                whereToInvite={whereToInvite}
-                photo={room ? room.photo : organization!.photo}
-                title={`Your access to “${room ? room.title : organization!.name}” is suspended`}
-                id={room ? room.id : organization!.id}
-                description={"To keep your access to the group by subscription you need to complete payment"}
-                room={room}
-                noLogin={!loggedIn}
-            /> :
+            {premiumSuspended ?
+                <InviteLandingComponentLayout
+                    button={button}
+                    whereToInvite={whereToInvite}
+                    photo={room ? room.photo : organization!.photo}
+                    title={`Your access to “${room ? room.title : organization!.name}” is suspended`}
+                    entityTitle={room ? room.title : organization!.name}
+                    id={room ? room.id : organization!.id}
+                    description={"To keep your access to the group by subscription you need to complete payment"}
+                    room={room}
+                    noLogin={!loggedIn}
+                /> :
                 <InviteLandingComponentLayout
                     invitedByUser={invitedByUser}
                     button={button}
                     whereToInvite={whereToInvite}
                     photo={room ? room.photo : organization!.photo}
                     title={room ? room.title : organization!.name}
+                    entityTitle={room ? room.title : organization!.name}
                     id={room ? room.id : organization!.id}
                     membersCount={room ? room.membersCount : organization!.membersCount}
                     description={room ? room.description : organization!.about}
