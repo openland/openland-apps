@@ -1,27 +1,39 @@
 import * as React from 'react';
-import { Text, StyleSheet, TextStyle, ViewStyle, Animated, View } from 'react-native';
+import { Text, StyleSheet, ViewStyle, Animated, View } from 'react-native';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { FontStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
         paddingHorizontal: 4,
-        borderRadius: 8,
-        minWidth: 16,
-        height: 16,
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
     } as ViewStyle,
-    text: {
-        fontSize: 10,
-        lineHeight: 16,
-        fontWeight: FontStyles.Weight.Bold
-    } as TextStyle
 });
+
+const containerBySize: {[sizeKey in ZCounterSize]: ViewStyle} = {
+    small: {
+        borderRadius: 8,
+        minWidth: 16,
+        height: 16,
+    },
+    medium: {
+        borderRadius: 11,
+        minWidth: 22,
+        height: 22,
+    }
+};
+const textBySize: {[sizeKey in ZCounterSize]: ViewStyle} = {
+    small: TextStyles.Detail,
+    medium: TextStyles.Label3,
+};
+
+type ZCounterSize = 'small' | 'medium';
 
 export interface ZCounterProps {
     value: number;
+    size?: ZCounterSize;
     theme: ThemeGlobal;
 }
 
@@ -63,11 +75,12 @@ export class ZCounter extends React.PureComponent<ZCounterProps, { value: number
 
     render() {
         const { theme } = this.props;
+        const size = this.props.size || 'small';
 
         return (
             <Animated.View style={{ opacity: this.opacity }}>
-                <View style={[styles.container, { backgroundColor: theme.accentNegative }]}>
-                    <Text style={[styles.text, { color: theme.foregroundContrast }]} allowFontScaling={false}>{this.state.value}</Text>
+                <View style={[styles.container, { ...containerBySize[size], backgroundColor: theme.accentNegative }]}>
+                    <Text style={{ ...textBySize[size], color: theme.foregroundContrast }} allowFontScaling={false}>{this.state.value}</Text>
                 </View>
             </Animated.View>
         );

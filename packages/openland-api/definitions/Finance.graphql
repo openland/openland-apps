@@ -254,6 +254,7 @@ query MyWallet {
         balance
         state
         isLocked
+        failingPaymentsCount
     }
     transactionsPending {
         ...WalletTransactionFragment

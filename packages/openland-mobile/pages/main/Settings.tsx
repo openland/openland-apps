@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Share, View, Image } from 'react-native';
+import { Share, View } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListGroup } from '../../components/ZListGroup';
@@ -13,6 +13,7 @@ import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { trackEvent } from 'openland-mobile/analytics';
+import { ZCounter } from 'openland-mobile/components/ZCounter';
 
 export const handleGlobalInvitePress = async () => {
     startLoader();
@@ -75,7 +76,7 @@ let SettingsContent = ((props: PageProps) => {
                     text="Wallet"
                     path="Wallet"
                     rightElement={wallet && wallet.myWallet.isLocked ? (
-                        <Image source={require('assets/ic-failure-16.png')} style={{ tintColor: theme.accentNegative }} />
+                        <ZCounter theme={theme} value={wallet.myWallet.failingPaymentsCount} size="medium" />
                     ) : undefined}
                 />
                 <ZListItem

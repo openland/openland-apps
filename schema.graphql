@@ -3028,6 +3028,7 @@ type WalletAccount {
   balance: Int!
   state: String!
   isLocked: Boolean!
+  failingPaymentsCount: Int!
 }
 
 union WalletIncomeSource = WalletSubscription | Purchase

@@ -8,6 +8,7 @@ import { sequenceWatcher } from 'openland-api/sequenceWatcher';
 export interface WalletState {
     balance: number;
     isLocked: boolean;
+    failingPaymentsCount: number;
     pendingTransactions: MyWallet_transactionsPending[];
 
     historyTransactions: MyWallet_transactionsPending[];
@@ -30,6 +31,7 @@ export class WalletEngine {
         this.state.setState({
             balance: wallet.myWallet.balance,
             isLocked: wallet.myWallet.isLocked,
+            failingPaymentsCount: wallet.myWallet.failingPaymentsCount,
             pendingTransactions: wallet.transactionsPending,
             historyTransactions: wallet.transactionsHistory.items,
             historyTransactionsCursor: wallet.transactionsHistory.cursor,

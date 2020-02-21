@@ -26,8 +26,6 @@ import { showCreatingOrgFragment } from 'openland-web/fragments/create/CreateEnt
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { trackEvent } from 'openland-x-analytics';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import FailureIcon from 'openland-icons/s/ic-failure-16.svg';
-import { UIconSelectable } from 'openland-web/components/unicorn/UIcon';
 import { UCounter } from 'openland-unicorn/UCounter';
 
 const UserProfileCard = withUserInfo(({ user, profile }) => {
@@ -99,7 +97,7 @@ export const Organizations = React.memo(() => {
 
 const AccountCounter = React.memo(() => {
     const walletState = React.useContext(MessengerContext).wallet.state.useState();
-    return <UCounter value={walletState.isLocked ? 1 : 0} />;
+    return <UCounter value={walletState.isLocked ? walletState.failingPaymentsCount : 0} />;
 });
 
 export const AccountFragment = React.memo(() => {
@@ -140,7 +138,24 @@ export const AccountFragment = React.memo(() => {
                                 title="Wallet"
                                 icon={<WalletIcon />}
                                 path="/wallet"
-                                rightElement={walletState.isLocked ? <XView marginRight={8}><UIconSelectable size={22} icon={<FailureIcon />} color="var(--accentNegative)" selectedColor="var(--foregroundContrast)" /></XView> : undefined}
+                                rightElement={walletState.isLocked ? (
+                                    <XView marginRight={8}>
+                                        <SelectableText 
+                                            minWidth={22} 
+                                            height={22} 
+                                            borderRadius={11}
+                                            alignItems="center"
+                                            justifyContent="center"
+                                            color="var(--foregroundInverted)" 
+                                            backgroundColor="var(--accentNegative)" 
+                                            selectedColor="var(--accentMuted)"
+                                            selectedBackgroundColor="var(--foregroundInverted)"
+                                            {...TextStyles.Label2}
+                                        >
+                                            {walletState.failingPaymentsCount}
+                                        </SelectableText>
+                                    </XView> 
+                                ) : undefined}
                             />
                             <UListItem
                                 title="Subscriptions"

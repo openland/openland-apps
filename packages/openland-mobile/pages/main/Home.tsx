@@ -30,6 +30,7 @@ export const Home = XMemo<PageProps>((props) => {
     const wallet = getClient().useMyWallet({ suspense: false });
     // const showFeed = NON_PRODUCTION && !isPad;
     const showFeed = false;
+    const failingPaymentsCount = wallet ? wallet.myWallet.failingPaymentsCount : undefined;
 
     React.useEffect(() => {
         if (tab === 0 && showFeed) {
@@ -108,7 +109,7 @@ export const Home = XMemo<PageProps>((props) => {
                         onPress={() => setTab(2)}
                     />
                     <AppBarBottomItem
-                        counter={wallet && wallet.myWallet.isLocked ? 1 : undefined}
+                        counter={failingPaymentsCount}
                         icon={require('assets/ic-user-24.png')}
                         iconSelected={require('assets/ic-user-filled-24.png')}
                         iconCounter={require('assets/ic-user-counter-24.png')}
