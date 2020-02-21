@@ -126,14 +126,14 @@ const BuyPaidChatPassButton = (props: {
 export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
     const area = React.useContext(ASSafeAreaContext);
     const { theme, action, invitedBy, room } = props;
-    const { id, title, photo, description, membersCount, onlineMembersCount, previewMembers = [], isChannel } = room;
+    let { id, title, photo, description, membersCount, onlineMembersCount, previewMembers = [], isChannel } = room;
     const typeStr = isChannel ? 'channel' : 'group';
     const paddingBottom = Platform.OS === 'ios' ? (area.bottom || 16) : area.bottom + 16;
 
     const avatars = previewMembers.map(x => x.photo).filter(x => !!x).slice(0, 5);
-    const showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
+    let showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
     const showOnlineMembers = onlineMembersCount ? onlineMembersCount >= 10 : false;
-    const joinTitle = !!invitedBy ? `${invitedBy.name} invites you to join “${title}”` : title;
+    let joinTitle = !!invitedBy ? `${invitedBy.name} invites you to join “${title}”` : title;
     const joinAvatars = !!invitedBy ? (
         <View flexDirection="row" justifyContent="center">
             <View marginLeft={-14} borderRadius={100} borderColor={theme.backgroundPrimary} borderWidth={2}>
@@ -208,7 +208,19 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
             room.premiumSubscription &&
             room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED
         ) {
-            // problems
+            button = (
+                <View style={styles.buttonWrapper}>
+                    <ZButton
+                        title={`Open wallet`}
+                        size="large"
+                        loading={loading}
+                        onPress={() => props.router.push('Wallet')}
+                    />
+                </View>
+            );
+            showMembers = false;
+            joinTitle = `Your access to “${room.title}” is suspended`;
+            description = 'To keep your access to the group by subscription you need to complete payment';
         } else {
             button = (
                 <BuyPaidChatPassButton
