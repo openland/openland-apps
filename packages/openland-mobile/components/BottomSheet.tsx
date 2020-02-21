@@ -160,7 +160,7 @@ class BottomSheetProviderComponent extends React.Component<
             >
                 <View paddingTop={20} paddingBottom={modal.cancelable === false ? SDevice.safeArea.bottom || 20 : 0}>
                     {!!modal.title && (
-                        <View paddingTop={4} paddingBottom={30} alignItems="center">
+                        <View paddingTop={6} paddingBottom={10} alignItems="center">
                             <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }} allowFontScaling={false}>
                                 {modal.title}
                             </Text>

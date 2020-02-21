@@ -258,6 +258,7 @@ interface CreatingContainerProps {
 const CreatingContainer = React.memo((props: CreatingContainerProps) => {
     const [settingsPage, setSettingsPage] = React.useState(true);
     const [loading, setLoading] = React.useState(false);
+    const titleRef = React.useRef<HTMLInputElement>(null);
 
     useShortcuts({
         keys: ['Escape'],
@@ -289,6 +290,9 @@ const CreatingContainer = React.memo((props: CreatingContainerProps) => {
 
     const onNext = () => {
         if (!canNextClick) {
+            if (titleRef && titleRef.current) {
+                titleRef.current.focus();
+            }
             return shake();
         }
         props.getSettingsData(avatarField.value, titleField.value.trim());
@@ -323,10 +327,17 @@ const CreatingContainer = React.memo((props: CreatingContainerProps) => {
                             <div className={avatarContainer}>
                                 <UAvatarUploadField field={avatarField} />
                             </div>
-                            <div className={cx(shakeClassName, inputNameContainer)}>
-                                <UInputField field={titleField} label="Name" hideErrorText={true} />
+                            <div className={shakeClassName}>
+                                <div className={inputNameContainer}>
+                                    <UInputField
+                                        field={titleField}
+                                        label="Name"
+                                        hideErrorText={true}
+                                        ref={titleRef}
+                                    />
+                                </div>
+                                {props.children}
                             </div>
-                            {props.children}
                             <UButton
                                 text="Next"
                                 size="large"

@@ -160,23 +160,25 @@ export const UInput = React.forwardRef(
     },
 );
 
-export const UInputField = (
-    props: UInputProps & {
-        field: FormField<string>;
-        errorText?: string | null;
-        hideErrorText?: boolean;
-    },
-) => {
-    const { field, ...other } = props;
-    return (
-        <>
-            <UInput {...field.input} {...other} />
-            {(field.input.invalid || props.errorText) &&
-                !props.hideErrorText && (
+export const UInputField = React.forwardRef(
+    (
+        props: UInputProps & {
+            field: FormField<string>;
+            errorText?: string | null;
+            hideErrorText?: boolean;
+        },
+        ref: React.RefObject<HTMLInputElement>,
+    ) => {
+        const { field, ...other } = props;
+        return (
+            <>
+                <UInput {...field.input} {...other} ref={ref} />
+                {(field.input.invalid || props.errorText) && !props.hideErrorText && (
                     <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
                         {props.errorText ? props.errorText : field.input.errorText}
                     </XView>
                 )}
-        </>
-    );
-};
+            </>
+        );
+    },
+);
