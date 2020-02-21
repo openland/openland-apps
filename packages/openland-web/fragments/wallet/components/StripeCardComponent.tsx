@@ -86,7 +86,7 @@ export const StripeCardComponent = React.memo((props: StripeCardProps) => {
                         </XView>
                         Powered by Stripe
                     </XView>
-                    <UButton text="Cancel" onClick={() => modalCtx.hide()} style="secondary" size="large" />
+                    <UButton text="Cancel" onClick={() => modalCtx.hide()} style="tertiary" size="large" />
                     <UButton text={text} onClick={handleSubmit} loading={loading} size="large" />
                 </XView>
             )}

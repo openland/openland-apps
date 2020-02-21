@@ -56,7 +56,7 @@ export const AddSuperAdminForm = ({ hide }: { hide: () => void }) => {
             </XView>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
+                    <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
                 </XView>
                 <UButton
                     text="Add"
@@ -106,7 +106,7 @@ const RemoveSuperAdminForm = ({ hide }: { hide: () => void }) => {
             </XView>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
+                    <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
                 </XView>
                 <UButton text="Leave" style="danger" size="large" onClick={remove} />
             </XModalFooter>

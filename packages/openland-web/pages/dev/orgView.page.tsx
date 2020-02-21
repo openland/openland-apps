@@ -85,7 +85,7 @@ export const showSuperDeleteOrganizationModal = ({ orgId, accountId }: DeleteBut
                         <XView marginRight={12}>
                             <UButton
                                 text="Cancel"
-                                style="secondary"
+                                style="tertiary"
                                 size="large"
                                 onClick={ctx.hide}
                             />
@@ -137,7 +137,7 @@ const DeleteUserModal = ({ userId, hide }: { userId: string; hide: () => void })
         <XView borderRadius={8}>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
+                    <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
                 </XView>
                 <UButton
                     text="Delete"
@@ -218,7 +218,7 @@ const AddMemberForm = ({ hide, accountId }: { accountId: string; hide: () => voi
             </XView>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
+                    <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
                 </XView>
                 <UButton
                     text="Add"
@@ -270,7 +270,7 @@ const RemoveMemberForm = ({ hide, accountId }: { accountId: string; hide: () => 
             </XView>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
+                    <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
                 </XView>
                 <UButton
                     text="Remove"
@@ -353,7 +353,7 @@ const AddFeatureModal = ({ accountId, hide }: { accountId: string; hide: () => v
             </XView>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
+                    <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
                 </XView>
                 <UButton
                     text="Add"
@@ -436,7 +436,7 @@ const RemoveFeatureModal = ({ accountId, hide }: { accountId: string; hide: () =
             </XView>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
+                    <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
                 </XView>
                 <UButton
                     text="Remove"
@@ -493,7 +493,7 @@ const EditOrganizationModal = ({
             </XView>
             <XModalFooter>
                 <XView marginRight={12}>
-                    <UButton text="Cancel" style="secondary" size="large" onClick={hide} />
+                    <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
                 </XView>
                 <UButton
                     text="Rename"

@@ -171,7 +171,7 @@ const AddMemberModalInner = (props: InviteModalProps) => {
             {canAddPeople && <XModalFooter>
                 <UButton
                     text="Cancel"
-                    style="secondary"
+                    style="tertiary"
                     size="large"
                     onClick={props.hide}
                 />

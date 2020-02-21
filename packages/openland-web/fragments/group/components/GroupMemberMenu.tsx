@@ -92,7 +92,7 @@ const MakeFeaturedModal = (props: {
                 <XModalFooter>
                     <UButton
                         text="Cancel"
-                        style="secondary"
+                        style="tertiary"
                         size="large"
                         onClick={() => ctx.hide()}
                     />

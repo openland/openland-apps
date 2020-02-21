@@ -133,7 +133,7 @@ const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
                 {error && (<XView marginTop={8} marginHorizontal={16} color="var(--accentNegative)" {...TextStyles.Caption}>{error}</XView>)}
             </XView>
             <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} backgroundColor="var(--backgroundTertiary)" justifyContent="flex-end" flexDirection="row">
-                <UButton text="Cancel" onClick={() => props.ctx.hide()} style="secondary" size="large" />
+                <UButton text="Cancel" onClick={() => props.ctx.hide()} style="tertiary" size="large" />
                 <UButton disable={cards.length === 0} text={`Deposit ${formatMoney(amount)}`} onClick={onSubmit} style="pay" size="large" loading={loading} />
             </XView>
         </XView>

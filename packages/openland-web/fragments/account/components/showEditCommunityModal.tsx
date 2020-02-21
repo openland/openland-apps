@@ -249,7 +249,7 @@ const EditCommunityEntity = (props: {
             <XModalFooter>
                 <UButton
                     text="Cancel"
-                    style="secondary"
+                    style="tertiary"
                     size="large"
                     onClick={() => props.modalCtx.hide()}
                 />

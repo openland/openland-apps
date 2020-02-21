@@ -80,7 +80,7 @@ const StickerPackModalInner = (props: { packId: string; hide: () => void }) => {
             <XModalFooter>
                 <UButton
                     text="Cancel"
-                    style="secondary"
+                    style="tertiary"
                     size="large"
                     onClick={props.hide}
                 />

@@ -38,7 +38,7 @@ export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, 
                         <UButton
                             disable={form.loading}
                             text="Cancel"
-                            style="secondary"
+                            style="tertiary"
                             size="large"
                             onClick={() => {
                                 if (builder._onCancel) {

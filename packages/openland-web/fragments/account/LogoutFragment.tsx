@@ -24,7 +24,7 @@ const LogoutDialog = React.memo<{ ctx: XModalController }>(props => {
             <XModalFooter>
                 <UButton
                     text="Cancel"
-                    style="secondary"
+                    style="tertiary"
                     size="large"
                     onClick={() => props.ctx.hide()}
                 />

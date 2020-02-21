@@ -99,7 +99,7 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
             <XModalFooter>
                 <UButton
                     text="Cancel"
-                    style="secondary"
+                    style="tertiary"
                     size="large"
                     onClick={() => props.onClose()}
                 />

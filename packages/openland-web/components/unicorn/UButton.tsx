@@ -5,7 +5,7 @@ import { XLoader } from 'openland-x/XLoader';
 
 type UButtonShape = 'round' | 'square';
 type UButtonSize = 'small' | 'medium' | 'large';
-export type UButtonStyle = 'primary' | 'secondary' | 'danger' | 'success' | 'pay';
+export type UButtonStyle = 'primary' | 'secondary' | 'tertiary' | 'danger' | 'success' | 'pay';
 
 export interface UButtonProps extends XViewProps {
     text: string;
@@ -116,6 +116,23 @@ const secondaryActiveStyle = css`
     }
 `;
 
+const tertiaryStyle = css`
+    color: var(--foregroundSecondary);
+    background-color: transparent;
+`;
+
+const tertiaryHoverStyle = css`
+    &:hover {
+        opacity: 0.64;
+    }
+`;
+
+const tertiaryActiveStyle = css`
+    &:active {
+        opacity: 0.48;
+    }
+`;
+
 const dangerStyle = css`
     color: #fff;
     background-color: var(--accentNegative);
@@ -181,6 +198,7 @@ const sizeResolver: { [key in UButtonSize]: string } = {
 const styleResolver: { [key in UButtonStyle]: string } = {
     primary: primaryStyle,
     secondary: secondaryStyle,
+    tertiary: tertiaryStyle,
     danger: dangerStyle,
     success: successStyle,
     pay: payStyle,
@@ -189,6 +207,7 @@ const styleResolver: { [key in UButtonStyle]: string } = {
 const styleResolverHover: { [key in UButtonStyle]: string } = {
     primary: primaryHoverStyle,
     secondary: secondaryHoverStyle,
+    tertiary: tertiaryHoverStyle,
     danger: dangerHoverStyle,
     success: successHoverStyle,
     pay: payHoverStyle,
@@ -197,6 +216,7 @@ const styleResolverHover: { [key in UButtonStyle]: string } = {
 const styleResolverActive: { [key in UButtonStyle]: string } = {
     primary: primaryActiveStyle,
     secondary: secondaryActiveStyle,
+    tertiary: tertiaryActiveStyle,
     danger: dangerActiveStyle,
     success: successActiveStyle,
     pay: payActiveStyle,
@@ -207,6 +227,9 @@ const loaderStyle: { [key in UButtonStyle]: { contrast: boolean } } = {
         contrast: true,
     },
     secondary: {
+        contrast: false,
+    },
+    tertiary: {
         contrast: false,
     },
     danger: {

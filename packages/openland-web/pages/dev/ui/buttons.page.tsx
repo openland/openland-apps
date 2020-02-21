@@ -31,10 +31,12 @@ export default withApp('Buttons', 'viewer', props => {
                 <XView margin={16}>
                     <UButton text="Label" size="large" shape="round" />
                     <UButton text="Label" size="large" style="secondary" />
+                    <UButton text="Label" size="large" style="tertiary" />
                     <UButton text="Label" size="large" style="danger" />
                     <UButton text="Label" size="large" style="pay" />
                     <UButton text="Label" size="large" loading={true} />
                     <UButton text="Label" size="large" style="secondary" loading={true} />
+                    <UButton text="Label" size="large" style="tertiary" loading={true} />
                     <UButton text="Label" size="large" style="danger" loading={true} />
                     <UButton text="Label" size="large" style="pay" loading={true} />
                 </XView>

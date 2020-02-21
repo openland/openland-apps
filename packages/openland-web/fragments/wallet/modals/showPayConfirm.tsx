@@ -68,7 +68,7 @@ const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController } & P
                 </UListGroup>
             )}
             <XView marginTop={24} paddingVertical={16} paddingHorizontal={24} marginHorizontal={-8} backgroundColor="var(--backgroundTertiary)" justifyContent="flex-end" flexDirection="row">
-                <UButton text="Cancel" disable={!cancelable} onClick={() => props.ctx.hide()} style="secondary" size="large" />
+                <UButton text="Cancel" disable={!cancelable} onClick={() => props.ctx.hide()} style="tertiary" size="large" />
                 <UButton disable={cards.length === 0} text="Confirm" action={onSubmit} style="primary" size="large" loading={loading} />
             </XView>
         </XView>
