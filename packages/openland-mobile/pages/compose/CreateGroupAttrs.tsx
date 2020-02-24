@@ -198,6 +198,10 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                                             field={priceField}
                                             options={[
                                                 {
+                                                    value: 100,
+                                                    label: '$1',
+                                                },
+                                                {
                                                     value: 500,
                                                     label: '$5',
                                                 },
