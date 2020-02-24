@@ -51,9 +51,13 @@ type ToastBuildConfig = {
     IconComponent?: () => React.ReactElement;
     duration?: number;
     textStyle?: TextStyle;
+    fn?: Function;
+    Success?: () => React.ReactElement;
+    Failure?: () => React.ReactElement;
+    hide?: () => void;
 };
 
-const ToastComponent = ({ text, iconSource, IconComponent, textStyle }: ToastBuildConfig) => {
+const RawToast = ({ text, iconSource, IconComponent, textStyle }: ToastBuildConfig) => {
     const theme = React.useContext(ThemeContext);
     const textIndent = !!(iconSource || IconComponent) && { marginTop: 8 };
     const toastContainerStyle = !text && styles.toastContainerWithoutText;
@@ -72,6 +76,33 @@ const ToastComponent = ({ text, iconSource, IconComponent, textStyle }: ToastBui
     );
 };
 
+const ToastComponent = ({ text, iconSource, IconComponent, textStyle, fn, Success, Failure, hide }: ToastBuildConfig) => {
+    const [content, setContent] = React.useState(
+        <RawToast
+            text={text}
+            iconSource={iconSource}
+            IconComponent={IconComponent}
+            textStyle={textStyle}
+        />
+    );
+
+    React.useEffect(() => {
+        if (fn && Success && Failure && hide) {
+            fn().then(() => {
+                setContent(<Success />);
+            }).catch(() => {
+                setContent(<Failure />);
+            }).finally(() => {
+                setTimeout(hide, 1000);
+            });
+        }
+    });
+
+    return (
+        <>{content}</>
+    );
+};
+
 function build(config: ToastBuildConfig) {
     let modal: ZModalController;
 
@@ -80,14 +111,14 @@ function build(config: ToastBuildConfig) {
             ctx => {
                 modal = ctx;
 
-                return <ToastComponent {...config} />;
+                return <ToastComponent {...config} hide={ctx.hide} />;
             },
-            { 
+            {
                 withoutWrapper: true,
                 overlayStyle: { backgroundColor: 'transparent' },
                 cancelable: false
             },
-            
+
         );
 
     const hide = () => {
@@ -127,19 +158,14 @@ const handle = async (
     fn: Function,
     config: { success?: ToastBuildConfig; failure?: ToastBuildConfig } = {},
 ) => {
-    const toastLoader = build({ IconComponent: () => <LoaderSpinner size="large" color="#ffffff" /> });
+    const toastLoader = build({
+        IconComponent: () => <LoaderSpinner size="large" color="#ffffff" />,
+        Success: () => <RawToast {...config.success} iconSource={require('assets/ic-done-36.png')} />,
+        Failure: () => <RawToast {...config.failure} iconSource={require('assets/ic-error-36.png')} />,
+        fn: fn
+    });
 
-    try {
-        toastLoader.show();
-
-        await fn();
-
-        toastLoader.hide();
-        success({ duration: 1000, ...config.success }).show();
-    } catch (err) {
-        toastLoader.hide();
-        failure({ duration: 1000, ...config.failure }).show();
-    }
+    toastLoader.show();
 };
 
 export default { build, loader, success, failure, showCopiedLink, handle };
