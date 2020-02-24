@@ -19,7 +19,7 @@ export interface WalletState {
 export class WalletEngine {
     readonly messenger: MessengerEngine;
     readonly state: StateStore<WalletState> = new StateStore();
-    readonly token: string = 'pk_test_y80EsXGYQdMKMcJ5lifEM4jx';
+    readonly token: string = 'pk_live_eLENsh8Ten2AoOcJhfxUkTfD';
 
     constructor(messenger: MessengerEngine) {
         this.messenger = messenger;

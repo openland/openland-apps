@@ -27,7 +27,7 @@
   /*
    * Stripe
    */
-  [Stripe setDefaultPublishableKey: @"pk_test_y80EsXGYQdMKMcJ5lifEM4jx"];
+  [Stripe setDefaultPublishableKey: @"pk_live_eLENsh8Ten2AoOcJhfxUkTfD"];
   
   /*
    * Bundle location

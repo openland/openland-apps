@@ -148,7 +148,7 @@ public class MainApplication extends Application implements ShareApplication, Re
         AppCenter.start(Distribute.class);
 
         // Stripe
-        PaymentConfiguration.init(this, "pk_test_y80EsXGYQdMKMcJ5lifEM4jx");
+        PaymentConfiguration.init(this, "pk_live_eLENsh8Ten2AoOcJhfxUkTfD");
 
         Log.d("Native", "BOOTSTRAP: app start done");
     }

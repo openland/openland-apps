@@ -80,7 +80,7 @@ class MainActivity : ReactActivity() {
         Log.d("Native", "BOOTSTRAP: Starting activity")
         super.onCreate(savedInstanceState)
 
-        this.stripe = Stripe(this, "pk_test_y80EsXGYQdMKMcJ5lifEM4jx")
+        this.stripe = Stripe(this, "pk_live_eLENsh8Ten2AoOcJhfxUkTfD")
 
         val statusBarMode = if ((resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or statusBarMode or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
