@@ -70,13 +70,13 @@ export const UNavigableReactWindow = React.memo(
                     const focusIndex = action.focusedIndex
                         ? action.focusedIndex
                         : action.reset
-                        ? props.focusedByDefault === false
-                            ? -1
-                            : findSelectable(0, 1)
-                        : findSelectable(
-                              Math.max(Math.min(length - 1, oldState.index + delta), 0),
-                              delta,
-                          );
+                            ? props.focusedByDefault === false
+                                ? -1
+                                : findSelectable(0, 1)
+                            : findSelectable(
+                                Math.max(Math.min(length - 1, oldState.index + delta), 0),
+                                delta,
+                            );
 
                     return {
                         index: focusIndex,
@@ -108,7 +108,7 @@ export const UNavigableReactWindow = React.memo(
                             delta: -1,
                             startScrolling: false,
                             focusedIndex: null,
-                            stopMouse: true,
+                            stopMouse: false,
                         });
                         return true;
                     },
@@ -117,7 +117,7 @@ export const UNavigableReactWindow = React.memo(
                             delta: 1,
                             startScrolling: false,
                             focusedIndex: null,
-                            stopMouse: true,
+                            stopMouse: false,
                         });
                         return true;
                     },
@@ -147,12 +147,12 @@ export const UNavigableReactWindow = React.memo(
                         onMouseEnter={
                             state.enterMouse
                                 ? () =>
-                                      dispatch({
-                                          focusedIndex: findSelectable(
-                                              pr.index,
-                                              props.focusedByDefault === false ? -1 : 1,
-                                          ),
-                                      })
+                                    dispatch({
+                                        focusedIndex: findSelectable(
+                                            pr.index,
+                                            props.focusedByDefault === false ? -1 : 1,
+                                        ),
+                                    })
                                 : undefined
                         }
                     >
