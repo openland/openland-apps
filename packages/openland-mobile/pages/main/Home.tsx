@@ -30,7 +30,7 @@ export const Home = XMemo<PageProps>((props) => {
     const wallet = getClient().useMyWallet({ suspense: false });
     // const showFeed = NON_PRODUCTION && !isPad;
     const showFeed = false;
-    const failingPaymentsCount = wallet ? wallet.myWallet.failingPaymentsCount : undefined;
+    const failingPaymentsCount = wallet && wallet.myWallet.failingPaymentsCount || undefined;
 
     React.useEffect(() => {
         if (tab === 0 && showFeed) {
