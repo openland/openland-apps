@@ -490,6 +490,10 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
                         searchable={false}
                         options={[
                             {
+                                value: 100,
+                                label: '$1',
+                            },
+                            {
                                 value: 500,
                                 label: '$5',
                             },
