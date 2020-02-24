@@ -146,13 +146,15 @@ export const UNavigableReactWindow = React.memo(
                         selectable={data[pr.index].selectable}
                         onMouseEnter={
                             state.enterMouse
-                                ? () =>
+                                ? () => {
                                     dispatch({
                                         focusedIndex: findSelectable(
                                             pr.index,
                                             props.focusedByDefault === false ? -1 : 1,
                                         ),
-                                    })
+                                        delta: -1
+                                    });
+                                }
                                 : undefined
                         }
                     >
