@@ -200,7 +200,7 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
                             </Text>
                         </View>
                         <View marginTop={16}>
-                            <ZButton title='Discover groups' path="Discover" />
+                            <ZButton title='Discover groups' path="Explore" />
                         </View>
                     </View>
                 </ASSafeAreaView>

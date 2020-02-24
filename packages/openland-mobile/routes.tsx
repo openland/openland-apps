@@ -83,6 +83,7 @@ import { PowerUps } from './pages/dev/PowerUps';
 import { Wallet } from './pages/wallet/Wallet';
 import { Subscriptions } from './pages/wallet/Subscriptions';
 import { AddCard } from './pages/wallet/AddCard';
+import { Explore } from './pages/main/Explore';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -156,6 +157,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('StartConversation', StartConversation)
   .addRoute('Invites', Invites)
   .addRoute('InvitesMore', InvitesMore)
+  .addRoute('Explore', Explore)
 
   .addRoute('CommunityList', CommunityList)
 
