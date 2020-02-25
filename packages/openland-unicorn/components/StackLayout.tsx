@@ -8,6 +8,7 @@ import { useClient } from 'openland-api/useClient';
 import { debounce } from 'openland-y-utils/timer';
 import { css } from 'linaria';
 import { UToast } from 'openland-web/components/unicorn/UToast';
+import { RootErrorBoundary } from 'openland-web/pages/root/RootErrorBoundary';
 
 const PageAnimator = React.memo(
     (props: {
@@ -300,14 +301,16 @@ export const StackLayout = React.memo((props: StackLayoutProps) => {
                             visible={props.visible}
                             depth={i}
                         >
-                            <PageComponent
-                                component={v.component}
-                                query={v.query}
-                                id={v.id}
-                                path={v.path}
-                                protocol={baseRoute.protocol}
-                                hostName={baseRoute.hostName}
-                            />
+                            <RootErrorBoundary>
+                                <PageComponent
+                                    component={v.component}
+                                    query={v.query}
+                                    id={v.id}
+                                    path={v.path}
+                                    protocol={baseRoute.protocol}
+                                    hostName={baseRoute.hostName}
+                                />
+                            </RootErrorBoundary>
                         </PageAnimator>
                     ))}
                     <ConnectionStatus />
