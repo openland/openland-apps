@@ -2183,7 +2183,8 @@ internal val WalletUpdateFragmentSelector = obj(
             )),
             inline("WalletUpdateLocked", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
-                field("isLocked", "isLocked", notNull(scalar("Boolean")))
+                field("isLocked", "isLocked", notNull(scalar("Boolean"))),
+                field("failingPaymentsCount", "failingPaymentsCount", notNull(scalar("Int")))
             )),
             inline("WalletUpdateTransactionSuccess", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),

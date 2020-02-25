@@ -282,6 +282,7 @@ fragment WalletUpdateFragment on WalletUpdate {
     }
     ... on WalletUpdateLocked {
         isLocked
+        failingPaymentsCount
     }
     ... on WalletUpdateTransactionSuccess {
         transaction {

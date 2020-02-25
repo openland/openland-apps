@@ -3142,6 +3142,7 @@ union WalletUpdateContainer = WalletUpdateSingle | WalletUpdateBatch
 
 type WalletUpdateLocked {
   isLocked: Boolean!
+  failingPaymentsCount: Int!
 }
 
 type WalletUpdatePaymentStatus {

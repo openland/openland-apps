@@ -82,12 +82,14 @@ export class WalletEngine {
             // Update State
             this.state.setState({
                 ...this.state.get(),
-                isLocked: event.isLocked
+                isLocked: event.isLocked,
+                failingPaymentsCount: event.failingPaymentsCount
             });
 
             this.messenger.client.updateMyWallet((data) => {
                 const newData = { ...data };
                 newData.myWallet.isLocked = event.isLocked;
+                newData.myWallet.failingPaymentsCount = event.failingPaymentsCount;
                 return newData;
             });
         } else if (event.__typename === 'WalletUpdateTransactionPending') {
