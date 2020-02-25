@@ -1,5 +1,11 @@
-import { WalletSubscriptionInterval, WalletSubscriptionState, Subscriptions_subscriptions, Subscriptions_subscriptions_product_WalletProductGroup } from 'openland-api/spacex.types';
+import {
+    WalletSubscriptionInterval,
+    WalletSubscriptionState,
+    Subscriptions_subscriptions,
+    Subscriptions_subscriptions_product_WalletProductGroup,
+} from 'openland-api/spacex.types';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
+import { formatAbsoluteDate } from 'openland-mobile/utils/formatDate';
 
 export interface SubscriptionConverted {
     id: string;
@@ -15,12 +21,8 @@ export interface SubscriptionConverted {
 }
 
 export const displaySubscriptionDate = (date: Date) => {
-    const utc = date.toUTCString();
-    const segments = utc.split(' ');
-    const month = segments[2];
-    const day = segments[1];
-
-    return `${month} ${day}`;
+    const unixNumber = date.getTime();
+    return formatAbsoluteDate(unixNumber);
 };
 
 const generateSubTitle = (expires: Date, state: WalletSubscriptionState) => {
@@ -38,7 +40,8 @@ const generateSubTitle = (expires: Date, state: WalletSubscriptionState) => {
 };
 
 export const convertSubscription = (subscription: Subscriptions_subscriptions) => {
-    const group = (subscription.product as Subscriptions_subscriptions_product_WalletProductGroup).group;
+    const group = (subscription.product as Subscriptions_subscriptions_product_WalletProductGroup)
+        .group;
     const expires = new Date(parseInt(subscription.expires, 10));
     const subtitle = generateSubTitle(expires, subscription.state);
     const amount = formatMoney(subscription.amount);
@@ -57,7 +60,7 @@ export const convertSubscription = (subscription: Subscriptions_subscriptions) =
         state: subscription.state,
         expires,
         amount: formatMoney(subscription.amount),
-        interval: subscription.interval
+        interval: subscription.interval,
     };
 
     return converted;

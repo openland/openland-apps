@@ -1,14 +1,16 @@
 import { formatTime } from 'openland-y-utils/formatTime';
+import { formatAbsoluteDate } from 'openland-mobile/utils/formatDate';
 
 export const extractDateTime = (
     unixTime: string,
 ): { date: string; time: string; isToday: boolean } => {
-    const date = new Date(parseInt(unixTime, 10));
-    const utc = date.toUTCString();
-    const segments = utc.split(' ');
+    const unixNumber = parseInt(unixTime, 10);
+
+    const date = new Date(unixNumber);
     const isToday = new Date().toDateString() === date.toDateString();
 
-    const localTime = formatTime(parseInt(unixTime, 10));
+    const localTime = formatTime(unixNumber);
+    const localDate = formatAbsoluteDate(unixNumber);
 
-    return { date: `${segments[2]} ${segments[1]}`, time: localTime, isToday };
+    return { date: localDate, time: localTime, isToday };
 };
