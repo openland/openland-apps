@@ -20,8 +20,13 @@ import { RoomMembersPaginated_members } from 'openland-api/spacex.types';
 import IcUser from 'openland-icons/s/ic-user-24.svg';
 import IcCopy from 'openland-icons/s/ic-copy-24.svg';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
+import { RootErrorBoundary } from 'openland-web/pages/root/RootErrorBoundary';
 
-export const GroupProfileFragment = React.memo<{id?: string}>((props) => {
+interface GroupProfileFragmentProps {
+    id?: string;
+}
+
+const GroupProfileFragmentRaw = React.memo<GroupProfileFragmentProps>((props) => {
     const client = useClient();
     const unicorn = useUnicorn();
     const roomId = props.id || unicorn.id;
@@ -151,7 +156,7 @@ export const GroupProfileFragment = React.memo<{id?: string}>((props) => {
                     <UListItem
                         title={`Member profiles ${
                             otherMemberProfiles ? matchmaking!.profiles!.length - 1 : ''
-                        }`}
+                            }`}
                         icon={<IcCopy />}
                         useRadius={true}
                         path={`/group/${id}/users`}
@@ -197,3 +202,9 @@ export const GroupProfileFragment = React.memo<{id?: string}>((props) => {
         </UFlatList>
     );
 });
+
+export const GroupProfileFragment = React.memo((props: GroupProfileFragmentProps) => (
+    <RootErrorBoundary>
+        <GroupProfileFragmentRaw {...props} />
+    </RootErrorBoundary>
+));
