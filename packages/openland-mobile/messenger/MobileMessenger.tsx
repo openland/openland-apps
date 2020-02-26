@@ -312,10 +312,6 @@ export class MobileMessenger {
     }
 
     private useSelectionMode = (message: DataSourceMessageItem): [boolean, Function] => {
-        if (!!message.notificationType) {
-            return [false, () => { return; }];
-        }
-
         let conversation: ConversationEngine = this.engine.getConversation(message.chatId);
         const state = conversation.messagesActionsStateEngine.getState();
         return [state.action === 'select', () => conversation.messagesActionsStateEngine.selectToggle(message)];
