@@ -990,7 +990,8 @@
             "name": "ic-discover",
             "src": "ic-discover-24.svg",
             "sizes": [
-                24
+                24,
+                36
             ]
         },
         {
