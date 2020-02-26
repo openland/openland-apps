@@ -7,6 +7,54 @@ import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
+import { useTheme } from 'openland-mobile/themes/ThemeContext';
+import { TouchableHighlight, View, Image, StyleSheet, ViewStyle } from 'react-native';
+import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
+import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
+
+const styles = StyleSheet.create({
+    btn: {
+        width: 56,
+        height: 36,
+        borderRadius: RadiusStyles.Large,
+        alignItems: 'center',
+        justifyContent: 'center'
+    } as ViewStyle
+});
+
+type FollowButtonState = 'can_follow' | 'loading' | 'done';
+interface FollowButtonProps {
+    isFollowing: boolean;
+    action: () => Promise<any>;
+}
+
+const FollowButton = React.memo((props: FollowButtonProps) => {
+    const theme = useTheme();
+    let [state, setState] = React.useState<FollowButtonState>(props.isFollowing ? 'done' : 'can_follow');
+    let handleBtnPress = React.useCallback(async () => {
+        setState('loading');
+        await props.action();
+        setState('done');
+    }, [props.action]);
+    const backgroundColor = state === 'done' ? theme.backgroundTertiary : theme.accentPrimary;
+    const tintColor = state === 'done' ? theme.foregroundTertiary : theme.foregroundInverted;
+    const underlayColor = state === 'done' ? theme.backgroundTertiaryActive : theme.accentPrimaryActive;
+
+    return (
+        <TouchableHighlight
+            style={[styles.btn, { backgroundColor }]}
+            onPress={handleBtnPress}
+            disabled={state === 'loading' || state === 'done'}
+            underlayColor={underlayColor}
+        >
+            <View>
+                {state === 'can_follow' && <Image source={require('assets/ic-add-24.png')} style={{ tintColor }} />}
+                {state === 'loading' && <LoaderSpinner size="small" color={tintColor} />}
+                {state === 'done' && <Image source={require('assets/ic-done-24.png')} style={{ tintColor }} />}
+            </View>
+        </TouchableHighlight>
+    );
+});
 
 const GroupListComponent = React.memo<PageProps>((props) => {
     let initial = props.router.params.initial as Types.AvailableRooms_availableChats_edges_node[];
@@ -30,6 +78,9 @@ const GroupListComponent = React.memo<PageProps>((props) => {
         }
 
     }, [rooms, loading]);
+    let joinGroup = React.useCallback(async (id) => {
+        await getClient().mutateRoomJoin({ roomId: id });
+    }, []);
 
     return (
         <>
@@ -47,6 +98,10 @@ const GroupListComponent = React.memo<PageProps>((props) => {
                                 title: item.title,
                             }}
                             subTitle={item.membersCount + (item.membersCount === 1 ? ' member' : ' members')}
+                            rightElement={<FollowButton 
+                                isFollowing={item.membership === Types.SharedRoomMembershipStatus.MEMBER} 
+                                action={() => joinGroup(item.id)} 
+                            />}
                             path="Conversation"
                             pathParams={{ flexibleId: item.id }}
                         />
