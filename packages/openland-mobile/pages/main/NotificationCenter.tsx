@@ -85,6 +85,7 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
                     {area => (
                         <>
                             <ASListView
+                                overscrollCompensation={true}
                                 contentPaddingTop={area.top}
                                 contentPaddingBottom={area.bottom}
                                 dataView={getMessenger().notifications}
