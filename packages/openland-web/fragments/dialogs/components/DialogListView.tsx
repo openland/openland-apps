@@ -16,6 +16,7 @@ import { DataSource } from 'openland-y-utils/DataSource';
 import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { CallFloating } from 'openland-web/modules/conference/CallFloating';
+import { DiscoverFooter } from 'openland-web/fragments/discover/components/DiscoverFooter';
 
 export const dialogSearchWrapperClassName = css`
     justify-content: flex-start;
@@ -198,6 +199,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                             loadingHeight={200}
                             renderItem={renderDialog}
                             renderLoading={renderLoading}
+                            afterChildren={<DiscoverFooter />}
                         />
                     )}
             </XView>

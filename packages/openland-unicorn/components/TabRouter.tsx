@@ -151,7 +151,7 @@ export class TabRouter {
         }
     }
 
-    onCountersChanged(handler: (counters: number []) => void) {
+    onCountersChanged(handler: (counters: number[]) => void) {
         this._counterListeners.push(handler);
         return () => {
             let r = this._counterListeners.indexOf(handler);
