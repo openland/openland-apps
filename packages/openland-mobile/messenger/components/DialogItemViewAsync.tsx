@@ -107,7 +107,8 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & {theme: 
             </ASFlex>
             {shouldShowDiscover && (
                     <ASFlex 
-                        backgroundGradient={{start: theme.gradient0to100Start, end: theme.gradient0to100End}}
+                        backgroundGradient={{start: theme.gradient0to100End, end: theme.gradient0to100Start}}
+                        backgroundGradientOrientation="top_bottom"
                         justifyContent="center"
                         alignItems="center"
                     >

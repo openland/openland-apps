@@ -79,6 +79,7 @@ class AsyncViewStyle {
     var backgroundPatchTintColor: Int? = null
     var backgroundGradientStart: Int? = null
     var backgroundGradientEnd: Int? = null
+    var backgroundGradientOrientation: AsyncBackgroundGradientOrientation? = null
 
     fun merge(with: AsyncViewStyle): AsyncViewStyle {
         val res = AsyncViewStyle()
@@ -106,6 +107,7 @@ class AsyncViewStyle {
         res.backgroundPatchTintColor = with.backgroundPatchTintColor.let { backgroundPatchTintColor -> if (backgroundPatchTintColor !== null) backgroundPatchTintColor else this.backgroundPatchTintColor }
         res.backgroundGradientStart = with.backgroundGradientStart.let { backgroundGradientStart -> if (backgroundGradientStart !== null) backgroundGradientStart else this.backgroundGradientStart }
         res.backgroundGradientEnd = with.backgroundGradientEnd.let { backgroundGradientEnd -> if (backgroundGradientEnd !== null) backgroundGradientEnd else this.backgroundGradientEnd }
+        res.backgroundGradientOrientation = with.backgroundGradientOrientation.let { backgroundGradientOrientation -> if (backgroundGradientOrientation !== null) backgroundGradientOrientation else this.backgroundGradientOrientation }
 
         return res
     }
@@ -138,6 +140,13 @@ enum class AsyncFlexAlignSelf {
     end,
     center,
     stretch
+}
+
+enum class AsyncBackgroundGradientOrientation {
+    left_right,
+    top_bottom,
+    tl_br,
+    tr_bl,
 }
 
 class AsyncFlexSpec(key: String, val children: Array<AsyncViewSpec>) : AsyncViewSpec(key) {
@@ -270,6 +279,14 @@ private fun resolveStyle(src: JSONObject, res: AsyncViewStyle, context: ReactCon
             res.backgroundGradientStart = it["start"] as Int
             res.backgroundGradientEnd = it["end"] as Int
         }
+    }
+
+    res.backgroundGradientOrientation = when (props.nullableString("backgroundGradientOrientation")) {
+        "left_right" -> AsyncBackgroundGradientOrientation.left_right
+        "top_bottom" -> AsyncBackgroundGradientOrientation.top_bottom
+        "tl_br" -> AsyncBackgroundGradientOrientation.tl_br
+        "tr_bl" -> AsyncBackgroundGradientOrientation.tr_bl
+        else -> null
     }
 
     if (props.has("backgroundPatch")) {

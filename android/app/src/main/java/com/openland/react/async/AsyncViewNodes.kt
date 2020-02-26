@@ -59,7 +59,14 @@ fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, sty
         res.background(bg)
     } else if (style.backgroundGradientStart != null && style.backgroundGradientEnd != null) {
         val colors = intArrayOf(style.backgroundGradientStart!!, style.backgroundGradientEnd!!)
-        val gradient = ComparableGradientDrawable(GradientDrawable.Orientation.TL_BR, colors)
+        val orientation = when(style.backgroundGradientOrientation) {
+            AsyncBackgroundGradientOrientation.left_right -> GradientDrawable.Orientation.LEFT_RIGHT
+            AsyncBackgroundGradientOrientation.top_bottom -> GradientDrawable.Orientation.TOP_BOTTOM
+            AsyncBackgroundGradientOrientation.tl_br -> GradientDrawable.Orientation.TL_BR
+            AsyncBackgroundGradientOrientation.tr_bl -> GradientDrawable.Orientation.TR_BL
+            else -> GradientDrawable.Orientation.TL_BR
+        }
+        val gradient = ComparableGradientDrawable(orientation, colors)
 
         if (style.borderRadius != null) {
             gradient.setCornerRadius(Resources.getSystem().displayMetrics.density * style.borderRadius!!)
