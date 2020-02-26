@@ -1,5 +1,5 @@
 import React from 'react';
-import { XView, XViewRouterContext } from 'react-mental';
+import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
