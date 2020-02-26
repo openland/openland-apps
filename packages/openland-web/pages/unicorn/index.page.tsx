@@ -16,25 +16,37 @@ import ProfileActiveIcon from './navigation/icon_profile_active.svg';
 import { AuthRouter } from '../root/AuthRouter';
 
 const Unicorn = React.memo(() => {
-    const router = React.useMemo(() => new TabRouter([{
-        icon: <DiscoverIcon />,
-        iconActive: <DiscoverActiveIcon />,
-        path: '/discover',
-        component: <DiscoverFragment />,
-        caption: 'Discover'
-    }, {
-        icon: <ChatIcon />,
-        iconActive: <ChatActiveIcon />,
-        path: '/mail',
-        component: <DialogsFragment />,
-        caption: 'Chats'
-    }, {
-        icon: <ProfileIcon />,
-        iconActive: <ProfileActiveIcon />,
-        path: '/settings',
-        component: <AccountFragment />,
-        caption: 'Account'
-    }], 1, Routing), []);
+    const router = React.useMemo(
+        () =>
+            new TabRouter(
+                [
+                    {
+                        icon: <DiscoverIcon />,
+                        iconActive: <DiscoverActiveIcon />,
+                        path: '/discover',
+                        component: <DiscoverFragment />,
+                        caption: 'Discover',
+                    },
+                    {
+                        icon: <ChatIcon />,
+                        iconActive: <ChatActiveIcon />,
+                        path: '/mail',
+                        component: <DialogsFragment />,
+                        caption: 'Chats',
+                    },
+                    {
+                        icon: <ProfileIcon />,
+                        iconActive: <ProfileActiveIcon />,
+                        path: '/settings',
+                        component: <AccountFragment />,
+                        caption: 'Account',
+                    },
+                ],
+                1,
+                Routing,
+            ),
+        [],
+    );
     return (
         <LayoutProvider>
             <TabLayout router={router} />
@@ -51,6 +63,5 @@ export default React.memo(() => {
                 </AuthRouter>
             </React.Suspense>
         </React.StrictMode>
-
     );
 });

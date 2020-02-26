@@ -30,7 +30,7 @@ const BotActivator = () => {
 };
 
 export const DialogsFragment = React.memo(() => {
-    let router = React.useContext(XViewRouterContext)!;
+    const stackRouter = React.useContext(XViewRouterContext)!;
     const isVisible = useVisibleTab();
     React.useEffect(() => {
         if (isVisible) {
@@ -51,7 +51,7 @@ export const DialogsFragment = React.memo(() => {
                     <DialogListFragment
                         onSearchItemSelected={() => { /* */ }}
                         onDialogPress={(id) => {
-                            router.navigate(`/mail/${id}`);
+                            stackRouter.navigate(`/mail/${id}`);
                         }}
                     />
                 </XView>
