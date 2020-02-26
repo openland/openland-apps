@@ -146,10 +146,28 @@ func resolveStyle(_ key: String, _ style: AsyncStyleSpec, _ source: ASLayoutElem
     if let br = style.borderRadius {
       bgr = CGFloat(br)
     }
-    let g = context.fetchCached(key: key+"-bg-gradient") { () -> RNAsyncGradient in
-      return RNAsyncGradient(startingAt: CGPoint(x: 0.0, y: 0.0), endingAt: CGPoint(x: 1.0, y: 1.0), with: v, borderRadius: bgr)
+    var startingAt: CGPoint = CGPoint(x: 0.0, y: 0.0)
+    var endingAt: CGPoint = CGPoint(x: 1.0, y: 1.0)
+    if let o = style.backgroundGradientOrientation {
+      switch o {
+        case AsyncBackgroundGradientOrientation.top_bottom:
+          startingAt = CGPoint(x: 0.5, y: 0.0)
+          endingAt = CGPoint(x: 0.5, y: 1.0)
+        case AsyncBackgroundGradientOrientation.left_right:
+          startingAt = CGPoint(x: 0.0, y: 0.5)
+          endingAt = CGPoint(x: 1.0, y: 0.5)
+        case AsyncBackgroundGradientOrientation.tl_br:
+          startingAt = CGPoint(x: 0.0, y: 0.0)
+          endingAt = CGPoint(x: 1.0, y: 1.0)
+        case AsyncBackgroundGradientOrientation.tr_bl:
+          startingAt = CGPoint(x: 1.0, y: 0.0)
+          endingAt = CGPoint(x: 0.0, y: 1.0)
+      }
     }
-    g.update(startingAt: CGPoint(x: 0.0, y: 0.0), endingAt: CGPoint(x: 1.0, y: 1.0), with: v,borderRadius: bgr)
+    let g = context.fetchCached(key: key+"-bg-gradient") { () -> RNAsyncGradient in
+      return RNAsyncGradient(startingAt: startingAt, endingAt: endingAt, with: v, borderRadius: bgr)
+    }
+    g.update(startingAt: startingAt, endingAt: endingAt, with: v,borderRadius: bgr)
 //    if let br = style.borderRadius {
 //      g.cornerRadius = CGFloat(br)
 //      g.cornerRoundingType = .precomposited

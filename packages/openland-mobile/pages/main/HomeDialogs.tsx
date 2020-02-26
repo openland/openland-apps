@@ -16,6 +16,7 @@ import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngin
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { GlobalSearchEntryKind } from 'openland-api/spacex.types';
+import { SetTabContext } from './Home';
 
 const DialogsComponent = XMemo<PageProps>((props) => {
     const handlePress = React.useCallback((id: string, title: string) => {
@@ -42,13 +43,14 @@ const DialogsComponent = XMemo<PageProps>((props) => {
             getMessenger().history.navigationManager.push('Conversation', { id });
         }
     }, [props.router.params.share, props.router.params.pressCallback]);
+    const setTab = React.useContext(SetTabContext);
 
     const dialogs = (props.router.params.share || props.router.params.pressCallback) ? new ASDataView(getMessenger().engine.dialogList.dataSource, (item) => {
         return (
-            <DialogItemViewAsync item={item} onPress={(id, i) => handlePress(id, (i as DialogDataSourceItem).title)} />
+            <DialogItemViewAsync item={item} onPress={(id, i) => handlePress(id, (i as DialogDataSourceItem).title)} showDiscover={() => false} />
         );
     }) :
-        getMessenger().dialogs
+        getMessenger().getDialogs(setTab)
         ;
 
     return (

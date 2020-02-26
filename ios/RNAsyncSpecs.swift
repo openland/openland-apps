@@ -45,6 +45,13 @@ enum AsyncTextAlignment: String {
   case right = "right"
 }
 
+enum AsyncBackgroundGradientOrientation: String {
+  case left_right = "left_right"
+  case top_bottom = "top_bottom"
+  case tl_br = "tl_br"
+  case tr_bl = "tr_bl"
+}
+
 protocol AsyncViewSpec {
   var style: AsyncStyleSpec {get set}
   var key: String {get}
@@ -103,6 +110,7 @@ class AsyncStyleSpec {
   var flexBasis: Float?
   var alignSelf: AsyncFlexAlignSelf?
   var backgroundGradient: [UIColor]?
+  var backgroundGradientOrientation: AsyncBackgroundGradientOrientation?
   var backgroundColor: UIColor?
   var backgroundPatch: AsyncPatch?
   var backgroundPatchTintColor: UIColor?
@@ -175,6 +183,10 @@ class AsyncStyleSpec {
     res.backgroundGradient = self.backgroundGradient
     if let backgroundGradient = with.backgroundGradient{
       res.backgroundGradient = backgroundGradient
+    }
+    res.backgroundGradientOrientation = self.backgroundGradientOrientation
+    if let backgroundGradientOrientation = with.backgroundGradientOrientation{
+      res.backgroundGradientOrientation = backgroundGradientOrientation
     }
     res.backgroundColor = self.backgroundColor
     if let backgroundColor = with.backgroundColor{
@@ -316,6 +328,9 @@ private func resolveStyle(_ src: JSON) -> AsyncStyleSpec {
   }
   if let v = src["props"]["backgroundGradient"].dictionary {
     res.backgroundGradient = [resolveColorR(v["start"]!.uInt64Value), resolveColorR(v["end"]!.uInt64Value)]
+  }
+  if let v = src["props"]["backgroundGradientOrientation"].string {
+    res.backgroundGradientOrientation = AsyncBackgroundGradientOrientation(rawValue: v)
   }
   if let v = src["props"]["backgroundPatchTintColor"].uInt64 {
     res.backgroundPatchTintColor = resolveColorR(v)

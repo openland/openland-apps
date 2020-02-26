@@ -64,23 +64,39 @@ export const forward = (conversationEngine: ConversationEngine, messages: DataSo
 export class MobileMessenger {
     readonly engine: MessengerEngine;
     readonly history: SRouting;
-    readonly dialogs: ASDataView<DialogDataSourceItem>;
     readonly notifications: ASDataView<NotificationsDataSourceItem>;
+
+    private dialogs?: ASDataView<DialogDataSourceItem>;
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>>();
     private readonly sharedMedias = new Map<string, Map<string, ASDataView<SharedMediaDataSourceItem>>>();
 
     constructor(engine: MessengerEngine, history: SRouting) {
         this.engine = engine;
         this.history = history;
-        this.dialogs = new ASDataView(
-            engine.dialogList.dataSource,
-            item => <DialogItemViewAsync item={item} onPress={this.handleDialogClick} />
-        );
 
         this.notifications = new ASDataView(
             engine.notificationCenter.dataSource,
             item => <NotificationCenterItemAsync item={item} />
         );
+    }
+
+    getDialogs = (setTab: (index: number) => void) => {
+        if (!this.dialogs) {
+            let onDiscoverPress = () => {
+                setTab(0);
+            };
+            let showDiscover = (key: string) => {
+                let {dataSource} = this.engine.dialogList;
+                let lastItem = dataSource.getAt(dataSource.getSize() - 1);
+                let lastKey = lastItem.key;
+                return dataSource.isCompleted() && lastKey === key;
+            };
+            this.dialogs = new ASDataView(
+                this.engine.dialogList.dataSource,
+                item => <DialogItemViewAsync item={item} onPress={this.handleDialogClick} onDiscoverPress={onDiscoverPress} showDiscover={showDiscover} />
+            );
+        }
+        return this.dialogs;
     }
 
     getConversation(id: string) {

@@ -18,6 +18,7 @@ import { showFeedTutorialIfNeeded } from 'openland-mobile/feed/components/FeedTu
 import { SRouterContext } from 'react-native-s/SRouterContext';
 
 export const ActiveTabContext = React.createContext(false);
+export const SetTabContext = React.createContext<(index: number) => void>(() => {/* noop */});
 
 const DEFAULT_TAB = 1;
 
@@ -52,7 +53,9 @@ export const Home = XMemo<PageProps>((props) => {
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 1 ? 1 : 0 }} pointerEvents={tab === 1 ? 'box-none' : 'none'}>
                         <HeaderContextChild enabled={tab === 1}>
                             {tab === 1 && <ZTrack event="navigate_chats" />}
-                            <HomeDialogs {...props} />
+                            <SetTabContext.Provider value={setTab}>
+                                <HomeDialogs {...props} />
+                            </SetTabContext.Provider>
                         </HeaderContextChild>
                     </View>
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 2 ? 1 : 0 }} pointerEvents={tab === 2 ? 'box-none' : 'none'}>
