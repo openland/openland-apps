@@ -335,7 +335,7 @@ PODS:
     - React
     - SDWebImage (~> 5.0)
     - SDWebImageWebPCoder (~> 0.2.3)
-  - RNGestureHandler (1.5.3):
+  - RNGestureHandler (1.4.1):
     - React
   - RNGoogleSignin (3.0.3):
     - GoogleSignIn (~> 5.0.0)
@@ -646,7 +646,7 @@ SPEC CHECKSUMS:
   rn-fetch-blob: f525a73a78df9ed5d35e67ea65e79d53c15255bc
   RNDeviceInfo: e7c5fcde13d40e161d8a27f6c5dc69c638936002
   RNFastImage: 9b0c22643872bb7494c8d87bbbb66cc4c0d9e7a2
-  RNGestureHandler: 02905abe54e1f6e59c081a10b4bd689721e17aa6
+  RNGestureHandler: 4cb47a93019c1a201df2644413a0a1569a51c8aa
   RNGoogleSignin: a10b849c165088c737d4465de6c2062f24d06002
   RNImageCropPicker: 9d1a7eea4f8368fc479cbd2bf26459bd3c74d9aa
   RNRate: 29be49c24b314c4e8ec09d848c3965f61cb0be47
