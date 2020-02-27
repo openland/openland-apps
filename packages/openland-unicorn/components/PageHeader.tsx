@@ -11,7 +11,7 @@ import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     const router = useStackRouter();
     const layout = useLayout();
-    const wideHeader = router.pages.length > 0 || layout === 'mobile';
+    const wideHeader = router.pages.length > 0;
     useShortcuts({
         keys: ['Escape'],
         callback: () => {
@@ -20,7 +20,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     });
     let appearance = props.config.appearance || 'normal';
     let backgroundColor = props.config.backgroundColor;
-
+    let showBack = router.pages.length > 0 && router.rootPath !== '/discover';
     return (
         <XView
             height={56}
@@ -29,7 +29,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
             zIndex={2}
             backgroundColor={backgroundColor}
         >
-            {wideHeader ? (
+            {layout === 'mobile' || showBack ? (
                 <XView height={56} width={56} alignItems="center" justifyContent="center">
                     <UIconButton icon={<BackIcon />} onClick={() => router.pop()} size="large" />
                 </XView>
