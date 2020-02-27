@@ -21,6 +21,9 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     let appearance = props.config.appearance || 'normal';
     let backgroundColor = props.config.backgroundColor;
     let showBack = router.pages.length > 0 && router.rootPath !== '/discover';
+    if (router.rootPath === '/discover' && router.pages.length > 1) {
+        showBack = true;
+    }
     return (
         <XView
             height={56}
