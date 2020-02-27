@@ -13,6 +13,7 @@ import { WalletSubscriptionInterval } from 'openland-api/spacex.types';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import { showPayConfirm } from '../modals/PayConfirm';
 import { SRouter } from 'react-native-s/SRouter';
+import { OpenlandClient } from 'openland-api/spacex';
 
 const styles = StyleSheet.create({
     container: {
@@ -55,6 +56,47 @@ interface ChatJoinComponentProps {
     router: SRouter;
 }
 
+interface JoinPaidGroupProps {
+    id: string;
+    premiumSettings: { price: number; interval?: WalletSubscriptionInterval | null };
+    title: string;
+    photo?: string;
+    router: SRouter;
+    client: OpenlandClient;
+    onError?: () => void;
+}
+
+export const joinPaidGroup = (props: JoinPaidGroupProps) => {
+    showPayConfirm({
+        router: props.router,
+        amount: props.premiumSettings.price,
+        ...(props.premiumSettings.interval ?
+            { type: 'subscription', interval: props.premiumSettings.interval } :
+            { type: 'payment' }),
+        productTitle: props.title,
+        productDescription: props.premiumSettings.interval ? 'Subscription' : 'Payment',
+        productPicture: <ZAvatar size="medium" title={props.title} id={props.id} photo={props.photo} />,
+        action: async () => {
+            try {
+                let passIsActive = false;
+                if (props.premiumSettings.interval) {
+                    passIsActive = (await props.client.mutateBuyPremiumChatSubscription({ chatId: props.id })).betaBuyPremiumChatSubscription.premiumPassIsActive;
+                } else {
+                    passIsActive = (await props.client.mutateBuyPremiumChatPass({ chatId: props.id })).betaBuyPremiumChatPass.premiumPassIsActive;
+                }
+                if (passIsActive) {
+                    props.router.pushAndRemove('Conversation', { id: props.id });
+                }
+            } catch (e) {
+                AlertBlanket.alert(e.message);
+                if (props.onError) {
+                    props.onError();
+                }
+            }
+        },
+    });
+};
+
 const BuyPaidChatPassButton = (props: {
     id: string;
     premiumSettings: { price: number; interval?: WalletSubscriptionInterval | null };
@@ -66,31 +108,14 @@ const BuyPaidChatPassButton = (props: {
     const client = useClient();
     const [loading, setLoading] = React.useState(false);
     const buyPaidChatPass = React.useCallback(async () => {
-        showPayConfirm({
+        joinPaidGroup({
+            id: props.id,
+            premiumSettings: props.premiumSettings,
+            title: props.title,
+            photo: props.photo,
             router: props.router,
-            amount: props.premiumSettings.price,
-            ...(props.premiumSettings.interval ?
-                { type: 'subscription', interval: props.premiumSettings.interval } :
-                { type: 'payment' }),
-            productTitle: props.title,
-            productDescription: props.premiumSettings.interval ? 'Subscription' : 'Payment',
-            productPicture: <ZAvatar size="medium" title={props.title} id={props.id} photo={props.photo} />,
-            action: async () => {
-                try {
-                    let passIsActive = false;
-                    if (props.premiumSettings.interval) {
-                        passIsActive = (await client.mutateBuyPremiumChatSubscription({ chatId: props.id })).betaBuyPremiumChatSubscription.premiumPassIsActive;
-                    } else {
-                        passIsActive = (await client.mutateBuyPremiumChatPass({ chatId: props.id })).betaBuyPremiumChatPass.premiumPassIsActive;
-                    }
-                    if (passIsActive) {
-                        props.router.pushAndRemove('Conversation', { id: props.id });
-                    }
-                } catch (e) {
-                    AlertBlanket.alert(e.message);
-                    setLoading(false);
-                }
-            },
+            client,
+            onError: () => setLoading(false),
         });
     }, []);
 

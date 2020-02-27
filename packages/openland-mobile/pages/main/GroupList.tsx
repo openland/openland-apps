@@ -11,6 +11,7 @@ import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { TouchableHighlight, View, Image, StyleSheet, ViewStyle } from 'react-native';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
+import { joinPaidGroup } from './components/ChatJoin';
 
 const styles = StyleSheet.create({
     btn: {
@@ -78,9 +79,19 @@ const GroupListComponent = React.memo<PageProps>((props) => {
         }
 
     }, [rooms, loading]);
-    let joinGroup = React.useCallback(async (id) => {
-        await getClient().mutateRoomJoin({ roomId: id });
-    }, []);
+    let action = async (room: Types.AvailableRooms_availableChats_edges_node) => {
+        if (room.isPremium && !room.premiumPassIsActive) {
+            joinPaidGroup({
+                id: room.id,
+                title: room.title,
+                premiumSettings: room.premiumSettings!,
+                router: props.router,
+                client: getClient(),
+            });
+        } else {
+            await getClient().mutateRoomJoin({ roomId: room.id });
+        }
+    };
 
     return (
         <>
@@ -100,7 +111,7 @@ const GroupListComponent = React.memo<PageProps>((props) => {
                             subTitle={item.membersCount + (item.membersCount === 1 ? ' member' : ' members')}
                             rightElement={<FollowButton 
                                 isFollowing={item.membership === Types.SharedRoomMembershipStatus.MEMBER} 
-                                action={() => joinGroup(item.id)} 
+                                action={() => action(item)} 
                             />}
                             path="Conversation"
                             pathParams={{ flexibleId: item.id }}
