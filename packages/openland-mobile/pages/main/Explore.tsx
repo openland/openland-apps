@@ -16,6 +16,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZButton } from 'openland-mobile/components/ZButton';
+import { EditorsChoiceList } from './components/discover/EditorsChoiceList';
+import { DiscoverCollectionsList } from './components/discover/DiscoverCollectionsList';
 
 export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) => {
     const theme = useTheme();
@@ -32,8 +34,12 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
     let suggestedRooms = rooms.suggestedRooms || [];
     let communities = rooms.communities || [];
 
+    // TODO: remove when api is ready
+    let isNewDiscoverReady = false;
+
     return (
         <>
+            {isNewDiscoverReady && <EditorsChoiceList router={props.router} />}
             <ZListGroup
                 header="Top groups"
                 headerMarginTop={0}
@@ -88,6 +94,8 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                     />
                 ))}
             </ZListGroup>
+
+            {isNewDiscoverReady && <DiscoverCollectionsList router={props.router} />}
 
             <ZListGroup
                 header="Top communities"
