@@ -125,7 +125,14 @@ export const TabBarDesktop = React.memo((props: TabBarDesktopProps) => {
             </XView>
             {props.router.tabs.map((v, i) => (
                 <TabBarButton
-                    onClick={() => props.setSelected(i)}
+                    onClick={() => {
+                        if (v.path === '/discover' && !props.router.stacks[0].pages.length) {
+                            setTimeout(() => {
+                                props.router.navigate('/discover/home');
+                            }, 20);
+                        }
+                        props.setSelected(i);
+                    }}
                     selected={props.selected === i}
                     icon={v.icon}
                     iconActive={v.iconActive}

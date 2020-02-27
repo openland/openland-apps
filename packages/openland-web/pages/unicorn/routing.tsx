@@ -6,6 +6,7 @@ import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { SettingsProfileFragment } from 'openland-web/fragments/account/SettingsProfileFragment';
 import { SettingsAppearanceFragment } from 'openland-web/fragments/account/SettingsAppearanceFragment';
 import { RecommendationsFragment } from 'openland-web/fragments/discover/RecommendationsFragment';
+import { DiscoverHomeFragment } from 'openland-web/fragments/discover/DiscoverHomeFragment';
 import { DiscoverGroupsFragment } from 'openland-web/fragments/discover/DiscoverGroupsFragment';
 import { SettingsNotificationsFragment } from 'openland-web/fragments/account/SettingsNotificationsFragment';
 import { SettingsEmailFragment } from 'openland-web/fragments/account/SettingsEmailFragment';
@@ -66,6 +67,7 @@ routing.addRoute('/notifications', () => NotificationsFragment);
 routing.addRoute('/feed', () => FeedFragment);
 routing.addRoute('/feed/:postId', () => FeedItemFragment);
 routing.addRoute('/feed/:postId/comment/:commentId', () => FeedItemFragment);
+routing.addRoute('/discover/home', () => DiscoverHomeFragment);
 routing.addRoute('/discover/recommendations', () => RecommendationsFragment);
 routing.addRoute('/discover/groups', () => DiscoverGroupsFragment);
 

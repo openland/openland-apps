@@ -271,6 +271,7 @@ interface StackLayoutProps {
     className?: string;
     visible: boolean;
     placeholder?: React.ReactNode;
+    defaultPage?: React.ReactNode;
 }
 
 export const StackLayout = React.memo((props: StackLayoutProps) => {
@@ -283,13 +284,21 @@ export const StackLayout = React.memo((props: StackLayoutProps) => {
         requestAnimationFrame(() => requestAnimationFrame(() => dispatch({ type: 'mounted' })));
     });
 
-    const Placeholder = props.placeholder;
+    let StartPage: React.ReactNode | undefined;
+
+    if (props.placeholder) {
+        StartPage = props.placeholder;
+    }
+
+    if (props.defaultPage) {
+        StartPage = props.defaultPage;
+    }
 
     return (
         <StackRouterContext.Provider value={props.router}>
             <VisibleTabContext.Provider value={props.visible}>
                 <div key="content" className={props.className} ref={props.router.ref}>
-                    {Placeholder}
+                    {StartPage}
                     {state.pages.map((v, i) => (
                         <PageAnimator
                             state={v.state}

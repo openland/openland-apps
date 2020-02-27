@@ -55,11 +55,18 @@ routes.add('/feed/:postId', '/unicorn/index');
 routes.add('/feed/:postId/', '/unicorn/index');
 routes.add('/feed/:postId/comment/:commentId', '/unicorn/index');
 routes.add('/feed/:postId/comment/:commentId/', '/unicorn/index');
+routes.add('/discover/home', '/unicorn/index');
+routes.add('/discover/home/', '/unicorn/index');
 routes.add('/discover/recommendations', '/unicorn/index');
+routes.add('/discover/recommendations/', '/unicorn/index');
 routes.add('/discover/groups', '/unicorn/index');
+routes.add('/discover/groups/', '/unicorn/index');
 routes.add('/discover/communities', '/unicorn/index');
+routes.add('/discover/communities/', '/unicorn/index');
 routes.add('/discover/people', '/unicorn/index');
+routes.add('/discover/people/', '/unicorn/index');
 routes.add('/discover/organizations', '/unicorn/index');
+routes.add('/discover/organizations/', '/unicorn/index');
 
 //
 // Onboardinng

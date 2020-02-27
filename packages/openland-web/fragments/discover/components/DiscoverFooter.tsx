@@ -42,7 +42,9 @@ export const DiscoverFooter = React.memo(() => {
                 onClick={() => {
                     if (tabRouter) {
                         tabRouter.setTab(0);
-                        tabRouter.router.navigate('/discover/recommendations');
+                        setTimeout(() => {
+                            tabRouter.router.navigate('/discover/recommendations');
+                        }, 20);
                     }
                 }}
             />
