@@ -15,14 +15,7 @@ const blanket = css`
     transition: transform 300ms;
 `;
 
-const slide = css`
-    width: 100%;
-    height: 200px;
-    background: red;
-    flex-shrink: 0;
-`;
-
-export const USlider = React.memo(() => {
+export const USlider = React.memo((props) => {
     const [offset, setOffset] = React.useState<number>(0);
     const [numChildren, setNumChildren] = React.useState<number>(0);
     const [childWidth, setChildWidth] = React.useState<number>(0);
@@ -36,7 +29,7 @@ export const USlider = React.memo(() => {
     const reinitSlider = () => {
         const blanketElement = blanketRef.current;
 
-        console.warn('call', blanketElement);
+        console.warn('call', { offset, numChildren, childWidth });
         if (blanketElement) {
             const numberOfChildren = blanketElement.children.length;
             const offsetWidth = blanketElement.getBoundingClientRect().width;
@@ -48,6 +41,10 @@ export const USlider = React.memo(() => {
 
     window.addEventListener('resize', reinitSlider);
     React.useLayoutEffect(reinitSlider, []);
+
+    // research why useLayoutEffect doesnt't work as needed
+    // uncomment in case of emergency release
+    // setTimeout(reinitSlider, 300);
 
     const onNextClick = () => {
         if (Math.abs(offset - childWidth) < Math.abs(childWidth * numChildren)) {
@@ -66,9 +63,7 @@ export const USlider = React.memo(() => {
             <button onClick={onNextClick}>next</button>
             <div className={slider}>
                 <div className={blanket} style={blanketStyle} ref={blanketRef}>
-                    <div className={slide}>one</div>
-                    <div className={slide}>two</div>
-                    <div className={slide}>three</div>
+                    {props.children}
                 </div>
             </div>
         </div>
