@@ -146,8 +146,6 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         });
     }, 1000);
 
-    // uncomment this all when you need to handle sticker picking
-
     private setStickerPicking = () => {
         this.props.messenger.client.mutateSetTyping({
             conversationId: this.props.conversationId,
@@ -169,6 +167,9 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             console.log('From the interval');
             this.setStickerPicking();
         }, 3000));
+
+        // clear typing after one minute in case it somehow stuck
+        setTimeout(this.finishStickerPicking, 1000 * 60);
     }
     private finishStickerPicking = () => {
         this.stickerPickingMutationIntervals.forEach(clearInterval);
