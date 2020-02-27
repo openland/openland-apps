@@ -4,7 +4,7 @@ import { css, cx } from 'linaria';
 import { UIcon } from './UIcon';
 import { XLoader } from 'openland-x/XLoader';
 
-export type UIconButtonSize = 'small' | 'small-densed' | 'medium' | 'large' | 'large-densed';
+export type UIconButtonSize = 'xsmall' | 'small' | 'small-densed' | 'medium' | 'large' | 'large-densed';
 
 const wrapper = css`
     display: flex;
@@ -56,6 +56,7 @@ interface UIconButtonProps extends XViewProps {
 }
 
 const widthBySize: { [key in UIconButtonSize]: number } = {
+    xsmall: 32,
     small: 32,
     'small-densed': 24,
     medium: 40,
@@ -64,6 +65,7 @@ const widthBySize: { [key in UIconButtonSize]: number } = {
 };
 
 const heightBySize: { [key in UIconButtonSize]: number } = {
+    xsmall: 32,
     small: 32,
     'small-densed': 32,
     medium: 40,
@@ -72,6 +74,7 @@ const heightBySize: { [key in UIconButtonSize]: number } = {
 };
 
 const rippleBySize: { [key in UIconButtonSize]: string } = {
+    xsmall: '32px',
     small: '32px',
     'small-densed': '32px',
     medium: '40px',
@@ -80,6 +83,7 @@ const rippleBySize: { [key in UIconButtonSize]: string } = {
 };
 
 const iconBySize: { [key in UIconButtonSize]: string } = {
+    xsmall: '16px',
     small: '20px',
     'small-densed': '20px',
     medium: '24px',

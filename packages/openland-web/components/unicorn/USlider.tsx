@@ -1,5 +1,9 @@
 import React from 'react';
 import { css } from 'linaria';
+import ArrowRight from 'openland-icons/s/ic-arrow-right-16.svg';
+import ArrowLeft from 'openland-icons/s/ic-arrow-left-16.svg';
+
+import { UIconButton } from './UIconButton';
 
 const root = css`
     display: flex;
@@ -8,11 +12,18 @@ const root = css`
 
 const slider = css`
     overflow-x: hidden;
+    border-radius: 8px;
 `;
 
 const blanket = css`
     display: flex;
     transition: transform 300ms;
+`;
+
+const icons = css`
+    align-self: flex-end;
+    display: flex;
+    margin-bottom: 16px;
 `;
 
 export const USlider = React.memo((props) => {
@@ -29,13 +40,15 @@ export const USlider = React.memo((props) => {
     const reinitSlider = () => {
         const blanketElement = blanketRef.current;
 
-        console.warn('call', { offset, numChildren, childWidth });
+        console.warn('call');
         if (blanketElement) {
             const numberOfChildren = blanketElement.children.length;
             const offsetWidth = blanketElement.getBoundingClientRect().width;
 
             setNumChildren(numberOfChildren);
             setChildWidth(offsetWidth);
+
+            console.warn({ offset, numChildren, childWidth });
         }
     };
 
@@ -59,8 +72,19 @@ export const USlider = React.memo((props) => {
 
     return (
         <div className={root}>
-            <button onClick={onPrevClick}>prev</button>
-            <button onClick={onNextClick}>next</button>
+            <div className={icons}>
+                <UIconButton
+                    icon={<ArrowLeft />}
+                    size="xsmall"
+                    onClick={onPrevClick}
+                />
+
+                <UIconButton
+                    size="xsmall"
+                    icon={<ArrowRight />}
+                    onClick={onNextClick}
+                />
+            </div>
             <div className={slider}>
                 <div className={blanket} style={blanketStyle} ref={blanketRef}>
                     {props.children}

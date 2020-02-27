@@ -6,7 +6,7 @@ import { css } from 'linaria';
 const slide = css`
     width: 100%;
     height: 200px;
-    background: red;
+    background: grey;
     flex-shrink: 0;
 `;
 
