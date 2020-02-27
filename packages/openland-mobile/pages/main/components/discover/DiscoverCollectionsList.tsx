@@ -4,7 +4,7 @@ import { View, ScrollView, Image, Text, TouchableWithoutFeedback } from 'react-n
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { plural } from 'openland-y-utils/plural';
-import { SRouter } from 'react-native-s/SRouter';
+import { SRouterContext } from 'react-native-s/SRouterContext';
 
 const items = [
     {   
@@ -38,13 +38,13 @@ interface DiscoverCollectionsItemProps {
     cover: string;
     title: string;
     groups: number;
-    router: SRouter;
 }
 
 const DiscoverCollectionsItem = (props: DiscoverCollectionsItemProps) => {
     const theme = useTheme();
+    const router = React.useContext(SRouterContext)!;
     const onPress = React.useCallback(() => {
-        props.router.push('Conversation', {id: props.id});
+        router.push('Conversation', {id: props.id});
     }, [props.id]);
     return (
         <View style={{width: 167, height: 162, marginRight: 8}}>
@@ -73,12 +73,12 @@ const DiscoverCollectionsItem = (props: DiscoverCollectionsItemProps) => {
     );
 };
 
-export const DiscoverCollectionsList = (props: {router: SRouter}) => {
+export const DiscoverCollectionsList = () => {
 
     return (
         <ZListGroup header="Collections" >
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} paddingLeft={16}>
-                {items.map((item, i) => <DiscoverCollectionsItem router={props.router} key={i} {...item} />)}
+                {items.map((item, i) => <DiscoverCollectionsItem key={i} {...item} />)}
                 <View width={24} />
             </ScrollView>
         </ZListGroup>

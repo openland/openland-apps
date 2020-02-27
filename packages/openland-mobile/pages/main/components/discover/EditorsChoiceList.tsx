@@ -5,7 +5,7 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { plural } from 'openland-y-utils/plural';
-import { SRouter } from 'react-native-s/SRouter';
+import { SRouterContext } from 'react-native-s/SRouterContext';
 
 const items = [
     {   
@@ -44,14 +44,14 @@ interface EditorsChoiceItemProps {
     photo: string;
     title: string;
     members: number;
-    router: SRouter;
 }
 
 const EditorsChoiceItem = (props: EditorsChoiceItemProps) => {
     const theme = useTheme();
+    const router = React.useContext(SRouterContext)!;
     const onPress = React.useCallback(() => {
-        props.router.push('Conversation', {id: props.id});
-    }, [props.id]);
+        router.push('Conversation', {id: props.id});
+    }, [router, props.id]);
     return (
         <View style={{width: 343, height: 264, marginRight: 8}}>
             <TouchableWithoutFeedback onPress={onPress}>
@@ -82,12 +82,12 @@ const EditorsChoiceItem = (props: EditorsChoiceItemProps) => {
     );
 };
 
-export const EditorsChoiceList = (props: {router: SRouter}) => {
+export const EditorsChoiceList = () => {
 
     return (
         <ZListGroup header="Editors' choice" >
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} paddingLeft={16}>
-                {items.map((item, i) => <EditorsChoiceItem router={props.router} key={i} {...item} />)}
+                {items.map((item, i) => <EditorsChoiceItem key={i} {...item} />)}
                 <View width={24} />
             </ScrollView>
         </ZListGroup>

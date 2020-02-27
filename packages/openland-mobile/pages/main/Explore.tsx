@@ -39,7 +39,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
 
     return (
         <>
-            {isNewDiscoverReady && <EditorsChoiceList router={props.router} />}
+            {isNewDiscoverReady && <EditorsChoiceList />}
             <ZListGroup
                 header="Top groups"
                 headerMarginTop={0}
@@ -95,7 +95,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                 ))}
             </ZListGroup>
 
-            {isNewDiscoverReady && <DiscoverCollectionsList router={props.router} />}
+            {isNewDiscoverReady && <DiscoverCollectionsList />}
 
             <ZListGroup
                 header="Top communities"
