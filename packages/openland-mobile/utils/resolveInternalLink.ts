@@ -34,7 +34,9 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         ////
         const pages: { [key: string]: { route: string, callback?: Function } | undefined } = {
             'mail': { route: 'Home', callback: () => getMessenger().history.navigationManager.pushAndResetRoot("Home") },
-            'settings/email': { route: 'SettingsEmail' }
+            'settings/email': { route: 'SettingsEmail' },
+            'wallet': { route: 'Wallet' },
+            'collections': { route: 'Collections' },
         };
 
         let pagePattern = /(http(s)?\:\/\/)?(.*)?.openland.com\/(.*)/g;
@@ -320,10 +322,6 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         }
         if (link === '/onboarding_invite') {
             navigate('Invites');
-            return;
-        }
-        if (link === '/wallet') {
-            navigate('Wallet');
             return;
         }
 
