@@ -40,15 +40,12 @@ export const USlider = React.memo((props) => {
     const reinitSlider = () => {
         const blanketElement = blanketRef.current;
 
-        console.warn('call');
         if (blanketElement) {
             const numberOfChildren = blanketElement.children.length;
             const offsetWidth = blanketElement.getBoundingClientRect().width;
 
             setNumChildren(numberOfChildren);
             setChildWidth(offsetWidth);
-
-            console.warn({ offset, numChildren, childWidth });
         }
     };
 
@@ -56,8 +53,7 @@ export const USlider = React.memo((props) => {
     React.useLayoutEffect(reinitSlider, []);
 
     // research why useLayoutEffect doesnt't work as needed
-    // uncomment in case of emergency release
-    // setTimeout(reinitSlider, 300);
+    setTimeout(reinitSlider, 300);
 
     const onNextClick = () => {
         if (Math.abs(offset - childWidth) < Math.abs(childWidth * numChildren)) {
