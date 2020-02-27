@@ -55,6 +55,8 @@ routes.add('/feed/:postId', '/unicorn/index');
 routes.add('/feed/:postId/', '/unicorn/index');
 routes.add('/feed/:postId/comment/:commentId', '/unicorn/index');
 routes.add('/feed/:postId/comment/:commentId/', '/unicorn/index');
+routes.add('/discover', '/unicorn/index');
+routes.add('/discover/', '/unicorn/index');
 routes.add('/discover/home', '/unicorn/index');
 routes.add('/discover/home/', '/unicorn/index');
 routes.add('/discover/recommendations', '/unicorn/index');

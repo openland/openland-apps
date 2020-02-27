@@ -32,8 +32,10 @@ import { SharedMediaFragment } from 'openland-web/fragments/chat/sharedMedia/Sha
 import { SettingsAboutFragment } from 'openland-web/fragments/account/SettingsAboutFragment';
 import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
 
+import { TabRouterContext } from 'openland-unicorn/components/TabLayout';
+
 // temporary stub for /mail/ -> not found bug
-const TemporaryStub = React.memo(() => {
+const TemporaryStubMail = React.memo(() => {
     const stackRouter = useStackRouter();
 
     React.useEffect(() => {
@@ -43,11 +45,30 @@ const TemporaryStub = React.memo(() => {
     return null;
 });
 
+const TemporaryStubDiscover = React.memo(() => {
+    const router = React.useContext(TabRouterContext);
+    React.useEffect(() => {
+        let timer: any;
+        if (router) {
+            router.router.switchTab(0);
+            timer = setTimeout(() => {
+                if (router) {
+                    router.router.navigate('/discover/home');
+                }
+            }, 20);
+        }
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    return null;
+});
+
 const routing = new URouting();
 
 // Mail
-routing.addRoute('/mail', () => TemporaryStub);
-routing.addRoute('/mail/', () => TemporaryStub);
+routing.addRoute('/mail', () => TemporaryStubMail);
+routing.addRoute('/mail/', () => TemporaryStubMail);
 routing.addRoute('/mail/:conversationId', () =>
     React.memo(() => {
         let ctx = useUnicorn();
@@ -67,6 +88,8 @@ routing.addRoute('/notifications', () => NotificationsFragment);
 routing.addRoute('/feed', () => FeedFragment);
 routing.addRoute('/feed/:postId', () => FeedItemFragment);
 routing.addRoute('/feed/:postId/comment/:commentId', () => FeedItemFragment);
+routing.addRoute('/discover', () => TemporaryStubDiscover);
+routing.addRoute('/discover/', () => TemporaryStubDiscover);
 routing.addRoute('/discover/home', () => DiscoverHomeFragment);
 routing.addRoute('/discover/recommendations', () => RecommendationsFragment);
 routing.addRoute('/discover/groups', () => DiscoverGroupsFragment);
