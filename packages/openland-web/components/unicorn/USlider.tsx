@@ -2,7 +2,8 @@ import React from 'react';
 import { css } from 'linaria';
 
 const root = css`
-
+    display: flex;
+    flex-direction: column;
 `;
 
 const slider = css`
@@ -35,7 +36,7 @@ export const USlider = React.memo(() => {
     const reinitSlider = () => {
         const blanketElement = blanketRef.current;
 
-        console.warn('call', blanketElement)
+        console.warn('call', blanketElement);
         if (blanketElement) {
             const numberOfChildren = blanketElement.children.length;
             const offsetWidth = blanketElement.getBoundingClientRect().width;
@@ -48,8 +49,16 @@ export const USlider = React.memo(() => {
     window.addEventListener('resize', reinitSlider);
     React.useLayoutEffect(reinitSlider, []);
 
-    const onNextClick = () => setOffset(offset - childWidth);
-    const onPrevClick = () => setOffset(offset + childWidth);
+    const onNextClick = () => {
+        if (Math.abs(offset - childWidth) < Math.abs(childWidth * numChildren)) {
+            setOffset(offset - childWidth);
+        }
+    };
+    const onPrevClick = () => {
+        if (offset < 0) {
+            setOffset(offset + childWidth);
+        }
+    };
 
     return (
         <div className={root}>
