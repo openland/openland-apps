@@ -30,6 +30,7 @@ import { useStackRouter } from 'openland-unicorn/components/StackRouter';
 import { SharedMediaFragment } from 'openland-web/fragments/chat/sharedMedia/SharedMediaFragment';
 import { SettingsAboutFragment } from 'openland-web/fragments/account/SettingsAboutFragment';
 import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
+import { DiscoverHomeFragment } from 'openland-web/fragments/discover/DiscoverHomeFragment';
 
 // temporary stub for /mail/ -> not found bug
 const TemporaryStub = React.memo(() => {
@@ -68,6 +69,7 @@ routing.addRoute('/feed/:postId', () => FeedItemFragment);
 routing.addRoute('/feed/:postId/comment/:commentId', () => FeedItemFragment);
 routing.addRoute('/discover/recommendations', () => RecommendationsFragment);
 routing.addRoute('/discover/groups', () => DiscoverGroupsFragment);
+routing.addRoute('/discover/home', () => DiscoverHomeFragment);
 
 // Settings
 routing.addRoute('/settings/profile', () => SettingsProfileFragment);

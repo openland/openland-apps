@@ -60,6 +60,7 @@ routes.add('/discover/groups', '/unicorn/index');
 routes.add('/discover/communities', '/unicorn/index');
 routes.add('/discover/people', '/unicorn/index');
 routes.add('/discover/organizations', '/unicorn/index');
+routes.add('/discover/home', '/unicorn/index');
 
 //
 // Onboardinng
