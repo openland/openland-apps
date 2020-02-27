@@ -38,7 +38,7 @@ const Logo = React.memo(() => {
                     />
                 </View>
                 <Image
-                    source={require('assets/art-discover.png')}
+                    source={require('assets/art-profile-card.png')}
                     style={{ width: 240, height: 150, marginBottom: 16 }}
                 />
             </View>
