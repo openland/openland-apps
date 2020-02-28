@@ -61,11 +61,12 @@ type ListingType = 'new' | 'popular' | 'top-free' | 'top-premium';
 interface UseFetchMoreRoomsArgs {
     first: number;
     initialAfter: string;
+    seed: number;
     type: ListingType;
     initialRooms: Types.DiscoverSharedRoom[];
 }
 type UseFetchMoreRoomsReturned = [Types.DiscoverSharedRoom[], boolean, () => void];
-const useFetchMoreRooms = ({first, type, initialAfter, initialRooms}: UseFetchMoreRoomsArgs): UseFetchMoreRoomsReturned => {
+const useFetchMoreRooms = ({first, type, seed, initialAfter, initialRooms}: UseFetchMoreRoomsArgs): UseFetchMoreRoomsReturned => {
     const [rooms, setRooms] = React.useState(initialRooms);
     const [loading, setLoading] = React.useState(false);
     const [after, setAfter] = React.useState<string | null>(initialAfter);
@@ -75,7 +76,7 @@ const useFetchMoreRooms = ({first, type, initialAfter, initialRooms}: UseFetchMo
             setLoading(true);
             let items: Types.DiscoverSharedRoom[] = [], cursor: string | null = null;
             if (type === 'new') {
-                let res = (await getClient().queryDiscoverNewAndGrowing({ after, seed: 123, first }, { fetchPolicy: 'network-only' })).discoverNewAndGrowing;
+                let res = (await getClient().queryDiscoverNewAndGrowing({ after, seed, first }, { fetchPolicy: 'network-only' })).discoverNewAndGrowing;
                 items = res.items;
                 cursor = res.cursor;
             } else if (type === 'popular') {
@@ -106,12 +107,13 @@ const useFetchMoreRooms = ({first, type, initialAfter, initialRooms}: UseFetchMo
     return [rooms, loading, loadMore];
 };
 
-const GroupListComponent = React.memo<PageProps>((props) => {
+const DiscoverListingComponent = React.memo<PageProps>((props) => {
     let initialRooms = props.router.params.initialRooms as Types.DiscoverSharedRoom[];
     let type = props.router.params.type as ListingType;
     let initialAfter = props.router.params.after as string;
+    let seed = props.router.params.seed as number;
 
-    const [rooms, loading, handleLoadMore] = useFetchMoreRooms({first: 10, type, initialAfter, initialRooms });
+    const [rooms, loading, handleLoadMore] = useFetchMoreRooms({first: 10, type, seed, initialAfter, initialRooms });
 
     let action = async (room: Types.DiscoverSharedRoom) => {
         if (room.isPremium && !room.premiumPassIsActive && room.premiumSettings) {
@@ -160,4 +162,4 @@ const GroupListComponent = React.memo<PageProps>((props) => {
     );
 });
 
-export const GroupList = withApp(GroupListComponent);
+export const DiscoverListing = withApp(DiscoverListingComponent);

@@ -70,14 +70,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: OperationParameters): Promise<Types.DiscoverTopPremium> {
         return this.query('DiscoverTopPremium', variables, opts);
     }
-    queryExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: OperationParameters): Promise<Types.ExploreCommunity> {
-        return this.query('ExploreCommunity', variables, opts);
-    }
     queryExplorePeople(variables: Types.ExplorePeopleVariables, opts?: OperationParameters): Promise<Types.ExplorePeople> {
         return this.query('ExplorePeople', variables, opts);
     }
-    queryExploreRooms(opts?: OperationParameters): Promise<Types.ExploreRooms> {
-        return this.query('ExploreRooms', undefined, opts);
+    queryExploreRooms(variables: Types.ExploreRoomsVariables, opts?: OperationParameters): Promise<Types.ExploreRooms> {
+        return this.query('ExploreRooms', variables, opts);
     }
     queryFeatureFlags(opts?: OperationParameters): Promise<Types.FeatureFlags> {
         return this.query('FeatureFlags', undefined, opts);
@@ -370,14 +367,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: OperationParameters): Promise<Types.DiscoverTopPremium> {
         return this.refetch('DiscoverTopPremium', variables);
     }
-    refetchExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: OperationParameters): Promise<Types.ExploreCommunity> {
-        return this.refetch('ExploreCommunity', variables);
-    }
     refetchExplorePeople(variables: Types.ExplorePeopleVariables, opts?: OperationParameters): Promise<Types.ExplorePeople> {
         return this.refetch('ExplorePeople', variables);
     }
-    refetchExploreRooms(opts?: OperationParameters): Promise<Types.ExploreRooms> {
-        return this.refetch('ExploreRooms', undefined);
+    refetchExploreRooms(variables: Types.ExploreRoomsVariables, opts?: OperationParameters): Promise<Types.ExploreRooms> {
+        return this.refetch('ExploreRooms', variables);
     }
     refetchFeatureFlags(opts?: OperationParameters): Promise<Types.FeatureFlags> {
         return this.refetch('FeatureFlags', undefined);
@@ -670,14 +664,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, updater: (data: Types.DiscoverTopPremium) => Types.DiscoverTopPremium | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverTopPremium', variables);
     }
-    updateExploreCommunity(variables: Types.ExploreCommunityVariables, updater: (data: Types.ExploreCommunity) => Types.ExploreCommunity | null): Promise<boolean> {
-        return this.updateQuery(updater, 'ExploreCommunity', variables);
-    }
     updateExplorePeople(variables: Types.ExplorePeopleVariables, updater: (data: Types.ExplorePeople) => Types.ExplorePeople | null): Promise<boolean> {
         return this.updateQuery(updater, 'ExplorePeople', variables);
     }
-    updateExploreRooms(updater: (data: Types.ExploreRooms) => Types.ExploreRooms | null): Promise<boolean> {
-        return this.updateQuery(updater, 'ExploreRooms', undefined);
+    updateExploreRooms(variables: Types.ExploreRoomsVariables, updater: (data: Types.ExploreRooms) => Types.ExploreRooms | null): Promise<boolean> {
+        return this.updateQuery(updater, 'ExploreRooms', variables);
     }
     updateFeatureFlags(updater: (data: Types.FeatureFlags) => Types.FeatureFlags | null): Promise<boolean> {
         return this.updateQuery(updater, 'FeatureFlags', undefined);
@@ -1012,20 +1003,15 @@ export class OpenlandClient extends BaseSpaceXClient {
     useDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverTopPremium | null {
         return this.useQuery('DiscoverTopPremium', variables, opts);
     }
-    useExploreCommunity(variables: Types.ExploreCommunityVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ExploreCommunity | null;
-    useExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: SpaceQueryWatchParameters): Types.ExploreCommunity;
-    useExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: SpaceQueryWatchParameters): Types.ExploreCommunity | null {
-        return this.useQuery('ExploreCommunity', variables, opts);
-    }
     useExplorePeople(variables: Types.ExplorePeopleVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ExplorePeople | null;
     useExplorePeople(variables: Types.ExplorePeopleVariables, opts?: SpaceQueryWatchParameters): Types.ExplorePeople;
     useExplorePeople(variables: Types.ExplorePeopleVariables, opts?: SpaceQueryWatchParameters): Types.ExplorePeople | null {
         return this.useQuery('ExplorePeople', variables, opts);
     }
-    useExploreRooms(opts: SpaceQueryWatchParameters & { suspense: false }): Types.ExploreRooms | null;
-    useExploreRooms(opts?: SpaceQueryWatchParameters): Types.ExploreRooms;
-    useExploreRooms(opts?: SpaceQueryWatchParameters): Types.ExploreRooms | null {
-        return this.useQuery('ExploreRooms', undefined, opts);
+    useExploreRooms(variables: Types.ExploreRoomsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ExploreRooms | null;
+    useExploreRooms(variables: Types.ExploreRoomsVariables, opts?: SpaceQueryWatchParameters): Types.ExploreRooms;
+    useExploreRooms(variables: Types.ExploreRoomsVariables, opts?: SpaceQueryWatchParameters): Types.ExploreRooms | null {
+        return this.useQuery('ExploreRooms', variables, opts);
     }
     useFeatureFlags(opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeatureFlags | null;
     useFeatureFlags(opts?: SpaceQueryWatchParameters): Types.FeatureFlags;

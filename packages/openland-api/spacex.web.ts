@@ -2593,28 +2593,6 @@ const DiscoverTopPremiumSelector = obj(
                     field('cursor', 'cursor', args(), scalar('String'))
                 )))
         );
-const ExploreCommunitySelector = obj(
-            field('alphaComunityPrefixSearch', 'items', args(fieldValue("query", refValue('query')), fieldValue("sort", refValue('sort')), fieldValue("page", refValue('page')), fieldValue("first", intValue(25)), fieldValue("after", refValue('after')), fieldValue("featuredIfEmptyQuery", refValue('featuredIfEmptyQuery'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('edges', 'edges', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('node', 'node', args(), notNull(obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    fragment('Organization', CommunitySearchSelector)
-                                ))),
-                            field('cursor', 'cursor', args(), notNull(scalar('String')))
-                        ))))),
-                    field('pageInfo', 'pageInfo', args(), notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('hasNextPage', 'hasNextPage', args(), notNull(scalar('Boolean'))),
-                            field('hasPreviousPage', 'hasPreviousPage', args(), notNull(scalar('Boolean'))),
-                            field('itemsCount', 'itemsCount', args(), notNull(scalar('Int'))),
-                            field('currentPage', 'currentPage', args(), notNull(scalar('Int'))),
-                            field('pagesCount', 'pagesCount', args(), notNull(scalar('Int'))),
-                            field('openEnded', 'openEnded', args(), notNull(scalar('Boolean')))
-                        )))
-                )))
-        );
 const ExplorePeopleSelector = obj(
             field('userSearch', 'items', args(fieldValue("query", refValue('query')), fieldValue("sort", refValue('sort')), fieldValue("page", refValue('page')), fieldValue("first", intValue(25)), fieldValue("after", refValue('after'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -2639,6 +2617,14 @@ const ExplorePeopleSelector = obj(
                 )))
         );
 const ExploreRoomsSelector = obj(
+            field('discoverNewAndGrowing', 'discoverNewAndGrowing', args(fieldValue("first", intValue(5)), fieldValue("seed", refValue('seed'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('SharedRoom', DiscoverSharedRoomSelector)
+                        ))))),
+                    field('cursor', 'cursor', args(), scalar('String'))
+                ))),
             field('discoverPopularNow', 'discoverPopularNow', args(fieldValue("first", intValue(5))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('items', 'items', args(), notNull(list(notNull(obj(
@@ -5062,12 +5048,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query DiscoverTopPremium($first:Int!,$after:String){discoverTopPremium(first:$first,after:$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
         selector: DiscoverTopPremiumSelector
     },
-    ExploreCommunity: {
-        kind: 'query',
-        name: 'ExploreCommunity',
-        body: 'query ExploreCommunity($query:String,$sort:String,$page:Int,$after:String,$featuredIfEmptyQuery:Boolean){items:alphaComunityPrefixSearch(query:$query,sort:$sort,page:$page,first:25,after:$after,featuredIfEmptyQuery:$featuredIfEmptyQuery){__typename edges{__typename node{__typename ...CommunitySearch}cursor}pageInfo{__typename hasNextPage hasPreviousPage itemsCount currentPage pagesCount openEnded}}}fragment CommunitySearch on Organization{__typename id superAccountId name photo isMine about status featured:alphaFeatured membersCount roomsCount:betaPublicRoomsCount}',
-        selector: ExploreCommunitySelector
-    },
     ExplorePeople: {
         kind: 'query',
         name: 'ExplorePeople',
@@ -5077,7 +5057,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ExploreRooms: {
         kind: 'query',
         name: 'ExploreRooms',
-        body: 'query ExploreRooms{discoverPopularNow(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
+        body: 'query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:5,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
         selector: ExploreRoomsSelector
     },
     FeatureFlags: {

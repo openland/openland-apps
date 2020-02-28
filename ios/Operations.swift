@@ -2586,28 +2586,6 @@ private let DiscoverTopPremiumSelector = obj(
                     field("cursor", "cursor", scalar("String"))
                 )))
         )
-private let ExploreCommunitySelector = obj(
-            field("alphaComunityPrefixSearch", "items", arguments(fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort")), fieldValue("page", refValue("page")), fieldValue("first", intValue(25)), fieldValue("after", refValue("after")), fieldValue("featuredIfEmptyQuery", refValue("featuredIfEmptyQuery"))), notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("edges", "edges", notNull(list(notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("node", "node", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    fragment("Organization", CommunitySearchSelector)
-                                ))),
-                            field("cursor", "cursor", notNull(scalar("String")))
-                        ))))),
-                    field("pageInfo", "pageInfo", notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean"))),
-                            field("hasPreviousPage", "hasPreviousPage", notNull(scalar("Boolean"))),
-                            field("itemsCount", "itemsCount", notNull(scalar("Int"))),
-                            field("currentPage", "currentPage", notNull(scalar("Int"))),
-                            field("pagesCount", "pagesCount", notNull(scalar("Int"))),
-                            field("openEnded", "openEnded", notNull(scalar("Boolean")))
-                        )))
-                )))
-        )
 private let ExplorePeopleSelector = obj(
             field("userSearch", "items", arguments(fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort")), fieldValue("page", refValue("page")), fieldValue("first", intValue(25)), fieldValue("after", refValue("after"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -2632,6 +2610,14 @@ private let ExplorePeopleSelector = obj(
                 )))
         )
 private let ExploreRoomsSelector = obj(
+            field("discoverNewAndGrowing", "discoverNewAndGrowing", arguments(fieldValue("first", intValue(5)), fieldValue("seed", refValue("seed"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("SharedRoom", DiscoverSharedRoomSelector)
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                ))),
             field("discoverPopularNow", "discoverPopularNow", arguments(fieldValue("first", intValue(5))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
@@ -5059,12 +5045,6 @@ class Operations {
         "query DiscoverTopPremium($first:Int!,$after:String){discoverTopPremium(first:$first,after:$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         DiscoverTopPremiumSelector
     )
-    let ExploreCommunity = OperationDefinition(
-        "ExploreCommunity",
-        .query, 
-        "query ExploreCommunity($query:String,$sort:String,$page:Int,$after:String,$featuredIfEmptyQuery:Boolean){items:alphaComunityPrefixSearch(query:$query,sort:$sort,page:$page,first:25,after:$after,featuredIfEmptyQuery:$featuredIfEmptyQuery){__typename edges{__typename node{__typename ...CommunitySearch}cursor}pageInfo{__typename hasNextPage hasPreviousPage itemsCount currentPage pagesCount openEnded}}}fragment CommunitySearch on Organization{__typename id superAccountId name photo isMine about status featured:alphaFeatured membersCount roomsCount:betaPublicRoomsCount}",
-        ExploreCommunitySelector
-    )
     let ExplorePeople = OperationDefinition(
         "ExplorePeople",
         .query, 
@@ -5074,7 +5054,7 @@ class Operations {
     let ExploreRooms = OperationDefinition(
         "ExploreRooms",
         .query, 
-        "query ExploreRooms{discoverPopularNow(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
+        "query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:5,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         ExploreRoomsSelector
     )
     let FeatureFlags = OperationDefinition(
@@ -6384,7 +6364,6 @@ class Operations {
         if name == "DiscoverState" { return DiscoverState }
         if name == "DiscoverTopFree" { return DiscoverTopFree }
         if name == "DiscoverTopPremium" { return DiscoverTopPremium }
-        if name == "ExploreCommunity" { return ExploreCommunity }
         if name == "ExplorePeople" { return ExplorePeople }
         if name == "ExploreRooms" { return ExploreRooms }
         if name == "FeatureFlags" { return FeatureFlags }

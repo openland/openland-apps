@@ -33,7 +33,7 @@ import { BenchmarkAsync } from './pages/dev/BenchmarkAsync';
 import { BenchmarkAsyncDirect } from './pages/dev/BenchmarkAsyncDirect';
 import { ToastPage } from './pages/dev/Toast';
 import { BottomSheetPage } from './pages/dev/BottomSheetPage';
-import { GroupList } from './pages/main/GroupList';
+import { DiscoverListing } from './pages/main/DiscoverListing';
 import { SelectPrimaryOrganization } from './pages/main/SelectPrimaryOrganization';
 import { SetUserShortname } from './pages/main/SetUserShortname';
 import { SettingsAppearance } from './pages/main/SettingsAppearance';
@@ -48,7 +48,6 @@ import Tasks from './pages/apps/Tasks';
 import { Message } from './pages/main/Message';
 import { Colors } from './pages/dev/Colors';
 import { Discover } from './pages/main/Discover';
-import { CommunityList } from './pages/main/CommunityList';
 import { GroupMultiplePicker } from './pages/main/modals/GroupMultiplePicker';
 import { NotificationCenter } from './pages/main/NotificationCenter';
 import { InstallApps } from './pages/main/InstallApps';
@@ -113,7 +112,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('PostMentionPicker', PostMentionPicker)
   .addRoute('ProfileGroupLink', ProfileGroupLink)
   .addRoute('ProfileOrganizationGroups', ProfileOrganizationGroups)
-  .addRoute('GroupList', GroupList)
+  .addRoute('DiscoverListing', DiscoverListing)
   .addRoute('GroupInvite', GroupInvite)
   .addRoute('Message', Message)
   .addRoute('NotificationCenter', NotificationCenter)
@@ -160,8 +159,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('InvitesMore', InvitesMore)
   .addRoute('Explore', Explore)
   .addRoute('Collections', Collections)
-
-  .addRoute('CommunityList', CommunityList)
 
   .addRoute('Apps/Tasks', Tasks)
 

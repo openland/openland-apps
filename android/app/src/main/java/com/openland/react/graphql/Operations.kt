@@ -28,7 +28,6 @@ object Operations {
         if (name == "DiscoverState") return DiscoverState
         if (name == "DiscoverTopFree") return DiscoverTopFree
         if (name == "DiscoverTopPremium") return DiscoverTopPremium
-        if (name == "ExploreCommunity") return ExploreCommunity
         if (name == "ExplorePeople") return ExplorePeople
         if (name == "ExploreRooms") return ExploreRooms
         if (name == "FeatureFlags") return FeatureFlags

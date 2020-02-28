@@ -21,10 +21,10 @@ import { DiscoverCollectionsList } from './components/discover/DiscoverCollectio
 
 export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) => {
     const theme = useTheme();
-    let rooms = getClient().useExploreRooms({ fetchPolicy: 'network-only' });
-
+    let discoverSeed = Math.floor(Math.random() * 100);
+    let rooms = getClient().useExploreRooms({seed: discoverSeed}, { fetchPolicy: 'network-only' });
     let suggestedRooms = rooms.suggestedRooms || [];
-    // let newRooms = rooms.discoverNewAndGrowing.items || [];
+    let newRooms = rooms.discoverNewAndGrowing.items || [];
     let popularRooms = rooms.discoverPopularNow.items || [];
     let topFreeRooms = rooms.discoverTopFree.items || [];
     let topPremiumRooms = rooms.discoverTopPremium.items || [];
@@ -32,13 +32,14 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
     return (
         <>
             <EditorsChoiceList />
-            {/* <ZListGroup
+            <ZListGroup
                 header="New and growing"
                 headerMarginTop={0}
                 actionRight={newRooms.length === 5 ? {
-                    title: 'See all', onPress: () => props.router.push('GroupList', {
+                    title: 'See all', onPress: () => props.router.push('DiscoverListing', {
                         initialRooms: newRooms,
                         type: 'new',
+                        seed: discoverSeed,
                         after: rooms.discoverNewAndGrowing.cursor,
                         title: 'New and growing',
                     })
@@ -58,13 +59,13 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                         pathParams={{ flexibleId: v.id }}
                     />
                 ))}
-            </ZListGroup> */}
+            </ZListGroup>
 
             <ZListGroup
                 header="Popular now"
                 headerMarginTop={0}
                 actionRight={popularRooms.length === 5 ? {
-                    title: 'See all', onPress: () => props.router.push('GroupList', {
+                    title: 'See all', onPress: () => props.router.push('DiscoverListing', {
                         initialRooms: popularRooms,
                         type: 'popular',
                         after: rooms.discoverPopularNow.cursor,
@@ -94,7 +95,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                 header="Top premium"
                 headerMarginTop={0}
                 actionRight={topPremiumRooms.length === 5 ? {
-                    title: 'See all', onPress: () => props.router.push('GroupList', {
+                    title: 'See all', onPress: () => props.router.push('DiscoverListing', {
                         initialRooms: topPremiumRooms,
                         type: 'top-premium',
                         after: rooms.discoverTopPremium.cursor,
@@ -122,7 +123,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                 header="Top free"
                 headerMarginTop={0}
                 actionRight={topFreeRooms.length === 5 ? {
-                    title: 'See all', onPress: () => props.router.push('GroupList', {
+                    title: 'See all', onPress: () => props.router.push('DiscoverListing', {
                         initialRooms: topFreeRooms,
                         type: 'top-free',
                         after: rooms.discoverTopFree.cursor,

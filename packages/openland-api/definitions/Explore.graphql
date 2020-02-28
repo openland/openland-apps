@@ -19,13 +19,13 @@ fragment DiscoverSharedRoom on SharedRoom {
     premiumPassIsActive
 }
 
-query ExploreRooms {
-    # discoverNewAndGrowing(first: 5, seed: 123) {
-    #     items {
-    #         ...DiscoverSharedRoom
-    #     }
-    #     cursor
-    # }
+query ExploreRooms($seed: Int!) {
+    discoverNewAndGrowing(first: 5, seed: $seed) {
+        items {
+            ...DiscoverSharedRoom
+        }
+        cursor
+    }
     discoverPopularNow(first: 5) {
         items {
             ...DiscoverSharedRoom
