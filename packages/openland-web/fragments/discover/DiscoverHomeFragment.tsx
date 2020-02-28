@@ -70,7 +70,7 @@ export const DiscoverHomeFragment = React.memo(() => {
 
                 <div className={listingsContainer}>
                     <ListingCompact title="New and growing" items={newAndGrowingItems} />
-                    <ListingCompact title="Popular now" items={popularNowItems} />
+                    <ListingCompact title="Popular now" items={popularNowItems} path="/discover/popular" />
                 </div>
 
                 <USlider>

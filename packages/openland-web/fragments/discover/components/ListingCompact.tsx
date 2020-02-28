@@ -3,10 +3,12 @@ import { XView } from 'react-mental';
 import { RoomShort_SharedRoom } from 'openland-api/spacex.types';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
+import ArrowRight from 'openland-icons/s/ic-arrow-right-16.svg';
 
 interface ListingCompactProps {
     title?: string;
     items: RoomShort_SharedRoom[];
+    path?: string;
 }
 
 export const ListingCompact = React.memo((props: ListingCompactProps) => {
@@ -17,10 +19,13 @@ export const ListingCompact = React.memo((props: ListingCompactProps) => {
     return (
         <XView marginTop={16} paddingHorizontal={16}>
             {props.title && (
-                <XView marginBottom={12}>
+                <XView marginBottom={12} flexDirection="row" alignItems="center" cursor="pointer" path={props.path}>
                     <h2 className={TextTitle3}>
                         {props.title}
                     </h2>
+                    <XView marginLeft={8}>
+                        <ArrowRight />
+                    </XView>
                 </XView>
             )}
             <XView marginLeft={-16} marginRight={-16}>
