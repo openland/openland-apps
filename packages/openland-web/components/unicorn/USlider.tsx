@@ -65,11 +65,14 @@ export const USlider = React.memo((props) => {
             const blanketRect = blanketElement.getBoundingClientRect();
             const sliderRect = sliderElement.getBoundingClientRect();
 
-            if (sliderRect.right < blanketRect.left + (childWidth * numChildren)) {
+            const sliderRightmostPoint = sliderRect.right;
+            const blanketWidth = childWidth * numChildren;
+            const blanketRightmostPoint = blanketRect.left + blanketWidth;
+
+            if (sliderRightmostPoint < blanketRightmostPoint) {
                 setOffset(offset - childWidth);
                 setCurrentSlide(currentSlide + 1);
             }
-
         }
     };
     const onPrevClick = () => {

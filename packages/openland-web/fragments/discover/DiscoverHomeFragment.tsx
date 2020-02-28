@@ -15,7 +15,7 @@ const slide = css`
 `;
 
 const slideNarrow = css`
-    width: 200px;
+    width: 33%;
     height: 200px;
     background: grey;
     flex-shrink: 0;
