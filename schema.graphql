@@ -2289,7 +2289,7 @@ type Query {
   betaDialogTextSearch(query: String!): [Dialog!]!
   conversationDraft(conversationId: ID!): String
   alphaDraftMessage(conversationId: ID!): String
-  discoverNewAndGrowing(first: Int!, after: String): SharedRoomConnection!
+  discoverNewAndGrowing(first: Int!, seed: Int!, after: String): SharedRoomConnection!
   discoverPopularNow(first: Int!, after: String): SharedRoomConnection!
   discoverTopPremium(first: Int!, after: String): SharedRoomConnection!
   discoverTopFree(first: Int!, after: String): SharedRoomConnection!

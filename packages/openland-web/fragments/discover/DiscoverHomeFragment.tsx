@@ -43,10 +43,9 @@ const listingsContainer = css`
 export const DiscoverHomeFragment = React.memo(() => {
     const client = useClient();
 
-    // uncomment when backend fixed
-    // const newAndGrowing = client.useDiscoverNewAndGrowing({ first: 3 });
-    // const newAndGrowingItems = newAndGrowing.discoverNewAndGrowing.items || [];
-    // const newAndGrowingItems = []
+    // temporary seed
+    const newAndGrowing = client.useDiscoverNewAndGrowing({ first: 3, seed: 123 });
+    const newAndGrowingItems = newAndGrowing.discoverNewAndGrowing.items || [];
 
     const popularNow = client.useDiscoverPopularNow({ first: 3 });
     const popularNowItems = popularNow.discoverPopularNow.items || [];
@@ -70,7 +69,7 @@ export const DiscoverHomeFragment = React.memo(() => {
                 </USlider>
 
                 <div className={listingsContainer}>
-                    <ListingCompact title="New and growing" items={popularNowItems} />
+                    <ListingCompact title="New and growing" items={newAndGrowingItems} />
                     <ListingCompact title="Popular now" items={popularNowItems} />
                 </div>
 

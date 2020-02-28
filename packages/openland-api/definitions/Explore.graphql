@@ -213,8 +213,8 @@ query DiscoverPopularNow($first: Int!, $after: String) {
         }
     }
 }
-query DiscoverNewAndGrowing($first: Int!, $after: String) {
-    discoverNewAndGrowing(first: $first, after: $after) {
+query DiscoverNewAndGrowing($first: Int!, $seed: Int!, $after: String) {
+    discoverNewAndGrowing(first: $first, seed: $seed, after: $after) {
         items {
             ...RoomShort
         }
