@@ -23,9 +23,12 @@ object Operations {
         if (name == "ConferenceMedia") return ConferenceMedia
         if (name == "Dialogs") return Dialogs
         if (name == "DiscoverIsDone") return DiscoverIsDone
+        if (name == "DiscoverNewAndGrowing") return DiscoverNewAndGrowing
         if (name == "DiscoverNextPage") return DiscoverNextPage
         if (name == "DiscoverPopularNow") return DiscoverPopularNow
         if (name == "DiscoverState") return DiscoverState
+        if (name == "DiscoverTopFree") return DiscoverTopFree
+        if (name == "DiscoverTopPremium") return DiscoverTopPremium
         if (name == "ExploreCommunity") return ExploreCommunity
         if (name == "ExplorePeople") return ExplorePeople
         if (name == "FeatureFlags") return FeatureFlags

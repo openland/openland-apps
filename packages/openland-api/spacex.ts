@@ -55,6 +55,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryDiscoverIsDone(opts?: OperationParameters): Promise<Types.DiscoverIsDone> {
         return this.query('DiscoverIsDone', undefined, opts);
     }
+    queryDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, opts?: OperationParameters): Promise<Types.DiscoverNewAndGrowing> {
+        return this.query('DiscoverNewAndGrowing', variables, opts);
+    }
     queryDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: OperationParameters): Promise<Types.DiscoverNextPage> {
         return this.query('DiscoverNextPage', variables, opts);
     }
@@ -63,6 +66,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryDiscoverState(opts?: OperationParameters): Promise<Types.DiscoverState> {
         return this.query('DiscoverState', undefined, opts);
+    }
+    queryDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, opts?: OperationParameters): Promise<Types.DiscoverTopFree> {
+        return this.query('DiscoverTopFree', variables, opts);
+    }
+    queryDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: OperationParameters): Promise<Types.DiscoverTopPremium> {
+        return this.query('DiscoverTopPremium', variables, opts);
     }
     queryExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: OperationParameters): Promise<Types.ExploreCommunity> {
         return this.query('ExploreCommunity', variables, opts);
@@ -346,6 +355,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchDiscoverIsDone(opts?: OperationParameters): Promise<Types.DiscoverIsDone> {
         return this.refetch('DiscoverIsDone', undefined);
     }
+    refetchDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, opts?: OperationParameters): Promise<Types.DiscoverNewAndGrowing> {
+        return this.refetch('DiscoverNewAndGrowing', variables);
+    }
     refetchDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: OperationParameters): Promise<Types.DiscoverNextPage> {
         return this.refetch('DiscoverNextPage', variables);
     }
@@ -354,6 +366,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchDiscoverState(opts?: OperationParameters): Promise<Types.DiscoverState> {
         return this.refetch('DiscoverState', undefined);
+    }
+    refetchDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, opts?: OperationParameters): Promise<Types.DiscoverTopFree> {
+        return this.refetch('DiscoverTopFree', variables);
+    }
+    refetchDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: OperationParameters): Promise<Types.DiscoverTopPremium> {
+        return this.refetch('DiscoverTopPremium', variables);
     }
     refetchExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: OperationParameters): Promise<Types.ExploreCommunity> {
         return this.refetch('ExploreCommunity', variables);
@@ -637,6 +655,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateDiscoverIsDone(updater: (data: Types.DiscoverIsDone) => Types.DiscoverIsDone | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverIsDone', undefined);
     }
+    updateDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, updater: (data: Types.DiscoverNewAndGrowing) => Types.DiscoverNewAndGrowing | null): Promise<boolean> {
+        return this.updateQuery(updater, 'DiscoverNewAndGrowing', variables);
+    }
     updateDiscoverNextPage(variables: Types.DiscoverNextPageVariables, updater: (data: Types.DiscoverNextPage) => Types.DiscoverNextPage | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverNextPage', variables);
     }
@@ -645,6 +666,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateDiscoverState(updater: (data: Types.DiscoverState) => Types.DiscoverState | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverState', undefined);
+    }
+    updateDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, updater: (data: Types.DiscoverTopFree) => Types.DiscoverTopFree | null): Promise<boolean> {
+        return this.updateQuery(updater, 'DiscoverTopFree', variables);
+    }
+    updateDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, updater: (data: Types.DiscoverTopPremium) => Types.DiscoverTopPremium | null): Promise<boolean> {
+        return this.updateQuery(updater, 'DiscoverTopPremium', variables);
     }
     updateExploreCommunity(variables: Types.ExploreCommunityVariables, updater: (data: Types.ExploreCommunity) => Types.ExploreCommunity | null): Promise<boolean> {
         return this.updateQuery(updater, 'ExploreCommunity', variables);
@@ -960,6 +987,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useDiscoverIsDone(opts?: SpaceQueryWatchParameters): Types.DiscoverIsDone | null {
         return this.useQuery('DiscoverIsDone', undefined, opts);
     }
+    useDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverNewAndGrowing | null;
+    useDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverNewAndGrowing;
+    useDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverNewAndGrowing | null {
+        return this.useQuery('DiscoverNewAndGrowing', variables, opts);
+    }
     useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverNextPage | null;
     useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverNextPage;
     useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverNextPage | null {
@@ -974,6 +1006,16 @@ export class OpenlandClient extends BaseSpaceXClient {
     useDiscoverState(opts?: SpaceQueryWatchParameters): Types.DiscoverState;
     useDiscoverState(opts?: SpaceQueryWatchParameters): Types.DiscoverState | null {
         return this.useQuery('DiscoverState', undefined, opts);
+    }
+    useDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverTopFree | null;
+    useDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverTopFree;
+    useDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverTopFree | null {
+        return this.useQuery('DiscoverTopFree', variables, opts);
+    }
+    useDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverTopPremium | null;
+    useDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverTopPremium;
+    useDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverTopPremium | null {
+        return this.useQuery('DiscoverTopPremium', variables, opts);
     }
     useExploreCommunity(variables: Types.ExploreCommunityVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ExploreCommunity | null;
     useExploreCommunity(variables: Types.ExploreCommunityVariables, opts?: SpaceQueryWatchParameters): Types.ExploreCommunity;

@@ -21,11 +21,37 @@ const slideNarrow = css`
     flex-shrink: 0;
 `;
 
+const listingsContainer = css`
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+    margin-bottom: 16px;
+
+    margin-left: -16px;
+    margin-right: -16px;
+
+    & > * {
+        width: 100%;
+        flex-shrink: 2;
+    }
+`;
+
 export const DiscoverHomeFragment = React.memo(() => {
     const client = useClient();
 
+    // uncomment when backend fixed
+    // const newAndGrowing = client.useDiscoverNewAndGrowing({ first: 3 });
+    // const newAndGrowingItems = newAndGrowing.discoverNewAndGrowing.items || [];
+    // const newAndGrowingItems = []
+
     const popularNow = client.useDiscoverPopularNow({ first: 3 });
     const popularNowItems = popularNow.discoverPopularNow.items || [];
+
+    const topPremium = client.useDiscoverTopPremium({ first: 5 });
+    const topPremiumItems = topPremium.discoverTopPremium.items;
+
+    const topFree = client.useDiscoverTopFree({ first: 5 });
+    const topFreeItems = topFree.discoverTopFree.items;
 
     return (
         <Page track="discover_home">
@@ -38,10 +64,10 @@ export const DiscoverHomeFragment = React.memo(() => {
                 <div className={slide}>four</div>
             </USlider>
 
-            <XView flexDirection="row" justifyContent="space-between" marginTop={24} marginBottom={16}>
+            <div className={listingsContainer}>
                 <ListingCompact title="New and growing" items={popularNowItems} />
                 <ListingCompact title="Popular now" items={popularNowItems} />
-            </XView>
+            </div>
 
             <USlider>
                 <div className={slideNarrow}>one</div>
@@ -50,9 +76,11 @@ export const DiscoverHomeFragment = React.memo(() => {
                 <div className={slideNarrow}>four</div>
             </USlider>
 
-            <XView flexDirection="row" justifyContent="space-between" marginTop={24} marginBottom={56}>
-                <ListingCompact title="Top premium" items={popularNowItems} />
-                <ListingCompact title="Top free" items={popularNowItems} />
+            <XView marginBottom={40}>
+                <div className={listingsContainer}>
+                    <ListingCompact title="Top premium" items={topPremiumItems} />
+                    <ListingCompact title="Top free" items={topFreeItems} />
+                </div>
             </XView>
 
         </Page>

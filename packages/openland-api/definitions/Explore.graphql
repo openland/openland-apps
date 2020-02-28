@@ -213,3 +213,24 @@ query DiscoverPopularNow($first: Int!, $after: String) {
         }
     }
 }
+query DiscoverNewAndGrowing($first: Int!, $after: String) {
+    discoverNewAndGrowing(first: $first, after: $after) {
+        items {
+            ...RoomShort
+        }
+    }
+}
+query DiscoverTopPremium($first: Int!, $after: String) {
+    discoverTopPremium(first: $first, after: $after) {
+        items {
+            ...RoomShort
+        }
+    }
+}
+query DiscoverTopFree($first: Int!, $after: String) {
+    discoverTopFree(first: $first, after: $after) {
+        items {
+            ...RoomShort
+        }
+    }
+}

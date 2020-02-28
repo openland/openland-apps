@@ -11,7 +11,7 @@ interface ListingCompactProps {
 
 export const ListingCompact = React.memo((props: ListingCompactProps) => {
     return (
-        <XView marginTop={16}>
+        <XView marginTop={16} paddingHorizontal={16}>
             {props.title && (
                 <XView marginBottom={12}>
                     <h2 className={TextTitle3}>
