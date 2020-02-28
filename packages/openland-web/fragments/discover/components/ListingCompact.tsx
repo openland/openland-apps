@@ -10,6 +10,10 @@ interface ListingCompactProps {
 }
 
 export const ListingCompact = React.memo((props: ListingCompactProps) => {
+    if (props.items.length === 0) {
+        return null;
+    }
+
     return (
         <XView marginTop={16} paddingHorizontal={16}>
             {props.title && (
