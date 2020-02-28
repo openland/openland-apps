@@ -30,19 +30,21 @@ export const USlider = React.memo((props) => {
     const [offset, setOffset] = React.useState<number>(0);
     const [numChildren, setNumChildren] = React.useState<number>(0);
     const [childWidth, setChildWidth] = React.useState<number>(0);
+    const [currentSlide, setCurrentSlide] = React.useState<number>(0);
 
     const blanketStyle = {
         transform: `translateX(${offset}px)`
     };
 
     const blanketRef = React.createRef<HTMLDivElement>();
+    const sliderRef = React.createRef<HTMLDivElement>();
 
     const reinitSlider = () => {
         const blanketElement = blanketRef.current;
 
         if (blanketElement) {
             const numberOfChildren = blanketElement.children.length;
-            const offsetWidth = blanketElement.getBoundingClientRect().width;
+            const offsetWidth = blanketElement.children[0].getBoundingClientRect().width;
 
             setNumChildren(numberOfChildren);
             setChildWidth(offsetWidth);
@@ -56,14 +58,26 @@ export const USlider = React.memo((props) => {
     setTimeout(reinitSlider, 300);
 
     const onNextClick = () => {
-        if (Math.abs(offset - childWidth) < Math.abs(childWidth * numChildren)) {
-            setOffset(offset - childWidth);
+        const blanketElement = blanketRef.current;
+        const sliderElement = sliderRef.current;
+
+        if (blanketElement && sliderElement) {
+            const blanketRect = blanketElement.getBoundingClientRect();
+            const sliderRect = sliderElement.getBoundingClientRect();
+
+            if (sliderRect.right < blanketRect.left + (childWidth * numChildren)) {
+                setOffset(offset - childWidth);
+                setCurrentSlide(currentSlide + 1);
+            }
+
         }
     };
     const onPrevClick = () => {
-        if (offset < 0) {
+        if (currentSlide > 0) {
             setOffset(offset + childWidth);
+            setCurrentSlide(currentSlide - 1);
         }
+
     };
 
     return (
@@ -81,7 +95,7 @@ export const USlider = React.memo((props) => {
                     onClick={onNextClick}
                 />
             </div>
-            <div className={slider}>
+            <div className={slider} ref={sliderRef}>
                 <div className={blanket} style={blanketStyle} ref={blanketRef}>
                     {props.children}
                 </div>
