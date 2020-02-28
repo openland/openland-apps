@@ -122,7 +122,7 @@ const BuyPaidChatPassButton = (props: {
     let buttonText = 'Join for ' + formatMoney(props.premiumSettings.price, true);
     if (props.premiumSettings.interval) {
         if (props.premiumSettings.interval === WalletSubscriptionInterval.WEEK) {
-            buttonText += ' / w.';
+            buttonText += ' / wk.';
         } else if (props.premiumSettings.interval === WalletSubscriptionInterval.MONTH) {
             buttonText += ' / mo.';
         }
