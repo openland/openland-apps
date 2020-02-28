@@ -2328,7 +2328,15 @@ const AvailableRoomsSelector = obj(
                                                 field('id', 'id', args(), notNull(scalar('ID'))),
                                                 field('name', 'name', args(), notNull(scalar('String'))),
                                                 field('photo', 'photo', args(), scalar('String'))
-                                            ))
+                                            )),
+                                        field('premiumSettings', 'premiumSettings', args(), obj(
+                                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                field('id', 'id', args(), notNull(scalar('ID'))),
+                                                field('price', 'price', args(), notNull(scalar('Int'))),
+                                                field('interval', 'interval', args(), scalar('String'))
+                                            )),
+                                        field('isPremium', 'isPremium', args(), notNull(scalar('Boolean'))),
+                                        field('premiumPassIsActive', 'premiumPassIsActive', args(), notNull(scalar('Boolean')))
                                     ))
                                 ))),
                             field('cursor', 'cursor', args(), notNull(scalar('String')))
@@ -2353,7 +2361,15 @@ const AvailableRoomsSelector = obj(
                                                 field('id', 'id', args(), notNull(scalar('ID'))),
                                                 field('name', 'name', args(), notNull(scalar('String'))),
                                                 field('photo', 'photo', args(), scalar('String'))
-                                            ))
+                                            )),
+                                        field('premiumSettings', 'premiumSettings', args(), obj(
+                                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                field('id', 'id', args(), notNull(scalar('ID'))),
+                                                field('price', 'price', args(), notNull(scalar('Int'))),
+                                                field('interval', 'interval', args(), scalar('String'))
+                                            )),
+                                        field('isPremium', 'isPremium', args(), notNull(scalar('Boolean'))),
+                                        field('premiumPassIsActive', 'premiumPassIsActive', args(), notNull(scalar('Boolean')))
                                     ))
                                 ))),
                             field('cursor', 'cursor', args(), notNull(scalar('String')))
@@ -2374,7 +2390,15 @@ const AvailableRoomsSelector = obj(
                                 field('id', 'id', args(), notNull(scalar('ID'))),
                                 field('name', 'name', args(), notNull(scalar('String'))),
                                 field('photo', 'photo', args(), scalar('String'))
-                            ))
+                            )),
+                        field('premiumSettings', 'premiumSettings', args(), obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('id', 'id', args(), notNull(scalar('ID'))),
+                                field('price', 'price', args(), notNull(scalar('Int'))),
+                                field('interval', 'interval', args(), scalar('String'))
+                            )),
+                        field('isPremium', 'isPremium', args(), notNull(scalar('Boolean'))),
+                        field('premiumPassIsActive', 'premiumPassIsActive', args(), notNull(scalar('Boolean')))
                     ))
                 ))))),
             field('alphaComunityPrefixSearch', 'communities', args(fieldValue("first", intValue(3))), notNull(obj(
@@ -3912,7 +3936,15 @@ const UserAvailableRoomsSelector = obj(
                                                 field('id', 'id', args(), notNull(scalar('ID'))),
                                                 field('name', 'name', args(), notNull(scalar('String'))),
                                                 field('photo', 'photo', args(), scalar('String'))
-                                            ))
+                                            )),
+                                        field('premiumSettings', 'premiumSettings', args(), obj(
+                                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                field('id', 'id', args(), notNull(scalar('ID'))),
+                                                field('price', 'price', args(), notNull(scalar('Int'))),
+                                                field('interval', 'interval', args(), scalar('String'))
+                                            )),
+                                        field('isPremium', 'isPremium', args(), notNull(scalar('Boolean'))),
+                                        field('premiumPassIsActive', 'premiumPassIsActive', args(), notNull(scalar('Boolean')))
                                     ))
                                 ))),
                             field('cursor', 'cursor', args(), notNull(scalar('String')))
@@ -4969,7 +5001,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     AvailableRooms: {
         kind: 'query',
         name: 'AvailableRooms',
-        body: 'query AvailableRooms($chatsQuery:String,$channelsQuery:String){availableChats:alphaUserAvailableRooms(first:3,query:$chatsQuery){__typename edges{__typename node{__typename ... on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}}}cursor}}availableChannels:alphaUserAvailableRooms(first:3,query:$channelsQuery){__typename edges{__typename node{__typename ... on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}}}cursor}}suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}}}communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone}fragment CommunitySearch on Organization{__typename id superAccountId name photo isMine about status featured:alphaFeatured membersCount roomsCount:betaPublicRoomsCount}',
+        body: 'query AvailableRooms($chatsQuery:String,$channelsQuery:String){availableChats:alphaUserAvailableRooms(first:3,query:$chatsQuery){__typename edges{__typename node{__typename ... on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}}cursor}}availableChannels:alphaUserAvailableRooms(first:3,query:$channelsQuery){__typename edges{__typename node{__typename ... on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}}cursor}}suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}}communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone}fragment CommunitySearch on Organization{__typename id superAccountId name photo isMine about status featured:alphaFeatured membersCount roomsCount:betaPublicRoomsCount}',
         selector: AvailableRoomsSelector
     },
     ChatInit: {
@@ -5491,7 +5523,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     UserAvailableRooms: {
         kind: 'query',
         name: 'UserAvailableRooms',
-        body: 'query UserAvailableRooms($first:Int!,$after:String,$query:String){alphaUserAvailableRooms(first:$first,after:$after,query:$query){__typename edges{__typename node{__typename ... on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}}}cursor}pageInfo{__typename hasNextPage}}}',
+        body: 'query UserAvailableRooms($first:Int!,$after:String,$query:String){alphaUserAvailableRooms(first:$first,after:$after,query:$query){__typename edges{__typename node{__typename ... on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}}cursor}pageInfo{__typename hasNextPage}}}',
         selector: UserAvailableRoomsSelector
     },
     UserPico: {

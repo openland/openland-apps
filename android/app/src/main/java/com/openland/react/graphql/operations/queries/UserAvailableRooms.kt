@@ -24,7 +24,15 @@ internal val UserAvailableRoomsSelector = obj(
                                                 field("id", "id", notNull(scalar("ID"))),
                                                 field("name", "name", notNull(scalar("String"))),
                                                 field("photo", "photo", scalar("String"))
-                                            ))
+                                            )),
+                                        field("premiumSettings", "premiumSettings", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                field("id", "id", notNull(scalar("ID"))),
+                                                field("price", "price", notNull(scalar("Int"))),
+                                                field("interval", "interval", scalar("String"))
+                                            )),
+                                        field("isPremium", "isPremium", notNull(scalar("Boolean"))),
+                                        field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean")))
                                     ))
                                 ))),
                             field("cursor", "cursor", notNull(scalar("String")))
@@ -38,6 +46,6 @@ internal val UserAvailableRoomsSelector = obj(
 val UserAvailableRooms = object: OperationDefinition {
     override val name = "UserAvailableRooms"
     override val kind = OperationKind.QUERY
-    override val body = "query UserAvailableRooms(\$first:Int!,\$after:String,\$query:String){alphaUserAvailableRooms(first:\$first,after:\$after,query:\$query){__typename edges{__typename node{__typename ... on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}}}cursor}pageInfo{__typename hasNextPage}}}"
+    override val body = "query UserAvailableRooms(\$first:Int!,\$after:String,\$query:String){alphaUserAvailableRooms(first:\$first,after:\$after,query:\$query){__typename edges{__typename node{__typename ... on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}}cursor}pageInfo{__typename hasNextPage}}}"
     override val selector = UserAvailableRoomsSelector
 }

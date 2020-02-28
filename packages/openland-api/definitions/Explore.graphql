@@ -15,6 +15,7 @@ query AvailableRooms($chatsQuery: String, $channelsQuery: String) {
                         photo
                     }
                     premiumSettings {
+                        id
                         price
                         interval
                     }
@@ -41,6 +42,7 @@ query AvailableRooms($chatsQuery: String, $channelsQuery: String) {
                         photo
                     }
                     premiumSettings {
+                        id
                         price
                         interval
                     }
@@ -65,6 +67,7 @@ query AvailableRooms($chatsQuery: String, $channelsQuery: String) {
                 photo
             }
             premiumSettings {
+                id
                 price
                 interval
             }
@@ -116,6 +119,7 @@ query UserAvailableRooms($first: Int!, $after: String, $query: String) {
                         photo
                     }
                     premiumSettings {
+                        id
                         price
                         interval
                     }
