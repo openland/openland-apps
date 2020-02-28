@@ -33,6 +33,7 @@ import { SettingsAboutFragment } from 'openland-web/fragments/account/SettingsAb
 import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
 
 import { TabRouterContext } from 'openland-unicorn/components/TabLayout';
+import { DiscoverPopularNowFragment } from 'openland-web/fragments/discover/DiscoverPopularNowFragment';
 
 // temporary stub for /mail/ -> not found bug
 const TemporaryStubMail = React.memo(() => {
@@ -93,6 +94,7 @@ routing.addRoute('/discover/', () => TemporaryStubDiscover);
 routing.addRoute('/discover/home', () => DiscoverHomeFragment);
 routing.addRoute('/discover/recommendations', () => RecommendationsFragment);
 routing.addRoute('/discover/groups', () => DiscoverGroupsFragment);
+routing.addRoute('/discover/popular', () => DiscoverPopularNowFragment);
 
 // Settings
 routing.addRoute('/settings/profile', () => SettingsProfileFragment);

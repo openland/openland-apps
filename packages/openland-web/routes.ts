@@ -69,6 +69,8 @@ routes.add('/discover/people', '/unicorn/index');
 routes.add('/discover/people/', '/unicorn/index');
 routes.add('/discover/organizations', '/unicorn/index');
 routes.add('/discover/organizations/', '/unicorn/index');
+routes.add('/discover/popular', '/unicorn/index');
+routes.add('/discover/popular/', '/unicorn/index');
 
 //
 // Onboardinng
