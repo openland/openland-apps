@@ -90,10 +90,17 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
                 />
                 <UInputField field={descriptionField} label="Description" marginBottom={16} />
                 {hasShortname && (
-                    <UInputField
-                        label="Shortname"
-                        field={shortnameField}
-                    />
+                    <>
+                        <UInputField
+                            label="Shortname"
+                            field={shortnameField}
+                        />
+                        {!!form.error && (
+                            <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
+                                {form.error}
+                            </XView>
+                        )}
+                    </>
                 )}
             </XView>
             <XModalFooter>
