@@ -103,7 +103,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     {!!user.about && <View height={10} />}
                     {!!user.shortname && <ZListItem title="Username" text={'@' + user.shortname} tall={true} copy={true} />}
                     {!!user.email && <ZListItem title="Email" text={user.email} linkify={true} tall={true} copy={true} />}
-                    {!!user.phone && <ZListItem title="Phone" text={'tel:' + user.phone.replace(/ /g, '')} tall={true} copy={true} />}
+                    {!!user.phone && <ZListItem title="Phone" text={'tel:' + user.phone} linkify={true} tall={true} copy={true} />}
                     {!!user.website && <ZListItem title="Website" text={user.website} linkify={true} tall={true} copy={true} />}
                     {!!user.location && <ZListItem title="Location" text={user.location} tall={true} copy={true} />}
                     {!!user.instagram && <ZListItem title="Instagram" text={user.instagram} linkify={true} tall={true} copy={true} />}

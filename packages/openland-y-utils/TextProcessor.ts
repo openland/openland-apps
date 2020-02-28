@@ -7,14 +7,17 @@ export interface Span {
     link?: string;
 }
 
+let isTelSymbol = (s: string) => s === '+' || Number.isInteger(parseInt(s, 10));
+
 let linkifyInstance = linkify()
     .add('tel:',
         {
             validate: (text, pos, self) => {
                 let tail = text.slice(pos);
                 let split = tail.split(' ');
+                split = split.filter(str => [...str].every(s => isTelSymbol(s)));
                 if (split.length > 1) {
-                    return split[0].length;
+                    return split.join(' ').length;
                 }
                 return tail.length;
             },
