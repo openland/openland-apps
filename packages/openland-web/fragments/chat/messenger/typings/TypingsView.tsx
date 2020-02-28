@@ -91,7 +91,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
                         break;
 
                     case TypingType.STICKER:
-                        typingActionString = 'picking a sticker';
+                        typingActionString = 'picking an emoji';
                         typingAnimationString = 'sticker';
                         break;
 
@@ -134,7 +134,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
 
                 {typingArr.length === 1 && (
                     <>
-                        { animation }
+                        {animation}
                         <UserLink {...typingArr[0]} />
                         &nbsp;is {typingType}
                     </>
@@ -142,7 +142,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
 
                 {typingArr.length === 2 && (
                     <>
-                        { animation }
+                        {animation}
                         <UserLink {...typingArr[0]} />
                         &nbsp;and&nbsp;
                         <UserLink {...typingArr[1]} />
@@ -152,7 +152,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
 
                 {typingArr.length === 3 && (
                     <>
-                        { animation }
+                        {animation}
                         <UserLink {...typingArr[0]} />
                         ,&nbsp;
                         <UserLink {...typingArr[1]} />
@@ -164,7 +164,7 @@ export const TypingsView = XMemo<TypingsViewProps>(props => {
 
                 {typingArr.length > 3 && (
                     <>
-                        { animation }
+                        {animation}
                         <UserLink {...typingArr[0]} />
                         ,&nbsp;
                         <UserLink {...typingArr[1]} />

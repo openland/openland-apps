@@ -90,7 +90,7 @@ const PrivateChatHeaderContent = XMemo<{ room: RoomTiny_room_PrivateRoom, typing
             case TypingType.TEXT: subtitle = 'typing'; break;
             case TypingType.FILE: subtitle = 'sending a file'; break;
             case TypingType.PHOTO: subtitle = 'sending a photo'; break;
-            case TypingType.STICKER: subtitle = 'picking a sticker'; break;
+            case TypingType.STICKER: subtitle = 'picking an emoji'; break;
             case TypingType.VIDEO: subtitle = 'uploading a video'; break;
             default: subtitle = 'typing'; break;
         }
