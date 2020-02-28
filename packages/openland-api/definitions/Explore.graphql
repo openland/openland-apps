@@ -1,89 +1,55 @@
-query AvailableRooms($chatsQuery: String, $channelsQuery: String) {
-    availableChats: alphaUserAvailableRooms(first: 3, query: $chatsQuery) {
-        edges {
-            node {
-                ... on SharedRoom {
-                    id
-                    kind
-                    title
-                    photo
-                    membersCount
-                    membership
-                    organization {
-                        id
-                        name
-                        photo
-                    }
-                    premiumSettings {
-                        id
-                        price
-                        interval
-                    }
-                    isPremium
-                    premiumPassIsActive
-                }
-            }
-            cursor
-        }
+fragment DiscoverSharedRoom on SharedRoom {
+    id
+    kind
+    title
+    photo
+    membersCount
+    membership
+    organization {
+        id
+        name
+        photo
     }
-    availableChannels: alphaUserAvailableRooms(first: 3, query: $channelsQuery) {
-        edges {
-            node {
-                ... on SharedRoom {
-                    id
-                    kind
-                    title
-                    photo
-                    membersCount
-                    membership
-                    organization {
-                        id
-                        name
-                        photo
-                    }
-                    premiumSettings {
-                        id
-                        price
-                        interval
-                    }
-                    isPremium
-                    premiumPassIsActive
-                }
-            }
-            cursor
+    premiumSettings {
+        id
+        price
+        interval
+    }
+    isPremium
+    premiumPassIsActive
+}
+
+query ExploreRooms {
+    # discoverNewAndGrowing(first: 5, seed: 123) {
+    #     items {
+    #         ...DiscoverSharedRoom
+    #     }
+    #     cursor
+    # }
+    discoverPopularNow(first: 5) {
+        items {
+            ...DiscoverSharedRoom
         }
+        cursor
     }
     suggestedRooms: betaSuggestedRooms {
-        ... on SharedRoom {
-            id
-            kind
-            title
-            photo
-            membersCount
-            membership
-            organization {
-                id
-                name
-                photo
-            }
-            premiumSettings {
-                id
-                price
-                interval
-            }
-            isPremium
-            premiumPassIsActive
-        }
+        ...DiscoverSharedRoom
     }
-    communities: alphaComunityPrefixSearch(first: 3) {
-        edges {
-            node {
-                ...CommunitySearch
-            }
+    discoverTopPremium(first: 5) {
+        items {
+            ...DiscoverSharedRoom
         }
+        cursor
+    }
+    discoverTopFree(first: 5) {
+        items {
+            ...DiscoverSharedRoom
+        }
+        cursor
     }
     isDiscoverDone: betaIsDiscoverDone
 }
+
 query SuggestedRooms {
     suggestedRooms: betaSuggestedRooms {
         ... on SharedRoom {
@@ -106,26 +72,7 @@ query UserAvailableRooms($first: Int!, $after: String, $query: String) {
     alphaUserAvailableRooms(first: $first, after: $after, query: $query) {
         edges {
             node {
-                ... on SharedRoom {
-                    id
-                    kind
-                    title
-                    photo
-                    membersCount
-                    membership
-                    organization {
-                        id
-                        name
-                        photo
-                    }
-                    premiumSettings {
-                        id
-                        price
-                        interval
-                    }
-                    isPremium
-                    premiumPassIsActive
-                }
+                ...DiscoverSharedRoom
             }
             cursor
         }
@@ -206,31 +153,36 @@ query DiscoverState {
         }
     }
 }
+
 query DiscoverPopularNow($first: Int!, $after: String) {
     discoverPopularNow(first: $first, after: $after) {
         items {
-            ...RoomShort
+            ...DiscoverSharedRoom
         }
+        cursor
     }
 }
 query DiscoverNewAndGrowing($first: Int!, $seed: Int!, $after: String) {
     discoverNewAndGrowing(first: $first, seed: $seed, after: $after) {
         items {
-            ...RoomShort
+            ...DiscoverSharedRoom
         }
+        cursor
     }
 }
 query DiscoverTopPremium($first: Int!, $after: String) {
     discoverTopPremium(first: $first, after: $after) {
         items {
-            ...RoomShort
+            ...DiscoverSharedRoom
         }
+        cursor
     }
 }
 query DiscoverTopFree($first: Int!, $after: String) {
     discoverTopFree(first: $first, after: $after) {
         items {
-            ...RoomShort
+            ...DiscoverSharedRoom
         }
+        cursor
     }
 }

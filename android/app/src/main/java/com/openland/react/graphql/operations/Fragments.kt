@@ -1081,6 +1081,30 @@ internal val DialogUpdateFragmentSelector = obj(
             ))
         )
 
+internal val DiscoverSharedRoomSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("kind", "kind", notNull(scalar("String"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("photo", "photo", notNull(scalar("String"))),
+            field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("membership", "membership", notNull(scalar("String"))),
+            field("organization", "organization", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("photo", "photo", scalar("String"))
+                )),
+            field("premiumSettings", "premiumSettings", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("price", "price", notNull(scalar("Int"))),
+                    field("interval", "interval", scalar("String"))
+                )),
+            field("isPremium", "isPremium", notNull(scalar("Boolean"))),
+            field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean")))
+        )
+
 internal val FeedChannelFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),

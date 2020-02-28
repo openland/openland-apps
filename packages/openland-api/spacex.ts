@@ -22,9 +22,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryAccountSettings(opts?: OperationParameters): Promise<Types.AccountSettings> {
         return this.query('AccountSettings', undefined, opts);
     }
-    queryAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: OperationParameters): Promise<Types.AvailableRooms> {
-        return this.query('AvailableRooms', variables, opts);
-    }
     queryChatInit(variables: Types.ChatInitVariables, opts?: OperationParameters): Promise<Types.ChatInit> {
         return this.query('ChatInit', variables, opts);
     }
@@ -78,6 +75,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryExplorePeople(variables: Types.ExplorePeopleVariables, opts?: OperationParameters): Promise<Types.ExplorePeople> {
         return this.query('ExplorePeople', variables, opts);
+    }
+    queryExploreRooms(opts?: OperationParameters): Promise<Types.ExploreRooms> {
+        return this.query('ExploreRooms', undefined, opts);
     }
     queryFeatureFlags(opts?: OperationParameters): Promise<Types.FeatureFlags> {
         return this.query('FeatureFlags', undefined, opts);
@@ -322,9 +322,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchAccountSettings(opts?: OperationParameters): Promise<Types.AccountSettings> {
         return this.refetch('AccountSettings', undefined);
     }
-    refetchAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: OperationParameters): Promise<Types.AvailableRooms> {
-        return this.refetch('AvailableRooms', variables);
-    }
     refetchChatInit(variables: Types.ChatInitVariables, opts?: OperationParameters): Promise<Types.ChatInit> {
         return this.refetch('ChatInit', variables);
     }
@@ -378,6 +375,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchExplorePeople(variables: Types.ExplorePeopleVariables, opts?: OperationParameters): Promise<Types.ExplorePeople> {
         return this.refetch('ExplorePeople', variables);
+    }
+    refetchExploreRooms(opts?: OperationParameters): Promise<Types.ExploreRooms> {
+        return this.refetch('ExploreRooms', undefined);
     }
     refetchFeatureFlags(opts?: OperationParameters): Promise<Types.FeatureFlags> {
         return this.refetch('FeatureFlags', undefined);
@@ -622,9 +622,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateAccountSettings(updater: (data: Types.AccountSettings) => Types.AccountSettings | null): Promise<boolean> {
         return this.updateQuery(updater, 'AccountSettings', undefined);
     }
-    updateAvailableRooms(variables: Types.AvailableRoomsVariables, updater: (data: Types.AvailableRooms) => Types.AvailableRooms | null): Promise<boolean> {
-        return this.updateQuery(updater, 'AvailableRooms', variables);
-    }
     updateChatInit(variables: Types.ChatInitVariables, updater: (data: Types.ChatInit) => Types.ChatInit | null): Promise<boolean> {
         return this.updateQuery(updater, 'ChatInit', variables);
     }
@@ -678,6 +675,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateExplorePeople(variables: Types.ExplorePeopleVariables, updater: (data: Types.ExplorePeople) => Types.ExplorePeople | null): Promise<boolean> {
         return this.updateQuery(updater, 'ExplorePeople', variables);
+    }
+    updateExploreRooms(updater: (data: Types.ExploreRooms) => Types.ExploreRooms | null): Promise<boolean> {
+        return this.updateQuery(updater, 'ExploreRooms', undefined);
     }
     updateFeatureFlags(updater: (data: Types.FeatureFlags) => Types.FeatureFlags | null): Promise<boolean> {
         return this.updateQuery(updater, 'FeatureFlags', undefined);
@@ -932,11 +932,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useAccountSettings(opts?: SpaceQueryWatchParameters): Types.AccountSettings | null {
         return this.useQuery('AccountSettings', undefined, opts);
     }
-    useAvailableRooms(variables: Types.AvailableRoomsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.AvailableRooms | null;
-    useAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: SpaceQueryWatchParameters): Types.AvailableRooms;
-    useAvailableRooms(variables: Types.AvailableRoomsVariables, opts?: SpaceQueryWatchParameters): Types.AvailableRooms | null {
-        return this.useQuery('AvailableRooms', variables, opts);
-    }
     useChatInit(variables: Types.ChatInitVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ChatInit | null;
     useChatInit(variables: Types.ChatInitVariables, opts?: SpaceQueryWatchParameters): Types.ChatInit;
     useChatInit(variables: Types.ChatInitVariables, opts?: SpaceQueryWatchParameters): Types.ChatInit | null {
@@ -1026,6 +1021,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useExplorePeople(variables: Types.ExplorePeopleVariables, opts?: SpaceQueryWatchParameters): Types.ExplorePeople;
     useExplorePeople(variables: Types.ExplorePeopleVariables, opts?: SpaceQueryWatchParameters): Types.ExplorePeople | null {
         return this.useQuery('ExplorePeople', variables, opts);
+    }
+    useExploreRooms(opts: SpaceQueryWatchParameters & { suspense: false }): Types.ExploreRooms | null;
+    useExploreRooms(opts?: SpaceQueryWatchParameters): Types.ExploreRooms;
+    useExploreRooms(opts?: SpaceQueryWatchParameters): Types.ExploreRooms | null {
+        return this.useQuery('ExploreRooms', undefined, opts);
     }
     useFeatureFlags(opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeatureFlags | null;
     useFeatureFlags(opts?: SpaceQueryWatchParameters): Types.FeatureFlags;

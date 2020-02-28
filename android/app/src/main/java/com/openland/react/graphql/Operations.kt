@@ -12,7 +12,6 @@ object Operations {
         if (name == "AccountAppInviteInfo") return AccountAppInviteInfo
         if (name == "AccountInviteInfo") return AccountInviteInfo
         if (name == "AccountSettings") return AccountSettings
-        if (name == "AvailableRooms") return AvailableRooms
         if (name == "ChatInit") return ChatInit
         if (name == "ChatInitFromUnread") return ChatInitFromUnread
         if (name == "ChatJoin") return ChatJoin
@@ -31,6 +30,7 @@ object Operations {
         if (name == "DiscoverTopPremium") return DiscoverTopPremium
         if (name == "ExploreCommunity") return ExploreCommunity
         if (name == "ExplorePeople") return ExplorePeople
+        if (name == "ExploreRooms") return ExploreRooms
         if (name == "FeatureFlags") return FeatureFlags
         if (name == "FeedChannel") return FeedChannel
         if (name == "FeedChannelContent") return FeedChannelContent

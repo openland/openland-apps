@@ -57,34 +57,68 @@ const FollowButton = React.memo((props: FollowButtonProps) => {
     );
 });
 
-const GroupListComponent = React.memo<PageProps>((props) => {
-    let initial = props.router.params.initial as Types.AvailableRooms_availableChats_edges_node[];
-    let { query } = props.router.params;
-
-    let [rooms, setRooms] = React.useState(initial);
+type ListingType = 'new' | 'popular' | 'top-free' | 'top-premium';
+interface UseFetchMoreRoomsArgs {
+    first: number;
+    initialAfter: string;
+    type: ListingType;
+    initialRooms: Types.DiscoverSharedRoom[];
+}
+type UseFetchMoreRoomsReturned = [Types.DiscoverSharedRoom[], boolean, () => void];
+const useFetchMoreRooms = ({first, type, initialAfter, initialRooms}: UseFetchMoreRoomsArgs): UseFetchMoreRoomsReturned => {
+    const [rooms, setRooms] = React.useState(initialRooms);
     const [loading, setLoading] = React.useState(false);
-    const [after, setAfter] = React.useState(props.router.params.after as string);
-    let handleLoadMore = React.useCallback(async () => {
+    const [after, setAfter] = React.useState<string | null>(initialAfter);
+
+    const loadMore = async () => {
         if (!loading && !!after) {
             setLoading(true);
-            let res = (await getClient().queryUserAvailableRooms({ after, first: 10, query }, { fetchPolicy: 'network-only' })).alphaUserAvailableRooms;
-            let newAfter = res.edges[res.edges.length - 1].cursor;
-            if (res.pageInfo.hasNextPage) {
-                setAfter(newAfter);
-            } else {
-                setAfter('');
+            let items: Types.DiscoverSharedRoom[] = [], cursor: string | null = null;
+            if (type === 'new') {
+                let res = (await getClient().queryDiscoverNewAndGrowing({ after, seed: 123, first }, { fetchPolicy: 'network-only' })).discoverNewAndGrowing;
+                items = res.items;
+                cursor = res.cursor;
+            } else if (type === 'popular') {
+                let res = (await getClient().queryDiscoverPopularNow({ after, first }, { fetchPolicy: 'network-only' })).discoverPopularNow;
+                items = res.items;
+                cursor = res.cursor;
+            } else if (type === 'top-free') {
+                let res = (await getClient().queryDiscoverTopFree({ after, first }, { fetchPolicy: 'network-only' })).discoverTopFree;
+                items = res.items;
+                cursor = res.cursor;
+            } else if (type === 'top-premium') {
+                let res = (await getClient().queryDiscoverTopPremium({ after, first }, { fetchPolicy: 'network-only' })).discoverTopPremium;
+                items = res.items;
+                cursor = res.cursor;
             }
-            setRooms([...rooms, ...res.edges.map(x => x.node)]);
+            
+            if (items.length < first) {
+                setAfter('');
+            } else {
+                setAfter(cursor);
+            }
+
+            setRooms([...rooms, ...items]);
             setLoading(false);
         }
+    };
 
-    }, [rooms, loading]);
-    let action = async (room: Types.AvailableRooms_availableChats_edges_node) => {
-        if (room.isPremium && !room.premiumPassIsActive) {
+    return [rooms, loading, loadMore];
+};
+
+const GroupListComponent = React.memo<PageProps>((props) => {
+    let initialRooms = props.router.params.initialRooms as Types.DiscoverSharedRoom[];
+    let type = props.router.params.type as ListingType;
+    let initialAfter = props.router.params.after as string;
+
+    const [rooms, loading, handleLoadMore] = useFetchMoreRooms({first: 10, type, initialAfter, initialRooms });
+
+    let action = async (room: Types.DiscoverSharedRoom) => {
+        if (room.isPremium && !room.premiumPassIsActive && room.premiumSettings) {
             joinPaidGroup({
                 id: room.id,
                 title: room.title,
-                premiumSettings: room.premiumSettings!,
+                premiumSettings: room.premiumSettings,
                 router: props.router,
                 client: getClient(),
             });

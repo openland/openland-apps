@@ -21,38 +21,88 @@ import { DiscoverCollectionsList } from './components/discover/DiscoverCollectio
 
 export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) => {
     const theme = useTheme();
-    const chatsQuery = JSON.stringify({ isChannel: false });
-    const channelsQuery = JSON.stringify({ isChannel: true });
-    let rooms = getClient().useAvailableRooms({ chatsQuery, channelsQuery }, { fetchPolicy: 'network-only' });
+    let rooms = getClient().useExploreRooms({ fetchPolicy: 'network-only' });
 
-    let chatsEdges = (rooms.availableChats.edges || []);
-    let availableChats = chatsEdges.map(x => x.node);
-    let chatsCursor = (rooms.availableChats.edges || []).map(x => x.cursor)[chatsEdges.length - 1];
-    let channelsEdges = (rooms.availableChannels.edges || []);
-    let availableChannels = channelsEdges.map(x => x.node);
-    let channelsCursor = channelsEdges.map(x => x.cursor)[channelsEdges.length - 1];
     let suggestedRooms = rooms.suggestedRooms || [];
-    let communities = rooms.communities || [];
-
-    // TODO: remove when api is ready
-    let isNewDiscoverReady = false;
+    // let newRooms = rooms.discoverNewAndGrowing.items || [];
+    let popularRooms = rooms.discoverPopularNow.items || [];
+    let topFreeRooms = rooms.discoverTopFree.items || [];
+    let topPremiumRooms = rooms.discoverTopPremium.items || [];
 
     return (
         <>
-            {isNewDiscoverReady && <EditorsChoiceList />}
-            <ZListGroup
-                header="Top groups"
+            <EditorsChoiceList />
+            {/* <ZListGroup
+                header="New and growing"
                 headerMarginTop={0}
-                actionRight={{
+                actionRight={newRooms.length === 5 ? {
                     title: 'See all', onPress: () => props.router.push('GroupList', {
-                        after: chatsCursor,
-                        query: chatsQuery,
-                        initial: availableChats,
-                        title: 'Top groups',
+                        initialRooms: newRooms,
+                        type: 'new',
+                        after: rooms.discoverNewAndGrowing.cursor,
+                        title: 'New and growing',
                     })
-                }}
+                } : undefined}
             >
-                {availableChats.map(v => (
+                {newRooms.map(v => (
+                    <ZListItem
+                        key={v.id}
+                        text={v.title}
+                        leftAvatar={{
+                            photo: v.photo,
+                            id: v.id,
+                            title: v.title,
+                        }}
+                        subTitle={v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}
+                        path="Conversation"
+                        pathParams={{ flexibleId: v.id }}
+                    />
+                ))}
+            </ZListGroup> */}
+
+            <ZListGroup
+                header="Popular now"
+                headerMarginTop={0}
+                actionRight={popularRooms.length === 5 ? {
+                    title: 'See all', onPress: () => props.router.push('GroupList', {
+                        initialRooms: popularRooms,
+                        type: 'popular',
+                        after: rooms.discoverPopularNow.cursor,
+                        title: 'Popular now',
+                    })
+                } : undefined}
+            >
+                {popularRooms.map(v => (
+                    <ZListItem
+                        key={v.id}
+                        text={v.title}
+                        leftAvatar={{
+                            photo: v.photo,
+                            id: v.id,
+                            title: v.title,
+                        }}
+                        subTitle={v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}
+                        path="Conversation"
+                        pathParams={{ flexibleId: v.id }}
+                    />
+                ))}
+            </ZListGroup>
+
+            <DiscoverCollectionsList />
+
+            <ZListGroup
+                header="Top premium"
+                headerMarginTop={0}
+                actionRight={topPremiumRooms.length === 5 ? {
+                    title: 'See all', onPress: () => props.router.push('GroupList', {
+                        initialRooms: topPremiumRooms,
+                        type: 'top-premium',
+                        after: rooms.discoverTopPremium.cursor,
+                        title: 'Top premium',
+                    })
+                } : undefined}
+            >
+                {topPremiumRooms.map(v => (
                     <ZListItem
                         key={v.id}
                         text={v.title}
@@ -69,17 +119,18 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
             </ZListGroup>
 
             <ZListGroup
-                header="Top channels"
-                actionRight={{
+                header="Top free"
+                headerMarginTop={0}
+                actionRight={topFreeRooms.length === 5 ? {
                     title: 'See all', onPress: () => props.router.push('GroupList', {
-                        after: channelsCursor,
-                        query: channelsQuery,
-                        initial: availableChannels,
-                        title: 'Top channels',
+                        initialRooms: topFreeRooms,
+                        type: 'top-free',
+                        after: rooms.discoverTopFree.cursor,
+                        title: 'Top free',
                     })
-                }}
+                } : undefined}
             >
-                {availableChannels.map(v => (
+                {topFreeRooms.map(v => (
                     <ZListItem
                         key={v.id}
                         text={v.title}
@@ -91,33 +142,6 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                         subTitle={v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}
                         path="Conversation"
                         pathParams={{ flexibleId: v.id }}
-                    />
-                ))}
-            </ZListGroup>
-
-            {isNewDiscoverReady && <DiscoverCollectionsList />}
-
-            <ZListGroup
-                header="Top communities"
-                actionRight={{
-                    title: 'See all', onPress: () => props.router.push('CommunityList', {
-                        initial: communities.edges.map(e => e.node),
-                        title: 'Communities',
-                    })
-                }}
-            >
-                {communities.edges.map(e => e.node).map(v => (
-                    <ZListItem
-                        key={v.id}
-                        text={v.name}
-                        leftAvatar={{
-                            photo: v.photo,
-                            id: v.id,
-                            title: v.name,
-                        }}
-                        subTitle={<>{v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}<Text style={{ opacity: 0.5 }}> ∙</Text> {v.roomsCount + (v.roomsCount === 1 ? ' chat' : ' chats')}</>}
-                        path="ProfileOrganization"
-                        pathParams={{ id: v.id }}
                     />
                 ))}
             </ZListGroup>
@@ -183,7 +207,7 @@ const ExplorePage = (props: PageProps) => {
                     />
                 )}
             >
-                <SScrollView>
+                <SScrollView marginTop={-16}>
                     <SDeferred>
                         <RoomsList router={props.router} isDiscoverDone={discoverDone.betaIsDiscoverDone} />
                     </SDeferred>

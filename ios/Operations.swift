@@ -1075,6 +1075,30 @@ private let DialogUpdateFragmentSelector = obj(
             ))
         )
 
+private let DiscoverSharedRoomSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("kind", "kind", notNull(scalar("String"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("photo", "photo", notNull(scalar("String"))),
+            field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("membership", "membership", notNull(scalar("String"))),
+            field("organization", "organization", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("photo", "photo", scalar("String"))
+                )),
+            field("premiumSettings", "premiumSettings", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("price", "price", notNull(scalar("Int"))),
+                    field("interval", "interval", scalar("String"))
+                )),
+            field("isPremium", "isPremium", notNull(scalar("Boolean"))),
+            field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean")))
+        )
+
 private let FeedChannelFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -2301,111 +2325,6 @@ private let AccountSettingsSelector = obj(
                     fragment("Organization", OrganizationShortSelector)
                 )))))
         )
-private let AvailableRoomsSelector = obj(
-            field("alphaUserAvailableRooms", "availableChats", arguments(fieldValue("first", intValue(3)), fieldValue("query", refValue("chatsQuery"))), notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("edges", "edges", notNull(list(notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("node", "node", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    inline("SharedRoom", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("kind", "kind", notNull(scalar("String"))),
-                                        field("title", "title", notNull(scalar("String"))),
-                                        field("photo", "photo", notNull(scalar("String"))),
-                                        field("membersCount", "membersCount", notNull(scalar("Int"))),
-                                        field("membership", "membership", notNull(scalar("String"))),
-                                        field("organization", "organization", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("id", "id", notNull(scalar("ID"))),
-                                                field("name", "name", notNull(scalar("String"))),
-                                                field("photo", "photo", scalar("String"))
-                                            )),
-                                        field("premiumSettings", "premiumSettings", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("id", "id", notNull(scalar("ID"))),
-                                                field("price", "price", notNull(scalar("Int"))),
-                                                field("interval", "interval", scalar("String"))
-                                            )),
-                                        field("isPremium", "isPremium", notNull(scalar("Boolean"))),
-                                        field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean")))
-                                    ))
-                                ))),
-                            field("cursor", "cursor", notNull(scalar("String")))
-                        )))))
-                ))),
-            field("alphaUserAvailableRooms", "availableChannels", arguments(fieldValue("first", intValue(3)), fieldValue("query", refValue("channelsQuery"))), notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("edges", "edges", notNull(list(notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("node", "node", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    inline("SharedRoom", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("kind", "kind", notNull(scalar("String"))),
-                                        field("title", "title", notNull(scalar("String"))),
-                                        field("photo", "photo", notNull(scalar("String"))),
-                                        field("membersCount", "membersCount", notNull(scalar("Int"))),
-                                        field("membership", "membership", notNull(scalar("String"))),
-                                        field("organization", "organization", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("id", "id", notNull(scalar("ID"))),
-                                                field("name", "name", notNull(scalar("String"))),
-                                                field("photo", "photo", scalar("String"))
-                                            )),
-                                        field("premiumSettings", "premiumSettings", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("id", "id", notNull(scalar("ID"))),
-                                                field("price", "price", notNull(scalar("Int"))),
-                                                field("interval", "interval", scalar("String"))
-                                            )),
-                                        field("isPremium", "isPremium", notNull(scalar("Boolean"))),
-                                        field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean")))
-                                    ))
-                                ))),
-                            field("cursor", "cursor", notNull(scalar("String")))
-                        )))))
-                ))),
-            field("betaSuggestedRooms", "suggestedRooms", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    inline("SharedRoom", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("kind", "kind", notNull(scalar("String"))),
-                        field("title", "title", notNull(scalar("String"))),
-                        field("photo", "photo", notNull(scalar("String"))),
-                        field("membersCount", "membersCount", notNull(scalar("Int"))),
-                        field("membership", "membership", notNull(scalar("String"))),
-                        field("organization", "organization", obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("id", "id", notNull(scalar("ID"))),
-                                field("name", "name", notNull(scalar("String"))),
-                                field("photo", "photo", scalar("String"))
-                            )),
-                        field("premiumSettings", "premiumSettings", obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("id", "id", notNull(scalar("ID"))),
-                                field("price", "price", notNull(scalar("Int"))),
-                                field("interval", "interval", scalar("String"))
-                            )),
-                        field("isPremium", "isPremium", notNull(scalar("Boolean"))),
-                        field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean")))
-                    ))
-                ))))),
-            field("alphaComunityPrefixSearch", "communities", arguments(fieldValue("first", intValue(3))), notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("edges", "edges", notNull(list(notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("node", "node", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    fragment("Organization", CommunitySearchSelector)
-                                )))
-                        )))))
-                ))),
-            field("betaIsDiscoverDone", "isDiscoverDone", notNull(scalar("Boolean")))
-        )
 private let ChatInitSelector = obj(
             field("messages", "messages", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("first", refValue("first")), fieldValue("before", refValue("before"))), notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -2603,8 +2522,9 @@ private let DiscoverNewAndGrowingSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("Room", RoomShortSelector)
-                        )))))
+                            fragment("SharedRoom", DiscoverSharedRoomSelector)
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
                 )))
         )
 private let DiscoverNextPageSelector = obj(
@@ -2632,8 +2552,9 @@ private let DiscoverPopularNowSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("Room", RoomShortSelector)
-                        )))))
+                            fragment("SharedRoom", DiscoverSharedRoomSelector)
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
                 )))
         )
 private let DiscoverStateSelector = obj(
@@ -2650,8 +2571,9 @@ private let DiscoverTopFreeSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("Room", RoomShortSelector)
-                        )))))
+                            fragment("SharedRoom", DiscoverSharedRoomSelector)
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
                 )))
         )
 private let DiscoverTopPremiumSelector = obj(
@@ -2659,8 +2581,9 @@ private let DiscoverTopPremiumSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("Room", RoomShortSelector)
-                        )))))
+                            fragment("SharedRoom", DiscoverSharedRoomSelector)
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
                 )))
         )
 private let ExploreCommunitySelector = obj(
@@ -2707,6 +2630,37 @@ private let ExplorePeopleSelector = obj(
                             field("openEnded", "openEnded", notNull(scalar("Boolean")))
                         )))
                 )))
+        )
+private let ExploreRoomsSelector = obj(
+            field("discoverPopularNow", "discoverPopularNow", arguments(fieldValue("first", intValue(5))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("SharedRoom", DiscoverSharedRoomSelector)
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                ))),
+            field("betaSuggestedRooms", "suggestedRooms", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("SharedRoom", DiscoverSharedRoomSelector)
+                ))))),
+            field("discoverTopPremium", "discoverTopPremium", arguments(fieldValue("first", intValue(5))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("SharedRoom", DiscoverSharedRoomSelector)
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                ))),
+            field("discoverTopFree", "discoverTopFree", arguments(fieldValue("first", intValue(5))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("SharedRoom", DiscoverSharedRoomSelector)
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                ))),
+            field("betaIsDiscoverDone", "isDiscoverDone", notNull(scalar("Boolean")))
         )
 private let FeatureFlagsSelector = obj(
             field("featureFlags", "featureFlags", notNull(list(notNull(obj(
@@ -3952,29 +3906,7 @@ private let UserAvailableRoomsSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("node", "node", notNull(obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),
-                                    inline("SharedRoom", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("kind", "kind", notNull(scalar("String"))),
-                                        field("title", "title", notNull(scalar("String"))),
-                                        field("photo", "photo", notNull(scalar("String"))),
-                                        field("membersCount", "membersCount", notNull(scalar("Int"))),
-                                        field("membership", "membership", notNull(scalar("String"))),
-                                        field("organization", "organization", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("id", "id", notNull(scalar("ID"))),
-                                                field("name", "name", notNull(scalar("String"))),
-                                                field("photo", "photo", scalar("String"))
-                                            )),
-                                        field("premiumSettings", "premiumSettings", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("id", "id", notNull(scalar("ID"))),
-                                                field("price", "price", notNull(scalar("Int"))),
-                                                field("interval", "interval", scalar("String"))
-                                            )),
-                                        field("isPremium", "isPremium", notNull(scalar("Boolean"))),
-                                        field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean")))
-                                    ))
+                                    fragment("SharedRoom", DiscoverSharedRoomSelector)
                                 ))),
                             field("cursor", "cursor", notNull(scalar("String")))
                         ))))),
@@ -5031,12 +4963,6 @@ class Operations {
         "query AccountSettings{me:me{__typename ...UserShort audienceSize}myProfile{__typename id authEmail}organizations:myOrganizations{__typename ...OrganizationShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
         AccountSettingsSelector
     )
-    let AvailableRooms = OperationDefinition(
-        "AvailableRooms",
-        .query, 
-        "query AvailableRooms($chatsQuery:String,$channelsQuery:String){availableChats:alphaUserAvailableRooms(first:3,query:$chatsQuery){__typename edges{__typename node{__typename ... on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}}cursor}}availableChannels:alphaUserAvailableRooms(first:3,query:$channelsQuery){__typename edges{__typename node{__typename ... on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}}cursor}}suggestedRooms:betaSuggestedRooms{__typename ... on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}}communities:alphaComunityPrefixSearch(first:3){__typename edges{__typename node{__typename ...CommunitySearch}}}isDiscoverDone:betaIsDiscoverDone}fragment CommunitySearch on Organization{__typename id superAccountId name photo isMine about status featured:alphaFeatured membersCount roomsCount:betaPublicRoomsCount}",
-        AvailableRoomsSelector
-    )
     let ChatInit = OperationDefinition(
         "ChatInit",
         .query, 
@@ -5100,7 +5026,7 @@ class Operations {
     let DiscoverNewAndGrowing = OperationDefinition(
         "DiscoverNewAndGrowing",
         .query, 
-        "query DiscoverNewAndGrowing($first:Int!,$seed:Int!,$after:String){discoverNewAndGrowing(first:$first,seed:$seed,after:$after){__typename items{__typename ...RoomShort}}}fragment RoomShort on Room{__typename ... on PrivateRoom{__typename id user{__typename ...UserShort}settings{__typename id mute}pinnedMessage{__typename ...FullMessage}myBadge{__typename ...UserBadge}}... on SharedRoom{__typename id kind isChannel isPremium title photo membership role canEdit canSendMessage membersCount pinnedMessage{__typename ...FullMessage}matchmaking{__typename ...MatchmakingRoomFragment}organization{__typename ...OrganizationShort}settings{__typename id mute}myBadge{__typename ...UserBadge}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment FullMessage on ModernMessage{__typename id date sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}edited commentsCount attachments{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}socialImage{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id title style url}}fallback}}quotedMessages{__typename ...QuotedMessage}reactions{__typename user{__typename ...UserShort}reaction}}spans{__typename ...SpanFragment}... on StickerMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}date commentsCount sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}quotedMessages{__typename ...QuotedMessage}reactions{__typename user{__typename ...UserShort}reaction}sticker{__typename ...StickerFragment}}... on ServiceMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}serviceMetadata{__typename ... on InviteServiceMetadata{__typename users{__typename ...UserTiny}invitedBy{__typename ...UserTiny}}... on KickServiceMetadata{__typename user{__typename ...UserTiny}kickedBy{__typename ...UserTiny}}... on TitleChangeServiceMetadata{__typename title}... on PhotoChangeServiceMetadata{__typename photo}... on PostRespondServiceMetadata{__typename respondType}}}}fragment UserBadge on UserBadge{__typename id name verified}fragment QuotedMessage on ModernMessage{__typename id date message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}}}spans{__typename ...SpanFragment}... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}commentsCount edited attachments{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}keyboard{__typename buttons{__typename id title style url}}imageFallback{__typename photo text}fallback}}}... on StickerMessage{__typename id date overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}}}reactions{__typename user{__typename ...UserShort}reaction}sticker{__typename ... on ImageSticker{__typename id pack{__typename ... on StickerPack{__typename id title}}image{__typename ... on ImageRef{__typename uuid}}}}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}fragment UserTiny on User{__typename id isYou name firstName lastName photo shortname primaryOrganization{__typename ...OrganizationShort}}fragment MatchmakingRoomFragment on MatchmakingRoom{__typename enabled questions{__typename ... on TextMatchmakingQuestion{__typename id title subtitle}... on MultiselectMatchmakingQuestion{__typename id title subtitle tags}}myProfile{__typename ...MatchmakingProfileFragment}profiles{__typename ...MatchmakingProfileFragment}}fragment MatchmakingProfileFragment on MatchmakingProfile{__typename chatCreated user{__typename id isYou name photo isBot primaryOrganization{__typename id name}}answers{__typename ... on TextMatchmakingAnswer{__typename question{__typename id title subtitle}answer}... on MultiselectMatchmakingAnswer{__typename question{__typename id title subtitle}tags}}}",
+        "query DiscoverNewAndGrowing($first:Int!,$seed:Int!,$after:String){discoverNewAndGrowing(first:$first,seed:$seed,after:$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         DiscoverNewAndGrowingSelector
     )
     let DiscoverNextPage = OperationDefinition(
@@ -5112,7 +5038,7 @@ class Operations {
     let DiscoverPopularNow = OperationDefinition(
         "DiscoverPopularNow",
         .query, 
-        "query DiscoverPopularNow($first:Int!,$after:String){discoverPopularNow(first:$first,after:$after){__typename items{__typename ...RoomShort}}}fragment RoomShort on Room{__typename ... on PrivateRoom{__typename id user{__typename ...UserShort}settings{__typename id mute}pinnedMessage{__typename ...FullMessage}myBadge{__typename ...UserBadge}}... on SharedRoom{__typename id kind isChannel isPremium title photo membership role canEdit canSendMessage membersCount pinnedMessage{__typename ...FullMessage}matchmaking{__typename ...MatchmakingRoomFragment}organization{__typename ...OrganizationShort}settings{__typename id mute}myBadge{__typename ...UserBadge}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment FullMessage on ModernMessage{__typename id date sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}edited commentsCount attachments{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}socialImage{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id title style url}}fallback}}quotedMessages{__typename ...QuotedMessage}reactions{__typename user{__typename ...UserShort}reaction}}spans{__typename ...SpanFragment}... on StickerMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}date commentsCount sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}quotedMessages{__typename ...QuotedMessage}reactions{__typename user{__typename ...UserShort}reaction}sticker{__typename ...StickerFragment}}... on ServiceMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}serviceMetadata{__typename ... on InviteServiceMetadata{__typename users{__typename ...UserTiny}invitedBy{__typename ...UserTiny}}... on KickServiceMetadata{__typename user{__typename ...UserTiny}kickedBy{__typename ...UserTiny}}... on TitleChangeServiceMetadata{__typename title}... on PhotoChangeServiceMetadata{__typename photo}... on PostRespondServiceMetadata{__typename respondType}}}}fragment UserBadge on UserBadge{__typename id name verified}fragment QuotedMessage on ModernMessage{__typename id date message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}}}spans{__typename ...SpanFragment}... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}commentsCount edited attachments{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}keyboard{__typename buttons{__typename id title style url}}imageFallback{__typename photo text}fallback}}}... on StickerMessage{__typename id date overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}}}reactions{__typename user{__typename ...UserShort}reaction}sticker{__typename ... on ImageSticker{__typename id pack{__typename ... on StickerPack{__typename id title}}image{__typename ... on ImageRef{__typename uuid}}}}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}fragment UserTiny on User{__typename id isYou name firstName lastName photo shortname primaryOrganization{__typename ...OrganizationShort}}fragment MatchmakingRoomFragment on MatchmakingRoom{__typename enabled questions{__typename ... on TextMatchmakingQuestion{__typename id title subtitle}... on MultiselectMatchmakingQuestion{__typename id title subtitle tags}}myProfile{__typename ...MatchmakingProfileFragment}profiles{__typename ...MatchmakingProfileFragment}}fragment MatchmakingProfileFragment on MatchmakingProfile{__typename chatCreated user{__typename id isYou name photo isBot primaryOrganization{__typename id name}}answers{__typename ... on TextMatchmakingAnswer{__typename question{__typename id title subtitle}answer}... on MultiselectMatchmakingAnswer{__typename question{__typename id title subtitle}tags}}}",
+        "query DiscoverPopularNow($first:Int!,$after:String){discoverPopularNow(first:$first,after:$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         DiscoverPopularNowSelector
     )
     let DiscoverState = OperationDefinition(
@@ -5124,13 +5050,13 @@ class Operations {
     let DiscoverTopFree = OperationDefinition(
         "DiscoverTopFree",
         .query, 
-        "query DiscoverTopFree($first:Int!,$after:String){discoverTopFree(first:$first,after:$after){__typename items{__typename ...RoomShort}}}fragment RoomShort on Room{__typename ... on PrivateRoom{__typename id user{__typename ...UserShort}settings{__typename id mute}pinnedMessage{__typename ...FullMessage}myBadge{__typename ...UserBadge}}... on SharedRoom{__typename id kind isChannel isPremium title photo membership role canEdit canSendMessage membersCount pinnedMessage{__typename ...FullMessage}matchmaking{__typename ...MatchmakingRoomFragment}organization{__typename ...OrganizationShort}settings{__typename id mute}myBadge{__typename ...UserBadge}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment FullMessage on ModernMessage{__typename id date sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}edited commentsCount attachments{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}socialImage{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id title style url}}fallback}}quotedMessages{__typename ...QuotedMessage}reactions{__typename user{__typename ...UserShort}reaction}}spans{__typename ...SpanFragment}... on StickerMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}date commentsCount sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}quotedMessages{__typename ...QuotedMessage}reactions{__typename user{__typename ...UserShort}reaction}sticker{__typename ...StickerFragment}}... on ServiceMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}serviceMetadata{__typename ... on InviteServiceMetadata{__typename users{__typename ...UserTiny}invitedBy{__typename ...UserTiny}}... on KickServiceMetadata{__typename user{__typename ...UserTiny}kickedBy{__typename ...UserTiny}}... on TitleChangeServiceMetadata{__typename title}... on PhotoChangeServiceMetadata{__typename photo}... on PostRespondServiceMetadata{__typename respondType}}}}fragment UserBadge on UserBadge{__typename id name verified}fragment QuotedMessage on ModernMessage{__typename id date message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}}}spans{__typename ...SpanFragment}... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}commentsCount edited attachments{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}keyboard{__typename buttons{__typename id title style url}}imageFallback{__typename photo text}fallback}}}... on StickerMessage{__typename id date overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}}}reactions{__typename user{__typename ...UserShort}reaction}sticker{__typename ... on ImageSticker{__typename id pack{__typename ... on StickerPack{__typename id title}}image{__typename ... on ImageRef{__typename uuid}}}}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}fragment UserTiny on User{__typename id isYou name firstName lastName photo shortname primaryOrganization{__typename ...OrganizationShort}}fragment MatchmakingRoomFragment on MatchmakingRoom{__typename enabled questions{__typename ... on TextMatchmakingQuestion{__typename id title subtitle}... on MultiselectMatchmakingQuestion{__typename id title subtitle tags}}myProfile{__typename ...MatchmakingProfileFragment}profiles{__typename ...MatchmakingProfileFragment}}fragment MatchmakingProfileFragment on MatchmakingProfile{__typename chatCreated user{__typename id isYou name photo isBot primaryOrganization{__typename id name}}answers{__typename ... on TextMatchmakingAnswer{__typename question{__typename id title subtitle}answer}... on MultiselectMatchmakingAnswer{__typename question{__typename id title subtitle}tags}}}",
+        "query DiscoverTopFree($first:Int!,$after:String){discoverTopFree(first:$first,after:$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         DiscoverTopFreeSelector
     )
     let DiscoverTopPremium = OperationDefinition(
         "DiscoverTopPremium",
         .query, 
-        "query DiscoverTopPremium($first:Int!,$after:String){discoverTopPremium(first:$first,after:$after){__typename items{__typename ...RoomShort}}}fragment RoomShort on Room{__typename ... on PrivateRoom{__typename id user{__typename ...UserShort}settings{__typename id mute}pinnedMessage{__typename ...FullMessage}myBadge{__typename ...UserBadge}}... on SharedRoom{__typename id kind isChannel isPremium title photo membership role canEdit canSendMessage membersCount pinnedMessage{__typename ...FullMessage}matchmaking{__typename ...MatchmakingRoomFragment}organization{__typename ...OrganizationShort}settings{__typename id mute}myBadge{__typename ...UserBadge}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment FullMessage on ModernMessage{__typename id date sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}edited commentsCount attachments{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}socialImage{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id title style url}}fallback}}quotedMessages{__typename ...QuotedMessage}reactions{__typename user{__typename ...UserShort}reaction}}spans{__typename ...SpanFragment}... on StickerMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}date commentsCount sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}quotedMessages{__typename ...QuotedMessage}reactions{__typename user{__typename ...UserShort}reaction}sticker{__typename ...StickerFragment}}... on ServiceMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}serviceMetadata{__typename ... on InviteServiceMetadata{__typename users{__typename ...UserTiny}invitedBy{__typename ...UserTiny}}... on KickServiceMetadata{__typename user{__typename ...UserTiny}kickedBy{__typename ...UserTiny}}... on TitleChangeServiceMetadata{__typename title}... on PhotoChangeServiceMetadata{__typename photo}... on PostRespondServiceMetadata{__typename respondType}}}}fragment UserBadge on UserBadge{__typename id name verified}fragment QuotedMessage on ModernMessage{__typename id date message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}}}spans{__typename ...SpanFragment}... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}commentsCount edited attachments{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}keyboard{__typename buttons{__typename id title style url}}imageFallback{__typename photo text}fallback}}}... on StickerMessage{__typename id date overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}}}reactions{__typename user{__typename ...UserShort}reaction}sticker{__typename ... on ImageSticker{__typename id pack{__typename ... on StickerPack{__typename id title}}image{__typename ... on ImageRef{__typename uuid}}}}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}fragment UserTiny on User{__typename id isYou name firstName lastName photo shortname primaryOrganization{__typename ...OrganizationShort}}fragment MatchmakingRoomFragment on MatchmakingRoom{__typename enabled questions{__typename ... on TextMatchmakingQuestion{__typename id title subtitle}... on MultiselectMatchmakingQuestion{__typename id title subtitle tags}}myProfile{__typename ...MatchmakingProfileFragment}profiles{__typename ...MatchmakingProfileFragment}}fragment MatchmakingProfileFragment on MatchmakingProfile{__typename chatCreated user{__typename id isYou name photo isBot primaryOrganization{__typename id name}}answers{__typename ... on TextMatchmakingAnswer{__typename question{__typename id title subtitle}answer}... on MultiselectMatchmakingAnswer{__typename question{__typename id title subtitle}tags}}}",
+        "query DiscoverTopPremium($first:Int!,$after:String){discoverTopPremium(first:$first,after:$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         DiscoverTopPremiumSelector
     )
     let ExploreCommunity = OperationDefinition(
@@ -5144,6 +5070,12 @@ class Operations {
         .query, 
         "query ExplorePeople($query:String,$sort:String,$page:Int,$after:String){items:userSearch(query:$query,sort:$sort,page:$page,first:25,after:$after){__typename edges{__typename node{__typename ...UserShort isYou}cursor}pageInfo{__typename hasNextPage hasPreviousPage itemsCount currentPage pagesCount openEnded}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
         ExplorePeopleSelector
+    )
+    let ExploreRooms = OperationDefinition(
+        "ExploreRooms",
+        .query, 
+        "query ExploreRooms{discoverPopularNow(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
+        ExploreRoomsSelector
     )
     let FeatureFlags = OperationDefinition(
         "FeatureFlags",
@@ -5580,7 +5512,7 @@ class Operations {
     let UserAvailableRooms = OperationDefinition(
         "UserAvailableRooms",
         .query, 
-        "query UserAvailableRooms($first:Int!,$after:String,$query:String){alphaUserAvailableRooms(first:$first,after:$after,query:$query){__typename edges{__typename node{__typename ... on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}}cursor}pageInfo{__typename hasNextPage}}}",
+        "query UserAvailableRooms($first:Int!,$after:String,$query:String){alphaUserAvailableRooms(first:$first,after:$after,query:$query){__typename edges{__typename node{__typename ...DiscoverSharedRoom}cursor}pageInfo{__typename hasNextPage}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         UserAvailableRoomsSelector
     )
     let UserPico = OperationDefinition(
@@ -6436,7 +6368,6 @@ class Operations {
         if name == "AccountAppInviteInfo" { return AccountAppInviteInfo }
         if name == "AccountInviteInfo" { return AccountInviteInfo }
         if name == "AccountSettings" { return AccountSettings }
-        if name == "AvailableRooms" { return AvailableRooms }
         if name == "ChatInit" { return ChatInit }
         if name == "ChatInitFromUnread" { return ChatInitFromUnread }
         if name == "ChatJoin" { return ChatJoin }
@@ -6455,6 +6386,7 @@ class Operations {
         if name == "DiscoverTopPremium" { return DiscoverTopPremium }
         if name == "ExploreCommunity" { return ExploreCommunity }
         if name == "ExplorePeople" { return ExplorePeople }
+        if name == "ExploreRooms" { return ExploreRooms }
         if name == "FeatureFlags" { return FeatureFlags }
         if name == "FeedChannel" { return FeedChannel }
         if name == "FeedChannelContent" { return FeedChannelContent }
