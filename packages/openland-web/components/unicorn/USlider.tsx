@@ -17,7 +17,7 @@ const slider = css`
 
 const blanket = css`
     display: flex;
-    transition: transform 300ms;
+    transition: transform 100ms;
 `;
 
 const icons = css`
