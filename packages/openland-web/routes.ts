@@ -71,6 +71,8 @@ routes.add('/discover/organizations', '/unicorn/index');
 routes.add('/discover/organizations/', '/unicorn/index');
 routes.add('/discover/popular', '/unicorn/index');
 routes.add('/discover/popular/', '/unicorn/index');
+routes.add('/discover/new', '/unicorn/index');
+routes.add('/discover/new/', '/unicorn/index');
 
 //
 // Onboardinng

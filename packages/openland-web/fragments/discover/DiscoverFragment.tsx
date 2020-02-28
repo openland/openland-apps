@@ -25,6 +25,7 @@ export const DiscoverFragment = React.memo(() => {
             <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>
                 <XView flexDirection="column">
                     <UListItem title="Home" path="/discover/home" />
+                    <UListItem title="New and growing" path="/discover/new" />
                     <UListItem title="Groups" path="/discover/groups" />
                     <UListItem title="Popular now" path="/discover/popular" />
                     <UListItem
