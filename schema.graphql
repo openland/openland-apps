@@ -659,6 +659,31 @@ type DialogUpdateState {
   state: String
 }
 
+type DiscoverChatsCollection {
+  id: ID!
+  title: String!
+  image: ImageRef!
+  chatsCount: Int!
+  chats: [SharedRoom!]!
+}
+
+type DiscoverChatsCollectionConnection {
+  items: [DiscoverChatsCollection!]!
+  cursor: String
+}
+
+input DiscoverChatsCollectionInput {
+  title: String!
+  image: ImageRefInput!
+  chatIds: [ID!]!
+}
+
+input DiscoverChatsCollectionUpdateInput {
+  title: String
+  image: ImageRefInput
+  chatIds: [ID!]
+}
+
 type DiscoverPage {
   chats: [Room!]
   tagGroup: TagGroup
@@ -1535,6 +1560,9 @@ type Mutation {
   deliverCountersForAll: Boolean!
   conversationDraftUpdate(conversationId: ID!, message: String): String!
   alphaSaveDraftMessage(conversationId: ID!, message: String): String!
+  discoverCollectionsCreate(collection: DiscoverChatsCollectionInput!): DiscoverChatsCollection!
+  discoverCollectionsUpdate(id: ID!, input: DiscoverChatsCollectionUpdateInput!): DiscoverChatsCollection!
+  discoverCollectionsDelete(id: ID!): Boolean!
   track(did: String!, events: [Event!]!, platform: EventPlatform, isProd: Boolean): String!
   createPowerup(input: PowerupInput!): Powerup!
   updatePowerup(id: ID!, input: PowerupInput!): Powerup!
@@ -2261,6 +2289,12 @@ type Query {
   betaDialogTextSearch(query: String!): [Dialog!]!
   conversationDraft(conversationId: ID!): String
   alphaDraftMessage(conversationId: ID!): String
+  discoverNewAndGrowing(first: Int!, after: String): SharedRoomConnection!
+  discoverPopularNow(first: Int!, after: String): SharedRoomConnection!
+  discoverTopPremium(first: Int!, after: String): SharedRoomConnection!
+  discoverTopFree(first: Int!, after: String): SharedRoomConnection!
+  discoverCollections(first: Int!, after: String): DiscoverChatsCollectionConnection
+  discoverCollection(id: ID!): DiscoverChatsCollection
   powerups: [Powerup!]!
   chatsWithPowerup(id: ID!): [Room!]!
   chatPowerups(id: ID!): [RoomPowerup!]!

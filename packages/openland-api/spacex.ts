@@ -58,6 +58,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: OperationParameters): Promise<Types.DiscoverNextPage> {
         return this.query('DiscoverNextPage', variables, opts);
     }
+    queryDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, opts?: OperationParameters): Promise<Types.DiscoverPopularNow> {
+        return this.query('DiscoverPopularNow', variables, opts);
+    }
     queryDiscoverState(opts?: OperationParameters): Promise<Types.DiscoverState> {
         return this.query('DiscoverState', undefined, opts);
     }
@@ -346,6 +349,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: OperationParameters): Promise<Types.DiscoverNextPage> {
         return this.refetch('DiscoverNextPage', variables);
     }
+    refetchDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, opts?: OperationParameters): Promise<Types.DiscoverPopularNow> {
+        return this.refetch('DiscoverPopularNow', variables);
+    }
     refetchDiscoverState(opts?: OperationParameters): Promise<Types.DiscoverState> {
         return this.refetch('DiscoverState', undefined);
     }
@@ -633,6 +639,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateDiscoverNextPage(variables: Types.DiscoverNextPageVariables, updater: (data: Types.DiscoverNextPage) => Types.DiscoverNextPage | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverNextPage', variables);
+    }
+    updateDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, updater: (data: Types.DiscoverPopularNow) => Types.DiscoverPopularNow | null): Promise<boolean> {
+        return this.updateQuery(updater, 'DiscoverPopularNow', variables);
     }
     updateDiscoverState(updater: (data: Types.DiscoverState) => Types.DiscoverState | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverState', undefined);
@@ -955,6 +964,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverNextPage;
     useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverNextPage | null {
         return this.useQuery('DiscoverNextPage', variables, opts);
+    }
+    useDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverPopularNow | null;
+    useDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverPopularNow;
+    useDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverPopularNow | null {
+        return this.useQuery('DiscoverPopularNow', variables, opts);
     }
     useDiscoverState(opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverState | null;
     useDiscoverState(opts?: SpaceQueryWatchParameters): Types.DiscoverState;

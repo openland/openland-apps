@@ -206,3 +206,10 @@ query DiscoverState {
         }
     }
 }
+query DiscoverPopularNow($first: Int!, $after: String) {
+    discoverPopularNow(first: $first, after: $after) {
+        items {
+            ...RoomShort
+        }
+    }
+}

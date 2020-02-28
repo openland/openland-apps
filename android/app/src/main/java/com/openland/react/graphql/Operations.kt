@@ -24,6 +24,7 @@ object Operations {
         if (name == "Dialogs") return Dialogs
         if (name == "DiscoverIsDone") return DiscoverIsDone
         if (name == "DiscoverNextPage") return DiscoverNextPage
+        if (name == "DiscoverPopularNow") return DiscoverPopularNow
         if (name == "DiscoverState") return DiscoverState
         if (name == "ExploreCommunity") return ExploreCommunity
         if (name == "ExplorePeople") return ExplorePeople
