@@ -1,1 +1,1 @@
-export const publicPaths = ['/', '/download', '/about', '/terms', '/privacy'];
+export const publicPaths = ['/', '/download', '/start', '/about', '/terms', '/privacy'];
