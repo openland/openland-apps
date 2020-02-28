@@ -34,6 +34,10 @@ const listingsContainer = css`
         width: 100%;
         flex-shrink: 2;
     }
+
+    @media (max-width: 600px) {
+        flex-wrap: wrap;
+    }
 `;
 
 export const DiscoverHomeFragment = React.memo(() => {
@@ -57,30 +61,33 @@ export const DiscoverHomeFragment = React.memo(() => {
         <Page track="discover_home">
             <UHeader title="Home" />
 
-            <USlider>
-                <div className={slide}>one</div>
-                <div className={slide}>two</div>
-                <div className={slide}>three</div>
-                <div className={slide}>four</div>
-            </USlider>
+            <XView paddingHorizontal={16}>
+                <USlider>
+                    <div className={slide}>one</div>
+                    <div className={slide}>two</div>
+                    <div className={slide}>three</div>
+                    <div className={slide}>four</div>
+                </USlider>
 
-            <div className={listingsContainer}>
-                <ListingCompact title="New and growing" items={popularNowItems} />
-                <ListingCompact title="Popular now" items={popularNowItems} />
-            </div>
-
-            <USlider>
-                <div className={slideNarrow}>one</div>
-                <div className={slideNarrow}>two</div>
-                <div className={slideNarrow}>three</div>
-                <div className={slideNarrow}>four</div>
-            </USlider>
-
-            <XView marginBottom={40}>
                 <div className={listingsContainer}>
-                    <ListingCompact title="Top premium" items={topPremiumItems} />
-                    <ListingCompact title="Top free" items={topFreeItems} />
+                    <ListingCompact title="New and growing" items={popularNowItems} />
+                    <ListingCompact title="Popular now" items={popularNowItems} />
                 </div>
+
+                <USlider>
+                    <div className={slideNarrow}>one</div>
+                    <div className={slideNarrow}>two</div>
+                    <div className={slideNarrow}>three</div>
+                    <div className={slideNarrow}>four</div>
+                </USlider>
+
+                <XView marginBottom={40}>
+                    <div className={listingsContainer}>
+                        <ListingCompact title="Top premium" items={topPremiumItems} />
+                        <ListingCompact title="Top free" items={topFreeItems} />
+                    </div>
+                </XView>
+
             </XView>
 
         </Page>
