@@ -63,6 +63,7 @@ interface JoinPaidGroupProps {
     photo?: string;
     router: SRouter;
     client: OpenlandClient;
+    onSuccess: () => void;
     onError?: () => void;
 }
 
@@ -85,7 +86,7 @@ export const joinPaidGroup = (props: JoinPaidGroupProps) => {
                     passIsActive = (await props.client.mutateBuyPremiumChatPass({ chatId: props.id })).betaBuyPremiumChatPass.premiumPassIsActive;
                 }
                 if (passIsActive) {
-                    props.router.pushAndRemove('Conversation', { id: props.id });
+                    props.onSuccess();
                 }
             } catch (e) {
                 AlertBlanket.alert(e.message);
@@ -116,6 +117,7 @@ const BuyPaidChatPassButton = (props: {
             router: props.router,
             client,
             onError: () => setLoading(false),
+            onSuccess: () => props.router.pushAndRemove('Conversation', { id: props.id })
         });
     }, []);
 

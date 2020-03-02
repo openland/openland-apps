@@ -12,6 +12,7 @@ import { TouchableHighlight, View, Image, StyleSheet, ViewStyle } from 'react-na
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { joinPaidGroup } from './components/ChatJoin';
+import { SRouter } from 'react-native-s/SRouter';
 
 const styles = StyleSheet.create({
     btn: {
@@ -23,20 +24,33 @@ const styles = StyleSheet.create({
     } as ViewStyle
 });
 
-type FollowButtonState = 'can_follow' | 'loading' | 'done';
+type FollowButtonState = 'initial' | 'loading' | 'done';
 interface FollowButtonProps {
     isFollowing: boolean;
-    action: () => Promise<any>;
+    room: Types.DiscoverSharedRoom;
+    router: SRouter;
 }
 
 const FollowButton = React.memo((props: FollowButtonProps) => {
     const theme = useTheme();
-    let [state, setState] = React.useState<FollowButtonState>(props.isFollowing ? 'done' : 'can_follow');
+    let [state, setState] = React.useState<FollowButtonState>(props.isFollowing ? 'done' : 'initial');
     let handleBtnPress = React.useCallback(async () => {
-        setState('loading');
-        await props.action();
-        setState('done');
-    }, [props.action]);
+        if (props.room.isPremium && !props.room.premiumPassIsActive && props.room.premiumSettings) {
+            joinPaidGroup({
+                id: props.room.id,
+                title: props.room.title,
+                premiumSettings: props.room.premiumSettings,
+                router: props.router,
+                client: getClient(),
+                onSuccess: () => { setState('done'); },
+            });
+        } else {
+            setState('loading');
+            await getClient().mutateRoomJoin({ roomId: props.room.id });
+            setState('done');
+        }
+
+    }, [props.room]);
     const backgroundColor = state === 'done' ? theme.backgroundTertiary : theme.accentPrimary;
     const tintColor = state === 'done' ? theme.foregroundTertiary : theme.foregroundInverted;
     const underlayColor = state === 'done' ? theme.backgroundTertiaryActive : theme.accentPrimaryActive;
@@ -49,7 +63,7 @@ const FollowButton = React.memo((props: FollowButtonProps) => {
             underlayColor={underlayColor}
         >
             <View>
-                {state === 'can_follow' && <Image source={require('assets/ic-add-24.png')} style={{ tintColor }} />}
+                {state === 'initial' && <Image source={require('assets/ic-add-24.png')} style={{ tintColor }} />}
                 {state === 'loading' && <LoaderSpinner size="small" color={tintColor} />}
                 {state === 'done' && <Image source={require('assets/ic-done-24.png')} style={{ tintColor }} />}
             </View>
@@ -115,20 +129,6 @@ const DiscoverListingComponent = React.memo<PageProps>((props) => {
 
     const [rooms, loading, handleLoadMore] = useFetchMoreRooms({first: 10, type, seed, initialAfter, initialRooms });
 
-    let action = async (room: Types.DiscoverSharedRoom) => {
-        if (room.isPremium && !room.premiumPassIsActive && room.premiumSettings) {
-            joinPaidGroup({
-                id: room.id,
-                title: room.title,
-                premiumSettings: room.premiumSettings,
-                router: props.router,
-                client: getClient(),
-            });
-        } else {
-            await getClient().mutateRoomJoin({ roomId: room.id });
-        }
-    };
-
     return (
         <>
             <SHeader title={props.router.params.title} />
@@ -147,7 +147,8 @@ const DiscoverListingComponent = React.memo<PageProps>((props) => {
                             subTitle={item.membersCount + (item.membersCount === 1 ? ' member' : ' members')}
                             rightElement={<FollowButton 
                                 isFollowing={item.membership === Types.SharedRoomMembershipStatus.MEMBER} 
-                                action={() => action(item)} 
+                                room={item}
+                                router={props.router}
                             />}
                             path="Conversation"
                             pathParams={{ flexibleId: item.id }}
