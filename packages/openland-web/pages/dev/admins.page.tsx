@@ -11,7 +11,6 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { TextLabel1, TextTitle1, TextLabel2 } from 'openland-web/utils/TextStyles';
-import { XScrollView3 } from 'openland-x/XScrollView3';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 import { USelectField } from 'openland-web/components/unicorn/USelect';
@@ -154,26 +153,24 @@ export default withApp('Super Admins', ['super-admin', 'software-developer'], ()
                 </XView>
                 <UButton text="Add New" onClick={() => showAddSuperAdminFormModal()} />
             </XView>
-            <XScrollView3>
-                <XView maxWidth={600}>
-                    {superAdmins.map(v => (
-                        <UUserView
-                            onClick={() => null}
-                            user={v.user}
-                            rightElement={
-                                <XView flexDirection="row">
-                                    <span className={TextLabel1}>{v.role}</span>
-                                    <UButton
-                                        text="Remove"
-                                        size="small"
-                                        onClick={() => showRemoveSuperAdminFormModal(v.user.id)}
-                                    />
-                                </XView>
-                            }
-                        />
-                    ))}
-                </XView>
-            </XScrollView3>
+            <XView maxWidth={600}>
+                {superAdmins.map(v => (
+                    <UUserView
+                        onClick={() => null}
+                        user={v.user}
+                        rightElement={
+                            <XView flexDirection="row">
+                                <span className={TextLabel1}>{v.role}</span>
+                                <UButton
+                                    text="Remove"
+                                    size="small"
+                                    onClick={() => showRemoveSuperAdminFormModal(v.user.id)}
+                                />
+                            </XView>
+                        }
+                    />
+                ))}
+            </XView>
         </DevToolsScaffold>
     );
 });

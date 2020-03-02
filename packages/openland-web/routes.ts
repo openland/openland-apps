@@ -190,8 +190,6 @@ routes.add('/super/choice', '/dev/choice');
 routes.add('/super/choice/', '/dev/choice');
 routes.add('/super/mails', '/dev/mails');
 routes.add('/super/mails/', '/dev/mails');
-routes.add('/super/debug', '/dev/debug');
-routes.add('/super/debug/', '/dev/debug');
 routes.add('/super/users', '/dev/users');
 routes.add('/super/users/', '/dev/users');
 routes.add('/super/organizations', '/dev/orgs');

@@ -7,6 +7,7 @@ import { XView } from 'react-mental';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { Page } from 'openland-unicorn/Page';
 import { XDialogProviderComponent } from 'openland-x/XDialogProvider';
+import IcBack from 'openland-icons/s/ic-back-24.svg';
 
 export function DevDocsScaffold(props: {
     title?: string;
@@ -23,6 +24,7 @@ export function DevDocsScaffold(props: {
                 {props.hideSidebar !== true && (
                     <XView width="300px" backgroundColor="var(--backgroundTertiary)">
                         <UListGroup header="UI">
+                            <UListItem title="Back to mail" path="/mail" icon={<IcBack />} />
                             <UListItem title="Typography" path="/ui" />
                             <UListItem title="List items" path="/ui/list" />
                             <UListItem title="Buttons" path="/ui/buttons" />
@@ -39,7 +41,7 @@ export function DevDocsScaffold(props: {
                     </XView>
                 )}
                 <XView flexGrow={1}>
-                    <Page track={'DevDocsScaffold'} scroll="disable">
+                    <Page track={'DevDocsScaffold'} scroll="enable">
                         {props.title !== undefined && <UListHeader text={props.title} />}
                         <XView paddingHorizontal={16} flexGrow={1}>
                             {props.children}
