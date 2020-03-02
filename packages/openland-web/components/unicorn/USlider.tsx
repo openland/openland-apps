@@ -73,9 +73,6 @@ export const USlider = React.memo((props: USliderProps) => {
     window.addEventListener('resize', reinitSlider);
     React.useLayoutEffect(reinitSlider, []);
 
-    // research why useLayoutEffect doesnt't work as needed
-    setTimeout(reinitSlider, 300);
-
     const onNextClick = () => {
         const blanketElement = blanketRef.current;
         const sliderElement = sliderRef.current;
@@ -103,37 +100,39 @@ export const USlider = React.memo((props: USliderProps) => {
     };
 
     return (
-        <div className={root}>
-            <div className={header}>
-                <div className={icons}>
-                    <UIconButton
-                        icon={<ArrowLeft />}
-                        size="xsmall"
-                        onClick={onPrevClick}
-                    />
+        <React.Suspense fallback={null}>
+            <div className={root}>
+                <div className={header}>
+                    <div className={icons}>
+                        <UIconButton
+                            icon={<ArrowLeft />}
+                            size="xsmall"
+                            onClick={onPrevClick}
+                        />
 
-                    <UIconButton
-                        size="xsmall"
-                        icon={<ArrowRight />}
-                        onClick={onNextClick}
-                    />
+                        <UIconButton
+                            size="xsmall"
+                            icon={<ArrowRight />}
+                            onClick={onNextClick}
+                        />
+                    </div>
+                    {props.title && (
+                        <XView path={props.path ? props.path : undefined} flexDirection="row" alignItems="center" cursor={props.path ? 'pointer' : undefined}>
+                            <h2 className={TextTitle3}>{props.title}</h2>
+                            {props.path && (
+                                <XView marginLeft={8}>
+                                    <ArrowRight />
+                                </XView>
+                            )}
+                        </XView>
+                    )}
                 </div>
-                {props.title && (
-                    <XView path={props.path ? props.path : undefined} flexDirection="row" alignItems="center" cursor={props.path ? 'pointer' : undefined}>
-                        <h2 className={TextTitle3}>{props.title}</h2>
-                        {props.path && (
-                            <XView marginLeft={8}>
-                                <ArrowRight />
-                            </XView>
-                        )}
-                    </XView>
-                )}
-            </div>
-            <div className={slider} ref={sliderRef}>
-                <div className={blanket} style={blanketStyle} ref={blanketRef}>
-                    {props.children}
+                <div className={slider} ref={sliderRef}>
+                    <div className={blanket} style={blanketStyle} ref={blanketRef}>
+                        {props.children}
+                    </div>
                 </div>
             </div>
-        </div>
+        </React.Suspense>
     );
 });

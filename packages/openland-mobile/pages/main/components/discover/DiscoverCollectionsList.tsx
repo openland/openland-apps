@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
-import { View, ScrollView, Image, Text, TouchableWithoutFeedback } from 'react-native';
+import { View, ScrollView, Text, TouchableWithoutFeedback } from 'react-native';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { plural } from 'openland-y-utils/plural';
@@ -8,6 +8,7 @@ import { SRouterContext } from 'react-native-s/SRouterContext';
 import { DiscoverChatsCollection } from 'openland-api/spacex.types';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { layoutCollection } from 'openland-mobile/pages/main/Collections';
+import FastImage from 'react-native-fast-image';
 
 interface DiscoverCollectionsItem {
     item: DiscoverChatsCollection;
@@ -38,7 +39,7 @@ const DiscoverCollectionsItem = (props: DiscoverCollectionsItem) => {
         <View style={{width: 167, height: 162, marginRight: 8}}>
             <TouchableWithoutFeedback onPress={onPress}>
                 <View flexDirection="column" borderRadius={RadiusStyles.Large} paddingVertical={8}>
-                    <Image 
+                    <FastImage
                         source={{uri: path}}
                         style={{
                             width: 167, 
