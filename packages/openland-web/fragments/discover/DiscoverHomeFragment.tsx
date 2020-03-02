@@ -15,6 +15,15 @@ const slide = css`
     flex-shrink: 0;
 `;
 
+const sliderCollectionItem = css`
+    width: 192px;
+    flex-shrink: 0;
+
+    &:last-child {
+        width: 176px;
+    }
+`;
+
 const listingsContainer = css`
     display: flex;
     justify-content: space-between;
@@ -72,11 +81,13 @@ export const DiscoverHomeFragment = React.memo(() => {
 
                 <USlider title="Collections" path="/discover/collections">
                     {collectionsItems.map(collection => (
-                        <DiscoverCollection {...collection} />
+                        <div className={sliderCollectionItem}>
+                            <DiscoverCollection {...collection} />
+                        </div>
                     ))}
                 </USlider>
 
-                <XView marginBottom={40} marginTop={-44}>
+                <XView marginBottom={40}>
                     <div className={listingsContainer}>
                         <ListingCompact title="Top premium" items={topPremiumItems} path="/discover/premium" />
                         <ListingCompact title="Top free" items={topFreeItems} path="/discover/free" />
