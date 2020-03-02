@@ -218,6 +218,7 @@ query DiscoverCollections($first: Int!, $after: String) {
         cursor
     }
 }
+
 query DiscoverCollection($id: ID!) {
     discoverCollection(id: $id) {
         id
@@ -226,4 +227,63 @@ query DiscoverCollection($id: ID!) {
             ...DiscoverSharedRoom
         }
     }
+}
+mutation DiscoverCollectionsCreate($title: String!, $image: ImageRefInput!, $chatIds: [ID!]!) {
+    discoverCollectionsCreate(collection: { title: $title, image: $image, chatIds: $chatIds }) {
+        id
+        title
+    }
+}
+mutation DiscoverCollectionsUpdate(
+    $id: ID!
+    $title: String!
+    $image: ImageRefInput!
+    $chatIds: [ID!]!
+) {
+    discoverCollectionsUpdate(id: $id, input: { title: $title, image: $image, chatIds: $chatIds }) {
+        id
+        title
+    }
+}
+mutation DiscoverCollectionsDelete($id: ID!) {
+    discoverCollectionsDelete(id: $id)
+}
+mutation DiscoverEditorsChoiceCreate($image: ImageRefInput!, $cid: ID!) {
+    discoverEditorsChoiceCreate(input: { image: $image, cid: $cid }) {
+        id
+        image {
+            uuid
+            crop {
+                x
+                y
+                w
+                h
+            }
+        }
+        chat {
+            id
+            title
+        }
+    }
+}
+mutation DiscoverEditorsChoiceUpdate($id: ID!, $image: ImageRefInput!, $cid: ID!) {
+    discoverEditorsChoiceUpdate(id: $id, input: { image: $image, cid: $cid }) {
+        id
+        image {
+            uuid
+            crop {
+                x
+                y
+                w
+                h
+            }
+        }
+        chat {
+            id
+            title
+        }
+    }
+}
+mutation DiscoverEditorsChoiceDelete($id: ID!) {
+    discoverEditorsChoiceDelete(id: $id)
 }

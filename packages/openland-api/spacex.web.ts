@@ -4160,6 +4160,70 @@ const DeleteOrganizationSelector = obj(
 const DeleteUserSelector = obj(
             field('superDeleteUser', 'superDeleteUser', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
         );
+const DiscoverCollectionsCreateSelector = obj(
+            field('discoverCollectionsCreate', 'discoverCollectionsCreate', args(fieldValue("collection", objectValue(fieldValue('title', refValue('title')),fieldValue('image', refValue('image')),fieldValue('chatIds', refValue('chatIds'))))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('title', 'title', args(), notNull(scalar('String')))
+                )))
+        );
+const DiscoverCollectionsDeleteSelector = obj(
+            field('discoverCollectionsDelete', 'discoverCollectionsDelete', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
+        );
+const DiscoverCollectionsUpdateSelector = obj(
+            field('discoverCollectionsUpdate', 'discoverCollectionsUpdate', args(fieldValue("id", refValue('id')), fieldValue("input", objectValue(fieldValue('title', refValue('title')),fieldValue('image', refValue('image')),fieldValue('chatIds', refValue('chatIds'))))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('title', 'title', args(), notNull(scalar('String')))
+                )))
+        );
+const DiscoverEditorsChoiceCreateSelector = obj(
+            field('discoverEditorsChoiceCreate', 'discoverEditorsChoiceCreate', args(fieldValue("input", objectValue(fieldValue('image', refValue('image')),fieldValue('cid', refValue('cid'))))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('image', 'image', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('uuid', 'uuid', args(), notNull(scalar('String'))),
+                            field('crop', 'crop', args(), obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    field('x', 'x', args(), notNull(scalar('Int'))),
+                                    field('y', 'y', args(), notNull(scalar('Int'))),
+                                    field('w', 'w', args(), notNull(scalar('Int'))),
+                                    field('h', 'h', args(), notNull(scalar('Int')))
+                                ))
+                        ))),
+                    field('chat', 'chat', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('title', 'title', args(), notNull(scalar('String')))
+                        )))
+                )))
+        );
+const DiscoverEditorsChoiceDeleteSelector = obj(
+            field('discoverEditorsChoiceDelete', 'discoverEditorsChoiceDelete', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
+        );
+const DiscoverEditorsChoiceUpdateSelector = obj(
+            field('discoverEditorsChoiceUpdate', 'discoverEditorsChoiceUpdate', args(fieldValue("id", refValue('id')), fieldValue("input", objectValue(fieldValue('image', refValue('image')),fieldValue('cid', refValue('cid'))))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('image', 'image', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('uuid', 'uuid', args(), notNull(scalar('String'))),
+                            field('crop', 'crop', args(), obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    field('x', 'x', args(), notNull(scalar('Int'))),
+                                    field('y', 'y', args(), notNull(scalar('Int'))),
+                                    field('w', 'w', args(), notNull(scalar('Int'))),
+                                    field('h', 'h', args(), notNull(scalar('Int')))
+                                ))
+                        ))),
+                    field('chat', 'chat', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('title', 'title', args(), notNull(scalar('String')))
+                        )))
+                )))
+        );
 const DonateSelector = obj(
             field('donateToUser', 'donateToUser', args(fieldValue("id", refValue('id')), fieldValue("amount", intValue(100))), notNull(scalar('Boolean')))
         );
@@ -5752,6 +5816,42 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'DeleteUser',
         body: 'mutation DeleteUser($id:ID!){superDeleteUser(id:$id)}',
         selector: DeleteUserSelector
+    },
+    DiscoverCollectionsCreate: {
+        kind: 'mutation',
+        name: 'DiscoverCollectionsCreate',
+        body: 'mutation DiscoverCollectionsCreate($title:String!,$image:ImageRefInput!,$chatIds:[ID!]!){discoverCollectionsCreate(collection:{title:$title,image:$image,chatIds:$chatIds}){__typename id title}}',
+        selector: DiscoverCollectionsCreateSelector
+    },
+    DiscoverCollectionsDelete: {
+        kind: 'mutation',
+        name: 'DiscoverCollectionsDelete',
+        body: 'mutation DiscoverCollectionsDelete($id:ID!){discoverCollectionsDelete(id:$id)}',
+        selector: DiscoverCollectionsDeleteSelector
+    },
+    DiscoverCollectionsUpdate: {
+        kind: 'mutation',
+        name: 'DiscoverCollectionsUpdate',
+        body: 'mutation DiscoverCollectionsUpdate($id:ID!,$title:String!,$image:ImageRefInput!,$chatIds:[ID!]!){discoverCollectionsUpdate(id:$id,input:{title:$title,image:$image,chatIds:$chatIds}){__typename id title}}',
+        selector: DiscoverCollectionsUpdateSelector
+    },
+    DiscoverEditorsChoiceCreate: {
+        kind: 'mutation',
+        name: 'DiscoverEditorsChoiceCreate',
+        body: 'mutation DiscoverEditorsChoiceCreate($image:ImageRefInput!,$cid:ID!){discoverEditorsChoiceCreate(input:{image:$image,cid:$cid}){__typename id image{__typename uuid crop{__typename x y w h}}chat{__typename id title}}}',
+        selector: DiscoverEditorsChoiceCreateSelector
+    },
+    DiscoverEditorsChoiceDelete: {
+        kind: 'mutation',
+        name: 'DiscoverEditorsChoiceDelete',
+        body: 'mutation DiscoverEditorsChoiceDelete($id:ID!){discoverEditorsChoiceDelete(id:$id)}',
+        selector: DiscoverEditorsChoiceDeleteSelector
+    },
+    DiscoverEditorsChoiceUpdate: {
+        kind: 'mutation',
+        name: 'DiscoverEditorsChoiceUpdate',
+        body: 'mutation DiscoverEditorsChoiceUpdate($id:ID!,$image:ImageRefInput!,$cid:ID!){discoverEditorsChoiceUpdate(id:$id,input:{image:$image,cid:$cid}){__typename id image{__typename uuid crop{__typename x y w h}}chat{__typename id title}}}',
+        selector: DiscoverEditorsChoiceUpdateSelector
     },
     Donate: {
         kind: 'mutation',

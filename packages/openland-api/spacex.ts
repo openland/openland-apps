@@ -1508,6 +1508,24 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateDeleteUser(variables: Types.DeleteUserVariables): Promise<Types.DeleteUser> {
         return this.mutate('DeleteUser', variables);
     }
+    mutateDiscoverCollectionsCreate(variables: Types.DiscoverCollectionsCreateVariables): Promise<Types.DiscoverCollectionsCreate> {
+        return this.mutate('DiscoverCollectionsCreate', variables);
+    }
+    mutateDiscoverCollectionsDelete(variables: Types.DiscoverCollectionsDeleteVariables): Promise<Types.DiscoverCollectionsDelete> {
+        return this.mutate('DiscoverCollectionsDelete', variables);
+    }
+    mutateDiscoverCollectionsUpdate(variables: Types.DiscoverCollectionsUpdateVariables): Promise<Types.DiscoverCollectionsUpdate> {
+        return this.mutate('DiscoverCollectionsUpdate', variables);
+    }
+    mutateDiscoverEditorsChoiceCreate(variables: Types.DiscoverEditorsChoiceCreateVariables): Promise<Types.DiscoverEditorsChoiceCreate> {
+        return this.mutate('DiscoverEditorsChoiceCreate', variables);
+    }
+    mutateDiscoverEditorsChoiceDelete(variables: Types.DiscoverEditorsChoiceDeleteVariables): Promise<Types.DiscoverEditorsChoiceDelete> {
+        return this.mutate('DiscoverEditorsChoiceDelete', variables);
+    }
+    mutateDiscoverEditorsChoiceUpdate(variables: Types.DiscoverEditorsChoiceUpdateVariables): Promise<Types.DiscoverEditorsChoiceUpdate> {
+        return this.mutate('DiscoverEditorsChoiceUpdate', variables);
+    }
     mutateDonate(variables: Types.DonateVariables): Promise<Types.Donate> {
         return this.mutate('Donate', variables);
     }

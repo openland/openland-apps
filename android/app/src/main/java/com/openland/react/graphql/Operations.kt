@@ -137,6 +137,12 @@ object Operations {
         if (name == "DeleteNotification") return DeleteNotification
         if (name == "DeleteOrganization") return DeleteOrganization
         if (name == "DeleteUser") return DeleteUser
+        if (name == "DiscoverCollectionsCreate") return DiscoverCollectionsCreate
+        if (name == "DiscoverCollectionsDelete") return DiscoverCollectionsDelete
+        if (name == "DiscoverCollectionsUpdate") return DiscoverCollectionsUpdate
+        if (name == "DiscoverEditorsChoiceCreate") return DiscoverEditorsChoiceCreate
+        if (name == "DiscoverEditorsChoiceDelete") return DiscoverEditorsChoiceDelete
+        if (name == "DiscoverEditorsChoiceUpdate") return DiscoverEditorsChoiceUpdate
         if (name == "Donate") return Donate
         if (name == "EditComment") return EditComment
         if (name == "EditMessage") return EditMessage

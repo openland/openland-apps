@@ -4153,6 +4153,70 @@ private let DeleteOrganizationSelector = obj(
 private let DeleteUserSelector = obj(
             field("superDeleteUser", "superDeleteUser", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
+private let DiscoverCollectionsCreateSelector = obj(
+            field("discoverCollectionsCreate", "discoverCollectionsCreate", arguments(fieldValue("collection", objectValue(fieldValue("title", refValue("title")),fieldValue("image", refValue("image")),fieldValue("chatIds", refValue("chatIds"))))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("title", "title", notNull(scalar("String")))
+                )))
+        )
+private let DiscoverCollectionsDeleteSelector = obj(
+            field("discoverCollectionsDelete", "discoverCollectionsDelete", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+        )
+private let DiscoverCollectionsUpdateSelector = obj(
+            field("discoverCollectionsUpdate", "discoverCollectionsUpdate", arguments(fieldValue("id", refValue("id")), fieldValue("input", objectValue(fieldValue("title", refValue("title")),fieldValue("image", refValue("image")),fieldValue("chatIds", refValue("chatIds"))))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("title", "title", notNull(scalar("String")))
+                )))
+        )
+private let DiscoverEditorsChoiceCreateSelector = obj(
+            field("discoverEditorsChoiceCreate", "discoverEditorsChoiceCreate", arguments(fieldValue("input", objectValue(fieldValue("image", refValue("image")),fieldValue("cid", refValue("cid"))))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("image", "image", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("uuid", "uuid", notNull(scalar("String"))),
+                            field("crop", "crop", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("x", "x", notNull(scalar("Int"))),
+                                    field("y", "y", notNull(scalar("Int"))),
+                                    field("w", "w", notNull(scalar("Int"))),
+                                    field("h", "h", notNull(scalar("Int")))
+                                ))
+                        ))),
+                    field("chat", "chat", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("title", "title", notNull(scalar("String")))
+                        )))
+                )))
+        )
+private let DiscoverEditorsChoiceDeleteSelector = obj(
+            field("discoverEditorsChoiceDelete", "discoverEditorsChoiceDelete", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+        )
+private let DiscoverEditorsChoiceUpdateSelector = obj(
+            field("discoverEditorsChoiceUpdate", "discoverEditorsChoiceUpdate", arguments(fieldValue("id", refValue("id")), fieldValue("input", objectValue(fieldValue("image", refValue("image")),fieldValue("cid", refValue("cid"))))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("image", "image", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("uuid", "uuid", notNull(scalar("String"))),
+                            field("crop", "crop", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("x", "x", notNull(scalar("Int"))),
+                                    field("y", "y", notNull(scalar("Int"))),
+                                    field("w", "w", notNull(scalar("Int"))),
+                                    field("h", "h", notNull(scalar("Int")))
+                                ))
+                        ))),
+                    field("chat", "chat", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("title", "title", notNull(scalar("String")))
+                        )))
+                )))
+        )
 private let DonateSelector = obj(
             field("donateToUser", "donateToUser", arguments(fieldValue("id", refValue("id")), fieldValue("amount", intValue(100))), notNull(scalar("Boolean")))
         )
@@ -5750,6 +5814,42 @@ class Operations {
         "mutation DeleteUser($id:ID!){superDeleteUser(id:$id)}",
         DeleteUserSelector
     )
+    let DiscoverCollectionsCreate = OperationDefinition(
+        "DiscoverCollectionsCreate",
+        .mutation, 
+        "mutation DiscoverCollectionsCreate($title:String!,$image:ImageRefInput!,$chatIds:[ID!]!){discoverCollectionsCreate(collection:{title:$title,image:$image,chatIds:$chatIds}){__typename id title}}",
+        DiscoverCollectionsCreateSelector
+    )
+    let DiscoverCollectionsDelete = OperationDefinition(
+        "DiscoverCollectionsDelete",
+        .mutation, 
+        "mutation DiscoverCollectionsDelete($id:ID!){discoverCollectionsDelete(id:$id)}",
+        DiscoverCollectionsDeleteSelector
+    )
+    let DiscoverCollectionsUpdate = OperationDefinition(
+        "DiscoverCollectionsUpdate",
+        .mutation, 
+        "mutation DiscoverCollectionsUpdate($id:ID!,$title:String!,$image:ImageRefInput!,$chatIds:[ID!]!){discoverCollectionsUpdate(id:$id,input:{title:$title,image:$image,chatIds:$chatIds}){__typename id title}}",
+        DiscoverCollectionsUpdateSelector
+    )
+    let DiscoverEditorsChoiceCreate = OperationDefinition(
+        "DiscoverEditorsChoiceCreate",
+        .mutation, 
+        "mutation DiscoverEditorsChoiceCreate($image:ImageRefInput!,$cid:ID!){discoverEditorsChoiceCreate(input:{image:$image,cid:$cid}){__typename id image{__typename uuid crop{__typename x y w h}}chat{__typename id title}}}",
+        DiscoverEditorsChoiceCreateSelector
+    )
+    let DiscoverEditorsChoiceDelete = OperationDefinition(
+        "DiscoverEditorsChoiceDelete",
+        .mutation, 
+        "mutation DiscoverEditorsChoiceDelete($id:ID!){discoverEditorsChoiceDelete(id:$id)}",
+        DiscoverEditorsChoiceDeleteSelector
+    )
+    let DiscoverEditorsChoiceUpdate = OperationDefinition(
+        "DiscoverEditorsChoiceUpdate",
+        .mutation, 
+        "mutation DiscoverEditorsChoiceUpdate($id:ID!,$image:ImageRefInput!,$cid:ID!){discoverEditorsChoiceUpdate(id:$id,input:{image:$image,cid:$cid}){__typename id image{__typename uuid crop{__typename x y w h}}chat{__typename id title}}}",
+        DiscoverEditorsChoiceUpdateSelector
+    )
     let Donate = OperationDefinition(
         "Donate",
         .mutation, 
@@ -6536,6 +6636,12 @@ class Operations {
         if name == "DeleteNotification" { return DeleteNotification }
         if name == "DeleteOrganization" { return DeleteOrganization }
         if name == "DeleteUser" { return DeleteUser }
+        if name == "DiscoverCollectionsCreate" { return DiscoverCollectionsCreate }
+        if name == "DiscoverCollectionsDelete" { return DiscoverCollectionsDelete }
+        if name == "DiscoverCollectionsUpdate" { return DiscoverCollectionsUpdate }
+        if name == "DiscoverEditorsChoiceCreate" { return DiscoverEditorsChoiceCreate }
+        if name == "DiscoverEditorsChoiceDelete" { return DiscoverEditorsChoiceDelete }
+        if name == "DiscoverEditorsChoiceUpdate" { return DiscoverEditorsChoiceUpdate }
         if name == "Donate" { return Donate }
         if name == "EditComment" { return EditComment }
         if name == "EditMessage" { return EditMessage }
