@@ -252,7 +252,7 @@ const DeleteCollectionForm = ({ hide, id }: { hide: () => void; id: string }) =>
 export const showDeleteCollectionModal = (id: string) => {
     showModalBox(
         {
-            title: 'Remove Super Admin',
+            title: 'Delete collection',
         },
         ctx => <DeleteCollectionForm hide={ctx.hide} id={id} />,
     );

@@ -2,9 +2,8 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { withApp } from '../../components/withApp';
 import { UAvatarUploadField, StoredFileT } from 'openland-web/components/unicorn/UAvatarUpload';
-import { DiscoverCollections_discoverCollections_items } from 'openland-api/spacex.types';
+import { DiscoverEditorsChoice_discoverEditorsChoice } from 'openland-api/spacex.types';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { UInputField } from 'openland-web/components/unicorn/UInput';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { useClient } from 'openland-api/useClient';
 import { XView } from 'react-mental';
@@ -35,17 +34,13 @@ const searchBoxWrapper = css`
     margin-top: 10px;
 `;
 
-type Collection = DiscoverCollections_discoverCollections_items;
+type Choice = DiscoverEditorsChoice_discoverEditorsChoice;
 
-const EditCollectionForm = React.memo((props: { hide: () => void; collection?: Collection }) => {
-    const { hide, collection } = props;
+const EditChoiceForm = React.memo((props: { hide: () => void; choice?: Choice }) => {
+    const { hide, choice } = props;
     const client = useClient();
 
-    const defaultOptions = collection
-        ? collection.chats.map(i => {
-              return { label: i.title, value: i.id };
-          })
-        : [];
+    const defaultOptions = choice ? [{ label: choice.chat.title, value: choice.chat.id }] : [];
 
     const defaultMap = new Map<string, string>();
 
@@ -55,27 +50,18 @@ const EditCollectionForm = React.memo((props: { hide: () => void; collection?: C
     const [selectedRooms, setSelectedRooms] = React.useState<null | Map<string, string>>(
         defaultMap,
     );
-    const [options, setOptions] = React.useState<{ label: string; value: string }[]>(
-        defaultOptions,
-    );
+    const [option, setOption] = React.useState<{ label: string; value: string }[]>(defaultOptions);
 
     const form = useForm();
 
-    const titleField = useField('title', collection ? collection.title : '', form, [
-        {
-            checkIsValid: d => !!d.trim(),
-            text: 'invalid',
-        },
-    ]);
-
     const avatarField = useField<StoredFileT | undefined | null>(
         'avatar',
-        collection ? collection.image : null,
+        choice ? choice.image : null,
         form,
     );
 
     const selectRooms = (label: string, value: string) => {
-        const selected = selectedRooms || new Map();
+        const selected = new Map();
         const newOpts: { label: string; value: string }[] = [];
         if (selected.has(value)) {
             selected.delete(value);
@@ -89,7 +75,7 @@ const EditCollectionForm = React.memo((props: { hide: () => void; collection?: C
             });
         });
         setSelectedRooms(selected);
-        setOptions(newOpts);
+        setOption(newOpts);
     };
 
     const onInputChange = (data: string) => {
@@ -108,37 +94,35 @@ const EditCollectionForm = React.memo((props: { hide: () => void; collection?: C
             });
         });
         setSelectedRooms(newSelected);
-        setOptions(newOpts);
+        setOption(newOpts);
     };
 
     const update = () => {
         form.doAction(async () => {
-            if (!titleField.value || !avatarField.value || !options.length) {
+            if (!avatarField.value || !option.length) {
                 return;
             }
-            if (collection) {
-                await client.mutateDiscoverCollectionsUpdate({
-                    id: collection.id,
+            if (choice) {
+                await client.mutateDiscoverEditorsChoiceUpdate({
+                    id: choice.id,
                     image: {
                         uuid: avatarField.value.uuid,
                         crop: avatarField.value.crop,
                     },
-                    title: titleField.value,
-                    chatIds: options.map(i => i.value),
+                    cid: option[0].value,
                 });
             }
-            if (!collection) {
-                await client.mutateDiscoverCollectionsCreate({
+            if (!choice) {
+                await client.mutateDiscoverEditorsChoiceCreate({
                     image: {
                         uuid: avatarField.value.uuid,
                         crop: avatarField.value.crop,
                     },
-                    title: titleField.value,
-                    chatIds: options.map(i => i.value),
+                    cid: option[0].value,
                 });
             }
 
-            await client.refetchDiscoverCollections({ first: 50 });
+            await client.refetchDiscoverEditorsChoice();
             await hide();
         });
     };
@@ -146,7 +130,6 @@ const EditCollectionForm = React.memo((props: { hide: () => void; collection?: C
     return (
         <XView borderRadius={8} flexGrow={1} flexShrink={1}>
             <XModalContent flexGrow={1} flexShrink={1}>
-                <UInputField field={titleField} label="Title" marginBottom={10} />
                 <UAvatarUploadField
                     field={avatarField}
                     cropParams="16:9"
@@ -154,9 +137,10 @@ const EditCollectionForm = React.memo((props: { hide: () => void; collection?: C
                 />
                 <div className={searchBoxWrapper}>
                     <SearchBox
+                        multi={false}
                         small={true}
                         onInputChange={onInputChange}
-                        value={options}
+                        value={option}
                         onChange={onChange}
                     />
                 </div>
@@ -174,26 +158,26 @@ const EditCollectionForm = React.memo((props: { hide: () => void; collection?: C
                 <XView marginRight={12}>
                     <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
                 </XView>
-                <UButton text={collection ? 'Update' : 'Create'} size="large" onClick={update} />
+                <UButton text={choice ? 'Update' : 'Create'} size="large" onClick={update} />
             </XModalFooter>
         </XView>
     );
 });
 
-const showEditCollectionModal = (collection?: Collection) => {
-    showModalBox({ title: 'Edit collection' }, ctx => (
-        <EditCollectionForm hide={ctx.hide} collection={collection} />
+const showEditChoiceModal = (choice?: Choice) => {
+    showModalBox({ title: 'Edit choice' }, ctx => (
+        <EditChoiceForm hide={ctx.hide} choice={choice} />
     ));
 };
 
-const DeleteCollectionForm = ({ hide, id }: { hide: () => void; id: string }) => {
+const DeleteChoiceForm = ({ hide, id }: { hide: () => void; id: string }) => {
     const client = useClient();
 
     const remove = async () => {
-        await client.mutateDiscoverCollectionsDelete({
+        await client.mutateDiscoverEditorsChoiceDelete({
             id: id,
         });
-        await client.refetchDiscoverCollections({ first: 50 });
+        await client.refetchDiscoverEditorsChoice();
         hide();
     };
 
@@ -210,23 +194,22 @@ const DeleteCollectionForm = ({ hide, id }: { hide: () => void; id: string }) =>
     );
 };
 
-export const showDeleteCollectionModal = (id: string) => {
+export const showDeleteChoiceModal = (id: string) => {
     showModalBox(
         {
-            title: 'Remove Super Admin',
+            title: 'Delete choice',
         },
-        ctx => <DeleteCollectionForm hide={ctx.hide} id={id} />,
+        ctx => <DeleteChoiceForm hide={ctx.hide} id={id} />,
     );
 };
 
-const CollectionsFragment = React.memo(() => {
+const ChoiceFragment = React.memo(() => {
     const client = useClient();
-    const discoverCollections = client.useDiscoverCollections({ first: 50 }).discoverCollections;
-    if (!discoverCollections) {
-        return <XView>hasn't collections</XView>;
-    }
+    const choiceCollection = client.useDiscoverEditorsChoice().discoverEditorsChoice;
 
-    const collections = discoverCollections.items;
+    if (!choiceCollection) {
+        return null;
+    }
 
     const getAvatar = (uuid: string) => {
         return `https://ucarecdn.com/${uuid}/-/format/auto/-/scale_crop/40x40/center/`;
@@ -234,12 +217,11 @@ const CollectionsFragment = React.memo(() => {
 
     return (
         <XView>
-            {collections.map(i => (
+            {choiceCollection.map(i => (
                 <UListItem
                     key={i.id}
-                    title={i.title}
-                    description={`${i.chatsCount} chats`}
-                    avatar={{ photo: getAvatar(i.image.uuid), title: i.title, id: i.id }}
+                    title={i.chat.title}
+                    avatar={{ photo: getAvatar(i.image.uuid), title: i.chat.title, id: i.id }}
                     onClick={() => null}
                     rightElement={
                         <XView flexDirection="row">
@@ -247,12 +229,12 @@ const CollectionsFragment = React.memo(() => {
                                 text="Delete"
                                 style="danger"
                                 size="small"
-                                onClick={() => showDeleteCollectionModal(i.id)}
+                                onClick={() => showDeleteChoiceModal(i.id)}
                             />
                             <UButton
                                 text="Edit"
                                 size="small"
-                                onClick={() => showEditCollectionModal(i)}
+                                onClick={() => showEditChoiceModal(i)}
                             />
                         </XView>
                     }
@@ -266,9 +248,9 @@ export default withApp('Super Admins', ['super-admin', 'software-developer'], ()
     return (
         <DevToolsScaffold title="Edit collections">
             <XView flexDirection="row" justifyContent="flex-end">
-                <UButton text="Create new" onClick={() => showEditCollectionModal()} />
+                <UButton text="Create new" onClick={() => showEditChoiceModal()} />
             </XView>
-            <CollectionsFragment />
+            <ChoiceFragment />
         </DevToolsScaffold>
     );
 });
