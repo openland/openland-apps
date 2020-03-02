@@ -246,7 +246,7 @@ const ChoiceFragment = React.memo(() => {
 
 export default withApp('Super Admins', ['super-admin', 'software-developer'], () => {
     return (
-        <DevToolsScaffold title="Edit collections">
+        <DevToolsScaffold title="Edit choice">
             <XView flexDirection="row" justifyContent="flex-end">
                 <UButton text="Create new" onClick={() => showEditChoiceModal()} />
             </XView>
