@@ -67,6 +67,7 @@ export class MobileMessenger {
     readonly notifications: ASDataView<NotificationsDataSourceItem>;
 
     private dialogs?: ASDataView<DialogDataSourceItem>;
+    private prevDialogsCb: (index: number) => void = () => {/* noop */};
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>>();
     private readonly sharedMedias = new Map<string, Map<string, ASDataView<SharedMediaDataSourceItem>>>();
 
@@ -81,7 +82,7 @@ export class MobileMessenger {
     }
 
     getDialogs = (setTab: (index: number) => void) => {
-        if (!this.dialogs) {
+        if (!this.dialogs || this.prevDialogsCb !== setTab) {
             let onDiscoverPress = () => {
                 setTab(0);
             };
@@ -96,6 +97,7 @@ export class MobileMessenger {
                 item => <DialogItemViewAsync item={item} onPress={this.handleDialogClick} onDiscoverPress={onDiscoverPress} showDiscover={showDiscover} />
             );
         }
+        this.prevDialogsCb = setTab;
         return this.dialogs;
     }
 
