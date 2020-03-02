@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
-import { View, ScrollView, Image, Text, TouchableWithoutFeedback } from 'react-native';
+import { View, ScrollView, Text, TouchableWithoutFeedback } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { plural } from 'openland-y-utils/plural';
 import { SRouterContext } from 'react-native-s/SRouterContext';
+import FastImage from 'react-native-fast-image';
 
 const items = [
     {   
@@ -56,7 +57,7 @@ const EditorsChoiceItem = (props: EditorsChoiceItemProps) => {
         <View style={{width: 343, height: 264, marginRight: 8}}>
             <TouchableWithoutFeedback onPress={onPress}>
                 <View flexDirection="column" borderRadius={RadiusStyles.Large} paddingTop={8} paddingBottom={6}>
-                <Image 
+                <FastImage 
                     source={{uri: props.cover}}
                     style={{
                         width: 343, 

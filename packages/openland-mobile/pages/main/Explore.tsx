@@ -22,7 +22,7 @@ import { DiscoverCollectionsList } from './components/discover/DiscoverCollectio
 export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) => {
     const theme = useTheme();
     let discoverSeed = Math.floor(Math.random() * 100);
-    let rooms = getClient().useExploreRooms({seed: discoverSeed}, { fetchPolicy: 'network-only' });
+    let rooms = getClient().useExploreRooms({seed: discoverSeed}, { fetchPolicy: 'cache-and-network' });
     let suggestedRooms = rooms.suggestedRooms || [];
     let newRooms = rooms.discoverNewAndGrowing.items || [];
     let popularRooms = rooms.discoverPopularNow.items || [];

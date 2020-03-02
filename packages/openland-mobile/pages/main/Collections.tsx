@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SFlatList } from 'react-native-s/SFlatList';
-import { View, TouchableWithoutFeedback, Image, Text, PixelRatio } from 'react-native';
+import { View, TouchableWithoutFeedback, Text, PixelRatio } from 'react-native';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { plural } from 'openland-y-utils/plural';
@@ -10,6 +10,8 @@ import { DiscoverChatsCollection } from 'openland-api/spacex.types';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { SRouter } from 'react-native-s/SRouter';
+import FastImage from 'react-native-fast-image';
+import { useClient } from 'openland-api/useClient';
 
 export const layoutCollection = () => ({
         width: Math.round(167 * PixelRatio.get()),
@@ -44,10 +46,10 @@ const Collection = (props: CollectionProps) => {
         <View style={{width: 375, height: 264, padding: 16}}>
             <TouchableWithoutFeedback onPress={onPress}>
                 <View flexDirection="column" borderRadius={RadiusStyles.Large} paddingTop={8} paddingBottom={6}>
-                    <Image 
+                    <FastImage 
                         source={{uri: path}}
                         style={{
-                            width: 343, 
+                            width: 343,
                             height: 192, 
                             borderRadius: RadiusStyles.Large, 
                             borderWidth: 0.5,
@@ -70,9 +72,30 @@ const Collection = (props: CollectionProps) => {
 const CollectionsComponent = () => {
     let router = React.useContext(SRouterContext)!;
     let initialCollections = router.params.initialCollections as DiscoverChatsCollection[];
-    let [loading] = React.useState(false);
-    let [collections] = React.useState(initialCollections);
-    let handleLoadMore = () => {/** noop */};
+    let initialAfter = router.params.initialAfter as string | null;
+    let [loading, setLoading] = React.useState(false);
+    let [collections, setCollections] = React.useState(initialCollections);
+    let [after, setAfter] = React.useState(initialAfter);
+    let client = useClient();
+    let handleLoadMore = async () => {
+        if (!loading && !!after) {
+            setLoading(true);
+            let res = (await client.queryDiscoverCollections({ after, first: 10 }, { fetchPolicy: 'network-only' })).discoverCollections;
+            if (!res) {
+                return;
+            }
+            let {items, cursor} = res;
+
+            if (items.length < 10) {
+                setAfter('');
+            } else {
+                setAfter(cursor);
+            }
+
+            setCollections(prevItems => ([...prevItems, ...items]));
+            setLoading(false);
+        }
+    };
 
     return (
         <>
