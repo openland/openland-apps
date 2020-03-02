@@ -27,6 +27,9 @@ export const DiscoverFragment = React.memo(() => {
                     <UListItem title="Home" path="/discover/home" />
                     <UListItem title="New and growing" path="/discover/new" />
                     <UListItem title="Groups" path="/discover/groups" />
+                    <UListItem title="Top premium" path="/discover/premium" />
+                    <UListItem title="Top free" path="/discover/free" />
+                    <UListItem title="Collections" path="/discover/collections" />
                     <UListItem title="Popular now" path="/discover/popular" />
                     <UListItem
                         title="Recommendations"

@@ -82,8 +82,8 @@ export const DiscoverHomeFragment = React.memo(() => {
 
                 <XView marginBottom={40}>
                     <div className={listingsContainer}>
-                        <ListingCompact title="Top premium" items={topPremiumItems} />
-                        <ListingCompact title="Top free" items={topFreeItems} />
+                        <ListingCompact title="Top premium" items={topPremiumItems} path="/discover/premium" />
+                        <ListingCompact title="Top free" items={topFreeItems} path="/discover/free" />
                     </div>
                 </XView>
 

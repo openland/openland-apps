@@ -73,6 +73,12 @@ routes.add('/discover/popular', '/unicorn/index');
 routes.add('/discover/popular/', '/unicorn/index');
 routes.add('/discover/new', '/unicorn/index');
 routes.add('/discover/new/', '/unicorn/index');
+routes.add('/discover/collections', '/unicorn/index');
+routes.add('/discover/collections/', '/unicorn/index');
+routes.add('/discover/premium', '/unicorn/index');
+routes.add('/discover/premium/', '/unicorn/index');
+routes.add('/discover/free', '/unicorn/index');
+routes.add('/discover/free/', '/unicorn/index');
 
 //
 // Onboardinng
