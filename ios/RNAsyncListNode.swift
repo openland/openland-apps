@@ -500,7 +500,12 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           c!.setSpec(spec: state.items[index].config)
           self.state = state
            // hack for disabling animations
-           self.node.moveItem(at: IndexPath(item: index, section: 1), to: IndexPath(item: index, section: 1))
+          if #available(iOS 13, *) {
+              // hack is not needed anymore, actually it breaks rendering
+          } else {
+             self.node.moveItem(at: IndexPath(item: index, section: 1), to: IndexPath(item: index, section: 1))
+          }
+          
         }, completion: nil)
       }
     }
