@@ -4,6 +4,7 @@ import { UHeader } from 'openland-unicorn/UHeader';
 import { useClient } from 'openland-api/useClient';
 import { css } from 'linaria';
 import { DiscoverCollection } from './components/DiscoverCollection';
+import { XView } from 'react-mental';
 
 const collectionsContainer = css`
     margin-top: 20px;
@@ -30,7 +31,9 @@ export const DiscoverCollectionsFragment = React.memo(() => {
 
             <div className={collectionsContainer}>
                 {collectionsItems.map((collection => (
-                    <DiscoverCollection {...collection} />
+                    <XView marginBottom={32} marginRight={16}>
+                        <DiscoverCollection {...collection} />
+                    </XView>
                 )))}
             </div>
 

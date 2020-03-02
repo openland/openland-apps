@@ -7,12 +7,22 @@ import { XView } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { DiscoverCollection } from './components/DiscoverCollection';
+import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 
 const slide = css`
     width: 100%;
     height: 200px;
     background: grey;
     flex-shrink: 0;
+`;
+
+const sliderCollectionItem = css`
+    width: 192px;
+    flex-shrink: 0;
+
+    &:last-child {
+        width: 176px;
+    }
 `;
 
 const listingsContainer = css`
@@ -53,30 +63,38 @@ export const DiscoverHomeFragment = React.memo(() => {
     const collections = client.useDiscoverCollections({ first: 20 });
     const collectionsItems = collections.discoverCollections!.items;
 
+    const isTabVisible = useVisibleTab();
+
     return (
         <Page track="discover_home">
             <UHeader title="Home" />
 
             <XView paddingHorizontal={16}>
-                <USlider title="Editors choice">
-                    <div className={slide}>one</div>
-                    <div className={slide}>two</div>
-                    <div className={slide}>three</div>
-                    <div className={slide}>four</div>
-                </USlider>
+                {isTabVisible && (
+                    <USlider title="Editors choice">
+                        <div className={slide}>one</div>
+                        <div className={slide}>two</div>
+                        <div className={slide}>three</div>
+                        <div className={slide}>four</div>
+                    </USlider>
+                )}
 
                 <div className={listingsContainer}>
                     <ListingCompact title="New and growing" items={newAndGrowingItems} path="/discover/new" />
                     <ListingCompact title="Popular now" items={popularNowItems} path="/discover/popular" />
                 </div>
 
-                <USlider title="Collections" path="/discover/collections">
-                    {collectionsItems.map(collection => (
-                        <DiscoverCollection {...collection} />
-                    ))}
-                </USlider>
+                {isTabVisible && (
+                    <USlider title="Collections" path="/discover/collections">
+                        {collectionsItems.map(collection => (
+                            <div className={sliderCollectionItem}>
+                                <DiscoverCollection {...collection} />
+                            </div>
+                        ))}
+                    </USlider>
+                )}
 
-                <XView marginBottom={40} marginTop={-44}>
+                <XView marginBottom={40}>
                     <div className={listingsContainer}>
                         <ListingCompact title="Top premium" items={topPremiumItems} path="/discover/premium" />
                         <ListingCompact title="Top free" items={topFreeItems} path="/discover/free" />

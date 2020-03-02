@@ -41,7 +41,7 @@ interface USliderProps {
     children?: React.ReactNode;
 }
 
-export const USlider = React.memo((props: USliderProps) => {
+const USliderRaw = React.memo((props: USliderProps) => {
     const [offset, setOffset] = React.useState<number>(0);
     const [numChildren, setNumChildren] = React.useState<number>(0);
     const [childWidth, setChildWidth] = React.useState<number>(0);
@@ -100,39 +100,43 @@ export const USlider = React.memo((props: USliderProps) => {
     };
 
     return (
-        <React.Suspense fallback={null}>
-            <div className={root}>
-                <div className={header}>
-                    <div className={icons}>
-                        <UIconButton
-                            icon={<ArrowLeft />}
-                            size="xsmall"
-                            onClick={onPrevClick}
-                        />
+        <div className={root}>
+            <div className={header}>
+                <div className={icons}>
+                    <UIconButton
+                        icon={<ArrowLeft />}
+                        size="xsmall"
+                        onClick={onPrevClick}
+                    />
 
-                        <UIconButton
-                            size="xsmall"
-                            icon={<ArrowRight />}
-                            onClick={onNextClick}
-                        />
-                    </div>
-                    {props.title && (
-                        <XView path={props.path ? props.path : undefined} flexDirection="row" alignItems="center" cursor={props.path ? 'pointer' : undefined}>
-                            <h2 className={TextTitle3}>{props.title}</h2>
-                            {props.path && (
-                                <XView marginLeft={8}>
-                                    <ArrowRight />
-                                </XView>
-                            )}
-                        </XView>
-                    )}
+                    <UIconButton
+                        size="xsmall"
+                        icon={<ArrowRight />}
+                        onClick={onNextClick}
+                    />
                 </div>
-                <div className={slider} ref={sliderRef}>
-                    <div className={blanket} style={blanketStyle} ref={blanketRef}>
-                        {props.children}
-                    </div>
+                {props.title && (
+                    <XView path={props.path ? props.path : undefined} flexDirection="row" alignItems="center" cursor={props.path ? 'pointer' : undefined}>
+                        <h2 className={TextTitle3}>{props.title}</h2>
+                        {props.path && (
+                            <XView marginLeft={8}>
+                                <ArrowRight />
+                            </XView>
+                        )}
+                    </XView>
+                )}
+            </div>
+            <div className={slider} ref={sliderRef}>
+                <div className={blanket} style={blanketStyle} ref={blanketRef}>
+                    {props.children}
                 </div>
             </div>
-        </React.Suspense>
+        </div>
     );
 });
+
+export const USlider = React.memo((props: USliderProps) => (
+    <React.Suspense fallback={null}>
+        <USliderRaw {...props} />
+    </React.Suspense>
+));

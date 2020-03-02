@@ -65,14 +65,14 @@ class ChatFlowLayout: UICollectionViewFlowLayout {
       isInitialLoading = true;
     }
     // Chack: Pre-Append or Append
-    if updateItems.first?.indexPathAfterUpdate?.item ?? -1 == 0,
-      updateItems.first?.updateAction == .insert,
-      !isInitialLoading {
+    if (updateItems.first?.indexPathAfterUpdate?.item ?? 0 == 0 &&
+      (updateItems.first?.updateAction == .insert || updateItems.first?.updateAction == .delete) &&
+      !isInitialLoading) {
       self.isPrepend = true
     } else {
       return
     }
-    
+
     // Calculate Offset
     let inserts = updateItems.filter { $0.updateAction == .insert }
     let paths = inserts.map { $0.indexPathAfterUpdate }

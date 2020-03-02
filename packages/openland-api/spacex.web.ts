@@ -2564,6 +2564,27 @@ const DiscoverCollectionsSelector = obj(
                     field('cursor', 'cursor', args(), scalar('String'))
                 ))
         );
+const DiscoverEditorsChoiceSelector = obj(
+            field('discoverEditorsChoice', 'discoverEditorsChoice', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('image', 'image', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('uuid', 'uuid', args(), notNull(scalar('String'))),
+                            field('crop', 'crop', args(), obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    field('x', 'x', args(), notNull(scalar('Int'))),
+                                    field('y', 'y', args(), notNull(scalar('Int'))),
+                                    field('w', 'w', args(), notNull(scalar('Int'))),
+                                    field('h', 'h', args(), notNull(scalar('Int')))
+                                ))
+                        ))),
+                    field('chat', 'chat', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('SharedRoom', DiscoverSharedRoomSelector)
+                        )))
+                )))))
+        );
 const DiscoverIsDoneSelector = obj(
             field('betaIsDiscoverDone', 'betaIsDiscoverDone', args(), notNull(scalar('Boolean')))
         );
@@ -2680,14 +2701,6 @@ const ExploreRoomsSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('SharedRoom', DiscoverSharedRoomSelector)
                 ))))),
-            field('discoverCollections', 'discoverCollections', args(fieldValue("first", intValue(5))), obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('items', 'items', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            fragment('DiscoverChatsCollection', DiscoverChatsCollectionSelector)
-                        ))))),
-                    field('cursor', 'cursor', args(), scalar('String'))
-                )),
             field('discoverTopPremium', 'discoverTopPremium', args(fieldValue("first", intValue(5))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('items', 'items', args(), notNull(list(notNull(obj(
@@ -5133,6 +5146,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query DiscoverCollections($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename ...DiscoverChatsCollection}cursor}}fragment DiscoverChatsCollection on DiscoverChatsCollection{__typename id title chatsCount chats{__typename ...DiscoverSharedRoom}image{__typename uuid crop{__typename x y w h}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
         selector: DiscoverCollectionsSelector
     },
+    DiscoverEditorsChoice: {
+        kind: 'query',
+        name: 'DiscoverEditorsChoice',
+        body: 'query DiscoverEditorsChoice{discoverEditorsChoice{__typename id image{__typename uuid crop{__typename x y w h}}chat{__typename ...DiscoverSharedRoom}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
+        selector: DiscoverEditorsChoiceSelector
+    },
     DiscoverIsDone: {
         kind: 'query',
         name: 'DiscoverIsDone',
@@ -5184,7 +5203,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ExploreRooms: {
         kind: 'query',
         name: 'ExploreRooms',
-        body: 'query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:5,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverCollections(first:5){__typename items{__typename ...DiscoverChatsCollection}cursor}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}fragment DiscoverChatsCollection on DiscoverChatsCollection{__typename id title chatsCount chats{__typename ...DiscoverSharedRoom}image{__typename uuid crop{__typename x y w h}}}',
+        body: 'query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:5,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
         selector: ExploreRoomsSelector
     },
     FeatureFlags: {
