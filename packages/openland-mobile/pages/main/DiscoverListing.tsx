@@ -71,7 +71,7 @@ const FollowButton = React.memo((props: FollowButtonProps) => {
     );
 });
 
-type ListingType = 'new' | 'popular' | 'top-free' | 'top-premium';
+type ListingType = 'new' | 'popular' | 'top-free' | 'top-premium' | 'collections';
 interface UseFetchMoreRoomsArgs {
     first: number;
     initialAfter: string;
@@ -86,6 +86,9 @@ const useFetchMoreRooms = ({first, type, seed, initialAfter, initialRooms}: UseF
     const [after, setAfter] = React.useState<string | null>(initialAfter);
 
     const loadMore = async () => {
+        if (type === 'collections') {
+            return;
+        }
         if (!loading && !!after) {
             setLoading(true);
             let items: Types.DiscoverSharedRoom[] = [], cursor: string | null = null;

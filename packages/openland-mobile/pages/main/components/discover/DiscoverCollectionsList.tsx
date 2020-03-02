@@ -5,53 +5,41 @@ import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { plural } from 'openland-y-utils/plural';
 import { SRouterContext } from 'react-native-s/SRouterContext';
+import { DiscoverChatsCollection } from 'openland-api/spacex.types';
+import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
+import { layoutCollection } from 'openland-mobile/pages/main/Collections';
 
-const items = [
-    {   
-        id: 'vmZR69a4k0FoqJEJDykRIyeZ3q',
-        title: 'The State of socialThe State of socialThe State of socialThe State of socialThe State of socialThe State of socialThe State of social', 
-        groups: 128,
-        cover: '',
-    },
-    {
-        id: 'vmZR69a4k0FoqJEJDykRIyeZ3q',
-        title: 'The State of social', 
-        groups: 1,
-        cover: '',
-    },
-    {
-        id: 'vmZR69a4k0FoqJEJDykRIyeZ3q',
-        title: 'The State of social', 
-        groups: 128,
-        cover: '',
-    },
-    {
-        id: 'vmZR69a4k0FoqJEJDykRIyeZ3q',
-        title: 'The State of social', 
-        groups: 128,
-        cover: '',
-    },
-];
-
-interface DiscoverCollectionsItemProps {
-    id: string;
-    cover: string;
-    title: string;
-    groups: number;
+interface DiscoverCollectionsItem {
+    item: DiscoverChatsCollection;
 }
 
-const DiscoverCollectionsItem = (props: DiscoverCollectionsItemProps) => {
+const DiscoverCollectionsItem = (props: DiscoverCollectionsItem) => {
     const theme = useTheme();
     const router = React.useContext(SRouterContext)!;
     const onPress = React.useCallback(() => {
-        router.push('Conversation', {id: props.id});
-    }, [props.id]);
+        router.push('DiscoverListing', {
+            initialRooms: props.item.chats,
+            type: 'collections',
+            title: props.item.title,
+        });
+    }, [props.item.id]);
+    const {image} = props.item;
+    const [path, setPath] = React.useState('');
+
+    React.useEffect(() => {
+        return DownloadManagerInstance.watch(image.uuid, layoutCollection(), state => {
+            if (state.path) {
+                setPath(state.path);
+            }
+        });
+    }, [image]);
+
     return (
         <View style={{width: 167, height: 162, marginRight: 8}}>
             <TouchableWithoutFeedback onPress={onPress}>
                 <View flexDirection="column" borderRadius={RadiusStyles.Large} paddingVertical={8}>
                     <Image 
-                        source={{uri: props.cover}}
+                        source={{uri: path}}
                         style={{
                             width: 167, 
                             height: 94, 
@@ -62,9 +50,9 @@ const DiscoverCollectionsItem = (props: DiscoverCollectionsItemProps) => {
                         }}
                     />
                     <View flexGrow={1} flexShrink={1} flexDirection="column">
-                        <Text style={{...TextStyles.Label1, color: theme.foregroundPrimary}} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{props.title}</Text>
+                        <Text style={{...TextStyles.Label1, color: theme.foregroundPrimary}} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{props.item.title}</Text>
                         <Text style={{...TextStyles.Subhead, color: theme.foregroundTertiary}} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
-                            {plural(props.groups, ['group', 'groups'])}
+                            {plural(props.item.chatsCount, ['group', 'groups'])}
                         </Text>
                     </View>
                 </View>
@@ -73,12 +61,25 @@ const DiscoverCollectionsItem = (props: DiscoverCollectionsItemProps) => {
     );
 };
 
-export const DiscoverCollectionsList = () => {
+interface DiscoverCollectionsListProps {
+    collections: DiscoverChatsCollection[];
+    after: string | null;
+}
 
-    return (
-        <ZListGroup header="Collections" >
+export const DiscoverCollectionsList = (props: DiscoverCollectionsListProps) => {
+    let router = React.useContext(SRouterContext)!;
+    return (    
+        <ZListGroup
+            header="Collections" 
+            actionRight={props.collections.length === 5 ? {
+                title: 'See all', onPress: () => router.push('Collections', {
+                    initialCollections: props.collections,
+                    after: props.after,
+                })
+            } : undefined}
+        >
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} paddingLeft={16}>
-                {items.map((item, i) => <DiscoverCollectionsItem key={i} {...item} />)}
+                {props.collections.map((item, i) => <DiscoverCollectionsItem key={i} item={item} />)}
                 <View width={24} />
             </ScrollView>
         </ZListGroup>

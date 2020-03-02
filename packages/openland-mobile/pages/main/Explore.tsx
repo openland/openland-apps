@@ -22,12 +22,13 @@ import { DiscoverCollectionsList } from './components/discover/DiscoverCollectio
 export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) => {
     const theme = useTheme();
     let discoverSeed = Math.floor(Math.random() * 100);
-    let rooms = getClient().useExploreRooms({seed: discoverSeed}, { fetchPolicy: 'cache-and-network' });
+    let rooms = getClient().useExploreRooms({seed: discoverSeed}, { fetchPolicy: 'network-only' });
     let suggestedRooms = rooms.suggestedRooms || [];
     let newRooms = rooms.discoverNewAndGrowing.items || [];
     let popularRooms = rooms.discoverPopularNow.items || [];
     let topFreeRooms = rooms.discoverTopFree.items || [];
     let topPremiumRooms = rooms.discoverTopPremium.items || [];
+    let collections = rooms.discoverCollections && rooms.discoverCollections.items || [];
 
     return (
         <>
@@ -89,7 +90,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                 ))}
             </ZListGroup>
 
-            <DiscoverCollectionsList />
+            <DiscoverCollectionsList collections={collections} after={rooms.discoverCollections && rooms.discoverCollections.cursor} />
 
             <ZListGroup
                 header="Top premium"

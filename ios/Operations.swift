@@ -1099,6 +1099,28 @@ private let DiscoverSharedRoomSelector = obj(
             field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean")))
         )
 
+private let DiscoverChatsCollectionSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("chatsCount", "chatsCount", notNull(scalar("Int"))),
+            field("chats", "chats", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("SharedRoom", DiscoverSharedRoomSelector)
+                ))))),
+            field("image", "image", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("uuid", "uuid", notNull(scalar("String"))),
+                    field("crop", "crop", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("x", "x", notNull(scalar("Int"))),
+                            field("y", "y", notNull(scalar("Int"))),
+                            field("w", "w", notNull(scalar("Int"))),
+                            field("h", "h", notNull(scalar("Int")))
+                        ))
+                )))
+        )
+
 private let FeedChannelFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -2530,20 +2552,7 @@ private let DiscoverCollectionsSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("title", "title", notNull(scalar("String"))),
-                            field("chatsCount", "chatsCount", notNull(scalar("Int"))),
-                            field("image", "image", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("uuid", "uuid", notNull(scalar("String"))),
-                                    field("crop", "crop", obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("x", "x", notNull(scalar("Int"))),
-                                            field("y", "y", notNull(scalar("Int"))),
-                                            field("w", "w", notNull(scalar("Int"))),
-                                            field("h", "h", notNull(scalar("Int")))
-                                        ))
-                                )))
+                            fragment("DiscoverChatsCollection", DiscoverChatsCollectionSelector)
                         ))))),
                     field("cursor", "cursor", scalar("String"))
                 ))
@@ -2664,6 +2673,14 @@ private let ExploreRoomsSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("SharedRoom", DiscoverSharedRoomSelector)
                 ))))),
+            field("discoverCollections", "discoverCollections", arguments(fieldValue("first", intValue(5))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("DiscoverChatsCollection", DiscoverChatsCollectionSelector)
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                )),
             field("discoverTopPremium", "discoverTopPremium", arguments(fieldValue("first", intValue(5))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
@@ -5046,7 +5063,7 @@ class Operations {
     let DiscoverCollections = OperationDefinition(
         "DiscoverCollections",
         .query, 
-        "query DiscoverCollections($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename id title chatsCount image{__typename uuid crop{__typename x y w h}}}cursor}}",
+        "query DiscoverCollections($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename ...DiscoverChatsCollection}cursor}}fragment DiscoverChatsCollection on DiscoverChatsCollection{__typename id title chatsCount chats{__typename ...DiscoverSharedRoom}image{__typename uuid crop{__typename x y w h}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         DiscoverCollectionsSelector
     )
     let DiscoverIsDone = OperationDefinition(
@@ -5100,7 +5117,7 @@ class Operations {
     let ExploreRooms = OperationDefinition(
         "ExploreRooms",
         .query, 
-        "query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:5,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
+        "query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:5,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverCollections(first:5){__typename items{__typename ...DiscoverChatsCollection}cursor}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}fragment DiscoverChatsCollection on DiscoverChatsCollection{__typename id title chatsCount chats{__typename ...DiscoverSharedRoom}image{__typename uuid crop{__typename x y w h}}}",
         ExploreRoomsSelector
     )
     let FeatureFlags = OperationDefinition(

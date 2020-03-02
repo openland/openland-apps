@@ -1105,6 +1105,28 @@ internal val DiscoverSharedRoomSelector = obj(
             field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean")))
         )
 
+internal val DiscoverChatsCollectionSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("chatsCount", "chatsCount", notNull(scalar("Int"))),
+            field("chats", "chats", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("SharedRoom", DiscoverSharedRoomSelector)
+                ))))),
+            field("image", "image", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("uuid", "uuid", notNull(scalar("String"))),
+                    field("crop", "crop", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("x", "x", notNull(scalar("Int"))),
+                            field("y", "y", notNull(scalar("Int"))),
+                            field("w", "w", notNull(scalar("Int"))),
+                            field("h", "h", notNull(scalar("Int")))
+                        ))
+                )))
+        )
+
 internal val FeedChannelFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),

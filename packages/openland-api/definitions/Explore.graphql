@@ -19,6 +19,24 @@ fragment DiscoverSharedRoom on SharedRoom {
     premiumPassIsActive
 }
 
+fragment DiscoverChatsCollection on DiscoverChatsCollection {
+    id
+    title
+    chatsCount
+    chats {
+        ...DiscoverSharedRoom
+    }
+    image {
+        uuid
+        crop {
+            x
+            y
+            w
+            h
+        }
+    }
+}
+
 query ExploreRooms($seed: Int!) {
     discoverNewAndGrowing(first: 5, seed: $seed) {
         items {
@@ -34,6 +52,12 @@ query ExploreRooms($seed: Int!) {
     }
     suggestedRooms: betaSuggestedRooms {
         ...DiscoverSharedRoom
+    }
+    discoverCollections(first: 5) {
+        items {
+            ...DiscoverChatsCollection
+        }
+        cursor
     }
     discoverTopPremium(first: 5) {
         items {
@@ -189,18 +213,7 @@ query DiscoverTopFree($first: Int!, $after: String) {
 query DiscoverCollections($first: Int!, $after: String) {
     discoverCollections(first: $first, after: $after) {
         items {
-            id
-            title
-            chatsCount
-            image {
-                uuid
-                crop {
-                    x
-                    y
-                    w
-                    h
-                }
-            }
+            ...DiscoverChatsCollection
         }
         cursor
     }
