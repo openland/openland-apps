@@ -80,6 +80,9 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     if #available(iOS 11.0, *) {
       self.node.view.contentInsetAdjustmentBehavior = .never
     }
+    if #available(iOS 13.0, *) {
+      self.node.view.automaticallyAdjustsScrollIndicatorInsets = false
+    }
     self.node.view.alwaysBounceVertical = true
     self.dataViewUnsubscribe = self.dataView.watch(delegate: self)
     self.viewLoaded = true
