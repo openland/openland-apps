@@ -61,7 +61,7 @@ export const DiscoverHomeFragment = React.memo(() => {
             <UHeader title="Home" />
 
             <XView paddingHorizontal={16}>
-                <USlider>
+                <USlider title="Editors choice">
                     <div className={slide}>one</div>
                     <div className={slide}>two</div>
                     <div className={slide}>three</div>
@@ -73,7 +73,7 @@ export const DiscoverHomeFragment = React.memo(() => {
                     <ListingCompact title="Popular now" items={popularNowItems} path="/discover/popular" />
                 </div>
 
-                <USlider>
+                <USlider title="Collections" path="/discover/collections">
                     <div className={slideNarrow}>one</div>
                     <div className={slideNarrow}>two</div>
                     <div className={slideNarrow}>three</div>

@@ -4,6 +4,7 @@ import ArrowRight from 'openland-icons/s/ic-arrow-right-16.svg';
 import ArrowLeft from 'openland-icons/s/ic-arrow-left-16.svg';
 
 import { UIconButton } from './UIconButton';
+import { XView } from 'react-mental';
 
 const root = css`
     display: flex;
@@ -21,16 +22,33 @@ const blanket = css`
 `;
 
 const icons = css`
-    align-self: flex-end;
     display: flex;
-    margin-bottom: 16px;
 `;
 
-export const USlider = React.memo((props) => {
+const header = css`
+    margin-bottom: 8px;
+
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+interface USliderProps {
+    title?: string;
+    path?: string;
+    children?: React.ReactNode;
+}
+
+export const USlider = React.memo((props: USliderProps) => {
     const [offset, setOffset] = React.useState<number>(0);
     const [numChildren, setNumChildren] = React.useState<number>(0);
     const [childWidth, setChildWidth] = React.useState<number>(0);
     const [currentSlide, setCurrentSlide] = React.useState<number>(0);
+
+    if (!props.children) {
+        return null;
+    }
 
     const blanketStyle = {
         transform: `translateX(${offset}px)`
@@ -85,18 +103,30 @@ export const USlider = React.memo((props) => {
 
     return (
         <div className={root}>
-            <div className={icons}>
-                <UIconButton
-                    icon={<ArrowLeft />}
-                    size="xsmall"
-                    onClick={onPrevClick}
-                />
+            <div className={header}>
+                <div className={icons}>
+                    <UIconButton
+                        icon={<ArrowLeft />}
+                        size="xsmall"
+                        onClick={onPrevClick}
+                    />
 
-                <UIconButton
-                    size="xsmall"
-                    icon={<ArrowRight />}
-                    onClick={onNextClick}
-                />
+                    <UIconButton
+                        size="xsmall"
+                        icon={<ArrowRight />}
+                        onClick={onNextClick}
+                    />
+                </div>
+                {props.title && (
+                    <XView path={props.path ? props.path : undefined} flexDirection="row" alignItems="center" cursor={props.path ? 'pointer' : undefined}>
+                        <h2>{props.title}</h2>
+                        {props.path && (
+                            <XView marginLeft={8}>
+                                <ArrowRight />
+                            </XView>
+                        )}
+                    </XView>
+                )}
             </div>
             <div className={slider} ref={sliderRef}>
                 <div className={blanket} style={blanketStyle} ref={blanketRef}>
