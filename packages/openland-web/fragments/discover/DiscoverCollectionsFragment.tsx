@@ -29,6 +29,11 @@ const collectionPhoto = css`
     margin-bottom: 16px;
 `;
 
+const pluralizeGroupsCount = (count: number): string => {
+    const strCount = count.toString();
+    return strCount === '1' ? `${count} group` : `${count} groups`;
+};
+
 const Collection = React.memo((props: DiscoverCollections_discoverCollections_items) => {
     return (
         <XView path={`/discover/collections/${props.id}`} cursor="pointer">
@@ -38,7 +43,7 @@ const Collection = React.memo((props: DiscoverCollections_discoverCollections_it
                 </div>
                 <h2 className={TextLabel1}>{props.title}</h2>
                 <XView color="var(--foregroundSecondary)">
-                    <span className={TextSubhead}>{props.chatsCount} groups</span>
+                    <span className={TextSubhead}>{pluralizeGroupsCount(props.chatsCount)}</span>
                 </XView>
             </div>
         </XView>
