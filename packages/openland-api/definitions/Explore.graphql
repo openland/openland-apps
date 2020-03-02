@@ -205,3 +205,12 @@ query DiscoverCollections($first: Int!, $after: String) {
         cursor
     }
 }
+query DiscoverCollection($id: ID!) {
+    discoverCollection(id: $id) {
+        id
+        title
+        chats {
+            ...DiscoverSharedRoom
+        }
+    }
+}

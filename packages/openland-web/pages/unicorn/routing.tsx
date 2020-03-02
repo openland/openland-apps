@@ -38,6 +38,7 @@ import { DiscoverNewAndGrowingFragment } from 'openland-web/fragments/discover/D
 import { DiscoverCollectionsFragment } from 'openland-web/fragments/discover/DiscoverCollectionsFragment';
 import { DiscoverTopPremiumFragment } from 'openland-web/fragments/discover/DiscoverTopPremiumFragment';
 import { DiscoverTopFreeFragment } from 'openland-web/fragments/discover/DiscoverTopFreeFragment';
+import { DiscoverCollectionFragment } from 'openland-web/fragments/discover/DiscoverCollectionFragment';
 
 // temporary stub for /mail/ -> not found bug
 const TemporaryStubMail = React.memo(() => {
@@ -101,6 +102,7 @@ routing.addRoute('/discover/groups', () => DiscoverGroupsFragment);
 routing.addRoute('/discover/popular', () => DiscoverPopularNowFragment);
 routing.addRoute('/discover/new', () => DiscoverNewAndGrowingFragment);
 routing.addRoute('/discover/collections', () => DiscoverCollectionsFragment);
+routing.addRoute('/discover/collections/:collectionId', () => DiscoverCollectionFragment);
 routing.addRoute('/discover/premium', () => DiscoverTopPremiumFragment);
 routing.addRoute('/discover/free', () => DiscoverTopFreeFragment);
 

@@ -2521,6 +2521,17 @@ const DialogsSelector = obj(
                     field('unreadCount', 'unreadCount', args(), notNull(scalar('Int')))
                 )))
         );
+const DiscoverCollectionSelector = obj(
+            field('discoverCollection', 'discoverCollection', args(fieldValue("id", refValue('id'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('title', 'title', args(), notNull(scalar('String'))),
+                    field('chats', 'chats', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('SharedRoom', DiscoverSharedRoomSelector)
+                        )))))
+                ))
+        );
 const DiscoverCollectionsSelector = obj(
             field('discoverCollections', 'discoverCollections', args(fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5028,6 +5039,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'Dialogs',
         body: 'query Dialogs($after:String){dialogs(first:20,after:$after){__typename items{__typename ...DialogFragment}cursor}state:dialogsState{__typename state}counter:alphaNotificationCounter{__typename id unreadCount}}fragment DialogFragment on Dialog{__typename id cid fid kind isChannel isPremium title photo unreadCount isMuted haveMention topMessage:alphaTopMessage{__typename ...DialogMessage}membership}fragment DialogMessage on ModernMessage{__typename id date sender{__typename id name photo firstName}message fallback ... on GeneralMessage{__typename id quotedMessages{__typename id}}}',
         selector: DialogsSelector
+    },
+    DiscoverCollection: {
+        kind: 'query',
+        name: 'DiscoverCollection',
+        body: 'query DiscoverCollection($id:ID!){discoverCollection(id:$id){__typename id title chats{__typename ...DiscoverSharedRoom}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
+        selector: DiscoverCollectionSelector
     },
     DiscoverCollections: {
         kind: 'query',

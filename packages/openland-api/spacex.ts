@@ -49,6 +49,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryDialogs(variables: Types.DialogsVariables, opts?: OperationParameters): Promise<Types.Dialogs> {
         return this.query('Dialogs', variables, opts);
     }
+    queryDiscoverCollection(variables: Types.DiscoverCollectionVariables, opts?: OperationParameters): Promise<Types.DiscoverCollection> {
+        return this.query('DiscoverCollection', variables, opts);
+    }
     queryDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts?: OperationParameters): Promise<Types.DiscoverCollections> {
         return this.query('DiscoverCollections', variables, opts);
     }
@@ -349,6 +352,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchDialogs(variables: Types.DialogsVariables, opts?: OperationParameters): Promise<Types.Dialogs> {
         return this.refetch('Dialogs', variables);
     }
+    refetchDiscoverCollection(variables: Types.DiscoverCollectionVariables, opts?: OperationParameters): Promise<Types.DiscoverCollection> {
+        return this.refetch('DiscoverCollection', variables);
+    }
     refetchDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts?: OperationParameters): Promise<Types.DiscoverCollections> {
         return this.refetch('DiscoverCollections', variables);
     }
@@ -648,6 +654,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateDialogs(variables: Types.DialogsVariables, updater: (data: Types.Dialogs) => Types.Dialogs | null): Promise<boolean> {
         return this.updateQuery(updater, 'Dialogs', variables);
+    }
+    updateDiscoverCollection(variables: Types.DiscoverCollectionVariables, updater: (data: Types.DiscoverCollection) => Types.DiscoverCollection | null): Promise<boolean> {
+        return this.updateQuery(updater, 'DiscoverCollection', variables);
     }
     updateDiscoverCollections(variables: Types.DiscoverCollectionsVariables, updater: (data: Types.DiscoverCollections) => Types.DiscoverCollections | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverCollections', variables);
@@ -976,6 +985,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useDialogs(variables: Types.DialogsVariables, opts?: SpaceQueryWatchParameters): Types.Dialogs;
     useDialogs(variables: Types.DialogsVariables, opts?: SpaceQueryWatchParameters): Types.Dialogs | null {
         return this.useQuery('Dialogs', variables, opts);
+    }
+    useDiscoverCollection(variables: Types.DiscoverCollectionVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverCollection | null;
+    useDiscoverCollection(variables: Types.DiscoverCollectionVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollection;
+    useDiscoverCollection(variables: Types.DiscoverCollectionVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollection | null {
+        return this.useQuery('DiscoverCollection', variables, opts);
     }
     useDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverCollections | null;
     useDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollections;

@@ -21,6 +21,7 @@ object Operations {
         if (name == "Conference") return Conference
         if (name == "ConferenceMedia") return ConferenceMedia
         if (name == "Dialogs") return Dialogs
+        if (name == "DiscoverCollection") return DiscoverCollection
         if (name == "DiscoverCollections") return DiscoverCollections
         if (name == "DiscoverIsDone") return DiscoverIsDone
         if (name == "DiscoverNewAndGrowing") return DiscoverNewAndGrowing

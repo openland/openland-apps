@@ -2514,6 +2514,17 @@ private let DialogsSelector = obj(
                     field("unreadCount", "unreadCount", notNull(scalar("Int")))
                 )))
         )
+private let DiscoverCollectionSelector = obj(
+            field("discoverCollection", "discoverCollection", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("title", "title", notNull(scalar("String"))),
+                    field("chats", "chats", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("SharedRoom", DiscoverSharedRoomSelector)
+                        )))))
+                ))
+        )
 private let DiscoverCollectionsSelector = obj(
             field("discoverCollections", "discoverCollections", arguments(fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5026,6 +5037,12 @@ class Operations {
         "query Dialogs($after:String){dialogs(first:20,after:$after){__typename items{__typename ...DialogFragment}cursor}state:dialogsState{__typename state}counter:alphaNotificationCounter{__typename id unreadCount}}fragment DialogFragment on Dialog{__typename id cid fid kind isChannel isPremium title photo unreadCount isMuted haveMention topMessage:alphaTopMessage{__typename ...DialogMessage}membership}fragment DialogMessage on ModernMessage{__typename id date sender{__typename id name photo firstName}message fallback ... on GeneralMessage{__typename id quotedMessages{__typename id}}}",
         DialogsSelector
     )
+    let DiscoverCollection = OperationDefinition(
+        "DiscoverCollection",
+        .query, 
+        "query DiscoverCollection($id:ID!){discoverCollection(id:$id){__typename id title chats{__typename ...DiscoverSharedRoom}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
+        DiscoverCollectionSelector
+    )
     let DiscoverCollections = OperationDefinition(
         "DiscoverCollections",
         .query, 
@@ -6386,6 +6403,7 @@ class Operations {
         if name == "Conference" { return Conference }
         if name == "ConferenceMedia" { return ConferenceMedia }
         if name == "Dialogs" { return Dialogs }
+        if name == "DiscoverCollection" { return DiscoverCollection }
         if name == "DiscoverCollections" { return DiscoverCollections }
         if name == "DiscoverIsDone" { return DiscoverIsDone }
         if name == "DiscoverNewAndGrowing" { return DiscoverNewAndGrowing }

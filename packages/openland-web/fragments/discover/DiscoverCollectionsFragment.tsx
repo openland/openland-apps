@@ -31,15 +31,17 @@ const collectionPhoto = css`
 
 const Collection = React.memo((props: DiscoverCollections_discoverCollections_items) => {
     return (
-        <div className={collectionItem}>
-            <div className={collectionPhoto}>
-                <XCloudImage photoRef={props.image} width={176} height={100} />
+        <XView path={`/discover/collections/${props.id}`} cursor="pointer">
+            <div className={collectionItem}>
+                <div className={collectionPhoto}>
+                    <XCloudImage photoRef={props.image} width={176} height={100} />
+                </div>
+                <h2 className={TextLabel1}>{props.title}</h2>
+                <XView color="var(--foregroundSecondary)">
+                    <span className={TextSubhead}>{props.chatsCount} groups</span>
+                </XView>
             </div>
-            <h2 className={TextLabel1}>{props.title}</h2>
-            <XView color="var(--foregroundSecondary)">
-                <span className={TextSubhead}>{props.chatsCount} groups</span>
-            </XView>
-        </div>
+        </XView>
     );
 });
 
