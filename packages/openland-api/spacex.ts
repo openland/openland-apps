@@ -49,6 +49,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryDialogs(variables: Types.DialogsVariables, opts?: OperationParameters): Promise<Types.Dialogs> {
         return this.query('Dialogs', variables, opts);
     }
+    queryDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts?: OperationParameters): Promise<Types.DiscoverCollections> {
+        return this.query('DiscoverCollections', variables, opts);
+    }
     queryDiscoverIsDone(opts?: OperationParameters): Promise<Types.DiscoverIsDone> {
         return this.query('DiscoverIsDone', undefined, opts);
     }
@@ -346,6 +349,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchDialogs(variables: Types.DialogsVariables, opts?: OperationParameters): Promise<Types.Dialogs> {
         return this.refetch('Dialogs', variables);
     }
+    refetchDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts?: OperationParameters): Promise<Types.DiscoverCollections> {
+        return this.refetch('DiscoverCollections', variables);
+    }
     refetchDiscoverIsDone(opts?: OperationParameters): Promise<Types.DiscoverIsDone> {
         return this.refetch('DiscoverIsDone', undefined);
     }
@@ -642,6 +648,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateDialogs(variables: Types.DialogsVariables, updater: (data: Types.Dialogs) => Types.Dialogs | null): Promise<boolean> {
         return this.updateQuery(updater, 'Dialogs', variables);
+    }
+    updateDiscoverCollections(variables: Types.DiscoverCollectionsVariables, updater: (data: Types.DiscoverCollections) => Types.DiscoverCollections | null): Promise<boolean> {
+        return this.updateQuery(updater, 'DiscoverCollections', variables);
     }
     updateDiscoverIsDone(updater: (data: Types.DiscoverIsDone) => Types.DiscoverIsDone | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverIsDone', undefined);
@@ -967,6 +976,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useDialogs(variables: Types.DialogsVariables, opts?: SpaceQueryWatchParameters): Types.Dialogs;
     useDialogs(variables: Types.DialogsVariables, opts?: SpaceQueryWatchParameters): Types.Dialogs | null {
         return this.useQuery('Dialogs', variables, opts);
+    }
+    useDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverCollections | null;
+    useDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollections;
+    useDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollections | null {
+        return this.useQuery('DiscoverCollections', variables, opts);
     }
     useDiscoverIsDone(opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverIsDone | null;
     useDiscoverIsDone(opts?: SpaceQueryWatchParameters): Types.DiscoverIsDone;

@@ -2514,6 +2514,29 @@ private let DialogsSelector = obj(
                     field("unreadCount", "unreadCount", notNull(scalar("Int")))
                 )))
         )
+private let DiscoverCollectionsSelector = obj(
+            field("discoverCollections", "discoverCollections", arguments(fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("title", "title", notNull(scalar("String"))),
+                            field("chatsCount", "chatsCount", notNull(scalar("Int"))),
+                            field("image", "image", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("uuid", "uuid", notNull(scalar("String"))),
+                                    field("crop", "crop", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("x", "x", notNull(scalar("Int"))),
+                                            field("y", "y", notNull(scalar("Int"))),
+                                            field("w", "w", notNull(scalar("Int"))),
+                                            field("h", "h", notNull(scalar("Int")))
+                                        ))
+                                )))
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                ))
+        )
 private let DiscoverIsDoneSelector = obj(
             field("betaIsDiscoverDone", "betaIsDiscoverDone", notNull(scalar("Boolean")))
         )
@@ -5003,6 +5026,12 @@ class Operations {
         "query Dialogs($after:String){dialogs(first:20,after:$after){__typename items{__typename ...DialogFragment}cursor}state:dialogsState{__typename state}counter:alphaNotificationCounter{__typename id unreadCount}}fragment DialogFragment on Dialog{__typename id cid fid kind isChannel isPremium title photo unreadCount isMuted haveMention topMessage:alphaTopMessage{__typename ...DialogMessage}membership}fragment DialogMessage on ModernMessage{__typename id date sender{__typename id name photo firstName}message fallback ... on GeneralMessage{__typename id quotedMessages{__typename id}}}",
         DialogsSelector
     )
+    let DiscoverCollections = OperationDefinition(
+        "DiscoverCollections",
+        .query, 
+        "query DiscoverCollections($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename id title chatsCount image{__typename uuid crop{__typename x y w h}}}cursor}}",
+        DiscoverCollectionsSelector
+    )
     let DiscoverIsDone = OperationDefinition(
         "DiscoverIsDone",
         .query, 
@@ -6357,6 +6386,7 @@ class Operations {
         if name == "Conference" { return Conference }
         if name == "ConferenceMedia" { return ConferenceMedia }
         if name == "Dialogs" { return Dialogs }
+        if name == "DiscoverCollections" { return DiscoverCollections }
         if name == "DiscoverIsDone" { return DiscoverIsDone }
         if name == "DiscoverNewAndGrowing" { return DiscoverNewAndGrowing }
         if name == "DiscoverNextPage" { return DiscoverNextPage }

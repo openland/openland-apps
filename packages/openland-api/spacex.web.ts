@@ -2521,6 +2521,29 @@ const DialogsSelector = obj(
                     field('unreadCount', 'unreadCount', args(), notNull(scalar('Int')))
                 )))
         );
+const DiscoverCollectionsSelector = obj(
+            field('discoverCollections', 'discoverCollections', args(fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('title', 'title', args(), notNull(scalar('String'))),
+                            field('chatsCount', 'chatsCount', args(), notNull(scalar('Int'))),
+                            field('image', 'image', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    field('uuid', 'uuid', args(), notNull(scalar('String'))),
+                                    field('crop', 'crop', args(), obj(
+                                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                            field('x', 'x', args(), notNull(scalar('Int'))),
+                                            field('y', 'y', args(), notNull(scalar('Int'))),
+                                            field('w', 'w', args(), notNull(scalar('Int'))),
+                                            field('h', 'h', args(), notNull(scalar('Int')))
+                                        ))
+                                )))
+                        ))))),
+                    field('cursor', 'cursor', args(), scalar('String'))
+                ))
+        );
 const DiscoverIsDoneSelector = obj(
             field('betaIsDiscoverDone', 'betaIsDiscoverDone', args(), notNull(scalar('Boolean')))
         );
@@ -5005,6 +5028,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'Dialogs',
         body: 'query Dialogs($after:String){dialogs(first:20,after:$after){__typename items{__typename ...DialogFragment}cursor}state:dialogsState{__typename state}counter:alphaNotificationCounter{__typename id unreadCount}}fragment DialogFragment on Dialog{__typename id cid fid kind isChannel isPremium title photo unreadCount isMuted haveMention topMessage:alphaTopMessage{__typename ...DialogMessage}membership}fragment DialogMessage on ModernMessage{__typename id date sender{__typename id name photo firstName}message fallback ... on GeneralMessage{__typename id quotedMessages{__typename id}}}',
         selector: DialogsSelector
+    },
+    DiscoverCollections: {
+        kind: 'query',
+        name: 'DiscoverCollections',
+        body: 'query DiscoverCollections($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename id title chatsCount image{__typename uuid crop{__typename x y w h}}}cursor}}',
+        selector: DiscoverCollectionsSelector
     },
     DiscoverIsDone: {
         kind: 'query',

@@ -186,3 +186,22 @@ query DiscoverTopFree($first: Int!, $after: String) {
         cursor
     }
 }
+query DiscoverCollections($first: Int!, $after: String) {
+    discoverCollections(first: $first, after: $after) {
+        items {
+            id
+            title
+            chatsCount
+            image {
+                uuid
+                crop {
+                    x
+                    y
+                    w
+                    h
+                }
+            }
+        }
+        cursor
+    }
+}

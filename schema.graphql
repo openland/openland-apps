@@ -689,6 +689,22 @@ type DiscoverPage {
   tagGroup: TagGroup
 }
 
+type EditorsChoiceChat {
+  id: ID!
+  image: ImageRef!
+  chat: SharedRoom!
+}
+
+input EditorsChoiceChatInput {
+  image: ImageRefInput!
+  cid: ID!
+}
+
+input EditorsChoiceChatUpdateInput {
+  image: ImageRefInput
+  cid: ID
+}
+
 enum EmailFrequency {
   NEVER
   MIN_15
@@ -1563,6 +1579,9 @@ type Mutation {
   discoverCollectionsCreate(collection: DiscoverChatsCollectionInput!): DiscoverChatsCollection!
   discoverCollectionsUpdate(id: ID!, input: DiscoverChatsCollectionUpdateInput!): DiscoverChatsCollection!
   discoverCollectionsDelete(id: ID!): Boolean!
+  discoverEditorsChoiceCreate(input: EditorsChoiceChatInput!): EditorsChoiceChat!
+  discoverEditorsChoiceUpdate(id: ID!, input: EditorsChoiceChatUpdateInput!): EditorsChoiceChat!
+  discoverEditorsChoiceDelete(id: ID!): Boolean!
   track(did: String!, events: [Event!]!, platform: EventPlatform, isProd: Boolean): String!
   createPowerup(input: PowerupInput!): Powerup!
   updatePowerup(id: ID!, input: PowerupInput!): Powerup!
@@ -2295,6 +2314,8 @@ type Query {
   discoverTopFree(first: Int!, after: String): SharedRoomConnection!
   discoverCollections(first: Int!, after: String): DiscoverChatsCollectionConnection
   discoverCollection(id: ID!): DiscoverChatsCollection
+  discoverEditorsChoice: [EditorsChoiceChat!]!
+  discoverEditorsChoiceChat(id: ID!): EditorsChoiceChat!
   powerups: [Powerup!]!
   chatsWithPowerup(id: ID!): [Room!]!
   chatPowerups(id: ID!): [RoomPowerup!]!
