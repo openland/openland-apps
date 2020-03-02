@@ -5,6 +5,7 @@ import ArrowLeft from 'openland-icons/s/ic-arrow-left-16.svg';
 
 import { UIconButton } from './UIconButton';
 import { XView } from 'react-mental';
+import { TextTitle3 } from 'openland-web/utils/TextStyles';
 
 const root = css`
     display: flex;
@@ -119,7 +120,7 @@ export const USlider = React.memo((props: USliderProps) => {
                 </div>
                 {props.title && (
                     <XView path={props.path ? props.path : undefined} flexDirection="row" alignItems="center" cursor={props.path ? 'pointer' : undefined}>
-                        <h2>{props.title}</h2>
+                        <h2 className={TextTitle3}>{props.title}</h2>
                         {props.path && (
                             <XView marginLeft={8}>
                                 <ArrowRight />
