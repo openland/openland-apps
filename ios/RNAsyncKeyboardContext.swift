@@ -19,7 +19,7 @@ class RNAsyncKeyboardContextView: RCTView, RNAsyncKeyboardManagerDelegate {
   
   @objc public func setContextKey(_ contextKey: String) {
     self.keyboardContextKey = contextKey
-    self.subscription = RNAsyncKeyboardManager.sharedInstance.watch(delegate: self)
+    self.subscription = RNAsyncKeyboardManager.sharedInstance.watch(delegate: self, ctx: nil)
   }
   
   @objc public func setBottomSafeInset(_ inset: CGFloat) {

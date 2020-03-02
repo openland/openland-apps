@@ -114,10 +114,10 @@ import Foundation
     self.lastCtx = "default"
   }
   
-  func watch(delegate: RNAsyncKeyboardManagerDelegate) -> ()-> Void {
+  func watch(delegate: RNAsyncKeyboardManagerDelegate, ctx: String?) -> ()-> Void {
     let key = UUID().uuidString
     self.watchers.set(key: key, value: delegate)
-    delegate.keyboardWillChangeHeight(ctx: self.lastCtx, kbHeight: CGFloat(keyboardHeight), acHeight: CGFloat(self.keyboardAcHeight))
+    delegate.keyboardWillChangeHeight(ctx: ctx ?? self.lastCtx, kbHeight: CGFloat(keyboardHeight), acHeight: CGFloat(self.keyboardAcHeight))
     return {
       self.watchers.remove(key: key)
     }

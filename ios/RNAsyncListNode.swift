@@ -42,7 +42,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var keyboardHeight: CGFloat = 0.0
   private var keyboardAcHeight: CGFloat = 0.0
   // This context references parent view and can create reference cycle
-  private weak var keyboard: RNAsyncKeyboardContextView? = nil
+  private var keyboardCtx: String? = nil
   private var overscrollCompensation = false
   private var isApplying = false
   private var didRenderContent = false
@@ -65,12 +65,10 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.node.dataSource = self
     self.node.delegate = self
     
-    print("RNAsyncListView: init node")
-    self.keyboardSubscription = RNAsyncKeyboardManager.sharedInstance.watch(delegate: self)
   }
   
   deinit {
-    print("RNAsyncListView: deinit node")
+    self.keyboardSubscription?()
   }
   
   func start() {
@@ -86,53 +84,49 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
     self.dataViewUnsubscribe = self.dataView.watch(delegate: self)
     self.viewLoaded = true
     
-    self.fixContentInset(interactive: false)
     
-    self.keyboard = self.parent.resolveKeyboardContextKey()
+    self.keyboardCtx = (self.parent.resolveKeyboardContextKey()?.keyboardContextKey) ?? "default"
+    self.keyboardSubscription = RNAsyncKeyboardManager.sharedInstance.watch(delegate: self, ctx: self.keyboardCtx)
+    
+    
   }
   
   func keyboardWillChangeHeight(ctx: String, kbHeight: CGFloat, acHeight: CGFloat) {
-    if let k = self.keyboard {
-      if k.keyboardContextKey == ctx {
-        if self.node.inverted {
-          self.keyboardHeight = kbHeight + acHeight
-          if self.keyboardAcHeight != acHeight {
-            self.keyboardAcHeight = acHeight
-            self.fixContentInset(interactive: false)
-          }
+    if self.keyboardCtx == ctx {
+      if self.node.inverted {
+         self.keyboardHeight = kbHeight + acHeight
+         if self.keyboardAcHeight != acHeight {
+           self.keyboardAcHeight = acHeight
+           self.fixContentInset(interactive: false)
+         }
 
-          print("keyboardWillChangeHeight")
-          // self.fixContentInset(interactive: true)
-        }
+         print("keyboardWillChangeHeight")
+         // self.fixContentInset(interactive: true)
       }
     }
   }
   
   func keyboardWillShow(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int) {
-    if let k = self.keyboard {
-      if k.keyboardContextKey == ctx {
-        self.keyboardVisible = true
-        self.keyboardHeight = kbHeight + acHeight
-        self.keyboardAcHeight = acHeight
-        print("keyboardWillShow")
-        UIView.animate(withDuration: duration, delay: 0.0, options: UIView.AnimationOptions(rawValue: UInt(curve)), animations: {
-          self.fixContentInset(interactive: false)
-        }, completion: nil)
-      }
+    if self.keyboardCtx == ctx {
+      self.keyboardVisible = true
+      self.keyboardHeight = kbHeight + acHeight
+      self.keyboardAcHeight = acHeight
+      print("keyboardWillShow")
+      UIView.animate(withDuration: duration, delay: 0.0, options: UIView.AnimationOptions(rawValue: UInt(curve)), animations: {
+        self.fixContentInset(interactive: false)
+      }, completion: nil)
     }
   }
   
   func keyboardWillHide(ctx: String, kbHeight: CGFloat, acHeight: CGFloat, duration: Double, curve: Int) {
-    if let k = self.keyboard {
-      if k.keyboardContextKey == ctx {
-        self.keyboardVisible = false
-        self.keyboardHeight = kbHeight + acHeight
-        self.keyboardAcHeight = acHeight
-        print("keyboardWillHide")
-        UIView.animate(withDuration: duration, delay: 0.0, options: [UIView.AnimationOptions(rawValue: UInt(curve)), UIView.AnimationOptions.beginFromCurrentState], animations: {
-          self.fixContentInset(interactive: false)
-        }, completion: nil)
-      }
+     if self.keyboardCtx == ctx {
+      self.keyboardVisible = false
+      self.keyboardHeight = kbHeight + acHeight
+      self.keyboardAcHeight = acHeight
+      print("keyboardWillHide")
+      UIView.animate(withDuration: duration, delay: 0.0, options: [UIView.AnimationOptions(rawValue: UInt(curve)), UIView.AnimationOptions.beginFromCurrentState], animations: {
+        self.fixContentInset(interactive: false)
+      }, completion: nil)
     }
   }
   
