@@ -11,9 +11,9 @@ import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { showModalBox } from 'openland-x/showModalBox';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { SelectWithDropdown } from '../components/SelectWithDropdown';
 import { FeatureFlags_featureFlags } from 'openland-api/spacex.types';
 import { UInput } from 'openland-web/components/unicorn/UInput';
+import { USelectField } from 'openland-web/components/unicorn/USelect';
 
 const ActivateButton = ({ accountId }: { accountId: string }) => {
     const client = useClient();
@@ -71,7 +71,7 @@ interface DeleteButtonProps {
     orgId: string;
 }
 
-export const showSuperDeleteOrganizationModal = ({ orgId, accountId }: DeleteButtonProps) =>
+const showSuperDeleteOrganizationModal = ({ orgId, accountId }: DeleteButtonProps) =>
     showModalBox(
         {
             title: 'Delete organization',
@@ -120,47 +120,47 @@ const DeleteButton = (props: DeleteButtonProps) => {
     );
 };
 
-const DeleteUserModal = ({ userId, hide }: { userId: string; hide: () => void }) => {
-    const client = useClient();
+// const DeleteUserModal = ({ userId, hide }: { userId: string; hide: () => void }) => {
+//     const client = useClient();
+//
+//     const form = useForm();
+//     const remove = () =>
+//         form.doAction(async () => {
+//             await client.mutateDeleteUser({
+//                 id: userId,
+//             });
+//
+//             hide();
+//         });
+//
+//     return (
+//         <XView borderRadius={8}>
+//             <XModalFooter>
+//                 <XView marginRight={12}>
+//                     <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
+//                 </XView>
+//                 <UButton
+//                     text="Delete"
+//                     style="danger"
+//                     size="large"
+//                     onClick={remove}
+//                     loading={form.loading}
+//                 />
+//             </XModalFooter>
+//         </XView>
+//     );
+// };
 
-    const form = useForm();
-    const remove = () =>
-        form.doAction(async () => {
-            await client.mutateDeleteUser({
-                id: userId,
-            });
-
-            hide();
-        });
-
-    return (
-        <XView borderRadius={8}>
-            <XModalFooter>
-                <XView marginRight={12}>
-                    <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
-                </XView>
-                <UButton
-                    text="Delete"
-                    style="danger"
-                    size="large"
-                    onClick={remove}
-                    loading={form.loading}
-                />
-            </XModalFooter>
-        </XView>
-    );
-};
-
-export const showDeleteUserModal = (userId: string) => {
-    showModalBox(
-        {
-            title: 'Block user?',
-        },
-        ctx => {
-            return <DeleteUserModal userId={userId} hide={ctx.hide} />;
-        },
-    );
-};
+// const showDeleteUserModal = (userId: string) => {
+//     showModalBox(
+//         {
+//             title: 'Block user?',
+//         },
+//         ctx => {
+//             return <DeleteUserModal userId={userId} hide={ctx.hide} />;
+//         },
+//     );
+// };
 
 const AlterOrgPublishedButton = ({
     orgId,
@@ -232,7 +232,7 @@ const AddMemberForm = ({ hide, accountId }: { accountId: string; hide: () => voi
     );
 };
 
-export const showAddMemberFormModal = (accountId: string) => {
+const showAddMemberFormModal = (accountId: string) => {
     showModalBox(
         {
             title: 'Add member to organization',
@@ -284,7 +284,7 @@ const RemoveMemberForm = ({ hide, accountId }: { accountId: string; hide: () => 
     );
 };
 
-export const showRemoveMemberFormModal = (accountId: string) => {
+const showRemoveMemberFormModal = (accountId: string) => {
     showModalBox(
         {
             title: 'Remove member from organization',
@@ -340,11 +340,11 @@ const AddFeatureModal = ({ accountId, hide }: { accountId: string; hide: () => v
         <XView borderRadius={8}>
             <XView flexGrow={1}>
                 {featureIdField.value && (
-                    <SelectWithDropdown
-                        {...featureIdField.input}
+                    <USelectField
+                        field={featureIdField as any}
                         value={featureIdField.value!.id}
-                        title={'feature'}
-                        selectOptions={data.featureFlags.map((v: any) => ({
+                        placeholder={'feature'}
+                        options={data.featureFlags.map((v: any) => ({
                             label: v.title,
                             value: v.id,
                         }))}
@@ -367,7 +367,7 @@ const AddFeatureModal = ({ accountId, hide }: { accountId: string; hide: () => v
     );
 };
 
-export const showAddFeatureModal = (accountId: string) => {
+const showAddFeatureModal = (accountId: string) => {
     showModalBox(
         {
             title: 'Add feature to organization',
@@ -423,11 +423,11 @@ const RemoveFeatureModal = ({ accountId, hide }: { accountId: string; hide: () =
         <XView borderRadius={8}>
             <XView flexGrow={1}>
                 {featureIdField.value && (
-                    <SelectWithDropdown
-                        {...featureIdField.input}
+                    <USelectField
+                        field={featureIdField as any}
                         value={featureIdField.value!.id}
-                        title={'feature'}
-                        selectOptions={data.featureFlags.map((v: any) => ({
+                        placeholder={'feature'}
+                        options={data.featureFlags.map((v: any) => ({
                             label: v.title,
                             value: v.id,
                         }))}
@@ -450,7 +450,7 @@ const RemoveFeatureModal = ({ accountId, hide }: { accountId: string; hide: () =
     );
 };
 
-export const showRemoveFeatureModal = (accountId: string) => {
+const showRemoveFeatureModal = (accountId: string) => {
     showModalBox(
         {
             title: 'Remove feature from organization',
@@ -507,7 +507,7 @@ const EditOrganizationModal = ({
     );
 };
 
-export const showEditOrganizationModal = (props: EditOrganizationModal) => {
+const showEditOrganizationModal = (props: EditOrganizationModal) => {
     showModalBox(
         {
             title: 'Edit organization',
@@ -518,7 +518,7 @@ export const showEditOrganizationModal = (props: EditOrganizationModal) => {
     );
 };
 
-export default withApp('Super Organization', 'super-admin', () => {
+export default withApp('Super Organization', ['super-admin', 'software-developer'], () => {
     const client = useClient();
     const router = useXRouter();
     const accountId = router.routeQuery.accountId as string;
@@ -555,8 +555,9 @@ export default withApp('Super Organization', 'super-admin', () => {
                         />
                     </>
                 )}
-                {!actionsButton &&
-                superAccount.state !== 'DELETED' && <ActivateButton accountId={accountId} />}
+                {!actionsButton && superAccount.state !== 'DELETED' && (
+                    <ActivateButton accountId={accountId} />
+                )}
                 {actionsButton && <SuspendButton accountId={accountId} />}
                 {actionsButton && <PendButton accountId={accountId} />}
                 {actionsButton && <DeleteButton accountId={accountId} orgId={superAccount.orgId} />}

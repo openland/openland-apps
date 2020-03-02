@@ -165,7 +165,7 @@ export const TabBarDesktop = React.memo((props: TabBarDesktopProps) => {
                         justifyContent="center"
                         hoverBackgroundColor="var(--backgroundTertiaryHover)"
                         cursor="pointer"
-                        path="/super"
+                        path="/super/admins"
                     >
                         <UIcon icon={<SuperIcon />} color="#676D7A" />
                     </XView>

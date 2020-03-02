@@ -3,9 +3,9 @@ import { XView, XViewRouterContext } from 'react-mental';
 import { css } from 'linaria';
 import { XImage } from 'react-mental';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { USelect } from 'openland-web/components/unicorn/USelect';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
-import { SelectWithDropdown } from 'openland-web/pages/components/SelectWithDropdown';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XModalController } from 'openland-x/showModal';
@@ -97,15 +97,15 @@ const WriteFirstMessageModal = (props: { ctx: XModalController }) => {
 
                 <XView minWidth={360} marginBottom={40}>
                     {selected && (
-                        <SelectWithDropdown
-                            title="Chats"
+                        <USelect
+                            placeholder="Chats"
                             value={selected}
-                            onChange={setSelected}
-                            selectOptions={items.map(i => ({
+                            onChange={(v: any) => {
+                                setSelected(v.value);
+                            }}
+                            options={items.map((i: any) => ({
                                 value: i,
                                 label: i.title,
-                                labelShort: i.title,
-                                subtitle: '',
                             }))}
                         />
                     )}

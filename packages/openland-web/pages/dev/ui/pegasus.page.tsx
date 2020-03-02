@@ -7,7 +7,7 @@ import { PowerupSample } from 'openland-powerups/PowerupSample';
 import { Deferred } from 'openland-unicorn/components/Deferred';
 import { XLoader } from 'openland-x/XLoader';
 
-export default withApp('Pegasus', 'viewer', props => {
+export default withApp('Pegasus', ['super-admin', 'software-developer'], props => {
     return (
         <DevDocsScaffold title="Pegasus">
             <Deferred>

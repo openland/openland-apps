@@ -7,7 +7,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { delay } from 'openland-y-utils/timer';
 
-export default withApp('Modals', 'viewer', props => {
+export default withApp('Modals', ['super-admin', 'software-developer'], props => {
     return (
         <DevDocsScaffold title="Modals">
             <XView>

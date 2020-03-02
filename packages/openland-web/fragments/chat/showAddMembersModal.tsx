@@ -10,7 +10,6 @@ import {
 } from 'openland-api/spacex.types';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-api/useClient';
-import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalContent } from 'openland-web/components/XModalContent';
@@ -32,7 +31,6 @@ interface InviteModalProps {
             id: string;
         };
     }[];
-    isMobile: boolean;
     isGroup: boolean;
     isChannel?: boolean;
     isOrganization: boolean;
@@ -122,7 +120,7 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                 />
 
                 <XView
-                    height={canAddPeople ? (props.isMobile ? '100%' : '65vh') : undefined}
+                    height={canAddPeople ? '65vh' : undefined}
                     flexGrow={1}
                     marginBottom={-24}
                     paddingTop={8}
@@ -250,7 +248,6 @@ export const AddMembersModal = React.memo(
         onGroupMembersAdd,
         hide,
     }: AddMemberModalT & { hide?: () => void }) => {
-        const isMobile = React.useContext(IsMobileContext);
         const client = useClient();
 
         const addMembersToRoom = async ({ variables }: AddMemberToRoom) => {
@@ -303,7 +300,6 @@ export const AddMembersModal = React.memo(
                         ? (data as OrganizationMembersShort).organization.members
                         : (data as RoomMembersShort).members
                 }
-                isMobile={isMobile}
                 isGroup={isGroup}
                 isChannel={isChannel}
                 isOrganization={isOrganization}

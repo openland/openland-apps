@@ -170,7 +170,7 @@ const FilteredOptions = (props: FilteredOptionsProps) => {
     );
 };
 
-export default withApp('Super Organizations', 'super-admin', () => {
+export default withApp('Super Organizations', ['super-admin', 'software-developer'], () => {
     const [searchValue, setSearchValue] = React.useState('');
     const client = useClient();
     const orgs = client.useSuperAccounts().superAccounts;

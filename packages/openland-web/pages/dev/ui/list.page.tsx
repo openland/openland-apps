@@ -4,7 +4,7 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XView } from 'react-mental';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 
-export default withApp('List items', 'viewer', props => {
+export default withApp('List items', ['super-admin', 'software-developer'], props => {
     return (
         <DevDocsScaffold title="List items">
             <XView marginHorizontal={-16}>

@@ -69,7 +69,7 @@ const ShortcutHandlerView = () => {
     );
 };
 
-export default withApp('Rick Text Input', 'viewer', props => {
+export default withApp('Rick Text Input', ['super-admin', 'software-developer'], props => {
     return (
         <DevDocsScaffold title="Shortcuts">
             {canUseDOM && <ShortcutHandlerView />}

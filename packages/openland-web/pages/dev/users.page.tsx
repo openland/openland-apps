@@ -109,7 +109,7 @@ const ExplorePeople = (props: ExplorePeopleProps) => {
     );
 };
 
-export default withApp('Super Users', 'super-admin', () => {
+export default withApp('Super Users', ['super-admin', 'software-developer'], () => {
     const [searchValue, setSearchValue] = React.useState('');
 
     const onInputChange = (data: string) => {

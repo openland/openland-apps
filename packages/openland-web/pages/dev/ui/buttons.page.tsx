@@ -4,7 +4,7 @@ import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 
-export default withApp('Buttons', 'viewer', props => {
+export default withApp('Buttons', ['super-admin', 'software-developer'], props => {
     return (
         <DevDocsScaffold title="Buttons">
             <XView>

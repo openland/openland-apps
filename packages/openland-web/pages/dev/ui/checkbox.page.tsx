@@ -4,7 +4,7 @@ import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 
-export default withApp('Checkbox', 'viewer', props => {
+export default withApp('Checkbox', ['super-admin', 'software-developer'], props => {
     return (
         <DevDocsScaffold title="Inputs">
             <XView>

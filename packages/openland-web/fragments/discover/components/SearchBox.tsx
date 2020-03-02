@@ -3,7 +3,6 @@ import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
-import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 
 const searchContainer = css`
@@ -21,7 +20,6 @@ interface SearchBoxProps {
 
 export const SearchBox = React.memo((props: SearchBoxProps) => {
     const layout = useLayout();
-    const isMobile = React.useContext(IsMobileContext);
     const onChange = (value: string) => {
         props.onChange(value);
     };
@@ -29,7 +27,7 @@ export const SearchBox = React.memo((props: SearchBoxProps) => {
     const inputRef = React.createRef<HTMLInputElement>();
 
     React.useLayoutEffect(() => {
-        if (!isMobile && inputRef && inputRef.current) {
+        if (inputRef && inputRef.current) {
             setTimeout(() => {
                 inputRef.current!.focus();
             }, 300);

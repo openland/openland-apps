@@ -4,7 +4,7 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { TextStyles, TextCaption, TextDensed, TextBody, TextLabel2, TextLabel1, TextTitle1, TextTitle3 } from 'openland-web/utils/TextStyles';
 import { XView } from 'react-mental';
 
-export default withApp('Typography', 'viewer', props => {
+export default withApp('Typography', ['super-admin', 'software-developer'], props => {
     return (
         <DevDocsScaffold title="Typography">
             <XView>

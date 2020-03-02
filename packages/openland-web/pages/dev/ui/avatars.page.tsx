@@ -20,7 +20,7 @@ const AvatarComponent = () => {
     );
 };
 
-export default withApp('Avatars', 'viewer', props => {
+export default withApp('Avatars', ['super-admin', 'software-developer'], props => {
     return (
         <DevDocsScaffold title="Avatars">
             <AvatarComponent />

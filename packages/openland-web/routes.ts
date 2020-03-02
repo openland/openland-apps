@@ -184,22 +184,22 @@ routes.add('/ui/pegasus/', '/dev/ui/pegasus');
 // Dev Tools
 //
 
+routes.add('/super/collections', '/dev/collections');
+routes.add('/super/collections/', '/dev/collections');
+routes.add('/super/choice', '/dev/choice');
+routes.add('/super/choice/', '/dev/choice');
 routes.add('/super/mails', '/dev/mails');
 routes.add('/super/mails/', '/dev/mails');
-
 routes.add('/super/debug', '/dev/debug');
 routes.add('/super/debug/', '/dev/debug');
-
-routes.add('/super', '/dev/orgs');
-routes.add('/super/', '/dev/orgs');
 routes.add('/super/users', '/dev/users');
 routes.add('/super/users/', '/dev/users');
+routes.add('/super/organizations', '/dev/orgs');
+routes.add('/super/organizations/', '/dev/orgs');
 routes.add('/super/orgs/:accountId', '/dev/orgView');
 routes.add('/super/orgs/:accountId/', '/dev/orgView');
-
 routes.add('/super/admins', '/dev/admins');
 routes.add('/super/admins/', '/dev/admins');
-
 routes.add('/performance', '/perf/perf');
 
 //

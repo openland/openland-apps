@@ -5,7 +5,7 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { VideoPreview } from 'openland-video/VideoPreview';
 import { VideoTestRenderer } from 'openland-video/VideoTestRenderer';
 
-export default withApp('Videos', 'viewer', props => {
+export default withApp('Videos', ['super-admin', 'software-developer'], props => {
     return (
         <DevDocsScaffold title="Videos">
             <XView>

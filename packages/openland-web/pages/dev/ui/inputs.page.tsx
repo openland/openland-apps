@@ -109,7 +109,7 @@ const SelectComponents = () => {
     );
 };
 
-export default withApp('Inputs', 'viewer', props => {
+export default withApp('Inputs', ['super-admin', 'software-developer'], props => {
     return (
         <DevDocsScaffold title="Inputs">
             <XView>

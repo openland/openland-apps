@@ -149,7 +149,7 @@ const TestComponent = React.memo(() => {
     );
 });
 
-export default withApp('Scroll', 'viewer', props => {
+export default withApp('Scroll', ['super-admin', 'software-developer'], props => {
     return (
         <DevDocsScaffold title="Scroll">
             <TestComponent />
