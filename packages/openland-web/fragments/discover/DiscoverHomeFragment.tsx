@@ -6,16 +6,10 @@ import { ListingCompact } from './components/ListingCompact';
 import { XView } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
 import { UHeader } from 'openland-unicorn/UHeader';
+import { DiscoverCollection } from './components/DiscoverCollection';
 
 const slide = css`
     width: 100%;
-    height: 200px;
-    background: grey;
-    flex-shrink: 0;
-`;
-
-const slideNarrow = css`
-    width: 33%;
     height: 200px;
     background: grey;
     flex-shrink: 0;
@@ -56,6 +50,9 @@ export const DiscoverHomeFragment = React.memo(() => {
     const topFree = client.useDiscoverTopFree({ first: 5 });
     const topFreeItems = topFree.discoverTopFree.items;
 
+    const collections = client.useDiscoverCollections({ first: 20 });
+    const collectionsItems = collections.discoverCollections!.items;
+
     return (
         <Page track="discover_home">
             <UHeader title="Home" />
@@ -74,13 +71,12 @@ export const DiscoverHomeFragment = React.memo(() => {
                 </div>
 
                 <USlider title="Collections" path="/discover/collections">
-                    <div className={slideNarrow}>one</div>
-                    <div className={slideNarrow}>two</div>
-                    <div className={slideNarrow}>three</div>
-                    <div className={slideNarrow}>four</div>
+                    {collectionsItems.map(collection => (
+                        <DiscoverCollection {...collection} />
+                    ))}
                 </USlider>
 
-                <XView marginBottom={40}>
+                <XView marginBottom={40} marginTop={-44}>
                     <div className={listingsContainer}>
                         <ListingCompact title="Top premium" items={topPremiumItems} path="/discover/premium" />
                         <ListingCompact title="Top free" items={topFreeItems} path="/discover/free" />
