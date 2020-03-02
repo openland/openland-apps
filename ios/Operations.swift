@@ -2557,6 +2557,27 @@ private let DiscoverCollectionsSelector = obj(
                     field("cursor", "cursor", scalar("String"))
                 ))
         )
+private let DiscoverEditorsChoiceSelector = obj(
+            field("discoverEditorsChoice", "discoverEditorsChoice", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("image", "image", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("uuid", "uuid", notNull(scalar("String"))),
+                            field("crop", "crop", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("x", "x", notNull(scalar("Int"))),
+                                    field("y", "y", notNull(scalar("Int"))),
+                                    field("w", "w", notNull(scalar("Int"))),
+                                    field("h", "h", notNull(scalar("Int")))
+                                ))
+                        ))),
+                    field("chat", "chat", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("SharedRoom", DiscoverSharedRoomSelector)
+                        )))
+                )))))
+        )
 private let DiscoverIsDoneSelector = obj(
             field("betaIsDiscoverDone", "betaIsDiscoverDone", notNull(scalar("Boolean")))
         )
@@ -2673,14 +2694,6 @@ private let ExploreRoomsSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("SharedRoom", DiscoverSharedRoomSelector)
                 ))))),
-            field("discoverCollections", "discoverCollections", arguments(fieldValue("first", intValue(5))), obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("items", "items", notNull(list(notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("DiscoverChatsCollection", DiscoverChatsCollectionSelector)
-                        ))))),
-                    field("cursor", "cursor", scalar("String"))
-                )),
             field("discoverTopPremium", "discoverTopPremium", arguments(fieldValue("first", intValue(5))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
@@ -5130,6 +5143,12 @@ class Operations {
         "query DiscoverCollections($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename ...DiscoverChatsCollection}cursor}}fragment DiscoverChatsCollection on DiscoverChatsCollection{__typename id title chatsCount chats{__typename ...DiscoverSharedRoom}image{__typename uuid crop{__typename x y w h}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         DiscoverCollectionsSelector
     )
+    let DiscoverEditorsChoice = OperationDefinition(
+        "DiscoverEditorsChoice",
+        .query, 
+        "query DiscoverEditorsChoice{discoverEditorsChoice{__typename id image{__typename uuid crop{__typename x y w h}}chat{__typename ...DiscoverSharedRoom}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
+        DiscoverEditorsChoiceSelector
+    )
     let DiscoverIsDone = OperationDefinition(
         "DiscoverIsDone",
         .query, 
@@ -5181,7 +5200,7 @@ class Operations {
     let ExploreRooms = OperationDefinition(
         "ExploreRooms",
         .query, 
-        "query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:5,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverCollections(first:5){__typename items{__typename ...DiscoverChatsCollection}cursor}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}fragment DiscoverChatsCollection on DiscoverChatsCollection{__typename id title chatsCount chats{__typename ...DiscoverSharedRoom}image{__typename uuid crop{__typename x y w h}}}",
+        "query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:5,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         ExploreRoomsSelector
     )
     let FeatureFlags = OperationDefinition(
@@ -6522,6 +6541,7 @@ class Operations {
         if name == "Dialogs" { return Dialogs }
         if name == "DiscoverCollection" { return DiscoverCollection }
         if name == "DiscoverCollections" { return DiscoverCollections }
+        if name == "DiscoverEditorsChoice" { return DiscoverEditorsChoice }
         if name == "DiscoverIsDone" { return DiscoverIsDone }
         if name == "DiscoverNewAndGrowing" { return DiscoverNewAndGrowing }
         if name == "DiscoverNextPage" { return DiscoverNextPage }

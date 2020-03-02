@@ -9,6 +9,7 @@ import { DiscoverChatsCollection } from 'openland-api/spacex.types';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { layoutCollection } from 'openland-mobile/pages/main/Collections';
 import FastImage from 'react-native-fast-image';
+import { useClient } from 'openland-api/useClient';
 
 interface DiscoverCollectionsItem {
     item: DiscoverChatsCollection;
@@ -62,25 +63,25 @@ const DiscoverCollectionsItem = (props: DiscoverCollectionsItem) => {
     );
 };
 
-interface DiscoverCollectionsListProps {
-    collections: DiscoverChatsCollection[];
-    after: string | null;
-}
-
-export const DiscoverCollectionsList = (props: DiscoverCollectionsListProps) => {
+export const DiscoverCollectionsList = () => {
     let router = React.useContext(SRouterContext)!;
+    let client = useClient();
+    let {discoverCollections} = client.useDiscoverCollections({first: 5}, { fetchPolicy: 'cache-and-network' });
+    let items = discoverCollections && discoverCollections.items || [];
+    let cursor = discoverCollections && discoverCollections.cursor;
+
     return (    
         <ZListGroup
             header="Collections" 
-            actionRight={props.collections.length === 5 ? {
+            actionRight={items.length === 5 ? {
                 title: 'See all', onPress: () => router.push('Collections', {
-                    initialCollections: props.collections,
-                    after: props.after,
+                    initialCollections: items,
+                    after: cursor,
                 })
             } : undefined}
         >
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} paddingLeft={16}>
-                {props.collections.map((item, i) => <DiscoverCollectionsItem key={i} item={item} />)}
+                {items.map((item, i) => <DiscoverCollectionsItem key={i} item={item} />)}
                 <View width={24} />
             </ScrollView>
         </ZListGroup>

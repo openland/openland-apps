@@ -28,7 +28,6 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
     let popularRooms = rooms.discoverPopularNow.items || [];
     let topFreeRooms = rooms.discoverTopFree.items || [];
     let topPremiumRooms = rooms.discoverTopPremium.items || [];
-    let collections = rooms.discoverCollections && rooms.discoverCollections.items || [];
 
     return (
         <>
@@ -90,7 +89,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                 ))}
             </ZListGroup>
 
-            <DiscoverCollectionsList collections={collections} after={rooms.discoverCollections && rooms.discoverCollections.cursor} />
+            <DiscoverCollectionsList  />
 
             <ZListGroup
                 header="Top premium"

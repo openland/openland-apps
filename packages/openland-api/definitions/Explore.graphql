@@ -53,12 +53,6 @@ query ExploreRooms($seed: Int!) {
     suggestedRooms: betaSuggestedRooms {
         ...DiscoverSharedRoom
     }
-    discoverCollections(first: 5) {
-        items {
-            ...DiscoverChatsCollection
-        }
-        cursor
-    }
     discoverTopPremium(first: 5) {
         items {
             ...DiscoverSharedRoom
@@ -250,7 +244,7 @@ mutation DiscoverCollectionsDelete($id: ID!) {
 }
 mutation DiscoverEditorsChoiceCreate($image: ImageRefInput!, $cid: ID!) {
     discoverEditorsChoiceCreate(input: { image: $image, cid: $cid }) {
-        id
+id
         image {
             uuid
             crop {
@@ -286,4 +280,22 @@ mutation DiscoverEditorsChoiceUpdate($id: ID!, $image: ImageRefInput!, $cid: ID!
 }
 mutation DiscoverEditorsChoiceDelete($id: ID!) {
     discoverEditorsChoiceDelete(id: $id)
+}
+
+query DiscoverEditorsChoice {
+    discoverEditorsChoice {
+        id
+        image {
+            uuid
+            crop {
+                x
+                y
+                w
+                h
+            }
+        }
+        chat {
+            ...DiscoverSharedRoom
+        }
+    }
 }
