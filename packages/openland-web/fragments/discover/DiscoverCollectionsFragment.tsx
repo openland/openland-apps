@@ -40,16 +40,17 @@ export const DiscoverCollectionsFragment = React.memo(() => {
 
     return (
         <>
-            <UHeader title="Popular now" />
+            <UHeader title="Collections" />
             <XView height={16} />
             <UFlatList
-                track="discover_popular_now"
-                title="Popular now"
+                track="discover_collections"
+                title="Collections"
+                grid={true}
                 loading={loading}
                 loadMore={handleLoadMore}
                 items={displayItems}
                 renderItem={item => (
-                    <XView marginBottom={32} marginRight={16}>
+                    <XView marginBottom={32} marginLeft={16}>
                         <DiscoverCollection {...item} />
                     </XView>
                 )}

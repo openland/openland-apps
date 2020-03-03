@@ -4,6 +4,13 @@ import { UHeader } from 'openland-unicorn/UHeader';
 import { XScrollValues } from 'openland-x/XScrollView3';
 import { XView } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
+import { css } from 'linaria';
+
+const container = css`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+`;
 
 interface UFlatListProps<T> {
     track: string;
@@ -15,6 +22,7 @@ interface UFlatListProps<T> {
     padded?: boolean;
     children?: any;
     title?: string;
+    grid?: boolean;
 }
 
 export const UFlatList: <T>(props: UFlatListProps<T>) => any = React.memo((props) => {
@@ -31,9 +39,21 @@ export const UFlatList: <T>(props: UFlatListProps<T>) => any = React.memo((props
         <Page onScroll={onScroll} padded={padded} track={track}>
             <UHeader documentTitle={props.title} />
             {children}
-            {items.map((item, index) => (
-                <XView key={'item-' + index}>{props.renderItem(item)}</XView>
-            ))}
+
+            {!props.grid &&
+                items.map((item, index) => (
+                    <XView key={'item-' + index}>{props.renderItem(item)}</XView>
+                ))
+            }
+
+            {props.grid && (
+                <div className={container}>
+                    {items.map((item, index) => (
+                        <XView key={'item-' + index}>{props.renderItem(item)}</XView>
+                    ))}
+                </div>
+            )}
+
             <XView height={56} alignItems="center" justifyContent="center">
                 {loading && <XLoader loading={true} />}
             </XView>
