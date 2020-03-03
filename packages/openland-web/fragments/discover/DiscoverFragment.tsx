@@ -1,11 +1,14 @@
 import * as React from 'react';
-import { XView, XViewRouterContext } from 'react-mental';
+import { XView } from 'react-mental';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { trackEvent } from 'openland-x-analytics';
-
+import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
+import { DialogSearchResults } from '../dialogs/components/DialogSearchResults';
+import { GlobalSearch_items } from 'openland-api/spacex.types';
+import { TabRouterContext } from 'openland-unicorn/components/TabLayout';
 import IcHome from 'openland-icons/s/ic-home-24.svg';
 import IcNew from 'openland-icons/s/ic-new-24.svg';
 import IcPopular from 'openland-icons/s/ic-popular-24.svg';
@@ -13,9 +16,6 @@ import IcCollections from 'openland-icons/s/ic-collections-24.svg';
 import IcPremium from 'openland-icons/s/ic-premium-24.svg';
 import IcFree from 'openland-icons/s/ic-free-24.svg';
 import IcStar from 'openland-icons/s/ic-star-24.svg';
-import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
-import { DialogSearchResults } from '../dialogs/components/DialogSearchResults';
-import { GlobalSearch_items } from 'openland-api/spacex.types';
 
 export const DiscoverFragment = React.memo(() => {
     const refInput = React.useRef<USearchInputRef>(null);
@@ -30,7 +30,7 @@ export const DiscoverFragment = React.memo(() => {
         [isVisible],
     );
 
-    const router = React.useContext(XViewRouterContext)!;
+    const router = React.useContext(TabRouterContext)!.router;
     const [query, setQuery] = React.useState<string>('');
     const isSearching = query.trim().length > 0;
 
