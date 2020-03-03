@@ -16,7 +16,6 @@ import IcStar from 'openland-icons/s/ic-star-24.svg';
 import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
 import { DialogSearchResults } from '../dialogs/components/DialogSearchResults';
 import { GlobalSearch_items } from 'openland-api/spacex.types';
-import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 export const DiscoverFragment = React.memo(() => {
     const isNP = AppConfig.isNonProduction();
