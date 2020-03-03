@@ -26,14 +26,16 @@ class ItemRenderHolder<T extends DataSourceItem> {
                 let st = this.container.getState();
                 let hs = doSimpleHash(JSON.stringify(st));
                 if (this.currentStateHash !== hs) {
+                    if (this.currentStateHash !== 0) {
+                        dataView.onDataSourceItemRenderUpdated(this.item.key);
+                    }
                     this.currentState = st;
                     this.currentStateHash = hs;
-                    dataView.onDataSourceItemRenderUpdated(this.item.key);
                 }
             },
             render(initial));
-        this.currentState = this.container.getState();
-        this.currentStateHash = doSimpleHash(JSON.stringify(this.currentState));
+            this.currentState = this.container.getState();
+
     }
 
     updateItem(item: T) {
