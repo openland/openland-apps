@@ -199,7 +199,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                             loadingHeight={200}
                             renderItem={renderDialog}
                             renderLoading={renderLoading}
-                            afterChildren={<DiscoverFooter/>}
+                            afterChildren={<DiscoverFooter />}
                         />
                     )}
             </XView>
