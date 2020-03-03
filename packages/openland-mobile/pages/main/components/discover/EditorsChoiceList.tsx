@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
-import { View, ScrollView, Text, TouchableWithoutFeedback, PixelRatio, Platform } from 'react-native';
+import { View, ScrollView, Text, TouchableWithoutFeedback, PixelRatio, Platform, Animated } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
@@ -10,6 +10,7 @@ import FastImage from 'react-native-fast-image';
 import { useClient } from 'openland-api/useClient';
 import { DiscoverSharedRoom, DiscoverEditorsChoice_discoverEditorsChoice_image } from 'openland-api/spacex.types';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
+import { usePressableView } from './usePressableView';
 
 interface EditorsChoiceItemProps {
     item: {
@@ -28,6 +29,7 @@ const EditorsChoiceItem = (props: EditorsChoiceItemProps) => {
     const onPress = React.useCallback(() => {
         router.push('Conversation', {id});
     }, [router, id]);
+    const {styles, delayPressIn, handlePressIn, handlePressOut} = usePressableView();
 
     React.useEffect(() => {
         const size = {
@@ -42,8 +44,8 @@ const EditorsChoiceItem = (props: EditorsChoiceItemProps) => {
         });
     }, [image]);
     return (
-        <View style={{width: 343, height: 264, marginRight: 8}}>
-            <TouchableWithoutFeedback onPress={onPress}>
+        <Animated.View style={{width: 343, height: 264, marginRight: 8, ...styles}}>
+            <TouchableWithoutFeedback delayPressIn={delayPressIn} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut}>
                 <View flexDirection="column" borderRadius={RadiusStyles.Large} paddingTop={8} paddingBottom={6}>
                 <FastImage 
                     source={{uri: path}}
@@ -67,7 +69,7 @@ const EditorsChoiceItem = (props: EditorsChoiceItemProps) => {
                 </View>
                 </View>
             </TouchableWithoutFeedback>
-        </View>
+        </Animated.View>
     );
 };
 
