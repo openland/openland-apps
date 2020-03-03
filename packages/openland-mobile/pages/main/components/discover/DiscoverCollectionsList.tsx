@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
-import { View, ScrollView, Text, TouchableWithoutFeedback } from 'react-native';
+import { View, ScrollView, Text, TouchableWithoutFeedback, Platform } from 'react-native';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { plural } from 'openland-y-utils/plural';
 import { SRouterContext } from 'react-native-s/SRouterContext';
-import { DiscoverChatsCollection } from 'openland-api/spacex.types';
+import { DiscoverChatsCollectionShort } from 'openland-api/spacex.types';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { layoutCollection } from 'openland-mobile/pages/main/Collections';
 import FastImage from 'react-native-fast-image';
 import { useClient } from 'openland-api/useClient';
 
 interface DiscoverCollectionsItem {
-    item: DiscoverChatsCollection;
+    item: DiscoverChatsCollectionShort;
 }
 
 const DiscoverCollectionsItem = (props: DiscoverCollectionsItem) => {
@@ -20,9 +20,9 @@ const DiscoverCollectionsItem = (props: DiscoverCollectionsItem) => {
     const router = React.useContext(SRouterContext)!;
     const onPress = React.useCallback(() => {
         router.push('DiscoverListing', {
-            initialRooms: props.item.chats,
             type: 'collections',
             title: props.item.title,
+            collectionId: props.item.id,
         });
     }, [props.item.id]);
     const {image} = props.item;
@@ -31,7 +31,8 @@ const DiscoverCollectionsItem = (props: DiscoverCollectionsItem) => {
     React.useEffect(() => {
         return DownloadManagerInstance.watch(image.uuid, layoutCollection(), state => {
             if (state.path) {
-                setPath(state.path);
+                let newPath = Platform.select({ios: state.path, android: 'file://' + state.path});
+                setPath(newPath);
             }
         });
     }, [image]);
@@ -66,7 +67,7 @@ const DiscoverCollectionsItem = (props: DiscoverCollectionsItem) => {
 export const DiscoverCollectionsList = () => {
     let router = React.useContext(SRouterContext)!;
     let client = useClient();
-    let {discoverCollections} = client.useDiscoverCollections({first: 5}, { fetchPolicy: 'cache-and-network' });
+    let {discoverCollections} = client.useDiscoverCollectionsShort({first: 5}, { fetchPolicy: 'cache-and-network' });
     let items = discoverCollections && discoverCollections.items || [];
     let cursor = discoverCollections && discoverCollections.cursor;
 

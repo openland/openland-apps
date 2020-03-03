@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
-import { View, ScrollView, Text, TouchableWithoutFeedback, PixelRatio } from 'react-native';
+import { View, ScrollView, Text, TouchableWithoutFeedback, PixelRatio, Platform } from 'react-native';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
@@ -36,7 +36,8 @@ const EditorsChoiceItem = (props: EditorsChoiceItemProps) => {
         };
         return DownloadManagerInstance.watch(image.uuid, size, state => {
             if (state.path) {
-                setPath(state.path);
+                let newPath = Platform.select({ios: state.path, android: 'file://' + state.path});
+                setPath(newPath);
             }
         });
     }, [image]);

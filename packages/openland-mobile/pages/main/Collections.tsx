@@ -2,11 +2,11 @@ import * as React from 'react';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SFlatList } from 'react-native-s/SFlatList';
-import { View, TouchableWithoutFeedback, Text, PixelRatio } from 'react-native';
+import { View, TouchableWithoutFeedback, Text, PixelRatio, Platform } from 'react-native';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { plural } from 'openland-y-utils/plural';
-import { DiscoverChatsCollection } from 'openland-api/spacex.types';
+import { DiscoverChatsCollectionShort } from 'openland-api/spacex.types';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { SRouter } from 'react-native-s/SRouter';
@@ -19,7 +19,7 @@ export const layoutCollection = () => ({
 });
 
 interface CollectionProps {
-    item: DiscoverChatsCollection;
+    item: DiscoverChatsCollectionShort;
     router: SRouter;
 }
 
@@ -29,27 +29,28 @@ const Collection = (props: CollectionProps) => {
     const [path, setPath] = React.useState('');
     let onPress = () => {
         props.router.push('DiscoverListing', {
-            initialRooms: props.item.chats,
             type: 'collections',
             title: props.item.title,
+            collectionId: props.item.id,
         });
     };
 
     React.useEffect(() => {
         return DownloadManagerInstance.watch(image.uuid, layoutCollection(), state => {
             if (state.path) {
-                setPath(state.path);
+                let newPath = Platform.select({ios: state.path, android: 'file://' + state.path});
+                setPath(newPath);
             }
         });
     }, []);
     return (
-        <View style={{width: 375, height: 264, padding: 16}}>
+        <View style={{width: '100%', height: 264, padding: 16, alignSelf: 'center'}}>
             <TouchableWithoutFeedback onPress={onPress}>
                 <View flexDirection="column" borderRadius={RadiusStyles.Large} paddingTop={8} paddingBottom={6}>
                     <FastImage 
                         source={{uri: path}}
                         style={{
-                            width: 343,
+                            width: '100%',
                             height: 192, 
                             borderRadius: RadiusStyles.Large, 
                             borderWidth: 0.5,
@@ -71,7 +72,7 @@ const Collection = (props: CollectionProps) => {
 
 const CollectionsComponent = () => {
     let router = React.useContext(SRouterContext)!;
-    let initialCollections = router.params.initialCollections as DiscoverChatsCollection[];
+    let initialCollections = router.params.initialCollections as DiscoverChatsCollectionShort[];
     let initialAfter = router.params.initialAfter as string | null;
     let [loading, setLoading] = React.useState(false);
     let [collections, setCollections] = React.useState(initialCollections);
