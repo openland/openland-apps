@@ -18,7 +18,7 @@ export const DiscoverCollection = React.memo((props: DiscoverCollections_discove
     return (
         <XView path={`/discover/collections/${props.id}`} cursor="pointer">
             <div className={collectionPhoto}>
-                <XCloudImage photoRef={props.image} width={176} height={100} />
+                <XCloudImage photoRef={props.image} resize="fill" width={176} height={100} />
             </div>
             <h2 className={TextLabel1}>{props.title}</h2>
             <XView color="var(--foregroundSecondary)">

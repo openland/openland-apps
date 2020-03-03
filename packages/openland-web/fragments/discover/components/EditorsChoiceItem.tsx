@@ -23,7 +23,7 @@ export const EditorsChoiceItem = React.memo((props: DiscoverEditorsChoice_discov
     return (
         <div className={container}>
             <div className={imageContainer}>
-                <XCloudImage photoRef={props.image} width={560} height={200} />
+                <XCloudImage photoRef={props.image} resize="fill" width={560} height={200} />
             </div>
             <XView marginTop={8} marginHorizontal={-16}>
                 <UGroupView group={props.chat as DiscoverSharedRoom} disableHover={true} />
