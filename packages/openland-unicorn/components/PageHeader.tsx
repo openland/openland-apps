@@ -19,11 +19,13 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
         },
     });
     let appearance = props.config.appearance || 'normal';
+    let maxWidth = props.config.maxWidth;
     let backgroundColor = props.config.backgroundColor;
     let showBack = router.pages.length > 0 && router.rootPath !== '/discover';
     if (router.rootPath === '/discover' && router.pages.length > 1) {
         showBack = true;
     }
+    console.log(maxWidth);
     return (
         <XView
             height={56}
@@ -54,7 +56,9 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                         flexBasis={0}
                         flexGrow={1}
                         maxWidth={
-                            appearance === 'normal'
+                            maxWidth
+                                ? maxWidth
+                                : appearance === 'normal'
                                 ? 600
                                 : appearance === 'fullwidth'
                                 ? '100%'
@@ -75,7 +79,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                         minWidth={0}
                         flexBasis={0}
                         flexGrow={1}
-                        maxWidth={appearance === 'normal' ? 600 : 824}
+                        maxWidth={maxWidth ? maxWidth : appearance === 'normal' ? 600 : 824}
                         flexDirection="row"
                         paddingHorizontal={16}
                         {...TextStyles.Title1}

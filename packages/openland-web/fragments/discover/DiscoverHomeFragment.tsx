@@ -73,7 +73,7 @@ export const DiscoverHomeFragment = React.memo(() => {
 
     return (
         <Page track="discover_home">
-            <UHeader title="Home" />
+            <UHeader title="Home" maxWidth={540} />
 
             <XView paddingHorizontal={20}>
                 {isTabVisible && (

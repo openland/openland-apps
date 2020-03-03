@@ -31,7 +31,7 @@ export const RecommendationsFragment = React.memo(() => {
             {tab === 'discover' && (
                 <>
                     <UHeader title="Chats for you" />
-                    <Page track="discover_recommended">
+                    <Page track="discover_recommended" style="wide">
                         {data.suggestedRooms.map((room) => {
                             if (room.__typename === 'SharedRoom') {
                                 return (
