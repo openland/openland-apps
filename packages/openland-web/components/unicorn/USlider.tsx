@@ -2,7 +2,6 @@ import React from 'react';
 import { css } from 'linaria';
 import ArrowRight from 'openland-icons/s/ic-arrow-right-16.svg';
 import ArrowLeft from 'openland-icons/s/ic-arrow-left-16.svg';
-
 import { UIconButton } from './UIconButton';
 import { XView } from 'react-mental';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
@@ -20,15 +19,20 @@ const slider = css`
 const blanket = css`
     display: flex;
     transition: transform 300ms;
+    user-select: none;
 `;
 
 const icons = css`
     display: flex;
 `;
 
+const titleContainer = css`
+    display: flex;
+    user-select: none;
+`;
+
 const header = css`
     margin-bottom: 8px;
-
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
@@ -70,6 +74,9 @@ const USliderRaw = React.memo((props: USliderProps) => {
 
     const enableClick = React.useCallback(
         () => {
+            if (!canClick) {
+                return;
+            }
             let timer: any;
             timer = setTimeout(() => {
                 setCanClick(true);
@@ -98,7 +105,10 @@ const USliderRaw = React.memo((props: USliderProps) => {
             const blanketRightmostPoint = blanketRect.left + blanketWidth;
             const gap = 16;
 
-            if (sliderRightmostPoint < blanketRightmostPoint - gap && currentSlide + 1 < (props.childrenCount || 0)) {
+            if (
+                sliderRightmostPoint < blanketRightmostPoint - gap &&
+                currentSlide + 1 < (props.childrenCount || 0)
+            ) {
                 setCurrentSlide(currentSlide + 1);
                 setOffset(offset - childWidth);
                 setCanClick(false);
@@ -116,39 +126,31 @@ const USliderRaw = React.memo((props: USliderProps) => {
             setCanClick(false);
             enableClick();
         }
-
     };
 
     return (
         <div className={root}>
             <div className={header}>
                 <div className={icons}>
-                    <UIconButton
-                        icon={<ArrowLeft />}
-                        size="xsmall"
-                        onClick={onPrevClick}
-                    />
-
-                    <UIconButton
-                        size="xsmall"
-                        icon={<ArrowRight />}
-                        onClick={onNextClick}
-                    />
+                    <UIconButton icon={<ArrowLeft />} size="xsmall" onClick={onPrevClick} />
+                    <UIconButton size="xsmall" icon={<ArrowRight />} onClick={onNextClick} />
                 </div>
                 {props.title && (
-                    <XView
-                        path={props.path ? props.path : undefined}
-                        flexDirection="row"
-                        alignItems="center"
-                        cursor={props.path ? 'pointer' : undefined}
-                    >
-                        <h2 className={TextTitle3}>{props.title}</h2>
-                        {props.path && (
-                            <XView marginLeft={8}>
-                                <ArrowRight />
-                            </XView>
-                        )}
-                    </XView>
+                    <div className={titleContainer}>
+                        <XView
+                            path={props.path ? props.path : undefined}
+                            flexDirection="row"
+                            alignItems="center"
+                            cursor={props.path ? 'pointer' : undefined}
+                        >
+                            <h2 className={TextTitle3}>{props.title}</h2>
+                            {props.path && (
+                                <XView marginLeft={8}>
+                                    <ArrowRight />
+                                </XView>
+                            )}
+                        </XView>
+                    </div>
                 )}
             </div>
             <div className={slider} ref={sliderRef}>
