@@ -35,7 +35,7 @@ export interface DialogListViewProps {
 let ds: DataSource<DialogListWebItem> | undefined;
 
 export const DialogListView = XMemo<DialogListViewProps>(props => {
-    const ref = React.createRef<USearchInputRef>();
+    const ref = React.useRef<USearchInputRef>(null);
     let messenger = React.useContext(MessengerContext);
     if (!ds) {
         ds = dialogListWebDataSource(messenger.dialogList.dataSource);
