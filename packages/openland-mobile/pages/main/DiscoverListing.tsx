@@ -52,7 +52,7 @@ const FollowButton = React.memo((props: FollowButtonProps) => {
         }
 
     }, [props.room]);
-    const backgroundColor = state === 'done' ? theme.backgroundTertiary : theme.accentPrimary;
+    const backgroundColor = state === 'done' ? theme.backgroundTertiaryTrans : theme.accentPrimary;
     const tintColor = state === 'done' ? theme.foregroundTertiary : theme.foregroundInverted;
     const underlayColor = state === 'done' ? theme.backgroundTertiaryActive : theme.accentPrimaryActive;
 

@@ -79,7 +79,7 @@ export const DiscoverCollectionsList = () => {
             actionRight={items.length === 10 ? {
                 title: 'See all', onPress: () => router.push('Collections', {
                     initialCollections: items,
-                    after: cursor,
+                    initialAfter: cursor,
                 })
             } : undefined}
         >

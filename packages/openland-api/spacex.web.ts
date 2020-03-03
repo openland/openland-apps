@@ -2709,7 +2709,7 @@ const ExplorePeopleSelector = obj(
                 )))
         );
 const ExploreRoomsSelector = obj(
-            field('discoverNewAndGrowing', 'discoverNewAndGrowing', args(fieldValue("first", intValue(5)), fieldValue("seed", refValue('seed'))), notNull(obj(
+            field('discoverNewAndGrowing', 'discoverNewAndGrowing', args(fieldValue("first", intValue(3)), fieldValue("seed", refValue('seed'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('items', 'items', args(), notNull(list(notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -2717,7 +2717,7 @@ const ExploreRoomsSelector = obj(
                         ))))),
                     field('cursor', 'cursor', args(), scalar('String'))
                 ))),
-            field('discoverPopularNow', 'discoverPopularNow', args(fieldValue("first", intValue(5))), notNull(obj(
+            field('discoverPopularNow', 'discoverPopularNow', args(fieldValue("first", intValue(3))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('items', 'items', args(), notNull(list(notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5237,7 +5237,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ExploreRooms: {
         kind: 'query',
         name: 'ExploreRooms',
-        body: 'query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:5,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
+        body: 'query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename ...DiscoverSharedRoom}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
         selector: ExploreRoomsSelector
     },
     FeatureFlags: {

@@ -35,7 +35,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
             <ZListGroup
                 header="New and growing"
                 headerMarginTop={0}
-                actionRight={newRooms.length === 5 ? {
+                actionRight={newRooms.length === 3 ? {
                     title: 'See all', onPress: () => props.router.push('DiscoverListing', {
                         initialRooms: newRooms,
                         type: 'new',
@@ -64,7 +64,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
             <ZListGroup
                 header="Popular now"
                 headerMarginTop={0}
-                actionRight={popularRooms.length === 5 ? {
+                actionRight={popularRooms.length === 3 ? {
                     title: 'See all', onPress: () => props.router.push('DiscoverListing', {
                         initialRooms: popularRooms,
                         type: 'popular',

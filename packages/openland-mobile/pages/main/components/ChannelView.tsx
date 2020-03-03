@@ -44,7 +44,7 @@ const FollowButton = React.memo((props: FollowButtonProps) => {
     const theme = React.useContext(ThemeContext);
     const { state, onPress } = props;
 
-    const backgroundColor = state.startsWith('done') ? theme.backgroundTertiary : theme.accentPrimary;
+    const backgroundColor = state.startsWith('done') ? theme.backgroundTertiaryTrans : theme.accentPrimary;
     const tintColor = state.startsWith('done') ? theme.foregroundTertiary : theme.foregroundInverted;
     const underlayColor = state.startsWith('done') ? theme.backgroundTertiaryActive : theme.accentPrimaryActive;
 

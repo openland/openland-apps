@@ -53,13 +53,13 @@ fragment DiscoverChatsCollectionShort on DiscoverChatsCollection {
 }
 
 query ExploreRooms($seed: Int!) {
-    discoverNewAndGrowing(first: 5, seed: $seed) {
+    discoverNewAndGrowing(first: 3, seed: $seed) {
         items {
             ...DiscoverSharedRoom
         }
         cursor
     }
-    discoverPopularNow(first: 5) {
+    discoverPopularNow(first: 3) {
         items {
             ...DiscoverSharedRoom
         }
