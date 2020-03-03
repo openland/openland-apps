@@ -9,6 +9,7 @@ import { UHeader } from 'openland-unicorn/UHeader';
 import { DiscoverCollection } from './components/DiscoverCollection';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { EditorsChoiceItem } from './components/EditorsChoiceItem';
+import { getRandomSeed } from './utils/getRandomSeed';
 
 const editorsChoiceItem = css`
     width: 100%;
@@ -48,9 +49,9 @@ const listingsContainer = css`
 
 export const DiscoverHomeFragment = React.memo(() => {
     const client = useClient();
+    const seed = getRandomSeed();
 
-    // temporary seed
-    const newAndGrowing = client.useDiscoverNewAndGrowing({ first: 3, seed: 123 });
+    const newAndGrowing = client.useDiscoverNewAndGrowing({ first: 3, seed });
     const newAndGrowingItems = newAndGrowing.discoverNewAndGrowing.items || [];
 
     const popularNow = client.useDiscoverPopularNow({ first: 3 });

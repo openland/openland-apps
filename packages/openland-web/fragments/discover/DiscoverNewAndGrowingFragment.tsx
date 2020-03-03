@@ -4,12 +4,14 @@ import { UHeader } from 'openland-unicorn/UHeader';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
+import { getRandomSeed } from './utils/getRandomSeed';
 
 export const DiscoverNewAndGrowingFragment = React.memo(() => {
     const client = useClient();
+    const seed = getRandomSeed();
 
     // initial items
-    const newAndGrowing = client.useDiscoverNewAndGrowing({ first: 20, seed: 123 });
+    const newAndGrowing = client.useDiscoverNewAndGrowing({ first: 20, seed });
     const { items: initialItems, cursor: initialCursor } = newAndGrowing.discoverNewAndGrowing;
 
     const [loading, setLoading] = React.useState<boolean>(false);
@@ -23,7 +25,7 @@ export const DiscoverNewAndGrowingFragment = React.memo(() => {
         setLoading(true);
         const first = 10;
 
-        const loaded = await client.queryDiscoverNewAndGrowing({ first, seed: 123, after });
+        const loaded = await client.queryDiscoverNewAndGrowing({ first, seed, after });
         const { items, cursor } = loaded.discoverNewAndGrowing;
 
         setAfter(cursor);
