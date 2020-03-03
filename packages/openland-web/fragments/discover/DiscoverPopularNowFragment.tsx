@@ -1,18 +1,50 @@
 import * as React from 'react';
 import { useClient } from 'openland-api/useClient';
-import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
-import { Listing } from './components/Listing';
+import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
+import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
+import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 
 export const DiscoverPopularNowFragment = React.memo(() => {
     const client = useClient();
-    const popularNow = client.useDiscoverPopularNow({ first: 0 });
-    const popularNowItems = popularNow.discoverPopularNow.items;
+
+    // initial items
+    const popularNow = client.useDiscoverPopularNow({ first: 20 });
+    const { items: initialItems, cursor: initialCursor } = popularNow.discoverPopularNow;
+
+    const [loading, setLoading] = React.useState<boolean>(false);
+    const [after, setAfter] = React.useState<string | null>(initialCursor);
+    const [displayItems, setDisplayItems] = React.useState<DiscoverSharedRoom[]>(initialItems);
+
+    const handleLoadMore = React.useCallback(async () => {
+        if (loading || !after) {
+            return;
+        }
+        setLoading(true);
+        const first = 10;
+
+        const loaded = await client.queryDiscoverPopularNow({ first, after });
+        const { items, cursor } = loaded.discoverPopularNow;
+
+        setAfter(cursor);
+        setDisplayItems(prev => prev.concat(items));
+        setLoading(false);
+
+    }, [after, loading]);
 
     return (
-        <Page track="discover_popular_now">
+        <>
             <UHeader title="Popular now" />
-            <Listing items={popularNowItems} />
-        </Page>
+            <UFlatList
+                track="discover_popular_now"
+                title="Popular now"
+                loading={loading}
+                loadMore={handleLoadMore}
+                items={displayItems}
+                renderItem={item => (
+                    <UGroupView group={item as DiscoverSharedRoom} />
+                )}
+            />
+        </>
     );
 });
