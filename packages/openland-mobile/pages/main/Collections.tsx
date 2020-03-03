@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SFlatList } from 'react-native-s/SFlatList';
-import { View, TouchableWithoutFeedback, Text, PixelRatio, Platform } from 'react-native';
+import { View, TouchableWithoutFeedback, Text, PixelRatio, Platform, Animated } from 'react-native';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { plural } from 'openland-y-utils/plural';
@@ -12,6 +12,7 @@ import { SRouterContext } from 'react-native-s/SRouterContext';
 import { SRouter } from 'react-native-s/SRouter';
 import FastImage from 'react-native-fast-image';
 import { useClient } from 'openland-api/useClient';
+import { usePressableView } from './components/discover/usePressableView';
 
 export const layoutCollection = () => ({
         width: Math.round(167 * PixelRatio.get()),
@@ -27,6 +28,7 @@ const Collection = (props: CollectionProps) => {
     let theme = useTheme();
     const {image} = props.item;
     const [path, setPath] = React.useState('');
+    const {styles, delayPressIn, handlePressIn, handlePressOut} = usePressableView();
     let onPress = () => {
         props.router.push('DiscoverListing', {
             type: 'collections',
@@ -44,8 +46,8 @@ const Collection = (props: CollectionProps) => {
         });
     }, []);
     return (
-        <View style={{width: '100%', height: 264, padding: 16, alignSelf: 'center'}}>
-            <TouchableWithoutFeedback onPress={onPress}>
+        <Animated.View style={{width: '100%', height: 264, padding: 16, alignSelf: 'center', ...styles}}>
+            <TouchableWithoutFeedback delayPressIn={delayPressIn} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut}>
                 <View flexDirection="column" borderRadius={RadiusStyles.Large} paddingTop={8} paddingBottom={6}>
                     <FastImage 
                         source={{uri: path}}
@@ -66,7 +68,7 @@ const Collection = (props: CollectionProps) => {
                     </View>
                 </View>
             </TouchableWithoutFeedback>
-        </View>
+        </Animated.View>
     );
 };
 
