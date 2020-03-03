@@ -13,11 +13,12 @@ import IcCollections from 'openland-icons/s/ic-collections-24.svg';
 import IcPremium from 'openland-icons/s/ic-premium-24.svg';
 import IcFree from 'openland-icons/s/ic-free-24.svg';
 import IcStar from 'openland-icons/s/ic-star-24.svg';
-import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
+import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
 import { DialogSearchResults } from '../dialogs/components/DialogSearchResults';
 import { GlobalSearch_items } from 'openland-api/spacex.types';
 
 export const DiscoverFragment = React.memo(() => {
+    const refInput = React.useRef<USearchInputRef>(null);
     const isNP = AppConfig.isNonProduction();
     const isVisible = useVisibleTab();
     React.useEffect(
@@ -34,7 +35,9 @@ export const DiscoverFragment = React.memo(() => {
     const isSearching = query.trim().length > 0;
 
     const onPick = React.useCallback((item: GlobalSearch_items) => {
-        // setQuery('');
+        if (refInput && refInput.current) {
+            refInput.current.reset();
+        }
         if (item.__typename === 'Organization') {
             router.navigate(`/${item.shortname || item.id}`);
             return;
@@ -50,17 +53,29 @@ export const DiscoverFragment = React.memo(() => {
                 onChange={setQuery}
                 marginHorizontal={16}
                 marginBottom={16}
+                ref={refInput}
                 placeholder="Groups and people"
             />
             <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>
-
                 {!isSearching && (
                     <XView flexDirection="column">
                         <UListItem title="Home" path="/discover/home" icon={<IcHome />} />
                         <UListItem title="New and growing" path="/discover/new" icon={<IcNew />} />
-                        <UListItem title="Popular now" path="/discover/popular" icon={<IcPopular />} />
-                        <UListItem title="Collections" path="/discover/collections" icon={<IcCollections />} />
-                        <UListItem title="Top premium" path="/discover/premium" icon={<IcPremium />} />
+                        <UListItem
+                            title="Popular now"
+                            path="/discover/popular"
+                            icon={<IcPopular />}
+                        />
+                        <UListItem
+                            title="Collections"
+                            path="/discover/collections"
+                            icon={<IcCollections />}
+                        />
+                        <UListItem
+                            title="Top premium"
+                            path="/discover/premium"
+                            icon={<IcPremium />}
+                        />
                         <UListItem title="Top free" path="/discover/free" icon={<IcFree />} />
                         <UListItem
                             title="Recommendations"
@@ -73,12 +88,8 @@ export const DiscoverFragment = React.memo(() => {
                 )}
 
                 {isSearching && (
-                    <DialogSearchResults
-                        variables={{ query: query }}
-                        onPick={onPick}
-                    />
+                    <DialogSearchResults variables={{ query: query }} onPick={onPick} />
                 )}
-
             </XView>
         </XView>
     );

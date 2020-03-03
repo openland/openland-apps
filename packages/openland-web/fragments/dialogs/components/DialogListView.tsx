@@ -7,7 +7,7 @@ import { XListView } from 'openland-web/components/XListView';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { DialogView } from './DialogView';
 import { DialogSearchResults } from './DialogSearchResults';
-import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
+import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { dialogListWebDataSource, DialogListWebItem } from './DialogListWebDataSource';
@@ -35,7 +35,7 @@ export interface DialogListViewProps {
 let ds: DataSource<DialogListWebItem> | undefined;
 
 export const DialogListView = XMemo<DialogListViewProps>(props => {
-    const ref = React.createRef<HTMLInputElement>();
+    const ref = React.createRef<USearchInputRef>();
     let messenger = React.useContext(MessengerContext);
     if (!ds) {
         ds = dialogListWebDataSource(messenger.dialogList.dataSource);
@@ -147,7 +147,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
             callback: () => {
                 // TODO: check input focus (implement is useShortcuts via ref?)
                 if (ref.current && query) {
-                    setQuery('');
+                    ref.current.reset();
                     return true;
                 }
                 return false;
@@ -159,7 +159,9 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
     ]);
 
     const onPick = React.useCallback((item: GlobalSearch_items) => {
-        setQuery('');
+        if (ref.current) {
+            ref.current.reset();
+        }
         if (item.__typename === 'Organization') {
             router!.navigate(`/${item.shortname || item.id}`);
             return;
@@ -167,10 +169,13 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
         router!.navigate(`/mail/${item.id}`);
     }, []);
 
-    const onMessagePick = React.useCallback((chatId: string) => {
-        setQuery('');
-        router!.navigate(`/mail/${chatId}`);
-    }, []);
+    const onMessagePick = React.useCallback(
+        (chatId: string) => {
+            setQuery('');
+            router!.navigate(`/mail/${chatId}`);
+        },
+        [query],
+    );
 
     return (
         <XView flexGrow={1} flexBasis={0} minHeight={0}>
@@ -191,17 +196,16 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                         />
                     </div>
                 )}
-                {canUseDOM &&
-                    !isSearching && (
-                        <XListView
-                            dataSource={dataSource}
-                            itemHeight={72}
-                            loadingHeight={200}
-                            renderItem={renderDialog}
-                            renderLoading={renderLoading}
-                            afterChildren={<DiscoverFooter />}
-                        />
-                    )}
+                {canUseDOM && !isSearching && (
+                    <XListView
+                        dataSource={dataSource}
+                        itemHeight={72}
+                        loadingHeight={200}
+                        renderItem={renderDialog}
+                        renderLoading={renderLoading}
+                        afterChildren={<DiscoverFooter />}
+                    />
+                )}
             </XView>
             <CallFloating />
         </XView>

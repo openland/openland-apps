@@ -30,7 +30,7 @@ const field = css`
     }
 `;
 
-const reset = css`
+const resetClassName = css`
     appearance: none;
     cursor: pointer;
     position: absolute;
@@ -80,40 +80,45 @@ interface USearchInputProps extends XViewProps {
     placeholder?: string;
 }
 
-export const USearchInput = React.forwardRef(
-    (props: USearchInputProps, ref: React.RefObject<HTMLInputElement>) => {
-        const { value, onChange, autoFocus, placeholder = 'Search', ...other } = props;
+export interface USearchInputRef extends HTMLInputElement {
+    reset: () => void;
+}
 
-        const [val, setValue] = React.useState(value || '');
+export const USearchInput = React.forwardRef((props: USearchInputProps, ref: React.RefObject<USearchInputRef>) => {
+    const { value, onChange, autoFocus, placeholder = 'Search', ...other } = props;
 
-        const handleChange = (v: string) => {
-            setValue(v);
-            if (onChange) {
-                onChange(v);
-            }
-        };
+    const [val, setValue] = React.useState(typeof value === 'string' ? value : '');
 
-        return (
-            <XView position="relative" {...other}>
-                <input
-                    type="search"
-                    className={cx(TextBody, field)}
-                    value={val || ''}
-                    onChange={e => handleChange(e.target.value)}
-                    placeholder={placeholder}
-                    autoFocus={autoFocus}
-                    ref={ref}
-                />
-                <div className={searchIconWrapper}>
-                    <SearchIcon />
-                </div>
-                {props.value &&
-                    props.value.length > 0 && (
-                        <button className={reset} onClick={() => handleChange('')}>
-                            <ClearIcon />
-                        </button>
-                    )}
-            </XView>
-        );
-    },
-);
+    const handleChange = (v: string) => {
+        setValue(v);
+        if (onChange) {
+            onChange(v);
+        }
+    };
+
+    React.useImperativeHandle<any, { reset: () => void }>(ref, () => ({
+        reset: () => handleChange(''),
+    }));
+
+    return (
+        <XView position="relative" {...other}>
+            <input
+                type="search"
+                className={cx(TextBody, field)}
+                value={val || ''}
+                onChange={e => handleChange(e.target.value)}
+                placeholder={placeholder}
+                autoFocus={autoFocus}
+                ref={ref}
+            />
+            <div className={searchIconWrapper}>
+                <SearchIcon />
+            </div>
+            {props.value && props.value.length > 0 && (
+                <button className={resetClassName} onClick={() => handleChange('')}>
+                    <ClearIcon />
+                </button>
+            )}
+        </XView>
+    );
+});
