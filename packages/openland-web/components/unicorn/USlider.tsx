@@ -84,8 +84,9 @@ const USliderRaw = React.memo((props: USliderProps) => {
             const sliderRightmostPoint = sliderRect.right;
             const blanketWidth = childWidth * numChildren;
             const blanketRightmostPoint = blanketRect.left + blanketWidth;
+            const gap = 16;
 
-            if (sliderRightmostPoint < blanketRightmostPoint) {
+            if (sliderRightmostPoint < blanketRightmostPoint - gap) {
                 setOffset(offset - childWidth);
                 setCurrentSlide(currentSlide + 1);
             }

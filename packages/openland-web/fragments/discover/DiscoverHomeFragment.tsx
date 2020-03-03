@@ -69,7 +69,7 @@ export const DiscoverHomeFragment = React.memo(() => {
         <Page track="discover_home">
             <UHeader title="Home" />
 
-            <XView paddingHorizontal={16}>
+            <XView paddingHorizontal={20}>
                 {isTabVisible && (
                     <USlider title="Editors choice">
                         <div className={slide}>one</div>
