@@ -11,10 +11,11 @@ import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabConte
 import { EditorsChoiceItem } from './components/EditorsChoiceItem';
 
 const editorsChoiceItem = css`
-    // width: 100%;
-    // height: 200px;
-    // background: grey;
+    width: 100%;
+    max-width: 560px;
     flex-shrink: 0;
+    display: flex;
+    justify-content: center;
 `;
 
 const sliderCollectionItem = css`

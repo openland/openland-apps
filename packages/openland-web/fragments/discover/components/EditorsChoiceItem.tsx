@@ -14,9 +14,14 @@ const imageContainer = css`
     }
 `;
 
+const container = css`
+    width: 100%;
+    max-width: 560px;
+`;
+
 export const EditorsChoiceItem = React.memo((props: DiscoverEditorsChoice_discoverEditorsChoice) => {
     return (
-        <div>
+        <div className={container}>
             <div className={imageContainer}>
                 <XCloudImage photoRef={props.image} width={560} height={200} />
             </div>
