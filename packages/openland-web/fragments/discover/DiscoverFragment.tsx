@@ -73,7 +73,7 @@ export const DiscoverFragment = React.memo(() => {
                             path="/discover/recommendations"
                             icon={<IcStar />}
                         />
-                        <UListItem title="Groups" path="/discover/groups" />
+                        {/* <UListItem title="Groups" path="/discover/groups" /> */}
                         {isNP && <UListItem title="Feed" path="/feed" />}
                     </XView>
                 )}
