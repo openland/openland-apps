@@ -56,7 +56,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                         flexBasis={0}
                         flexGrow={1}
                         maxWidth={
-                            maxWidth
+                            maxWidth && !showBack
                                 ? maxWidth
                                 : appearance === 'normal'
                                 ? 600
@@ -79,7 +79,9 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                         minWidth={0}
                         flexBasis={0}
                         flexGrow={1}
-                        maxWidth={maxWidth ? maxWidth : appearance === 'normal' ? 600 : 824}
+                        maxWidth={
+                            maxWidth && !showBack ? maxWidth : appearance === 'normal' ? 600 : 824
+                        }
                         flexDirection="row"
                         paddingHorizontal={16}
                         {...TextStyles.Title1}
