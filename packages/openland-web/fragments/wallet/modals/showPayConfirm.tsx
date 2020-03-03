@@ -51,7 +51,7 @@ const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController } & P
                     {props.productPicture}
                 </XView>}
                 {props.productView}
-                <XView {...TextStyles.Title3} color="var(--foregroundPrimary)" marginBottom={4} marginTop={20}>{`${formatMoney(props.amount)} ${props.type === 'payment' ? '' : props.interval === WalletSubscriptionInterval.MONTH ? ' / mo.' : props.interval === WalletSubscriptionInterval.WEEK ? ' / wk.' : ' / /?'}`}</XView>
+                <XView {...TextStyles.Title3} color="var(--foregroundPrimary)" marginBottom={4} marginTop={20}>{`${formatMoney(props.amount)} ${props.type === 'payment' ? '' : props.interval === WalletSubscriptionInterval.MONTH ? ' / mo' : props.interval === WalletSubscriptionInterval.WEEK ? ' / wk' : ' / /?'}`}</XView>
                 {props.productDescription && <XView {...TextStyles.Body} color="var(--foregroundSecondary)">Amount</XView>}
 
             </XView>

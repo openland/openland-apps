@@ -46,8 +46,8 @@ export const convertSubscription = (subscription: Subscriptions_subscriptions) =
     const subtitle = generateSubTitle(expires, subscription.state);
     const amount = formatMoney(subscription.amount);
     const intervalVariants: { [key in WalletSubscriptionInterval]: string } = {
-        [WalletSubscriptionInterval.MONTH]: 'mo.',
-        [WalletSubscriptionInterval.WEEK]: 'wk.',
+        [WalletSubscriptionInterval.MONTH]: 'mo',
+        [WalletSubscriptionInterval.WEEK]: 'wk',
     };
     const interval = intervalVariants[subscription.interval] || 'period';
     const amountInterval = `${amount} / ${interval}, `;
