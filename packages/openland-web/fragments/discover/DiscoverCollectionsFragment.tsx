@@ -1,21 +1,13 @@
 import * as React from 'react';
-import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { useClient } from 'openland-api/useClient';
-import { css } from 'linaria';
 import { DiscoverCollection } from './components/DiscoverCollection';
 import { XView } from 'react-mental';
-
-const collectionsContainer = css`
-    margin-top: 20px;
-    margin-left: 16px;
-
-    display: flex;
-    flex-wrap: wrap;
-`;
+import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 
 export const DiscoverCollectionsFragment = React.memo(() => {
     const client = useClient();
+
     const collections = client.useDiscoverCollections({ first: 20 });
 
     if (!collections || !collections.discoverCollections) {
@@ -23,20 +15,45 @@ export const DiscoverCollectionsFragment = React.memo(() => {
         return null;
     }
 
-    const collectionsItems = collections.discoverCollections.items;
+    const { items: initialItems, cursor: initialCursor } = collections.discoverCollections;
+
+    const [loading, setLoading] = React.useState<boolean>(false);
+    const [after, setAfter] = React.useState<string | null>(initialCursor);
+
+    const [displayItems, setDisplayItems] = React.useState(initialItems);
+
+    const handleLoadMore = React.useCallback(async () => {
+        if (loading || !after) {
+            return;
+        }
+        setLoading(true);
+        const first = 10;
+
+        const loaded = await client.queryDiscoverCollections({ first, after });
+        const { items, cursor } = loaded.discoverCollections!;
+
+        setAfter(cursor);
+        setDisplayItems(prev => prev.concat(items));
+        setLoading(false);
+
+    }, [after, loading]);
 
     return (
-        <Page track="discover_collections">
-            <UHeader title="Collections" />
-
-            <div className={collectionsContainer}>
-                {collectionsItems.map((collection => (
+        <>
+            <UHeader title="Popular now" />
+            <XView height={16} />
+            <UFlatList
+                track="discover_popular_now"
+                title="Popular now"
+                loading={loading}
+                loadMore={handleLoadMore}
+                items={displayItems}
+                renderItem={item => (
                     <XView marginBottom={32} marginRight={16}>
-                        <DiscoverCollection {...collection} />
+                        <DiscoverCollection {...item} />
                     </XView>
-                )))}
-            </div>
-
-        </Page>
+                )}
+            />
+        </>
     );
 });
