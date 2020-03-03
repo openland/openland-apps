@@ -1121,6 +1121,24 @@ private let DiscoverChatsCollectionSelector = obj(
                 )))
         )
 
+private let DiscoverChatsCollectionShortSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("chatsCount", "chatsCount", notNull(scalar("Int"))),
+            field("image", "image", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("uuid", "uuid", notNull(scalar("String"))),
+                    field("crop", "crop", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("x", "x", notNull(scalar("Int"))),
+                            field("y", "y", notNull(scalar("Int"))),
+                            field("w", "w", notNull(scalar("Int"))),
+                            field("h", "h", notNull(scalar("Int")))
+                        ))
+                )))
+        )
+
 private let FeedChannelFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -2553,6 +2571,16 @@ private let DiscoverCollectionsSelector = obj(
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("DiscoverChatsCollection", DiscoverChatsCollectionSelector)
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                ))
+        )
+private let DiscoverCollectionsShortSelector = obj(
+            field("discoverCollections", "discoverCollections", arguments(fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("DiscoverChatsCollection", DiscoverChatsCollectionShortSelector)
                         ))))),
                     field("cursor", "cursor", scalar("String"))
                 ))
@@ -5143,6 +5171,12 @@ class Operations {
         "query DiscoverCollections($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename ...DiscoverChatsCollection}cursor}}fragment DiscoverChatsCollection on DiscoverChatsCollection{__typename id title chatsCount chats{__typename ...DiscoverSharedRoom}image{__typename uuid crop{__typename x y w h}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         DiscoverCollectionsSelector
     )
+    let DiscoverCollectionsShort = OperationDefinition(
+        "DiscoverCollectionsShort",
+        .query, 
+        "query DiscoverCollectionsShort($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename ...DiscoverChatsCollectionShort}cursor}}fragment DiscoverChatsCollectionShort on DiscoverChatsCollection{__typename id title chatsCount image{__typename uuid crop{__typename x y w h}}}",
+        DiscoverCollectionsShortSelector
+    )
     let DiscoverEditorsChoice = OperationDefinition(
         "DiscoverEditorsChoice",
         .query, 
@@ -6541,6 +6575,7 @@ class Operations {
         if name == "Dialogs" { return Dialogs }
         if name == "DiscoverCollection" { return DiscoverCollection }
         if name == "DiscoverCollections" { return DiscoverCollections }
+        if name == "DiscoverCollectionsShort" { return DiscoverCollectionsShort }
         if name == "DiscoverEditorsChoice" { return DiscoverEditorsChoice }
         if name == "DiscoverIsDone" { return DiscoverIsDone }
         if name == "DiscoverNewAndGrowing" { return DiscoverNewAndGrowing }

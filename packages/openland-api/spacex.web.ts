@@ -1128,6 +1128,24 @@ const DiscoverChatsCollectionSelector = obj(
                 )))
         );
 
+const DiscoverChatsCollectionShortSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('title', 'title', args(), notNull(scalar('String'))),
+            field('chatsCount', 'chatsCount', args(), notNull(scalar('Int'))),
+            field('image', 'image', args(), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('uuid', 'uuid', args(), notNull(scalar('String'))),
+                    field('crop', 'crop', args(), obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('x', 'x', args(), notNull(scalar('Int'))),
+                            field('y', 'y', args(), notNull(scalar('Int'))),
+                            field('w', 'w', args(), notNull(scalar('Int'))),
+                            field('h', 'h', args(), notNull(scalar('Int')))
+                        ))
+                )))
+        );
+
 const FeedChannelFullSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -2560,6 +2578,16 @@ const DiscoverCollectionsSelector = obj(
                     field('items', 'items', args(), notNull(list(notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             fragment('DiscoverChatsCollection', DiscoverChatsCollectionSelector)
+                        ))))),
+                    field('cursor', 'cursor', args(), scalar('String'))
+                ))
+        );
+const DiscoverCollectionsShortSelector = obj(
+            field('discoverCollections', 'discoverCollections', args(fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('DiscoverChatsCollection', DiscoverChatsCollectionShortSelector)
                         ))))),
                     field('cursor', 'cursor', args(), scalar('String'))
                 ))
@@ -5145,6 +5173,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'DiscoverCollections',
         body: 'query DiscoverCollections($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename ...DiscoverChatsCollection}cursor}}fragment DiscoverChatsCollection on DiscoverChatsCollection{__typename id title chatsCount chats{__typename ...DiscoverSharedRoom}image{__typename uuid crop{__typename x y w h}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
         selector: DiscoverCollectionsSelector
+    },
+    DiscoverCollectionsShort: {
+        kind: 'query',
+        name: 'DiscoverCollectionsShort',
+        body: 'query DiscoverCollectionsShort($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename ...DiscoverChatsCollectionShort}cursor}}fragment DiscoverChatsCollectionShort on DiscoverChatsCollection{__typename id title chatsCount image{__typename uuid crop{__typename x y w h}}}',
+        selector: DiscoverCollectionsShortSelector
     },
     DiscoverEditorsChoice: {
         kind: 'query',

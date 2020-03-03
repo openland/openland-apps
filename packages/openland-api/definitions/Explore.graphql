@@ -37,6 +37,21 @@ fragment DiscoverChatsCollection on DiscoverChatsCollection {
     }
 }
 
+fragment DiscoverChatsCollectionShort on DiscoverChatsCollection {
+    id
+    title
+    chatsCount
+    image {
+        uuid
+        crop {
+            x
+            y
+            w
+            h
+        }
+    }
+}
+
 query ExploreRooms($seed: Int!) {
     discoverNewAndGrowing(first: 5, seed: $seed) {
         items {
@@ -200,6 +215,15 @@ query DiscoverTopFree($first: Int!, $after: String) {
     discoverTopFree(first: $first, after: $after) {
         items {
             ...DiscoverSharedRoom
+        }
+        cursor
+    }
+}
+
+query DiscoverCollectionsShort($first: Int!, $after: String) {
+    discoverCollections(first: $first, after: $after) {
+        items {
+            ...DiscoverChatsCollectionShort
         }
         cursor
     }

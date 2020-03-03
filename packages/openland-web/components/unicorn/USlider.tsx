@@ -2,7 +2,7 @@ import React from 'react';
 import { css } from 'linaria';
 import ArrowRight from 'openland-icons/s/ic-arrow-right-16.svg';
 import ArrowLeft from 'openland-icons/s/ic-arrow-left-16.svg';
-import { debounce } from 'openland-y-utils/timer';
+
 import { UIconButton } from './UIconButton';
 import { XView } from 'react-mental';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
@@ -39,6 +39,7 @@ interface USliderProps {
     title?: string;
     path?: string;
     children?: React.ReactNode;
+    childrenCount?: number;
 }
 
 const USliderRaw = React.memo((props: USliderProps) => {
@@ -97,9 +98,9 @@ const USliderRaw = React.memo((props: USliderProps) => {
             const blanketRightmostPoint = blanketRect.left + blanketWidth;
             const gap = 16;
 
-            if (sliderRightmostPoint < blanketRightmostPoint - gap) {
-                setOffset(offset - childWidth);
+            if (sliderRightmostPoint < blanketRightmostPoint - gap && currentSlide + 1 < (props.childrenCount || 0)) {
                 setCurrentSlide(currentSlide + 1);
+                setOffset(offset - childWidth);
                 setCanClick(false);
                 enableClick();
             }
@@ -115,6 +116,7 @@ const USliderRaw = React.memo((props: USliderProps) => {
             setCanClick(false);
             enableClick();
         }
+
     };
 
     return (
@@ -124,13 +126,13 @@ const USliderRaw = React.memo((props: USliderProps) => {
                     <UIconButton
                         icon={<ArrowLeft />}
                         size="xsmall"
-                        onClick={debounce(onPrevClick, 400)}
+                        onClick={onPrevClick}
                     />
 
                     <UIconButton
                         size="xsmall"
                         icon={<ArrowRight />}
-                        onClick={debounce(onNextClick, 400)}
+                        onClick={onNextClick}
                     />
                 </div>
                 {props.title && (
