@@ -67,8 +67,6 @@ export const DiscoverHomeFragment = React.memo(() => {
     const editorsChoice = client.useDiscoverEditorsChoice();
     const editorsChoiceItems = editorsChoice.discoverEditorsChoice;
 
-    console.warn({ editorsChoiceItems });
-
     const isTabVisible = useVisibleTab();
 
     return (

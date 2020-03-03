@@ -34,17 +34,12 @@ export const DiscoverFragment = React.memo(() => {
     const isSearching = query.trim().length > 0;
 
     const onPick = React.useCallback((item: GlobalSearch_items) => {
-        setQuery('');
+        // setQuery('');
         if (item.__typename === 'Organization') {
             router.navigate(`/${item.shortname || item.id}`);
             return;
         }
         router.navigate(`/mail/${item.id}`);
-    }, []);
-
-    const onMessagePick = React.useCallback((chatId: string) => {
-        setQuery('');
-        router.navigate(`/mail/${chatId}`);
     }, []);
 
     return (
@@ -81,7 +76,6 @@ export const DiscoverFragment = React.memo(() => {
                     <DialogSearchResults
                         variables={{ query: query }}
                         onPick={onPick}
-                        onMessagePick={onMessagePick}
                     />
                 )}
 
