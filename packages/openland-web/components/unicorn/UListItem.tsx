@@ -56,6 +56,7 @@ export interface UListItemProps {
     paddingHorizontal?: number;
     interactive?: boolean;
     linkSelectable?: boolean;
+    disableHover?: boolean;
 }
 
 export const UListItem = React.memo((props: UListItemProps) => {
@@ -237,7 +238,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 alignItems="center"
                 flexDirection="row"
                 backgroundColor={hovered ? 'var(--backgroundPrimaryHover)' : undefined}
-                hoverBackgroundColor="var(--backgroundPrimaryHover)"
+                hoverBackgroundColor={props.disableHover ? undefined : "var(--backgroundPrimaryHover)"}
                 selectedBackgroundColor="var(--accentMuted)"
                 selectedHoverBackgroundColor="var(--accentMutedHover)"
                 selectedColor="var(--foregroundContrast)"

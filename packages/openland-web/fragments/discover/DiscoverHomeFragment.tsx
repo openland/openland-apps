@@ -8,11 +8,12 @@ import { useClient } from 'openland-api/useClient';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { DiscoverCollection } from './components/DiscoverCollection';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
+import { EditorsChoiceItem } from './components/EditorsChoiceItem';
 
-const slide = css`
-    width: 100%;
-    height: 200px;
-    background: grey;
+const editorsChoiceItem = css`
+    // width: 100%;
+    // height: 200px;
+    // background: grey;
     flex-shrink: 0;
 `;
 
@@ -63,6 +64,11 @@ export const DiscoverHomeFragment = React.memo(() => {
     const collections = client.useDiscoverCollections({ first: 20 });
     const collectionsItems = collections.discoverCollections!.items;
 
+    const editorsChoice = client.useDiscoverEditorsChoice();
+    const editorsChoiceItems = editorsChoice.discoverEditorsChoice;
+
+    console.warn({ editorsChoiceItems });
+
     const isTabVisible = useVisibleTab();
 
     return (
@@ -72,10 +78,11 @@ export const DiscoverHomeFragment = React.memo(() => {
             <XView paddingHorizontal={20}>
                 {isTabVisible && (
                     <USlider title="Editors choice">
-                        <div className={slide}>one</div>
-                        <div className={slide}>two</div>
-                        <div className={slide}>three</div>
-                        <div className={slide}>four</div>
+                        {editorsChoiceItems.map(item => (
+                            <div className={editorsChoiceItem}>
+                                <EditorsChoiceItem {...item} />
+                            </div>
+                        ))}
                     </USlider>
                 )}
 
