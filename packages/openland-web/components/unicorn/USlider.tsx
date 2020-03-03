@@ -19,7 +19,7 @@ const slider = css`
 
 const blanket = css`
     display: flex;
-    transition: transform 100ms;
+    transition: transform 300ms;
 `;
 
 const icons = css`
@@ -39,6 +39,7 @@ interface USliderProps {
     title?: string;
     path?: string;
     children?: React.ReactNode;
+    childrenCount?: number;
 }
 
 const USliderRaw = React.memo((props: USliderProps) => {
@@ -46,10 +47,6 @@ const USliderRaw = React.memo((props: USliderProps) => {
     const [numChildren, setNumChildren] = React.useState<number>(0);
     const [childWidth, setChildWidth] = React.useState<number>(0);
     const [currentSlide, setCurrentSlide] = React.useState<number>(0);
-
-    if (!props.children) {
-        return null;
-    }
 
     const blanketStyle = {
         transform: `translateX(${offset}px)`
@@ -86,9 +83,9 @@ const USliderRaw = React.memo((props: USliderProps) => {
             const blanketRightmostPoint = blanketRect.left + blanketWidth;
             const gap = 16;
 
-            if (sliderRightmostPoint < blanketRightmostPoint - gap) {
-                setOffset(offset - childWidth);
+            if (sliderRightmostPoint < blanketRightmostPoint - gap && currentSlide + 1 < (props.childrenCount || 0)) {
                 setCurrentSlide(currentSlide + 1);
+                setOffset(offset - childWidth);
             }
         }
     };
