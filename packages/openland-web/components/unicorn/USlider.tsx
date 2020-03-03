@@ -2,7 +2,7 @@ import React from 'react';
 import { css } from 'linaria';
 import ArrowRight from 'openland-icons/s/ic-arrow-right-16.svg';
 import ArrowLeft from 'openland-icons/s/ic-arrow-left-16.svg';
-
+import { debounce } from 'openland-y-utils/timer';
 import { UIconButton } from './UIconButton';
 import { XView } from 'react-mental';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
@@ -19,7 +19,7 @@ const slider = css`
 
 const blanket = css`
     display: flex;
-    transition: transform 100ms;
+    transition: transform 300ms;
 `;
 
 const icons = css`
@@ -43,6 +43,7 @@ interface USliderProps {
 
 const USliderRaw = React.memo((props: USliderProps) => {
     const [offset, setOffset] = React.useState<number>(0);
+    const [canClick, setCanClick] = React.useState(true);
     const [numChildren, setNumChildren] = React.useState<number>(0);
     const [childWidth, setChildWidth] = React.useState<number>(0);
     const [currentSlide, setCurrentSlide] = React.useState<number>(0);
@@ -50,10 +51,6 @@ const USliderRaw = React.memo((props: USliderProps) => {
     if (!props.children) {
         return null;
     }
-
-    const blanketStyle = {
-        transform: `translateX(${offset}px)`
-    };
 
     const blanketRef = React.createRef<HTMLDivElement>();
     const sliderRef = React.createRef<HTMLDivElement>();
@@ -70,10 +67,24 @@ const USliderRaw = React.memo((props: USliderProps) => {
         }
     };
 
+    const enableClick = React.useCallback(
+        () => {
+            let timer: any;
+            timer = setTimeout(() => {
+                setCanClick(true);
+            }, 300);
+            return () => clearTimeout(timer);
+        },
+        [canClick],
+    );
+
     window.addEventListener('resize', reinitSlider);
     React.useLayoutEffect(reinitSlider, []);
 
     const onNextClick = () => {
+        if (!canClick) {
+            return;
+        }
         const blanketElement = blanketRef.current;
         const sliderElement = sliderRef.current;
 
@@ -89,15 +100,21 @@ const USliderRaw = React.memo((props: USliderProps) => {
             if (sliderRightmostPoint < blanketRightmostPoint - gap) {
                 setOffset(offset - childWidth);
                 setCurrentSlide(currentSlide + 1);
+                setCanClick(false);
+                enableClick();
             }
         }
     };
     const onPrevClick = () => {
+        if (!canClick) {
+            return;
+        }
         if (currentSlide > 0) {
             setOffset(offset + childWidth);
             setCurrentSlide(currentSlide - 1);
+            setCanClick(false);
+            enableClick();
         }
-
     };
 
     return (
@@ -107,17 +124,22 @@ const USliderRaw = React.memo((props: USliderProps) => {
                     <UIconButton
                         icon={<ArrowLeft />}
                         size="xsmall"
-                        onClick={onPrevClick}
+                        onClick={debounce(onPrevClick, 400)}
                     />
 
                     <UIconButton
                         size="xsmall"
                         icon={<ArrowRight />}
-                        onClick={onNextClick}
+                        onClick={debounce(onNextClick, 400)}
                     />
                 </div>
                 {props.title && (
-                    <XView path={props.path ? props.path : undefined} flexDirection="row" alignItems="center" cursor={props.path ? 'pointer' : undefined}>
+                    <XView
+                        path={props.path ? props.path : undefined}
+                        flexDirection="row"
+                        alignItems="center"
+                        cursor={props.path ? 'pointer' : undefined}
+                    >
                         <h2 className={TextTitle3}>{props.title}</h2>
                         {props.path && (
                             <XView marginLeft={8}>
@@ -128,7 +150,11 @@ const USliderRaw = React.memo((props: USliderProps) => {
                 )}
             </div>
             <div className={slider} ref={sliderRef}>
-                <div className={blanket} style={blanketStyle} ref={blanketRef}>
+                <div
+                    className={blanket}
+                    style={{ transform: `translateX(${offset}px)` }}
+                    ref={blanketRef}
+                >
                     {props.children}
                 </div>
             </div>
