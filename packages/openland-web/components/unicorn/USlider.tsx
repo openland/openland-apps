@@ -69,6 +69,8 @@ const USliderRaw = React.memo((props: USliderProps) => {
 
             setNumChildren(numberOfChildren);
             setChildWidth(offsetWidth);
+            setOffset(0);
+            setCurrentSlide(0);
         }
     };
 
