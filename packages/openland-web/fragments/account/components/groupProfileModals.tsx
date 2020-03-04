@@ -49,6 +49,13 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
     ]);
     const descriptionField = useField('input.description', props.description || '', form);
     const shortnameField = useShortnameField('input.shortname', initialShortname, form);
+    const [errorText, setErrorText] = React.useState(form.error);
+    React.useEffect(() => {
+        setErrorText('');
+    }, [shortnameField.value]);
+    React.useEffect(() => {
+        setErrorText(form.error);
+    }, [form.error]);
     const onSubmit = async () => {
         await form.doAction(async () => {
             let newPhoto = avatarField.value;
@@ -70,7 +77,7 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
             if (hasShortname && shortnameField.value !== initialShortname) {
                 promises.push(client.mutateSetRoomShortname(shortnameData));
             }
-
+                
             await Promise.all(promises);
             await client.refetchRoomWithoutMembers({ id: props.roomId });
             props.onClose();
@@ -91,10 +98,13 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
                 <UInputField field={descriptionField} label="Description" marginBottom={16} />
                 {hasShortname && (
                     <>
-                        <UInputField label="Shortname" field={shortnameField} />
-                        {!!form.error && (
+                        <UInputField
+                            label="Shortname"
+                            field={shortnameField}
+                        />
+                        {!!errorText && (
                             <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
-                                {form.error}
+                                {errorText}
                             </XView>
                         )}
                     </>
@@ -157,11 +167,7 @@ export const showRoomEditModal = (chatId: string) => {
     );
 };
 
-export const showLeaveChatConfirmation = (
-    client: OpenlandClient,
-    chatId: string,
-    router: XViewRouter,
-) => {
+export const showLeaveChatConfirmation = (client: OpenlandClient, chatId: string, router: XViewRouter) => {
     const builder = new AlertBlanketBuilder();
 
     builder.title('Leave chat');
