@@ -9,6 +9,12 @@ import ArrowRight from 'openland-icons/s/ic-arrow-right-16.svg';
 const contentContainer = css`
     display: flex;
     user-select: none;
+    align-items: flex-start;
+`;
+
+const titleContainer = css`
+    margin-bottom: 12px;
+    cursor: pointer;
 `;
 
 interface ListingCompactProps {
@@ -24,20 +30,16 @@ export const ListingCompact = React.memo((props: ListingCompactProps) => {
 
     return (
         <div className={contentContainer}>
-            <XView marginTop={16} paddingHorizontal={16}>
+            <XView marginTop={16} paddingHorizontal={16} alignItems="flex-start">
                 {props.title && (
-                    <XView
-                        marginBottom={12}
-                        flexDirection="row"
-                        alignItems="center"
-                        cursor="pointer"
-                        path={props.path}
-                    >
-                        <h2 className={TextTitle3}>{props.title}</h2>
-                        <XView marginLeft={8}>
-                            <ArrowRight />
+                    <div className={titleContainer}>
+                        <XView path={props.path} flexDirection="row" alignItems="center">
+                            <h2 className={TextTitle3}>{props.title}</h2>
+                            <XView marginLeft={8}>
+                                <ArrowRight />
+                            </XView>
                         </XView>
-                    </XView>
+                    </div>
                 )}
                 <XView marginLeft={-16} marginRight={-16}>
                     {props.items.map(item => (
