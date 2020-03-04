@@ -29,6 +29,40 @@ const icons = css`
 const titleContainer = css`
     display: flex;
     user-select: none;
+
+    &:hover span {
+        transform: translateX(8px);
+    }
+
+    &:hover span:after {
+        transform: scale(1);
+    }
+`;
+
+const iconContainer = css`
+    margin-left: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: transform 300ms;
+
+    position: relative;
+
+    &:after {
+        display: block;
+        content: '';
+        position: absolute;
+        top: -4px;
+        left: -4px;
+        width: 24px;
+        height: 24px;
+        border-radius: 100%;
+        background-color: var(--backgroundTertiaryTrans);
+
+        transition: transform 300ms;
+        transform: scale(0);
+    }
 `;
 
 const header = css`
@@ -153,9 +187,9 @@ const USliderRaw = React.memo((props: USliderProps) => {
                         >
                             <h2 className={TextTitle3}>{props.title}</h2>
                             {props.path && (
-                                <XView marginLeft={8}>
+                                <span className={iconContainer}>
                                     <ArrowRight />
-                                </XView>
+                                </span>
                             )}
                         </XView>
                     </div>
