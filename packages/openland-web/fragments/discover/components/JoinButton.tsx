@@ -15,6 +15,8 @@ const button = css`
     width: 48px;
     height: 32px;
 
+    cursor: pointer;
+
     display: flex;
     align-items: center;
     justify-content: center;
