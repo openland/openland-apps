@@ -15,6 +15,40 @@ const contentContainer = css`
 const titleContainer = css`
     margin-bottom: 12px;
     cursor: pointer;
+
+    &:hover span {
+        transform: translateX(8px);
+    }
+
+    &:hover span:after {
+        transform: scale(1);
+    }
+`;
+
+const iconContainer = css`
+    margin-left: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: transform 300ms;
+
+    position: relative;
+
+    &:after {
+        display: block;
+        content: '';
+        position: absolute;
+        top: -4px;
+        left: -4px;
+        width: 24px;
+        height: 24px;
+        border-radius: 100%;
+        background-color: var(--backgroundTertiaryTrans);
+
+        transition: transform 300ms;
+        transform: scale(0);
+    }
 `;
 
 interface ListingCompactProps {
@@ -35,9 +69,9 @@ export const ListingCompact = React.memo((props: ListingCompactProps) => {
                     <div className={titleContainer}>
                         <XView path={props.path} flexDirection="row" alignItems="center">
                             <h2 className={TextTitle3}>{props.title}</h2>
-                            <XView marginLeft={8}>
+                            <span className={iconContainer}>
                                 <ArrowRight />
-                            </XView>
+                            </span>
                         </XView>
                     </div>
                 )}
