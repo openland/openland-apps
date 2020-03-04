@@ -49,7 +49,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
             <>
                 {message.reply && isForward && (
                     <ASText {...TextStylesAsync.Densed} color={forwardColor}>
-                        {message.reply.length} forwarded {message.reply.length === 1 ? 'message' : 'messages'}:
+                        {message.reply.length} forwarded {message.reply.length === 1 ? 'message' : 'messages'}
                     </ASText>
                 )}
                 {message.reply && (

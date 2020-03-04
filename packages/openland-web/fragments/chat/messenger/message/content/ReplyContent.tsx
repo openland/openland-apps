@@ -75,7 +75,7 @@ export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessage
 const ForwardCaption = (props: {isForward?: boolean, messagesCount: number }) => {
     return props.isForward ? (
         <span className={cx(TextBody, forwardCaptionClass)}>
-            {props.messagesCount} forwarded {props.messagesCount === 1 ? 'message' : 'messages'}:
+            {props.messagesCount} forwarded {props.messagesCount === 1 ? 'message' : 'messages'}
         </span>
     ) : null;
 };
