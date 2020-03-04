@@ -25,7 +25,7 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     if (router.rootPath === '/discover' && router.pages.length > 1) {
         showBack = true;
     }
-    console.log(maxWidth);
+
     return (
         <XView
             height={56}

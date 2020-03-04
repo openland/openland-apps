@@ -82,10 +82,9 @@ export const UListItem = React.memo((props: UListItemProps) => {
         disabled,
         paddingHorizontal = 16,
         interactive = true,
-        linkSelectable = true
+        linkSelectable = true,
     } = props;
     const height = large ? 80 : !!avatar || !!leftElement || !!iconBackground ? 56 : 48;
-
     const titleFont = !!description ? TextStyles.Label1 : TextStyles.Body;
     const subtitleFont = TextStyles.Caption;
     const descriptionFont = large ? TextStyles.Densed : TextStyles.Caption;
@@ -101,50 +100,47 @@ export const UListItem = React.memo((props: UListItemProps) => {
         [hovered],
     );
 
-    const titleEmojify = typeof title === 'string' ? React.useMemo(() => emoji(title), [title]) : title;
-    const descriptionEmojify = typeof description === 'string' ? React.useMemo(() => emoji(description), [description]) : description;
-    const subtitleEmojify = typeof subtitle === 'string' ? React.useMemo(() => emoji(subtitle), [subtitle]) : subtitle;
+    const titleEmojify =
+        typeof title === 'string' ? React.useMemo(() => emoji(title), [title]) : title;
+    const descriptionEmojify =
+        typeof description === 'string'
+            ? React.useMemo(() => emoji(description), [description])
+            : description;
+    const subtitleEmojify =
+        typeof subtitle === 'string' ? React.useMemo(() => emoji(subtitle), [subtitle]) : subtitle;
 
     const content = (
         <>
-            {!!icon &&
-                !iconBackground && (
-                    <XView
-                        marginRight={16}
-                        width={24}
-                        height={24}
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <SelectableSVG icon={icon} />
-                    </XView>
-                )}
-            {!!icon &&
-                !!iconBackground && (
-                    <XView
-                        marginRight={16}
-                        width={40}
-                        height={40}
-                        borderRadius={20}
-                        backgroundColor={iconBackground}
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <UIcon icon={icon} color={iconColor || 'var(--foregroundContrast)'} />
-                    </XView>
-                )}
-            {!!avatar &&
-                !icon && (
-                    <XView marginRight={16}>
-                        <UAvatar {...avatar} size={large ? 'large' : 'medium'} />
-                    </XView>
-                )}
-            {!!leftElement &&
-                !icon && (
-                    <XView marginRight={16}>
-                        {leftElement}
-                    </XView>
-                )}
+            {!!icon && !iconBackground && (
+                <XView
+                    marginRight={16}
+                    width={24}
+                    height={24}
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <SelectableSVG icon={icon} />
+                </XView>
+            )}
+            {!!icon && !!iconBackground && (
+                <XView
+                    marginRight={16}
+                    width={40}
+                    height={40}
+                    borderRadius={20}
+                    backgroundColor={iconBackground}
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <UIcon icon={icon} color={iconColor || 'var(--foregroundContrast)'} />
+                </XView>
+            )}
+            {!!avatar && !icon && (
+                <XView marginRight={16}>
+                    <UAvatar {...avatar} size={large ? 'large' : 'medium'} />
+                </XView>
+            )}
+            {!!leftElement && !icon && <XView marginRight={16}>{leftElement}</XView>}
 
             <XView flexDirection="column" flexGrow={1} flexShrink={1} flexBasis={0}>
                 <XView flexDirection="row" alignItems="center" overflow="hidden">
@@ -154,7 +150,6 @@ export const UListItem = React.memo((props: UListItemProps) => {
                         color="var(--foregroundPrimary)"
                         selectedColor="var(--foregroundContrast)"
                     >
-
                         {titleStyle ? <XView {...titleStyle}>{titleEmojify}</XView> : titleEmojify}
                     </SelectableText>
 
@@ -240,7 +235,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 backgroundColor={hovered ? 'var(--backgroundPrimaryHover)' : undefined}
                 hoverBackgroundColor={props.disableHover ? undefined : "var(--backgroundPrimaryHover)"}
                 selectedBackgroundColor="var(--accentMuted)"
-                selectedHoverBackgroundColor="var(--accentMutedHover)"
+                selectedHoverBackgroundColor="var(--accentMutedHover) !important"
                 selectedColor="var(--foregroundContrast)"
                 cursor="pointer"
                 borderRadius={useRadius ? 8 : 0}
