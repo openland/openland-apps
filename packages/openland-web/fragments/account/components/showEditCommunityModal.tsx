@@ -114,6 +114,13 @@ const EditCommunityEntity = (props: {
         org.private ? CommunityType.COMMUNITY_PRIVATE : CommunityType.COMMUNITY_PUBLIC,
         form,
     );
+    const [errorText, setErrorText] = React.useState(form.error);
+    React.useEffect(() => {
+        setErrorText('');
+    }, [shortnameField.value]);
+    React.useEffect(() => {
+        setErrorText(form.error);
+    }, [form.error]);
 
     const doConfirm = () => {
         form.doAction(async () => {
@@ -192,9 +199,9 @@ const EditCommunityEntity = (props: {
                         />
                         <div className={TextTitle3}>Shortname</div>
                         <UInputField field={shortnameField} label="Shortname" marginTop={12} />
-                        {!!form.error && (
+                        {!!errorText && (
                             <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
-                                {form.error}
+                                {errorText}
                             </XView>
                         )}
                         {!props.isCommunity && (

@@ -49,6 +49,13 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
     ]);
     const descriptionField = useField('input.description', props.description || '', form);
     const shortnameField = useShortnameField('input.shortname', initialShortname, form);
+    const [errorText, setErrorText] = React.useState(form.error);
+    React.useEffect(() => {
+        setErrorText('');
+    }, [shortnameField.value]);
+    React.useEffect(() => {
+        setErrorText(form.error);
+    }, [form.error]);
     const onSubmit = async () => {
         await form.doAction(async () => {
             let newPhoto = avatarField.value;
@@ -95,9 +102,9 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
                             label="Shortname"
                             field={shortnameField}
                         />
-                        {!!form.error && (
+                        {!!errorText && (
                             <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
-                                {form.error}
+                                {errorText}
                             </XView>
                         )}
                     </>
