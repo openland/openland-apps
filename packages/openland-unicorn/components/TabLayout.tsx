@@ -82,12 +82,10 @@ const TabContainer = React.memo(
     },
 );
 
-export interface TabRouterContextProps {
+export const TabRouterContext = React.createContext<{
     router: TabRouter;
     setTab(id: number): void;
-}
-
-export const TabRouterContext = React.createContext<TabRouterContextProps | null>(null);
+} | null>(null);
 
 export const TabLayout = React.memo((props: { router: TabRouter }) => {
     let layout = useLayout();
@@ -144,9 +142,7 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
     }, []);
 
     return (
-        <TabRouterContext.Provider
-            value={{ router: props.router, setTab: setSelectedClb }}
-        >
+        <TabRouterContext.Provider value={{ router: props.router, setTab: setSelectedClb }}>
             <XViewRouterContext.Provider value={xRouting}>
                 <Container>
                     <XDialogProviderComponent />

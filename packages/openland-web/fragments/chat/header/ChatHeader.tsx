@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ChatInfo } from '../types';
 import { XView, XViewRouterContext } from 'react-mental';
-import { TabRouterContext } from 'openland-unicorn/components/TabLayout';
 import { css, cx } from 'linaria';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useClient } from 'openland-api/useClient';
@@ -121,7 +120,6 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     let layout = useLayout();
     const client = useClient();
     const router = React.useContext(XViewRouterContext)!;
-    const tabRouter = React.useContext(TabRouterContext)!;
     let chat = client.useRoomChat({ id: props.id }, { fetchPolicy: 'cache-first' }).room!;
     let calls = React.useContext(MessengerContext).calls;
 
@@ -192,7 +190,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
         res.item({
             title: 'Leave chat',
             icon: <LeaveIcon />,
-            action: () => showLeaveChatConfirmation(client, chat.id, tabRouter),
+            action: () => showLeaveChatConfirmation(client, chat.id, router),
         });
     }
 

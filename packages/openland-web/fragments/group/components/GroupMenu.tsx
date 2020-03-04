@@ -11,7 +11,6 @@ import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { useClient } from 'openland-api/useClient';
 import { useRole } from 'openland-x-permissions/XWithRole';
-import { TabRouterContext } from 'openland-unicorn/components/TabLayout';
 import AlertBlanket from 'openland-x/AlertBlanket';
 
 interface GroupMenu {
@@ -20,7 +19,6 @@ interface GroupMenu {
 
 const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController }) => {
     const router = React.useContext(XViewRouterContext)!;
-    const tabRouter = React.useContext(TabRouterContext)!;
     const client = useClient();
     const { ctx, group } = props;
     const { id, title, canEdit, role, organization, isChannel } = group;
@@ -48,7 +46,7 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
     builder.item({
         title: `Leave ${typeString}`,
         icon: <LeaveIcon />,
-        onClick: () => showLeaveChatConfirmation(client, id, tabRouter),
+        onClick: () => showLeaveChatConfirmation(client, id, router)
     });
 
     if (useRole('super-admin')) {
