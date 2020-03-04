@@ -60,6 +60,11 @@ const USliderRaw = React.memo((props: USliderProps) => {
     const blanketRef = React.createRef<HTMLDivElement>();
     const sliderRef = React.createRef<HTMLDivElement>();
 
+    const reset = () => {
+        setOffset(0);
+        setCurrentSlide(0);
+    };
+
     const reinitSlider = () => {
         const blanketElement = blanketRef.current;
 
@@ -69,8 +74,7 @@ const USliderRaw = React.memo((props: USliderProps) => {
 
             setNumChildren(numberOfChildren);
             setChildWidth(offsetWidth);
-            setOffset(0);
-            setCurrentSlide(0);
+            reset();
         }
     };
 
@@ -115,6 +119,8 @@ const USliderRaw = React.memo((props: USliderProps) => {
                 setOffset(offset - childWidth);
                 setCanClick(false);
                 enableClick();
+            } else {
+                reset();
             }
         }
     };
