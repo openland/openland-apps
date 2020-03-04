@@ -1,7 +1,6 @@
 import React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
-import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import ArrowRight from 'openland-icons/s/ic-arrow-right-16.svg';
