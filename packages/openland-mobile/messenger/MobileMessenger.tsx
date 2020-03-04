@@ -109,7 +109,7 @@ export class MobileMessenger {
                     if (item.isService) {
                         return <AsyncServiceMessage message={item} onUserPress={this.handleUserClick} onGroupPress={this.handleGroupClick} onOrganizationPress={this.handleOrganizationClick} />;
                     } else {
-                        return <AsyncMessageView message={item} engine={eng} onUserPress={this.handleMessageUserClick} onGroupPress={this.handleMessageGroupClick} onOrganizationPress={this.handleMessageOrganizationClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMessageMediaClick} onMessageLongPress={this.handleMessageLongPress} onMessagePress={this.handleMessagePress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsClick} onReplyPress={this.handleReplyClick} onReactionsPress={this.handleReactionsClick} />;
+                        return <AsyncMessageView conversationId={id} message={item} engine={eng} onUserPress={this.handleMessageUserClick} onGroupPress={this.handleMessageGroupClick} onOrganizationPress={this.handleMessageOrganizationClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMessageMediaClick} onMessageLongPress={this.handleMessageLongPress} onMessagePress={this.handleMessagePress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsClick} onReplyPress={this.handleReplyClick} onReactionsPress={this.handleReactionsClick} />;
                     }
                 } else if (item.type === 'date') {
                     return <AsyncDateSeparator year={item.year} month={item.month} date={item.date} />;

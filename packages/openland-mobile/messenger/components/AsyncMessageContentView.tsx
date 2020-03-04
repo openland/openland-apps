@@ -27,6 +27,7 @@ import { SenderContent } from './content/SenderContent';
 export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={17}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 20 : 16, ios: edited ? 17 : 14 }))}</ASText>;
 
 interface AsyncMessageTextViewProps {
+    conversationId?: string;
     theme: ThemeGlobal;
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
@@ -98,7 +99,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
 };
 
 export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number, compensateBubble?: boolean) => {
-    const { theme, message, onUserPress, onGroupPress, onOrganizationPress, onMediaPress, onDocumentPress, onLongPress, onReplyPress } = props;
+    const { conversationId, theme, message, onUserPress, onGroupPress, onOrganizationPress, onMediaPress, onDocumentPress, onLongPress, onReplyPress } = props;
 
     // todo: handle multiple attaches
     const attaches = (message.attachments || []);
@@ -106,6 +107,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     const augmenationAttach = attaches.filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
     const hasImage = !!(fileAttach && fileAttach.fileMetadata.isImage);
     const hasReply = !!(message.reply && message.reply.length > 0);
+    const hasForward = !!(hasReply && conversationId && message.reply![0].source && message.reply![0].source.chat.id !== conversationId);
     const hasText = !!(message.text);
     const hasUrlAug = !!augmenationAttach;
     const sticker = message.sticker && message.sticker.__typename === 'ImageSticker' ? message.sticker : undefined;
@@ -130,9 +132,6 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
 
     const textSize = !compensateBubble ? maxSize : undefined;
 
-    if (hasReply) {
-        topContent.push(<ReplyContent key="msg-reply" compensateBubble={compensateBubble} width={textSize} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onMediaPress={onMediaPress} onPress={onReplyPress} />);
-    }
     if (hasImage && imageLayout) {
         topContent.push(<MediaContent key="msg-media" theme={theme} compensateBubble={compensateBubble} layout={imageLayout} message={message} attach={fileAttach!} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onLongPress={onLongPress} hasTopContent={hasReply} hasBottomContent={hasText || hasUrlAug} />);
     }
@@ -144,6 +143,14 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     }
     if (hasDocument) {
         topContent.push(<DocumentContent key="msg-document" theme={theme} compensateBubble={compensateBubble} attach={fileAttach!} message={message} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onLongPress={onLongPress} />);
+    }
+    if (hasReply) {
+        let replyContent = <ReplyContent key="msg-reply" isForward={hasForward} compensateBubble={compensateBubble} width={textSize} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onMediaPress={onMediaPress} onPress={onReplyPress} />;
+        if (hasForward) {
+            topContent.push(replyContent);
+        } else {
+            topContent.unshift(replyContent);
+        }
     }
 
     let bottomContent: any[] = [];

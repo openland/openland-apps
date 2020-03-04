@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { MessageContent } from '../MessageContent';
 import { DataSourceWebMessageItem } from '../../data/WebMessageItemDataSource';
 import { MessageSenderContent } from '../MessageComponent';
+import { TextBody } from 'openland-web/utils/TextStyles';
 
 const replyMessageGroupClass = css`
     display: flex;
@@ -35,7 +36,11 @@ const replyItemClass = css`
     }
 `;
 
-export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessageItem[] }) => {
+const forwardCaptionClass = css`
+    color: var(--foregroundSecondary);
+`;
+
+export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessageItem[], isForward?: boolean }) => {
     let firstMessage = props.quotedMessages[0];
     return (
         <div className={replyMessageGroupClass}>
@@ -58,6 +63,7 @@ export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessage
                             isOut={q.isOut}
                             sticker={q.sticker}
                             isReply={true}
+                            isForward={props.isForward}
                         />
                     </div>
                 ))}
@@ -66,7 +72,15 @@ export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessage
     );
 };
 
-export const ReplyContent = (props: { quotedMessages: DataSourceWebMessageItem[] }) => {
+const ForwardCaption = (props: {isForward?: boolean, messagesCount: number }) => {
+    return props.isForward ? (
+        <span className={cx(TextBody, forwardCaptionClass)}>
+            {props.messagesCount} forwarded {props.messagesCount === 1 ? 'message' : 'messages'}:
+        </span>
+    ) : null;
+};
+
+export const ReplyContent = (props: { quotedMessages: DataSourceWebMessageItem[], isForward: boolean }) => {
     let content = props.quotedMessages
         .reduce(
             (res, message, i, source) => {
@@ -87,5 +101,10 @@ export const ReplyContent = (props: { quotedMessages: DataSourceWebMessageItem[]
         .map((group, i) => {
             return <ReplyMessagesGroup key={i} {...props} quotedMessages={group} />;
         });
-    return <>{content}</>;
+    return (
+        <>
+            <ForwardCaption isForward={props.isForward} messagesCount={props.quotedMessages.length} />
+            {content}
+        </>
+    );
 };

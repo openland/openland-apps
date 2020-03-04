@@ -3,7 +3,7 @@ import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEn
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
-import { FontStyles } from 'openland-mobile/styles/AppStyles';
+import { FontStyles, TextStylesAsync } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
 import { AsyncReplyMessageMediaView } from '../AsyncReplyMessageMediaView';
 import { AsyncReplyMessageDocumentView } from '../AsyncReplyMessageDocumentView';
@@ -25,11 +25,12 @@ interface ReplyContentProps {
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onPress?: (message: DataSourceMessageItem) => void;
     theme: ThemeGlobal;
+    isForward?: boolean;
 }
 export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
     render() {
-        let { message, maxWidth, width, compensateBubble, theme, onPress } = this.props;
+        let { message, maxWidth, width, compensateBubble, theme, isForward, onPress } = this.props;
 
         let lineBackgroundPatch: any;
         let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
@@ -42,16 +43,22 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
 
         const bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
         const bubbleForegroundTertiary = message.isOut ? theme.outgoingForegroundTertiary : theme.incomingForegroundTertiary;
+        const forwardColor = message.isOut ? theme.tintInverted : theme.foregroundTertiary;
 
         return (
             <>
+                {message.reply && isForward && (
+                    <ASText {...TextStylesAsync.Densed} color={forwardColor}>
+                        {message.reply.length} forwarded {message.reply.length === 1 ? 'message' : 'messages'}:
+                    </ASText>
+                )}
                 {message.reply && (
                     message.reply.map((m, i) => {
                         const needPaddedText = !message.text && !message.sticker && (i + 1 === message.reply!.length);
                         const repliedMessage = !m.isService ? m : undefined;
                         
                         const handlePress = () => { 
-                            if (onPress) {
+                            if (!isForward && onPress) {
                                 onPress(m);
                             }
                          };
@@ -90,7 +97,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                                 insetLeft={8}
                                                 insetRight={contentInsetsHorizontal}
                                                 insetVertical={4}
-                                                numberOfLines={1}
+                                                numberOfLines={isForward ? undefined : 1}
 
                                                 onUserPress={this.props.onUserPress}
                                                 onGroupPress={this.props.onGroupPress}

@@ -30,6 +30,7 @@ const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMe
 });
 
 export interface AsyncMessageViewProps {
+    conversationId: string;
     message: DataSourceMessageItem;
     engine: ConversationEngine;
     onMessagePress: (message: DataSourceMessageItem) => void;
@@ -47,7 +48,7 @@ export interface AsyncMessageViewProps {
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const theme = useThemeGlobal();
-    const { message, engine, onMessageDoublePress, onMessagePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress } = props;
+    const { conversationId, message, engine, onMessageDoublePress, onMessagePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress } = props;
     const { isOut, attachTop, attachBottom, commentsCount, reactions, sender, isSending } = message;
 
     let lastTap: number;
@@ -76,7 +77,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     let res;
 
     if (message.text || message.reply || (message.attachments && message.attachments.length) || message.sticker) {
-        res = <AsyncMessageContentView theme={theme} key={'message-content'} message={message} onMediaPress={handleMediaPress} onLongPress={handleLongPress} onDocumentPress={onDocumentPress} onUserPress={handleUserPress} onGroupPress={handleGroupPress} onOrganizationPress={handleOrganizationPress} onReplyPress={handleReplyPress} />;
+        res = <AsyncMessageContentView conversationId={conversationId} theme={theme} key={'message-content'} message={message} onMediaPress={handleMediaPress} onLongPress={handleLongPress} onDocumentPress={onDocumentPress} onUserPress={handleUserPress} onGroupPress={handleGroupPress} onOrganizationPress={handleOrganizationPress} onReplyPress={handleReplyPress} />;
     }
 
     if (!res) {

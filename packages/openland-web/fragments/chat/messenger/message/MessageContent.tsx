@@ -78,6 +78,7 @@ interface MessageContentProps {
     date?: number;
     fileProgress?: number;
     isReply?: boolean;
+    isForward?: boolean;
 }
 
 export const MessageContent = (props: MessageContentProps) => {
@@ -94,7 +95,9 @@ export const MessageContent = (props: MessageContentProps) => {
         attachTop = false,
         fileProgress,
         isReply = false,
+        isForward = false,
     } = props;
+    const isReplyOnly = isReply && !isForward;
 
     const imageAttaches =
         (attachments.filter(
@@ -119,7 +122,7 @@ export const MessageContent = (props: MessageContentProps) => {
 
     imageAttaches.map(file => {
         content.push(
-            <ContentWrapper wrapperKey={'msg-' + id + '-media-' + file.fileId} className={extraClassName} id={id} isReply={isReply}>
+            <ContentWrapper wrapperKey={'msg-' + id + '-media-' + file.fileId} className={extraClassName} id={id} isReply={isReplyOnly}>
                 <ImageContent
                     file={file}
                     sender={props.sender}
@@ -132,15 +135,15 @@ export const MessageContent = (props: MessageContentProps) => {
 
     if (hasText) {
         content.push(
-            <ContentWrapper wrapperKey="msg-text" className={textClassName} id={id} isReply={isReply}>
-                <MessageTextComponent spans={textSpans} edited={!!edited} shouldCrop={isReply} />
+            <ContentWrapper wrapperKey="msg-text" className={textClassName} id={id} isReply={isReplyOnly}>
+                <MessageTextComponent spans={textSpans} edited={!!edited} shouldCrop={isReplyOnly} />
             </ContentWrapper>,
         );
     }
 
     documentsAttaches.map(file => {
         content.push(
-            <ContentWrapper wrapperKey={'msg-' + id + '-document-' + file.fileId} className={extraClassName} id={id} isReply={isReply}>
+            <ContentWrapper wrapperKey={'msg-' + id + '-document-' + file.fileId} className={extraClassName} id={id} isReply={isReplyOnly}>
                 <DocumentContent
                     file={file}
                     sender={props.sender}
@@ -155,7 +158,7 @@ export const MessageContent = (props: MessageContentProps) => {
 
     augmenationAttaches.map(attach => {
         content.push(
-            <ContentWrapper wrapperKey={'msg-' + id + '-rich-' + attach.id} className={extraClassName} id={id} isReply={isReply}>
+            <ContentWrapper wrapperKey={'msg-' + id + '-rich-' + attach.id} className={extraClassName} id={id} isReply={isReplyOnly}>
                 <RichAttachContent attach={attach} canDelete={isOut} messageId={id} />
             </ContentWrapper>,
         );
@@ -163,23 +166,22 @@ export const MessageContent = (props: MessageContentProps) => {
 
     if (sticker) {
         content.push(
-            <ContentWrapper wrapperKey={'msg-' + id + '-sticker-' + sticker.id} className={extraClassName} id={id} isReply={isReply}>
+            <ContentWrapper wrapperKey={'msg-' + id + '-sticker-' + sticker.id} className={extraClassName} id={id} isReply={isReplyOnly}>
                 <StickerContent sticker={sticker} />
             </ContentWrapper>,
         );
     }
 
     if (reply && reply.length) {
+        const hasForward = props.chatId && reply[0].source && reply[0].source.chat.id !== props.chatId;
+
         const replySection = (
             <div key={'msg-' + id + '-forward'} className={cx(extraClassName, replySectionWrapper)}>
-                <ReplyContent quotedMessages={reply} />
+                <ReplyContent quotedMessages={reply} isForward={!!hasForward} />
             </div>
         );
 
-        const isForward =
-            props.chatId && reply[0].source && reply[0].source.chat.id !== props.chatId;
-
-        if (isForward) {
+        if (hasForward) {
             content.push(replySection);
         } else {
             content.unshift(replySection);
