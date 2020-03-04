@@ -5,9 +5,10 @@ import { DiscoverOnLocalState } from 'openland-web/pages/onboarding/discover.pag
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
-import { RoomShort_SharedRoom } from 'openland-api/spacex.types';
+import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { DiscoverRecommendationsStart } from './components/DiscoverRecommendationsStart';
 import { XView } from 'react-mental';
+import { JoinButton } from './components/JoinButton';
 
 export const RecommendationsFragment = React.memo(() => {
     const client = useClient();
@@ -37,8 +38,8 @@ export const RecommendationsFragment = React.memo(() => {
                             if (room.__typename === 'SharedRoom') {
                                 return (
                                     <UGroupView
-                                        key={'group-' + room.id}
-                                        group={room as RoomShort_SharedRoom}
+                                        group={room as DiscoverSharedRoom}
+                                        rightElement={<JoinButton group={room as DiscoverSharedRoom} />}
                                     />
                                 );
                             }

@@ -294,7 +294,9 @@ export const UButton = React.memo((props: UButtonProps) => {
                 )}
             >
                 {props.left}
-                <span className={cx(textStyle, loadingState && loadingStyle)}>{text}</span>
+                {!loadingState && (
+                    <span className={cx(textStyle, loadingState && loadingStyle)}>{text}</span>
+                )}
                 {loadingState && (
                     <XLoader
                         loading={true}
