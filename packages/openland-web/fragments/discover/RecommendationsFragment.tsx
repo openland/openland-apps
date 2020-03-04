@@ -7,6 +7,7 @@ import { Page } from 'openland-unicorn/Page';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { RoomShort_SharedRoom } from 'openland-api/spacex.types';
 import { DiscoverRecommendationsStart } from './components/DiscoverRecommendationsStart';
+import { XView } from 'react-mental';
 
 export const RecommendationsFragment = React.memo(() => {
     const client = useClient();
@@ -30,8 +31,8 @@ export const RecommendationsFragment = React.memo(() => {
             )}
             {tab === 'discover' && (
                 <>
-                    <UHeader title="Chats for you" />
-                    <Page track="discover_recommended" style="wide">
+                    <UHeader title="Chats for you" maxWidth={555} />
+                    <Page track="discover_recommended">
                         {data.suggestedRooms.map((room) => {
                             if (room.__typename === 'SharedRoom') {
                                 return (
@@ -43,6 +44,7 @@ export const RecommendationsFragment = React.memo(() => {
                             }
                             return null;
                         })}
+                        <XView height={56} />
                     </Page>
                 </>
             )}

@@ -40,7 +40,7 @@ export const DiscoverCollectionsFragment = React.memo(() => {
 
     return (
         <>
-            <UHeader title="Collections" maxWidth={540} />
+            <UHeader title="Collections" maxWidth={555} />
             <XView height={16} />
             <UFlatList
                 track="discover_collections"

@@ -36,7 +36,7 @@ export const DiscoverNewAndGrowingFragment = React.memo(() => {
 
     return (
         <>
-            <UHeader title="New and growing" maxWidth={540} />
+            <UHeader title="New and growing" maxWidth={555} />
             <UFlatList
                 track="discover_new_and_growing"
                 title="New and growing"

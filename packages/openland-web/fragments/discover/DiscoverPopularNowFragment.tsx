@@ -34,7 +34,7 @@ export const DiscoverPopularNowFragment = React.memo(() => {
 
     return (
         <>
-            <UHeader title="Popular now" maxWidth={540} />
+            <UHeader title="Popular now" maxWidth={555} />
             <UFlatList
                 track="discover_popular_now"
                 title="Popular now"
