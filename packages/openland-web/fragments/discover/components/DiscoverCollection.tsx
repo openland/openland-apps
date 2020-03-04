@@ -12,6 +12,15 @@ const collectionPhoto = css`
     border-radius: 8px;
     overflow: hidden;
     margin-bottom: 16px;
+
+    & img {
+        display: block;
+        transition: transform 300ms;
+    }
+
+    &:hover img {
+        transform: scale(1.03);
+    }
 `;
 
 export const DiscoverCollection = React.memo((props: DiscoverCollections_discoverCollections_items) => {

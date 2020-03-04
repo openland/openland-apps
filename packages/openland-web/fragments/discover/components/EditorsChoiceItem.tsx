@@ -11,6 +11,11 @@ const imageContainer = css`
 
     & img {
         display: block;
+        transition: transform 300ms;
+    }
+
+    &:hover img {
+        transform: scale(1.03);
     }
 `;
 
