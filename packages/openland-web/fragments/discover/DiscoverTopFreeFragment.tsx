@@ -4,6 +4,7 @@ import { UHeader } from 'openland-unicorn/UHeader';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
+import { JoinButton } from './components/JoinButton';
 
 export const DiscoverTopFreeFragment = React.memo(() => {
     const client = useClient();
@@ -42,7 +43,10 @@ export const DiscoverTopFreeFragment = React.memo(() => {
                 loadMore={handleLoadMore}
                 items={displayItems}
                 renderItem={item => (
-                    <UGroupView group={item as DiscoverSharedRoom} />
+                    <UGroupView
+                        group={item as DiscoverSharedRoom}
+                        rightElement={<JoinButton group={item as DiscoverSharedRoom} />}
+                    />
                 )}
             />
         </>
