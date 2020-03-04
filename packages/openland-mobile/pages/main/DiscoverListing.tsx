@@ -14,6 +14,7 @@ import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { joinPaidGroup } from './components/ChatJoin';
 import { SRouter } from 'react-native-s/SRouter';
 import { SRouterContext } from 'react-native-s/SRouterContext';
+import { normalizePopularItems, DiscoverRoom } from 'openland-y-utils/discover/normalizePopularItems';
 
 const styles = StyleSheet.create({
     btn: {
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
 type FollowButtonState = 'initial' | 'loading' | 'done';
 interface FollowButtonProps {
     isFollowing: boolean;
-    room: Types.DiscoverSharedRoom;
+    room: DiscoverRoom;
     router: SRouter;
 }
 
@@ -75,7 +76,7 @@ const FollowButton = React.memo((props: FollowButtonProps) => {
 type ListingType = 'new' | 'popular' | 'top-free' | 'top-premium' | 'collections';
 
 interface DiscoverListingContentProps {
-    rooms: Types.DiscoverSharedRoom[];
+    rooms: DiscoverRoom[];
     onEndReached: () => void;
     loading: boolean;
 }
@@ -97,7 +98,12 @@ const DiscoverListingContent = (props: DiscoverListingContentProps) => {
                                 id: item.id,
                                 title: item.title,
                             }}
-                            subTitle={item.membersCount + (item.membersCount === 1 ? ' member' : ' members')}
+                            subTitle={
+                                item.newMessages 
+                                    ? item.newMessages + (item.newMessages === 1 ? ' new message' : ' new messages')
+                                    : item.membersCount ? item.membersCount + (item.membersCount === 1 ? ' member' : ' members')
+                                    : undefined
+                            }
                             rightElement={<FollowButton 
                                 isFollowing={item.membership === Types.SharedRoomMembershipStatus.MEMBER} 
                                 room={item}
@@ -117,7 +123,7 @@ const DiscoverListingContent = (props: DiscoverListingContentProps) => {
 };
 
 interface DiscoverListingPageProps {
-    initialRooms: Types.DiscoverSharedRoom[];
+    initialRooms: DiscoverRoom[];
     initialAfter: string;
 }
 
@@ -175,7 +181,7 @@ const DiscoverPopularListing = (props: DiscoverListingPageProps) => {
                 setAfter(cursor);
             }
 
-            setRooms([...rooms, ...items]);
+            setRooms([...rooms, ...normalizePopularItems(items)]);
             setLoading(false);
         }
     };
@@ -258,7 +264,7 @@ interface DiscoverCollectionsListingProps {
 }
 
 const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
-    const [rooms, setRooms] = React.useState<Types.DiscoverSharedRoom[]>([]);
+    const [rooms, setRooms] = React.useState<DiscoverRoom[]>([]);
     const [loading, setLoading] = React.useState(false);
     const loadCollections = async() => {
         setLoading(true);
@@ -282,7 +288,7 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
 };
 
 const DiscoverListingComponent = React.memo<PageProps>((props) => {
-    let initialRooms = props.router.params.initialRooms as Types.DiscoverSharedRoom[];
+    let initialRooms = props.router.params.initialRooms as DiscoverRoom[];
     let type = props.router.params.type as ListingType;
     let initialAfter = props.router.params.after as string;
     let seed = props.router.params.seed as number;

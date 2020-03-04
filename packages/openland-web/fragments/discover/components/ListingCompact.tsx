@@ -6,6 +6,7 @@ import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import ArrowRight from 'openland-icons/s/ic-arrow-right-16.svg';
 import { TabRouterContext } from 'openland-unicorn/components/TabLayout';
+import { DiscoverRoom } from 'openland-y-utils/discover/normalizePopularItems';
 
 const contentContainer = css`
     display: flex;
@@ -54,7 +55,7 @@ const iconContainer = css`
 
 interface ListingCompactProps {
     title?: string;
-    items: DiscoverSharedRoom[];
+    items: DiscoverRoom[];
     path?: string;
 }
 
@@ -86,7 +87,7 @@ export const ListingCompact = React.memo((props: ListingCompactProps) => {
                 )}
                 <XView marginLeft={-16} marginRight={-16}>
                     {props.items.map(item => (
-                        <UGroupView key={'group-' + item.id} group={item as DiscoverSharedRoom} />
+                        <UGroupView key={'group-' + item.id} group={item} />
                     ))}
                 </XView>
             </XView>

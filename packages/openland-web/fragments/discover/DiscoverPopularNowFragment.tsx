@@ -5,6 +5,7 @@ import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { JoinButton } from './components/JoinButton';
+import { normalizePopularItems, DiscoverRoom } from 'openland-y-utils/discover/normalizePopularItems';
 
 export const DiscoverPopularNowFragment = React.memo(() => {
     const client = useClient();
@@ -12,10 +13,11 @@ export const DiscoverPopularNowFragment = React.memo(() => {
     // initial items
     const popularNow = client.useDiscoverPopularNow({ first: 20 });
     const { items: initialItems, cursor: initialCursor } = popularNow.discoverPopularNow;
+    const normalizedItems = normalizePopularItems(initialItems);
 
     const [loading, setLoading] = React.useState<boolean>(false);
     const [after, setAfter] = React.useState<string | null>(initialCursor);
-    const [displayItems, setDisplayItems] = React.useState<DiscoverSharedRoom[]>(initialItems);
+    const [displayItems, setDisplayItems] = React.useState(normalizedItems);
 
     const handleLoadMore = React.useCallback(async () => {
         if (loading || !after) {
@@ -28,7 +30,7 @@ export const DiscoverPopularNowFragment = React.memo(() => {
         const { items, cursor } = loaded.discoverPopularNow;
 
         setAfter(cursor);
-        setDisplayItems(prev => prev.concat(items));
+        setDisplayItems(prev => prev.concat(normalizePopularItems(items)));
         setLoading(false);
 
     }, [after, loading]);
@@ -44,7 +46,7 @@ export const DiscoverPopularNowFragment = React.memo(() => {
                 items={displayItems}
                 renderItem={item => (
                     <UGroupView
-                        group={item as DiscoverSharedRoom}
+                        group={item as DiscoverRoom}
                         rightElement={<JoinButton group={item as DiscoverSharedRoom} />}
                     />
                 )}

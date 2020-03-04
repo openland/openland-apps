@@ -10,6 +10,7 @@ import { DiscoverCollection } from './components/DiscoverCollection';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { EditorsChoiceItem } from './components/EditorsChoiceItem';
 import { getRandomSeed } from './utils/getRandomSeed';
+import { normalizePopularItems } from 'openland-y-utils/discover/normalizePopularItems';
 
 const editorsChoiceItem = css`
     width: calc(100% + 16px);
@@ -58,7 +59,7 @@ export const DiscoverHomeFragment = React.memo(() => {
     const newAndGrowingItems = newAndGrowing.discoverNewAndGrowing.items || [];
 
     const popularNow = client.useDiscoverPopularNow({ first: 3 });
-    const popularNowItems = popularNow.discoverPopularNow.items || [];
+    const popularNowItems = normalizePopularItems(popularNow.discoverPopularNow.items || []);
 
     const topPremium = client.useDiscoverTopPremium({ first: 5 });
     const topPremiumItems = topPremium.discoverTopPremium.items;

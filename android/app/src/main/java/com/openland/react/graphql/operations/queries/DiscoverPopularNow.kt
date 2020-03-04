@@ -9,7 +9,11 @@ internal val DiscoverPopularNowSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("SharedRoom", DiscoverSharedRoomSelector)
+                            field("room", "room", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    fragment("SharedRoom", DiscoverSharedRoomSelector)
+                                ))),
+                            field("newMessages", "newMessages", notNull(scalar("Int")))
                         ))))),
                     field("cursor", "cursor", scalar("String"))
                 )))
@@ -17,6 +21,6 @@ internal val DiscoverPopularNowSelector = obj(
 val DiscoverPopularNow = object: OperationDefinition {
     override val name = "DiscoverPopularNow"
     override val kind = OperationKind.QUERY
-    override val body = "query DiscoverPopularNow(\$first:Int!,\$after:String){discoverPopularNow(first:\$first,after:\$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}"
+    override val body = "query DiscoverPopularNow(\$first:Int!,\$after:String){discoverPopularNow(first:\$first,after:\$after){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}"
     override val selector = DiscoverPopularNowSelector
 }

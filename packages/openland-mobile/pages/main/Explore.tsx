@@ -18,6 +18,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { EditorsChoiceList } from './components/discover/EditorsChoiceList';
 import { DiscoverCollectionsList } from './components/discover/DiscoverCollectionsList';
+import { normalizePopularItems } from 'openland-y-utils/discover/normalizePopularItems';
 
 export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) => {
     const theme = useTheme();
@@ -25,7 +26,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
     let rooms = getClient().useExploreRooms({seed: discoverSeed}, { fetchPolicy: 'cache-and-network' });
     let suggestedRooms = rooms.suggestedRooms || [];
     let newRooms = rooms.discoverNewAndGrowing.items || [];
-    let popularRooms = rooms.discoverPopularNow.items || [];
+    let popularRooms = normalizePopularItems(rooms.discoverPopularNow.items);
     let topFreeRooms = rooms.discoverTopFree.items || [];
     let topPremiumRooms = rooms.discoverTopPremium.items || [];
 
@@ -82,7 +83,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                             id: v.id,
                             title: v.title,
                         }}
-                        subTitle={v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}
+                        subTitle={v.newMessages + (v.newMessages === 1 ? ' new message' : ' new messages')}
                         path="Conversation"
                         pathParams={{ flexibleId: v.id }}
                     />

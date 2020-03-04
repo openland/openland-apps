@@ -2644,7 +2644,11 @@ private let DiscoverPopularNowSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("SharedRoom", DiscoverSharedRoomSelector)
+                            field("room", "room", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    fragment("SharedRoom", DiscoverSharedRoomSelector)
+                                ))),
+                            field("newMessages", "newMessages", notNull(scalar("Int")))
                         ))))),
                     field("cursor", "cursor", scalar("String"))
                 )))
@@ -2714,7 +2718,11 @@ private let ExploreRoomsSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("SharedRoom", DiscoverSharedRoomSelector)
+                            field("room", "room", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    fragment("SharedRoom", DiscoverSharedRoomSelector)
+                                ))),
+                            field("newMessages", "newMessages", notNull(scalar("Int")))
                         ))))),
                     field("cursor", "cursor", scalar("String"))
                 ))),
@@ -5204,7 +5212,7 @@ class Operations {
     let DiscoverPopularNow = OperationDefinition(
         "DiscoverPopularNow",
         .query, 
-        "query DiscoverPopularNow($first:Int!,$after:String){discoverPopularNow(first:$first,after:$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
+        "query DiscoverPopularNow($first:Int!,$after:String){discoverPopularNow(first:$first,after:$after){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         DiscoverPopularNowSelector
     )
     let DiscoverState = OperationDefinition(
@@ -5234,7 +5242,7 @@ class Operations {
     let ExploreRooms = OperationDefinition(
         "ExploreRooms",
         .query, 
-        "query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename ...DiscoverSharedRoom}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
+        "query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         ExploreRoomsSelector
     )
     let FeatureFlags = OperationDefinition(

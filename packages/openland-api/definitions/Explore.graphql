@@ -61,7 +61,10 @@ query ExploreRooms($seed: Int!) {
     }
     discoverPopularNow(first: 3) {
         items {
-            ...DiscoverSharedRoom
+            room {
+                ...DiscoverSharedRoom
+            }
+            newMessages
         }
         cursor
     }
@@ -190,7 +193,10 @@ query DiscoverState {
 query DiscoverPopularNow($first: Int!, $after: String) {
     discoverPopularNow(first: $first, after: $after) {
         items {
-            ...DiscoverSharedRoom
+            room {
+                ...DiscoverSharedRoom
+            }
+            newMessages
         }
         cursor
     }

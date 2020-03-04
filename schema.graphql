@@ -2110,6 +2110,16 @@ input PlatformNotificationSettingsInput {
   notificationPreview: NotificationPreview
 }
 
+type PopularNowRoom {
+  room: SharedRoom!
+  newMessages: Int!
+}
+
+type PopularNowRoomConnection {
+  items: [PopularNowRoom!]!
+  cursor: String
+}
+
 enum PostMessageType {
   BLANK
   JOB_OPPORTUNITY
@@ -2308,10 +2318,6 @@ type Query {
   betaDialogTextSearch(query: String!): [Dialog!]!
   conversationDraft(conversationId: ID!): String
   alphaDraftMessage(conversationId: ID!): String
-  discoverNewAndGrowing(first: Int!, seed: Int!, after: String): SharedRoomConnection!
-  discoverPopularNow(first: Int!, after: String): SharedRoomConnection!
-  discoverTopPremium(first: Int!, after: String): SharedRoomConnection!
-  discoverTopFree(first: Int!, after: String): SharedRoomConnection!
   discoverCollections(first: Int!, after: String): DiscoverChatsCollectionConnection
   discoverCollection(id: ID!): DiscoverChatsCollection
   discoverEditorsChoice: [EditorsChoiceChat!]!
@@ -2354,6 +2360,10 @@ type Query {
 
   """Deprecated"""
   users(query: String!): [User!]!
+  discoverNewAndGrowing(first: Int!, seed: Int!, after: String): SharedRoomConnection!
+  discoverPopularNow(first: Int!, after: String): PopularNowRoomConnection!
+  discoverTopPremium(first: Int!, after: String): SharedRoomConnection!
+  discoverTopFree(first: Int!, after: String): SharedRoomConnection!
   myProfilePrefill: ProfilePrefill
   pushSettings: PushSettings!
   sessionState: SessionState!
