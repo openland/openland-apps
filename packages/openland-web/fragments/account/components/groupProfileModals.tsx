@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { XView, XViewRouter } from 'react-mental';
+import { XView } from 'react-mental';
+import { TabRouterContextProps } from 'openland-unicorn/components/TabLayout';
 import { XLoader } from 'openland-x/XLoader';
 import { showModalBox } from 'openland-x/showModalBox';
 import { Room_room_SharedRoom, SharedRoomKind } from 'openland-api/spacex.types';
@@ -70,7 +71,7 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
             if (hasShortname && shortnameField.value !== initialShortname) {
                 promises.push(client.mutateSetRoomShortname(shortnameData));
             }
-                
+
             await Promise.all(promises);
             await client.refetchRoomWithoutMembers({ id: props.roomId });
             props.onClose();
@@ -91,10 +92,7 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
                 <UInputField field={descriptionField} label="Description" marginBottom={16} />
                 {hasShortname && (
                     <>
-                        <UInputField
-                            label="Shortname"
-                            field={shortnameField}
-                        />
+                        <UInputField label="Shortname" field={shortnameField} />
                         {!!form.error && (
                             <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
                                 {form.error}
@@ -160,9 +158,12 @@ export const showRoomEditModal = (chatId: string) => {
     );
 };
 
-export const showLeaveChatConfirmation = (client: OpenlandClient, chatId: string, router: XViewRouter) => {
+export const showLeaveChatConfirmation = (
+    client: OpenlandClient,
+    chatId: string,
+    router: TabRouterContextProps,
+) => {
     const builder = new AlertBlanketBuilder();
-
     builder.title('Leave chat');
     builder.message(
         'Are you sure you want to leave? You will need to request access to join it again in the future.',
@@ -172,7 +173,11 @@ export const showLeaveChatConfirmation = (client: OpenlandClient, chatId: string
         async () => {
             await client.mutateRoomLeave({ roomId: chatId });
             await client.refetchRoomChat({ id: chatId });
-            router.navigate('/mail');
+            if (router.router.currentTab === 0) {
+                router.router.navigate('/discover/home');
+            } else {
+                router.router.navigate('/mail');
+            }
         },
         'danger',
     );
