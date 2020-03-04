@@ -171,6 +171,7 @@ export const showLeaveChatConfirmation = (client: OpenlandClient, chatId: string
         'Leave',
         async () => {
             await client.mutateRoomLeave({ roomId: chatId });
+            await client.refetchRoomChat({ id: chatId });
             router.navigate('/mail');
         },
         'danger',
