@@ -12,11 +12,14 @@ import { EditorsChoiceItem } from './components/EditorsChoiceItem';
 import { getRandomSeed } from './utils/getRandomSeed';
 
 const editorsChoiceItem = css`
-    width: 100%;
-    max-width: 560px;
+    width: calc(100% + 16px);
+    max-width: 576px;
     flex-shrink: 0;
-    display: flex;
-    justify-content: center;
+
+    &:last-child {
+        max-width: 560px;
+        width: 100%;
+    }
 `;
 
 const sliderCollectionItem = css`
