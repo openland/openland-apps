@@ -208,6 +208,7 @@ const withMenuStyle = css`
         z-index: 1;
         overflow: hidden;
         -webkit-overflow-scrolling: touch;
+        margin-bottom: 16px;
     }
     & .Select-menu {
         padding: 8px 0;
