@@ -2,7 +2,10 @@ import * as React from 'react';
 import { XViewRouterContext } from 'react-mental';
 import { RoomFullWithoutMembers_SharedRoom } from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
-import { showRoomEditModal, showLeaveChatConfirmation } from 'openland-web/fragments/account/components/groupProfileModals';
+import {
+    showRoomEditModal,
+    showLeaveChatConfirmation,
+} from 'openland-web/fragments/account/components/groupProfileModals';
 import SettingsIcon from 'openland-icons/s/ic-settings-24.svg';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
@@ -29,24 +32,28 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
         builder.item({
             title: 'Settings',
             icon: <SettingsIcon />,
-            onClick: () => showRoomEditModal(id)
+            onClick: () => showRoomEditModal(id),
         });
     }
 
-    if (role === 'OWNER' || role === 'ADMIN' || (organization && (organization.isAdmin || organization.isOwner))) {
+    if (
+        role === 'OWNER' ||
+        role === 'ADMIN' ||
+        (organization && (organization.isAdmin || organization.isOwner))
+    ) {
         builder.item({
             title: 'Advanced settings',
             icon: <StarIcon />,
             onClick: () => {
                 router.navigate(`/advanced/${id}`);
-            }
+            },
         });
     }
 
     builder.item({
         title: `Leave ${typeString}`,
         icon: <LeaveIcon />,
-        onClick: () => showLeaveChatConfirmation(client, id, router)
+        onClick: () => showLeaveChatConfirmation(client, id, router),
     });
 
     if (useRole('super-admin')) {
@@ -57,14 +64,17 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
                 AlertBlanket.builder()
                     .title(`Delete ${title}`)
                     .message(`Are you sure you want to delete ${title}? This cannot be undone.`)
-                    .action('Delete', async () => {
-                        await client.mutateRoomLeave({ roomId: id });
-                        router.navigate('/mail');
-                    }, 'danger')
+                    .action(
+                        'Delete',
+                        async () => {
+                            await client.mutateRoomLeave({ roomId: id });
+                            router.navigate('/mail');
+                        },
+                        'danger',
+                    )
                     .show();
-            }
+            },
         });
-
     }
 
     return builder.build(ctx);

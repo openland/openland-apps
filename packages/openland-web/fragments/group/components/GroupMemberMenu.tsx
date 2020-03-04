@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { RoomFullWithoutMembers_SharedRoom, RoomMembersPaginated_members } from 'openland-api/spacex.types';
+import {
+    RoomFullWithoutMembers_SharedRoom,
+    RoomMembersPaginated_members,
+} from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
@@ -22,11 +25,7 @@ import { XModalContent } from 'openland-web/components/XModalContent';
 import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 import { showModalBox } from 'openland-x/showModalBox';
 
-const MakeFeaturedModal = (props: {
-    ctx: XModalController;
-    roomId: string;
-    userId: string;
-}) => {
+const MakeFeaturedModal = (props: { ctx: XModalController; roomId: string; userId: string }) => {
     const { ctx, roomId, userId } = props;
     const client = useClient();
     const form = useForm();
@@ -96,12 +95,7 @@ const MakeFeaturedModal = (props: {
                         size="large"
                         onClick={() => ctx.hide()}
                     />
-                    <UButton
-                        text="Save"
-                        style="primary"
-                        size="large"
-                        onClick={onSave}
-                    />
+                    <UButton text="Save" style="primary" size="large" onClick={onSave} />
                 </XModalFooter>
             </XView>
         </>
@@ -125,7 +119,9 @@ interface GroupMemberMenuProps {
     onRemove: (memberId: string) => void;
 }
 
-const getMenuContent = (opts: GroupMemberMenuProps & { client: OpenlandClient, router: XViewRouter }) => {
+const getMenuContent = (
+    opts: GroupMemberMenuProps & { client: OpenlandClient; router: XViewRouter },
+) => {
     const res: MenuItem[] = [];
 
     const { group, member, onRemove, client, router } = opts;
@@ -138,7 +134,7 @@ const getMenuContent = (opts: GroupMemberMenuProps & { client: OpenlandClient, r
         res.push({
             title: badge ? 'Edit featured status' : 'Make featured',
             icon: <StarIcon />,
-            onClick: () => showMakeFeaturedModal(id, user.id)
+            onClick: () => showMakeFeaturedModal(id, user.id),
         });
     }
 
@@ -146,7 +142,7 @@ const getMenuContent = (opts: GroupMemberMenuProps & { client: OpenlandClient, r
         res.push({
             title: `Leave ${typeString}`,
             icon: <LeaveIcon />,
-            onClick: () => showLeaveChatConfirmation(client, id, router)
+            onClick: () => showLeaveChatConfirmation(client, id, router),
         });
     }
 
@@ -155,33 +151,41 @@ const getMenuContent = (opts: GroupMemberMenuProps & { client: OpenlandClient, r
             title: `Remove from ${typeString}`,
             icon: <LeaveIcon />,
             onClick: () => {
-                const builder = new AlertBlanketBuilder;
+                const builder = new AlertBlanketBuilder();
 
                 builder.title(`Remove ${user.name} from ${group.title}`);
-                builder.message(`Are you sure you want to remove ${user.firstName}? They will no longer be able to participate in the discussion.`);
-                builder.action(`Remove`, async () => {
-                    await client.mutateRoomKick({
-                        userId: user.id,
-                        roomId: group.id,
-                    });
+                builder.message(
+                    `Are you sure you want to remove ${
+                        user.firstName
+                    }? They will no longer be able to participate in the discussion.`,
+                );
+                builder.action(
+                    `Remove`,
+                    async () => {
+                        await client.mutateRoomKick({
+                            userId: user.id,
+                            roomId: group.id,
+                        });
 
-                    await client.refetchRoomWithoutMembers({ id: group.id });
-                    await client.refetchRoomMembersShort({ roomId: id });
+                        await client.refetchRoomWithoutMembers({ id: group.id });
+                        await client.refetchRoomMembersShort({ roomId: id });
 
-                    onRemove(user.id);
-                }, 'danger');
+                        onRemove(user.id);
+                    },
+                    'danger',
+                );
 
                 builder.show();
-            }
+            },
         });
     }
 
     return res;
 };
 
-const MenuComponent = React.memo((props: { ctx: UPopperController, items: MenuItem[] }) => (
-    new UPopperMenuBuilder().items(props.items).build(props.ctx)
-));
+const MenuComponent = React.memo((props: { ctx: UPopperController; items: MenuItem[] }) =>
+    new UPopperMenuBuilder().items(props.items).build(props.ctx),
+);
 
 export const GroupMemberMenu = React.memo((props: GroupMemberMenuProps) => {
     const client = useClient();
@@ -192,14 +196,5 @@ export const GroupMemberMenu = React.memo((props: GroupMemberMenuProps) => {
         return null;
     }
 
-    return (
-        <UMoreButton
-            menu={ctx => (
-                <MenuComponent
-                    ctx={ctx}
-                    items={menuContent}
-                />
-            )}
-        />
-    );
+    return <UMoreButton menu={ctx => <MenuComponent ctx={ctx} items={menuContent} />} />;
 });
