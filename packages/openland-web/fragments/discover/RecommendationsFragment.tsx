@@ -5,7 +5,7 @@ import { DiscoverOnLocalState } from 'openland-web/pages/onboarding/discover.pag
 import { UHeader } from 'openland-unicorn/UHeader';
 import { Page } from 'openland-unicorn/Page';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
-import { RoomShort_SharedRoom, DiscoverSharedRoom } from 'openland-api/spacex.types';
+import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { DiscoverRecommendationsStart } from './components/DiscoverRecommendationsStart';
 import { XView } from 'react-mental';
 import { JoinButton } from './components/JoinButton';

@@ -1,6 +1,5 @@
 import React from 'react';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
-import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useClient } from 'openland-api/useClient';
 import { css } from 'linaria';
 import { XLoader } from 'openland-x/XLoader';
