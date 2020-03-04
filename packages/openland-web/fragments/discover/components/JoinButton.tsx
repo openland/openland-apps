@@ -2,10 +2,40 @@ import React from 'react';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useClient } from 'openland-api/useClient';
+import { css } from 'linaria';
+import { XLoader } from 'openland-x/XLoader';
+
+import IcAdd from 'openland-icons/s/ic-add-24.svg';
+import IcDone from 'openland-icons/s/ic-done-24.svg';
 
 interface JoinButtonProps {
     group: DiscoverSharedRoom;
 }
+
+const button = css`
+    width: 48px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--accentPrimary);
+
+    border-radius: 64px;
+
+    & path {
+        fill: var(--foregroundContrast);
+    }
+
+    &:disabled {
+        background-color: var(--backgroundTertiaryTrans);
+    }
+
+    &:disabled path {
+        fill: var(--foregroundTertiary);
+    }
+`;
 
 export const JoinButton = React.memo((props: JoinButtonProps) => {
     const client = useClient();
@@ -20,19 +50,34 @@ export const JoinButton = React.memo((props: JoinButtonProps) => {
         });
     };
 
+    const stopPropagation = (e: any) => {
+        e.stopPropagation();
+    };
+
     if (state === 'done') {
         return (
-            <UButton text="Joined" disable={true} style="secondary" />
+            <button className={button} disabled={true}>
+                <IcDone />
+            </button>
         );
     }
 
     if (state === 'loading') {
         return (
-            <UButton loading={true} text="Loading..." style="secondary" />
+            <button className={button} onClick={stopPropagation}>
+                <XLoader
+                    loading={true}
+                    transparentBackground={true}
+                    size="small"
+                    contrast={true}
+                />
+            </button>
         );
     }
 
     return (
-        <UButton text="Join" onClick={onClick} />
+        <button className={button} onClick={onClick}>
+            <IcAdd />
+        </button>
     );
 });
