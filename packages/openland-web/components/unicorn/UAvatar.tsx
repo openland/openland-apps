@@ -56,6 +56,10 @@ export const AvatarSizes: {
     'xxx-large': { size: 144, placeholder: 40, dotSize: 16, dotPosition: 6, dotBorderWidth: 2 },
 };
 
+const avatarPlaceholderStyle = css`
+    -webkit-user-select: none;
+`;
+
 const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: number }) => {
     const { title, titleEmoji, index, size = 'medium', squared } = props;
     const ph = extractPlaceholder(title);
@@ -73,7 +77,9 @@ const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: number }) =
             overflow="hidden"
             hoverTextDecoration="none"
         >
-            {titleEmoji || emoji(ph)}
+            <span className={avatarPlaceholderStyle}>
+                {titleEmoji || emoji(ph)}
+            </span>
         </XView>
     );
 });
