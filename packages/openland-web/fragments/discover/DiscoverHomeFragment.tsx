@@ -32,8 +32,6 @@ const sliderCollectionItem = css`
 `;
 
 const listingsContainer = css`
-    display: flex;
-    justify-content: space-between;
     margin-top: 24px;
     margin-bottom: 16px;
 
@@ -41,12 +39,14 @@ const listingsContainer = css`
     margin-right: -16px;
 
     & > * {
-        width: 100%;
-        flex-shrink: 2;
+        width: 50%;
+        display: inline-block;
     }
 
     @media (max-width: 600px) {
-        flex-wrap: wrap;
+        & > * {
+            width: 100%;
+        }
     }
 `;
 
