@@ -5,6 +5,7 @@ import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import ArrowRight from 'openland-icons/s/ic-arrow-right-16.svg';
+import { TabRouterContext } from 'openland-unicorn/components/TabLayout';
 
 const contentContainer = css`
     display: flex;
@@ -62,12 +63,20 @@ export const ListingCompact = React.memo((props: ListingCompactProps) => {
         return null;
     }
 
+    const router = React.useContext(TabRouterContext)!;
+
+    const onClick = () => {
+        if (props.path) {
+            router.router.reset(props.path);
+        }
+    };
+
     return (
         <div className={contentContainer}>
             <XView marginTop={16} paddingHorizontal={16} alignItems="flex-start">
                 {props.title && (
                     <div className={titleContainer}>
-                        <XView path={props.path} flexDirection="row" alignItems="center">
+                        <XView flexDirection="row" alignItems="center" onClick={onClick}>
                             <h2 className={TextTitle3}>{props.title}</h2>
                             <span className={iconContainer}>
                                 <ArrowRight />
