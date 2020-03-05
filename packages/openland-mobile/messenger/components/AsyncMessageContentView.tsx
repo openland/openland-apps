@@ -7,7 +7,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { resolveInternalLink } from '../../utils/resolveInternalLink';
 import { FontStyles } from '../../styles/AppStyles';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
-import { ReplyContent } from './content/ReplyContent';
+import { ReplyContent, shiftReplyMeta } from './content/ReplyContent';
 import { TextContent } from './content/TextContent';
 import { RichAttachContent, richAttachImageShouldBeCompact } from './content/RichAttachContent';
 import { MediaContent, layoutImage } from './content/MediaContent';
@@ -178,6 +178,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         hasDocument,
         hasImage,
         hasReply,
+        hasForward,
         hasText,
         hasUrlAug,
         topContent,
@@ -198,7 +199,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
         hasDocument,
         hasImage,
         hasText,
-        hasReply,
+        hasForward,
         imageOnly,
         topContent,
         imageLayout,
@@ -219,7 +220,8 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
     const fixedSize = !imageOnly && (imageLayout || richAttachImageLayout);
     const isImageBottom = hasImage && !hasText && !hasDocument;
     // sorry
-    const shiftMeta = !!(!bottomContent.length && (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment' && a.keyboard).length) || hasReply;
+    const shiftMeta = !!(!bottomContent.length && (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment' && a.keyboard).length) 
+        || shiftReplyMeta(message, hasForward);
     const meta = <MetaInfoIndicator type={isImageBottom ? 'media' : 'default'} message={message} theme={theme} />;
 
     const bubbleBackgroundPrimary = message.isOut ? theme.outgoingBackgroundPrimary : theme.incomingBackgroundPrimary;
