@@ -188,7 +188,7 @@ export const showLeaveChatConfirmation = (
             await client.mutateRoomLeave({ roomId: chatId });
             await client.refetchRoomChat({ id: chatId });
             if (tabRouter.router.currentTab === 0) {
-                tabRouter.router.navigate('/discover/home');
+                tabRouter.router.reset('/discover/home');
             } else {
                 tabRouter.router.navigate('/mail');
             }
