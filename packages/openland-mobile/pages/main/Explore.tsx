@@ -19,6 +19,7 @@ import { ZButton } from 'openland-mobile/components/ZButton';
 import { EditorsChoiceList } from './components/discover/EditorsChoiceList';
 import { DiscoverCollectionsList } from './components/discover/DiscoverCollectionsList';
 import { normalizePopularItems } from 'openland-y-utils/discover/normalizePopularItems';
+import { DiscoverListItem } from './components/discover/DiscoverListItem';
 
 export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) => {
     const theme = useTheme();
@@ -74,20 +75,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                     })
                 } : undefined}
             >
-                {popularRooms.map(v => (
-                    <ZListItem
-                        key={v.id}
-                        text={v.title}
-                        leftAvatar={{
-                            photo: v.photo,
-                            id: v.id,
-                            title: v.title,
-                        }}
-                        subTitle={v.newMessages + (v.newMessages === 1 ? ' new message' : ' new messages')}
-                        path="Conversation"
-                        pathParams={{ flexibleId: v.id }}
-                    />
-                ))}
+                {popularRooms.map(v => <DiscoverListItem key={v.id} item={v} />)}
             </ZListGroup>
 
             <DiscoverCollectionsList  />
@@ -104,20 +92,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                     })
                 } : undefined}
             >
-                {topPremiumRooms.map(v => (
-                    <ZListItem
-                        key={v.id}
-                        text={v.title}
-                        leftAvatar={{
-                            photo: v.photo,
-                            id: v.id,
-                            title: v.title,
-                        }}
-                        subTitle={v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}
-                        path="Conversation"
-                        pathParams={{ flexibleId: v.id }}
-                    />
-                ))}
+                {topPremiumRooms.map(v => <DiscoverListItem key={v.id} item={v} />)}
             </ZListGroup>
 
             <ZListGroup
@@ -132,38 +107,14 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                     })
                 } : undefined}
             >
-                {topFreeRooms.map(v => (
-                    <ZListItem
-                        key={v.id}
-                        text={v.title}
-                        leftAvatar={{
-                            photo: v.photo,
-                            id: v.id,
-                            title: v.title,
-                        }}
-                        subTitle={v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}
-                        path="Conversation"
-                        pathParams={{ flexibleId: v.id }}
-                    />
-                ))}
+                {topFreeRooms.map(v => <DiscoverListItem key={v.id} item={v} />)}
             </ZListGroup>
 
             {props.isDiscoverDone ? (
                 <>
                     <ZListGroup header="Recommendations">
                         {suggestedRooms.map(v => (
-                            v.__typename === 'SharedRoom' ? <ZListItem
-                                key={v.id}
-                                text={v.title}
-                                leftAvatar={{
-                                    photo: v.photo,
-                                    id: v.id,
-                                    title: v.title,
-                                }}
-                                subTitle={v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}
-                                path="Conversation"
-                                pathParams={{ flexibleId: v.id }}
-                            /> : null
+                            v.__typename === 'SharedRoom' ? <DiscoverListItem key={v.id} item={v} /> : null
                         ))}
                     </ZListGroup>
                     <View height={32} />
