@@ -33,11 +33,7 @@ const sliderCollectionItem = css`
 `;
 
 const listingsContainer = css`
-    margin-top: 24px;
-    margin-bottom: 16px;
-
-    margin-left: -16px;
-    margin-right: -16px;
+    margin: 24px -16px;
 
     & > * {
         width: 50%;

@@ -67,7 +67,7 @@ const iconContainer = css`
 `;
 
 const header = css`
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
