@@ -28,11 +28,13 @@ export const shiftReplyMeta = (message: DataSourceMessageItem, isForward: boolea
     if (!lastReply) {
         return false;
     }
-    const attachFile = getAttachFile(lastReply);
+    let attachFile = getAttachFile(lastReply);
     let isImage = attachFile && attachFile.fileMetadata.isImage;
+    let isSticker = !!lastReply.sticker;
     let isRichAttach = !!getAttachRich(lastReply);
 
-    return isForward && isImage || !isForward && message.textSpans.length === 0 && (isImage || isRichAttach);
+    return isForward && (isImage || isSticker) 
+        || !isForward && !message.text && (isImage || isRichAttach || isSticker);
 };
 
 interface ReplyContentProps {
@@ -76,7 +78,8 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                 )}
                 {message.reply && (
                     message.reply.map((m, i) => {
-                        const needPaddedText = !message.text && !message.sticker && (i + 1 === message.reply!.length);
+                        const hasAttachments = m.attachments && m.attachments.length > 0;
+                        const needPaddedText = !m.isService && !!m.text && !hasAttachments && (i + 1 === message.reply!.length);
                         const repliedMessage = !m.isService ? m : undefined;
                         
                         const handlePress = () => { 
