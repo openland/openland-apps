@@ -7,11 +7,33 @@ import { FontStyles, TextStylesAsync } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
 import { AsyncReplyMessageMediaView } from '../AsyncReplyMessageMediaView';
 import { AsyncReplyMessageDocumentView } from '../AsyncReplyMessageDocumentView';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/spacex.types';
 import { RenderSpans } from './AsyncRenderSpans';
 import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from '../AsyncBubbleView';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { StickerContent } from './StickerContent';
+
+const getAttachFile = (message: DataSourceMessageItem) => {
+    return message.attachments && message.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
+};
+const getAttachRich = (message: DataSourceMessageItem) => {
+    return message.attachments && message.attachments.filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
+};
+
+export const shiftReplyMeta = (message: DataSourceMessageItem, isForward: boolean) => {
+    if (!message.reply) {
+        return false;
+    }
+    let lastReply = message.reply[message.reply.length - 1];
+    if (!lastReply) {
+        return false;
+    }
+    const attachFile = getAttachFile(lastReply);
+    let isImage = attachFile && attachFile.fileMetadata.isImage;
+    let isRichAttach = !!getAttachRich(lastReply);
+
+    return isForward && isImage || !isForward && message.textSpans.length === 0 && (isImage || isRichAttach);
+};
 
 interface ReplyContentProps {
     message: DataSourceMessageItem;
