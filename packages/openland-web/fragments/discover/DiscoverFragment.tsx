@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
+import { XScrollView3 } from 'openland-x/XScrollView3';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
@@ -57,39 +58,45 @@ export const DiscoverFragment = React.memo(() => {
                 placeholder="Groups and people"
             />
             <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>
-                {!isSearching && (
-                    <XView flexDirection="column">
-                        <UListItem title="Home" path="/discover/home" icon={<IcHome />} />
-                        <UListItem title="New and growing" path="/discover/new" icon={<IcNew />} />
-                        <UListItem
-                            title="Popular now"
-                            path="/discover/popular"
-                            icon={<IcPopular />}
-                        />
-                        <UListItem
-                            title="Collections"
-                            path="/discover/collections"
-                            icon={<IcCollections />}
-                        />
-                        <UListItem
-                            title="Top premium"
-                            path="/discover/premium"
-                            icon={<IcPremium />}
-                        />
-                        <UListItem title="Top free" path="/discover/free" icon={<IcFree />} />
-                        <UListItem
-                            title="Recommendations"
-                            path="/discover/recommendations"
-                            icon={<IcStar />}
-                        />
-                        {/* <UListItem title="Groups" path="/discover/groups" /> */}
-                        {isNP && <UListItem title="Feed" path="/feed" />}
-                    </XView>
-                )}
+                <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
+                    {!isSearching && (
+                        <XView flexDirection="column">
+                            <UListItem title="Home" path="/discover/home" icon={<IcHome />} />
+                            <UListItem
+                                title="New and growing"
+                                path="/discover/new"
+                                icon={<IcNew />}
+                            />
+                            <UListItem
+                                title="Popular now"
+                                path="/discover/popular"
+                                icon={<IcPopular />}
+                            />
+                            <UListItem
+                                title="Collections"
+                                path="/discover/collections"
+                                icon={<IcCollections />}
+                            />
+                            <UListItem
+                                title="Top premium"
+                                path="/discover/premium"
+                                icon={<IcPremium />}
+                            />
+                            <UListItem title="Top free" path="/discover/free" icon={<IcFree />} />
+                            <UListItem
+                                title="Recommendations"
+                                path="/discover/recommendations"
+                                icon={<IcStar />}
+                            />
+                            {/* <UListItem title="Groups" path="/discover/groups" /> */}
+                            {isNP && <UListItem title="Feed" path="/feed" />}
+                        </XView>
+                    )}
 
-                {isSearching && (
-                    <DialogSearchResults variables={{ query: query }} onPick={onPick} />
-                )}
+                    {isSearching && (
+                        <DialogSearchResults variables={{ query: query }} onPick={onPick} />
+                    )}
+                </XScrollView3>
             </XView>
         </XView>
     );
