@@ -43,12 +43,13 @@ export const JoinButton = React.memo((props: JoinButtonProps) => {
     const [state, setState] = React.useState<string>(props.group.membership === 'MEMBER' ? 'done' : 'initial');
 
     // TODO remove any
-    const onClick = (e: any) => {
+    const onClick = async (e: any) => {
         e.stopPropagation();
         setState('loading');
-        client.mutateRoomJoin({ roomId: props.group.id }).then(() => {
+        await client.mutateRoomJoin({ roomId: props.group.id }).then(() => {
             setState('done');
         });
+        await client.refetchRoom({id: props.group.id});
     };
 
     const stopPropagation = (e: any) => {
