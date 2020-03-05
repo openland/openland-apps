@@ -73,10 +73,10 @@ export const DiscoverHomeFragment = React.memo(() => {
     const isTabVisible = useVisibleTab();
 
     return (
-        <Page track="discover_home">
-            <UHeader title="Home" maxWidth={555} />
+        <Page track="discover_home" padded={true}>
+            <UHeader title="Home" maxWidth={580} />
 
-            <XView paddingHorizontal={20}>
+            <XView width={560}>
                 {isTabVisible && (
                     <USlider title="Editors choice" childrenCount={editorsChoiceItems.length}>
                         {editorsChoiceItems.map(item => (
