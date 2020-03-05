@@ -99,7 +99,7 @@ const CompletePaymentComponent = React.memo((props: { id: string, clientSecret: 
 
     return (
         <View flexDirection="column">
-            <Text style={{...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 7, marginBottom: 11, textAlign: 'center', paddingHorizontal: 32}}>Complete payment</Text>
+            <Text style={{...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 7, marginBottom: 11, textAlign: 'center', paddingHorizontal: 32}}>Update payment method</Text>
             <Text style={{...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center', paddingHorizontal: 32, marginBottom: 16}}>
                 Choose correct payment method or add a new one to complete transaction
             </Text>
@@ -108,8 +108,7 @@ const CompletePaymentComponent = React.memo((props: { id: string, clientSecret: 
             <View marginTop={16} paddingHorizontal={16}>
                 <ZButton enabled={!!selected} title="Complete" action={onSubmit} style="primary" size="large" loading={loading} />
             </View>
-
-        </View >
+        </View>
     );
 });
 

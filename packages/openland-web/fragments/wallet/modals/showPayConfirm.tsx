@@ -88,14 +88,14 @@ const CheckLock = React.memo((props: { ctx: XModalController } & PaymentProps) =
     if (wallet.myWallet.isLocked) {
         const builder = new AlertBlanketBuilder();
 
-        builder.message("Complete all failed transactions in Wallet to keep subscribing to premium groups");
+        builder.message("Update payment method to complete previously failed transactions and enable new purchases");
         builder.body(ctx => <div className={warningContainer} />);
         builder.action('Continue', async () => router?.navigate('/wallet'));
         builder.onCancel(props.ctx.hide);
         builder.width(480);
         return (
             <XView>
-                <XView marginLeft={20} marginTop={24} marginBottom={-20} {...TextStyles.Title1}>You have failed transactions</XView>
+                <XView marginLeft={20} marginTop={24} marginBottom={-20} {...TextStyles.Title1}>Update payment method</XView>
                 <AlertBlanketComponent builder={builder} controller={props.ctx} />
             </XView>
         );

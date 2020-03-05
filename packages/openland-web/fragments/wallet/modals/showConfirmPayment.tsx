@@ -128,7 +128,7 @@ const ConfirmPaymentComponent = React.memo((props: { ctx: XModalController, id: 
 });
 
 export function showConfirmPayment(id: string, clientSecret: string) {
-    showModalBox({ title: 'Complete transaction', width: 400 }, (ctx) => {
+    showModalBox({ title: 'Update payment method', width: 400 }, (ctx) => {
         return (
             <ConfirmPaymentComponent ctx={ctx} id={id} clientSecret={clientSecret} />
         );

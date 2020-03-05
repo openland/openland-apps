@@ -80,8 +80,8 @@ export const showPayConfirm = (props: PaymentProps) => {
     } else {
         const builder = new AlertBlanketBuilder();
 
-        builder.title('You have failed transactions');
-        builder.message('Complete all failed transactions in wallet to keep subscribing to premium groups');
+        builder.title('Update payment method');
+        builder.message('Update payment method to complete previously failed transactions and enable new purchases');
 
         builder.view(
             <View marginBottom={16} marginHorizontal={-24} overflow="hidden">

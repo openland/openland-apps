@@ -60,10 +60,10 @@ export const TransactionView = (props: TransactionViewProps) => {
                             <Image source={require('assets/wallet/ic-tail-12.png')} style={{ width: 12, height: 6 }} />
                         </View>
                         <View paddingHorizontal={16} paddingVertical={12} borderRadius={RadiusStyles.Medium} width={287} maxWidth="100%" backgroundColor={theme.accentNegative}>
-                            <Text style={{ ...TextStyles.Subhead, color: theme.foregroundContrast }} allowFontScaling={false}>Couldn’t complete transaction</Text>
+                            <Text style={{ ...TextStyles.Subhead, color: theme.foregroundContrast }} allowFontScaling={false}>Transaction failed</Text>
                             <View flexDirection="row" alignItems="center">
                                 <Text style={{ ...TextStyles.Label2, color: theme.foregroundContrast, }} allowFontScaling={false}>
-                                    Complete
+                                    Update payment method
                                 </Text>
                                 <Image source={require('assets/ic-chevron-16.png')} style={{ tintColor: theme.foregroundContrast, }} />
                             </View>

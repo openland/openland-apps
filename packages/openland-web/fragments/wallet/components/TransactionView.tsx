@@ -76,7 +76,7 @@ export const TransactionView = React.memo((props: TransactionViewProps) => {
                                 <UIcon icon={<FailureIcon />} color="var(--foregroundContrast)" />
                             </XView>
                             <XView {...TextStyles.Body}>
-                                Couldn’t charge this amount
+                                Transaction failed
                             </XView>
                         </XView>
 
@@ -85,7 +85,7 @@ export const TransactionView = React.memo((props: TransactionViewProps) => {
                             paddingVertical={8}
                             paddingHorizontal={16}
                         >
-                            Try again
+                            Update payment method
                         </XView>
                     </XView>
                 </XView>

@@ -228,16 +228,16 @@ const SubscriptionsComponent = React.memo<PageProps>((props) => {
                             />
                             <View marginTop={4}>
                                 <Text allowFontScaling={false} style={{ ...TextStyles.Title2, color: theme.foregroundPrimary }}>
-                                    Billing problems
+                                    Billing problem
                             </Text>
                             </View>
                             <View marginTop={4}>
                                 <Text allowFontScaling={false} style={{ ...TextStyles.Body, color: theme.foregroundSecondary, textAlign: 'center' }}>
-                                    Some transactions for subscriptions are failed. Complete them or add a new card to keep subscriptions ongoing
+                                    A payment for some of your recent purchases or subscriptions has recently failed. Please update your payment method to keep your paid group memberships.
                             </Text>
                             </View>
                             <View marginTop={16}>
-                                <ZButton title='Open wallet' path="Wallet" />
+                                <ZButton title='Update payment method' path="Wallet" />
                             </View>
                         </LinearGradient>
                     )}

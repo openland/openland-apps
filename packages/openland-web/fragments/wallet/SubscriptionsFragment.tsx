@@ -78,15 +78,15 @@ export const SubscriptionsFragment = React.memo(() => {
                         <Warning />
                         <XView flexDirection="column" alignItems="flex-start">
                             <XView>
-                                <h2 className={TextTitle3}>Billing problems</h2>
+                                <h2 className={TextTitle3}>Billing problem</h2>
                             </XView>
                             <XView color="var(--foregroundSecondary)" marginTop={2}>
                                 <p className={TextBody}>
-                                    Some transactions for subscriptions are failed. Complete them or add a new card to keep subscriptions ongoing.
+                                    A payment for some of your recent purchases or subscriptions has recently failed. Please update your payment method to keep your paid group memberships.
                                 </p>
                             </XView>
                             <XView marginTop={8}>
-                                <UButton text="Open wallet" onClick={() => router.navigate('/wallet')} />
+                                <UButton text="Update payment method" onClick={() => router.navigate('/wallet')} />
                             </XView>
                         </XView>
                     </div>
