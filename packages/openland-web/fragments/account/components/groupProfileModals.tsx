@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { XView, XViewRouter } from 'react-mental';
+import { XView } from 'react-mental';
+import { TabRouterContextProps } from 'openland-unicorn/components/TabLayout';
 import { XLoader } from 'openland-x/XLoader';
 import { showModalBox } from 'openland-x/showModalBox';
 import { Room_room_SharedRoom, SharedRoomKind } from 'openland-api/spacex.types';
@@ -50,12 +51,18 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
     const descriptionField = useField('input.description', props.description || '', form);
     const shortnameField = useShortnameField('input.shortname', initialShortname, form);
     const [errorText, setErrorText] = React.useState(form.error);
-    React.useEffect(() => {
-        setErrorText('');
-    }, [shortnameField.value]);
-    React.useEffect(() => {
-        setErrorText(form.error);
-    }, [form.error]);
+    React.useEffect(
+        () => {
+            setErrorText('');
+        },
+        [shortnameField.value],
+    );
+    React.useEffect(
+        () => {
+            setErrorText(form.error);
+        },
+        [form.error],
+    );
     const onSubmit = async () => {
         await form.doAction(async () => {
             let newPhoto = avatarField.value;
@@ -77,7 +84,7 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
             if (hasShortname && shortnameField.value !== initialShortname) {
                 promises.push(client.mutateSetRoomShortname(shortnameData));
             }
-                
+
             await Promise.all(promises);
             await client.refetchRoomWithoutMembers({ id: props.roomId });
             props.onClose();
@@ -98,10 +105,7 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
                 <UInputField field={descriptionField} label="Description" marginBottom={16} />
                 {hasShortname && (
                     <>
-                        <UInputField
-                            label="Shortname"
-                            field={shortnameField}
-                        />
+                        <UInputField label="Shortname" field={shortnameField} />
                         {!!errorText && (
                             <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
                                 {errorText}
@@ -167,7 +171,11 @@ export const showRoomEditModal = (chatId: string) => {
     );
 };
 
-export const showLeaveChatConfirmation = (client: OpenlandClient, chatId: string, router: XViewRouter) => {
+export const showLeaveChatConfirmation = (
+    client: OpenlandClient,
+    chatId: string,
+    tabRouter: TabRouterContextProps,
+) => {
     const builder = new AlertBlanketBuilder();
 
     builder.title('Leave chat');
@@ -179,7 +187,11 @@ export const showLeaveChatConfirmation = (client: OpenlandClient, chatId: string
         async () => {
             await client.mutateRoomLeave({ roomId: chatId });
             await client.refetchRoomChat({ id: chatId });
-            router.navigate('/mail');
+            if (tabRouter.router.currentTab === 0) {
+                tabRouter.router.navigate('/discover/home');
+            } else {
+                tabRouter.router.navigate('/mail');
+            }
         },
         'danger',
     );

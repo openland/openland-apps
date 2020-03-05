@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XViewRouterContext } from 'react-mental';
+import { TabRouterContext } from 'openland-unicorn/components/TabLayout';
 import { RoomFullWithoutMembers_SharedRoom } from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import {
@@ -21,7 +21,7 @@ interface GroupMenu {
 }
 
 const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController }) => {
-    const router = React.useContext(XViewRouterContext)!;
+    const tabRouter = React.useContext(TabRouterContext)!;
     const client = useClient();
     const { ctx, group } = props;
     const { id, title, canEdit, role, organization, isChannel } = group;
@@ -45,7 +45,7 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
             title: 'Advanced settings',
             icon: <StarIcon />,
             onClick: () => {
-                router.navigate(`/advanced/${id}`);
+                tabRouter.router.navigate(`/advanced/${id}`);
             },
         });
     }
@@ -53,7 +53,7 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
     builder.item({
         title: `Leave ${typeString}`,
         icon: <LeaveIcon />,
-        onClick: () => showLeaveChatConfirmation(client, id, router),
+        onClick: () => showLeaveChatConfirmation(client, id, tabRouter),
     });
 
     if (useRole('super-admin')) {
@@ -68,7 +68,7 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
                         'Delete',
                         async () => {
                             await client.mutateRoomLeave({ roomId: id });
-                            router.navigate('/mail');
+                            tabRouter.router.navigate('/mail');
                         },
                         'danger',
                     )

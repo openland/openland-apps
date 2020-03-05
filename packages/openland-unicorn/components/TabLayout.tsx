@@ -82,10 +82,12 @@ const TabContainer = React.memo(
     },
 );
 
-export const TabRouterContext = React.createContext<{
+export interface TabRouterContextProps {
     router: TabRouter;
     setTab(id: number): void;
-} | null>(null);
+}
+
+export const TabRouterContext = React.createContext<TabRouterContextProps | null>(null);
 
 export const TabLayout = React.memo((props: { router: TabRouter }) => {
     let layout = useLayout();

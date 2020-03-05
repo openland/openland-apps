@@ -17,13 +17,14 @@ import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { XModalController } from 'openland-x/showModal';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { XView, XViewRouterContext, XViewRouter } from 'react-mental';
+import { XView } from 'react-mental';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { UInputField } from 'openland-web/components/unicorn/UInput';
 import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 import { showModalBox } from 'openland-x/showModalBox';
+import { TabRouterContext, TabRouterContextProps } from 'openland-unicorn/components/TabLayout';
 
 const MakeFeaturedModal = (props: { ctx: XModalController; roomId: string; userId: string }) => {
     const { ctx, roomId, userId } = props;
@@ -120,11 +121,10 @@ interface GroupMemberMenuProps {
 }
 
 const getMenuContent = (
-    opts: GroupMemberMenuProps & { client: OpenlandClient; router: XViewRouter },
+    opts: GroupMemberMenuProps & { client: OpenlandClient; tabRouter: TabRouterContextProps },
 ) => {
     const res: MenuItem[] = [];
-
-    const { group, member, onRemove, client, router } = opts;
+    const { group, member, onRemove, client, tabRouter } = opts;
     const { id, isChannel } = group;
     const { user, badge, canKick } = member;
 
@@ -142,7 +142,7 @@ const getMenuContent = (
         res.push({
             title: `Leave ${typeString}`,
             icon: <LeaveIcon />,
-            onClick: () => showLeaveChatConfirmation(client, id, router),
+            onClick: () => showLeaveChatConfirmation(client, id, tabRouter),
         });
     }
 
@@ -189,8 +189,8 @@ const MenuComponent = React.memo((props: { ctx: UPopperController; items: MenuIt
 
 export const GroupMemberMenu = React.memo((props: GroupMemberMenuProps) => {
     const client = useClient();
-    const router = React.useContext(XViewRouterContext)!;
-    const menuContent = getMenuContent({ ...props, client, router });
+    const tabRouter = React.useContext(TabRouterContext)!;
+    const menuContent = getMenuContent({ ...props, client, tabRouter });
 
     if (menuContent.length <= 0) {
         return null;
