@@ -8,6 +8,7 @@ import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { useClient } from 'openland-api/useClient';
 import { XView } from 'react-mental';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { showModalBox } from 'openland-x/showModalBox';
@@ -221,6 +222,14 @@ const ChoiceFragment = React.memo(() => {
                 <UListItem
                     key={i.id}
                     title={i.chat.title}
+                    leftElement={
+                        <UAvatar
+                            photo={i.chat.photo}
+                            title={i.chat.title}
+                            id={i.chat.id}
+                            size="medium"
+                        />
+                    }
                     avatar={{ photo: getAvatar(i.image.uuid), title: i.chat.title, id: i.id }}
                     onClick={() => null}
                     rightElement={
