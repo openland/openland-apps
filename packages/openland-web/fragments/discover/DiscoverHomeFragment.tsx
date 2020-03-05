@@ -40,8 +40,9 @@ const listingsContainer = css`
         display: inline-block;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 1051px) {
         & > * {
+            display: block;
             width: 100%;
         }
     }
