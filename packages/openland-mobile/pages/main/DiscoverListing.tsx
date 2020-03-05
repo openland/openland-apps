@@ -3,7 +3,6 @@ import * as Types from '../../../openland-api/spacex.types';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { withApp } from 'openland-mobile/components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
-import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
@@ -15,6 +14,7 @@ import { joinPaidGroup } from './components/ChatJoin';
 import { SRouter } from 'react-native-s/SRouter';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { normalizePopularItems, DiscoverRoom } from 'openland-y-utils/discover/normalizePopularItems';
+import { DiscoverListItem } from './components/discover/DiscoverListItem';
 
 const styles = StyleSheet.create({
     btn: {
@@ -90,27 +90,13 @@ const DiscoverListingContent = (props: DiscoverListingContentProps) => {
                 <SFlatList
                     data={props.rooms}
                     renderItem={({ item }) => (
-                        <ZListItem
-                            key={item.id}
-                            text={item.title}
-                            leftAvatar={{
-                                photo: item.photo,
-                                id: item.id,
-                                title: item.title,
-                            }}
-                            subTitle={
-                                item.newMessages 
-                                    ? item.newMessages + (item.newMessages === 1 ? ' new message' : ' new messages')
-                                    : item.membersCount ? item.membersCount + (item.membersCount === 1 ? ' member' : ' members')
-                                    : undefined
-                            }
+                        <DiscoverListItem 
+                            item={item} 
                             rightElement={<FollowButton 
                                 isFollowing={item.membership === Types.SharedRoomMembershipStatus.MEMBER} 
                                 room={item}
                                 router={router}
-                            />}
-                            path="Conversation"
-                            pathParams={{ flexibleId: item.id }}
+                            />} 
                         />
                     )}
                     keyExtractor={(item, index) => index + '-' + item.id}
