@@ -163,17 +163,17 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                                 {
                                     value: DistributionType.FREE,
                                     label: 'Free',
-                                    subtitle: 'Available for everyone',
+                                    subtitle: 'Members join for free',
                                 },
                                 {
                                     value: DistributionType.PAID,
-                                    label: 'Paid',
-                                    subtitle: 'One-time payment for join',
+                                    label: 'One-time payment',
+                                    subtitle: 'Members pay once to join',
                                 },
                                 {
                                     value: DistributionType.SUBSCRIPTION,
                                     label: 'Subscription',
-                                    subtitle: 'Recurrent payments for membership',
+                                    subtitle: 'Recurrent membership fee',
                                 },
                             ]}
                         />
@@ -252,12 +252,12 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                         options={[
                             {
                                 label: 'Secret',
-                                subtitle: 'For people with direct invite',
+                                subtitle: 'Only people with invite link can see it',
                                 value: SharedRoomKind.GROUP,
                             },
                             {
                                 label: 'Shared',
-                                subtitle: 'For all organization/community members',
+                                subtitle: 'Visible in group search',
                                 value: SharedRoomKind.PUBLIC,
                             },
                         ]}

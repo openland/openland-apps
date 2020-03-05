@@ -459,19 +459,19 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
                             value: DistributionType.FREE,
                             labelShort: 'Free',
                             label: 'Free',
-                            subtitle: 'Available for everyone',
+                            subtitle: 'Members join for free',
                         },
                         {
                             value: DistributionType.PAID,
-                            labelShort: 'Paid',
-                            label: 'Paid',
-                            subtitle: 'One-time payment for join',
+                            labelShort: 'One-time payment',
+                            label: 'One-time payment',
+                            subtitle: 'Members pay once to join',
                         },
                         {
                             value: DistributionType.SUBSCRIPTION,
                             labelShort: 'Subscription',
                             label: 'Subscription',
-                            subtitle: 'Recurrent payments for membership',
+                            subtitle: 'Recurrent membership fee',
                         },
                     ]}
                 />
@@ -534,16 +534,16 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
                         searchable={false}
                         options={[
                             {
-                                value: false,
-                                labelShort: 'Shared',
-                                label: 'Shared',
-                                subtitle: 'For all organization/community members',
-                            },
-                            {
                                 value: true,
                                 labelShort: 'Secret',
                                 label: 'Secret',
-                                subtitle: 'For people with direct invite',
+                                subtitle: 'Only people with invite link can see it',
+                            },
+                            {
+                                value: false,
+                                labelShort: 'Shared',
+                                label: 'Shared',
+                                subtitle: 'Visible in group search',
                             },
                         ]}
                     />
