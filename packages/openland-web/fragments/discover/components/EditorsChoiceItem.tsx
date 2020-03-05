@@ -8,6 +8,7 @@ import { XView } from 'react-mental';
 const imageContainer = css`
     border-radius: 8px;
     overflow: hidden;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
 
     & img {
         display: block;
