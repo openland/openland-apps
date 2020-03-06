@@ -73,12 +73,12 @@ const FollowButton = React.memo((props: FollowButtonProps) => {
     );
 });
 
-type ListingType = 'new' | 'popular' | 'top-free' | 'top-premium' | 'collections';
+type ListingType = 'new' | 'popular' | 'top-free' | 'top-premium' | 'collections' | 'recommendations';
 
 interface DiscoverListingContentProps {
     rooms: DiscoverRoom[];
-    onEndReached: () => void;
-    loading: boolean;
+    onEndReached?: () => void;
+    loading?: boolean;
 }
 
 const DiscoverListingContent = (props: DiscoverListingContentProps) => {
@@ -262,13 +262,11 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
     React.useEffect(() => {
         loadCollections();
     }, []);
-    const loadMore = () => {/* noop */};
 
     return (
         <DiscoverListingContent 
             rooms={rooms}
             loading={loading}
-            onEndReached={loadMore}
         />
     );
 };
@@ -290,9 +288,9 @@ const DiscoverListingComponent = React.memo<PageProps>((props) => {
         return <DiscoverTopPremiumListing initialAfter={initialAfter} initialRooms={initialRooms} />;
     } else if (type === 'collections') {
         return <DiscoverCollectionsListing collectionId={collectionId} />;
+    } else {
+        return <DiscoverListingContent rooms={initialRooms} />;
     }
-    
-    throw Error('Invalid listing type');
 });
 
 export const DiscoverListing = withApp(DiscoverListingComponent);

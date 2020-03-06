@@ -10,9 +10,9 @@ import { DiscoverChatsCollectionShort } from 'openland-api/spacex.types';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { SRouter } from 'react-native-s/SRouter';
-import FastImage from 'react-native-fast-image';
 import { useClient } from 'openland-api/useClient';
 import { usePressableView } from './components/discover/usePressableView';
+import { DiscoverCover } from './components/discover/DiscoverCover';
 
 export const layoutCollection = () => ({
         width: Math.round(167 * PixelRatio.get()),
@@ -49,17 +49,7 @@ const Collection = (props: CollectionProps) => {
         <Animated.View style={{width: '100%', height: 264, padding: 16, alignSelf: 'center', ...styles}}>
             <TouchableWithoutFeedback delayPressIn={delayPressIn} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut}>
                 <View flexDirection="column" borderRadius={RadiusStyles.Large} paddingTop={8} paddingBottom={6}>
-                    <FastImage 
-                        source={{uri: path}}
-                        style={{
-                            width: '100%',
-                            height: 192, 
-                            borderRadius: RadiusStyles.Large, 
-                            borderWidth: 0.5,
-                            borderColor: theme.border, 
-                            marginBottom: 16,
-                        }}
-                    />
+                    <DiscoverCover width="100%" height={192} path={path} marginBottom={16} />
                     <View flexGrow={1} flexShrink={1} flexDirection="row" alignItems="center">
                         <Text style={{...TextStyles.Label1, color: theme.foregroundPrimary, flexGrow: 1, flexShrink: 1}} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{props.item.title}</Text>
                         <Text style={{...TextStyles.Subhead, color: theme.foregroundTertiary}} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>

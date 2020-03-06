@@ -6,11 +6,11 @@ import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { plural } from 'openland-y-utils/plural';
 import { SRouterContext } from 'react-native-s/SRouterContext';
-import FastImage from 'react-native-fast-image';
 import { useClient } from 'openland-api/useClient';
 import { DiscoverSharedRoom, DiscoverEditorsChoice_discoverEditorsChoice_image } from 'openland-api/spacex.types';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { usePressableView } from './usePressableView';
+import { DiscoverCover } from './DiscoverCover';
 
 interface EditorsChoiceItemProps {
     item: {
@@ -47,19 +47,11 @@ const EditorsChoiceItem = (props: EditorsChoiceItemProps) => {
         <Animated.View style={{width: 343, height: 264, marginRight: 8, ...styles}}>
             <TouchableWithoutFeedback delayPressIn={delayPressIn} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut}>
                 <View flexDirection="column" borderRadius={RadiusStyles.Large} paddingTop={8} paddingBottom={6}>
-                <FastImage 
-                    source={{uri: path}}
-                    style={{
-                        width: 343,
-                        height: 192,
-                        borderRadius: RadiusStyles.Large,
-                        borderWidth: 0.5,
-                        borderColor: theme.border,
-                        marginBottom: 14,
-                    }}
-                />
+                <DiscoverCover path={path} width={343} height={192} marginBottom={14} />
                 <View flexDirection="row">
-                    <ZAvatar size="medium" photo={photo} id={id} title={title} />
+                    <View paddingTop={2}>
+                        <ZAvatar size="medium" photo={photo} id={id} title={title} />
+                    </View>
                     <View marginLeft={16} flexGrow={1} flexShrink={1} flexDirection="column">
                         <Text style={{...TextStyles.Label1, color: theme.foregroundPrimary}} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{title}</Text>
                         <Text style={{...TextStyles.Subhead, color: theme.foregroundTertiary}} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
@@ -78,7 +70,7 @@ export const EditorsChoiceList = () => {
     const {discoverEditorsChoice} = client.useDiscoverEditorsChoice({fetchPolicy: 'network-only'});
 
     return (
-        <ZListGroup header="Editors' choice">
+        <ZListGroup header="Editors’ choice">
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} paddingLeft={16}>
                 {discoverEditorsChoice.map((item, i) => <EditorsChoiceItem key={i} item={item} />)}
                 <View width={24} />

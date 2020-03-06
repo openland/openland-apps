@@ -20,12 +20,13 @@ import { EditorsChoiceList } from './components/discover/EditorsChoiceList';
 import { DiscoverCollectionsList } from './components/discover/DiscoverCollectionsList';
 import { normalizePopularItems } from 'openland-y-utils/discover/normalizePopularItems';
 import { DiscoverListItem } from './components/discover/DiscoverListItem';
+import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 
 export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) => {
     const theme = useTheme();
     let [discoverSeed] = React.useState(Math.floor(Math.random() * 100));
     let rooms = getClient().useExploreRooms({seed: discoverSeed}, { fetchPolicy: 'cache-and-network' });
-    let suggestedRooms = rooms.suggestedRooms || [];
+    let suggestedRooms = (rooms.suggestedRooms || []).filter(v => v.__typename === 'SharedRoom') as DiscoverSharedRoom[];
     let newRooms = rooms.discoverNewAndGrowing.items || [];
     let popularRooms = normalizePopularItems(rooms.discoverPopularNow.items);
     let topFreeRooms = rooms.discoverTopFree.items || [];
@@ -65,7 +66,6 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
 
             <ZListGroup
                 header="Popular now"
-                headerMarginTop={0}
                 actionRight={popularRooms.length === 3 ? {
                     title: 'See all', onPress: () => props.router.push('DiscoverListing', {
                         initialRooms: popularRooms,
@@ -82,7 +82,6 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
 
             <ZListGroup
                 header="Top premium"
-                headerMarginTop={0}
                 actionRight={topPremiumRooms.length === 5 ? {
                     title: 'See all', onPress: () => props.router.push('DiscoverListing', {
                         initialRooms: topPremiumRooms,
@@ -97,7 +96,6 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
 
             <ZListGroup
                 header="Top free"
-                headerMarginTop={0}
                 actionRight={topFreeRooms.length === 5 ? {
                     title: 'See all', onPress: () => props.router.push('DiscoverListing', {
                         initialRooms: topFreeRooms,
@@ -112,10 +110,16 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
 
             {props.isDiscoverDone ? (
                 <>
-                    <ZListGroup header="Recommendations">
-                        {suggestedRooms.map(v => (
-                            v.__typename === 'SharedRoom' ? <DiscoverListItem key={v.id} item={v} /> : null
-                        ))}
+                    <ZListGroup 
+                        header="Recommendations"
+                        actionRight={suggestedRooms.length > 5 ? {
+                            title: 'See all', onPress: () => props.router.push('DiscoverListing', {
+                                initialRooms: suggestedRooms,
+                                title: 'Recommendations',
+                            })
+                        } : undefined}
+                    >
+                        {suggestedRooms.slice(0, 5).map(v => <DiscoverListItem key={v.id} item={v} />)}
                     </ZListGroup>
                     <View height={32} />
                 </>

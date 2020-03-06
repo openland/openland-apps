@@ -8,9 +8,9 @@ import { SRouterContext } from 'react-native-s/SRouterContext';
 import { DiscoverChatsCollectionShort } from 'openland-api/spacex.types';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { layoutCollection } from 'openland-mobile/pages/main/Collections';
-import FastImage from 'react-native-fast-image';
 import { useClient } from 'openland-api/useClient';
 import { usePressableView } from './usePressableView';
+import { DiscoverCover } from './DiscoverCover';
 
 interface DiscoverCollectionsItem {
     item: DiscoverChatsCollectionShort;
@@ -43,17 +43,7 @@ const DiscoverCollectionsItem = (props: DiscoverCollectionsItem) => {
         <Animated.View style={{width: 167, height: 162, marginRight: 8, ...styles}}>
             <TouchableWithoutFeedback delayPressIn={delayPressIn} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut}>
                 <View flexDirection="column" borderRadius={RadiusStyles.Large} paddingVertical={8}>
-                    <FastImage
-                        source={{uri: path}}
-                        style={{
-                            width: 167, 
-                            height: 94, 
-                            borderRadius: RadiusStyles.Large, 
-                            borderWidth: 0.5,
-                            borderColor: theme.border, 
-                            marginBottom: 8,
-                        }}
-                    />
+                    <DiscoverCover width={167} height={94} path={path} marginBottom={8} />
                     <View flexGrow={1} flexShrink={1} flexDirection="column">
                         <Text style={{...TextStyles.Label1, color: theme.foregroundPrimary}} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{props.item.title}</Text>
                         <Text style={{...TextStyles.Subhead, color: theme.foregroundTertiary}} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
