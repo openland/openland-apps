@@ -141,7 +141,7 @@ export class TypingsWatcher {
             case TypingType.TEXT: actionString = 'typing'; break;
             case TypingType.FILE: actionString = 'sending a file'; break;
             case TypingType.PHOTO: actionString = 'sending a photo'; break;
-            case TypingType.STICKER: actionString = 'picking an emoji'; break;
+            case TypingType.STICKER: actionString = 'picking a sticker'; break;
             case TypingType.VIDEO: actionString = 'uploading a video'; break;
             default: actionString = 'typing'; break;
         }
