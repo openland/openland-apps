@@ -160,7 +160,12 @@ const EditCollectionForm = React.memo((props: { hide: () => void; collection?: C
                     id: collection.id,
                     image: {
                         uuid: avatarField.value.uuid,
-                        crop: avatarField.value.crop,
+                        crop: avatarField.value.crop ? {
+                            x: avatarField.value.crop.x,
+                            y: avatarField.value.crop.y,
+                            w: avatarField.value.crop.w,
+                            h: avatarField.value.crop.h,
+                        } : null,
                     },
                     title: titleField.value,
                     chatIds: options.map(i => i.value),

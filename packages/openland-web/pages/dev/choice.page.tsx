@@ -108,7 +108,12 @@ const EditChoiceForm = React.memo((props: { hide: () => void; choice?: Choice })
                     id: choice.id,
                     image: {
                         uuid: avatarField.value.uuid,
-                        crop: avatarField.value.crop,
+                        crop: avatarField.value.crop ? {
+                            x: avatarField.value.crop.x,
+                            y: avatarField.value.crop.y,
+                            w: avatarField.value.crop.w,
+                            h: avatarField.value.crop.h,
+                        } : null,
                     },
                     cid: option[0].value,
                 });
