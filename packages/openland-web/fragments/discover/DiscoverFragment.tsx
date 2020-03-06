@@ -55,7 +55,7 @@ export const DiscoverFragment = React.memo(() => {
                 marginHorizontal={16}
                 marginBottom={16}
                 ref={refInput}
-                placeholder="Groups and people"
+                placeholder="Groups, people, and more"
             />
             <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>
                 <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
