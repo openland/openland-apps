@@ -16,7 +16,7 @@ import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
 import InviteIcon from 'openland-icons/s/ic-invite-24.svg';
 import SettingsIcon from 'openland-icons/s/ic-settings-24.svg';
 import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
-import AttachIcon from 'openland-icons/s/ic-attach-24.svg';
+import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
 import NotificationsOffIcon from 'openland-icons/s/ic-notifications-off-24.svg';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
@@ -108,10 +108,10 @@ const CallButton = (props: { chat: ChatInfo; calls: CallsEngine }) => {
                     props.chat.__typename === 'PrivateRoom',
                     props.chat.__typename === 'PrivateRoom'
                         ? {
-                              id: props.chat.user.id,
-                              title: props.chat.user.name,
-                              picture: props.chat.user.photo,
-                          }
+                            id: props.chat.user.id,
+                            title: props.chat.user.name,
+                            picture: props.chat.user.photo,
+                        }
                         : { id: props.chat.id, title: props.chat.title, picture: props.chat.photo },
                 )
             }

@@ -6,7 +6,7 @@ import {
     URickInputInstance,
     URickTextValue,
 } from 'openland-web/components/unicorn/URickInput';
-import AttachIcon from 'openland-icons/s/ic-attach-24.svg';
+import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
 import AllIcon from 'openland-icons/s/ic-channel-16.svg';
 import SendIcon from 'openland-icons/s/ic-send-24.svg';
 import { UNavigableListRef } from 'openland-web/components/unicorn/UNavigableReactWindow';
