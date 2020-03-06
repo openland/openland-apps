@@ -462,7 +462,7 @@ interface SendMessageComponentProps {
     onStickerSent?: (sticker: StickerFragment) => void;
     onStickerSentAsync?: (sticker: StickerFragment) => void;
     onTextChange?: (text: string) => void;
-    onEmojiPickerShow?: () => void;
+    onEmojiPickerShow?: (stickers: boolean) => void;
     onEmojiPickerHide?: () => void;
     placeholder?: string;
     initialText?: URickTextValue;

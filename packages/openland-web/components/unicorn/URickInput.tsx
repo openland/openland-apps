@@ -103,7 +103,7 @@ export interface URickInputProps {
     withShortcutsButton?: boolean;
     onStickerSent?: (sticker: StickerFragment) => void;
 
-    onEmojiPickerShow?: () => void;
+    onEmojiPickerShow?: (stickers: boolean) => void;
     onEmojiPickerHide?: () => void;
 
     onPressEnter?: () => Promise<boolean>;
