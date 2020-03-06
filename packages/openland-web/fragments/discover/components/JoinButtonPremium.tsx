@@ -3,6 +3,7 @@ import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { css } from 'linaria';
 import IcAdd from 'openland-icons/s/ic-add-24.svg';
+import IcDone from 'openland-icons/s/ic-done-24.svg';
 import { showPayConfirm } from 'openland-web/fragments/wallet/modals/showPayConfirm';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { XViewRouterContext } from 'react-mental';
@@ -39,6 +40,7 @@ const button = css`
 `;
 
 export const JoinButtonPremium = React.memo((props: JoinButtonPremiumProps) => {
+    const [state, setState] = React.useState<string>(props.group.membership === 'MEMBER' ? 'done' : 'initial');
     const client = useClient();
     const router = React.useContext(XViewRouterContext)!;
     // TODO remove any
@@ -63,10 +65,19 @@ export const JoinButtonPremium = React.memo((props: JoinButtonPremiumProps) => {
                 }
                 if (passIsActive) {
                     router.navigate('/mail/' + props.group.id);
+                    setState('done');
                 }
             },
         });
     };
+
+    if (state === 'done') {
+        return (
+            <button className={button} disabled={true}>
+                <IcDone />
+            </button>
+        );
+    }
 
     return (
         <button className={button} onClick={onClick}>
