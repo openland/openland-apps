@@ -21,6 +21,7 @@ import { DiscoverCollectionsList } from './components/discover/DiscoverCollectio
 import { normalizePopularItems } from 'openland-y-utils/discover/normalizePopularItems';
 import { DiscoverListItem } from './components/discover/DiscoverListItem';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
+import { ZLoader } from 'openland-mobile/components/ZLoader';
 
 export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) => {
     const theme = useTheme();
@@ -164,11 +165,13 @@ const ExplorePage = (props: PageProps) => {
                     />
                 )}
             >
-                <SScrollView marginTop={-16}>
-                    <SDeferred>
-                        <RoomsList router={props.router} isDiscoverDone={discoverDone.betaIsDiscoverDone} />
-                    </SDeferred>
-                </SScrollView>
+                <React.Suspense fallback={<ZLoader />}>
+                    <SScrollView marginTop={-16}>
+                        <SDeferred>
+                            <RoomsList router={props.router} isDiscoverDone={discoverDone.betaIsDiscoverDone} />
+                        </SDeferred>
+                    </SScrollView>
+                </React.Suspense>
             </SSearchControler>
         </>
     );
