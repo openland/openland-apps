@@ -146,6 +146,13 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         });
     }, 1000);
 
+    private setTypingRaw = () => {
+        this.props.messenger.client.mutateSetTyping({
+            conversationId: this.props.conversationId,
+            type: TypingType.TEXT
+        });
+    }
+
     private setStickerPicking = () => {
         this.props.messenger.client.mutateSetTyping({
             conversationId: this.props.conversationId,
@@ -161,11 +168,13 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
 
     // TODO remove any
     private stickerPickingMutationIntervals: any[] = [];
-    private startStickerPicking = () => {
-        this.setStickerPicking();
+    private startStickerPicking = (stickers: boolean) => {
+        const typingFunction = stickers ? this.setStickerPicking : this.setTypingRaw;
+
+        typingFunction();
         this.stickerPickingMutationIntervals.push(setInterval(() => {
             console.log('From the interval');
-            this.setStickerPicking();
+            typingFunction();
         }, 3000));
 
         // clear typing after one minute in case it somehow stuck

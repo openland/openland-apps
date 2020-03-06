@@ -385,11 +385,18 @@ const CategoryButton = React.memo(
 interface EmojiPickerProps {
     onEmojiPicked: (arg: string) => void;
     onStickerSent?: (sticker: StickerFragment) => void;
-    onShow?: () => void;
+    onShow?: (stickers: boolean) => void;
     onHide?: () => void;
 }
 
-const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
+interface EmojiPickerBodyProps {
+    onEmojiPicked: (arg: string) => void;
+    onStickerSent?: (sticker: StickerFragment) => void;
+    onStickerTabActive: () => void;
+    onStickerTabLeave: () => void;
+}
+
+const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
     const ref = React.useRef<FixedSizeList>(null);
     const [currentSection, setCurrentSection] = React.useState(0);
     const [stickers, setStickers] = React.useState(false);
@@ -421,7 +428,10 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
             <XView flexDirection="row">
                 <div
                     className={cx(TextTitle3, sectionTitle, !stickers && sectionActiveTitle)}
-                    onClick={() => setStickers(false)}
+                    onClick={() => {
+                        setStickers(false);
+                        props.onStickerTabLeave();
+                    }}
                 >
                     Emoji
                 </div>
@@ -429,7 +439,10 @@ const EmojiPickerBody = React.memo((props: EmojiPickerProps) => {
                     {props.onStickerSent && (
                         <div
                             className={cx(TextTitle3, sectionTitle, stickers && sectionActiveTitle)}
-                            onClick={() => setStickers(true)}
+                            onClick={() => {
+                                setStickers(true);
+                                props.onStickerTabActive();
+                            }}
                         >
                             Stickers
                         </div>
@@ -633,6 +646,22 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
             <EmojiPickerBody
                 onEmojiPicked={props.onEmojiPicked}
                 onStickerSent={props.onStickerSent}
+                onStickerTabActive={() => {
+                    if (props.onHide) {
+                        props.onHide();
+                    }
+                    if (props.onShow) {
+                        props.onShow(true);
+                    }
+                }}
+                onStickerTabLeave={() => {
+                    if (props.onHide) {
+                        props.onHide();
+                    }
+                    if (props.onShow) {
+                        props.onShow(false);
+                    }
+                }}
             />
         ),
     );
@@ -644,7 +673,7 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
     const showWithEvent = (e: any) => {
         show(e);
         if (props.onShow) {
-            props.onShow();
+            props.onShow(false);
         }
     };
 
