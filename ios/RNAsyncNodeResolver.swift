@@ -78,7 +78,7 @@ func createFlexNode(spec: AsyncFlexSpec, modesToApply: [String], context: RNAsyn
   }
   
   if (spec.touchableKey != nil) {
-    res2 = RNTouchableNode(key: spec.touchableKey!, higlightColor: spec.highlightColor, child: res2)
+    res2 = RNTouchableNode(key: spec.touchableKey!, higlightColor: spec.highlightColor, child: res2, borderRadius: spec.style.borderRadius)
   }
   
   return res2

@@ -14,11 +14,15 @@ class RNTouchableNode: ASControlNode, UIGestureRecognizerDelegate {
   let higlightColor: UIColor;
   let child: ASLayoutElement
   
-  init(key: String, higlightColor: UIColor, child: ASLayoutElement) {
+  init(key: String, higlightColor: UIColor, child: ASLayoutElement, borderRadius: Float?) {
     self.key = key
     self.higlightColor = higlightColor;
     self.child = child
     super.init()
+    if let br = borderRadius {
+      self.cornerRadius = CGFloat(br)
+      self.cornerRoundingType = .defaultSlowCALayer
+    }
     self.automaticallyManagesSubnodes = true
     self.backgroundColor = UIColor.clear
     self.isLayerBacked = false

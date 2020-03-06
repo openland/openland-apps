@@ -105,6 +105,7 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & {theme: 
                     </ASFlex>}
                 </ASFlex>
             </ASFlex>
+            {shouldShowDiscover && <ASFlex height={16} />}
             {shouldShowDiscover && (
                     <ASFlex 
                         backgroundGradient={{start: theme.gradient0to100End, end: theme.gradient0to100Start}}
@@ -121,10 +122,10 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & {theme: 
                             alignItems="center"
                             flexDirection="column"
                         >
-                            <ASImage source={require('assets/ic-discover-36.png')} width={36} height={36} tintColor={props.theme.foregroundSecondary} />
+                            <ASImage source={require('assets/ic-discover-large-36.png')} width={36} height={36} tintColor={props.theme.foregroundSecondary} />
                             <ASText marginTop={8} marginBottom={4} {...TextStylesAsync.Title2} color={props.theme.foregroundPrimary}>Find more chats</ASText>
                             <ASText marginBottom={16} {...TextStylesAsync.Body} color={props.theme.foregroundSecondary}>Get recommendations for your interests</ASText>
-                            <ASFlex height={36} alignItems="center" justifyContent="center" borderRadius={18} backgroundColor={theme.backgroundTertiaryTrans} onPress={props.onDiscoverPress}>
+                            <ASFlex height={36} alignItems="center" justifyContent="center" borderRadius={18} backgroundColor={theme.backgroundTertiaryTrans} highlightColor={theme.backgroundTertiaryActive} onPress={props.onDiscoverPress}>
                                 <ASText
                                     marginLeft={16}
                                     marginRight={16}
