@@ -12,7 +12,6 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { UnsupportedContent } from './content/UnsupportedContent';
-import { SendingIndicator } from './content/SendingIndicator';
 
 const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMessageItem, theme: ThemeGlobal }>((props) => {
     const [selected, toggleSelect] = useMessageSelected(props.engine.messagesActionsStateEngine, props.message);
@@ -88,6 +87,36 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const marginTop = attachTop ? 4 : 12;
     const marginBottom = attachBottom && showReactions ? 6 : 0;
 
+    const [isSendingShown, setSendingShown] = React.useState<boolean>(false);
+    const [hadLag, setLag] = React.useState<boolean>(false);
+    const [isSentShown, setSentShown] = React.useState<boolean>(false);
+
+    React.useEffect(() => {
+        const timeout = setTimeout(() => {
+            if (message.isSending) {
+                setSendingShown(true);
+                setLag(true);
+            }
+        }, 500);
+
+        return () => {
+            clearInterval(timeout);
+            setSendingShown(false);
+        };
+    }, [message.isSending]);
+
+    React.useEffect(() => {
+        if (hadLag) {
+            setSentShown(true);
+        }
+
+        const timeout = setTimeout(() => {
+            setSentShown(false);
+        }, 250);
+
+        return () => clearInterval(timeout);
+    }, [hadLag]);
+
     return (
         <ASFlex flexDirection="column" alignItems="stretch" onPress={handlePress} onLongPress={handleLongPress}>
             <ASFlex key="margin-top" height={marginTop} />
@@ -109,11 +138,24 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
                     {isOut && (
                         <ASFlex flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" alignItems="flex-end" justifyContent="flex-end">
-                            {isSending && (
-                                <ASFlex marginRight={12} marginBottom={10}>
-                                    <SendingIndicator sendTime={message.date} theme={theme} />
-                                </ASFlex>
-                            )}
+                            <ASFlex marginRight={12} marginBottom={10} width={16} height={16}>
+                                {isSendingShown && !isSentShown && (
+                                    <ASImage
+                                        source={require('assets/ic-recent-16.png')}
+                                        width={16}
+                                        height={16}
+                                        tintColor={theme.foregroundQuaternary}
+                                    />
+                                )}
+                                {!isSendingShown && isSentShown && (
+                                    <ASImage
+                                        source={require('assets/ic-success-16.png')}
+                                        width={16}
+                                        height={16}
+                                        tintColor={theme.accentPositive}
+                                    />
+                                )}
+                            </ASFlex>
                         </ASFlex>
                     )}
 
