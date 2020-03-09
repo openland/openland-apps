@@ -3857,6 +3857,18 @@ const StickerPackSelector = obj(
                     fragment('StickerPack', StickerPackFragmentSelector)
                 ))
         );
+const StickerPackCatalogSelector = obj(
+            field('stickerPackCatalog', 'stickers', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('title', 'title', args(), notNull(scalar('String'))),
+                    field('published', 'published', args(), notNull(scalar('Boolean'))),
+                    field('stickers', 'stickers', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('Sticker', StickerFragmentSelector)
+                        )))))
+                )))))
+        );
 const SubscriptionsSelector = obj(
             field('subscriptions', 'subscriptions', args(), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5631,6 +5643,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'StickerPack',
         body: 'query StickerPack($id:ID!){stickerPack(id:$id){__typename ...StickerPackFragment}}fragment StickerPackFragment on StickerPack{__typename id title stickers{__typename ...StickerFragment}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}',
         selector: StickerPackSelector
+    },
+    StickerPackCatalog: {
+        kind: 'query',
+        name: 'StickerPackCatalog',
+        body: 'query StickerPackCatalog{stickers:stickerPackCatalog{__typename id title published stickers{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}',
+        selector: StickerPackCatalogSelector
     },
     Subscriptions: {
         kind: 'query',

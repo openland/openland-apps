@@ -29,6 +29,16 @@ query MyStickers {
         }
     }
 }
+query StickerPackCatalog {
+    stickers: stickerPackCatalog {
+        id
+        title
+        published
+        stickers {
+            ...StickerFragment
+        }
+    }
+}
 query StickerPack($id: ID!) {
     stickerPack(id: $id) {
         ...StickerPackFragment

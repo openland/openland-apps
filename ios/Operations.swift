@@ -3850,6 +3850,18 @@ private let StickerPackSelector = obj(
                     fragment("StickerPack", StickerPackFragmentSelector)
                 ))
         )
+private let StickerPackCatalogSelector = obj(
+            field("stickerPackCatalog", "stickers", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("title", "title", notNull(scalar("String"))),
+                    field("published", "published", notNull(scalar("Boolean"))),
+                    field("stickers", "stickers", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("Sticker", StickerFragmentSelector)
+                        )))))
+                )))))
+        )
 private let SubscriptionsSelector = obj(
             field("subscriptions", "subscriptions", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5629,6 +5641,12 @@ class Operations {
         "query StickerPack($id:ID!){stickerPack(id:$id){__typename ...StickerPackFragment}}fragment StickerPackFragment on StickerPack{__typename id title stickers{__typename ...StickerFragment}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}",
         StickerPackSelector
     )
+    let StickerPackCatalog = OperationDefinition(
+        "StickerPackCatalog",
+        .query, 
+        "query StickerPackCatalog{stickers:stickerPackCatalog{__typename id title published stickers{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}",
+        StickerPackCatalogSelector
+    )
     let Subscriptions = OperationDefinition(
         "Subscriptions",
         .query, 
@@ -6658,6 +6676,7 @@ class Operations {
         if name == "SharedMedia" { return SharedMedia }
         if name == "SharedMediaCounters" { return SharedMediaCounters }
         if name == "StickerPack" { return StickerPack }
+        if name == "StickerPackCatalog" { return StickerPackCatalog }
         if name == "Subscriptions" { return Subscriptions }
         if name == "SuggestedRooms" { return SuggestedRooms }
         if name == "SuperAccount" { return SuperAccount }

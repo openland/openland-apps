@@ -280,6 +280,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryStickerPack(variables: Types.StickerPackVariables, opts?: OperationParameters): Promise<Types.StickerPack> {
         return this.query('StickerPack', variables, opts);
     }
+    queryStickerPackCatalog(opts?: OperationParameters): Promise<Types.StickerPackCatalog> {
+        return this.query('StickerPackCatalog', undefined, opts);
+    }
     querySubscriptions(opts?: OperationParameters): Promise<Types.Subscriptions> {
         return this.query('Subscriptions', undefined, opts);
     }
@@ -589,6 +592,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchStickerPack(variables: Types.StickerPackVariables, opts?: OperationParameters): Promise<Types.StickerPack> {
         return this.refetch('StickerPack', variables);
     }
+    refetchStickerPackCatalog(opts?: OperationParameters): Promise<Types.StickerPackCatalog> {
+        return this.refetch('StickerPackCatalog', undefined);
+    }
     refetchSubscriptions(opts?: OperationParameters): Promise<Types.Subscriptions> {
         return this.refetch('Subscriptions', undefined);
     }
@@ -897,6 +903,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateStickerPack(variables: Types.StickerPackVariables, updater: (data: Types.StickerPack) => Types.StickerPack | null): Promise<boolean> {
         return this.updateQuery(updater, 'StickerPack', variables);
+    }
+    updateStickerPackCatalog(updater: (data: Types.StickerPackCatalog) => Types.StickerPackCatalog | null): Promise<boolean> {
+        return this.updateQuery(updater, 'StickerPackCatalog', undefined);
     }
     updateSubscriptions(updater: (data: Types.Subscriptions) => Types.Subscriptions | null): Promise<boolean> {
         return this.updateQuery(updater, 'Subscriptions', undefined);
@@ -1388,6 +1397,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useStickerPack(variables: Types.StickerPackVariables, opts?: SpaceQueryWatchParameters): Types.StickerPack;
     useStickerPack(variables: Types.StickerPackVariables, opts?: SpaceQueryWatchParameters): Types.StickerPack | null {
         return this.useQuery('StickerPack', variables, opts);
+    }
+    useStickerPackCatalog(opts: SpaceQueryWatchParameters & { suspense: false }): Types.StickerPackCatalog | null;
+    useStickerPackCatalog(opts?: SpaceQueryWatchParameters): Types.StickerPackCatalog;
+    useStickerPackCatalog(opts?: SpaceQueryWatchParameters): Types.StickerPackCatalog | null {
+        return this.useQuery('StickerPackCatalog', undefined, opts);
     }
     useSubscriptions(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Subscriptions | null;
     useSubscriptions(opts?: SpaceQueryWatchParameters): Types.Subscriptions;

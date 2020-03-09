@@ -1,17 +1,26 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { useClient } from 'openland-api/useClient';
-import { ListOnScrollProps, VariableSizeList } from 'react-window';
-import { MyStickers_stickers_packs, StickerFragment } from 'openland-api/spacex.types';
+import { ListOnScrollProps, VariableSizeList, FixedSizeList } from 'react-window';
+import {
+    MyStickers_stickers_packs,
+    StickerFragment,
+    StickerPackCatalog_stickers,
+} from 'openland-api/spacex.types';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { XLoader } from 'openland-x/XLoader';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { showStickerStickerPackModal } from 'openland-web/fragments/chat/messenger/message/content/StickerContent';
-import { TextLabel1, TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
+import { TextLabel1, TextTitle3, TextBody, TextDensed } from 'openland-web/utils/TextStyles';
 import AlertBlanket from 'openland-x/AlertBlanket';
 import IcArrow from 'openland-icons/s/ic-chevron-16.svg';
 import IcDelete from 'openland-icons/s/ic-close-16.svg';
+import IcAdd from 'openland-icons/s/ic-add-24.svg';
+import IcDone from 'openland-icons/s/ic-done-24.svg';
+import IcCatalog from './ic-catalog.svg';
+import IcCatalogActive from './ic-catalog-active.svg';
 
 type StickerPack = MyStickers_stickers_packs & {
     start: number;
@@ -73,6 +82,9 @@ const sticker = css`
     flex-shrink: 0;
     padding: 8px;
     border-radius: 8px;
+`;
+
+const stickerSanded = css`
     &:hover {
         background-color: #f2f3f5;
     }
@@ -95,6 +107,7 @@ const titleContainerStyle = css`
     background-color: #fff;
     padding-left: 16px;
     padding-right: 4px;
+    user-select: none;
     @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
         background-color: rgba(255, 255, 255, 0.72);
         backdrop-filter: blur(16px);
@@ -166,6 +179,153 @@ const categoryButton = css`
     cursor: pointer;
 `;
 
+interface CatalogRowProps {
+    stickerPack: StickerPackCatalog_stickers;
+    haveIt: boolean;
+}
+
+const catalogRowContainer = css`
+    width: 352px;
+    display: flex;
+    flex-direction: column;
+    padding-left: 16px;
+    padding-right: 16px;
+    user-select: none;
+`;
+
+const catalogHeaderContent = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2px;
+`;
+
+const catalogTitlesContainer = css`
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    &:hover {
+        opacity: 0.56;
+    }
+`;
+
+const catalogTitle = css`
+    color: var(--foregroundPrimary);
+`;
+
+const catalogSubtitle = css`
+    color: var(--foregroundSecondary);
+`;
+
+const catalogPreviewContainer = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+const addCatalogButton = css`
+    position: relative;
+    width: 48px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--accentPrimary);
+    border-radius: 64px;
+    &:hover {
+        background-color: var(--accentPrimaryHover);
+    }
+    &:active {
+        background-color: var(--accentPrimaryActive);
+    }
+    & path {
+        fill: var(--foregroundContrast);
+    }
+`;
+
+const doneCatalogButton = css`
+    cursor: default;
+    background-color: var(--backgroundTertiaryTrans);
+    &:hover {
+        background-color: var(--backgroundTertiaryTrans);
+    }
+    &:active {
+        background-color: var(--backgroundTertiaryTrans);
+    }
+    & path {
+        fill: var(--foregroundTertiary);
+    }
+`;
+
+const CatalogRow = (props: CatalogRowProps) => {
+    const [loading, setLoading] = React.useState(false);
+    const client = useClient();
+    const { stickerPack } = props;
+    const { stickers } = stickerPack;
+    const preview = stickers.slice(0, 4);
+
+    const addPack = async () => {
+        setLoading(true);
+        await client.mutateStickerPackAddToCollection({
+            id: stickerPack.id,
+        });
+        await client.refetchMyStickers();
+        setLoading(false);
+    };
+
+    return (
+        <div className={catalogRowContainer}>
+            <div className={catalogHeaderContent}>
+                <div
+                    className={catalogTitlesContainer}
+                    onClick={() => showStickerStickerPackModal(stickerPack.id, stickerPack.title)}
+                >
+                    <div className={cx(TextLabel1, catalogTitle)}>{stickerPack.title}</div>
+                    <div className={cx(TextDensed, catalogSubtitle)}>
+                        {stickers.length} {stickers.length === 1 ? 'sticker' : 'stickers'}
+                    </div>
+                </div>
+                <div
+                    className={cx(addCatalogButton, props.haveIt && doneCatalogButton)}
+                    onClick={props.haveIt ? undefined : loading ? undefined : addPack}
+                >
+                    {loading && (
+                        <XLoader
+                            loading={true}
+                            transparentBackground={true}
+                            size="small"
+                            contrast={true}
+                        />
+                    )}
+                    {!loading && !props.haveIt && <IcAdd />}
+                    {!loading && props.haveIt && <IcDone />}
+                </div>
+            </div>
+            <div className={catalogPreviewContainer}>
+                {preview.map(i => {
+                    const url = `https://ucarecdn.com/${i.image.uuid}/-/format/auto/-/`;
+                    const ops = `preview/${64}x${64}/`;
+                    const opsRetina = `preview/${64 * 2}x${64 * 2}/ 2x`;
+                    return (
+                        <div key={i.id} className={sticker}>
+                            <ImgWithRetry
+                                width={64}
+                                height={64}
+                                src={url + ops}
+                                srcSet={url + opsRetina}
+                                style={{ objectFit: 'contain' }}
+                            />
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
+};
+
 const InnerElementType = React.forwardRef<HTMLDivElement>((props: any, ref) => {
     const { children, sections, ...rest } = props;
     const client = useClient();
@@ -232,31 +392,34 @@ const InnerElementType = React.forwardRef<HTMLDivElement>((props: any, ref) => {
     );
 });
 
-const StickersRow = (props: {
-    stickers: StickerFragment[];
-    sendSticker: (item: StickerFragment) => void;
-}) => {
-    return (
-        <div className={stickerRowContainer}>
-            {props.stickers.map(i => {
-                const url = `https://ucarecdn.com/${i.image.uuid}/-/format/auto/-/`;
-                const ops = `preview/${64}x${64}/`;
-                const opsRetina = `preview/${64 * 2}x${64 * 2}/ 2x`;
-                return (
-                    <div key={i.id} className={sticker} onClick={() => props.sendSticker(i)}>
-                        <ImgWithRetry
-                            width={64}
-                            height={64}
-                            src={url + ops}
-                            srcSet={url + opsRetina}
-                            style={{ objectFit: 'contain' }}
-                        />
-                    </div>
-                );
-            })}
-        </div>
-    );
-};
+const StickersRow = React.memo(
+    (props: { stickers: StickerFragment[]; sendSticker: (item: StickerFragment) => void }) => {
+        return (
+            <div className={stickerRowContainer}>
+                {props.stickers.map(i => {
+                    const url = `https://ucarecdn.com/${i.image.uuid}/-/format/auto/-/`;
+                    const ops = `preview/${64}x${64}/`;
+                    const opsRetina = `preview/${64 * 2}x${64 * 2}/ 2x`;
+                    return (
+                        <div
+                            key={i.id}
+                            className={cx(sticker, stickerSanded)}
+                            onClick={() => props.sendSticker(i)}
+                        >
+                            <ImgWithRetry
+                                width={64}
+                                height={64}
+                                src={url + ops}
+                                srcSet={url + opsRetina}
+                                style={{ objectFit: 'contain' }}
+                            />
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    },
+);
 
 const CategoryButton = React.memo(
     (props: { sticker: StickerFragment; offset: number; onClick: (offset: number) => void }) => {
@@ -281,16 +444,25 @@ const CategoryButton = React.memo(
 export const StickerComponent = React.memo<{
     onStickerSent?: (sticker: StickerFragment) => void;
 }>(props => {
+    const [showCatalog, setShowCatalog] = React.useState(false);
     const client = useClient();
     const stickers = client.useMyStickers({ fetchPolicy: 'cache-and-network' }).stickers;
+    const stickersCatalog = client.useStickerPackCatalog().stickers;
     const ref = React.useRef<VariableSizeList>(null);
     const categoriesRef = React.useRef<HTMLDivElement>(null);
     const [stickersCount, setStickersCount] = React.useState(0);
     const [stickersPack, setStickersPack] = React.useState<StickerPack[]>([]);
-    const [currentSection, setCurrentSection] = React.useState(0);
+    const [currentSection, setCurrentSection] = React.useState(1);
 
     const categoriesScrolling = () => {
         if (categoriesRef.current) {
+            if (currentSection === 1) {
+                categoriesRef.current.scrollTo({
+                    left: 0,
+                    behavior: 'smooth',
+                });
+                return;
+            }
             categoriesRef.current.scrollTo({
                 left: currentSection * 40,
                 behavior: 'smooth',
@@ -312,6 +484,9 @@ export const StickerComponent = React.memo<{
                 }
                 setStickersCount(totalCount);
                 setStickersPack(totalPack);
+            } else {
+                setStickersCount(0);
+                setStickersPack([]);
             }
         },
         [stickers],
@@ -322,9 +497,9 @@ export const StickerComponent = React.memo<{
             const row = Math.round(s.scrollOffset / 75 + stickersPack.length / 40) + 1;
             const section = stickersPack.findIndex(v => v.start <= row && row < v.end)!;
             if (section < 0) {
-                setCurrentSection(0);
+                setCurrentSection(1);
             } else {
-                setCurrentSection(section);
+                setCurrentSection(section + 1);
             }
         },
         [stickersPack],
@@ -334,6 +509,7 @@ export const StickerComponent = React.memo<{
 
     const onCategoryClick = React.useCallback(
         (src: number) => {
+            setShowCatalog(false);
             if (ref.current && categoriesRef.current) {
                 ref.current.scrollToItem(src, 'start');
                 categoriesScrolling();
@@ -348,14 +524,14 @@ export const StickerComponent = React.memo<{
         }
     };
 
-    if (!stickers.packs.length) {
+    if (!stickers.packs.length && !showCatalog) {
         return (
             <div className={stubContainer}>
                 <div className={cx(TextTitle3, stubTitle)}>No stickers</div>
                 <div className={cx(TextBody, stubSubtitle)}>
                     Communication is more fun with stickers. Let’s find cool sticker pack for you!
                 </div>
-                <UButton text="Find stickers" />
+                <UButton text="Find stickers" onClick={() => setShowCatalog(true)} />
             </div>
         );
     }
@@ -363,48 +539,85 @@ export const StickerComponent = React.memo<{
     return (
         <div className={container}>
             <div className={stickersContainer}>
-                <VariableSizeList
-                    ref={ref}
-                    itemCount={stickersCount}
-                    itemSize={index => {
-                        const section = stickersPack.find(v => v.start <= index && index < v.end)!;
-                        let i = index - section.start;
-                        if (i === 0) {
-                            return 40;
-                        } else {
-                            return 80;
-                        }
-                    }}
-                    width={384 /* Bigger width to hide scrollbar */}
-                    height={384}
-                    overscanCount={8}
-                    innerElementType={d => <InnerElementType sections={stickersPack} {...d} />}
-                    onScroll={onScroll}
-                >
-                    {({ index, style }) => {
-                        const section = stickersPack.find(v => v.start <= index && index < v.end)!;
-                        let i = index - section.start;
-                        if (i === 0) {
-                            return null;
-                        }
-                        i--;
-                        const stickRow = section.stickers.slice(
-                            i * 4,
-                            Math.min(section.stickers.length, i * 4 + 4),
-                        );
-                        return (
-                            <div style={style}>
-                                <StickersRow stickers={stickRow} sendSticker={sendSticker} />
-                            </div>
-                        );
-                    }}
-                </VariableSizeList>
+                {showCatalog && (
+                    <FixedSizeList
+                        itemCount={stickersCatalog.length}
+                        itemSize={136}
+                        width={384 /* Bigger width to hide scrollbar */}
+                        height={384}
+                        overscanCount={8}
+                        // onScroll={onScroll}
+                    >
+                        {({ index, style }) => {
+                            const section = stickersCatalog[index];
+                            const haveIt = !!stickers.packs.find(i => i.id === section.id);
+                            return (
+                                <div style={style}>
+                                    <CatalogRow stickerPack={section} haveIt={haveIt} />
+                                </div>
+                            );
+                        }}
+                    </FixedSizeList>
+                )}
+                {!showCatalog && (
+                    <VariableSizeList
+                        ref={ref}
+                        itemCount={stickersCount}
+                        itemSize={index => {
+                            const section = stickersPack.find(
+                                v => v.start <= index && index < v.end,
+                            )!;
+                            let i = index - section.start;
+                            if (i === 0) {
+                                return 40;
+                            } else {
+                                return 80;
+                            }
+                        }}
+                        width={384 /* Bigger width to hide scrollbar */}
+                        height={384}
+                        overscanCount={8}
+                        innerElementType={d => <InnerElementType sections={stickersPack} {...d} />}
+                        onScroll={onScroll}
+                    >
+                        {({ index, style }) => {
+                            const section = stickersPack.find(
+                                v => v.start <= index && index < v.end,
+                            )!;
+                            let i = index - section.start;
+                            if (i === 0) {
+                                return null;
+                            }
+                            i--;
+                            const stickRow = section.stickers.slice(
+                                i * 4,
+                                Math.min(section.stickers.length, i * 4 + 4),
+                            );
+                            return (
+                                <div style={style}>
+                                    <StickersRow stickers={stickRow} sendSticker={sendSticker} />
+                                </div>
+                            );
+                        }}
+                    </VariableSizeList>
+                )}
             </div>
             <div className={categoryContainer} ref={categoriesRef}>
                 <div
                     className={categorySelector}
-                    style={{ transform: `translateX(${currentSection * 40}px)` }}
+                    style={{
+                        transform: showCatalog ? '0px' : `translateX(${currentSection * 40}px)`,
+                    }}
                 />
+                <div
+                    className={categoryButton}
+                    onClick={() => {
+                        setShowCatalog(true);
+                        setCurrentSection(0);
+                    }}
+                >
+                    {showCatalog ? <IcCatalogActive /> : <IcCatalog />}
+                </div>
                 {stickersPack.map((i, j) => {
                     const stickerCover = i.stickers[0];
                     return (
