@@ -451,7 +451,7 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
         >
             <div className={otherInputContainer}>
                 <USelectField
-                    placeholder="Distribution"
+                    placeholder="Payments"
                     field={distributionField as any}
                     searchable={false}
                     options={[

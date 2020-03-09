@@ -3,6 +3,7 @@ import { css, cx } from 'linaria';
 import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     UserShort,
+    // SharedMediaType,
 } from 'openland-api/spacex.types';
 import { layoutMedia, uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
@@ -16,6 +17,7 @@ import { TextCaption } from 'openland-web/utils/TextStyles';
 import { XLoader } from 'openland-x/XLoader';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
+// import { useClient } from 'openland-api/useClient';
 
 const modalImgContainer = css`
     position: relative;
@@ -172,9 +174,21 @@ interface ModalProps {
     sender?: UserShort;
     senderNameEmojify?: string | JSX.Element;
     date?: number;
+    chatId?: string;
 }
 
 const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
+    // const client = useClient();
+    // const [imageCursor, setImageCursor] = React.useState<string | null>(null);
+    // let images;
+    // if (props.chatId) {
+    //     images = client.useSharedMedia({
+    //         chatId: props.chatId,
+    //         mediaTypes: [SharedMediaType.IMAGE],
+    //         first: 1
+    //     });
+    // }
+    // console.log(images);
     const messenger = React.useContext(MessengerContext);
     const imgRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
@@ -204,18 +218,16 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     return (
         <div className={modalImgContainer} onClick={props.hide}>
             <div className={modalToolbarContainer}>
-                {(props.sender || props.senderNameEmojify) &&
-                    props.date && (
-                        <div className={modalInfoContainer}>
-                            <div className={cx(TextCaption, modalSecondaryText)}>
-                                {props.senderNameEmojify ||
-                                    (props.sender ? props.sender!!.name : '')}
-                            </div>
-                            <div className={cx(TextCaption, modalSecondaryText)}>
-                                {formatDateTime(props.date)}
-                            </div>
+                {(props.sender || props.senderNameEmojify) && props.date && (
+                    <div className={modalInfoContainer}>
+                        <div className={cx(TextCaption, modalSecondaryText)}>
+                            {props.senderNameEmojify || (props.sender ? props.sender!!.name : '')}
                         </div>
-                    )}
+                        <div className={cx(TextCaption, modalSecondaryText)}>
+                            {formatDateTime(props.date)}
+                        </div>
+                    </div>
+                )}
                 <div className={modalButtonsContainer} onClick={e => e.stopPropagation()}>
                     <a
                         className={modalButtonStyle}
@@ -385,6 +397,7 @@ interface ImageContentProps {
     sender?: UserShort;
     senderNameEmojify?: string | JSX.Element;
     date?: number;
+    chatId?: string;
 }
 
 export const ImageContent = React.memo((props: ImageContentProps) => {
@@ -456,6 +469,7 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
                     sender: props.sender,
                     senderNameEmojify: props.senderNameEmojify,
                     date: props.date,
+                    chatId: props.chatId,
                 });
             }}
         >

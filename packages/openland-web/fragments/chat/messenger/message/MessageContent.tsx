@@ -128,6 +128,7 @@ export const MessageContent = (props: MessageContentProps) => {
                     sender={props.sender}
                     senderNameEmojify={props.senderNameEmojify}
                     date={props.date}
+                    chatId={props.chatId}
                 />
             </ContentWrapper>,
         );

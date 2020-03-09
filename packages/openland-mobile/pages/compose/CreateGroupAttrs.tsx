@@ -156,8 +156,8 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                     <ZInput placeholder="Name" field={titleField} autoFocus={true} />
                     <>
                         <ZSelect
-                            label="Distribution"
-                            modalTitle="Distribution"
+                            label="Payments"
+                            modalTitle="Payments"
                             field={distributionField}
                             options={[
                                 {
