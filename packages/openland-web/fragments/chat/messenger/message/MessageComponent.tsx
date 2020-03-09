@@ -16,6 +16,10 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { useUserPopper } from 'openland-web/components/EntityPoppers';
 import { defaultHover } from 'openland-web/utils/Styles';
+import { XView } from 'react-mental';
+
+import IcPending from 'openland-icons/s/ic-pending-16.svg';
+import IcSuccess from 'openland-icons/s/ic-success-16.svg';
 
 const senderContainer = css`
     display: flex;
@@ -372,7 +376,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             </div>
         );
     };
-        
+
     const sender = (
         <MessageSenderContent
             sender={message.sender}
@@ -381,6 +385,36 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             date={message.date}
         />
     );
+
+    const [isSendingShown, setSendingShown] = React.useState<boolean>(false);
+    const [hadLag, setLag] = React.useState<boolean>(false);
+    const [isSentShown, setSentShown] = React.useState<boolean>(false);
+
+    React.useEffect(() => {
+        const timeout = setTimeout(() => {
+            if (message.isSending) {
+                setSendingShown(true);
+                setLag(true);
+            }
+        }, 500);
+
+        return () => {
+            clearInterval(timeout);
+            setSendingShown(false);
+        };
+    }, [message.isSending]);
+
+    React.useEffect(() => {
+        if (hadLag) {
+            setSentShown(true);
+        }
+
+        const timeout = setTimeout(() => {
+            setSentShown(false);
+        }, 250);
+
+        return () => clearInterval(timeout);
+    }, [hadLag]);
 
     return (
         <div
@@ -407,7 +441,15 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                         )}
                     >
                         {!message.attachTop && sender}
-                        {content}
+
+                        <XView flexDirection="row" justifyContent="space-between">
+                            {content}
+                            <XView marginRight={24}>
+                                {isSendingShown && !isSentShown && <IcPending />}
+                                {isSentShown && !isSendingShown && <IcSuccess />}
+                            </XView>
+                        </XView>
+
                         {(message.commentsCount > 0 ||
                             engine.isChannel ||
                             message.reactions.length > 0) &&
