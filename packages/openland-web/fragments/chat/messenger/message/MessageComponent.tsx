@@ -284,6 +284,17 @@ const messageAvatarWrapper = css`
     flex-shrink: 0;
 `;
 
+const contentContainer = css`
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    flex-shrink: 1;
+
+    & > .x {
+        flex-shrink: 1;
+
+    }
+`;
 interface MessageComponentProps {
     message: DataSourceWebMessageItem;
     engine: ConversationEngine;
@@ -442,14 +453,13 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
                     >
                         {!message.attachTop && sender}
 
-                        <XView flexDirection="row" justifyContent="space-between">
+                        <div className={contentContainer}>
                             {content}
-                            <XView marginRight={24}>
+                            <XView marginHorizontal={24} width={16} height={16}>
                                 {isSendingShown && !isSentShown && <IcPending />}
                                 {isSentShown && !isSendingShown && <IcSuccess />}
                             </XView>
-                        </XView>
-
+                        </div>
                         {(message.commentsCount > 0 ||
                             engine.isChannel ||
                             message.reactions.length > 0) &&
