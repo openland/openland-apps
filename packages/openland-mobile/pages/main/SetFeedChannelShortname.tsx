@@ -51,7 +51,8 @@ const SetFeedChannelShortnameComponent = XMemo<PageProps>((props) => {
         }
     };
 
-    const greenErrorLabel = getErrorByShortname(shortnameField.value, 'Shortname', minLength, maxLength);
+    const shortnameError = getErrorByShortname(shortnameField.value, 'Shortname', minLength, maxLength);
+    const footerShortnameText = shortnameField.value ? `This link opens ${channel.title} page:\nopenland.com/${shortnameField.value}` : '';
 
     return (
         <>
@@ -65,8 +66,7 @@ const SetFeedChannelShortnameComponent = XMemo<PageProps>((props) => {
                             'Other people will be able to find ' + channel.title + ' by this shortname.' + '\n\n' +
                             'You can use a-z, 0-9 and underscores.' + '\n' +
                             'Minimum length is ' + minLength + ' characters.' + '\n\n' +
-                            'This link opens ' + channel.title + ' page:' + '\n' +
-                            'openland.com/' + (shortnameField.value ? shortnameField.value : ' shortname'),
+                            footerShortnameText,
 
                         onPress: (link: string) => {
                             if (channel.shortname) {
@@ -88,8 +88,8 @@ const SetFeedChannelShortnameComponent = XMemo<PageProps>((props) => {
                         autoFocus={true}
                     />
 
-                    {error && <ErrorText color="red" text={error} />}
-                    {!error && greenErrorLabel && <ErrorText color="green" text={greenErrorLabel} />}
+                    {error && <ErrorText text={error} />}
+                    {!error && shortnameError && <ErrorText text={shortnameError} />}
                 </ZListGroup>
             </KeyboardAvoidingScrollView>
         </>
