@@ -58,10 +58,10 @@ export const DiscoverHomeFragment = React.memo(() => {
     const popularNow = client.useDiscoverPopularNow({ first: 3 });
     const popularNowItems = normalizePopularItems(popularNow.discoverPopularNow.items || []);
 
-    const topPremium = client.useDiscoverTopPremium({ first: 5 });
+    const topPremium = client.useDiscoverTopPremium({ first: 3 });
     const topPremiumItems = topPremium.discoverTopPremium.items;
 
-    const topFree = client.useDiscoverTopFree({ first: 5 });
+    const topFree = client.useDiscoverTopFree({ first: 3 });
     const topFreeItems = topFree.discoverTopFree.items;
 
     const collections = client.useDiscoverCollections({ first: 20 });
