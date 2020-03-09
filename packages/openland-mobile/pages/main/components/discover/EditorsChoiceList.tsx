@@ -71,7 +71,7 @@ export const EditorsChoiceList = () => {
 
     return (
         <ZListGroup header="Editors’ choice">
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} paddingLeft={16}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} paddingLeft={16} pagingEnabled={true} decelerationRate="fast" snapToInterval={351}>
                 {discoverEditorsChoice.map((item, i) => <EditorsChoiceItem key={i} item={item} />)}
                 <View width={24} />
             </ScrollView>

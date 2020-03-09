@@ -73,7 +73,7 @@ export const DiscoverCollectionsList = () => {
                 })
             } : undefined}
         >
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} paddingLeft={16}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} paddingLeft={16} pagingEnabled={true} decelerationRate="fast" snapToInterval={175}>
                 {items.map((item, i) => <DiscoverCollectionsItem key={i} item={item} />)}
                 <View width={24} />
             </ScrollView>
