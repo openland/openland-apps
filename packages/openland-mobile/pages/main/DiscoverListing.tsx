@@ -56,6 +56,9 @@ const FollowButton = React.memo((props: FollowButtonProps) => {
     const backgroundColor = state === 'done' ? theme.backgroundTertiaryTrans : theme.accentPrimary;
     const tintColor = state === 'done' ? theme.foregroundTertiary : theme.foregroundInverted;
     const underlayColor = state === 'done' ? theme.backgroundTertiaryActive : theme.accentPrimaryActive;
+    React.useEffect(() => {
+        setState(props.isFollowing ? 'done' : 'initial');
+    }, [props.isFollowing]);
 
     return (
         <TouchableHighlight
@@ -81,8 +84,12 @@ interface DiscoverListingContentProps {
     loading?: boolean;
 }
 
-const DiscoverListingContent = (props: DiscoverListingContentProps) => {
+const DiscoverListingContent = React.memo((props: DiscoverListingContentProps) => {
     let router = React.useContext(SRouterContext)!;
+    const [joinedChats, setJoinedChats] = React.useState(new Set<string>());
+    const onJoin = React.useCallback((room: Types.Room_room_SharedRoom) => {
+        setJoinedChats(prev => prev.add(room.id));
+    }, []);
     return (
         <>
             <SHeader title={router.params.title} />
@@ -92,8 +99,11 @@ const DiscoverListingContent = (props: DiscoverListingContentProps) => {
                     renderItem={({ item }) => (
                         <DiscoverListItem 
                             item={item} 
+                            onJoin={onJoin}
                             rightElement={<FollowButton 
-                                isFollowing={item.membership === Types.SharedRoomMembershipStatus.MEMBER} 
+                                isFollowing={
+                                    item.membership === Types.SharedRoomMembershipStatus.MEMBER || joinedChats.has(item.id)
+                                }
                                 room={item}
                                 router={router}
                             />} 
@@ -106,7 +116,7 @@ const DiscoverListingContent = (props: DiscoverListingContentProps) => {
             </SDeferred>
         </>
     );
-};
+});
 
 interface DiscoverListingPageProps {
     initialRooms: DiscoverRoom[];

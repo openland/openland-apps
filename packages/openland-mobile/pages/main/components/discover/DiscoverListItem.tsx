@@ -2,13 +2,15 @@ import * as React from 'react';
 import { ZListItem } from "openland-mobile/components/ZListItem";
 import { DiscoverRoom } from 'openland-y-utils/discover/normalizePopularItems';
 import { plural } from 'openland-y-utils/plural';
+import { Room_room_SharedRoom } from 'openland-api/spacex.types';
 
 interface DiscoverListItemProps {
     item: DiscoverRoom;
     rightElement?: any;
+    onJoin?: (room: Room_room_SharedRoom) => void;
 }
 
-export const DiscoverListItem = ({item, rightElement}: DiscoverListItemProps) => {
+export const DiscoverListItem = ({item, rightElement, onJoin}: DiscoverListItemProps) => {
     return (
         <ZListItem
             key={item.id}
@@ -26,7 +28,7 @@ export const DiscoverListItem = ({item, rightElement}: DiscoverListItemProps) =>
             }
             rightElement={rightElement}
             path="Conversation"
-            pathParams={{ flexibleId: item.id }}
+            pathParams={{ flexibleId: item.id, onJoin }}
         />
     );
 };
