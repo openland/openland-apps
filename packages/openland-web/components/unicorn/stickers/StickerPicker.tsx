@@ -73,7 +73,6 @@ const stickerRowContainer = css`
 `;
 
 const sticker = css`
-    cursor: pointer;
     width: 80px;
     height: 80px;
     display: flex;
@@ -85,6 +84,7 @@ const sticker = css`
 `;
 
 const stickerSanded = css`
+    cursor: pointer;
     &:hover {
         background-color: #f2f3f5;
     }
