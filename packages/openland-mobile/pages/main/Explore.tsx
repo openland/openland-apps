@@ -38,7 +38,6 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
             <EditorsChoiceList />
             <ZListGroup
                 header="New and growing"
-                headerMarginTop={0}
                 actionRight={newRooms.length === 3 ? {
                     title: 'See all', onPress: () => props.router.push('DiscoverListing', {
                         initialRooms: newRooms,
