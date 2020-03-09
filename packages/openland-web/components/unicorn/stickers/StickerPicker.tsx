@@ -605,7 +605,9 @@ export const StickerComponent = React.memo<{
                 <div
                     className={categorySelector}
                     style={{
-                        transform: showCatalog ? '0px' : `translateX(${currentSection * 40}px)`,
+                        transform: showCatalog
+                            ? 'translateX(0px)'
+                            : `translateX(${currentSection * 40}px)`,
                     }}
                 />
                 <div
