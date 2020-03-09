@@ -546,7 +546,6 @@ export const StickerComponent = React.memo<{
                         width={384 /* Bigger width to hide scrollbar */}
                         height={384}
                         overscanCount={8}
-                        // onScroll={onScroll}
                     >
                         {({ index, style }) => {
                             const section = stickersCatalog[index];
