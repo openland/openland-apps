@@ -15,10 +15,10 @@ import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 
-export const ErrorText = (props: { color: string; text: string }) => (
+export const ErrorText = (props: { text: string }) => (
     <Text
         style={{
-            color: props.color === 'green' ? '#6cb83d' : '#f6564e',
+            color: '#f6564e',
             fontSize: 13,
             lineHeight: 17,
             paddingHorizontal: 16,
@@ -104,7 +104,8 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
         setError(undefined);
     }, [shortnameField.value]);
 
-    const greenErrorLabel = getErrorByShortname(shortnameField.value, 'Username', minLength, maxLength);
+    const shortnameError = getErrorByShortname(shortnameField.value, 'Username', minLength, maxLength);
+    const footerUsernameText = shortnameField.value ? `This link opens a chat with you:\nopenland.com/${shortnameField.value}` : '';
 
     return (
         <>
@@ -117,8 +118,7 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                             'Other people will be able to find you by this username, and mention you with this username in groups.' + '\n\n' +
                             'You can use a-z, 0-9 and underscores.' + '\n' +
                             'Minimum length is ' + minLength + ' characters.' + '\n\n' +
-                            'This link opens a chat with you:' + '\n' +
-                            'openland.com/' + (shortnameField.value ? shortnameField.value : ' username'),
+                            footerUsernameText,
                         onPress: (link: string) => {
                             if (user.shortname) {
                                 ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-copy-24.png')).show();
@@ -139,8 +139,8 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                         autoFocus={true}
                     />
 
-                    {error && <ErrorText color="red" text={error} />}
-                    {!error && greenErrorLabel && <ErrorText color="green" text={greenErrorLabel} />}
+                    {error && <ErrorText text={error} />}
+                    {!error && shortnameError && <ErrorText text={shortnameError} />}
                 </ZListGroup>
             </KeyboardAvoidingScrollView>
         </>

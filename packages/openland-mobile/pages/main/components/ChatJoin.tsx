@@ -289,12 +289,17 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
 });
 
 export const ChatJoin = React.memo((props: ChatJoinProps) => {
+    const onJoin = props.router.params.onJoin as (room: Room_room_SharedRoom) => void;
     const client = getClient();
     const room = client.useChatJoin({ id: props.room.id }).room as ChatJoin_room_SharedRoom;
     const action = React.useCallback(async () => {
         await client.mutateRoomJoin({ roomId: props.room.id });
         await client.refetchRoomTiny({ id: props.room.id });
-    }, [props.room.id]);
+        
+        if (onJoin) {
+            onJoin(props.room);
+        }
+    }, [props.room]);
 
     return <ChatJoinComponent room={room} theme={props.theme} action={action} router={props.router} />;
 });
