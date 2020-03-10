@@ -24,7 +24,6 @@ import { pickerEmoji } from 'openland-y-utils/data/emoji-data';
 import { emojiComponentSprite } from 'openland-y-utils/emojiComponentSprite';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
 import { onEmojiSent, getRecent } from './Recent';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
@@ -435,27 +434,23 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                 >
                     Emoji
                 </div>
-                <XWithRole role="super-admin">
-                    {props.onStickerSent && (
-                        <div
-                            className={cx(TextTitle3, sectionTitle, stickers && sectionActiveTitle)}
-                            onClick={() => {
-                                setStickers(true);
-                                props.onStickerTabActive();
-                            }}
-                        >
-                            Stickers
-                        </div>
-                    )}
-                </XWithRole>
+                {props.onStickerSent && (
+                    <div
+                        className={cx(TextTitle3, sectionTitle, stickers && sectionActiveTitle)}
+                        onClick={() => {
+                            setStickers(true);
+                            props.onStickerTabActive();
+                        }}
+                    >
+                        Stickers
+                    </div>
+                )}
             </XView>
             {!stickers && (
                 <>
-                    <XWithRole role="super-admin">
-                        <XView paddingLeft={16} paddingRight={16} paddingBottom={8}>
-                            <USearchInput value={searchInput} onChange={onSearch} />
-                        </XView>
-                    </XWithRole>
+                    <XView paddingLeft={16} paddingRight={16} paddingBottom={8}>
+                        <USearchInput value={searchInput} onChange={onSearch} />
+                    </XView>
                     {searchInput.length > 0 && foundEmoji.length > 0 && (
                         <div className={emojiContainer}>
                             <XView marginTop={8}>
@@ -468,7 +463,10 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                                     onScroll={onScroll}
                                 >
                                     {({ index: rowIndex, style }) => {
-                                        const currentRowEmoji = foundEmoji.slice(rowIndex * 8, rowIndex * 8 + 8);
+                                        const currentRowEmoji = foundEmoji.slice(
+                                            rowIndex * 8,
+                                            rowIndex * 8 + 8,
+                                        );
 
                                         return (
                                             <div style={style}>
@@ -492,10 +490,15 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                     )}
 
                     {searchInput.length > 0 && foundEmoji.length === 0 && (
-                        <XView marginLeft={16} marginRight={16} height={384} alignItems="center" justifyContent="center" color='var(--foregroundTertiary)'>
-                            <span className={TextBody}>
-                                Nothing found
-                            </span>
+                        <XView
+                            marginLeft={16}
+                            marginRight={16}
+                            height={384}
+                            alignItems="center"
+                            justifyContent="center"
+                            color="var(--foregroundTertiary)"
+                        >
+                            <span className={TextBody}>Nothing found</span>
                         </XView>
                     )}
 
@@ -524,7 +527,9 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                                             );
                                         }
                                         let ii = index - 3;
-                                        let section = sections.find(v => v.start <= ii && ii < v.end)!;
+                                        let section = sections.find(
+                                            v => v.start <= ii && ii < v.end,
+                                        )!;
                                         return (
                                             <div style={style}>
                                                 <RowComponent
@@ -678,7 +683,10 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
     };
 
     return (
-        <div className={cx(emojiPickerIcon, visible && emojiPickerIconOpen)} onMouseEnter={showWithEvent}>
+        <div
+            className={cx(emojiPickerIcon, visible && emojiPickerIconOpen)}
+            onMouseEnter={showWithEvent}
+        >
             <UIcon icon={<IcSticker />} size={20} />
         </div>
     );
