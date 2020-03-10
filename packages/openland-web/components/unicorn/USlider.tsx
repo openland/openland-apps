@@ -25,6 +25,8 @@ const blanket = css`
 
 const icons = css`
     display: flex;
+    position: relative;
+    left: 8px;
 `;
 
 const titleContainer = css`
@@ -32,7 +34,7 @@ const titleContainer = css`
     user-select: none;
 
     &:hover span {
-        transform: translateX(8px);
+        transform: translateX(5px);
     }
 
     &:hover span:after {
@@ -46,7 +48,7 @@ const iconContainer = css`
     align-items: center;
     justify-content: center;
 
-    transition: transform 300ms;
+    transition: transform 150ms;
 
     position: relative;
 
@@ -61,13 +63,13 @@ const iconContainer = css`
         border-radius: 100%;
         background-color: var(--backgroundTertiaryTrans);
 
-        transition: transform 300ms;
+        transition: transform 150ms;
         transform: scale(0);
     }
 `;
 
 const header = css`
-    margin-bottom: 10px;
+    margin-bottom: 16px;
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
@@ -183,8 +185,8 @@ const USliderRaw = React.memo((props: USliderProps) => {
         <div className={root}>
             <div className={header}>
                 <div className={icons}>
-                    <UIconButton icon={<ArrowLeft />} size="xsmall" onClick={onPrevClick} />
-                    <UIconButton size="xsmall" icon={<ArrowRight />} onClick={onNextClick} />
+                    <UIconButton icon={<ArrowLeft />} size="xsmall" onClick={onPrevClick} color="var(--foregroundTertiary)" />
+                    <UIconButton size="xsmall" icon={<ArrowRight />} onClick={onNextClick} color="var(--foregroundTertiary)" />
                 </div>
                 {props.title && (
                     <div className={titleContainer}>

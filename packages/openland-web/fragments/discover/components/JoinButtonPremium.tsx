@@ -16,6 +16,8 @@ const button = css`
     width: 48px;
     height: 32px;
 
+    margin-right: 8px;
+    
     cursor: pointer;
 
     display: flex;
@@ -36,6 +38,11 @@ const button = css`
 
     &:disabled path {
         fill: var(--foregroundTertiary);
+    }
+
+    svg {
+        width: 20px;
+        height: 20px;
     }
 `;
 

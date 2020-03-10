@@ -469,8 +469,6 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
 
         const pin = this.props.pinMessage;
         const showInput = !this.state.hideInput && this.conversation.canSendMessage;
-        const groupId =
-            this.props.conversationType !== 'PRIVATE' ? this.props.conversationId : undefined;
         const membersCount =
             this.props.room.__typename === 'SharedRoom' ? this.props.room.membersCount : undefined;
         return (
@@ -509,13 +507,14 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                         initialText={this.initialContent}
                                         onPressUp={this.onInputPressUp}
                                         rickRef={this.rickRef}
-                                        groupId={groupId}
+                                        groupId={this.props.conversationId}
                                         membersCount={membersCount}
                                         onTextSentAsync={this.onTextSend}
                                         onStickerSent={this.onStickerSent}
                                         onTextChange={this.handleChange}
                                         onContentChange={this.onContentChange}
                                         isChannel={this.props.room.__typename === 'SharedRoom' ? this.props.room.isChannel : undefined}
+                                        isPrivate={this.props.conversationType === 'PRIVATE'}
                                         autoFocus={true}
                                         onEmojiPickerShow={this.startStickerPicking}
                                         onEmojiPickerHide={this.finishStickerPicking}

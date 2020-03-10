@@ -141,6 +141,7 @@ const AutoCompleteComponent = React.memo(
             props: {
                 groupId?: string;
                 isChannel?: boolean;
+                isPrivate?: boolean;
                 membersCount?: number | null;
                 activeWord: string | null;
                 onSelected: (mention: MentionToSend) => void;
@@ -245,7 +246,7 @@ const AutoCompleteComponent = React.memo(
                             setUsers(currentUsers => {
                                 let res: ListItem[] = currentUsers.filter(c => c.__typename !== 'cursor');
 
-                                if (currentUsers.filter(c => c.__typename === 'divider').length > 0) {
+                                if (currentUsers.filter(c => c.__typename === 'divider').length > 0 || props.isPrivate) {
                                     res.push(...globalItems);
                                 } else {
                                     res.push(...localItems);
@@ -351,7 +352,9 @@ const AutoCompleteComponent = React.memo(
 
                     const { localItems, globalItems, cursor } = mentions.mentions;
 
-                    let res: ListItem[] = [...localItems, ...(globalItems.length > 0 ? [{ __typename: 'divider', selectable: false } as Divider, ...globalItems] : [])];
+                    let res: ListItem[] = props.isPrivate
+                        ? [...globalItems]
+                        : [...localItems, ...(globalItems.length > 0 ? [{ __typename: 'divider', selectable: false } as Divider, ...globalItems] : [])];
 
                     if (!!cursor) {
                         res.push({
@@ -360,7 +363,7 @@ const AutoCompleteComponent = React.memo(
                         });
                     }
 
-                    if (res.length && word && word.startsWith('@')) {
+                    if (res.length && word && word.startsWith('@') && !props.isPrivate) {
                         if ('@all'.startsWith(word.toLowerCase())) {
                             res.unshift({ __typename: 'AllMention' });
                         }
@@ -455,6 +458,7 @@ const AutoCompleteComponent = React.memo(
 interface SendMessageComponentProps {
     groupId?: string;
     isChannel?: boolean;
+    isPrivate?: boolean;
     membersCount?: number | null;
     onTextSent?: (text: URickTextValue) => boolean;
     onTextSentAsync?: (text: URickTextValue) => Promise<boolean>;
@@ -624,6 +628,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     membersCount={props.membersCount}
                     activeWord={activeWord}
                     isChannel={props.isChannel}
+                    isPrivate={props.isPrivate}
                     ref={suggestRef}
                 />
             </Deferred>

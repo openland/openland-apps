@@ -6,6 +6,7 @@ import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { getRandomSeed } from './utils/getRandomSeed';
 import { JoinButton } from './components/JoinButton';
+import { XView } from 'react-mental';
 
 export const DiscoverNewAndGrowingFragment = React.memo(() => {
     const client = useClient();
@@ -38,7 +39,9 @@ export const DiscoverNewAndGrowingFragment = React.memo(() => {
     return (
         <>
             <UHeader title="New and growing" maxWidth={555} />
+            <XView height={16} />
             <UFlatList
+                maxWidth={560 + 16 * 2}
                 track="discover_new_and_growing"
                 title="New and growing"
                 loading={loading}

@@ -6,9 +6,25 @@ import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView
 import { XView } from 'react-mental';
 
 const imageContainer = css`
+    position: relative;
     border-radius: 8px;
     overflow: hidden;
     -webkit-mask-image: -webkit-radial-gradient(white, black);
+
+    &:after {
+        display: block;
+        content: '';
+        background: transparent;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+        box-shadow: inset 0 0 0 1px var(--borderLight);
+        border-radius: 8px;
+        pointer-events: none;
+    }
 
     & img {
         display: block;

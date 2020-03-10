@@ -15,6 +15,8 @@ const button = css`
     width: 48px;
     height: 32px;
 
+    margin-right: 8px;
+
     cursor: pointer;
 
     display: flex;
@@ -36,6 +38,11 @@ const button = css`
     &:disabled path {
         fill: var(--foregroundTertiary);
     }
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
 `;
 
 export const JoinButton = React.memo((props: JoinButtonProps) => {
@@ -48,8 +55,8 @@ export const JoinButton = React.memo((props: JoinButtonProps) => {
         setState('loading');
         client.mutateRoomJoin({ roomId: props.group.id }).then(async (data) => {
             setState('done');
-            await client.refetchRoomChat({id: data.join.id});
-            await client.refetchRoom({id: data.join.id});
+            await client.refetchRoomChat({ id: data.join.id });
+            await client.refetchRoom({ id: data.join.id });
         });
     };
 

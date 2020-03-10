@@ -23,6 +23,7 @@ interface UFlatListProps<T> {
     children?: any;
     title?: string;
     grid?: boolean;
+    maxWidth?: number;
 }
 
 export const UFlatList: <T>(props: UFlatListProps<T>) => any = React.memo((props) => {
@@ -36,7 +37,7 @@ export const UFlatList: <T>(props: UFlatListProps<T>) => any = React.memo((props
     };
 
     return (
-        <Page onScroll={onScroll} padded={padded} track={track}>
+        <Page onScroll={onScroll} padded={padded} track={track} maxWidth={props.maxWidth}>
             <UHeader documentTitle={props.title} />
             {children}
 
