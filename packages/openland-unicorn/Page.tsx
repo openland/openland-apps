@@ -12,6 +12,7 @@ interface PageProps {
     padded?: boolean;
     children?: any;
     flexGrow?: number;
+    maxWidth?: number;
 }
 
 export const Page = React.memo((props: PageProps) => {
@@ -22,7 +23,9 @@ export const Page = React.memo((props: PageProps) => {
         }
     }, [isTabVisible]);
     const { style = 'normal', scroll = 'enable', padded, onScroll, children } = props;
-    const width = style === 'normal' ? 600 : 856;
+    const width = props.maxWidth
+        ? props.maxWidth
+        : style === 'normal' ? 600 : 856;
     const marginHorizontal = padded ? 16 : 0;
 
     if (scroll !== 'enable') {

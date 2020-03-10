@@ -41,6 +41,7 @@ export const DiscoverNewAndGrowingFragment = React.memo(() => {
             <UHeader title="New and growing" maxWidth={555} />
             <XView height={16} />
             <UFlatList
+                maxWidth={560 + 16 * 2}
                 track="discover_new_and_growing"
                 title="New and growing"
                 loading={loading}

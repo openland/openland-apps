@@ -10,7 +10,7 @@ interface ListingProps {
 
 export const Listing = React.memo((props: ListingProps) => {
     return (
-        <XView marginTop={16}>
+        <XView marginTop={16} maxWidth={560 + 16 * 2}>
             {props.items.map(item => (
                 <UGroupView
                     key={'group-' + item.id}

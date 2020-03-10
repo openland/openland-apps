@@ -39,6 +39,7 @@ export const DiscoverTopPremiumFragment = React.memo(() => {
             <UHeader title="Top premium" maxWidth={555} />
             <XView height={16} />
             <UFlatList
+                maxWidth={560 + 16 * 2}
                 track="discover_top_premium"
                 title="Top premium"
                 loading={loading}

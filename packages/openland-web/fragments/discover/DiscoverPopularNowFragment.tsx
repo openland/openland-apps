@@ -41,6 +41,7 @@ export const DiscoverPopularNowFragment = React.memo(() => {
             <UHeader title="Popular now" maxWidth={555} />
             <XView height={16} />
             <UFlatList
+                maxWidth={560 + 16 * 2}
                 track="discover_popular_now"
                 title="Popular now"
                 loading={loading}
