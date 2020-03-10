@@ -34,7 +34,7 @@ const titleContainer = css`
     user-select: none;
 
     &:hover span {
-        transform: translateX(8px);
+        transform: translateX(5px);
     }
 
     &:hover span:after {
@@ -48,7 +48,7 @@ const iconContainer = css`
     align-items: center;
     justify-content: center;
 
-    transition: transform 300ms;
+    transition: transform 150ms;
 
     position: relative;
 
@@ -63,7 +63,7 @@ const iconContainer = css`
         border-radius: 100%;
         background-color: var(--backgroundTertiaryTrans);
 
-        transition: transform 300ms;
+        transition: transform 150ms;
         transform: scale(0);
     }
 `;
