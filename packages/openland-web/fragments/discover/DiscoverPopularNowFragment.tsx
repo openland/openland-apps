@@ -6,6 +6,7 @@ import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { JoinButton } from './components/JoinButton';
 import { normalizePopularItems, DiscoverRoom } from 'openland-y-utils/discover/normalizePopularItems';
+import { XView } from 'react-mental';
 
 export const DiscoverPopularNowFragment = React.memo(() => {
     const client = useClient();
@@ -38,6 +39,7 @@ export const DiscoverPopularNowFragment = React.memo(() => {
     return (
         <>
             <UHeader title="Popular now" maxWidth={555} />
+            <XView height={16} />
             <UFlatList
                 track="discover_popular_now"
                 title="Popular now"

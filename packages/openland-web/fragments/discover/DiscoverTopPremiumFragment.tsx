@@ -5,6 +5,7 @@ import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { JoinButtonPremium } from './components/JoinButtonPremium';
+import { XView } from 'react-mental';
 
 export const DiscoverTopPremiumFragment = React.memo(() => {
     const client = useClient();
@@ -36,6 +37,7 @@ export const DiscoverTopPremiumFragment = React.memo(() => {
     return (
         <>
             <UHeader title="Top premium" maxWidth={555} />
+            <XView height={16} />
             <UFlatList
                 track="discover_top_premium"
                 title="Top premium"
