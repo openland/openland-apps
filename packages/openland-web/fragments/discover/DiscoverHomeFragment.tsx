@@ -33,7 +33,7 @@ const sliderCollectionItem = css`
 `;
 
 const listingsContainer = css`
-    margin: 24px -16px;
+    margin: 0 -16px;
 
     & > * {
         width: 50%;
@@ -76,7 +76,7 @@ export const DiscoverHomeFragment = React.memo(() => {
         <Page track="discover_home" padded={true}>
             <UHeader title="Home" maxWidth={577} />
 
-            <XView width={560} marginTop={16}>
+            <XView width={560} marginTop={25}>
                 {isTabVisible && (
                     <USlider title="Editors choice" childrenCount={editorsChoiceItems.length}>
                         {editorsChoiceItems.map(item => (
@@ -87,10 +87,12 @@ export const DiscoverHomeFragment = React.memo(() => {
                     </USlider>
                 )}
 
-                <div className={listingsContainer}>
-                    <ListingCompact title="New and growing" items={newAndGrowingItems} path="/discover/new" />
-                    <ListingCompact title="Popular now" items={popularNowItems} path="/discover/popular" />
-                </div>
+                <XView marginTop={10} marginBottom={24}>
+                    <div className={listingsContainer}>
+                        <ListingCompact title="New and growing" items={newAndGrowingItems} path="/discover/new" />
+                        <ListingCompact title="Popular now" items={popularNowItems} path="/discover/popular" />
+                    </div>
+                </XView>
 
                 {isTabVisible && (
                     <USlider title="Collections" path="/discover/collections" childrenCount={collectionsItems.length}>
@@ -102,7 +104,7 @@ export const DiscoverHomeFragment = React.memo(() => {
                     </USlider>
                 )}
 
-                <XView marginBottom={40}>
+                <XView marginBottom={40} marginTop={20}>
                     <div className={listingsContainer}>
                         <ListingCompact title="Top premium" items={topPremiumItems} path="/discover/premium" />
                         <ListingCompact title="Top free" items={topFreeItems} path="/discover/free" />
