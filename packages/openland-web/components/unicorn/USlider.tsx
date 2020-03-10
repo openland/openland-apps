@@ -25,6 +25,8 @@ const blanket = css`
 
 const icons = css`
     display: flex;
+    position: relative;
+    left: 8px;
 `;
 
 const titleContainer = css`
@@ -67,7 +69,7 @@ const iconContainer = css`
 `;
 
 const header = css`
-    margin-bottom: 10px;
+    margin-bottom: 16px;
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
@@ -183,8 +185,8 @@ const USliderRaw = React.memo((props: USliderProps) => {
         <div className={root}>
             <div className={header}>
                 <div className={icons}>
-                    <UIconButton icon={<ArrowLeft />} size="xsmall" onClick={onPrevClick} />
-                    <UIconButton size="xsmall" icon={<ArrowRight />} onClick={onNextClick} />
+                    <UIconButton icon={<ArrowLeft />} size="xsmall" onClick={onPrevClick} color="var(--foregroundTertiary)" />
+                    <UIconButton size="xsmall" icon={<ArrowRight />} onClick={onNextClick} color="var(--foregroundTertiary)" />
                 </div>
                 {props.title && (
                     <div className={titleContainer}>
