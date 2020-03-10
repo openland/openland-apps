@@ -8,6 +8,7 @@ import {
 } from 'openland-web/components/unicorn/URickInput';
 import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
 import AllIcon from 'openland-icons/s/ic-channel-16.svg';
+import AtIcon from 'openland-icons/s/ic-at-24.svg';
 import SendIcon from 'openland-icons/s/ic-send-24.svg';
 import { UNavigableListRef } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { useClient } from 'openland-api/useClient';
@@ -18,7 +19,7 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UNavigableReactWindow } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
-import { TextLabel1, TextDensed, TextStyles } from 'openland-web/utils/TextStyles';
+import { TextLabel1, TextDensed, TextBody, TextStyles } from 'openland-web/utils/TextStyles';
 import { fileListToArray } from './DropZone';
 import { XLoader } from 'openland-x/XLoader';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
@@ -60,6 +61,17 @@ const userName = css`
     overflow: hidden;
 `;
 
+const placeholderContainer = css`
+    height: 56px;
+`;
+
+const placeholderText = css`
+    color: var(--foregroundSecondary);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+`;
+
 const allMention = css`
     font-weight: bold;
 `;
@@ -73,11 +85,12 @@ const userOrg = css`
     flex-shrink: 0;
 `;
 
-const allMentionIcon = css`
+const listItemIcon = css`
     flex-grow: 0;
-    width: 28px;
-    height: 28px;
-    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+    margin-right: 18px;
+    margin-left: 2px;
 `;
 
 export const MentionItemComponent = (props: MentionItemComponentProps) => (
@@ -133,7 +146,10 @@ interface Cursor {
 }
 
 interface Divider { __typename: 'divider'; }
-type ListItem = (MentionToSend | Cursor | Divider) & { selectable?: boolean };
+
+interface Placeholder { __typename: 'placeholder'; }
+
+type ListItem = (MentionToSend | Cursor | Divider | Placeholder) & { selectable?: boolean };
 
 const AutoCompleteComponent = React.memo(
     React.forwardRef(
@@ -279,10 +295,19 @@ const AutoCompleteComponent = React.memo(
                                 <XView height={1} backgroundColor="var(--border)" flexGrow={1} marginHorizontal={16} />
                             </XView>
                         );
+                    }  else if (v.__typename === 'placeholder') {
+                        return (
+                            <div className={cx(mentionContainer, placeholderContainer)}>
+                                <UIcon className={listItemIcon} color="var(--foregroundSecondary)" icon={<AtIcon />} />
+                                <span className={cx(TextBody, placeholderText)}>
+                                    Type to search anyone or anything
+                                </span>
+                            </div>
+                        );
                     } else if (v.__typename === 'AllMention') {
                         return (
                             <div className={mentionContainer}>
-                                <UIcon className={allMentionIcon} icon={<AllIcon />} />
+                                <UIcon className={listItemIcon} color="var(--foregroundSecondary)" icon={<AllIcon />} />
                                 <span className={userName}>
                                     <span className={allMention}>
                                         All
@@ -339,8 +364,10 @@ const AutoCompleteComponent = React.memo(
             );
 
             let matched: ListItem[] | undefined = [];
+            let currentWord = lastActiveWord.current;
+            const usersRef = React.useRef<ListItem[]>([]);
             if (props.groupId) {
-                let query = word && word.startsWith('@') ? word.substring(1) : undefined;
+                let query = currentWord && currentWord.startsWith('@') ? currentWord.substring(1) : undefined;
                 const mentions = client.useChatMentionSearch({
                     cid: props.groupId,
                     query,
@@ -363,21 +390,25 @@ const AutoCompleteComponent = React.memo(
                         });
                     }
 
-                    if (res.length && word && word.startsWith('@') && !props.isPrivate) {
-                        if ('@all'.startsWith(word.toLowerCase())) {
+                    if (res.length && currentWord && currentWord.startsWith('@') && !props.isPrivate) {
+                        if ('@all'.startsWith(currentWord.toLowerCase())) {
                             res.unshift({ __typename: 'AllMention' });
                         }
                     }
-
+                    
+                    if (res.length === 0 && currentWord === '@') {
+                        res = [{__typename: 'placeholder', selectable: false}];
+                    }
                     setUsers(res);
+                    usersRef.current = res;
                 }
-                if (users && word && word.startsWith('@')) {
-                    matched = [...users];
+                if (users && currentWord && currentWord.startsWith('@')) {
+                    matched = [...usersRef.current];
                 }
             }
             let filtered: { name: string; value: string; shortcode: string; selectable?: boolean; }[] = [];
-            if (word) {
-                filtered.push(...emojiSuggest(word));
+            if (currentWord) {
+                filtered.push(...emojiSuggest(currentWord));
             }
 
             isActive.current = !!filtered.length || !!matched.length;
@@ -411,6 +442,7 @@ const AutoCompleteComponent = React.memo(
             );
 
             if (matched.length) {
+                const isPlaceholder = matched[0].__typename === 'placeholder';
                 fallbackRender.current = (
                     <div
                         ref={containerRef}
@@ -419,7 +451,7 @@ const AutoCompleteComponent = React.memo(
                     >
                         <UNavigableReactWindow
                             width={'100%'}
-                            height={Math.min(matched.length * 40, 250)}
+                            height={isPlaceholder ? 56 : Math.min(matched.length * 40, 250)}
                             data={matched}
                             itemSize={40}
                             renderItem={itemRender}
