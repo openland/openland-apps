@@ -7,12 +7,28 @@ import { plural } from 'openland-y-utils/plural';
 import { css } from 'linaria';
 
 const collectionPhoto = css`
+    position: relative;
     width: 176px;
     height: 100px;
     border-radius: 8px;
     overflow: hidden;
     margin-bottom: 16px;
     -webkit-mask-image: -webkit-radial-gradient(white, black);
+
+    &:after {
+        display: block;
+        content: '';
+        background: transparent;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+        box-shadow: inset 0 0 0 1px var(--borderLight);
+        border-radius: 8px;
+        pointer-events: none;
+    }
 
     & img {
         display: block;
