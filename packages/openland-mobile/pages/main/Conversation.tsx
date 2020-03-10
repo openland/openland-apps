@@ -304,13 +304,14 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         let suggestions = null;
         let activeWord = findActiveWord(this.state.text, this.state.selection);
-        if (this.props.chat.__typename === 'SharedRoom' && this.state.inputFocused && activeWord && activeWord.startsWith('@')) {
+        if (this.state.inputFocused && activeWord && activeWord.startsWith('@')) {
             suggestions = (
                 <MentionsSuggestions
                     activeWord={activeWord}
                     onMentionPress={this.handleMentionPress}
                     groupId={this.props.chat.id}
-                    isChannel={this.props.chat.isChannel}
+                    isChannel={this.props.chat.__typename === 'SharedRoom' && this.props.chat.isChannel}
+                    isPrivate={this.props.chat.__typename === 'PrivateRoom'}
                 />
             );
         }

@@ -7,12 +7,13 @@ import { MentionView } from './MentionView';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { MentionsPlaceholder, MentionsPlaceholderType, MentionsPlaceholderView } from './MentionsPlaceholder';
 
 interface MentionsSuggestionsProps {
     activeWord: string;
     groupId: string;
     isChannel: boolean;
-
+    isPrivate?: boolean;
     onMentionPress: (word: string | undefined, mention: MentionToSend) => void;
 }
 
@@ -112,15 +113,22 @@ export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) 
         return null;
     }
 
-    const mergedItems: (MentionToSend | MentionsDividerType)[] = [...localItems, ...(globalItems.length > 0 ? [MentionsDivider, ...globalItems] : [])];
-
+    const mergedItems: (MentionToSend | MentionsDividerType | MentionsPlaceholderType)[] = props.isPrivate 
+        ? globalItems.length === 0 && activeWord === '@' ? [MentionsPlaceholder] : globalItems
+        : [...localItems, ...(globalItems.length > 0 ? [MentionsDivider, ...globalItems] : [])];
     return (
         <View>
             <FlatList
                 ref={listRef}
                 data={mergedItems}
-                renderItem={({ item }) => item.__typename === 'GlobalDivider' ? <MentionsDividerView /> : <MentionView mention={item} onPress={() => handleOnPress(item)} isChannel={isChannel} />}
-                keyExtractor={(item, index) => item.__typename === 'GlobalDivider' ? `${index}-divider` : item.__typename === 'AllMention' ? `${index}-all` : `${index}-${item.id}`}
+                renderItem={({ item }) => item.__typename === 'GlobalDivider' 
+                    ? <MentionsDividerView />
+                    : item.__typename === 'MentionsPlaceholder' ? <MentionsPlaceholderView />
+                    : <MentionView mention={item} onPress={() => handleOnPress(item)} isChannel={isChannel} />}
+                keyExtractor={(item, index) => item.__typename === 'GlobalDivider'  ? `${index}-divider` 
+                    : item.__typename === 'AllMention' ? `${index}-all` 
+                    : item.__typename === 'MentionsPlaceholder' ? `${index}-placeholder`
+                    : `${index}-${item.id}`}
                 alwaysBounceVertical={false}
                 keyboardShouldPersistTaps="always"
                 maxHeight={188}
@@ -142,7 +150,7 @@ export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) 
                 }
                 onEndReached={() => handleLoadMore()}
             />
-            {loadingQuery && mergedItems.length > 0 && (
+            {loadingQuery && mergedItems.length > 0 && mergedItems[0].__typename !== 'MentionsPlaceholder' && (
                 <View position="absolute" top={16} right={16} alignItems="center" justifyContent="center" width={24} height={24} borderRadius={RadiusStyles.Medium} backgroundColor={theme.backgroundPrimary}>
                     <ZLoader size="small" />
                 </View>
