@@ -264,7 +264,7 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
     const [loading, setLoading] = React.useState(false);
     const loadCollections = async() => {
         setLoading(true);
-        let res = (await getClient().queryDiscoverCollection({ id: props.collectionId }, {fetchPolicy: 'cache-and-network'})).discoverCollection;
+        let res = (await getClient().queryDiscoverCollection({ id: props.collectionId }, {fetchPolicy: 'network-only'})).discoverCollection;
         let items = res && res.chats || [];
         setRooms(items);
         setLoading(false);
