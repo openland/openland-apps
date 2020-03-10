@@ -121,7 +121,7 @@ const BuyPaidChatPassButton = (props: {
         });
     }, []);
 
-    let buttonText = 'Join for ' + formatMoney(props.premiumSettings.price, true);
+    let buttonText = 'Join for ' + formatMoney(props.premiumSettings.price);
     if (props.premiumSettings.interval) {
         if (props.premiumSettings.interval === WalletSubscriptionInterval.WEEK) {
             buttonText += ' / wk';

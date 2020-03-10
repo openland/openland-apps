@@ -24,7 +24,7 @@ const getAvatar = (subject: { __typename: 'User', id: string, name: string, phot
     id: subject.id, title: subject.name, photo: subject.photo,
 } : { id: subject.id, title: subject.title, photo: subject.photo });
 
-const formatTransactionMoney = (amount: number) => formatMoney(amount, false, true);
+const formatTransactionMoney = (amount: number) => formatMoney(amount, true);
 
 export const convertTransaction = (transaction: WalletTransactionFragment) => {
     const { id, operation } = transaction;

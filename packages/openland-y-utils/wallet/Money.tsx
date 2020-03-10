@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export const formatMoney = (amount: number, adaptiveCents?: boolean, showPositiveSign?: boolean) => {
+export const formatMoney = (amount: number, showPositiveSign?: boolean) => {
     let a = amount < 0 ? -amount : amount; // Division of incorrect numbers is incorrect in CPU
     let d = Math.floor(a / 100);
     let c = a % 100;
@@ -12,7 +12,7 @@ export const formatMoney = (amount: number, adaptiveCents?: boolean, showPositiv
 
     let sign = amount < 0 ? '− ' : (showPositiveSign ? '+ ' : '');
 
-    return sign + '$' + (d.toString() + ((adaptiveCents && cs === '00') ? '' : ('.' + cs)));
+    return sign + '$' + (d.toString() + ((cs === '00') ? '' : ('.' + cs)));
 };
 
-export const Money = React.memo((props: { amount: number, adaptiveCents?: boolean, showSign?: boolean }) => <>{formatMoney(props.amount, props.adaptiveCents, props.showSign)}</>);
+export const Money = React.memo((props: { amount: number, showSign?: boolean }) => <>{formatMoney(props.amount, props.showSign)}</>);
