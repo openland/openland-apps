@@ -54,7 +54,7 @@ export const DiscoverHomeFragment = React.memo(() => {
 
     let rooms = client.useExploreRooms({seed: seed}, { fetchPolicy: 'cache-and-network' });
     
-    const collections = client.useDiscoverCollections({ first: 20 });
+    const collections = client.useDiscoverCollectionsShort({ first: 20 });
     const collectionsItems = collections.discoverCollections!.items;
 
     const editorsChoice = client.useDiscoverEditorsChoice();

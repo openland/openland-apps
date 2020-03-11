@@ -1,5 +1,5 @@
 import React from 'react';
-import { DiscoverCollections_discoverCollections_items } from 'openland-api/spacex.types';
+import { DiscoverCollectionsShort_discoverCollections_items } from 'openland-api/spacex.types';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { TextLabel1, TextSubhead } from 'openland-web/utils/TextStyles';
 import { XView } from 'react-mental';
@@ -40,7 +40,7 @@ const collectionPhoto = css`
     }
 `;
 
-export const DiscoverCollection = React.memo((props: DiscoverCollections_discoverCollections_items) => {
+export const DiscoverCollection = React.memo((props: DiscoverCollectionsShort_discoverCollections_items) => {
     return (
         <XView path={`/discover/collections/${props.id}`} cursor="pointer">
             <div className={collectionPhoto}>
