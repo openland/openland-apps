@@ -18,6 +18,10 @@ import { css, cx } from 'linaria';
 import { createSimpleSpan } from 'openland-y-utils/spans/processSpans';
 import { XViewRouterContext } from 'react-mental';
 
+const wrapper = css`
+    flex-grow: 1;
+`;
+
 const textWrapper = css`
     margin-top: 4px;
 
@@ -199,5 +203,5 @@ export const MessageContent = (props: MessageContentProps) => {
         );
     }
 
-    return <div className="x">{content}</div>;
+    return <div className={cx("x", wrapper)}>{content}</div>;
 };

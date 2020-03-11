@@ -20,6 +20,7 @@ const root = css`
     border-radius: 8px;
     overflow: hidden;
     max-width: 480px;
+    width: 100%;
     cursor: pointer;
     transition: background-color 300ms ease;
 
@@ -44,8 +45,6 @@ const wrapper = css`
 
     @media (max-width: 1050px) {
         width: 100%;
-        max-width: initial;
-        min-width: initial;
     }
 
     @media (max-width: 750px) {
