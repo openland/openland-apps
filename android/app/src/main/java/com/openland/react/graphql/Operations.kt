@@ -30,6 +30,7 @@ object Operations {
         if (name == "DiscoverNextPage") return DiscoverNextPage
         if (name == "DiscoverPopularNow") return DiscoverPopularNow
         if (name == "DiscoverState") return DiscoverState
+        if (name == "DiscoverSuggestedRooms") return DiscoverSuggestedRooms
         if (name == "DiscoverTopFree") return DiscoverTopFree
         if (name == "DiscoverTopPremium") return DiscoverTopPremium
         if (name == "ExplorePeople") return ExplorePeople

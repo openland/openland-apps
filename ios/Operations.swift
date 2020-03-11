@@ -2662,6 +2662,12 @@ private let DiscoverStateSelector = obj(
                         )))))
                 )))
         )
+private let DiscoverSuggestedRoomsSelector = obj(
+            field("betaSuggestedRooms", "suggestedRooms", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("SharedRoom", DiscoverSharedRoomSelector)
+                )))))
+        )
 private let DiscoverTopFreeSelector = obj(
             field("discoverTopFree", "discoverTopFree", arguments(fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5233,6 +5239,12 @@ class Operations {
         "query DiscoverState{dialogs(first:1){__typename items{__typename id}}}",
         DiscoverStateSelector
     )
+    let DiscoverSuggestedRooms = OperationDefinition(
+        "DiscoverSuggestedRooms",
+        .query, 
+        "query DiscoverSuggestedRooms{suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
+        DiscoverSuggestedRoomsSelector
+    )
     let DiscoverTopFree = OperationDefinition(
         "DiscoverTopFree",
         .query, 
@@ -6608,6 +6620,7 @@ class Operations {
         if name == "DiscoverNextPage" { return DiscoverNextPage }
         if name == "DiscoverPopularNow" { return DiscoverPopularNow }
         if name == "DiscoverState" { return DiscoverState }
+        if name == "DiscoverSuggestedRooms" { return DiscoverSuggestedRooms }
         if name == "DiscoverTopFree" { return DiscoverTopFree }
         if name == "DiscoverTopPremium" { return DiscoverTopPremium }
         if name == "ExplorePeople" { return ExplorePeople }

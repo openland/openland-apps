@@ -2669,6 +2669,12 @@ const DiscoverStateSelector = obj(
                         )))))
                 )))
         );
+const DiscoverSuggestedRoomsSelector = obj(
+            field('betaSuggestedRooms', 'suggestedRooms', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('SharedRoom', DiscoverSharedRoomSelector)
+                )))))
+        );
 const DiscoverTopFreeSelector = obj(
             field('discoverTopFree', 'discoverTopFree', args(fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5235,6 +5241,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'DiscoverState',
         body: 'query DiscoverState{dialogs(first:1){__typename items{__typename id}}}',
         selector: DiscoverStateSelector
+    },
+    DiscoverSuggestedRooms: {
+        kind: 'query',
+        name: 'DiscoverSuggestedRooms',
+        body: 'query DiscoverSuggestedRooms{suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
+        selector: DiscoverSuggestedRoomsSelector
     },
     DiscoverTopFree: {
         kind: 'query',

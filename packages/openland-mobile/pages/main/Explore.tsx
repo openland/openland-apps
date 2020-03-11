@@ -97,7 +97,7 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                         actionRight={suggestedRooms.length > 5 ? {
                             title: 'See all', onPress: () => props.router.push('DiscoverListing', {
                                 initialRooms: suggestedRooms,
-                                title: 'Recommendations',
+                                type: 'recommendations',
                             })
                         } : undefined}
                     >

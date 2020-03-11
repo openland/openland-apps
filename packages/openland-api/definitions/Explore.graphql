@@ -226,6 +226,12 @@ query DiscoverTopFree($first: Int!, $after: String) {
     }
 }
 
+query DiscoverSuggestedRooms {
+    suggestedRooms: betaSuggestedRooms {
+        ...DiscoverSharedRoom
+    }
+}
+
 query DiscoverCollectionsShort($first: Int!, $after: String) {
     discoverCollections(first: $first, after: $after) {
         items {

@@ -323,6 +323,30 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
     );
 };
 
+const DiscoverRecommendationsListing = (props: {initialRooms: DiscoverRoom[]}) => {
+    const [rooms, setRooms] = React.useState(props.initialRooms);
+    const [loading, setLoading] = React.useState(false);
+    const loadRooms = async() => {
+        setLoading(true);
+        let items = (await getClient().queryDiscoverSuggestedRooms({fetchPolicy: 'network-only'})).suggestedRooms.filter(x => x.__typename === 'SharedRoom');
+        setRooms(items as DiscoverRoom[]);
+        setLoading(false);
+    };
+    React.useEffect(() => {
+        if (props.initialRooms.length === 0) {
+            loadRooms();
+        }
+    }, []);
+
+    return (
+        <DiscoverListingContent
+            title="Recommendations"
+            rooms={rooms}
+            loading={loading}
+        />
+    );
+};
+
 const DiscoverListingComponent = React.memo<PageProps>((props) => {
     let initialRooms = (props.router.params.initialRooms || []) as DiscoverRoom[];
     let type = props.router.params.type as ListingType;
@@ -340,6 +364,8 @@ const DiscoverListingComponent = React.memo<PageProps>((props) => {
         return <DiscoverTopPremiumListing initialAfter={initialAfter} initialRooms={initialRooms} />;
     } else if (type === 'collections') {
         return <DiscoverCollectionsListing collectionId={collectionId} />;
+    } else if (type === 'recommendations') {
+        return <DiscoverRecommendationsListing initialRooms={initialRooms} />;
     } else {
         return <DiscoverListingContent title={title} rooms={initialRooms} />;
     }

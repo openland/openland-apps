@@ -76,6 +76,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryDiscoverState(opts?: OperationParameters): Promise<Types.DiscoverState> {
         return this.query('DiscoverState', undefined, opts);
     }
+    queryDiscoverSuggestedRooms(opts?: OperationParameters): Promise<Types.DiscoverSuggestedRooms> {
+        return this.query('DiscoverSuggestedRooms', undefined, opts);
+    }
     queryDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, opts?: OperationParameters): Promise<Types.DiscoverTopFree> {
         return this.query('DiscoverTopFree', variables, opts);
     }
@@ -388,6 +391,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchDiscoverState(opts?: OperationParameters): Promise<Types.DiscoverState> {
         return this.refetch('DiscoverState', undefined);
     }
+    refetchDiscoverSuggestedRooms(opts?: OperationParameters): Promise<Types.DiscoverSuggestedRooms> {
+        return this.refetch('DiscoverSuggestedRooms', undefined);
+    }
     refetchDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, opts?: OperationParameters): Promise<Types.DiscoverTopFree> {
         return this.refetch('DiscoverTopFree', variables);
     }
@@ -699,6 +705,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateDiscoverState(updater: (data: Types.DiscoverState) => Types.DiscoverState | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverState', undefined);
+    }
+    updateDiscoverSuggestedRooms(updater: (data: Types.DiscoverSuggestedRooms) => Types.DiscoverSuggestedRooms | null): Promise<boolean> {
+        return this.updateQuery(updater, 'DiscoverSuggestedRooms', undefined);
     }
     updateDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, updater: (data: Types.DiscoverTopFree) => Types.DiscoverTopFree | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverTopFree', variables);
@@ -1057,6 +1066,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useDiscoverState(opts?: SpaceQueryWatchParameters): Types.DiscoverState;
     useDiscoverState(opts?: SpaceQueryWatchParameters): Types.DiscoverState | null {
         return this.useQuery('DiscoverState', undefined, opts);
+    }
+    useDiscoverSuggestedRooms(opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverSuggestedRooms | null;
+    useDiscoverSuggestedRooms(opts?: SpaceQueryWatchParameters): Types.DiscoverSuggestedRooms;
+    useDiscoverSuggestedRooms(opts?: SpaceQueryWatchParameters): Types.DiscoverSuggestedRooms | null {
+        return this.useQuery('DiscoverSuggestedRooms', undefined, opts);
     }
     useDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverTopFree | null;
     useDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverTopFree;
