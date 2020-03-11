@@ -225,6 +225,16 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         }
 
         //
+        // COLLECTIONS
+        //
+        let collectionsPattern = new UrlPattern(patternBase + 'discover/collections/:id');
+        let matchCollections = collectionsPattern.match(link);
+        if (matchCollections && matchCollections.id) {
+            navigate('DiscoverListing', { type: 'collections', collectionId: matchCollections.id });
+            return;
+        }
+
+        //
         // CONVERSATION
         //
         let conversationPattern = new UrlPattern(patternBase + 'mail/:id');
