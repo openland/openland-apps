@@ -52,18 +52,8 @@ export const DiscoverHomeFragment = React.memo(() => {
     const client = useClient();
     const seed = getRandomSeed();
 
-    const newAndGrowing = client.useDiscoverNewAndGrowing({ first: 3, seed });
-    const newAndGrowingItems = newAndGrowing.discoverNewAndGrowing.items || [];
-
-    const popularNow = client.useDiscoverPopularNow({ first: 3 });
-    const popularNowItems = normalizePopularItems(popularNow.discoverPopularNow.items || []);
-
-    const topPremium = client.useDiscoverTopPremium({ first: 3 });
-    const topPremiumItems = topPremium.discoverTopPremium.items;
-
-    const topFree = client.useDiscoverTopFree({ first: 3 });
-    const topFreeItems = topFree.discoverTopFree.items;
-
+    let rooms = client.useExploreRooms({seed: seed}, { fetchPolicy: 'cache-and-network' });
+    
     const collections = client.useDiscoverCollections({ first: 20 });
     const collectionsItems = collections.discoverCollections!.items;
 
@@ -89,8 +79,8 @@ export const DiscoverHomeFragment = React.memo(() => {
 
                 <XView marginTop={10} marginBottom={24}>
                     <div className={listingsContainer}>
-                        <ListingCompact title="New and growing" items={newAndGrowingItems} path="/discover/new" />
-                        <ListingCompact title="Popular now" items={popularNowItems} path="/discover/popular" />
+                        <ListingCompact title="New and growing" items={rooms.discoverNewAndGrowing.items || []} path="/discover/new" />
+                        <ListingCompact title="Popular now" items={normalizePopularItems(rooms.discoverPopularNow.items)} path="/discover/popular" />
                     </div>
                 </XView>
 
@@ -106,8 +96,8 @@ export const DiscoverHomeFragment = React.memo(() => {
 
                 <XView marginBottom={40} marginTop={20}>
                     <div className={listingsContainer}>
-                        <ListingCompact title="Top premium" items={topPremiumItems} path="/discover/premium" />
-                        <ListingCompact title="Top free" items={topFreeItems} path="/discover/free" />
+                        <ListingCompact title="Top premium" items={rooms.discoverTopPremium.items || []} path="/discover/premium" />
+                        <ListingCompact title="Top free" items={rooms.discoverTopFree.items || []} path="/discover/free" />
                     </div>
                 </XView>
 
