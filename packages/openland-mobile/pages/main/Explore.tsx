@@ -5,7 +5,6 @@ import { Text, View, Image } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
@@ -22,10 +21,11 @@ import { normalizePopularItems } from 'openland-y-utils/discover/normalizePopula
 import { DiscoverListItem } from './components/discover/DiscoverListItem';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
+import { getRandomSeed } from './DiscoverListing';
 
 export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) => {
     const theme = useTheme();
-    let [discoverSeed] = React.useState(Math.floor(Math.random() * 100));
+    let discoverSeed = getRandomSeed();
     let rooms = getClient().useExploreRooms({seed: discoverSeed}, { fetchPolicy: 'cache-and-network' });
     let suggestedRooms = (rooms.suggestedRooms || []).filter(v => v.__typename === 'SharedRoom') as DiscoverSharedRoom[];
     let newRooms = rooms.discoverNewAndGrowing.items || [];
@@ -42,26 +42,11 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                     title: 'See all', onPress: () => props.router.push('DiscoverListing', {
                         initialRooms: newRooms,
                         type: 'new',
-                        seed: discoverSeed,
                         after: rooms.discoverNewAndGrowing.cursor,
-                        title: 'New and growing',
                     })
                 } : undefined}
             >
-                {newRooms.map(v => (
-                    <ZListItem
-                        key={v.id}
-                        text={v.title}
-                        leftAvatar={{
-                            photo: v.photo,
-                            id: v.id,
-                            title: v.title,
-                        }}
-                        subTitle={v.membersCount + (v.membersCount === 1 ? ' member' : ' members')}
-                        path="Conversation"
-                        pathParams={{ flexibleId: v.id }}
-                    />
-                ))}
+                {newRooms.map(v => <DiscoverListItem key={v.id} item={v} />)}
             </ZListGroup>
 
             <ZListGroup
@@ -71,7 +56,6 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                         initialRooms: popularRooms,
                         type: 'popular',
                         after: rooms.discoverPopularNow.cursor,
-                        title: 'Popular now',
                     })
                 } : undefined}
             >
@@ -87,7 +71,6 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                         initialRooms: topPremiumRooms,
                         type: 'top-premium',
                         after: rooms.discoverTopPremium.cursor,
-                        title: 'Top premium',
                     })
                 } : undefined}
             >
@@ -101,7 +84,6 @@ export const RoomsList = (props: { router: SRouter, isDiscoverDone: boolean }) =
                         initialRooms: topFreeRooms,
                         type: 'top-free',
                         after: rooms.discoverTopFree.cursor,
-                        title: 'Top free',
                     })
                 } : undefined}
             >

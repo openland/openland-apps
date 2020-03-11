@@ -11,10 +11,10 @@ import { TouchableHighlight, View, Image, StyleSheet, ViewStyle } from 'react-na
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { joinPaidGroup } from './components/ChatJoin';
-import { SRouter } from 'react-native-s/SRouter';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { normalizePopularItems, DiscoverRoom } from 'openland-y-utils/discover/normalizePopularItems';
 import { DiscoverListItem } from './components/discover/DiscoverListItem';
+import { AppStorage } from 'openland-mobile/utils/AppStorage';
 
 const styles = StyleSheet.create({
     btn: {
@@ -30,10 +30,10 @@ type FollowButtonState = 'initial' | 'loading' | 'done';
 interface FollowButtonProps {
     isFollowing: boolean;
     room: DiscoverRoom;
-    router: SRouter;
 }
 
 const FollowButton = React.memo((props: FollowButtonProps) => {
+    let router = React.useContext(SRouterContext)!;
     const theme = useTheme();
     let [state, setState] = React.useState<FollowButtonState>(props.isFollowing ? 'done' : 'initial');
     let handleBtnPress = React.useCallback(async () => {
@@ -42,7 +42,7 @@ const FollowButton = React.memo((props: FollowButtonProps) => {
                 id: props.room.id,
                 title: props.room.title,
                 premiumSettings: props.room.premiumSettings,
-                router: props.router,
+                router,
                 client: getClient(),
                 onSuccess: () => { setState('done'); },
             });
@@ -79,20 +79,20 @@ const FollowButton = React.memo((props: FollowButtonProps) => {
 type ListingType = 'new' | 'popular' | 'top-free' | 'top-premium' | 'collections' | 'recommendations';
 
 interface DiscoverListingContentProps {
+    title: string;
     rooms: DiscoverRoom[];
     onEndReached?: () => void;
     loading?: boolean;
 }
 
 const DiscoverListingContent = React.memo((props: DiscoverListingContentProps) => {
-    let router = React.useContext(SRouterContext)!;
     const [joinedChats, setJoinedChats] = React.useState(new Set<string>());
     const onJoin = React.useCallback((room: Types.Room_room_SharedRoom) => {
         setJoinedChats(prev => prev.add(room.id));
     }, []);
     return (
         <>
-            <SHeader title={router.params.title} />
+            <SHeader title={props.title} />
             <SDeferred>
                 <SFlatList
                     data={props.rooms}
@@ -105,7 +105,6 @@ const DiscoverListingContent = React.memo((props: DiscoverListingContentProps) =
                                     item.membership === Types.SharedRoomMembershipStatus.MEMBER || joinedChats.has(item.id)
                                 }
                                 room={item}
-                                router={router}
                             />} 
                         />
                     )}
@@ -123,35 +122,53 @@ interface DiscoverListingPageProps {
     initialAfter: string;
 }
 
-interface DiscoverNewListingPageProps extends DiscoverListingPageProps {
-    seed: number;
-}
+export const getRandomSeed = (): number => {
+    const token = AppStorage.token!;
+    const tokenSymbols = token.split('');
+    let sum = 0;
 
-const DiscoverNewListing = (props: DiscoverNewListingPageProps) => {
+    tokenSymbols.forEach(symbol => {
+        const charCode = symbol.charCodeAt(0);
+        sum += charCode;
+    });
+
+    return sum;
+};
+
+const DiscoverNewListing = (props: DiscoverListingPageProps) => {
     const [rooms, setRooms] = React.useState(props.initialRooms);
     const [loading, setLoading] = React.useState(false);
     const [after, setAfter] = React.useState<string | null>(props.initialAfter);
     const first = 10;
+    const seed = getRandomSeed();
 
     const loadMore = async () => {
-        if (!loading && !!after) {
-            setLoading(true);
-            
-            let {items, cursor} = (await getClient().queryDiscoverNewAndGrowing({ after, seed: props.seed, first }, { fetchPolicy: 'network-only' })).discoverNewAndGrowing;
-            
-            if (items.length < first) {
-                setAfter('');
-            } else {
-                setAfter(cursor);
-            }
-
-            setRooms([...rooms, ...items]);
-            setLoading(false);
+        if (loading || (!after && rooms.length > 0)) {
+            return;
         }
+        setLoading(true);
+        
+        let {items, cursor} = (await getClient().queryDiscoverNewAndGrowing({ after, first, seed }, { fetchPolicy: 'network-only' })).discoverNewAndGrowing;
+        
+        if (items.length < first) {
+            setAfter('');
+        } else {
+            setAfter(cursor);
+        }
+
+        setRooms([...rooms, ...items]);
+        setLoading(false);
     };
+
+    React.useEffect(() => {
+        if (rooms.length === 0) {
+            loadMore();
+        } 
+    }, []);
 
     return (
         <DiscoverListingContent 
+            title="New and growing"
             rooms={rooms}
             loading={loading}
             onEndReached={loadMore}
@@ -166,24 +183,32 @@ const DiscoverPopularListing = (props: DiscoverListingPageProps) => {
     const first = 10;
 
     const loadMore = async () => {
-        if (!loading && !!after) {
-            setLoading(true);
-            
-            let {items, cursor} = (await getClient().queryDiscoverPopularNow({ after, first }, { fetchPolicy: 'network-only' })).discoverPopularNow;
-            
-            if (items.length < first) {
-                setAfter('');
-            } else {
-                setAfter(cursor);
-            }
-
-            setRooms([...rooms, ...normalizePopularItems(items)]);
-            setLoading(false);
+        if (loading || (!after && rooms.length > 0)) {
+            return;
         }
+        setLoading(true);
+        
+        let {items, cursor} = (await getClient().queryDiscoverPopularNow({ after, first }, { fetchPolicy: 'network-only' })).discoverPopularNow;
+        
+        if (items.length < first) {
+            setAfter('');
+        } else {
+            setAfter(cursor);
+        }
+
+        setRooms([...rooms, ...normalizePopularItems(items)]);
+        setLoading(false);
     };
+
+    React.useEffect(() => {
+        if (rooms.length === 0) {
+            loadMore();
+        } 
+    }, []);
 
     return (
         <DiscoverListingContent 
+            title="Popular now"
             rooms={rooms}
             loading={loading}
             onEndReached={loadMore}
@@ -198,24 +223,32 @@ const DiscoverTopFreeListing = (props: DiscoverListingPageProps) => {
     const first = 10;
 
     const loadMore = async () => {
-        if (!loading && !!after) {
-            setLoading(true);
-            
-            let {items, cursor} = (await getClient().queryDiscoverTopFree({ after, first }, { fetchPolicy: 'network-only' })).discoverTopFree;
-            
-            if (items.length < first) {
-                setAfter('');
-            } else {
-                setAfter(cursor);
-            }
-
-            setRooms([...rooms, ...items]);
-            setLoading(false);
+        if (loading || (!after && rooms.length > 0)) {
+            return;
         }
+        setLoading(true);
+        
+        let {items, cursor} = (await getClient().queryDiscoverTopFree({ after, first }, { fetchPolicy: 'network-only' })).discoverTopFree;
+        
+        if (items.length < first) {
+            setAfter('');
+        } else {
+            setAfter(cursor);
+        }
+
+        setRooms([...rooms, ...items]);
+        setLoading(false);
     };
+
+    React.useEffect(() => {
+        if (rooms.length === 0) {
+            loadMore();
+        } 
+    }, []);
 
     return (
         <DiscoverListingContent 
+            title="Top free"
             rooms={rooms}
             loading={loading}
             onEndReached={loadMore}
@@ -230,24 +263,32 @@ const DiscoverTopPremiumListing = (props: DiscoverListingPageProps) => {
     const first = 10;
 
     const loadMore = async () => {
-        if (!loading && !!after) {
-            setLoading(true);
-            
-            let {items, cursor} = (await getClient().queryDiscoverTopPremium({ after, first }, { fetchPolicy: 'network-only' })).discoverTopPremium;
-            
-            if (items.length < first) {
-                setAfter('');
-            } else {
-                setAfter(cursor);
-            }
-
-            setRooms([...rooms, ...items]);
-            setLoading(false);
+        if (loading || (!after && rooms.length > 0)) {
+            return;
         }
+        setLoading(true);
+        
+        let {items, cursor} = (await getClient().queryDiscoverTopPremium({ after, first }, { fetchPolicy: 'network-only' })).discoverTopPremium;
+        
+        if (items.length < first) {
+            setAfter('');
+        } else {
+            setAfter(cursor);
+        }
+
+        setRooms([...rooms, ...items]);
+        setLoading(false);
     };
+
+    React.useEffect(() => {
+        if (rooms.length === 0) {
+            loadMore();
+        } 
+    }, []);
 
     return (
         <DiscoverListingContent 
+            title="Top premium"
             rooms={rooms}
             loading={loading}
             onEndReached={loadMore}
@@ -274,7 +315,8 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
     }, []);
 
     return (
-        <DiscoverListingContent 
+        <DiscoverListingContent
+            title="Collections"
             rooms={rooms}
             loading={loading}
         />
@@ -282,14 +324,14 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
 };
 
 const DiscoverListingComponent = React.memo<PageProps>((props) => {
-    let initialRooms = props.router.params.initialRooms as DiscoverRoom[];
+    let initialRooms = (props.router.params.initialRooms || []) as DiscoverRoom[];
     let type = props.router.params.type as ListingType;
     let initialAfter = props.router.params.after as string;
-    let seed = props.router.params.seed as number;
+    let title = props.router.params.title as string;
     let collectionId = props.router.params.collectionId as string;
 
     if (type === 'new') {
-        return <DiscoverNewListing seed={seed} initialAfter={initialAfter} initialRooms={initialRooms} />;
+        return <DiscoverNewListing initialAfter={initialAfter} initialRooms={initialRooms} />;
     } else if (type === 'popular') {
         return <DiscoverPopularListing initialAfter={initialAfter} initialRooms={initialRooms} />;
     } else if (type === 'top-free') {
@@ -299,7 +341,7 @@ const DiscoverListingComponent = React.memo<PageProps>((props) => {
     } else if (type === 'collections') {
         return <DiscoverCollectionsListing collectionId={collectionId} />;
     } else {
-        return <DiscoverListingContent rooms={initialRooms} />;
+        return <DiscoverListingContent title={title} rooms={initialRooms} />;
     }
 });
 

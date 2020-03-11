@@ -32,11 +32,18 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         ////
         //// PAGES
         ////
-        const pages: { [key: string]: { route: string, callback?: Function } | undefined } = {
+        const pages: { [key: string]: { route: string, callback?: Function, params?: Object } | undefined } = {
             'mail': { route: 'Home', callback: () => getMessenger().history.navigationManager.pushAndResetRoot("Home") },
             'settings/email': { route: 'SettingsEmail' },
             'wallet': { route: 'Wallet' },
-            'collections': { route: 'Collections' },
+            'discover': { route: 'Explore' },
+            'discover/home': { route: 'Explore' },
+            'discover/new': { route: 'DiscoverListing', params: {type: 'new'} },
+            'discover/popular': { route: 'DiscoverListing', params: {type: 'popular'} },
+            'discover/collections': { route: 'Collections' },
+            'discover/premium': { route: 'DiscoverListing', params: {type: 'top-premium'} },
+            'discover/free': { route: 'DiscoverListing', params: {type: 'top-free'} },
+            'discover/recommendations': { route: 'Explore' },
         };
 
         let pagePattern = /(http(s)?\:\/\/)?(.*)?.openland.com\/(.*)/g;
@@ -47,7 +54,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
                 if (page.callback) {
                     page.callback();
                 } else {
-                    navigate(page.route);
+                    navigate(page.route, page.params);
                 }
                 return;
             }

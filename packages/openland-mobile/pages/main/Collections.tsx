@@ -64,31 +64,38 @@ const Collection = (props: CollectionProps) => {
 
 const CollectionsComponent = () => {
     let router = React.useContext(SRouterContext)!;
-    let initialCollections = router.params.initialCollections as DiscoverChatsCollectionShort[];
+    let initialCollections = (router.params.initialCollections || []) as DiscoverChatsCollectionShort[];
     let initialAfter = router.params.initialAfter as string | null;
     let [loading, setLoading] = React.useState(false);
     let [collections, setCollections] = React.useState(initialCollections);
     let [after, setAfter] = React.useState(initialAfter);
     let client = useClient();
     let handleLoadMore = async () => {
-        if (!loading && !!after) {
-            setLoading(true);
-            let res = (await client.queryDiscoverCollections({ after, first: 10 }, { fetchPolicy: 'network-only' })).discoverCollections;
-            if (!res) {
-                return;
-            }
-            let {items, cursor} = res;
-
-            if (items.length < 10) {
-                setAfter('');
-            } else {
-                setAfter(cursor);
-            }
-
-            setCollections(prevItems => ([...prevItems, ...items]));
-            setLoading(false);
+        if (loading || (!after && collections.length > 0)) {
+            return;
         }
+        setLoading(true);
+        let res = (await client.queryDiscoverCollections({ after, first: 10 }, { fetchPolicy: 'network-only' })).discoverCollections;
+        if (!res) {
+            return;
+        }
+        let {items, cursor} = res;
+
+        if (items.length < 10) {
+            setAfter('');
+        } else {
+            setAfter(cursor);
+        }
+
+        setCollections(prevItems => ([...prevItems, ...items]));
+        setLoading(false);
     };
+
+    React.useEffect(() => {
+        if (collections.length === 0) {
+            handleLoadMore();
+        } 
+    }, []);
 
     return (
         <>
