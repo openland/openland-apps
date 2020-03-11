@@ -78,7 +78,7 @@ export const DiscoverHomeFragment = React.memo(() => {
 
             <XView maxWidth={560} marginTop={25}>
                 {isTabVisible && (
-                    <USlider title="Editors choice" childrenCount={editorsChoiceItems.length}>
+                    <USlider title="Featured" childrenCount={editorsChoiceItems.length}>
                         {editorsChoiceItems.map(item => (
                             <div className={editorsChoiceItem}>
                                 <EditorsChoiceItem {...item} />
