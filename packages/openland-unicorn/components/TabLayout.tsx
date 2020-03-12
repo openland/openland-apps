@@ -13,7 +13,6 @@ import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 import { XDialogProviderComponent } from 'openland-x/XDialogProvider';
 import { VisibleTabContext } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { StackLayoutPlaceholder } from 'openland-unicorn/components/StackLayoutPlaceholder';
-import { DiscoverHomeFragment } from 'openland-web/fragments/discover/DiscoverHomeFragment';
 
 const containerMobile = css`
     display: flex;
