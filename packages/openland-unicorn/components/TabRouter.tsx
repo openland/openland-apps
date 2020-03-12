@@ -12,6 +12,7 @@ export interface TabDefinition {
     readonly path: string;
     readonly component: any;
     readonly caption: string;
+    readonly defaultPage: boolean;
 }
 
 export class TabRouter {
@@ -33,7 +34,7 @@ export class TabRouter {
 
         this.tabs = tabs;
         this.stacks = this.tabs.map((v, i) => {
-            let r = new StackRouter(v.path, routing);
+            let r = new StackRouter(v.path, routing, v.defaultPage);
             r.addListener((action) => {
                 if (action.type === 'pop') {
                     this.onBackPressed(i);
@@ -137,6 +138,7 @@ export class TabRouter {
                     this.historyChanged(state);
                 }
             });
+            this.stacks.map(i => i.restoreRootPath());
         }
     }
 

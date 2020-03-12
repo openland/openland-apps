@@ -21,11 +21,21 @@ export class StackRouter {
     readonly rootPath: string;
     readonly pages: StackItems[] = [];
     readonly routing: URouting;
+    readonly rootPage: boolean;
     private readonly _listeners: ((action: StackRouterAction) => void)[] = [];
 
-    constructor(rootPath: string, routing: URouting) {
+    constructor(rootPath: string, routing: URouting, defaultPage: boolean) {
         this.rootPath = rootPath;
         this.routing = routing;
+        this.rootPage = defaultPage;
+    }
+
+    restoreRootPath = () => {
+        if (this.rootPage && !this.pages.length) {
+            setTimeout(() => {
+                this.reset(this.rootPath);
+            }, 20);
+        }
     }
 
     historyChanged = (paths: string[]) => {

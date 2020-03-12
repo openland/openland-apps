@@ -27,7 +27,7 @@ import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabConte
 import { trackEvent } from 'openland-x-analytics';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UCounter } from 'openland-unicorn/UCounter';
-import { useIsMobile } from '../../hooks/useIsMobile';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 
 const UserProfileCard = withUserInfo(({ user, profile }) => {
     const isMobile = useIsMobile();

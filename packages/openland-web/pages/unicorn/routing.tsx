@@ -57,11 +57,13 @@ const TemporaryStubMail = React.memo(() => {
 //         let timer: any;
 //         if (router) {
 //             router.router.switchTab(0);
-//             timer = setTimeout(() => {
-//                 if (router) {
-//                     router.router.navigate('/discover');
-//                 }
-//             }, 20);
+//             if (!router.router.stacks[0].pages.length) {
+//                 timer = setTimeout(() => {
+//                     if (router) {
+//                         router.router.navigate('/discover/');
+//                     }
+//                 }, 20);
+//             }
 //         }
 //
 //         return () => clearTimeout(timer);

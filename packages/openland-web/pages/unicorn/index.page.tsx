@@ -26,6 +26,7 @@ const Unicorn = React.memo(() => {
                         path: '/discover',
                         component: <DiscoverFragment />,
                         caption: 'Discover',
+                        defaultPage: true
                     },
                     {
                         icon: <ChatIcon />,
@@ -33,6 +34,7 @@ const Unicorn = React.memo(() => {
                         path: '/mail',
                         component: <DialogsFragment />,
                         caption: 'Chats',
+                        defaultPage: false,
                     },
                     {
                         icon: <ProfileIcon />,
@@ -40,6 +42,7 @@ const Unicorn = React.memo(() => {
                         path: '/account',
                         component: <AccountFragment />,
                         caption: 'Account',
+                        defaultPage: true
                     },
                 ],
                 1,
