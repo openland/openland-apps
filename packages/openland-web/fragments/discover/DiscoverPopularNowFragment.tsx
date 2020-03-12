@@ -38,20 +38,22 @@ export const DiscoverPopularNowFragment = React.memo(() => {
 
     return (
         <>
-            <UHeader title="Popular now" maxWidth={555} />
+            <UHeader title="Popular now" maxWidth={577} />
             <XView height={16} />
             <UFlatList
-                maxWidth={560 + 16 * 2}
+                padded={true}
                 track="discover_popular_now"
                 title="Popular now"
                 loading={loading}
                 loadMore={handleLoadMore}
                 items={displayItems}
                 renderItem={item => (
-                    <UGroupView
-                        group={item as DiscoverRoom}
-                        rightElement={<JoinButton group={item as DiscoverSharedRoom} />}
-                    />
+                    <XView marginHorizontal={-16} maxWidth={560 + 16 * 2}>
+                        <UGroupView
+                            group={item as DiscoverRoom}
+                            rightElement={<JoinButton group={item as DiscoverSharedRoom} />}
+                        />
+                    </XView>
                 )}
             />
         </>

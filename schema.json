@@ -24624,6 +24624,22 @@
             "deprecationReason": null
           },
           {
+            "name": "debugReindexRoomMessagesCounter",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "settingsUpdate",
             "description": "",
             "args": [
@@ -44655,6 +44671,12 @@
           },
           {
             "name": "LIGHT",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PAY",
             "description": "",
             "isDeprecated": false,
             "deprecationReason": null
