@@ -1410,6 +1410,7 @@ input ModernMessageButtonInput {
 enum ModernMessageButtonStyle {
   DEFAULT
   LIGHT
+  PAY
 }
 
 type ModernMessageReaction {
@@ -1535,6 +1536,7 @@ type Mutation {
   debugAddStickerPackToAll(packId: ID!): Boolean!
   debugReplaceCommunityForChat(chatId: ID!, newCommunityId: ID!): Boolean!
   debugRecountSeqForMessages: Boolean!
+  debugReindexRoomMessagesCounter: Boolean!
   settingsUpdate(settings: UpdateSettingsInput): Settings!
 
   """Deprecated"""

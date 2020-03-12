@@ -4,6 +4,7 @@ import { XViewRouterContext } from 'react-mental';
 import {
     FullMessage_GeneralMessage_attachments_MessageRichAttachment,
     FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard,
+    ModernMessageButtonStyle,
 } from 'openland-api/spacex.types';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
 import { UButton, UButtonProps } from 'openland-web/components/unicorn/UButton';
@@ -184,8 +185,8 @@ const UnicornBotButton = (props: { keyboard: FullMessage_GeneralMessage_attachme
     );
 };
 
-const MessageButton = (props: UButtonProps & { url: string | null, fallback: (e: React.MouseEvent, path: string | null) => void }) => {
-    const { url, fallback, ...buttonProps } = props;
+const MessageButton = (props: UButtonProps & { url: string | null, fallback: (e: React.MouseEvent, path: string | null) => void, btnStyle: ModernMessageButtonStyle }) => {
+    const { url, fallback, btnStyle, ...buttonProps } = props;
     const [loading, setLoading] = React.useState(false);
     const engine = React.useContext(MessengerContext);
     const router = React.useContext(XViewRouterContext);
@@ -205,6 +206,7 @@ const MessageButton = (props: UButtonProps & { url: string | null, fallback: (e:
     }, []);
     return <UButton
         {...buttonProps}
+        style={btnStyle === ModernMessageButtonStyle.PAY ? 'pay' : undefined}
         loading={loading}
         onClick={onclick}
     />;
@@ -293,6 +295,7 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
                                 {i.map(k => (
                                     <div key={k.id} className={keyboardItem}>
                                         <MessageButton
+                                            btnStyle={k.style}
                                             text={k.title}
                                             size={layout === 'mobile' ? 'large' : 'medium'}
                                             url={k.url}
