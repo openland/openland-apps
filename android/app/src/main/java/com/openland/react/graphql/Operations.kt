@@ -75,6 +75,7 @@ object Operations {
         if (name == "OrganizationPublicRooms") return OrganizationPublicRooms
         if (name == "OrganizationWithoutMembers") return OrganizationWithoutMembers
         if (name == "Permissions") return Permissions
+        if (name == "PicSharedMedia") return PicSharedMedia
         if (name == "Profile") return Profile
         if (name == "ProfilePrefill") return ProfilePrefill
         if (name == "ResolveShortName") return ResolveShortName

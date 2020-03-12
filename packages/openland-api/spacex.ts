@@ -211,6 +211,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryPermissions(opts?: OperationParameters): Promise<Types.Permissions> {
         return this.query('Permissions', undefined, opts);
     }
+    queryPicSharedMedia(variables: Types.PicSharedMediaVariables, opts?: OperationParameters): Promise<Types.PicSharedMedia> {
+        return this.query('PicSharedMedia', variables, opts);
+    }
     queryProfile(opts?: OperationParameters): Promise<Types.Profile> {
         return this.query('Profile', undefined, opts);
     }
@@ -526,6 +529,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchPermissions(opts?: OperationParameters): Promise<Types.Permissions> {
         return this.refetch('Permissions', undefined);
     }
+    refetchPicSharedMedia(variables: Types.PicSharedMediaVariables, opts?: OperationParameters): Promise<Types.PicSharedMedia> {
+        return this.refetch('PicSharedMedia', variables);
+    }
     refetchProfile(opts?: OperationParameters): Promise<Types.Profile> {
         return this.refetch('Profile', undefined);
     }
@@ -840,6 +846,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updatePermissions(updater: (data: Types.Permissions) => Types.Permissions | null): Promise<boolean> {
         return this.updateQuery(updater, 'Permissions', undefined);
+    }
+    updatePicSharedMedia(variables: Types.PicSharedMediaVariables, updater: (data: Types.PicSharedMedia) => Types.PicSharedMedia | null): Promise<boolean> {
+        return this.updateQuery(updater, 'PicSharedMedia', variables);
     }
     updateProfile(updater: (data: Types.Profile) => Types.Profile | null): Promise<boolean> {
         return this.updateQuery(updater, 'Profile', undefined);
@@ -1291,6 +1300,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     usePermissions(opts?: SpaceQueryWatchParameters): Types.Permissions;
     usePermissions(opts?: SpaceQueryWatchParameters): Types.Permissions | null {
         return this.useQuery('Permissions', undefined, opts);
+    }
+    usePicSharedMedia(variables: Types.PicSharedMediaVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.PicSharedMedia | null;
+    usePicSharedMedia(variables: Types.PicSharedMediaVariables, opts?: SpaceQueryWatchParameters): Types.PicSharedMedia;
+    usePicSharedMedia(variables: Types.PicSharedMediaVariables, opts?: SpaceQueryWatchParameters): Types.PicSharedMedia | null {
+        return this.useQuery('PicSharedMedia', variables, opts);
     }
     useProfile(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Profile | null;
     useProfile(opts?: SpaceQueryWatchParameters): Types.Profile;

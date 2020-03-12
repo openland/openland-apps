@@ -1,4 +1,4 @@
-query SharedMedia($chatId: ID!, $mediaTypes: [SharedMediaType!]!, $first: Int!, $after: String) {
+query SharedMedia($chatId: ID!, $mediaTypes: [SharedMediaType!]!, $first: Int!, $after: ID) {
     sharedMedia: chatSharedMedia(
         chatId: $chatId
         mediaTypes: $mediaTypes
@@ -70,5 +70,50 @@ query SharedMediaCounters($chatId: ID!) {
         images
         documents
         videos
+    }
+}
+
+query PicSharedMedia($chatId: ID!, $first: Int!, $after: ID, $before: ID, $around: ID) {
+    chatSharedMedia(chatId: $chatId, mediaTypes: [IMAGE], first: $first, after: $after, before: $before, around: $around) {
+        pageInfo {
+            hasNextPage
+            hasPreviousPage
+            currentPage
+            pagesCount
+            itemsCount
+        }
+        edges {
+            cursor
+            index
+            node {
+                message {
+                    ... on GeneralMessage {
+                        id
+                        date
+                        sender {
+                            id
+                            name
+                        }
+                        attachments {
+                            ... on MessageAttachmentFile {
+                                id
+                                fileMetadata {
+                                    name
+                                    isImage
+                                    imageFormat
+                                    mimeType
+                                    imageWidth
+                                    imageHeight
+                                    size
+                                }
+                                filePreview
+                                fileId
+                                fallback
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

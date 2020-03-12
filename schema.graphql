@@ -2413,7 +2413,7 @@ type Query {
   gammaMessages(chatId: ID!, first: Int!, before: ID, after: ID, around: ID): GammaMessagesBatch
   message(messageId: ID!): ModernMessage
   lastReadedMessage(chatId: ID!): ModernMessage
-  chatSharedMedia(chatId: ID!, mediaTypes: [SharedMediaType!]!, first: Int!, after: String): MessageConnection!
+  chatSharedMedia(chatId: ID!, mediaTypes: [SharedMediaType!]!, first: Int!, after: ID, before: ID, around: ID): SharedMediaConnection!
   chatSharedMediaCounters(chatId: ID!): SharedMediaCounters!
   room(id: ID!): Room
   rooms(ids: [ID!]!): [Room!]!
@@ -2617,11 +2617,22 @@ type SharedConversation implements Conversation {
   settings: ConversationSettings!
 }
 
+type SharedMediaConnection {
+  edges: [SharedMediaMessageEdge!]!
+  pageInfo: PageInfo!
+}
+
 type SharedMediaCounters {
   links: Int!
   images: Int!
   documents: Int!
   videos: Int!
+}
+
+type SharedMediaMessageEdge {
+  node: MessageWithChat!
+  cursor: String!
+  index: Int!
 }
 
 enum SharedMediaType {

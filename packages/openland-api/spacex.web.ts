@@ -3299,6 +3299,60 @@ const PermissionsSelector = obj(
                     field('roles', 'roles', args(), notNull(list(notNull(scalar('String')))))
                 )))
         );
+const PicSharedMediaSelector = obj(
+            field('chatSharedMedia', 'chatSharedMedia', args(fieldValue("chatId", refValue('chatId')), fieldValue("mediaTypes", listValue(stringValue("IMAGE"))), fieldValue("first", refValue('first')), fieldValue("after", refValue('after')), fieldValue("before", refValue('before')), fieldValue("around", refValue('around'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('pageInfo', 'pageInfo', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('hasNextPage', 'hasNextPage', args(), notNull(scalar('Boolean'))),
+                            field('hasPreviousPage', 'hasPreviousPage', args(), notNull(scalar('Boolean'))),
+                            field('currentPage', 'currentPage', args(), notNull(scalar('Int'))),
+                            field('pagesCount', 'pagesCount', args(), notNull(scalar('Int'))),
+                            field('itemsCount', 'itemsCount', args(), notNull(scalar('Int')))
+                        ))),
+                    field('edges', 'edges', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('cursor', 'cursor', args(), notNull(scalar('String'))),
+                            field('index', 'index', args(), notNull(scalar('Int'))),
+                            field('node', 'node', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    field('message', 'message', args(), notNull(obj(
+                                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                            inline('GeneralMessage', obj(
+                                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                field('id', 'id', args(), notNull(scalar('ID'))),
+                                                field('date', 'date', args(), notNull(scalar('Date'))),
+                                                field('sender', 'sender', args(), notNull(obj(
+                                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                        field('id', 'id', args(), notNull(scalar('ID'))),
+                                                        field('name', 'name', args(), notNull(scalar('String')))
+                                                    ))),
+                                                field('attachments', 'attachments', args(), notNull(list(notNull(obj(
+                                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                        inline('MessageAttachmentFile', obj(
+                                                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                            field('id', 'id', args(), notNull(scalar('ID'))),
+                                                            field('fileMetadata', 'fileMetadata', args(), notNull(obj(
+                                                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                                                    field('name', 'name', args(), notNull(scalar('String'))),
+                                                                    field('isImage', 'isImage', args(), notNull(scalar('Boolean'))),
+                                                                    field('imageFormat', 'imageFormat', args(), scalar('String')),
+                                                                    field('mimeType', 'mimeType', args(), scalar('String')),
+                                                                    field('imageWidth', 'imageWidth', args(), scalar('Int')),
+                                                                    field('imageHeight', 'imageHeight', args(), scalar('Int')),
+                                                                    field('size', 'size', args(), notNull(scalar('Int')))
+                                                                ))),
+                                                            field('filePreview', 'filePreview', args(), scalar('String')),
+                                                            field('fileId', 'fileId', args(), notNull(scalar('String'))),
+                                                            field('fallback', 'fallback', args(), notNull(scalar('String')))
+                                                        ))
+                                                    )))))
+                                            ))
+                                        )))
+                                )))
+                        )))))
+                )))
+        );
 const ProfileSelector = obj(
             field('me', 'user', args(), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5512,6 +5566,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query Permissions{myPermissions{__typename roles}}',
         selector: PermissionsSelector
     },
+    PicSharedMedia: {
+        kind: 'query',
+        name: 'PicSharedMedia',
+        body: 'query PicSharedMedia($chatId:ID!,$first:Int!,$after:ID,$before:ID,$around:ID){chatSharedMedia(chatId:$chatId,mediaTypes:[IMAGE],first:$first,after:$after,before:$before,around:$around){__typename pageInfo{__typename hasNextPage hasPreviousPage currentPage pagesCount itemsCount}edges{__typename cursor index node{__typename message{__typename ... on GeneralMessage{__typename id date sender{__typename id name}attachments{__typename ... on MessageAttachmentFile{__typename id fileMetadata{__typename name isImage imageFormat mimeType imageWidth imageHeight size}filePreview fileId fallback}}}}}}}}',
+        selector: PicSharedMediaSelector
+    },
     Profile: {
         kind: 'query',
         name: 'Profile',
@@ -5641,7 +5701,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     SharedMedia: {
         kind: 'query',
         name: 'SharedMedia',
-        body: 'query SharedMedia($chatId:ID!,$mediaTypes:[SharedMediaType!]!,$first:Int!,$after:String){sharedMedia:chatSharedMedia(chatId:$chatId,mediaTypes:$mediaTypes,first:$first,after:$after){__typename pageInfo{__typename hasNextPage currentPage}edges{__typename node{__typename message{__typename ... on GeneralMessage{__typename id fallback date sender{__typename id name}attachments{__typename ... on MessageAttachmentFile{__typename id fileMetadata{__typename name isImage imageFormat mimeType imageWidth imageHeight size}filePreview fileId fallback}... on MessageRichAttachment{__typename id title text titleLink imagePreview image{__typename url}imageFallback{__typename photo}keyboard{__typename buttons{__typename id title url}}}}}}}cursor}}}',
+        body: 'query SharedMedia($chatId:ID!,$mediaTypes:[SharedMediaType!]!,$first:Int!,$after:ID){sharedMedia:chatSharedMedia(chatId:$chatId,mediaTypes:$mediaTypes,first:$first,after:$after){__typename pageInfo{__typename hasNextPage currentPage}edges{__typename node{__typename message{__typename ... on GeneralMessage{__typename id fallback date sender{__typename id name}attachments{__typename ... on MessageAttachmentFile{__typename id fileMetadata{__typename name isImage imageFormat mimeType imageWidth imageHeight size}filePreview fileId fallback}... on MessageRichAttachment{__typename id title text titleLink imagePreview image{__typename url}imageFallback{__typename photo}keyboard{__typename buttons{__typename id title url}}}}}}}cursor}}}',
         selector: SharedMediaSelector
     },
     SharedMediaCounters: {
