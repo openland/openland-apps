@@ -27,6 +27,14 @@ const button = css`
 
     border-radius: 64px;
 
+    &:hover {
+        background-color: var(--accentPrimaryHover);
+    }
+
+    &:active {
+        background-color: var(--accentPrimaryActive);
+    }
+
     & path {
         fill: var(--foregroundContrast);
     }
