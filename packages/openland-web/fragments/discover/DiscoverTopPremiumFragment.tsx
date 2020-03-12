@@ -36,20 +36,22 @@ export const DiscoverTopPremiumFragment = React.memo(() => {
 
     return (
         <>
-            <UHeader title="Top premium" maxWidth={555} />
+            <UHeader title="Top premium" maxWidth={577} />
             <XView height={16} />
             <UFlatList
-                maxWidth={560 + 16 * 2}
+                padded={true}
                 track="discover_top_premium"
                 title="Top premium"
                 loading={loading}
                 loadMore={handleLoadMore}
                 items={displayItems}
                 renderItem={item => (
-                    <UGroupView
-                        group={item as DiscoverSharedRoom}
-                        rightElement={<JoinButtonPremium group={item as DiscoverSharedRoom} />}
-                    />
+                    <XView marginHorizontal={-16} maxWidth={560 + 16 * 2}>
+                        <UGroupView
+                            group={item as DiscoverSharedRoom}
+                            rightElement={<JoinButtonPremium group={item as DiscoverSharedRoom} />}
+                        />
+                    </XView>
                 )}
             />
         </>

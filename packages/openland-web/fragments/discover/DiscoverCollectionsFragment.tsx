@@ -40,9 +40,10 @@ export const DiscoverCollectionsFragment = React.memo(() => {
 
     return (
         <>
-            <UHeader title="Collections" maxWidth={555} />
+            <UHeader title="Collections" maxWidth={577} />
             <XView height={16} />
             <UFlatList
+                padded={true}
                 track="discover_collections"
                 title="Collections"
                 grid={true}
@@ -50,7 +51,7 @@ export const DiscoverCollectionsFragment = React.memo(() => {
                 loadMore={handleLoadMore}
                 items={displayItems}
                 renderItem={item => (
-                    <XView marginBottom={32} marginLeft={16}>
+                    <XView marginBottom={32} marginRight={16}>
                         <DiscoverCollection {...item} />
                     </XView>
                 )}

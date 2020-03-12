@@ -32,15 +32,18 @@ export const RecommendationsFragment = React.memo(() => {
             )}
             {tab === 'discover' && (
                 <>
-                    <UHeader title="Chats for you" maxWidth={555} />
+                    <UHeader title="Chats for you" maxWidth={577} />
+                    <XView height={16} />
                     <Page track="discover_recommended">
                         {data.suggestedRooms.map((room) => {
                             if (room.__typename === 'SharedRoom') {
                                 return (
-                                    <UGroupView
-                                        group={room as DiscoverSharedRoom}
-                                        rightElement={<JoinButton group={room as DiscoverSharedRoom} />}
-                                    />
+                                    <XView marginHorizontal={-16} maxWidth={560 + 16 * 2}>
+                                        <UGroupView
+                                            group={room as DiscoverSharedRoom}
+                                            rightElement={<JoinButton group={room as DiscoverSharedRoom} />}
+                                        />
+                                    </XView>
                                 );
                             }
                             return null;
