@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TabRouterContext } from 'openland-unicorn/components/TabLayout';
+import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { RoomFullWithoutMembers_SharedRoom } from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import {
@@ -21,7 +21,7 @@ interface GroupMenu {
 }
 
 const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController }) => {
-    const tabRouter = React.useContext(TabRouterContext)!;
+    const tabRouter = useTabRouter();
     const client = useClient();
     const { ctx, group } = props;
     const { id, title, canEdit, role, organization, isChannel } = group;

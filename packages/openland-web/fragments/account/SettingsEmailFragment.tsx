@@ -37,7 +37,7 @@ export const SettingsEmailFragment = React.memo(() => {
     );
     return (
         <Page track="account_email">
-            <UHeader title="Email preferences" />
+            <UHeader title="Email preferences" maxWidth={550} />
             <FormWrapper>
                 <FormSection
                     title="Messages notifications"

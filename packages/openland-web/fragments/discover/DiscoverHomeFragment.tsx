@@ -100,9 +100,7 @@ export const DiscoverHomeFragment = React.memo(() => {
                         <ListingCompact title="Top free" items={rooms.discoverTopFree.items || []} path="/discover/free" />
                     </div>
                 </XView>
-
             </XView>
-
         </Page>
     );
 });

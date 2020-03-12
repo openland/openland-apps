@@ -32,7 +32,7 @@ export const WalletFragment = React.memo(() => {
             title="Wallet"
             renderItem={transaction => <TransactionView key={transaction.id} item={transaction} />}
         >
-            <UHeader title="Wallet" />
+            <UHeader title="Wallet" maxWidth={550} />
             <UListGroup header="Your balance" action={{ title: 'Top up', onClick: () => showAddFunds() }}>
                 <XView
                     {...TextStyles.Title1}

@@ -27,13 +27,15 @@ import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabConte
 import { trackEvent } from 'openland-x-analytics';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UCounter } from 'openland-unicorn/UCounter';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 const UserProfileCard = withUserInfo(({ user, profile }) => {
+    const isMobile = useIsMobile();
     if (user) {
         return (
             <XView
                 cursor="pointer"
-                path={`/${user.shortname || user.id}`}
+                path={isMobile ? '/account/me' : '/account'}
                 color="var(--foregroundPrimary)"
                 hoverBackgroundColor="var(--backgroundPrimaryHover)"
                 selectedBackgroundColor="var(--accentMuted)"
@@ -125,12 +127,12 @@ export const AccountFragment = React.memo(() => {
                         <UListItem
                             title="Edit profile"
                             icon={<EditProfileIcon />}
-                            path="/settings/profile"
+                            path="/account/profile"
                         />
                         <UListItem
                             title="Invite friends"
                             icon={<InviteFriendsIcon />}
-                            path="/settings/invites"
+                            path="/account/invites"
                         />
 
                         <UListGroup header="Billing">
@@ -169,17 +171,17 @@ export const AccountFragment = React.memo(() => {
                             <UListItem
                                 title="Notifications"
                                 icon={<NotificationsIcon />}
-                                path="/settings/notifications"
+                                path="/account/notifications"
                             />
                             <UListItem
                                 title="Email preferences"
                                 icon={<EmailIcon />}
-                                path="/settings/email"
+                                path="/account/email"
                             />
                             <UListItem
                                 title="Appearance"
                                 icon={<AppearanceIcon />}
-                                path="/settings/appearance"
+                                path="/account/appearance"
                             />
                         </UListGroup>
 
@@ -187,12 +189,12 @@ export const AccountFragment = React.memo(() => {
                             <UListItem
                                 title="Install apps"
                                 icon={<AppsIcon />}
-                                path="/settings/download"
+                                path="/account/download"
                             />
                             <UListItem
                                 title="About us"
                                 icon={<InfoIcon />}
-                                path="/settings/about"
+                                path="/account/about"
                             />
                         </UListGroup>
 

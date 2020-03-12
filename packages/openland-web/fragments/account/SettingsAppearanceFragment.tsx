@@ -32,7 +32,7 @@ export const SettingsAppearanceFragment = React.memo(() => {
 
     return (
         <Page track="account_appearance">
-            <UHeader title="Appearance" />
+            <UHeader title="Appearance" maxWidth={550} />
             <FormWrapper>
                 <FormSection title="Secret group display">
                     <XView marginHorizontal={-16}>

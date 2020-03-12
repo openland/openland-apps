@@ -3,7 +3,7 @@ import { css, cx } from 'linaria';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
-import { TabRouterContext } from 'openland-unicorn/components/TabLayout';
+import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import IcDiscover from 'openland-icons/s/ic-discover-36.svg';
 
 const container = css`
@@ -28,7 +28,7 @@ const subtitleStyle = css`
 `;
 
 export const DiscoverFooter = React.memo(() => {
-    const tabRouter = React.useContext(TabRouterContext);
+    const tabRouter = useTabRouter();
 
     return (
         <div className={container}>
@@ -39,12 +39,10 @@ export const DiscoverFooter = React.memo(() => {
                 marginTop={16}
                 style="secondary"
                 text="Discover chats"
-                onClick={() => {
+                onClick={async () => {
                     if (tabRouter) {
-                        tabRouter.setTab(0);
-                        setTimeout(() => {
-                            tabRouter.router.navigate('/discover/recommendations');
-                        }, 20);
+                        await tabRouter.setTab(0);
+                        await tabRouter.router.navigate('/discover/recommendations');
                     }
                 }}
             />

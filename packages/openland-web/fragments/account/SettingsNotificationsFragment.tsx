@@ -131,7 +131,7 @@ export const SettingsNotificationsFragment = React.memo(() => {
 
     return (
         <Page track="account_notifications">
-            <UHeader title="Notifications" />
+            <UHeader title="Notifications" maxWidth={550} />
             <FormWrapper>
                 <FormSection title="Direct messages">
                     <XView marginHorizontal={-16}>

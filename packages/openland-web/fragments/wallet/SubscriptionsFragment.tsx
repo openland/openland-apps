@@ -69,7 +69,7 @@ export const SubscriptionsFragment = React.memo(() => {
 
     return (
         <Page track="settings_subscriptions">
-            <UHeader title="Subscriptions" />
+            <UHeader title="Subscriptions" maxWidth={550} />
 
             <FormWrapper>
 

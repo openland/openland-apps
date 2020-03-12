@@ -126,12 +126,17 @@ export const TabBarDesktop = React.memo((props: TabBarDesktopProps) => {
             {props.router.tabs.map((v, i) => (
                 <TabBarButton
                     onClick={() => {
+                        props.setSelected(i);
                         if (v.path === '/discover' && !props.router.stacks[0].pages.length) {
                             setTimeout(() => {
-                                props.router.navigate('/discover/home');
+                                props.router.navigate('/discover');
                             }, 20);
                         }
-                        props.setSelected(i);
+                        if (v.path === '/account' && !props.router.stacks[2].pages.length) {
+                            setTimeout(() => {
+                                props.router.navigate('/account');
+                            }, 20);
+                        }
                     }}
                     selected={props.selected === i}
                     icon={v.icon}

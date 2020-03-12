@@ -5,7 +5,7 @@ import ArrowLeft from 'openland-icons/s/ic-arrow-left-16.svg';
 import { UIconButton } from './UIconButton';
 import { XView } from 'react-mental';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
-import { TabRouterContext } from 'openland-unicorn/components/TabLayout';
+import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 
 const root = css`
     display: flex;
@@ -97,7 +97,7 @@ const USliderRaw = React.memo((props: USliderProps) => {
     const blanketRef = React.createRef<HTMLDivElement>();
     const sliderRef = React.createRef<HTMLDivElement>();
 
-    const router = React.useContext(TabRouterContext)!;
+    const router = useTabRouter();
 
     const onClick = () => {
         if (props.path) {

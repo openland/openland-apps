@@ -15,6 +15,7 @@ import { UserMenu } from './components/UserMenu';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import MessageIcon from 'openland-icons/s/ic-message-24.svg';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 const MessageButton = React.memo((props: { isBot: boolean, id: string }) => {
     const layout = useLayout();
@@ -30,10 +31,12 @@ const MessageButton = React.memo((props: { isBot: boolean, id: string }) => {
     );
 });
 
-export const UserProfileFragment = React.memo((props: { id: string }) => {
+export const UserProfileFragment = React.memo((props: { id?: string }) => {
     const isMobile = useLayout() === 'mobile';
+    const userContext = React.useContext(UserInfoContext)!.user!;
+    const uId = props.id ? props.id : userContext.id;
     const client = useClient();
-    const { user, conversation } = client.useUser({ userId: props.id }, { fetchPolicy: 'cache-and-network' });
+    const { user, conversation } = client.useUser({ userId: uId }, { fetchPolicy: 'cache-and-network' });
     const { id, isBot, name, photo, audienceSize, about, shortname, location, phone, email, linkedin, instagram,
         primaryOrganization, isYou, chatsWithBadge, website, twitter, facebook } = user;
 

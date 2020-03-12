@@ -4,7 +4,7 @@ import { XView } from 'react-mental';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import ArrowRight from 'openland-icons/s/ic-arrow-right-16.svg';
-import { TabRouterContext } from 'openland-unicorn/components/TabLayout';
+import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { DiscoverRoom } from 'openland-y-utils/discover/normalizePopularItems';
 
 const contentContainer = css`
@@ -68,7 +68,7 @@ export const ListingCompact = React.memo((props: ListingCompactProps) => {
         return null;
     }
 
-    const router = React.useContext(TabRouterContext)!;
+    const router = useTabRouter();
 
     const onClick = () => {
         if (props.path) {

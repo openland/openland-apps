@@ -182,11 +182,9 @@ export class TabRouter {
         // Ignore navigation if url is not changed
         // otherwise next.js won't push new page to history
         //
-        if (NextRouter.asPath !== path) {
-            this.stacks[this.currentTab].push(path);
-            this.pushHistory(path);
-            return;
-        }
+        this.stacks[this.currentTab].push(path);
+        this.pushHistory(path);
+        return;
     }
 
     reset(path: string) {

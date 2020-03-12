@@ -24,7 +24,7 @@ import { XErrorMessage } from 'openland-x/XErrorMessage';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 import { showModalBox } from 'openland-x/showModalBox';
-import { TabRouterContext, TabRouterContextProps } from 'openland-unicorn/components/TabLayout';
+import { useTabRouter, TabRouterContextProps } from 'openland-unicorn/components/TabLayout';
 
 const MakeFeaturedModal = (props: { ctx: XModalController; roomId: string; userId: string }) => {
     const { ctx, roomId, userId } = props;
@@ -189,7 +189,7 @@ const MenuComponent = React.memo((props: { ctx: UPopperController; items: MenuIt
 
 export const GroupMemberMenu = React.memo((props: GroupMemberMenuProps) => {
     const client = useClient();
-    const tabRouter = React.useContext(TabRouterContext)!;
+    const tabRouter = useTabRouter();
     const menuContent = getMenuContent({ ...props, client, tabRouter });
 
     if (menuContent.length <= 0) {

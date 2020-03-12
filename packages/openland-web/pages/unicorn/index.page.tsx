@@ -37,7 +37,7 @@ const Unicorn = React.memo(() => {
                     {
                         icon: <ProfileIcon />,
                         iconActive: <ProfileActiveIcon />,
-                        path: '/settings',
+                        path: '/account',
                         component: <AccountFragment />,
                         caption: 'Account',
                     },

@@ -27,7 +27,7 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
         builder.item({
             title: 'Edit profile',
             icon: <EditIcon />,
-            path: '/settings/profile',
+            path: '/account/profile',
         });
     }
 

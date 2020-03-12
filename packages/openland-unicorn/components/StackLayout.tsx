@@ -62,32 +62,32 @@ const PageAnimator = React.memo(
 
 type AnimationAction =
     | {
-        type: 'push';
-        key: string;
-        query: any;
-        id?: string;
-        path: string;
-        component: any;
-    }
+          type: 'push';
+          key: string;
+          query: any;
+          id?: string;
+          path: string;
+          component: any;
+      }
     | {
-        type: 'pop';
-        key: string;
-    }
+          type: 'pop';
+          key: string;
+      }
     | {
-        type: 'entered';
-        key: string;
-    }
+          type: 'entered';
+          key: string;
+      }
     | {
-        type: 'exited';
-        key: string;
-    }
+          type: 'exited';
+          key: string;
+      }
     | {
-        type: 'mounted';
-    }
+          type: 'mounted';
+      }
     | {
-        type: 'reset';
-        pages: StackItems[];
-    };
+          type: 'reset';
+          pages: StackItems[];
+      };
 
 type AnimationState = {
     pages: {
@@ -271,7 +271,6 @@ interface StackLayoutProps {
     className?: string;
     visible: boolean;
     placeholder?: React.ReactNode;
-    defaultPage?: React.ReactNode;
 }
 
 export const StackLayout = React.memo((props: StackLayoutProps) => {
@@ -289,11 +288,6 @@ export const StackLayout = React.memo((props: StackLayoutProps) => {
     if (props.placeholder) {
         StartPage = props.placeholder;
     }
-
-    if (props.defaultPage) {
-        StartPage = props.defaultPage;
-    }
-
     return (
         <StackRouterContext.Provider value={props.router}>
             <VisibleTabContext.Provider value={props.visible}>

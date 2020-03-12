@@ -69,7 +69,7 @@ export const SettingsAboutFragment = React.memo(() => {
 
     return (
         <Page track="account_about_us">
-            <UHeader title="About us" />
+            <UHeader title="About us" maxWidth={550} />
             <FormWrapper>
                 <div className={hero}>
                     <XView flexDirection="row">

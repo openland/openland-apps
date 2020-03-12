@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ChatInfo } from '../types';
 import { XView } from 'react-mental';
-import { TabRouterContext } from 'openland-unicorn/components/TabLayout';
+import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { css, cx } from 'linaria';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useClient } from 'openland-api/useClient';
@@ -123,7 +123,7 @@ const CallButton = (props: { chat: ChatInfo; calls: CallsEngine }) => {
 const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     let layout = useLayout();
     const client = useClient();
-    const tabRouter = React.useContext(TabRouterContext)!;
+    const tabRouter = useTabRouter();
     let chat = client.useRoomChat({ id: props.id }, { fetchPolicy: 'cache-first' }).room!;
     let calls = React.useContext(MessengerContext).calls;
 

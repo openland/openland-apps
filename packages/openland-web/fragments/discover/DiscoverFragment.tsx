@@ -9,7 +9,8 @@ import { trackEvent } from 'openland-x-analytics';
 import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
 import { DialogSearchResults } from '../dialogs/components/DialogSearchResults';
 import { GlobalSearch_items } from 'openland-api/spacex.types';
-import { TabRouterContext } from 'openland-unicorn/components/TabLayout';
+import { useTabRouter } from 'openland-unicorn/components/TabLayout';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import IcHome from 'openland-icons/s/ic-home-24.svg';
 import IcNew from 'openland-icons/s/ic-new-24.svg';
 import IcPopular from 'openland-icons/s/ic-popular-24.svg';
@@ -19,6 +20,7 @@ import IcFree from 'openland-icons/s/ic-free-24.svg';
 import IcStar from 'openland-icons/s/ic-star-24.svg';
 
 export const DiscoverFragment = React.memo(() => {
+    const isMobile = useIsMobile();
     const refInput = React.useRef<USearchInputRef>(null);
     const isNP = AppConfig.isNonProduction();
     const isVisible = useVisibleTab();
@@ -31,7 +33,7 @@ export const DiscoverFragment = React.memo(() => {
         [isVisible],
     );
 
-    const router = React.useContext(TabRouterContext)!.router;
+    const router = useTabRouter().router;
     const [query, setQuery] = React.useState<string>('');
     const isSearching = query.trim().length > 0;
 
@@ -61,7 +63,11 @@ export const DiscoverFragment = React.memo(() => {
                 <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
                     {!isSearching && (
                         <XView flexDirection="column">
-                            <UListItem title="Home" path="/discover/home" icon={<IcHome />} />
+                            <UListItem
+                                title="Home"
+                                path={isMobile ? '/discover/home' : '/discover'}
+                                icon={<IcHome />}
+                            />
                             <UListItem
                                 title="New and growing"
                                 path="/discover/new"

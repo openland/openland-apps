@@ -31,8 +31,8 @@ import { useStackRouter } from 'openland-unicorn/components/StackRouter';
 import { SharedMediaFragment } from 'openland-web/fragments/chat/sharedMedia/SharedMediaFragment';
 import { SettingsAboutFragment } from 'openland-web/fragments/account/SettingsAboutFragment';
 import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
-
-import { TabRouterContext } from 'openland-unicorn/components/TabLayout';
+import { UserProfileFragment } from 'openland-web/fragments/shortname/UserProfileFragment';
+// import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { DiscoverPopularNowFragment } from 'openland-web/fragments/discover/DiscoverPopularNowFragment';
 import { DiscoverNewAndGrowingFragment } from 'openland-web/fragments/discover/DiscoverNewAndGrowingFragment';
 import { DiscoverCollectionsFragment } from 'openland-web/fragments/discover/DiscoverCollectionsFragment';
@@ -51,24 +51,24 @@ const TemporaryStubMail = React.memo(() => {
     return null;
 });
 
-const TemporaryStubDiscover = React.memo(() => {
-    const router = React.useContext(TabRouterContext);
-    React.useEffect(() => {
-        let timer: any;
-        if (router) {
-            router.router.switchTab(0);
-            timer = setTimeout(() => {
-                if (router) {
-                    router.router.navigate('/discover/home');
-                }
-            }, 20);
-        }
-
-        return () => clearTimeout(timer);
-    }, []);
-
-    return null;
-});
+// const RedirectStubDiscover = React.memo(() => {
+//     const router = useTabRouter();
+//     React.useEffect(() => {
+//         let timer: any;
+//         if (router) {
+//             router.router.switchTab(0);
+//             timer = setTimeout(() => {
+//                 if (router) {
+//                     router.router.navigate('/discover');
+//                 }
+//             }, 20);
+//         }
+//
+//         return () => clearTimeout(timer);
+//     }, []);
+//
+//     return null;
+// });
 
 const routing = new URouting();
 
@@ -94,8 +94,8 @@ routing.addRoute('/notifications', () => NotificationsFragment);
 routing.addRoute('/feed', () => FeedFragment);
 routing.addRoute('/feed/:postId', () => FeedItemFragment);
 routing.addRoute('/feed/:postId/comment/:commentId', () => FeedItemFragment);
-routing.addRoute('/discover', () => TemporaryStubDiscover);
-routing.addRoute('/discover/', () => TemporaryStubDiscover);
+routing.addRoute('/discover', () => DiscoverHomeFragment);
+routing.addRoute('/discover/', () => DiscoverHomeFragment);
 routing.addRoute('/discover/home', () => DiscoverHomeFragment);
 routing.addRoute('/discover/recommendations', () => RecommendationsFragment);
 routing.addRoute('/discover/groups', () => DiscoverGroupsFragment);
@@ -106,14 +106,16 @@ routing.addRoute('/discover/collections/:collectionId', () => DiscoverCollection
 routing.addRoute('/discover/premium', () => DiscoverTopPremiumFragment);
 routing.addRoute('/discover/free', () => DiscoverTopFreeFragment);
 
-// Settings
-routing.addRoute('/settings/profile', () => SettingsProfileFragment);
-routing.addRoute('/settings/notifications', () => SettingsNotificationsFragment);
-routing.addRoute('/settings/email', () => SettingsEmailFragment);
-routing.addRoute('/settings/appearance', () => SettingsAppearanceFragment);
-routing.addRoute('/settings/download', () => DownloadAppsFragment);
-routing.addRoute('/settings/invites', () => InviteFriendsFragment);
-routing.addRoute('/settings/about', () => SettingsAboutFragment);
+// Account
+routing.addRoute('/account', () => UserProfileFragment);
+routing.addRoute('/account/me', () => UserProfileFragment);
+routing.addRoute('/account/profile', () => SettingsProfileFragment);
+routing.addRoute('/account/notifications', () => SettingsNotificationsFragment);
+routing.addRoute('/account/email', () => SettingsEmailFragment);
+routing.addRoute('/account/appearance', () => SettingsAppearanceFragment);
+routing.addRoute('/account/download', () => DownloadAppsFragment);
+routing.addRoute('/account/invites', () => InviteFriendsFragment);
+routing.addRoute('/account/about', () => SettingsAboutFragment);
 
 // Wallet
 routing.addRoute('/wallet', () => WalletFragment);
