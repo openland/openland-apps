@@ -52,6 +52,11 @@ const iconContainer = css`
     }
 `;
 
+const groupContainer = css`
+    margin: 0 -16px
+    width: calc(100% + 16px);
+`;
+
 interface ListingCompactProps {
     title?: string;
     items: DiscoverRoom[];
@@ -84,11 +89,13 @@ export const ListingCompact = React.memo((props: ListingCompactProps) => {
                         </XView>
                     </div>
                 )}
-                <XView marginLeft={-16} marginRight={-16}>
-                    {props.items.map(item => (
-                        <UGroupView key={'group-' + item.id} group={item} />
-                    ))}
-                </XView>
+                <div className={groupContainer}>
+                    <XView width='100%'>
+                        {props.items.map(item => (
+                            <UGroupView key={'group-' + item.id} group={item} />
+                        ))}
+                    </XView>
+                </div>
             </XView>
         </div>
     );
