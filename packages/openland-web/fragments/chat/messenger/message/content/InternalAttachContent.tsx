@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { XViewRouterContext } from 'react-mental';
+import { XViewRouterContext, XViewRouter } from 'react-mental';
 import {
     FullMessage_GeneralMessage_attachments_MessageRichAttachment,
     FullMessage_GeneralMessage_attachments_MessageRichAttachment_keyboard,
@@ -9,12 +9,12 @@ import {
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
 import { UButton, UButtonProps } from 'openland-web/components/unicorn/UButton';
 import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
-import { resolveLinkAction } from 'openland-web/utils/resolveLinkAction';
+import { resolveLinkAction, resolveInvite } from 'openland-web/utils/resolveLinkAction';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
-import AlertBlanket from 'openland-x/AlertBlanket';
+import { OpenlandClient } from 'openland-api/spacex';
 
 const root = css`
     background-color: var(--backgroundTertiary);
@@ -185,18 +185,33 @@ const UnicornBotButton = (props: { keyboard: FullMessage_GeneralMessage_attachme
     );
 };
 
-const MessageButton = (props: UButtonProps & { url: string | null, fallback: (e: React.MouseEvent, path: string | null) => void, btnStyle: ModernMessageButtonStyle }) => {
-    const { url, fallback, btnStyle, ...buttonProps } = props;
+const handleInviteClick = (e: React.MouseEvent, path: string | null, router: XViewRouter, client: OpenlandClient, ignoreJoin: boolean) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (!path) {
+        return;
+    }
+    
+    return resolveInvite(path, client, router!, () => {
+        const link = makeInternalLinkRelative(path || '');
+        if (link) {
+            router.navigate(link);
+        }
+    }, ignoreJoin);
+};
+
+const MessageButton = (props: UButtonProps & { url: string | null, btnStyle: ModernMessageButtonStyle }) => {
+    const { url, btnStyle, ...buttonProps } = props;
     const [loading, setLoading] = React.useState(false);
     const engine = React.useContext(MessengerContext);
-    const router = React.useContext(XViewRouterContext);
+    const router = React.useContext(XViewRouterContext)!;
+
     const onclick = React.useCallback(async (e: React.MouseEvent) => {
-        let action = resolveLinkAction(url, engine.client, router!, () => fallback(e, url));
+        let action = handleInviteClick(e, url, router, engine.client, false);
         if (action) {
             setLoading(true);
             try {
-                e.stopPropagation();
-                e.preventDefault();
                 await action;
             } catch (e) {
                 console.warn(e);
@@ -212,13 +227,6 @@ const MessageButton = (props: UButtonProps & { url: string | null, fallback: (e:
     />;
 };
 
-export const showRevokedInviteModal = () => {
-    AlertBlanket.builder()
-        .message('This invitation has been revoked.')
-        .action('OK', async () => { return; })
-        .show();
-};
-
 export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment }) => {
     const { title, subTitle, keyboard, image, imageFallback, socialImage, id, titleLink } = props.attach;
     const layout = useLayout();
@@ -231,35 +239,6 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
     let keyboardWrapper = null;
     const router = React.useContext(XViewRouterContext)!;
     const engine = React.useContext(MessengerContext);
-
-    const link = makeInternalLinkRelative(titleLink || '');
-    const linkSegments = link.split('/');
-    const isInviteLink = linkSegments.includes('invite');
-    const key = isInviteLink ? linkSegments[linkSegments.length - 1] : '';
-    const client = engine.client;
-
-    const keyboardAction = React.useCallback(async (e: React.MouseEvent, path: string | null) => {
-        e.stopPropagation();
-        e.preventDefault();
-
-        let finalLink = link;
-
-        if (isInviteLink) {
-            const invite = await client.queryResolvedInvite({ key }, {fetchPolicy: 'network-only'});
-
-            if (!invite.invite) {
-                showRevokedInviteModal();
-                return;
-            }
-    
-            if (invite.invite.__typename === 'RoomInvite' && invite.invite.room.membership === 'MEMBER') {
-                const roomId = invite.invite.room.id!;
-                finalLink = `/mail/${roomId}`;
-            }
-        }
-
-        router.navigate(finalLink);
-    }, []);
 
     if (image) {
         avatarWrapper = (
@@ -299,7 +278,6 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
                                             text={k.title}
                                             size={layout === 'mobile' ? 'large' : 'medium'}
                                             url={k.url}
-                                            fallback={keyboardAction}
                                         />
                                     </div>
                                 ))}
@@ -318,7 +296,7 @@ export const InternalAttachContent = (props: { attach: FullMessage_GeneralMessag
             )}
             <div
                 className={cx(wrapper, 'message-rich-wrapper')}
-                onClick={(e) => keyboardAction(e, titleLink)}
+                onClick={(e) => handleInviteClick(e, titleLink, router, engine.client, true)}
             >
                 <div className={content}>
                     {avatarWrapper}
