@@ -34,7 +34,7 @@ export const RecommendationsFragment = React.memo(() => {
                 <>
                     <UHeader title="Chats for you" maxWidth={577} />
                     <XView height={16} />
-                    <Page track="discover_recommended">
+                    <Page track="discover_recommended" padded={true}>
                         {data.suggestedRooms.map((room) => {
                             if (room.__typename === 'SharedRoom') {
                                 return (
