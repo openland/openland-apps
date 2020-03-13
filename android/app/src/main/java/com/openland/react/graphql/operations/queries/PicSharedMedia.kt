@@ -4,16 +4,21 @@ import com.openland.spacex.*
 import com.openland.spacex.gen.*
 import org.json.*
 
-internal val SharedMediaSelector = obj(
-            field("chatSharedMedia", "sharedMedia", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("mediaTypes", refValue("mediaTypes")), fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(obj(
+internal val PicSharedMediaSelector = obj(
+            field("chatSharedMedia", "chatSharedMedia", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("mediaTypes", listValue(stringValue("IMAGE"))), fieldValue("first", refValue("first")), fieldValue("after", refValue("after")), fieldValue("before", refValue("before")), fieldValue("around", refValue("around"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("pageInfo", "pageInfo", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("hasNextPage", "hasNextPage", notNull(scalar("Boolean"))),
-                            field("currentPage", "currentPage", notNull(scalar("Int")))
+                            field("hasPreviousPage", "hasPreviousPage", notNull(scalar("Boolean"))),
+                            field("currentPage", "currentPage", notNull(scalar("Int"))),
+                            field("pagesCount", "pagesCount", notNull(scalar("Int"))),
+                            field("itemsCount", "itemsCount", notNull(scalar("Int")))
                         ))),
                     field("edges", "edges", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
+                            field("cursor", "cursor", notNull(scalar("String"))),
+                            field("index", "index", notNull(scalar("Int"))),
                             field("node", "node", notNull(obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),
                                     field("message", "message", notNull(obj(
@@ -21,7 +26,6 @@ internal val SharedMediaSelector = obj(
                                             inline("GeneralMessage", obj(
                                                 field("__typename", "__typename", notNull(scalar("String"))),
                                                 field("id", "id", notNull(scalar("ID"))),
-                                                field("fallback", "fallback", notNull(scalar("String"))),
                                                 field("date", "date", notNull(scalar("Date"))),
                                                 field("sender", "sender", notNull(obj(
                                                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -46,43 +50,17 @@ internal val SharedMediaSelector = obj(
                                                             field("filePreview", "filePreview", scalar("String")),
                                                             field("fileId", "fileId", notNull(scalar("String"))),
                                                             field("fallback", "fallback", notNull(scalar("String")))
-                                                        )),
-                                                        inline("MessageRichAttachment", obj(
-                                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                                            field("id", "id", notNull(scalar("ID"))),
-                                                            field("title", "title", scalar("String")),
-                                                            field("text", "text", scalar("String")),
-                                                            field("titleLink", "titleLink", scalar("String")),
-                                                            field("imagePreview", "imagePreview", scalar("String")),
-                                                            field("image", "image", obj(
-                                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                                    field("url", "url", notNull(scalar("String")))
-                                                                )),
-                                                            field("imageFallback", "imageFallback", obj(
-                                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                                    field("photo", "photo", notNull(scalar("String")))
-                                                                )),
-                                                            field("keyboard", "keyboard", obj(
-                                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                                    field("buttons", "buttons", notNull(list(list(notNull(obj(
-                                                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                                                            field("id", "id", notNull(scalar("ID"))),
-                                                                            field("title", "title", notNull(scalar("String"))),
-                                                                            field("url", "url", scalar("String"))
-                                                                        ))))))
-                                                                ))
                                                         ))
                                                     )))))
                                             ))
                                         )))
-                                ))),
-                            field("cursor", "cursor", notNull(scalar("String")))
+                                )))
                         )))))
                 )))
         )
-val SharedMedia = object: OperationDefinition {
-    override val name = "SharedMedia"
+val PicSharedMedia = object: OperationDefinition {
+    override val name = "PicSharedMedia"
     override val kind = OperationKind.QUERY
-    override val body = "query SharedMedia(\$chatId:ID!,\$mediaTypes:[SharedMediaType!]!,\$first:Int!,\$after:ID){sharedMedia:chatSharedMedia(chatId:\$chatId,mediaTypes:\$mediaTypes,first:\$first,after:\$after){__typename pageInfo{__typename hasNextPage currentPage}edges{__typename node{__typename message{__typename ... on GeneralMessage{__typename id fallback date sender{__typename id name}attachments{__typename ... on MessageAttachmentFile{__typename id fileMetadata{__typename name isImage imageFormat mimeType imageWidth imageHeight size}filePreview fileId fallback}... on MessageRichAttachment{__typename id title text titleLink imagePreview image{__typename url}imageFallback{__typename photo}keyboard{__typename buttons{__typename id title url}}}}}}}cursor}}}"
-    override val selector = SharedMediaSelector
+    override val body = "query PicSharedMedia(\$chatId:ID!,\$first:Int!,\$after:ID,\$before:ID,\$around:ID){chatSharedMedia(chatId:\$chatId,mediaTypes:[IMAGE],first:\$first,after:\$after,before:\$before,around:\$around){__typename pageInfo{__typename hasNextPage hasPreviousPage currentPage pagesCount itemsCount}edges{__typename cursor index node{__typename message{__typename ... on GeneralMessage{__typename id date sender{__typename id name}attachments{__typename ... on MessageAttachmentFile{__typename id fileMetadata{__typename name isImage imageFormat mimeType imageWidth imageHeight size}filePreview fileId fallback}}}}}}}}"
+    override val selector = PicSharedMediaSelector
 }
