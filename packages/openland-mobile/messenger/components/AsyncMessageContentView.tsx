@@ -120,8 +120,12 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         imageLayout = layoutImage(fileAttach!.fileMetadata, maxSize);
     }
     let richAttachImageLayout;
+    let richAttachSocialImageLayout;
     if (augmenationAttach && augmenationAttach.image && augmenationAttach.image.metadata) {
         richAttachImageLayout = layoutImage(augmenationAttach.image.metadata, maxSize);
+    }
+    if (augmenationAttach && augmenationAttach.socialImage && augmenationAttach.socialImage.metadata) {
+        richAttachSocialImageLayout = layoutImage(augmenationAttach.socialImage.metadata, maxSize);
     }
     const richAttachIsCompact = richAttachImageShouldBeCompact(augmenationAttach);
 
@@ -155,7 +159,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
 
     let bottomContent: any[] = [];
     if (hasUrlAug) {
-        bottomContent.push(<RichAttachContent key="msg-rich" theme={theme} padded={!topContent.length} compensateBubble={compensateBubble} attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} />);
+        bottomContent.push(<RichAttachContent key="msg-rich" theme={theme} padded={!topContent.length} compensateBubble={compensateBubble} attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} socialImageLayout={richAttachSocialImageLayout} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} />);
     }
 
     if (!topContent.length && bottomContent.length) {

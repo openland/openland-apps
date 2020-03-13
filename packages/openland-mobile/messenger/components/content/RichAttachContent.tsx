@@ -19,6 +19,7 @@ interface UrlAugmentationContentProps {
     message: DataSourceMessageItem;
     attach: FullMessage_GeneralMessage_attachments_MessageRichAttachment;
     imageLayout?: { width: number, height: number };
+    socialImageLayout?: { width: number, height: number };
     compensateBubble?: boolean;
     maxWidth?: number;
     onUserPress: (id: string) => void;
@@ -40,44 +41,74 @@ export let richAttachImageShouldBeCompact = (attach?: FullMessage_GeneralMessage
 
 export const paddedTextPrfix = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 9, ios: 8 }))}</ASText >;
 
-export class RichAttachContent extends React.PureComponent<UrlAugmentationContentProps, { downloadState?: DownloadState }> {
-    private augLayout?: { width: number, height: number };
-    private downloadManagerWatch?: WatchSubscription;
+const getImageSize = ({width, height}: {width: number, height: number}) => {
+    let ratio = PixelRatio.get();
+    return ({
+        width: Math.floor(width * ratio),
+        height: Math.floor(height * ratio)
+    });
+};
+
+export class RichAttachContent extends React.PureComponent<UrlAugmentationContentProps, { compactDownloadState?: DownloadState, largeDownloadState?: DownloadState }> {
+    private compactImageLayout: { width: number, height: number } = {width: 36, height: 36};
+    private compactDownloadManagerWatch?: WatchSubscription;
+    private largeDownloadManagerWatch?: WatchSubscription;
     private imageCompact = false;
+    private imageLarge = false;
 
     componentWillMount() {
         if (this.props.attach && this.props.attach.image && this.props.imageLayout) {
-
-            this.augLayout = this.props.imageLayout;
             if (richAttachImageShouldBeCompact(this.props.attach)) {
                 this.imageCompact = true;
-                this.augLayout = { width: 36, height: 36 };
+                this.compactDownloadManagerWatch = DownloadManagerInstance.watch(this.props.attach.image.url, getImageSize(this.compactImageLayout), (state) => {
+                    this.setState({ compactDownloadState: state });
+                });
+            } else {
+                this.imageLarge = true;
+                this.largeDownloadManagerWatch = DownloadManagerInstance.watch(this.props.attach.image.url, getImageSize(this.props.imageLayout), (state) => {
+                    this.setState({ largeDownloadState: state });
+                });
             }
-
-            let ratio = PixelRatio.get();
-            let imageSize = {
-                width: Math.floor(this.augLayout.width * ratio),
-                height: Math.floor(this.augLayout.height * ratio)
-            };
-
-            this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.attach.image.url, imageSize, (state) => {
-                this.setState({ downloadState: state });
+        }
+        if (this.props.attach && this.props.attach.socialImage && this.props.socialImageLayout && this.imageCompact) {
+            this.imageLarge = true;
+            this.largeDownloadManagerWatch = DownloadManagerInstance.watch(this.props.attach.socialImage.url, getImageSize(this.props.socialImageLayout), (state) => {
+                this.setState({ largeDownloadState: state });
             });
         }
     }
 
     componentWillUnmount() {
-        if (this.downloadManagerWatch) {
-            this.downloadManagerWatch();
+        if (this.compactDownloadManagerWatch) {
+            this.compactDownloadManagerWatch();
+        }
+        if (this.largeDownloadManagerWatch) {
+            this.largeDownloadManagerWatch();
         }
     }
 
-    onMediaPress = (event: ASPressEvent, radius?: number) => {
-        if (this.state && this.state.downloadState && this.state.downloadState.path && this.props.attach.image && this.props.attach.image.metadata && this.props.attach.image.metadata.imageHeight && this.props.attach.image.metadata.imageWidth) {
+    onMediaPress = (event: ASPressEvent) => {
+        let imageSize = this.props.attach.image && this.props.attach.image.metadata && this.props.attach.image.metadata.imageHeight && this.props.attach.image.metadata.imageWidth && {
+            imageWidth: this.props.attach.image.metadata.imageWidth,
+            imageHeight: this.props.attach.image.metadata.imageHeight,
+        };
+        let socialImageSize = this.props.attach.socialImage && this.props.attach.socialImage.metadata && this.props.attach.socialImage.metadata.imageHeight && this.props.attach.socialImage.metadata.imageWidth && {
+            imageWidth: this.props.attach.socialImage.metadata.imageWidth,
+            imageHeight: this.props.attach.socialImage.metadata.imageHeight,
+        };
+        let largeImageSize = socialImageSize || imageSize;
+
+        if (this.state && this.state.largeDownloadState && this.state.largeDownloadState.path && largeImageSize) {
+            this.props.onMediaPress(largeImageSize, { ...event, path: this.state.largeDownloadState.path }, 0);
+        }
+    }
+
+    onCompactMediaPress = (event: ASPressEvent) => {
+        if (this.state && this.state.compactDownloadState && this.state.compactDownloadState.path && this.props.attach.image && this.props.attach.image.metadata && this.props.attach.image.metadata.imageHeight && this.props.attach.image.metadata.imageWidth) {
             let w = this.props.attach.image.metadata.imageWidth;
             let h = this.props.attach.image.metadata.imageHeight;
 
-            this.props.onMediaPress({ imageHeight: h, imageWidth: w }, { ...event, path: this.state.downloadState.path }, radius);
+            this.props.onMediaPress({ imageHeight: h, imageWidth: w }, { ...event, path: this.state.compactDownloadState.path }, 10);
         }
     }
 
@@ -95,23 +126,22 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
 
         // prepare image
         let imgCompact = this.imageCompact;
-        let imgLayout = this.augLayout;
-        let imageSource = { uri: (this.state && this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined };
+        let compactImageSource = { uri: (this.state && this.state.compactDownloadState && this.state.compactDownloadState.path) ? ('file://' + this.state.compactDownloadState.path) : undefined };
+        let largeImageSource = { uri: (this.state && this.state.largeDownloadState && this.state.largeDownloadState.path) ? ('file://' + this.state.largeDownloadState.path) : undefined };
+        let largeImageLayout = this.props.socialImageLayout || this.props.imageLayout;
 
         // invite link image placeholder
         if (richAttachImageShouldBeCompact(this.props.attach)) {
             imgCompact = true;
-            imgLayout = !!imgLayout ? { width: 36, height: 36 } : undefined;
 
         }
 
         if (isInvite(this.props.attach) && !this.props.attach.image) {
             imgCompact = true;
-            imgLayout = { width: 36, height: 36 };
-            imageSource = isOut ? require('assets/ing-thn-out.png') : require('assets/img-thn-in.png');
+            compactImageSource = isOut ? require('assets/ing-thn-out.png') : require('assets/img-thn-in.png');
         }
 
-        let maxWidth = this.props.maxWidth || ((imgLayout && !imgCompact) ? (imgLayout.width - contentInsetsHorizontal * 2) : (isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming));
+        let maxWidth = this.props.maxWidth || ((this.props.imageLayout && !imgCompact) ? (this.props.imageLayout.width - contentInsetsHorizontal * 2) : (isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming));
 
         const bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
         const bubbleForegroundSecondary = message.isOut ? theme.outgoingForegroundSecondary : theme.incomingForegroundSecondary;
@@ -130,7 +160,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                     </ASText>
                 )}
 
-                {!imgCompact && this.props.attach.image && imgLayout && (
+                {this.imageLarge && largeImageLayout && (
                     <ASFlex
                         marginTop={this.props.compensateBubble ? -contentInsetsTop : 5}
                         marginLeft={this.props.compensateBubble ? -contentInsetsHorizontal : 0}
@@ -138,21 +168,21 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                         justifyContent="center"
                     >
                         <ASImage
-                            onPress={(e) => this.onMediaPress(e, 0)}
-                            source={imageSource}
-                            width={imgLayout!.width}
-                            height={imgLayout!.height}
+                            onPress={this.onMediaPress}
+                            source={largeImageSource}
+                            width={largeImageLayout.width}
+                            height={largeImageLayout.height}
                         />
-                        {this.state && this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path &&
+                        {this.state && this.state.largeDownloadState && this.state.largeDownloadState.progress !== undefined && this.state.largeDownloadState.progress < 1 && !this.state.largeDownloadState.path &&
                             <ASFlex
                                 overlay={true}
-                                width={imgLayout.width}
-                                height={imgLayout.height}
+                                width={largeImageLayout.width}
+                                height={largeImageLayout.height}
                                 justifyContent="center"
                                 alignItems="center"
                             >
                                 <ASFlex backgroundColor={theme.backgroundPrimary} borderRadius={20}>
-                                    <ASText color={theme.foregroundPrimary} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</ASText>
+                                    <ASText color={theme.foregroundPrimary} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.largeDownloadState.progress * 100)}</ASText>
                                 </ASFlex>
                             </ASFlex>
                         }
@@ -170,14 +200,14 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                     {this.props.attach.titleLinkHostname}
                 </ASText>}
 
-                <ASFlex flexDirection="row" marginTop={5}>
-                    {imgCompact && imgLayout && imageSource && (
+                <ASFlex flexDirection="row" marginTop={imgCompact && this.imageLarge ? 12 : 5}>
+                    {imgCompact && this.compactImageLayout && compactImageSource && (
                         <ASFlex>
                             <ASImage
-                                onPress={(e) => this.onMediaPress(e, 10)}
-                                source={imageSource}
-                                width={imgLayout!.width}
-                                height={imgLayout!.height}
+                                onPress={this.onCompactMediaPress}
+                                source={compactImageSource}
+                                width={this.compactImageLayout.width}
+                                height={this.compactImageLayout.height}
                                 borderRadius={10}
                                 marginRight={9}
                             />
@@ -221,13 +251,13 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                     maxWidth={maxWidth}
                     color={bubbleForegroundPrimary}
                     fontSize={14}
-                    marginTop={this.imageCompact && imgLayout ? (subTitle ? 4 : -19) : 0}
+                    marginTop={this.imageCompact && compactImageSource ? (subTitle ? 4 : -19) : 0}
                     marginBottom={4}
                     lineHeight={19}
                     numberOfLines={5}
                     fontWeight={FontStyles.Weight.Regular}
                 >
-                    {!subTitle && this.imageCompact && imgLayout && paddedTextPrfix}
+                    {!subTitle && this.imageCompact && compactImageSource && paddedTextPrfix}
                     {text}
                     {this.props.padded && paddedText(message.isEdited)}
                 </ASText>}
