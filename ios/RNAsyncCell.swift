@@ -48,7 +48,7 @@ class RNAsyncCell: ASCellNode {
   
   func updateNode(spec: AsyncViewSpec, modesToApply: [String]){
       openland.lock(self.lock) {
-        if(self.updating || self.preDisplay){
+        if(self.updating){
           self.pendingApplyModes = modesToApply
           self.pendingSpec = spec
           return
