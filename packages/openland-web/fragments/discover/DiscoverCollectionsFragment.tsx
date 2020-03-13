@@ -41,8 +41,8 @@ export const DiscoverCollectionsFragment = React.memo(() => {
     return (
         <>
             <UHeader title="Collections" maxWidth={577} />
-            <XView height={16} />
             <UFlatList
+                gap={16}
                 padded={true}
                 track="discover_collections"
                 title="Collections"

@@ -39,8 +39,8 @@ export const DiscoverNewAndGrowingFragment = React.memo(() => {
     return (
         <>
             <UHeader title="New and growing" maxWidth={577} />
-            <XView height={16} />
             <UFlatList
+                gap={16}
                 padded={true}
                 track="discover_new_and_growing"
                 title="New and growing"
