@@ -58,8 +58,8 @@ export function useImageViewer(data: dataT, currentId: string): ImageViewerCb {
             senderName: getMsg(1).sender.name,
         };
         index = data.edges[1].index;
-        prevCursor = (data.edges[2].node.message as messageT).id;
-        nextCursor = (data.edges[0].node.message as messageT).id;
+        prevCursor = (data.edges[0].node.message as messageT).id;
+        nextCursor = (data.edges[2].node.message as messageT).id;
     }
 
     if (data.edges.length === 2) {
@@ -74,8 +74,8 @@ export function useImageViewer(data: dataT, currentId: string): ImageViewerCb {
                     senderName: getMsg(j).sender.name,
                 };
                 index = i.index;
-                hasPrev = j === 0;
-                hasNext = j === 1;
+                hasPrev = j === 1;
+                hasNext = j === 0;
 
                 if (hasPrev) {
                     prevCursor = getMsg(0).id;

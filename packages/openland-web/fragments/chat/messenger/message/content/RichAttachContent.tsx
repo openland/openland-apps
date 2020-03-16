@@ -310,10 +310,8 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
                                 .image!!.url.split('https://ucarecdn.com/')
                                 .pop()!
                                 .slice(0, -1),
-                            src: attach.image!!.url,
-                            srcSet: attach.image!!.url,
-                            width: layout!.width * 2,
-                            height: layout!.height * 2,
+                            imageWidth: attach.image!!.metadata!!.imageWidth!! * 2 || 0,
+                            imageHeight: attach.image!!.metadata!!.imageHeight!! * 2 || 0,
                         });
                     }}
                 >

@@ -2,18 +2,17 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { SharedItemFile } from './SharedMediaFragment';
 import { showImageModal } from '../messenger/message/content/ImageContent';
-import { layoutMedia, uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { emoji } from 'openland-y-utils/emoji';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 
 const MediaItemClass = css`
     display: flex;
-    width: 25%;    
+    width: 25%;
     position: relative;
     overflow: hidden;
     cursor: pointer;
     @media (max-width: 750px) {
-        width: calc(100% / 3);    
+        width: calc(100% / 3);
     }
     &:before {
         content: '';
@@ -24,20 +23,19 @@ const MediaItemClass = css`
         content: '';
         position: absolute;
         opacity: 0;
-        top:1px;
+        top: 1px;
         left: 1px;
         bottom: 1px;
         right: 1px;
         background: var(--overlayLight);
     }
-    &:hover:after{
+    &:hover:after {
         opacity: 1;
     }
-    
 `;
 const MediaItemContentClass = css`
     position: absolute;
-    top:1px;
+    top: 1px;
     left: 1px;
 
     display: block;
@@ -72,25 +70,10 @@ export const MediaContent = (props: { item: SharedItemFile }) => {
     const imgRef = React.useRef<HTMLImageElement>(null);
     const placeholderRef = React.useRef<HTMLDivElement>(null);
     const onClick = React.useCallback(() => {
-
-        const layoutModal = layoutMedia(
-            props.item.attach.fileMetadata.imageWidth || 0,
-            props.item.attach.fileMetadata.imageHeight || 0,
-            window.innerWidth,
-            window.innerHeight,
-            32,
-            32,
-        );
-
-        const url = `https://ucarecdn.com/${props.item.attach.fileId}/-/format/auto/-/`;
-        let modalOps = uploadcareOptions(layoutModal);
-
         showImageModal({
             fileId: props.item.attach.fileId,
-            src: url + modalOps[0],
-            srcSet: url + modalOps[1],
-            width: layoutModal.width,
-            height: layoutModal.height,
+            imageWidth: props.item.attach.fileMetadata.imageWidth || 0,
+            imageHeight: props.item.attach.fileMetadata.imageHeight || 0,
             preview: props.item.attach.filePreview,
             senderNameEmojify: emoji(props.item.sender.name),
             date: parseInt(props.item.dateRaw, 10),
@@ -99,8 +82,8 @@ export const MediaContent = (props: { item: SharedItemFile }) => {
 
     const onLoad = React.useCallback(() => {
         if (imgRef.current && placeholderRef.current) {
-            imgRef.current.style.opacity = "1";
-            placeholderRef.current.style.opacity = "0";
+            imgRef.current.style.opacity = '1';
+            placeholderRef.current.style.opacity = '0';
         }
     }, []);
     return (
@@ -115,7 +98,9 @@ export const MediaContent = (props: { item: SharedItemFile }) => {
             <ImgWithRetry
                 ref={imgRef}
                 className={MediaItemContentClass}
-                src={`https://ucarecdn.com/${props.item.attach.fileId}/-/format/auto/-/scale_crop/138x138/smart/`}
+                src={`https://ucarecdn.com/${
+                    props.item.attach.fileId
+                }/-/format/auto/-/scale_crop/138x138/smart/`}
                 onLoad={onLoad}
             />
         </div>
