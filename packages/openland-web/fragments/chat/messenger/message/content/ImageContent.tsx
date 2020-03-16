@@ -3,8 +3,8 @@ import { css, cx } from 'linaria';
 import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     UserShort,
-    // SharedMediaType,
 } from 'openland-api/spacex.types';
+import { useImageViewer, ImageViewerCb } from 'openland-x-utils/imageViewer';
 import { layoutMedia, uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
 import { showModalBox } from 'openland-x/showModalBox';
@@ -13,11 +13,12 @@ import IcDownload from 'openland-icons/s/ic-download-24.svg';
 import IcForward from 'openland-icons/s/ic-forward-24.svg';
 import IcClose from 'openland-icons/s/ic-close-24.svg';
 import { formatDateTime } from 'openland-y-utils/formatTime';
-import { TextCaption } from 'openland-web/utils/TextStyles';
+import { TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { XLoader } from 'openland-x/XLoader';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
-// import { useClient } from 'openland-api/useClient';
+import { useClient } from 'openland-api/useClient';
 
 const modalImgContainer = css`
     position: relative;
@@ -57,9 +58,14 @@ const modalImgContent = css`
 const modalInfoContainer = css`
     padding: 16px;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     pointer-events: none;
     margin-right: auto;
+`;
+
+const modalPrimaryText = css`
+    color: var(--backgroundPrimary);
+    margin-right: 16px;
 `;
 
 const modalSecondaryText = css`
@@ -134,7 +140,6 @@ const imgPreviewHiddenClass = css`
 
 const imgAppearClass = css`
     opacity: 0;
-    background-color: var(--backgroundPrimary);
     transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
     position: absolute;
     top: 0;
@@ -164,35 +169,81 @@ const imgSpacer = css`
     }
 `;
 
+interface ModalControllerProps {
+    cId: string;
+    cursor: string;
+    setCursor: (cursor: string) => void;
+    prevCursor: string | null;
+    nextCursor: string | null;
+    setViewerState: (data: ImageViewerCb) => void;
+    hide: () => void;
+}
+
+const ModalController = React.memo((props: ModalControllerProps) => {
+    const client = useClient();
+
+    const sharedInfo = client.usePicSharedMedia({
+        chatId: props.cId,
+        first: 1,
+        around: props.cursor,
+    }).chatSharedMedia;
+
+    useShortcuts([
+        {
+            keys: ['Escape'],
+            callback: () => props.hide(),
+        },
+        {
+            keys: ['ArrowLeft'],
+            callback: () => {
+                if (props.nextCursor) {
+                    props.setCursor(props.nextCursor);
+                }
+            },
+        },
+        {
+            keys: ['ArrowRight'],
+            callback: () => {
+                if (props.prevCursor) {
+                    props.setCursor(props.prevCursor);
+                }
+            },
+        },
+    ]);
+
+    React.useEffect(
+        () => {
+            if (sharedInfo && props.cursor) {
+                const viewerData = useImageViewer(sharedInfo, props.cursor);
+                props.setViewerState(viewerData);
+            }
+        },
+        [sharedInfo, props],
+    );
+
+    return null;
+});
+
 interface ModalProps {
     fileId: string;
-    src: string;
-    srcSet: string;
-    width: number;
-    height: number;
+    imageWidth: number;
+    imageHeight: number;
     preview?: string | null;
     sender?: UserShort;
     senderNameEmojify?: string | JSX.Element;
     date?: number;
     chatId?: string;
+    mId?: string;
 }
 
 const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
-    // const client = useClient();
-    // const [imageCursor, setImageCursor] = React.useState<string | null>(null);
-    // let images;
-    // if (props.chatId) {
-    //     images = client.useSharedMedia({
-    //         chatId: props.chatId,
-    //         mediaTypes: [SharedMediaType.IMAGE],
-    //         first: 1
-    //     });
-    // }
-    // console.log(images);
     const messenger = React.useContext(MessengerContext);
     const imgRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
     const renderTime = new Date().getTime();
+
+    const [viewerState, setViewerState] = React.useState<ImageViewerCb | null>(null);
+    const [cursor, setCursor] = React.useState(props.mId);
 
     const onLoad = React.useCallback(() => {
         let delta = new Date().getTime() - renderTime;
@@ -215,28 +266,73 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
         });
     }, []);
 
+    const sender = viewerState
+        ? viewerState.current.senderName
+        : props.senderNameEmojify
+        ? props.senderNameEmojify
+        : props.sender
+        ? props.sender.name
+        : '';
+
+    const date = viewerState ? viewerState.current.date : props.date;
+    const downloadLink =
+        'https://ucarecdn.com/' +
+        (viewerState ? viewerState.current.fileId : props.fileId) +
+        '/-/format/jpg/-/inline/no/pic.jpg';
+
+    const url = `https://ucarecdn.com/${
+        viewerState ? viewerState.current.fileId : props.fileId
+    }/-/format/auto/-/`;
+
+    const layoutModal = layoutMedia(
+        viewerState ? viewerState.current.imageWidth : props.imageWidth,
+        viewerState ? viewerState.current.imageHeight : props.imageHeight,
+        window.innerWidth,
+        window.innerHeight,
+        32,
+        32,
+    );
+
+    const modalOps = uploadcareOptions(layoutModal);
+
+    const src = url + modalOps[0];
+    const srcSet = url + modalOps[1];
+    const width = layoutModal.width;
+    const height = layoutModal.height;
+
+    const preview = viewerState ? viewerState.current.filePreview : props.preview;
+
     return (
-        <div className={modalImgContainer} onClick={props.hide}>
+        <div className={modalImgContainer}>
             <div className={modalToolbarContainer}>
-                {(props.sender || props.senderNameEmojify) && props.date && (
+                {cursor && props.chatId && (
+                    <React.Suspense fallback={null}>
+                        <ModalController
+                            cId={props.chatId}
+                            cursor={cursor || ''}
+                            setCursor={setCursor}
+                            prevCursor={viewerState ? viewerState.prevCursor : null}
+                            nextCursor={viewerState ? viewerState.nextCursor : null}
+                            setViewerState={setViewerState}
+                            hide={props.hide}
+                        />
+                    </React.Suspense>
+                )}
+                {sender && date && (
                     <div className={modalInfoContainer}>
+                        {viewerState && (
+                            <div className={cx(TextLabel1, modalPrimaryText)}>
+                                Media {viewerState.index} of {viewerState.count}
+                            </div>
+                        )}
+                        <div className={cx(TextCaption, modalSecondaryText)}>{sender}</div>
                         <div className={cx(TextCaption, modalSecondaryText)}>
-                            {props.senderNameEmojify || (props.sender ? props.sender!!.name : '')}
-                        </div>
-                        <div className={cx(TextCaption, modalSecondaryText)}>
-                            {formatDateTime(props.date)}
+                            {formatDateTime(date)}
                         </div>
                     </div>
                 )}
                 <div className={modalButtonsContainer} onClick={e => e.stopPropagation()}>
-                    <a
-                        className={modalButtonStyle}
-                        href={
-                            'https://ucarecdn.com/' +
-                            props.fileId +
-                            '/-/format/jpg/-/inline/no/pic.jpg'
-                        }
-                    >
+                    <a className={modalButtonStyle} href={downloadLink}>
                         <UIcon icon={<IcDownload />} color="var(--backgroundPrimary)" />
                     </a>
                     <div
@@ -253,24 +349,24 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     </div>
                 </div>
             </div>
-            <div className={modalImgContent} style={{ maxWidth: props.width }}>
+            <div className={modalImgContent} style={{ maxWidth: width }}>
                 <div
                     className={imgSpacer}
                     style={
                         {
-                            width: props.width,
+                            width: width,
                             maxWidth: '100%',
                             margin: 'auto',
-                            '--ratio': (props.height / props.width) * 100 + '%',
+                            '--ratio': (height / width) * 100 + '%',
                         } as React.CSSProperties
                     }
                 />
-                {props.preview && (
+                {preview && (
                     <img
                         className={imgPreviewClass}
-                        src={props.preview}
-                        width={props.width}
-                        height={props.height}
+                        src={preview}
+                        width={width}
+                        height={height}
                         style={{ cursor: 'default' }}
                     />
                 )}
@@ -283,11 +379,11 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                 <ImgWithRetry
                     ref={imgRef}
                     onLoad={onLoad}
-                    src={props.src}
-                    srcSet={props.srcSet}
+                    src={src}
+                    srcSet={srcSet}
                     className={imgAppearClass}
-                    width={props.width}
-                    height={props.height}
+                    width={width}
+                    height={height}
                     style={{ objectFit: 'contain', cursor: 'default' }}
                 />
             </div>
@@ -296,9 +392,10 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
 });
 
 export const showImageModal = (props: ModalProps) => {
-    showModalBox({ fullScreen: true, darkOverlay: true, useTopCloser: false }, ctx => (
-        <ModalContent {...props} hide={ctx.hide} />
-    ));
+    showModalBox(
+        { fullScreen: true, darkOverlay: true, useTopCloser: false, hideOnEsc: false },
+        ctx => <ModalContent {...props} hide={ctx.hide} />,
+    );
 };
 
 const GifContent = React.memo(
@@ -398,6 +495,7 @@ interface ImageContentProps {
     senderNameEmojify?: string | JSX.Element;
     date?: number;
     chatId?: string;
+    mId?: string;
 }
 
 export const ImageContent = React.memo((props: ImageContentProps) => {
@@ -443,16 +541,6 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
     const ops = `scale_crop/${layoutWidth}x${layoutHeight}/`;
     const opsRetina = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/center/ 2x`;
 
-    const layoutModal = layoutMedia(
-        props.file.fileMetadata.imageWidth || 0,
-        props.file.fileMetadata.imageHeight || 0,
-        window.innerWidth,
-        window.innerHeight,
-        32,
-        32,
-    );
-
-    let modalOps = uploadcareOptions(layoutModal);
     return (
         <div
             className={imgContainer}
@@ -461,15 +549,14 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
                 e.stopPropagation();
                 showImageModal({
                     fileId: props.file.fileId,
-                    src: url + modalOps[0],
-                    srcSet: url + modalOps[1],
-                    width: layoutModal.width,
-                    height: layoutModal.height,
+                    imageWidth: props.file.fileMetadata.imageWidth || 0,
+                    imageHeight: props.file.fileMetadata.imageHeight || 0,
                     preview: props.file.filePreview,
                     sender: props.sender,
                     senderNameEmojify: props.senderNameEmojify,
                     date: props.date,
                     chatId: props.chatId,
+                    mId: props.mId,
                 });
             }}
         >
