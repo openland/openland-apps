@@ -9,6 +9,9 @@ import { trackEvent } from 'openland-x-analytics';
 import { OpenlandClient } from 'openland-api/spacex';
 import { XViewRouter } from 'react-mental';
 import AlertBlanket from 'openland-x/AlertBlanket';
+import { showPayConfirm } from 'openland-web/fragments/wallet/modals/showPayConfirm';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
+import { showPremiumPayConfirm } from 'openland-web/fragments/discover/components/JoinButtonPremium';
 
 const showRevokedInviteModal = () => {
     AlertBlanket.builder()
@@ -25,12 +28,16 @@ export const resolveInvite = async (url: string, client: OpenlandClient, router:
         // must show prview on matchmaking, just join/open in other cases
         if (invite.invite && invite.invite.__typename === 'RoomInvite' && (!invite.invite.room.matchmaking || !invite.invite.room.matchmaking.enabled)) {
             if (invite.invite.room.membership !== 'MEMBER') {
-                if (invite.invite.room.__typename === 'SharedRoom' && invite.invite.room.isPremium || ignoreJoin) {
+                if (ignoreJoin) {
                     router.navigate(`/invite/${key}`);
                     return;
                 } else {
-                    await client.mutateRoomJoinInviteLink({ invite: key });
-                    router.navigate(`/mail/${invite.invite.room.id}`);
+                    if (invite.invite.room.isPremium && !invite.invite.room.premiumPassIsActive) {
+                        showPremiumPayConfirm({ group: invite.invite.room }, client, router);
+                    } else {
+                        await client.mutateRoomJoinInviteLink({ invite: key });
+                        router.navigate(`/mail/${invite.invite.room.id}`);
+                    }
                     return;
                 }
             } else {

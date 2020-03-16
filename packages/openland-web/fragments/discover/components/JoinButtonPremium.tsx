@@ -1,15 +1,16 @@
 import React from 'react';
-import { DiscoverSharedRoom } from 'openland-api/spacex.types';
+import { DiscoverSharedRoom, Room, RoomFull_SharedRoom, Room_room_SharedRoom } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { css } from 'linaria';
 import IcAdd from 'openland-icons/s/ic-add-24.svg';
 import IcDone from 'openland-icons/s/ic-done-24.svg';
 import { showPayConfirm } from 'openland-web/fragments/wallet/modals/showPayConfirm';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { XViewRouterContext } from 'react-mental';
+import { XViewRouterContext, XViewRouter } from 'react-mental';
+import { OpenlandClient } from 'openland-api/spacex';
 
 interface JoinButtonPremiumProps {
-    group: DiscoverSharedRoom;
+    group: Pick<Room_room_SharedRoom, 'id' | 'isPremium' | 'premiumSettings' | 'title' | 'photo' | 'membership'>;
 }
 
 const button = css`
@@ -54,36 +55,41 @@ const button = css`
     }
 `;
 
+export const showPremiumPayConfirm = (props: JoinButtonPremiumProps, client: OpenlandClient, router: XViewRouter, onJoined?: () => void) => {
+    const premiumSettings = props.group.premiumSettings!;
+    showPayConfirm({
+        amount: premiumSettings.price,
+        ...(premiumSettings.interval ?
+            { type: 'subscription', interval: premiumSettings.interval } :
+            { type: 'payment' }),
+        productTitle: props.group.title,
+        productDescription: premiumSettings.interval ? 'Subscription' : 'Payment',
+        productPicture: <UAvatar title={props.group.title} id={props.group.id} photo={props.group.photo} />,
+        action: async () => {
+            let passIsActive = false;
+            if (premiumSettings.interval) {
+                passIsActive = (await client.mutateBuyPremiumChatSubscription({ chatId: props.group.id })).betaBuyPremiumChatSubscription.premiumPassIsActive;
+            } else {
+                passIsActive = (await client.mutateBuyPremiumChatPass({ chatId: props.group.id })).betaBuyPremiumChatPass.premiumPassIsActive;
+            }
+            if (passIsActive) {
+                router.navigate('/mail/' + props.group.id);
+                if (onJoined) {
+                    onJoined();
+                }
+            }
+        },
+    });
+};
+
 export const JoinButtonPremium = React.memo((props: JoinButtonPremiumProps) => {
-    const [state, setState] = React.useState<string>(props.group.membership === 'MEMBER' ? 'done' : 'initial');
     const client = useClient();
     const router = React.useContext(XViewRouterContext)!;
-    // TODO remove any
-    const premiumSettings = props.group.premiumSettings!;
+
+    const [state, setState] = React.useState<string>(props.group.membership === 'MEMBER' ? 'done' : 'initial');
     const onClick = (e: any) => {
         e.stopPropagation();
-
-        showPayConfirm({
-            amount: premiumSettings.price,
-            ...(premiumSettings.interval ?
-                { type: 'subscription', interval: premiumSettings.interval } :
-                { type: 'payment' }),
-            productTitle: props.group.title,
-            productDescription: premiumSettings.interval ? 'Subscription' : 'Payment',
-            productPicture: <UAvatar title={props.group.title} id={props.group.id} photo={props.group.photo} />,
-            action: async () => {
-                let passIsActive = false;
-                if (premiumSettings.interval) {
-                    passIsActive = (await client.mutateBuyPremiumChatSubscription({ chatId: props.group.id })).betaBuyPremiumChatSubscription.premiumPassIsActive;
-                } else {
-                    passIsActive = (await client.mutateBuyPremiumChatPass({ chatId: props.group.id })).betaBuyPremiumChatPass.premiumPassIsActive;
-                }
-                if (passIsActive) {
-                    router.navigate('/mail/' + props.group.id);
-                    setState('done');
-                }
-            },
-        });
+        showPremiumPayConfirm(props, client, router, () => setState('done'));
     };
 
     if (state === 'done') {
