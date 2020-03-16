@@ -4152,7 +4152,8 @@ const BuyPremiumChatPassSelector = obj(
             field('betaBuyPremiumChatPass', 'betaBuyPremiumChatPass', args(fieldValue("chatId", refValue('chatId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('id', 'id', args(), notNull(scalar('ID'))),
-                    field('premiumPassIsActive', 'premiumPassIsActive', args(), notNull(scalar('Boolean')))
+                    field('premiumPassIsActive', 'premiumPassIsActive', args(), notNull(scalar('Boolean'))),
+                    field('membership', 'membership', args(), notNull(scalar('String')))
                 )))
         );
 const BuyPremiumChatSubscriptionSelector = obj(
@@ -4164,7 +4165,8 @@ const BuyPremiumChatSubscriptionSelector = obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             field('id', 'id', args(), notNull(scalar('ID'))),
                             field('state', 'state', args(), notNull(scalar('String')))
-                        ))
+                        )),
+                    field('membership', 'membership', args(), notNull(scalar('String')))
                 )))
         );
 const CancelSubscriptionSelector = obj(
@@ -5839,13 +5841,13 @@ export const Operations: { [key: string]: OperationDefinition } = {
     BuyPremiumChatPass: {
         kind: 'mutation',
         name: 'BuyPremiumChatPass',
-        body: 'mutation BuyPremiumChatPass($chatId:ID!){betaBuyPremiumChatPass(chatId:$chatId){__typename id premiumPassIsActive}}',
+        body: 'mutation BuyPremiumChatPass($chatId:ID!){betaBuyPremiumChatPass(chatId:$chatId){__typename id premiumPassIsActive membership}}',
         selector: BuyPremiumChatPassSelector
     },
     BuyPremiumChatSubscription: {
         kind: 'mutation',
         name: 'BuyPremiumChatSubscription',
-        body: 'mutation BuyPremiumChatSubscription($chatId:ID!){betaBuyPremiumChatSubscription(chatId:$chatId){__typename id premiumPassIsActive premiumSubscription{__typename id state}}}',
+        body: 'mutation BuyPremiumChatSubscription($chatId:ID!){betaBuyPremiumChatSubscription(chatId:$chatId){__typename id premiumPassIsActive premiumSubscription{__typename id state}membership}}',
         selector: BuyPremiumChatSubscriptionSelector
     },
     CancelSubscription: {

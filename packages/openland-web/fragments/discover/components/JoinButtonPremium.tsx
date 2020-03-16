@@ -1,5 +1,5 @@
 import React from 'react';
-import { DiscoverSharedRoom, Room, RoomFull_SharedRoom, Room_room_SharedRoom } from 'openland-api/spacex.types';
+import { Room_room_SharedRoom } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { css } from 'linaria';
 import IcAdd from 'openland-icons/s/ic-add-24.svg';

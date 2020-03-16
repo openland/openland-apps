@@ -276,12 +276,14 @@ mutation BuyPremiumChatSubscription($chatId: ID!) {
             id
             state
         }
+        membership
     }
 }
 mutation BuyPremiumChatPass($chatId: ID!) {
     betaBuyPremiumChatPass(chatId: $chatId) {
         id
         premiumPassIsActive
+        membership
     }
 }
 

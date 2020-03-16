@@ -4145,7 +4145,8 @@ private let BuyPremiumChatPassSelector = obj(
             field("betaBuyPremiumChatPass", "betaBuyPremiumChatPass", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
-                    field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean")))
+                    field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean"))),
+                    field("membership", "membership", notNull(scalar("String")))
                 )))
         )
 private let BuyPremiumChatSubscriptionSelector = obj(
@@ -4157,7 +4158,8 @@ private let BuyPremiumChatSubscriptionSelector = obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("id", "id", notNull(scalar("ID"))),
                             field("state", "state", notNull(scalar("String")))
-                        ))
+                        )),
+                    field("membership", "membership", notNull(scalar("String")))
                 )))
         )
 private let CancelSubscriptionSelector = obj(
@@ -5836,13 +5838,13 @@ class Operations {
     let BuyPremiumChatPass = OperationDefinition(
         "BuyPremiumChatPass",
         .mutation, 
-        "mutation BuyPremiumChatPass($chatId:ID!){betaBuyPremiumChatPass(chatId:$chatId){__typename id premiumPassIsActive}}",
+        "mutation BuyPremiumChatPass($chatId:ID!){betaBuyPremiumChatPass(chatId:$chatId){__typename id premiumPassIsActive membership}}",
         BuyPremiumChatPassSelector
     )
     let BuyPremiumChatSubscription = OperationDefinition(
         "BuyPremiumChatSubscription",
         .mutation, 
-        "mutation BuyPremiumChatSubscription($chatId:ID!){betaBuyPremiumChatSubscription(chatId:$chatId){__typename id premiumPassIsActive premiumSubscription{__typename id state}}}",
+        "mutation BuyPremiumChatSubscription($chatId:ID!){betaBuyPremiumChatSubscription(chatId:$chatId){__typename id premiumPassIsActive premiumSubscription{__typename id state}membership}}",
         BuyPremiumChatSubscriptionSelector
     )
     let CancelSubscription = OperationDefinition(

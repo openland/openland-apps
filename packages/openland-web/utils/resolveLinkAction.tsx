@@ -9,8 +9,6 @@ import { trackEvent } from 'openland-x-analytics';
 import { OpenlandClient } from 'openland-api/spacex';
 import { XViewRouter } from 'react-mental';
 import AlertBlanket from 'openland-x/AlertBlanket';
-import { showPayConfirm } from 'openland-web/fragments/wallet/modals/showPayConfirm';
-import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { showPremiumPayConfirm } from 'openland-web/fragments/discover/components/JoinButtonPremium';
 
 const showRevokedInviteModal = () => {
