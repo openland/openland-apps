@@ -101,18 +101,18 @@ const primaryActiveStyle = css`
 
 const secondaryStyle = css`
     color: var(--foregroundSecondary);
-    background-color: var(--backgroundTertiary);
+    background-color: var(--backgroundTertiaryTrans);
 `;
 
 const secondaryHoverStyle = css`
     &:hover {
-        background-color: var(--backgroundTertiaryHover);
+        background-color: #ebedf0;
     }
 `;
 
 const secondaryActiveStyle = css`
     &:active {
-        background-color: var(--backgroundTertiaryActive);
+        background-color: #e6e7eb;
     }
 `;
 

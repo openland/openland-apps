@@ -23,9 +23,8 @@ class RNPatchNode: ASDisplayNode {
   }
   
   func setSpec(spec: AsyncPatch) {
-    
     // Nothing to update
-    if self.spec != nil && (spec.source == self.spec!.source && spec.left == self.spec?.left && spec.right == self.spec?.right && spec.top == self.spec?.top && spec.bottom == self.spec?.bottom && spec.tint == self.spec?.tint) {
+    if self.spec != nil && (spec.source == self.spec!.source && spec.left == self.spec?.left && spec.right == self.spec?.right && spec.top == self.spec?.top && spec.bottom == self.spec?.bottom && spec.tint?.description == self.spec?.tint?.description) {
       return
     }
     
@@ -39,7 +38,7 @@ class RNPatchNode: ASDisplayNode {
       if let val = patchBaseCache[spec.source] {
         _baseImage = val
       } else {
-        _baseImage = try! UIImage(data: Data(contentsOf: URL(string: spec.source)!), scale: UIScreen.main.scale)
+        _baseImage = (try? UIImage(data: Data(contentsOf: URL(string: spec.source)!), scale: UIScreen.main.scale) ) ?? nil
         if _baseImage != nil {
           patchBaseCache[spec.source] = _baseImage
         }
@@ -55,16 +54,16 @@ class RNPatchNode: ASDisplayNode {
     self.node.placeholderEnabled = false
     self.node.placeholderFadeDuration = 0.0
     self.node.placeholderColor = UIColor.white
-    
-    if(spec.tint != nil){
-        let modificationBlock = { (originalImage: UIImage) -> UIImage? in
-            return ASImageNodeTintColorModificationBlock(spec.tint!)(originalImage)
-        }
-        self.node.imageModificationBlock = modificationBlock
-    }
     self.node.image = _baseImage?.resizableImage(withCapInsets: UIEdgeInsets(top: CGFloat(spec.top), left: CGFloat(spec.left), bottom: CGFloat(spec.bottom), right: CGFloat(spec.right)), resizingMode: UIImage.ResizingMode.stretch)
     
   }
+  
+  override func willEnterHierarchy() {
+    if(self.node.displaySuspended){
+      recursivelySetDisplaySuspended(false)
+    }
+  }
+    
   
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
     return ASInsetLayoutSpec(insets: UIEdgeInsets.zero, child: self.node)

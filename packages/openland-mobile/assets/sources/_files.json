@@ -1170,6 +1170,13 @@
             "sizes": [
                 40
             ]
+        },
+        {
+            "name": "ic-arrow-down-glyph",
+            "src": "ic-arrow-down-glyph-24.svg",
+            "sizes": [
+                24
+            ]
         }
     ]
 }

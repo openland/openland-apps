@@ -101,6 +101,12 @@ class RNAsyncTextNode: ASTextNode, ASTextNodeDelegate {
     
     self.truncationMode = .byTruncatingTail
   }
+  
+  override func willEnterHierarchy() {
+    if(displaySuspended){
+      recursivelySetDisplaySuspended(false)
+    }
+  }
 
   func textNode(_ textNode: ASTextNode!, shouldHighlightLinkAttribute attribute: String!, value: Any!, at point: CGPoint) -> Bool {
     return true

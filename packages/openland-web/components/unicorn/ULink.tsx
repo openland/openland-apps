@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isInternalLink } from 'openland-web/utils/isInternalLink';
+import { isInternalLink } from 'openland-y-utils/isInternalLink';
 import { XViewRouterContext } from 'react-mental';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
 

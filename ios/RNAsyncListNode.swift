@@ -383,7 +383,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           if ex != nil {
             fatalError("Item already exists!")
           }
-          let cell = RNAsyncCell(spec: itm.config, context: self.context)
+          let cell = RNAsyncCell(spec: itm.config, context: self.context, applyModes: self.applyModes)
           openland.lock(lockObj, blk: {
             self.activeCellsStrong[itm.key] = cell
             pendingCells[itm.key] = cell
@@ -462,7 +462,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       if ex != nil {
         fatalError("Item already exists!")
       }
-      let cell = RNAsyncCell(spec: state.items[index].config, context: self.context)
+      let cell = RNAsyncCell(spec: state.items[index].config, context: self.context, applyModes: self.applyModes)
       cell.applyModes = self.applyModes
       self.activeCellsStrong[state.items[index].key] = cell
       
@@ -490,22 +490,22 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   func onUpdated(index: Int, state: RNAsyncDataViewState) {
     self.queue.async {
+      let myGroup = DispatchGroup()
+      myGroup.enter();
+      DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated).async {
+        let c = self.activeCellsStrong[state.items[index].key]
+        if(c == nil){
+          return
+        }
+        c!.applyModes = self.applyModes
+        c!.setSpec(spec: state.items[index].config)
+         myGroup.leave();
+      }
+      myGroup.wait()
       DispatchQueue.main.async {
         self.node.performBatch(animated: false, updates: {
-          let c = self.activeCellsStrong[state.items[index].key]
-          if(c == nil){
-            return
-          }
-          c!.applyModes = self.applyModes
-          c!.setSpec(spec: state.items[index].config)
           self.state = state
-           // hack for disabling animations
-          if #available(iOS 13, *) {
-              // hack is not needed anymore, actually it breaks rendering
-          } else {
-             self.node.moveItem(at: IndexPath(item: index, section: 1), to: IndexPath(item: index, section: 1))
-          }
-          
+          self.node.reloadItems(at: [IndexPath(item: index, section: 1)])
         }, completion: nil)
       }
     }
@@ -527,7 +527,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
               fatalError("Item already exists: \(itm.key)")
             }
           })
-          let cell = RNAsyncCell(spec: itm.config, context: self.context)
+          let cell = RNAsyncCell(spec: itm.config, context: self.context, applyModes: self.applyModes)
           openland.lock(lockObj, blk: {
             self.activeCellsStrong[itm.key] = cell
             pendingCells[itm.key] = cell

@@ -35,11 +35,9 @@ class RNImageNode: ASDisplayNode {
   }
 
   func setSpec(spec: AsyncImageSpec) {
-    if self.url != spec.url || self.currentTintColor != spec.tintColor {
+    if self.url != spec.url || self.currentTintColor?.description != spec.tintColor?.description {
       // Cancel previous task
-      if self.task != nil {
-        self.task?.cancel()
-      }
+      self.task?.cancel()
       self.url = spec.url
       self.currentTintColor = spec.tintColor
       if spec.url != "" {
@@ -86,6 +84,12 @@ class RNImageNode: ASDisplayNode {
     }
     
     // self.node.tintColor = spec.tintColor
+  }
+  
+  override func willEnterHierarchy() {
+    if(self.node.displaySuspended){
+      recursivelySetDisplaySuspended(false)
+    }
   }
   
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {

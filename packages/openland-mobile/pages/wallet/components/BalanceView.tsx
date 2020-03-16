@@ -4,7 +4,9 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import LinearGradient from 'react-native-linear-gradient';
 import { Money } from 'openland-y-utils/wallet/Money';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { ZButton } from 'openland-mobile/components/ZButton';
+import { BalanceActionButton } from './BalanceActionButton';
+import { SRouterContext } from 'react-native-s/SRouterContext';
+import { showWithdrawFunds } from './showWithdrawFunds';
 
 interface BalanceViewProps {
     amount: number;
@@ -13,20 +15,20 @@ interface BalanceViewProps {
 export const BalanceView = (props: BalanceViewProps) => {
     const { amount } = props;
     const theme = React.useContext(ThemeContext);
-    let showTopUp = false;
+    const router = React.useContext(SRouterContext)!;
 
     return (
         <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} paddingTop={16} paddingBottom={32} paddingHorizontal={16} flexDirection="row">
             <View flexGrow={1} alignItems="flex-start">
-                <Text style={{ ...TextStyles.Body, textAlign: 'center', color: theme.foregroundSecondary, marginBottom: 4 }} allowFontScaling={false}>
-                    Your balance
-                </Text>
                 <Text style={{ ...TextStyles.Title1, textAlign: 'center', color: theme.foregroundPrimary, }} allowFontScaling={false}>
                     <Money amount={amount} />
                 </Text>
+                <Text style={{ ...TextStyles.Body, textAlign: 'center', color: theme.foregroundSecondary, marginTop: 4 }} allowFontScaling={false}>
+                    Your balance
+                </Text>
             </View>
-            <View flexGrow={1} alignItems="flex-end" paddingTop={12}>
-                {showTopUp && <ZButton title="Top up" />}
+            <View flexGrow={1} alignItems="flex-end" paddingTop={10}>
+                <BalanceActionButton source={require('assets/ic-arrow-down-glyph-24.png')} onPress={() => showWithdrawFunds(router)} />
             </View>
         </LinearGradient>
     );

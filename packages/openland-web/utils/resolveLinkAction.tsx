@@ -9,6 +9,7 @@ import { trackEvent } from 'openland-x-analytics';
 import { OpenlandClient } from 'openland-api/spacex';
 import { XViewRouter } from 'react-mental';
 import AlertBlanket from 'openland-x/AlertBlanket';
+import { showPremiumPayConfirm } from 'openland-web/fragments/discover/components/JoinButtonPremium';
 
 const showRevokedInviteModal = () => {
     AlertBlanket.builder()
@@ -18,30 +19,37 @@ const showRevokedInviteModal = () => {
 };
 
 export const resolveInvite = async (url: string, client: OpenlandClient, router: XViewRouter, fallback?: () => void, ignoreJoin?: boolean) => {
-    let split = url.split('/');
-    let key = split[split.length - 1];
-    let invite = await client.queryResolvedInvite({ key }, { fetchPolicy: 'network-only' });
-    // must show prview on matchmaking, just join/open in other cases
-    if (invite.invite && invite.invite.__typename === 'RoomInvite' && (!invite.invite.room.matchmaking || !invite.invite.room.matchmaking.enabled)) {
-        if (invite.invite.room.membership !== 'MEMBER') {
-            if (invite.invite.room.__typename === 'SharedRoom' && invite.invite.room.isPremium || ignoreJoin) {
-                router.navigate(`/invite/${key}`);
-                return;
+    if (url.includes('/invite/')) {
+        let split = url.split('/');
+        let key = split[split.length - 1];
+        let invite = await client.queryResolvedInvite({ key }, { fetchPolicy: 'network-only' });
+        // must show prview on matchmaking, just join/open in other cases
+        if (invite.invite && invite.invite.__typename === 'RoomInvite' && (!invite.invite.room.matchmaking || !invite.invite.room.matchmaking.enabled)) {
+            if (invite.invite.room.membership !== 'MEMBER') {
+                if (ignoreJoin) {
+                    router.navigate(`/invite/${key}`);
+                    return;
+                } else {
+                    if (invite.invite.room.isPremium && !invite.invite.room.premiumPassIsActive) {
+                        showPremiumPayConfirm({ group: invite.invite.room }, client, router);
+                    } else {
+                        await client.mutateRoomJoinInviteLink({ invite: key });
+                        router.navigate(`/mail/${invite.invite.room.id}`);
+                    }
+                    return;
+                }
             } else {
-                await client.mutateRoomJoinInviteLink({ invite: key });
                 router.navigate(`/mail/${invite.invite.room.id}`);
                 return;
             }
-        } else {
-            router.navigate(`/mail/${invite.invite.room.id}`);
+
+        }
+        if (!invite.invite) {
+            showRevokedInviteModal();
             return;
         }
+    }
 
-    }
-    if (!invite.invite) {
-        showRevokedInviteModal();
-        return;
-    }
     if (fallback) {
         fallback();
     }
@@ -78,7 +86,7 @@ export const resolveLinkAction = (url: string | null, client: OpenlandClient, ro
             action_type: 'write_first_message'
         });
         showWriteFirstMessageModal();
-    } else if (url && url.includes('/invite')) {
+    } else if (url) {
         return resolveInvite(url, client, router, fallback);
     } else if (fallback) {
         fallback();
