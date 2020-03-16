@@ -364,8 +364,7 @@ const AutoCompleteComponent = React.memo(
             );
 
             let matched: ListItem[] | undefined = [];
-            let currentWord = lastActiveWord.current;
-            const usersRef = React.useRef<ListItem[]>([]);
+            let currentWord = word;
             if (props.groupId) {
                 let query = currentWord && currentWord.startsWith('@') ? currentWord.substring(1) : undefined;
                 const mentions = client.useChatMentionSearch({
@@ -400,10 +399,9 @@ const AutoCompleteComponent = React.memo(
                         res = [{__typename: 'placeholder', selectable: false}];
                     }
                     setUsers(res);
-                    usersRef.current = res;
                 }
                 if (users && currentWord && currentWord.startsWith('@')) {
-                    matched = [...usersRef.current];
+                    matched = [...users];
                 }
             }
             let filtered: { name: string; value: string; shortcode: string; selectable?: boolean; }[] = [];
