@@ -399,7 +399,7 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
     const priceField = useField<string>('input.price', '1', form, [
         {
             checkIsValid: x => {
-                return Number.isInteger(Number(x));
+                return /^[0-9]*$/.test(x);
             },
             text: 'Numbers only',
         },

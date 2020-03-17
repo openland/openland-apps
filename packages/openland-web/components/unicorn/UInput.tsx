@@ -15,11 +15,15 @@ const inputWrapper = css`
         background-color: var(--backgroundTertiaryHoverTrans);
     }
 
-    &:focus-within div.input-label, &.has-prefix div.input-label {
+    &:focus-within div.input-label {
         font-size: 13px;
         line-height: 18px;
         color: var(--accentPrimary);
         top: 8px;
+    }
+
+    &:not(:focus-within) div.input-prefix {
+        display: none;
     }
 
     input[type='number']::-webkit-inner-spin-button,
@@ -154,7 +158,7 @@ export const UInput = React.forwardRef(
         return (
             <XView {...other}>
                 <div className={cx(inputWrapper, hasPlaceholder && inputWrapperWithPlaceholder, prefixText && 'has-prefix')}>
-                    <div className={cx(prefixStyle, inputTextStyle)} ref={prefixRef}>{prefixText}</div>
+                    <div className={cx(prefixStyle, inputTextStyle, !valueText && 'input-prefix')} ref={prefixRef}>{prefixText}</div>
                     <input
                         disabled={disabled}
                         value={valueText}
