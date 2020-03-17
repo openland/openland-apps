@@ -107,6 +107,17 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
         setPlaceholderWidth(e.nativeEvent.layout.width);
     }, []);
 
+    React.useEffect(() => {
+        if (!focused && !!props.value) {
+            Animated.timing(animation, {
+                toValue: 1,
+                duration: DURATION_PLACEHOLDER_ANIMATION,
+                useNativeDriver: true
+            }).start();
+            setFilled(true);
+        }
+    }, [props.value]);
+
     const placeholderAimatedStyle = {
         transform: [
             {

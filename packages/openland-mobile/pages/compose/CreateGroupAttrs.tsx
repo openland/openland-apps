@@ -208,20 +208,27 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                         {distributionField.value !== DistributionType.FREE && (
                             // without this shit selector dont work!
                             <React.Suspense fallback={null}>
-                                <View flexDirection={isSubscription ? 'row' : undefined}>
+                                <View flexDirection={isSubscription ? 'row' : undefined} paddingHorizontal={16} marginBottom={16}>
                                     <View
                                         flexGrow={1}
                                         flexShrink={0}
                                         flexBasis={0}
+                                        marginRight={isSubscription ? 8 : undefined}
                                     >
-                                        <ZInput placeholder="Price" prefix="$" field={priceField} keyboardType="numeric" />
+                                        <ZInput
+                                            placeholder="Price" 
+                                            prefix="$" 
+                                            field={priceField} 
+                                            keyboardType="numeric" 
+                                            noWrapper={true} 
+                                        />
                                     </View>
                                     {isSubscription && (
                                         <View
                                             flexGrow={1}
                                             flexShrink={0}
                                             flexBasis={0}
-                                            paddingRight={16}
+                                            marginLeft={8}
                                         >
                                             <ZSelect
                                                 noWrapper={true}
