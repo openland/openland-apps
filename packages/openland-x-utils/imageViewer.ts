@@ -27,7 +27,7 @@ export interface ImageViewerCb {
     current: currentT;
 }
 
-export function useImageViewer(data: dataT, currentId: string): ImageViewerCb {
+export function useImageViewer(data: dataT): ImageViewerCb {
     let prevCursor = null;
     let nextCursor = null;
     let index = data.edges[0].index;

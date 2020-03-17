@@ -233,7 +233,7 @@ const ModalController = React.memo((props: ModalControllerProps) => {
     React.useEffect(
         () => {
             if (sharedInfo && props.cursor) {
-                const viewerData = useImageViewer(sharedInfo, props.cursor);
+                const viewerData = useImageViewer(sharedInfo);
                 props.setViewerState(viewerData);
             }
         },
