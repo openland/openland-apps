@@ -28,16 +28,14 @@ export interface ImageViewerCb {
 }
 
 export function useImageViewer(data: dataT, currentId: string): ImageViewerCb {
-    let hasPrev = false;
-    let hasNext = false;
     let prevCursor = null;
     let nextCursor = null;
-    let index = 0;
+    let index = data.edges[0].index;
     let count = data.pageInfo.itemsCount;
 
     const getMsg = (i: number) => data.edges[i].node.message as messageT;
 
-    let current: currentT = {
+    let current = {
         fileId: (getMsg(0).attachments[0] as fileT).fileId,
         imageWidth: (getMsg(0).attachments[0] as fileT).fileMetadata.imageWidth || 0,
         imageHeight: (getMsg(0).attachments[0] as fileT).fileMetadata.imageHeight || 0,
@@ -47,51 +45,22 @@ export function useImageViewer(data: dataT, currentId: string): ImageViewerCb {
     };
 
     if (data.edges.length === 3) {
-        hasNext = true;
-        hasPrev = true;
-        current = {
-            fileId: (getMsg(1).attachments[0] as fileT).fileId,
-            imageWidth: (getMsg(1).attachments[0] as fileT).fileMetadata.imageWidth || 0,
-            imageHeight: (getMsg(1).attachments[0] as fileT).fileMetadata.imageHeight || 0,
-            filePreview: (getMsg(1).attachments[0] as fileT).filePreview || '',
-            date: parseInt(getMsg(1).date, 10),
-            senderName: getMsg(1).sender.name,
-        };
-        index = data.edges[1].index;
-        prevCursor = (data.edges[2].node.message as messageT).id;
-        nextCursor = (data.edges[0].node.message as messageT).id;
+        prevCursor = (data.edges[1].node.message as messageT).id;
+        nextCursor = (data.edges[2].node.message as messageT).id;
     }
 
     if (data.edges.length === 2) {
-        data.edges.map((i, j) => {
-            if ((i.node.message as messageT).id === currentId) {
-                current = {
-                    fileId: (getMsg(j).attachments[0] as fileT).fileId,
-                    imageWidth: (getMsg(j).attachments[0] as fileT).fileMetadata.imageWidth || 0,
-                    imageHeight: (getMsg(j).attachments[0] as fileT).fileMetadata.imageHeight || 0,
-                    filePreview: (getMsg(j).attachments[0] as fileT).filePreview || '',
-                    date: parseInt(getMsg(j).date, 10),
-                    senderName: getMsg(j).sender.name,
-                };
-                index = i.index;
-                hasPrev = j === 0;
-                hasNext = j === 1;
-
-                if (hasPrev) {
-                    prevCursor = getMsg(0).id;
-                }
-                if (hasNext) {
-                    nextCursor = getMsg(1).id;
-                }
-
-                return;
-            }
-        });
+        if (data.pageInfo.hasNextPage) {
+            prevCursor = (data.edges[1].node.message as messageT).id;
+        }
+        if (data.pageInfo.hasPreviousPage) {
+            nextCursor = (data.edges[1].node.message as messageT).id;
+        }
     }
 
     return {
-        hasNextPage: hasNext,
-        hasPrevPage: hasPrev,
+        hasPrevPage: data.pageInfo.hasNextPage,
+        hasNextPage: data.pageInfo.hasPreviousPage,
         prevCursor: prevCursor,
         nextCursor: nextCursor,
         index: index,
