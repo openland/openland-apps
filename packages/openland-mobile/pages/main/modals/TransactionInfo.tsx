@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { showBottomSheet, BottomSheetActions } from 'openland-mobile/components/BottomSheet';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useTheme, ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import LinearGradient from 'react-native-linear-gradient';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { WalletTransactionFragment } from 'openland-api/spacex.types';
 import { convertTransaction, TransactionConvertedStatus } from 'openland-y-utils/wallet/transaction';
+import { SRouter } from 'react-native-s/SRouter';
 
 const InfoItem = React.memo<{ name: string, secondary?: boolean, value?: string, status?: TransactionConvertedStatus }>((props) => {
     const theme = useTheme();
@@ -38,13 +39,19 @@ const InfoItem = React.memo<{ name: string, secondary?: boolean, value?: string,
 
 interface TransactionInfoProps {
     item: WalletTransactionFragment;
+    router?: SRouter;
 }
 
 const TransactionInfo = React.memo<TransactionInfoProps & { ctx: BottomSheetActions }>((props) => {
     const theme = React.useContext(ThemeContext);
-    const { avatar, title, type, dateTime, amount, walletAmount, chargeAmount, paymentMethod, interval, status } = convertTransaction(props.item);
+    const { avatar, title, type, dateTime, amount, walletAmount, chargeAmount, paymentMethod, interval, status, group } = convertTransaction(props.item);
     const hasSplittedAmount = !!walletAmount && !!chargeAmount;
-
+    const productPress = React.useCallback(() => {
+        if (group) {
+            props.router?.push('Conversation', { id: group.id });
+            props.ctx.hide();
+        }
+    }, [props.item]);
     return (
         <View>
             <LinearGradient
@@ -55,10 +62,13 @@ const TransactionInfo = React.memo<TransactionInfoProps & { ctx: BottomSheetActi
                 alignItems="center"
                 marginBottom={16}
             >
-                {avatar && <ZAvatar size="xx-large" {...avatar} />}
-                {!avatar && <Image source={require('assets/ic-top-up-40.png')} style={{ width: 96, height: 96 }} />}
-
-                <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 16, marginBottom: 4 }} allowFontScaling={false}>{title}</Text>
+                <TouchableOpacity onPress={productPress} >
+                    <View alignItems="center">
+                        {avatar && <ZAvatar size="xx-large" {...avatar} />}
+                        {!avatar && <Image source={require('assets/ic-top-up-40.png')} style={{ width: 96, height: 96 }} />}
+                        <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 16, marginBottom: 4 }} allowFontScaling={false}>{title}</Text>
+                    </View>
+                </TouchableOpacity>
                 <Text style={{ ...TextStyles.Body, color: theme.foregroundTertiary }} allowFontScaling={false}>
                     {type}{!!interval && `, ${interval}`}
                 </Text>

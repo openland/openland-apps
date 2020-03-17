@@ -7,6 +7,7 @@ export type TransactionConvertedStatus = 'pending' | 'failing' | 'canceled' | 's
 export interface TransactionConverted {
     id: string;
     avatar?: { id: string, title: string, photo: string | null | undefined };
+    group?: { id: string };
     title: string;
     type: string;
     interval?: string;
@@ -63,6 +64,7 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
         if (product.__typename === 'WalletProductGroup') {
             converted.title = product.group.title;
             converted.avatar = getAvatar(product.group);
+            converted.group = product.group;
         } else if (product.__typename === 'WalletProductDonation') {
             converted.title = product.user.name;
             converted.avatar = getAvatar(product.user);
@@ -95,6 +97,7 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
             if (product.__typename === 'WalletProductGroup') {
                 converted.title = product.group.title;
                 converted.avatar = getAvatar(product.group);
+                converted.group = product.group;
             } else if (product.__typename === 'WalletProductDonation') {
                 converted.title = product.user.name;
                 converted.avatar = getAvatar(product.user);
@@ -113,6 +116,7 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
         if (product.__typename === 'WalletProductGroup') {
             converted.title = product.group.title;
             converted.avatar = getAvatar(product.group);
+            converted.group = product.group;
         } else if (product.__typename === 'WalletProductDonation') {
             converted.title = product.user.name;
             converted.avatar = getAvatar(product.user);

@@ -31,7 +31,7 @@ export const TransactionView = (props: TransactionViewProps) => {
     }, [actionRequired]);
 
     const handlePress = React.useCallback(() => {
-        showTransactionInfo({ item: props.item });
+        showTransactionInfo({ item: props.item, router });
     }, [props.item]);
 
     return (

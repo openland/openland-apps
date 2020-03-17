@@ -47,12 +47,12 @@ const StatusColor: { [key in TransactionConvertedStatus]: string } = {
 };
 
 const TransactionComponent = React.memo((props: { ctx: XModalController, transaction: WalletTransactionFragment }) => {
-    const { avatar, title, type, dateTime, status, amount, walletAmount, chargeAmount, interval, paymentMethod } = convertTransaction(props.transaction);
+    const { avatar, title, type, dateTime, status, amount, walletAmount, chargeAmount, interval, paymentMethod, group } = convertTransaction(props.transaction);
     const hasSplittedAmount = !!walletAmount && !!chargeAmount;
 
     return (
         <XView paddingTop={12} paddingBottom={16} paddingHorizontal={24}>
-            <XView alignItems="center" justifyContent="center">
+            <XView alignItems="center" justifyContent="center" cursor="pointer" path={group ? '/mail/' + group.id : undefined} onClick={props.ctx.hide}>
                 {avatar ? <UAvatar {...avatar} size='xx-large' /> : <DepositAvatar size="xx-large" />}
 
                 <div className={cx(TextTitle2, titleBox)}>
