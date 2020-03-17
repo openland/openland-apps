@@ -18,6 +18,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
+import { emoji } from 'openland-y-utils/emoji';
 import { useClient } from 'openland-api/useClient';
 
 const modalImgContainer = css`
@@ -100,8 +101,6 @@ const imgContainer = css`
     min-height: 72px;
     min-width: 72px;
     max-width: 100%;
-    // max-height: 600px;
-    overflow: hidden;
     border-radius: 8px;
     background-color: #f0f2f5;
     z-index: 0;
@@ -134,10 +133,6 @@ const imgPreviewClass = css`
     transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
 `;
 
-const imgPreviewHiddenClass = css`
-    opacity: 0;
-`;
-
 const imgAppearClass = css`
     opacity: 0;
     transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -153,10 +148,6 @@ const imgAppearClass = css`
     will-change: opacity;
     background: transparent;
     object-fit: contain;
-`;
-
-const imgAppearInstantClass = css`
-    opacity: 1;
     cursor: pointer;
 `;
 
@@ -240,29 +231,31 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const messenger = React.useContext(MessengerContext);
     const imgRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
-    const renderTime = new Date().getTime();
 
     const [viewerState, setViewerState] = React.useState<ImageViewerCb | null>(null);
     const [cursor, setCursor] = React.useState(props.mId);
 
     const onLoad = React.useCallback(() => {
-        let delta = new Date().getTime() - renderTime;
         if (imgRef.current && loaderRef.current) {
-            if (delta < 50) {
-                // show image instantly if loaded fast enough
-                imgRef.current.classList.add(imgAppearInstantClass);
-                loaderRef.current.style.opacity = '0';
-            } else {
-                // animate loaded via transition
-                imgRef.current.style.opacity = '1';
-                loaderRef.current.style.opacity = '0';
-            }
+            imgRef.current.style.opacity = '1';
+            imgRef.current.style.visibility = 'visible';
+            loaderRef.current.style.opacity = '0';
+            loaderRef.current.style.display = 'none';
         }
     }, []);
 
+    React.useLayoutEffect(() => {
+        if (imgRef.current && loaderRef.current) {
+            imgRef.current.style.opacity = '0';
+            imgRef.current.style.visibility = 'hidden';
+            loaderRef.current.style.opacity = '1';
+            loaderRef.current.style.display = 'flex';
+        }
+    }, [viewerState]);
+
     const forwardCallback = React.useCallback(() => {
         showChatPicker((id: string) => {
-            messenger.sender.shareFile(id, props.fileId);
+            messenger.sender.shareFile(id, viewerState ? viewerState.current.fileId : props.fileId);
         });
     }, []);
 
@@ -271,7 +264,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
         : props.senderNameEmojify
         ? props.senderNameEmojify
         : props.sender
-        ? props.sender.name
+        ? emoji(props.sender.name)
         : '';
 
     const date = viewerState ? viewerState.current.date : props.date;
@@ -402,19 +395,10 @@ const GifContent = React.memo(
     (props: { file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile }) => {
         const gifRef = React.useRef<HTMLVideoElement>(null);
         const loaderRef = React.useRef<HTMLDivElement>(null);
-        const renderTime = new Date().getTime();
         const onLoad = React.useCallback(() => {
-            let delta = new Date().getTime() - renderTime;
             if (gifRef.current && loaderRef.current) {
-                if (delta < 50) {
-                    // show image instantly if loaded fast enough
-                    gifRef.current.classList.add(imgAppearInstantClass);
-                    loaderRef.current.style.opacity = '0';
-                } else {
-                    // animate loaded via transition
-                    gifRef.current.style.opacity = '1';
-                    loaderRef.current.style.opacity = '0';
-                }
+                gifRef.current.style.opacity = '1';
+                loaderRef.current.style.opacity = '0';
             }
         }, []);
 
@@ -506,22 +490,13 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
     const imgRef = React.useRef<HTMLImageElement>(null);
     const imgPrevRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
-    const renderTime = new Date().getTime();
 
     const onLoad = React.useCallback(() => {
-        let delta = new Date().getTime() - renderTime;
         if (imgRef.current && imgPrevRef.current && loaderRef.current) {
-            if (delta < 50) {
-                // show image instantly if loaded fast enough
-                imgRef.current.classList.add(imgAppearInstantClass);
-                imgPrevRef.current.classList.add(imgPreviewHiddenClass);
-                loaderRef.current.style.opacity = '0';
-            } else {
-                // animate loaded via transition
-                imgRef.current.style.opacity = '1';
-                imgPrevRef.current.style.opacity = '0';
-                loaderRef.current.style.opacity = '0';
-            }
+            imgRef.current.style.opacity = '1';
+            imgPrevRef.current.style.opacity = '0';
+            imgPrevRef.current.style.visibility = 'hidden';
+            loaderRef.current.style.opacity = '0';
         }
     }, []);
 
