@@ -72,7 +72,7 @@ export const ListingCompact = React.memo((props: ListingCompactProps) => {
 
     const onClick = () => {
         if (props.path) {
-            router.router.reset(props.path);
+            router.router.navigate(props.path);
         }
     };
 
