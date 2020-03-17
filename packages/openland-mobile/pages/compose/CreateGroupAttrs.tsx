@@ -83,7 +83,7 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
     const titleField = useField('title', '', form);
     const kindField = useField<SharedRoomKind>(
         'kind',
-        orgIdFromRouter ? SharedRoomKind.PUBLIC : SharedRoomKind.GROUP,
+        SharedRoomKind.PUBLIC,
         form,
     );
     const distributionField = useField<DistributionType>(
@@ -166,7 +166,11 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
             }
 
             trackEvent('navigate_new_group_add_members');
-            showMembersModal(props.router, res);
+            if (distributionField.value === DistributionType.FREE) {
+                showMembersModal(props.router, res);
+            } else {
+                props.router.pushAndReset('Conversation', { id: res.room.id });
+            }
         });
     };
 
@@ -263,7 +267,7 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                                 value: SharedRoomKind.GROUP,
                             },
                             {
-                                label: 'Shared',
+                                label: 'Public',
                                 subtitle: 'Visible in group search',
                                 value: SharedRoomKind.PUBLIC,
                             },
