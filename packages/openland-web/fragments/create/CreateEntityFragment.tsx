@@ -6,7 +6,7 @@ import { useClient } from 'openland-api/useClient';
 import { XView, XViewRouterContext } from 'react-mental';
 import { useShake } from 'openland-web/pages/auth/components/authComponents';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { UInputField } from 'openland-web/components/unicorn/UInput';
+import { UInputField, UInputErrorText } from 'openland-web/components/unicorn/UInput';
 import { UTextAreaField } from 'openland-web/components/unicorn/UTextArea';
 import { USelectField } from 'openland-web/components/unicorn/USelect';
 import { UAvatarUploadField, StoredFileT } from 'openland-web/components/unicorn/UAvatarUpload';
@@ -253,6 +253,7 @@ interface CreatingContainerProps {
     getSettingsData: (avatar: StoredFileT | undefined | null, title: string) => void;
     onPeopleChange: (data: Map<string, string> | null) => void;
     handleDone: () => void;
+    hasError?: boolean;
 }
 
 const CreatingContainer = React.memo((props: CreatingContainerProps) => {
@@ -286,7 +287,7 @@ const CreatingContainer = React.memo((props: CreatingContainerProps) => {
         setSettingsPage(true);
     }, []);
 
-    const canNextClick = !!titleField.value.trim();
+    const canNextClick = !!titleField.value.trim() && !props.hasError;
 
     const onNext = () => {
         if (!canNextClick) {
@@ -395,22 +396,41 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
         DistributionType.FREE,
         form,
     );
-    const priceField = useField<number | null>('input.price', null, form);
+    const priceField = useField<string>('input.price', '1', form, [
+        {
+            checkIsValid: x => {
+                return Number.isInteger(Number(x));
+            },
+            text: 'Numbers only',
+        },
+        {
+            checkIsValid: x => {
+                return Number(x) <= 1000;
+            },
+            text: '$1000 maximum',
+        },
+        {
+            checkIsValid: x => {
+                return Number(x) >= 1;
+            },
+            text: '$1 minimum',
+        },
+    ]);
     const intervalField = useField<WalletSubscriptionInterval | null>('input.interval', null, form);
 
     React.useEffect(
         () => {
             if (distributionField.value === DistributionType.FREE) {
-                priceField.input.onChange(null);
+                priceField.input.onChange('1');
                 intervalField.input.onChange(null);
             }
             if (distributionField.value === DistributionType.PAID) {
                 intervalField.input.onChange(null);
-                priceField.input.onChange(500);
+                priceField.input.onChange('1');
             }
             if (distributionField.value === DistributionType.SUBSCRIPTION) {
                 intervalField.input.onChange(WalletSubscriptionInterval.MONTH);
-                priceField.input.onChange(500);
+                priceField.input.onChange('1');
             }
         },
         [distributionField.value],
@@ -426,6 +446,7 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
     };
 
     const doSubmit = async () => {
+        const isPaid = [DistributionType.PAID, DistributionType.SUBSCRIPTION].includes(distributionField.value);
         const group = (await client.mutateRoomCreate({
             title: title,
             kind: secretField.value ? SharedRoomKind.GROUP : SharedRoomKind.PUBLIC,
@@ -433,7 +454,7 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
             members: !!people ? [...people.keys()] : [],
             organizationId: props.inOrgId || '',
             channel: props.entityType === 'channel',
-            price: priceField.value,
+            price:  isPaid ? parseInt(priceField.value, 10) * 100 : undefined,
             interval: intervalField.value,
         })).room;
 
@@ -448,6 +469,7 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
             getSettingsData={getSettingsData}
             onPeopleChange={onPeopleChange}
             handleDone={doSubmit}
+            hasError={!!priceField.input.errorText}
         >
             <div className={otherInputContainer}>
                 <USelectField
@@ -477,54 +499,45 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
                 />
             </div>
             {distributionField.value !== DistributionType.FREE && (
-                <div
-                    className={cx(
-                        otherInputContainer,
-                        distributionField.value === DistributionType.SUBSCRIPTION &&
-                            multiInputsContainer,
-                    )}
-                >
-                    <USelectField
-                        placeholder="Price"
-                        field={priceField as any}
-                        searchable={false}
-                        options={[
-                            {
-                                value: 100,
-                                label: '$1',
-                            },
-                            {
-                                value: 500,
-                                label: '$5',
-                            },
-                            {
-                                value: 1000,
-                                label: '$10',
-                            },
-                            {
-                                value: 2000,
-                                label: '$20',
-                            },
-                        ]}
-                    />
-                    {distributionField.value === DistributionType.SUBSCRIPTION && (
-                        <USelectField
-                            placeholder="Period"
-                            field={intervalField as any}
-                            searchable={false}
-                            options={[
-                                {
-                                    value: WalletSubscriptionInterval.WEEK,
-                                    label: 'Week',
-                                },
-                                {
-                                    value: WalletSubscriptionInterval.MONTH,
-                                    label: 'Month',
-                                },
-                            ]}
+                <>
+                    <div
+                        className={cx(
+                            otherInputContainer,
+                            distributionField.value === DistributionType.SUBSCRIPTION &&
+                                multiInputsContainer,
+                        )}
+                    >
+                        <UInputField
+                            field={priceField}
+                            label="Price"
+                            prefix="$"
+                            hideErrorText={true}
                         />
+                        {distributionField.value !== DistributionType.SUBSCRIPTION && priceField.input.errorText && (
+                            <UInputErrorText text={priceField.input.errorText} />
+                        )}
+                        {distributionField.value === DistributionType.SUBSCRIPTION && (
+                            <USelectField
+                                placeholder="Period"
+                                field={intervalField as any}
+                                searchable={false}
+                                options={[
+                                    {
+                                        value: WalletSubscriptionInterval.WEEK,
+                                        label: 'Week',
+                                    },
+                                    {
+                                        value: WalletSubscriptionInterval.MONTH,
+                                        label: 'Month',
+                                    },
+                                ]}
+                            />
+                        )}
+                    </div>
+                    {distributionField.value === DistributionType.SUBSCRIPTION && priceField.input.errorText && (
+                        <UInputErrorText text={priceField.input.errorText} />
                     )}
-                </div>
+                </>
             )}
             {!props.inOrgId && (
                 <div className={otherInputContainer}>

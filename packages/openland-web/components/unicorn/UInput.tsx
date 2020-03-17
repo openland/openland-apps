@@ -15,7 +15,7 @@ const inputWrapper = css`
         background-color: var(--backgroundTertiaryHoverTrans);
     }
 
-    &:focus-within div.input-label {
+    &:focus-within div.input-label, &.has-prefix div.input-label {
         font-size: 13px;
         line-height: 18px;
         color: var(--accentPrimary);
@@ -38,15 +38,28 @@ const inputWrapperWithPlaceholder = css`
     height: 40px;
 `;
 
+const prefixStyle = css`
+    position: absolute;
+    padding-top: 18px;
+    left: 16px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+`;
+
+const inputTextStyle = css`
+    font-size: 15px;
+    color: var(--foregroundPrimary);
+    line-height: 24px;
+`;
+
 const inputStyle = css`
+    position: relative;
     width: 100%;
     height: 100%;
     padding-left: 16px;
     padding-right: 16px;
     padding-top: 18px;
-    font-size: 15px;
-    color: var(--foregroundPrimary);
-    line-height: 24px;
 `;
 
 const inputStyleWithPlaceholder = css`
@@ -84,6 +97,7 @@ const labelInvalidStyle = css`
 export interface UInputProps extends XViewProps {
     label?: string;
     value?: string;
+    prefix?: string;
     disabled?: boolean;
     invalid?: boolean;
     type?: string;
@@ -99,6 +113,7 @@ export const UInput = React.forwardRef(
         const {
             label,
             value,
+            prefix,
             disabled,
             invalid,
             type,
@@ -111,6 +126,10 @@ export const UInput = React.forwardRef(
         } = props;
 
         const [val, setValue] = React.useState(value || '');
+        const prefixText = prefix || '';
+        const valueText = val || '';
+        const prefixRef = React.useRef<HTMLDivElement>(null);
+        const [inputShift, setInputShift] = React.useState(0);
 
         const handleChange = (v: string) => {
             setValue(v);
@@ -126,13 +145,20 @@ export const UInput = React.forwardRef(
             [value],
         );
 
+        React.useLayoutEffect(() => {
+            if (prefixRef.current) {
+                setInputShift(prefixRef.current.getBoundingClientRect().width);
+            }
+        }, [prefixRef.current]);
+
         return (
             <XView {...other}>
-                <div className={cx(inputWrapper, hasPlaceholder && inputWrapperWithPlaceholder)}>
+                <div className={cx(inputWrapper, hasPlaceholder && inputWrapperWithPlaceholder, prefixText && 'has-prefix')}>
+                    <div className={cx(prefixStyle, inputTextStyle)} ref={prefixRef}>{prefixText}</div>
                     <input
                         disabled={disabled}
-                        value={val || ''}
-                        className={cx(inputStyle, hasPlaceholder && inputStyleWithPlaceholder)}
+                        value={valueText}
+                        className={cx(inputStyle, inputTextStyle, hasPlaceholder && inputStyleWithPlaceholder)}
                         type={type}
                         pattern={pattern}
                         autoFocus={autofocus}
@@ -141,12 +167,13 @@ export const UInput = React.forwardRef(
                         maxLength={maxLength}
                         ref={ref}
                         {...hasPlaceholder && { placeholder: label }}
+                        style={{left: inputShift}}
                     />
                     {!hasPlaceholder && (
                         <div
                             className={cx(
                                 labelStyle,
-                                val && labelValueStyle,
+                                valueText && labelValueStyle,
                                 invalid && labelInvalidStyle,
                                 'input-label',
                             )}
@@ -158,6 +185,16 @@ export const UInput = React.forwardRef(
             </XView>
         );
     },
+);
+
+interface UInputErrorTextProps extends XViewProps {
+    text: string;
+}
+
+export const UInputErrorText = ({text, ...other}: UInputErrorTextProps) => (
+    <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12} {...other}>
+        {text}
+    </XView>
 );
 
 export const UInputField = React.forwardRef(
@@ -174,9 +211,7 @@ export const UInputField = React.forwardRef(
             <>
                 <UInput {...field.input} {...other} ref={ref} />
                 {(field.input.invalid || props.errorText) && !props.hideErrorText && (
-                    <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12}>
-                        {props.errorText ? props.errorText : field.input.errorText}
-                    </XView>
+                    <UInputErrorText text={props.errorText ? props.errorText : field.input.errorText} />
                 )}
             </>
         );
