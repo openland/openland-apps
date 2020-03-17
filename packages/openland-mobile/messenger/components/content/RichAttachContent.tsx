@@ -14,6 +14,7 @@ import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { resolveInternalLink } from 'openland-mobile/utils/resolveInternalLink';
 import { FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/spacex.types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+import { isInternalLink } from 'openland-y-utils/isInternalLink';
 
 interface UrlAugmentationContentProps {
     message: DataSourceMessageItem;
@@ -50,7 +51,7 @@ const getImageSize = ({width, height}: {width: number, height: number}) => {
 };
 
 export class RichAttachContent extends React.PureComponent<UrlAugmentationContentProps, { compactDownloadState?: DownloadState, largeDownloadState?: DownloadState }> {
-    private compactImageLayout: { width: number, height: number } = {width: 36, height: 36};
+    private compactImageLayout: { width: number, height: number } = {width: 40, height: 40};
     private compactDownloadManagerWatch?: WatchSubscription;
     private largeDownloadManagerWatch?: WatchSubscription;
     private imageCompact = false;
@@ -107,8 +108,9 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         if (this.state && this.state.compactDownloadState && this.state.compactDownloadState.path && this.props.attach.image && this.props.attach.image.metadata && this.props.attach.image.metadata.imageHeight && this.props.attach.image.metadata.imageWidth) {
             let w = this.props.attach.image.metadata.imageWidth;
             let h = this.props.attach.image.metadata.imageHeight;
+            let isInternal = !!(this.props.attach.titleLink && isInternalLink(this.props.attach.titleLink));
 
-            this.props.onMediaPress({ imageHeight: h, imageWidth: w }, { ...event, path: this.state.compactDownloadState.path }, 10);
+            this.props.onMediaPress({ imageHeight: h, imageWidth: w }, { ...event, path: this.state.compactDownloadState.path }, isInternal ? 20 : 10);
         }
     }
 
@@ -122,7 +124,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         let { theme, message } = this.props;
         let isOut = message.isOut;
         // let link = this.props.attach!.titleLink || '';
-        let { text, subTitle, keyboard } = this.props.attach;
+        let { text, subTitle, keyboard, titleLink } = this.props.attach;
 
         // prepare image
         let imgCompact = this.imageCompact;
@@ -140,11 +142,16 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
             imgCompact = true;
             compactImageSource = isOut ? require('assets/ing-thn-out.png') : require('assets/img-thn-in.png');
         }
+        let isInternal = !!(titleLink && isInternalLink(titleLink));
 
         let maxWidth = this.props.maxWidth || ((this.props.imageLayout && !imgCompact) ? (this.props.imageLayout.width - contentInsetsHorizontal * 2) : (isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming));
 
         const bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
         const bubbleForegroundSecondary = message.isOut ? theme.outgoingForegroundSecondary : theme.incomingForegroundSecondary;
+
+        const textWrapperMarginTop = !!this.props.attach.titleLinkHostname && !imgCompact ? 0
+            :  imgCompact && this.imageLarge ? 12 
+            : 5;
 
         return (
             <ASFlex flexDirection="column" alignItems="stretch" alignSelf="stretch">
@@ -200,7 +207,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                     {this.props.attach.titleLinkHostname}
                 </ASText>}
 
-                <ASFlex flexDirection="row" marginTop={imgCompact && this.imageLarge ? 12 : 5}>
+                <ASFlex flexDirection="row" marginTop={textWrapperMarginTop}>
                     {imgCompact && this.compactImageLayout && compactImageSource && (
                         <ASFlex>
                             <ASImage
@@ -208,8 +215,8 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                                 source={compactImageSource}
                                 width={this.compactImageLayout.width}
                                 height={this.compactImageLayout.height}
-                                borderRadius={10}
-                                marginRight={9}
+                                borderRadius={isInternal ? 20 : 10}
+                                marginRight={12}
                             />
                         </ASFlex>
                     )}
@@ -223,9 +230,9 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             color={bubbleForegroundPrimary}
                             letterSpacing={0}
                             fontSize={14}
-                            marginTop={Platform.OS === 'android' ? -4 : -1}
-                            numberOfLines={this.imageCompact ? 1 : 3}
-                            marginBottom={4}
+                            marginTop={1}
+                            numberOfLines={imgCompact ? 1 : 3}
+                            marginBottom={!subTitle && !!text ? 0 : 4}
                             fontWeight={FontStyles.Weight.Medium}
                             onPress={this.onTitleClick}
                         >
@@ -235,10 +242,10 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                         {!!subTitle && <ASText
                             marginTop={(Platform.OS === 'android' ? -4 : -1)}
                             maxWidth={maxWidth - 36}
-                            color={bubbleForegroundPrimary}
+                            color={bubbleForegroundSecondary}
                             fontSize={14}
                             numberOfLines={1}
-                            marginBottom={4}
+                            marginBottom={!!text ? 0 : 4}
                             fontWeight={FontStyles.Weight.Regular}
                         >
                             {subTitle}
@@ -251,19 +258,19 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                     maxWidth={maxWidth}
                     color={bubbleForegroundPrimary}
                     fontSize={14}
-                    marginTop={this.imageCompact && compactImageSource ? (subTitle ? 4 : -19) : 0}
+                    marginTop={imgCompact ? (subTitle ? 8 : -15) : 0}
                     marginBottom={4}
                     lineHeight={19}
                     numberOfLines={5}
                     fontWeight={FontStyles.Weight.Regular}
                 >
-                    {!subTitle && this.imageCompact && compactImageSource && paddedTextPrfix}
+                    {!subTitle && imgCompact && compactImageSource && paddedTextPrfix}
                     {text}
                     {this.props.padded && paddedText(message.isEdited)}
                 </ASText>}
 
                 {!!keyboard && keyboard.buttons.map((line, i) =>
-                    <ASFlex key={i + ''} flexDirection="row" maxWidth={maxWidth - 24} marginTop={4} alignSelf="stretch" marginBottom={i === keyboard!.buttons.length - 1 ? 4 : 0}>
+                    <ASFlex key={i + ''} flexDirection="row" maxWidth={maxWidth - 24} marginTop={!!text ? 8 : 12} alignSelf="stretch" marginBottom={i === keyboard!.buttons.length - 1 ? 4 : 0}>
                         {!!line && line.map((button, j) =>
                             <ASFlex
                                 marginTop={i !== 0 ? 4 : 0}
@@ -274,7 +281,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                                 marginRight={j < line.length - 1 ? 4 : 0}
                                 alignItems="center"
                                 justifyContent="center"
-                                height={30}
+                                height={36}
                                 // flexBasis={1}
                                 flexGrow={1}
                                 onPress={resolveInternalLink(button.url!, () => Linking.openURL(button.url!))}
@@ -283,7 +290,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                                 <ASText
                                     textAlign='center'
                                     color={theme.accentPrimary}
-                                    fontSize={14}
+                                    fontSize={15}
                                     fontWeight={FontStyles.Weight.Medium}
                                     maxWidth={maxWidth - 24 - 16}
                                 >

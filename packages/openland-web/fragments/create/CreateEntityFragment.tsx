@@ -279,7 +279,6 @@ const CreatingContainer = React.memo((props: CreatingContainerProps) => {
         setSettingsPage(true);
     }, []);
 
-    
     const check = () => {
         if (!props.titleField.value.trim() || props.hasError) {
             if (titleRef && titleRef.current) {
