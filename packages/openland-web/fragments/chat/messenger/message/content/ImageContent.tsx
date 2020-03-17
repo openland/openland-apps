@@ -9,9 +9,6 @@ import { layoutMedia, uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import IcDownload from 'openland-icons/s/ic-download-24.svg';
-import IcForward from 'openland-icons/s/ic-forward-24.svg';
-import IcClose from 'openland-icons/s/ic-close-24.svg';
 import { formatDateTime } from 'openland-y-utils/formatTime';
 import { TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { XLoader } from 'openland-x/XLoader';
@@ -20,6 +17,11 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { emoji } from 'openland-y-utils/emoji';
 import { useClient } from 'openland-api/useClient';
+import IcDownload from 'openland-icons/s/ic-download-24.svg';
+import IcForward from 'openland-icons/s/ic-forward-24.svg';
+import IcClose from 'openland-icons/s/ic-close-24.svg';
+import IcLeft from 'openland-icons/s/ic-arrow-left-16.svg';
+import IcRight from 'openland-icons/s/ic-arrow-right-16.svg';
 
 const modalImgContainer = css`
     position: relative;
@@ -160,15 +162,47 @@ const imgSpacer = css`
     }
 `;
 
+const cursorContainer = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: absolute;
+    cursor: pointer;
+    padding-top: 56px;
+    top: 0;
+    bottom: 0;
+    width: 20%;
+    transition: 200ms opacity ease;
+    opacity: 0.56;
+    & > div {
+        flex-grow: 0;
+    }
+    :hover {
+        opacity: 1;
+    }
+`;
+
+const prevCursorContent = css`
+    left: 0;
+    justify-content: flex-start;
+    padding-left: 16px;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0) 100%);
+`;
+
+const nextCursorContent = css`
+    right: 0;
+    justify-content: flex-end;
+    padding-right: 16px;
+    background: linear-gradient(270deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0) 100%);
+`;
+
 interface ModalControllerProps {
     cId: string;
     cursor: string;
-    setCursor: (cursor: string) => void;
-    prevCursor: string | null;
-    nextCursor: string | null;
     setViewerState: (data: ImageViewerCb) => void;
-    setLoaded: (data: boolean) => void;
     hide: () => void;
+    onPrevClick: () => void;
+    onNextClick: () => void;
 }
 
 const ModalController = React.memo((props: ModalControllerProps) => {
@@ -187,21 +221,11 @@ const ModalController = React.memo((props: ModalControllerProps) => {
         },
         {
             keys: ['ArrowLeft'],
-            callback: () => {
-                if (props.nextCursor) {
-                    props.setCursor(props.nextCursor);
-                    props.setLoaded(false);
-                }
-            },
+            callback: props.onPrevClick,
         },
         {
             keys: ['ArrowRight'],
-            callback: () => {
-                if (props.prevCursor) {
-                    props.setCursor(props.prevCursor);
-                    props.setLoaded(false);
-                }
-            },
+            callback: props.onNextClick,
         },
     ]);
 
@@ -212,7 +236,7 @@ const ModalController = React.memo((props: ModalControllerProps) => {
                 props.setViewerState(viewerData);
             }
         },
-        [sharedInfo, props],
+        [sharedInfo],
     );
 
     return null;
@@ -239,24 +263,43 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const [loaded, setLoaded] = React.useState(false);
     const [cursor, setCursor] = React.useState(props.mId);
 
-    const onLoad = React.useCallback(() => {
-        if (imgRef.current && loaderRef.current) {
-            imgRef.current.style.opacity = '1';
-            imgRef.current.style.visibility = 'visible';
-            loaderRef.current.style.opacity = '0';
-            loaderRef.current.style.display = 'none';
-            setLoaded(true);
-        }
-    }, [viewerState]);
+    const onLoad = React.useCallback(
+        () => {
+            if (imgRef.current && loaderRef.current) {
+                imgRef.current.style.opacity = '1';
+                imgRef.current.style.visibility = 'visible';
+                loaderRef.current.style.opacity = '0';
+                loaderRef.current.style.display = 'none';
+                setLoaded(true);
+            }
+        },
+        [viewerState],
+    );
 
-    React.useLayoutEffect(() => {
-        if (imgRef.current && loaderRef.current && !loaded) {
-            imgRef.current.style.opacity = '0';
-            imgRef.current.style.visibility = 'hidden';
-            loaderRef.current.style.opacity = '1';
-            loaderRef.current.style.display = 'flex';
+    React.useLayoutEffect(
+        () => {
+            if (imgRef.current && loaderRef.current && !loaded) {
+                imgRef.current.style.opacity = '0';
+                imgRef.current.style.visibility = 'hidden';
+                loaderRef.current.style.opacity = '1';
+                loaderRef.current.style.display = 'flex';
+            }
+        },
+        [viewerState],
+    );
+
+    const onPrevClick = () => {
+        if (viewerState && viewerState.prevCursor) {
+            setCursor(viewerState.prevCursor);
+            setLoaded(false);
         }
-    }, [viewerState]);
+    };
+    const onNextClick = () => {
+        if (viewerState && viewerState.nextCursor) {
+            setCursor(viewerState.nextCursor);
+            setLoaded(false);
+        }
+    };
 
     const forwardCallback = React.useCallback(() => {
         showChatPicker((id: string) => {
@@ -308,12 +351,10 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                         <ModalController
                             cId={props.chatId}
                             cursor={cursor || ''}
-                            setCursor={setCursor}
-                            prevCursor={viewerState ? viewerState.prevCursor : null}
-                            nextCursor={viewerState ? viewerState.nextCursor : null}
-                            setLoaded={setLoaded}
                             setViewerState={setViewerState}
                             hide={props.hide}
+                            onPrevClick={onPrevClick}
+                            onNextClick={onNextClick}
                         />
                     </React.Suspense>
                 )}
@@ -386,6 +427,22 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     style={{ objectFit: 'contain', cursor: 'default' }}
                 />
             </div>
+            {viewerState && viewerState.hasPrevPage && (
+                <div
+                    className={cx(cursorContainer, prevCursorContent)}
+                    onClick={() => onPrevClick()}
+                >
+                    <UIcon icon={<IcLeft />} size={24} color={'var(--backgroundPrimary)'} />
+                </div>
+            )}
+            {viewerState && viewerState.hasNextPage && (
+                <div
+                    className={cx(cursorContainer, nextCursorContent)}
+                    onClick={() => onNextClick()}
+                >
+                    <UIcon icon={<IcRight />} size={24} color={'var(--backgroundPrimary)'} />
+                </div>
+            )}
         </div>
     );
 });
