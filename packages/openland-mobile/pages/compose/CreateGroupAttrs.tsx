@@ -91,22 +91,41 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
         DistributionType.FREE,
         form,
     );
-    const priceField = useField<number | null>('price', null, form);
+    const priceField = useField<string>('price', '1', form, [
+        {
+            checkIsValid: x => {
+                return /^[0-9]*$/.test(x);
+            },
+            text: 'Numbers only',
+        },
+        {
+            checkIsValid: x => {
+                return Number(x) <= 1000;
+            },
+            text: '$1000 maximum',
+        },
+        {
+            checkIsValid: x => {
+                return Number(x) >= 1;
+            },
+            text: '$1 minimum',
+        },
+    ]);
     const intervalField = useField<WalletSubscriptionInterval | null>('interval', null, form);
 
     React.useEffect(
         () => {
             if (distributionField.value === DistributionType.FREE) {
-                priceField.input.onChange(null);
+                priceField.input.onChange('1');
                 intervalField.input.onChange(null);
             }
             if (distributionField.value === DistributionType.PAID) {
                 intervalField.input.onChange(null);
-                priceField.input.onChange(500);
+                priceField.input.onChange('1');
             }
             if (distributionField.value === DistributionType.SUBSCRIPTION) {
                 intervalField.input.onChange(WalletSubscriptionInterval.MONTH);
-                priceField.input.onChange(500);
+                priceField.input.onChange('1');
             }
         },
         [distributionField.value],
@@ -116,12 +135,21 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
         if (titleField.value === '') {
             Alert.builder()
                 .title(`Please enter a name for this ${chatTypeString.toLowerCase()}`)
-                .button('GOT IT!')
+                .button('Got it!')
+                .show();
+            return;
+        }
+
+        if (priceField.input.invalid) {
+            Alert.builder()
+                .title(`Please enter a valid price for this ${chatTypeString.toLowerCase()}`)
+                .button('Got it!')
                 .show();
             return;
         }
 
         form.doAction(async () => {
+            const isPaid = [DistributionType.PAID, DistributionType.SUBSCRIPTION].includes(distributionField.value);
             const res = await getClient().mutateRoomCreate({
                 kind: kindField.value === 'PUBLIC' ? SharedRoomKind.PUBLIC : SharedRoomKind.GROUP,
                 title: titleField.value,
@@ -129,7 +157,7 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                 members: [],
                 organizationId: orgIdFromRouter,
                 channel: isChannel,
-                price: priceField.value,
+                price:  isPaid ? parseInt(priceField.value, 10) * 100 : undefined,
                 interval: intervalField.value,
             });
 
@@ -180,48 +208,20 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                         {distributionField.value !== DistributionType.FREE && (
                             // without this shit selector dont work!
                             <React.Suspense fallback={null}>
-                                <View
-                                    marginBottom={16}
-                                    paddingHorizontal={16}
-                                    flexDirection={isSubscription ? 'row' : undefined}
-                                >
+                                <View flexDirection={isSubscription ? 'row' : undefined}>
                                     <View
                                         flexGrow={1}
                                         flexShrink={0}
                                         flexBasis={0}
-                                        marginRight={isSubscription ? 8 : undefined}
                                     >
-                                        <ZSelect
-                                            noWrapper={true}
-                                            label="Price"
-                                            modalTitle="Price"
-                                            field={priceField}
-                                            options={[
-                                                {
-                                                    value: 100,
-                                                    label: '$1',
-                                                },
-                                                {
-                                                    value: 500,
-                                                    label: '$5',
-                                                },
-                                                {
-                                                    value: 1000,
-                                                    label: '$10',
-                                                },
-                                                {
-                                                    value: 2000,
-                                                    label: '$20',
-                                                },
-                                            ]}
-                                        />
+                                        <ZInput placeholder="Price" prefix="$" field={priceField} keyboardType="numeric" />
                                     </View>
                                     {isSubscription && (
                                         <View
                                             flexGrow={1}
                                             flexShrink={0}
                                             flexBasis={0}
-                                            marginLeft={isSubscription ? 8 : undefined}
+                                            paddingRight={16}
                                         >
                                             <ZSelect
                                                 noWrapper={true}
