@@ -15,6 +15,7 @@ import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuB
 import { useClient } from 'openland-api/useClient';
 import { useRole } from 'openland-x-permissions/XWithRole';
 import AlertBlanket from 'openland-x/AlertBlanket';
+import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 
 interface GroupMenu {
     group: RoomFullWithoutMembers_SharedRoom;
@@ -28,7 +29,7 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
     const typeString = isChannel ? 'channel' : 'group';
     const builder = new UPopperMenuBuilder();
 
-    if (canEdit) {
+    if (canEdit || AppConfig.isSuperAdmin()) {
         builder.item({
             title: 'Settings',
             icon: <SettingsIcon />,

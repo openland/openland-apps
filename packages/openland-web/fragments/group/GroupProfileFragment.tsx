@@ -16,12 +16,12 @@ import { showAddMembersModal } from '../chat/showAddMembersModal';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { UListText } from 'openland-web/components/unicorn/UListText';
 import { GroupMemberMenu } from './components/GroupMemberMenu';
-import { RoomMembersPaginated_members } from 'openland-api/spacex.types';
+import { RoomMembersPaginated_members, RoomMemberRole } from 'openland-api/spacex.types';
 import IcUser from 'openland-icons/s/ic-user-24.svg';
 import IcCopy from 'openland-icons/s/ic-copy-24.svg';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 
-export const GroupProfileFragment = React.memo<{id?: string}>((props) => {
+export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     const client = useClient();
     const unicorn = useUnicorn();
     const roomId = props.id || unicorn.id;
@@ -101,6 +101,13 @@ export const GroupProfileFragment = React.memo<{id?: string}>((props) => {
         [members],
     );
 
+    const updateUserRole = React.useCallback(
+        (uid: string, role: RoomMemberRole) => {
+            setMembers(current => current.map(m => m.user.id === uid ? { ...m, role } : m));
+        },
+        [members],
+    );
+
     return (
         <UFlatList
             track="group_profile"
@@ -110,7 +117,7 @@ export const GroupProfileFragment = React.memo<{id?: string}>((props) => {
             title={title}
             renderItem={member => (
                 <UUserView
-                    key={'member-' + member.user.id}
+                    key={'member-' + member.user.id + '-' + member.role}
                     user={member.user}
                     role={member.role}
                     rightElement={
@@ -118,6 +125,7 @@ export const GroupProfileFragment = React.memo<{id?: string}>((props) => {
                             group={group}
                             member={member}
                             onRemove={handleRemoveMember}
+                            updateUserRole={updateUserRole}
                         />
                     }
                 />
@@ -151,7 +159,7 @@ export const GroupProfileFragment = React.memo<{id?: string}>((props) => {
                     <UListItem
                         title={`Member profiles ${
                             otherMemberProfiles ? matchmaking!.profiles!.length - 1 : ''
-                        }`}
+                            }`}
                         icon={<IcCopy />}
                         useRadius={true}
                         path={`/group/${id}/users`}
@@ -167,7 +175,7 @@ export const GroupProfileFragment = React.memo<{id?: string}>((props) => {
             <UListGroup header="Featured" counter={featuredMembers.length}>
                 {featuredMembers.map(member => (
                     <UUserView
-                        key={'featured-member-' + member.user.id}
+                        key={'featured-member-' + member.user.id + '-' + member.role}
                         user={member.user}
                         badge={member.badge}
                         rightElement={
@@ -175,6 +183,7 @@ export const GroupProfileFragment = React.memo<{id?: string}>((props) => {
                                 group={group}
                                 member={member}
                                 onRemove={handleRemoveMember}
+                                updateUserRole={updateUserRole}
                             />
                         }
                     />

@@ -23,6 +23,7 @@ import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';
 import { trackEvent } from 'openland-mobile/analytics';
 import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
+import { SUPER_ADMIN } from '../Init';
 
 const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
@@ -165,7 +166,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const handleManageClick = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
 
-        if (room.canEdit) {
+        if (room.canEdit || SUPER_ADMIN) {
             builder.action('Edit info', () => props.router.push('EditGroup', { id: room.id }), false, require('assets/ic-edit-24.png'));
         }
 
@@ -285,7 +286,7 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
                         memberRole={item.role}
                         badge={item.badge}
                         user={item.user}
-                        onLongPress={() => handleMemberLongPress(item, item.canKick, room.canEdit)}
+                        onLongPress={() => handleMemberLongPress(item, item.canKick, room.canEdit || SUPER_ADMIN)}
                         onPress={() => props.router.push('ProfileUser', { id: item.user.id })}
                     />
                 )}

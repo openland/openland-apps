@@ -33,6 +33,7 @@ import { emoji } from 'openland-y-utils/emoji';
 import { useLastSeen } from 'openland-y-utils/LastSeen';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
+import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 
 const secondary = css`
     color: var(--foregroundSecondary);
@@ -173,7 +174,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     });
 
     if (chat.__typename === 'SharedRoom') {
-        if (chat.canEdit) {
+        if (chat.canEdit || AppConfig.isSuperAdmin()) {
             res.item({
                 title: 'Settings',
                 icon: <SettingsIcon />,
@@ -183,6 +184,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
         if (
             chat.role === 'OWNER' ||
             chat.role === 'ADMIN' ||
+            AppConfig.isSuperAdmin() ||
             (chat.organization && (chat.organization.isAdmin || chat.organization.isOwner))
         ) {
             res.item({

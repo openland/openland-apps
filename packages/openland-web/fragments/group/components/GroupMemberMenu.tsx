@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
     RoomFullWithoutMembers_SharedRoom,
     RoomMembersPaginated_members,
+    RoomMemberRole,
 } from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
@@ -118,6 +119,7 @@ interface GroupMemberMenuProps {
     group: RoomFullWithoutMembers_SharedRoom;
     member: RoomMembersPaginated_members;
     onRemove: (memberId: string) => void;
+    updateUserRole: (uid: string, role: RoomMemberRole) => void;
 }
 
 const getMenuContent = (
@@ -135,6 +137,17 @@ const getMenuContent = (
             title: badge ? 'Edit featured status' : 'Make featured',
             icon: <StarIcon />,
             onClick: () => showMakeFeaturedModal(id, user.id),
+        });
+    }
+
+    if ((group.role === 'OWNER' || AppConfig.isSuperAdmin()) && !user.isYou) {
+        res.push({
+            title: member.role === 'ADMIN' ? 'Revoke admin status' : 'Make admin',
+            icon: <StarIcon />,
+            action: async () => {
+                await client.mutateRoomChangeRole({ userId: user.id, roomId: id, newRole: member.role === 'ADMIN' ? RoomMemberRole.MEMBER : RoomMemberRole.ADMIN });
+                opts.updateUserRole(user.id, member.role === 'ADMIN' ? RoomMemberRole.MEMBER : RoomMemberRole.ADMIN );
+            },
         });
     }
 
@@ -156,7 +169,7 @@ const getMenuContent = (
                 builder.title(`Remove ${user.name} from ${group.title}`);
                 builder.message(
                     `Are you sure you want to remove ${
-                        user.firstName
+                    user.firstName
                     }? They will no longer be able to participate in the discussion.`,
                 );
                 builder.action(

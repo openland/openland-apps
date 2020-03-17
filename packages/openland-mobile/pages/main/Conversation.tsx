@@ -46,6 +46,7 @@ import { ConversationManageButton } from './components/ConversationManageButton'
 import { showNoiseWarning } from 'openland-mobile/messenger/components/showNoiseWarning';
 import { plural } from 'openland-y-utils/plural';
 import { SRouterMountedContext } from 'react-native-s/SRouterContext';
+import { SUPER_ADMIN } from '../Init';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -397,7 +398,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     onPress={this.handlePinnedMessagePress}
                                     theme={this.props.theme}
                                     showAuthor={showPinAuthor}
-                                    canUnpin={this.props.chat.__typename === 'PrivateRoom' || this.props.chat.canEdit}
+                                    canUnpin={this.props.chat.__typename === 'PrivateRoom' || this.props.chat.canEdit || SUPER_ADMIN}
                                     chatId={this.props.chat.id}
                                 />
                             )}
