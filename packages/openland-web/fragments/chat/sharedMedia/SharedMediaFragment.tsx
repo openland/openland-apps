@@ -66,7 +66,7 @@ const DateClass = css`
 `;
 
 const Corner = <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0H0V8C0 3.58172 3.58172 0 8 0Z" fill="var(--backgroundPrimary)" />
+    <path fillRule="evenodd" clipRule="evenodd" d="M8 0H0V8C0 3.58172 3.58172 0 8 0Z" fill="var(--backgroundPrimary)" />
 </svg>;
 
 const c1 = css`position: absolute; bottom: -15px; left: 1px; z-index: 1;`;
@@ -126,7 +126,7 @@ const monthsFull = ['January', 'February', 'March', 'April', 'May', 'June', 'Jul
 
 const SharedMediaContainerClass = css`
     display: flex;
-    justify-content: 'flex-start';
+    justify-content: flex-start;
     flex-wrap: wrap;
     flex-direction: row;
     margin: 0 15px;
@@ -154,12 +154,12 @@ export const Placeholder = (props: { mediaTypes: SharedMediaType[]; }) => {
 
 export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps, ref: React.RefObject<Paginated>) => {
     const client = useClient();
-    const [loading, setLoadin] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
     const [data, setData] = React.useState<SharedItem[]>([]);
     const [after, setAfter] = React.useState<string | null>();
     const loadMore = React.useCallback(async () => {
         if ((after || after === undefined) && !loading) {
-            setLoadin(true);
+            setLoading(true);
             let res = await client.querySharedMedia({ chatId: props.chatId, after, mediaTypes: props.mediaTypes, first: 30 });
             let nextAfter: string | undefined = undefined;
             setData(currentData => res.sharedMedia.edges.reduce((attaches, next) => {
@@ -177,7 +177,7 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
                 return attaches;
             }, currentData));
             setAfter(res.sharedMedia.pageInfo.hasNextPage ? nextAfter : null);
-            setLoadin(false);
+            setLoading(false);
         }
     }, [after, loading]);
 
@@ -191,25 +191,26 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
     const layout = useLayout();
     const items = [];
     let lastDate: string | undefined;
+    let key: number = 0;
     for (let i of data) {
+        key++;
         if (lastDate !== i.date) {
             lastDate = i.date;
-            items.push(<DateDivider date={i.date} useCorners={props.mediaTypes.includes(SharedMediaType.IMAGE)} />);
+            items.push(<DateDivider key={'date_' + key} date={i.date} useCorners={props.mediaTypes.includes(SharedMediaType.IMAGE)} />);
         }
         // wtf check index on backend, it apperars that non-image can appear in SharedMediaType.IMAGE
         if (props.mediaTypes.includes(SharedMediaType.IMAGE)) {
             if (i.attach.__typename === 'MessageAttachmentFile' && i.attach.fileMetadata.isImage) {
-                items.push(<MediaContent item={i as SharedItemFile} />);
+                items.push(<MediaContent key={'media_' + key} item={i as SharedItemFile} chatId={props.chatId} />);
             }
         } else {
             if (i.attach.__typename === 'MessageAttachmentFile') {
-                items.push(<DocContent item={i as SharedItemFile} />);
+                items.push(<DocContent key={'doc_' + key} item={i as SharedItemFile} />);
             } else if (i.attach.__typename === 'MessageRichAttachment') {
-                items.push(<RichContent item={i as SharedItemRich} />);
+                items.push(<RichContent key={'rich_' + key} item={i as SharedItemRich} />);
             } else {
-                items.push(<XView padding={8} flexGrow={1}>Unknown content</XView>);
+                items.push(<XView key={'x_' + key} padding={8} flexGrow={1}>Unknown content</XView>);
             }
-
         }
     }
     const initialLoading = loading && items.length === 0;

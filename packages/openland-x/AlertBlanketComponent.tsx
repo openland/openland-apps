@@ -58,6 +58,7 @@ export const AlertBlanketComponent = React.memo<{ builder: AlertBlanketBuilder, 
                             size="large"
                             onClick={() => doConfirm(action.action)}
                             loading={form.loading}
+                            key={'action_' + action.name}
                         />
                     ))}
                 </XModalFooter>

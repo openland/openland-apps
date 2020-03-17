@@ -51,7 +51,7 @@ const replySectionWrapper = css`
     padding: 0;
 `;
 
-const ContentWrapper = (props: {wrapperKey: string, className: string, isReply?: boolean, id?: string, children: any }) => {
+const ContentWrapper = React.memo((props: {className: string, isReply?: boolean, id?: string, children: any }) => {
     const router = React.useContext(XViewRouterContext)!;
     const onContentClick = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
@@ -59,11 +59,11 @@ const ContentWrapper = (props: {wrapperKey: string, className: string, isReply?:
     };
 
     return (
-        <div key={props.wrapperKey} className={cx(props.className, props.isReply && replyContentWrapper)} onClick={props.isReply ? onContentClick : undefined}>
+        <div className={cx(props.className, props.isReply && replyContentWrapper)} onClick={props.isReply ? onContentClick : undefined}>
             {props.children}
         </div>
     );
-};
+});
 
 interface MessageContentProps {
     id?: string;
@@ -126,7 +126,7 @@ export const MessageContent = (props: MessageContentProps) => {
 
     imageAttaches.map(file => {
         content.push(
-            <ContentWrapper wrapperKey={'msg-' + id + '-media-' + file.fileId} className={extraClassName} id={id} isReply={isReplyOnly}>
+            <ContentWrapper key={'msg-' + id + '-media-' + file.fileId} className={extraClassName} id={id} isReply={isReplyOnly}>
                 <ImageContent
                     file={file}
                     sender={props.sender}
@@ -141,7 +141,7 @@ export const MessageContent = (props: MessageContentProps) => {
 
     if (hasText) {
         content.push(
-            <ContentWrapper wrapperKey="msg-text" className={textClassName} id={id} isReply={isReplyOnly}>
+            <ContentWrapper key="msg-text" className={textClassName} id={id} isReply={isReplyOnly}>
                 <MessageTextComponent spans={textSpans} edited={!!edited} shouldCrop={isReplyOnly} />
             </ContentWrapper>,
         );
@@ -149,7 +149,7 @@ export const MessageContent = (props: MessageContentProps) => {
 
     documentsAttaches.map(file => {
         content.push(
-            <ContentWrapper wrapperKey={'msg-' + id + '-document-' + file.fileId} className={extraClassName} id={id} isReply={isReplyOnly}>
+            <ContentWrapper key={'msg-' + id + '-document-' + file.fileId} className={extraClassName} id={id} isReply={isReplyOnly}>
                 <DocumentContent
                     file={file}
                     sender={props.sender}
@@ -164,7 +164,7 @@ export const MessageContent = (props: MessageContentProps) => {
 
     augmenationAttaches.map(attach => {
         content.push(
-            <ContentWrapper wrapperKey={'msg-' + id + '-rich-' + attach.id} className={extraClassName} id={id} isReply={isReplyOnly}>
+            <ContentWrapper key={'msg-' + id + '-rich-' + attach.id} className={extraClassName} id={id} isReply={isReplyOnly}>
                 <RichAttachContent attach={attach} canDelete={isOut} messageId={id} />
             </ContentWrapper>,
         );
@@ -172,7 +172,7 @@ export const MessageContent = (props: MessageContentProps) => {
 
     if (sticker) {
         content.push(
-            <ContentWrapper wrapperKey={'msg-' + id + '-sticker-' + sticker.id} className={extraClassName} id={id} isReply={isReplyOnly}>
+            <ContentWrapper key={'msg-' + id + '-sticker-' + sticker.id} className={extraClassName} id={id} isReply={isReplyOnly}>
                 <StickerContent sticker={sticker} />
             </ContentWrapper>,
         );
@@ -198,7 +198,7 @@ export const MessageContent = (props: MessageContentProps) => {
         const unsupportedText = 'Unsupported content' + (fallback ? ': ' + fallback : '');
 
         content.push(
-            <ContentWrapper wrapperKey="msg-text-unsupported" className={textClassName}>
+            <ContentWrapper key={'unsupported-' + id} className={textClassName}>
                 <MessageTextComponent spans={createSimpleSpan(unsupportedText, SpanType.italic)} />
             </ContentWrapper>,
         );

@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { SharedItemFile } from './SharedMediaFragment';
-import { showImageModal } from '../messenger/message/content/ImageContent';
 import { emoji } from 'openland-y-utils/emoji';
+import { SharedMedia_sharedMedia_edges_node_message_GeneralMessage } from 'openland-api/spacex.types';
+import { showImageModal } from 'openland-web/fragments/chat/messenger/message/content/ImageContent';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
+import { SharedItemFile } from './SharedMediaFragment';
+
+type generalM = SharedMedia_sharedMedia_edges_node_message_GeneralMessage;
 
 const MediaItemClass = css`
     display: flex;
@@ -66,11 +69,13 @@ const ImgPreviewContainerClass = css`
     transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
     will-change: opacity;
 `;
-export const MediaContent = (props: { item: SharedItemFile }) => {
+export const MediaContent = React.memo((props: { item: SharedItemFile; chatId: string }) => {
     const imgRef = React.useRef<HTMLImageElement>(null);
     const placeholderRef = React.useRef<HTMLDivElement>(null);
     const onClick = React.useCallback(() => {
         showImageModal({
+            chatId: props.chatId,
+            mId: (props.item.message as generalM).id,
             fileId: props.item.attach.fileId,
             imageWidth: props.item.attach.fileMetadata.imageWidth || 0,
             imageHeight: props.item.attach.fileMetadata.imageHeight || 0,
@@ -84,6 +89,7 @@ export const MediaContent = (props: { item: SharedItemFile }) => {
         if (imgRef.current && placeholderRef.current) {
             imgRef.current.style.opacity = '1';
             placeholderRef.current.style.opacity = '0';
+            placeholderRef.current.style.visibility = 'hidden';
         }
     }, []);
     return (
@@ -105,4 +111,4 @@ export const MediaContent = (props: { item: SharedItemFile }) => {
             />
         </div>
     );
-};
+});

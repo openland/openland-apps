@@ -167,6 +167,7 @@ interface ModalControllerProps {
     prevCursor: string | null;
     nextCursor: string | null;
     setViewerState: (data: ImageViewerCb) => void;
+    setLoaded: (data: boolean) => void;
     hide: () => void;
 }
 
@@ -189,6 +190,7 @@ const ModalController = React.memo((props: ModalControllerProps) => {
             callback: () => {
                 if (props.nextCursor) {
                     props.setCursor(props.nextCursor);
+                    props.setLoaded(false);
                 }
             },
         },
@@ -197,6 +199,7 @@ const ModalController = React.memo((props: ModalControllerProps) => {
             callback: () => {
                 if (props.prevCursor) {
                     props.setCursor(props.prevCursor);
+                    props.setLoaded(false);
                 }
             },
         },
@@ -233,6 +236,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const loaderRef = React.useRef<HTMLDivElement>(null);
 
     const [viewerState, setViewerState] = React.useState<ImageViewerCb | null>(null);
+    const [loaded, setLoaded] = React.useState(false);
     const [cursor, setCursor] = React.useState(props.mId);
 
     const onLoad = React.useCallback(() => {
@@ -241,11 +245,12 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
             imgRef.current.style.visibility = 'visible';
             loaderRef.current.style.opacity = '0';
             loaderRef.current.style.display = 'none';
+            setLoaded(true);
         }
-    }, []);
+    }, [viewerState]);
 
     React.useLayoutEffect(() => {
-        if (imgRef.current && loaderRef.current) {
+        if (imgRef.current && loaderRef.current && !loaded) {
             imgRef.current.style.opacity = '0';
             imgRef.current.style.visibility = 'hidden';
             loaderRef.current.style.opacity = '1';
@@ -306,6 +311,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                             setCursor={setCursor}
                             prevCursor={viewerState ? viewerState.prevCursor : null}
                             nextCursor={viewerState ? viewerState.nextCursor : null}
+                            setLoaded={setLoaded}
                             setViewerState={setViewerState}
                             hide={props.hide}
                         />
