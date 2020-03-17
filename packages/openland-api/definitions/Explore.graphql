@@ -258,6 +258,23 @@ query DiscoverCollection($id: ID!) {
         }
     }
 }
+
+query DiscoverCollectionShort($id: ID!) {
+    discoverCollection(id: $id) {
+        id
+        title
+        image {
+            uuid
+            crop {
+                x
+                y
+                w
+                h
+            }
+        }
+    }
+}
+
 mutation DiscoverCollectionsCreate($title: String!, $image: ImageRefInput!, $chatIds: [ID!]!) {
     discoverCollectionsCreate(collection: { title: $title, image: $image, chatIds: $chatIds }) {
         id

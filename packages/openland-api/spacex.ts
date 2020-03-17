@@ -52,6 +52,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryDiscoverCollection(variables: Types.DiscoverCollectionVariables, opts?: OperationParameters): Promise<Types.DiscoverCollection> {
         return this.query('DiscoverCollection', variables, opts);
     }
+    queryDiscoverCollectionShort(variables: Types.DiscoverCollectionShortVariables, opts?: OperationParameters): Promise<Types.DiscoverCollectionShort> {
+        return this.query('DiscoverCollectionShort', variables, opts);
+    }
     queryDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts?: OperationParameters): Promise<Types.DiscoverCollections> {
         return this.query('DiscoverCollections', variables, opts);
     }
@@ -370,6 +373,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchDiscoverCollection(variables: Types.DiscoverCollectionVariables, opts?: OperationParameters): Promise<Types.DiscoverCollection> {
         return this.refetch('DiscoverCollection', variables);
     }
+    refetchDiscoverCollectionShort(variables: Types.DiscoverCollectionShortVariables, opts?: OperationParameters): Promise<Types.DiscoverCollectionShort> {
+        return this.refetch('DiscoverCollectionShort', variables);
+    }
     refetchDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts?: OperationParameters): Promise<Types.DiscoverCollections> {
         return this.refetch('DiscoverCollections', variables);
     }
@@ -687,6 +693,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateDiscoverCollection(variables: Types.DiscoverCollectionVariables, updater: (data: Types.DiscoverCollection) => Types.DiscoverCollection | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverCollection', variables);
+    }
+    updateDiscoverCollectionShort(variables: Types.DiscoverCollectionShortVariables, updater: (data: Types.DiscoverCollectionShort) => Types.DiscoverCollectionShort | null): Promise<boolean> {
+        return this.updateQuery(updater, 'DiscoverCollectionShort', variables);
     }
     updateDiscoverCollections(variables: Types.DiscoverCollectionsVariables, updater: (data: Types.DiscoverCollections) => Types.DiscoverCollections | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverCollections', variables);
@@ -1035,6 +1044,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useDiscoverCollection(variables: Types.DiscoverCollectionVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollection;
     useDiscoverCollection(variables: Types.DiscoverCollectionVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollection | null {
         return this.useQuery('DiscoverCollection', variables, opts);
+    }
+    useDiscoverCollectionShort(variables: Types.DiscoverCollectionShortVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverCollectionShort | null;
+    useDiscoverCollectionShort(variables: Types.DiscoverCollectionShortVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollectionShort;
+    useDiscoverCollectionShort(variables: Types.DiscoverCollectionShortVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollectionShort | null {
+        return this.useQuery('DiscoverCollectionShort', variables, opts);
     }
     useDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverCollections | null;
     useDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollections;

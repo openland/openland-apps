@@ -22,6 +22,7 @@ object Operations {
         if (name == "ConferenceMedia") return ConferenceMedia
         if (name == "Dialogs") return Dialogs
         if (name == "DiscoverCollection") return DiscoverCollection
+        if (name == "DiscoverCollectionShort") return DiscoverCollectionShort
         if (name == "DiscoverCollections") return DiscoverCollections
         if (name == "DiscoverCollectionsShort") return DiscoverCollectionsShort
         if (name == "DiscoverEditorsChoice") return DiscoverEditorsChoice

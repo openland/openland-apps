@@ -2572,6 +2572,24 @@ const DiscoverCollectionSelector = obj(
                         )))))
                 ))
         );
+const DiscoverCollectionShortSelector = obj(
+            field('discoverCollection', 'discoverCollection', args(fieldValue("id", refValue('id'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('title', 'title', args(), notNull(scalar('String'))),
+                    field('image', 'image', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('uuid', 'uuid', args(), notNull(scalar('String'))),
+                            field('crop', 'crop', args(), obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    field('x', 'x', args(), notNull(scalar('Int'))),
+                                    field('y', 'y', args(), notNull(scalar('Int'))),
+                                    field('w', 'w', args(), notNull(scalar('Int'))),
+                                    field('h', 'h', args(), notNull(scalar('Int')))
+                                ))
+                        )))
+                ))
+        );
 const DiscoverCollectionsSelector = obj(
             field('discoverCollections', 'discoverCollections', args(fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5249,6 +5267,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'DiscoverCollection',
         body: 'query DiscoverCollection($id:ID!){discoverCollection(id:$id){__typename id title chats{__typename ...DiscoverSharedRoom}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
         selector: DiscoverCollectionSelector
+    },
+    DiscoverCollectionShort: {
+        kind: 'query',
+        name: 'DiscoverCollectionShort',
+        body: 'query DiscoverCollectionShort($id:ID!){discoverCollection(id:$id){__typename id title image{__typename uuid crop{__typename x y w h}}}}',
+        selector: DiscoverCollectionShortSelector
     },
     DiscoverCollections: {
         kind: 'query',

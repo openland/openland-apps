@@ -90,6 +90,7 @@ export default class OpenlandDocument extends Document {
         const styles = renderStaticOptimized(() => page.html || '');
 
         let inviteKey;
+        let collectionId;
         let metaTagsInfo;
         if (props && props.req && (props.req as any).originalUrl) {
             const originalUrl = (props.req as any).originalUrl;
@@ -106,6 +107,8 @@ export default class OpenlandDocument extends Document {
                 inviteKey = originalUrl.slice('/invite/'.length);
             } else if (originalUrl.startsWith('/joinChannel/')) {
                 inviteKey = originalUrl.slice('/joinChannel/'.length);
+            } else if (originalUrl.startsWith('/discover/collections/')) {
+                collectionId = originalUrl.slice('/discover/collections/'.length);
             }
 
             if (inviteKey) {
@@ -148,6 +151,27 @@ export default class OpenlandDocument extends Document {
                         description: room.description || 'Join Openland and find inspiring communities',
                         image: roomImage,
                     };
+                }
+            } else if (collectionId) {
+                try {
+                    let res = await openland.queryDiscoverCollectionShort({id: collectionId});
+                    let collection = res.discoverCollection;
+
+                    if (collection) {
+                        const {image: {uuid, crop}, title} = collection;
+                        let imageLink = 'https://ucarecdn.com/' + uuid + '/';
+                        if (crop) {
+                            imageLink += `-/crop/${crop.w}x${crop.h}/${crop.x},${crop.y}/`;
+                        }
+
+                        metaTagsInfo = {
+                            title: `${title} on Openland`,
+                            url: urlPrefix + originalUrl,
+                            image: imageLink || 'https://cdn.openland.com/shared/og/og-global.png',
+                        };
+                    }
+                } catch (e) {
+                    // noop
                 }
             } else {
                 // probably user meta tags needed

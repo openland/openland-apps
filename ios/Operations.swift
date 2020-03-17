@@ -2565,6 +2565,24 @@ private let DiscoverCollectionSelector = obj(
                         )))))
                 ))
         )
+private let DiscoverCollectionShortSelector = obj(
+            field("discoverCollection", "discoverCollection", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("title", "title", notNull(scalar("String"))),
+                    field("image", "image", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("uuid", "uuid", notNull(scalar("String"))),
+                            field("crop", "crop", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("x", "x", notNull(scalar("Int"))),
+                                    field("y", "y", notNull(scalar("Int"))),
+                                    field("w", "w", notNull(scalar("Int"))),
+                                    field("h", "h", notNull(scalar("Int")))
+                                ))
+                        )))
+                ))
+        )
 private let DiscoverCollectionsSelector = obj(
             field("discoverCollections", "discoverCollections", arguments(fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5247,6 +5265,12 @@ class Operations {
         "query DiscoverCollection($id:ID!){discoverCollection(id:$id){__typename id title chats{__typename ...DiscoverSharedRoom}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         DiscoverCollectionSelector
     )
+    let DiscoverCollectionShort = OperationDefinition(
+        "DiscoverCollectionShort",
+        .query, 
+        "query DiscoverCollectionShort($id:ID!){discoverCollection(id:$id){__typename id title image{__typename uuid crop{__typename x y w h}}}}",
+        DiscoverCollectionShortSelector
+    )
     let DiscoverCollections = OperationDefinition(
         "DiscoverCollections",
         .query, 
@@ -6674,6 +6698,7 @@ class Operations {
         if name == "ConferenceMedia" { return ConferenceMedia }
         if name == "Dialogs" { return Dialogs }
         if name == "DiscoverCollection" { return DiscoverCollection }
+        if name == "DiscoverCollectionShort" { return DiscoverCollectionShort }
         if name == "DiscoverCollections" { return DiscoverCollections }
         if name == "DiscoverCollectionsShort" { return DiscoverCollectionsShort }
         if name == "DiscoverEditorsChoice" { return DiscoverEditorsChoice }
