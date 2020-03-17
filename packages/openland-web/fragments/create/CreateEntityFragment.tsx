@@ -12,7 +12,6 @@ import { USelectField } from 'openland-web/components/unicorn/USelect';
 import { UAvatarUploadField, StoredFileT } from 'openland-web/components/unicorn/UAvatarUpload';
 import {
     SharedRoomKind,
-    ImageRefInput,
     WalletSubscriptionInterval,
 } from 'openland-api/spacex.types';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
@@ -250,7 +249,9 @@ interface CreatingContainerProps {
     children: any;
     title: string;
     ctx: XModalController;
-    getSettingsData: (avatar: StoredFileT | undefined | null, title: string) => void;
+    useInvitesPage: boolean;
+    titleField: any;
+    avatarField: any;
     onPeopleChange: (data: Map<string, string> | null) => void;
     handleDone: () => void;
     hasError?: boolean;
@@ -272,32 +273,27 @@ const CreatingContainer = React.memo((props: CreatingContainerProps) => {
         },
     });
 
-    const form = useForm();
     const [shakeClassName, shake] = useShake();
-
-    const titleField = useField('input.title', '', form, [
-        {
-            checkIsValid: value => !!value.trim(),
-            text: 'Please enter name',
-        },
-    ]);
-    const avatarField = useField<StoredFileT | undefined | null>('input.avatar', null, form);
-
+    
     const handleBack = React.useCallback(() => {
         setSettingsPage(true);
     }, []);
 
-    const canNextClick = !!titleField.value.trim() && !props.hasError;
-
-    const onNext = () => {
-        if (!canNextClick) {
+    
+    const check = () => {
+        if (!props.titleField.value.trim() || props.hasError) {
             if (titleRef && titleRef.current) {
                 titleRef.current.focus();
             }
-            return shake();
+            shake();
+            return false;
+        } 
+        return true;
+    };
+    const onNext = () => {
+        if (check()) {
+            setSettingsPage(false);
         }
-        props.getSettingsData(avatarField.value, titleField.value.trim());
-        setSettingsPage(false);
     };
 
     const onPeopleChange = (data: Map<string, string> | null) => {
@@ -305,8 +301,10 @@ const CreatingContainer = React.memo((props: CreatingContainerProps) => {
     };
 
     const handleDone = () => {
-        setLoading(true);
-        props.handleDone();
+        if (check()) {
+            setLoading(true);
+            props.handleDone();
+        }
     };
 
     return (
@@ -326,12 +324,12 @@ const CreatingContainer = React.memo((props: CreatingContainerProps) => {
                     {settingsPage && (
                         <>
                             <div className={avatarContainer}>
-                                <UAvatarUploadField field={avatarField} />
+                                <UAvatarUploadField field={props.avatarField} />
                             </div>
                             <div className={shakeClassName}>
                                 <div className={inputNameContainer}>
                                     <UInputField
-                                        field={titleField}
+                                        field={props.titleField}
                                         label="Name"
                                         hideErrorText={true}
                                         ref={titleRef}
@@ -340,11 +338,11 @@ const CreatingContainer = React.memo((props: CreatingContainerProps) => {
                                 {props.children}
                             </div>
                             <UButton
-                                text="Next"
+                                text={props.useInvitesPage ? 'Next' : 'Done'}
                                 size="large"
                                 alignSelf="center"
                                 marginTop={32}
-                                onClick={onNext}
+                                onClick={props.useInvitesPage ? onNext : handleDone}
                             />
                         </>
                     )}
@@ -382,15 +380,13 @@ interface CreateEntityGroupProps {
 }
 
 const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) => {
-    const [avatar, setAvatar] = React.useState<ImageRefInput | null>(null);
-    const [title, setTitle] = React.useState('');
     const [people, setPeople] = React.useState<Map<string, string> | null>(null);
 
     const router = React.useContext(XViewRouterContext)!;
     const client = useClient();
     const form = useForm();
 
-    const secretField = useField<boolean>('input.secret', !props.inOrgId, form);
+    const secretField = useField<boolean>('input.secret', false, form);
     const distributionField = useField<DistributionType>(
         'input.distribution',
         DistributionType.FREE,
@@ -417,6 +413,13 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
         },
     ]);
     const intervalField = useField<WalletSubscriptionInterval | null>('input.interval', null, form);
+    const titleField = useField('input.title', '', form, [
+        {
+            checkIsValid: value => !!value.trim(),
+            text: 'Please enter name',
+        },
+    ]);
+    const avatarField = useField<StoredFileT | undefined | null>('input.avatar', null, form);
 
     React.useEffect(
         () => {
@@ -436,11 +439,6 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
         [distributionField.value],
     );
 
-    const getSettingsData = (img: StoredFileT | undefined | null, name: string) => {
-        setAvatar(sanitizeImageRef(img));
-        setTitle(name);
-    };
-
     const onPeopleChange = (data: Map<string, string> | null) => {
         setPeople(data);
     };
@@ -448,9 +446,9 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
     const doSubmit = async () => {
         const isPaid = [DistributionType.PAID, DistributionType.SUBSCRIPTION].includes(distributionField.value);
         const group = (await client.mutateRoomCreate({
-            title: title,
+            title: titleField.value,
             kind: secretField.value ? SharedRoomKind.GROUP : SharedRoomKind.PUBLIC,
-            photoRef: avatar,
+            photoRef: sanitizeImageRef(avatarField.value),
             members: !!people ? [...people.keys()] : [],
             organizationId: props.inOrgId || '',
             channel: props.entityType === 'channel',
@@ -466,10 +464,12 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
         <CreatingContainer
             ctx={props.ctx}
             title={`New ${props.entityType}`}
-            getSettingsData={getSettingsData}
+            titleField={titleField}
+            avatarField={avatarField}
             onPeopleChange={onPeopleChange}
             handleDone={doSubmit}
             hasError={!!priceField.input.errorText}
+            useInvitesPage={distributionField.value === DistributionType.FREE}
         >
             <div className={otherInputContainer}>
                 <USelectField
@@ -554,8 +554,8 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
                             },
                             {
                                 value: false,
-                                labelShort: 'Shared',
-                                label: 'Shared',
+                                labelShort: 'Public',
+                                label: 'Public',
                                 subtitle: 'Visible in group search',
                             },
                         ]}
@@ -572,8 +572,6 @@ interface CreateEntityOrgProps {
 }
 
 const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
-    const [avatar, setAvatar] = React.useState<ImageRefInput | null>(null);
-    const [title, setTitle] = React.useState('');
     const [people, setPeople] = React.useState<Map<string, string> | null>(null);
 
     const router = React.useContext(XViewRouterContext)!;
@@ -582,11 +580,13 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
 
     const secretField = useField<boolean>('input.secret', false, form);
     const descriptionField = useField('input.description', '', form);
-
-    const getSettingsData = (img: StoredFileT | undefined | null, name: string) => {
-        setAvatar(sanitizeImageRef(img));
-        setTitle(name);
-    };
+    const titleField = useField('input.title', '', form, [
+        {
+            checkIsValid: value => !!value.trim(),
+            text: 'Please enter name',
+        },
+    ]);
+    const avatarField = useField<StoredFileT | undefined | null>('input.avatar', null, form);
 
     const onPeopleChange = (data: Map<string, string> | null) => {
         setPeople(data);
@@ -596,9 +596,9 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
         const organization = (await client.mutateCreateOrganization({
             input: {
                 personal: false,
-                name: title,
+                name: titleField.value,
                 about: descriptionField.value.trim(),
-                photoRef: avatar,
+                photoRef: sanitizeImageRef(avatarField.value),
                 isCommunity: props.entityType === 'community',
                 isPrivate: secretField.value,
             },
@@ -620,9 +620,11 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
         <CreatingContainer
             ctx={props.ctx}
             title={`New ${props.entityType}`}
-            getSettingsData={getSettingsData}
             onPeopleChange={onPeopleChange}
             handleDone={doSubmit}
+            useInvitesPage={true}
+            titleField={titleField}
+            avatarField={avatarField}
         >
             {props.entityType === 'community' && (
                 <div className={otherInputContainer}>
@@ -633,8 +635,8 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
                         options={[
                             {
                                 value: false,
-                                labelShort: 'Shared',
-                                label: 'Shared',
+                                labelShort: 'Public',
+                                label: 'Public',
                                 subtitle: 'For all organization/community members',
                             },
                             {
