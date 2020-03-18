@@ -10,10 +10,7 @@ import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ReplyContent, shiftReplyMeta } from './content/ReplyContent';
 import { TextContent } from './content/TextContent';
 import { RichAttachContent, richAttachImageShouldBeCompact } from './content/RichAttachContent';
-import {
-    // MediaContent,
-    layoutImage
-} from './content/MediaContent';
+import { MediaContent, layoutImage } from './content/MediaContent';
 import { DocumentContent } from './content/DocumentContent';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/spacex.types';
 import { OthersUsersWrapper } from './content/OthersUsersWrapper';
@@ -139,9 +136,9 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
 
     const textSize = !compensateBubble ? maxSize : undefined;
 
-    // if (hasImage && imageLayout) {
-    //     topContent.push(<MediaContent key="msg-media" theme={theme} compensateBubble={compensateBubble} layout={imageLayout} message={message} attach={fileAttach!} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onLongPress={onLongPress} hasTopContent={hasReply} hasBottomContent={hasText || hasUrlAug} />);
-    // }
+    if (hasImage && imageLayout) {
+        topContent.push(<MediaContent key="msg-media" theme={theme} compensateBubble={compensateBubble} layout={imageLayout} message={message} attach={fileAttach!} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onLongPress={onLongPress} hasTopContent={hasReply} hasBottomContent={hasText || hasUrlAug} />);
+    }
     if (sticker) {
         topContent.push(<StickerContent key="msg-sticker" sticker={sticker} message={message} padded={hasReply} />);
     }
@@ -227,7 +224,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
     const fixedSize = !imageOnly && (imageLayout || richAttachImageLayout);
     const isImageBottom = hasImage && !hasText && !hasDocument;
     // sorry
-    const shiftMeta = !!(!bottomContent.length && (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment' && a.keyboard).length)
+    const shiftMeta = !!(!bottomContent.length && (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment' && a.keyboard).length) 
         || shiftReplyMeta(message, hasForward);
     const meta = <MetaInfoIndicator type={isImageBottom ? 'media' : 'default'} message={message} theme={theme} />;
 
