@@ -5,7 +5,10 @@ import {
     UserShort,
 } from 'openland-api/spacex.types';
 // import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { useImageViewer, ImageViewerCb } from 'openland-x-utils/imageViewer';
+import {
+    // useImageViewer,
+    ImageViewerCb
+} from 'openland-x-utils/imageViewer';
 import { layoutMedia, uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
 import { showModalBox } from 'openland-x/showModalBox';
@@ -17,7 +20,7 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { emoji } from 'openland-y-utils/emoji';
-import { useClient } from 'openland-api/useClient';
+// import { useClient } from 'openland-api/useClient';
 import IcDownload from 'openland-icons/s/ic-download-24.svg';
 import IcForward from 'openland-icons/s/ic-forward-24.svg';
 import IcClose from 'openland-icons/s/ic-close-24.svg';
@@ -199,47 +202,47 @@ const nextCursorContent = css`
 `;
 
 interface ModalControllerProps {
-    cId: string;
-    cursor: string;
-    setViewerState: (data: ImageViewerCb) => void;
+    // cId: string;
+    // cursor: string;
+    // setViewerState: (data: ImageViewerCb) => void;
     hide: () => void;
-    onPrevClick: () => void;
-    onNextClick: () => void;
+    // onPrevClick: () => void;
+    // onNextClick: () => void;
 }
 
 const ModalController = React.memo((props: ModalControllerProps) => {
-    const client = useClient();
+    // const client = useClient();
 
-    const sharedInfo = client.usePicSharedMedia({
-        chatId: props.cId,
-        first: 1,
-        around: props.cursor,
-    }).chatSharedMedia;
+    // const sharedInfo = client.usePicSharedMedia({
+    //     chatId: props.cId,
+    //     first: 1,
+    //     around: props.cursor,
+    // }).chatSharedMedia;
 
     useShortcuts([
         {
             keys: ['Escape'],
             callback: () => props.hide(),
         },
-        {
-            keys: ['ArrowLeft'],
-            callback: props.onPrevClick,
-        },
-        {
-            keys: ['ArrowRight'],
-            callback: props.onNextClick,
-        },
+        // {
+        //     keys: ['ArrowLeft'],
+        //     callback: props.onPrevClick,
+        // },
+        // {
+        //     keys: ['ArrowRight'],
+        //     callback: props.onNextClick,
+        // },
     ]);
 
-    React.useEffect(
-        () => {
-            if (sharedInfo && props.cursor) {
-                const viewerData = useImageViewer(sharedInfo);
-                props.setViewerState(viewerData);
-            }
-        },
-        [sharedInfo],
-    );
+    // React.useEffect(
+    //     () => {
+    //         if (sharedInfo && props.cursor) {
+    //             const viewerData = useImageViewer(sharedInfo);
+    //             props.setViewerState(viewerData);
+    //         }
+    //     },
+    //     [sharedInfo],
+    // );
 
     return null;
 });
@@ -348,20 +351,18 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     return (
         <div className={modalImgContainer}>
             <div className={modalToolbarContainer}>
-                {/*<XWithRole role="super-admin">*/}
-                {/*    {cursor && props.chatId && (*/}
-                {/*        <React.Suspense fallback={null}>*/}
-                {/*            <ModalController*/}
-                {/*                cId={props.chatId}*/}
-                {/*                cursor={cursor || ''}*/}
-                {/*                setViewerState={setViewerState}*/}
-                {/*                hide={props.hide}*/}
-                {/*                onPrevClick={onPrevClick}*/}
-                {/*                onNextClick={onNextClick}*/}
-                {/*            />*/}
-                {/*        </React.Suspense>*/}
-                {/*    )}*/}
-                {/*</XWithRole>*/}
+                {cursor && props.chatId && (
+                    <React.Suspense fallback={null}>
+                        <ModalController
+                            // cId={props.chatId}
+                            // cursor={cursor || ''}
+                            // setViewerState={setViewerState}
+                            hide={props.hide}
+                            // onPrevClick={onPrevClick}
+                            // onNextClick={onNextClick}
+                        />
+                    </React.Suspense>
+                )}
                 {sender && date && (
                     <div className={modalInfoContainer}>
                         {viewerState && (
