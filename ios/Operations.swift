@@ -1872,6 +1872,56 @@ private let RoomFullWithoutMembersSelector = obj(
             ))
         )
 
+private let RoomPreviewSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("PrivateRoom", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("User", UserShortSelector)
+                    )))
+            )),
+            inline("SharedRoom", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                field("isPremium", "isPremium", notNull(scalar("Boolean"))),
+                field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean"))),
+                field("premiumSubscription", "premiumSubscription", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("state", "state", notNull(scalar("String")))
+                    )),
+                field("premiumSettings", "premiumSettings", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("price", "price", notNull(scalar("Int"))),
+                        field("interval", "interval", scalar("String"))
+                    )),
+                field("membership", "membership", notNull(scalar("String"))),
+                field("owner", "owner", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
+                    )),
+                field("matchmaking", "matchmaking", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("enabled", "enabled", notNull(scalar("Boolean")))
+                    )),
+                field("title", "title", notNull(scalar("String"))),
+                field("photo", "photo", notNull(scalar("String"))),
+                field("membersCount", "membersCount", notNull(scalar("Int"))),
+                field("description", "description", scalar("String")),
+                field("previewMembers", "previewMembers", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("name", "name", notNull(scalar("String"))),
+                        field("photo", "photo", scalar("String"))
+                    ))))),
+                field("onlineMembersCount", "onlineMembersCount", notNull(scalar("Int")))
+            ))
+        )
+
 private let SessionStateFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("isLoggedIn", "isLoggedIn", notNull(scalar("Boolean"))),
@@ -2364,6 +2414,19 @@ private let AccountSettingsSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationShortSelector)
                 )))))
+        )
+private let AuthResolveShortNameSelector = obj(
+            field("alphaResolveShortName", "item", arguments(fieldValue("shortname", refValue("shortname"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    inline("User", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("User", UserNanoSelector)
+                    )),
+                    inline("SharedRoom", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("Room", RoomPreviewSelector)
+                    ))
+                ))
         )
 private let ChatInitSelector = obj(
             field("messages", "messages", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("first", refValue("first")), fieldValue("before", refValue("before"))), notNull(list(notNull(obj(
@@ -2921,15 +2984,6 @@ private let FetchPushSettingsSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("webPushKey", "webPushKey", scalar("String"))
                 )))
-        )
-private let GetUserSelector = obj(
-            field("alphaResolveShortName", "user", arguments(fieldValue("shortname", refValue("shortname"))), obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    inline("User", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("User", UserNanoSelector)
-                    ))
-                ))
         )
 private let GlobalCounterSelector = obj(
             field("alphaNotificationCounter", "alphaNotificationCounter", notNull(obj(
@@ -3520,6 +3574,13 @@ private let ResolvedInviteSelector = obj(
                                         ))
                                 ))
                             )))
+                    ))
+                )),
+            field("alphaResolveShortName", "shortnameItem", arguments(fieldValue("shortname", refValue("shortname"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    inline("SharedRoom", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("Room", RoomPreviewSelector)
                     ))
                 ))
         )
@@ -5205,6 +5266,12 @@ class Operations {
         "query AccountSettings{me:me{__typename ...UserShort audienceSize}myProfile{__typename id authEmail}organizations:myOrganizations{__typename ...OrganizationShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
         AccountSettingsSelector
     )
+    let AuthResolveShortName = OperationDefinition(
+        "AuthResolveShortName",
+        .query, 
+        "query AuthResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename ...UserNano}... on SharedRoom{__typename ...RoomPreview}}}fragment UserNano on User{__typename id name firstName lastName photo online}fragment RoomPreview on Room{__typename ... on PrivateRoom{__typename id user{__typename ...UserShort}}... on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}matchmaking{__typename enabled}title photo membersCount description previewMembers{__typename id name photo}onlineMembersCount}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
+        AuthResolveShortNameSelector
+    )
     let ChatInit = OperationDefinition(
         "ChatInit",
         .query, 
@@ -5421,12 +5488,6 @@ class Operations {
         "query FetchPushSettings{pushSettings{__typename webPushKey}}",
         FetchPushSettingsSelector
     )
-    let GetUser = OperationDefinition(
-        "GetUser",
-        .query, 
-        "query GetUser($shortname:String!){user:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename ...UserNano}}}fragment UserNano on User{__typename id name firstName lastName photo online}",
-        GetUserSelector
-    )
     let GlobalCounter = OperationDefinition(
         "GlobalCounter",
         .query, 
@@ -5616,7 +5677,7 @@ class Operations {
     let ResolvedInvite = OperationDefinition(
         "ResolvedInvite",
         .query, 
-        "query ResolvedInvite($key:String!){invite:alphaResolveInvite(key:$key){__typename ... on InviteInfo{__typename id orgId title creator{__typename ...UserShort}organization{__typename id photo name membersCount about isCommunity:alphaIsCommunity}}... on AppInvite{__typename inviter{__typename ...UserShort}}... on RoomInvite{__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{__typename id kind isChannel title photo socialImage description membership membersCount onlineMembersCount previewMembers{__typename id photo name}matchmaking{__typename enabled}isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}owner{__typename id}}}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
+        "query ResolvedInvite($key:String!){invite:alphaResolveInvite(key:$key){__typename ... on InviteInfo{__typename id orgId title creator{__typename ...UserShort}organization{__typename id photo name membersCount about isCommunity:alphaIsCommunity}}... on AppInvite{__typename inviter{__typename ...UserShort}}... on RoomInvite{__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{__typename id kind isChannel title photo socialImage description membership membersCount onlineMembersCount previewMembers{__typename id photo name}matchmaking{__typename enabled}isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}owner{__typename id}}}}}shortnameItem:alphaResolveShortName(shortname:$shortname){__typename ... on SharedRoom{__typename ...RoomPreview}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment RoomPreview on Room{__typename ... on PrivateRoom{__typename id user{__typename ...UserShort}}... on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}matchmaking{__typename enabled}title photo membersCount description previewMembers{__typename id name photo}onlineMembersCount}}",
         ResolvedInviteSelector
     )
     let Room = OperationDefinition(
@@ -6688,6 +6749,7 @@ class Operations {
         if name == "AccountAppInviteInfo" { return AccountAppInviteInfo }
         if name == "AccountInviteInfo" { return AccountInviteInfo }
         if name == "AccountSettings" { return AccountSettings }
+        if name == "AuthResolveShortName" { return AuthResolveShortName }
         if name == "ChatInit" { return ChatInit }
         if name == "ChatInitFromUnread" { return ChatInitFromUnread }
         if name == "ChatJoin" { return ChatJoin }
@@ -6724,7 +6786,6 @@ class Operations {
         if name == "FeedSubscriptions" { return FeedSubscriptions }
         if name == "FeedWritableChannels" { return FeedWritableChannels }
         if name == "FetchPushSettings" { return FetchPushSettings }
-        if name == "GetUser" { return GetUser }
         if name == "GlobalCounter" { return GlobalCounter }
         if name == "GlobalSearch" { return GlobalSearch }
         if name == "InitFeed" { return InitFeed }

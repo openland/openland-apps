@@ -5,7 +5,7 @@ import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UserProfileFragment } from './UserProfileFragment';
 import { OrganizationProfileFragment } from './OrganizationProfileFragment';
 import { FeedChannelFragment } from './FeedChannelFragment';
-import { GroupProfileFragment } from '../group/GroupProfileFragment';
+import { MessengerFragment } from '../chat/MessengerFragment';
 
 export const ShortnameFragment = React.memo(() => {
     let client = useClient();
@@ -24,7 +24,7 @@ export const ShortnameFragment = React.memo(() => {
             return <FeedChannelFragment id={data.id} />;
         }
         if (data.__typename === 'SharedRoom') {
-            return <GroupProfileFragment id={data.id} />;
+            return <MessengerFragment id={data.id} />;
         }
     }
 

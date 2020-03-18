@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { GetUser_user_User } from 'openland-api/spacex.types';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { emoji } from 'openland-y-utils/emoji';
@@ -10,6 +9,7 @@ import {
     AuthSidebarComponent,
     AuthMobileHeader,
 } from 'openland-web/pages/root/AuthSidebarComponent';
+import { AuthResolveShortName_item_User } from 'openland-api/spacex.types';
 
 const rootContainer = css`
     display: flex;
@@ -50,7 +50,7 @@ const userSubtitle = css`
     margin-bottom: 32px;
 `;
 
-export const AuthProfileFragment = React.memo((props: { user: GetUser_user_User }) => {
+export const AuthProfileFragment = React.memo((props: { user: AuthResolveShortName_item_User }) => {
     const isMobile = useIsMobile();
     return (
         <div className={rootContainer}>
@@ -67,8 +67,8 @@ export const AuthProfileFragment = React.memo((props: { user: GetUser_user_User 
                     />
                     <div className={cx(userName, TextTitle1)}>{emoji(props.user.name)}</div>
                     <div className={cx(userSubtitle, TextBody)}>
-    {props.user.firstName} uses Openland. Want to reach them?<br/>Join Openland and write a message
-                    </div>
+                        {props.user.firstName} uses Openland. Want to reach them?<br />Join Openland and write a message
+                            </div>
                     <UButton
                         text={`Message ${props.user.firstName}`}
                         size="large"

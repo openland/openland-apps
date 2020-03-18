@@ -1,0 +1,40 @@
+fragment RoomPreview on Room {
+    ... on PrivateRoom {
+        id
+        user {
+            ...UserShort
+        }
+    }
+    ... on SharedRoom {
+        id
+        isChannel
+        isPremium
+        premiumPassIsActive
+        premiumSubscription{
+            id
+            state
+        }
+        premiumSettings {
+            id
+            price
+            interval
+        }
+        membership
+        owner{
+            id
+        }
+        matchmaking{
+            enabled
+        }
+        title
+        photo
+        membersCount
+        description
+        previewMembers{
+            id
+            name
+            photo
+        }
+        onlineMembersCount
+    }
+}

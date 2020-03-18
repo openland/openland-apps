@@ -22,6 +22,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryAccountSettings(opts?: OperationParameters): Promise<Types.AccountSettings> {
         return this.query('AccountSettings', undefined, opts);
     }
+    queryAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, opts?: OperationParameters): Promise<Types.AuthResolveShortName> {
+        return this.query('AuthResolveShortName', variables, opts);
+    }
     queryChatInit(variables: Types.ChatInitVariables, opts?: OperationParameters): Promise<Types.ChatInit> {
         return this.query('ChatInit', variables, opts);
     }
@@ -129,9 +132,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryFetchPushSettings(opts?: OperationParameters): Promise<Types.FetchPushSettings> {
         return this.query('FetchPushSettings', undefined, opts);
-    }
-    queryGetUser(variables: Types.GetUserVariables, opts?: OperationParameters): Promise<Types.GetUser> {
-        return this.query('GetUser', variables, opts);
     }
     queryGlobalCounter(opts?: OperationParameters): Promise<Types.GlobalCounter> {
         return this.query('GlobalCounter', undefined, opts);
@@ -343,6 +343,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchAccountSettings(opts?: OperationParameters): Promise<Types.AccountSettings> {
         return this.refetch('AccountSettings', undefined);
     }
+    refetchAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, opts?: OperationParameters): Promise<Types.AuthResolveShortName> {
+        return this.refetch('AuthResolveShortName', variables);
+    }
     refetchChatInit(variables: Types.ChatInitVariables, opts?: OperationParameters): Promise<Types.ChatInit> {
         return this.refetch('ChatInit', variables);
     }
@@ -450,9 +453,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchFetchPushSettings(opts?: OperationParameters): Promise<Types.FetchPushSettings> {
         return this.refetch('FetchPushSettings', undefined);
-    }
-    refetchGetUser(variables: Types.GetUserVariables, opts?: OperationParameters): Promise<Types.GetUser> {
-        return this.refetch('GetUser', variables);
     }
     refetchGlobalCounter(opts?: OperationParameters): Promise<Types.GlobalCounter> {
         return this.refetch('GlobalCounter', undefined);
@@ -664,6 +664,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateAccountSettings(updater: (data: Types.AccountSettings) => Types.AccountSettings | null): Promise<boolean> {
         return this.updateQuery(updater, 'AccountSettings', undefined);
     }
+    updateAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, updater: (data: Types.AuthResolveShortName) => Types.AuthResolveShortName | null): Promise<boolean> {
+        return this.updateQuery(updater, 'AuthResolveShortName', variables);
+    }
     updateChatInit(variables: Types.ChatInitVariables, updater: (data: Types.ChatInit) => Types.ChatInit | null): Promise<boolean> {
         return this.updateQuery(updater, 'ChatInit', variables);
     }
@@ -771,9 +774,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateFetchPushSettings(updater: (data: Types.FetchPushSettings) => Types.FetchPushSettings | null): Promise<boolean> {
         return this.updateQuery(updater, 'FetchPushSettings', undefined);
-    }
-    updateGetUser(variables: Types.GetUserVariables, updater: (data: Types.GetUser) => Types.GetUser | null): Promise<boolean> {
-        return this.updateQuery(updater, 'GetUser', variables);
     }
     updateGlobalCounter(updater: (data: Types.GlobalCounter) => Types.GlobalCounter | null): Promise<boolean> {
         return this.updateQuery(updater, 'GlobalCounter', undefined);
@@ -995,6 +995,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useAccountSettings(opts?: SpaceQueryWatchParameters): Types.AccountSettings | null {
         return this.useQuery('AccountSettings', undefined, opts);
     }
+    useAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.AuthResolveShortName | null;
+    useAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, opts?: SpaceQueryWatchParameters): Types.AuthResolveShortName;
+    useAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, opts?: SpaceQueryWatchParameters): Types.AuthResolveShortName | null {
+        return this.useQuery('AuthResolveShortName', variables, opts);
+    }
     useChatInit(variables: Types.ChatInitVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ChatInit | null;
     useChatInit(variables: Types.ChatInitVariables, opts?: SpaceQueryWatchParameters): Types.ChatInit;
     useChatInit(variables: Types.ChatInitVariables, opts?: SpaceQueryWatchParameters): Types.ChatInit | null {
@@ -1174,11 +1179,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useFetchPushSettings(opts?: SpaceQueryWatchParameters): Types.FetchPushSettings;
     useFetchPushSettings(opts?: SpaceQueryWatchParameters): Types.FetchPushSettings | null {
         return this.useQuery('FetchPushSettings', undefined, opts);
-    }
-    useGetUser(variables: Types.GetUserVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.GetUser | null;
-    useGetUser(variables: Types.GetUserVariables, opts?: SpaceQueryWatchParameters): Types.GetUser;
-    useGetUser(variables: Types.GetUserVariables, opts?: SpaceQueryWatchParameters): Types.GetUser | null {
-        return this.useQuery('GetUser', variables, opts);
     }
     useGlobalCounter(opts: SpaceQueryWatchParameters & { suspense: false }): Types.GlobalCounter | null;
     useGlobalCounter(opts?: SpaceQueryWatchParameters): Types.GlobalCounter;

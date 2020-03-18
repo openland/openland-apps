@@ -1477,6 +1477,7 @@ type Mutation {
   alphaDeleteInvite(id: ID!): String!
   alphaJoinInvite(key: String!, isNewUser: Boolean): ID!
   joinAppInvite(key: String!, isNewUser: Boolean): ID!
+  debugSendSMS(to: String!, message: String!): Boolean!
   debugSerializeId(id: Int!, type: String!): ID!
   debugSendEmail(type: DebugEmailType!): Boolean
   debugCreateTestUser(key: String!, name: String!): User!
@@ -1538,6 +1539,8 @@ type Mutation {
   debugRecountSeqForMessages: Boolean!
   debugReindexRoomMessagesCounter: Boolean!
   settingsUpdate(settings: UpdateSettingsInput): Settings!
+  sendEmailChangeCode(newEmail: String!): String!
+  changeEmail(sessionId: String!, confirmationCode: String!): Boolean!
 
   """Deprecated"""
   updateSettings(settings: UpdateSettingsInput): Settings!

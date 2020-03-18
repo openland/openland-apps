@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import {
-    ResolvedInvite_invite_RoomInvite_room,
     ResolvedInvite_invite_InviteInfo_organization,
-    SharedRoomMembershipStatus,
-    RoomChat_room_SharedRoom,
     WalletSubscriptionInterval,
     WalletSubscriptionState,
+    RoomPreview_SharedRoom,
 } from 'openland-api/spacex.types';
 import { XViewRouterContext } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
@@ -27,6 +25,8 @@ import {
     AuthSidebarComponent,
     AuthMobileHeader,
 } from 'openland-web/pages/root/AuthSidebarComponent';
+import * as Cookie from 'js-cookie';
+import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 
 const container = css`
     display: flex;
@@ -128,7 +128,7 @@ interface InviteLandingComponentLayoutProps {
     description?: string | null;
     button: any;
     noLogin: boolean;
-    room?: ResolvedInvite_invite_RoomInvite_room | RoomChat_room_SharedRoom;
+    room?: RoomPreview_SharedRoom;
 }
 
 const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLayoutProps) => {
@@ -231,7 +231,7 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
 
 const JoinButton = ({ roomId, text }: { roomId: string; text: string }) => {
     const client = useClient();
-    const router = React.useContext(XViewRouterContext);
+    const router = useTabRouter().router;
     return (
         <UButton
             style="primary"
@@ -243,7 +243,7 @@ const JoinButton = ({ roomId, text }: { roomId: string; text: string }) => {
                 trackEvent('invite_button_clicked');
                 await client.mutateRoomJoin({ roomId });
                 await client.refetchRoomWithoutMembers({ id: roomId });
-                router!.navigate(`/mail/${roomId}`);
+                router.reset(`/mail/${roomId}`);
             }}
         />
     );
@@ -256,7 +256,7 @@ const JoinLinkButton = (props: {
     matchmaking?: boolean;
 }) => {
     const client = useClient();
-    const router = React.useContext(XViewRouterContext);
+    const router = useTabRouter().router;
 
     const onAccept = React.useCallback(async () => {
         let timer: any;
@@ -264,9 +264,9 @@ const JoinLinkButton = (props: {
         props.onAccept(true);
         const res = await client.mutateRoomJoinInviteLink({ invite: props.invite });
         if (props.matchmaking) {
-            router!.navigate(`/matchmaking/${res.join.id}/start`, true);
+            router.reset(`/matchmaking/${res.join.id}/start`);
         } else {
-            router!.navigate(`/mail/${res.join.id}`, true);
+            router.reset(`/mail/${res.join.id}`);
         }
         setTimeout(() => props.onAccept(false), 500);
 
@@ -285,6 +285,18 @@ const JoinLinkButton = (props: {
     );
 };
 
+const formatWithInterval = (premiumSettings: { price: number, interval?: WalletSubscriptionInterval | null }) => {
+    let text = formatMoney(premiumSettings.price);
+    if (premiumSettings.interval) {
+        if (premiumSettings.interval === WalletSubscriptionInterval.WEEK) {
+            text += ' / wk';
+        } else if (premiumSettings.interval === WalletSubscriptionInterval.MONTH) {
+            text += ' / mo';
+        }
+    }
+    return text;
+};
+
 const BuyPaidChatPassButton = (props: {
     id: string;
     premiumSettings: { price: number; interval?: WalletSubscriptionInterval | null };
@@ -293,7 +305,8 @@ const BuyPaidChatPassButton = (props: {
     ownerId?: string | null;
 }) => {
     const client = useClient();
-    let router = React.useContext(XViewRouterContext)!;
+    const router = useTabRouter().router;
+
     const [loading, setLoading] = React.useState(false);
     const buyPaidChatPass = React.useCallback(async () => {
         showPayConfirm({
@@ -313,7 +326,7 @@ const BuyPaidChatPassButton = (props: {
                         passIsActive = (await client.mutateBuyPremiumChatPass({ chatId: props.id })).betaBuyPremiumChatPass.premiumPassIsActive;
                     }
                     if (passIsActive) {
-                        router.navigate('/mail/' + props.id);
+                        router.reset('/mail/' + props.id);
                     }
                 } catch (e) {
                     setLoading(false);
@@ -322,14 +335,7 @@ const BuyPaidChatPassButton = (props: {
         });
     }, []);
 
-    let buttonText = 'Join for ' + formatMoney(props.premiumSettings.price);
-    if (props.premiumSettings.interval) {
-        if (props.premiumSettings.interval === WalletSubscriptionInterval.WEEK) {
-            buttonText += ' / wk';
-        } else if (props.premiumSettings.interval === WalletSubscriptionInterval.MONTH) {
-            buttonText += ' / mo';
-        }
-    }
+    let buttonText = 'Join for ' + formatWithInterval(props.premiumSettings);
 
     return (
         <>
@@ -356,22 +362,13 @@ const BuyPaidChatPassButton = (props: {
 };
 
 const resolveRoomButton = (
-    room: {
-        id: string;
-        membership: SharedRoomMembershipStatus;
-        premiumSettings?: { price: number; interval?: WalletSubscriptionInterval | null } | null;
-        premiumPassIsActive: boolean;
-        premiumSubscription?: { state: WalletSubscriptionState } | null;
-        title: string;
-        photo?: string;
-        owner?: { id: string } | null;
-    },
+    room: RoomPreview_SharedRoom,
     buttonText: string,
     key?: string,
     matchmaking?: boolean,
 ) => {
     const [loading, setLoading] = React.useState(false);
-    if (room && room.premiumSettings && !room.premiumPassIsActive) {
+    if (room && room.isPremium && room.premiumSettings && !room.premiumPassIsActive) {
         if (
             room.premiumSubscription &&
             room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED
@@ -452,7 +449,7 @@ const resolveRoomButton = (
     return <></>;
 };
 
-export const SharedRoomPlaceholder = ({ room }: { room: RoomChat_room_SharedRoom }) => {
+export const SharedRoomPlaceholder = ({ room }: { room: RoomPreview_SharedRoom }) => {
     const buttonText = room.isChannel ? 'Join channel' : 'Join group';
     const premiumSuspended = room && room.isPremium && !room.premiumPassIsActive && (room.premiumSubscription && room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED);
     return (
@@ -482,7 +479,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     const key = unicorn ? unicorn.id : path[path.length - 1];
 
     let invite = client.useResolvedInvite({ key });
-    let room: ResolvedInvite_invite_RoomInvite_room | undefined;
+    let room: RoomPreview_SharedRoom | undefined;
     let organization: ResolvedInvite_invite_InviteInfo_organization | undefined;
 
     let invitedByUser;
@@ -497,6 +494,12 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
         room = invite.invite.room;
         invitedByUser = invite.invite.invitedByUser;
         matchmaking = !!(room.matchmaking && room.matchmaking.enabled);
+    }
+
+    if (invite.shortnameItem && invite.shortnameItem.__typename === 'SharedRoom') {
+        room = invite.shortnameItem;
+        matchmaking = !!(room.matchmaking && room.matchmaking.enabled);
+        Cookie.set('x-openland-shortname', key, { path: '/' });
     }
 
     if (invite.invite && invite.invite.__typename === 'AppInvite') {
@@ -524,8 +527,8 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 size="large"
                 shape="square"
                 text={
-                    room && room.premiumSettings
-                        ? `Pay ${formatMoney(room.premiumSettings.price)}`
+                    room && room.isPremium && room.premiumSettings
+                        ? 'Join for ' + formatWithInterval(room.premiumSettings)
                         : buttonText
                 }
                 alignSelf="center"

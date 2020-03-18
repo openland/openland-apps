@@ -11,6 +11,7 @@ import { Wrapper } from '../onboarding/components/wrapper';
 import { Title, Subtitle, FormLayout, AuthInput, AuthInputWrapper, AuthActionButton, useShake } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { AuthHeaderConfig } from './root.page';
+import { ResolvedInvite } from 'openland-api/spacex.types';
 
 export type EnterYourOrganizationPageProps = { inviteKey?: string | null };
 
@@ -121,6 +122,16 @@ export const EnterYourOrganizationPageInner = ({
         }
 
         let result;
+        const inviteKey = Cookie.get('x-openland-invite')!!;
+        let invite: ResolvedInvite | undefined;
+        let isPremium = false;
+        if (inviteKey) {
+            invite = await client.queryResolvedInvite({ key: inviteKey });
+            if (invite.invite?.__typename === 'RoomInvite') {
+                isPremium = invite.invite.room.isPremium;
+            }
+        }
+
         if (profile.profile && profile.profile.primaryOrganization) {
             const { updateOrganizationProfile } = await client.mutateUpdateOrganization({
                 input: {
@@ -132,24 +143,23 @@ export const EnterYourOrganizationPageInner = ({
                 organization: updateOrganizationProfile,
             };
 
-            if (Cookie.get('x-openland-invite')) {
+            if (inviteKey) {
                 // room invite
-                const inviteKey = Cookie.get('x-openland-invite')!!;
-
-                const room = await client.mutateRoomJoinInviteLink({
-                    invite: inviteKey,
-                });
-
-                await client.refetchAccount();
-
-                window.location.href = `/mail/${room.join.id}`;
+                if (!isPremium) {
+                    const room = await client.mutateRoomJoinInviteLink({
+                        invite: inviteKey,
+                    });
+                    await client.refetchAccount();
+                    window.location.href = `/mail/${room.join.id}`;
+                } else {
+                    window.location.href = `/invite/${inviteKey}`;
+                }
                 return;
             }
             if (Cookie.get('x-openland-app-invite')) {
                 // app invite invite
-                const inviteKey = Cookie.get('x-openland-app-invite')!!;
                 await client.mutateOrganizationActivateByInvite({
-                    inviteKey,
+                    inviteKey: Cookie.get('x-openland-app-invite')!!,
                 });
                 await client.refetchAccount();
             }
@@ -162,41 +172,41 @@ export const EnterYourOrganizationPageInner = ({
                     name: organizationFieldValue,
                 },
             });
-            if (Cookie.get('x-openland-invite')) {
-                // room invite
-                const inviteKey = Cookie.get('x-openland-invite')!!;
+            if (inviteKey) {
+                if (!isPremium) {
+                    const room = await client.mutateRoomJoinInviteLink({
+                        invite: inviteKey,
+                    });
 
-                const room = await client.mutateRoomJoinInviteLink({
-                    invite: inviteKey,
-                });
+                    await client.refetchAccount();
 
-                await client.refetchAccount();
+                    Cookie.set('x-openland-org', result.organization.id, { path: '/' });
 
-                Cookie.set('x-openland-org', result.organization.id, { path: '/' });
-                trackEvent('registration_complete');
-
-                // can not remove cookie or update will break
-                // Cookie.remove('x-openland-invite');
-                await client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
-                if (
-                    room.join.__typename === 'SharedRoom' &&
-                    room.join.matchmaking &&
-                    room.join.matchmaking.enabled &&
-                    room.join.matchmaking.questions &&
-                    room.join.matchmaking.questions.length
-                ) {
-                    window.location.href = `/matchmaking/${room.join.id}/ask/${
-                        room.join.matchmaking.questions[0].id
-                        }`;
+                    // can not remove cookie or update will break
+                    // Cookie.remove('x-openland-invite');
+                    await client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
+                    if (
+                        room.join.__typename === 'SharedRoom' &&
+                        room.join.matchmaking &&
+                        room.join.matchmaking.enabled &&
+                        room.join.matchmaking.questions &&
+                        room.join.matchmaking.questions.length
+                    ) {
+                        window.location.href = `/matchmaking/${room.join.id}/ask/${
+                            room.join.matchmaking.questions[0].id
+                            }`;
+                    } else {
+                        window.location.href = `/mail/${room.join.id}`;
+                    }
                 } else {
-                    window.location.href = `/mail/${room.join.id}`;
+                    window.location.href = `/invite/${inviteKey}`;
                 }
+                trackEvent('registration_complete');
                 return;
             } else if (Cookie.get('x-openland-app-invite')) {
                 // app invite invite
-                const inviteKey = Cookie.get('x-openland-app-invite')!!;
                 await client.mutateOrganizationActivateByInvite({
-                    inviteKey,
+                    inviteKey: Cookie.get('x-openland-app-invite')!!,
                 });
                 await client.refetchAccount();
 
@@ -205,8 +215,10 @@ export const EnterYourOrganizationPageInner = ({
 
                 // can not remove cookie or update will break
                 // Cookie.remove('x-openland-app-invite');
+            } else if (Cookie.get('x-openland-shortname')) {
+                window.location.href = `/${Cookie.get('x-openland-shortname')}`;
+                return;
             }
-
             window.location.href = '/onboarding/start';
         }
     };

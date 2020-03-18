@@ -13,6 +13,7 @@ export default class LogoutHandler extends React.Component<{}, {}> {
 
         Cookie.remove('x-openland-app-invite', { path: '/' });
         Cookie.remove('x-openland-invite', { path: '/' });
+        Cookie.remove('x-openland-shortname', { path: '/' });
 
         let keepDomain = Cookie.defaults.domain;
         let keepPath = Cookie.defaults.path;

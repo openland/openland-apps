@@ -1878,6 +1878,56 @@ internal val RoomFullWithoutMembersSelector = obj(
             ))
         )
 
+internal val RoomPreviewSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("PrivateRoom", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("User", UserShortSelector)
+                    )))
+            )),
+            inline("SharedRoom", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                field("isPremium", "isPremium", notNull(scalar("Boolean"))),
+                field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean"))),
+                field("premiumSubscription", "premiumSubscription", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("state", "state", notNull(scalar("String")))
+                    )),
+                field("premiumSettings", "premiumSettings", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("price", "price", notNull(scalar("Int"))),
+                        field("interval", "interval", scalar("String"))
+                    )),
+                field("membership", "membership", notNull(scalar("String"))),
+                field("owner", "owner", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
+                    )),
+                field("matchmaking", "matchmaking", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("enabled", "enabled", notNull(scalar("Boolean")))
+                    )),
+                field("title", "title", notNull(scalar("String"))),
+                field("photo", "photo", notNull(scalar("String"))),
+                field("membersCount", "membersCount", notNull(scalar("Int"))),
+                field("description", "description", scalar("String")),
+                field("previewMembers", "previewMembers", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("name", "name", notNull(scalar("String"))),
+                        field("photo", "photo", scalar("String"))
+                    ))))),
+                field("onlineMembersCount", "onlineMembersCount", notNull(scalar("Int")))
+            ))
+        )
+
 internal val SessionStateFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("isLoggedIn", "isLoggedIn", notNull(scalar("Boolean"))),

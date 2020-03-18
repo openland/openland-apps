@@ -2,7 +2,6 @@ import * as React from 'react';
 import { UserInfoContext } from '../../components/UserInfo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
-import { GetUser_user } from 'openland-api/spacex.types';
 import { extractRedirect } from './router/extractRedirect';
 import { isRootPath } from './router/isRootPath';
 import { redirectSuffix } from './router/redirectSuffix';
@@ -10,6 +9,7 @@ import { isPublicPath } from './router/isPublicPath';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useClient } from 'openland-api/useClient';
 import { AuthProfileFragment } from './AuthProfileFragment';
+import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
 
 export const AuthRouter = React.memo((props: { children: any }) => {
     const router = React.useContext(XRouterContext)!;
@@ -19,17 +19,8 @@ export const AuthRouter = React.memo((props: { children: any }) => {
 
     const { hostName, path, routeQuery } = router;
 
-    const shortName = routeQuery && routeQuery.shortname ? routeQuery.shortname : null;
-    let user: GetUser_user | null = null;
-
-    if (!userInfo.isLoggedIn && shortName) {
-        const item = client.useGetUser({ shortname: shortName }).user;
-
-        if (item && item.__typename === 'User') {
-            user = item;
-        }
-    }
-
+    const shortname = routeQuery && routeQuery.shortname ? routeQuery.shortname : null;
+    let shortnameItem = (!userInfo.isLoggedIn && shortname) ? client.useAuthResolveShortName({ shortname }, { fetchPolicy: 'network-only' }).item : null;
     if (hostName === 'app.openland.com') {
         if (canUseDOM) {
             window.location.replace(`https://openland.com${path}`);
@@ -86,8 +77,11 @@ export const AuthRouter = React.memo((props: { children: any }) => {
         }
     }
 
-    if (!userInfo.isLoggedIn && user) {
-        return <AuthProfileFragment user={user} />;
+    if (shortnameItem?.__typename === 'User') {
+        return <AuthProfileFragment user={shortnameItem} />;
+    }
+    if (shortnameItem?.__typename === 'SharedRoom') {
+        return <InviteLandingComponent signupRedirect={'/signin?redirect=' + encodeURIComponent('/' + shortname)}/>;
     }
 
     // Redirect to Signup/Signin pages

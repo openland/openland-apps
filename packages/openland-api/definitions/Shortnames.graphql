@@ -16,10 +16,13 @@ query ResolveShortName($shortname: String!) {
         }
     }
 }
-query GetUser($shortname: String!) {
-    user: alphaResolveShortName(shortname: $shortname) {
+query AuthResolveShortName($shortname: String!) {
+    item: alphaResolveShortName(shortname: $shortname) {
         ... on User {
             ...UserNano
+        }
+        ... on SharedRoom {
+            ...RoomPreview
         }
     }
 }

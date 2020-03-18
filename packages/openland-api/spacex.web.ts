@@ -1879,6 +1879,56 @@ const RoomFullWithoutMembersSelector = obj(
             ))
         );
 
+const RoomPreviewSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            inline('PrivateRoom', obj(
+                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                field('id', 'id', args(), notNull(scalar('ID'))),
+                field('user', 'user', args(), notNull(obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        fragment('User', UserShortSelector)
+                    )))
+            )),
+            inline('SharedRoom', obj(
+                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                field('id', 'id', args(), notNull(scalar('ID'))),
+                field('isChannel', 'isChannel', args(), notNull(scalar('Boolean'))),
+                field('isPremium', 'isPremium', args(), notNull(scalar('Boolean'))),
+                field('premiumPassIsActive', 'premiumPassIsActive', args(), notNull(scalar('Boolean'))),
+                field('premiumSubscription', 'premiumSubscription', args(), obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('id', 'id', args(), notNull(scalar('ID'))),
+                        field('state', 'state', args(), notNull(scalar('String')))
+                    )),
+                field('premiumSettings', 'premiumSettings', args(), obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('id', 'id', args(), notNull(scalar('ID'))),
+                        field('price', 'price', args(), notNull(scalar('Int'))),
+                        field('interval', 'interval', args(), scalar('String'))
+                    )),
+                field('membership', 'membership', args(), notNull(scalar('String'))),
+                field('owner', 'owner', args(), obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('id', 'id', args(), notNull(scalar('ID')))
+                    )),
+                field('matchmaking', 'matchmaking', args(), obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('enabled', 'enabled', args(), notNull(scalar('Boolean')))
+                    )),
+                field('title', 'title', args(), notNull(scalar('String'))),
+                field('photo', 'photo', args(), notNull(scalar('String'))),
+                field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
+                field('description', 'description', args(), scalar('String')),
+                field('previewMembers', 'previewMembers', args(), notNull(list(notNull(obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('id', 'id', args(), notNull(scalar('ID'))),
+                        field('name', 'name', args(), notNull(scalar('String'))),
+                        field('photo', 'photo', args(), scalar('String'))
+                    ))))),
+                field('onlineMembersCount', 'onlineMembersCount', args(), notNull(scalar('Int')))
+            ))
+        );
+
 const SessionStateFullSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('isLoggedIn', 'isLoggedIn', args(), notNull(scalar('Boolean'))),
@@ -2371,6 +2421,19 @@ const AccountSettingsSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('Organization', OrganizationShortSelector)
                 )))))
+        );
+const AuthResolveShortNameSelector = obj(
+            field('alphaResolveShortName', 'item', args(fieldValue("shortname", refValue('shortname'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    inline('User', obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        fragment('User', UserNanoSelector)
+                    )),
+                    inline('SharedRoom', obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        fragment('Room', RoomPreviewSelector)
+                    ))
+                ))
         );
 const ChatInitSelector = obj(
             field('messages', 'messages', args(fieldValue("chatId", refValue('chatId')), fieldValue("first", refValue('first')), fieldValue("before", refValue('before'))), notNull(list(notNull(obj(
@@ -2928,15 +2991,6 @@ const FetchPushSettingsSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('webPushKey', 'webPushKey', args(), scalar('String'))
                 )))
-        );
-const GetUserSelector = obj(
-            field('alphaResolveShortName', 'user', args(fieldValue("shortname", refValue('shortname'))), obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    inline('User', obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        fragment('User', UserNanoSelector)
-                    ))
-                ))
         );
 const GlobalCounterSelector = obj(
             field('alphaNotificationCounter', 'alphaNotificationCounter', args(), notNull(obj(
@@ -3527,6 +3581,13 @@ const ResolvedInviteSelector = obj(
                                         ))
                                 ))
                             )))
+                    ))
+                )),
+            field('alphaResolveShortName', 'shortnameItem', args(fieldValue("shortname", refValue('key'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    inline('SharedRoom', obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        fragment('Room', RoomPreviewSelector)
                     ))
                 ))
         );
@@ -5208,6 +5269,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query AccountSettings{me:me{__typename ...UserShort audienceSize}myProfile{__typename id authEmail}organizations:myOrganizations{__typename ...OrganizationShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
         selector: AccountSettingsSelector
     },
+    AuthResolveShortName: {
+        kind: 'query',
+        name: 'AuthResolveShortName',
+        body: 'query AuthResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename ...UserNano}... on SharedRoom{__typename ...RoomPreview}}}fragment UserNano on User{__typename id name firstName lastName photo online}fragment RoomPreview on Room{__typename ... on PrivateRoom{__typename id user{__typename ...UserShort}}... on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}matchmaking{__typename enabled}title photo membersCount description previewMembers{__typename id name photo}onlineMembersCount}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
+        selector: AuthResolveShortNameSelector
+    },
     ChatInit: {
         kind: 'query',
         name: 'ChatInit',
@@ -5424,12 +5491,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query FetchPushSettings{pushSettings{__typename webPushKey}}',
         selector: FetchPushSettingsSelector
     },
-    GetUser: {
-        kind: 'query',
-        name: 'GetUser',
-        body: 'query GetUser($shortname:String!){user:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename ...UserNano}}}fragment UserNano on User{__typename id name firstName lastName photo online}',
-        selector: GetUserSelector
-    },
     GlobalCounter: {
         kind: 'query',
         name: 'GlobalCounter',
@@ -5619,7 +5680,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ResolvedInvite: {
         kind: 'query',
         name: 'ResolvedInvite',
-        body: 'query ResolvedInvite($key:String!){invite:alphaResolveInvite(key:$key){__typename ... on InviteInfo{__typename id orgId title creator{__typename ...UserShort}organization{__typename id photo name membersCount about isCommunity:alphaIsCommunity}}... on AppInvite{__typename inviter{__typename ...UserShort}}... on RoomInvite{__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{__typename id kind isChannel title photo socialImage description membership membersCount onlineMembersCount previewMembers{__typename id photo name}matchmaking{__typename enabled}isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}owner{__typename id}}}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
+        body: 'query ResolvedInvite($key:String!){invite:alphaResolveInvite(key:$key){__typename ... on InviteInfo{__typename id orgId title creator{__typename ...UserShort}organization{__typename id photo name membersCount about isCommunity:alphaIsCommunity}}... on AppInvite{__typename inviter{__typename ...UserShort}}... on RoomInvite{__typename id invitedByUser{__typename ...UserShort}room{__typename ... on SharedRoom{__typename id kind isChannel title photo socialImage description membership membersCount onlineMembersCount previewMembers{__typename id photo name}matchmaking{__typename enabled}isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}owner{__typename id}}}}}shortnameItem:alphaResolveShortName(shortname:$key){__typename ... on SharedRoom{__typename ...RoomPreview}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment RoomPreview on Room{__typename ... on PrivateRoom{__typename id user{__typename ...UserShort}}... on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}matchmaking{__typename enabled}title photo membersCount description previewMembers{__typename id name photo}onlineMembersCount}}',
         selector: ResolvedInviteSelector
     },
     Room: {

@@ -608,6 +608,11 @@ query ResolvedInvite($key: String!) {
             }
         }
     }
+    shortnameItem: alphaResolveShortName(shortname: $key){
+        ... on SharedRoom {
+            ... RoomPreview
+        }
+    }
 }
 mutation RoomUpdate($roomId: ID!, $input: RoomUpdateInput!) {
     betaRoomUpdate(roomId: $roomId, input: $input) {
