@@ -136,9 +136,9 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
 
     const textSize = !compensateBubble ? maxSize : undefined;
 
-    if (hasImage && imageLayout) {
-        topContent.push(<MediaContent key="msg-media" theme={theme} compensateBubble={compensateBubble} layout={imageLayout} message={message} attach={fileAttach!} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onLongPress={onLongPress} hasTopContent={hasReply} hasBottomContent={hasText || hasUrlAug} />);
-    }
+    // if (hasImage && imageLayout) {
+    //     topContent.push(<MediaContent key="msg-media" theme={theme} compensateBubble={compensateBubble} layout={imageLayout} message={message} attach={fileAttach!} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onLongPress={onLongPress} hasTopContent={hasReply} hasBottomContent={hasText || hasUrlAug} />);
+    // }
     if (sticker) {
         topContent.push(<StickerContent key="msg-sticker" sticker={sticker} message={message} padded={hasReply} />);
     }
