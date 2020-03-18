@@ -14,7 +14,6 @@ const textWrapper = css`
     &:first-child {
         margin-top: 4px;
     }
-
 `;
 
 export const SettingsLicensesFragment = React.memo(() => {

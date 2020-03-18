@@ -8,6 +8,7 @@ import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradie
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import Version from 'react-native-version-number';
+import { SRouterContext } from 'react-native-s/SRouterContext';
 
 const styles = StyleSheet.create({
     image: {
@@ -35,6 +36,7 @@ const styles = StyleSheet.create({
 
 const SettingsAboutComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
+    const router = React.useContext(SRouterContext)!;
 
     const buildNumber = Version.appVersion;
 
@@ -65,6 +67,12 @@ const SettingsAboutComponent = React.memo((props: PageProps) => {
                     text='Privacy policy'
                     small={true}
                     onPress={() => Linking.openURL('https://openland.com/privacy')}
+                />
+                <ZListItem
+                    leftIcon={require('assets/ic-copyright-24.png')}
+                    text='Licenses'
+                    small={true}
+                    onPress={() => router.push('SettingsLicenses')}
                 />
             </View>
         </SScrollView>

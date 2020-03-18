@@ -44,6 +44,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
             'discover/premium': { route: 'DiscoverListing', params: {type: 'top-premium'} },
             'discover/free': { route: 'DiscoverListing', params: {type: 'top-free'} },
             'discover/recommendations': { route: 'DiscoverListing', params: {type: 'recommendations'} },
+            'account/licenses': { route: 'SettingsLicenses' },
         };
 
         let pagePattern = /(http(s)?\:\/\/)?(.*)?.openland.com\/(.*)/g;
