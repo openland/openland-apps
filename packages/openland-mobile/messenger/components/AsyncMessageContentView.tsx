@@ -10,7 +10,10 @@ import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ReplyContent, shiftReplyMeta } from './content/ReplyContent';
 import { TextContent } from './content/TextContent';
 import { RichAttachContent, richAttachImageShouldBeCompact } from './content/RichAttachContent';
-import { MediaContent, layoutImage } from './content/MediaContent';
+import {
+    // MediaContent,
+    layoutImage
+} from './content/MediaContent';
 import { DocumentContent } from './content/DocumentContent';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/spacex.types';
 import { OthersUsersWrapper } from './content/OthersUsersWrapper';
@@ -224,7 +227,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
     const fixedSize = !imageOnly && (imageLayout || richAttachImageLayout);
     const isImageBottom = hasImage && !hasText && !hasDocument;
     // sorry
-    const shiftMeta = !!(!bottomContent.length && (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment' && a.keyboard).length) 
+    const shiftMeta = !!(!bottomContent.length && (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment' && a.keyboard).length)
         || shiftReplyMeta(message, hasForward);
     const meta = <MetaInfoIndicator type={isImageBottom ? 'media' : 'default'} message={message} theme={theme} />;
 
