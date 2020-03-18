@@ -10,6 +10,7 @@ const badge = css`
     border-radius: 4px;
     margin: 1px 8px -1px 0;
     opacity: 0.84;
+    flex-shrink: 0;
 `;
 
 const badgeActive = css`
