@@ -65,6 +65,11 @@ type AppToken {
   salt: String!
 }
 
+type AuthPoint {
+  email: String
+  phone: String
+}
+
 type CardSetupIntent {
   id: ID!
   clientSecret: String!
@@ -1538,9 +1543,12 @@ type Mutation {
   debugReplaceCommunityForChat(chatId: ID!, newCommunityId: ID!): Boolean!
   debugRecountSeqForMessages: Boolean!
   debugReindexRoomMessagesCounter: Boolean!
+  debugQueueDailyPaidLeaderboard: Boolean!
   settingsUpdate(settings: UpdateSettingsInput): Settings!
   sendEmailChangeCode(newEmail: String!): String!
   changeEmail(sessionId: String!, confirmationCode: String!): Boolean!
+  sendPhonePairCode(phone: String!): String!
+  pairPhone(sessionId: String!, confirmationCode: String!): Boolean!
 
   """Deprecated"""
   updateSettings(settings: UpdateSettingsInput): Settings!
@@ -2304,6 +2312,7 @@ type Query {
   debugServerId: String!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
+  authPoints: AuthPoint!
   myOauthApps: [OauthApp!]!
   oauthContext(code: String!): OauthContext
   alphaOrganizationMembers(orgId: ID!, first: Int, after: ID): [OrganizationMember!]!
