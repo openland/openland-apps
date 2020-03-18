@@ -4,6 +4,7 @@ import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     UserShort,
 } from 'openland-api/spacex.types';
+// import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { useImageViewer, ImageViewerCb } from 'openland-x-utils/imageViewer';
 import { layoutMedia, uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
@@ -347,18 +348,20 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     return (
         <div className={modalImgContainer}>
             <div className={modalToolbarContainer}>
-                {cursor && props.chatId && (
-                    <React.Suspense fallback={null}>
-                        <ModalController
-                            cId={props.chatId}
-                            cursor={cursor || ''}
-                            setViewerState={setViewerState}
-                            hide={props.hide}
-                            onPrevClick={onPrevClick}
-                            onNextClick={onNextClick}
-                        />
-                    </React.Suspense>
-                )}
+                {/*<XWithRole role="super-admin">*/}
+                {/*    {cursor && props.chatId && (*/}
+                {/*        <React.Suspense fallback={null}>*/}
+                {/*            <ModalController*/}
+                {/*                cId={props.chatId}*/}
+                {/*                cursor={cursor || ''}*/}
+                {/*                setViewerState={setViewerState}*/}
+                {/*                hide={props.hide}*/}
+                {/*                onPrevClick={onPrevClick}*/}
+                {/*                onNextClick={onNextClick}*/}
+                {/*            />*/}
+                {/*        </React.Suspense>*/}
+                {/*    )}*/}
+                {/*</XWithRole>*/}
                 {sender && date && (
                     <div className={modalInfoContainer}>
                         {viewerState && (
