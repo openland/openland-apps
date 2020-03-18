@@ -30,6 +30,7 @@ import { FeedItemFragment } from 'openland-web/fragments/feed/FeedItemFragment';
 import { useStackRouter } from 'openland-unicorn/components/StackRouter';
 import { SharedMediaFragment } from 'openland-web/fragments/chat/sharedMedia/SharedMediaFragment';
 import { SettingsAboutFragment } from 'openland-web/fragments/account/SettingsAboutFragment';
+import { SettingsLicensesFragment } from 'openland-web/fragments/account/SettingsLicensesFragment';
 import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
 import { UserProfileFragment } from 'openland-web/fragments/shortname/UserProfileFragment';
 // import { useTabRouter } from 'openland-unicorn/components/TabLayout';
@@ -118,6 +119,7 @@ routing.addRoute('/account/appearance', () => SettingsAppearanceFragment);
 routing.addRoute('/account/download', () => DownloadAppsFragment);
 routing.addRoute('/account/invites', () => InviteFriendsFragment);
 routing.addRoute('/account/about', () => SettingsAboutFragment);
+routing.addRoute('/account/licenses', () => SettingsLicensesFragment);
 
 // Wallet
 routing.addRoute('/wallet', () => WalletFragment);

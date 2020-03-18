@@ -9,7 +9,9 @@ import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
 import Info from 'openland-icons/ic-info-24.svg';
 import Terms from 'openland-icons/ic-terms-24.svg';
 import Privacy from 'openland-icons/ic-lock-24.svg';
+import Copyright from 'openland-icons/ic-copyright-24.svg';
 import { VERSION } from 'openland-web/version';
+import { ULink } from 'openland-web/components/unicorn/ULink';
 
 const hero = css`
     background-color: #F2F3F5;
@@ -49,18 +51,28 @@ interface MenuItemProps {
     path: string;
     icon: React.ReactNode;
     children: string;
+    inStack?: boolean;
 }
 
-const MenuItem = React.memo((props: MenuItemProps) => (
-    <a className={menuItem} href={props.path} target="_blank" rel="noopener noreferrer">
-        <XView marginRight={16}>
-            {props.icon}
-        </XView >
-        <span className={TextBody}>
-            {props.children}
-        </span>
-    </a>
-));
+const MenuItem = React.memo((props: MenuItemProps) => {
+    const content = (
+        <>
+            <XView marginRight={16}>
+                {props.icon}
+            </XView >
+            <span className={TextBody}>
+                {props.children}
+            </span>
+        </>
+    );
+    return props.inStack ? (
+        <ULink path={props.path} className={menuItem}>{content}</ULink>
+    ) : (
+        <a className={menuItem} href={props.path} target="_blank" rel="noopener noreferrer">
+            {content}
+        </a>
+    );
+});
 
 export const SettingsAboutFragment = React.memo(() => {
     // replace with electron build number when available
@@ -88,6 +100,7 @@ export const SettingsAboutFragment = React.memo(() => {
                     <MenuItem icon={<Info />} path="/about">About Openland</MenuItem>
                     <MenuItem icon={<Terms />} path="/terms">Terms of service</MenuItem>
                     <MenuItem icon={<Privacy />} path="/privacy">Privacy policy</MenuItem>
+                    <MenuItem icon={<Copyright />} path="/account/licenses" inStack={true}>Licenses</MenuItem>
                 </XView>
             </FormWrapper>
         </Page>

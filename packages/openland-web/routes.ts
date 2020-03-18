@@ -213,6 +213,7 @@ routes.add('/account/notifications', '/unicorn/index');
 routes.add('/account/email', '/unicorn/index');
 routes.add('/account/apps', '/unicorn/index');
 routes.add('/account/about', '/unicorn/index');
+routes.add('/account/licenses', '/unicorn/index');
 
 //
 // Wallet
