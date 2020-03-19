@@ -259,6 +259,9 @@ export class DataSourceStored<T extends DataSourceItem> {
 
     addItem = async (item: T, index: number) => {
         await this._queue.sync(async () => {
+            if (this._index.find((v) => v === item.key)) {
+                throw Error('Item already exists');
+            }
             // Write record
             await this._storage.writeKey('ds.' + this.name + '.item.' + item.key, JSON.stringify(item));
 

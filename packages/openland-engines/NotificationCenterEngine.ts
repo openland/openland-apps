@@ -250,7 +250,7 @@ export class NotificationCenterEngine {
         };
 
         this._dataSourceStored = new DataSourceStored(
-            'notifications-8',
+            'notifications-9',
             engine.options.store,
             20,
             provider,
@@ -321,8 +321,11 @@ export class NotificationCenterEngine {
         log.log('Event Recieved: ' + event.__typename);
 
         if (event.__typename === 'NotificationReceived') {
-            const converted = convertNotification(event.notification);
+            if (await this._dataSourceStored.hasItem(event.notification.id)) {
+                return;
+            }
 
+            const converted = convertNotification(event.notification);
             await this._dataSourceStored.addItem(converted, 0);
 
             if (converted.notificationType === 'new_comment' || converted.notificationType === 'mm') {
