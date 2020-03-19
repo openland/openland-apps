@@ -66,7 +66,7 @@ const TransactionInfo = React.memo<TransactionInfoProps & { ctx: BottomSheetActi
                     <View alignItems="center">
                         {avatar && <ZAvatar size="xx-large" {...avatar} />}
                         {!avatar && <Image source={require('assets/ic-top-up-40.png')} style={{ width: 96, height: 96 }} />}
-                        <Text style={{ ...TextStyles.Title2, color: theme.foregroundPrimary, marginTop: 16, marginBottom: 4 }} allowFontScaling={false}>{title}</Text>
+                        <Text style={{ ...TextStyles.Title2, textAlign: 'center', color: theme.foregroundPrimary, marginTop: 16, marginBottom: 4 }} allowFontScaling={false}>{title}</Text>
                     </View>
                 </TouchableOpacity>
                 <Text style={{ ...TextStyles.Body, color: theme.foregroundTertiary }} allowFontScaling={false}>
