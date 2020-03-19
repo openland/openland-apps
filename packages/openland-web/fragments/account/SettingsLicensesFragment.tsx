@@ -7,7 +7,6 @@ import { TextBody } from 'openland-web/utils/TextStyles';
 import { css, cx } from 'linaria';
 
 const textWrapper = css`
-    padding: 0 8px;
     color: var(--foregroundPrimary);
     margin-top: 16px;
 
@@ -18,7 +17,7 @@ const textWrapper = css`
 
 export const SettingsLicensesFragment = React.memo(() => {
     return (
-        <Page track="account_licenses">
+        <Page track="account_licenses" scroll="disable">
             <UHeader title="Licenses" maxWidth={550} />
             <FormWrapper>
                 <p className={cx(textWrapper, TextBody)}>Product illustrations by <ULink href="https://icons8.com/">Icons 8</ULink></p>
