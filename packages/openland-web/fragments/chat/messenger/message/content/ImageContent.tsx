@@ -11,6 +11,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { formatDateTime } from 'openland-y-utils/formatTime';
 import { TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XLoader } from 'openland-x/XLoader';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
@@ -65,6 +66,7 @@ const modalInfoContainer = css`
     align-items: center;
     pointer-events: none;
     margin-right: auto;
+    white-space: nowrap;
 `;
 
 const modalPrimaryText = css`
@@ -256,6 +258,7 @@ interface ModalProps {
 }
 
 const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
+    const isMobile = useIsMobile();
     const messenger = React.useContext(MessengerContext);
     const imgRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
@@ -363,10 +366,20 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     <div className={modalInfoContainer}>
                         {viewerState && (
                             <div className={cx(TextLabel1, modalPrimaryText)}>
-                                Media {viewerState.index} of {viewerState.count}
+                                {isMobile ? (
+                                    <>
+                                        {viewerState.index} of {viewerState.count}
+                                    </>
+                                ) : (
+                                    <>
+                                        Media {viewerState.index} of {viewerState.count}
+                                    </>
+                                )}
                             </div>
                         )}
-                        <div className={cx(TextCaption, modalSecondaryText)}>{sender}</div>
+                        {!isMobile && (
+                            <div className={cx(TextCaption, modalSecondaryText)}>{sender}</div>
+                        )}
                         <div className={cx(TextCaption, modalSecondaryText)}>
                             {formatDateTime(date)}
                         </div>

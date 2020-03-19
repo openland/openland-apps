@@ -66,6 +66,11 @@ const darkOverlayStyle = css`
     background-color: var(--overlayHeavy);
 `;
 
+const transparentBoxStyle = css`
+    background-color: transparent;
+    box-shadow: none;
+`;
+
 const overlayFullScreenStyle = css`
     position: relative;
     width: 100%;
@@ -224,6 +229,7 @@ const ModalBoxComponent = React.memo<{
                     className={cx(
                         boxStyle,
                         props.config.darkOverlay && darkOverlayStyle,
+                        props.config.transparentBox && transparentBoxStyle,
                         state === 'showing' && boxShowing,
                         state === 'visible' && boxVisible,
                         state === 'hiding' && boxHiding,
@@ -285,6 +291,7 @@ export interface XModalBoxConfig {
     flowing?: boolean;
     useTopCloser?: boolean;
     darkOverlay?: boolean;
+    transparentBox?: boolean;
     onCancel?: () => void;
     hideOnEsc?: boolean;
 }

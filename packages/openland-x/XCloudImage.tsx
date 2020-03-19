@@ -18,8 +18,8 @@ export interface XCloudImageProps {
     photoRef?: XPhotoRef | null;
     src?: string | null;
     className?: string;
-    maxWidth?: number;
-    maxHeight?: number;
+    maxWidth?: number | string;
+    maxHeight?: number | string;
     width?: number;
     height?: number;
     resize?: 'fill' | 'fit';
@@ -43,8 +43,8 @@ export class XCloudImage extends React.PureComponent<XCloudImageProps> {
         if (srcCloud) {
             let scale: string | null = null;
             let scaleRetina: string | null = null;
-            let scaleWidth = this.props.width ? this.props.width : (this.props.maxWidth ? this.props.maxWidth : null);
-            let scaleHeight = this.props.height ? this.props.height : (this.props.maxHeight ? this.props.maxHeight : null);
+            let scaleWidth = this.props.width ? this.props.width : null;
+            let scaleHeight = this.props.height ? this.props.height : null;
 
             if (scaleWidth && scaleHeight) {
                 scale = `${scaleWidth}x${scaleHeight}`;
