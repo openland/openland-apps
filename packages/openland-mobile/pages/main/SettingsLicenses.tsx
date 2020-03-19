@@ -11,9 +11,10 @@ const Link = React.memo((props: {path: string, children: any}) => {
     const onPress = React.useCallback(() => {
         Linking.openURL(props.path);
     }, []);
+    const textDecorationLine = theme.accentPrimary === theme.foregroundPrimary ? 'underline' : 'none';
     return (
         <TouchableWithoutFeedback onPress={onPress}>
-                <Text style={{color: theme.accentPrimary}}>{props.children}</Text>
+                <Text style={{color: theme.accentPrimary, textDecorationLine}}>{props.children}</Text>
         </TouchableWithoutFeedback>
     );
 });

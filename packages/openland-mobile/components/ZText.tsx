@@ -38,10 +38,11 @@ export const ZText = (props: ZTextProps) => {
             if (v.type === 'new_line') {
                 return <Text key={'br-' + i} style={props.style} allowFontScaling={false}>{'\n'}</Text>;
             } else if (v.type === 'link') {
+                const textDecorationLine = theme.accentPrimary === theme.foregroundPrimary ? 'underline' : 'none';
                 return (
                     <Text
                         key={'link-' + i}
-                        style={[props.style, props.linkify && { color: theme.accentPrimary }]}
+                        style={[props.style, props.linkify && { color: theme.accentPrimary, textDecorationLine }]}
                         onLongPress={() => props.onLongPress ? props.onLongPress(v.link!) : openContextMenu(v.link!)}
                         onPress={props.onPress ? () => { props.onPress!(v.link!); } : props.linkify !== false ? resolveInternalLink(v.link!, linkifyPressFallback(v.link!)) : undefined}
                         allowFontScaling={false}
