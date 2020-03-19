@@ -27,44 +27,58 @@ export interface ImageViewerCb {
     current: currentT;
 }
 
-export function useImageViewer(data: dataT): ImageViewerCb {
+export function useImageViewer(data: dataT, currentId: string): ImageViewerCb {
+    let hasPrev = false;
+    let hasNext = false;
     let prevCursor = null;
     let nextCursor = null;
     let index = data.edges[0].index;
     let count = data.pageInfo.itemsCount;
 
+    let current;
+
     const getMsg = (i: number) => data.edges[i].node.message as messageT;
 
-    let current = {
-        fileId: (getMsg(0).attachments[0] as fileT).fileId,
-        imageWidth: (getMsg(0).attachments[0] as fileT).fileMetadata.imageWidth || 0,
-        imageHeight: (getMsg(0).attachments[0] as fileT).fileMetadata.imageHeight || 0,
-        filePreview: (getMsg(0).attachments[0] as fileT).filePreview || '',
-        date: parseInt(getMsg(0).date, 10),
-        senderName: getMsg(0).sender.name,
+    const setCurrent = (i: number) => {
+        current = {
+            fileId: (getMsg(i).attachments[0] as fileT).fileId,
+            imageWidth: (getMsg(i).attachments[0] as fileT).fileMetadata.imageWidth || 0,
+            imageHeight: (getMsg(i).attachments[0] as fileT).fileMetadata.imageHeight || 0,
+            filePreview: (getMsg(i).attachments[0] as fileT).filePreview || '',
+            date: parseInt(getMsg(i).date, 10),
+            senderName: getMsg(i).sender.name,
+        };
+        index = data.edges[i].index;
     };
+    setCurrent(0);
 
     if (data.edges.length === 3) {
-        prevCursor = (data.edges[1].node.message as messageT).id;
-        nextCursor = (data.edges[2].node.message as messageT).id;
+        hasPrev = true;
+        hasNext = true;
+        setCurrent(1);
+        prevCursor = getMsg(2).id;
+        nextCursor = getMsg(0).id;
     }
 
     if (data.edges.length === 2) {
-        if (data.pageInfo.hasNextPage) {
-            prevCursor = (data.edges[1].node.message as messageT).id;
+        if (getMsg(1).id === currentId) {
+            setCurrent(1);
+            nextCursor = getMsg(0).id;
+            hasNext = true;
         }
-        if (data.pageInfo.hasPreviousPage) {
-            nextCursor = (data.edges[1].node.message as messageT).id;
+        if (getMsg(0).id === currentId) {
+            prevCursor = getMsg(1).id;
+            hasPrev = true;
         }
     }
 
     return {
-        hasPrevPage: data.pageInfo.hasNextPage,
-        hasNextPage: data.pageInfo.hasPreviousPage,
+        hasPrevPage: hasPrev,
+        hasNextPage: hasNext,
         prevCursor: prevCursor,
         nextCursor: nextCursor,
         index: index,
         count: count,
-        current: current,
+        current: current as any,
     };
 }

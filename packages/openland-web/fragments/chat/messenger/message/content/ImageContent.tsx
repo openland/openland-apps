@@ -4,11 +4,7 @@ import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     UserShort,
 } from 'openland-api/spacex.types';
-// import { XWithRole } from 'openland-x-permissions/XWithRole';
-import {
-    // useImageViewer,
-    ImageViewerCb
-} from 'openland-x-utils/imageViewer';
+import { useImageViewer, ImageViewerCb } from 'openland-x-utils/imageViewer';
 import { layoutMedia, uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
 import { showModalBox } from 'openland-x/showModalBox';
@@ -20,12 +16,12 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { emoji } from 'openland-y-utils/emoji';
-// import { useClient } from 'openland-api/useClient';
+import { useClient } from 'openland-api/useClient';
 import IcDownload from 'openland-icons/s/ic-download-24.svg';
 import IcForward from 'openland-icons/s/ic-forward-24.svg';
 import IcClose from 'openland-icons/s/ic-close-24.svg';
-// import IcLeft from 'openland-icons/s/ic-arrow-left-16.svg';
-// import IcRight from 'openland-icons/s/ic-arrow-right-16.svg';
+import IcLeft from 'openland-icons/s/ic-arrow-left-16.svg';
+import IcRight from 'openland-icons/s/ic-arrow-right-16.svg';
 
 const modalImgContainer = css`
     position: relative;
@@ -167,85 +163,85 @@ const imgSpacer = css`
     }
 `;
 
-// const cursorContainer = css`
-//     display: flex;
-//     flex-direction: row;
-//     align-items: center;
-//     position: absolute;
-//     cursor: pointer;
-//     padding-top: 56px;
-//     top: 0;
-//     bottom: 0;
-//     width: 20%;
-//     transition: 200ms opacity ease;
-//     opacity: 0.56;
-//     & > div {
-//         flex-grow: 0;
-//     }
-//     :hover {
-//         opacity: 1;
-//     }
-// `;
+const cursorContainer = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: absolute;
+    cursor: pointer;
+    padding-top: 56px;
+    top: 0;
+    bottom: 0;
+    width: 20%;
+    transition: 200ms opacity ease;
+    opacity: 0.56;
+    & > div {
+        flex-grow: 0;
+    }
+    :hover {
+        opacity: 1;
+    }
+`;
 
-// const prevCursorContent = css`
-//     left: 0;
-//     justify-content: flex-start;
-//     padding-left: 16px;
-//     background: linear-gradient(90deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0) 100%);
-// `;
-//
-// const nextCursorContent = css`
-//     right: 0;
-//     justify-content: flex-end;
-//     padding-right: 16px;
-//     background: linear-gradient(270deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0) 100%);
-// `;
-//
-// interface ModalControllerProps {
-//     // cId: string;
-//     // cursor: string;
-//     // setViewerState: (data: ImageViewerCb) => void;
-//     hide: () => void;
-//     // onPrevClick: () => void;
-//     // onNextClick: () => void;
-// }
-//
-// const ModalController = React.memo((props: ModalControllerProps) => {
-//     // const client = useClient();
-//
-//     // const sharedInfo = client.usePicSharedMedia({
-//     //     chatId: props.cId,
-//     //     first: 1,
-//     //     around: props.cursor,
-//     // }).chatSharedMedia;
-//
-//     useShortcuts([
-//         {
-//             keys: ['Escape'],
-//             callback: () => props.hide(),
-//         },
-//         // {
-//         //     keys: ['ArrowLeft'],
-//         //     callback: props.onPrevClick,
-//         // },
-//         // {
-//         //     keys: ['ArrowRight'],
-//         //     callback: props.onNextClick,
-//         // },
-//     ]);
-//
-//     // React.useEffect(
-//     //     () => {
-//     //         if (sharedInfo && props.cursor) {
-//     //             const viewerData = useImageViewer(sharedInfo);
-//     //             props.setViewerState(viewerData);
-//     //         }
-//     //     },
-//     //     [sharedInfo],
-//     // );
-//
-//     return null;
-// });
+const prevCursorContent = css`
+    left: 0;
+    justify-content: flex-start;
+    padding-left: 16px;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0) 100%);
+`;
+
+const nextCursorContent = css`
+    right: 0;
+    justify-content: flex-end;
+    padding-right: 16px;
+    background: linear-gradient(270deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0) 100%);
+`;
+
+interface ModalControllerProps {
+    cId: string;
+    cursor: string;
+    setViewerState: (data: ImageViewerCb) => void;
+    hide: () => void;
+    onPrevClick: () => void;
+    onNextClick: () => void;
+}
+
+const ModalController = React.memo((props: ModalControllerProps) => {
+    const client = useClient();
+
+    const sharedInfo = client.usePicSharedMedia({
+        chatId: props.cId,
+        first: 1,
+        around: props.cursor,
+    }).chatSharedMedia;
+
+    useShortcuts([
+        {
+            keys: ['Escape'],
+            callback: () => props.hide(),
+        },
+        {
+            keys: ['ArrowLeft'],
+            callback: props.onPrevClick,
+        },
+        {
+            keys: ['ArrowRight'],
+            callback: props.onNextClick,
+        },
+    ]);
+
+    React.useEffect(
+        () => {
+            if (sharedInfo && props.cursor) {
+                const viewerData = useImageViewer(sharedInfo, props.cursor);
+                props.setViewerState(viewerData);
+            }
+        },
+        [sharedInfo],
+    );
+
+    return null;
+});
 
 interface ModalProps {
     fileId: string;
@@ -264,9 +260,9 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const imgRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
 
-    const [viewerState] = React.useState<ImageViewerCb | null>(null);
-    // const [loaded, setLoaded] = React.useState(false);
-    // const [cursor, setCursor] = React.useState(props.mId);
+    const [viewerState, setViewerState] = React.useState<ImageViewerCb | null>(null);
+    const [loaded, setLoaded] = React.useState(false);
+    const [cursor, setCursor] = React.useState(props.mId);
 
     const onLoad = React.useCallback(
         () => {
@@ -275,48 +271,40 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                 imgRef.current.style.visibility = 'visible';
                 loaderRef.current.style.opacity = '0';
                 loaderRef.current.style.display = 'none';
-                // setLoaded(true);
+                setLoaded(true);
             }
         },
         [viewerState],
     );
 
-    useShortcuts([
-        {
-            keys: ['Escape'],
-            callback: () => props.hide(),
+    React.useLayoutEffect(
+        () => {
+            if (imgRef.current && loaderRef.current && !loaded) {
+                imgRef.current.style.opacity = '0';
+                imgRef.current.style.visibility = 'hidden';
+                loaderRef.current.style.opacity = '1';
+                loaderRef.current.style.display = 'flex';
+            }
         },
-    ]);
+        [viewerState],
+    );
 
-    // React.useLayoutEffect(
-    //     () => {
-    //         if (imgRef.current && loaderRef.current && !loaded) {
-    //             imgRef.current.style.opacity = '0';
-    //             imgRef.current.style.visibility = 'hidden';
-    //             loaderRef.current.style.opacity = '1';
-    //             loaderRef.current.style.display = 'flex';
-    //         }
-    //     },
-    //     [viewerState],
-    // );
-
-    // const onPrevClick = () => {
-    //     if (viewerState && viewerState.prevCursor) {
-    //         setCursor(viewerState.prevCursor);
-    //         setLoaded(false);
-    //     }
-    // };
-    // const onNextClick = () => {
-    //     if (viewerState && viewerState.nextCursor) {
-    //         setCursor(viewerState.nextCursor);
-    //         setLoaded(false);
-    //     }
-    // };
+    const onPrevClick = () => {
+        if (viewerState && viewerState.prevCursor) {
+            setCursor(viewerState.prevCursor);
+            setLoaded(false);
+        }
+    };
+    const onNextClick = () => {
+        if (viewerState && viewerState.nextCursor) {
+            setCursor(viewerState.nextCursor);
+            setLoaded(false);
+        }
+    };
 
     const forwardCallback = React.useCallback(() => {
         showChatPicker((id: string) => {
-            // messenger.sender.shareFile(id, viewerState ? viewerState.current.fileId : props.fileId);
-            messenger.sender.shareFile(id, props.fileId);
+            messenger.sender.shareFile(id, viewerState ? viewerState.current.fileId : props.fileId);
         });
     }, []);
 
@@ -359,18 +347,18 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     return (
         <div className={modalImgContainer}>
             <div className={modalToolbarContainer}>
-                {/*{cursor && props.chatId && (*/}
-                {/*    <React.Suspense fallback={null}>*/}
-                {/*        <ModalController*/}
-                {/*            // cId={props.chatId}*/}
-                {/*            // cursor={cursor || ''}*/}
-                {/*            // setViewerState={setViewerState}*/}
-                {/*            hide={props.hide}*/}
-                {/*            // onPrevClick={onPrevClick}*/}
-                {/*            // onNextClick={onNextClick}*/}
-                {/*        />*/}
-                {/*    </React.Suspense>*/}
-                {/*)}*/}
+                {cursor && props.chatId && (
+                    <React.Suspense fallback={null}>
+                        <ModalController
+                            cId={props.chatId}
+                            cursor={cursor || ''}
+                            setViewerState={setViewerState}
+                            hide={props.hide}
+                            onPrevClick={onPrevClick}
+                            onNextClick={onNextClick}
+                        />
+                    </React.Suspense>
+                )}
                 {sender && date && (
                     <div className={modalInfoContainer}>
                         {viewerState && (
@@ -440,22 +428,22 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     style={{ objectFit: 'contain', cursor: 'default' }}
                 />
             </div>
-            {/*{viewerState && viewerState.hasPrevPage && (*/}
-            {/*    <div*/}
-            {/*        className={cx(cursorContainer, prevCursorContent)}*/}
-            {/*        onClick={() => onPrevClick()}*/}
-            {/*    >*/}
-            {/*        <UIcon icon={<IcLeft />} size={24} color={'var(--backgroundPrimary)'} />*/}
-            {/*    </div>*/}
-            {/*)}*/}
-            {/*{viewerState && viewerState.hasNextPage && (*/}
-            {/*    <div*/}
-            {/*        className={cx(cursorContainer, nextCursorContent)}*/}
-            {/*        onClick={() => onNextClick()}*/}
-            {/*    >*/}
-            {/*        <UIcon icon={<IcRight />} size={24} color={'var(--backgroundPrimary)'} />*/}
-            {/*    </div>*/}
-            {/*)}*/}
+            {viewerState && viewerState.hasPrevPage && (
+                <div
+                    className={cx(cursorContainer, prevCursorContent)}
+                    onClick={() => onPrevClick()}
+                >
+                    <UIcon icon={<IcLeft />} size={24} color={'var(--backgroundPrimary)'} />
+                </div>
+            )}
+            {viewerState && viewerState.hasNextPage && (
+                <div
+                    className={cx(cursorContainer, nextCursorContent)}
+                    onClick={() => onNextClick()}
+                >
+                    <UIcon icon={<IcRight />} size={24} color={'var(--backgroundPrimary)'} />
+                </div>
+            )}
         </div>
     );
 });
