@@ -79,6 +79,6 @@ export function useImageViewer(data: dataT, currentId: string): ImageViewerCb {
         nextCursor: nextCursor,
         index: index,
         count: count,
-        current: current as any as currentT,
+        current: (current as any) as currentT,
     };
 }

@@ -211,11 +211,14 @@ interface ModalControllerProps {
 const ModalController = React.memo((props: ModalControllerProps) => {
     const client = useClient();
 
-    const sharedInfo = client.usePicSharedMedia({
-        chatId: props.cId,
-        first: 1,
-        around: props.cursor,
-    }).chatSharedMedia;
+    const sharedInfo = client.usePicSharedMedia(
+        {
+            chatId: props.cId,
+            first: 1,
+            around: props.cursor,
+        },
+        { fetchPolicy: 'cache-and-network' },
+    ).chatSharedMedia;
 
     useShortcuts([
         {
@@ -234,10 +237,32 @@ const ModalController = React.memo((props: ModalControllerProps) => {
 
     React.useEffect(
         () => {
-            if (sharedInfo && props.cursor) {
-                const viewerData = useImageViewer(sharedInfo, props.cursor);
-                props.setViewerState(viewerData);
-            }
+            (async () => {
+                await client.refetchPicSharedMedia({
+                    chatId: props.cId,
+                    first: 1,
+                    around: props.cursor,
+                });
+                let viewerData;
+                if (sharedInfo) {
+                    viewerData = useImageViewer(sharedInfo, props.cursor);
+                    props.setViewerState(viewerData);
+                }
+                if (viewerData && viewerData.prevCursor) {
+                    await client.refetchPicSharedMedia({
+                        chatId: props.cId,
+                        first: 1,
+                        around: viewerData.prevCursor,
+                    });
+                }
+                if (viewerData && viewerData.nextCursor) {
+                    await client.refetchPicSharedMedia({
+                        chatId: props.cId,
+                        first: 1,
+                        around: viewerData.nextCursor,
+                    });
+                }
+            })();
         },
         [sharedInfo],
     );
@@ -403,7 +428,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     </div>
                 </div>
             </div>
-            <div className={modalImgContent} style={{ maxWidth: width }}>
+            <div className={modalImgContent} onClick={props.hide} style={{ maxWidth: width }}>
                 <div
                     className={imgSpacer}
                     style={
@@ -444,7 +469,10 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
             {viewerState && viewerState.hasPrevPage && (
                 <div
                     className={cx(cursorContainer, prevCursorContent)}
-                    onClick={() => onPrevClick()}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        onPrevClick();
+                    }}
                 >
                     <UIcon icon={<IcLeft />} size={24} color={'var(--backgroundPrimary)'} />
                 </div>
@@ -452,7 +480,10 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
             {viewerState && viewerState.hasNextPage && (
                 <div
                     className={cx(cursorContainer, nextCursorContent)}
-                    onClick={() => onNextClick()}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        onNextClick();
+                    }}
                 >
                     <UIcon icon={<IcRight />} size={24} color={'var(--backgroundPrimary)'} />
                 </div>
