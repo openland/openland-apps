@@ -67,7 +67,7 @@ export class MobileMessenger {
     readonly notifications: ASDataView<NotificationsDataSourceItem>;
 
     private dialogs?: ASDataView<DialogDataSourceItem>;
-    private prevDialogsCb: (index: number) => void = () => {/* noop */};
+    private prevDialogsCb: (index: number) => void = () => {/* noop */ };
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem>>();
     private readonly sharedMedias = new Map<string, Map<string, ASDataView<SharedMediaDataSourceItem>>>();
 
@@ -87,7 +87,7 @@ export class MobileMessenger {
                 setTab(0);
             };
             let showDiscover = (key: string) => {
-                let {dataSource} = this.engine.dialogList;
+                let { dataSource } = this.engine.dialogList;
                 let lastItem = dataSource.getAt(dataSource.getSize() - 1);
                 let lastKey = lastItem.key;
                 return dataSource.isCompleted() && lastKey === key;
@@ -254,30 +254,8 @@ export class MobileMessenger {
     handleUserClick = (id: string) => {
         this.history.navigationManager.push('ProfileUser', { id });
     }
-    handleEntityClick = async (id: string, isGroup: boolean) => {
-        if (isGroup) {
-            // get membership
-            const roomInfo = await this.engine.client.queryRoom({ id });
-            const isMember = (roomInfo!.room! as Room_room_SharedRoom).membership === 'MEMBER';
-
-            if (isMember) {
-                this.history.navigationManager.push('Conversation', { id });
-            } else {
-                startLoader();
-                const inviteLinkInfo = await this.engine.client.queryRoomInviteLink({ roomId: id });
-                const invite = await this.engine.client.queryResolvedInvite({ key: inviteLinkInfo.link });
-                stopLoader();
-                this.history.navigationManager.push('GroupInvite', { invite: invite.invite, inviteId: inviteLinkInfo.link });
-            }
-        } else {
-            this.history.navigationManager.push('ProfileOrganization', { id });
-        }
-    }
-    handleGroupClick = (id: string) => {
-        this.handleEntityClick(id, true);
-    }
     handleOrganizationClick = (id: string) => {
-        this.handleEntityClick(id, false);
+        this.history.navigationManager.push('ProfileOrganization', { id });
     }
     handleMessageUserClick = (message: DataSourceMessageItem) => (id: string) => {
         const [isSelecting, toogleSelect] = this.useSelectionMode(message);
@@ -293,7 +271,7 @@ export class MobileMessenger {
             toogleSelect();
             return;
         }
-        return this.handleGroupClick(id);
+        return this.handleDialogClick(id);
     }
     handleMessageOrganizationClick = (message: DataSourceMessageItem) => (id: string) => {
         const [isSelecting, toogleSelect] = this.useSelectionMode(message);
