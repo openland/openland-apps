@@ -98,7 +98,7 @@ export const FeedTextSlide = React.memo((props: FeedSlideProps) => {
     const textCanBeDynamic = (!cover || textCover) && !attachments.length;
     const textStyle = textCanBeDynamic ? (text.length < 200 ? (text.length < 100 ? styles.textLarge : styles.textMedium) : styles.text) : styles.text;
 
-    const renderText = React.useMemo(() => renderPreprocessedText(textSpans, messenger.handleUserClick, messenger.handleGroupClick, messenger.handleOrganizationClick, theme), [textSpans, theme]);
+    const renderText = React.useMemo(() => renderPreprocessedText(textSpans, messenger.handleUserClick, messenger.handleChatClick, messenger.handleOrganizationClick, theme), [textSpans, theme]);
     const content = (
         <>
             {text.length > 0 && ((coverAlign && coverAlign === SlideCoverAlign.Bottom) || attachments.length > 0) && (

@@ -94,7 +94,7 @@ export class MobileMessenger {
             };
             this.dialogs = new ASDataView(
                 this.engine.dialogList.dataSource,
-                item => <DialogItemViewAsync item={item} onPress={this.handleDialogClick} onDiscoverPress={onDiscoverPress} showDiscover={showDiscover} />
+                item => <DialogItemViewAsync item={item} onPress={this.handleChatClick} onDiscoverPress={onDiscoverPress} showDiscover={showDiscover} />
             );
         }
         this.prevDialogsCb = setTab;
@@ -107,7 +107,7 @@ export class MobileMessenger {
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
                     if (item.isService) {
-                        return <AsyncServiceMessage message={item} onUserPress={this.handleUserClick} onGroupPress={this.handleDialogClick} onOrganizationPress={this.handleOrganizationClick} />;
+                        return <AsyncServiceMessage message={item} onUserPress={this.handleUserClick} onGroupPress={this.handleChatClick} onOrganizationPress={this.handleOrganizationClick} />;
                     } else {
                         return <AsyncMessageView conversationId={id} message={item} engine={eng} onUserPress={this.handleMessageUserClick} onGroupPress={this.handleMessageGroupClick} onOrganizationPress={this.handleMessageOrganizationClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMessageMediaClick} onMessageLongPress={this.handleMessageLongPress} onMessagePress={this.handleMessagePress} onMessageDoublePress={this.handleMessageDoublePress} onCommentsPress={this.handleCommentsClick} onReplyPress={this.handleReplyClick} onReactionsPress={this.handleReactionsClick} />;
                     }
@@ -248,7 +248,7 @@ export class MobileMessenger {
         showFileModal({ uuid: attach.fileId, name: attach.fileMetadata.name, size: attach.fileMetadata.size });
     }
 
-    handleDialogClick = (id: string) => {
+    handleChatClick = (id: string) => {
         this.history.navigationManager.push('Conversation', { id });
     }
     handleUserClick = (id: string) => {
@@ -271,7 +271,7 @@ export class MobileMessenger {
             toogleSelect();
             return;
         }
-        return this.handleDialogClick(id);
+        return this.handleChatClick(id);
     }
     handleMessageOrganizationClick = (message: DataSourceMessageItem) => (id: string) => {
         const [isSelecting, toogleSelect] = this.useSelectionMode(message);
