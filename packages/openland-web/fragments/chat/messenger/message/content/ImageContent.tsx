@@ -373,8 +373,8 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const preview = viewerState ? viewerState.current.filePreview : props.preview;
 
     return (
-        <div className={modalImgContainer}>
-            <div className={modalToolbarContainer}>
+        <div className={modalImgContainer} onClick={props.hide}>
+            <div className={modalToolbarContainer} onClick={e => e.preventDefault()}>
                 {cursor && props.chatId && (
                     <React.Suspense fallback={null}>
                         <ModalController
@@ -410,8 +410,8 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                         </div>
                     </div>
                 )}
-                <div className={modalButtonsContainer} onClick={e => e.stopPropagation()}>
-                    <a className={modalButtonStyle} href={downloadLink}>
+                <div className={modalButtonsContainer}>
+                    <a className={modalButtonStyle} href={downloadLink} onClick={e => e.stopPropagation()}>
                         <UIcon icon={<IcDownload />} color="var(--backgroundPrimary)" />
                     </a>
                     <div
@@ -428,7 +428,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     </div>
                 </div>
             </div>
-            <div className={modalImgContent} onClick={props.hide} style={{ maxWidth: width }}>
+            <div className={modalImgContent} style={{ maxWidth: width }}>
                 <div
                     className={imgSpacer}
                     style={
@@ -469,8 +469,8 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
             {viewerState && viewerState.hasPrevPage && (
                 <div
                     className={cx(cursorContainer, prevCursorContent)}
-                    onClick={(e) => {
-                        e.preventDefault();
+                    onClick={e => {
+                        e.stopPropagation();
                         onPrevClick();
                     }}
                 >
@@ -480,8 +480,8 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
             {viewerState && viewerState.hasNextPage && (
                 <div
                     className={cx(cursorContainer, nextCursorContent)}
-                    onClick={(e) => {
-                        e.preventDefault();
+                    onClick={e => {
+                        e.stopPropagation();
                         onNextClick();
                     }}
                 >
