@@ -13416,6 +13416,13 @@ react-native-fast-image@^7.0.0:
   resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-7.0.2.tgz#e06b21f42f4a9786eaa86f3db35d919070fb8403"
   integrity sha512-MfuzJbC0RjYobR2gFCdqe1I7jvNOCfDkjQ7VGOHXniqjohhULMkcWNBE9Umovi9Dx93lJ6t5utcE2wf/09zvlg==
 
+react-native-fast-modal@^0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/react-native-fast-modal/-/react-native-fast-modal-0.0.10.tgz#38479d62e64fe503a1c0986f6b1d56619758e2a0"
+  integrity sha512-3CZQQQUqCZmzcSiuchAlyIvNDQ5GO6uZXOnG5KCOl3xAwSvfguccTAaIgXSBoU6XaSI4AvLlnDkApj6mKpVEqQ==
+  dependencies:
+    uuid "^3.4.0"
+
 react-native-gesture-handler@1.5.3:
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.5.3.tgz#191b44701fab7ba54c27a2438cb5eaa252666e66"
@@ -13492,11 +13499,6 @@ react-native-modalbox@^1.6.0:
     create-react-class "^15.6.0"
     prop-types "^15.5.10"
 
-react-native-modalize@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/react-native-modalize/-/react-native-modalize-1.2.1.tgz#7c42f5ed22e1fa21314afa5b634c7e39d514a9f9"
-  integrity sha512-j3+uJB0UtlSeQbwDZ+DEcvyUYN4vfZt4bczwPdG2NAoMbePSNV4iWcD6co0UonDuHZAcD0G9xZU6PU/wSGjGRQ==
-
 react-native-pdf@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/react-native-pdf/-/react-native-pdf-5.1.0.tgz#dd209171cec9a04d74a4b12e71ff78ecb98465d4"
@@ -13523,6 +13525,11 @@ react-native-restart@^0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/react-native-restart/-/react-native-restart-0.0.8.tgz#b19e99b6f0cb9820a3a900e57a564c69d2b0b1e2"
   integrity sha512-rVtjvNZO4QwYHLn1fDzUGNqYFwJufRBkWdSFlxID/QM+2j7siV4rad138I4ejpPdtwdSsQ/EIIdk6VFUQQ9S9g==
+
+react-native-safe-area-context@^0.7.3:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-0.7.3.tgz#ad6bd4abbabe195332c53810e4ce5851eb21aa2a"
+  integrity sha512-9Uqu1vlXPi+2cKW/CW6OnHxA76mWC4kF3wvlqzq4DY8hn37AeiXtLFs2WkxH4yXQRrnJdP6ivc65Lz+MqwRZAA==
 
 react-native-safe-modules@^1.0.0:
   version "1.0.0"

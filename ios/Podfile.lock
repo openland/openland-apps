@@ -273,6 +273,8 @@ PODS:
     - React
   - react-native-pdf (5.1.0):
     - React
+  - react-native-safe-area-context (0.7.3):
+    - React
   - react-native-sqlite-storage (3.3.10):
     - React
   - react-native-version-number (0.3.6):
@@ -406,6 +408,7 @@ DEPENDENCIES:
   - react-native-location (from `../node_modules/react-native-location`)
   - "react-native-mapbox-gl (from `../node_modules/@react-native-mapbox-gl/maps`)"
   - react-native-pdf (from `../node_modules/react-native-pdf`)
+  - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
   - react-native-version-number (from `../node_modules/react-native-version-number`)
   - react-native-video (from `../node_modules/react-native-video/react-native-video.podspec`)
@@ -519,6 +522,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-mapbox-gl/maps"
   react-native-pdf:
     :path: "../node_modules/react-native-pdf"
+  react-native-safe-area-context:
+    :path: "../node_modules/react-native-safe-area-context"
   react-native-sqlite-storage:
     :path: "../node_modules/react-native-sqlite-storage"
   react-native-version-number:
@@ -625,6 +630,7 @@ SPEC CHECKSUMS:
   react-native-location: 5a40ec1cc6abf2f6d94df979f98ec76c3a415681
   react-native-mapbox-gl: fcd88e2bf0ddea552b0209cc2770a5ac2b9c9910
   react-native-pdf: 8cc276fd8ab7dff6b602eb65fcf0f6c145c0f524
+  react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
   react-native-sqlite-storage: dba8e864e9a76f1aae6ddb5e7d0dc330d59f4bb3
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   react-native-video: 8c49eca5a6087de968a05b340933b10e3b58169a
@@ -660,6 +666,6 @@ SPEC CHECKSUMS:
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: 0bfbb1eee7a7e07b2b8d00f290c0c5e397825f8e
+PODFILE CHECKSUM: b6d90b5c225d60ac1bf41871e4d0a2bdf9389aa2
 
 COCOAPODS: 1.8.4

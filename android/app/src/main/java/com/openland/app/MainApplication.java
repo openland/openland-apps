@@ -62,7 +62,7 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.mapbox.rctmgl.RCTMGLPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
-
+import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 import java.util.Arrays;
 import java.util.List;
 
@@ -111,7 +111,8 @@ public class MainApplication extends Application implements ShareApplication, Re
                     new SQLitePluginPackage(),
                     new DarkModePackage(),
                     new RCTMGLPackage(),
-                    new LottiePackage()
+                    new LottiePackage(),
+                    new SafeAreaContextPackage()
             );
         }
 

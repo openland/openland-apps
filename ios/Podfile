@@ -101,6 +101,8 @@ target 'openland' do
   
   pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
   pod 'react-native-fast-animations', :path => '../node_modules/react-native-fast-animations'
+  
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
 end
 

@@ -4,9 +4,10 @@ import { showSheetModal } from './showSheetModal';
 import { ZModalController } from './ZModal';
 import { ZListItem } from './ZListItem';
 import { ZButton } from './ZButton';
-import { BottomSheetActions, showBottomSheet } from './BottomSheet';
+import { showBottomSheet } from './BottomSheet';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { isPad } from 'openland-mobile/pages/Root';
+import { ModalProps } from 'react-native-fast-modal';
 
 interface ActionSheetBuilderActionItem {
     __typename: "ActionItem";
@@ -81,7 +82,7 @@ export class ActionSheetBuilder {
         return this;
     }
 
-    renderItems = (ctx: ZModalController | BottomSheetActions) => {
+    renderItems = (ctx: ZModalController | ModalProps) => {
         return (
             <>
                 {this._items.map((a, i) => (
@@ -134,7 +135,7 @@ export class ActionSheetBuilder {
                 );
             }, this._title);
         } else {
-            showBottomSheet({ view: this.renderItems, cancelable: this._cancelable, title: this._title, buttonTitle: this._buttonTitle });
+            showBottomSheet({ view: this.renderItems, cancelable: this._cancelable, buttonTitle: this._buttonTitle });
         }
     }
 }

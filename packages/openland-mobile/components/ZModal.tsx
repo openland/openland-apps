@@ -5,7 +5,7 @@ import { SDevice } from 'react-native-s/SDevice';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 
 export interface ZModalController {
-    hide(): void;
+    hide: () => void;
 }
 
 export type ZModal = (modal: ZModalController) => React.ReactElement<{}>;

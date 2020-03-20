@@ -25,12 +25,13 @@ import { randomKey } from 'react-native-s/utils/randomKey';
 import { Track } from 'openland-engines/Tracking';
 import { NotificationHandler } from 'react-native-notification-handler/NotificationHandler';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
-import { BottomSheetProvider } from 'openland-mobile/components/BottomSheet';
 import { AndroidSplashView } from '../components/AndroidSplashView';
 import { initialMode } from 'react-native-dark-mode';
 import { GQLClientContext } from 'openland-api/useClient';
 import { AppStorage as Storage } from 'openland-y-runtime/AppStorage';
 import { createClientNative } from 'openland-api/createClientNative';
+import { ModalProvider } from 'react-native-fast-modal';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
     const animatedValue = React.useMemo(() => new SAnimatedShadowView('app-placeholder-' + randomKey(), { opacity: 1 }), []);
@@ -93,12 +94,14 @@ const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
 
 const AppContainer = React.memo<{ children?: any, loading: boolean, onLayout?: (e: LayoutChangeEvent) => void }>((props) => {
     return (
-        <View style={{ width: '100%', height: '100%' }} onLayout={props.onLayout}>
-            {props.children}
-            <BottomSheetProvider />
-            <ZModalProvider />
-            <AppPlaceholder loading={props.loading} />
-        </View>
+        <SafeAreaProvider>
+            <ModalProvider />
+            <View style={{ width: '100%', height: '100%' }} onLayout={props.onLayout}>
+                {props.children}
+                <ZModalProvider />
+                <AppPlaceholder loading={props.loading} />
+            </View>
+        </SafeAreaProvider>
     );
 });
 

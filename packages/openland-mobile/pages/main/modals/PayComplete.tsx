@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { showBottomSheet, BottomSheetActions } from 'openland-mobile/components/BottomSheet';
+import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import { useClient } from 'openland-api/useClient';
 import { View, Text, NativeModules, Platform, DeviceEventEmitter, NativeEventEmitter } from 'react-native';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
@@ -10,6 +10,7 @@ import { backoff } from 'openland-y-utils/timer';
 import { AddCardItem } from 'openland-mobile/pages/wallet/components/AddCardItem';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
+import { ModalProps } from 'react-native-fast-modal';
 
 const StripeModule = NativeModules.RNStripe as { confirmPayment(paymentId: string, clientSecret: string, paymentMethod: string): void };
 const StripeModuleEmitter = new NativeEventEmitter(NativeModules.RNStripe);
@@ -59,7 +60,7 @@ const awaitForCompletePayment = async (id: string) => {
     }
 };
 
-const CompletePaymentComponent = React.memo((props: { id: string, clientSecret: string, router: SRouter, ctx: BottomSheetActions }) => {
+const CompletePaymentComponent = React.memo((props: { id: string, clientSecret: string, router: SRouter, ctx: ModalProps }) => {
     const client = useClient();
     const theme = useTheme();
     const [selected, setSelected] = React.useState<string>();

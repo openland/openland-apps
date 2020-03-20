@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { WalletSubscriptionInterval } from 'openland-api/spacex.types';
-import { showBottomSheet, BottomSheetActions } from 'openland-mobile/components/BottomSheet';
+import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import { useClient } from 'openland-api/useClient';
 import { View, Text, Image } from 'react-native';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
@@ -11,8 +11,9 @@ import { ZButton } from 'openland-mobile/components/ZButton';
 import { SRouter } from 'react-native-s/SRouter';
 import { AddCardItem } from 'openland-mobile/pages/wallet/components/AddCardItem';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { ModalProps } from 'react-native-fast-modal';
 
-const ConfirmPaymentComponent = React.memo((props: PaymentProps & { ctx: BottomSheetActions }) => {
+const ConfirmPaymentComponent = React.memo((props: PaymentProps & { ctx: ModalProps }) => {
     const client = useClient();
     const theme = useTheme();
     const cards = client.useMyCards().myCards;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { showBottomSheet, BottomSheetActions } from 'openland-mobile/components/BottomSheet';
+import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useTheme, ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,6 +8,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { WalletTransactionFragment } from 'openland-api/spacex.types';
 import { convertTransaction, TransactionConvertedStatus } from 'openland-y-utils/wallet/transaction';
 import { SRouter } from 'react-native-s/SRouter';
+import { ModalProps } from 'react-native-fast-modal';
 
 const InfoItem = React.memo<{ name: string, secondary?: boolean, value?: string, status?: TransactionConvertedStatus }>((props) => {
     const theme = useTheme();
@@ -42,7 +43,7 @@ interface TransactionInfoProps {
     router?: SRouter;
 }
 
-const TransactionInfo = React.memo<TransactionInfoProps & { ctx: BottomSheetActions }>((props) => {
+const TransactionInfo = React.memo<TransactionInfoProps & { ctx: ModalProps }>((props) => {
     const theme = React.useContext(ThemeContext);
     const { avatar, title, type, dateTime, amount, walletAmount, chargeAmount, paymentMethod, interval, status, group } = convertTransaction(props.item);
     const hasSplittedAmount = !!walletAmount && !!chargeAmount;
