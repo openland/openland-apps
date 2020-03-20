@@ -298,16 +298,20 @@ const DiscoverTopPremiumListing = (props: DiscoverListingPageProps) => {
 
 interface DiscoverCollectionsListingProps {
     collectionId: string;
+    title?: string;
 }
 
 const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
     const [rooms, setRooms] = React.useState<DiscoverRoom[]>([]);
     const [loading, setLoading] = React.useState(false);
+    const [title, setTitle] = React.useState(props.title || '');
     const loadCollections = async() => {
         setLoading(true);
         let res = (await getClient().queryDiscoverCollection({ id: props.collectionId }, {fetchPolicy: 'network-only'})).discoverCollection;
-        let items = res && res.chats || [];
-        setRooms(items);
+        if (res) {
+            setTitle(res.title);
+            setRooms(res.chats);
+        }
         setLoading(false);
     };
     React.useEffect(() => {
@@ -316,7 +320,7 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
 
     return (
         <DiscoverListingContent
-            title="Collections"
+            title={title}
             rooms={rooms}
             loading={loading}
         />
@@ -363,7 +367,7 @@ const DiscoverListingComponent = React.memo<PageProps>((props) => {
     } else if (type === 'top-premium') {
         return <DiscoverTopPremiumListing initialAfter={initialAfter} initialRooms={initialRooms} />;
     } else if (type === 'collections') {
-        return <DiscoverCollectionsListing collectionId={collectionId} />;
+        return <DiscoverCollectionsListing collectionId={collectionId} title={title} />;
     } else if (type === 'recommendations') {
         return <DiscoverRecommendationsListing initialRooms={initialRooms} />;
     } else {
