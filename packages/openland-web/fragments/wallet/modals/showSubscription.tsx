@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { WalletSubscriptionState } from 'openland-api/spacex.types';
-import { XView } from 'react-mental';
+import { WalletSubscriptionState, Subscriptions_subscriptions_product } from 'openland-api/spacex.types';
+import { XView, XViewRouter } from 'react-mental';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { TextTitle2, TextBody, TextCaption } from 'openland-web/utils/TextStyles';
 import { css, cx } from 'linaria';
@@ -8,6 +8,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { OpenlandClient } from 'openland-api/spacex';
 import { SubscriptionConverted, displaySubscriptionDate } from 'openland-y-utils/wallet/subscription';
+import { XModalController } from 'openland-x/showModal';
 
 const gradientModalBody = css`
     display: flex;
@@ -19,6 +20,7 @@ const gradientModalBody = css`
     padding-left: 24px;
     padding-right: 24px;
     background: linear-gradient(180deg, rgba(201, 204, 209, 0) 0%, rgba(201, 204, 209, 0.14) 100%);
+    cursor: pointer;
 `;
 
 const modalBody = css`
@@ -30,6 +32,7 @@ const modalBody = css`
     padding-bottom: 48px;
     padding-left: 24px;
     padding-right: 24px;
+    cursor: pointer;
 `;
 
 const modalFooter = css`
@@ -45,17 +48,24 @@ const descriptionBox = css`
     text-align: center;
 `;
 
-export const showSubscription = (props: SubscriptionConverted, client: OpenlandClient) => {
+const onProductClick = (product: Subscriptions_subscriptions_product, router: XViewRouter, modalCtx: XModalController) => {
+    modalCtx.hide();
+    if (product.__typename === 'WalletProductGroup') {
+        router.navigate(`/mail/${product.group.id}`);
+    }
+};
+
+export const showSubscription = (props: SubscriptionConverted, client: OpenlandClient, router: XViewRouter) => {
     showModalBox({ title: 'Subscription', useTopCloser: true }, (ctx) => {
         return (
             <>
-                <div className={props.state === WalletSubscriptionState.STARTED ? gradientModalBody : modalBody}>
-                    <UAvatar
+                <div onClick={() => onProductClick(props.product, router, ctx)} className={props.state === WalletSubscriptionState.STARTED ? gradientModalBody : modalBody}>
+                    {props.id && props.title && <UAvatar
                         id={props.id}
                         title={props.title}
                         photo={props.photo}
                         size='xx-large'
-                    />
+                    />}
                     <XView marginTop={16}>
                         <h2 className={TextTitle2}>
                             {props.title}
@@ -68,7 +78,7 @@ export const showSubscription = (props: SubscriptionConverted, client: OpenlandC
                     </XView>
                 </div>
 
-                {props.state === WalletSubscriptionState.STARTED && (
+                {![WalletSubscriptionState.CANCELED, WalletSubscriptionState.EXPIRED].includes(props.state) && (
                     <div className={modalFooter}>
                         <UButton
                             text="Cancel subscription"

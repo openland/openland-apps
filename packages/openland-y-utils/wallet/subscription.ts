@@ -2,17 +2,18 @@ import {
     WalletSubscriptionInterval,
     WalletSubscriptionState,
     Subscriptions_subscriptions,
-    Subscriptions_subscriptions_product_WalletProductGroup,
+    Subscriptions_subscriptions_product,
 } from 'openland-api/spacex.types';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { formatAbsoluteDate } from 'openland-mobile/utils/formatDate';
 
 export interface SubscriptionConverted {
-    id: string;
-    title: string;
+    product: Subscriptions_subscriptions_product;
+    id?: string;
+    photo: string;
+    title?: string;
     subtitle: string;
     amountSubtitle: string;
-    photo: string;
     state: WalletSubscriptionState;
     expires: Date;
     subscriptionId: string;
@@ -39,9 +40,7 @@ const generateSubTitle = (expires: Date, state: WalletSubscriptionState) => {
     return variants[state] || `Expires on ${date}`;
 };
 
-export const convertSubscription = (subscription: Subscriptions_subscriptions) => {
-    const group = (subscription.product as Subscriptions_subscriptions_product_WalletProductGroup)
-        .group;
+export function convertSubscription (subscription: Subscriptions_subscriptions): SubscriptionConverted {
     const expires = new Date(parseInt(subscription.expires, 10));
     const subtitle = generateSubTitle(expires, subscription.state);
     const amount = formatMoney(subscription.amount);
@@ -51,9 +50,8 @@ export const convertSubscription = (subscription: Subscriptions_subscriptions) =
     };
     const interval = intervalVariants[subscription.interval] || 'period';
     const amountInterval = `${amount} / ${interval}, `;
-
-    const converted: SubscriptionConverted = {
-        ...group,
+    let converted = {
+        photo: 'ph://' + subscription.id,
         subtitle,
         amountSubtitle: amountInterval + subtitle.charAt(0).toLowerCase() + subtitle.slice(1),
         subscriptionId: subscription.id,
@@ -61,7 +59,14 @@ export const convertSubscription = (subscription: Subscriptions_subscriptions) =
         expires,
         amount: formatMoney(subscription.amount),
         interval: subscription.interval,
+        product: subscription.product
     };
-
+    if (subscription.product.__typename === 'WalletProductGroup') {
+        const group = subscription.product.group;
+        converted = {
+            ...converted,
+            ...group,
+        };
+    }
     return converted;
-};
+}

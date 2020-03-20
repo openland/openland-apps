@@ -34,14 +34,14 @@ export const SubscriptionView = React.memo((props: SubscriptionConverted) => {
             className={subsciptionView}
             onClick={() => props.state === WalletSubscriptionState.GRACE_PERIOD || props.state === WalletSubscriptionState.RETRYING
                 ? router.navigate('/wallet')
-                : showSubscription(props, client)
+                : showSubscription(props, client, router)
             }
         >
-            <UAvatar
+            {props.id && props.title && <UAvatar
                 id={props.id}
                 title={props.title}
                 photo={props.photo}
-            />
+            />}
             <XView marginLeft={16} flexDirection="column">
                 <span className={TextLabel1}>
                     {props.title}

@@ -47,8 +47,7 @@ export const SubscriptionsFragment = React.memo(() => {
     const client = useClient();
     const subscriptions = client.useSubscriptions();
     const router = React.useContext(XViewRouterContext)!;
-    const groupSubscriptions = subscriptions.subscriptions.filter(subscription => subscription.product.__typename === 'WalletProductGroup');
-    const normalizedSubscriptions = groupSubscriptions.map(convertSubscription);
+    const normalizedSubscriptions = subscriptions.subscriptions.map(convertSubscription);
 
     const activeSubscriptions = normalizedSubscriptions.filter(subscription =>
         subscription.state === WalletSubscriptionState.STARTED ||

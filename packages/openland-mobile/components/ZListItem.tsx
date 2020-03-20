@@ -12,7 +12,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { preprocessText } from 'openland-y-utils/TextProcessor';
 
 export interface ZListItemProps {
-    leftAvatar?: { photo?: string | null, id: string, title: string };
+    leftAvatar?: { photo?: string | null, id?: string, title?: string };
     leftIcon?: any | null;
     leftIconColor?: string;
     leftIconView?: JSX.Element;
