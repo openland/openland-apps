@@ -21,6 +21,7 @@ import { useClient } from 'openland-api/useClient';
 import IcDownload from 'openland-icons/s/ic-download-24.svg';
 import IcForward from 'openland-icons/s/ic-forward-24.svg';
 import IcClose from 'openland-icons/s/ic-close-24.svg';
+import IcDown from 'openland-icons/s/ic-arrow-down-24.svg';
 import IcLeft from 'openland-icons/s/ic-arrow-left-16.svg';
 import IcRight from 'openland-icons/s/ic-arrow-right-16.svg';
 
@@ -198,6 +199,104 @@ const nextCursorContent = css`
     padding-right: 16px;
     background: linear-gradient(270deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0) 100%);
 `;
+
+const progressLoaderWrapper = css`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 42px;
+    height: 42px;
+    will-change: transform;
+`;
+
+const progressLoader = css`
+    animation: rotate 0.752s linear infinite;
+    @keyframes rotate {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+`;
+
+const progressLoaderCircle = css`
+    fill: transparent;
+    stroke: var(--foregroundContrast);
+    stroke-dasharray: var(--dashArray);
+    stroke-dashoffset: var(--dashOffset);
+    stroke-linecap: round;
+    stroke-width: 2px;
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 0.1s;
+`;
+
+const mediaLoader = css`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 100;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--overlayMedium);
+`;
+
+const mediaLoaderIcon = css`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 24px;
+    height: 24px;
+`;
+
+const ProgressLoader = (props: {progress: number}) => {
+    let radius = 21;
+    let c = 2 * Math.PI * radius;
+    let progress = Math.max(Math.floor(props.progress), 5);
+    let dashOffset = c - (c * (progress / 100));
+    return (
+        <div className={progressLoaderWrapper} style={{'--dashArray': c, '--dashOffset': dashOffset} as React.CSSProperties}>
+            <svg className={progressLoader} viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg">
+                <circle className={progressLoaderCircle} cx="21" cy="21" r="20"/>
+            </svg>
+        </div>
+    );
+};
+
+const MediaLoader = React.forwardRef((props: {onContinue: () => void, onStop: () => void}, ref: React.Ref<HTMLDivElement>) => {
+    const [stopped, setStopped] = React.useState(false);
+    const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setStopped(prev => !prev);
+        if (stopped) {
+            props.onContinue();
+        } else {
+            props.onStop();
+        }
+    };
+    return (
+        <div 
+            className={mediaLoader} 
+            ref={ref} 
+            onClick={handleClick}
+        >
+            {stopped ? (
+                <UIcon className={mediaLoaderIcon} icon={<IcDown />} color="var(--foregroundContrast)" />
+            ) : (
+                <>
+                    <ProgressLoader progress={80} />
+                    <UIcon className={mediaLoaderIcon} icon={<IcClose />} color="var(--foregroundContrast)" />
+                </>
+            )}
+        </div>
+    );
+});
 
 interface ModalControllerProps {
     cId: string;
@@ -507,6 +606,7 @@ const GifContent = React.memo(
             if (gifRef.current && loaderRef.current) {
                 gifRef.current.style.opacity = '1';
                 loaderRef.current.style.opacity = '0';
+                loaderRef.current.style.visibility = 'hidden';
             }
         }, []);
 
@@ -524,6 +624,20 @@ const GifContent = React.memo(
 
         const imgPositionLeft = layoutWidth < 72 ? `calc(50% - ${layoutWidth / 2}px)` : '0';
         const imgPositionTop = layoutHeight < 72 ? `calc(50% - ${layoutHeight / 2}px)` : '0';
+
+        const webm = 'https://ucarecdn.com/' + props.file.fileId + '/gif2video/-/format/webm/image.gif';
+        const mp4 = 'https://ucarecdn.com/' + props.file.fileId + '/gif2video/-/format/mp4/image.gif';
+        const [srcWebm, setSrcWebm] = React.useState<string | undefined>(webm);
+        const [srcMp4, setSrcMp4] = React.useState<string | undefined>(mp4);
+
+        const onContinue = React.useCallback(() => {
+            setSrcWebm(webm);
+            setSrcMp4(mp4);
+        }, [webm, mp4]);
+        const onStop = React.useCallback(() => {
+            setSrcWebm(undefined);
+            setSrcMp4(undefined);
+        }, [webm, mp4]);
 
         return (
             <div className={imgContainer} style={{ width: layoutWidth }}>
@@ -543,15 +657,11 @@ const GifContent = React.memo(
                     src={props.file.filePreview || undefined}
                     style={{ top: imgPositionTop, left: imgPositionLeft }}
                 />
-                <XLoader
-                    transparentBackground={true}
-                    ref={loaderRef}
-                    loading={true}
-                    contrast={true}
-                />
+                <MediaLoader ref={loaderRef} onContinue={onContinue} onStop={onStop} />
                 <video
+                    key={`${srcWebm}${srcMp4}`}
                     ref={gifRef}
-                    onLoadStart={onLoad}
+                    onLoadedData={onLoad}
                     width={layoutWidth}
                     height={layoutHeight}
                     autoPlay={true}
@@ -560,19 +670,11 @@ const GifContent = React.memo(
                     className={imgAppearClass}
                 >
                     <source
-                        src={
-                            'https://ucarecdn.com/' +
-                            props.file.fileId +
-                            '/gif2video/-/format/webm/image.gif'
-                        }
+                        src={srcWebm}
                         type="video/webm"
                     />
                     <source
-                        src={
-                            'https://ucarecdn.com/' +
-                            props.file.fileId +
-                            '/gif2video/-/format/mp4/image.gif'
-                        }
+                        src={srcMp4}
                         type="video/mp4"
                     />
                 </video>
@@ -599,15 +701,6 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
     const imgPrevRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
 
-    const onLoad = React.useCallback(() => {
-        if (imgRef.current && imgPrevRef.current && loaderRef.current) {
-            imgRef.current.style.opacity = '1';
-            imgPrevRef.current.style.opacity = '0';
-            imgPrevRef.current.style.visibility = 'hidden';
-            loaderRef.current.style.opacity = '0';
-        }
-    }, []);
-
     const layout = layoutMedia(
         props.file.fileMetadata.imageWidth || 0,
         props.file.fileMetadata.imageHeight || 0,
@@ -623,6 +716,28 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
     const url = `https://ucarecdn.com/${props.file.fileId}/-/format/auto/-/`;
     const ops = `scale_crop/${layoutWidth}x${layoutHeight}/`;
     const opsRetina = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/center/ 2x`;
+
+    const [src, setSrc] = React.useState<string | undefined>(url + ops);
+    const [srcSet, setSrcSet] = React.useState<string | undefined>(url + opsRetina);
+
+    const onContinue = React.useCallback(() => {
+        setSrc(url + ops);
+        setSrcSet(url + opsRetina);
+    }, [url]);
+    const onStop = React.useCallback(() => {
+        setSrc(undefined);
+        setSrcSet(undefined);
+    }, [url]);
+
+    const onLoad = React.useCallback(() => {
+        if (imgRef.current && imgPrevRef.current && loaderRef.current) {
+            imgRef.current.style.opacity = '1';
+            imgPrevRef.current.style.opacity = '0';
+            imgPrevRef.current.style.visibility = 'hidden';
+            loaderRef.current.style.opacity = '0';
+            loaderRef.current.style.visibility = 'hidden';
+        }
+    }, []);
 
     return (
         <div
@@ -659,15 +774,16 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
                 height={layoutHeight}
                 src={props.file.filePreview || undefined}
             />
-            <XLoader loading={true} transparentBackground={true} ref={loaderRef} />
+            <MediaLoader ref={loaderRef} onContinue={onContinue} onStop={onStop} />
             <ImgWithRetry
                 ref={imgRef}
+                key={src}
                 onLoad={onLoad}
                 className={imgAppearClass}
                 width={layoutWidth}
                 height={layoutHeight}
-                src={url + ops}
-                srcSet={url + opsRetina}
+                src={src}
+                srcSet={srcSet}
             />
         </div>
     );
