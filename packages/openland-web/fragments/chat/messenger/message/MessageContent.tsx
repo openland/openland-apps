@@ -83,6 +83,7 @@ interface MessageContentProps {
     fileProgress?: number;
     isReply?: boolean;
     isForward?: boolean;
+    isPending?: boolean;
 }
 
 export const MessageContent = (props: MessageContentProps) => {
@@ -100,6 +101,7 @@ export const MessageContent = (props: MessageContentProps) => {
         fileProgress,
         isReply = false,
         isForward = false,
+        isPending
     } = props;
     const isReplyOnly = isReply && !isForward;
 
@@ -134,6 +136,7 @@ export const MessageContent = (props: MessageContentProps) => {
                     date={props.date}
                     chatId={props.chatId}
                     mId={id}
+                    isPending={isPending}
                 />
             </ContentWrapper>,
         );

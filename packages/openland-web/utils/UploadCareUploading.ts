@@ -29,16 +29,18 @@ export class UploadCareUploading implements UploadingFile {
                 }
                 isFirst = false;
                 let name = v.incompleteFileInfo.name || 'image.jpg';
+                let isImage = v.incompleteFileInfo.isImage || file.type.includes('image');
                 resolved = true;
-                resolver({ name, uri: this.origUrl, fileSize: parseInt(v.incompleteFileInfo.size || '0', 10) });
+                resolver({ name, uri: this.origUrl, fileSize: parseInt(v.incompleteFileInfo.size || '0', 10), isImage });
             });
             this.file.done(v => {
                 if (resolved) {
                     return;
                 }
                 let name = v.name || 'image.jpg';
+                let isImage = v.isImage || file.type.includes('image');
                 resolved = true;
-                resolver({ name, uri: this.origUrl, fileSize: parseInt(v.size || '0', 10) });
+                resolver({ name, uri: this.origUrl, fileSize: parseInt(v.size || '0', 10), isImage });
             });
         });
     }

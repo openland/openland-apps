@@ -21,9 +21,9 @@ import { useClient } from 'openland-api/useClient';
 import IcDownload from 'openland-icons/s/ic-download-24.svg';
 import IcForward from 'openland-icons/s/ic-forward-24.svg';
 import IcClose from 'openland-icons/s/ic-close-24.svg';
-import IcDown from 'openland-icons/s/ic-arrow-down-24.svg';
 import IcLeft from 'openland-icons/s/ic-arrow-left-16.svg';
 import IcRight from 'openland-icons/s/ic-arrow-right-16.svg';
+import { MediaLoader } from './MediaLoader';
 
 const modalImgContainer = css`
     position: relative;
@@ -199,104 +199,6 @@ const nextCursorContent = css`
     padding-right: 16px;
     background: linear-gradient(270deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0) 100%);
 `;
-
-const progressLoaderWrapper = css`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    width: 42px;
-    height: 42px;
-    will-change: transform;
-`;
-
-const progressLoader = css`
-    animation: rotate 0.752s linear infinite;
-    @keyframes rotate {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
-    }
-`;
-
-const progressLoaderCircle = css`
-    fill: transparent;
-    stroke: var(--foregroundContrast);
-    stroke-dasharray: var(--dashArray);
-    stroke-dashoffset: var(--dashOffset);
-    stroke-linecap: round;
-    stroke-width: 2px;
-    transform-origin: 50% 50%;
-    transition: stroke-dashoffset 0.1s;
-`;
-
-const mediaLoader = css`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    z-index: 100;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background-color: var(--overlayMedium);
-`;
-
-const mediaLoaderIcon = css`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    width: 24px;
-    height: 24px;
-`;
-
-const ProgressLoader = (props: {progress: number}) => {
-    let radius = 21;
-    let c = 2 * Math.PI * radius;
-    let progress = Math.max(Math.floor(props.progress), 5);
-    let dashOffset = c - (c * (progress / 100));
-    return (
-        <div className={progressLoaderWrapper} style={{'--dashArray': c, '--dashOffset': dashOffset} as React.CSSProperties}>
-            <svg className={progressLoader} viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg">
-                <circle className={progressLoaderCircle} cx="21" cy="21" r="20"/>
-            </svg>
-        </div>
-    );
-};
-
-const MediaLoader = React.forwardRef((props: {onContinue: () => void, onStop: () => void}, ref: React.Ref<HTMLDivElement>) => {
-    const [stopped, setStopped] = React.useState(false);
-    const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setStopped(prev => !prev);
-        if (stopped) {
-            props.onContinue();
-        } else {
-            props.onStop();
-        }
-    };
-    return (
-        <div 
-            className={mediaLoader} 
-            ref={ref} 
-            onClick={handleClick}
-        >
-            {stopped ? (
-                <UIcon className={mediaLoaderIcon} icon={<IcDown />} color="var(--foregroundContrast)" />
-            ) : (
-                <>
-                    <ProgressLoader progress={80} />
-                    <UIcon className={mediaLoaderIcon} icon={<IcClose />} color="var(--foregroundContrast)" />
-                </>
-            )}
-        </div>
-    );
-});
 
 interface ModalControllerProps {
     cId: string;
@@ -690,6 +592,7 @@ interface ImageContentProps {
     date?: number;
     chatId?: string;
     mId?: string;
+    isPending?: boolean;
 }
 
 export const ImageContent = React.memo((props: ImageContentProps) => {
@@ -717,17 +620,25 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
     const ops = `scale_crop/${layoutWidth}x${layoutHeight}/`;
     const opsRetina = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/center/ 2x`;
 
-    const [src, setSrc] = React.useState<string | undefined>(url + ops);
-    const [srcSet, setSrcSet] = React.useState<string | undefined>(url + opsRetina);
+    const [src, setSrc] = React.useState<string | undefined>(props.file.fileId ? url + ops : undefined);
+    const [srcSet, setSrcSet] = React.useState<string | undefined>(props.file.fileId ? url + opsRetina : undefined);
+    const [previewSrc] = React.useState(props.file.filePreview);
+
+    React.useEffect(() => {
+        if (!props.isPending) {
+            setSrc(url + ops);
+            setSrcSet(url + opsRetina);
+        }
+    }, [props.file.fileId, props.file.id]);
 
     const onContinue = React.useCallback(() => {
         setSrc(url + ops);
         setSrcSet(url + opsRetina);
-    }, [url]);
+    }, [props.file.fileId]);
     const onStop = React.useCallback(() => {
         setSrc(undefined);
         setSrcSet(undefined);
-    }, [url]);
+    }, [props.file.fileId]);
 
     const onLoad = React.useCallback(() => {
         if (imgRef.current && imgPrevRef.current && loaderRef.current) {
@@ -772,7 +683,7 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
                 className={imgPreviewClass}
                 width={layoutWidth}
                 height={layoutHeight}
-                src={props.file.filePreview || undefined}
+                src={previewSrc || undefined}
             />
             <MediaLoader ref={loaderRef} onContinue={onContinue} onStop={onStop} />
             <ImgWithRetry

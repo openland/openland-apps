@@ -93,8 +93,8 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
             showAttachConfirm(files, (res) => new Promise(resolve => {
                 const uploadedFiles: string[] = [];
 
-                res.map(u => {
-                    u.watch((state) => {
+                res.map(({file}) => {
+                    file.watch((state) => {
                         if (state.uuid && !uploadedFiles.includes(state.uuid)) {
                             uploadedFiles.push(state.uuid);
                         }

@@ -31,6 +31,7 @@ import { reduceReactions } from 'openland-engines/reactions/reduceReactions';
 import { getReactionsLabel } from 'openland-engines/reactions/getReactionsLabel';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { GraphqlActiveSubscription } from '@openland/spacex';
+import { LocalImage } from 'openland-engines/messenger/types';
 
 const log = createLogger('Engine-Messages');
 
@@ -60,7 +61,7 @@ export interface DataSourceMessageItem {
     reply?: DataSourceMessageItem[];
     source?: Types.FullMessage_GeneralMessage_source_MessageSourceChat;
     reactions: FullMessage_GeneralMessage_reactions[];
-    attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string })[];
+    attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string, filePreview?: string | null })[];
     spans?: FullMessage_GeneralMessage_spans[];
     isSending: boolean;
     attachTop: boolean;
@@ -239,6 +240,12 @@ const createNewMessageDividerSourceItem = (messageId: string): DataSourceNewDivi
         key: 'new_divider-' + messageId,
     };
 };
+
+export const PENDING_MESSAGE_ATTACH_ID = 'pending_message_attach_file_id';
+export const isPendingAttach = (message: DataSourceMessageItem) => message.attachments
+    && message.attachments[0]
+    && message.attachments[0].__typename === 'MessageAttachmentFile'
+    && message.attachments[0].id === PENDING_MESSAGE_ATTACH_ID;
 
 export class ConversationEngine implements MessageSendHandler {
     readonly engine: MessengerEngine;
@@ -651,7 +658,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.loic(text);
     }
 
-    sendFile = (file: UploadingFile) => {
+    sendFile = (file: UploadingFile, localImage?: LocalImage) => {
         let messagesActionsState = this.messagesActionsStateEngine.getState();
         let quoted;
 
@@ -675,8 +682,9 @@ export class ConversationEngine implements MessageSendHandler {
                 message: null,
                 failed: false,
                 isImage: !!info.isImage,
-                imageSize: info.imageSize,
-                quoted
+                imageSize: info.imageSize || localImage && {width: localImage.width, height: localImage.height},
+                quoted,
+                filePreview: localImage && localImage.src || '',
             } as PendingMessage;
             this.messages = [...this.messages, { ...pmsg } as PendingMessage];
             this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
@@ -1055,11 +1063,11 @@ export class ConversationEngine implements MessageSendHandler {
                 commentsCount: 0,
                 attachments: p.uri ? [{
                     __typename: "MessageAttachmentFile",
-                    id: 'pending_message_attach_file_id',
+                    id: PENDING_MESSAGE_ATTACH_ID,
                     uri: p.uri,
                     fileId: '',
                     fallback: 'Document',
-                    filePreview: '',
+                    filePreview: p.filePreview || '',
                     fileMetadata: {
                         __typename: 'FileMetadata',
                         mimeType: '',
@@ -1090,6 +1098,9 @@ export class ConversationEngine implements MessageSendHandler {
             // Do not remove local url for attachments
             if (conv.attachments && conv.attachments.length && ex.attachments && ex.attachments.length && ex.attachments[0].uri) {
                 conv.attachments[0].uri = ex.attachments[0].uri;
+                if (ex.attachments[0].filePreview) {
+                    conv.attachments[0].filePreview = ex.attachments[0].filePreview;
+                }
             }
 
             let converted = {

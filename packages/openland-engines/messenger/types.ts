@@ -16,6 +16,7 @@ export interface PendingMessage {
     file: string | null;
     uri?: string;
     fileSize?: number;
+    filePreview?: string;
     isImage: boolean;
     imageSize?: { width: number; height: number };
     failed?: boolean;
@@ -53,4 +54,11 @@ export interface UploadingFile {
     watch(
         handler: (state: { status: UploadStatus; progress?: number; uuid?: string }) => void,
     ): void;
+}
+
+export interface LocalImage {
+    src: string | null;
+    width: number;
+    height: number;
+    index: number;
 }

@@ -442,7 +442,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         if (files.length) {
             showAttachConfirm(
                 files,
-                res => res.map(this.conversation!.sendFile),
+                res => res.map(({file, localImage}) => this.conversation!.sendFile(file, localImage)),
                 this.refreshFileUploadingTyping,
                 this.endFileUploadingTyping
             );

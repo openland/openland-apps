@@ -7,6 +7,7 @@ import { css } from 'linaria';
 import { XModalController } from 'openland-x/showModal';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { UploadCareUploading } from 'openland-web/utils/UploadCareUploading';
+import { LocalImage } from 'openland-engines/messenger/types';
 
 const imgClass = css`
     margin-top: 8px;
@@ -24,7 +25,7 @@ const titleClass = css`
     font-size: 36px;
 `;
 
-let Img = React.memo((props: { file: File; onClick: (f: File) => void }) => {
+let Img = React.memo((props: { file: File; onClick: (f: File) => void, onLoad: (img: LocalImage) => void, index: number; }) => {
     let ref = React.useRef<HTMLImageElement>(null);
     React.useEffect(() => {
         let reader = new FileReader();
@@ -35,6 +36,7 @@ let Img = React.memo((props: { file: File; onClick: (f: File) => void }) => {
                 ref.current.src = reader.result as any;
                 ref.current.width = layout.width;
                 ref.current.height = layout.height;
+                props.onLoad({index: props.index, src: (reader.result as string), width: image.width, height: image.height});
             }
         };
         reader.onloadend = () => {
@@ -45,8 +47,8 @@ let Img = React.memo((props: { file: File; onClick: (f: File) => void }) => {
     return <img className={imgClass} ref={ref} onClick={() => props.onClick(props.file)} />;
 });
 
-const Body = (props: { files: File[][]; ctx: XModalController }) => {
-    let { files } = props;
+const Body = (props: { files: File[][]; onImageLoad: (img: LocalImage) => void; ctx: XModalController }) => {
+    let { files, onImageLoad } = props;
     let [bodyFiles, setFiles] = React.useState(files[0]);
 
     // workaround - somehow DocumentContent is not recreating
@@ -71,7 +73,7 @@ const Body = (props: { files: File[][]; ctx: XModalController }) => {
         hasPhoto = hasPhoto || isImage;
         hasFiles = hasFiles || !isImage;
         if (isImage) {
-            return <Img key={f.name + f.size + f.lastModified} file={f} onClick={onClick} />;
+            return <Img key={f.name + f.size + f.lastModified} file={f} onClick={onClick} index={i} onLoad={onImageLoad} />;
         } else {
             return (
                 <div
@@ -107,7 +109,7 @@ const Body = (props: { files: File[][]; ctx: XModalController }) => {
 const MAX_FILE_SIZE = 1e8;
 export const showAttachConfirm = (
     files: File[],
-    callback: (files: UploadCareUploading[]) => void,
+    callback: (files: {file: UploadCareUploading, localImage?: LocalImage}[]) => void,
     onFileUploadingProgress?: (filename?: string) => void,
     onFileUploadingEnd?: () => void,
 ) => {
@@ -121,11 +123,16 @@ export const showAttachConfirm = (
     let filesRes = [[...filesFiltered]];
     const uploading = filesFiltered.map(f => new UploadCareUploading(f));
 
+    let loadedImages: LocalImage[] = [];
+    let saveImage = (img: LocalImage) => {
+        loadedImages[img.index] = img;
+    };
+
     if (filesFiltered.length > 0) {
         AlertBlanket.builder()
-            .body(ctx => <Body files={filesRes} ctx={ctx} />)
+            .body(ctx => <Body files={filesRes} onImageLoad={saveImage} ctx={ctx} />)
             .action('Send', async () => {
-                await callback(uploading.filter(u => filesRes[0].includes(u.getSourceFile())));
+                await callback(uploading.map((u, i) => ({file: u, localImage: loadedImages[i]})).filter(({file}) => filesRes[0].includes(file.getSourceFile())));
 
                 const { name } = await uploading[0].fetchInfo();
 

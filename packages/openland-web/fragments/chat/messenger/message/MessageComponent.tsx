@@ -20,6 +20,7 @@ import { XView } from 'react-mental';
 
 import IcPending from 'openland-icons/s/ic-pending-16.svg';
 import IcSuccess from 'openland-icons/s/ic-success-16.svg';
+import { isPendingAttach } from 'openland-engines/messenger/ConversationEngine';
 
 const senderContainer = css`
     display: flex;
@@ -342,26 +343,6 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
         [message.id],
     );
 
-    const content = (
-        <MessageContent
-            id={message.id}
-            text={message.text}
-            textSpans={message.textSpans}
-            edited={message.isEdited}
-            reply={message.replyWeb}
-            attachments={message.attachments}
-            sticker={message.sticker}
-            fallback={message.fallback}
-            isOut={message.isOut}
-            attachTop={message.attachTop}
-            chatId={message.chatId}
-            sender={message.sender}
-            senderNameEmojify={message.senderNameEmojify}
-            date={message.date}
-            fileProgress={message.progress}
-        />
-    );
-
     const buttons = (
         <div className={buttonsClass}>
             <MessageReactions message={message} engine={engine} />
@@ -426,6 +407,27 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
 
         return () => clearInterval(timeout);
     }, [hadLag]);
+
+    const content = (
+        <MessageContent
+            id={message.id}
+            text={message.text}
+            textSpans={message.textSpans}
+            edited={message.isEdited}
+            reply={message.replyWeb}
+            attachments={message.attachments}
+            sticker={message.sticker}
+            fallback={message.fallback}
+            isOut={message.isOut}
+            attachTop={message.attachTop}
+            chatId={message.chatId}
+            sender={message.sender}
+            senderNameEmojify={message.senderNameEmojify}
+            date={message.date}
+            fileProgress={message.progress}
+            isPending={isPendingAttach(message)}
+        />
+    );
 
     return (
         <div
