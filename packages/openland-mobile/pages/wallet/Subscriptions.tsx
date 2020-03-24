@@ -112,7 +112,7 @@ const SubscriptionView = React.memo((props: SubscriptionConverted & { router?: S
         ));
 
         builder.show();
-    }, []);
+    }, [props.state]);
 
     return props.state === WalletSubscriptionState.GRACE_PERIOD || props.state === WalletSubscriptionState.RETRYING ? (
         <ZListItem
