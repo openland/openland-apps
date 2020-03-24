@@ -20,6 +20,7 @@ import IcViolet from 'openland-icons/files/violet.svg';
 import IcYellow from 'openland-icons/files/yellow.svg';
 import { isElectron } from 'openland-y-utils/isElectron';
 import { electronBus } from 'openland-web/utils/electronBus';
+import { MediaLoader } from './MediaLoader';
 
 const modalContainer = css`
     position: relative;
@@ -314,6 +315,19 @@ export const fileIcon = {
     KEY: <IcYellow />,
 };
 
+const fileColor = {
+    FILE: '#248BF2',
+    PDF: '#E52243',
+    ZIP: '#8518F2',
+    VIDEO: '#8518F2',
+    DOCX: '#248BF2',
+    PAGES: '#248BF2',
+    XLSX: '#3EB265',
+    NUMB: '#3EB265',
+    PPTX: '#FFAE0D',
+    KEY: '#FFAE0D',
+};
+
 export const fileFormat = (name: string) => {
     let format = 'FILE';
     if (name.endsWith('.pdf')) {
@@ -410,6 +424,12 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
             ? props.sender.name
             : '';
 
+    const hasProgress = typeof progress === 'number' && progress >= 0 && progress < 1;
+    const progressStyles = {
+        borderRadius: '8px',
+        backgroundColor: fileColor[fileFormat(name)],
+    } as React.CSSProperties;
+
     return (
         <a
             className={cx(fileContainer, 'message-document-wrapper', props.className)}
@@ -417,15 +437,10 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
             href={!props.onClick ? fileSrc : undefined}
         >
             <div className={infoContent}>
-                <div className={fileIconContainer}>
-                    {fileIcon[fileFormat(name)]}
-                    {typeof progress === 'number' && progress >= 0 && progress < 1 ? (
-                        <XLoader
-                            size="medium"
-                            contrast={true}
-                            loading={true}
-                            transparentBackground={true}
-                        />
+                <div className={fileIconContainer} style={hasProgress ? progressStyles : undefined}>
+                    {!hasProgress && fileIcon[fileFormat(name)]}
+                    {hasProgress ? (
+                        <MediaLoader size="small" transparent={true} />
                     ) : (
                         <div className={cx(iconInfo, 'icon-info')}>
                             <UIcon
