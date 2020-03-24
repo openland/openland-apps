@@ -428,11 +428,9 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
             }
             if (distributionField.value === DistributionType.PAID) {
                 intervalField.input.onChange(null);
-                priceField.input.onChange('1');
             }
             if (distributionField.value === DistributionType.SUBSCRIPTION) {
                 intervalField.input.onChange(WalletSubscriptionInterval.MONTH);
-                priceField.input.onChange('1');
             }
         },
         [distributionField.value],
