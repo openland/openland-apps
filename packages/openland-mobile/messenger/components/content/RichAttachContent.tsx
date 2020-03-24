@@ -40,7 +40,7 @@ export let richAttachImageShouldBeCompact = (attach?: FullMessage_GeneralMessage
     return ((aspectRatio && aspectRatio >= 0.8 && aspectRatio <= 1.2) || isInvite(attach));
 };
 
-export const paddedTextPrfix = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 9, ios: 8 }))}</ASText >;
+export const paddedTextPrfix = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 11, ios: 10 }))}</ASText >;
 
 const getImageSize = ({width, height}: {width: number, height: number}) => {
     let ratio = PixelRatio.get();
@@ -216,7 +216,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                                 width={this.compactImageLayout.width}
                                 height={this.compactImageLayout.height}
                                 borderRadius={isInternal ? 20 : 10}
-                                marginRight={12}
+                                marginRight={11}
                             />
                         </ASFlex>
                     )}
@@ -258,7 +258,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                     maxWidth={maxWidth}
                     color={bubbleForegroundPrimary}
                     fontSize={14}
-                    marginTop={imgCompact ? (subTitle ? 8 : -15) : 0}
+                    marginTop={imgCompact ? (subTitle ? 8 : -20) : 0}
                     marginBottom={4}
                     lineHeight={19}
                     numberOfLines={5}
@@ -285,7 +285,6 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                                 // flexBasis={1}
                                 flexGrow={1}
                                 onPress={resolveInternalLink(button.url!, () => Linking.openURL(button.url!))}
-
                             >
                                 <ASText
                                     textAlign='center'
