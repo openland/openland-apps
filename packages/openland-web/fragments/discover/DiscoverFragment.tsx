@@ -69,14 +69,14 @@ export const DiscoverFragment = React.memo(() => {
                                 icon={<IcHome />}
                             />
                             <UListItem
-                                title="New and growing"
-                                path="/discover/new"
-                                icon={<IcNew />}
-                            />
-                            <UListItem
                                 title="Popular now"
                                 path="/discover/popular"
                                 icon={<IcPopular />}
+                            />
+                            <UListItem
+                                title="New and growing"
+                                path="/discover/new"
+                                icon={<IcNew />}
                             />
                             <UListItem
                                 title="Collections"
