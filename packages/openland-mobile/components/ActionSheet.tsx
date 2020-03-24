@@ -135,7 +135,7 @@ export class ActionSheetBuilder {
                 );
             }, this._title);
         } else {
-            showBottomSheet({ view: this.renderItems, cancelable: this._cancelable, buttonTitle: this._buttonTitle });
+            showBottomSheet({ view: this.renderItems, title: this._title, cancelable: this._cancelable, buttonTitle: this._buttonTitle });
         }
     }
 }
