@@ -165,8 +165,9 @@ export default class OpenlandDocument extends Document {
                         }
 
                         metaTagsInfo = {
-                            title: `${title} on Openland`,
+                            title,
                             url: urlPrefix + originalUrl,
+                            description: 'Collection of Openland chats on the topic',
                             image: imageLink || 'https://cdn.openland.com/shared/og/og-global.png',
                         };
                     }
