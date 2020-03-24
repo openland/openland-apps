@@ -546,17 +546,17 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
                         searchable={false}
                         options={[
                             {
-                                value: true,
-                                labelShort: 'Secret',
-                                label: 'Secret',
-                                subtitle: 'Only people with invite link can see it',
-                            },
-                            {
                                 value: false,
                                 labelShort: 'Public',
                                 label: 'Public',
                                 subtitle: 'Visible in group search',
                             },
+                            {
+                                value: true,
+                                labelShort: 'Secret',
+                                label: 'Secret',
+                                subtitle: 'Only people with invite link can see it',
+                            }
                         ]}
                     />
                 </div>

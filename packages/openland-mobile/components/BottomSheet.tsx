@@ -2,7 +2,6 @@ import * as React from 'react';
 import { View, Text, Platform, Keyboard } from 'react-native';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { SDevice } from 'react-native-s/SDevice';
 import { GQLClientContext } from 'openland-api/useClient';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZLoader } from './ZLoader';

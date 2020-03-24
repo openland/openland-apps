@@ -262,15 +262,15 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                         field={kindField}
                         options={[
                             {
-                                label: 'Secret',
-                                subtitle: 'Only people with invite link can see it',
-                                value: SharedRoomKind.GROUP,
-                            },
-                            {
                                 label: 'Public',
                                 subtitle: 'Visible in group search',
                                 value: SharedRoomKind.PUBLIC,
                             },
+                            {
+                                label: 'Secret',
+                                subtitle: 'Only people with invite link can see it',
+                                value: SharedRoomKind.GROUP,
+                            }
                         ]}
                     />
                 </ZListGroup>
