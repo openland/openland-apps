@@ -20,6 +20,7 @@ import { RoomMembersPaginated_members, RoomMemberRole } from 'openland-api/space
 import IcUser from 'openland-icons/s/ic-user-24.svg';
 import IcCopy from 'openland-icons/s/ic-copy-24.svg';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
+import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 
 export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     const client = useClient();
@@ -52,7 +53,8 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         organization,
         settings,
         matchmaking,
-        isPremium
+        isPremium,
+        premiumSettings
     } = group;
 
     const memberProfiles = matchmaking && matchmaking.enabled;
@@ -108,6 +110,12 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         [members],
     );
 
+    let descriptionHero = plural(membersCount || 0, ['member', 'members']);
+
+    if (isPremium && premiumSettings) {
+        descriptionHero += ', ' + formatMoneyInterval(premiumSettings.price, premiumSettings.interval);
+    }
+
     return (
         <UFlatList
             track="group_profile"
@@ -135,7 +143,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
             <UListHero
                 title={title}
                 titleIcon={isPremium ? <PremiumBadge /> : undefined}
-                description={plural(membersCount || 0, ['member', 'members'])}
+                description={descriptionHero}
                 avatar={{ photo, id, title }}
             >
                 <UButton text="View" path={'/mail/' + id} />
