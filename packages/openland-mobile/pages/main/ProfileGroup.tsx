@@ -18,7 +18,6 @@ import { NotificationSettings } from './components/NotificationSetting';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { SFlatList } from 'react-native-s/SFlatList';
-import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';
 import { trackEvent } from 'openland-mobile/analytics';
@@ -38,13 +37,9 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const [members, setMembers] = React.useState(initialMembers);
     const [loading, setLoading] = React.useState(false);
 
-    const [onlineCount, setOnlineCount] = React.useState<number>(0);
-
     React.useEffect(() => {
         members.map(u => u.user.id).map(getMessenger().engine.getOnlines().onUserAppears);
     }, members);
-
-    getChatOnlinesCount(roomId, client, (count) => setOnlineCount(count));
 
     // callbacks
     const handleAddMembers = React.useCallback((addedMembers: RoomMembersPaginated_members[]) => {
