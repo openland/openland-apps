@@ -24,6 +24,7 @@ import { ZListHeader } from 'openland-mobile/components/ZListHeader';
 import { trackEvent } from 'openland-mobile/analytics';
 import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
 import { SUPER_ADMIN } from '../Init';
+import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 
 const ProfileGroupComponent = XMemo<PageProps>((props) => {
     const theme = React.useContext(ThemeContext);
@@ -196,8 +197,9 @@ const ProfileGroupComponent = XMemo<PageProps>((props) => {
 
     let subtitle = (
         <>
-            <Text>{(room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + ' member'}</Text>
-            {onlineCount > 0 && (<Text style={{ color: theme.accentPrimary }}>{'   '}{onlineCount} online</Text>)}
+            <Text allowFontScaling={false}>{(room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + ' member'}</Text>
+            {/* {onlineCount > 0 && (<Text style={{ color: theme.accentPrimary }}>{'   '}{onlineCount} online</Text>)} */}
+            {(room.isPremium && room.premiumSettings) && <Text allowFontScaling={false}>, {formatMoneyInterval(room.premiumSettings.price, room.premiumSettings.interval)}</Text>}
         </>
     );
 
