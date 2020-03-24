@@ -60,7 +60,7 @@ const UsersList = XMemo<PageProps & { query: string, users: any, onAdd: (user: U
                 <View marginBottom={6} marginTop={18}>
                     <ZListItem
                         leftIcon={require('assets/ic-link-glyph-24.png')}
-                        text="Invite with a link"
+                        text="Invite with link"
                         onPress={props.router.params.inviteLinkButton.onPress ? props.router.params.inviteLinkButton.onPress : () => {
                             props.router.pushAndRemove(props.router.params.inviteLinkButton.path, props.router.params.inviteLinkButton.pathParams);
                         }}

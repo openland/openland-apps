@@ -29,7 +29,7 @@ export const TextInvites = {
     customMessageButton: 'Add a custom message to make your invitation more personal', 
 
     // LINK
-    getLinkButtonLinkExists: 'Invite with a link',
+    getLinkButtonLinkExists: 'Invite with link',
     getLinkButtonNoLink: 'Get an invite link to share',
     deleteLink: 'Delete link',
     linkExpirationOption1: 'expires in 1 day',
