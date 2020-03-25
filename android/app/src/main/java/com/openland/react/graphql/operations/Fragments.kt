@@ -1873,7 +1873,8 @@ internal val RoomFullWithoutMembersSelector = obj(
                     )),
                 field("owner", "owner", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID")))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("firstName", "firstName", notNull(scalar("String")))
                     ))
             ))
         )

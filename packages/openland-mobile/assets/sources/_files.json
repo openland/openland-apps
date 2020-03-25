@@ -248,6 +248,13 @@
             ]
         },
         {
+            "name": "ic-minus-glyph",
+            "src": "ic-minus-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-star-glyph",
             "src": "ic-star-glyph-24.svg",
             "sizes": [

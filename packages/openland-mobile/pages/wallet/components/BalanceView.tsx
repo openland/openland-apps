@@ -4,9 +4,9 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import LinearGradient from 'react-native-linear-gradient';
 import { Money } from 'openland-y-utils/wallet/Money';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { BalanceActionButton } from './BalanceActionButton';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { showWithdrawFunds } from './showWithdrawFunds';
+import { ZIconAction } from 'openland-mobile/components/ZIconAction';
 
 interface BalanceViewProps {
     amount: number;
@@ -28,7 +28,7 @@ export const BalanceView = (props: BalanceViewProps) => {
                 </Text>
             </View>
             <View flexGrow={1} alignItems="flex-end" paddingTop={10}>
-                <BalanceActionButton source={require('assets/ic-arrow-down-glyph-24.png')} onPress={() => showWithdrawFunds(router)} />
+                <ZIconAction source={require('assets/ic-arrow-down-glyph-24.png')} onPress={() => showWithdrawFunds(router)} />
             </View>
         </LinearGradient>
     );
