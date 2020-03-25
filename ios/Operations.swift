@@ -4001,6 +4001,9 @@ private let StickerPackCatalogSelector = obj(
                         )))))
                 )))))
         )
+private let StripeTokenSelector = obj(
+            field("stripeToken", "stripeToken", notNull(scalar("String")))
+        )
 private let SubscriptionsSelector = obj(
             field("subscriptions", "subscriptions", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5806,6 +5809,12 @@ class Operations {
         "query StickerPackCatalog{stickers:stickerPackCatalog{__typename id title published stickers{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}",
         StickerPackCatalogSelector
     )
+    let StripeToken = OperationDefinition(
+        "StripeToken",
+        .query, 
+        "query StripeToken{stripeToken}",
+        StripeTokenSelector
+    )
     let Subscriptions = OperationDefinition(
         "Subscriptions",
         .query, 
@@ -6839,6 +6848,7 @@ class Operations {
         if name == "SharedMediaCounters" { return SharedMediaCounters }
         if name == "StickerPack" { return StickerPack }
         if name == "StickerPackCatalog" { return StickerPackCatalog }
+        if name == "StripeToken" { return StripeToken }
         if name == "Subscriptions" { return Subscriptions }
         if name == "SuggestedRooms" { return SuggestedRooms }
         if name == "SuperAccount" { return SuperAccount }

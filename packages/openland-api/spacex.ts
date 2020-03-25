@@ -292,6 +292,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryStickerPackCatalog(opts?: OperationParameters): Promise<Types.StickerPackCatalog> {
         return this.query('StickerPackCatalog', undefined, opts);
     }
+    queryStripeToken(opts?: OperationParameters): Promise<Types.StripeToken> {
+        return this.query('StripeToken', undefined, opts);
+    }
     querySubscriptions(opts?: OperationParameters): Promise<Types.Subscriptions> {
         return this.query('Subscriptions', undefined, opts);
     }
@@ -613,6 +616,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchStickerPackCatalog(opts?: OperationParameters): Promise<Types.StickerPackCatalog> {
         return this.refetch('StickerPackCatalog', undefined);
     }
+    refetchStripeToken(opts?: OperationParameters): Promise<Types.StripeToken> {
+        return this.refetch('StripeToken', undefined);
+    }
     refetchSubscriptions(opts?: OperationParameters): Promise<Types.Subscriptions> {
         return this.refetch('Subscriptions', undefined);
     }
@@ -933,6 +939,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateStickerPackCatalog(updater: (data: Types.StickerPackCatalog) => Types.StickerPackCatalog | null): Promise<boolean> {
         return this.updateQuery(updater, 'StickerPackCatalog', undefined);
+    }
+    updateStripeToken(updater: (data: Types.StripeToken) => Types.StripeToken | null): Promise<boolean> {
+        return this.updateQuery(updater, 'StripeToken', undefined);
     }
     updateSubscriptions(updater: (data: Types.Subscriptions) => Types.Subscriptions | null): Promise<boolean> {
         return this.updateQuery(updater, 'Subscriptions', undefined);
@@ -1444,6 +1453,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useStickerPackCatalog(opts?: SpaceQueryWatchParameters): Types.StickerPackCatalog;
     useStickerPackCatalog(opts?: SpaceQueryWatchParameters): Types.StickerPackCatalog | null {
         return this.useQuery('StickerPackCatalog', undefined, opts);
+    }
+    useStripeToken(opts: SpaceQueryWatchParameters & { suspense: false }): Types.StripeToken | null;
+    useStripeToken(opts?: SpaceQueryWatchParameters): Types.StripeToken;
+    useStripeToken(opts?: SpaceQueryWatchParameters): Types.StripeToken | null {
+        return this.useQuery('StripeToken', undefined, opts);
     }
     useSubscriptions(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Subscriptions | null;
     useSubscriptions(opts?: SpaceQueryWatchParameters): Types.Subscriptions;

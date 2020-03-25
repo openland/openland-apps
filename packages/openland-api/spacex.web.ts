@@ -4008,6 +4008,9 @@ const StickerPackCatalogSelector = obj(
                         )))))
                 )))))
         );
+const StripeTokenSelector = obj(
+            field('stripeToken', 'stripeToken', args(), notNull(scalar('String')))
+        );
 const SubscriptionsSelector = obj(
             field('subscriptions', 'subscriptions', args(), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5808,6 +5811,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'StickerPackCatalog',
         body: 'query StickerPackCatalog{stickers:stickerPackCatalog{__typename id title published stickers{__typename ...StickerFragment}}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}',
         selector: StickerPackCatalogSelector
+    },
+    StripeToken: {
+        kind: 'query',
+        name: 'StripeToken',
+        body: 'query StripeToken{stripeToken}',
+        selector: StripeTokenSelector
     },
     Subscriptions: {
         kind: 'query',

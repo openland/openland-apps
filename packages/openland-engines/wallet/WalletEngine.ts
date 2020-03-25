@@ -19,7 +19,7 @@ export interface WalletState {
 export class WalletEngine {
     readonly messenger: MessengerEngine;
     readonly state: StateStore<WalletState> = new StateStore();
-    readonly token: string = 'pk_live_eLENsh8Ten2AoOcJhfxUkTfD';
+    token: string = 'pk_live_eLENsh8Ten2AoOcJhfxUkTfD';
 
     constructor(messenger: MessengerEngine) {
         this.messenger = messenger;
@@ -27,6 +27,7 @@ export class WalletEngine {
     }
 
     private async start() {
+        this.token = (await backoff(() => this.messenger.client.queryStripeToken({ fetchPolicy: 'network-only' }))).stripeToken;
         let wallet = await backoff(() => this.messenger.client.queryMyWallet({ fetchPolicy: 'network-only' }));
         this.state.setState({
             balance: wallet.myWallet.balance,

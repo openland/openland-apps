@@ -670,6 +670,7 @@ type DiscoverChatsCollection {
   image: ImageRef!
   chatsCount: Int!
   chats: [SharedRoom!]!
+  shortname: String
 }
 
 type DiscoverChatsCollectionConnection {
@@ -1544,6 +1545,7 @@ type Mutation {
   debugRecountSeqForMessages: Boolean!
   debugReindexRoomMessagesCounter: Boolean!
   debugQueueDailyPaidLeaderboard: Boolean!
+  debugQueueWeeklyPaidLeaderboard: Boolean!
   settingsUpdate(settings: UpdateSettingsInput): Settings!
   sendEmailChangeCode(newEmail: String!): String!
   changeEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -1766,6 +1768,7 @@ type Mutation {
   alphaSetOrgShortName(id: ID!, shortname: String!): String
   alphaSetFeedChannelShortName(id: ID!, shortname: String!): String
   alphaSetRoomShortName(id: ID!, shortname: String!): String
+  alphaSetCollectionShortName(id: ID!, shortname: String!): String
 }
 
 type NewCommentNotification {
@@ -2288,6 +2291,7 @@ type Query {
   transactionsPending: [WalletTransaction!]!
   transactionsHistory(first: Int!, after: String): WalletTransactionConnection!
   subscriptions: [WalletSubscription!]!
+  stripeToken: String!
   alphaInvites: [Invite!]
   alphaInviteInfo(key: String!): InviteInfo
   appInvite: String!
@@ -2711,7 +2715,7 @@ type SharedRoomMention {
   sharedRoom: SharedRoom!
 }
 
-union ShortNameDestination = User | Organization | FeedChannel | SharedRoom
+union ShortNameDestination = User | Organization | FeedChannel | SharedRoom | DiscoverChatsCollection
 
 type ShowNotificationMessageInfo {
   mobile: Boolean!

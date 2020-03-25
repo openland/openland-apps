@@ -412,6 +412,22 @@
             "deprecationReason": null
           },
           {
+            "name": "stripeToken",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "alphaInvites",
             "description": "",
             "args": [],
@@ -17431,6 +17447,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "shortname",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -21569,6 +21597,11 @@
             "kind": "OBJECT",
             "name": "SharedRoom",
             "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "DiscoverChatsCollection",
+            "ofType": null
           }
         ]
       },
@@ -24867,6 +24900,22 @@
           },
           {
             "name": "debugQueueDailyPaidLeaderboard",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "debugQueueWeeklyPaidLeaderboard",
             "description": "",
             "args": [],
             "type": {
@@ -34232,6 +34281,47 @@
           },
           {
             "name": "alphaSetRoomShortName",
+            "description": "",
+            "args": [
+              {
+                "name": "id",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "shortname",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "alphaSetCollectionShortName",
             "description": "",
             "args": [
               {

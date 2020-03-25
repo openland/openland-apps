@@ -102,6 +102,7 @@ object Operations {
         if (name == "SharedMediaCounters") return SharedMediaCounters
         if (name == "StickerPack") return StickerPack
         if (name == "StickerPackCatalog") return StickerPackCatalog
+        if (name == "StripeToken") return StripeToken
         if (name == "Subscriptions") return Subscriptions
         if (name == "SuggestedRooms") return SuggestedRooms
         if (name == "SuperAccount") return SuperAccount
