@@ -9,9 +9,10 @@ import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { RegistrationContainer, ShakeContainer } from './RegistrationContainer';
+import { RegistrationContainer } from './RegistrationContainer';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { logout } from 'openland-mobile/utils/logout';
+import { ZShaker } from 'openland-mobile/components/ZShaker';
 
 const SignupOrgComponent = React.memo((props: PageProps) => {
     const ref = React.useRef<{ shake: () => void }>(null);
@@ -79,14 +80,14 @@ const SignupOrgComponent = React.memo((props: PageProps) => {
                 }
             >
                 <View marginTop={16}>
-                    <ShakeContainer ref={ref}>
+                    <ZShaker ref={ref}>
                         <ZInput
                             placeholder="Organization name"
                             autoFocus={true}
                             description="Please, provide organization name"
                             field={nameField}
                         />
-                    </ShakeContainer>
+                    </ZShaker>
                 </View>
             </RegistrationContainer>
         </ZTrack>

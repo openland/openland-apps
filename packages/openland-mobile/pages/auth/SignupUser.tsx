@@ -9,11 +9,12 @@ import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
-import { RegistrationContainer, ShakeContainer } from './RegistrationContainer';
+import { RegistrationContainer } from './RegistrationContainer';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { logout } from 'openland-mobile/utils/logout';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { ZShaker } from 'openland-mobile/components/ZShaker';
 
 const PrivacyText = React.memo(() => {
     const theme = React.useContext(ThemeContext);
@@ -104,9 +105,9 @@ const SignupUserComponent = React.memo((props: PageProps) => {
                     />
                 </View>
                 <View marginTop={16}>
-                    <ShakeContainer ref={ref}>
+                    <ZShaker ref={ref}>
                         <ZInput field={firstNameField} placeholder="First name" />
-                    </ShakeContainer>
+                    </ZShaker>
                     <ZInput
                         field={lastNameField}
                         placeholder="Last name"

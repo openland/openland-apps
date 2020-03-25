@@ -9,8 +9,18 @@ import { HighlightAlpha, TextStyles, RadiusStyles } from 'openland-mobile/styles
 import { hexToRgba } from 'openland-y-utils/hexToRgba';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { PageProps } from 'openland-mobile/components/PageProps';
+import { useField } from 'openland-form/useField';
+import { useForm } from 'openland-form/useForm';
+import Toast from 'openland-mobile/components/Toast';
+import { ZShaker } from 'openland-mobile/components/ZShaker';
 
-const PriceInput = (props: {value: string, autofocus: boolean, onChange: (price: string) => void}) => {
+interface PriceInputProps {
+    value: string;
+    autofocus: boolean;
+    onChange: (price: string) => void;
+}
+
+const PriceInput = React.forwardRef((props: PriceInputProps, ref: React.RefObject<TextInput>) => {
     let theme = useTheme();
     let value = props.value ? `$${props.value}` : '';
     let handleChangeText = (text: string) => {
@@ -19,6 +29,7 @@ const PriceInput = (props: {value: string, autofocus: boolean, onChange: (price:
 
     return (
         <TextInput
+            ref={ref}
             placeholder="$0"
             placeholderTextColor={hexToRgba(theme.foregroundInverted, 0.48)}
             keyboardAppearance={theme.keyboardAppearance}
@@ -38,7 +49,7 @@ const PriceInput = (props: {value: string, autofocus: boolean, onChange: (price:
             {...{ scrollEnabled: false }}
         />
     );
-};
+});
 
 const MessageInput = () => {
     let theme = useTheme();
@@ -79,43 +90,93 @@ const DonationComponent = (props: PageProps) => {
     let theme = useTheme();
     let initialPrice = props.router.params.initialPrice ? String(props.router.params.initialPrice) : '';
     let user = props.router.params.user as {name: string, id: string};
-    let [price, setPrice] = React.useState(initialPrice);
+
+    let priceRef = React.useRef<TextInput>(null);
+    let wrapperRef = React.useRef<{ shake: () => void }>(null);
+    let form = useForm();
+    let priceField = useField<string>('price', initialPrice, form, [
+        {
+            checkIsValid: x => {
+                return /^[0-9]*$/.test(x);
+            },
+            text: 'Numbers only',
+        },
+        {
+            checkIsValid: x => {
+                return Number(x) <= 1000;
+            },
+            text: '$1000 maximum',
+        },
+        {
+            checkIsValid: x => {
+                return Number(x) >= 1;
+            },
+            text: '$1 minimum',
+        },
+    ]);
+    let price = priceField.value;
+
+    let handlePriceChange = (value: string) => {
+        priceField.input.onChange(value);
+    };
     let updatePrice = (value: number) => {
         let current = price ? parseInt(price, 10) : 0;
         let newPrice = current + value;
         if (newPrice > 0) {
-            setPrice(String(newPrice));
+            handlePriceChange(String(newPrice));
         } else {
-            setPrice('');
+            handlePriceChange('');
         }
+    };
+
+    let handleSubmit = () => {
+        if (priceField.value.trim() === '' && wrapperRef.current) {
+            wrapperRef.current.shake();
+            return;
+        }
+
+        if (priceField.input.invalid) {
+            Toast.failure({ text: priceField.input.errorText, duration: 1000 }).show();
+            setTimeout(() => {
+                if (priceRef.current) {
+                    priceRef.current.focus();
+                }
+            }, 200);
+            return;
+        }
+        form.doAction(() => {
+            Toast.success({ text: 'Successful donation!', duration: 1000}).show();
+        });
     };
 
     return (
         <>
             <SHeader title={user ? `Donate to ${user.name}` : 'Donate'} />
             <SScrollView flexDirection="column" alignSelf="stretch" alignItems="stretch" padding={16}>
-                <View 
-                    paddingTop={32} 
-                    paddingBottom={4} 
-                    paddingHorizontal={16} 
-                    backgroundColor={theme.accentPay} 
-                    flexDirection="column"
-                    borderRadius={RadiusStyles.Large}
-                >
-                    <View flexDirection="row">
-                        <ZIconAction source={require('assets/ic-minus-glyph-24.png')} onPress={() => updatePrice(-5)} style="pay" />
-                        <View marginHorizontal={16} flex={1} flexDirection="row" justifyContent="center">
-                            <PriceInput value={price} autofocus={!initialPrice} onChange={setPrice} />
+                <ZShaker ref={wrapperRef}>
+                    <View 
+                        paddingTop={32} 
+                        paddingBottom={4} 
+                        paddingHorizontal={16} 
+                        backgroundColor={theme.accentPay} 
+                        flexDirection="column"
+                        borderRadius={RadiusStyles.Large}
+                    >
+                        <View flexDirection="row">
+                            <ZIconAction source={require('assets/ic-minus-glyph-24.png')} onPress={() => updatePrice(-5)} style="pay" />
+                            <View marginHorizontal={16} flex={1} flexDirection="row" justifyContent="center">
+                                <PriceInput value={price} autofocus={!initialPrice} onChange={handlePriceChange} ref={priceRef} />
+                            </View>
+                            <ZIconAction source={require('assets/ic-add-glyph-24.png')} onPress={() => updatePrice(5)} style="pay" />
                         </View>
-                        <ZIconAction source={require('assets/ic-add-glyph-24.png')} onPress={() => updatePrice(5)} style="pay" />
+                        <View marginTop={32} flexDirection="row">
+                            <MessageInput />
+                        </View>
+                        <View marginTop={4}>
+                            <ZButton title="Donate" style="pay" size="large" onPress={handleSubmit} />
+                        </View>
                     </View>
-                    <View marginTop={32} flexDirection="row">
-                        <MessageInput />
-                    </View>
-                    <View marginTop={4}>
-                        <ZButton title="Donate" style="pay" size="large" />
-                    </View>
-                </View>
+                </ZShaker>
             </SScrollView>
         </>
     );
