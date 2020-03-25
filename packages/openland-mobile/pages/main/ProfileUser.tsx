@@ -23,6 +23,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import Toast from 'openland-mobile/components/Toast';
+import { ProfileDonationGroup } from './components/ProfileDonationGroup';
 
 const ProfileUserComponent = XMemo<PageProps>((props) => {
     const { user, conversation } = getClient().useUser({ userId: props.router.params.id }, { fetchPolicy: 'cache-and-network' });
@@ -112,6 +113,8 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     {!!user.linkedin && <ZListItem title="LinkedIn" text={user.linkedin} linkify={true} tall={true} copy={true} />}
                 </ZListGroup>
 
+                <ProfileDonationGroup user={{name: user.firstName, id: user.id}} />
+                
                 {!!user.primaryOrganization && (
                     <ZListGroup header="Organization">
                         <ZListItem

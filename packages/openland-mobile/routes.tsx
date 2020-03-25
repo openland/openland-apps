@@ -85,6 +85,7 @@ import { Subscriptions } from './pages/wallet/Subscriptions';
 import { AddCard } from './pages/wallet/AddCard';
 import { Explore } from './pages/main/Explore';
 import { Collections } from './pages/main/Collections';
+import { Donation } from './pages/wallet/Donation';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -185,5 +186,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('Wallet', Wallet)
   .addRoute('Subscriptions', Subscriptions)
   .addRoute('AddCard', AddCard)
+  .addRoute('Donation', Donation)
 
   .build();
