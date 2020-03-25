@@ -77,7 +77,6 @@ const buttonAddPayStyle = css`
 `;
 
 export const JoinButton = React.memo((props: JoinButtonProps) => {
-    console.log(props);
     const client = useClient();
     const router = React.useContext(XViewRouterContext)!;
     const [state, setState] = React.useState<string>(
