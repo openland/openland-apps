@@ -17,9 +17,10 @@ import { TrackAuthError } from './TrackAuthError';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { API_HOST } from 'openland-y-utils/api';
-import { RegistrationContainer, ShakeContainer } from './RegistrationContainer';
+import { RegistrationContainer } from './RegistrationContainer';
 import { AppStorage as Storage } from 'openland-y-runtime-native/AppStorage';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { ZShaker } from 'openland-mobile/components/ZShaker';
 
 export const ACTIVATION_CODE_LENGTH = 6;
 
@@ -101,7 +102,7 @@ const EmailStartComponent = React.memo((props: PageProps) => {
                     />
                 }
             >
-                <ShakeContainer ref={ref}>
+                <ZShaker ref={ref}>
                     <ZInput
                         field={emailField}
                         placeholder="Email"
@@ -112,7 +113,7 @@ const EmailStartComponent = React.memo((props: PageProps) => {
                         allowFontScaling={false}
                         onSubmitEditing={submitForm}
                     />
-                </ShakeContainer>
+                </ZShaker>
             </RegistrationContainer>
         </ZTrack>
     );
@@ -244,7 +245,7 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
                     </View>
                 )}
                 <View>
-                    <ShakeContainer ref={ref}>
+                    <ZShaker ref={ref}>
                         <ZInput
                             field={codeField}
                             placeholder="Login code"
@@ -256,7 +257,7 @@ const EmailCodeComponent = React.memo((props: PageProps) => {
                             onSubmitEditing={submitForm}
                             maxLength={ACTIVATION_CODE_LENGTH}
                         />
-                    </ShakeContainer>
+                    </ZShaker>
                 </View>
             </RegistrationContainer>
         </ZTrack>
