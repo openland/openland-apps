@@ -4,7 +4,7 @@ import { UHeader } from 'openland-unicorn/UHeader';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { DiscoverSharedRoom } from 'openland-api/spacex.types';
-import { JoinButtonPremium } from './components/JoinButtonPremium';
+import { JoinButton } from './components/JoinButton';
 import { XView } from 'react-mental';
 
 export const DiscoverTopPremiumFragment = React.memo(() => {
@@ -49,7 +49,7 @@ export const DiscoverTopPremiumFragment = React.memo(() => {
                     <XView marginHorizontal={-16} maxWidth={560 + 16 * 2}>
                         <UGroupView
                             group={item as DiscoverSharedRoom}
-                            rightElement={<JoinButtonPremium group={item as DiscoverSharedRoom} />}
+                            rightElement={<JoinButton group={item as DiscoverSharedRoom} />}
                         />
                     </XView>
                 )}

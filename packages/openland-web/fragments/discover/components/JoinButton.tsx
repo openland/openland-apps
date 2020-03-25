@@ -1,32 +1,49 @@
 import React from 'react';
-import { DiscoverSharedRoom } from 'openland-api/spacex.types';
+import { XViewRouterContext } from 'react-mental';
+import { css, cx } from 'linaria';
+import { DiscoverSharedRoom, Room_room_SharedRoom } from 'openland-api/spacex.types';
+import { showPremiumPayConfirm } from './ShowPremiumPayConfirm';
 import { useClient } from 'openland-api/useClient';
-import { css } from 'linaria';
 import { XLoader } from 'openland-x/XLoader';
-
 import IcAdd from 'openland-icons/s/ic-add-24.svg';
 import IcDone from 'openland-icons/s/ic-done-24.svg';
+import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 
 interface JoinButtonProps {
-    group: DiscoverSharedRoom;
+    group:
+        | DiscoverSharedRoom
+        | Pick<
+              Room_room_SharedRoom,
+              'id' | 'isPremium' | 'premiumSettings' | 'title' | 'photo' | 'membership'
+          >;
 }
 
-const button = css`
-    width: 48px;
+const buttonStyle = css`
+    min-width: 56px;
     height: 32px;
-
     margin-right: 8px;
-
     cursor: pointer;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
-    background-color: var(--accentPrimary);
-
+    flex-shrink: 0;
+    position: relative;
     border-radius: 64px;
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+`;
 
+const buttonDoneStyle = css`
+    background-color: var(--backgroundTertiaryTrans) !important;
+    & path {
+        fill: var(--foregroundTertiary) !important;
+    }
+`;
+
+const buttonAddPrimaryStyle = css`
+    background-color: var(--accentPrimary);
     &:hover {
         background-color: var(--accentPrimaryHover);
     }
@@ -34,68 +51,87 @@ const button = css`
     &:active {
         background-color: var(--accentPrimaryActive);
     }
-
     & path {
         fill: var(--foregroundContrast);
     }
+`;
 
-    &:disabled {
-        background-color: var(--backgroundTertiaryTrans);
+const buttonAddPayStyle = css`
+    background-color: var(--accentPay);
+    color: var(--foregroundContrast);
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    padding-left: 16px;
+    padding-right: 16px;
+    &:hover {
+        background-color: var(--accentPayHover);
     }
-
-    &:disabled path {
-        fill: var(--foregroundTertiary);
+    &:active {
+        background-color: var(--accentPayActive);
     }
-
-    svg {
-        width: 20px;
-        height: 20px;
+    & path {
+        fill: var(--foregroundContrast);
     }
 `;
 
 export const JoinButton = React.memo((props: JoinButtonProps) => {
+    console.log(props);
     const client = useClient();
-    const [state, setState] = React.useState<string>(props.group.membership === 'MEMBER' ? 'done' : 'initial');
+    const router = React.useContext(XViewRouterContext)!;
+    const [state, setState] = React.useState<string>(
+        props.group.membership === 'MEMBER' ? 'done' : 'initial',
+    );
 
     // TODO remove any
-    const onClick = (e: any) => {
+    const onClick = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.stopPropagation();
+
+        if (props.group.isPremium) {
+            showPremiumPayConfirm(props, client, router, () => setState('done'));
+            return;
+        }
+
         setState('loading');
-        client.mutateRoomJoin({ roomId: props.group.id }).then(async (data) => {
-            setState('done');
-            await client.refetchRoomChat({ id: data.join.id });
-            await client.refetchRoom({ id: data.join.id });
-        });
+        const data = await client.mutateRoomJoin({ roomId: props.group.id });
+        await client.refetchRoomChat({ id: data.join.id });
+        await client.refetchRoom({ id: data.join.id });
+        await setState('done');
     };
 
-    const stopPropagation = (e: any) => {
-        e.stopPropagation();
-    };
-
-    if (state === 'done') {
-        return (
-            <button className={button} disabled={true}>
-                <IcDone />
-            </button>
-        );
-    }
-
-    if (state === 'loading') {
-        return (
-            <button className={button} onClick={stopPropagation}>
-                <XLoader
-                    loading={true}
-                    transparentBackground={true}
-                    size="small"
-                    contrast={true}
-                />
-            </button>
-        );
-    }
+    const isDone = state === 'done';
+    const isLoading = state === 'loading';
+    const isAdd = !isDone && !isLoading;
 
     return (
-        <button className={button} onClick={onClick}>
-            <IcAdd />
-        </button>
+        <div
+            className={cx(
+                buttonStyle,
+                props.group.isPremium ? buttonAddPayStyle : buttonAddPrimaryStyle,
+                isDone && buttonDoneStyle,
+            )}
+            onClick={async e => {
+                if (isDone) {
+                    return;
+                }
+                if (isLoading) {
+                    return e.stopPropagation();
+                }
+                await onClick(e);
+            }}
+        >
+            {isAdd && !props.group.isPremium && <IcAdd />}
+            {isAdd &&
+                props.group.isPremium &&
+                formatMoneyInterval(
+                    props.group.premiumSettings!.price,
+                    props.group.premiumSettings!.interval,
+                )}
+            {isDone && <IcDone />}
+            {isLoading && (
+                <XLoader loading={true} transparentBackground={true} size="small" contrast={true} />
+            )}
+        </div>
     );
 });

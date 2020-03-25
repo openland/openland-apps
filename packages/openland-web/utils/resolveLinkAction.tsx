@@ -9,7 +9,7 @@ import { trackEvent } from 'openland-x-analytics';
 import { OpenlandClient } from 'openland-api/spacex';
 import { XViewRouter } from 'react-mental';
 import AlertBlanket from 'openland-x/AlertBlanket';
-import { showPremiumPayConfirm } from 'openland-web/fragments/discover/components/JoinButtonPremium';
+import { showPremiumPayConfirm } from 'openland-web/fragments/discover/components/ShowPremiumPayConfirm';
 
 const showRevokedInviteModal = () => {
     AlertBlanket.builder()
