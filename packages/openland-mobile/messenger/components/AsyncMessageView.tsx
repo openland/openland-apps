@@ -50,6 +50,9 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const { conversationId, message, engine, onMessageDoublePress, onMessagePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress } = props;
     const { isOut, attachTop, attachBottom, commentsCount, reactions, sender, isSending } = message;
 
+    const messageRef = React.useRef(message);
+    messageRef.current = message;
+
     let lastTap: number;
     const handlePress = () => {
         onMessagePress(message);
@@ -86,36 +89,23 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const showReactions = ((engine.isChannel || commentsCount > 0) || reactions.length > 0) && !isSending;
     const marginTop = attachTop ? 4 : 12;
     const marginBottom = attachBottom && showReactions ? 6 : 0;
-
-    const [isSendingShown, setSendingShown] = React.useState<boolean>(false);
-    const [hadLag, setLag] = React.useState<boolean>(false);
-    const [isSentShown, setSentShown] = React.useState<boolean>(false);
+    const [tooLong, setTooLong] = React.useState(false);
 
     React.useEffect(() => {
-        const timeout = setTimeout(() => {
-            if (message.isSending) {
-                setSendingShown(true);
-                setLag(true);
-            }
-        }, 500);
-
-        return () => {
-            clearInterval(timeout);
-            setSendingShown(false);
-        };
-    }, [message.isSending]);
-
-    React.useEffect(() => {
-        if (hadLag) {
-            setSentShown(true);
+        if (message.isSending && !tooLong) {
+            setTimeout(() => {
+                if (messageRef.current.isSending) {
+                    setTooLong(true);
+                }
+            }, 500);
         }
-
-        const timeout = setTimeout(() => {
-            setSentShown(false);
-        }, 250);
-
-        return () => clearInterval(timeout);
-    }, [hadLag]);
+        if (!message.isSending && tooLong) {
+            setTimeout(() => {
+                console.warn('too long false');
+                setTooLong(false);
+            }, 250);
+        }
+    }, [message.isSending, tooLong]);
 
     return (
         <ASFlex flexDirection="column" alignItems="stretch" onPress={handlePress} onLongPress={handleLongPress}>
@@ -139,20 +129,12 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     {isOut && (
                         <ASFlex flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" alignItems="flex-end" justifyContent="flex-end">
                             <ASFlex marginRight={12} marginBottom={10} width={16} height={16}>
-                                {isSendingShown && !isSentShown && (
+                                {tooLong && (
                                     <ASImage
-                                        source={require('assets/ic-recent-16.png')}
+                                        source={message.isSending ? require('assets/ic-recent-16.png') : require('assets/ic-success-16.png')}
                                         width={16}
                                         height={16}
-                                        tintColor={theme.foregroundQuaternary}
-                                    />
-                                )}
-                                {!isSendingShown && isSentShown && (
-                                    <ASImage
-                                        source={require('assets/ic-success-16.png')}
-                                        width={16}
-                                        height={16}
-                                        tintColor={theme.accentPositive}
+                                        tintColor={message.isSending ? theme.foregroundQuaternary : theme.accentPositive}
                                     />
                                 )}
                             </ASFlex>
