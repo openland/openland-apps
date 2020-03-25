@@ -53,12 +53,24 @@ const FollowButton = React.memo((props: FollowButtonProps) => {
         }
 
     }, [props.room]);
-    const backgroundColor = state === 'done' ? theme.backgroundTertiaryTrans : theme.accentPrimary;
-    const tintColor = state === 'done' ? theme.foregroundTertiary : theme.foregroundInverted;
-    const underlayColor = state === 'done' ? theme.backgroundTertiaryActive : theme.accentPrimaryActive;
+
     React.useEffect(() => {
         setState(props.isFollowing ? 'done' : 'initial');
     }, [props.isFollowing]);
+
+    const tintColor = state === 'done'
+        ? theme.foregroundTertiary
+        : theme.foregroundInverted;
+    const backgroundColor = state === 'done'
+        ? theme.backgroundTertiaryTrans
+        : props.room.isPremium
+            ? theme.accentPay
+            : theme.accentPrimary;
+    const underlayColor = state === 'done'
+        ? theme.backgroundTertiaryActive
+        : props.room.isPremium
+            ? theme.accentPayActive
+            : theme.accentPrimaryActive;
 
     return (
         <TouchableHighlight
