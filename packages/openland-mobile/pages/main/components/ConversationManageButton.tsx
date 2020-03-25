@@ -7,7 +7,6 @@ import { SRouter } from 'react-native-s/SRouter';
 import { RoomMemberRole, Room_room, Room_room_SharedRoom } from 'openland-api/spacex.types';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
-import { XMemo } from 'openland-y-utils/XMemo';
 
 interface ConversationManageButtonProps {
     muted: boolean;
@@ -38,7 +37,7 @@ const useSharedHandlers = (room: Room_room_SharedRoom, router: SRouter) => {
                         router.back();
                     }
                 },
-                'Add people',
+                room.isPremium ? 'Add people for free' : 'Add people',
                 [],
                 [userId],
                 { path: 'ProfileGroupLink', pathParams: { room } }
@@ -66,7 +65,7 @@ const useSharedHandlers = (room: Room_room_SharedRoom, router: SRouter) => {
     return { onInvitePress, onLeavePress };
 };
 
-export const ConversationManageButton = XMemo((props: ConversationManageButtonProps) => {
+export const ConversationManageButton = React.memo((props: ConversationManageButtonProps) => {
     const { muted, onMutedChange, room, router } = props;
     const client = useClient();
 

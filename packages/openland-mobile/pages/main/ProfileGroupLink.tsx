@@ -10,16 +10,16 @@ import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { RoomWithoutMembers_room_SharedRoom } from 'openland-api/spacex.types';
 import { trackEvent } from 'openland-mobile/analytics';
 import { InviteLinkView } from './components/InviteLinkView';
 import { formatError } from 'openland-y-forms/errorHandling';
 
-const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
+const ProfileGroupLinkContent = React.memo((props: PageProps) => {
     const { id, isChannel } = props.router.params.room as RoomWithoutMembers_room_SharedRoom;
-    const invite = getClient().useRoomInviteLink({ roomId: id }, { fetchPolicy: 'network-only' }).link;
+    const invite = getClient().useRoomInviteLink({ roomId: id }, { fetchPolicy: 'network-only' })
+        .link;
     const link = 'https://openland.com/invite/' + invite;
     const chatType = isChannel ? 'channel' : 'group';
 
@@ -29,78 +29,90 @@ const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
         });
     }, []);
 
-    const handleCopyClick = React.useCallback(() => {
-        trackEvent('invite_link_action', {
-            invite_type: chatType,
-            action_type: 'link_copied'
-        });
+    const handleCopyClick = React.useCallback(
+        () => {
+            trackEvent('invite_link_action', {
+                invite_type: chatType,
+                action_type: 'link_copied',
+            });
 
-        Clipboard.setString(link);
-        Toast.showCopiedLink();
-    }, [link]);
+            Clipboard.setString(link);
+            Toast.showCopiedLink();
+        },
+        [link],
+    );
 
-    const handleShareClick = React.useCallback(() => {
-        trackEvent('invite_link_action', {
-            invite_type: chatType,
-            action_type: 'link_shared'
-        });
+    const handleShareClick = React.useCallback(
+        () => {
+            trackEvent('invite_link_action', {
+                invite_type: chatType,
+                action_type: 'link_shared',
+            });
 
-        Share.share({ message: link });
-    }, [link]);
+            Share.share({ message: link });
+        },
+        [link],
+    );
 
-    const handleRevokeClick = React.useCallback(async () => {
-        startLoader();
-        try {
-            await getClient().mutateRoomRenewInviteLink({ roomId: id });
-            await getClient().refetchRoomInviteLink({ roomId: id });
-        } catch (e) {
-            Alert.alert(formatError(e));
-        }
-        stopLoader();
-    }, [id]);
+    const handleRevokeClick = React.useCallback(
+        async () => {
+            startLoader();
+            try {
+                await getClient().mutateRoomRenewInviteLink({ roomId: id });
+                await getClient().refetchRoomInviteLink({ roomId: id });
+            } catch (e) {
+                Alert.alert(formatError(e));
+            }
+            stopLoader();
+        },
+        [id],
+    );
 
     return (
-        <ZTrack event="invite_view" params={{ invite_type: chatType }}>
-            <InviteLinkView
-                link={link}
-                onPress={handleShareClick}
-                footer="Anyone with link can join as group member"
-            />
-            <ZListGroup>
-                <ZListItem
-                    leftIcon={require('assets/ic-copy-24.png')}
-                    small={true}
-                    text="Copy link"
-                    onPress={handleCopyClick}
-                />
-                <ZListItem
-                    leftIcon={require('assets/ic-share-24.png')}
-                    small={true}
-                    text="Share link"
+        <>
+            <SHeader title={isChannel ? 'Channel link' : 'Group link'} />
+            <ZTrack event="invite_view" params={{ invite_type: chatType }}>
+                <InviteLinkView
+                    link={link}
                     onPress={handleShareClick}
+                    footer="Anyone with link can join as group member"
                 />
-                <ZListItem
-                    leftIcon={require('assets/ic-refresh-24.png')}
-                    small={true}
-                    text="Revoke link"
-                    onPress={handleRevokeClick}
-                />
-            </ZListGroup>
-        </ZTrack>
+                <ZListGroup>
+                    <ZListItem
+                        leftIcon={require('assets/ic-copy-24.png')}
+                        small={true}
+                        text="Copy link"
+                        onPress={handleCopyClick}
+                    />
+                    <ZListItem
+                        leftIcon={require('assets/ic-share-24.png')}
+                        small={true}
+                        text="Share link"
+                        onPress={handleShareClick}
+                    />
+                    <ZListItem
+                        leftIcon={require('assets/ic-refresh-24.png')}
+                        small={true}
+                        text="Revoke link"
+                        onPress={handleRevokeClick}
+                    />
+                </ZListGroup>
+            </ZTrack>
+        </>
     );
 });
 
 class ProfileGroupLinkComponent extends React.PureComponent<PageProps> {
     render() {
+        const { props } = this;
         return (
-            <>
-                <SHeader title="Invitation link" />
-                <SScrollView>
-                    <ProfileGroupLinkContent {...this.props} />
-                </SScrollView>
-            </>
+            <SScrollView>
+                <ProfileGroupLinkContent {...props} />
+            </SScrollView>
         );
     }
 }
 
-export const ProfileGroupLink = withApp(ProfileGroupLinkComponent, { navigationAppearance: 'small' });
+export const ProfileGroupLink = withApp(ProfileGroupLinkComponent, {
+    navigationAppearance: 'small',
+});

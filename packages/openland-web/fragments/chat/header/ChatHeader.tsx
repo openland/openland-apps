@@ -109,10 +109,10 @@ const CallButton = (props: { chat: ChatInfo; calls: CallsEngine }) => {
                     props.chat.__typename === 'PrivateRoom',
                     props.chat.__typename === 'PrivateRoom'
                         ? {
-                            id: props.chat.user.id,
-                            title: props.chat.user.name,
-                            picture: props.chat.user.photo,
-                        }
+                              id: props.chat.user.id,
+                              title: props.chat.user.name,
+                              picture: props.chat.user.photo,
+                          }
                         : { id: props.chat.id, title: props.chat.title, picture: props.chat.photo },
                 )
             }

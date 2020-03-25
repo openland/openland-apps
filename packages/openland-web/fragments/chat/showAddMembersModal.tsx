@@ -60,8 +60,8 @@ const AddMemberModalInner = (props: InviteModalProps) => {
             ? 'channel'
             : 'group'
         : props.isCommunity
-            ? 'community'
-            : 'organization';
+        ? 'community'
+        : 'organization';
 
     const onInputChange = (data: string) => {
         setSearchQuery(data);
@@ -100,19 +100,21 @@ const AddMemberModalInner = (props: InviteModalProps) => {
         setOptions(newOpts);
     };
 
-    const canAddPeople = (!props.isPremium || props.isOwner);
+    const canAddPeople = !props.isPremium || props.isOwner;
 
     return (
         <>
-            {!canAddPeople && <UIconButton
-                onClick={props.hide}
-                icon={<UIcon icon={<IcClose />} size={16} />}
-                size="small"
-                position="absolute"
-                right={26}
-                top={26}
-            />}
-            <XModalContent >
+            {!canAddPeople && (
+                <UIconButton
+                    onClick={props.hide}
+                    icon={<UIcon icon={<IcClose />} size={16} />}
+                    size="small"
+                    position="absolute"
+                    right={26}
+                    top={26}
+                />
+            )}
+            <XModalContent>
                 <XTrack event="invite_view" params={{ invite_type: objType }} />
                 <XTrack
                     event={`navigate_${objType}_add_members`}
@@ -126,7 +128,7 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                     paddingTop={8}
                 >
                     <XView marginBottom={canAddPeople ? 16 : 24}>
-                        <SectionTitle title="Share invitation link" />
+                        <SectionTitle title={`Share ${objType} link`} />
                         <OwnerLinkComponent
                             id={props.id}
                             isGroup={props.isGroup}
@@ -135,9 +137,15 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                             isCommunity={props.isCommunity}
                         />
                     </XView>
-                    {canAddPeople &&
+                    {canAddPeople && (
                         <>
-                            <SectionTitle title="Add people directly" />
+                            <SectionTitle
+                                title={
+                                    props.isPremium
+                                        ? 'Add people directly and for free'
+                                        : 'Add people directly'
+                                }
+                            />
                             <XView>
                                 <SearchBox
                                     small={true}
@@ -163,51 +171,48 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                                 </XView>
                             </React.Suspense>
                         </>
-                    }
+                    )}
                 </XView>
             </XModalContent>
-            {canAddPeople && <XModalFooter>
-                <UButton
-                    text="Cancel"
-                    style="tertiary"
-                    size="large"
-                    onClick={props.hide}
-                />
-                <UButton
-                    text="Add"
-                    style="primary"
-                    size="large"
-                    disable={!options.length}
-                    onClick={
-                        !!options.length
-                            ? async () => {
-                                if (props.isGroup) {
-                                    await (props.addMembers as any)({
-                                        variables: {
-                                            roomId: props.id,
-                                            invites: options.map(i => ({
-                                                userId: i.value,
-                                                role: RoomMemberRole.MEMBER,
-                                            })),
-                                        },
-                                    });
-                                } else if (props.isOrganization) {
-                                    await (props.addMembers as any)({
-                                        variables: {
-                                            organizationId: props.id,
-                                            userIds: options.map(i => i.value),
-                                        },
-                                    });
-                                }
-                                setSelectedUsers(null);
-                                if (props.hide) {
-                                    props.hide();
-                                }
-                            }
-                            : undefined
-                    }
-                />
-            </XModalFooter>}
+            {canAddPeople && (
+                <XModalFooter>
+                    <UButton text="Cancel" style="tertiary" size="large" onClick={props.hide} />
+                    <UButton
+                        text="Add"
+                        style="primary"
+                        size="large"
+                        disable={!options.length}
+                        onClick={
+                            !!options.length
+                                ? async () => {
+                                      if (props.isGroup) {
+                                          await (props.addMembers as any)({
+                                              variables: {
+                                                  roomId: props.id,
+                                                  invites: options.map(i => ({
+                                                      userId: i.value,
+                                                      role: RoomMemberRole.MEMBER,
+                                                  })),
+                                              },
+                                          });
+                                      } else if (props.isOrganization) {
+                                          await (props.addMembers as any)({
+                                              variables: {
+                                                  organizationId: props.id,
+                                                  userIds: options.map(i => i.value),
+                                              },
+                                          });
+                                      }
+                                      setSelectedUsers(null);
+                                      if (props.hide) {
+                                          props.hide();
+                                      }
+                                  }
+                                : undefined
+                        }
+                    />
+                </XModalFooter>
+            )}
         </>
     );
 };
@@ -283,14 +288,16 @@ export const AddMembersModal = React.memo(
         if (isGroup) {
             data = client.useRoomMembersShort({ roomId: id });
             let group = client.useRoomWithoutMembers({ id: id });
-            isPremium = group.room?.__typename === 'SharedRoom' && group.room.isPremium;
-            isOwner = group.room?.__typename === 'SharedRoom' && group.room.role === 'OWNER';
+            isPremium =
+                !!(group.room && group.room.__typename === 'SharedRoom') && group.room.isPremium;
+            isOwner =
+                !!(group.room && group.room.__typename === 'SharedRoom') &&
+                group.room.role === 'OWNER';
         } else if (isOrganization) {
             data = client.useOrganizationMembersShort({ organizationId: id });
         }
 
         return (
-
             <AddMemberModalInner
                 hide={hide}
                 addMembers={isOrganization ? addMembersToOrganization : addMembersToRoom}
