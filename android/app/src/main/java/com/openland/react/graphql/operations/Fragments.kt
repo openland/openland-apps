@@ -786,6 +786,11 @@ internal val RoomShortSelector = obj(
                 field("myBadge", "myBadge", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("UserBadge", UserBadgeSelector)
+                    )),
+                field("owner", "owner", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("firstName", "firstName", notNull(scalar("String")))
                     ))
             ))
         )
@@ -1786,7 +1791,8 @@ internal val RoomFullSelector = obj(
                     )),
                 field("owner", "owner", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID")))
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("firstName", "firstName", notNull(scalar("String")))
                     ))
             ))
         )

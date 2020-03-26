@@ -6,7 +6,7 @@ import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handl
 import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 
-export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video', name: string, path: string, size: number) => void) => {
+export const showAttachMenu = (fileCallback?: (type: 'document' | 'photo' | 'video', name: string, path: string, size: number) => void, donationCb?: () => void) => {
     let builder = new ActionSheetBuilder();
 
     builder.action(Platform.select({ ios: 'Take photo or video', android: 'Take photo' }), async () => {
@@ -23,8 +23,8 @@ export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video',
 
                 let isPhoto = checkFileIsPhoto(response.uri);
 
-                if (callback) {
-                    callback(isPhoto ? 'photo' : 'video', isPhoto ? 'image.jpg' : 'video.mp4', response.path ? 'file://' + response.path : response.uri, response.fileSize);
+                if (fileCallback) {
+                    fileCallback(isPhoto ? 'photo' : 'video', isPhoto ? 'image.jpg' : 'video.mp4', response.path ? 'file://' + response.path : response.uri, response.fileSize);
                 }
             });
         }
@@ -45,8 +45,8 @@ export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video',
                         return;
                     }
 
-                    if (callback) {
-                        callback('video', 'video.mp4', response.uri, response.fileSize);
+                    if (fileCallback) {
+                        fileCallback('video', 'video.mp4', response.uri, response.fileSize);
                     }
                 });
             }
@@ -75,8 +75,8 @@ export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video',
 
                     let isPhoto = checkFileIsPhoto(response.uri);
 
-                    if (callback) {
-                        callback(isPhoto ? 'photo' : 'video', isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
+                    if (fileCallback) {
+                        fileCallback(isPhoto ? 'photo' : 'video', isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
                     }
                 }
             );
@@ -98,8 +98,8 @@ export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video',
                         return;
                     }
 
-                    if (callback) {
-                        callback('video', 'video.mp4', response.uri, response.fileSize);
+                    if (fileCallback) {
+                        fileCallback('video', 'video.mp4', response.uri, response.fileSize);
                     }
                 });
             }
@@ -113,12 +113,19 @@ export const showAttachMenu = (callback?: (type: 'document' | 'photo' | 'video',
                     return;
                 }
 
-                if (callback) {
-                    callback('document', response.fileName, response.uri, response.fileSize);
+                if (fileCallback) {
+                    fileCallback('document', response.fileName, response.uri, response.fileSize);
                 }
             }
         );
     }, false, require('assets/ic-document-24.png'));
+
+    let showDonation = false;
+    if (donationCb && showDonation) {
+        builder.action(Platform.select({ ios: 'Make donation', android: 'Donation' }), () => {
+            donationCb();
+        }, false, require('assets/ic-donation-24.png'));
+    }
 
     builder.show();
 };

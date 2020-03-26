@@ -222,6 +222,13 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     handleAttach = () => {
         showAttachMenu((type, name, path, size) => {
             UploadManagerInstance.registerMessageUpload(this.props.chat.id, name, path, size);
+        }, () => {
+            let user = this.props.chat.__typename === 'PrivateRoom'
+                ? this.props.chat.user
+                : this.props.chat.owner;
+            if (user) {
+                this.props.router.push('Donation', { user: {name: user.firstName, id: user.id} });
+            }
         });
     }
 

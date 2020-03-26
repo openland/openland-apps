@@ -1191,6 +1191,13 @@
             "sizes": [
                 24
             ]
+        },
+        {
+            "name": "ic-donation",
+            "src": "ic-donation-24.svg",
+            "sizes": [
+                24
+            ]
         }
     ]
 }
