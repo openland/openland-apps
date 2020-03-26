@@ -43,5 +43,9 @@ fragment RoomShort on Room {
         myBadge {
             ...UserBadge
         }
+        owner {
+            id
+            firstName
+        }
     }
 }

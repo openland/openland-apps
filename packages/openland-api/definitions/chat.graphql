@@ -532,6 +532,7 @@ query RoomInviteInfo($invite: String!) {
                 }
                 owner {
                     id
+                    firstName
                 }
             }
         }
@@ -603,6 +604,7 @@ query ResolvedInvite($key: String!) {
                     }
                     owner {
                         id
+                        firstName
                     }
                 }
             }
@@ -805,6 +807,7 @@ query ChatJoin($id: ID!) {
             }
             owner {
                 id
+                firstName
             }
         }
     }
