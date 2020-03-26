@@ -238,10 +238,10 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                                         size="small"
                                         style="success"
                                         marginRight={8}
-                                        text={callState.screenSharing ? 'Stop' : 'Share screen'}
+                                        text={callState.outVideo?.type === 'screen' ? 'Stop' : 'Share screen'}
                                         className={greenButtonStyle}
                                         onClick={() =>
-                                            calls.setScreenShare(!callState.screenSharing)
+                                            calls.switchScreenShare()
                                         }
                                     />
                                 )}

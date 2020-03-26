@@ -5,7 +5,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TalkWatchComponent } from './TalkWatchComponent';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { debounce } from 'openland-y-utils/timer';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
@@ -13,8 +13,13 @@ import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager'
 import { MediaStreamManager } from 'openland-engines/media/MediaStreamManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
+import { VideoComponent } from './ScreenShareModal';
+import { XView } from 'react-mental';
+import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 
 const AVATAR_SIZE = 48;
+const VIDEO_SIZE = 200;
+const OPEN_WIDTH = 360;
 
 const FloatContainerClass = css`
     display: none;
@@ -26,15 +31,29 @@ const FloatContainerClass = css`
     justify-content: center;
     background-color: #32bb78;
     flex-direction: row;
-    padding: 8px;
-    border-radius: ${AVATAR_SIZE}px;
+    padding: 8px 4px;
+    border-radius: ${AVATAR_SIZE / 2}px;
     transition: max-width 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
         opacity 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
     overflow: hidden;
     max-width: ${AVATAR_SIZE}px;
     opacity: 0.56;
     &:hover {
-        max-width: 360px;
+        max-width: ${OPEN_WIDTH}px;
+        opacity: 1;
+    }
+`;
+
+const videoClass = css`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+`;
+
+const VideoOnClass = css`
+    max-width: ${VIDEO_SIZE + 16}px;
+    &:hover {
+        max-width: ${OPEN_WIDTH + VIDEO_SIZE}px;
         opacity: 1;
     }
 `;
@@ -43,6 +62,8 @@ const TargetClass = css`
     display: flex;
     flex-shrink: 0;
     cursor: move;
+
+    margin: 0 4px;
 `;
 
 const animatedAvatarStyle = css`
@@ -180,6 +201,8 @@ const Avatar = React.memo(
     }) => {
         const avatarRef = React.useRef<HTMLDivElement>(null);
         const [speakingPeerId, setSpeakingPeerId] = React.useState<string>();
+        const [speakingPeerStream, setSpeakingPeerStream] = React.useState<AppMediaStream>();
+        const [videoEnabled, setVideoEnabled] = React.useState(false);
         React.useEffect(
             () => {
                 let buffer: Uint8Array;
@@ -191,6 +214,7 @@ const Avatar = React.memo(
                     {
                         analyzer: AnalyserNode;
                         stream: MediaStream;
+                        streamManager: MediaStreamManager;
                         appSrteam: AppMediaStream;
                         isMe?: boolean;
                     }
@@ -233,6 +257,7 @@ const Avatar = React.memo(
                             stream,
                             appSrteam: manager.getStream(),
                             analyzer: analyser,
+                            streamManager: manager,
                             isMe,
                         });
                     }
@@ -245,6 +270,8 @@ const Avatar = React.memo(
                         initStreamsAnalizer(streamsManagers.values().next().value, true);
                     }
                 };
+                let lastPeer: string | undefined;
+                let lastStream: AppMediaStream | undefined;
                 const render = () => {
                     if (!running) {
                         return;
@@ -252,6 +279,8 @@ const Avatar = React.memo(
                     initStreamsAnalizers();
                     let lastVal = 0;
                     let activePeerId: string | undefined;
+                    let activeStream: AppMediaStream | undefined;
+                    let lostStream: AppMediaStream | undefined;
                     for (let [key, entry] of peerStreamAnalyzers) {
                         entry.analyzer.getByteFrequencyData(buffer);
                         let val = Math.min(
@@ -268,18 +297,33 @@ const Avatar = React.memo(
                         if (entry.isMe && entry.appSrteam.muted) {
                             val = 0;
                         }
-                        if (val > lastVal) {
+                        if ((val > lastVal || !activePeerId) && !entry.isMe) {
                             lastVal = val;
                             activePeerId = key;
+                            activeStream = entry.streamManager.getVideoStream();
                         }
 
-                        // animate
-                        let scale = 1 + lastVal * 0.4;
-                        if (avatarRef.current) {
-                            avatarRef.current.style.transform = `scale(${scale})`;
+                        if (key === lastPeer && !lastStream) {
+                            lostStream = entry.streamManager.getVideoStream();
                         }
                     }
-                    setSpeakingPeerId(activePeerId);
+
+                    // animate
+                    let scale = 1 + lastVal * 0.4;
+                    if (activePeerId && avatarRef.current) {
+                        avatarRef.current.style.transform = `scale(${scale})`;
+                    }
+
+                    if (activePeerId) {
+                        lastPeer = activePeerId;
+                        lastStream = activeStream;
+                        setSpeakingPeerId(activePeerId);
+                        setSpeakingPeerStream(activeStream);
+                    }
+                    if (lostStream) {
+                        lastStream = lostStream;
+                        setSpeakingPeerStream(lostStream);
+                    }
                     requestAnimationFrame(render);
                 };
 
@@ -298,8 +342,30 @@ const Avatar = React.memo(
             },
             [props.mediaSessionManager],
         );
+        React.useEffect(() => {
+            let dispose: (() => void) | undefined;
+            if (props.mediaSessionManager) {
+                dispose = props.mediaSessionManager.listenVideoEnabled(() => {
+                    setVideoEnabled(true);
+                });
+            }
+            return dispose;
+        }, [props.mediaSessionManager]);
         let peer = props.peers.find(p => p.id === speakingPeerId);
-        return (
+        return (videoEnabled ?
+            <XView>
+                <XView width={VIDEO_SIZE} height={VIDEO_SIZE} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" backgroundColor="gray" alignItems="center" justifyContent="center">
+                    {speakingPeerStream ?
+                        <VideoComponent stream={(speakingPeerStream as AppUserMediaStreamWeb)._stream} videoClass={videoClass} /> :
+                        <UAvatar
+                            size="large"
+                            id={peer ? peer.user.id : props.fallback.id}
+                            title={peer ? peer.user.name : props.fallback.title}
+                            photo={peer ? peer.user.photo : props.fallback.picture}
+                        />}
+
+                </XView>
+            </XView> :
             <div key={'animtateing_wrapper'} className={animatedAvatarStyle} ref={avatarRef}>
                 <UAvatar
                     size="small"
@@ -308,6 +374,7 @@ const Avatar = React.memo(
                     photo={peer ? peer.user.photo : props.fallback.picture}
                 />
             </div>
+
         );
     },
 );
@@ -342,41 +409,75 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
         [forceOpen],
     );
 
+    const avatar = data && callState.avatar && (
+        <>
+            <Avatar
+                peers={data.conference.peers}
+                mediaSessionManager={calls.getMediaSession()}
+                fallback={{
+                    id: callState.avatar.id,
+                    title: callState.avatar.title,
+                    picture: callState.avatar.picture,
+                }}
+            />
+        </>
+    );
+
+    const buttons = (
+        <>
+            <UButton
+                flexShrink={0}
+                style="success"
+                text={callState.mute ? 'Unmute' : 'Mute'}
+                onClick={() => calls.setMute(!callState.mute)}
+                className={greenButtonStyle}
+                marginHorizontal={4}
+            />
+            {AppConfig.isNonProduction() &&
+                <UButton
+                    flexShrink={0}
+                    style="success"
+                    text={callState.outVideo?.type !== 'video' ? 'Start video' : 'Stop video'}
+                    onClick={() => calls.switchVideo()}
+                    className={greenButtonStyle}
+                    marginHorizontal={4}
+                    marginVertical={callState.videoEnabled ? 8 : 0}
+                />
+            }
+            <UButton
+                flexShrink={0}
+                style="success"
+                text={callState.status === 'connecting' ? 'Connecting' : 'Leave'}
+                onClick={() => calls.leaveCall()}
+                className={greenButtonStyle}
+                marginHorizontal={4}
+            />
+        </>
+    );
+
     return (
         data && (
-            <div className={FloatContainerClass} ref={containerRef} onClick={onClick}>
+            <div className={cx(FloatContainerClass, callState.videoEnabled && VideoOnClass)} ref={containerRef} onClick={onClick}>
                 <div style={{ display: 'flex', flexDirection: 'row' }} ref={contentRef}>
+
                     {callState.avatar && (
                         <div className={TargetClass} ref={targetRef}>
-                            <Avatar
-                                peers={data.conference.peers}
-                                mediaSessionManager={calls.getMediaSession()}
-                                fallback={{
-                                    id: callState.avatar.id,
-                                    title: callState.avatar.title,
-                                    picture: callState.avatar.picture,
-                                }}
-                            />
+                            {callState.videoEnabled && (
+                                <XView width={VIDEO_SIZE} height={VIDEO_SIZE} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" backgroundColor="gray">
+                                    {avatar}
+                                    <XView width={VIDEO_SIZE / 3} height={VIDEO_SIZE / 3} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" position="absolute" top={0} right={0}>
+                                        {callState.outVideo && <VideoComponent stream={(callState.outVideo.stream as AppUserMediaStreamWeb)._stream} videoClass={videoClass} />}
+                                    </XView>
+                                </XView>
+                            )}
+                            {!callState.videoEnabled && avatar}
                         </div>
                     )}
-                    <UButton
-                        flexShrink={0}
-                        style="success"
-                        text={callState.mute ? 'Unmute' : 'Mute'}
-                        onClick={() => calls.setMute(!callState.mute)}
-                        marginLeft={4}
-                        marginRight={8}
-                        className={greenButtonStyle}
-                    />
-                    <UButton
-                        flexShrink={0}
-                        style="success"
-                        text={callState.status === 'connecting' ? 'Connecting' : 'Leave'}
-                        onClick={() => calls.leaveCall()}
-                        marginLeft={8}
-                        marginRight={4}
-                        className={greenButtonStyle}
-                    />
+                    {!callState.videoEnabled ? buttons : (
+                        <XView>
+                            {buttons}
+                        </XView>
+                    )}
                 </div>
             </div>
         )

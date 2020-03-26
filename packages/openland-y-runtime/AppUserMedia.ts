@@ -5,6 +5,10 @@ export const AppUserMedia: AppUserMediaApi = {
         throw Error('');
     },
 
+    getUserVideo() {
+        throw Error('');
+    },
+
     getUserScreen() {
         throw Error('');
     }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { showModalBox } from 'openland-x/showModalBox';
 
-const VideoComponent = (props: { stream: MediaStream }) => {
+export const VideoComponent = (props: { stream: MediaStream, videoClass?: string }) => {
     const videoRef = React.useRef<HTMLVideoElement>(null);
     React.useEffect(() => {
         if (videoRef.current) {
@@ -10,7 +10,7 @@ const VideoComponent = (props: { stream: MediaStream }) => {
         }
 
     }, []);
-    return <video ref={videoRef} />;
+    return <video ref={videoRef} className={props.videoClass} />;
 };
 
 export const showVideoModal = (stream: MediaStream) => {

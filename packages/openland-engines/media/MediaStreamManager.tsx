@@ -266,6 +266,12 @@ export class MediaStreamManager {
     getStream = () => {
         return this.stream;
     }
+    getVideoStream = () => {
+        return this.contentInStream;
+    }
+    getOutVideoStream = () => {
+        return this.outContentStream;
+    }
 
     getInStream = () => {
         return this.mainInStream;

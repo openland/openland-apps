@@ -5,6 +5,8 @@ import { MediaSessionManager } from './media/MediaSessionManager';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 
 export type CallStatus = 'initial' | 'connecting' | 'connected' | 'end' | 'waiting';
+
+type LocalVideo = { type: 'screen', stream: AppMediaStream } | { type: 'video', stream: AppMediaStream };
 export interface CallState {
     avatar?: { id: string, title: string, picture?: string | null };
     conversationId?: string;
@@ -12,7 +14,8 @@ export interface CallState {
     startTime?: number;
     status: CallStatus;
     mute: boolean;
-    screenSharing?: boolean;
+    outVideo?: LocalVideo;
+    videoEnabled?: boolean;
 }
 
 export class CallsEngine {
@@ -36,7 +39,7 @@ export class CallsEngine {
         if (this.mediaSession) {
             this.mediaSession.destroy();
         }
-        this.mediaSession = new MediaSessionManager(this.client, conversationId, this._state.mute, !!isPrivate, (status, startTime) => this.setState({ ...this._state, status, private: !!isPrivate, startTime }), this.leaveCall);
+        this.mediaSession = new MediaSessionManager(this.client, conversationId, this._state.mute, !!isPrivate, (status, startTime) => this.setState({ ...this._state, status, private: !!isPrivate, startTime }), this.leaveCall, this.onVideoEnabled);
         this.setState({ mute: false, status: 'connecting', conversationId, private: isPrivate, avatar });
     }
 
@@ -55,17 +58,30 @@ export class CallsEngine {
         }
     }
 
-    setScreenShare = async (screenSharing: boolean) => {
-        let ms: AppMediaStream | undefined;
+    switchScreenShare = async () => {
+        await this.switchMedia('screen');
+    }
+
+    switchVideo = async () => {
+        await this.switchMedia('video');
+    }
+
+    onVideoEnabled = () => {
+        if (!this.state.videoEnabled) {
+            this.setState({ ...this._state, videoEnabled: true });
+        }
+    }
+
+    private switchMedia = async (source: 'video' | 'screen') => {
+        let localVideo: LocalVideo | undefined = undefined;
         if (this.mediaSession) {
-            if (this._state.screenSharing) {
-                await this.mediaSession.stopScreenShare();
+            if (source !== this.state.outVideo?.type) {
+                localVideo = { type: source, stream: await (source === 'video' ? this.mediaSession.startVideo : this.mediaSession.startScreenShare)() };
             } else {
-                ms = await this.mediaSession.startScreenShare();
+                (source === 'video' ? this.mediaSession.stopVideo : this.mediaSession.stopScreenShare)();
             }
         }
-        this.setState({ ...this._state, screenSharing: !!ms });
-        return ms;
+        this.setState({ ...this._state, outVideo: localVideo });
     }
 
     useState = () => {

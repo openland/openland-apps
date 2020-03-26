@@ -3,6 +3,7 @@ import { AppUserMediaApi, AppMediaStream } from 'openland-y-runtime-api/AppUserM
 export class AppUserMediaStreamWeb implements AppMediaStream {
     readonly id: string;
     private _muted = false;
+    private _blinded = false;
     readonly _stream: MediaStream;
     onClosed: (() => void) | undefined;
 
@@ -19,6 +20,19 @@ export class AppUserMediaStreamWeb implements AppMediaStream {
         if (this._muted !== val) {
             this._muted = val;
             for (let t of this._stream.getAudioTracks()) {
+                t.enabled = !val;
+            }
+        }
+    }
+
+    get blinded() {
+        return this._blinded;
+    }
+
+    set blinded(val: boolean) {
+        if (this._blinded !== val) {
+            this._blinded = val;
+            for (let t of this._stream.getVideoTracks()) {
                 t.enabled = !val;
             }
         }
@@ -43,6 +57,15 @@ export const AppUserMedia: AppUserMediaApi = {
                 noiseSuppression: true,
                 autoGainControl: false,
             } as any,
+        });
+
+        return new AppUserMediaStreamWeb(media);
+    },
+
+    async getUserVideo() {
+        let media = await navigator.mediaDevices.getUserMedia({
+            audio: false,
+            video: true
         });
 
         return new AppUserMediaStreamWeb(media);

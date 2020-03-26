@@ -2,6 +2,7 @@ import { AppUserMediaApi, AppMediaStream } from 'openland-y-runtime-api/AppUserM
 import { mediaDevices } from 'react-native-webrtc';
 
 export class AppUserMediaStreamNative implements AppMediaStream {
+    blinded = false;
     private _muted = false;
     readonly _stream: any;
     readonly id: string;
@@ -36,6 +37,10 @@ export const AppUserMedia: AppUserMediaApi = {
     async getUserAudio() {
         let media = await mediaDevices.getUserMedia({ audio: true, video: false });
         return new AppUserMediaStreamNative(media);
+    },
+
+    async getUserVideo() {
+        throw Error('not implemented yet');
     },
 
     async getUserScreen() {
