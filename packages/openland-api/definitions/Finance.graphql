@@ -45,9 +45,6 @@ mutation PaymentIntentCommit($id: ID!) {
 mutation PaymentIntentCancel($id: ID!) {
     paymentCancel(id: $id)
 }
-mutation Donate($id: ID!) {
-    donateToUser(id: $id, amount: 100)
-}
 fragment WalletTransactionFragment on WalletTransaction {
     id
     status
@@ -103,6 +100,20 @@ fragment WalletTransactionFragment on WalletTransaction {
                                 photo
                             }
                         }
+
+                        ...on WalletProductDonationMessage {
+                            user {
+                                id
+                                name
+                                photo
+                            }
+                            chat {
+                                ... on SharedRoom {
+                                    id
+                                    title
+                                }
+                            }
+                        }
                     }
                 }
                 ... on Purchase {
@@ -121,6 +132,20 @@ fragment WalletTransactionFragment on WalletTransaction {
                                 id
                                 name
                                 photo
+                            }
+                        }
+
+                        ...on WalletProductDonationMessage {
+                            user {
+                                id
+                                name
+                                photo
+                            }
+                            chat {
+                                ... on SharedRoom {
+                                    id
+                                    title
+                                }
                             }
                         }
                     }
@@ -191,6 +216,20 @@ fragment WalletTransactionFragment on WalletTransaction {
                             photo
                         }
                     }
+
+                    ...on WalletProductDonationMessage {
+                        user {
+                            id
+                            name
+                            photo
+                        }
+                        chat {
+                            ... on SharedRoom {
+                                id
+                                title
+                            }
+                        }
+                    }
                 }
             }
             payment {
@@ -227,6 +266,20 @@ fragment WalletTransactionFragment on WalletTransaction {
                             id
                             name
                             photo
+                        }
+                    }
+
+                    ...on WalletProductDonationMessage {
+                        user {
+                            id
+                            name
+                            photo
+                        }
+                        chat {
+                            ... on SharedRoom {
+                                id
+                                title
+                            }
                         }
                     }
                 }
@@ -356,4 +409,13 @@ mutation CancelSubscription($id: ID!) {
 }
 query StripeToken {
     stripeToken
+}
+
+mutation SendDonation($chatId: ID!, $amount: Int!, $message: String, $repeatKey: String) {
+    sendDonation(
+        chatId: $chatId
+        amount: $amount
+        message: $message
+        repeatKey: $repeatKey
+    )
 }

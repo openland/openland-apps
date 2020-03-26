@@ -16,7 +16,7 @@ interface ReactionsListProps {
     };
 }
 
-const ReactionLabel: { [key in MessageReactionType]: string } = {
+const ReactionLabel: { [key in Exclude<MessageReactionType, MessageReactionType.DONATE>]: string } = {
     ANGRY: 'Angry',
     CRYING: 'Crying',
     JOY: 'Joy',

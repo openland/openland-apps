@@ -150,7 +150,6 @@ object Operations {
         if (name == "DiscoverEditorsChoiceCreate") return DiscoverEditorsChoiceCreate
         if (name == "DiscoverEditorsChoiceDelete") return DiscoverEditorsChoiceDelete
         if (name == "DiscoverEditorsChoiceUpdate") return DiscoverEditorsChoiceUpdate
-        if (name == "Donate") return Donate
         if (name == "EditComment") return EditComment
         if (name == "EditMessage") return EditMessage
         if (name == "FeatureFlagAdd") return FeatureFlagAdd
@@ -217,6 +216,7 @@ object Operations {
         if (name == "RoomUpdate") return RoomUpdate
         if (name == "RoomsInviteUser") return RoomsInviteUser
         if (name == "RoomsJoin") return RoomsJoin
+        if (name == "SendDonation") return SendDonation
         if (name == "SendMessage") return SendMessage
         if (name == "SendSticker") return SendSticker
         if (name == "SetFeedChannelShortname") return SetFeedChannelShortname

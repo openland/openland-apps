@@ -9,7 +9,7 @@ import { MessageReactionType } from 'openland-api/spacex.types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
 
-export const reactionsImagesMap: { [key in MessageReactionType]: NodeRequire } = {
+export const reactionsImagesMap: { [key in Exclude<MessageReactionType, MessageReactionType.DONATE>]: NodeRequire } = {
     'LIKE': require('assets/reactions/ic-reaction-like.png'),
     'THUMB_UP': require('assets/reactions/ic-reaction-thumbsup.png'),
     'JOY': require('assets/reactions/ic-reaction-lol.png'),

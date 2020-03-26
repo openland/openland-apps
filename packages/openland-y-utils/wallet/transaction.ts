@@ -7,7 +7,7 @@ export type TransactionConvertedStatus = 'pending' | 'failing' | 'canceled' | 's
 export interface TransactionConverted {
     id: string;
     avatar?: { id: string, title: string, photo: string | null | undefined };
-    group?: { id: string };
+    group?: { id: string, title: string };
     title: string;
     type: string;
     interval?: string;
@@ -68,6 +68,14 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
         } else if (product.__typename === 'WalletProductDonation') {
             converted.title = product.user.name;
             converted.avatar = getAvatar(product.user);
+            converted.type = 'Donation';
+        } else if (product.__typename === 'WalletProductDonationMessage') {
+            converted.title = product.user.name;
+            converted.avatar = getAvatar(product.user);
+            converted.type = 'Donation';
+            if (product.chat && product.chat.__typename === 'SharedRoom') {
+                converted.group = product.chat;
+            }
         }
     } else if (operation.__typename === 'WalletTransactionTransferIn') {
         const { fromUser } = operation;
@@ -101,6 +109,14 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
             } else if (product.__typename === 'WalletProductDonation') {
                 converted.title = product.user.name;
                 converted.avatar = getAvatar(product.user);
+                converted.type = 'Donation';
+            } else if (product.__typename === 'WalletProductDonationMessage') {
+                converted.title = product.user.name;
+                converted.avatar = getAvatar(product.user);
+                converted.type = 'Donation';
+                if (product.chat && product.chat.__typename === 'SharedRoom') {
+                    converted.group = product.chat;
+                }
             }
         }
     } else if (operation.__typename === 'WalletTransactionPurchase') {
@@ -120,6 +136,14 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
         } else if (product.__typename === 'WalletProductDonation') {
             converted.title = product.user.name;
             converted.avatar = getAvatar(product.user);
+            converted.type = 'Donation';
+        } else if (product.__typename === 'WalletProductDonationMessage') {
+            converted.title = product.user.name;
+            converted.avatar = getAvatar(product.user);
+            converted.type = 'Donation';
+            if (product.chat && product.chat.__typename === 'SharedRoom') {
+                converted.group = product.chat;
+            }
         }
     }
 

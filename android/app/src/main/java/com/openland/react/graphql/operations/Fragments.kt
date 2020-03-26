@@ -2117,6 +2117,23 @@ internal val WalletTransactionFragmentSelector = obj(
                                                         field("name", "name", notNull(scalar("String"))),
                                                         field("photo", "photo", scalar("String"))
                                                     )))
+                                            )),
+                                            inline("WalletProductDonationMessage", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                field("user", "user", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
+                                                        field("name", "name", notNull(scalar("String"))),
+                                                        field("photo", "photo", scalar("String"))
+                                                    ))),
+                                                field("chat", "chat", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        inline("SharedRoom", obj(
+                                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                                            field("id", "id", notNull(scalar("ID"))),
+                                                            field("title", "title", notNull(scalar("String")))
+                                                        ))
+                                                    )))
                                             ))
                                         )))
                                 )),
@@ -2141,6 +2158,23 @@ internal val WalletTransactionFragmentSelector = obj(
                                                         field("id", "id", notNull(scalar("ID"))),
                                                         field("name", "name", notNull(scalar("String"))),
                                                         field("photo", "photo", scalar("String"))
+                                                    )))
+                                            )),
+                                            inline("WalletProductDonationMessage", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                field("user", "user", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
+                                                        field("name", "name", notNull(scalar("String"))),
+                                                        field("photo", "photo", scalar("String"))
+                                                    ))),
+                                                field("chat", "chat", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        inline("SharedRoom", obj(
+                                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                                            field("id", "id", notNull(scalar("ID"))),
+                                                            field("title", "title", notNull(scalar("String")))
+                                                        ))
                                                     )))
                                             ))
                                         )))
@@ -2226,6 +2260,23 @@ internal val WalletTransactionFragmentSelector = obj(
                                                     field("name", "name", notNull(scalar("String"))),
                                                     field("photo", "photo", scalar("String"))
                                                 )))
+                                        )),
+                                        inline("WalletProductDonationMessage", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("user", "user", notNull(obj(
+                                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                                    field("id", "id", notNull(scalar("ID"))),
+                                                    field("name", "name", notNull(scalar("String"))),
+                                                    field("photo", "photo", scalar("String"))
+                                                ))),
+                                            field("chat", "chat", notNull(obj(
+                                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                                    inline("SharedRoom", obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
+                                                        field("title", "title", notNull(scalar("String")))
+                                                    ))
+                                                )))
                                         ))
                                     )))
                             ))),
@@ -2272,6 +2323,23 @@ internal val WalletTransactionFragmentSelector = obj(
                                                     field("id", "id", notNull(scalar("ID"))),
                                                     field("name", "name", notNull(scalar("String"))),
                                                     field("photo", "photo", scalar("String"))
+                                                )))
+                                        )),
+                                        inline("WalletProductDonationMessage", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("user", "user", notNull(obj(
+                                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                                    field("id", "id", notNull(scalar("ID"))),
+                                                    field("name", "name", notNull(scalar("String"))),
+                                                    field("photo", "photo", scalar("String"))
+                                                ))),
+                                            field("chat", "chat", notNull(obj(
+                                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                                    inline("SharedRoom", obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID"))),
+                                                        field("title", "title", notNull(scalar("String")))
+                                                    ))
                                                 )))
                                         ))
                                     )))
