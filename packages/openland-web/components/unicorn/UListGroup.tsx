@@ -10,7 +10,7 @@ interface UListGroupProps {
     action?: {
         title: string;
         path?: string;
-        onClick?: () => void;
+        onClick?: (e: any) => void;
     };
     padded?: boolean;
     children?: any;

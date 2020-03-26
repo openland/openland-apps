@@ -20,7 +20,7 @@ import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { showLogoutConfirmation } from './LogoutFragment';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { TextStyles } from 'openland-web/utils/TextStyles';
+import { TextDensed, TextLabel1, TextStyles } from 'openland-web/utils/TextStyles';
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
 import { showCreatingOrgFragment } from 'openland-web/fragments/create/CreateEntityFragment';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
@@ -28,6 +28,11 @@ import { trackEvent } from 'openland-x-analytics';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UCounter } from 'openland-unicorn/UCounter';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
+import { usePopper } from 'openland-web/components/unicorn/usePopper';
+import { css, cx } from 'linaria';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import CommunityIcon from 'openland-icons/s/ic-community-2-24.svg';
+import OrganizationIcon from 'openland-icons/s/ic-organization-2-24.svg';
 
 const UserProfileCard = withUserInfo(({ user, profile }) => {
     const isMobile = useIsMobile();
@@ -80,19 +85,21 @@ export const Organizations = React.memo(() => {
 
     return (
         <XView paddingBottom={56}>
-            {myOrganizations.sort((a, b) => (a.isPrimary ? 1 : 0)).map((organization, key) => {
-                const { id, photo, name, isPrimary, shortname } = organization;
+            {myOrganizations
+                .sort((a, b) => (a.isPrimary ? 1 : 0))
+                .map((organization, key) => {
+                    const { id, photo, name, isPrimary, shortname } = organization;
 
-                return (
-                    <UListItem
-                        key={'organization-' + id}
-                        avatar={{ photo, id, title: name }}
-                        title={name}
-                        textRight={isPrimary ? 'Primary' : undefined}
-                        path={`/${shortname || id}`}
-                    />
-                );
-            })}
+                    return (
+                        <UListItem
+                            key={'organization-' + id}
+                            avatar={{ photo, id, title: name }}
+                            title={name}
+                            textRight={isPrimary ? 'Primary' : undefined}
+                            path={`/${shortname || id}`}
+                        />
+                    );
+                })}
         </XView>
     );
 });
@@ -102,8 +109,77 @@ const AccountCounter = React.memo(() => {
     return <UCounter value={walletState.isLocked ? walletState.failingPaymentsCount : 0} />;
 });
 
+const iconContainerClass = css`
+    width: 24px;
+    height: 24px;
+    flex-grow: 0;
+`;
+
+const itemContainerClass = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+    padding: 6px 16px;
+
+    &:hover {
+        background-color: var(--backgroundPrimaryHover);
+    }
+`;
+
+const itemTextContainer = css`
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-direction: column;
+    margin-left: 16px;
+`;
+
+const itemDescriptionClass = css`
+    color: var(--foregroundSecondary);
+`;
+
+interface ItemProps {
+    title: string;
+    description: string;
+    onClick?: ((event: React.MouseEvent) => void) | undefined;
+    icon: JSX.Element;
+}
+
+const Item = ({ title, description, onClick, icon }: ItemProps) => (
+    <div className={itemContainerClass} onClick={onClick}>
+        {icon}
+        <div className={itemTextContainer}>
+            <div className={TextLabel1}>{title}</div>
+            <div className={cx(TextDensed, itemDescriptionClass)}>{description}</div>
+        </div>
+    </div>
+);
+
+const NewOptionsMenu = React.memo(() => (
+    <>
+        <Item
+            onClick={() => {
+                showCreatingOrgFragment({ entityType: 'community' });
+            }}
+            icon={<UIcon icon={<CommunityIcon />} className={iconContainerClass} />}
+            title="New community"
+            description="A hub for chats for the same audience"
+        />
+        <Item
+            onClick={() => {
+                showCreatingOrgFragment({ entityType: 'organization' });
+            }}
+            icon={<UIcon icon={<OrganizationIcon />} className={iconContainerClass} />}
+            title="New organization"
+            description="A hub for chats with your teammates"
+        />
+    </>
+));
+
 export const AccountFragment = React.memo(() => {
     const isVisible = useVisibleTab();
+
     React.useEffect(
         () => {
             if (isVisible) {
@@ -114,12 +190,30 @@ export const AccountFragment = React.memo(() => {
     );
     const walletState = React.useContext(MessengerContext).wallet.state.useState();
 
+    const [, show] = usePopper(
+        {
+            placement: 'bottom-end',
+            hideOnEsc: true,
+            hideOnChildClick: true,
+            showTimeout: 100,
+        },
+        () => (
+            <XView paddingVertical={8}>
+                <NewOptionsMenu />
+            </XView>
+        ),
+    );
+
     return (
         <>
             <AccountCounter />
             <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
                 <USideHeader title="Account">
-                    <UIconButton icon={<LeaveIcon />} size="large" onClick={showLogoutConfirmation} />
+                    <UIconButton
+                        icon={<LeaveIcon />}
+                        size="large"
+                        onClick={showLogoutConfirmation}
+                    />
                 </USideHeader>
                 <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} flexDirection="column">
                     <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
@@ -140,24 +234,26 @@ export const AccountFragment = React.memo(() => {
                                 title="Wallet"
                                 icon={<WalletIcon />}
                                 path="/wallet"
-                                rightElement={walletState.isLocked ? (
-                                    <XView marginRight={8}>
-                                        <SelectableText 
-                                            minWidth={22} 
-                                            height={22} 
-                                            borderRadius={11}
-                                            alignItems="center"
-                                            justifyContent="center"
-                                            color="var(--foregroundInverted)" 
-                                            backgroundColor="var(--accentNegative)" 
-                                            selectedColor="var(--accentMuted)"
-                                            selectedBackgroundColor="var(--foregroundInverted)"
-                                            {...TextStyles.Label2}
-                                        >
-                                            {walletState.failingPaymentsCount}
-                                        </SelectableText>
-                                    </XView> 
-                                ) : undefined}
+                                rightElement={
+                                    walletState.isLocked ? (
+                                        <XView marginRight={8}>
+                                            <SelectableText
+                                                minWidth={22}
+                                                height={22}
+                                                borderRadius={11}
+                                                alignItems="center"
+                                                justifyContent="center"
+                                                color="var(--foregroundInverted)"
+                                                backgroundColor="var(--accentNegative)"
+                                                selectedColor="var(--accentMuted)"
+                                                selectedBackgroundColor="var(--foregroundInverted)"
+                                                {...TextStyles.Label2}
+                                            >
+                                                {walletState.failingPaymentsCount}
+                                            </SelectableText>
+                                        </XView>
+                                    ) : undefined
+                                }
                             />
                             <UListItem
                                 title="Subscriptions"
@@ -167,7 +263,6 @@ export const AccountFragment = React.memo(() => {
                         </UListGroup>
 
                         <UListGroup header="Settings">
-
                             <UListItem
                                 title="Notifications"
                                 icon={<NotificationsIcon />}
@@ -191,21 +286,14 @@ export const AccountFragment = React.memo(() => {
                                 icon={<AppsIcon />}
                                 path="/account/download"
                             />
-                            <UListItem
-                                title="About us"
-                                icon={<InfoIcon />}
-                                path="/account/about"
-                            />
+                            <UListItem title="About us" icon={<InfoIcon />} path="/account/about" />
                         </UListGroup>
 
                         <UListGroup
                             header="Organizations"
                             action={{
                                 title: 'New',
-                                onClick: () => {
-                                    showCreatingOrgFragment({ entityType: 'organization' });
-                                    // router.navigate('/new/organization')
-                                },
+                                onClick: show,
                             }}
                         >
                             <React.Suspense fallback={<XLoader loading={true} />}>

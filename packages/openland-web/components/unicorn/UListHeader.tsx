@@ -9,7 +9,7 @@ interface UListHeaderProps {
     action?: {
         title: string;
         path?: string;
-        onClick?: () => void;
+        onClick?: (e: any) => void;
     };
 }
 
