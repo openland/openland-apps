@@ -853,6 +853,15 @@ union FeedPostAuthor = User
 
 union FeedPostSource = FeedChannel
 
+enum FeedReactionType {
+  LIKE
+  THUMB_UP
+  JOY
+  SCREAM
+  CRYING
+  ANGRY
+}
+
 type FeedRebuildNeeded {
   homeFeed: FeedItemConnection!
 }
@@ -897,6 +906,7 @@ type GeneralMessage implements ModernMessage {
   reactions: [ModernMessageReaction!]!
   isMentioned: Boolean!
   source: MessageSource
+  hidden: Boolean!
 
   """Content"""
   message: String
@@ -1187,6 +1197,12 @@ type MessageAttachmentPost implements ModernMessageAttachment {
   fallback: String!
 }
 
+type MessageAttachmentPurchase implements ModernMessageAttachment {
+  id: ID!
+  fallback: String!
+  purchase: Purchase!
+}
+
 type MessageButton {
   title: String!
   style: MessageButtonStyle!
@@ -1234,6 +1250,7 @@ enum MessageReactionType {
   SCREAM
   CRYING
   ANGRY
+  DONATE
 }
 
 type MessageRichAttachment implements ModernMessageAttachment {
@@ -1388,6 +1405,7 @@ interface ModernMessage {
   sender: User!
   senderBadge: UserBadge
   source: MessageSource
+  hidden: Boolean!
 
   """Content"""
   message: String
@@ -1476,13 +1494,12 @@ type Mutation {
   cardDepositIntent(id: ID!, amount: Int!, retryKey: String!): PaymentIntent!
   paymentIntentCommit(id: ID!): Boolean!
   paymentCancel(id: ID!): Boolean!
-  donateToUser(amount: Int!, id: ID!): Boolean!
-  donateToUser2(amount: Int!, id: ID!): Purchase!
   subscriptionCancel(id: ID!): WalletSubscription!
   alphaCreateInvite: Invite!
   alphaDeleteInvite(id: ID!): String!
   alphaJoinInvite(key: String!, isNewUser: Boolean): ID!
   joinAppInvite(key: String!, isNewUser: Boolean): ID!
+  phonebookAdd(records: [PhonebookRecordInput!]!): Boolean!
   debugSendSMS(to: String!, message: String!): Boolean!
   debugSerializeId(id: Int!, type: String!): ID!
   debugSendEmail(type: DebugEmailType!): Boolean
@@ -1546,6 +1563,7 @@ type Mutation {
   debugReindexRoomMessagesCounter: Boolean!
   debugQueueDailyPaidLeaderboard: Boolean!
   debugQueueWeeklyPaidLeaderboard: Boolean!
+  debugSendHiddenMessage(uid: ID!, message: String!): Boolean!
   settingsUpdate(settings: UpdateSettingsInput): Settings!
   sendEmailChangeCode(newEmail: String!): String!
   changeEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -1708,8 +1726,8 @@ type Mutation {
   alphaCreateFeedPost(channel: ID!, message: String, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!], slides: [SlideInput!], repeatKey: String): FeedItem!
   alphaEditFeedPost(feedItemId: ID!, message: String, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!], slides: [SlideInput!]): FeedItem!
   alphaDeleteFeedPost(feedItemId: ID!): Boolean!
-  feedReactionAdd(feedItemId: ID!, reaction: MessageReactionType!): Boolean!
-  feedReactionRemove(feedItemId: ID!, reaction: MessageReactionType!): Boolean!
+  feedReactionAdd(feedItemId: ID!, reaction: FeedReactionType!): Boolean!
+  feedReactionRemove(feedItemId: ID!, reaction: FeedReactionType!): Boolean!
   alphaFeedCreateChannel(title: String!, about: String, photoRef: ImageRefInput, socialImageRef: ImageRefInput, global: Boolean): FeedChannel!
   alphaFeedUpdateChannel(id: ID!, title: String, about: String, photoRef: ImageRefInput, socialImageRef: ImageRefInput, global: Boolean): FeedChannel!
   alphaFeedChannelSubscribe(id: ID!): Boolean!
@@ -1722,6 +1740,7 @@ type Mutation {
   alphaFeedChannelDisableCommunityAutoSubscription(channelId: ID!, roomId: ID!): Boolean!
   sendMessage(chatId: ID!, message: String, replyMessages: [ID!], mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!], repeatKey: String): Boolean!
   sendSticker(chatId: ID!, stickerId: ID!, replyMessages: [ID!], repeatKey: String): Boolean!
+  sendDonation(chatId: ID!, amount: Int!, message: String, repeatKey: String): Boolean!
   editMessage(messageId: ID!, message: String, replyMessages: [ID!], mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!]): Boolean!
   pinMessage(chatId: ID!, messageId: ID!): Boolean!
   unpinMessage(chatId: ID!): Boolean!
@@ -1730,6 +1749,7 @@ type Mutation {
   gammaPinMessage(chatId: ID!, messageId: ID!): Room!
   gammaUnpinMessage(chatId: ID!): Room!
   messageReactionAdd(messageId: ID!, reaction: MessageReactionType!): Boolean!
+  messageDonationReactionAdd(messageId: ID!): Boolean!
   messageReactionRemove(messageId: ID!, reaction: MessageReactionType!): Boolean!
   deleteChat(chatId: ID!): Boolean!
   archiveChat(chatId: ID!): Boolean!
@@ -2097,6 +2117,20 @@ enum PermissionScope {
   CHAT
 }
 
+"""
+type PhonebookRecord {
+    id: ID!
+    name: String!
+    info: String
+    phone: String!
+}
+"""
+input PhonebookRecordInput {
+  name: String!
+  info: String
+  phone: String!
+}
+
 type PhotoChangeServiceMetadata {
   photo: String
   photoRef: ImageRef
@@ -2258,6 +2292,7 @@ type Purchase {
   state: PurchaseState!
   intent: PaymentIntent
   product: WalletProduct!
+  amount: Int!
 }
 
 enum PurchaseState {
@@ -2574,6 +2609,7 @@ type ServiceMessage implements ModernMessage {
   senderBadge: UserBadge
   isMentioned: Boolean!
   source: MessageSource
+  hidden: Boolean!
 
   """Content"""
   message: String
@@ -2766,6 +2802,7 @@ type StickerMessage implements ModernMessage {
   sender: User!
   senderBadge: UserBadge
   source: MessageSource
+  hidden: Boolean!
 
   """Content"""
   message: String
@@ -3127,10 +3164,20 @@ type WalletAccount {
 
 union WalletIncomeSource = WalletSubscription | Purchase
 
-union WalletProduct = WalletProductGroup | WalletProductDonation
+union WalletProduct = WalletProductGroup | WalletProductDonation | WalletProductDonationMessage | WalletProductDonationReaction
 
 type WalletProductDonation {
   user: User!
+}
+
+type WalletProductDonationMessage {
+  user: User!
+  chat: Room!
+}
+
+type WalletProductDonationReaction {
+  user: User!
+  message: ModernMessage!
 }
 
 type WalletProductGroup {

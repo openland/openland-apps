@@ -18,11 +18,14 @@ export const TransactionView = (props: TransactionViewProps) => {
     const theme = React.useContext(ThemeContext);
     const router = React.useContext(SRouterContext);
 
-    const { avatar, title, type, dateTime, status, amount, source } = convertTransaction(props.item);
+    const { avatar, title, type, dateTime, status, amount, source, group } = convertTransaction(props.item);
     const payment = source.operation.payment;
     const actionRequired = status === 'failing';
     const color = (actionRequired || status === 'canceled') ? theme.accentNegative : (source.operation.amount > 0 ? theme.accentPositive : theme.foregroundPrimary);
-    const subtitle = `${type}\n${dateTime.isToday ? dateTime.time : dateTime.date}${status !== 'success' ? `, ${status}` : ''}`;
+    const subtitleTime = dateTime.isToday ? dateTime.time : dateTime.date;
+    const subtitleGroup = type === 'Donation' && group ? `, ${group.title}` : '';
+    const subtitleStatus = status !== 'success' ? `, ${status}` : '';
+    const subtitle = `${type}\n${subtitleTime}${subtitleStatus}${subtitleGroup}`;
 
     const complete = React.useCallback(() => {
         if (actionRequired && payment && payment.intent && router) {

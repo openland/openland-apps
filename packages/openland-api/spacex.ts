@@ -1624,9 +1624,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateDiscoverEditorsChoiceUpdate(variables: Types.DiscoverEditorsChoiceUpdateVariables): Promise<Types.DiscoverEditorsChoiceUpdate> {
         return this.mutate('DiscoverEditorsChoiceUpdate', variables);
     }
-    mutateDonate(variables: Types.DonateVariables): Promise<Types.Donate> {
-        return this.mutate('Donate', variables);
-    }
     mutateEditComment(variables: Types.EditCommentVariables): Promise<Types.EditComment> {
         return this.mutate('EditComment', variables);
     }
@@ -1824,6 +1821,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateRoomsJoin(variables: Types.RoomsJoinVariables): Promise<Types.RoomsJoin> {
         return this.mutate('RoomsJoin', variables);
+    }
+    mutateSendDonation(variables: Types.SendDonationVariables): Promise<Types.SendDonation> {
+        return this.mutate('SendDonation', variables);
     }
     mutateSendMessage(variables: Types.SendMessageVariables): Promise<Types.SendMessage> {
         return this.mutate('SendMessage', variables);
