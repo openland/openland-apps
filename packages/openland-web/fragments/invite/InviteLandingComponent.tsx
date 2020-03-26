@@ -21,6 +21,7 @@ import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { showPayConfirm } from '../wallet/modals/showPayConfirm';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
+import { UText } from 'openland-web/components/unicorn/UText';
 import {
     AuthSidebarComponent,
     AuthMobileHeader,
@@ -148,9 +149,9 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
 
     const avatars = room
         ? room.previewMembers
-            .map(x => x)
-            .filter(x => !!x)
-            .slice(0, 5)
+              .map(x => x)
+              .filter(x => !!x)
+              .slice(0, 5)
         : [];
 
     const showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
@@ -181,46 +182,44 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
                             </div>
                         </div>
                     ) : (
-                            <div className={avatarsContainer}>
-                                <UAvatar photo={photo} title={entityTitle} id={id} size="xx-large" />
-                            </div>
-                        )}
+                        <div className={avatarsContainer}>
+                            <UAvatar photo={photo} title={entityTitle} id={id} size="xx-large" />
+                        </div>
+                    )}
                     <div className={cx(TextTitle1, titleStyle)}>{joinTitle}</div>
                     {!!description && (
-                        <div className={cx(TextBody, descriptionStyle)}>{description}</div>
+                        <div className={cx(TextBody, descriptionStyle)}>
+                            <UText text={description} />
+                        </div>
                     )}
-                    {showMembers &&
-                        room && (
-                            <div className={membersContainer}>
-                                <div className={membersAvatarsContainer}>
-                                    {avatars.map(i => (
-                                        <div
-                                            key={i.id}
-                                            className={cx(bigAvatarWrapper, smallAvatarWrapper)}
-                                        >
-                                            <UAvatar
-                                                title={i.name}
-                                                id={i.id}
-                                                photo={i.photo}
-                                                size="small"
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className={cx(TextBody, descriptionStyle)}>
-                                    {membersCount} members
-                                    {room &&
-                                        showOnlineMembers &&
-                                        `, ${room.onlineMembersCount} online`}
-                                </div>
+                    {showMembers && room && (
+                        <div className={membersContainer}>
+                            <div className={membersAvatarsContainer}>
+                                {avatars.map(i => (
+                                    <div
+                                        key={i.id}
+                                        className={cx(bigAvatarWrapper, smallAvatarWrapper)}
+                                    >
+                                        <UAvatar
+                                            title={i.name}
+                                            id={i.id}
+                                            photo={i.photo}
+                                            size="small"
+                                        />
+                                    </div>
+                                ))}
                             </div>
-                        )}
-                    {!showMembers &&
-                        !description && (
                             <div className={cx(TextBody, descriptionStyle)}>
-                                New {whereToInvite.toLocaleLowerCase()}
+                                {membersCount} members
+                                {room && showOnlineMembers && `, ${room.onlineMembersCount} online`}
                             </div>
-                        )}
+                        </div>
+                    )}
+                    {!showMembers && !description && (
+                        <div className={cx(TextBody, descriptionStyle)}>
+                            New {whereToInvite.toLocaleLowerCase()}
+                        </div>
+                    )}
 
                     <div className={buttonContainer}>{button}</div>
                 </div>
@@ -285,7 +284,10 @@ const JoinLinkButton = (props: {
     );
 };
 
-const formatWithInterval = (premiumSettings: { price: number, interval?: WalletSubscriptionInterval | null }) => {
+const formatWithInterval = (premiumSettings: {
+    price: number;
+    interval?: WalletSubscriptionInterval | null;
+}) => {
     let text = formatMoney(premiumSettings.price);
     if (premiumSettings.interval) {
         if (premiumSettings.interval === WalletSubscriptionInterval.WEEK) {
@@ -311,9 +313,9 @@ const BuyPaidChatPassButton = (props: {
     const buyPaidChatPass = React.useCallback(async () => {
         showPayConfirm({
             amount: props.premiumSettings.price,
-            ...(props.premiumSettings.interval ?
-                { type: 'subscription', interval: props.premiumSettings.interval } :
-                { type: 'payment' }),
+            ...(props.premiumSettings.interval
+                ? { type: 'subscription', interval: props.premiumSettings.interval }
+                : { type: 'payment' }),
             productTitle: props.title,
             productDescription: props.premiumSettings.interval ? 'Subscription' : 'Payment',
             productPicture: <UAvatar title={props.title} id={props.id} photo={props.photo} />,
@@ -321,9 +323,12 @@ const BuyPaidChatPassButton = (props: {
                 try {
                     let passIsActive = false;
                     if (props.premiumSettings.interval) {
-                        passIsActive = (await client.mutateBuyPremiumChatSubscription({ chatId: props.id })).betaBuyPremiumChatSubscription.premiumPassIsActive;
+                        passIsActive = (await client.mutateBuyPremiumChatSubscription({
+                            chatId: props.id,
+                        })).betaBuyPremiumChatSubscription.premiumPassIsActive;
                     } else {
-                        passIsActive = (await client.mutateBuyPremiumChatPass({ chatId: props.id })).betaBuyPremiumChatPass.premiumPassIsActive;
+                        passIsActive = (await client.mutateBuyPremiumChatPass({ chatId: props.id }))
+                            .betaBuyPremiumChatPass.premiumPassIsActive;
                     }
                     if (passIsActive) {
                         router.reset('/mail/' + props.id);
@@ -349,14 +354,16 @@ const BuyPaidChatPassButton = (props: {
                 marginBottom={16}
                 width={240}
             />
-            {props.ownerId && <UButton
-                text="Get help"
-                path={`/mail/${props.ownerId}`}
-                shape="square"
-                size="large"
-                style="secondary"
-                width={240}
-            />}
+            {props.ownerId && (
+                <UButton
+                    text="Get help"
+                    path={`/mail/${props.ownerId}`}
+                    shape="square"
+                    size="large"
+                    style="secondary"
+                    width={240}
+                />
+            )}
         </>
     );
 };
@@ -451,7 +458,12 @@ const resolveRoomButton = (
 
 export const SharedRoomPlaceholder = ({ room }: { room: RoomPreview_SharedRoom }) => {
     const buttonText = room.isChannel ? 'Join channel' : 'Join group';
-    const premiumSuspended = room && room.isPremium && !room.premiumPassIsActive && (room.premiumSubscription && room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED);
+    const premiumSuspended =
+        room &&
+        room.isPremium &&
+        !room.premiumPassIsActive &&
+        (room.premiumSubscription &&
+            room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED);
     return (
         <InviteLandingComponentLayout
             button={resolveRoomButton(room, buttonText)}
@@ -461,7 +473,11 @@ export const SharedRoomPlaceholder = ({ room }: { room: RoomPreview_SharedRoom }
             entityTitle={room.title}
             id={room.id}
             membersCount={room.membersCount}
-            description={premiumSuspended ? "To keep your access to the group by subscription you need to complete payment" : room.description}
+            description={
+                premiumSuspended
+                    ? 'To keep your access to the group by subscription you need to complete payment'
+                    : room.description
+            }
             room={room}
             noLogin={false}
         />
@@ -515,8 +531,8 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
             ? 'Channel'
             : 'Group'
         : organization && organization.isCommunity
-            ? 'Community'
-            : 'Organization';
+        ? 'Community'
+        : 'Organization';
 
     const buttonText = 'Join ' + whereToInvite.toLocaleLowerCase();
 
@@ -537,12 +553,12 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 onClick={
                     matchmaking && signupRedirect
                         ? () => {
-                            showModalBox({ fullScreen: true, useTopCloser: false }, () => (
-                                <MatchmakingStartComponent
-                                    onStart={() => router!.navigate(signupRedirect)}
-                                />
-                            ));
-                        }
+                              showModalBox({ fullScreen: true, useTopCloser: false }, () => (
+                                  <MatchmakingStartComponent
+                                      onStart={() => router!.navigate(signupRedirect)}
+                                  />
+                              ));
+                          }
                         : undefined
                 }
                 zIndex={2}
@@ -569,7 +585,12 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
         );
     }
 
-    const premiumSuspended = room && room.isPremium && !room.premiumPassIsActive && (room.premiumSubscription && room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED);
+    const premiumSuspended =
+        room &&
+        room.isPremium &&
+        !room.premiumPassIsActive &&
+        (room.premiumSubscription &&
+            room.premiumSubscription.state !== WalletSubscriptionState.EXPIRED);
 
     return (
         <>
@@ -577,18 +598,23 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 event={loggedIn ? 'invite_screen_view' : 'invite_landing_view'}
                 params={{ invite_type: whereToInvite.toLowerCase() }}
             />
-            {premiumSuspended ?
+            {premiumSuspended ? (
                 <InviteLandingComponentLayout
                     button={button}
                     whereToInvite={whereToInvite}
                     photo={room ? room.photo : organization!.photo}
-                    title={`Your access to “${room ? room.title : organization!.name}” is suspended`}
+                    title={`Your access to “${
+                        room ? room.title : organization!.name
+                    }” is suspended`}
                     entityTitle={room ? room.title : organization!.name}
                     id={room ? room.id : organization!.id}
-                    description={"To keep your access to the group by subscription you need to complete payment"}
+                    description={
+                        'To keep your access to the group by subscription you need to complete payment'
+                    }
                     room={room}
                     noLogin={!loggedIn}
-                /> :
+                />
+            ) : (
                 <InviteLandingComponentLayout
                     invitedByUser={invitedByUser}
                     button={button}
@@ -601,8 +627,8 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                     description={room ? room.description : organization!.about}
                     room={room}
                     noLogin={!loggedIn}
-                />}
-
+                />
+            )}
         </>
     );
 };

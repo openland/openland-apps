@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, Text, Alert, StyleSheet, ViewStyle, TextStyle, Platform } from 'react-native';
 import { ZButton } from 'openland-mobile/components/ZButton';
+import { ZText } from 'openland-mobile/components/ZText';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { Room_room_SharedRoom, ChatJoin_room_SharedRoom, WalletSubscriptionState } from 'openland-api/spacex.types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
@@ -270,9 +271,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                     {joinTitle}
                 </Text>
                 {!!description && (
-                    <Text style={[styles.description, { color: theme.foregroundSecondary }]} numberOfLines={4} allowFontScaling={false}>
-                        {description}
-                    </Text>
+                    <ZText text={description} linkify={true} style={[styles.description, { color: theme.foregroundSecondary }]} numberOfLines={4}/>
                 )}
                 {showMembers && membersContent}
                 {!showMembers && !description && (
