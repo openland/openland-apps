@@ -1,6 +1,20 @@
 {
     "icons": [
         {
+            "name": "ic-organization",
+            "src": "ic-organization-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-community",
+            "src": "ic-community-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-user-counter",
             "src": "ic-user-counter-24.svg",
             "sizes": [

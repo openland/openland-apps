@@ -11,6 +11,7 @@ import Rate from 'react-native-rate';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { trackEvent } from 'openland-mobile/analytics';
 import { ZCounter } from 'openland-mobile/components/ZCounter';
@@ -42,6 +43,23 @@ let SettingsContent = ((props: PageProps) => {
     if (resp.me === null) {
         return null;
     }
+
+    const onNewPress = React.useCallback(() => {
+        const builder = new ActionSheetBuilder();
+        builder.action(
+            'New organization',
+            () => props.router.push('NewOrganization'),
+            false,
+            require('assets/ic-organization-24.png')
+        );
+        builder.action(
+            'New community',
+            () => props.router.push('NewOrganization', { isCommunity: true }),
+            false,
+            require('assets/ic-community-24.png')
+        );
+        builder.show();
+    }, []);
 
     const primary = resp.me.primaryOrganization;
     const secondary = resp.organizations.filter((v) => v.id !== (primary && primary.id)).sort((a, b) => a.name.localeCompare(b.name));
@@ -133,7 +151,7 @@ let SettingsContent = ((props: PageProps) => {
                 />
             </ZListGroup>
 
-            <ZListGroup header="Organizations" actionRight={{ title: 'New', onPress: () => props.router.push('NewOrganization') }}>
+            <ZListGroup header="Organizations" actionRight={{ title: 'New', onPress: onNewPress }}>
                 {primary && <ZListItem
                     text={primary.name}
                     leftAvatar={{ photo: primary.photo, id: primary.id, title: primary.name }}
