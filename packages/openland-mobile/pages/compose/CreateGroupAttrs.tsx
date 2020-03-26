@@ -81,11 +81,7 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
     const form = useForm();
     const photoField = useField('photoRef', null, form);
     const titleField = useField('title', '', form);
-    const kindField = useField<SharedRoomKind>(
-        'kind',
-        SharedRoomKind.PUBLIC,
-        form,
-    );
+    const kindField = useField<SharedRoomKind>('kind', SharedRoomKind.PUBLIC, form);
     const distributionField = useField<DistributionType>(
         'distribution',
         DistributionType.FREE,
@@ -147,7 +143,9 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
         }
 
         form.doAction(async () => {
-            const isPaid = [DistributionType.PAID, DistributionType.SUBSCRIPTION].includes(distributionField.value);
+            const isPaid = [DistributionType.PAID, DistributionType.SUBSCRIPTION].includes(
+                distributionField.value,
+            );
             const res = await getClient().mutateRoomCreate({
                 kind: kindField.value === 'PUBLIC' ? SharedRoomKind.PUBLIC : SharedRoomKind.GROUP,
                 title: titleField.value,
@@ -155,7 +153,7 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                 members: [],
                 organizationId: orgIdFromRouter,
                 channel: isChannel,
-                price:  isPaid ? parseInt(priceField.value, 10) * 100 : undefined,
+                price: isPaid ? parseInt(priceField.value, 10) * 100 : undefined,
                 interval: intervalField.value,
             });
 
@@ -210,7 +208,11 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                         {distributionField.value !== DistributionType.FREE && (
                             // without this shit selector dont work!
                             <React.Suspense fallback={null}>
-                                <View flexDirection={isSubscription ? 'row' : undefined} paddingHorizontal={16} marginBottom={16}>
+                                <View
+                                    flexDirection={isSubscription ? 'row' : undefined}
+                                    paddingHorizontal={16}
+                                    marginBottom={16}
+                                >
                                     <View
                                         flexGrow={1}
                                         flexShrink={0}
@@ -218,11 +220,11 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                                         marginRight={isSubscription ? 8 : undefined}
                                     >
                                         <ZInput
-                                            placeholder="Price" 
-                                            prefix="$" 
-                                            field={priceField} 
-                                            keyboardType="numeric" 
-                                            noWrapper={true} 
+                                            placeholder="Price"
+                                            prefix="$"
+                                            field={priceField}
+                                            keyboardType="numeric"
+                                            noWrapper={true}
                                         />
                                     </View>
                                     {isSubscription && (
@@ -255,7 +257,7 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                         )}
                     </>
                     <ZSelect
-                        label="Type"
+                        label="Visibility"
                         modalTitle="Visibility"
                         field={kindField}
                         options={[
@@ -268,7 +270,7 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                                 label: 'Secret',
                                 subtitle: 'Only people with invite link can see it',
                                 value: SharedRoomKind.GROUP,
-                            }
+                            },
                         ]}
                     />
                 </ZListGroup>
