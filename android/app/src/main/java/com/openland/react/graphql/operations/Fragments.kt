@@ -300,6 +300,16 @@ internal val QuotedMessageSelector = obj(
                                     field("text", "text", notNull(scalar("String")))
                                 )),
                             field("fallback", "fallback", notNull(scalar("String")))
+                        )),
+                        inline("MessageAttachmentPurchase", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("purchase", "purchase", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("state", "state", notNull(scalar("String"))),
+                                    field("amount", "amount", notNull(scalar("Int")))
+                                )))
                         ))
                     )))))
             )),
@@ -548,6 +558,16 @@ internal val FullMessageSelector = obj(
                                         ))))))
                                 )),
                             field("fallback", "fallback", notNull(scalar("String")))
+                        )),
+                        inline("MessageAttachmentPurchase", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("purchase", "purchase", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("state", "state", notNull(scalar("String"))),
+                                    field("amount", "amount", notNull(scalar("Int")))
+                                )))
                         ))
                     ))))),
                 field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(

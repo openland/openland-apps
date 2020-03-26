@@ -45,7 +45,7 @@ const Label = React.memo((props: LabelProps) => {
 interface MetaInfoIndicatorProps {
     message: DataSourceMessageItem;
     theme: ThemeGlobal;
-    type: 'default' | 'media' | 'emoji';
+    type: 'default' | 'media' | 'emoji' | 'pay';
 }
 
 export const MetaInfoIndicator = React.memo((props: MetaInfoIndicatorProps) => {
@@ -89,7 +89,10 @@ export const MetaInfoIndicator = React.memo((props: MetaInfoIndicatorProps) => {
         );
     }
 
-    const bubbleForegroundSecondary = message.isOut ? theme.outgoingForegroundSecondary : theme.incomingForegroundSecondary;
+    let bubbleForegroundSecondary = message.isOut ? theme.outgoingForegroundSecondary : theme.incomingForegroundSecondary;
+    if (type === 'pay') {
+        bubbleForegroundSecondary = theme.payForegroundSecondary;
+    }
 
     return (
         <ASFlex

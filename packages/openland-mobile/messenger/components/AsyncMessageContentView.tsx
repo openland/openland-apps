@@ -12,7 +12,7 @@ import { TextContent } from './content/TextContent';
 import { RichAttachContent, richAttachImageShouldBeCompact } from './content/RichAttachContent';
 import { MediaContent, layoutImage } from './content/MediaContent';
 import { DocumentContent } from './content/DocumentContent';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/spacex.types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment, FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase } from 'openland-api/spacex.types';
 import { OthersUsersWrapper } from './content/OthersUsersWrapper';
 import { openCalendar } from 'openland-mobile/utils/openCalendar';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
@@ -23,6 +23,7 @@ import { StickerBox } from './content/StickerBox';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { MetaInfoIndicator } from './content/MetaInfoIndicator';
 import { SenderContent } from './content/SenderContent';
+import { DonationContent } from './content/DonationContent';
 
 export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={17}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 20 : 16, ios: edited ? 17 : 14 }))}</ASText>;
 
@@ -105,11 +106,13 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     const attaches = (message.attachments || []);
     const fileAttach = attaches.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
     const augmenationAttach = attaches.filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
+    const purchaseAttach = attaches.filter(a => a.__typename === 'MessageAttachmentPurchase')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase | undefined;
     const hasImage = !!(fileAttach && fileAttach.fileMetadata.isImage);
     const hasReply = !!(message.reply && message.reply.length > 0);
     const hasForward = !!(hasReply && conversationId && message.reply![0].source && message.reply![0].source.chat.id !== conversationId);
     const hasText = !!(message.text);
     const hasUrlAug = !!augmenationAttach;
+    const hasPurchase = !!purchaseAttach;
     const sticker = message.sticker && message.sticker.__typename === 'ImageSticker' ? message.sticker : undefined;
 
     const isEmojiOnly = message.textSpans.length === 1 && message.textSpans[0].type === 'emoji' && (message.attachments || []).length === 0 && (message.reply || []).length === 0;
@@ -142,8 +145,11 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     if (sticker) {
         topContent.push(<StickerContent key="msg-sticker" sticker={sticker} message={message} padded={hasReply} />);
     }
+    if (!!purchaseAttach) {
+        topContent.push(<DonationContent key="msg-donation" attach={purchaseAttach} hasText={hasText} isOut={message.isOut} />);
+    }
     if (hasText) {
-        topContent.push(<TextContent key="msg-text" compensateBubble={compensateBubble} width={textSize} emojiOnly={isEmojiOnly} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onMediaPress={onMediaPress} />);
+        topContent.push(<TextContent key="msg-text" compensateBubble={compensateBubble} width={textSize} emojiOnly={isEmojiOnly} hasPurchase={hasPurchase} theme={theme} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onGroupPress={onGroupPress} onOrganizationPress={onOrganizationPress} onMediaPress={onMediaPress} />);
     }
     if (hasDocument) {
         topContent.push(<DocumentContent key="msg-document" theme={theme} compensateBubble={compensateBubble} attach={fileAttach!} message={message} onUserPress={onUserPress} onGroupPress={onGroupPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} onLongPress={onLongPress} />);
@@ -159,7 +165,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
 
     let bottomContent: any[] = [];
     if (hasUrlAug) {
-        bottomContent.push(<RichAttachContent key="msg-rich" theme={theme} padded={!topContent.length} compensateBubble={compensateBubble} attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} socialImageLayout={richAttachSocialImageLayout} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} />);
+        bottomContent.push(<RichAttachContent key="msg-rich" theme={theme} padded={!topContent.length} compensateBubble={compensateBubble} hasPurchase={hasPurchase} attach={augmenationAttach!} maxWidth={maxSize} imageLayout={richAttachImageLayout} socialImageLayout={richAttachSocialImageLayout} message={message} onUserPress={onUserPress} onDocumentPress={onDocumentPress} onMediaPress={onMediaPress} />);
     }
 
     if (!topContent.length && bottomContent.length) {
@@ -173,6 +179,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
                 key={'name-' + theme.accentPrimary}
                 message={message}
                 theme={theme}
+                hasPurchase={hasPurchase}
                 onUserPress={onUserPress}
             />
         );
@@ -184,6 +191,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
         hasReply,
         hasForward,
         hasText,
+        hasPurchase,
         hasUrlAug,
         topContent,
         bottomContent,
@@ -204,6 +212,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
         hasImage,
         hasText,
         hasForward,
+        hasPurchase,
         imageOnly,
         topContent,
         imageLayout,
@@ -226,10 +235,15 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
     // sorry
     const shiftMeta = !!(!bottomContent.length && (message.attachments || []).filter(a => a.__typename === 'MessageRichAttachment' && a.keyboard).length) 
         || shiftReplyMeta(message, hasForward);
-    const meta = <MetaInfoIndicator type={isImageBottom ? 'media' : 'default'} message={message} theme={theme} />;
+    const meta = <MetaInfoIndicator type={hasPurchase ? 'pay' : isImageBottom ? 'media' : 'default'} message={message} theme={theme} />;
 
-    const bubbleBackgroundPrimary = message.isOut ? theme.outgoingBackgroundPrimary : theme.incomingBackgroundPrimary;
-    const bubbleBackgroundSecondary = message.isOut ? theme.outgoingBackgroundSecondary : theme.incomingBackgroundSecondary;
+    let bubbleBackgroundPrimary = message.isOut ? theme.outgoingBackgroundPrimary : theme.incomingBackgroundPrimary;
+    let bubbleBackgroundSecondary = message.isOut ? theme.outgoingBackgroundSecondary : theme.incomingBackgroundSecondary;
+
+    if (hasPurchase) {
+        bubbleBackgroundPrimary = theme.payBackgroundPrimary;
+        bubbleBackgroundSecondary = theme.payBackgroundSecondary;
+    }
 
     return (
         <ASFlex flexDirection="column" alignItems="stretch">

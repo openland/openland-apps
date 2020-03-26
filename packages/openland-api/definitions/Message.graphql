@@ -177,6 +177,15 @@ fragment QuotedMessage on ModernMessage {
                 }
                 fallback
             }
+
+            ... on MessageAttachmentPurchase {
+                id
+                purchase {
+                    id
+                    state
+                    amount
+                }
+            }
         }
     }
 
@@ -348,6 +357,14 @@ fragment FullMessage on ModernMessage {
                     }
                 }
                 fallback
+            }
+            ... on MessageAttachmentPurchase {
+                id
+                purchase {
+                    id
+                    state
+                    amount
+                }
             }
         }
         quotedMessages {

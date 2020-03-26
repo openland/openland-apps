@@ -40,6 +40,11 @@ export const ThemeLight: ThemeGlobal = {
     backgroundTertiaryTrans: 'rgba(201, 204, 209, 0.24)',
     backgroundTertiaryHoverTrans: 'rgba(169, 174, 184, 0.24)',
 
+    payBackgroundPrimary: '#171A1F',
+    payBackgroundSecondary: '#292C33',
+    payForegroundPrimary: '#FFFFFF',
+    payForegroundSecondary: 'rgba(255, 255, 255, 0.56)',
+
     accentPrimary: TintBlue.primary,
     accentPrimaryHover: TintBlue.hover,
     accentPrimaryActive: TintBlue.active,

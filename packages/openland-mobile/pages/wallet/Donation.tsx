@@ -13,6 +13,7 @@ import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
 import Toast from 'openland-mobile/components/Toast';
 import { ZShaker } from 'openland-mobile/components/ZShaker';
+import { useClient } from 'openland-api/useClient';
 
 interface PriceInputProps {
     value: string;
@@ -51,9 +52,8 @@ const PriceInput = React.forwardRef((props: PriceInputProps, ref: React.RefObjec
     );
 });
 
-const MessageInput = () => {
+const MessageInput = (props: {value: string, onChange: (s: string) => void}) => {
     let theme = useTheme();
-    let [value, setValue] = React.useState('');
 
     return (
         <View
@@ -68,8 +68,8 @@ const MessageInput = () => {
                 placeholder="Your message"
                 placeholderTextColor={hexToRgba(theme.foregroundInverted, 0.48)}
                 keyboardAppearance={theme.keyboardAppearance}
-                value={value}
-                onChangeText={setValue}
+                value={props.value}
+                onChangeText={props.onChange}
                 allowFontScaling={false}
                 multiline={true}
                 selectionColor={Platform.OS === 'android' ? hexToRgba(theme.foregroundInverted, HighlightAlpha) : theme.foregroundInverted}
@@ -88,7 +88,9 @@ const MessageInput = () => {
 
 const DonationComponent = (props: PageProps) => {
     let theme = useTheme();
+    let client = useClient();
     let initialPrice = props.router.params.initialPrice ? String(props.router.params.initialPrice) : '';
+    let chatId = props.router.params.chatId as string;
     let user = props.router.params.user as {name: string, id: string};
 
     let priceRef = React.useRef<TextInput>(null);
@@ -114,6 +116,8 @@ const DonationComponent = (props: PageProps) => {
             text: '$1 minimum',
         },
     ]);
+    let messageField = useField('message', '', form);
+
     let price = priceField.value;
 
     let handlePriceChange = (value: string) => {
@@ -144,8 +148,14 @@ const DonationComponent = (props: PageProps) => {
             }, 200);
             return;
         }
-        form.doAction(() => {
-            Toast.success({ text: 'Successful donation!', duration: 1000}).show();
+        form.doAction(async () => {
+            let amount = parseInt(priceField.value, 10) * 100;
+            try {
+                await client.mutateSendDonation({chatId, amount, message: messageField.value });
+                Toast.success({ duration: 1000}).show();
+            } catch (e) {
+                Toast.failure({ duration: 1000}).show();
+            }
         });
     };
 
@@ -170,7 +180,7 @@ const DonationComponent = (props: PageProps) => {
                             <ZIconAction source={require('assets/ic-add-glyph-24.png')} onPress={() => updatePrice(5)} style="pay" />
                         </View>
                         <View marginTop={32} flexDirection="row">
-                            <MessageInput />
+                            <MessageInput value={messageField.value} onChange={messageField.input.onChange} />
                         </View>
                         <View marginTop={4}>
                             <ZButton title="Donate" style="pay" size="large" onPress={handleSubmit} />

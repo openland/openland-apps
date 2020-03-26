@@ -44,6 +44,7 @@ interface RenderSpansProps {
     textAlign?: 'left' | 'right' | 'center';
     numberOfLines?: number;
     emojiOnly?: boolean;
+    hasPurchase?: boolean;
 
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
@@ -73,10 +74,14 @@ const letterSpacing = {
 
 export class RenderSpans extends React.PureComponent<RenderSpansProps> {
     render() {
-        const { emojiOnly, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetVertical, numberOfLines, onUserPress, onGroupPress, onOrganizationPress } = this.props;
+        const { emojiOnly, hasPurchase, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetVertical, numberOfLines, onUserPress, onGroupPress, onOrganizationPress } = this.props;
 
-        const bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
+        let bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
         const bubbleBackgroundSecondary = message.isOut ? theme.outgoingBackgroundSecondary : theme.incomingBackgroundSecondary;
+
+        if (hasPurchase) {
+            bubbleForegroundPrimary = theme.payForegroundPrimary;
+        }
 
         const color = emojiOnly ? theme.foregroundPrimary : bubbleForegroundPrimary;
         const content = getSpansSlices(spans, padded);

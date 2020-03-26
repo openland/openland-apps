@@ -27,6 +27,7 @@ interface UrlAugmentationContentProps {
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     padded?: boolean;
+    hasPurchase?: boolean;
     theme: ThemeGlobal;
 }
 
@@ -121,7 +122,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
     }
 
     render() {
-        let { theme, message } = this.props;
+        let { theme, message, hasPurchase } = this.props;
         let isOut = message.isOut;
         // let link = this.props.attach!.titleLink || '';
         let { text, subTitle, keyboard, titleLink } = this.props.attach;
@@ -146,8 +147,16 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
 
         let maxWidth = this.props.maxWidth || ((this.props.imageLayout && !imgCompact) ? (this.props.imageLayout.width - contentInsetsHorizontal * 2) : (isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming));
 
-        const bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
-        const bubbleForegroundSecondary = message.isOut ? theme.outgoingForegroundSecondary : theme.incomingForegroundSecondary;
+        let bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
+        let bubbleForegroundSecondary = message.isOut ? theme.outgoingForegroundSecondary : theme.incomingForegroundSecondary;
+        let loadingBackground = theme.backgroundPrimary;
+        let loadingForeground = theme.foregroundPrimary;
+        if (hasPurchase) {
+            bubbleForegroundPrimary = theme.payForegroundPrimary;
+            bubbleForegroundSecondary = theme.payForegroundSecondary;
+            loadingBackground = theme.payBackgroundSecondary;
+            loadingForeground = theme.payForegroundSecondary;
+        }
 
         const textWrapperMarginTop = !!this.props.attach.titleLinkHostname && !imgCompact ? 0
             :  imgCompact && this.imageLarge ? 12 
@@ -188,8 +197,8 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                                 justifyContent="center"
                                 alignItems="center"
                             >
-                                <ASFlex backgroundColor={theme.backgroundPrimary} borderRadius={20}>
-                                    <ASText color={theme.foregroundPrimary} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.largeDownloadState.progress * 100)}</ASText>
+                                <ASFlex backgroundColor={loadingBackground} borderRadius={20}>
+                                    <ASText color={loadingForeground} opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.largeDownloadState.progress * 100)}</ASText>
                                 </ASFlex>
                             </ASFlex>
                         }

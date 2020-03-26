@@ -13,6 +13,7 @@ interface TextContentProps {
     maxWidth?: number;
     width?: number;
     compensateBubble?: boolean;
+    hasPurchase?: boolean;
 
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
@@ -23,7 +24,7 @@ interface TextContentProps {
 
 export class TextContent extends React.PureComponent<TextContentProps> {
     render() {
-        const { message, theme, fontStyle, onUserPress, onGroupPress, emojiOnly, maxWidth, width, compensateBubble, onOrganizationPress } = this.props;
+        const { message, theme, fontStyle, onUserPress, onGroupPress, emojiOnly, hasPurchase, maxWidth, width, compensateBubble, onOrganizationPress } = this.props;
 
         return (
             <RenderSpans
@@ -39,6 +40,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
                 insetRight={compensateBubble ? contentInsetsHorizontal : 16}
                 insetVertical={contentInsetsTop}
                 emojiOnly={emojiOnly}
+                hasPurchase={hasPurchase}
 
                 onUserPress={onUserPress}
                 onGroupPress={onGroupPress}
