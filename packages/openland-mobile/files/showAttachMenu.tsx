@@ -120,8 +120,7 @@ export const showAttachMenu = (fileCallback?: (type: 'document' | 'photo' | 'vid
         );
     }, false, require('assets/ic-document-24.png'));
 
-    let showDonation = false;
-    if (donationCb && showDonation) {
+    if (donationCb) {
         builder.action(Platform.select({ ios: 'Make donation', android: 'Donation' }), () => {
             donationCb();
         }, false, require('assets/ic-donation-24.png'));

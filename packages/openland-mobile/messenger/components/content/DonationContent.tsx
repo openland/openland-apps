@@ -5,6 +5,7 @@ import { ASText } from 'react-native-async-view/ASText';
 import { RadiusStyles, TextStylesAsync } from 'openland-mobile/styles/AppStyles';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
+import { Platform } from 'react-native';
 
 interface DonationContentProps {
     attach: FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase;
@@ -23,6 +24,7 @@ export const DonationContent = (props: DonationContentProps) => {
             backgroundColor={theme.payBackgroundSecondary}
             marginTop={isOut ? 7 : 6}
             marginBottom={hasText ? 7 : 18}
+            {...Platform.OS === 'android' ? {flex: 1, flexBasis: 227} : {minWidth: 227}}
         >
             <ASFlex 
                 flexGrow={1}
@@ -33,7 +35,7 @@ export const DonationContent = (props: DonationContentProps) => {
             >
                 <ASFlex 
                     flexGrow={1}
-                    minWidth={203} 
+                    {...Platform.OS === 'android' && {flexBasis: 203}}
                     flexDirection="column"
                     justifyContent="center"
                     alignItems="center"

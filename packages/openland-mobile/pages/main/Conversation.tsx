@@ -227,7 +227,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 ? this.props.chat.user
                 : this.props.chat.owner;
             if (user) {
-                this.props.router.push('Donation', { chatId: this.props.chat.id, user: {name: user.firstName, id: user.id} });
+                this.props.router.push('Donation', { chatId: this.props.chat.id, name: user.firstName });
             }
         });
     }

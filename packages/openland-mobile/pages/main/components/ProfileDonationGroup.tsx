@@ -5,9 +5,10 @@ import { View } from 'react-native';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 
 interface ProfileDonationGroupProps {
-    user: {name: string, id: string};
+    name: string;
 }
 
+// TODO pass userId to donation screen
 export const ProfileDonationGroup = (props: ProfileDonationGroupProps) => {
     let router = React.useContext(SRouterContext)!;
     let showDonation = null;
@@ -20,11 +21,11 @@ export const ProfileDonationGroup = (props: ProfileDonationGroupProps) => {
                         <ZButton 
                             title={`$${price}`} 
                             style="secondary" 
-                            onPress={() => router.push('Donation', {initialPrice: price, user: props.user})}
+                            onPress={() => router.push('Donation', {initialPrice: price, name: props.name})}
                         />
                     </View>
                 ))}
-                <ZButton title="Other" style="secondary" onPress={() => router.push('Donation', {user: props.user})} />
+                <ZButton title="Other" style="secondary" onPress={() => router.push('Donation', {name: props.name})} />
             </View>
         </ZListGroup>
     );

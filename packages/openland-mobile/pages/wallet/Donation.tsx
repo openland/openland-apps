@@ -45,7 +45,7 @@ const PriceInput = React.forwardRef((props: PriceInputProps, ref: React.RefObjec
                 color: theme.foregroundContrast,
                 borderWidth: 0,
                 height: 40,
-                textAlignVertical: 'center',
+                padding: Platform.OS === 'android' ? 0 : undefined,
             }}
             {...{ scrollEnabled: false }}
         />
@@ -91,7 +91,7 @@ const DonationComponent = (props: PageProps) => {
     let client = useClient();
     let initialPrice = props.router.params.initialPrice ? String(props.router.params.initialPrice) : '';
     let chatId = props.router.params.chatId as string;
-    let user = props.router.params.user as {name: string, id: string};
+    let name = props.router.params.name as string;
 
     let priceRef = React.useRef<TextInput>(null);
     let wrapperRef = React.useRef<{ shake: () => void }>(null);
@@ -161,7 +161,7 @@ const DonationComponent = (props: PageProps) => {
 
     return (
         <>
-            <SHeader title={user ? `Donate to ${user.name}` : 'Donate'} />
+            <SHeader title={name ? `Donate to ${name}` : 'Donate'} />
             <SScrollView flexDirection="column" alignSelf="stretch" alignItems="stretch" padding={16}>
                 <ZShaker ref={wrapperRef}>
                     <View 
@@ -174,7 +174,7 @@ const DonationComponent = (props: PageProps) => {
                     >
                         <View flexDirection="row">
                             <ZIconAction source={require('assets/ic-minus-glyph-24.png')} onPress={() => updatePrice(-5)} style="pay" />
-                            <View marginHorizontal={16} flex={1} flexDirection="row" justifyContent="center">
+                            <View marginHorizontal={16} flex={1} height={40} flexDirection="row" justifyContent="center">
                                 <PriceInput value={price} autofocus={!initialPrice} onChange={handlePriceChange} ref={priceRef} />
                             </View>
                             <ZIconAction source={require('assets/ic-add-glyph-24.png')} onPress={() => updatePrice(5)} style="pay" />
