@@ -44,12 +44,6 @@ const FloatContainerClass = css`
     }
 `;
 
-const videoClass = css`
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-`;
-
 const VideoOnClass = css`
     max-width: ${VIDEO_SIZE + 16}px;
     &:hover {
@@ -297,14 +291,15 @@ const Avatar = React.memo(
                         if (entry.isMe && entry.appSrteam.muted) {
                             val = 0;
                         }
-                        if ((val > lastVal || !activePeerId) && !entry.isMe) {
+                        let videoStream = entry.streamManager.getVideoStream();
+                        if ((val > lastVal || (!activePeerId && !lastPeer)) && !entry.isMe) {
                             lastVal = val;
                             activePeerId = key;
-                            activeStream = entry.streamManager.getVideoStream();
+                            activeStream = videoStream;
                         }
 
-                        if (key === lastPeer && !lastStream) {
-                            lostStream = entry.streamManager.getVideoStream();
+                        if (key === lastPeer && (videoStream !== lastStream)) {
+                            lostStream = videoStream;
                         }
                     }
 
@@ -321,6 +316,7 @@ const Avatar = React.memo(
                         setSpeakingPeerStream(activeStream);
                     }
                     if (lostStream) {
+                        console.warn('lost stream', lostStream);
                         lastStream = lostStream;
                         setSpeakingPeerStream(lostStream);
                     }
@@ -356,7 +352,7 @@ const Avatar = React.memo(
             <XView>
                 <XView width={VIDEO_SIZE} height={VIDEO_SIZE} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" backgroundColor="gray" alignItems="center" justifyContent="center">
                     {speakingPeerStream ?
-                        <VideoComponent stream={(speakingPeerStream as AppUserMediaStreamWeb)._stream} videoClass={videoClass} /> :
+                        <VideoComponent stream={(speakingPeerStream as AppUserMediaStreamWeb)._stream} cover={true} /> :
                         <UAvatar
                             size="large"
                             id={peer ? peer.user.id : props.fallback.id}
@@ -466,7 +462,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
                                 <XView width={VIDEO_SIZE} height={VIDEO_SIZE} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" backgroundColor="gray">
                                     {avatar}
                                     <XView width={VIDEO_SIZE / 3} height={VIDEO_SIZE / 3} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" position="absolute" top={0} right={0}>
-                                        {callState.outVideo && <VideoComponent stream={(callState.outVideo.stream as AppUserMediaStreamWeb)._stream} videoClass={videoClass} />}
+                                        {callState.outVideo && <VideoComponent stream={(callState.outVideo.stream as AppUserMediaStreamWeb)._stream} cover={true}/>}
                                     </XView>
                                 </XView>
                             )}

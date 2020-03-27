@@ -231,13 +231,14 @@ export class MediaStreamManager {
     // TODO: move screen share to separate peer connection
     // WebRTC still can't detect stream/track removal, so we cant display ui prpperly :/
     onStreamAdded = (stream: AppMediaStream) => {
-        console.warn('onStreamAdded', stream);
         if (!this.mainInStream) {
             this.mainInStream = stream;
         } else {
             if (this.contentInStream !== undefined) {
                 this.contentInStream.close();
             }
+            console.warn('new content stream', this.contentInStream, stream);
+
             this.contentInStream = stream;
             this.notifyContentStream();
             stream.onClosed = () => {
@@ -251,9 +252,6 @@ export class MediaStreamManager {
 
     addStream = (stream: AppMediaStream) => {
         if (this.outContentStream !== stream) {
-            if (this.outContentStream) {
-                this.outContentStream.close();
-            }
             this.outContentStream = stream;
             console.warn('boom', this.id, 'adding stream', stream);
             this.peerConnection.addStream(stream);
@@ -269,7 +267,7 @@ export class MediaStreamManager {
     getVideoStream = () => {
         return this.contentInStream;
     }
-    getOutVideoStream = () => {
+    getOutContentStream = () => {
         return this.outContentStream;
     }
 

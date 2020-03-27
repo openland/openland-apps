@@ -44,6 +44,8 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
                 this.audio.load();
                 this.audio.play();
 
+            } else {
+                console.warn('on track', ev.track);
             }
 
             for (let stream of ev.streams) {
@@ -98,7 +100,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
             if (sender) {
                 this.connection.removeTrack(sender);
             }
-            this.connection.addTrack(t, str);
+            this.trackSenders.set(t, this.connection.addTrack(t, str));
         }
     }
 

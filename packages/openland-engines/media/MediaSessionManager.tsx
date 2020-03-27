@@ -19,6 +19,7 @@ export class MediaSessionManager {
     private mediaStream!: AppMediaStream;
     private outVideoStream?: AppMediaStream;
     private outScreenStream?: AppMediaStream;
+    private activeStream?: AppMediaStream;
     private streamConfigs!: ConferenceMediaWatch_media_streams[];
     private iceServers!: any[];
     private conferenceId!: string;
@@ -57,6 +58,7 @@ export class MediaSessionManager {
             this.outScreenStream = await AppUserMedia.getUserScreen();
         }
         this.outScreenStream.blinded = false;
+        this.activeStream = this.outScreenStream;
         this.handleState();
         this.onVideoEnabled();
         return this.outScreenStream;
@@ -65,6 +67,8 @@ export class MediaSessionManager {
     stopScreenShare = async () => {
         if (this.outScreenStream) {
             this.outScreenStream.blinded = true;
+            this.outScreenStream.close();
+            this.outScreenStream = undefined;
         }
     }
 
@@ -74,6 +78,7 @@ export class MediaSessionManager {
             this.outVideoStream = await AppUserMedia.getUserVideo();
         }
         this.outVideoStream.blinded = false;
+        this.activeStream = this.outVideoStream;
         this.handleState();
         this.onVideoEnabled();
         return this.outVideoStream;
@@ -259,8 +264,8 @@ export class MediaSessionManager {
         for (let s of this.streamConfigs) {
             let ms = this.streams.get(s.id);
             if (ms) {
-                if (this.outVideoStream) {
-                    ms.addStream(this.outVideoStream);
+                if (this.activeStream && (ms.getOutContentStream() !== this.activeStream)) {
+                    ms.addStream(this.activeStream);
                 }
                 ms.onStateChanged(s);
             } else {
