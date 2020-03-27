@@ -43,8 +43,8 @@ export const DonationContent = (props: DonationContentProps) => {
                     <ASText {...TextStylesAsync.Large} color={theme.payForegroundPrimary}>
                         {formatMoney(amount)}
                     </ASText>
-                    {state !== PurchaseState.COMPLETED && (
-                        <ASText {...TextStylesAsync.Caption} color={theme.payForegroundSecondary}>Payment failed</ASText>
+                    {state === PurchaseState.PENDING && (
+                        <ASText {...TextStylesAsync.Caption} color={theme.payForegroundSecondary}>Pending</ASText>
                     )}
                 </ASFlex>
             </ASFlex>

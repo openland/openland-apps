@@ -372,7 +372,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 )}
             </ZListGroup>
 
-            {donateTo && <ProfileDonationGroup name={donateTo} />}
+            {donateTo && <ProfileDonationGroup name={donateTo} chatId={room.id} />}
 
             <ZListGroup header="Settings" headerMarginTop={!hasAbout ? 0 : undefined}>
                 <NotificationSettings id={room.id} mute={!!room.settings.mute} />

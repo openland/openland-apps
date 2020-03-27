@@ -4991,7 +4991,7 @@ private let RoomsJoinSelector = obj(
                 )))))
         )
 private let SendDonationSelector = obj(
-            field("sendDonation", "sendDonation", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("amount", refValue("amount")), fieldValue("message", refValue("message")), fieldValue("repeatKey", refValue("repeatKey"))), notNull(scalar("Boolean")))
+            field("sendDonation", "sendDonation", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("userId", refValue("userId")), fieldValue("amount", refValue("amount")), fieldValue("message", refValue("message")), fieldValue("repeatKey", refValue("repeatKey"))), notNull(scalar("Boolean")))
         )
 private let SendMessageSelector = obj(
             field("sendMessage", "sentMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("message", refValue("message")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("mentions", refValue("mentions")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("spans", refValue("spans")), fieldValue("repeatKey", refValue("repeatKey"))), notNull(scalar("Boolean")))
@@ -6594,7 +6594,7 @@ class Operations {
     let SendDonation = OperationDefinition(
         "SendDonation",
         .mutation, 
-        "mutation SendDonation($chatId:ID!,$amount:Int!,$message:String,$repeatKey:String){sendDonation(chatId:$chatId,amount:$amount,message:$message,repeatKey:$repeatKey)}",
+        "mutation SendDonation($amount:Int!,$chatId:ID,$userId:ID,$message:String,$repeatKey:String){sendDonation(chatId:$chatId,userId:$userId,amount:$amount,message:$message,repeatKey:$repeatKey)}",
         SendDonationSelector
     )
     let SendMessage = OperationDefinition(

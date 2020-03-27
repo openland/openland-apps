@@ -113,7 +113,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     {!!user.linkedin && <ZListItem title="LinkedIn" text={user.linkedin} linkify={true} tall={true} copy={true} />}
                 </ZListGroup>
 
-                <ProfileDonationGroup name={user.firstName} />
+                <ProfileDonationGroup name={user.firstName} userId={user.id} />
                 
                 {!!user.primaryOrganization && (
                     <ZListGroup header="Organization">

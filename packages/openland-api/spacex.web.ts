@@ -4998,7 +4998,7 @@ const RoomsJoinSelector = obj(
                 )))))
         );
 const SendDonationSelector = obj(
-            field('sendDonation', 'sendDonation', args(fieldValue("chatId", refValue('chatId')), fieldValue("amount", refValue('amount')), fieldValue("message", refValue('message')), fieldValue("repeatKey", refValue('repeatKey'))), notNull(scalar('Boolean')))
+            field('sendDonation', 'sendDonation', args(fieldValue("chatId", refValue('chatId')), fieldValue("userId", refValue('userId')), fieldValue("amount", refValue('amount')), fieldValue("message", refValue('message')), fieldValue("repeatKey", refValue('repeatKey'))), notNull(scalar('Boolean')))
         );
 const SendMessageSelector = obj(
             field('sendMessage', 'sentMessage', args(fieldValue("chatId", refValue('chatId')), fieldValue("message", refValue('message')), fieldValue("replyMessages", refValue('replyMessages')), fieldValue("mentions", refValue('mentions')), fieldValue("fileAttachments", refValue('fileAttachments')), fieldValue("spans", refValue('spans')), fieldValue("repeatKey", refValue('repeatKey'))), notNull(scalar('Boolean')))
@@ -6597,7 +6597,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     SendDonation: {
         kind: 'mutation',
         name: 'SendDonation',
-        body: 'mutation SendDonation($chatId:ID!,$amount:Int!,$message:String,$repeatKey:String){sendDonation(chatId:$chatId,amount:$amount,message:$message,repeatKey:$repeatKey)}',
+        body: 'mutation SendDonation($amount:Int!,$chatId:ID,$userId:ID,$message:String,$repeatKey:String){sendDonation(chatId:$chatId,userId:$userId,amount:$amount,message:$message,repeatKey:$repeatKey)}',
         selector: SendDonationSelector
     },
     SendMessage: {

@@ -411,9 +411,10 @@ query StripeToken {
     stripeToken
 }
 
-mutation SendDonation($chatId: ID!, $amount: Int!, $message: String, $repeatKey: String) {
+mutation SendDonation($amount: Int!, $chatId: ID, $userId: ID, $message: String, $repeatKey: String) {
     sendDonation(
         chatId: $chatId
+        userId: $userId
         amount: $amount
         message: $message
         repeatKey: $repeatKey

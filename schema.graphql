@@ -667,6 +667,7 @@ type DialogUpdateState {
 type DiscoverChatsCollection {
   id: ID!
   title: String!
+  description: String
   image: ImageRef!
   chatsCount: Int!
   chats: [SharedRoom!]!
@@ -680,12 +681,14 @@ type DiscoverChatsCollectionConnection {
 
 input DiscoverChatsCollectionInput {
   title: String!
+  description: String
   image: ImageRefInput!
   chatIds: [ID!]!
 }
 
 input DiscoverChatsCollectionUpdateInput {
   title: String
+  description: String
   image: ImageRefInput
   chatIds: [ID!]
 }
@@ -1740,7 +1743,7 @@ type Mutation {
   alphaFeedChannelDisableCommunityAutoSubscription(channelId: ID!, roomId: ID!): Boolean!
   sendMessage(chatId: ID!, message: String, replyMessages: [ID!], mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!], repeatKey: String): Boolean!
   sendSticker(chatId: ID!, stickerId: ID!, replyMessages: [ID!], repeatKey: String): Boolean!
-  sendDonation(chatId: ID!, amount: Int!, message: String, repeatKey: String): Boolean!
+  sendDonation(chatId: ID, userId: ID, amount: Int!, message: String, repeatKey: String): Boolean!
   editMessage(messageId: ID!, message: String, replyMessages: [ID!], mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!]): Boolean!
   pinMessage(chatId: ID!, messageId: ID!): Boolean!
   unpinMessage(chatId: ID!): Boolean!

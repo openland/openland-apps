@@ -91,6 +91,7 @@ const DonationComponent = (props: PageProps) => {
     let client = useClient();
     let initialPrice = props.router.params.initialPrice ? String(props.router.params.initialPrice) : '';
     let chatId = props.router.params.chatId as string;
+    let userId = props.router.params.userId as string;
     let name = props.router.params.name as string;
 
     let priceRef = React.useRef<TextInput>(null);
@@ -151,7 +152,7 @@ const DonationComponent = (props: PageProps) => {
         form.doAction(async () => {
             let amount = parseInt(priceField.value, 10) * 100;
             try {
-                await client.mutateSendDonation({chatId, amount, message: messageField.value });
+                await client.mutateSendDonation({chatId, userId, amount, message: messageField.value });
                 Toast.success({ duration: 1000}).show();
             } catch (e) {
                 Toast.failure({ duration: 1000}).show();
