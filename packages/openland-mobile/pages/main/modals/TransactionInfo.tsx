@@ -71,7 +71,7 @@ const TransactionInfo = React.memo<TransactionInfoProps & { ctx: ModalProps }>((
                     </View>
                 </TouchableOpacity>
                 <Text style={{ ...TextStyles.Body, color: theme.foregroundTertiary }} allowFontScaling={false}>
-                    {type}{!!interval && `, ${interval}`}
+                    {type}{!!interval && `, ${interval}`}{type === 'Donation' && group ? `, ${group.title}` : ''}
                 </Text>
             </LinearGradient>
             <View>

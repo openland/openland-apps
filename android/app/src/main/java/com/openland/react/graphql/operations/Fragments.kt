@@ -309,7 +309,8 @@ internal val QuotedMessageSelector = obj(
                                     field("id", "id", notNull(scalar("ID"))),
                                     field("state", "state", notNull(scalar("String"))),
                                     field("amount", "amount", notNull(scalar("Int")))
-                                )))
+                                ))),
+                            field("fallback", "fallback", notNull(scalar("String")))
                         ))
                     )))))
             )),
@@ -567,7 +568,8 @@ internal val FullMessageSelector = obj(
                                     field("id", "id", notNull(scalar("ID"))),
                                     field("state", "state", notNull(scalar("String"))),
                                     field("amount", "amount", notNull(scalar("Int")))
-                                )))
+                                ))),
+                            field("fallback", "fallback", notNull(scalar("String")))
                         ))
                     ))))),
                 field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(

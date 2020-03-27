@@ -185,6 +185,7 @@ fragment QuotedMessage on ModernMessage {
                     state
                     amount
                 }
+                fallback
             }
         }
     }
@@ -365,6 +366,7 @@ fragment FullMessage on ModernMessage {
                     state
                     amount
                 }
+                fallback
             }
         }
         quotedMessages {

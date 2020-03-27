@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     FullMessage_GeneralMessage_attachments_MessageRichAttachment,
+    FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase,
     FullMessage_GeneralMessage_attachments,
     MyStickers_stickers_packs_stickers,
     UserShort,
@@ -13,6 +14,7 @@ import { ReplyContent } from './content/ReplyContent';
 import { ImageContent } from './content/ImageContent';
 import { DocumentContent } from './content/DocumentContent';
 import { RichAttachContent } from './content/RichAttachContent';
+import { DonationContent } from './content/DonationContent';
 import { StickerContent } from './content/StickerContent';
 import { css, cx } from 'linaria';
 import { createSimpleSpan } from 'openland-y-utils/spans/processSpans';
@@ -34,6 +36,11 @@ const replyContentWrapper = css`
     &:hover {
         cursor: pointer;
     }
+`;
+
+const donationWrapper = css`
+    align-self: flex-start;
+    margin: 8px 0;
 `;
 
 const extraWrapper = css`
@@ -120,6 +127,11 @@ export const MessageContent = (props: MessageContentProps) => {
             a => a.__typename === 'MessageRichAttachment',
         ) as FullMessage_GeneralMessage_attachments_MessageRichAttachment[]) || [];
 
+    const purchaseAttaches =
+        (attachments.filter(
+            a => a.__typename === 'MessageAttachmentPurchase',
+        ) as FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase[]) || [];
+
     const hasText = !!text;
     const content: JSX.Element[] = [];
 
@@ -138,6 +150,14 @@ export const MessageContent = (props: MessageContentProps) => {
                     mId={id}
                     isPending={isPending}
                 />
+            </ContentWrapper>,
+        );
+    });
+
+    purchaseAttaches.forEach(attach => {
+        content.push(
+            <ContentWrapper key="msg-donation" className={donationWrapper} id={id} isReply={isReplyOnly}>
+                <DonationContent amount={attach.purchase.amount} state={attach.purchase.state} />
             </ContentWrapper>,
         );
     });

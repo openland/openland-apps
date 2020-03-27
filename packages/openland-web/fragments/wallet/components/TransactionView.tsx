@@ -25,18 +25,18 @@ interface TransactionViewProps {
 }
 
 export const TransactionView = React.memo((props: TransactionViewProps) => {
-    const { avatar, title, type, dateTime, status, amount, interval, source } = convertTransaction(props.item);
+    const { avatar, title, type, dateTime, status, amount, interval, source, group } = convertTransaction(props.item);
     const payment = source.operation.payment;
     const actionRequired = status === 'failing';
     const color = (actionRequired || status === 'canceled') ? 'var(--accentNegative)' : (source.operation.amount > 0 ? 'var(--accentPositive)' : 'var(--foregroundPrimary)');
-
+    const donationDescription = type === 'Donation' && group ? `, ${group.title}` : '';
     return (
         <>
             <UListItem
                 leftElement={!avatar ? <DepositAvatar /> : undefined}
                 avatar={avatar}
                 title={title}
-                description={type + (!!interval ? `, ${interval}` : '')}
+                description={type + (!!interval ? `, ${interval}` : '') + donationDescription}
                 useRadius={true}
                 rightElement={
                     <XView marginRight={8} alignItems="flex-end">
