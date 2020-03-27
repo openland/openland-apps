@@ -22,7 +22,7 @@ export const ZIconAction = React.memo<ZIconActionProps>((props) => {
     };
     const tintColors: {[s in ZIconActionStyle]: string} = {
         primary: theme.foregroundInverted,
-        pay: theme.foregroundInverted,
+        pay: theme.foregroundContrast,
     };
     const underlayColors: {[s in ZIconActionStyle]: string} = {
         primary: theme.accentPrimaryActive,

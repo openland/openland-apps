@@ -32,17 +32,17 @@ const PriceInput = React.forwardRef((props: PriceInputProps, ref: React.RefObjec
         <TextInput
             ref={ref}
             placeholder="$0"
-            placeholderTextColor={hexToRgba(theme.foregroundInverted, 0.48)}
+            placeholderTextColor={hexToRgba(theme.foregroundContrast, 0.48)}
             keyboardAppearance={theme.keyboardAppearance}
             keyboardType="numeric"
             value={value}
             onChangeText={handleChangeText}
             allowFontScaling={false}
             autoFocus={props.autofocus}
-            selectionColor={Platform.OS === 'android' ? hexToRgba(theme.foregroundInverted, HighlightAlpha) : theme.foregroundInverted}
+            selectionColor={Platform.OS === 'android' ? hexToRgba(theme.foregroundContrast, HighlightAlpha) : theme.foregroundContrast}
             style={{
                 ...TextStyles.Large,
-                color: theme.foregroundInverted,
+                color: theme.foregroundContrast,
                 borderWidth: 0,
                 height: 40,
                 textAlignVertical: 'center',
@@ -61,21 +61,21 @@ const MessageInput = (props: {value: string, onChange: (s: string) => void}) => 
             paddingHorizontal={16}
             paddingVertical={8}
             borderRadius={RadiusStyles.Medium}
-            backgroundColor={hexToRgba(theme.foregroundInverted, 0.08)}
+            backgroundColor={hexToRgba(theme.foregroundContrast, 0.08)}
             minHeight={48}
         >
             <TextInput
                 placeholder="Your message"
-                placeholderTextColor={hexToRgba(theme.foregroundInverted, 0.48)}
+                placeholderTextColor={hexToRgba(theme.foregroundContrast, 0.48)}
                 keyboardAppearance={theme.keyboardAppearance}
                 value={props.value}
                 onChangeText={props.onChange}
                 allowFontScaling={false}
                 multiline={true}
-                selectionColor={Platform.OS === 'android' ? hexToRgba(theme.foregroundInverted, HighlightAlpha) : theme.foregroundInverted}
+                selectionColor={Platform.OS === 'android' ? hexToRgba(theme.foregroundContrast, HighlightAlpha) : theme.foregroundContrast}
                 style={{
                     ...TextStyles.Densed,
-                    color: theme.foregroundInverted,
+                    color: theme.foregroundContrast,
                     borderWidth: 0,
                     paddingBottom: 5,
                     textAlignVertical: 'center',
@@ -168,7 +168,7 @@ const DonationComponent = (props: PageProps) => {
                         paddingTop={32} 
                         paddingBottom={4} 
                         paddingHorizontal={16} 
-                        backgroundColor={theme.accentPay} 
+                        backgroundColor={theme.payBackgroundPrimary} 
                         flexDirection="column"
                         borderRadius={RadiusStyles.Large}
                     >

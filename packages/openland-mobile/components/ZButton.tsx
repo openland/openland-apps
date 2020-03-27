@@ -103,7 +103,7 @@ const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) 
     const size: ZButtonSize = props.size || 'default';
     const style: ZButtonStyle = props.style || 'primary';
     const styles = resolveStylesBySize[size];
-    const backgroundColor = style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : style === 'pay' ? theme.accentPay : theme.backgroundTertiaryTrans);
+    const backgroundColor = style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : style === 'pay' ? theme.payBackgroundPrimary : theme.backgroundTertiaryTrans);
     const textColor = style === 'primary' ? theme.foregroundInverted : (style === 'danger' ? theme.foregroundContrast : style === 'pay' ? theme.foregroundContrast : theme.foregroundSecondary);
 
     const highlightedColors = {
