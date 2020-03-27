@@ -106,7 +106,7 @@ const CompletePaymentComponent = React.memo((props: { id: string, clientSecret: 
             </Text>
             {cards.map(card => <CardView key={card.id} item={card} selected={selected === card.pmid} onPress={() => setSelected(card.pmid)} />)}
             <AddCardItem onPress={handleAdd} />
-            <View marginTop={16} paddingHorizontal={16}>
+            <View marginVertical={16} paddingHorizontal={16}>
                 <ZButton enabled={!!selected} title="Complete" action={onSubmit} style="primary" size="large" loading={loading} />
             </View>
         </View>
