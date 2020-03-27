@@ -9,6 +9,7 @@ import { AppBackgroundTask } from 'openland-y-runtime/AppBackgroundTask';
 import { Queue } from 'openland-y-utils/Queue';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 import { ConferenceWatch } from 'openland-api/spacex.types';
+import { MediaStreamsAlalizer } from './MediaStreamsAlalizer';
 
 export class MediaSessionManager {
     readonly conversationId: string;
@@ -30,9 +31,11 @@ export class MediaSessionManager {
     private ownPeerDetected = false;
     private videoEnabled = false;
 
-    private streams = new Map<string, MediaStreamManager>();
+    readonly streams = new Map<string, MediaStreamManager>();
+    readonly peerStreams = new Map<string, MediaStreamManager>();
     private streamsListeners = new Set<(streams: Map<string, MediaStreamManager>) => void>();
     private videoEnabledListeners = new Set<() => void>();
+    readonly analizer: MediaStreamsAlalizer;
 
     constructor(client: OpenlandClient, conversationId: string, mute: boolean, isPrivate: boolean, onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void, onDestroyRequested: () => void, onVideoEnabled: () => void) {
         this.client = client;
@@ -43,6 +46,7 @@ export class MediaSessionManager {
         this.onVideoEnabledCallback = onVideoEnabled;
         this.isPrivate = isPrivate;
         this.doInit();
+        this.analizer = new MediaStreamsAlalizer(this);
     }
 
     setMute = (mute: boolean) => {
@@ -273,6 +277,10 @@ export class MediaSessionManager {
 
                 ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, this.mediaStream, s, this.isPrivate ? () => this.onStatusChange('connected') : undefined, s.peerId, this.outVideoStream);
                 this.streams.set(s.id, ms);
+                let target = s.peerId;
+                if (target) {
+                    this.peerStreams.set(target, ms);
+                }
                 ms.listenContentStream(c => {
                     if (c) {
                         this.onVideoEnabled();

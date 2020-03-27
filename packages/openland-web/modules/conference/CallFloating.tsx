@@ -10,7 +10,6 @@ import { debounce } from 'openland-y-utils/timer';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
-import { MediaStreamManager } from 'openland-engines/media/MediaStreamManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { VideoComponent } from './ScreenShareModal';
@@ -187,193 +186,76 @@ const useJsDrag = (
     }, []);
 };
 
-const Avatar = React.memo(
-    (props: {
-        peers: Conference_conference_peers[];
-        mediaSessionManager?: MediaSessionManager;
-        fallback: { id: string; title: string; picture?: string | null };
-    }) => {
-        const avatarRef = React.useRef<HTMLDivElement>(null);
-        const [speakingPeerId, setSpeakingPeerId] = React.useState<string>();
-        const [speakingPeerStream, setSpeakingPeerStream] = React.useState<AppMediaStream>();
-        const [videoEnabled, setVideoEnabled] = React.useState(false);
-        React.useEffect(
-            () => {
-                let buffer: Uint8Array;
-                let running = true;
-                let disposeStreamsListener: (() => void) | undefined;
-                let streamsManagers: Map<string, MediaStreamManager> = new Map();
-                const peerStreamAnalyzers = new Map<
-                    string,
-                    {
-                        analyzer: AnalyserNode;
-                        stream: MediaStream;
-                        streamManager: MediaStreamManager;
-                        appSrteam: AppMediaStream;
-                        isMe?: boolean;
-                    }
-                >();
-                if (props.mediaSessionManager) {
-                    disposeStreamsListener = props.mediaSessionManager.listenStreams(
-                        s => (streamsManagers = s),
-                    );
-                } else {
-                    return;
-                }
-
-                const initStreamsAnalizer = (manager: MediaStreamManager, isMe?: boolean) => {
-                    // damn you safari
-                    if (!(window as any).AudioContext) {
-                        return;
-                    }
-                    const peerId = isMe ? manager.getPeerId() : manager.getTargetPeerId() || 'none';
-                    let ex = peerStreamAnalyzers.get(peerId);
-                    let stream = isMe
-                        ? ((manager.getStream() as any) as AppUserMediaStreamWeb).getStream()
-                        : manager.getInStream()
-                            ? ((manager.getInStream() as any) as AppUserMediaStreamWeb).getStream()
-                            : undefined;
-                    // clean up
-                    if (ex && ex.stream !== stream) {
-                        ex.analyzer.disconnect();
-                    }
-                    // create new analyzer
-                    if (stream && (!ex || ex.stream !== stream)) {
-                        let context = new AudioContext();
-                        let source = context.createMediaStreamSource(stream);
-                        let analyser = context.createAnalyser();
-                        const bufferLength = analyser.frequencyBinCount;
-                        if (!buffer) {
-                            buffer = new Uint8Array(bufferLength);
-                        }
-                        source.connect(analyser);
-                        peerStreamAnalyzers.set(peerId, {
-                            stream,
-                            appSrteam: manager.getStream(),
-                            analyzer: analyser,
-                            streamManager: manager,
-                            isMe,
-                        });
-                    }
-                };
-                const initStreamsAnalizers = () => {
-                    streamsManagers.forEach(sm => {
-                        initStreamsAnalizer(sm);
-                    });
-                    if (streamsManagers.size) {
-                        initStreamsAnalizer(streamsManagers.values().next().value, true);
-                    }
-                };
-                let lastPeer: string | undefined;
-                let lastStream: AppMediaStream | undefined;
-                const render = () => {
-                    if (!running) {
-                        return;
-                    }
-                    initStreamsAnalizers();
-                    let lastVal = 0;
-                    let activePeerId: string | undefined;
-                    let activeStream: AppMediaStream | undefined;
-                    let lostStream: AppMediaStream | undefined;
-                    for (let [key, entry] of peerStreamAnalyzers) {
-                        entry.analyzer.getByteFrequencyData(buffer);
-                        let val = Math.min(
-                            1,
-                            buffer.reduce((res, x) => {
-                                return res + x;
-                            }, 0) /
-                            buffer.length /
-                            10,
-                        );
-                        if (val < 0.2) {
-                            val = 0;
-                        }
-                        if (entry.isMe && entry.appSrteam.muted) {
-                            val = 0;
-                        }
-                        let videoStream = entry.streamManager.getVideoStream();
-                        if ((val > lastVal || (!activePeerId && !lastPeer)) && !entry.isMe) {
-                            lastVal = val;
-                            activePeerId = key;
-                            activeStream = videoStream;
-                        }
-
-                        if (key === lastPeer && (videoStream !== lastStream)) {
-                            lostStream = videoStream;
-                        }
-                    }
-
-                    // animate
-                    let scale = 1 + lastVal * 0.4;
-                    if (activePeerId && avatarRef.current) {
-                        avatarRef.current.style.transform = `scale(${scale})`;
-                    }
-
-                    if (activePeerId) {
-                        lastPeer = activePeerId;
-                        lastStream = activeStream;
-                        setSpeakingPeerId(activePeerId);
-                        setSpeakingPeerStream(activeStream);
-                    }
-                    if (lostStream) {
-                        console.warn('lost stream', lostStream);
-                        lastStream = lostStream;
-                        setSpeakingPeerStream(lostStream);
-                    }
-                    requestAnimationFrame(render);
-                };
-
-                requestAnimationFrame(render);
-                return () => {
-                    running = false;
-                    if (disposeStreamsListener) {
-                        disposeStreamsListener();
-                    }
-                    peerStreamAnalyzers.forEach(v => v.analyzer.disconnect());
-
-                    if (avatarRef.current) {
-                        avatarRef.current.style.transform = '';
-                    }
-                };
-            },
-            [props.mediaSessionManager],
-        );
-        React.useEffect(() => {
-            let dispose: (() => void) | undefined;
-            if (props.mediaSessionManager) {
-                dispose = props.mediaSessionManager.listenVideoEnabled(() => {
-                    setVideoEnabled(true);
-                });
+const VideoMediaView = React.memo((props: {
+    mediaSessionManager: MediaSessionManager;
+    peer?: Conference_conference_peers,
+    avatarRef: React.RefObject<HTMLDivElement>,
+    fallback: { id: string; title: string; picture?: string | null }
+}) => {
+    const [stream, setStream] = React.useState<AppMediaStream>();
+    React.useEffect(() => {
+        let d: (() => void) | undefined;
+        if (props.peer?.id) {
+            let m = props.mediaSessionManager.peerStreams.get(props.peer.id);
+            if (m) {
+                d = m.listenContentStream(setStream);
             }
-            return dispose;
-        }, [props.mediaSessionManager]);
-        let peer = props.peers.find(p => p.id === speakingPeerId);
-        return (videoEnabled ?
-            <XView>
-                <XView width={VIDEO_SIZE} height={VIDEO_SIZE} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" backgroundColor="gray" alignItems="center" justifyContent="center">
-                    {speakingPeerStream ?
-                        <VideoComponent stream={(speakingPeerStream as AppUserMediaStreamWeb)._stream} cover={true} /> :
-                        <UAvatar
-                            size="large"
-                            id={peer ? peer.user.id : props.fallback.id}
-                            title={peer ? peer.user.name : props.fallback.title}
-                            photo={peer ? peer.user.photo : props.fallback.picture}
-                        />}
+        }
+        return d;
+    }, [props.peer?.id]);
+    return (
+        <XView width={VIDEO_SIZE} height={VIDEO_SIZE} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" backgroundColor="gray" alignItems="center" justifyContent="center">
+            {stream ?
+                <VideoComponent stream={(stream as AppUserMediaStreamWeb)._stream} cover={true} /> :
+                <div key={'animtateing_wrapper'} className={animatedAvatarStyle} ref={props.avatarRef}>
+                    <UAvatar
+                        size="large"
+                        id={props.peer ? props.peer.user.id : props.fallback.id}
+                        title={props.peer ? props.peer.user.name : props.fallback.title}
+                        photo={props.peer ? props.peer.user.photo : props.fallback.picture}
+                    />
+                </div>
+            }
+        </XView>
+    );
+});
 
-                </XView>
-            </XView> :
-            <div key={'animtateing_wrapper'} className={animatedAvatarStyle} ref={avatarRef}>
-                <UAvatar
-                    size="small"
-                    id={peer ? peer.user.id : props.fallback.id}
-                    title={peer ? peer.user.name : props.fallback.title}
-                    photo={peer ? peer.user.photo : props.fallback.picture}
-                />
-            </div>
+const MediaView = React.memo((props: {
+    peers: Conference_conference_peers[];
+    fallback: { id: string; title: string; picture?: string | null };
+    mediaSessionManager: MediaSessionManager;
+    videoEnabled?: boolean;
+}) => {
+    let peerId = props.mediaSessionManager.analizer.useSpeakingPeer();
+    const avatarRef = React.useRef<HTMLDivElement>(null);
+    console.warn('render', peerId);
+    React.useEffect(() => {
+        let d: (() => void) | undefined;
+        if (peerId) {
+            d = props.mediaSessionManager.analizer.subscribePeer(peerId, v => {
+                // animate
+                if (avatarRef.current) {
+                    avatarRef.current.style.transform = `scale(${1 + v * 0.4})`;
+                }
+            });
+        }
+        return d;
+    }, [peerId]);
+    let peer = props.peers.find(p => p.id === peerId);
 
-        );
-    },
-);
+    return (props.videoEnabled ?
+        <VideoMediaView peer={peer} mediaSessionManager={props.mediaSessionManager} avatarRef={avatarRef} fallback={props.fallback} /> :
+        <div key={'animtateing_wrapper'} className={animatedAvatarStyle} ref={avatarRef}>
+            <UAvatar
+                size="small"
+                id={peer ? peer.user.id : props.fallback.id}
+                title={peer ? peer.user.name : props.fallback.title}
+                photo={peer ? peer.user.photo : props.fallback.picture}
+            />
+        </div>
+
+    );
+});
 
 const greenButtonStyle = css`
     background-color: var(--accentPositiveHover);
@@ -405,16 +287,18 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
         [forceOpen],
     );
 
-    const avatar = data && callState.avatar && (
+    let ms = calls.getMediaSession();
+    const avatar = data && callState.avatar && ms && (
         <>
-            <Avatar
+            <MediaView
                 peers={data.conference.peers}
-                mediaSessionManager={calls.getMediaSession()}
+                mediaSessionManager={ms}
                 fallback={{
                     id: callState.avatar.id,
                     title: callState.avatar.title,
                     picture: callState.avatar.picture,
                 }}
+                videoEnabled={callState.videoEnabled}
             />
         </>
     );
@@ -462,7 +346,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
                                 <XView width={VIDEO_SIZE} height={VIDEO_SIZE} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" backgroundColor="gray">
                                     {avatar}
                                     <XView width={VIDEO_SIZE / 3} height={VIDEO_SIZE / 3} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" position="absolute" top={0} right={0}>
-                                        {callState.outVideo && <VideoComponent stream={(callState.outVideo.stream as AppUserMediaStreamWeb)._stream} cover={true}/>}
+                                        {callState.outVideo && <VideoComponent stream={(callState.outVideo.stream as AppUserMediaStreamWeb)._stream} cover={true} />}
                                     </XView>
                                 </XView>
                             )}
