@@ -108,6 +108,8 @@ export class MediaSessionManager {
         }
         this.destroyed = true;
 
+        this.analizer.dispose();
+
         console.log('[WEBRTC] Destroying conference');
 
         // Destroy streams
