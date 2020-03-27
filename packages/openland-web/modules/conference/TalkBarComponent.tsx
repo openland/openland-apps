@@ -27,96 +27,21 @@ export const CallPeer = (props: CallPeerProps) => {
     let callState = React.useContext(MessengerContext).calls.useState();
     const avatarRef = React.useRef<HTMLDivElement>(null);
     const mediaStream = useStream(props.mediaSessionManager, props.peer.id);
-    let dataArray: Uint8Array;
     const isMe =
         props.peer.id === (props.mediaSessionManager && props.mediaSessionManager.getPeerId());
     // animate while speaking
-    React.useEffect(
-        () => {
-            if (!mediaStream) {
-                return;
-            }
-            let running = true;
-            let remoteAnalyser: AnalyserNode;
-            let inited = false;
-            const init = () => {
-                // damn you safari
-                if (!(window as any).AudioContext) {
-                    return;
-                }
-                if (inited) {
-                    return;
-                }
-                let stream: MediaStream | undefined;
-                if (isMe) {
-                    stream = ((mediaStream.getStream() as any) as AppUserMediaStreamWeb).getStream();
-                } else if (mediaStream.getInStream()) {
-                    stream = ((mediaStream.getInStream() as any) as AppUserMediaStreamWeb).getStream();
-                }
-                if (!stream) {
-                    return;
-                }
-                inited = true;
-                let remoteAudioContext = new AudioContext();
-                let remoteAudioSource = remoteAudioContext.createMediaStreamSource(stream);
-                // Used to retrieve frequency data
-                remoteAnalyser = remoteAudioContext.createAnalyser();
-                // remoteAnalyser.fftSize = 256;
-                const bufferLength = remoteAnalyser.frequencyBinCount;
-                dataArray = new Uint8Array(bufferLength);
-                remoteAudioSource.connect(remoteAnalyser);
-            };
-
-            const render = () => {
-                if (!running) {
-                    return;
-                }
-                if (avatarRef.current && !callState.conversationId) {
-                    avatarRef.current.style.transform = ``;
-                    return;
-                }
-                init();
-                if (remoteAnalyser && dataArray) {
-                    remoteAnalyser.getByteFrequencyData(dataArray);
-
-                    let speaking = Math.min(
-                        1,
-                        dataArray.reduce((res, x) => {
-                            return res + x;
-                        }, 0) /
-                        dataArray.length /
-                        10,
-                    );
-                    if (speaking < 0.2) {
-                        speaking = 0;
-                    }
-                    let scale = 1 + speaking * 0.4;
-                    if (isMe && mediaStream.getStream().muted) {
-                        scale = 1;
-                    }
-                    if (
-                        avatarRef.current &&
-                        ['connected', 'completed'].indexOf(mediaStream.getIceState()) >= 0
-                    ) {
-                        avatarRef.current.style.transform = `scale(${scale})`;
-                    }
-                }
-                requestAnimationFrame(render);
-            };
-
-            requestAnimationFrame(render);
-
-            return () => {
-                if (remoteAnalyser) {
-                    remoteAnalyser.disconnect();
-                }
+    React.useEffect(() => {
+        let d: (() => void) | undefined;
+        if (props.mediaSessionManager) {
+            d = props.mediaSessionManager.analizer.subscribePeer(props.peer.id, v => {
                 if (avatarRef.current) {
-                    avatarRef.current.style.transform = '';
+                    avatarRef.current.style.transform = `scale(${1 + v * 0.4})`;
                 }
-                running = false;
-            };
-        },
-        [mediaStream, callState.conversationId],
+            });
+        }
+        return d;
+    },
+        [props.mediaSessionManager, props.peer.id],
     );
 
     // mark non connected
