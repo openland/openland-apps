@@ -14,7 +14,7 @@ const coverClass = css`
     object-fit: cover;
 `;
 
-export const VideoComponent = React.memo((props: { stream: MediaStream, cover?: boolean }) => {
+export const VideoComponent = React.memo((props: { stream: MediaStream, cover?: boolean, videoClass?: string }) => {
     const videoRef1 = React.useRef<HTMLVideoElement>(null);
     const videoRef2 = React.useRef<HTMLVideoElement>(null);
     const swtch = React.useRef(false);
@@ -31,8 +31,8 @@ export const VideoComponent = React.memo((props: { stream: MediaStream, cover?: 
         }
     }, [props.stream]);
     return <XView width={'100%'} height={'100%'}>
-        <video id={'video-1'} key={'video-1'} ref={videoRef1} className={cx(videoClass, props.cover && coverClass)} />
-        <video id={'video-2'} key={'video-2'} ref={videoRef2} className={cx(videoClass, props.cover && coverClass)} />
+        <video id={'video-1'} key={'video-1'} ref={videoRef1} className={cx(videoClass, props.cover && coverClass, props.videoClass)} />
+        <video id={'video-2'} key={'video-2'} ref={videoRef2} className={cx(videoClass, props.cover && coverClass, props.videoClass)} />
     </XView>;
 });
 

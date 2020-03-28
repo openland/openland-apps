@@ -51,6 +51,10 @@ const VideoOnClass = css`
     }
 `;
 
+const VideoRadius = css`
+    border-radius: ${(AVATAR_SIZE / 2) - 6}px;
+`;
+
 const TargetClass = css`
     display: flex;
     flex-shrink: 0;
@@ -206,7 +210,7 @@ const VideoMediaView = React.memo((props: {
     return (
         <XView width={VIDEO_SIZE} height={VIDEO_SIZE} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" backgroundColor="gray" alignItems="center" justifyContent="center">
             {stream ?
-                <VideoComponent stream={(stream as AppUserMediaStreamWeb)._stream} cover={true} /> :
+                <VideoComponent stream={(stream as AppUserMediaStreamWeb)._stream} cover={true} videoClass={VideoRadius} /> :
                 <div key={'animtateing_wrapper'} className={animatedAvatarStyle} ref={props.avatarRef}>
                     <UAvatar
                         size="large"
@@ -346,7 +350,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
                                 <XView width={VIDEO_SIZE} height={VIDEO_SIZE} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" backgroundColor="gray">
                                     {avatar}
                                     <XView width={VIDEO_SIZE / 3} height={VIDEO_SIZE / 3} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" position="absolute" top={0} right={0}>
-                                        {callState.outVideo && <VideoComponent stream={(callState.outVideo.stream as AppUserMediaStreamWeb)._stream} cover={true} />}
+                                        {callState.outVideo && <VideoComponent stream={(callState.outVideo.stream as AppUserMediaStreamWeb)._stream} cover={true} videoClass={VideoRadius} />}
                                     </XView>
                                 </XView>
                             )}

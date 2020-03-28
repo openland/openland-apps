@@ -3,6 +3,12 @@ import { MediaSessionManager } from './MediaSessionManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { MediaStreamManager } from './MediaStreamManager';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
+
+const AudioContext = canUseDOM && (window.AudioContext // Default
+    || (window as any).webkitAudioContext // Safari and old versions of Chrome
+    || false);
+let audioContext: any;
 
 export class MediaStreamsAlalizer {
     private manager: MediaSessionManager;
@@ -37,11 +43,16 @@ export class MediaStreamsAlalizer {
                 requestAnimationFrame(this.render);
             }
         });
+        if (audioContext?.close) {
+            audioContext?.close();
+        }
+        audioContext = AudioContext ? new AudioContext() : undefined;
+
     }
 
     initStreamsAnalizer = (peerId: string, appStream: AppMediaStream | undefined, manager: MediaStreamManager, isMe?: boolean) => {
         // damn you safari
-        if (!(window as any).AudioContext) {
+        if (!audioContext) {
             return;
         }
         let ex = this.peerStreamAnalyzers.get(peerId);
@@ -51,10 +62,9 @@ export class MediaStreamsAlalizer {
         }
         // create new analyzer
         if (appStream && (!ex || ex.appSrteam !== appStream)) {
-            let context = new AudioContext();
             let mediaStream = (appStream as AppUserMediaStreamWeb).getStream();
-            let source = context.createMediaStreamSource(mediaStream);
-            let analyser = context.createAnalyser();
+            let source = audioContext.createMediaStreamSource(mediaStream);
+            let analyser = audioContext.createAnalyser();
             const bufferLength = analyser.frequencyBinCount;
             if (!this.buffer) {
                 this.buffer = new Uint8Array(bufferLength);
