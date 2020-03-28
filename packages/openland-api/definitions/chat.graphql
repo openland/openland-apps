@@ -60,6 +60,7 @@ query RoomChat($id: ID!) {
             user {
                 id
                 name
+                firstName
                 photo
                 shortname
                 primaryOrganization {
@@ -119,6 +120,7 @@ query RoomChat($id: ID!) {
             }
             owner {
                 id
+                firstName
             }
         }
     }

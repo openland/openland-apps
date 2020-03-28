@@ -516,6 +516,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                         isChannel={this.props.room.__typename === 'SharedRoom' ? this.props.room.isChannel : undefined}
                                         isPrivate={this.props.conversationType === 'PRIVATE'}
                                         autoFocus={true}
+                                        ownerName={this.props.room.__typename === 'SharedRoom' ? this.props.room.owner && this.props.room.owner.firstName : this.props.room.user.firstName}
                                         onEmojiPickerShow={this.startStickerPicking}
                                         onEmojiPickerHide={this.finishStickerPicking}
                                     />

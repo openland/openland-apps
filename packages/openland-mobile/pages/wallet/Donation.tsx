@@ -135,7 +135,7 @@ const DonationComponent = (props: PageProps) => {
     };
 
     let handleSubmit = () => {
-        if (priceField.value.trim() === '' && wrapperRef.current) {
+        if ((priceField.value.trim() === '' || priceField.value === '0') && wrapperRef.current) {
             wrapperRef.current.shake();
             return;
         }

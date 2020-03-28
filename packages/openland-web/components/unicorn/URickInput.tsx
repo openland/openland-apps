@@ -114,6 +114,7 @@ export interface URickInputProps {
 
     onFilesPaste?: (files: File[]) => void;
     className?: string;
+    hideEmoji?: boolean;
 }
 
 let Quill: typeof QuillType.Quill;
@@ -501,12 +502,14 @@ export const URickInput = React.memo(
             >
                 <div ref={containerRef} />
                 {props.withShortcutsButton && <ShortcutButton />}
-                <EmojiPicker
-                    onEmojiPicked={onEmojiPicked}
-                    onStickerSent={props.onStickerSent}
-                    onShow={props.onEmojiPickerShow}
-                    onHide={props.onEmojiPickerHide}
-                />
+                {!props.hideEmoji && (
+                    <EmojiPicker
+                        onEmojiPicked={onEmojiPicked}
+                        onStickerSent={props.onStickerSent}
+                        onShow={props.onEmojiPickerShow}
+                        onHide={props.onEmojiPickerHide}
+                    />
+                )}
             </div>
         );
     }),

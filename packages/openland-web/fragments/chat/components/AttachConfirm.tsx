@@ -8,6 +8,14 @@ import { XModalController } from 'openland-x/showModal';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { UploadCareUploading } from 'openland-web/utils/UploadCareUploading';
 import { LocalImage } from 'openland-engines/messenger/types';
+import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
+import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
+import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
+import { UPopperController } from 'openland-web/components/unicorn/UPopper';
+import { usePopper } from 'openland-web/components/unicorn/usePopper';
+import MediaIcon from 'openland-icons/s/ic-gallery-24.svg';
+import FileIcon from 'openland-icons/s/ic-document-24.svg';
+import DonationIcon from 'openland-icons/s/ic-donation-24.svg';
 
 const imgClass = css`
     margin-top: 8px;
@@ -157,4 +165,54 @@ export const showAttachConfirm = (
     if (tooBig) {
         AlertBlanket.alert('Files bigger than 100mb are not supported yet.');
     }
+};
+
+const attachButtonContainer = css`
+    flex-shrink: 0;
+`;
+
+const AttachMenu = (props: {ctx: UPopperController, onAttachClick: () => void, onDonationClick: () => void}) => {
+    let builder = new UPopperMenuBuilder();
+
+    builder.item({
+        title: 'Photo or video',
+        icon: <MediaIcon />,
+        onClick: props.onAttachClick,
+    });
+    builder.item({
+        title: 'Document',
+        icon: <FileIcon />,
+        onClick: props.onAttachClick,
+    });
+    builder.item({
+        title: 'Donation',
+        icon: <DonationIcon />,
+        onClick: props.onDonationClick,
+    });
+
+    return builder.build(props.ctx, 200);
+};
+
+interface AttachConfirmButtonProps {
+    chatId?: string;
+    onAttachClick: () => void;
+    onDonationClick: () => void;
+}
+
+export const AttachConfirmButton = (props: AttachConfirmButtonProps) => {
+    const [active, show] = usePopper({placement: 'top-start'}, ctx => <AttachMenu ctx={ctx} onAttachClick={props.onAttachClick} onDonationClick={props.onDonationClick} />);
+
+    const handleClick = (e: React.MouseEvent<unknown, MouseEvent>) => {
+        if (props.chatId) {
+            show(e);
+        } else {
+            props.onAttachClick();
+        }
+    };
+
+    return (
+        <div className={attachButtonContainer}>
+            <UIconButton active={active} icon={<AttachIcon />} onClick={handleClick} />
+        </div>
+    );
 };

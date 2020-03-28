@@ -82,23 +82,27 @@ const warningContainer = css`
     margin: -8px 0 20px;
 `;
 
-const CheckLock = React.memo((props: { ctx: XModalController } & PaymentProps) => {
-    let wallet = useClient().useMyWallet();
+const CheckLock = React.memo((props: { ctx: XModalController }) => {
+    const builder = new AlertBlanketBuilder();
     let router = React.useContext(XViewRouterContext);
-    if (wallet.myWallet.isLocked) {
-        const builder = new AlertBlanketBuilder();
 
-        builder.message("Update payment method to complete previously failed transactions and enable new purchases");
-        builder.body(ctx => <div className={warningContainer} />);
-        builder.action('Continue', async () => router?.navigate('/wallet'));
-        builder.onCancel(props.ctx.hide);
-        builder.width(480);
-        return (
-            <XView>
-                <XView marginLeft={20} marginTop={24} marginBottom={-20} {...TextStyles.Title1}>Update payment method</XView>
-                <AlertBlanketComponent builder={builder} controller={props.ctx} />
-            </XView>
-        );
+    builder.message("Update payment method to complete previously failed transactions and enable new purchases");
+    builder.body(ctx => <div className={warningContainer} />);
+    builder.action('Continue', async () => router?.navigate('/wallet'));
+    builder.onCancel(props.ctx.hide);
+    builder.width(480);
+    return (
+        <XView>
+            <XView marginLeft={20} marginTop={24} marginBottom={-20} {...TextStyles.Title1}>Update payment method</XView>
+            <AlertBlanketComponent builder={builder} controller={props.ctx} />
+        </XView>
+    );
+});
+
+const PayConfirm = React.memo((props: { ctx: XModalController } & PaymentProps) => {
+    let wallet = useClient().useMyWallet();
+    if (wallet.myWallet.isLocked) {
+        return <CheckLock ctx={props.ctx} />;
     }
     return <ConfirmPaymentComponent {...props} />;
 });
@@ -114,7 +118,15 @@ type PaymentProps = {
 export function showPayConfirm(props: PaymentProps) {
     showModalBox({}, (ctx) => {
         return (
-            <CheckLock ctx={ctx} {...props} />
+            <PayConfirm ctx={ctx} {...props} />
+        );
+    });
+}
+
+export function showCheckLock() {
+    showModalBox({}, (ctx) => {
+        return (
+            <CheckLock ctx={ctx} />
         );
     });
 }

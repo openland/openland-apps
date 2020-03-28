@@ -6,7 +6,6 @@ import {
     URickInputInstance,
     URickTextValue,
 } from 'openland-web/components/unicorn/URickInput';
-import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
 import AllIcon from 'openland-icons/s/ic-channel-16.svg';
 import AtIcon from 'openland-icons/s/ic-at-24.svg';
 import SendIcon from 'openland-icons/s/ic-send-24.svg';
@@ -21,6 +20,8 @@ import { UNavigableReactWindow } from 'openland-web/components/unicorn/UNavigabl
 import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 import { TextLabel1, TextDensed, TextBody, TextStyles } from 'openland-web/utils/TextStyles';
 import { fileListToArray } from './DropZone';
+import { AttachConfirmButton } from './AttachConfirm';
+import { showDonation } from './showDonation';
 import { XLoader } from 'openland-x/XLoader';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { onEmojiSent } from 'openland-web/components/unicorn/emoji/Recent';
@@ -504,6 +505,7 @@ interface SendMessageComponentProps {
     onPressUp?: () => boolean;
     onAttach?: (files: File[]) => void;
     autoFocus?: boolean;
+    ownerName?: string | null;
 }
 
 const sendMessageContainer = css`
@@ -628,6 +630,10 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
         }
     }, []);
 
+    const onDonationPress = React.useCallback(() => {
+        showDonation({name: props.ownerName, chatId: props.groupId});
+    }, [props.ownerName]);
+
     const onFileInputChange = React.useCallback(e => {
         if (props.onAttach) {
             props.onAttach(fileListToArray(e.target.files));
@@ -670,9 +676,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 onChange={onFileInputChange}
             />
             {!!props.onAttach && (
-                <div className={actionButtonContainer}>
-                    <UIconButton icon={<AttachIcon />} onClick={onAttachPress} />
-                </div>
+                <AttachConfirmButton chatId={props.groupId} onAttachClick={onAttachPress} onDonationClick={onDonationPress} />
             )}
             <XView
                 flexGrow={1}
