@@ -15,7 +15,7 @@ interface TextWrapperProps extends ASTextProps {
     children?: any;
 }
 
-const TextWrapper = (props: TextWrapperProps) => {
+export const TextWrapper = (props: TextWrapperProps) => {
     const { children, numberOfLines, ...other } = props;
 
     return (

@@ -7,8 +7,8 @@ import { FontStyles, TextStylesAsync } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
 import { AsyncReplyMessageMediaView } from '../AsyncReplyMessageMediaView';
 import { AsyncReplyMessageDocumentView } from '../AsyncReplyMessageDocumentView';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/spacex.types';
-import { RenderSpans } from './AsyncRenderSpans';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage_GeneralMessage_attachments_MessageRichAttachment, FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase } from 'openland-api/spacex.types';
+import { RenderSpans, TextWrapper } from './AsyncRenderSpans';
 import { bubbleMaxWidth, bubbleMaxWidthIncoming, contentInsetsHorizontal } from '../AsyncBubbleView';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { StickerContent } from './StickerContent';
@@ -18,6 +18,9 @@ const getAttachFile = (message: DataSourceMessageItem) => {
 };
 const getAttachRich = (message: DataSourceMessageItem) => {
     return message.attachments && message.attachments.filter(a => a.__typename === 'MessageRichAttachment')[0] as FullMessage_GeneralMessage_attachments_MessageRichAttachment | undefined;
+};
+const getAttachPurchase = (message: DataSourceMessageItem) => {
+    return message.attachments && message.attachments.filter(a => a.__typename === 'MessageAttachmentPurchase')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase | undefined;
 };
 
 export const shiftReplyMeta = (message: DataSourceMessageItem, isForward: boolean) => {
@@ -32,9 +35,11 @@ export const shiftReplyMeta = (message: DataSourceMessageItem, isForward: boolea
     let isImage = attachFile && attachFile.fileMetadata.isImage;
     let isSticker = !!lastReply.sticker;
     let isRichAttach = !!getAttachRich(lastReply);
+    let isPurchaseAttach = getAttachPurchase(lastReply);
 
     return isForward && (isImage || isSticker) 
-        || !isForward && !message.text && (isImage || isRichAttach || isSticker);
+        || !isForward && !message.text && (isImage || isRichAttach || isSticker) 
+        || (isPurchaseAttach && isForward);
 };
 
 interface ReplyContentProps {
@@ -91,6 +96,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                         if (repliedMessage) {
                             const attachFile = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
                             const sticker = m.sticker && m.sticker.__typename === 'ImageSticker' ? m.sticker : undefined;
+                            const attachPurchase = getAttachPurchase(repliedMessage);
 
                             return (
                                 <ASFlex key={'reply-' + m.id} flexDirection="column" alignItems="stretch" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBackgroundPatch.uri, scale: lineBackgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={bubbleForegroundTertiary} onPress={handlePress}>
@@ -154,6 +160,19 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                             message={repliedMessage}
                                         />
                                     ) : null}
+                                    {attachPurchase && (
+                                        <TextWrapper
+                                            key={'reply-donation-' + m.id}
+                                            marginLeft={10} 
+                                            fontSize={17}
+                                            lineHeight={22}
+                                            letterSpacing={-0.41}
+                                            onPress={handlePress}
+                                            color={bubbleForegroundPrimary}
+                                        >
+                                            {attachPurchase.fallback}
+                                        </TextWrapper>
+                                    )}
                                 </ASFlex>
                             );
                         } else {

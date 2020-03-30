@@ -85,7 +85,7 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
 
     if (message.__typename === 'GeneralMessage') {
         purchaseAttach.forEach(attach => {
-            content.push(<DonationContent attach={attach} />);
+            content.push(<DonationContent attach={attach} hasText={hasText} />);
         });
     }
 
