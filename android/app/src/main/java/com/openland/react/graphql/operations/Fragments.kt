@@ -1137,6 +1137,7 @@ internal val DiscoverChatsCollectionSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             field("title", "title", notNull(scalar("String"))),
+            field("shortname", "shortname", scalar("String")),
             field("chatsCount", "chatsCount", notNull(scalar("Int"))),
             field("chats", "chats", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -1160,6 +1161,7 @@ internal val DiscoverChatsCollectionShortSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             field("title", "title", notNull(scalar("String"))),
+            field("shortname", "shortname", scalar("String")),
             field("chatsCount", "chatsCount", notNull(scalar("Int"))),
             field("description", "description", scalar("String")),
             field("image", "image", notNull(obj(

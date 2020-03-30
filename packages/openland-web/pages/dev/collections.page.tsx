@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { withApp } from '../../components/withApp';
+import { withApp } from 'openland-web/components/withApp';
 import { UAvatarUploadField, StoredFileT } from 'openland-web/components/unicorn/UAvatarUpload';
 import { DiscoverCollections_discoverCollections_items } from 'openland-api/spacex.types';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInputField } from 'openland-web/components/unicorn/UInput';
+import { UTextAreaField } from 'openland-web/components/unicorn/UTextArea';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { useClient } from 'openland-api/useClient';
 import { XView } from 'react-mental';
@@ -106,6 +107,22 @@ const EditCollectionForm = React.memo((props: { hide: () => void; collection?: C
             text: 'invalid',
         },
     ]);
+    const shortnameField = useField(
+        'shortname',
+        collection && collection.shortname ? collection.shortname : '',
+        form,
+        [
+            {
+                checkIsValid: d => !!d.trim() && d.length < 16,
+                text: 'invalid',
+            },
+        ],
+    );
+    const descriptionField = useField(
+        'description',
+        collection && collection.description ? collection.description : '',
+        form,
+    );
 
     const avatarField = useField<StoredFileT | undefined | null>(
         'avatar',
@@ -160,28 +177,43 @@ const EditCollectionForm = React.memo((props: { hide: () => void; collection?: C
                     id: collection.id,
                     image: {
                         uuid: avatarField.value.uuid,
-                        crop: avatarField.value.crop ? {
-                            x: avatarField.value.crop.x,
-                            y: avatarField.value.crop.y,
-                            w: avatarField.value.crop.w,
-                            h: avatarField.value.crop.h,
-                        } : null,
+                        crop: avatarField.value.crop
+                            ? {
+                                  x: avatarField.value.crop.x,
+                                  y: avatarField.value.crop.y,
+                                  w: avatarField.value.crop.w,
+                                  h: avatarField.value.crop.h,
+                              }
+                            : null,
                     },
                     title: titleField.value,
+                    description: descriptionField.value,
                     chatIds: options.map(i => i.value),
                 });
+                if (!!shortnameField.value) {
+                    await client.mutateDiscoverCollectionSetShortname({
+                        id: collection.id,
+                        shortname: shortnameField.value,
+                    });
+                }
             }
             if (!collection) {
-                await client.mutateDiscoverCollectionsCreate({
+                let data = await client.mutateDiscoverCollectionsCreate({
                     image: {
                         uuid: avatarField.value.uuid,
                         crop: avatarField.value.crop,
                     },
                     title: titleField.value,
+                    description: descriptionField.value,
                     chatIds: options.map(i => i.value),
                 });
+                if (!!shortnameField.value) {
+                    await client.mutateDiscoverCollectionSetShortname({
+                        id: data.discoverCollectionsCreate.id,
+                        shortname: shortnameField.value,
+                    });
+                }
             }
-
             await client.refetchDiscoverCollections({ first: 50 });
             await hide();
         });
@@ -190,7 +222,19 @@ const EditCollectionForm = React.memo((props: { hide: () => void; collection?: C
     return (
         <XView borderRadius={8} flexGrow={1} flexShrink={1}>
             <XModalContent flexGrow={1} flexShrink={1}>
-                <UInputField field={titleField} label="Title" marginBottom={10} />
+                <XView marginBottom={10} flexDirection="row" justifyContent="space-between">
+                    <XView>
+                        <UInputField field={titleField} label="Title" />
+                    </XView>
+                    <XView>
+                        <UInputField field={shortnameField} label="Shortname" />
+                    </XView>
+                </XView>
+                <UTextAreaField
+                    field={descriptionField}
+                    placeholder="Description"
+                    marginBottom={10}
+                />
                 <UAvatarUploadField
                     field={avatarField}
                     cropParams="16:9"
@@ -218,7 +262,12 @@ const EditCollectionForm = React.memo((props: { hide: () => void; collection?: C
                 <XView marginRight={12}>
                     <UButton text="Cancel" style="tertiary" size="large" onClick={hide} />
                 </XView>
-                <UButton text={collection ? 'Update' : 'Create'} size="large" onClick={update} />
+                <UButton
+                    text={collection ? 'Update' : 'Create'}
+                    size="large"
+                    onClick={update}
+                    loading={form.loading}
+                />
             </XModalFooter>
         </XView>
     );

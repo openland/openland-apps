@@ -1131,6 +1131,7 @@ private let DiscoverChatsCollectionSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             field("title", "title", notNull(scalar("String"))),
+            field("shortname", "shortname", scalar("String")),
             field("chatsCount", "chatsCount", notNull(scalar("Int"))),
             field("chats", "chats", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -1154,6 +1155,7 @@ private let DiscoverChatsCollectionShortSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             field("title", "title", notNull(scalar("String"))),
+            field("shortname", "shortname", scalar("String")),
             field("chatsCount", "chatsCount", notNull(scalar("Int"))),
             field("description", "description", scalar("String")),
             field("image", "image", notNull(obj(
@@ -2730,6 +2732,7 @@ private let DiscoverCollectionSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
                     field("title", "title", notNull(scalar("String"))),
+                    field("shortname", "shortname", scalar("String")),
                     field("description", "description", scalar("String")),
                     field("image", "image", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
@@ -4484,8 +4487,11 @@ private let DeleteOrganizationSelector = obj(
 private let DeleteUserSelector = obj(
             field("superDeleteUser", "superDeleteUser", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
+private let DiscoverCollectionSetShortnameSelector = obj(
+            field("alphaSetCollectionShortName", "alphaSetCollectionShortName", arguments(fieldValue("id", refValue("id")), fieldValue("shortname", refValue("shortname"))), scalar("String"))
+        )
 private let DiscoverCollectionsCreateSelector = obj(
-            field("discoverCollectionsCreate", "discoverCollectionsCreate", arguments(fieldValue("collection", objectValue(fieldValue("title", refValue("title")),fieldValue("image", refValue("image")),fieldValue("chatIds", refValue("chatIds"))))), notNull(obj(
+            field("discoverCollectionsCreate", "discoverCollectionsCreate", arguments(fieldValue("collection", objectValue(fieldValue("title", refValue("title")),fieldValue("description", refValue("description")),fieldValue("image", refValue("image")),fieldValue("chatIds", refValue("chatIds"))))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
                     field("title", "title", notNull(scalar("String")))
@@ -4495,7 +4501,7 @@ private let DiscoverCollectionsDeleteSelector = obj(
             field("discoverCollectionsDelete", "discoverCollectionsDelete", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
 private let DiscoverCollectionsUpdateSelector = obj(
-            field("discoverCollectionsUpdate", "discoverCollectionsUpdate", arguments(fieldValue("id", refValue("id")), fieldValue("input", objectValue(fieldValue("title", refValue("title")),fieldValue("image", refValue("image")),fieldValue("chatIds", refValue("chatIds"))))), notNull(obj(
+            field("discoverCollectionsUpdate", "discoverCollectionsUpdate", arguments(fieldValue("id", refValue("id")), fieldValue("input", objectValue(fieldValue("title", refValue("title")),fieldValue("description", refValue("description")),fieldValue("image", refValue("image")),fieldValue("chatIds", refValue("chatIds"))))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
                     field("title", "title", notNull(scalar("String")))
@@ -5458,7 +5464,7 @@ class Operations {
     let DiscoverCollection = OperationDefinition(
         "DiscoverCollection",
         .query, 
-        "query DiscoverCollection($id:ID!){discoverCollection(id:$id){__typename id title description image{__typename uuid crop{__typename x y w h}}chats{__typename ...DiscoverSharedRoom}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
+        "query DiscoverCollection($id:ID!){discoverCollection(id:$id){__typename id title shortname description image{__typename uuid crop{__typename x y w h}}chats{__typename ...DiscoverSharedRoom}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         DiscoverCollectionSelector
     )
     let DiscoverCollectionShort = OperationDefinition(
@@ -5470,13 +5476,13 @@ class Operations {
     let DiscoverCollections = OperationDefinition(
         "DiscoverCollections",
         .query, 
-        "query DiscoverCollections($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename ...DiscoverChatsCollection}cursor}}fragment DiscoverChatsCollection on DiscoverChatsCollection{__typename id title chatsCount chats{__typename ...DiscoverSharedRoom}description image{__typename uuid crop{__typename x y w h}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
+        "query DiscoverCollections($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename ...DiscoverChatsCollection}cursor}}fragment DiscoverChatsCollection on DiscoverChatsCollection{__typename id title shortname chatsCount chats{__typename ...DiscoverSharedRoom}description image{__typename uuid crop{__typename x y w h}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         DiscoverCollectionsSelector
     )
     let DiscoverCollectionsShort = OperationDefinition(
         "DiscoverCollectionsShort",
         .query, 
-        "query DiscoverCollectionsShort($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename ...DiscoverChatsCollectionShort}cursor}}fragment DiscoverChatsCollectionShort on DiscoverChatsCollection{__typename id title chatsCount description image{__typename uuid crop{__typename x y w h}}}",
+        "query DiscoverCollectionsShort($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename ...DiscoverChatsCollectionShort}cursor}}fragment DiscoverChatsCollectionShort on DiscoverChatsCollection{__typename id title shortname chatsCount description image{__typename uuid crop{__typename x y w h}}}",
         DiscoverCollectionsShortSelector
     )
     let DiscoverEditorsChoice = OperationDefinition(
@@ -6187,10 +6193,16 @@ class Operations {
         "mutation DeleteUser($id:ID!){superDeleteUser(id:$id)}",
         DeleteUserSelector
     )
+    let DiscoverCollectionSetShortname = OperationDefinition(
+        "DiscoverCollectionSetShortname",
+        .mutation, 
+        "mutation DiscoverCollectionSetShortname($id:ID!,$shortname:String!){alphaSetCollectionShortName(id:$id,shortname:$shortname)}",
+        DiscoverCollectionSetShortnameSelector
+    )
     let DiscoverCollectionsCreate = OperationDefinition(
         "DiscoverCollectionsCreate",
         .mutation, 
-        "mutation DiscoverCollectionsCreate($title:String!,$image:ImageRefInput!,$chatIds:[ID!]!){discoverCollectionsCreate(collection:{title:$title,image:$image,chatIds:$chatIds}){__typename id title}}",
+        "mutation DiscoverCollectionsCreate($title:String!,$description:String,$image:ImageRefInput!,$chatIds:[ID!]!){discoverCollectionsCreate(collection:{title:$title,description:$description,image:$image,chatIds:$chatIds}){__typename id title}}",
         DiscoverCollectionsCreateSelector
     )
     let DiscoverCollectionsDelete = OperationDefinition(
@@ -6202,7 +6214,7 @@ class Operations {
     let DiscoverCollectionsUpdate = OperationDefinition(
         "DiscoverCollectionsUpdate",
         .mutation, 
-        "mutation DiscoverCollectionsUpdate($id:ID!,$title:String!,$image:ImageRefInput!,$chatIds:[ID!]!){discoverCollectionsUpdate(id:$id,input:{title:$title,image:$image,chatIds:$chatIds}){__typename id title}}",
+        "mutation DiscoverCollectionsUpdate($id:ID!,$title:String!,$description:String,$image:ImageRefInput!,$chatIds:[ID!]!){discoverCollectionsUpdate(id:$id,input:{title:$title,description:$description,image:$image,chatIds:$chatIds}){__typename id title}}",
         DiscoverCollectionsUpdateSelector
     )
     let DiscoverEditorsChoiceCreate = OperationDefinition(
@@ -7016,6 +7028,7 @@ class Operations {
         if name == "DeleteNotification" { return DeleteNotification }
         if name == "DeleteOrganization" { return DeleteOrganization }
         if name == "DeleteUser" { return DeleteUser }
+        if name == "DiscoverCollectionSetShortname" { return DiscoverCollectionSetShortname }
         if name == "DiscoverCollectionsCreate" { return DiscoverCollectionsCreate }
         if name == "DiscoverCollectionsDelete" { return DiscoverCollectionsDelete }
         if name == "DiscoverCollectionsUpdate" { return DiscoverCollectionsUpdate }

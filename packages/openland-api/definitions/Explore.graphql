@@ -22,6 +22,7 @@ fragment DiscoverSharedRoom on SharedRoom {
 fragment DiscoverChatsCollection on DiscoverChatsCollection {
     id
     title
+    shortname
     chatsCount
     chats {
         ...DiscoverSharedRoom
@@ -41,6 +42,7 @@ fragment DiscoverChatsCollection on DiscoverChatsCollection {
 fragment DiscoverChatsCollectionShort on DiscoverChatsCollection {
     id
     title
+    shortname
     chatsCount
     description
     image {
@@ -255,6 +257,7 @@ query DiscoverCollection($id: ID!) {
     discoverCollection(id: $id) {
         id
         title
+        shortname
         description
         image {
             uuid
@@ -287,8 +290,20 @@ query DiscoverCollectionShort($id: ID!) {
     }
 }
 
-mutation DiscoverCollectionsCreate($title: String!, $image: ImageRefInput!, $chatIds: [ID!]!) {
-    discoverCollectionsCreate(collection: { title: $title, image: $image, chatIds: $chatIds }) {
+mutation DiscoverCollectionsCreate(
+    $title: String!
+    $description: String
+    $image: ImageRefInput!
+    $chatIds: [ID!]!
+) {
+    discoverCollectionsCreate(
+        collection: {
+            title: $title
+            description: $description
+            image: $image
+            chatIds: $chatIds
+        }
+    ) {
         id
         title
     }
@@ -296,20 +311,32 @@ mutation DiscoverCollectionsCreate($title: String!, $image: ImageRefInput!, $cha
 mutation DiscoverCollectionsUpdate(
     $id: ID!
     $title: String!
+    $description: String
     $image: ImageRefInput!
     $chatIds: [ID!]!
 ) {
-    discoverCollectionsUpdate(id: $id, input: { title: $title, image: $image, chatIds: $chatIds }) {
+    discoverCollectionsUpdate(
+        id: $id
+        input: {
+            title: $title
+            description: $description
+            image: $image
+            chatIds: $chatIds
+        }
+    ) {
         id
         title
     }
+}
+mutation DiscoverCollectionSetShortname($id: ID!, $shortname: String!) {
+    alphaSetCollectionShortName(id: $id, shortname: $shortname)
 }
 mutation DiscoverCollectionsDelete($id: ID!) {
     discoverCollectionsDelete(id: $id)
 }
 mutation DiscoverEditorsChoiceCreate($image: ImageRefInput!, $cid: ID!) {
     discoverEditorsChoiceCreate(input: { image: $image, cid: $cid }) {
-id
+        id
         image {
             uuid
             crop {

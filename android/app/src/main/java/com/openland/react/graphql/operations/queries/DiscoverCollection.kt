@@ -9,6 +9,7 @@ internal val DiscoverCollectionSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
                     field("title", "title", notNull(scalar("String"))),
+                    field("shortname", "shortname", scalar("String")),
                     field("description", "description", scalar("String")),
                     field("image", "image", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
@@ -30,6 +31,6 @@ internal val DiscoverCollectionSelector = obj(
 val DiscoverCollection = object: OperationDefinition {
     override val name = "DiscoverCollection"
     override val kind = OperationKind.QUERY
-    override val body = "query DiscoverCollection(\$id:ID!){discoverCollection(id:\$id){__typename id title description image{__typename uuid crop{__typename x y w h}}chats{__typename ...DiscoverSharedRoom}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}"
+    override val body = "query DiscoverCollection(\$id:ID!){discoverCollection(id:\$id){__typename id title shortname description image{__typename uuid crop{__typename x y w h}}chats{__typename ...DiscoverSharedRoom}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}"
     override val selector = DiscoverCollectionSelector
 }

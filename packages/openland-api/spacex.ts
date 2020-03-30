@@ -1606,6 +1606,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateDeleteUser(variables: Types.DeleteUserVariables): Promise<Types.DeleteUser> {
         return this.mutate('DeleteUser', variables);
     }
+    mutateDiscoverCollectionSetShortname(variables: Types.DiscoverCollectionSetShortnameVariables): Promise<Types.DiscoverCollectionSetShortname> {
+        return this.mutate('DiscoverCollectionSetShortname', variables);
+    }
     mutateDiscoverCollectionsCreate(variables: Types.DiscoverCollectionsCreateVariables): Promise<Types.DiscoverCollectionsCreate> {
         return this.mutate('DiscoverCollectionsCreate', variables);
     }
