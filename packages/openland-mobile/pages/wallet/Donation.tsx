@@ -159,7 +159,7 @@ const DonationComponent = (props: PageProps) => {
                     return;
                 }
                 if (userId) {
-                    props.router.push('ProfileUser', {id: userId});
+                    props.router.push('Conversation', {flexibleId: userId});
                     return;
                 }
 
