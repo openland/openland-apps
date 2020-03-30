@@ -6,7 +6,7 @@ import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 
 export type CallStatus = 'initial' | 'connecting' | 'connected' | 'end' | 'waiting';
 
-type LocalVideo = { type: 'screen', stream: AppMediaStream } | { type: 'video', stream: AppMediaStream };
+type LocalVideo = { type: 'screen' | 'video', stream: AppMediaStream };
 export interface CallState {
     avatar?: { id: string, title: string, picture?: string | null };
     conversationId?: string;
@@ -76,7 +76,10 @@ export class CallsEngine {
         let localVideo: LocalVideo | undefined = undefined;
         if (this.mediaSession) {
             if (source !== this.state.outVideo?.type) {
-                localVideo = { type: source, stream: await (source === 'video' ? this.mediaSession.startVideo : this.mediaSession.startScreenShare)() };
+                let stream = await (source === 'video' ? this.mediaSession.startVideo : this.mediaSession.startScreenShare)();
+                if (stream) {
+                    localVideo = { type: source, stream };
+                }
             } else {
                 (source === 'video' ? this.mediaSession.stopVideo : this.mediaSession.stopScreenShare)();
             }
