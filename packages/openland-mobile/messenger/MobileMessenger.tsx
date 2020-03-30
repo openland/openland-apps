@@ -398,7 +398,8 @@ export class MobileMessenger {
         }
 
         if (message.text) {
-            if (message.senderId === this.engine.user.id) {
+            let hasPurchase = message.attachments && message.attachments.some(a => a.__typename === 'MessageAttachmentPurchase');
+            if (message.senderId === this.engine.user.id && !hasPurchase) {
                 builder.action('Edit', () => {
                     conversation.messagesActionsStateEngine.edit(message);
                 }, false, require('assets/ic-edit-24.png'));

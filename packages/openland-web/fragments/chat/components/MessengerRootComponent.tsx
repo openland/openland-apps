@@ -342,7 +342,8 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             m => m.type === 'message' && m.isOut && m.text && !m.isSending && !m.isService,
         );
         let myMessage = myMessages[0] as DataSourceMessageItem | undefined;
-        if (myMessage) {
+        let hasPurchase = myMessage && myMessage.attachments && myMessage.attachments.some(a => a.__typename === 'MessageAttachmentPurchase');
+        if (myMessage && !hasPurchase) {
             this.conversation!.messagesActionsStateEngine.edit(myMessage);
             return true;
         }

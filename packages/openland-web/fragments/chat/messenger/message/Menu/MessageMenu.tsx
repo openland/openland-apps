@@ -31,7 +31,8 @@ export const buildMessageMenu = (ctx: UPopperController, message: DataSourceWebM
     if (engine.canPin && message.id) {
         menu.item({ title: 'Pin', icon: <PinIcon />, action: () => engine.engine.client.mutatePinMessage({ messageId: message.id!, chatId: engine.conversationId }) });
     }
-    if (message.senderId === engine.engine.user.id && message.text) {
+    let hasPurchase = message.attachments && message.attachments.some(a => a.__typename === 'MessageAttachmentPurchase');
+    if (message.senderId === engine.engine.user.id && message.text && !hasPurchase) {
         menu.item({ title: 'Edit', icon: <EditIcon />, onClick: () => engine.messagesActionsStateEngine.edit(message) });
     }
     if (message.senderId === engine.engine.user.id) {
