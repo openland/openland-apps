@@ -1143,6 +1143,7 @@ const DiscoverChatsCollectionSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('SharedRoom', DiscoverSharedRoomSelector)
                 ))))),
+            field('description', 'description', args(), scalar('String')),
             field('image', 'image', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('uuid', 'uuid', args(), notNull(scalar('String'))),
@@ -1161,6 +1162,7 @@ const DiscoverChatsCollectionShortSelector = obj(
             field('id', 'id', args(), notNull(scalar('ID'))),
             field('title', 'title', args(), notNull(scalar('String'))),
             field('chatsCount', 'chatsCount', args(), notNull(scalar('Int'))),
+            field('description', 'description', args(), scalar('String')),
             field('image', 'image', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('uuid', 'uuid', args(), notNull(scalar('String'))),
@@ -2729,6 +2731,18 @@ const DiscoverCollectionSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('id', 'id', args(), notNull(scalar('ID'))),
                     field('title', 'title', args(), notNull(scalar('String'))),
+                    field('description', 'description', args(), scalar('String')),
+                    field('image', 'image', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('uuid', 'uuid', args(), notNull(scalar('String'))),
+                            field('crop', 'crop', args(), obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    field('x', 'x', args(), notNull(scalar('Int'))),
+                                    field('y', 'y', args(), notNull(scalar('Int'))),
+                                    field('w', 'w', args(), notNull(scalar('Int'))),
+                                    field('h', 'h', args(), notNull(scalar('Int')))
+                                ))
+                        ))),
                     field('chats', 'chats', args(), notNull(list(notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             fragment('SharedRoom', DiscoverSharedRoomSelector)
@@ -5441,7 +5455,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     DiscoverCollection: {
         kind: 'query',
         name: 'DiscoverCollection',
-        body: 'query DiscoverCollection($id:ID!){discoverCollection(id:$id){__typename id title chats{__typename ...DiscoverSharedRoom}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
+        body: 'query DiscoverCollection($id:ID!){discoverCollection(id:$id){__typename id title description image{__typename uuid crop{__typename x y w h}}chats{__typename ...DiscoverSharedRoom}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
         selector: DiscoverCollectionSelector
     },
     DiscoverCollectionShort: {
@@ -5453,13 +5467,13 @@ export const Operations: { [key: string]: OperationDefinition } = {
     DiscoverCollections: {
         kind: 'query',
         name: 'DiscoverCollections',
-        body: 'query DiscoverCollections($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename ...DiscoverChatsCollection}cursor}}fragment DiscoverChatsCollection on DiscoverChatsCollection{__typename id title chatsCount chats{__typename ...DiscoverSharedRoom}image{__typename uuid crop{__typename x y w h}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
+        body: 'query DiscoverCollections($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename ...DiscoverChatsCollection}cursor}}fragment DiscoverChatsCollection on DiscoverChatsCollection{__typename id title chatsCount chats{__typename ...DiscoverSharedRoom}description image{__typename uuid crop{__typename x y w h}}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
         selector: DiscoverCollectionsSelector
     },
     DiscoverCollectionsShort: {
         kind: 'query',
         name: 'DiscoverCollectionsShort',
-        body: 'query DiscoverCollectionsShort($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename ...DiscoverChatsCollectionShort}cursor}}fragment DiscoverChatsCollectionShort on DiscoverChatsCollection{__typename id title chatsCount image{__typename uuid crop{__typename x y w h}}}',
+        body: 'query DiscoverCollectionsShort($first:Int!,$after:String){discoverCollections(first:$first,after:$after){__typename items{__typename ...DiscoverChatsCollectionShort}cursor}}fragment DiscoverChatsCollectionShort on DiscoverChatsCollection{__typename id title chatsCount description image{__typename uuid crop{__typename x y w h}}}',
         selector: DiscoverCollectionsShortSelector
     },
     DiscoverEditorsChoice: {

@@ -26,6 +26,7 @@ fragment DiscoverChatsCollection on DiscoverChatsCollection {
     chats {
         ...DiscoverSharedRoom
     }
+    description
     image {
         uuid
         crop {
@@ -41,6 +42,7 @@ fragment DiscoverChatsCollectionShort on DiscoverChatsCollection {
     id
     title
     chatsCount
+    description
     image {
         uuid
         crop {
@@ -253,6 +255,16 @@ query DiscoverCollection($id: ID!) {
     discoverCollection(id: $id) {
         id
         title
+        description
+        image {
+            uuid
+            crop {
+                x
+                y
+                w
+                h
+            }
+        }
         chats {
             ...DiscoverSharedRoom
         }

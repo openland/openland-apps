@@ -1567,6 +1567,7 @@ type Mutation {
   debugQueueDailyPaidLeaderboard: Boolean!
   debugQueueWeeklyPaidLeaderboard: Boolean!
   debugSendHiddenMessage(uid: ID!, message: String!): Boolean!
+  debugFixBrokenDonations: Boolean!
   settingsUpdate(settings: UpdateSettingsInput): Settings!
   sendEmailChangeCode(newEmail: String!): String!
   changeEmail(sessionId: String!, confirmationCode: String!): Boolean!

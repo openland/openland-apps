@@ -17,6 +17,6 @@ internal val DiscoverCollectionsShortSelector = obj(
 val DiscoverCollectionsShort = object: OperationDefinition {
     override val name = "DiscoverCollectionsShort"
     override val kind = OperationKind.QUERY
-    override val body = "query DiscoverCollectionsShort(\$first:Int!,\$after:String){discoverCollections(first:\$first,after:\$after){__typename items{__typename ...DiscoverChatsCollectionShort}cursor}}fragment DiscoverChatsCollectionShort on DiscoverChatsCollection{__typename id title chatsCount image{__typename uuid crop{__typename x y w h}}}"
+    override val body = "query DiscoverCollectionsShort(\$first:Int!,\$after:String){discoverCollections(first:\$first,after:\$after){__typename items{__typename ...DiscoverChatsCollectionShort}cursor}}fragment DiscoverChatsCollectionShort on DiscoverChatsCollection{__typename id title chatsCount description image{__typename uuid crop{__typename x y w h}}}"
     override val selector = DiscoverCollectionsShortSelector
 }

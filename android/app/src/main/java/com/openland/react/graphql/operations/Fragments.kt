@@ -1142,6 +1142,7 @@ internal val DiscoverChatsCollectionSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("SharedRoom", DiscoverSharedRoomSelector)
                 ))))),
+            field("description", "description", scalar("String")),
             field("image", "image", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("uuid", "uuid", notNull(scalar("String"))),
@@ -1160,6 +1161,7 @@ internal val DiscoverChatsCollectionShortSelector = obj(
             field("id", "id", notNull(scalar("ID"))),
             field("title", "title", notNull(scalar("String"))),
             field("chatsCount", "chatsCount", notNull(scalar("Int"))),
+            field("description", "description", scalar("String")),
             field("image", "image", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("uuid", "uuid", notNull(scalar("String"))),
