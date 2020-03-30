@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage, FullMessage_GeneralMessage_attachments_MessageRichAttachment } from 'openland-api/spacex.types';
+import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, FullMessage, FullMessage_GeneralMessage_attachments_MessageRichAttachment, FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase } from 'openland-api/spacex.types';
 import { View, Dimensions } from 'react-native';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { isPad } from 'openland-mobile/pages/Root';
 import { TextContent } from './content/TextContent';
 import { ReplyContent } from './content/ReplyContent';
+import { DonationContent } from './content/DonationContent';
 import { layoutImage } from 'openland-mobile/messenger/components/content/MediaContent';
 import { MediaContent } from './content/MediaContent';
 import { RichAttachContent } from './content/RichAttachContent';
@@ -59,6 +60,7 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
     const mediaAttaches = attaches.filter(a => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
     const documentsAttaches = attaches.filter(a => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[] || [];
     const augmenationAttaches = attaches.filter(a => a.__typename === 'MessageRichAttachment') as FullMessage_GeneralMessage_attachments_MessageRichAttachment[] || [];
+    const purchaseAttach = attaches.filter(a => a.__typename === 'MessageAttachmentPurchase') as FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase[] || [];
 
     const replies = message.__typename === 'GeneralMessage' ? message.quotedMessages : [];
     const sticker = message.__typename === 'StickerMessage' && message.sticker.__typename === 'ImageSticker' ? message.sticker : undefined;
@@ -78,6 +80,12 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
             if (imageLayout) {
                 content.push(<MediaContent key={'msg-' + message.id + '-media-' + index} imageLayout={imageLayout} message={message} attach={file} theme={theme} />);
             }
+        });
+    }
+
+    if (message.__typename === 'GeneralMessage') {
+        purchaseAttach.forEach(attach => {
+            content.push(<DonationContent attach={attach} />);
         });
     }
 
