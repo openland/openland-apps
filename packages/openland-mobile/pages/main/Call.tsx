@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { View, Text, TouchableOpacity, Image, BackHandler } from 'react-native';
+import { View, Text, TouchableOpacity, Image, BackHandler, Dimensions, ScrollView } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { CallController } from 'openland-mobile/calls/CallController';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -22,6 +22,40 @@ import { formatTimerTime } from 'openland-y-utils/formatTime';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
+import { Conference_conference_peers } from 'openland-api/spacex.types';
+import { AppUserMediaStreamNative } from 'openland-y-runtime-native/AppUserMedia';
+import { RTCView } from 'react-native-webrtc';
+import { AppConfig } from 'openland-y-runtime-native/AppConfig';
+
+const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaSession: MediaSessionManager }) => {
+    let [stream, setStream] = React.useState<string>();
+    let streamManager = props.mediaSession.useStreamManager(props.peer.id);
+
+    React.useEffect(() => {
+        if (props.peer.user.isYou) {
+            return props.mediaSession.listenOutVideo(s => {
+                setStream((s as AppUserMediaStreamNative)?._stream.toURL());
+            });
+        } else {
+            return streamManager?.listenContentStream(s => {
+                if (s) {
+                    setStream((s as AppUserMediaStreamNative)?._stream.toURL());
+                }
+            });
+        }
+
+    }, [streamManager]);
+    let w = Dimensions.get('window').width / 2;
+    return (
+        <View width={w} height={w} backgroundColor="black">
+            {stream && <RTCView streamURL={stream} style={{ flex: 1 }} objectFit="cover" />}
+            <View position="absolute" left={6} bottom={6}>
+                <ZAvatar size="medium" id={props.peer.id} title={props.peer.user.name} photo={props.peer.user.photo} />
+            </View>
+        </View>
+    );
+});
 
 let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let theme = React.useContext(ThemeContext);
@@ -93,41 +127,49 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
 
     }, [timer, initialTime, status]);
 
+    let mediaSession = calls.getMediaSession();
+
     return (
-        <ASSafeAreaView flexDirection="column" alignItems="stretch" flexGrow={1}>
-            <View alignItems="center" justifyContent="center" flexDirection="column">
-                <View marginTop={67} flexDirection="row" borderWidth={10} borderRadius={120} borderColor="rgba(0, 0, 0, 0.05)">
-                    <ZAvatar size="xx-large" id={room.id} title={title} photo={photo} />
+        <ASSafeAreaView flexDirection="column" alignItems="stretch" height="100%">
+            <ScrollView >
+                <View alignItems="center" justifyContent="center" flexDirection="column" marginBottom={40}>
+                    <View marginTop={67} flexDirection="row" borderWidth={10} borderRadius={120} borderColor="rgba(0, 0, 0, 0.05)">
+                        <ZAvatar size="xx-large" id={room.id} title={title} photo={photo} />
+                    </View>
+                    <Text
+                        style={{ fontSize: 28, fontWeight: FontStyles.Weight.Medium, color: 'white', textAlign: 'center', marginTop: 25 }}
+                        numberOfLines={4}
+                    >
+                        {title}
+                    </Text>
+                    <Text
+                        style={{ fontSize: 16, color: 'white', textAlign: 'center', marginTop: 8, opacity: 0.8 }}
+                    >
+                        {
+                            status === 'end' ? 'Call ended ' :
+                                status === 'waiting' ? 'Waiting...' :
+                                    status === 'connected' ? '' : 'Connecting...'
+                        }
+                        {['connected', 'end'].includes(status) ? formatTimerTime(timer) : ''}
+                    </Text>
                 </View>
-                <Text
-                    style={{ fontSize: 28, fontWeight: FontStyles.Weight.Medium, color: 'white', textAlign: 'center', marginTop: 25 }}
-                    numberOfLines={4}
-                >
-                    {title}
-                </Text>
-                <Text
-                    style={{ fontSize: 16, color: 'white', textAlign: 'center', marginTop: 8, opacity: 0.8 }}
-                >
-                    {
-                        status === 'end' ? 'Call ended ' :
-                            status === 'waiting' ? 'Waiting...' :
-                                status === 'connected' ? '' : 'Connecting...'
-                    }
-                    {['connected', 'end'].includes(status) ? formatTimerTime(timer) : ''}
-                </Text>
-            </View>
 
-            {room.__typename === 'SharedRoom' && <View flexDirection="row" alignItems="center" flexWrap="wrap" marginHorizontal={18} marginTop={40}>
-                {conference && conference.conference.peers.map(p => {
-                    return <View key={p.id} margin={10}>
-                        <ZAvatar size="medium" id={p.id} title={p.user.name} photo={p.user.photo} />
-                    </View>;
+                {room.__typename === 'SharedRoom' &&
+                    <View flexDirection="row" alignItems="center" flexWrap="wrap" marginHorizontal={callsState.videoEnabled ? 0 : 18}>
+                        {conference && conference.conference.peers.map(p => {
+                            return <View key={p.id} margin={callsState.videoEnabled ? 0 : 10} >
+                                {(!callsState.videoEnabled || !mediaSession) ? <ZAvatar size="medium" id={p.id} title={p.user.name} photo={p.user.photo} /> :
+                                    <VideoView peer={p} mediaSession={mediaSession} />
+                                }
+                            </View>;
 
-                })}
-            </View>}
+                        })}
+                        <View height={100} width={1} />
+                    </View>
+                }
+            </ScrollView>
 
-            <View flexGrow={1} />
-            <View justifyContent="center" alignItems="center" marginBottom={56} flexDirection="row">
+            <View justifyContent="space-around" alignItems="center" bottom={56} flexDirection="row" position="absolute" width="100%">
 
                 <TouchableOpacity
                     onPress={() => {
@@ -137,7 +179,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                         // props.hide();
                         setSpeaker((s) => !s);
                     }}
-                    style={{ width: 56, height: 56, marginRight: 45 }}
+                    style={{ width: 56, height: 56}}
                 >
                     <View backgroundColor={speaker ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
                         <Image source={require('assets/ic-speaker-30.png')} style={{ tintColor: speaker ? 'black' : 'white' }} />
@@ -153,11 +195,22 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                     </View>
                 </TouchableOpacity>
 
+                {AppConfig.isNonProduction() && <TouchableOpacity
+                    onPress={() => {
+                        calls.switchVideo();
+                    }}
+                    style={{ width: 56, height: 56 }}
+                >
+                    <View backgroundColor={calls.state.outVideo ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
+                        <Image source={calls.state.outVideo ? require('assets/ic-camera-video-24.png') : require('assets/ic-camera-video-24.png')} style={{ tintColor: calls.state.outVideo ? 'black' : 'white' }} />
+                    </View>
+                </TouchableOpacity>}
+
                 <TouchableOpacity
                     onPress={() => {
                         setMute((s) => !s);
                     }}
-                    style={{ width: 56, height: 56, marginLeft: 45 }}
+                    style={{ width: 56, height: 56 }}
                 >
                     <View backgroundColor={mute ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
                         <Image source={mute ? require('assets/ic-mic-off-30.png') : require('assets/ic-mic-on-30.png')} style={{ tintColor: mute ? 'black' : 'white' }} />

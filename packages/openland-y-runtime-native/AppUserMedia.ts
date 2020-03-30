@@ -1,14 +1,14 @@
 import { AppUserMediaApi, AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
-import { mediaDevices } from 'react-native-webrtc';
+import { mediaDevices, MediaStream } from 'react-native-webrtc';
 
 export class AppUserMediaStreamNative implements AppMediaStream {
-    blinded = false;
+    _blinded = false;
     private _muted = false;
-    readonly _stream: any;
+    readonly _stream: MediaStream;
     readonly id: string;
     onClosed: (() => void) | undefined;
 
-    constructor(stream: any) {
+    constructor(stream: MediaStream) {
         this.id = stream.id;
         this._stream = stream;
     }
@@ -26,6 +26,19 @@ export class AppUserMediaStreamNative implements AppMediaStream {
         }
     }
 
+    get blinded() {
+        return this._blinded;
+    }
+
+    set blinded(val: boolean) {
+        if (this._blinded !== val) {
+            this._blinded = val;
+            for (let t of this._stream.getVideoTracks()) {
+                t.enabled = !val;
+            }
+        }
+    }
+
     close = () => {
         for (let t of this._stream.getTracks()) {
             t.stop();
@@ -36,11 +49,18 @@ export class AppUserMediaStreamNative implements AppMediaStream {
 export const AppUserMedia: AppUserMediaApi = {
     async getUserAudio() {
         let media = await mediaDevices.getUserMedia({ audio: true, video: false });
-        return new AppUserMediaStreamNative(media);
+        if (!media) {
+            throw new Error('audio denied');
+        }
+        return new AppUserMediaStreamNative(media as MediaStream);
     },
 
     async getUserVideo() {
-        throw Error('not implemented yet');
+        let media = await mediaDevices.getUserMedia({ audio: false, video: true });
+        if (!media) {
+            throw new Error('video denied');
+        }
+        return new AppUserMediaStreamNative(media as MediaStream);
     },
 
     async getUserScreen() {

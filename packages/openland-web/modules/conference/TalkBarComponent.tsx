@@ -6,7 +6,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
 import { ChatInfo } from 'openland-web/fragments/chat/types';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
-import { useStream, MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
+import { useStreamManager, MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { css } from 'linaria';
 import { UButton } from 'openland-web/components/unicorn/UButton';
@@ -26,7 +26,7 @@ interface CallPeerProps {
 export const CallPeer = (props: CallPeerProps) => {
     let callState = React.useContext(MessengerContext).calls.useState();
     const avatarRef = React.useRef<HTMLDivElement>(null);
-    const mediaStream = useStream(props.mediaSessionManager, props.peer.id);
+    const mediaStream = useStreamManager(props.mediaSessionManager, props.peer.id);
     const isMe =
         props.peer.id === (props.mediaSessionManager && props.mediaSessionManager.getPeerId());
     // animate while speaking

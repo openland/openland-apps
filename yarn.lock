@@ -2429,6 +2429,14 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
+"@types/react-native-webrtc@^1.75.1":
+  version "1.75.1"
+  resolved "https://registry.yarnpkg.com/@types/react-native-webrtc/-/react-native-webrtc-1.75.1.tgz#f8da4428def7c80429aa7bc9436ef6a87c2f2763"
+  integrity sha512-+EvGAoMcS6GXEx0+3y57pmIHMjzGQ+K9FH3O5Hxl1BKEz4v+NdlnTW3pwR57vjO8vN3goXK1SbL+D3zBEGJdHA==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
 "@types/react-native@*", "@types/react-native@0.56.4":
   version "0.56.4"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.56.4.tgz#2643ca2a9a81e30da9fde96cfd8587fca4e3c19d"

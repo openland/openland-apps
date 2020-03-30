@@ -517,28 +517,28 @@ declare module 'react-native-extra-dimensions-android' {
     export = instance;
 }
 
-declare module 'react-native-webrtc' {
-    export const mediaDevices: {
-        getUserMedia(args: any): Promise<any>;
-    };
-    export class RTCPeerConnection {
-        constructor(args: any);
+// declare module 'react-native-webrtc' {
+//     export const mediaDevices: {
+//         getUserMedia(args: any): Promise<any>;
+//     };
+//     export class RTCPeerConnection {
+//         constructor(args: any);
 
-        onicecandidate: (src: any) => void;
+//         onicecandidate: (src: any) => void;
 
-        onnegotiationneeded: () => void;
+//         onnegotiationneeded: () => void;
 
-        close(): void;
-    }
+//         close(): void;
+//     }
 
-    export const RTCView: any;
-    export class RTCSessionDescription {
-        constructor(src: any);
-    }
-    export class RTCIceCandidate {
-        constructor(src: any);
-    }
-}
+//     export const RTCView: any;
+//     export class RTCSessionDescription {
+//         constructor(src: any);
+//     }
+//     export class RTCIceCandidate {
+//         constructor(src: any);
+//     }
+// }
 
 declare module 'emoji-toolkit' {
     const instance: {

@@ -10,6 +10,29 @@ import { Queue } from 'openland-y-utils/Queue';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 import { ConferenceWatch } from 'openland-api/spacex.types';
 import { MediaStreamsAlalizer } from './MediaStreamsAlalizer';
+import { AppConfig } from 'openland-y-runtime/AppConfig';
+
+export const useStreamManager = (manager: MediaSessionManager | undefined, peerId: string) => {
+    const [stream, setStream] = React.useState<MediaStreamManager>();
+    React.useEffect(() => {
+        if (!manager) {
+            return;
+        }
+        return manager.listenStreams(streams => {
+            if (manager.getPeerId() === peerId && streams.size) {
+                setStream(streams.values().next().value);
+            } else {
+                streams.forEach(s => {
+                    if (s.getTargetPeerId() === peerId) {
+                        setStream(s);
+                    }
+                });
+            }
+
+        });
+    }, [manager]);
+    return stream;
+};
 
 export class MediaSessionManager {
     readonly conversationId: string;
@@ -66,7 +89,7 @@ export class MediaSessionManager {
 
         this.stopVideo();
         this.outScreenStream.blinded = false;
-        this.activeStream = this.outScreenStream;
+        this.notifyOutVideo(this.outScreenStream);
         this.handleState();
         this.onVideoEnabled();
         return this.outScreenStream;
@@ -86,7 +109,7 @@ export class MediaSessionManager {
             this.outVideoStream = await AppUserMedia.getUserVideo();
         }
         this.outVideoStream.blinded = false;
-        this.activeStream = this.outVideoStream;
+        this.notifyOutVideo(this.outVideoStream);
         this.handleState();
         this.onVideoEnabled();
         return this.outVideoStream;
@@ -94,10 +117,16 @@ export class MediaSessionManager {
 
     stopVideo = async () => {
         if (this.outVideoStream) {
-            this.outVideoStream.blinded = true;
-            this.outVideoStream.close();
-            this.outVideoStream = undefined;
+            // we can't switch tracks on mobile yet, so just blind it for now
+            if (AppConfig.getPlatform() === 'mobile') {
+                this.outVideoStream.blinded = true;
+            } else {
+                this.outVideoStream.blinded = true;
+                this.outVideoStream.close();
+                this.outVideoStream = undefined;
+            }
         }
+
     }
 
     onVideoEnabled = () => {
@@ -354,26 +383,25 @@ export class MediaSessionManager {
     notifyVideoEnabled = () => {
         this.videoEnabledListeners.forEach(l => l());
     }
-}
 
-export const useStream = (manager: MediaSessionManager | undefined, peerId: string) => {
-    const [stream, setStream] = React.useState<MediaStreamManager>();
-    React.useEffect(() => {
-        if (!manager) {
-            return;
+    useStreamManager = (peerId: string) => {
+        return useStreamManager(this, peerId);
+    }
+
+    private outVideoListeners = new Set<(stream: AppMediaStream) => void>();
+    listenOutVideo = (listener: (stream: AppMediaStream) => void) => {
+        this.outVideoListeners.add(listener);
+        if (this.activeStream) {
+            listener(this.activeStream);
         }
-        return manager.listenStreams(streams => {
-            if (manager.getPeerId() === peerId && streams.size) {
-                setStream(streams.values().next().value);
-            } else {
-                streams.forEach(s => {
-                    if (s.getTargetPeerId() === peerId) {
-                        setStream(s);
-                    }
-                });
-            }
+        return () => {
+            this.outVideoListeners.delete(listener);
+        };
+    }
 
-        });
-    }, [manager]);
-    return stream;
-};
+    notifyOutVideo = (stream: AppMediaStream) => {
+        this.activeStream = stream;
+        this.outVideoListeners.forEach(l => l(stream));
+    }
+
+}
