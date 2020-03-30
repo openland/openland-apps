@@ -118,6 +118,11 @@ fragment WalletTransactionFragment on WalletTransaction {
                 }
                 ... on Purchase {
                     id
+                    user {
+                        id
+                        name
+                        photo
+                    }
                     product {
                         ... on WalletProductGroup {
                             group {

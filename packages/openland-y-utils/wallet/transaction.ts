@@ -118,6 +118,10 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
                     converted.group = product.chat;
                 }
             }
+            if (operation.source.__typename === 'Purchase') {
+                converted.title = operation.source.user.name;
+                converted.avatar = getAvatar(operation.source.user);
+            }
         }
     } else if (operation.__typename === 'WalletTransactionPurchase') {
         const { product } = operation.purchase;

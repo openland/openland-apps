@@ -2297,6 +2297,7 @@ type Purchase {
   intent: PaymentIntent
   product: WalletProduct!
   amount: Int!
+  user: User!
 }
 
 enum PurchaseState {
@@ -3177,7 +3178,7 @@ type WalletProductDonation {
 type WalletProductDonationMessage {
   user: User!
   chat: Room!
-  message: ModernMessage!
+  message: ModernMessage
 }
 
 type WalletProductDonationReaction {
