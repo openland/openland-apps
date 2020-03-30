@@ -57,10 +57,14 @@ export class MediaSessionManager {
     }
 
     startScreenShare = async () => {
-        this.stopVideo();
         if (!this.outScreenStream) {
             this.outScreenStream = await AppUserMedia.getUserScreen();
         }
+        if (!this.outScreenStream) {
+            return;
+        }
+
+        this.stopVideo();
         this.outScreenStream.blinded = false;
         this.activeStream = this.outScreenStream;
         this.handleState();
@@ -91,6 +95,8 @@ export class MediaSessionManager {
     stopVideo = async () => {
         if (this.outVideoStream) {
             this.outVideoStream.blinded = true;
+            this.outVideoStream.close();
+            this.outVideoStream = undefined;
         }
     }
 
@@ -277,7 +283,7 @@ export class MediaSessionManager {
             } else {
                 console.log('[WEBRTC] Create stream ' + s.id);
 
-                ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, this.mediaStream, s, this.isPrivate ? () => this.onStatusChange('connected') : undefined, s.peerId, this.outVideoStream);
+                ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, this.mediaStream, s, this.isPrivate ? () => this.onStatusChange('connected') : undefined, s.peerId, this.activeStream);
                 this.streams.set(s.id, ms);
                 let target = s.peerId;
                 if (target) {

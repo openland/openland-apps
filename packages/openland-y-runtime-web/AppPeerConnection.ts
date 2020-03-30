@@ -96,12 +96,25 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     addStream = (stream: AppMediaStream) => {
         let str = (stream as AppUserMediaStreamWeb)._stream;
         for (let t of str.getTracks()) {
+            // ensure track removed;
             let sender = this.trackSenders.get(t);
             if (sender) {
                 this.connection.removeTrack(sender);
             }
-            this.trackSenders.set(t, this.connection.addTrack(t, str));
         }
+        let tracks = str.getTracks();
+        for (let sender of this.connection.getSenders()) {
+            for (let i = tracks.length - 1; i >= 0; i--) {
+                let track = tracks[i];
+                console.warn(sender.track, track);
+                if (sender.track?.kind === track.kind) {
+                    sender.replaceTrack(track);
+                    this.trackSenders.set(track, sender);
+                    tracks.splice(i, 1);
+                }
+            }
+        }
+        tracks.map(track => this.trackSenders.set(track, this.connection.addTrack(track, str)));
     }
 
     addIceCandidate = (candidate: string) => {
