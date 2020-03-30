@@ -77,7 +77,7 @@ export class MediaStreamManager {
 
         this.peerConnection.onnegotiationneeded = () => {
             console.warn('[WEBRTC]: onnegotiationneeded');
-            if (this.streamConfig.state === 'READY' && this.iceConnectionState === 'connected') {
+            if (this.streamConfig.state === 'READY' && ['connected', 'completed'].includes(this. iceConnectionState)) {
                 backoff(async () => {
                     if (this.destroyed) {
                         return;
