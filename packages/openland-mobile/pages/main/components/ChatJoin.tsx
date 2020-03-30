@@ -50,7 +50,8 @@ interface ChatJoinProps {
 }
 
 interface ChatJoinComponentProps {
-    room: Pick<Room_room_SharedRoom, 'id' | 'title' | 'photo' | 'description' | 'membersCount' | 'onlineMembersCount' | 'previewMembers' | 'isChannel' | 'isPremium' | 'premiumPassIsActive' | 'premiumSettings' | 'premiumSubscription' | 'owner'>;
+    room: Pick<Room_room_SharedRoom, 'id' | 'title' | 'photo' | 'description' | 'membersCount' | 'onlineMembersCount' | 'previewMembers' | 'isChannel' | 'isPremium' | 'premiumPassIsActive' | 'premiumSettings' | 'premiumSubscription'>;
+    ownerId?: string;
     theme: ThemeGlobal;
     action: () => Promise<any>;
     invitedBy?: { id: string, name: string, photo: string | null };
@@ -153,7 +154,7 @@ const BuyPaidChatPassButton = (props: {
 };
 export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
     const area = React.useContext(ASSafeAreaContext);
-    const { theme, action, invitedBy, room } = props;
+    const { theme, action, invitedBy, room, ownerId } = props;
     let { id, title, photo, description, membersCount, onlineMembersCount, previewMembers = [], isChannel } = room;
     const typeStr = isChannel ? 'channel' : 'group';
     const paddingBottom = Platform.OS === 'ios' ? (area.bottom || 16) : area.bottom + 16;
@@ -257,7 +258,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                     premiumSettings={room.premiumSettings!}
                     title={room.title}
                     photo={room.photo}
-                    ownerId={room.owner && room.owner.id}
+                    ownerId={ownerId}
                 />
             );
         }
@@ -300,5 +301,5 @@ export const ChatJoin = React.memo((props: ChatJoinProps) => {
         }
     }, [props.room]);
 
-    return <ChatJoinComponent room={room} theme={props.theme} action={action} router={props.router} />;
+    return <ChatJoinComponent room={room} ownerId={room.owner ? room.owner.id : undefined} theme={props.theme} action={action} router={props.router} />;
 });

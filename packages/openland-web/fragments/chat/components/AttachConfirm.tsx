@@ -195,6 +195,8 @@ const AttachMenu = (props: {ctx: UPopperController, onAttachClick: () => void, o
 
 interface AttachConfirmButtonProps {
     chatId?: string;
+    isYou?: boolean;
+    isChannel?: boolean;
     onAttachClick: () => void;
     onDonationClick: () => void;
 }
@@ -203,7 +205,7 @@ export const AttachConfirmButton = (props: AttachConfirmButtonProps) => {
     const [active, show] = usePopper({placement: 'top-start'}, ctx => <AttachMenu ctx={ctx} onAttachClick={props.onAttachClick} onDonationClick={props.onDonationClick} />);
 
     const handleClick = (e: React.MouseEvent<unknown, MouseEvent>) => {
-        if (props.chatId) {
+        if (props.chatId && !props.isChannel && !props.isYou) {
             show(e);
         } else {
             props.onAttachClick();

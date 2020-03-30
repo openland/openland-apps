@@ -812,7 +812,8 @@ internal val RoomShortSelector = obj(
                 field("owner", "owner", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("id", "id", notNull(scalar("ID"))),
-                        field("firstName", "firstName", notNull(scalar("String")))
+                        field("firstName", "firstName", notNull(scalar("String"))),
+                        field("isYou", "isYou", notNull(scalar("Boolean")))
                     ))
             ))
         )
@@ -1814,7 +1815,8 @@ internal val RoomFullSelector = obj(
                 field("owner", "owner", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("id", "id", notNull(scalar("ID"))),
-                        field("firstName", "firstName", notNull(scalar("String")))
+                        field("firstName", "firstName", notNull(scalar("String"))),
+                        field("isYou", "isYou", notNull(scalar("Boolean")))
                     ))
             ))
         )

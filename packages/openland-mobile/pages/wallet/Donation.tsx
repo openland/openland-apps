@@ -154,6 +154,15 @@ const DonationComponent = (props: PageProps) => {
             try {
                 await client.mutateSendDonation({chatId, userId, amount, message: messageField.value });
                 Toast.success({ duration: 1000}).show();
+                if (chatId) {
+                    props.router.push('Conversation', {id: chatId});
+                    return;
+                }
+                if (userId) {
+                    props.router.push('ProfileUser', {id: userId});
+                    return;
+                }
+
             } catch (e) {
                 Toast.failure({ duration: 1000}).show();
             }

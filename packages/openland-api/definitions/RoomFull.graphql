@@ -90,6 +90,7 @@ fragment RoomFull on Room {
         owner {
             id
             firstName
+            isYou
         }
     }
 }

@@ -46,6 +46,7 @@ fragment RoomShort on Room {
         owner {
             id
             firstName
+            isYou
         }
     }
 }

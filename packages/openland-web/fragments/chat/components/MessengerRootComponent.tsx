@@ -471,6 +471,11 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         const showInput = !this.state.hideInput && this.conversation.canSendMessage;
         const membersCount =
             this.props.room.__typename === 'SharedRoom' ? this.props.room.membersCount : undefined;
+        const user = this.props.room.__typename === 'SharedRoom' 
+            ? this.props.room.owner
+            : this.props.room.user;
+        const userFirstName = user ? user.firstName : undefined;
+        const isYou = user ? user.isYou : undefined;
         return (
             <div className={messengerContainer}>
                 {this.state.loading && <XLoader loading={true} />}
@@ -515,8 +520,9 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                         onContentChange={this.onContentChange}
                                         isChannel={this.props.room.__typename === 'SharedRoom' ? this.props.room.isChannel : undefined}
                                         isPrivate={this.props.conversationType === 'PRIVATE'}
+                                        isYou={isYou}
                                         autoFocus={true}
-                                        ownerName={this.props.room.__typename === 'SharedRoom' ? this.props.room.owner && this.props.room.owner.firstName : this.props.room.user.firstName}
+                                        ownerName={userFirstName}
                                         onEmojiPickerShow={this.startStickerPicking}
                                         onEmojiPickerHide={this.finishStickerPicking}
                                     />
