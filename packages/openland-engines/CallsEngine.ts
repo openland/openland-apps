@@ -36,6 +36,9 @@ export class CallsEngine {
     }
 
     joinCall = (conversationId: string, isPrivate: boolean, avatar?: { id: string, title: string, picture?: string | null }) => {
+        if (this.mediaSession?.conversationId === conversationId) {
+            return;
+        }
         if (this.mediaSession) {
             this.mediaSession.destroy();
         }
@@ -46,6 +49,7 @@ export class CallsEngine {
     leaveCall = () => {
         if (this.mediaSession) {
             this.mediaSession.destroy();
+            this.mediaSession = undefined;
             this.setState({ mute: false, status: 'end' });
             this.setState({ mute: false, status: 'initial' });
         }
@@ -99,6 +103,17 @@ export class CallsEngine {
             };
         }, []);
         return res;
+    }
+
+    listenState = (listener: (state: CallState) => void) => {
+        this._stateSubscriptions.push(listener);
+        return () => {
+            let ind = this._stateSubscriptions.indexOf(listener);
+            listener(this.state);
+            if (ind >= 0) {
+                this._stateSubscriptions.splice(ind, 1);
+            }
+        };
     }
 
     private setState = (value: CallState) => {

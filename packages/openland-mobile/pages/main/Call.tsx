@@ -2,7 +2,6 @@ import * as React from 'react';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { View, Text, TouchableOpacity, Image, BackHandler, Dimensions, ScrollView } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { CallController } from 'openland-mobile/calls/CallController';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { SStatusBar } from 'react-native-s/SStatusBar';
 import { ZModalController, showModal } from 'openland-mobile/components/ZModal';
@@ -51,7 +50,7 @@ const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaS
         <View width={w} height={w} backgroundColor="black">
             {stream && <RTCView streamURL={stream} style={{ flex: 1 }} objectFit="cover" />}
             <View position="absolute" left={6} bottom={6}>
-                <ZAvatar size="medium" id={props.peer.id} title={props.peer.user.name} photo={props.peer.user.photo} />
+                <ZAvatar size="medium" id={props.peer.user.id} title={props.peer.user.name} photo={props.peer.user.photo} />
             </View>
         </View>
     );
@@ -90,6 +89,11 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let conference = getClient().useConference({ id: props.id }, { suspense: false });
     useWatchCall(conference && conference.conference.id);
 
+    React.useEffect(() => {
+        calls.joinCall(props.id, room.__typename === 'PrivateRoom');
+        return InCallManager.stop;
+    }, []);
+
     let onCallEnd = React.useCallback(() => {
         InCallManager.stop({ busytone: '_BUNDLE_' });
         calls.leaveCall();
@@ -102,6 +106,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     }, []);
 
     React.useEffect(() => {
+
         if (callsState.status === 'connected') {
             if (callsState.private) {
                 setInitialTime(new Date().getTime());
@@ -158,7 +163,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                     <View flexDirection="row" alignItems="center" flexWrap="wrap" marginHorizontal={callsState.videoEnabled ? 0 : 18}>
                         {conference && conference.conference.peers.map(p => {
                             return <View key={p.id} margin={callsState.videoEnabled ? 0 : 10} >
-                                {(!callsState.videoEnabled || !mediaSession) ? <ZAvatar size="medium" id={p.id} title={p.user.name} photo={p.user.photo} /> :
+                                {(!callsState.videoEnabled || !mediaSession) ? <ZAvatar size="medium" id={p.user.id} title={p.user.name} photo={p.user.photo} /> :
                                     <VideoView peer={p} mediaSession={mediaSession} />
                                 }
                             </View>;
@@ -171,15 +176,20 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
 
             <View justifyContent="space-around" alignItems="center" bottom={56} flexDirection="row" position="absolute" width="100%">
 
+                {AppConfig.isNonProduction() && <TouchableOpacity
+                    onPress={props.hide}
+                    style={{ width: 56, height: 56 }}
+                >
+                    <View backgroundColor="rgba(0,0,0,0.15)" width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
+                        <Image source={require('assets/ic-close-24.png')} style={{ tintColor: 'white' }} />
+                    </View>
+                </TouchableOpacity>}
+
                 <TouchableOpacity
                     onPress={() => {
-                        // if (theme.blurType === 'light') {
-                        //     SStatusBar.setBarStyle('dark-content');
-                        // }
-                        // props.hide();
                         setSpeaker((s) => !s);
                     }}
-                    style={{ width: 56, height: 56}}
+                    style={{ width: 56, height: 56 }}
                 >
                     <View backgroundColor={speaker ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
                         <Image source={require('assets/ic-speaker-30.png')} style={{ tintColor: speaker ? 'black' : 'white' }} />
@@ -208,7 +218,10 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
 
                 <TouchableOpacity
                     onPress={() => {
-                        setMute((s) => !s);
+                        setMute((s) => {
+                            calls.setMute(!s);
+                            return !s;
+                        });
                     }}
                     style={{ width: 56, height: 56 }}
                 >
@@ -217,10 +230,6 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                     </View>
                 </TouchableOpacity>
             </View>
-            <CallController id={props.id} mute={mute} isPrivate={room.__typename === 'PrivateRoom'} />
-            {/* <View flexDirection="row" paddingHorizontal={16} paddingVertical={16}>
-                {conference.peers.map((v) => (<View><Text>{v.user.name}</Text></View>))}
-            </View> */}
         </ASSafeAreaView>
     );
 });
