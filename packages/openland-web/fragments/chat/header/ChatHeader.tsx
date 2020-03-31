@@ -196,7 +196,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
         res.item({
             title: 'Leave chat',
             icon: <LeaveIcon />,
-            action: () => showLeaveChatConfirmation(client, chat.id, tabRouter),
+            action: () => showLeaveChatConfirmation(client, chat.id, tabRouter, chat.__typename === 'SharedRoom' && chat.isPremium),
         });
     }
 

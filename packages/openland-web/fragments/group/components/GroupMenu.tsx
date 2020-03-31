@@ -9,12 +9,9 @@ import {
 import SettingsIcon from 'openland-icons/s/ic-settings-24.svg';
 import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
-import DeleteIcon from 'openland-icons/s/ic-delete-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { useClient } from 'openland-api/useClient';
-import { useRole } from 'openland-x-permissions/XWithRole';
-import AlertBlanket from 'openland-x/AlertBlanket';
 import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 
 interface GroupMenu {
@@ -25,7 +22,7 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
     const tabRouter = useTabRouter();
     const client = useClient();
     const { ctx, group } = props;
-    const { id, title, canEdit, role, organization, isChannel } = group;
+    const { id, canEdit, role, organization, isChannel } = group;
     const typeString = isChannel ? 'channel' : 'group';
     const builder = new UPopperMenuBuilder();
 
@@ -54,29 +51,8 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
     builder.item({
         title: `Leave ${typeString}`,
         icon: <LeaveIcon />,
-        onClick: () => showLeaveChatConfirmation(client, id, tabRouter),
+        onClick: () => showLeaveChatConfirmation(client, id, tabRouter, group.__typename === 'SharedRoom' && group.isPremium),
     });
-
-    if (useRole('super-admin')) {
-        builder.item({
-            title: `Delete`,
-            icon: <DeleteIcon />,
-            onClick: () => {
-                AlertBlanket.builder()
-                    .title(`Delete ${title}`)
-                    .message(`Are you sure you want to delete ${title}? This cannot be undone.`)
-                    .action(
-                        'Delete',
-                        async () => {
-                            await client.mutateRoomLeave({ roomId: id });
-                            tabRouter.router.navigate('/mail');
-                        },
-                        'danger',
-                    )
-                    .show();
-            },
-        });
-    }
 
     return builder.build(ctx);
 });

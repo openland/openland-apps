@@ -175,26 +175,27 @@ export const showLeaveChatConfirmation = (
     client: OpenlandClient,
     chatId: string,
     tabRouter: TabRouterContextProps,
+    isPremium?: boolean
 ) => {
     const builder = new AlertBlanketBuilder();
 
-    builder.title('Leave chat');
-    builder.message(
-        'Are you sure you want to leave? You will need to request access to join it again in the future.',
-    );
-    builder.action(
-        'Leave',
-        async () => {
-            await client.mutateRoomLeave({ roomId: chatId });
-            await client.refetchRoomChat({ id: chatId });
-            if (tabRouter.router.currentTab === 0) {
-                tabRouter.router.reset('/discover');
-            } else {
-                tabRouter.router.navigate('/mail');
-            }
-        },
-        'danger',
-    );
-
-    builder.show();
+    builder.title('Leave chat')
+        .message(
+            isPremium ? 'Leaving the group only removes it from your chat list. To cancel the associated subscription, visit Subscriptions section in your Account tab and cancel it from there.' :
+                'Are you sure you want to leave? You will need to request access to join it again in the future.'
+        )
+        .action(
+            'Leave',
+            async () => {
+                await client.mutateRoomLeave({ roomId: chatId });
+                await client.refetchRoomChat({ id: chatId });
+                if (tabRouter.router.currentTab === 0) {
+                    tabRouter.router.reset('/discover');
+                } else {
+                    tabRouter.router.navigate('/mail');
+                }
+            },
+            'danger',
+        )
+        .show();
 };

@@ -86,7 +86,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
         () => {
             Alert.builder()
                 .title(`Leave ${typeString}?`)
-                .message('You may not be able to join it again')
+                .message(room.isPremium ? 'Leaving the group only removes it from your chat list. To cancel the associated subscription, visit Subscriptions section in your Account tab and cancel it from there.' : 'You may not be able to join it again')
                 .button('Cancel', 'cancel')
                 .action(`Leave`, 'destructive', async () => {
                     await client.mutateRoomLeave({ roomId });
@@ -339,8 +339,8 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                             <PremiumBadge />
                         </View>
                     ) : (
-                        undefined
-                    )
+                            undefined
+                        )
                 }
                 titleColor={highlightGroup ? theme.accentPositive : undefined}
                 title={room.title}

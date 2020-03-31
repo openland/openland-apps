@@ -51,7 +51,7 @@ const useSharedHandlers = (room: Room_room_SharedRoom, router: SRouter) => {
     const onLeavePress = React.useCallback(() => {
         Alert.builder()
             .title(`Leave ${room.isChannel ? 'channel' : 'group'}?`)
-            .message('You may not be able to join it again')
+            .message(room.isPremium ? 'Leaving the group only removes it from your chat list. To cancel the associated subscription, visit Subscriptions section in your Account tab and cancel it from there.' : 'You may not be able to join it again')
             .button('Cancel', 'cancel')
             .action('Leave', 'destructive', async () => {
                 await client.mutateRoomLeave({ roomId: room.id });

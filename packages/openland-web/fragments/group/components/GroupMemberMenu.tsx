@@ -146,7 +146,7 @@ const getMenuContent = (
             icon: <StarIcon />,
             action: async () => {
                 await client.mutateRoomChangeRole({ userId: user.id, roomId: id, newRole: member.role === 'ADMIN' ? RoomMemberRole.MEMBER : RoomMemberRole.ADMIN });
-                opts.updateUserRole(user.id, member.role === 'ADMIN' ? RoomMemberRole.MEMBER : RoomMemberRole.ADMIN );
+                opts.updateUserRole(user.id, member.role === 'ADMIN' ? RoomMemberRole.MEMBER : RoomMemberRole.ADMIN);
             },
         });
     }
@@ -155,7 +155,7 @@ const getMenuContent = (
         res.push({
             title: `Leave ${typeString}`,
             icon: <LeaveIcon />,
-            onClick: () => showLeaveChatConfirmation(client, id, tabRouter),
+            onClick: () => showLeaveChatConfirmation(client, id, tabRouter, group.__typename === 'SharedRoom' && group.isPremium),
         });
     }
 
