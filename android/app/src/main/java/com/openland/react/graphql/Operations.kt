@@ -144,6 +144,7 @@ object Operations {
         if (name == "DeleteNotification") return DeleteNotification
         if (name == "DeleteOrganization") return DeleteOrganization
         if (name == "DeleteUser") return DeleteUser
+        if (name == "DiscoverCollectionSetShortname") return DiscoverCollectionSetShortname
         if (name == "DiscoverCollectionsCreate") return DiscoverCollectionsCreate
         if (name == "DiscoverCollectionsDelete") return DiscoverCollectionsDelete
         if (name == "DiscoverCollectionsUpdate") return DiscoverCollectionsUpdate

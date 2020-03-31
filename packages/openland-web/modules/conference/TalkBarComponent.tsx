@@ -30,17 +30,18 @@ export const CallPeer = (props: CallPeerProps) => {
     const isMe =
         props.peer.id === (props.mediaSessionManager && props.mediaSessionManager.getPeerId());
     // animate while speaking
-    React.useEffect(() => {
-        let d: (() => void) | undefined;
-        if (props.mediaSessionManager) {
-            d = props.mediaSessionManager.analizer.subscribePeer(props.peer.id, v => {
-                if (avatarRef.current) {
-                    avatarRef.current.style.transform = `scale(${1 + v * 0.4})`;
-                }
-            });
-        }
-        return d;
-    },
+    React.useEffect(
+        () => {
+            let d: (() => void) | undefined;
+            if (props.mediaSessionManager) {
+                d = props.mediaSessionManager.analizer.subscribePeer(props.peer.id, v => {
+                    if (avatarRef.current) {
+                        avatarRef.current.style.transform = `scale(${1 + v * 0.4})`;
+                    }
+                });
+            }
+            return d;
+        },
         [props.mediaSessionManager, props.peer.id],
     );
 
@@ -56,7 +57,7 @@ export const CallPeer = (props: CallPeerProps) => {
                         callState.conversationId && ['connected', 'completed'].indexOf(s) === -1
                             ? 100
                             : 0
-                        }%)`;
+                    }%)`;
                 }
             });
             return () => {
@@ -105,10 +106,9 @@ export const CallPeer = (props: CallPeerProps) => {
                         photo={props.peer.user.photo}
                     />
                 </div>
-                {!isMe &&
-                    contentStream && (
-                        <UButton marginLeft={8} text="view screen" onClick={joinScreen} />
-                    )}
+                {!isMe && contentStream && (
+                    <UButton marginLeft={8} text="view screen" onClick={joinScreen} />
+                )}
             </XView>
             <XView width={8} />
         </>
@@ -117,6 +117,32 @@ export const CallPeer = (props: CallPeerProps) => {
 
 const greenButtonStyle = css`
     background-color: var(--accentPositiveHover);
+`;
+
+const barContainer = css`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #32bb78;
+    overflow-x: scroll;
+`;
+
+const barContent = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-left: auto;
+    margin-right: auto;
 `;
 
 export const TalkBarComponent = (props: { chat: ChatInfo }) => {
@@ -134,21 +160,8 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
         <XView height={0} alignSelf="stretch">
             <TalkWatchComponent id={data.conference.id} />
             {data.conference.peers.length !== 0 && (
-                <>
-                    <XView
-                        position="absolute"
-                        top={0}
-                        left={0}
-                        right={0}
-                        zIndex={2}
-                        flexShrink={0}
-                        paddingTop={8}
-                        paddingBottom={8}
-                        alignItems="center"
-                        justifyContent="center"
-                        backgroundColor="#32bb78"
-                        flexDirection="row"
-                    >
+                <div className={barContainer}>
+                    <div className={barContent}>
                         {data.conference.peers.map(v => (
                             <CallPeer
                                 key={v.id}
@@ -163,11 +176,14 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                                         size="small"
                                         style="success"
                                         marginRight={8}
-                                        text={callState.outVideo?.type === 'screen' ? 'Stop' : 'Share screen'}
-                                        className={greenButtonStyle}
-                                        onClick={() =>
-                                            calls.switchScreenShare()
+                                        text={
+                                            callState.outVideo &&
+                                            callState.outVideo.type === 'screen'
+                                                ? 'Stop'
+                                                : 'Share screen'
                                         }
+                                        className={greenButtonStyle}
+                                        onClick={() => calls.switchScreenShare()}
                                     />
                                 )}
                                 <UButton
@@ -198,27 +214,26 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                                     callState.conversationId
                                         ? () => calls.leaveCall()
                                         : () =>
-                                            calls.joinCall(
-                                                props.chat.id,
-                                                props.chat.__typename === 'PrivateRoom',
-                                                props.chat.__typename === 'PrivateRoom'
-                                                    ? {
-                                                        id: props.chat.user.id,
-                                                        title: props.chat.user.name,
-                                                        picture: props.chat.user.photo,
-                                                    }
-                                                    : {
-                                                        id: props.chat.id,
-                                                        title: props.chat.title,
-                                                        picture: props.chat.photo,
-                                                    },
-                                            )
+                                              calls.joinCall(
+                                                  props.chat.id,
+                                                  props.chat.__typename === 'PrivateRoom',
+                                                  props.chat.__typename === 'PrivateRoom'
+                                                      ? {
+                                                            id: props.chat.user.id,
+                                                            title: props.chat.user.name,
+                                                            picture: props.chat.user.photo,
+                                                        }
+                                                      : {
+                                                            id: props.chat.id,
+                                                            title: props.chat.title,
+                                                            picture: props.chat.photo,
+                                                        },
+                                              )
                                 }
                             />
                         )}
-                    </XView>
-                    )}
-                </>
+                    </div>
+                </div>
             )}
         </XView>
     );
