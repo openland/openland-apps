@@ -30,70 +30,58 @@ export const CallPeer = (props: CallPeerProps) => {
     const isMe =
         props.peer.id === (props.mediaSessionManager && props.mediaSessionManager.getPeerId());
     // animate while speaking
-    React.useEffect(
-        () => {
-            let d: (() => void) | undefined;
-            if (props.mediaSessionManager) {
-                d = props.mediaSessionManager.analizer.subscribePeer(props.peer.id, v => {
-                    if (avatarRef.current) {
-                        avatarRef.current.style.transform = `scale(${1 + v * 0.4})`;
-                    }
-                });
-            }
-            return d;
-        },
-        [props.mediaSessionManager, props.peer.id],
-    );
+    React.useEffect(() => {
+        let d: (() => void) | undefined;
+        if (props.mediaSessionManager) {
+            d = props.mediaSessionManager.analizer.subscribePeer(props.peer.id, (v) => {
+                if (avatarRef.current) {
+                    avatarRef.current.style.transform = `scale(${1 + v * 0.4})`;
+                }
+            });
+        }
+        return d;
+    }, [props.mediaSessionManager, props.peer.id]);
 
     // mark non connected
-    React.useEffect(
-        () => {
-            if (!mediaStream || isMe) {
-                return;
+    React.useEffect(() => {
+        if (!mediaStream || isMe) {
+            return;
+        }
+        mediaStream.listenIceState((s) => {
+            if (avatarRef.current) {
+                avatarRef.current.style.filter = `grayscale(${
+                    callState.conversationId && ['connected', 'completed'].indexOf(s) === -1
+                        ? 100
+                        : 0
+                }%)`;
             }
-            mediaStream.listenIceState(s => {
-                if (avatarRef.current) {
-                    avatarRef.current.style.filter = `grayscale(${
-                        callState.conversationId && ['connected', 'completed'].indexOf(s) === -1
-                            ? 100
-                            : 0
-                    }%)`;
-                }
-            });
-            return () => {
-                if (avatarRef.current) {
-                    avatarRef.current.style.filter = '';
-                }
-            };
-        },
-        [mediaStream, callState.conversationId],
-    );
+        });
+        return () => {
+            if (avatarRef.current) {
+                avatarRef.current.style.filter = '';
+            }
+        };
+    }, [mediaStream, callState.conversationId]);
 
     const [contentStream, setContentStream] = React.useState<MediaStream>();
-    React.useEffect(
-        () => {
-            if (!mediaStream) {
-                return;
+    React.useEffect(() => {
+        if (!mediaStream) {
+            return;
+        }
+        mediaStream.listenContentStream((s) => {
+            console.warn(s);
+            let stream: MediaStream | undefined;
+            if (s) {
+                stream = (s as AppUserMediaStreamWeb)._stream;
             }
-            mediaStream.listenContentStream(s => {
-                console.warn(s);
-                let stream: MediaStream | undefined;
-                if (s) {
-                    stream = (s as AppUserMediaStreamWeb)._stream;
-                }
-                setContentStream(stream);
-            });
-        },
-        [mediaStream],
-    );
-    const joinScreen = React.useCallback(
-        () => {
-            if (contentStream) {
-                showVideoModal(contentStream);
-            }
-        },
-        [contentStream],
-    );
+            setContentStream(stream);
+        });
+    }, [mediaStream]);
+    const joinScreen = React.useCallback(() => {
+        if (contentStream) {
+            showVideoModal(contentStream);
+        }
+    }, [contentStream]);
 
     return (
         <>
@@ -162,7 +150,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
             {data.conference.peers.length !== 0 && (
                 <div className={barContainer}>
                     <div className={barContent}>
-                        {data.conference.peers.map(v => (
+                        {data.conference.peers.map((v) => (
                             <CallPeer
                                 key={v.id}
                                 peer={v}
@@ -177,8 +165,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                                         style="success"
                                         marginRight={8}
                                         text={
-                                            callState.outVideo &&
-                                            callState.outVideo.type === 'screen'
+                                            callState.outVideo?.type === 'screen'
                                                 ? 'Stop'
                                                 : 'Share screen'
                                         }
