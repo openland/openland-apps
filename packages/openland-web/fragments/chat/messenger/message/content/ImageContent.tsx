@@ -21,8 +21,8 @@ import { useClient } from 'openland-api/useClient';
 import IcDownload from 'openland-icons/s/ic-download-24.svg';
 import IcForward from 'openland-icons/s/ic-forward-24.svg';
 import IcClose from 'openland-icons/s/ic-close-24.svg';
-import IcLeft from 'openland-icons/s/ic-arrow-left-16.svg';
-import IcRight from 'openland-icons/s/ic-arrow-right-16.svg';
+import IcLeft from 'openland-icons/s/ic-back-24.svg';
+import IcRight from 'openland-icons/s/ic-next-24.svg';
 import { MediaLoader } from './MediaLoader';
 
 const modalImgContainer = css`
@@ -33,6 +33,11 @@ const modalImgContainer = css`
     width: 100%;
     height: 100%;
     user-select: none;
+`;
+
+const fadeoutStyle = css`
+    opacity: 0 !important;
+    transition: 500ms opacity ease !important;
 `;
 
 const modalToolbarContainer = css`
@@ -190,14 +195,12 @@ const prevCursorContent = css`
     left: 0;
     justify-content: flex-start;
     padding-left: 16px;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0) 100%);
 `;
 
 const nextCursorContent = css`
     right: 0;
     justify-content: flex-end;
     padding-right: 16px;
-    background: linear-gradient(270deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0) 100%);
 `;
 
 interface ModalControllerProps {
@@ -236,37 +239,34 @@ const ModalController = React.memo((props: ModalControllerProps) => {
         },
     ]);
 
-    React.useEffect(
-        () => {
-            (async () => {
+    React.useEffect(() => {
+        (async () => {
+            await client.refetchPicSharedMedia({
+                chatId: props.cId,
+                first: 1,
+                around: props.cursor,
+            });
+            let viewerData;
+            if (sharedInfo) {
+                viewerData = useImageViewer(sharedInfo, props.cursor);
+                props.setViewerState(viewerData);
+            }
+            if (viewerData && viewerData.prevCursor) {
                 await client.refetchPicSharedMedia({
                     chatId: props.cId,
                     first: 1,
-                    around: props.cursor,
+                    around: viewerData.prevCursor,
                 });
-                let viewerData;
-                if (sharedInfo) {
-                    viewerData = useImageViewer(sharedInfo, props.cursor);
-                    props.setViewerState(viewerData);
-                }
-                if (viewerData && viewerData.prevCursor) {
-                    await client.refetchPicSharedMedia({
-                        chatId: props.cId,
-                        first: 1,
-                        around: viewerData.prevCursor,
-                    });
-                }
-                if (viewerData && viewerData.nextCursor) {
-                    await client.refetchPicSharedMedia({
-                        chatId: props.cId,
-                        first: 1,
-                        around: viewerData.nextCursor,
-                    });
-                }
-            })();
-        },
-        [sharedInfo],
-    );
+            }
+            if (viewerData && viewerData.nextCursor) {
+                await client.refetchPicSharedMedia({
+                    chatId: props.cId,
+                    first: 1,
+                    around: viewerData.nextCursor,
+                });
+            }
+        })();
+    }, [sharedInfo]);
 
     return null;
 });
@@ -292,31 +292,27 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const [viewerState, setViewerState] = React.useState<ImageViewerCb | null>(null);
     const [loaded, setLoaded] = React.useState(false);
     const [cursor, setCursor] = React.useState(props.mId);
+    const [fadeout, setFadeout] = React.useState(false);
+    const [cursorData, setCursorData] = React.useState({ x: 0, y: 0 });
 
-    const onLoad = React.useCallback(
-        () => {
-            if (imgRef.current && loaderRef.current) {
-                imgRef.current.style.opacity = '1';
-                imgRef.current.style.visibility = 'visible';
-                loaderRef.current.style.opacity = '0';
-                loaderRef.current.style.display = 'none';
-                setLoaded(true);
-            }
-        },
-        [viewerState],
-    );
+    const onLoad = React.useCallback(() => {
+        if (imgRef.current && loaderRef.current) {
+            imgRef.current.style.opacity = '1';
+            imgRef.current.style.visibility = 'visible';
+            loaderRef.current.style.opacity = '0';
+            loaderRef.current.style.display = 'none';
+            setLoaded(true);
+        }
+    }, [viewerState]);
 
-    React.useLayoutEffect(
-        () => {
-            if (imgRef.current && loaderRef.current && !loaded) {
-                imgRef.current.style.opacity = '0';
-                imgRef.current.style.visibility = 'hidden';
-                loaderRef.current.style.opacity = '1';
-                loaderRef.current.style.display = 'flex';
-            }
-        },
-        [viewerState],
-    );
+    React.useLayoutEffect(() => {
+        if (imgRef.current && loaderRef.current && !loaded) {
+            imgRef.current.style.opacity = '0';
+            imgRef.current.style.visibility = 'hidden';
+            loaderRef.current.style.opacity = '1';
+            loaderRef.current.style.display = 'flex';
+        }
+    }, [viewerState]);
 
     const onPrevClick = () => {
         if (viewerState && viewerState.prevCursor) {
@@ -373,9 +369,28 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
 
     const preview = viewerState ? viewerState.current.filePreview : props.preview;
 
+    const mouseMove = React.useCallback(
+        (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+            const data = { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY };
+            setFadeout(false);
+            setCursorData(data);
+        },
+        [fadeout, cursorData],
+    );
+
+    React.useLayoutEffect(() => {
+        const timer = setTimeout(() => {
+            setFadeout(true);
+        }, 2000);
+        return () => clearTimeout(timer);
+    }, [cursorData]);
+
     return (
-        <div className={modalImgContainer} onClick={props.hide}>
-            <div className={modalToolbarContainer} onClick={e => e.preventDefault()}>
+        <div className={modalImgContainer} onMouseMove={mouseMove} onClick={props.hide}>
+            <div
+                className={cx(modalToolbarContainer, fadeout && fadeoutStyle)}
+                onClick={(e) => e.preventDefault()}
+            >
                 {cursor && props.chatId && (
                     <React.Suspense fallback={null}>
                         <ModalController
@@ -412,12 +427,16 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     </div>
                 )}
                 <div className={modalButtonsContainer}>
-                    <a className={modalButtonStyle} href={downloadLink} onClick={e => e.stopPropagation()}>
+                    <a
+                        className={modalButtonStyle}
+                        href={downloadLink}
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <UIcon icon={<IcDownload />} color="var(--backgroundPrimary)" />
                     </a>
                     <div
                         className={modalButtonStyle}
-                        onClick={e => {
+                        onClick={(e) => {
                             e.stopPropagation();
                             forwardCallback();
                         }}
@@ -469,24 +488,24 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
             </div>
             {viewerState && viewerState.hasPrevPage && (
                 <div
-                    className={cx(cursorContainer, prevCursorContent)}
-                    onClick={e => {
+                    className={cx(cursorContainer, prevCursorContent, fadeout && fadeoutStyle)}
+                    onClick={(e) => {
                         e.stopPropagation();
                         onPrevClick();
                     }}
                 >
-                    <UIcon icon={<IcLeft />} size={24} color={'var(--backgroundPrimary)'} />
+                    <UIcon icon={<IcLeft />} color={'var(--backgroundPrimary)'} />
                 </div>
             )}
             {viewerState && viewerState.hasNextPage && (
                 <div
-                    className={cx(cursorContainer, nextCursorContent)}
-                    onClick={e => {
+                    className={cx(cursorContainer, nextCursorContent, fadeout && fadeoutStyle)}
+                    onClick={(e) => {
                         e.stopPropagation();
                         onNextClick();
                     }}
                 >
-                    <UIcon icon={<IcRight />} size={24} color={'var(--backgroundPrimary)'} />
+                    <UIcon icon={<IcRight />} color={'var(--backgroundPrimary)'} />
                 </div>
             )}
         </div>
@@ -496,7 +515,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
 export const showImageModal = (props: ModalProps) => {
     showModalBox(
         { fullScreen: true, darkOverlay: true, useTopCloser: false, hideOnEsc: false },
-        ctx => <ModalContent {...props} hide={ctx.hide} />,
+        (ctx) => <ModalContent {...props} hide={ctx.hide} />,
     );
 };
 
@@ -527,8 +546,10 @@ const GifContent = React.memo(
         const imgPositionLeft = layoutWidth < 72 ? `calc(50% - ${layoutWidth / 2}px)` : '0';
         const imgPositionTop = layoutHeight < 72 ? `calc(50% - ${layoutHeight / 2}px)` : '0';
 
-        const webm = 'https://ucarecdn.com/' + props.file.fileId + '/gif2video/-/format/webm/image.gif';
-        const mp4 = 'https://ucarecdn.com/' + props.file.fileId + '/gif2video/-/format/mp4/image.gif';
+        const webm =
+            'https://ucarecdn.com/' + props.file.fileId + '/gif2video/-/format/webm/image.gif';
+        const mp4 =
+            'https://ucarecdn.com/' + props.file.fileId + '/gif2video/-/format/mp4/image.gif';
         const [srcWebm, setSrcWebm] = React.useState<string | undefined>(webm);
         const [srcMp4, setSrcMp4] = React.useState<string | undefined>(mp4);
 
@@ -571,14 +592,8 @@ const GifContent = React.memo(
                     muted={true}
                     className={imgAppearClass}
                 >
-                    <source
-                        src={srcWebm}
-                        type="video/webm"
-                    />
-                    <source
-                        src={srcMp4}
-                        type="video/mp4"
-                    />
+                    <source src={srcWebm} type="video/webm" />
+                    <source src={srcMp4} type="video/mp4" />
                 </video>
             </div>
         );
@@ -620,8 +635,12 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
     const ops = `scale_crop/${layoutWidth}x${layoutHeight}/`;
     const opsRetina = `scale_crop/${layoutWidth * 2}x${layoutHeight * 2}/center/ 2x`;
 
-    const [src, setSrc] = React.useState<string | undefined>(props.file.fileId ? url + ops : undefined);
-    const [srcSet, setSrcSet] = React.useState<string | undefined>(props.file.fileId ? url + opsRetina : undefined);
+    const [src, setSrc] = React.useState<string | undefined>(
+        props.file.fileId ? url + ops : undefined,
+    );
+    const [srcSet, setSrcSet] = React.useState<string | undefined>(
+        props.file.fileId ? url + opsRetina : undefined,
+    );
     const [previewSrc] = React.useState(props.file.filePreview);
 
     React.useEffect(() => {
