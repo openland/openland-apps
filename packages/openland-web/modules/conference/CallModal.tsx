@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
 import { CallsEngine } from 'openland-engines/CallsEngine';
 import { OpenlandClient } from 'openland-api/spacex';
 import { XView } from 'react-mental';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
-import { VideoComponent } from './ScreenShareModal';
+import { VideoComponent, showVideoModal } from './ScreenShareModal';
 import { css, cx } from 'linaria';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { showModalBox } from 'openland-x/showModalBox';
@@ -43,6 +42,7 @@ const borderStyle = css`
     left: 0px;
     right: 0px;
     z-index: 3;
+    pointer-events: none;
 `;
 
 const Controls = React.memo((props: { calls: CallsEngine }) => {
@@ -103,10 +103,11 @@ const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: 
             }
         });
     }, []);
+    const onClick = React.useCallback(() => stream ? showVideoModal(stream) : undefined, [stream]);
 
     return (
         <XView backgroundColor="gray" alignItems="center" justifyContent="center" flexGrow={1} >
-            {stream && <VideoComponent stream={stream} cover={true} />}
+            {stream && <VideoComponent stream={stream} cover={true} onClick={onClick} />}
             <div key={'animtateing_wrapper'} className={cx(animatedAvatarStyle, stream && compactAvatarStyle)}>
                 <UAvatar
                     size={stream ? 'large' : 'xxx-large'}
@@ -116,25 +117,16 @@ const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: 
                 />
             </div>
             {props.peer.user.isYou && <Controls calls={props.calls} />}
-            <div ref={ref} className={borderStyle} />
+            <div ref={ref} className={borderStyle}/>
         </XView>
     );
 });
 
 export const CallModalConponent = React.memo((props: { chatId: string, calls: CallsEngine, client: OpenlandClient }) => {
     let conference = props.client.useConference({ id: props.chatId }, { suspense: false });
-    let _ = props.calls.useState();
+    props.calls.useState();
 
     let peers = conference ? conference.conference.peers : [];
-    // peers = [
-    //     peers[0],
-    //     peers[0],
-    //     peers[0],
-    //     peers[0],
-    //     peers[0],
-    //     ...peers
-    // ]
-    //     .filter(p => !!p);
     let peerSlice = peers.reduce((all, peer, i, array) => {
         let index =
             i === 1 ? 0

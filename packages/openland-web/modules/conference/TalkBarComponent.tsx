@@ -7,7 +7,6 @@ import { useClient } from 'openland-api/useClient';
 import { ChatInfo } from 'openland-web/fragments/chat/types';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { useStreamManager, MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
-import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { css, cx } from 'linaria';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
@@ -74,24 +73,6 @@ export const CallPeer = (props: CallPeerProps) => {
             }
         };
     }, [mediaStream, callState.conversationId]);
-
-    const [contentStream, setContentStream] = React.useState<MediaStream>();
-    React.useEffect(
-        () => {
-            if (!mediaStream) {
-                return;
-            }
-            mediaStream.listenContentStream(s => {
-                console.warn(s);
-                let stream: MediaStream | undefined;
-                if (s) {
-                    stream = (s as AppUserMediaStreamWeb)._stream;
-                }
-                setContentStream(stream);
-            });
-        },
-        [mediaStream],
-    );
 
     return (
         <>
