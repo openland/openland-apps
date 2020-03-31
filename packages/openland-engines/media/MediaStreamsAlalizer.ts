@@ -26,6 +26,9 @@ export class MediaStreamsAlalizer {
     private disposeStreamsListener: (() => void) | undefined;
     private running = false;
 
+    private fStartIndex = 0;
+    private fEndIndex = 1023;
+
     constructor(sessionManager: MediaSessionManager) {
         this.manager = sessionManager;
         this.disposeStreamsListener = this.manager.listenStreams(s => {
@@ -48,7 +51,6 @@ export class MediaStreamsAlalizer {
             audioContext?.close();
         }
         audioContext = AudioContext ? new AudioContext() : undefined;
-
     }
 
     initStreamsAnalizer = (peerId: string, appStream: AppMediaStream | undefined, manager: MediaStreamManager, isMe?: boolean) => {
@@ -69,6 +71,9 @@ export class MediaStreamsAlalizer {
             const bufferLength = analyser.frequencyBinCount;
             if (!this.buffer) {
                 this.buffer = new Uint8Array(bufferLength);
+                let fstep = audioContext.sampleRate / 2 / analyser.frequencyBinCount;
+                this.fStartIndex = Math.floor(80 / fstep);
+                this.fEndIndex = Math.ceil(80 / fstep + 1);
             }
             source.connect(analyser);
             this.peerStreamAnalyzers.set(peerId, {
@@ -81,7 +86,7 @@ export class MediaStreamsAlalizer {
     }
 
     private lastPeer: string | undefined;
-    private lastVals: { [id: string]: number } = {};
+    private lastVals: { [id: string]: boolean } = {};
     private render = () => {
         if (!this.running || !this.buffer) {
             return;
@@ -91,27 +96,26 @@ export class MediaStreamsAlalizer {
         let activePeerId: string | undefined;
         for (let [key, entry] of this.peerStreamAnalyzers) {
             entry.analyzer.getByteFrequencyData(this.buffer);
-            let val = Math.min(
-                1,
-                this.buffer.reduce((res, x) => {
-                    return res + x;
-                }, 0) /
-                this.buffer.length /
-                10,
-            );
+
+            let val = 0;
+            for (let i = this.fStartIndex; i <= this.fEndIndex; i++) {
+                val += this.buffer[i];
+            }
+            val = val / (this.fEndIndex - this.fStartIndex) / 255;
 
             if (entry.isMe && entry.appSrteam.muted) {
                 val = 0;
             }
 
-            if (lastVal[key] !== val) {
-                this.lastVals[key] = val;
-                this.notifyValueChanged(key, val);
-            }
-
-            if (val < 0.2) {
+            if (val < 0.25) {
                 val = 0;
             }
+
+            if (this.lastVals[key] !== !!val) {
+                this.lastVals[key] = !!val;
+                this.notifyValueChanged(key, !!val);
+            }
+
             if ((val > lastVal || (!activePeerId && !this.lastPeer)) && !entry.isMe) {
                 lastVal = val;
                 activePeerId = key;
@@ -140,35 +144,45 @@ export class MediaStreamsAlalizer {
     ////
     // IO
     ////
-    private peerValueListeners = new Map<string, Set<(val: number) => void>>();
-    notifyValueChanged(peerId: string, val: number) {
-        let listeners = this.peerValueListeners.get(peerId);
-        if (listeners) {
-            for (let l of listeners) {
-                l(val);
+    private peerValueListeners = new Map<string, Set<(val: boolean) => void>>();
+    private debouncedNotifiers = new Map<string, Set<(val: boolean) => void>>();
+    notifyValueChanged(peerId: string, val: boolean) {
+        let notifiers = this.debouncedNotifiers.get(peerId);
+        if (notifiers) {
+            for (let n of notifiers) {
+                n(val);
             }
         }
     }
 
-    subscribePeer(peerId: string, listener: (val: number) => void) {
+    subscribePeer(peerId: string, listener: (val: boolean) => void) {
+        let debauncedSet = this.debouncedNotifiers.get(peerId);
+        if (!debauncedSet) {
+            debauncedSet = new Set();
+            this.debouncedNotifiers.set(peerId, debauncedSet);
+        }
+
+        let dabounced = debounce((val: boolean) => {
+            let ls = this.peerValueListeners.get(peerId);
+            if (ls) {
+                for (let l of ls) {
+                    l(val);
+                }
+            }
+        }, 500);
+        debauncedSet.add(dabounced);
+
         let listeners = this.peerValueListeners.get(peerId);
         if (!listeners) {
             listeners = new Set();
             this.peerValueListeners.set(peerId, listeners);
         }
-        listener(this.lastVals[peerId] || 0);
+        listener(this.lastVals[peerId] || false);
         listeners.add(listener);
         return () => {
             listeners!.delete(listener);
+            debauncedSet?.delete(dabounced);
         };
-    }
-
-    usePeerValue = (peerId: string) => {
-        let [val, setVal] = React.useState(0);
-        React.useEffect(() => {
-            return this.subscribePeer(peerId, setVal);
-        }, [peerId]);
-        return val;
     }
 
     private sepakingPeerListeners = new Set<(peerId: string) => void>();
