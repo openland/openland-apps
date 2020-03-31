@@ -293,18 +293,16 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
 
     let ms = calls.getMediaSession();
     const avatar = data && callState.avatar && ms && (
-        <>
-            <MediaView
-                peers={data.conference.peers}
-                mediaSessionManager={ms}
-                fallback={{
-                    id: callState.avatar.id,
-                    title: callState.avatar.title,
-                    picture: callState.avatar.picture,
-                }}
-                videoEnabled={callState.videoEnabled}
-            />
-        </>
+        <MediaView
+            peers={data.conference.peers}
+            mediaSessionManager={ms}
+            fallback={{
+                id: callState.avatar.id,
+                title: callState.avatar.title,
+                picture: callState.avatar.picture,
+            }}
+            videoEnabled={callState.videoEnabled}
+        />
     );
 
     const buttons = (
@@ -344,19 +342,17 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
             <div className={cx(FloatContainerClass, callState.videoEnabled && VideoOnClass)} ref={containerRef} onClick={onClick}>
                 <div style={{ display: 'flex', flexDirection: 'row' }} ref={contentRef}>
 
-                    {callState.avatar && (
-                        <div className={TargetClass} ref={targetRef}>
-                            {callState.videoEnabled && (
-                                <XView width={VIDEO_SIZE} height={VIDEO_SIZE} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" backgroundColor="gray">
-                                    {avatar}
-                                    <XView width={VIDEO_SIZE / 3} height={VIDEO_SIZE / 3} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" position="absolute" top={0} right={0}>
-                                        {callState.outVideo && <VideoComponent stream={(callState.outVideo.stream as AppUserMediaStreamWeb)._stream} cover={true} videoClass={VideoRadius} />}
-                                    </XView>
+                    <div className={TargetClass} ref={targetRef}>
+                        {callState.videoEnabled && (
+                            <XView width={VIDEO_SIZE} height={VIDEO_SIZE} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" backgroundColor="gray">
+                                {avatar}
+                                <XView width={VIDEO_SIZE / 3} height={VIDEO_SIZE / 3} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" position="absolute" top={0} right={0}>
+                                    {callState.outVideo && <VideoComponent stream={(callState.outVideo.stream as AppUserMediaStreamWeb)._stream} cover={true} videoClass={VideoRadius} />}
                                 </XView>
-                            )}
-                            {!callState.videoEnabled && avatar}
-                        </div>
-                    )}
+                            </XView>
+                        )}
+                        {!callState.videoEnabled && avatar}
+                    </div>
                     {!callState.videoEnabled ? buttons : (
                         <XView>
                             {buttons}

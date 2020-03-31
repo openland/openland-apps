@@ -4,6 +4,7 @@ import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { MediaStreamManager } from './MediaStreamManager';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { debounce } from 'openland-y-utils/timer';
 
 const AudioContext = canUseDOM && (window.AudioContext // Default
     || (window as any).webkitAudioContext // Safari and old versions of Chrome
@@ -125,7 +126,7 @@ export class MediaStreamsAlalizer {
 
         if (activePeerId && (activePeerId !== this.lastPeer)) {
             this.lastPeer = activePeerId;
-            this.notifySpeakingPeerIdChanged(activePeerId);
+            this.notifySpeakingPeerIdChangedDebaunced(activePeerId);
         }
 
         // doing it with requestAnimationFrame bacause 
@@ -139,6 +140,7 @@ export class MediaStreamsAlalizer {
     ////
     // IO
     ////
+    private peerValueListeners = new Map<string, Set<(val: number) => void>>();
     notifyValueChanged(peerId: string, val: number) {
         let listeners = this.peerValueListeners.get(peerId);
         if (listeners) {
@@ -148,7 +150,6 @@ export class MediaStreamsAlalizer {
         }
     }
 
-    private peerValueListeners = new Map<string, Set<(val: number) => void>>();
     subscribePeer(peerId: string, listener: (val: number) => void) {
         let listeners = this.peerValueListeners.get(peerId);
         if (!listeners) {
@@ -170,13 +171,14 @@ export class MediaStreamsAlalizer {
         return val;
     }
 
-    notifySpeakingPeerIdChanged(peerId: string) {
+    private sepakingPeerListeners = new Set<(peerId: string) => void>();
+    notifySpeakingPeerIdChanged = (peerId: string) => {
         for (let l of this.sepakingPeerListeners) {
             l(peerId);
         }
     }
+    notifySpeakingPeerIdChangedDebaunced = debounce(this.notifySpeakingPeerIdChanged, 500);
 
-    private sepakingPeerListeners = new Set<(peerId: string) => void>();
     subscribeSpeakingPeerId(listener: (peerId: string) => void) {
         if (this.lastPeer) {
             listener(this.lastPeer);
