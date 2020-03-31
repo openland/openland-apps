@@ -15,6 +15,7 @@ import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { VideoComponent } from './ScreenShareModal';
 import { XView } from 'react-mental';
 import { AppConfig } from 'openland-y-runtime-web/AppConfig';
+import { showVideoCallModal } from './CallModal';
 
 const AVATAR_SIZE = 48;
 const VIDEO_SIZE = 200;
@@ -61,10 +62,6 @@ const TargetClass = css`
     cursor: move;
 
     margin: 0 4px;
-`;
-
-const animatedAvatarStyle = css`
-    transition: transform 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
 `;
 
 const useJsDrag = (
@@ -211,7 +208,7 @@ const VideoMediaView = React.memo((props: {
         <XView width={VIDEO_SIZE} height={VIDEO_SIZE} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" backgroundColor="gray" alignItems="center" justifyContent="center">
             {stream ?
                 <VideoComponent stream={(stream as AppUserMediaStreamWeb)._stream} cover={true} videoClass={VideoRadius} /> :
-                <div key={'animtateing_wrapper'} className={animatedAvatarStyle} ref={props.avatarRef}>
+                <div key={'animtateing_wrapper'} ref={props.avatarRef}>
                     <UAvatar
                         size="large"
                         id={props.peer ? props.peer.user.id : props.fallback.id}
@@ -223,6 +220,19 @@ const VideoMediaView = React.memo((props: {
         </XView>
     );
 });
+
+const activeAvatarStyle = css`
+    ::after{
+        content: '';
+        top: 6px;
+        right: 6px;
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        border: 2px solid white;
+        border-radius: 32px;
+    }
+`;
 
 const MediaView = React.memo((props: {
     peers: Conference_conference_peers[];
@@ -239,7 +249,7 @@ const MediaView = React.memo((props: {
             d = props.mediaSessionManager.analizer.subscribePeer(peerId, v => {
                 // animate
                 if (avatarRef.current) {
-                    avatarRef.current.style.transform = `scale(${1 + v * 0.4})`;
+                    avatarRef.current.className = cx(v && activeAvatarStyle);
                 }
             });
         }
@@ -249,7 +259,7 @@ const MediaView = React.memo((props: {
 
     return (props.videoEnabled ?
         <VideoMediaView peer={peer} mediaSessionManager={props.mediaSessionManager} avatarRef={avatarRef} fallback={props.fallback} /> :
-        <div key={'animtateing_wrapper'} className={animatedAvatarStyle} ref={avatarRef}>
+        <div key={'animtateing_wrapper'} ref={avatarRef}>
             <UAvatar
                 size="small"
                 id={peer ? peer.user.id : props.fallback.id}
@@ -307,6 +317,20 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
 
     const buttons = (
         <>
+            {AppConfig.isNonProduction() &&
+                <UButton
+                    flexShrink={0}
+                    style='primary'
+                    text={'Join video call'}
+                    onClick={() => {
+                        if (!callState.outVideo) {
+                            calls.switchVideo();
+                        }
+                        showVideoCallModal({ calls, chatId: props.id, client });
+                    }}
+                    marginHorizontal={4}
+                />
+            }
             <UButton
                 flexShrink={0}
                 style="success"
@@ -314,18 +338,9 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
                 onClick={() => calls.setMute(!callState.mute)}
                 className={greenButtonStyle}
                 marginHorizontal={4}
+                marginVertical={callState.videoEnabled ? 8 : 0}
             />
-            {AppConfig.isNonProduction() &&
-                <UButton
-                    flexShrink={0}
-                    style="success"
-                    text={callState.outVideo?.type !== 'video' ? 'Start video' : 'Stop video'}
-                    onClick={() => calls.switchVideo()}
-                    className={greenButtonStyle}
-                    marginHorizontal={4}
-                    marginVertical={callState.videoEnabled ? 8 : 0}
-                />
-            }
+
             <UButton
                 flexShrink={0}
                 style="success"

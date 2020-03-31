@@ -8,14 +8,26 @@ import { ChatInfo } from 'openland-web/fragments/chat/types';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { useStreamManager, MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { showVideoModal } from './ScreenShareModal';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
+import { showVideoCallModal } from './CallModal';
 
 const animatedAvatarStyle = css`
-    transition: transform 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
-        filter 350ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
+    transition: filter 350ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
+`;
+
+export const activeAvatarStyle = css`
+    ::after{
+        content: '';
+        position: absolute;
+        top:-2px;
+        left:-2px;
+        width: 32px;
+        height: 32px;
+        border: 2px solid white;
+        border-radius: 32px;
+    }
 `;
 
 interface CallPeerProps {
@@ -35,7 +47,7 @@ export const CallPeer = (props: CallPeerProps) => {
         if (props.mediaSessionManager) {
             d = props.mediaSessionManager.analizer.subscribePeer(props.peer.id, (v) => {
                 if (avatarRef.current) {
-                    avatarRef.current.style.transform = `scale(${1 + v * 0.4})`;
+                    avatarRef.current.className = (cx(v && activeAvatarStyle));
                 }
             });
         }
@@ -64,24 +76,22 @@ export const CallPeer = (props: CallPeerProps) => {
     }, [mediaStream, callState.conversationId]);
 
     const [contentStream, setContentStream] = React.useState<MediaStream>();
-    React.useEffect(() => {
-        if (!mediaStream) {
-            return;
-        }
-        mediaStream.listenContentStream((s) => {
-            console.warn(s);
-            let stream: MediaStream | undefined;
-            if (s) {
-                stream = (s as AppUserMediaStreamWeb)._stream;
+    React.useEffect(
+        () => {
+            if (!mediaStream) {
+                return;
             }
-            setContentStream(stream);
-        });
-    }, [mediaStream]);
-    const joinScreen = React.useCallback(() => {
-        if (contentStream) {
-            showVideoModal(contentStream);
-        }
-    }, [contentStream]);
+            mediaStream.listenContentStream(s => {
+                console.warn(s);
+                let stream: MediaStream | undefined;
+                if (s) {
+                    stream = (s as AppUserMediaStreamWeb)._stream;
+                }
+                setContentStream(stream);
+            });
+        },
+        [mediaStream],
+    );
 
     return (
         <>
@@ -94,9 +104,6 @@ export const CallPeer = (props: CallPeerProps) => {
                         photo={props.peer.user.photo}
                     />
                 </div>
-                {!isMe && contentStream && (
-                    <UButton marginLeft={8} text="view screen" onClick={joinScreen} />
-                )}
             </XView>
             <XView width={8} />
         </>
@@ -157,22 +164,21 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                                 mediaSessionManager={calls.getMediaSession()}
                             />
                         ))}
+                        {AppConfig.isNonProduction() && callState.conversationId && <UButton
+                            size="small"
+                            style='primary'
+                            marginRight={8}
+                            text="Join video call"
+                            onClick={() => {
+                                if (!callState.outVideo) {
+                                    calls.switchVideo();
+                                }
+                                showVideoCallModal({ calls, chatId: props.chat.id, client });
+                            }}
+                        />}
+
                         {callState.conversationId === props.chat.id && (
                             <>
-                                {AppConfig.isNonProduction() && (
-                                    <UButton
-                                        size="small"
-                                        style="success"
-                                        marginRight={8}
-                                        text={
-                                            callState.outVideo?.type === 'screen'
-                                                ? 'Stop'
-                                                : 'Share screen'
-                                        }
-                                        className={greenButtonStyle}
-                                        onClick={() => calls.switchScreenShare()}
-                                    />
-                                )}
                                 <UButton
                                     size="small"
                                     style="success"
