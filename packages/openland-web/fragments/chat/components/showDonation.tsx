@@ -12,7 +12,7 @@ import { css, cx } from 'linaria';
 import { TextTitle1 } from 'openland-web/utils/TextStyles';
 import { useShake } from 'openland-web/pages/auth/components/authComponents';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { URickInput } from 'openland-web/components/unicorn/URickInput';
+import { URickInput, URickInputInstance } from 'openland-web/components/unicorn/URickInput';
 import { useClient } from 'openland-api/useClient';
 import { delay } from 'openland-y-utils/timer';
 import { showCheckLock } from 'openland-web/fragments/wallet/modals/showPayConfirm';
@@ -43,6 +43,7 @@ interface DonationComponentProps {
     initialPrice?: number;
     chatId?: string;
     userId?: string;
+    onDonate?: () => void;
 }
 
 const DonationComponent = (props: DonationComponentProps & {ctx: XModalController}) => {
@@ -50,6 +51,7 @@ const DonationComponent = (props: DonationComponentProps & {ctx: XModalControlle
     let wallet = client.useMyWallet();
     let form = useForm();
     let inputRef = React.useRef<HTMLInputElement>(null);
+    let messageRef = React.useRef<URickInputInstance>(null);
     let initialPrice = props.initialPrice ? String(props.initialPrice) : '';
     let priceField = useField<string>('price', initialPrice, form, [
         {
@@ -102,6 +104,9 @@ const DonationComponent = (props: DonationComponentProps & {ctx: XModalControlle
                 await delay(2000);
                 await client.mutateSendDonation({chatId: props.chatId, userId: props.userId, amount, message: messageField.value });
                 props.ctx.hide();
+                if (props.onDonate) {
+                    props.onDonate();
+                }
             } catch (e) {
                 if (wallet.myWallet.isLocked) {
                     showCheckLock();
@@ -111,6 +116,15 @@ const DonationComponent = (props: DonationComponentProps & {ctx: XModalControlle
             }
         });
     };
+
+    React.useLayoutEffect(() => {
+        if (!initialPrice && inputRef.current) {
+            inputRef.current.focus();
+        }
+        if (initialPrice && messageRef.current) {
+            messageRef.current.focus();
+        }
+    }, []);
 
     return (
         <XView paddingTop={12} flexDirection="column">
@@ -136,6 +150,7 @@ const DonationComponent = (props: DonationComponentProps & {ctx: XModalControlle
                     onTextChange={messageField.input.onChange}
                     hideEmoji={true}
                     className={messageClass}
+                    ref={messageRef}
                 />
             </XView>
             <XView 

@@ -16,6 +16,7 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import MessageIcon from 'openland-icons/s/ic-message-24.svg';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
+import { ProfileDonationButtons } from 'openland-web/components/ProfileDonationButtons';
 
 const MessageButton = React.memo((props: { isBot: boolean, id: string }) => {
     const layout = useLayout();
@@ -37,7 +38,7 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
     const uId = props.id ? props.id : userContext.id;
     const client = useClient();
     const { user, conversation } = client.useUser({ userId: uId }, { fetchPolicy: 'cache-and-network' });
-    const { id, isBot, name, photo, audienceSize, about, shortname, location, phone, email, linkedin, instagram,
+    const { id, isBot, name, firstName, photo, audienceSize, about, shortname, location, phone, email, linkedin, instagram,
         primaryOrganization, isYou, chatsWithBadge, website, twitter, facebook } = user;
 
     return (
@@ -85,6 +86,7 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
                 {!!facebook && <UListField label="Facebook" value={facebook} />}
                 {!!linkedin && <UListField label="LinkedIn" value={linkedin} />}
             </UListGroup>
+            <ProfileDonationButtons shouldHide={isYou} name={firstName} userId={id} />
             <UListGroup header="Organization">
                 {!!primaryOrganization && (
                     <UOrganizationView organization={primaryOrganization} />

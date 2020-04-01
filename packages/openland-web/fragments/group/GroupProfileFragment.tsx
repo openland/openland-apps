@@ -21,6 +21,7 @@ import IcUser from 'openland-icons/s/ic-user-24.svg';
 import IcCopy from 'openland-icons/s/ic-copy-24.svg';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
+import { ProfileDonationButtons } from 'openland-web/components/ProfileDonationButtons';
 
 export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     const client = useClient();
@@ -54,7 +55,8 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         settings,
         matchmaking,
         isPremium,
-        premiumSettings
+        premiumSettings,
+        owner,
     } = group;
 
     const memberProfiles = matchmaking && matchmaking.enabled;
@@ -154,6 +156,9 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
             <UListGroup header="About">
                 {!!description && <UListText value={description} />}
             </UListGroup>
+            {owner && (
+                <ProfileDonationButtons shouldHide={owner.isYou} name={owner.firstName} chatId={id} />
+            )}
             {memberProfiles && (
                 <UListGroup marginTop={20}>
                     <UListItem
