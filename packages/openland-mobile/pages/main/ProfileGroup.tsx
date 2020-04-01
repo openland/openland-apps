@@ -323,7 +323,8 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     const hasAbout = !!room.description && !!room.organization;
     const highlightGroup = room.kind === 'GROUP' && !room.isPremium;
 
-    let donateTo = room && room.owner && room.owner.firstName;
+    let donateTo = room.owner && room.owner.firstName;
+    let isYou = !!(room.owner && room.owner.isYou);
 
     const content = (
         <>
@@ -372,7 +373,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 )}
             </ZListGroup>
 
-            {donateTo && <ProfileDonationGroup name={donateTo} chatId={room.id} />}
+            {donateTo && <ProfileDonationGroup name={donateTo} chatId={room.id} shouldHide={isYou} />}
 
             <ZListGroup header="Settings" headerMarginTop={!hasAbout ? 0 : undefined}>
                 <NotificationSettings id={room.id} mute={!!room.settings.mute} />

@@ -163,6 +163,7 @@ fragment RoomFullWithoutMembers on Room {
         owner {
             id
             firstName
+            isYou
         }
     }
 }
