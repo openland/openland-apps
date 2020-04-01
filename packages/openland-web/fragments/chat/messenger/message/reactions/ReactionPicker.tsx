@@ -10,6 +10,7 @@ const SortedReactions = [
     MessageReactionType.JOY,
     MessageReactionType.SCREAM,
     MessageReactionType.CRYING,
+    // MessageReactionType.DONATE,
     MessageReactionType.ANGRY
 ];
 

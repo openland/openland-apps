@@ -177,6 +177,7 @@ object Operations {
         if (name == "MediaFailed") return MediaFailed
         if (name == "MediaNegotiationNeeded") return MediaNegotiationNeeded
         if (name == "MediaOffer") return MediaOffer
+        if (name == "MessageSetDonationReaction") return MessageSetDonationReaction
         if (name == "MessageSetReaction") return MessageSetReaction
         if (name == "MessageUnsetReaction") return MessageUnsetReaction
         if (name == "MyNotificationCenterMarkSeqRead") return MyNotificationCenterMarkSeqRead

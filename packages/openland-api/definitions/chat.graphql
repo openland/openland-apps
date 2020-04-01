@@ -173,6 +173,9 @@ mutation MessageSetReaction($messageId: ID!, $reaction: MessageReactionType!) {
 mutation MessageUnsetReaction($messageId: ID!, $reaction: MessageReactionType!) {
     messageReactionRemove(messageId: $messageId, reaction: $reaction)
 }
+mutation MessageSetDonationReaction($messageId: ID!) {
+    messageDonationReactionAdd(messageId: $messageId)
+}
 query GlobalCounter {
     alphaNotificationCounter {
         id

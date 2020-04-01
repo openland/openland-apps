@@ -1705,6 +1705,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateMediaOffer(variables: Types.MediaOfferVariables): Promise<Types.MediaOffer> {
         return this.mutate('MediaOffer', variables);
     }
+    mutateMessageSetDonationReaction(variables: Types.MessageSetDonationReactionVariables): Promise<Types.MessageSetDonationReaction> {
+        return this.mutate('MessageSetDonationReaction', variables);
+    }
     mutateMessageSetReaction(variables: Types.MessageSetReactionVariables): Promise<Types.MessageSetReaction> {
         return this.mutate('MessageSetReaction', variables);
     }

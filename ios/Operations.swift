@@ -4733,6 +4733,9 @@ private let MediaOfferSelector = obj(
                         )))))
                 )))
         )
+private let MessageSetDonationReactionSelector = obj(
+            field("messageDonationReactionAdd", "messageDonationReactionAdd", arguments(fieldValue("messageId", refValue("messageId"))), notNull(scalar("Boolean")))
+        )
 private let MessageSetReactionSelector = obj(
             field("messageReactionAdd", "messageReactionAdd", arguments(fieldValue("messageId", refValue("messageId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
@@ -6392,6 +6395,12 @@ class Operations {
         "mutation MediaOffer($id:ID!,$peerId:ID!,$offer:String!){mediaStreamOffer(id:$id,peerId:$peerId,offer:$offer){__typename id streams{__typename id peerId state sdp ice}}}",
         MediaOfferSelector
     )
+    let MessageSetDonationReaction = OperationDefinition(
+        "MessageSetDonationReaction",
+        .mutation, 
+        "mutation MessageSetDonationReaction($messageId:ID!){messageDonationReactionAdd(messageId:$messageId)}",
+        MessageSetDonationReactionSelector
+    )
     let MessageSetReaction = OperationDefinition(
         "MessageSetReaction",
         .mutation, 
@@ -7062,6 +7071,7 @@ class Operations {
         if name == "MediaFailed" { return MediaFailed }
         if name == "MediaNegotiationNeeded" { return MediaNegotiationNeeded }
         if name == "MediaOffer" { return MediaOffer }
+        if name == "MessageSetDonationReaction" { return MessageSetDonationReaction }
         if name == "MessageSetReaction" { return MessageSetReaction }
         if name == "MessageUnsetReaction" { return MessageUnsetReaction }
         if name == "MyNotificationCenterMarkSeqRead" { return MyNotificationCenterMarkSeqRead }

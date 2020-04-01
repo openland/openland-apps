@@ -16,6 +16,8 @@ import { useClient } from 'openland-api/useClient';
 import { trackEvent } from 'openland-x-analytics';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
+import { AppStorage } from 'openland-y-runtime/AppStorage';
+import { showDonationReactionWarning } from '../reactions/showDonationReactionWarning';
 
 const menuContainerClass = css`
     position: absolute;
@@ -97,10 +99,31 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
         [pickerRef, reactionsRef.current],
     );
 
-    const handleReactionClick = (reaction: MessageReactionType) => {
+    const handleReactionClick = async (reaction: MessageReactionType) => {
         const messageId = messageIdRef.current;
         const messageKey = messageKeyRef.current;
         const reactions = reactionsRef.current;
+
+        const donate = async() => {
+            if (!messageId) {
+                return;   
+            }
+    
+            // TODO: add new toast with loading
+            try {
+                await client.mutateMessageSetDonationReaction({ messageId });
+            } catch (e) {
+                throw e;
+            }
+        };
+
+        const setEmoji = () => {
+            props.engine.setReaction(messageKey, reaction);
+            trackEvent('reaction_sent', {
+                reaction_type: reaction.toLowerCase(),
+                double_tap: 'not',
+            });
+        };
 
         if (messageId) {
             const remove =
@@ -111,16 +134,31 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
                         userReaction.reaction === reaction,
                 ).length > 0;
             if (remove) {
-                props.engine.unsetReaction(messageKey, reaction);
-                client.mutateMessageUnsetReaction({ messageId, reaction });
+                if (reaction !== MessageReactionType.DONATE) {
+                    props.engine.unsetReaction(messageKey, reaction);
+                    client.mutateMessageUnsetReaction({ messageId, reaction });
+                }
             } else {
-                props.engine.setReaction(messageKey, reaction);
-                trackEvent('reaction_sent', {
-                    reaction_type: reaction.toLowerCase(),
-                    double_tap: 'not',
-                });
-
-                client.mutateMessageSetReaction({ messageId, reaction });
+                if (reaction === MessageReactionType.DONATE) {
+                    let key = await AppStorage.readKey('reaction_donated');
+                    if (!key) {
+                        showDonationReactionWarning(async () => {
+                            try {
+                                await donate();
+                                setEmoji();
+                                AppStorage.writeKey('reaction_donated', true);
+                            } catch (e) {/* noop */}
+                        });
+                        return;
+                    }
+                    try {
+                        await donate();
+                        setEmoji();
+                    } catch (e) {/* noop */}
+                } else {
+                    client.mutateMessageSetReaction({ messageId, reaction });
+                    setEmoji();
+                }
             }
         }
     };

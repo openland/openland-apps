@@ -4740,6 +4740,9 @@ const MediaOfferSelector = obj(
                         )))))
                 )))
         );
+const MessageSetDonationReactionSelector = obj(
+            field('messageDonationReactionAdd', 'messageDonationReactionAdd', args(fieldValue("messageId", refValue('messageId'))), notNull(scalar('Boolean')))
+        );
 const MessageSetReactionSelector = obj(
             field('messageReactionAdd', 'messageReactionAdd', args(fieldValue("messageId", refValue('messageId')), fieldValue("reaction", refValue('reaction'))), notNull(scalar('Boolean')))
         );
@@ -6394,6 +6397,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'MediaOffer',
         body: 'mutation MediaOffer($id:ID!,$peerId:ID!,$offer:String!){mediaStreamOffer(id:$id,peerId:$peerId,offer:$offer){__typename id streams{__typename id peerId state sdp ice}}}',
         selector: MediaOfferSelector
+    },
+    MessageSetDonationReaction: {
+        kind: 'mutation',
+        name: 'MessageSetDonationReaction',
+        body: 'mutation MessageSetDonationReaction($messageId:ID!){messageDonationReactionAdd(messageId:$messageId)}',
+        selector: MessageSetDonationReactionSelector
     },
     MessageSetReaction: {
         kind: 'mutation',
