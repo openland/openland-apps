@@ -242,7 +242,6 @@ const MediaView = React.memo((props: {
 }) => {
     let peerId = props.mediaSessionManager.analizer.useSpeakingPeer();
     const avatarRef = React.useRef<HTMLDivElement>(null);
-    console.warn('render', peerId);
     React.useEffect(() => {
         let d: (() => void) | undefined;
         if (peerId) {

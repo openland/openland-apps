@@ -11,6 +11,12 @@ export class AppUserMediaStreamWeb implements AppMediaStream {
         this.id = stream.id;
         this._stream = stream;
     }
+    hasAudio(): boolean {
+        return !!this._stream.getAudioTracks().length;
+    }
+    hasVideo(): boolean {
+        return !!this._stream.getVideoTracks().length;
+    }
 
     get muted() {
         return this._muted;

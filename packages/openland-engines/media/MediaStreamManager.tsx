@@ -3,14 +3,15 @@ import { ConferenceMedia_conferenceMedia_streams, ConferenceMedia_conferenceMedi
 import { AppPeerConnectionFactory } from 'openland-y-runtime/AppPeerConnection';
 import { AppPeerConnection, IceState } from 'openland-y-runtime-api/AppPeerConnectionApi';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
-import { backoff } from 'openland-y-utils/timer';
+import { backoff, debounce } from 'openland-y-utils/timer';
+import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
 
 export class MediaStreamManager {
     private readonly id: string;
     private readonly client: OpenlandClient;
     private readonly peerId: string;
     private readonly targetPeerId: string | null;
-    private readonly stream: AppMediaStream;
+    private readonly audioOutStream: AppMediaStream;
     private readonly iceServers: ConferenceMedia_conferenceMedia_iceServers[];
     private readonly peerConnection: AppPeerConnection;
     private streamConfig: ConferenceMedia_conferenceMedia_streams;
@@ -25,10 +26,11 @@ export class MediaStreamManager {
     private iceConnectionState: IceState = 'new';
     private iceStateListeners = new Set<(iceState: IceState) => void>();
     private contentStreamListeners = new Set<(stream?: AppMediaStream) => void>();
-    private mainInStream?: AppMediaStream;
-    private contentInStream?: AppMediaStream;
-    private outContentStream?: AppMediaStream;
-
+    private audioInStream?: AppMediaStream;
+    private videoInStream?: AppMediaStream;
+    private videoOutStream?: AppMediaStream;
+    private ignoreNextNegotiationNeeded = false;
+    private _queue: ExecutionQueue;
     constructor(
         client: OpenlandClient,
         id: string,
@@ -40,14 +42,15 @@ export class MediaStreamManager {
         targetPeerId: string | null,
         outContentStream?: AppMediaStream
     ) {
+        this._queue = new ExecutionQueue();
         this.id = id;
         this.client = client;
         this.peerId = peerId;
         this.targetPeerId = targetPeerId;
         this.iceServers = iceServers;
         this.streamConfig = streamConfig;
-        this.stream = stream;
-        this.outContentStream = outContentStream;
+        this.audioOutStream = stream;
+        this.videoOutStream = outContentStream;
         this.onReady = onReady;
         this.peerConnection = AppPeerConnectionFactory.createConnection({
             iceServers: this.iceServers.map(v => ({
@@ -76,15 +79,13 @@ export class MediaStreamManager {
         };
 
         this.peerConnection.onnegotiationneeded = () => {
-            console.warn('[WEBRTC]: onnegotiationneeded');
-            if (this.streamConfig.state === 'READY' && ['connected', 'completed'].includes(this. iceConnectionState)) {
-                backoff(async () => {
-                    if (this.destroyed) {
-                        return;
-                    }
-                    await this.client.mutateMediaNegotiationNeeded({ id: this.id, peerId: this.peerId });
-                });
+            console.warn('[WEBRTC]: onnegotiationneeded ask');
+            if (this.ignoreNextNegotiationNeeded) {
+                this.ignoreNextNegotiationNeeded = false;
+                return;
             }
+            console.warn('[WEBRTC]: onnegotiationneeded confirmed');
+            this.requestNegotiationDebounced();
         };
 
         this.peerConnection.oniceconnectionstatechange = (ev) => {
@@ -99,16 +100,29 @@ export class MediaStreamManager {
             }
         };
         this.peerConnection.onStreamAdded = this.onStreamAdded;
-        this.peerConnection.addStream(this.stream);
-        if (this.outContentStream) {
-            this.peerConnection.addStream(this.outContentStream);
+        this.peerConnection.addStream(this.audioOutStream);
+        if (this.videoOutStream) {
+            this.peerConnection.addStream(this.videoOutStream);
         }
-        this.handleState();
+        this._queue.post(() => this.handleState(this.streamConfig));
     }
 
+    requestNegotiationDebounced = debounce(() => {
+        backoff(async () => {
+            if (this.destroyed) {
+                return;
+            }
+            await this._queue.sync(async () => {
+                this.offerHandled = false;
+                this.answerHandled = false;
+                this.readyHandled = false;
+            });
+            await this.client.mutateMediaNegotiationNeeded({ id: this.id, peerId: this.peerId });
+        });
+    }, 50);
+
     onStateChanged = (streamConfig: ConferenceMedia_conferenceMedia_streams) => {
-        this.streamConfig = streamConfig;
-        this.handleState();
+        this._queue.post(() => this.handleState(streamConfig));
     }
 
     destroy = () => {
@@ -119,7 +133,8 @@ export class MediaStreamManager {
         this.peerConnection.close();
     }
 
-    private handleState = () => {
+    private handleState = async (streamConfig: ConferenceMedia_conferenceMedia_streams) => {
+        this.streamConfig = streamConfig;
         if (this.streamConfig.state === 'NEED_OFFER') {
             if (this.offerHandled) {
                 return;
@@ -128,12 +143,13 @@ export class MediaStreamManager {
             this.readyHandled = false;
             this.localDescription = undefined;
             this.remoteDescription = undefined;
-            backoff(async () => {
+            await backoff(async () => {
                 if (this.destroyed) {
                     return;
                 }
 
                 if (!this.localDescription) {
+                    this.ignoreNextNegotiationNeeded = true;
                     console.log('[WEBRTC]: Creating offer');
                     let offer = await this.peerConnection.createOffer();
                     await this.peerConnection.setLocalDescription(offer);
@@ -155,7 +171,7 @@ export class MediaStreamManager {
             this.localDescription = undefined;
             this.remoteDescription = undefined;
 
-            backoff(async () => {
+            await backoff(async () => {
                 if (this.destroyed) {
                     return;
                 }
@@ -174,7 +190,7 @@ export class MediaStreamManager {
                     this.localDescription = answer;
                 }
 
-                this.handleState();
+                await this.handleState(streamConfig);
 
                 await this.client.mutateMediaAnswer({
                     id: this.id,
@@ -188,7 +204,7 @@ export class MediaStreamManager {
                 this.answerHandled = false;
                 this.offerHandled = false;
 
-                backoff(async () => {
+                await backoff(async () => {
                     if (this.destroyed) {
                         return;
                     }
@@ -206,7 +222,7 @@ export class MediaStreamManager {
                         this.onReady();
                     }
 
-                    this.handleState();
+                    await this.handleState(streamConfig);
                 });
             }
         }
@@ -220,7 +236,7 @@ export class MediaStreamManager {
                         if (this.destroyed) {
                             return;
                         }
-                        console.log('INCOMING ICE:' + ice);
+                        console.log('[WEBRTC]: INCOMING ICE:' + ice);
                         await this.peerConnection.addIceCandidate(ice);
                     });
                 }
@@ -231,29 +247,32 @@ export class MediaStreamManager {
     // TODO: move screen share to separate peer connection
     // WebRTC still can't detect stream/track removal, so we cant display ui prpperly :/
     onStreamAdded = (stream: AppMediaStream) => {
-        if (!this.mainInStream) {
-            this.mainInStream = stream;
-        } else {
-            if (this.contentInStream !== undefined) {
-                this.contentInStream.close();
+        if (stream.hasAudio()) {
+            if (!this.audioInStream) {
+                this.audioInStream = stream;
+            } else {
+                console.warn('[WEBRTC]: duplicate audio stream', stream);
             }
-            console.warn('new content stream', this.contentInStream, stream);
+        }
+        if (stream.hasVideo()) {
+            if (this.videoInStream !== undefined) {
+                this.videoInStream.close();
+            }
 
-            this.contentInStream = stream;
-            this.notifyContentStream();
+            this.videoInStream = stream;
+            this.notifyVideoInStream();
             stream.onClosed = () => {
-                if (this.contentInStream === stream) {
-                    this.contentInStream = undefined;
+                if (this.videoInStream === stream) {
+                    this.videoInStream = undefined;
                 }
-                this.notifyContentStream();
+                this.notifyVideoInStream();
             };
         }
     }
 
     addStream = (stream: AppMediaStream) => {
-        if (this.outContentStream !== stream) {
-            this.outContentStream = stream;
-            console.warn('boom', this.id, 'adding stream', stream);
+        if (this.videoOutStream !== stream) {
+            this.videoOutStream = stream;
             this.peerConnection.addStream(stream);
         }
     }
@@ -261,18 +280,18 @@ export class MediaStreamManager {
     ////
     // IO
     ////
-    getStream = () => {
-        return this.stream;
+    getAudioOutStream = () => {
+        return this.audioOutStream;
     }
-    getVideoStream = () => {
-        return this.contentInStream;
+    getVideoInStream = () => {
+        return this.videoInStream;
     }
-    getOutContentStream = () => {
-        return this.outContentStream;
+    getVideoOutStream = () => {
+        return this.videoOutStream;
     }
 
-    getInStream = () => {
-        return this.mainInStream;
+    getAudioInStream = () => {
+        return this.audioInStream;
     }
 
     getConnection = () => {
@@ -305,14 +324,14 @@ export class MediaStreamManager {
 
     listenContentStream = (listener: (stream?: AppMediaStream) => void) => {
         this.contentStreamListeners.add(listener);
-        listener(this.contentInStream);
+        listener(this.videoInStream);
         return () => {
             this.contentStreamListeners.forEach(l => this.contentStreamListeners.delete(l));
         };
     }
 
-    private notifyContentStream = () => {
-        this.contentStreamListeners.forEach(l => l(this.contentInStream));
+    private notifyVideoInStream = () => {
+        this.contentStreamListeners.forEach(l => l(this.videoInStream));
     }
 
 }

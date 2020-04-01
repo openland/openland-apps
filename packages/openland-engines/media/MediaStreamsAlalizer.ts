@@ -35,12 +35,12 @@ export class MediaStreamsAlalizer {
             s.forEach(sm => {
                 let peerId = sm.getTargetPeerId();
                 if (peerId) {
-                    this.initStreamsAnalizer(peerId, sm.getInStream(), sm);
+                    this.initStreamsAnalizer(peerId, sm.getAudioInStream(), sm);
                 }
             });
             if (s.size) {
                 let first = s.values().next().value;
-                this.initStreamsAnalizer(first.getPeerId(), first.getStream(), first, true);
+                this.initStreamsAnalizer(first.getPeerId(), first.getAudioOutStream(), first, true);
             }
             if (this.buffer && !this.running) {
                 this.running = true;

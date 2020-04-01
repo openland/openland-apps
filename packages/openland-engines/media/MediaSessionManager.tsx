@@ -305,7 +305,7 @@ export class MediaSessionManager {
         for (let s of this.streamConfigs) {
             let ms = this.streams.get(s.id);
             if (ms) {
-                if (this.activeStream && (ms.getOutContentStream() !== this.activeStream)) {
+                if (this.activeStream && (ms.getVideoOutStream() !== this.activeStream)) {
                     ms.addStream(this.activeStream);
                 }
                 ms.onStateChanged(s);

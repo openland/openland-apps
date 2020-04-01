@@ -62,8 +62,6 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
         new AlertBlanketBuilder().alert(formatError(e));
         props.modalController.hide();
     }, []);
-    console.warn('boom', isActionInProgress);
-    console.warn('boom', state);
     return (
         <View
             flexDirection="column"

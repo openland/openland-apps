@@ -4,6 +4,8 @@ export interface AppMediaStream {
     blinded: boolean;
     close(): void;
     onClosed: (() => void) | undefined;
+    hasAudio(): boolean;
+    hasVideo(): boolean;
 }
 
 export interface AppUserMediaApi {

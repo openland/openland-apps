@@ -43,10 +43,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
                 this.audio.srcObject = ev.streams[0];
                 this.audio.load();
                 this.audio.play();
-
-            } else {
-                console.warn('on track', ev.track);
-            }
+            } 
 
             for (let stream of ev.streams) {
                 if (!this.streams.has(stream)) {
