@@ -10,6 +10,7 @@ import { css, cx } from 'linaria';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { XModalController } from 'openland-x/showModal';
 
 const animatedAvatarStyle = css`
     position: absolute;
@@ -45,14 +46,14 @@ const borderStyle = css`
     pointer-events: none;
 `;
 
-const Controls = React.memo((props: { calls: CallsEngine }) => {
+const Controls = React.memo((props: { calls: CallsEngine, ctx: XModalController }) => {
     let callState = props.calls.useState();
     return (
         <div className={controlsStyle} >
             <UButton
                 flexShrink={0}
                 style={callState.mute ? 'primary' : 'secondary'}
-                text={callState.mute ? 'Unmute' : 'Mute'}
+                text={callState.mute ? 'Muted' : 'Mute'}
                 onClick={() => props.calls.setMute(!callState.mute)}
                 marginHorizontal={4}
             />
@@ -70,12 +71,28 @@ const Controls = React.memo((props: { calls: CallsEngine }) => {
                 onClick={() => props.calls.switchScreenShare()}
                 marginHorizontal={4}
             />
-
+            <UButton
+                flexShrink={0}
+                style={'danger'}
+                text={'Leave call'}
+                onClick={() => {
+                    props.ctx.hide();
+                    props.calls.leaveCall();
+                }}
+                marginHorizontal={4}
+            />
+            <UButton
+                flexShrink={0}
+                style={'secondary'}
+                text={'Minimize call'}
+                onClick={() => props.ctx.hide()}
+                marginHorizontal={4}
+            />
         </div>
     );
 });
 
-const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: Conference_conference_peers, calls: CallsEngine }) => {
+const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: Conference_conference_peers, calls: CallsEngine, ctx: XModalController }) => {
     let [stream, setStream] = React.useState<MediaStream>();
     let streamManager = props.mediaSession.useStreamManager(props.peer.id);
 
@@ -116,13 +133,13 @@ const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: 
                     photo={props.peer.user.photo}
                 />
             </div>
-            {props.peer.user.isYou && <Controls calls={props.calls} />}
-            <div ref={ref} className={borderStyle}/>
+            {props.peer.user.isYou && <Controls calls={props.calls} ctx={props.ctx} />}
+            <div ref={ref} className={borderStyle} />
         </XView>
     );
 });
 
-export const CallModalConponent = React.memo((props: { chatId: string, calls: CallsEngine, client: OpenlandClient }) => {
+export const CallModalConponent = React.memo((props: { chatId: string, calls: CallsEngine, client: OpenlandClient, ctx: XModalController }) => {
     let conference = props.client.useConference({ id: props.chatId }, { suspense: false });
     props.calls.useState();
 
@@ -139,13 +156,13 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     return (
         <XView flexDirection="column" justifyContent="flex-start" flexGrow={1}>
             {mediaSession && <>
-                <XView key="container-1" flexDirection="row" justifyContent="flex-start" flexGrow={1}>{peerSlice[0].map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} />)}</XView>
-                <XView key="container-2" flexDirection="row" justifyContent="flex-start" flexGrow={peerSlice[1].length ? 1 : 0}>{peerSlice[1].map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} />)}</XView>
+                <XView key="container-1" flexDirection="row" justifyContent="flex-start" flexGrow={1}>{peerSlice[0].map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} ctx={props.ctx} />)}</XView>
+                <XView key="container-2" flexDirection="row" justifyContent="flex-start" flexGrow={peerSlice[1].length ? 1 : 0}>{peerSlice[1].map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} ctx={props.ctx} />)}</XView>
             </>}
         </XView >
     );
 });
 
 export const showVideoCallModal = (props: { chatId: string, calls: CallsEngine, client: OpenlandClient }) => {
-    showModalBox({ fullScreen: true }, ctx => <CallModalConponent {...props} />);
+    showModalBox({ fullScreen: true }, ctx => <CallModalConponent {...props} ctx={ctx} />);
 };
