@@ -3,7 +3,11 @@ import { View, Text, Alert, StyleSheet, ViewStyle, TextStyle, Platform } from 'r
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { ZText } from 'openland-mobile/components/ZText';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { Room_room_SharedRoom, ChatJoin_room_SharedRoom, WalletSubscriptionState } from 'openland-api/spacex.types';
+import {
+    Room_room_SharedRoom,
+    ChatJoin_room_SharedRoom,
+    WalletSubscriptionState,
+} from 'openland-api/spacex.types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
@@ -27,7 +31,7 @@ const styles = StyleSheet.create({
     title: {
         ...TextStyles.Title2,
         marginTop: 32,
-        textAlign: 'center'
+        textAlign: 'center',
     } as TextStyle,
     description: {
         ...TextStyles.Body,
@@ -39,8 +43,8 @@ const styles = StyleSheet.create({
     } as TextStyle,
     buttonWrapper: {
         paddingTop: 16,
-        paddingHorizontal: 16
-    } as ViewStyle
+        paddingHorizontal: 16,
+    } as ViewStyle,
 });
 
 interface ChatJoinProps {
@@ -50,11 +54,25 @@ interface ChatJoinProps {
 }
 
 interface ChatJoinComponentProps {
-    room: Pick<Room_room_SharedRoom, 'id' | 'title' | 'photo' | 'description' | 'membersCount' | 'onlineMembersCount' | 'previewMembers' | 'isChannel' | 'isPremium' | 'premiumPassIsActive' | 'premiumSettings' | 'premiumSubscription'>;
+    room: Pick<
+        Room_room_SharedRoom,
+        | 'id'
+        | 'title'
+        | 'photo'
+        | 'description'
+        | 'membersCount'
+        | 'onlineMembersCount'
+        | 'previewMembers'
+        | 'isChannel'
+        | 'isPremium'
+        | 'premiumPassIsActive'
+        | 'premiumSettings'
+        | 'premiumSubscription'
+    >;
     ownerId?: string;
     theme: ThemeGlobal;
     action: () => Promise<any>;
-    invitedBy?: { id: string, name: string, photo: string | null };
+    invitedBy?: { id: string; name: string; photo: string | null };
     router: SRouter;
 }
 
@@ -73,19 +91,25 @@ export const joinPaidGroup = (props: JoinPaidGroupProps) => {
     showPayConfirm({
         router: props.router,
         amount: props.premiumSettings.price,
-        ...(props.premiumSettings.interval ?
-            { type: 'subscription', interval: props.premiumSettings.interval } :
-            { type: 'payment' }),
+        ...(props.premiumSettings.interval
+            ? { type: 'subscription', interval: props.premiumSettings.interval }
+            : { type: 'payment' }),
         productTitle: props.title,
         productDescription: props.premiumSettings.interval ? 'Subscription' : 'Payment',
-        productPicture: <ZAvatar size="medium" title={props.title} id={props.id} photo={props.photo} />,
+        productPicture: (
+            <ZAvatar size="medium" title={props.title} id={props.id} photo={props.photo} />
+        ),
         action: async () => {
             try {
                 let passIsActive = false;
                 if (props.premiumSettings.interval) {
-                    passIsActive = (await props.client.mutateBuyPremiumChatSubscription({ chatId: props.id })).betaBuyPremiumChatSubscription.premiumPassIsActive;
+                    passIsActive = (
+                        await props.client.mutateBuyPremiumChatSubscription({ chatId: props.id })
+                    ).betaBuyPremiumChatSubscription.premiumPassIsActive;
                 } else {
-                    passIsActive = (await props.client.mutateBuyPremiumChatPass({ chatId: props.id })).betaBuyPremiumChatPass.premiumPassIsActive;
+                    passIsActive = (
+                        await props.client.mutateBuyPremiumChatPass({ chatId: props.id })
+                    ).betaBuyPremiumChatPass.premiumPassIsActive;
                 }
                 if (passIsActive) {
                     props.onSuccess();
@@ -119,7 +143,7 @@ const BuyPaidChatPassButton = (props: {
             router: props.router,
             client,
             onError: () => setLoading(false),
-            onSuccess: () => props.router.pushAndRemove('Conversation', { id: props.id })
+            onSuccess: () => props.router.pushAndRemove('Conversation', { id: props.id }),
         });
     }, []);
 
@@ -141,70 +165,97 @@ const BuyPaidChatPassButton = (props: {
                 onPress={buyPaidChatPass}
                 size="large"
             />
-            {props.ownerId && <View marginTop={16}>
-                <ZButton
-                    title="Get help"
-                    onPress={() => props.router.push('Conversation', { id: props.ownerId })}
-                    size="large"
-                    style="secondary"
-                />
-            </View>}
+            {props.ownerId && (
+                <View marginTop={16}>
+                    <ZButton
+                        title="Get help"
+                        onPress={() => props.router.push('Conversation', { id: props.ownerId })}
+                        size="large"
+                        style="secondary"
+                    />
+                </View>
+            )}
         </View>
     );
 };
 export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
     const area = React.useContext(ASSafeAreaContext);
-    const { theme, action, invitedBy, room, ownerId } = props;
-    let { id, title, photo, description, membersCount, onlineMembersCount, previewMembers = [], isChannel } = room;
+    const {
+        theme,
+        action,
+        // invitedBy,
+        room,
+        ownerId,
+    } = props;
+    let {
+        id,
+        title,
+        photo,
+        description,
+        membersCount,
+        onlineMembersCount,
+        previewMembers = [],
+        isChannel,
+    } = room;
     const typeStr = isChannel ? 'channel' : 'group';
-    const paddingBottom = Platform.OS === 'ios' ? (area.bottom || 16) : area.bottom + 16;
+    const paddingBottom = Platform.OS === 'ios' ? area.bottom || 16 : area.bottom + 16;
 
-    const avatars = previewMembers.map(x => x.photo).filter(x => !!x).slice(0, 5);
+    const avatars = previewMembers
+        .map((x) => x.photo)
+        .filter((x) => !!x)
+        .slice(0, 5);
     let showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
     const showOnlineMembers = onlineMembersCount ? onlineMembersCount >= 10 : false;
-    let joinTitle = !!invitedBy ? `${invitedBy.name} invites you to join “${title}”` : title;
-    const joinAvatars = !!invitedBy ? (
-        <View flexDirection="row" justifyContent="center">
-            <View marginLeft={-14} borderRadius={100} borderColor={theme.backgroundPrimary} borderWidth={2}>
-                <ZAvatar
-                    photo={invitedBy.photo}
-                    size="x-large"
-                    id={invitedBy.id}
-                    title={invitedBy.name}
-                />
-            </View>
-            <View marginLeft={-14} borderRadius={100} borderColor={theme.backgroundPrimary} borderWidth={2}>
-                <ZAvatar
-                    photo={photo}
-                    size="x-large"
-                    id={id}
-                    title={title}
-                />
-            </View>
-        </View>
-    ) : (
-            <ZAvatar
-                photo={photo}
-                size="xx-large"
-                id={id}
-                title={title}
-            />
-        );
+    // let joinTitle = !!invitedBy ? `${invitedBy.name} invites you to join “${title}”` : title;
+    let joinTitle = title;
+    // const joinAvatars = !!invitedBy ? (
+    //     <View flexDirection="row" justifyContent="center">
+    //         <View marginLeft={-14} borderRadius={100} borderColor={theme.backgroundPrimary} borderWidth={2}>
+    //             <ZAvatar
+    //                 photo={invitedBy.photo}
+    //                 size="x-large"
+    //                 id={invitedBy.id}
+    //                 title={invitedBy.name}
+    //             />
+    //         </View>
+    //         <View marginLeft={-14} borderRadius={100} borderColor={theme.backgroundPrimary} borderWidth={2}>
+    //             <ZAvatar
+    //                 photo={photo}
+    //                 size="x-large"
+    //                 id={id}
+    //                 title={title}
+    //             />
+    //         </View>
+    //     </View>
+    // ) : (
+    //         <ZAvatar
+    //             photo={photo}
+    //             size="xx-large"
+    //             id={id}
+    //             title={title}
+    //         />
+    //     );
+    const joinAvatars = <ZAvatar photo={photo} size="xx-large" id={id} title={title} />;
 
     const membersContent = (
         <>
             <View flexDirection="row" justifyContent="center" marginTop={32}>
-                {avatars.map(src => (
-                    <View marginLeft={-8} borderRadius={100} borderColor={theme.backgroundPrimary} borderWidth={2}>
-                        <ZAvatar
-                            photo={src}
-                            size="small"
-                        />
+                {avatars.map((src) => (
+                    <View
+                        marginLeft={-8}
+                        borderRadius={100}
+                        borderColor={theme.backgroundPrimary}
+                        borderWidth={2}
+                    >
+                        <ZAvatar photo={src} size="small" />
                     </View>
                 ))}
             </View>
             <View marginTop={8}>
-                <Text style={[styles.members, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
+                <Text
+                    style={[styles.members, { color: theme.foregroundSecondary }]}
+                    allowFontScaling={false}
+                >
                     {membersCount} members{showOnlineMembers && `, ${onlineMembersCount} online`}
                 </Text>
             </View>
@@ -249,7 +300,8 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
             );
             showMembers = false;
             joinTitle = `Your access to “${room.title}” is suspended`;
-            description = 'To keep your access to the group by subscription you need to complete payment';
+            description =
+                'To keep your access to the group by subscription you need to complete payment';
         } else {
             button = (
                 <BuyPaidChatPassButton
@@ -268,16 +320,28 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
         <View style={{ flexGrow: 1, paddingTop: area.top, paddingBottom }}>
             <View style={styles.container}>
                 {joinAvatars}
-                <Text style={[styles.title, { color: theme.foregroundPrimary }]} numberOfLines={3} allowFontScaling={false}>
+                <Text
+                    style={[styles.title, { color: theme.foregroundPrimary }]}
+                    numberOfLines={3}
+                    allowFontScaling={false}
+                >
                     {joinTitle}
                 </Text>
                 {!!description && (
-                    <ZText text={description} linkify={true} style={[styles.description, { color: theme.foregroundSecondary }]} numberOfLines={4}/>
+                    <ZText
+                        text={description}
+                        linkify={true}
+                        style={[styles.description, { color: theme.foregroundSecondary }]}
+                        numberOfLines={4}
+                    />
                 )}
                 {showMembers && membersContent}
                 {!showMembers && !description && (
                     <View marginTop={4}>
-                        <Text style={[styles.members, { color: theme.foregroundSecondary }]} allowFontScaling={false}>
+                        <Text
+                            style={[styles.members, { color: theme.foregroundSecondary }]}
+                            allowFontScaling={false}
+                        >
                             New {typeStr}
                         </Text>
                     </View>
@@ -295,11 +359,19 @@ export const ChatJoin = React.memo((props: ChatJoinProps) => {
     const action = React.useCallback(async () => {
         await client.mutateRoomJoin({ roomId: props.room.id });
         await client.refetchRoomTiny({ id: props.room.id });
-        
+
         if (onJoin) {
             onJoin(props.room);
         }
     }, [props.room]);
 
-    return <ChatJoinComponent room={room} ownerId={room.owner ? room.owner.id : undefined} theme={props.theme} action={action} router={props.router} />;
+    return (
+        <ChatJoinComponent
+            room={room}
+            ownerId={room.owner ? room.owner.id : undefined}
+            theme={props.theme}
+            action={action}
+            router={props.router}
+        />
+    );
 });
