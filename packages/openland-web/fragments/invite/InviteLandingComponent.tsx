@@ -498,17 +498,17 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     let room: RoomPreview_SharedRoom | undefined;
     let organization: ResolvedInvite_invite_InviteInfo_organization | undefined;
 
-    let invitedByUser;
+    // let invitedByUser;
     let matchmaking;
 
     if (invite.invite && invite.invite.__typename === 'InviteInfo' && invite.invite.organization) {
         organization = invite.invite.organization;
-        invitedByUser = invite.invite.creator;
+        // invitedByUser = invite.invite.creator;
     }
 
     if (invite.invite && invite.invite.__typename === 'RoomInvite') {
         room = invite.invite.room;
-        invitedByUser = invite.invite.invitedByUser;
+        // invitedByUser = invite.invite.invitedByUser;
         matchmaking = !!(room.matchmaking && room.matchmaking.enabled);
     }
 
@@ -616,7 +616,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 />
             ) : (
                 <InviteLandingComponentLayout
-                    invitedByUser={invitedByUser}
+                    // invitedByUser={invitedByUser}
                     button={button}
                     whereToInvite={whereToInvite}
                     photo={room ? room.photo : organization!.photo}
