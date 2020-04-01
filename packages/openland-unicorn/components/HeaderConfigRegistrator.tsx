@@ -5,12 +5,13 @@ import { HeaderContextProvider, HeaderContext } from './HeaderContext';
 class HeaderConfigRegistratorComponent extends React.PureComponent<{ config: HeaderConfig, provider: HeaderContextProvider }> {
     private registrationId: string | undefined;
 
-    componentWillMount() {
+    componentDidMount() {
         this.registrationId = this.props.provider.registerConfig(this.props.config);
     }
-    componentWillReceiveProps(nextProps: { config: HeaderConfig, provider: HeaderContextProvider }) {
+
+    componentDidUpdate(prevProps: { config: HeaderConfig, provider: HeaderContextProvider }) {
         if (this.registrationId) {
-            this.props.provider.updateConfig(this.registrationId, nextProps.config);
+            this.props.provider.updateConfig(this.registrationId, this.props.config);
         }
     }
 

@@ -69,9 +69,9 @@ export const DiscoverHomeFragment = React.memo(() => {
             <XView maxWidth={560} marginTop={25}>
                 {isTabVisible && (
                     <USlider title="Featured" childrenCount={editorsChoiceItems.length}>
-                        {editorsChoiceItems.map(item => (
-                            <div className={editorsChoiceItem}>
-                                <EditorsChoiceItem {...item} />
+                        {editorsChoiceItems.map(i => (
+                            <div className={editorsChoiceItem} key={i.id}>
+                                <EditorsChoiceItem {...i} />
                             </div>
                         ))}
                     </USlider>
@@ -86,9 +86,9 @@ export const DiscoverHomeFragment = React.memo(() => {
 
                 {isTabVisible && (
                     <USlider title="Collections" path="/discover/collections" childrenCount={collectionsItems.length}>
-                        {collectionsItems.map(collection => (
-                            <div className={sliderCollectionItem}>
-                                <DiscoverCollection {...collection} />
+                        {collectionsItems.map(i => (
+                            <div className={sliderCollectionItem} key={i.id}>
+                                <DiscoverCollection {...i} />
                             </div>
                         ))}
                     </USlider>
