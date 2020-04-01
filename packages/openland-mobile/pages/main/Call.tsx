@@ -30,9 +30,9 @@ import { AppConfig } from 'openland-y-runtime-native/AppConfig';
 const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaSession: MediaSessionManager, h: number }) => {
     let [stream, setStream] = React.useState<string>();
     let streamManager = props.mediaSession.useStreamManager(props.peer.id);
-
+    let isLocal = props.peer.id === props.mediaSession.getPeerId();
     React.useEffect(() => {
-        if (props.peer.user.isYou) {
+        if (isLocal) {
             return props.mediaSession.listenOutVideo(s => {
                 setStream((s as AppUserMediaStreamNative)?._stream.toURL());
             });
@@ -47,7 +47,7 @@ const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaS
     }, [streamManager]);
     return (
         <View flexGrow={1} height={props.h} backgroundColor="gray">
-            {stream && <RTCView streamURL={stream} style={{ flexGrow: 1 }} objectFit="cover" />}
+            {stream && <RTCView streamURL={stream} style={{ flexGrow: 1 }} objectFit="cover" mirror={isLocal} />}
             <View position="absolute" left={6} top={6}>
                 <ZAvatar size="medium" id={props.peer.user.id} title={props.peer.user.name} photo={props.peer.user.photo} />
             </View>
@@ -151,7 +151,6 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     // animate controls hide/show
     const [uiHidden, setHideUi] = React.useState(false);
     const uiHiddenRef = React.useRef(false);
-    React.useEffect(() => setHideUi(videoEnabled), [videoEnabled]);
     let switchUi = React.useCallback(() => setHideUi(v => !v), []);
     const key = React.useMemo(() => randomKey(), []);
     React.useEffect(() => {

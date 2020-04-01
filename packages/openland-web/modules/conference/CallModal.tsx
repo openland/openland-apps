@@ -26,14 +26,22 @@ const controlsStyle = css`
     position: absolute;
     z-index: 3;
     
-    bottom: 16px;
+    bottom: 24px;
     left: 0;
     right: 0;
 
     display: flex;
-    flex-direction: row;
-    flex-grow: 1;
     justify-content: center;
+`;
+
+const controlsContainerStyle = css`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    padding: 8px 4px;
+    background-color: var(--backgroundTertiaryTrans);
+    border-radius: 24px;
 `;
 
 const borderStyle = css`
@@ -50,56 +58,58 @@ const Controls = React.memo((props: { calls: CallsEngine, ctx: XModalController 
     let callState = props.calls.useState();
     return (
         <div className={controlsStyle} >
-            <UButton
-                flexShrink={0}
-                style={callState.mute ? 'primary' : 'secondary'}
-                text={callState.mute ? 'Muted' : 'Mute'}
-                onClick={() => props.calls.setMute(!callState.mute)}
-                marginHorizontal={4}
-            />
-            <UButton
-                flexShrink={0}
-                style={callState.outVideo?.type === 'video' ? 'primary' : 'secondary'}
-                text={'Video'}
-                onClick={() => props.calls.switchVideo()}
-                marginHorizontal={4}
-            />
-            <UButton
-                flexShrink={0}
-                style={callState.outVideo?.type === 'screen' ? 'primary' : 'secondary'}
-                text={'Screen share'}
-                onClick={() => props.calls.switchScreenShare()}
-                marginHorizontal={4}
-            />
-            <UButton
-                flexShrink={0}
-                style={'danger'}
-                text={'Leave call'}
-                onClick={() => {
-                    props.ctx.hide();
-                    props.calls.leaveCall();
-                }}
-                marginHorizontal={4}
-            />
-            <UButton
-                flexShrink={0}
-                style={'secondary'}
-                text={'Minimize call'}
-                onClick={() => props.ctx.hide()}
-                marginHorizontal={4}
-            />
+            <div className={controlsContainerStyle}>
+                <UButton
+                    flexShrink={1}
+                    style={callState.mute ? 'primary' : 'secondary'}
+                    text={callState.mute ? 'Muted' : 'Mute'}
+                    onClick={() => props.calls.setMute(!callState.mute)}
+                    marginHorizontal={4}
+                />
+                <UButton
+                    flexShrink={1}
+                    style={callState.outVideo?.type === 'video' ? 'primary' : 'secondary'}
+                    text={'Video'}
+                    onClick={() => props.calls.switchVideo()}
+                    marginHorizontal={4}
+                />
+                <UButton
+                    flexShrink={1}
+                    style={callState.outVideo?.type === 'screen' ? 'primary' : 'secondary'}
+                    text={'Screen share'}
+                    onClick={() => props.calls.switchScreenShare()}
+                    marginHorizontal={4}
+                />
+                <UButton
+                    flexShrink={1}
+                    style={'danger'}
+                    text={'Leave call'}
+                    onClick={() => {
+                        props.ctx.hide();
+                        props.calls.leaveCall();
+                    }}
+                    marginHorizontal={4}
+                />
+                <UButton
+                    flexShrink={1}
+                    style={'secondary'}
+                    text={'Minimize call'}
+                    onClick={() => props.ctx.hide()}
+                    marginHorizontal={4}
+                />
+            </div>
         </div>
     );
 });
 
-const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: Conference_conference_peers, calls: CallsEngine, ctx: XModalController }) => {
+const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: Conference_conference_peers, calls: CallsEngine }) => {
     let [stream, setStream] = React.useState<MediaStream>();
     let streamManager = props.mediaSession.useStreamManager(props.peer.id);
 
     const ref = React.useRef<HTMLDivElement>(null);
-
+    const isLocal = props.peer.id === props.mediaSession.getPeerId();
     React.useEffect(() => {
-        if (props.peer.user.isYou) {
+        if (isLocal) {
             return props.mediaSession.listenOutVideo(s => {
                 setStream((s as AppUserMediaStreamWeb)?._stream);
             });
@@ -124,7 +134,7 @@ const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: 
 
     return (
         <XView backgroundColor="gray" alignItems="center" justifyContent="center" flexGrow={1} >
-            {stream && <VideoComponent stream={stream} cover={true} onClick={onClick} />}
+            {stream && <VideoComponent stream={stream} cover={true} onClick={onClick} mirror={isLocal} />}
             <div key={'animtateing_wrapper'} className={cx(animatedAvatarStyle, stream && compactAvatarStyle)}>
                 <UAvatar
                     size={stream ? 'large' : 'xxx-large'}
@@ -133,7 +143,6 @@ const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: 
                     photo={props.peer.user.photo}
                 />
             </div>
-            {props.peer.user.isYou && <Controls calls={props.calls} ctx={props.ctx} />}
             <div ref={ref} className={borderStyle} />
         </XView>
     );
@@ -156,9 +165,10 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     return (
         <XView flexDirection="column" justifyContent="flex-start" flexGrow={1}>
             {mediaSession && <>
-                <XView key="container-1" flexDirection="row" justifyContent="flex-start" flexGrow={1}>{peerSlice[0].map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} ctx={props.ctx} />)}</XView>
-                <XView key="container-2" flexDirection="row" justifyContent="flex-start" flexGrow={peerSlice[1].length ? 1 : 0}>{peerSlice[1].map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} ctx={props.ctx} />)}</XView>
+                <XView key="container-1" flexDirection="row" justifyContent="flex-start" flexGrow={1}>{peerSlice[0].map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} />)}</XView>
+                <XView key="container-2" flexDirection="row" justifyContent="flex-start" flexGrow={peerSlice[1].length ? 1 : 0}>{peerSlice[1].map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} />)}</XView>
             </>}
+            <Controls calls={props.calls} ctx={props.ctx} />
         </XView >
     );
 });
