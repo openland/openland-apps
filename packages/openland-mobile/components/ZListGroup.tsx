@@ -3,7 +3,7 @@ import { View, Platform } from 'react-native';
 import { ZText } from './ZText';
 import { ZListHeader } from './ZListHeader';
 
-interface ZListGroupProps {
+export interface ZListGroupProps {
     header?: string | null;
     headerMarginTop?: number;
     counter?: number | null;

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { ZListGroup } from 'openland-mobile/components/ZListGroup';
+import { ZListGroup, ZListGroupProps } from 'openland-mobile/components/ZListGroup';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { View } from 'react-native';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 
-interface ProfileDonationGroupProps {
+interface ProfileDonationGroupProps extends ZListGroupProps {
     name: string;
     userId?: string;
     chatId?: string;
@@ -13,8 +13,9 @@ interface ProfileDonationGroupProps {
 
 export const ProfileDonationGroup = (props: ProfileDonationGroupProps) => {
     let router = React.useContext(SRouterContext)!;
+    let {name, userId, chatId, shouldHide} = props;
 
-    return !props.shouldHide ? (
+    return !shouldHide ? (
         <ZListGroup header="Make donation">
             <View paddingHorizontal={16} marginTop={8} flexDirection="row">
                 {[1, 3, 5].map(price => (
@@ -22,11 +23,11 @@ export const ProfileDonationGroup = (props: ProfileDonationGroupProps) => {
                         <ZButton 
                             title={`$${price}`} 
                             style="secondary" 
-                            onPress={() => router.push('Donation', {initialPrice: price, name: props.name, chatId: props.chatId, userId: props.userId})}
+                            onPress={() => router.push('Donation', {initialPrice: price, name, chatId, userId})}
                         />
                     </View>
                 ))}
-                <ZButton title="Other" style="secondary" onPress={() => router.push('Donation', {name: props.name, chatId: props.chatId, userId: props.userId})} />
+                <ZButton title="Other" style="secondary" onPress={() => router.push('Donation', {name, chatId, userId})} />
             </View>
         </ZListGroup>
     ) : null;

@@ -185,7 +185,7 @@ const DonationComponent = (props: PageProps) => {
                         <View flexDirection="row">
                             <ZIconAction source={require('assets/ic-minus-glyph-24.png')} onPress={() => updatePrice(-5)} style="pay" />
                             <View marginHorizontal={16} flex={1} height={40} flexDirection="row" justifyContent="center">
-                                <PriceInput value={price} autofocus={!initialPrice} onChange={handlePriceChange} ref={priceRef} />
+                                <PriceInput value={price} autofocus={true} onChange={handlePriceChange} ref={priceRef} />
                             </View>
                             <ZIconAction source={require('assets/ic-add-glyph-24.png')} onPress={() => updatePrice(5)} style="pay" />
                         </View>
