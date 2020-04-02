@@ -201,7 +201,7 @@ export class MediaStreamManager {
 
         // Apply ICE
         if (this.remoteDescription && this.localDescription) {
-            for (let ice of this.streamConfig.ice) {
+            for (let ice of streamConfig.ice) {
                 if (!this.appliedCandidates.has(ice)) {
                     this.appliedCandidates.add(ice);
                     backoff(async () => {
