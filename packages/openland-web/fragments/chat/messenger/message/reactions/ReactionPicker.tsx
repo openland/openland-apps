@@ -3,6 +3,7 @@ import { MessageReactionType, FullMessage_GeneralMessage_reactions } from 'openl
 import { css, cx } from 'linaria';
 import { reactionImage } from './MessageReactions';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 
 const SortedReactions = [
     MessageReactionType.LIKE,
@@ -69,6 +70,16 @@ const reactionClass = css`
     }
 `;
 
+const texts: {[reaction in MessageReactionType]: string} = {
+    ANGRY: 'Angry',
+    CRYING: 'Crying',
+    JOY: 'Joy',
+    LIKE: 'Like',
+    SCREAM: 'Scream',
+    THUMB_UP: 'Thumb Up',
+    DONATE: 'Donate',
+};
+
 interface ReactionPickerItemProps {
     reaction: MessageReactionType;
     toRemove: boolean;
@@ -78,6 +89,7 @@ interface ReactionPickerItemProps {
 const ReactionPickerItem = React.memo<ReactionPickerItemProps>(props => {
     const { onPick, reaction, toRemove } = props;
     const [animate, setAnimate] = React.useState(false);
+    const [show] = useCaptionPopper({text: texts[reaction], scope: 'reactions'});
     const handleClick = () => {
         if (animate) {
             return;
@@ -92,7 +104,7 @@ const ReactionPickerItem = React.memo<ReactionPickerItemProps>(props => {
     };
 
     return (
-        <div className={cx(reactionClass, animate && 'animated', toRemove && 'to-remove')} onClick={handleClick}>
+        <div className={cx(reactionClass, animate && 'animated', toRemove && 'to-remove')} onClick={handleClick} onMouseEnter={show}>
             <img src={reactionImage(reaction)} className="reaction-main" />
             <img src={reactionImage(reaction)} className="reaction-duplicate" />
         </div>
