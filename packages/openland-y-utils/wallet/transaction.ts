@@ -117,6 +117,13 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
                 if (product.chat && product.chat.__typename === 'SharedRoom') {
                     converted.group = product.chat;
                 }
+            } else if (product.__typename === 'WalletProductDonationReaction') {
+                converted.title = product.user.name;
+                converted.avatar = getAvatar(product.user);
+                converted.type = 'Premium reaction';
+                if (product.chat && product.chat.__typename === 'SharedRoom') {
+                    converted.group = product.chat;
+                }
             }
             if (operation.source.__typename === 'Purchase') {
                 converted.title = operation.source.user.name;
@@ -145,6 +152,13 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
             converted.title = product.user.name;
             converted.avatar = getAvatar(product.user);
             converted.type = 'Transfer';
+            if (product.chat && product.chat.__typename === 'SharedRoom') {
+                converted.group = product.chat;
+            }
+        } else if (product.__typename === 'WalletProductDonationReaction') {
+            converted.title = product.user.name;
+            converted.avatar = getAvatar(product.user);
+            converted.type = 'Premium reaction';
             if (product.chat && product.chat.__typename === 'SharedRoom') {
                 converted.group = product.chat;
             }

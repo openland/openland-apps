@@ -114,6 +114,19 @@ fragment WalletTransactionFragment on WalletTransaction {
                                 }
                             }
                         }
+                        ...on WalletProductDonationReaction {
+                            user {
+                                id
+                                name
+                                photo
+                            }
+                            chat {
+                                ... on SharedRoom {
+                                    id
+                                    title
+                                }
+                            }
+                        }
                     }
                 }
                 ... on Purchase {
@@ -141,6 +154,19 @@ fragment WalletTransactionFragment on WalletTransaction {
                         }
 
                         ...on WalletProductDonationMessage {
+                            user {
+                                id
+                                name
+                                photo
+                            }
+                            chat {
+                                ... on SharedRoom {
+                                    id
+                                    title
+                                }
+                            }
+                        }
+                        ...on WalletProductDonationReaction {
                             user {
                                 id
                                 name
@@ -235,6 +261,19 @@ fragment WalletTransactionFragment on WalletTransaction {
                             }
                         }
                     }
+                    ...on WalletProductDonationReaction {
+                            user {
+                                id
+                                name
+                                photo
+                            }
+                            chat {
+                                ... on SharedRoom {
+                                    id
+                                    title
+                                }
+                            }
+                        }
                 }
             }
             payment {
@@ -287,6 +326,19 @@ fragment WalletTransactionFragment on WalletTransaction {
                             }
                         }
                     }
+                    ...on WalletProductDonationReaction {
+                            user {
+                                id
+                                name
+                                photo
+                            }
+                            chat {
+                                ... on SharedRoom {
+                                    id
+                                    title
+                                }
+                            }
+                        }
                 }
             }
             payment {

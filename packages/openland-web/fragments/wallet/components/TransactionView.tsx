@@ -29,7 +29,7 @@ export const TransactionView = React.memo((props: TransactionViewProps) => {
     const payment = source.operation.payment;
     const actionRequired = status === 'failing';
     const color = (actionRequired || status === 'canceled') ? 'var(--accentNegative)' : (source.operation.amount > 0 ? 'var(--accentPositive)' : 'var(--foregroundPrimary)');
-    const donationDescription = type === 'Transfer' && group ? `, ${group.title}` : '';
+    const donationDescription = group ? `, ${group.title}` : '';
     return (
         <>
             <UListItem

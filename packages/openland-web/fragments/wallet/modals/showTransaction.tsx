@@ -59,7 +59,7 @@ const TransactionComponent = React.memo((props: { ctx: XModalController, transac
                     {title}
                 </div>
                 <div className={cx(TextBody, typeBox)}>
-                    {type}{!!interval && `, ${interval}`}{type === 'Transfer' && group ? `, ${group.title}` : ''}
+                    {type}{!!interval && `, ${interval}`}{group ? `, ${group.title}` : ''}
                 </div>
             </XView>
             <XView marginTop={16}>

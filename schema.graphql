@@ -266,6 +266,7 @@ type Conference {
   startTime: Date
   peers: [ConferencePeer!]!
   iceServers: [ICEServer!]!
+  strategy: ConferenceStrategy!
 }
 
 type ConferenceJoinResult {
@@ -299,6 +300,11 @@ enum ConferencePeerConnectionState {
   WAIT_ANSWER
   NEED_ANSWER
   READY
+}
+
+enum ConferenceStrategy {
+  MASH
+  STREAM
 }
 
 input ContactPersonInput {
@@ -1135,6 +1141,14 @@ type MediaStream {
   state: MediaStreamState!
   sdp: String
   ice: [String!]!
+  settings: MediaStreamSettings!
+}
+
+type MediaStreamSettings {
+  videoIn: Boolean!
+  videoOut: Boolean!
+  audioIn: Boolean!
+  audioOut: Boolean!
 }
 
 enum MediaStreamState {
@@ -1656,7 +1670,7 @@ type Mutation {
   superAccountFeatureAdd(id: ID!, featureId: ID!): SuperAccount!
   superAccountFeatureRemove(id: ID!, featureId: ID!): SuperAccount!
   shareLocation(location: GeoLocationInput!): Boolean!
-  conferenceJoin(id: ID!): ConferenceJoinResult!
+  conferenceJoin(id: ID!, strategy: ConferenceStrategy): ConferenceJoinResult!
   conferenceKeepAlive(id: ID!, peerId: ID!): Conference!
   conferenceLeave(id: ID!, peerId: ID!): Conference!
   mediaStreamOffer(id: ID!, peerId: ID!, offer: String!): ConferenceMedia!
@@ -1664,6 +1678,8 @@ type Mutation {
   mediaStreamAnswer(id: ID!, peerId: ID!, answer: String!): ConferenceMedia!
   mediaStreamCandidate(id: ID!, peerId: ID!, candidate: String!): ConferenceMedia!
   mediaStreamFailed(id: ID!, peerId: ID!): ConferenceMedia!
+
+  """deprecated"""
   peerConnectionOffer(id: ID!, ownPeerId: ID!, peerId: ID!, offer: String!): Conference!
   peerConnectionAnswer(id: ID!, ownPeerId: ID!, peerId: ID!, answer: String!): Conference!
   peerConnectionCandidate(id: ID!, ownPeerId: ID!, peerId: ID!, candidate: String!): Conference!
@@ -2708,6 +2724,7 @@ type SharedRoom {
   socialImage: String
   description: String
   pinnedMessage: ModernMessage
+  canUnpinMessage: Boolean!
   welcomeMessage: WelcomeMessage
   organization: Organization
   membersCount: Int!
@@ -3183,6 +3200,7 @@ type WalletProductDonationMessage {
 
 type WalletProductDonationReaction {
   user: User!
+  chat: Room!
   message: ModernMessage!
 }
 
