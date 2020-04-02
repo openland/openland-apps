@@ -68,11 +68,11 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
         } else if (product.__typename === 'WalletProductDonation') {
             converted.title = product.user.name;
             converted.avatar = getAvatar(product.user);
-            converted.type = 'Donation';
+            converted.type = 'Transfer';
         } else if (product.__typename === 'WalletProductDonationMessage') {
             converted.title = product.user.name;
             converted.avatar = getAvatar(product.user);
-            converted.type = 'Donation';
+            converted.type = 'Transfer';
             if (product.chat && product.chat.__typename === 'SharedRoom') {
                 converted.group = product.chat;
             }
@@ -109,11 +109,11 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
             } else if (product.__typename === 'WalletProductDonation') {
                 converted.title = product.user.name;
                 converted.avatar = getAvatar(product.user);
-                converted.type = 'Donation';
+                converted.type = 'Transfer';
             } else if (product.__typename === 'WalletProductDonationMessage') {
                 converted.title = product.user.name;
                 converted.avatar = getAvatar(product.user);
-                converted.type = 'Donation';
+                converted.type = 'Transfer';
                 if (product.chat && product.chat.__typename === 'SharedRoom') {
                     converted.group = product.chat;
                 }
@@ -140,11 +140,11 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
         } else if (product.__typename === 'WalletProductDonation') {
             converted.title = product.user.name;
             converted.avatar = getAvatar(product.user);
-            converted.type = 'Donation';
+            converted.type = 'Transfer';
         } else if (product.__typename === 'WalletProductDonationMessage') {
             converted.title = product.user.name;
             converted.avatar = getAvatar(product.user);
-            converted.type = 'Donation';
+            converted.type = 'Transfer';
             if (product.chat && product.chat.__typename === 'SharedRoom') {
                 converted.group = product.chat;
             }

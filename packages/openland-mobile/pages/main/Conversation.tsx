@@ -224,16 +224,19 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 ? this.props.chat.user
                 : this.props.chat.owner;
         let isChannel = this.props.chat.__typename === 'SharedRoom' && this.props.chat.isChannel;
-        let donationCb = user && user.isYou || isChannel 
+        let donationOps = user && user.isYou || isChannel 
             ? undefined
-            : () => {
-                if (user) {
-                    this.props.router.push('Donation', { chatId: this.props.chat.id, name: user.firstName });
+            : ({
+                isPublic: this.props.chat.__typename === 'SharedRoom',
+                callback: () => {
+                    if (user) {
+                        this.props.router.push('Donation', { chatId: this.props.chat.id, name: user.firstName });
+                    }
                 }
-            };
+            });
         showAttachMenu((type, name, path, size) => {
             UploadManagerInstance.registerMessageUpload(this.props.chat.id, name, path, size);
-        }, donationCb);
+        }, donationOps);
     }
 
     handleMentionPress = (word: string | undefined, mention: MentionToSend) => {

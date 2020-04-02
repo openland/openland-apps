@@ -23,7 +23,7 @@ export const TransactionView = (props: TransactionViewProps) => {
     const actionRequired = status === 'failing';
     const color = (actionRequired || status === 'canceled') ? theme.accentNegative : (source.operation.amount > 0 ? theme.accentPositive : theme.foregroundPrimary);
     const subtitleTime = dateTime.isToday ? dateTime.time : dateTime.date;
-    const subtitleGroup = type === 'Donation' && group ? `, ${group.title}` : '';
+    const subtitleGroup = type === 'Transfer' && group ? `, ${group.title}` : '';
     const subtitleStatus = status !== 'success' ? `, ${status}` : '';
     const subtitle = `${type}\n${subtitleTime}${subtitleStatus}${subtitleGroup}`;
 

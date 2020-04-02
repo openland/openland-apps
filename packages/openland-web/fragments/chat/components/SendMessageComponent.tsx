@@ -680,6 +680,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 <AttachConfirmButton 
                     chatId={props.groupId} 
                     isChannel={props.isChannel}
+                    isPrivate={props.isPrivate}
                     isYou={props.isYou}
                     onAttachClick={onAttachPress} 
                     onDonationClick={onDonationPress} 
