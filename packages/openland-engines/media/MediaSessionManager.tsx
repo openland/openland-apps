@@ -10,7 +10,6 @@ import { Queue } from 'openland-y-utils/Queue';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 import { ConferenceWatch } from 'openland-api/spacex.types';
 import { MediaStreamsAlalizer } from './MediaStreamsAlalizer';
-import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 export const useStreamManager = (manager: MediaSessionManager | undefined, peerId: string) => {
     const [stream, setStream] = React.useState<MediaStreamManager>();
@@ -117,14 +116,9 @@ export class MediaSessionManager {
 
     stopVideo = async () => {
         if (this.outVideoStream) {
-            // we can't switch tracks on mobile yet, so just blind it for now
-            if (AppConfig.getPlatform() === 'mobile') {
-                this.outVideoStream.blinded = true;
-            } else {
-                this.outVideoStream.blinded = true;
-                this.outVideoStream.close();
-                this.outVideoStream = undefined;
-            }
+            this.outVideoStream.blinded = true;
+            this.outVideoStream.close();
+            this.outVideoStream = undefined;
         }
 
     }
@@ -291,7 +285,7 @@ export class MediaSessionManager {
         if (!this.mediaStream || !this.streamConfigs || this.destroyed) {
             return;
         }
-        console.log('[WEBRTC] Apply: ', this.streamConfigs);
+        console.log('[WEBRTC] Apply');
 
         // Detect deletions
         for (let s of this.streams.keys()) {

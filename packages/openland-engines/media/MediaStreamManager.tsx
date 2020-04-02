@@ -3,7 +3,7 @@ import { ConferenceMedia_conferenceMedia_streams, ConferenceMedia_conferenceMedi
 import { AppPeerConnectionFactory } from 'openland-y-runtime/AppPeerConnection';
 import { AppPeerConnection, IceState } from 'openland-y-runtime-api/AppPeerConnectionApi';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
-import { backoff, debounce } from 'openland-y-utils/timer';
+import { backoff } from 'openland-y-utils/timer';
 import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
 
 export class MediaStreamManager {
@@ -15,9 +15,7 @@ export class MediaStreamManager {
     private readonly iceServers: ConferenceMedia_conferenceMedia_iceServers[];
     private readonly peerConnection: AppPeerConnection;
     private streamConfig: ConferenceMedia_conferenceMedia_streams;
-    private answerHandled = false;
-    private offerHandled = false;
-    private readyHandled = false;
+    private seq: number;
     private localDescription?: string;
     private remoteDescription?: string;
     private appliedCandidates = new Set<string>();
@@ -29,7 +27,7 @@ export class MediaStreamManager {
     private audioInStream?: AppMediaStream;
     private videoInStream?: AppMediaStream;
     private videoOutStream?: AppMediaStream;
-    private ignoreNextNegotiationNeeded = false;
+    // private ignoreNextNegotiationNeeded = false;
     private _queue: ExecutionQueue;
     constructor(
         client: OpenlandClient,
@@ -49,6 +47,7 @@ export class MediaStreamManager {
         this.targetPeerId = targetPeerId;
         this.iceServers = iceServers;
         this.streamConfig = streamConfig;
+        this.seq = -1;
         this.audioOutStream = stream;
         this.videoOutStream = outContentStream;
         this.onReady = onReady;
@@ -80,12 +79,18 @@ export class MediaStreamManager {
 
         this.peerConnection.onnegotiationneeded = () => {
             console.warn('[WEBRTC]: onnegotiationneeded ask');
-            if (this.ignoreNextNegotiationNeeded) {
-                this.ignoreNextNegotiationNeeded = false;
+            // if (this.ignoreNextNegotiationNeeded) {
+            //     this.ignoreNextNegotiationNeeded = false;
+            //     return;
+            // }
+            console.warn('[WEBRTC]: onnegotiationneeded confirmed');
+            if (this.destroyed) {
                 return;
             }
-            console.warn('[WEBRTC]: onnegotiationneeded confirmed');
-            this.requestNegotiationDebounced();
+            backoff(async () => {
+                let res = await this.client.mutateMediaNegotiationNeeded({ id: this.id, peerId: this.peerId, seq: this.seq });
+                console.warn('[WEBRTC] res: ', this.seq, res.mediaStreamNegotiationNeeded.streams[0].seq);
+            });
         };
 
         this.peerConnection.oniceconnectionstatechange = (ev) => {
@@ -107,20 +112,6 @@ export class MediaStreamManager {
         this._queue.post(() => this.handleState(this.streamConfig));
     }
 
-    requestNegotiationDebounced = debounce(() => {
-        backoff(async () => {
-            if (this.destroyed) {
-                return;
-            }
-            await this._queue.sync(async () => {
-                this.offerHandled = false;
-                this.answerHandled = false;
-                this.readyHandled = false;
-            });
-            await this.client.mutateMediaNegotiationNeeded({ id: this.id, peerId: this.peerId });
-        });
-    }, 50);
-
     onStateChanged = (streamConfig: ConferenceMedia_conferenceMedia_streams) => {
         this._queue.post(() => this.handleState(streamConfig));
     }
@@ -134,97 +125,78 @@ export class MediaStreamManager {
     }
 
     private handleState = async (streamConfig: ConferenceMedia_conferenceMedia_streams) => {
-        this.streamConfig = streamConfig;
-        if (this.streamConfig.state === 'NEED_OFFER') {
-            if (this.offerHandled) {
-                return;
-            }
-            this.offerHandled = true;
-            this.readyHandled = false;
-            this.localDescription = undefined;
-            this.remoteDescription = undefined;
-            await backoff(async () => {
-                if (this.destroyed) {
-                    return;
-                }
+        if (streamConfig.seq > this.seq) {
+            this.seq = streamConfig.seq;
+            this.streamConfig = streamConfig;
+            if (this.streamConfig.state === 'NEED_OFFER') {
+                this.localDescription = undefined;
+                this.remoteDescription = undefined;
+                await backoff(async () => {
+                    if (this.destroyed) {
+                        return;
+                    }
 
-                if (!this.localDescription) {
-                    this.ignoreNextNegotiationNeeded = true;
-                    console.log('[WEBRTC]: Creating offer');
+                    console.log('[WEBRTC]: Creating offer ' + streamConfig.seq);
                     let offer = await this.peerConnection.createOffer();
+                    // this.ignoreNextNegotiationNeeded = true;
                     await this.peerConnection.setLocalDescription(offer);
                     this.localDescription = offer;
-                }
 
-                await this.client.mutateMediaOffer({
-                    id: this.id,
-                    peerId: this.peerId,
-                    offer: this.localDescription
+                    await this.client.mutateMediaOffer({
+                        id: this.id,
+                        peerId: this.peerId,
+                        offer: this.localDescription,
+                        seq: streamConfig.seq
+                    });
                 });
-            });
-        } else if (this.streamConfig.state === 'NEED_ANSWER') {
-            if (this.answerHandled) {
-                return;
-            }
-            this.answerHandled = true;
-            this.readyHandled = false;
-            this.localDescription = undefined;
-            this.remoteDescription = undefined;
-
-            await backoff(async () => {
-                if (this.destroyed) {
-                    return;
-                }
-
-                if (!this.remoteDescription) {
-                    console.log('[WEBRTC]: Received offer');
-                    let offer = this.streamConfig.sdp!;
-                    await this.peerConnection.setRemoteDescription(offer);
-                    this.remoteDescription = offer;
-                }
-
-                if (!this.localDescription) {
-                    console.log('[WEBRTC]: Creating answer');
-                    let answer = await this.peerConnection.createAnswer();
-                    await this.peerConnection.setLocalDescription(answer);
-                    this.localDescription = answer;
-                }
-
-                await this.handleState(streamConfig);
-
-                await this.client.mutateMediaAnswer({
-                    id: this.id,
-                    peerId: this.peerId,
-                    answer: this.localDescription
-                });
-            });
-        } else if (this.streamConfig.state === 'READY') {
-            if (!this.readyHandled) {
-                this.readyHandled = true;
-                this.answerHandled = false;
-                this.offerHandled = false;
+            } else if (this.streamConfig.state === 'NEED_ANSWER') {
+                this.localDescription = undefined;
+                this.remoteDescription = undefined;
 
                 await backoff(async () => {
                     if (this.destroyed) {
                         return;
                     }
 
+                    console.log('[WEBRTC]: Received offer ' + streamConfig.seq);
+                    let offer = this.streamConfig.sdp!;
+                    await this.peerConnection.setRemoteDescription(offer);
+                    this.remoteDescription = offer;
+
+                    console.log('[WEBRTC]: Creating answer ' + streamConfig.seq);
+                    let answer = await this.peerConnection.createAnswer();
+                    // this.ignoreNextNegotiationNeeded = true;
+                    await this.peerConnection.setLocalDescription(answer);
+                    this.localDescription = answer;
+
+                    await this.client.mutateMediaAnswer({
+                        id: this.id,
+                        peerId: this.peerId,
+                        answer: this.localDescription,
+                        seq: streamConfig.seq
+                    });
+                });
+            } else if (this.streamConfig.state === 'READY') {
+                await backoff(async () => {
+                    if (this.destroyed) {
+                        return;
+                    }
+
                     if (!this.remoteDescription) {
-                        console.log('[WEBRTC]: Handle ready (no remote set)');
+                        console.log('[WEBRTC]: Received answer ' + streamConfig.seq);
                         let offer = this.streamConfig.sdp!;
                         await this.peerConnection.setRemoteDescription(offer);
                         this.remoteDescription = offer;
-
-                        console.log('[WEBRTC]: Received answer');
+                        console.log('[WEBRTC]: Accepted answer ' + streamConfig.seq);
                     }
 
                     if (this.onReady) {
                         this.onReady();
                     }
 
-                    await this.handleState(streamConfig);
                 });
             }
+
         }
 
         // Apply ICE
@@ -248,11 +220,7 @@ export class MediaStreamManager {
     // WebRTC still can't detect stream/track removal, so we cant display ui prpperly :/
     onStreamAdded = (stream: AppMediaStream) => {
         if (stream.hasAudio()) {
-            if (!this.audioInStream) {
-                this.audioInStream = stream;
-            } else {
-                console.warn('[WEBRTC]: duplicate audio stream', stream);
-            }
+            this.audioInStream = stream;
         }
         if (stream.hasVideo()) {
             if (this.videoInStream !== undefined) {

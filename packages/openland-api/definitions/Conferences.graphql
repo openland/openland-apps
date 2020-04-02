@@ -10,6 +10,7 @@ query ConferenceMedia($id: ID!, $peerId: ID!) {
             id
             peerId
             state
+            seq
             sdp
             ice
         }
@@ -58,25 +59,27 @@ mutation ConferenceCandidate($id: ID!, $ownPeerId: ID!, $peerId: ID!, $candidate
         ...ConferenceShort
     }
 }
-mutation MediaOffer($id: ID!, $peerId: ID!, $offer: String!) {
-    mediaStreamOffer(id: $id, peerId: $peerId, offer: $offer) {
+mutation MediaOffer($id: ID!, $peerId: ID!, $offer: String!, $seq: Int!) {
+    mediaStreamOffer(id: $id, peerId: $peerId, offer: $offer, seq: $seq) {
         id
         streams {
             id
             peerId
             state
+            seq
             sdp
             ice
         }
     }
 }
-mutation MediaNegotiationNeeded($id: ID!, $peerId: ID!) {
-    mediaStreamNegotiationNeeded(id: $id, peerId: $peerId) {
+mutation MediaNegotiationNeeded($id: ID!, $peerId: ID!, $seq: Int!) {
+    mediaStreamNegotiationNeeded(id: $id, peerId: $peerId, seq: $seq) {
         id
         streams {
             id
             peerId
             state
+            seq
             sdp
             ice
         }
@@ -89,18 +92,20 @@ mutation MediaFailed($id: ID!, $peerId: ID!) {
             id
             peerId
             state
+            seq
             sdp
             ice
         }
     }
 }
-mutation MediaAnswer($id: ID!, $peerId: ID!, $answer: String!) {
-    mediaStreamAnswer(id: $id, peerId: $peerId, answer: $answer) {
+mutation MediaAnswer($id: ID!, $peerId: ID!, $answer: String!, $seq: Int!) {
+    mediaStreamAnswer(id: $id, peerId: $peerId, answer: $answer, seq: $seq) {
         id
         streams {
             id
             peerId
             state
+            seq
             sdp
             ice
         }
@@ -113,6 +118,7 @@ mutation MediaCandidate($id: ID!, $peerId: ID!, $candidate: String!) {
             id
             peerId
             state
+            seq
             sdp
             ice
         }
@@ -125,6 +131,7 @@ subscription ConferenceMediaWatch($id: ID!, $peerId: ID!) {
             id
             peerId
             state
+            seq
             sdp
             ice
         }

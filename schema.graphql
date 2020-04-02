@@ -1139,6 +1139,7 @@ type MediaStream {
   id: ID!
   peerId: ID
   state: MediaStreamState!
+  seq: Int!
   sdp: String
   ice: [String!]!
   settings: MediaStreamSettings!
@@ -1673,9 +1674,9 @@ type Mutation {
   conferenceJoin(id: ID!, strategy: ConferenceStrategy): ConferenceJoinResult!
   conferenceKeepAlive(id: ID!, peerId: ID!): Conference!
   conferenceLeave(id: ID!, peerId: ID!): Conference!
-  mediaStreamOffer(id: ID!, peerId: ID!, offer: String!): ConferenceMedia!
-  mediaStreamNegotiationNeeded(id: ID!, peerId: ID!): ConferenceMedia!
-  mediaStreamAnswer(id: ID!, peerId: ID!, answer: String!): ConferenceMedia!
+  mediaStreamOffer(id: ID!, peerId: ID!, offer: String!, seq: Int): ConferenceMedia!
+  mediaStreamNegotiationNeeded(id: ID!, peerId: ID!, seq: Int): ConferenceMedia!
+  mediaStreamAnswer(id: ID!, peerId: ID!, answer: String!, seq: Int): ConferenceMedia!
   mediaStreamCandidate(id: ID!, peerId: ID!, candidate: String!): ConferenceMedia!
   mediaStreamFailed(id: ID!, peerId: ID!): ConferenceMedia!
 
@@ -1804,7 +1805,7 @@ type Mutation {
   betaRoomAlterFeatured(roomId: ID!, featured: Boolean!): RoomSuper!
   betaRoomAlterListed(roomId: ID!, listed: Boolean!): RoomSuper!
   updateWelcomeMessage(roomId: ID!, welcomeMessageIsOn: Boolean!, welcomeMessageSender: ID, welcomeMessageText: String): Boolean!
-  alphaSetUserShortName(shortname: String!): String
+  alphaSetUserShortName(id: ID, shortname: String!): String
   alphaSetOrgShortName(id: ID!, shortname: String!): String
   alphaSetFeedChannelShortName(id: ID!, shortname: String!): String
   alphaSetRoomShortName(id: ID!, shortname: String!): String
