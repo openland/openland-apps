@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mangleSDP should keep only opus codecs 1`] = `
+"v=0
+o=- 7935371295621574052 2 IN IP4 127.0.0.1
+s=-
+t=0 0
+a=msid-semantic: WMS YyAaeu7fkyaQhWtoLfYDMR7UQHQzXo0O4n2v
+a=group:BUNDLE 0 1
+m=audio 9 UDP/TLS/RTP/SAVPF 
+c=IN IP4 0.0.0.0
+a=rtcp:9 IN IP4 0.0.0.0
+a=extmap:1 urn:ietf:params:rtp-hdrext:ssrc-audio-level
+a=extmap:2 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time
+a=extmap:4 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:5 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:6 urn:ietf:params:rtp-hdrext:sdes:repaired-rtp-stream-id
+a=setup:actpass
+a=mid:0
+a=msid:YyAaeu7fkyaQhWtoLfYDMR7UQHQzXo0O4n2v 66112148-2fda-44ef-8ead-459c0219e40c
+a=sendrecv
+a=ice-ufrag:ZT6G
+a=ice-pwd:PXDxTRsjvxfsL8PSO9s5fUKz
+a=fingerprint:sha-256 D6:D9:3D:29:DA:AE:A0:B0:93:76:80:B4:86:38:94:71:38:C3:45:5E:E2:89:2F:54:B1:6C:C0:3F:D8:C2:A0:8E
+a=ice-options:trickle
+a=ssrc:3082694993 cname:9X7qeldZwuCPhSku
+a=ssrc:3082694993 msid:YyAaeu7fkyaQhWtoLfYDMR7UQHQzXo0O4n2v 66112148-2fda-44ef-8ead-459c0219e40c
+a=ssrc:3082694993 mslabel:YyAaeu7fkyaQhWtoLfYDMR7UQHQzXo0O4n2v
+a=ssrc:3082694993 label:66112148-2fda-44ef-8ead-459c0219e40c
+a=rtcp-mux
+m=video 9 UDP/TLS/RTP/SAVPF 102 127 125 108 124 123
+c=IN IP4 0.0.0.0
+a=rtpmap:102 H264/90000
+a=rtpmap:127 H264/90000
+a=rtpmap:125 H264/90000
+a=rtpmap:108 H264/90000
+a=rtpmap:124 H264/90000
+a=rtpmap:123 H264/90000
+a=fmtp:102 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42001f
+a=fmtp:127 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42001f
+a=fmtp:125 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f
+a=fmtp:108 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f
+a=fmtp:124 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=4d0032
+a=fmtp:123 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=640032
+a=rtcp:9 IN IP4 0.0.0.0
+a=rtcp-fb:102 goog-remb
+a=rtcp-fb:102 transport-cc
+a=rtcp-fb:102 ccm fir
+a=rtcp-fb:102 nack
+a=rtcp-fb:102 nack pli
+a=rtcp-fb:127 goog-remb
+a=rtcp-fb:127 transport-cc
+a=rtcp-fb:127 ccm fir
+a=rtcp-fb:127 nack
+a=rtcp-fb:127 nack pli
+a=rtcp-fb:125 goog-remb
+a=rtcp-fb:125 transport-cc
+a=rtcp-fb:125 ccm fir
+a=rtcp-fb:125 nack
+a=rtcp-fb:125 nack pli
+a=rtcp-fb:108 goog-remb
+a=rtcp-fb:108 transport-cc
+a=rtcp-fb:108 ccm fir
+a=rtcp-fb:108 nack
+a=rtcp-fb:108 nack pli
+a=rtcp-fb:124 goog-remb
+a=rtcp-fb:124 transport-cc
+a=rtcp-fb:124 ccm fir
+a=rtcp-fb:124 nack
+a=rtcp-fb:124 nack pli
+a=rtcp-fb:123 goog-remb
+a=rtcp-fb:123 transport-cc
+a=rtcp-fb:123 ccm fir
+a=rtcp-fb:123 nack
+a=rtcp-fb:123 nack pli
+a=extmap:14 urn:ietf:params:rtp-hdrext:toffset
+a=extmap:2 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time
+a=extmap:13 urn:3gpp:video-orientation
+a=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01
+a=extmap:12 http://www.webrtc.org/experiments/rtp-hdrext/playout-delay
+a=extmap:11 http://www.webrtc.org/experiments/rtp-hdrext/video-content-type
+a=extmap:7 http://www.webrtc.org/experiments/rtp-hdrext/video-timing
+a=extmap:8 http://tools.ietf.org/html/draft-ietf-avtext-framemarking-07
+a=extmap:9 http://www.webrtc.org/experiments/rtp-hdrext/color-space
+a=extmap:4 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:5 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:6 urn:ietf:params:rtp-hdrext:sdes:repaired-rtp-stream-id
+a=setup:actpass
+a=mid:1
+a=msid:YyAaeu7fkyaQhWtoLfYDMR7UQHQzXo0O4n2v ca9c7c4d-dd2b-4cdb-b82f-fe8b91377366
+a=sendrecv
+a=ice-ufrag:ZT6G
+a=ice-pwd:PXDxTRsjvxfsL8PSO9s5fUKz
+a=fingerprint:sha-256 D6:D9:3D:29:DA:AE:A0:B0:93:76:80:B4:86:38:94:71:38:C3:45:5E:E2:89:2F:54:B1:6C:C0:3F:D8:C2:A0:8E
+a=ice-options:trickle
+a=ssrc:3719347516 cname:9X7qeldZwuCPhSku
+a=ssrc:3719347516 msid:YyAaeu7fkyaQhWtoLfYDMR7UQHQzXo0O4n2v ca9c7c4d-dd2b-4cdb-b82f-fe8b91377366
+a=ssrc:3719347516 mslabel:YyAaeu7fkyaQhWtoLfYDMR7UQHQzXo0O4n2v
+a=ssrc:3719347516 label:ca9c7c4d-dd2b-4cdb-b82f-fe8b91377366
+a=ssrc:1141567297 cname:9X7qeldZwuCPhSku
+a=ssrc:1141567297 msid:YyAaeu7fkyaQhWtoLfYDMR7UQHQzXo0O4n2v ca9c7c4d-dd2b-4cdb-b82f-fe8b91377366
+a=ssrc:1141567297 mslabel:YyAaeu7fkyaQhWtoLfYDMR7UQHQzXo0O4n2v
+a=ssrc:1141567297 label:ca9c7c4d-dd2b-4cdb-b82f-fe8b91377366
+a=ssrc-group:FID 3719347516 1141567297
+a=rtcp-mux
+a=rtcp-rsize
+"
+`;

@@ -104,6 +104,7 @@
         "canvas-confetti": "^1.0.3",
         "fast-animations": "1.0.4",
         "@openland/spacex": "0.0.25",
-        "graphql": "14.6.0"
+        "graphql": "14.6.0",
+        "sdp-transform": "2.14.0"
     }
 }
