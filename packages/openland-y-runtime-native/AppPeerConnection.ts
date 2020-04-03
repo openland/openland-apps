@@ -1,5 +1,5 @@
 import { AppPeerConnectionApi, AppPeerConnectionConfiguration, AppPeerConnection } from 'openland-y-runtime-api/AppPeerConnectionApi';
-import { RTCPeerConnection, RTCSessionDescription, RTCIceCandidate, EventOnAddStream, EventOnConnectionStateChange } from 'react-native-webrtc';
+import { RTCPeerConnection, RTCSessionDescription, RTCIceCandidate, EventOnAddStream, EventOnConnectionStateChange, MediaStream } from 'react-native-webrtc';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { AppUserMediaStreamNative } from './AppUserMedia';
 
@@ -46,8 +46,23 @@ class AppPeerConnectionNative implements AppPeerConnection {
         return JSON.stringify(await this.connection.createAnswer());
     }
 
+    private audioStream?: MediaStream;
+    private videoStream?: MediaStream;
     addStream = (stream: AppMediaStream) => {
-        this.connection.addStream((stream as any)._stream);
+        let s = (stream as AppUserMediaStreamNative)._stream;
+        if (s.getAudioTracks().length) {
+            if (this.audioStream) {
+                this.connection.removeStream(this.audioStream);
+            }
+            this.audioStream = s;
+        }
+        if (s.getVideoTracks().length) {
+            if (this.videoStream) {
+                this.connection.removeStream(this.videoStream);
+            }
+            this.videoStream = s;
+        }
+        this.connection.addStream(s);
     }
 
     close() {

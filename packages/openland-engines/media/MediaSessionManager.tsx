@@ -10,6 +10,7 @@ import { Queue } from 'openland-y-utils/Queue';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 import { ConferenceWatch } from 'openland-api/spacex.types';
 import { MediaStreamsAlalizer } from './MediaStreamsAlalizer';
+import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 export const useStreamManager = (manager: MediaSessionManager | undefined, peerId: string) => {
     const [stream, setStream] = React.useState<MediaStreamManager>();
@@ -97,7 +98,11 @@ export class MediaSessionManager {
     stopScreenShare = async () => {
         if (this.outScreenStream) {
             this.outScreenStream.blinded = true;
-            this.outScreenStream.close();
+            let toClose = this.outScreenStream;
+            // closing stream after timeout to get chance to send black frame
+            setTimeout(() => {
+                toClose.close();
+            }, 100);
             this.outScreenStream = undefined;
         }
     }
@@ -116,11 +121,19 @@ export class MediaSessionManager {
 
     stopVideo = async () => {
         if (this.outVideoStream) {
+            // mobile not sending black frame here, wtf
             this.outVideoStream.blinded = true;
-            this.outVideoStream.close();
-            this.outVideoStream = undefined;
-        }
+            if (AppConfig.getPlatform() !== 'mobile') {
+                // mobile webrtc will send closed stream next time in this case, it will lead to crash on other mobile
+                let toClose = this.outVideoStream;
+                // closing stream after timeout to get chance to send black frame
+                setTimeout(() => {
+                    toClose.close();
+                }, 100);
+                this.outVideoStream = undefined;
+            }
 
+        }
     }
 
     onVideoEnabled = () => {

@@ -13,6 +13,11 @@ export class MediaStreamManager {
     private readonly peerId: string;
     private readonly targetPeerId: string | null;
     private readonly audioOutStream: AppMediaStream;
+    private videoOutStream?: AppMediaStream;
+    private audioOutSentStreamId?: string;
+    private videoOutSentStreamId?: string;
+    private audioInStream?: AppMediaStream;
+    private videoInStream?: AppMediaStream;
     private readonly iceServers: ConferenceMedia_conferenceMedia_iceServers[];
     private readonly peerConnection: AppPeerConnection;
     private streamConfig: ConferenceMedia_conferenceMedia_streams;
@@ -25,11 +30,10 @@ export class MediaStreamManager {
     private iceConnectionState: IceState = 'new';
     private iceStateListeners = new Set<(iceState: IceState) => void>();
     private contentStreamListeners = new Set<(stream?: AppMediaStream) => void>();
-    private audioInStream?: AppMediaStream;
-    private videoInStream?: AppMediaStream;
-    private videoOutStream?: AppMediaStream;
-    // private ignoreNextNegotiationNeeded = false;
+
+    private ignoreNextNegotiationNeeded = false;
     private _queue: ExecutionQueue;
+    private pendingNegotiation = false;
     constructor(
         client: OpenlandClient,
         id: string,
@@ -58,7 +62,7 @@ export class MediaStreamManager {
                 credential: v.credential ? v.credential : undefined,
                 username: v.username ? v.username : undefined,
             })),
-            iceTransportPolicy: 'relay',
+            // iceTransportPolicy: 'relay',
         });
 
         this.peerConnection.onicecandidate = (ev) => {
@@ -79,19 +83,8 @@ export class MediaStreamManager {
         };
 
         this.peerConnection.onnegotiationneeded = () => {
-            console.warn('[WEBRTC]: onnegotiationneeded ask');
-            // if (this.ignoreNextNegotiationNeeded) {
-            //     this.ignoreNextNegotiationNeeded = false;
-            //     return;
-            // }
-            console.warn('[WEBRTC]: onnegotiationneeded confirmed');
-            if (this.destroyed) {
-                return;
-            }
-            backoff(async () => {
-                let res = await this.client.mutateMediaNegotiationNeeded({ id: this.id, peerId: this.peerId, seq: this.seq });
-                console.warn('[WEBRTC] res: ', this.seq, res.mediaStreamNegotiationNeeded.streams[0].seq);
-            });
+            console.warn('[WEBRTC]: onnegotiationneeded ask from pc');
+            this.negotiateIfReady();
         };
 
         this.peerConnection.oniceconnectionstatechange = (ev) => {
@@ -111,6 +104,33 @@ export class MediaStreamManager {
             this.peerConnection.addStream(this.videoOutStream);
         }
         this._queue.post(() => this.handleState(this.streamConfig));
+    }
+
+    negotiateIfReady = () => {
+        if (this.ignoreNextNegotiationNeeded) {
+            this.ignoreNextNegotiationNeeded = false;
+            console.warn('[WEBRTC]: onnegotiationneeded ignored');
+            return;
+        }
+        this._queue.post(async () => {
+            console.warn('[WEBRTC]: onnegotiationneeded check');
+            if (this.streamConfig.state === 'READY') {
+                // media mb changed after negotiation complete (or was pent)
+                await backoff(async () => {
+                    if (!this.destroyed) {
+                        await this.client.mutateMediaNegotiationNeeded({ id: this.id, peerId: this.peerId, seq: this.seq });
+                        console.warn('[WEBRTC]: onnegotiationneeded sent');
+                    }
+                });
+            } else if (this.streamConfig.state === 'NEED_OFFER' || this.streamConfig.state === 'NEED_ANSWER') {
+                // media chaged right after we sent offer/answer - wait for READY state
+                console.warn('[WEBRTC]: onnegotiationneeded pent');
+                this.pendingNegotiation = true;
+            } else {
+                // media chaged, but we are about to create new sdp
+                console.warn('[WEBRTC]: onnegotiationneeded rejected');
+            }
+        });
     }
 
     onStateChanged = (streamConfig: ConferenceMedia_conferenceMedia_streams) => {
@@ -138,12 +158,17 @@ export class MediaStreamManager {
                     }
 
                     console.log('[WEBRTC]: Creating offer ' + streamConfig.seq);
+                    // damn you chrome (it can fire onnegotiationneeded here, wtf)
+                    this.ignoreNextNegotiationNeeded = true;
+                    // remember stream we created sdp with to check if them not changed during ignore
+                    this.audioOutSentStreamId = this.audioOutStream.id;
+                    this.videoOutSentStreamId = this.videoOutStream?.id;
                     let offer = await this.peerConnection.createOffer();
                     offer = JSON.stringify({ type: 'offer', sdp: mangleSDP(JSON.parse(offer).sdp) });
 
-                    // this.ignoreNextNegotiationNeeded = true;
                     await this.peerConnection.setLocalDescription(offer);
                     this.localDescription = offer;
+                    this.ignoreNextNegotiationNeeded = false;
 
                     await this.client.mutateMediaOffer({
                         id: this.id,
@@ -162,15 +187,20 @@ export class MediaStreamManager {
                     }
 
                     console.log('[WEBRTC]: Received offer ' + streamConfig.seq);
+                    // damn you chrome
+                    this.ignoreNextNegotiationNeeded = true;
                     let offer = this.streamConfig.sdp!;
                     await this.peerConnection.setRemoteDescription(offer);
                     this.remoteDescription = offer;
 
                     console.log('[WEBRTC]: Creating answer ' + streamConfig.seq);
+                    // remember stream we created sdp with to check if them not changed during ignore
+                    this.audioOutSentStreamId = this.audioOutStream.id;
+                    this.videoOutSentStreamId = this.videoOutStream?.id;
                     let answer = await this.peerConnection.createAnswer();
                     answer = JSON.stringify({ type: 'answer', sdp: mangleSDP(JSON.parse(answer).sdp) });
-                    // this.ignoreNextNegotiationNeeded = true;
                     await this.peerConnection.setLocalDescription(answer);
+                    this.ignoreNextNegotiationNeeded = false;
                     this.localDescription = answer;
 
                     await this.client.mutateMediaAnswer({
@@ -196,6 +226,19 @@ export class MediaStreamManager {
 
                     if (this.onReady) {
                         this.onReady();
+                    }
+
+                    if (this.pendingNegotiation) {
+                        this.pendingNegotiation = false;
+                        console.warn('[WEBRTC]: onnegotiationneeded ask from pend');
+                        this.negotiateIfReady();
+                    }
+
+                    // mb media changed while onnegotiationneeded was ignored (damn you chrome)
+                    // check if media changed
+                    if (this.audioOutSentStreamId !== this.audioOutStream.id || this.videoOutSentStreamId !== this.videoOutStream?.id) {
+                        console.warn('[WEBRTC]: onnegotiationneeded ask from streams check');
+                        this.negotiateIfReady();
                     }
 
                 });
@@ -243,10 +286,12 @@ export class MediaStreamManager {
     }
 
     addStream = (stream: AppMediaStream) => {
-        if (this.videoOutStream !== stream) {
-            this.videoOutStream = stream;
-            this.peerConnection.addStream(stream);
-        }
+        this._queue.post(() => {
+            if (this.videoOutStream !== stream) {
+                this.videoOutStream = stream;
+                this.peerConnection.addStream(stream);
+            }
+        });
     }
 
     ////
