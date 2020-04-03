@@ -20,7 +20,7 @@ export function mangleSDP(src: string) {
         }
 
         // Find all payload ids
-        let payloadIds = v.rtp.filter((r) => r.codec === 'H264').map((p) => p.payload);
+        let payloadIds = v.rtp.filter((r) => codecs.indexOf(r.codec) >= 0).map((p) => p.payload);
 
         // Filter Codecs
         v.rtp = v.rtp.filter((r) => payloadIds.indexOf(r.payload) >= 0);

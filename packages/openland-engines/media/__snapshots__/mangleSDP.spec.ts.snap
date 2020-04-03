@@ -7,9 +7,12 @@ s=-
 t=0 0
 a=msid-semantic: WMS YyAaeu7fkyaQhWtoLfYDMR7UQHQzXo0O4n2v
 a=group:BUNDLE 0 1
-m=audio 9 UDP/TLS/RTP/SAVPF 
+m=audio 9 UDP/TLS/RTP/SAVPF 111
 c=IN IP4 0.0.0.0
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
 a=rtcp:9 IN IP4 0.0.0.0
+a=rtcp-fb:111 transport-cc
 a=extmap:1 urn:ietf:params:rtp-hdrext:ssrc-audio-level
 a=extmap:2 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time
 a=extmap:4 urn:ietf:params:rtp-hdrext:sdes:mid
@@ -28,7 +31,7 @@ a=ssrc:3082694993 msid:YyAaeu7fkyaQhWtoLfYDMR7UQHQzXo0O4n2v 66112148-2fda-44ef-8
 a=ssrc:3082694993 mslabel:YyAaeu7fkyaQhWtoLfYDMR7UQHQzXo0O4n2v
 a=ssrc:3082694993 label:66112148-2fda-44ef-8ead-459c0219e40c
 a=rtcp-mux
-m=video 9 UDP/TLS/RTP/SAVPF 102 127 125 108 124 123
+m=video 9 UDP/TLS/RTP/SAVPF 102 127 125 108 124 123 114 116
 c=IN IP4 0.0.0.0
 a=rtpmap:102 H264/90000
 a=rtpmap:127 H264/90000
@@ -36,6 +39,8 @@ a=rtpmap:125 H264/90000
 a=rtpmap:108 H264/90000
 a=rtpmap:124 H264/90000
 a=rtpmap:123 H264/90000
+a=rtpmap:114 red/90000
+a=rtpmap:116 ulpfec/90000
 a=fmtp:102 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42001f
 a=fmtp:127 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42001f
 a=fmtp:125 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f
