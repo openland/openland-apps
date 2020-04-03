@@ -138,7 +138,9 @@ export class MediaStreamManager {
                     }
 
                     console.log('[WEBRTC]: Creating offer ' + streamConfig.seq);
-                    let offer = mangleSDP(await this.peerConnection.createOffer());
+                    let offer = await this.peerConnection.createOffer();
+                    offer = JSON.stringify({ type: 'offer', sdp: mangleSDP(JSON.parse(offer).sdp) });
+
                     // this.ignoreNextNegotiationNeeded = true;
                     await this.peerConnection.setLocalDescription(offer);
                     this.localDescription = offer;
@@ -165,7 +167,8 @@ export class MediaStreamManager {
                     this.remoteDescription = offer;
 
                     console.log('[WEBRTC]: Creating answer ' + streamConfig.seq);
-                    let answer = mangleSDP(await this.peerConnection.createAnswer());
+                    let answer = await this.peerConnection.createAnswer();
+                    answer = JSON.stringify({ type: 'answer', sdp: mangleSDP(JSON.parse(answer).sdp) });
                     // this.ignoreNextNegotiationNeeded = true;
                     await this.peerConnection.setLocalDescription(answer);
                     this.localDescription = answer;
