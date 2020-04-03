@@ -14,9 +14,9 @@ export const showDonationReactionWarning = (action: () => Promise<any>) => {
     let builder = new AlertBlanketBuilder();
     builder
         .title('Premium reaction')
-        .message('Express your support to the author')
+        .message('Express your support with a donation to the author')
         .body(() => <div className={container} />)
-        .action('Transfer $1', async() => { await action(); }, 'pay')
+        .action('Donate $1', async() => { await action(); }, 'pay')
         .width(400);
     builder.show();
 };

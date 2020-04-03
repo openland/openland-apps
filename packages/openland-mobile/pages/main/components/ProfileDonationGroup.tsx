@@ -16,7 +16,7 @@ export const ProfileDonationGroup = (props: ProfileDonationGroupProps) => {
     let {name, userId, chatId, shouldHide} = props;
 
     return !shouldHide ? (
-        <ZListGroup header={chatId ? 'Support creator' : 'Make a transfer'}>
+        <ZListGroup header="Make donation">
             <View paddingHorizontal={16} marginTop={8} flexDirection="row">
                 {[1, 3, 5].map(price => (
                     <View marginRight={8}>

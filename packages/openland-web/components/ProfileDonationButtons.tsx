@@ -19,7 +19,7 @@ export const ProfileDonationButtons = (props: ProfileDonationButtonsProps) => {
     };
 
     return !props.shouldHide ? (
-        <UListGroup header={props.chatId ? 'Support creator' : 'Make a transfer'}>
+        <UListGroup header="Make donation">
             <XView paddingHorizontal={16} flexDirection="row">
             {[1, 3, 5].map(price => (
                 <XView marginRight={8}>

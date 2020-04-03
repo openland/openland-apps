@@ -171,7 +171,7 @@ const DonationComponent = (props: PageProps) => {
 
     return (
         <>
-            <SHeader title={name ? `Transfer to ${name}` : 'Transfer'} />
+            <SHeader title={name ? `Donate to ${name}` : 'Donate'} />
             <SScrollView flexDirection="column" alignSelf="stretch" alignItems="stretch" padding={16}>
                 <ZShaker ref={wrapperRef}>
                     <View 
@@ -193,7 +193,7 @@ const DonationComponent = (props: PageProps) => {
                             <MessageInput value={messageField.value} onChange={messageField.input.onChange} />
                         </View>
                         <View marginTop={4}>
-                            <ZButton title="Transfer" style="pay" size="large" onPress={handleSubmit} />
+                            <ZButton title="Donate" style="pay" size="large" onPress={handleSubmit} />
                         </View>
                     </View>
                 </ZShaker>

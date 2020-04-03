@@ -6,9 +6,7 @@ import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handl
 import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 
-export const showAttachMenu = (
-    fileCallback?: (type: 'document' | 'photo' | 'video', name: string, path: string, size: number) => void,
-     donationOps?: {callback: () => void, isPublic: boolean}) => {
+export const showAttachMenu = (fileCallback?: (type: 'document' | 'photo' | 'video', name: string, path: string, size: number) => void, donationCb?: () => void) => {
     let builder = new ActionSheetBuilder();
 
     builder.action(Platform.select({ ios: 'Take photo or video', android: 'Take photo' }), async () => {
@@ -122,12 +120,9 @@ export const showAttachMenu = (
         );
     }, false, require('assets/ic-document-24.png'));
 
-    if (donationOps) {
-        let title = donationOps.isPublic
-            ? 'Support creator' 
-            : Platform.select({ ios: 'Make a transfer', android: 'Transfer' });
-        builder.action(title, () => {
-            donationOps.callback();
+    if (donationCb) {
+        builder.action(Platform.select({ ios: 'Make donation', android: 'Donation' }), () => {
+            donationCb();
         }, false, require('assets/ic-donation-24.png'));
     }
 

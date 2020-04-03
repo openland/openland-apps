@@ -156,14 +156,14 @@ const DonationComponent = (props: DonationComponentProps & {ctx: XModalControlle
                 backgroundColor="var(--backgroundTertiary)"
             >
                 <UButton text="Cancel" style="tertiary" size="large" shape="square" onClick={() => props.ctx.hide()} />
-                <UButton text="Transfer" style="pay" size="large" shape="square" loading={loading} onClick={handleSubmit} />
+                <UButton text="Donate" style="pay" size="large" shape="square" loading={loading} onClick={handleSubmit} />
             </XView>
         </XView>
     );
 };
 
 export const showDonation = (props: DonationComponentProps & {name?: string | null}) => {
-    showModalBox({ title: props.name ? `Transfer to ${props.name}` : 'Transfer', width: 400 }, (ctx) => {
+    showModalBox({ title: props.name ? `Donate to ${props.name}` : 'Donate', width: 400 }, (ctx) => {
         return (
             <DonationComponent ctx={ctx} {...props} />
         );
