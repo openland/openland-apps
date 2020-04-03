@@ -3,6 +3,7 @@ import { css, cx } from 'linaria';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
 import { XLoader } from 'openland-x/XLoader';
 import DoneIcon from 'openland-icons/s/ic-done-16.svg';
+import WarningIcon from 'openland-icons/s/ic-warning-16.svg';
 
 const toastWrapper = css`
     position: relative;
@@ -30,7 +31,7 @@ const iconClass = css`
     height: 16px;
     margin-right: 8px;
 
-    svg {
+    svg, path {
         fill: var(--foregroundContrast);
     }
 `;
@@ -42,7 +43,7 @@ const textClass = css`
 
 export interface UToastProps {
     isVisible: boolean;
-    type?: 'text' | 'loading' | 'success';
+    type?: 'text' | 'loading' | 'success' | 'failure';
     text?: string;
     backgroundColor?: string;
     autoclose?: boolean;
@@ -75,7 +76,8 @@ export const UToast = React.memo((props: UToastProps) => {
 
     const iconByType = {
         loading: () => <XLoader contrast={true} transparentBackground={true} loading={true} size="small" />,
-        success: () => <DoneIcon />
+        success: () => <DoneIcon />,
+        failure: () => <WarningIcon />,
     };
 
     const Icon = iconByType[type];
@@ -93,3 +95,39 @@ export const UToast = React.memo((props: UToastProps) => {
         </div>
     ) : null;
 });
+
+export interface UToastConfig {
+    type?: 'text' | 'loading' | 'success' | 'failure';
+    text?: string;
+    backgroundColor?: string;
+    autoclose?: boolean;
+}
+
+export interface UToastHandlers {
+    show: (config: UToastConfig) => void;
+    hide: () => void;
+}
+
+export const UToastContext = React.createContext<UToastHandlers>({show: () => {/* noop */}, hide: () => {/* noop */}});
+
+export const useToastContext = (): {visible: boolean, config: UToastConfig, handlers: UToastHandlers} => {
+    const [visible, setVisible] = React.useState(false);
+    const [config, setConfig] = React.useState({});
+    const handlers = React.useRef({
+        show: (newConfig: UToastConfig) =>  {
+            setVisible(true);
+            setConfig(newConfig);
+        },
+        hide: () => setVisible(false),
+    }).current;
+
+    return {
+        visible,
+        config,
+        handlers
+    };
+};
+
+export const useToast = () => {
+    return React.useContext(UToastContext);
+};

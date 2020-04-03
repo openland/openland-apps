@@ -7,7 +7,7 @@ import { VisibleTabContext } from 'openland-unicorn/components/utils/VisibleTabC
 import { useClient } from 'openland-api/useClient';
 import { debounce } from 'openland-y-utils/timer';
 import { css } from 'linaria';
-import { UToast } from 'openland-web/components/unicorn/UToast';
+import { UToast, useToastContext, UToastContext, UToastConfig, UToastHandlers } from 'openland-web/components/unicorn/UToast';
 import { RootErrorBoundary } from 'openland-web/pages/root/RootErrorBoundary';
 
 const PageAnimator = React.memo(
@@ -233,7 +233,7 @@ const PageComponent = React.memo(
     },
 );
 
-const connectingWrapperClass = css`
+const toastWrapperClass = css`
     position: absolute;
     left: 0;
     right: 0;
@@ -243,24 +243,35 @@ const connectingWrapperClass = css`
     display: flex;
 `;
 
-const ConnectionStatus = () => {
+const useConnectionStatus = (props: UToastHandlers) => {
     const client = useClient().engine;
-    const [isVisible, setVisible] = React.useState(false);
+    const showToast = (visible: boolean) => {
+        if (visible) {
+            props.show({
+                backgroundColor: 'var(--tintOrange)',
+                text: 'Connecting',
+                autoclose: false,
+                type: 'loading',
+            });
+        } else {
+            props.hide();
+        }
+    };
     React.useEffect(() => {
-        const setStatusDebounced = debounce(setVisible, 1000);
+        const setStatusDebounced = debounce(showToast, 1000);
         return client.watchStatus(s => {
             setStatusDebounced(s.status === 'connecting');
         });
     }, []);
+};
 
+const ToastWrapper = (props: {visible: boolean, config: UToastConfig}) => {
     return (
-        <div className={connectingWrapperClass}>
+        <div className={toastWrapperClass}>
             <UToast
-                isVisible={isVisible}
-                backgroundColor="var(--tintOrange)"
-                text="Connecting"
-                autoclose={false}
-                type="loading"
+                key={`${props.config.type}-${props.config.text || ''}`}
+                isVisible={props.visible}
+                {...props.config}
             />
         </div>
     );
@@ -276,12 +287,16 @@ interface StackLayoutProps {
 export const StackLayout = React.memo((props: StackLayoutProps) => {
     let [state, dispatch] = React.useReducer(animationReducer, props.router.pages, initialState);
     const baseRoute = React.useContext(XViewRouteContext)!;
+
+    const {visible, config, handlers} = useToastContext();
+
     React.useEffect(() => {
         return props.router.addListener(dispatch);
     }, []);
     React.useLayoutEffect(() => {
         requestAnimationFrame(() => requestAnimationFrame(() => dispatch({ type: 'mounted' })));
     });
+    useConnectionStatus(handlers);
 
     let StartPage: React.ReactNode | undefined;
 
@@ -291,33 +306,35 @@ export const StackLayout = React.memo((props: StackLayoutProps) => {
     return (
         <StackRouterContext.Provider value={props.router}>
             <VisibleTabContext.Provider value={props.visible}>
-                <div key="content" className={props.className} ref={props.router.ref}>
-                    {StartPage}
-                    {state.pages.map((v, i) => (
-                        <PageAnimator
-                            state={v.state}
-                            removing={v.removing}
-                            key={v.key}
-                            k={v.key}
-                            dispatch={dispatch}
-                            router={props.router}
-                            visible={props.visible}
-                            depth={i}
-                        >
-                            <RootErrorBoundary>
-                                <PageComponent
-                                    component={v.component}
-                                    query={v.query}
-                                    id={v.id}
-                                    path={v.path}
-                                    protocol={baseRoute.protocol}
-                                    hostName={baseRoute.hostName}
-                                />
-                            </RootErrorBoundary>
-                        </PageAnimator>
-                    ))}
-                    <ConnectionStatus />
-                </div>
+                <UToastContext.Provider value={handlers}>
+                    <div key="content" className={props.className} ref={props.router.ref}>
+                        {StartPage}
+                        {state.pages.map((v, i) => (
+                            <PageAnimator
+                                state={v.state}
+                                removing={v.removing}
+                                key={v.key}
+                                k={v.key}
+                                dispatch={dispatch}
+                                router={props.router}
+                                visible={props.visible}
+                                depth={i}
+                            >
+                                <RootErrorBoundary>
+                                    <PageComponent
+                                        component={v.component}
+                                        query={v.query}
+                                        id={v.id}
+                                        path={v.path}
+                                        protocol={baseRoute.protocol}
+                                        hostName={baseRoute.hostName}
+                                    />
+                                </RootErrorBoundary>
+                            </PageAnimator>
+                        ))}
+                        <ToastWrapper visible={visible} config={config} />
+                    </div>
+                </UToastContext.Provider>
             </VisibleTabContext.Provider>
         </StackRouterContext.Provider>
     );

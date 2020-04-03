@@ -18,6 +18,8 @@ import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import { AppStorage } from 'openland-y-runtime/AppStorage';
 import { showDonationReactionWarning } from '../reactions/showDonationReactionWarning';
+import { useToast } from 'openland-web/components/unicorn/UToast';
+import { showCheckLock } from 'openland-web/fragments/wallet/modals/showPayConfirm';
 
 const menuContainerClass = css`
     position: absolute;
@@ -53,6 +55,7 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
     const router = React.useContext(XViewRouterContext);
     const messageRef = React.useRef(message);
     const [menuPlacement, setMenuPlacement] = React.useState<Placement>('bottom-end');
+    const toastHandlers = useToast();
 
     React.useLayoutEffect(
         () => {
@@ -109,10 +112,28 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
                 return;   
             }
     
-            // TODO: add new toast with loading
             try {
+                toastHandlers.show({
+                    type: 'loading',
+                    text: 'Loading',
+                    autoclose: false
+                });
                 await client.mutateMessageSetDonationReaction({ messageId });
+                toastHandlers.show({
+                    type: 'success',
+                    text: 'You’ve donated $1',
+                });
             } catch (e) {
+                let wallet = await client.queryMyWallet();
+                if (wallet.myWallet.isLocked) {
+                    toastHandlers.hide();
+                    showCheckLock();
+                } else {
+                    toastHandlers.show({
+                        type: 'failure',
+                        text: e.message,
+                    });
+                }
                 throw e;
             }
         };
@@ -125,6 +146,10 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
             });
         };
 
+        const unsetEmoji = () => {
+            props.engine.unsetReaction(messageKey, reaction);
+        };
+
         if (messageId) {
             const remove =
                 reactions &&
@@ -135,7 +160,7 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
                 ).length > 0;
             if (remove) {
                 if (reaction !== MessageReactionType.DONATE) {
-                    props.engine.unsetReaction(messageKey, reaction);
+                    unsetEmoji();
                     client.mutateMessageUnsetReaction({ messageId, reaction });
                 }
             } else {
@@ -144,17 +169,21 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
                     if (!key) {
                         showDonationReactionWarning(async () => {
                             try {
-                                await donate();
                                 setEmoji();
+                                await donate();
                                 AppStorage.writeKey('reaction_donated', true);
-                            } catch (e) {/* noop */}
+                            } catch (e) {
+                                unsetEmoji();
+                            }
                         });
                         return;
                     }
                     try {
-                        await donate();
                         setEmoji();
-                    } catch (e) {/* noop */}
+                        await donate();
+                    } catch (e) {
+                        unsetEmoji();
+                    }
                 } else {
                     client.mutateMessageSetReaction({ messageId, reaction });
                     setEmoji();

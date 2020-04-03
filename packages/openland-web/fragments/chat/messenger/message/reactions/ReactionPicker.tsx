@@ -70,6 +70,11 @@ const reactionClass = css`
     }
 `;
 
+const reactionDisabledClass = css`
+    opacity: 0.35;
+    pointer-events: none;
+`;
+
 const texts: {[reaction in MessageReactionType]: string} = {
     ANGRY: 'Angry',
     CRYING: 'Crying',
@@ -83,11 +88,12 @@ const texts: {[reaction in MessageReactionType]: string} = {
 interface ReactionPickerItemProps {
     reaction: MessageReactionType;
     toRemove: boolean;
+    disabled: boolean;
     onPick: (reaction: MessageReactionType) => void;
 }
 
 const ReactionPickerItem = React.memo<ReactionPickerItemProps>(props => {
-    const { onPick, reaction, toRemove } = props;
+    const { onPick, reaction, toRemove, disabled } = props;
     const [animate, setAnimate] = React.useState(false);
     const [show] = useCaptionPopper({text: texts[reaction], scope: 'reactions'});
     const handleClick = () => {
@@ -104,7 +110,7 @@ const ReactionPickerItem = React.memo<ReactionPickerItemProps>(props => {
     };
 
     return (
-        <div className={cx(reactionClass, animate && 'animated', toRemove && 'to-remove')} onClick={handleClick} onMouseEnter={show}>
+        <div className={cx(reactionClass, animate && 'animated', toRemove && 'to-remove', disabled && reactionDisabledClass)} onClick={handleClick} onMouseEnter={show}>
             <img src={reactionImage(reaction)} className="reaction-main" />
             <img src={reactionImage(reaction)} className="reaction-duplicate" />
         </div>
@@ -134,7 +140,9 @@ export const ReactionPicker = React.memo(React.forwardRef((props: ReactionPicker
     return (
         <div className={wrapperClass}>
             {SortedReactions.map(reaction => {
-                const toRemove = reactions && reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === reaction).length > 0;
+                const reactionsToRemove = reactions && reactions.filter(userReaction => userReaction.user.id === messenger.user.id && userReaction.reaction === reaction);
+                const toRemove = reactionsToRemove && reactionsToRemove.length > 0;
+                const disabled = reaction === MessageReactionType.DONATE && (reactionsToRemove && reactionsToRemove.some(r => r.reaction === MessageReactionType.DONATE));
 
                 return (
                     <ReactionPickerItem
@@ -142,6 +150,7 @@ export const ReactionPicker = React.memo(React.forwardRef((props: ReactionPicker
                         onPick={props.onPick}
                         reaction={reaction}
                         toRemove={toRemove}
+                        disabled={disabled}
                     />
                 );
             })}

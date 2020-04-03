@@ -111,6 +111,9 @@ export const MessageReactions = React.memo<MessageReactionsProps>(props => {
                             userReaction.my &&
                             userReaction.reaction === reaction,
                     ).length > 0;
+                if (reaction === MessageReactionType.DONATE) {
+                    return;
+                }
                 if (remove) {
                     if (engine && key) {
                         engine.unsetReaction(key, reaction);
