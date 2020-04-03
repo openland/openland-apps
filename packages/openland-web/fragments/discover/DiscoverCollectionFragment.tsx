@@ -15,6 +15,8 @@ import copy from 'copy-to-clipboard';
 const descriptionBox = css`
     color: var(--foregroundPrimary);
     margin-bottom: 16px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 `;
 
 const imageBox = css`
@@ -45,6 +47,8 @@ export const DiscoverCollectionFragment = React.memo(() => {
     }
 
     const { id, title, description, image, chats } = collection;
+
+    console.log(collection);
 
     return (
         <Page track="discover_collection">
