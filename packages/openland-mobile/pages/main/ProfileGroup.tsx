@@ -373,7 +373,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 )}
             </ZListGroup>
 
-            {donateTo && (
+            {donateTo && Platform.OS !== 'ios' && (
                 <ProfileDonationGroup 
                     headerMarginTop={!hasAbout ? 0 : undefined} 
                     name={donateTo} 
@@ -382,7 +382,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 />
             )}
 
-            <ZListGroup header="Settings" headerMarginTop={!hasDonate && !hasAbout ? 0 : undefined}>
+            <ZListGroup header="Settings" headerMarginTop={(!hasDonate || Platform.OS === 'ios') && !hasAbout ? 0 : undefined}>
                 <NotificationSettings id={room.id} mute={!!room.settings.mute} />
             </ZListGroup>
 
