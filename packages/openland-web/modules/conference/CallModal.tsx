@@ -191,22 +191,23 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     let conference = props.client.useConference({ id: props.chatId }, { suspense: false });
     props.calls.useState();
 
-    let peers = conference ? conference.conference.peers : [];
-    let peerSlice = peers.reduce((all, peer, i, array) => {
-        let index =
-            i === 1 ? 0
-                : i === 2 && array.length > 3 ? 1
-                    : i % 2;
-        all[index].push(peer);
-        return all;
-    }, [[], []] as Conference_conference_peers[][]);
+    let peers = [...conference ? conference.conference.peers : []];
+    let rotated = peers.length === 3;
+    let slicesCount = peers.length < 3 ? 1 : peers.length < 9 ? 2 : 3;
+    let slices: Conference_conference_peers[][] = [];
+    let divider = slicesCount;
+    while (divider) {
+        let count = Math.ceil(peers.length / divider--);
+        slices.unshift(peers.splice(peers.length - count, count));
+        console.warn(count, peers.length);
+    }
+
     const mediaSession = props.calls.getMediaSession();
     return (
-        <XView flexDirection="column" justifyContent="flex-start" flexGrow={1}>
-            {mediaSession && <>
-                <XView key="container-1" flexDirection="row" justifyContent="flex-start" flexGrow={1}>{peerSlice[0].map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} />)}</XView>
-                <XView key="container-2" flexDirection="row" justifyContent="flex-start" flexGrow={peerSlice[1].length ? 1 : 0}>{peerSlice[1].map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} />)}</XView>
-            </>}
+        <XView flexDirection={rotated ? 'row' : 'column'} justifyContent="flex-start" flexGrow={1}>
+            {mediaSession && slices.map((s, i) => (
+                <XView key={`container-${i}`} flexDirection={rotated ? 'column' : 'row'} justifyContent="flex-start" flexGrow={1}>{s.map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} />)}</XView>
+            ))}
             <Controls calls={props.calls} ctx={props.ctx} />
         </XView >
     );
