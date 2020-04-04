@@ -58,6 +58,7 @@ export class MediaSessionManager {
     readonly peerStreams = new Map<string, MediaStreamManager>();
     private streamsListeners = new Set<(streams: Map<string, MediaStreamManager>) => void>();
     private videoEnabledListeners = new Set<() => void>();
+    private peerVideoListeners = new Map<string, Set<(stream?: AppMediaStream) => void>>();
     readonly analizer: MediaStreamsAlalizer;
 
     constructor(client: OpenlandClient, conversationId: string, mute: boolean, isPrivate: boolean, onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void, onDestroyRequested: () => void, onVideoEnabled: () => void) {
@@ -324,12 +325,18 @@ export class MediaSessionManager {
                 let target = s.peerId;
                 if (target) {
                     this.peerStreams.set(target, ms);
+                    ms.listenContentStream(c => {
+                        let ls = this.peerVideoListeners.get(target!);
+                        if (ls) {
+                            for (let l of ls) {
+                                l(c);
+                            }
+                        }
+                        if (c) {
+                            this.onVideoEnabled();
+                        }
+                    });
                 }
-                ms.listenContentStream(c => {
-                    if (c) {
-                        this.onVideoEnabled();
-                    }
-                });
             }
         }
 
@@ -373,6 +380,22 @@ export class MediaSessionManager {
         };
     }
 
+    listenPeerVideo = (peerId: string, listener: (stream?: AppMediaStream) => void) => {
+        let listeners = this.peerVideoListeners.get(peerId);
+        if (!listeners) {
+            listeners = new Set();
+            this.peerVideoListeners.set(peerId, listeners);
+        }
+        listeners.add(listener);
+        let sm = this.peerStreams.get(peerId);
+        if (sm) {
+            listener(sm.getVideoInStream());
+        }
+        return () => {
+            listeners?.delete(listener);
+        };
+    }
+
     notifyStreamsChanged = () => {
         this.streamsListeners.forEach(l => l(this.streams));
     }
@@ -389,10 +412,6 @@ export class MediaSessionManager {
 
     notifyVideoEnabled = () => {
         this.videoEnabledListeners.forEach(l => l());
-    }
-
-    useStreamManager = (peerId: string) => {
-        return useStreamManager(this, peerId);
     }
 
     private outVideoListeners = new Set<(stream: AppMediaStream) => void>();

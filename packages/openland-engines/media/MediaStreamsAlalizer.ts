@@ -191,7 +191,7 @@ export class MediaStreamsAlalizer {
         listener(this.lastVals[peerId] || false);
         listeners.add(listener);
         return () => {
-            listeners!.delete(listener);
+            listeners?.delete(listener);
             debauncedSet?.delete(dabounced);
         };
     }

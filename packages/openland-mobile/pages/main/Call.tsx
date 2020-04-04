@@ -29,7 +29,6 @@ import { AppConfig } from 'openland-y-runtime-native/AppConfig';
 
 const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaSession: MediaSessionManager, h: number }) => {
     let [stream, setStream] = React.useState<string>();
-    let streamManager = props.mediaSession.useStreamManager(props.peer.id);
     let isLocal = props.peer.id === props.mediaSession.getPeerId();
     React.useEffect(() => {
         if (isLocal) {
@@ -37,14 +36,14 @@ const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaS
                 setStream((s as AppUserMediaStreamNative)?._stream.toURL());
             });
         } else {
-            return streamManager?.listenContentStream(s => {
+            return props.mediaSession.listenPeerVideo(props.peer.id, s => {
                 if (s) {
                     setStream((s as AppUserMediaStreamNative)?._stream.toURL());
                 }
             });
         }
 
-    }, [streamManager]);
+    });
     return (
         <View flexGrow={1} height={props.h} backgroundColor="gray">
             {stream && <RTCView streamURL={stream} style={{ flexGrow: 1 }} objectFit="cover" mirror={isLocal} />}

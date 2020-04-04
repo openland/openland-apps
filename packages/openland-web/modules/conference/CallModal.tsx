@@ -143,8 +143,6 @@ const Controls = React.memo((props: { calls: CallsEngine, ctx: XModalController 
 
 const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: Conference_conference_peers, calls: CallsEngine }) => {
     let [stream, setStream] = React.useState<MediaStream>();
-    let streamManager = props.mediaSession.useStreamManager(props.peer.id);
-
     const ref = React.useRef<HTMLDivElement>(null);
     const isLocal = props.peer.id === props.mediaSession.getPeerId();
     React.useEffect(() => {
@@ -153,14 +151,12 @@ const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: 
                 setStream((s as AppUserMediaStreamWeb)?._stream);
             });
         } else {
-            return streamManager?.listenContentStream(s => {
-                if (s) {
-                    setStream((s as AppUserMediaStreamWeb)?._stream);
-                }
+            return props.mediaSession.listenPeerVideo(props.peer.id, s => {
+                setStream((s as AppUserMediaStreamWeb)?._stream);
             });
         }
 
-    }, [streamManager]);
+    });
 
     React.useEffect(() => {
         return props.mediaSession.analizer.subscribePeer(props.peer.id, v => {
