@@ -2,6 +2,7 @@ import { AppPeerConnectionApi, AppPeerConnectionConfiguration, AppPeerConnection
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { AppUserMediaStreamWeb } from './AppUserMedia';
 import { randomKey } from 'openland-y-utils/randomKey';
+import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
 
 export class AppPeerConnectionWeb implements AppPeerConnection {
     private id = randomKey();
@@ -13,14 +14,30 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     onnegotiationneeded: (() => void) | undefined = undefined;
     oniceconnectionstatechange: ((ev: { target: { iceConnectionState?: string | 'failed' } }) => void) | undefined = undefined;
     onStreamAdded: ((stream: AppMediaStream) => void) | undefined;
+    onAudioInputChanged?: ((deviceId: string) => void) | undefined;
 
     private streams = new Set<MediaStream>();
 
     private trackSenders = new Map<MediaStreamTrack, RTCRtpSender>();
 
+    private audioOutputDevice: MediaDeviceInfo | undefined;
+
     constructor(connection: RTCPeerConnection) {
         this.connection = connection;
         this.connection.onicecandidate = (ev) => this.started && this.onicecandidate && this.onicecandidate({ candidate: ev.candidate ? JSON.stringify(ev.candidate) : undefined });
+
+        MediaDevicesManager.instance().listenOutputDevice(d => {
+            if (d !== this.audioOutputDevice) {
+                this.audioOutputDevice = d;
+                if (this.audio) {
+                    (this.audio as any).setSinkId(this.audioOutputDevice?.deviceId);
+                }
+            }
+        });
+
+        MediaDevicesManager.instance().listenStreamUpdated(s => {
+            this.addStream(s);
+        });
 
         this.connection.ontrack = (ev) => {
             console.warn(ev.track);
@@ -37,13 +54,14 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
 
                 // Create audio object and play stream
                 this.audio = new Audio();
+                (this.audio as any).setSinkId(this.audioOutputDevice?.deviceId);
                 this.audio.autoplay = true;
                 this.audio.setAttribute('playsinline', 'true');
                 this.audio.controls = false;
                 this.audio.srcObject = ev.streams[0];
                 this.audio.load();
                 this.audio.play();
-            } 
+            }
 
             for (let stream of ev.streams) {
                 if (!this.streams.has(stream)) {
@@ -92,6 +110,9 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
 
     addStream = (stream: AppMediaStream) => {
         let str = (stream as AppUserMediaStreamWeb)._stream;
+        if (str.getAudioTracks().length) {
+            MediaDevicesManager.instance().setAudioOutputStream(stream);
+        }
         for (let t of str.getTracks()) {
             // ensure track removed;
             let sender = this.trackSenders.get(t);

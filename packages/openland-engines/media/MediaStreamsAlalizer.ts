@@ -21,6 +21,7 @@ export class MediaStreamsAlalizer {
             stream: MediaStream;
             appSrteam: AppMediaStream;
             isMe?: boolean;
+            audioTrack: MediaStreamTrack;
         }
     >();
     private disposeStreamsListener: (() => void) | undefined;
@@ -66,14 +67,15 @@ export class MediaStreamsAlalizer {
         // create new analyzer
         if (appStream && (!ex || ex.appSrteam !== appStream)) {
             let mediaStream = (appStream as AppUserMediaStreamWeb).getStream();
-            let source = audioContext.createMediaStreamSource(mediaStream);
+            let source = (audioContext as AudioContext).createMediaStreamSource(mediaStream);
+            let audioTrack = mediaStream.getAudioTracks()[0];
             let analyser = audioContext.createAnalyser();
             const bufferLength = analyser.frequencyBinCount;
             if (!this.buffer) {
                 this.buffer = new Uint8Array(bufferLength);
                 let fstep = audioContext.sampleRate / 2 / analyser.frequencyBinCount;
-                this.fStartIndex = Math.floor(80 / fstep);
-                this.fEndIndex = Math.ceil(80 / fstep + 1);
+                this.fStartIndex = Math.floor(85 / fstep);
+                this.fEndIndex = Math.ceil(180 / fstep + 1);
             }
             source.connect(analyser);
             this.peerStreamAnalyzers.set(peerId, {
@@ -81,6 +83,7 @@ export class MediaStreamsAlalizer {
                 appSrteam: appStream,
                 analyzer: analyser,
                 isMe,
+                audioTrack
             });
         }
     }
@@ -95,6 +98,14 @@ export class MediaStreamsAlalizer {
         let lastVal = 0;
         let activePeerId: string | undefined;
         for (let [key, entry] of this.peerStreamAnalyzers) {
+            if (entry.isMe && entry.stream.getAudioTracks()[0] !== entry.audioTrack) {
+                console.warn('rebind analizer');
+                entry.analyzer.disconnect();
+                entry.analyzer = audioContext.createAnalyser();
+                entry.audioTrack = entry.stream.getAudioTracks()[0];
+                let source = (audioContext as AudioContext).createMediaStreamSource(entry.stream);
+                source.connect(entry.analyzer);
+            }
             entry.analyzer.getByteFrequencyData(this.buffer);
 
             let val = 0;

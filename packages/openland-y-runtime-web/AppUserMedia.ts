@@ -1,4 +1,5 @@
 import { AppUserMediaApi, AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
+import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
 
 export class AppUserMediaStreamWeb implements AppMediaStream {
     readonly id: string;
@@ -57,12 +58,14 @@ export class AppUserMediaStreamWeb implements AppMediaStream {
 }
 
 export const AppUserMedia: AppUserMediaApi = {
-    async getUserAudio() {
+    async getUserAudio(deviceId?: string) {
+
         let media = await navigator.mediaDevices.getUserMedia({
             audio: {
                 noiseSuppression: true,
                 autoGainControl: false,
-            } as any,
+                advanced: [{ deviceId: deviceId ||  MediaDevicesManager.instance().getSelectedInput()?.deviceId || 'default' }],
+            },
         });
 
         return new AppUserMediaStreamWeb(media);

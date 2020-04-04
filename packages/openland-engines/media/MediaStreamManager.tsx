@@ -12,7 +12,7 @@ export class MediaStreamManager {
     private readonly client: OpenlandClient;
     private readonly peerId: string;
     private readonly targetPeerId: string | null;
-    private readonly audioOutStream: AppMediaStream;
+    private audioOutStream: AppMediaStream;
     private videoOutStream?: AppMediaStream;
     private audioOutSentStreamId?: string;
     private videoOutSentStreamId?: string;
@@ -287,10 +287,19 @@ export class MediaStreamManager {
 
     addStream = (stream: AppMediaStream) => {
         this._queue.post(() => {
-            if (this.videoOutStream !== stream) {
-                this.videoOutStream = stream;
-                this.peerConnection.addStream(stream);
+            if (stream.hasAudio()) {
+                if (this.audioOutStream !== stream) {
+                    this.audioOutStream = stream;
+                    this.peerConnection.addStream(stream);
+                }
             }
+            if (stream.hasVideo()) {
+                if (this.videoOutStream !== stream) {
+                    this.videoOutStream = stream;
+                    this.peerConnection.addStream(stream);
+                }
+            }
+
         });
     }
 

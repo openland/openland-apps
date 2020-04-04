@@ -11,6 +11,8 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalController } from 'openland-x/showModal';
+import { USelect } from 'openland-web/components/unicorn/USelect';
+import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
 
 const animatedAvatarStyle = css`
     position: absolute;
@@ -54,8 +56,38 @@ const borderStyle = css`
     pointer-events: none;
 `;
 
+const SettingsModal = React.memo((props: {}) => {
+    let [devices, input, ouput, setInput, setOutput] = MediaDevicesManager.instance().useMediaDevices();
+
+    let outputs = devices.filter(d => d.kind === 'audiooutput');
+    let inputs = devices.filter(d => d.kind === 'audioinput');
+
+    let setInputDevice = React.useCallback((val) => {
+        let device = devices.find(d => d.deviceId === val.value);
+        setInput(device);
+    }, [devices]);
+    let setOutputDevice = React.useCallback((val) => {
+        let dev = devices.find(d => d.deviceId === val.value);
+        setOutput(dev);
+    }, [devices]);
+
+    return (
+        <XView height={500} justifyContent="flex-start">
+            <XView paddingHorizontal={16} paddingVertical={8}>
+                <USelect searchable={false} onChange={setInputDevice} placeholder="Microphone" value={input?.deviceId} options={inputs.map(o => ({ value: o.deviceId, label: o.label }))} />
+            </XView>
+            <XView paddingHorizontal={16} paddingVertical={8}>
+                <USelect searchable={false} onChange={setOutputDevice} placeholder="Speakers" value={ouput?.deviceId} options={outputs.map(o => ({ value: o.deviceId, label: o.label }))} />
+            </XView>
+        </XView>
+    );
+});
+
 const Controls = React.memo((props: { calls: CallsEngine, ctx: XModalController }) => {
     let callState = props.calls.useState();
+    let showSettings = React.useCallback(() => {
+        showModalBox({ title: 'Audio setting' }, () => <SettingsModal />);
+    }, []);
     return (
         <div className={controlsStyle} >
             <div className={controlsContainerStyle}>
@@ -70,14 +102,14 @@ const Controls = React.memo((props: { calls: CallsEngine, ctx: XModalController 
                     flexShrink={1}
                     style={callState.outVideo?.type === 'video' ? 'primary' : 'secondary'}
                     text={'Video'}
-                    onClick={() => props.calls.switchVideo()}
+                    onClick={props.calls.switchVideo}
                     marginHorizontal={4}
                 />
                 <UButton
                     flexShrink={1}
                     style={callState.outVideo?.type === 'screen' ? 'primary' : 'secondary'}
                     text={'Screen share'}
-                    onClick={() => props.calls.switchScreenShare()}
+                    onClick={props.calls.switchScreenShare}
                     marginHorizontal={4}
                 />
                 <UButton
@@ -94,7 +126,14 @@ const Controls = React.memo((props: { calls: CallsEngine, ctx: XModalController 
                     flexShrink={1}
                     style={'secondary'}
                     text={'Minimize call'}
-                    onClick={() => props.ctx.hide()}
+                    onClick={props.ctx.hide}
+                    marginHorizontal={4}
+                />
+                <UButton
+                    flexShrink={1}
+                    style={'secondary'}
+                    text={'Settings'}
+                    onClick={showSettings}
                     marginHorizontal={4}
                 />
             </div>
