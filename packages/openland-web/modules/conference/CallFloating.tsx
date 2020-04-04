@@ -281,7 +281,8 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
     const containerRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
     useJsDrag(targetRef, containerRef, contentRef);
-    let calls = React.useContext(MessengerContext).calls;
+    let messenger = React.useContext(MessengerContext);
+    let calls = messenger.calls;
     let callState = calls.useState();
 
     let client = useClient();
@@ -325,7 +326,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
                         if (!callState.outVideo) {
                             calls.switchVideo();
                         }
-                        showVideoCallModal({ calls, chatId: props.id, client });
+                        showVideoCallModal({ calls, chatId: props.id, client, messenger });
                     }}
                     marginHorizontal={4}
                 />

@@ -122,7 +122,8 @@ const barContent = css`
 `;
 
 export const TalkBarComponent = (props: { chat: ChatInfo }) => {
-    let calls = React.useContext(MessengerContext).calls;
+    let messenger = React.useContext(MessengerContext);
+    let calls = messenger.calls;
     let callState = calls.useState();
     let client = useClient();
     let data = client.useConference(
@@ -154,7 +155,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                                 if (!callState.outVideo) {
                                     calls.switchVideo();
                                 }
-                                showVideoCallModal({ calls, chatId: props.chat.id, client });
+                                showVideoCallModal({ calls, chatId: props.chat.id, client, messenger });
                             }}
                         />}
 

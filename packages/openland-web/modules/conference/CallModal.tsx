@@ -13,6 +13,10 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalController } from 'openland-x/showModal';
 import { USelect } from 'openland-web/components/unicorn/USelect';
 import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
+import { MessengerEngine } from 'openland-engines/MessengerEngine';
+import { TextStyles } from 'openland-web/utils/TextStyles';
+import { AppConfig } from 'openland-y-runtime/AppConfig';
+import { DataSourceMessageItem, DataSourceDateItem, DataSourceNewDividerItem } from 'openland-engines/messenger/ConversationEngine';
 
 const animatedAvatarStyle = css`
     position: absolute;
@@ -83,7 +87,7 @@ const SettingsModal = React.memo((props: {}) => {
     );
 });
 
-const Controls = React.memo((props: { calls: CallsEngine, ctx: XModalController }) => {
+const Controls = React.memo((props: { calls: CallsEngine, ctx: XModalController, showLink: boolean, setShowLink: (show: boolean) => void }) => {
     let callState = props.calls.useState();
     let showSettings = React.useCallback(() => {
         showModalBox({ title: 'Audio setting' }, () => <SettingsModal />);
@@ -136,6 +140,14 @@ const Controls = React.memo((props: { calls: CallsEngine, ctx: XModalController 
                     onClick={showSettings}
                     marginHorizontal={4}
                 />
+
+                {AppConfig.isNonProduction() && <UButton
+                    flexShrink={1}
+                    style={props.showLink ? 'primary' : 'secondary'}
+                    text={'Link'}
+                    onClick={() => props.setShowLink(!props.showLink)}
+                    marginHorizontal={4}
+                />}
             </div>
         </div>
     );
@@ -183,9 +195,17 @@ const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: 
     );
 });
 
-export const CallModalConponent = React.memo((props: { chatId: string, calls: CallsEngine, client: OpenlandClient, ctx: XModalController }) => {
+const LinkFrame = React.memo((props: { link?: string }) => {
+    return (
+        props.link ? <iframe width="100%" height="100%" src={props.link} /> : <XView width="100%" {...TextStyles.Title3} flexGrow={1} justifyContent={"center"} alignItems={"center"}>Send link to chat</XView>
+    );
+});
+
+export const CallModalConponent = React.memo((props: { chatId: string, calls: CallsEngine, client: OpenlandClient, ctx: XModalController, messenger: MessengerEngine }) => {
     let conference = props.client.useConference({ id: props.chatId }, { suspense: false });
     props.calls.useState();
+
+    let [showLink, setShowLink] = React.useState(false);
 
     let peers = [...conference ? conference.conference.peers : []];
     let rotated = peers.length === 3;
@@ -197,18 +217,86 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
         slices.unshift(peers.splice(peers.length - count, count));
         console.warn(count, peers.length);
     }
-
     const mediaSession = props.calls.getMediaSession();
+
+    // some fun
+    const [link, setLink] = React.useState<string | undefined>();
+    React.useEffect(() => {
+        if (!AppConfig.isNonProduction()) {
+            return;
+        }
+        // on message with linkm open it in iframe
+        let ds = props.messenger.getConversation(props.chatId).dataSource;
+        let processItem = (item: DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem) => {
+            if (item.type === 'message' && item.spans) {
+                let span = item.spans.find(s => s.__typename === 'MessageSpanLink');
+                let url = span?.__typename === 'MessageSpanLink' ? span.url : undefined;
+                if (url) {
+                    setLink(url);
+                    setShowLink(true);
+                    return true;
+                }
+            }
+            return false;
+        };
+        // check last 10 messages on start
+        for (let i = 0; i < Math.min(10, ds.getSize() - 1); i++) {
+            if (processItem(ds.getAt(i))) {
+                break;
+            }
+        }
+        return ds.watch(
+            {
+                onDataSourceInited: (items) => {
+                    //
+                },
+                onDataSourceLoadedMore: (items) => {
+                    //
+                },
+                onDataSourceItemAdded: (item) => {
+                    processItem(item);
+                },
+                onDataSourceLoadedMoreForward: (items) => {
+                    // Nothing to do
+                },
+                onDataSourceItemRemoved: (item) => {
+                    // Nothing to do
+                },
+                onDataSourceItemMoved: () => {
+                    // Nothing to do
+                },
+                onDataSourceItemUpdated: (item) => {
+                    processItem(item);
+                },
+                onDataSourceCompleted: () => {
+                    // Nothing to do
+                },
+                onDataSourceCompletedForward: () => {
+                    // Nothing to do
+                },
+                onDataSourceScrollToKeyRequested: () => {
+                    //
+                }
+            }
+        );
+    }, []);
     return (
-        <XView flexDirection={rotated ? 'row' : 'column'} justifyContent="flex-start" flexGrow={1}>
-            {mediaSession && slices.map((s, i) => (
-                <XView key={`container-${i}`} flexDirection={rotated ? 'column' : 'row'} justifyContent="flex-start" flexGrow={1}>{s.map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} />)}</XView>
-            ))}
-            <Controls calls={props.calls} ctx={props.ctx} />
+        <XView flexDirection="row" justifyContent="flex-start" flexGrow={1}>
+            <XView flexDirection={rotated ? 'row' : 'column'} justifyContent="flex-start" flexGrow={1}>
+                {mediaSession && slices.map((s, i) => (
+                    <XView key={`container-${i}`} flexDirection={rotated ? 'column' : 'row'} justifyContent="flex-start" flexGrow={1}>{s.map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} />)}</XView>
+                ))}
+                <Controls calls={props.calls} ctx={props.ctx} showLink={showLink} setShowLink={setShowLink} />
+            </XView >
+            {showLink && (
+                <XView flexGrow={0.5} flexBasis={0} alignItems="stretch">
+                    <LinkFrame link={link} />
+                </XView>
+            )}
         </XView >
     );
 });
 
-export const showVideoCallModal = (props: { chatId: string, calls: CallsEngine, client: OpenlandClient }) => {
+export const showVideoCallModal = (props: { chatId: string, calls: CallsEngine, client: OpenlandClient, messenger: MessengerEngine }) => {
     showModalBox({ fullScreen: true }, ctx => <CallModalConponent {...props} ctx={ctx} />);
 };
