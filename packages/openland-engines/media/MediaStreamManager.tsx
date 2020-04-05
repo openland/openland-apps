@@ -30,6 +30,7 @@ export class MediaStreamManager {
     private iceConnectionState: IceState = 'new';
     private iceStateListeners = new Set<(iceState: IceState) => void>();
     private contentStreamListeners = new Set<(stream?: AppMediaStream) => void>();
+    private dcListeners = new Set<(message: { peerId: string, data: any }) => void>();
 
     private ignoreNextNegotiationNeeded = false;
     private _queue: ExecutionQueue;
@@ -103,6 +104,13 @@ export class MediaStreamManager {
         if (this.videoOutStream) {
             this.peerConnection.addStream(this.videoOutStream);
         }
+
+        this.peerConnection.onDcMessage = (m) => {
+            let message = { peerId: this.targetPeerId || this.id, data: m };
+            for (let l of this.dcListeners) {
+                l(message);
+            }
+        };
         this._queue.post(() => this.handleState(this.streamConfig));
     }
 
@@ -360,4 +368,18 @@ export class MediaStreamManager {
         this.contentStreamListeners.forEach(l => l(this.videoInStream));
     }
 
+    ////
+    // DC
+    ////
+
+    sendDcMessage = (message: string) => {
+        this.peerConnection.sendDCMessage(message);
+    }
+
+    listenDc = (listener: (message: { peerId: string, data: any }) => void) => {
+        this.dcListeners.add(listener);
+        return () => {
+            this.dcListeners.delete(listener);
+        };
+    }
 }

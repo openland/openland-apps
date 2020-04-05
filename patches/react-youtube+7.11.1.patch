@@ -1,0 +1,48 @@
+diff --git a/node_modules/react-youtube/index.d.ts b/node_modules/react-youtube/index.d.ts
+index 5e86384..b1f285c 100644
+--- a/node_modules/react-youtube/index.d.ts
++++ b/node_modules/react-youtube/index.d.ts
+@@ -5,6 +5,7 @@
+ //                 goooseman <https://github.com/goooseman>
+ // TypeScript Version: 3.7
+ 
++
+ import * as React from "react";
+ 
+ export interface PlayerVars {
+@@ -29,7 +30,7 @@ export interface PlayerVars {
+     showinfo?: 0 | 1;
+     start?: number;
+     mute?: 0 | 1;
+-  }
++}
+ 
+ export interface Options {
+     height?: string;
+@@ -43,17 +44,26 @@ export interface YouTubeProps {
+     className?: string;
+     containerClassName?: string;
+     opts?: Options;
++   // @ts-ignore
+     onReady?(event: { target: YT.Player }): void;
++   // @ts-ignore
+     onError?(event: { target: YT.Player, data: number }): void;
++   // @ts-ignore
+     onPlay?(event: { target: YT.Player, data: number }): void;
++   // @ts-ignore
+     onPause?(event: { target: YT.Player, data: number }): void;
++   // @ts-ignore
+     onEnd?(event: { target: YT.Player, data: number }): void;
++   // @ts-ignore
+     onStateChange?(event: { target: YT.Player, data: number }): void;
++   // @ts-ignore
+     onPlaybackRateChange?(event: { target: YT.Player, data: number }): void;
++   // @ts-ignore
+     onPlaybackQualityChange?(event: { target: YT.Player, data: string }): void;
+ }
+ 
+ export default class YouTube extends React.Component<YouTubeProps> {
++   // @ts-ignore
+     static PlayerState = {
+         UNSTARTED: -1,
+         ENDED: 0,

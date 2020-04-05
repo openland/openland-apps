@@ -15,12 +15,14 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     oniceconnectionstatechange: ((ev: { target: { iceConnectionState?: string | 'failed' } }) => void) | undefined = undefined;
     onStreamAdded: ((stream: AppMediaStream) => void) | undefined;
     onAudioInputChanged?: ((deviceId: string) => void) | undefined;
+    onDcMessage: ((message: any) => void) | undefined;
 
     private streams = new Set<MediaStream>();
-
     private trackSenders = new Map<MediaStreamTrack, RTCRtpSender>();
 
     private audioOutputDevice: MediaDeviceInfo | undefined;
+
+    channel?: RTCDataChannel;
 
     constructor(connection: RTCPeerConnection) {
         this.connection = connection;
@@ -29,7 +31,8 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         MediaDevicesManager.instance().listenOutputDevice(d => {
             if (d !== this.audioOutputDevice) {
                 this.audioOutputDevice = d;
-                if (this.audio) {
+                // TODO how to do it in safari?
+                if (this.audio && (this.audio as any).setSinkId) {
                     (this.audio as any).setSinkId(this.audioOutputDevice?.deviceId);
                 }
             }
@@ -54,7 +57,10 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
 
                 // Create audio object and play stream
                 this.audio = new Audio();
-                (this.audio as any).setSinkId(this.audioOutputDevice?.deviceId);
+                if ((this.audio as any).setSinkId) {
+                    (this.audio as any).setSinkId(this.audioOutputDevice?.deviceId);
+                }
+
                 this.audio.autoplay = true;
                 this.audio.setAttribute('playsinline', 'true');
                 this.audio.controls = false;
@@ -77,6 +83,9 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         this.connection.onnegotiationneeded = () => this.onnegotiationneeded && this.onnegotiationneeded();
         this.connection.oniceconnectionstatechange = (ev) => this.oniceconnectionstatechange && ev && ev.target && this.oniceconnectionstatechange(ev as any);
 
+        let dc = this.connection.createDataChannel('main', { ordered: true });
+        this.handleDataChannel(dc);
+        this.connection.ondatachannel = (ev => this.handleDataChannel(ev.channel));
         // let audio = new Audio();
         // audio.autoplay = true;
         // audio.setAttribute('playsinline', 'true');
@@ -84,6 +93,21 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         // audio.srcObject = ev.streams[0];
         // audio.load();
         // audio.play();
+    }
+
+    handleDataChannel = (channel: RTCDataChannel) => {
+        this.channel = channel;
+        channel.onmessage = (ev) => {
+            if (this.onDcMessage) {
+                this.onDcMessage(ev.data);
+            }
+        };
+    }
+
+    sendDCMessage = (message: string) => {
+        if (this.channel?.readyState === 'open') {
+            this.channel.send(message);
+        }
     }
 
     createOffer = async () => {
@@ -148,8 +172,9 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
             this.audio.pause();
             this.audio = undefined;
         }
-        this.connection.close();
         this.streams.forEach(s => s.getTracks().forEach(t => t.stop()));
+        this.channel?.close();
+        this.connection.close();
     }
 
     getConnection = () => {

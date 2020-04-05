@@ -59,6 +59,7 @@ export class MediaSessionManager {
     private streamsListeners = new Set<(streams: Map<string, MediaStreamManager>) => void>();
     private videoEnabledListeners = new Set<() => void>();
     private peerVideoListeners = new Map<string, Set<(stream?: AppMediaStream) => void>>();
+    private dcListeners = new Set<(message: { peerId: string, data: any }) => void>();
     readonly analizer: MediaStreamsAlalizer;
 
     constructor(client: OpenlandClient, conversationId: string, mute: boolean, isPrivate: boolean, onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void, onDestroyRequested: () => void, onVideoEnabled: () => void) {
@@ -337,6 +338,11 @@ export class MediaSessionManager {
                         }
                     });
                 }
+                ms.listenDc(m => {
+                    for (let l of this.dcListeners) {
+                        l(m);
+                    }
+                });
             }
         }
 
@@ -428,6 +434,23 @@ export class MediaSessionManager {
     notifyOutVideo = (stream: AppMediaStream) => {
         this.activeStream = stream;
         this.outVideoListeners.forEach(l => l(stream));
+    }
+
+    ////
+    // DC
+    ////
+
+    sendDcMessage = (message: string) => {
+        for (let [, ms] of this.streams) {
+            ms.sendDcMessage(message);
+        }
+    }
+
+    listenDc = (listener: (message: { peerId: string, data: any }) => void) => {
+        this.dcListeners.add(listener);
+        return () => {
+            this.dcListeners.delete(listener);
+        };
     }
 
 }
