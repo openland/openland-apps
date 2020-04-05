@@ -27,7 +27,7 @@ import { AppUserMediaStreamNative } from 'openland-y-runtime-native/AppUserMedia
 import { RTCView } from 'react-native-webrtc';
 import { AppConfig } from 'openland-y-runtime-native/AppConfig';
 
-const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaSession: MediaSessionManager, h: number }) => {
+const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaSession: MediaSessionManager, h: number, mirror?: boolean }) => {
     let [stream, setStream] = React.useState<string>();
     let isLocal = props.peer.id === props.mediaSession.getPeerId();
     React.useEffect(() => {
@@ -46,7 +46,7 @@ const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaS
     });
     return (
         <View flexGrow={1} height={props.h} backgroundColor="gray">
-            {stream && <RTCView streamURL={stream} style={{ flexGrow: 1 }} objectFit="cover" mirror={isLocal} />}
+            {stream && <RTCView streamURL={stream} style={{ flexGrow: 1 }} objectFit="cover" mirror={props.mirror} />}
             <View position="absolute" left={6} top={6}>
                 <ZAvatar size="medium" id={props.peer.user.id} title={props.peer.user.name} photo={props.peer.user.photo} />
             </View>
@@ -166,13 +166,15 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
         SAnimated.commitTransaction();
     }, [uiHidden]);
 
+    const [mirrorSelf, setMirrorSelf] = React.useState(true);
+
     return (
         <TouchableOpacity delayPressIn={10} delayPressOut={10} activeOpacity={1} onPress={switchUi}>
             {Platform.OS === 'ios' && <StatusBar hidden={!!videoEnabled} />}
             {videoEnabled ?
                 <View flexDirection="row" alignItems="flex-start" width={w}>
-                    <View flexDirection="column" justifyContent="flex-start" flexGrow={1}>{peerSlice[0].map(p => <VideoView key={p.id} peer={p} mediaSession={mediaSession!} h={h1} />)}</View>
-                    <View flexDirection="column" justifyContent="flex-start" flexGrow={peerSlice[1].length ? 1 : 0}>{peerSlice[1].map(p => <VideoView key={p.id} peer={p} mediaSession={mediaSession!} h={h2} />)}</View>
+                    <View flexDirection="column" justifyContent="flex-start" flexGrow={1}>{peerSlice[0].map(p => <VideoView key={p.id} peer={p} mediaSession={mediaSession!} h={h1} mirror={p.id === mediaSession?.getPeerId() && mirrorSelf}/>)}</View>
+                    <View flexDirection="column" justifyContent="flex-start" flexGrow={peerSlice[1].length ? 1 : 0}>{peerSlice[1].map(p => <VideoView key={p.id} peer={p} mediaSession={mediaSession!} h={h2} mirror={p.id === mediaSession?.getPeerId() && mirrorSelf}/>)}</View>
                 </View> :
 
                 <ASSafeAreaView flexDirection="column" alignItems="stretch" height="100%">
@@ -244,6 +246,13 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                 {AppConfig.isNonProduction() && <TouchableOpacity
                     onPress={() => {
                         calls.switchVideo();
+                    }}
+                    onLongPress={() => {
+                        if (callsState.outVideo) {
+                            ReactNativeHapticFeedback.trigger('notificationSuccess');
+                            ((callsState.outVideo.stream as AppUserMediaStreamNative)._stream.getVideoTracks()[0] as any)?._switchCamera();
+                            setMirrorSelf(m => !m);
+                        }
                     }}
                     style={{ width: 56, height: 56 }}
                 >
