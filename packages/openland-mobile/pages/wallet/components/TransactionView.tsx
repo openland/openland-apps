@@ -23,9 +23,9 @@ export const TransactionView = (props: TransactionViewProps) => {
     const actionRequired = status === 'failing';
     const color = (actionRequired || status === 'canceled') ? theme.accentNegative : (source.operation.amount > 0 ? theme.accentPositive : theme.foregroundPrimary);
     const subtitleTime = dateTime.isToday ? dateTime.time : dateTime.date;
-    const subtitleGroup = group ? `, ${group.title}` : '';
+    const groupTitle = group ? `, ${group.title}` : '';
     const subtitleStatus = status !== 'success' ? `, ${status}` : '';
-    const subtitle = `${type}\n${subtitleTime}${subtitleStatus}${subtitleGroup}`;
+    const subtitle = `${type}${groupTitle}\n${subtitleTime}${subtitleStatus}`;
 
     const complete = React.useCallback(() => {
         if (actionRequired && payment && payment.intent && router) {
