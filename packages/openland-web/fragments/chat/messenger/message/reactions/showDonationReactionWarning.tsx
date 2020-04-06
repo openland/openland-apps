@@ -10,13 +10,16 @@ const container = css`
     margin: -4px auto 24px;
 `;
 
-export const showDonationReactionWarning = (action: () => Promise<any>) => {
-    let builder = new AlertBlanketBuilder();
-    builder
-        .title('Premium reaction')
-        .message('Express your support with a donation to the author')
-        .body(() => <div className={container} />)
-        .action('Donate $1', async() => { await action(); }, 'pay')
-        .width(400);
-    builder.show();
+export const showDonationReactionWarning = () => {
+    return new Promise((resolve, reject) => {
+        let builder = new AlertBlanketBuilder();
+        builder
+            .title('Premium reaction')
+            .message('Express your support with a donation to the author')
+            .body(() => <div className={container} />)
+            .action('Donate $1', () => Promise.resolve().then(resolve), 'pay')
+            .onCancel(reject)
+            .width(400);
+        builder.show(); 
+    });
 };

@@ -16,7 +16,6 @@ import { useClient } from 'openland-api/useClient';
 import { trackEvent } from 'openland-x-analytics';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
-import { AppStorage } from 'openland-y-runtime/AppStorage';
 import { showDonationReactionWarning } from '../reactions/showDonationReactionWarning';
 import { useToast } from 'openland-web/components/unicorn/UToast';
 import { showCheckLock } from 'openland-web/fragments/wallet/modals/showPayConfirm';
@@ -165,25 +164,15 @@ export const HoverMenu = React.memo<HoverMenuProps>(props => {
                 }
             } else {
                 if (reaction === MessageReactionType.DONATE) {
-                    let key = await AppStorage.readKey('reaction_donated');
-                    if (!key) {
-                        showDonationReactionWarning(async () => {
-                            try {
-                                setEmoji();
-                                await donate();
-                                AppStorage.writeKey('reaction_donated', true);
-                            } catch (e) {
-                                unsetEmoji();
-                            }
-                        });
-                        return;
-                    }
                     try {
-                        setEmoji();
-                        await donate();
-                    } catch (e) {
-                        unsetEmoji();
-                    }
+                        await showDonationReactionWarning();
+                        try {
+                            setEmoji();
+                            await donate();
+                        } catch (e) {
+                            unsetEmoji();
+                        }
+                    } catch (e) { /* noop */ }
                 } else {
                     client.mutateMessageSetReaction({ messageId, reaction });
                     setEmoji();
