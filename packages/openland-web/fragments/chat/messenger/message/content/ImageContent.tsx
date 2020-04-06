@@ -178,29 +178,35 @@ const cursorContainer = css`
     position: absolute;
     cursor: pointer;
     padding-top: 56px;
+    padding-left: 12px;
+    padding-right: 12px;
+    justify-content: center;
     top: 0;
     bottom: 0;
-    width: 20%;
+    width: 64px;
     transition: 200ms opacity ease;
     opacity: 0.56;
     & > div {
         flex-grow: 0;
+        width: 40px;
+        height: 40px;
+        transition: 200ms all ease;
+        border-radius: 100%;
     }
     :hover {
         opacity: 1;
+    }
+    :hover > div {
+        background-color: rgba(0, 0, 0, 0.48);
     }
 `;
 
 const prevCursorContent = css`
     left: 0;
-    justify-content: flex-start;
-    padding-left: 16px;
 `;
 
 const nextCursorContent = css`
     right: 0;
-    justify-content: flex-end;
-    padding-right: 16px;
 `;
 
 interface ModalControllerProps {
