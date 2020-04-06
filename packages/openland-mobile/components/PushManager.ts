@@ -6,6 +6,7 @@ import { AppNotifications } from 'openland-y-runtime-native/AppNotifications';
 import { OpenlandClient } from 'openland-api/spacex';
 import { PushType } from 'openland-api/spacex.types';
 import { createLogger } from 'mental-log';
+import { trackEvent } from 'openland-mobile/analytics';
 
 const log = createLogger('Engine-Push');
 
@@ -36,6 +37,9 @@ class PushRegistrator {
                 endpoint: JSON.stringify(endpoint),
                 type: Platform.OS === 'ios' ? PushType.IOS : PushType.ANDROID
             }));
+
+            trackEvent('mobile-push-registration');
+
             log.log('Token registered successfully');
         }
     }
