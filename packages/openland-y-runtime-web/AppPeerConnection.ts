@@ -23,6 +23,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     private audioOutputDevice: MediaDeviceInfo | undefined;
 
     channel?: RTCDataChannel;
+    private volume?: number;
 
     constructor(connection: RTCPeerConnection) {
         this.connection = connection;
@@ -59,6 +60,9 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
                 this.audio = new Audio();
                 if ((this.audio as any).setSinkId) {
                     (this.audio as any).setSinkId(this.audioOutputDevice?.deviceId);
+                }
+                if (this.volume) {
+                    this.audio.volume = this.volume;
                 }
 
                 this.audio.autoplay = true;
@@ -107,6 +111,13 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     sendDCMessage = (message: string) => {
         if (this.channel?.readyState === 'open') {
             this.channel.send(message);
+        }
+    }
+
+    setVolume = (volume: number) => {
+        this.volume = volume;
+        if (this.audio) {
+            this.audio.volume = volume;
         }
     }
 

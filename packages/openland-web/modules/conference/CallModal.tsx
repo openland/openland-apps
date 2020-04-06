@@ -17,8 +17,8 @@ import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { DataSourceMessageItem, DataSourceDateItem, DataSourceNewDividerItem } from 'openland-engines/messenger/ConversationEngine';
-import YouTube from "react-youtube";
-import uuid from 'uuid';
+import { YoutubeParty } from './YoutubeParty';
+import { VolumeSpace } from './VolumeSpace';
 
 const animatedAvatarStyle = css`
     position: absolute;
@@ -48,7 +48,7 @@ const controlsContainerStyle = css`
     justify-content: center;
 
     padding: 8px 4px;
-    background-color: var(--backgroundTertiaryTrans);
+    background-color: var(--backgroundTertiary);
     border-radius: 24px;
 `;
 
@@ -89,7 +89,14 @@ const SettingsModal = React.memo((props: {}) => {
     );
 });
 
-const Controls = React.memo((props: { calls: CallsEngine, ctx: XModalController, showLink: boolean, setShowLink: (show: boolean) => void }) => {
+const Controls = React.memo((props: {
+    calls: CallsEngine,
+    ctx: XModalController,
+    showLink: boolean,
+    setShowLink: (show: boolean) => void,
+    layout: 'volume-space' | 'grid',
+    setLayout: (layout: 'volume-space' | 'grid') => void
+}) => {
     let callState = props.calls.useState();
     let showSettings = React.useCallback(() => {
         showModalBox({ title: 'Audio setting' }, () => <SettingsModal />);
@@ -145,6 +152,14 @@ const Controls = React.memo((props: { calls: CallsEngine, ctx: XModalController,
 
                 {AppConfig.isNonProduction() && <UButton
                     flexShrink={1}
+                    style={'secondary'}
+                    text={props.layout === 'grid' ? 'Grid' : 'Volume Space'}
+                    onClick={() => props.setLayout(props.layout === 'grid' ? 'volume-space' : 'grid')}
+                    marginHorizontal={4}
+                />}
+
+                {AppConfig.isNonProduction() && <UButton
+                    flexShrink={1}
                     style={props.showLink ? 'primary' : 'secondary'}
                     text={'Link'}
                     onClick={() => props.setShowLink(!props.showLink)}
@@ -182,7 +197,7 @@ const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: 
     const onClick = React.useCallback(() => stream ? showVideoModal(stream) : undefined, [stream]);
 
     return (
-        <XView backgroundColor="gray" alignItems="center" justifyContent="center" flexGrow={1} >
+        <XView backgroundColor="gray" alignItems="center" justifyContent="center" flexGrow={1} flexBasis={1}>
             {stream && <VideoComponent stream={stream} cover={true} onClick={onClick} mirror={isLocal} />}
             <div key={'animtateing_wrapper'} className={cx(animatedAvatarStyle, stream && compactAvatarStyle)}>
                 <UAvatar
@@ -195,139 +210,6 @@ const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: 
             <div ref={ref} className={borderStyle} />
         </XView>
     );
-});
-
-interface YtbInstance {
-    getCurrentTime(): number;
-    getDuration(): number;
-    seekTo(time: number): void;
-    playVideo(): void;
-    pauseVideo(): void;
-}
-
-const YtbContainerStyle = css`
-    width: 100%;
-    height: 100%;
-`;
-const YoutubeParty = React.memo((props: { link: string, mediaSession: MediaSessionManager }) => {
-    let id: string | undefined;
-    let url = new URL(props.link);
-    if (props.link.includes('youtu.be')) {
-        id = url.pathname.split('/')[0];
-    } else {
-        id = url.searchParams.get('v') || undefined;
-    }
-    console.warn('[YTB]', id);
-
-    const targetRef = React.useRef<YtbInstance>();
-    const onReady = React.useCallback((ev: { target: YtbInstance }) => {
-        targetRef.current = ev.target;
-    }, []);
-
-    const stateSeqRef = React.useRef(0);
-    const messageSeqRef = React.useRef(0);
-    const palyingState = React.useRef(false);
-    const seqPalyingState = React.useRef(false);
-    const obay = React.useRef(true);
-    const initial = React.useRef(true);
-    const onPlay = React.useCallback(() => {
-        if (!palyingState.current) {
-            palyingState.current = true;
-            if ((seqPalyingState.current !== palyingState.current) && !obay.current) {
-                seqPalyingState.current = palyingState.current;
-                stateSeqRef.current++;
-            }
-        }
-        initial.current = false;
-    }, []);
-    const onPause = React.useCallback(() => {
-        if (palyingState.current) {
-            palyingState.current = false;
-            if ((seqPalyingState.current !== palyingState.current) && !obay.current) {
-                seqPalyingState.current = palyingState.current;
-                stateSeqRef.current++;
-            }
-        }
-
-    }, []);
-    React.useEffect(() => {
-        let session = uuid();
-        initial.current = true;
-        stateSeqRef.current = 0;
-        messageSeqRef.current = 0;
-        let lastTime = 0;
-        let interval = setInterval(() => {
-            let time = targetRef.current?.getCurrentTime() || 0;
-            let jump = Math.abs(time - lastTime) > 2;
-            lastTime = time;
-            if (!obay.current) {
-                if (jump) {
-                    stateSeqRef.current++;
-                }
-                props.mediaSession.sendDcMessage(JSON.stringify({ id, time, seq: messageSeqRef.current++, stateSeq: stateSeqRef.current, palyingState: seqPalyingState.current, session }));
-            }
-        }, 200);
-
-        let obayTimer = window.setTimeout(() => obay.current = false, 500);
-        let peerSeq: { [peerId: string]: number | undefined } = {};
-        let d = props.mediaSession.listenDc(container => {
-            if (typeof container.data === 'string') {
-                let message = JSON.parse(container.data);
-                if (!message) {
-                    console.error("can't parse message", container);
-                    return;
-                }
-                if (message.id !== id) {
-                    return;
-                }
-                if ((peerSeq[container.peerId + message.session] || -1) >= message.seq) {
-                    return;
-                }
-                if (message.stateSeq < stateSeqRef.current) {
-                    return;
-                } else if (message.stateSeq > stateSeqRef.current) {
-                    obay.current = true;
-                    window.clearTimeout(obayTimer);
-                    obayTimer = window.setTimeout(() => obay.current = false, 500);
-                    // sync time
-                    console.log('[YTB]', 'sync time', message);
-                    targetRef.current?.seekTo(message.time);
-                    // sync state
-                    if (palyingState.current !== message.palyingState) {
-                        console.log('[YTB]', 'sync state', message);
-                        if (message.palyingState) {
-                            targetRef.current?.playVideo();
-                        } else {
-                            targetRef.current?.pauseVideo();
-                        }
-                    }
-                    seqPalyingState.current = message.palyingState;
-                    stateSeqRef.current = message.stateSeq;
-                } else if ((message.time - (targetRef.current?.getCurrentTime() || 0) > 1) || initial.current) {
-                    targetRef.current?.seekTo(message.time);
-                }
-
-                peerSeq[message.peerId] = message.seq;
-            }
-        });
-
-        return () => {
-            clearInterval(interval);
-            d();
-        };
-    }, [id]);
-
-    return <YouTube
-        containerClassName={YtbContainerStyle}
-        onReady={onReady}
-        videoId={id}
-        opts={{
-            width: '100%',
-            height: '100%',
-        }}
-        onPlay={onPlay}
-        onPause={onPause}
-    />;
 });
 
 const LinkFrame = React.memo((props: { link?: string, mediaSession: MediaSessionManager }) => {
@@ -347,7 +229,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
         }
     }, [callState]);
     React.useEffect(() => {
-        if (!props.calls.state.videoEnabled) {
+        if (!props.calls.state.outVideo) {
             props.calls.switchVideo();
         }
     }, []);
@@ -364,6 +246,8 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
         console.warn(count, peers.length);
     }
     const mediaSession = props.calls.getMediaSession();
+
+    let [layout, setLayout] = React.useState<'grid' | 'volume-space'>('grid');
 
     // some fun - pick latest link from chat
     let [showLink, setShowLink] = React.useState(false);
@@ -429,12 +313,14 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     }, []);
     return (
         <XView flexDirection="row" justifyContent="flex-start" flexGrow={1}>
-            <XView flexDirection={rotated ? 'row' : 'column'} justifyContent="flex-start" flexGrow={1}>
-                {mediaSession && slices.map((s, i) => (
-                    <XView key={`container-${i}`} flexDirection={rotated ? 'column' : 'row'} justifyContent="flex-start" flexGrow={1}>{s.map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} />)}</XView>
+            {<XView flexDirection={rotated ? 'row' : 'column'} justifyContent="flex-start" flexGrow={1} flexBasis={0} >
+                {layout === 'grid' && mediaSession && slices.map((s, i) => (
+                    <XView key={`container-${i}`} flexShrink={1} flexDirection={rotated ? 'column' : 'row'} justifyContent="flex-start" flexGrow={1}>{s.map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} />)}</XView>
                 ))}
-                <Controls calls={props.calls} ctx={props.ctx} showLink={showLink} setShowLink={setShowLink} />
-            </XView >
+                {layout === 'volume-space' && mediaSession && <VolumeSpace mediaSession={mediaSession} peers={[...conference ? conference.conference.peers : []]} />}
+                <Controls calls={props.calls} ctx={props.ctx} showLink={showLink} setShowLink={setShowLink} layout={layout} setLayout={setLayout} />
+            </XView >}
+
             {mediaSession && showLink && (
                 <XView flexGrow={0.5} flexBasis={0} alignItems="stretch">
                     <LinkFrame link={link} mediaSession={mediaSession} />

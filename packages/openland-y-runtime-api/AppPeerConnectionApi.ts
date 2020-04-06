@@ -18,6 +18,7 @@ export interface AppPeerConnection {
 
     sendDCMessage(message: string): void;
     onDcMessage: ((message: any) => void) | undefined;
+    setVolume(volume: number): void;
 
     close(): void;
 }

@@ -48,7 +48,11 @@ class AppPeerConnectionNative implements AppPeerConnection {
     }
 
     sendDCMessage = (message: string) => {
-        // not supported yet
+        // not implemented yet
+    }
+
+    setVolume = (volume: number) => {
+        // not implemented yet
     }
 
     private audioStream?: MediaStream;

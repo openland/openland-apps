@@ -10,6 +10,7 @@ import { Queue } from 'openland-y-utils/Queue';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 import { ConferenceWatch } from 'openland-api/spacex.types';
 import { MediaStreamsAlalizer } from './MediaStreamsAlalizer';
+import { MediaSessionVolumeSpace } from './MediaSessionVolumeSpace';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 export const useStreamManager = (manager: MediaSessionManager | undefined, peerId: string) => {
@@ -61,6 +62,7 @@ export class MediaSessionManager {
     private peerVideoListeners = new Map<string, Set<(stream?: AppMediaStream) => void>>();
     private dcListeners = new Set<(message: { peerId: string, data: any }) => void>();
     readonly analizer: MediaStreamsAlalizer;
+    readonly volumeSpace: MediaSessionVolumeSpace;
 
     constructor(client: OpenlandClient, conversationId: string, mute: boolean, isPrivate: boolean, onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void, onDestroyRequested: () => void, onVideoEnabled: () => void) {
         this.client = client;
@@ -72,6 +74,7 @@ export class MediaSessionManager {
         this.isPrivate = isPrivate;
         this.doInit();
         this.analizer = new MediaStreamsAlalizer(this);
+        this.volumeSpace = new MediaSessionVolumeSpace(this);
     }
 
     setMute = (mute: boolean) => {

@@ -311,6 +311,10 @@ export class MediaStreamManager {
         });
     }
 
+    setVolume = (volume: number) => {
+        this.peerConnection.setVolume(volume);
+    }
+
     ////
     // IO
     ////

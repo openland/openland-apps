@@ -64,51 +64,52 @@ const TargetClass = css`
     margin: 0 4px;
 `;
 
-const useJsDrag = (
+export const useJsDrag = (
     targetRef: React.RefObject<HTMLDivElement>,
     containerRef: React.RefObject<HTMLDivElement>,
-    contentRef: React.RefObject<HTMLDivElement>,
+    onMove: (coords: number[]) => void,
+    saved?: number[],
+    initialTargetWidth?: number,
+    contentRef?: React.RefObject<HTMLDivElement>,
+    limitToScreen?: boolean,
+    deps?: any[]
 ) => {
-    const saveLastShift = React.useCallback(
-        debounce((shift: number[]) => {
-            window.localStorage.setItem('call_floating_shift', JSON.stringify(shift));
-        }, 500),
-        [],
-    );
 
     React.useLayoutEffect(() => {
+        console.warn('jsDrag!', targetRef.current);
         const container = containerRef.current;
         const target = targetRef.current;
-        const content = contentRef.current;
+        const content = contentRef?.current;
         let dragging = false;
-        let saved = window.localStorage.getItem('call_floating_shift');
-        let positionShift = saved
-            ? JSON.parse(saved)
-            : [window.innerWidth / 2 - (AVATAR_SIZE), window.innerHeight / 2];
+        let targetWidth = initialTargetWidth || target?.clientWidth || 0;
+        let positionShift = saved || [window.innerWidth / 2 - (targetWidth), window.innerHeight / 2];
         let prev: number[] | undefined;
 
         const checkPostion = () => {
             // limit shift with screen bounds
-            if (Math.abs(positionShift[0]) > window.innerWidth / 2 - (AVATAR_SIZE / 2)) {
-                positionShift[0] = (window.innerWidth / 2 - (AVATAR_SIZE / 2)) * Math.sign(positionShift[0]);
+            if (limitToScreen) {
+                if (Math.abs(positionShift[0]) > window.innerWidth / 2 - (targetWidth / 2)) {
+                    positionShift[0] = (window.innerWidth / 2 - (targetWidth / 2)) * Math.sign(positionShift[0]);
+                }
+                positionShift[1] = Math.min(window.innerHeight - (targetWidth), Math.max(0, positionShift[1]));
             }
-            positionShift[1] = Math.min(window.innerHeight - (AVATAR_SIZE), Math.max(0, positionShift[1]));
 
             // swap layout for left/right part of screen
             if (container && content) {
                 if (positionShift[0] > 0) {
-                    container.style.right = `calc(50% - ${AVATAR_SIZE / 2}px)`;
+                    container.style.right = `calc(50% - ${targetWidth / 2}px)`;
                     container.style.left = 'initial';
                     content.style.flexDirection = 'row-reverse';
                 } else {
                     container.style.right = 'initial';
-                    container.style.left = `calc(50% - ${AVATAR_SIZE / 2}px)`;
+                    container.style.left = `calc(50% - ${targetWidth / 2}px)`;
                     content.style.flexDirection = 'row';
                 }
             }
         };
 
         const onDragStart = (ev: MouseEvent | TouchEvent) => {
+            console.warn(ev);
             if (ev instanceof MouseEvent) {
                 ev.preventDefault();
             }
@@ -143,7 +144,7 @@ const useJsDrag = (
                 positionShift = [positionShift[0] + moveDelta[0], positionShift[1] + moveDelta[1]];
                 checkPostion();
 
-                saveLastShift(positionShift);
+                onMove(positionShift);
                 if (container) {
                     container.style.transform = `translate(${positionShift[0]}px, ${
                         positionShift[1]
@@ -184,7 +185,7 @@ const useJsDrag = (
                 window.document.removeEventListener('touchmove', onDrag);
             }
         };
-    }, []);
+    }, [deps]);
 };
 
 const VideoMediaView = React.memo((props: {
@@ -207,7 +208,7 @@ const VideoMediaView = React.memo((props: {
     return (
         <XView width={VIDEO_SIZE} height={VIDEO_SIZE} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" backgroundColor="gray" alignItems="center" justifyContent="center">
             {stream ?
-                <VideoComponent stream={(stream as AppUserMediaStreamWeb)._stream} cover={true} videoClass={VideoRadius} /> :
+                <VideoComponent stream={(stream as AppUserMediaStreamWeb)._stream} cover={true} videoClass={VideoRadius} switching={true}/> :
                 <div key={'animtateing_wrapper'} ref={props.avatarRef}>
                     <UAvatar
                         size="large"
@@ -280,7 +281,10 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
     const targetRef = React.useRef<HTMLDivElement>(null);
     const containerRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
-    useJsDrag(targetRef, containerRef, contentRef);
+    const moveCallBack = React.useCallback(debounce((shift: number[]) => {
+        window.localStorage.setItem('call_floating_shift', JSON.stringify(shift));
+    }, 500), []);
+    useJsDrag(targetRef, containerRef, moveCallBack, JSON.parse(window.localStorage.getItem('call_floating_shift') || '{}'), AVATAR_SIZE, contentRef, true);
     let messenger = React.useContext(MessengerContext);
     let calls = messenger.calls;
     let callState = calls.useState();
