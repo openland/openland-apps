@@ -103,7 +103,7 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
                             <View style={{ width: 8 }} />
                             <ZButton
                                 key={i + '-ac'}
-                                style={a.style === 'cancel' ? 'secondary' : a.style === 'destructive' ? 'danger' : 'primary'}
+                                style={a.style === 'cancel' ? 'secondary' : a.style === 'destructive' ? 'danger' : a.style === 'pay' ? 'pay' : 'primary'}
                                 title={a.name}
                                 enabled={!isActionInProgress}
                                 onPress={async () => {

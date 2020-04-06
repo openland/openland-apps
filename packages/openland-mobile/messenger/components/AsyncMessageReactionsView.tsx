@@ -9,13 +9,14 @@ import { MessageReactionType } from 'openland-api/spacex.types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
 
-export const reactionsImagesMap: { [key in Exclude<MessageReactionType, MessageReactionType.DONATE>]: NodeRequire } = {
+export const reactionsImagesMap: { [key in MessageReactionType]: NodeRequire } = {
     'LIKE': require('assets/reactions/ic-reaction-like.png'),
     'THUMB_UP': require('assets/reactions/ic-reaction-thumbsup.png'),
     'JOY': require('assets/reactions/ic-reaction-lol.png'),
     'SCREAM': require('assets/reactions/ic-reaction-wow.png'),
     'CRYING': require('assets/reactions/ic-reaction-sad.png'),
-    'ANGRY': require('assets/reactions/ic-reaction-angry.png')
+    'ANGRY': require('assets/reactions/ic-reaction-angry.png'),
+    'DONATE': require('assets/reactions/ic-reaction-donate.png'),
 };
 
 interface AsyncMessageReactionsViewProps {

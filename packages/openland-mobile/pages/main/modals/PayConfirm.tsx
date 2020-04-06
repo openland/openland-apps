@@ -63,6 +63,31 @@ const ConfirmPaymentComponent = React.memo((props: PaymentProps & { ctx: ModalPr
     );
 });
 
+export const showCheckLock = (props: {onSuccess: () => void}) => {
+    const builder = new AlertBlanketBuilder();
+
+    builder.title('Update payment method');
+    builder.message('Update payment method to complete previously failed transactions and enable new purchases');
+
+    builder.view(
+        <View marginBottom={16} marginHorizontal={-24} overflow="hidden">
+            <Image
+                source={require('assets/art-transactions-failing.png')}
+                style={{
+                    width: 340,
+                    height: 200,
+                    alignSelf: 'center',
+                    resizeMode: 'contain'
+                }}
+            />
+        </View>
+    );
+
+    builder.button('Cancel', 'cancel');
+    builder.button('Continue', 'default', () => props.onSuccess());
+    builder.show();
+};
+
 type PaymentProps = {
     router: SRouter;
     amount: number;
@@ -78,27 +103,6 @@ export const showPayConfirm = (props: PaymentProps) => {
     if (!locked) {
         showBottomSheet({ cancelable: false, view: (ctx) => <ConfirmPaymentComponent {...props} ctx={ctx} />, title: 'Payment' });
     } else {
-        const builder = new AlertBlanketBuilder();
-
-        builder.title('Update payment method');
-        builder.message('Update payment method to complete previously failed transactions and enable new purchases');
-
-        builder.view(
-            <View marginBottom={16} marginHorizontal={-24} overflow="hidden">
-                <Image
-                    source={require('assets/art-transactions-failing.png')}
-                    style={{
-                        width: 340,
-                        height: 200,
-                        alignSelf: 'center',
-                        resizeMode: 'contain'
-                    }}
-                />
-            </View>
-        );
-
-        builder.button('Cancel', 'cancel');
-        builder.button('Continue', 'default', () => props.router.push('Wallet'));
-        builder.show();
+        showCheckLock({onSuccess: () => props.router.push('Wallet')});
     }
 };

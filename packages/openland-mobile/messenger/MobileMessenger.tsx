@@ -36,6 +36,9 @@ import { AsyncSharedDocument } from 'openland-mobile/pages/shared-media/AsyncSha
 import { AsyncSharedMediaRow } from 'openland-mobile/pages/shared-media/AsyncSharedMediaRow';
 import { AsyncSharedDate } from 'openland-mobile/pages/shared-media/AsyncSharedDate';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
+import Toast from 'openland-mobile/components/Toast';
+import { showCheckLock } from 'openland-mobile/pages/main/modals/PayConfirm';
+import { showDonationReactionWarning } from './components/showDonationReactionWarning';
 
 const SortedReactions = [
     MessageReactionType.LIKE,
@@ -43,7 +46,8 @@ const SortedReactions = [
     MessageReactionType.JOY,
     MessageReactionType.SCREAM,
     MessageReactionType.CRYING,
-    MessageReactionType.ANGRY
+    MessageReactionType.ANGRY,
+    // MessageReactionType.DONATE,
 ];
 
 export const forward = (conversationEngine: ConversationEngine, messages: DataSourceMessageItem[]) => {
@@ -285,22 +289,52 @@ export class MobileMessenger {
         this.history.navigationManager.push('Conversation', { id });
     }
 
-    handleReactionSetUnset = (message: DataSourceMessageItem, r: MessageReactionType, doubleTap?: boolean) => {
+    handleReactionSetUnset = async (message: DataSourceMessageItem, r: MessageReactionType, doubleTap?: boolean) => {
+        const donate = async() => {
+            let loader = Toast.loader();
+            try {
+                loader.show();
+                await this.engine.client.mutateMessageSetDonationReaction({ messageId: message.id! });
+                loader.hide();
+                Toast.success({text: 'You’ve donated $1', duration: 1000}).show();
+            } catch (e) {
+                loader.hide();
+                if (this.engine.wallet.state.get().isLocked) {
+                    showCheckLock({onSuccess: () => this.history.navigationManager.push('Wallet')});
+                } else {
+                    Toast.failure({text: e.message, duration: 1000}).show();
+                }
+                
+                throw e;
+            }
+        };
         try {
             const conversation: ConversationEngine = this.engine.getConversation(message.chatId);
 
             let remove = message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;
             if (remove) {
-                // optimistic unset reaction
+                if (r === MessageReactionType.DONATE) {
+                    return;
+                }
                 conversation.unsetReaction(message.key, r);
 
                 this.engine.client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: r });
             } else {
-                // optimistic set reaction
-                conversation.setReaction(message.key, r);
-
-                trackEvent('reaction_sent', { reaction_type: r.toLowerCase(), double_tap: doubleTap ? 'yes' : 'not' });
-                this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: r });
+                if (r === MessageReactionType.DONATE) {
+                    try {
+                        await showDonationReactionWarning();
+                        try {
+                            conversation.setReaction(message.key, r);
+                            await donate();
+                        } catch (e) {
+                            conversation.unsetReaction(message.key, r);
+                        }
+                    } catch (e) { /* noop */ }
+                } else {
+                    conversation.setReaction(message.key, r);
+                    trackEvent('reaction_sent', { reaction_type: r.toLowerCase(), double_tap: doubleTap ? 'yes' : 'not' });
+                    await this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: r });
+                }
             }
         } catch (e) {
             Alert.alert(e.message);

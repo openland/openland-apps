@@ -2,7 +2,7 @@ import * as React from 'react';
 import { showBlanketModal } from './showBlanketModal';
 import { AlertBlanketComponent } from './AlertBlanketComponent';
 
-type BlanketButtonsStyle = 'destructive' | 'cancel' | 'default';
+type BlanketButtonsStyle = 'destructive' | 'cancel' | 'pay' | 'default';
 export class AlertBlanketBuilder {
     _title?: string;
     _message?: string;
