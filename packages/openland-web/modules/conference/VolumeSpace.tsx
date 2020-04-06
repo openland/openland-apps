@@ -22,6 +22,7 @@ let VolumeSpaceItemStyle = css`
 position: absolute;
 `;
 let VolumeSpaceVideoStyle = css`
+position: relative;
 width: 72px;
 height: 72px;
 border-radius: 72px;

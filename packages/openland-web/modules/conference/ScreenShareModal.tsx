@@ -4,12 +4,9 @@ import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 
 const videoClass = css`
+    position: absolute;
     width: 100%;
     height: 100%;
-`;
-
-const videoSwitching = css`
-    position: absolute;
 `;
 
 const coverClass = css`
@@ -41,8 +38,8 @@ export const VideoComponent = React.memo((props: { stream: MediaStream, cover?: 
         }
     }, [props.stream]);
     return <XView width={'100%'} height={'100%'} onClick={props.onClick} cursor={props.onClick ? 'pointer' : undefined}>
-        <video id={'video-1'} key={'video-1'} ref={videoRef1} className={cx(videoClass, props.switching && videoSwitching, props.cover && coverClass, props.videoClass, props.mirror && mirrorClass)} />
-        {props.switching && <video id={'video-2'} key={'video-2'} ref={videoRef2} className={cx(videoClass, props.switching && videoSwitching, props.cover && coverClass, props.videoClass, props.mirror && mirrorClass)} />}
+        <video id={'video-1'} key={'video-1'} ref={videoRef1} className={cx(videoClass, props.cover && coverClass, props.videoClass, props.mirror && mirrorClass)} />
+        {props.switching && <video id={'video-2'} key={'video-2'} ref={videoRef2} className={cx(videoClass, props.cover && coverClass, props.videoClass, props.mirror && mirrorClass)} />}
     </XView>;
 });
 

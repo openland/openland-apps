@@ -364,7 +364,7 @@ export class MediaStreamManager {
         this.contentStreamListeners.add(listener);
         listener(this.videoInStream);
         return () => {
-            this.contentStreamListeners.forEach(l => this.contentStreamListeners.delete(l));
+            this.contentStreamListeners.delete(listener);
         };
     }
 

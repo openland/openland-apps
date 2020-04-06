@@ -76,13 +76,12 @@ export const useJsDrag = (
 ) => {
 
     React.useLayoutEffect(() => {
-        console.warn('jsDrag!', targetRef.current);
         const container = containerRef.current;
         const target = targetRef.current;
         const content = contentRef?.current;
         let dragging = false;
         let targetWidth = initialTargetWidth || target?.clientWidth || 0;
-        let positionShift = saved || [window.innerWidth / 2 - (targetWidth), window.innerHeight / 2];
+        let positionShift = saved?.length ? saved : [window.innerWidth / 2 - (targetWidth), window.innerHeight / 2];
         let prev: number[] | undefined;
 
         const checkPostion = () => {

@@ -175,29 +175,31 @@ const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: 
     const ref = React.useRef<HTMLDivElement>(null);
     const isLocal = props.peer.id === props.mediaSession.getPeerId();
     React.useEffect(() => {
+        let d1: () => void;
         if (isLocal) {
-            return props.mediaSession.listenOutVideo(s => {
+            d1 = props.mediaSession.listenOutVideo(s => {
                 setStream((s as AppUserMediaStreamWeb)?._stream);
             });
         } else {
-            return props.mediaSession.listenPeerVideo(props.peer.id, s => {
+            d1 = props.mediaSession.listenPeerVideo(props.peer.id, s => {
                 setStream((s as AppUserMediaStreamWeb)?._stream);
             });
         }
-
-    });
-
-    React.useEffect(() => {
-        return props.mediaSession.analizer.subscribePeer(props.peer.id, v => {
+        let d2 = props.mediaSession.analizer.subscribePeer(props.peer.id, v => {
             if (ref.current) {
                 ref.current.style.border = v ? '2px solid white' : '';
             }
         });
+        return () => {
+            d1();
+            d2();
+        };
     }, []);
+
     const onClick = React.useCallback(() => stream ? showVideoModal(stream) : undefined, [stream]);
 
     return (
-        <XView backgroundColor="gray" alignItems="center" justifyContent="center" flexGrow={1} flexBasis={1}>
+        <XView backgroundColor="gray" alignItems="center" justifyContent="center" flexGrow={1}>
             {stream && <VideoComponent stream={stream} cover={true} onClick={onClick} mirror={isLocal} />}
             <div key={'animtateing_wrapper'} className={cx(animatedAvatarStyle, stream && compactAvatarStyle)}>
                 <UAvatar
@@ -312,10 +314,10 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
         );
     }, []);
     return (
-        <XView flexDirection="row" justifyContent="flex-start" flexGrow={1}>
-            {<XView flexDirection={rotated ? 'row' : 'column'} justifyContent="flex-start" flexGrow={1} flexBasis={0} >
+        <XView flexDirection="row" flexGrow={1} backgroundColor="gray" alignItems="stretch">
+            {<XView flexDirection={rotated ? 'row' : 'column'} justifyContent="flex-start" flexGrow={1} flexShrink={1}>
                 {layout === 'grid' && mediaSession && slices.map((s, i) => (
-                    <XView key={`container-${i}`} flexShrink={1} flexDirection={rotated ? 'column' : 'row'} justifyContent="flex-start" flexGrow={1}>{s.map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} />)}</XView>
+                    <XView key={`container-${i}`} flexDirection={rotated ? 'column' : 'row'} justifyContent="flex-start" flexShrink={1} flexGrow={1}>{s.map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} />)}</XView>
                 ))}
                 {layout === 'volume-space' && mediaSession && <VolumeSpace mediaSession={mediaSession} peers={[...conference ? conference.conference.peers : []]} />}
                 <Controls calls={props.calls} ctx={props.ctx} showLink={showLink} setShowLink={setShowLink} layout={layout} setLayout={setLayout} />

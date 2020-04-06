@@ -156,6 +156,7 @@ export class MediaSessionManager {
         this.destroyed = true;
 
         this.analizer.dispose();
+        this.volumeSpace.dispose();
 
         console.log('[WEBRTC] Destroying conference');
 
@@ -400,8 +401,9 @@ export class MediaSessionManager {
         if (sm) {
             listener(sm.getVideoInStream());
         }
+        let lsnrs = listeners;
         return () => {
-            listeners?.delete(listener);
+            lsnrs.delete(listener);
         };
     }
 
