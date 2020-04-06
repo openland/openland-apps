@@ -340,10 +340,19 @@ const LinkFrame = React.memo((props: { link?: string, mediaSession: MediaSession
 
 export const CallModalConponent = React.memo((props: { chatId: string, calls: CallsEngine, client: OpenlandClient, ctx: XModalController, messenger: MessengerEngine }) => {
     let conference = props.client.useConference({ id: props.chatId }, { suspense: false });
-    props.calls.useState();
+    let callState = props.calls.useState();
+    React.useEffect(() => {
+        if (callState.status === 'end') {
+            props.ctx.hide();
+        }
+    }, [callState]);
+    React.useEffect(() => {
+        if (!props.calls.state.videoEnabled) {
+            props.calls.switchVideo();
+        }
+    }, []);
 
-    let [showLink, setShowLink] = React.useState(false);
-
+    // layout video grid
     let peers = [...conference ? conference.conference.peers : []];
     let rotated = peers.length === 3;
     let slicesCount = peers.length < 3 ? 1 : peers.length < 9 ? 2 : 3;
@@ -356,7 +365,8 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     }
     const mediaSession = props.calls.getMediaSession();
 
-    // some fun
+    // some fun - pick latest link from chat
+    let [showLink, setShowLink] = React.useState(false);
     const [link, setLink] = React.useState<string | undefined>();
     React.useEffect(() => {
         if (!AppConfig.isNonProduction()) {

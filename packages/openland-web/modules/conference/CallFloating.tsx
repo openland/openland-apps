@@ -323,9 +323,6 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
                     style='primary'
                     text={'Join video call'}
                     onClick={() => {
-                        if (!callState.outVideo) {
-                            calls.switchVideo();
-                        }
                         showVideoCallModal({ calls, chatId: props.id, client, messenger });
                     }}
                     marginHorizontal={4}

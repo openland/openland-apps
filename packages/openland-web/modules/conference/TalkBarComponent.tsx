@@ -152,9 +152,6 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                             marginRight={8}
                             text="Join video call"
                             onClick={() => {
-                                if (!callState.outVideo) {
-                                    calls.switchVideo();
-                                }
                                 showVideoCallModal({ calls, chatId: props.chat.id, client, messenger });
                             }}
                         />}
