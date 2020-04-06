@@ -77,11 +77,11 @@ const reactionDisabledClass = css`
 
 const texts: {[reaction in MessageReactionType]: string} = {
     ANGRY: 'Angry',
-    CRYING: 'Crying',
-    JOY: 'Joy',
-    LIKE: 'Like',
-    SCREAM: 'Scream',
-    THUMB_UP: 'Thumb Up',
+    CRYING: 'Sad',
+    JOY: 'Haha',
+    LIKE: 'Love',
+    SCREAM: 'Wow',
+    THUMB_UP: 'Thumbs Up',
     DONATE: 'Donate',
 };
 
