@@ -40,6 +40,7 @@ import AlertBlanket from 'openland-x/AlertBlanket';
 import { OpenlandClient } from 'openland-api/spacex';
 import { ReloadFromEndButton } from './ReloadFromEndButton';
 import { showNoiseWarning } from './NoiseWarning';
+import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarComponent';
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
@@ -488,6 +489,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                         {pin && (
                             <PinMessageComponent message={pin} engine={this.conversation} />
                         )}
+                        <TalkBarComponent chat={this.props.room} />
                         <div className={messagesListContainer}>
                             <MessageListComponent
                                 ref={this.messagesList}

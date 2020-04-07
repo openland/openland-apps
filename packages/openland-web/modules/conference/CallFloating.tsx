@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { TalkWatchComponent } from './TalkWatchComponent';
+import { useTalkWatch } from './useTalkWatch';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
 import { css, cx } from 'linaria';
@@ -386,17 +386,14 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
 const CallFloatingInner = React.memo((props: { id: string; private: boolean }) => {
     let client = useClient();
     let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
+    useTalkWatch(data && data.conference.id);
+    
     if (!data) {
         return null;
     }
 
-    let res = (
-        <>
-            <TalkWatchComponent id={data.conference.id} />
-            {data.conference.peers.length !== 0 && (
-                <CallFloatingComponent id={props.id} private={props.private} />
-            )}
-        </>
+    let res = data.conference.peers.length !== 0 && (
+        <CallFloatingComponent id={props.id} private={props.private} />
     );
     return ReactDOM.createPortal(res, document.body);
 });

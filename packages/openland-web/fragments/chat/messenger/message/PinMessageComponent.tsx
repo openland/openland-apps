@@ -1,18 +1,14 @@
 import * as React from 'react';
-import { css, cx } from 'linaria';
 import { XViewRouterContext } from 'react-mental';
-import { TextBody } from 'openland-web/utils/TextStyles';
 import PinIcon from 'openland-icons/s/ic-pin-24.svg';
 import CloseIcon from 'openland-icons/s/ic-close-16.svg';
-import { TextLabel1 } from 'openland-web/utils/TextStyles';
 import { emoji } from 'openland-y-utils/emoji';
 import {
     Room_room_SharedRoom_pinnedMessage_GeneralMessage,
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
 } from 'openland-api/spacex.types';
-import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { defaultHover } from 'openland-web/utils/Styles';
+import { UTopBar } from 'openland-web/components/unicorn/UTopBar';
 
 interface PinMessageProps {
     engine: ConversationEngine;
@@ -20,83 +16,6 @@ interface PinMessageProps {
     | Room_room_SharedRoom_pinnedMessage_GeneralMessage
     | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage;
 }
-
-const pinMessageContainer = css`
-    height: 40px;
-    display: flex;
-    flex-shrink: 0;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--backgroundTertiary);
-    cursor: pointer;
-
-    &:hover {
-        background-color: var(--backgroundTertiaryHover);
-    }
-`;
-
-const piMessageContent = css`
-    max-width: 824px;
-    display: flex;
-    flex-direction: row;
-    padding: 0 16px;
-    align-items: center;
-    justify-content: space-between;
-    flex-grow: 1;
-    flex-basis: 0;
-`;
-
-const pinMessageMainContent = css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex-grow: 1;
-`;
-
-const iconContainer = css`
-    width: 40px;
-    height: 40px;
-    border-radius: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-right: 16px;
-
-    & svg {
-        width: 20px;
-        height: 20px;
-    }
-`;
-
-const senderName = css`
-    color: var(--foregroundPrimary);
-    margin-right: 10px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    flex-shrink: 0;
-`;
-
-const pinMessageFallback = css`
-    color: var(--foregroundPrimary);
-    white-space: pre-wrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    height: 24px;
-    pointer-events: none;
-`;
-
-const unpinIconContainer = css`
-    width: 40px;
-    height: 40px;
-    border-radius: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 16px;
-`;
 
 export const PinMessageComponent = React.memo((props: PinMessageProps) => {
     const router = React.useContext(XViewRouterContext);
@@ -112,30 +31,20 @@ export const PinMessageComponent = React.memo((props: PinMessageProps) => {
     );
 
     return (
-        <div className={pinMessageContainer} onClick={handlePinClick}>
-            <div className={piMessageContent}>
-                <div className={pinMessageMainContent}>
-                    <div className={iconContainer}>
-                        <UIcon icon={<PinIcon />} />
-                    </div>
-                    <div className={cx(TextLabel1, senderName)}>{emoji(message.sender.name)}</div>
-                    <div className={cx(pinMessageFallback, TextBody)}>{emoji(message.fallback)}</div>
-                </div>
-                {engine.canPin && (
-                    <div
-                        className={cx(unpinIconContainer, defaultHover)}
-                        onClick={(e: any) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            engine.engine.client.mutateUnpinMessage({
-                                chatId: engine.conversationId,
-                            });
-                        }}
-                    >
-                        <UIcon icon={<CloseIcon />} />
-                    </div>
-                )}
-            </div>
-        </div>
+        <UTopBar
+            type="light"
+            leftIcon={<PinIcon />}
+            title={emoji(message.sender.name)}
+            subtitle={emoji(message.fallback)}
+            onClick={handlePinClick}
+            rightIcon={<CloseIcon />}
+            onRightClick={(e: any) => {
+                e.stopPropagation();
+                e.preventDefault();
+                engine.engine.client.mutateUnpinMessage({
+                    chatId: engine.conversationId,
+                });
+            }}
+        />
     );
 });

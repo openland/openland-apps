@@ -10,7 +10,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MessagesActionsHeader } from './MessagesActionsHeader';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
-import { CallsEngine } from 'openland-engines/CallsEngine';
+import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
 import InviteIcon from 'openland-icons/s/ic-invite-24.svg';
@@ -34,6 +34,7 @@ import { useLastSeen } from 'openland-y-utils/LastSeen';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { AppConfig } from 'openland-y-runtime-web/AppConfig';
+import { showVideoCallModal } from 'openland-web/modules/conference/CallModal';
 
 const secondary = css`
     color: var(--foregroundSecondary);
@@ -59,6 +60,11 @@ const mutedIcon = css`
     margin: 2px 0 0 4px;
     flex-grow: 0;
     flex-shrink: 0;
+`;
+
+const disabledBtn = css`
+    opacity: 0.24;
+    pointer-events: none;
 `;
 
 const HeaderLastSeen = (props: { id: string }) => {
@@ -98,27 +104,32 @@ const ChatOnlinesTitle = (props: { id: string }) => {
     );
 };
 
-const CallButton = (props: { chat: ChatInfo; calls: CallsEngine }) => {
-    let callsState = props.calls.useState();
-    return callsState.conversationId !== props.chat.id ? (
-        <UIconButton
-            icon={<PhoneIcon />}
-            onClick={() =>
-                props.calls.joinCall(
-                    props.chat.id,
-                    props.chat.__typename === 'PrivateRoom',
-                    props.chat.__typename === 'PrivateRoom'
-                        ? {
-                              id: props.chat.user.id,
-                              title: props.chat.user.name,
-                              picture: props.chat.user.photo,
-                          }
-                        : { id: props.chat.id, title: props.chat.title, picture: props.chat.photo },
-                )
-            }
-            size="large"
-        />
-    ) : null;
+const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
+    let calls = props.messenger.calls;
+    let callsState = calls.useState();
+    let client = useClient();
+    return (
+        <div className={cx(callsState.conversationId === props.chat.id && disabledBtn)}>
+            <UIconButton
+                icon={<PhoneIcon />}
+                onClick={() => {
+                    calls.joinCall(
+                        props.chat.id,
+                        props.chat.__typename === 'PrivateRoom',
+                        props.chat.__typename === 'PrivateRoom'
+                            ? {
+                                id: props.chat.user.id,
+                                title: props.chat.user.name,
+                                picture: props.chat.user.photo,
+                            }
+                            : { id: props.chat.id, title: props.chat.title, picture: props.chat.photo },
+                    );
+                    showVideoCallModal({ calls, chatId: props.chat.id, client, messenger: props.messenger });
+                }}
+                size="large"
+            />
+        </div>
+    );
 };
 
 const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
@@ -126,8 +137,8 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     const client = useClient();
     const tabRouter = useTabRouter();
     let chat = client.useRoomChat({ id: props.id }, { fetchPolicy: 'cache-first' }).room!;
-    let calls = React.useContext(MessengerContext).calls;
-
+    let messenger = React.useContext(MessengerContext);
+    let calls = messenger.calls;
     let [muted, setMuted] = React.useState(chat.settings.mute);
 
     let res = new UPopperMenuBuilder();
@@ -144,14 +155,16 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
         res.item({
             title: 'Call',
             icon: <PhoneIcon />,
-            action: () =>
+            action: () => {
                 calls.joinCall(
                     chat.id,
                     chat.__typename === 'PrivateRoom',
                     chat.__typename === 'PrivateRoom'
                         ? { id: chat.user.id, title: chat.user.name, picture: chat.user.photo }
                         : { id: chat.id, title: chat.title, picture: chat.photo },
-                ),
+                );
+                showVideoCallModal({ calls, chatId: chat.id, client, messenger });
+            },
         });
     }
 
@@ -206,7 +219,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
 export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
     const { chat } = props;
     const layout = useLayout();
-    const calls = React.useContext(MessengerContext).calls;
+    const messenger = React.useContext(MessengerContext);
     const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
     const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
     const path =
@@ -323,7 +336,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                         size="large"
                     />
                 )}
-                {showCallButton && <CallButton chat={chat} calls={calls} />}
+                {showCallButton && <CallButton chat={chat} messenger={messenger} />}
 
                 <UMoreButton
                     menu={ctx => (
