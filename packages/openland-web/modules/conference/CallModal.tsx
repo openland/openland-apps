@@ -213,11 +213,16 @@ const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: 
     );
 });
 
-const LinkFrame = React.memo((props: { link?: string, mediaSession: MediaSessionManager }) => {
+const LinkFrame = React.memo((props: { link?: string, mediaSession: MediaSessionManager, messenger: MessengerEngine }) => {
+    let url = props.link ? new URL(props.link) : undefined;
     const isYoutube = props.link?.includes('youtube') || props.link?.includes('youtu.be');
+    // fun
+    if (url?.hostname.includes('quizzz-game')) {
+        url.searchParams.append('name', props.messenger.user.shortname || props.messenger.user.name);
+    }
     return (
         isYoutube ? <YoutubeParty link={props.link!} mediaSession={props.mediaSession} /> :
-            props.link ? <iframe width="100%" height="100%" src={props.link} /> : <XView width="100%" {...TextStyles.Title3} flexGrow={1} justifyContent={"center"} alignItems={"center"}>Send link to chat</XView>
+            url ? <iframe width="100%" height="100%" src={url.toString()} /> : <XView width="100%" {...TextStyles.Title3} flexGrow={1} justifyContent={"center"} alignItems={"center"}>Send link to chat</XView>
     );
 });
 
@@ -321,7 +326,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
 
             {mediaSession && showLink && (
                 <XView flexGrow={0.5} flexBasis={0} alignItems="stretch">
-                    <LinkFrame link={link} mediaSession={mediaSession} />
+                    <LinkFrame link={link} mediaSession={mediaSession} messenger={props.messenger} />
                 </XView>
             )}
         </XView >
