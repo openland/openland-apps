@@ -46,9 +46,13 @@ const SortedReactions = [
     MessageReactionType.JOY,
     MessageReactionType.SCREAM,
     MessageReactionType.CRYING,
-    MessageReactionType.ANGRY,
-    // MessageReactionType.DONATE,
 ];
+
+if (Platform.OS !== 'ios') {
+    SortedReactions.push(MessageReactionType.DONATE);
+} else {
+    SortedReactions.push(MessageReactionType.ANGRY);
+}
 
 export const forward = (conversationEngine: ConversationEngine, messages: DataSourceMessageItem[]) => {
 
@@ -378,18 +382,25 @@ export class MobileMessenger {
 
         builder.view((ctx: ZModalController) => (
             <View flexGrow={1} justifyContent="space-evenly" alignItems="center" flexDirection="row" height={52} paddingHorizontal={10}>
-                {SortedReactions.map(r => (
-                    <TouchableOpacity
-                        onPress={() => {
-                            ctx.hide();
-                            this.handleReactionSetUnset(message, r);
-                        }}
-                    >
-                        <View style={{ width: 52, height: 52, alignItems: 'center', justifyContent: 'center' }}>
-                            <Image source={reactionsImagesMap[r]} style={{ width: 36, height: 36 }} />
-                        </View>
-                    </TouchableOpacity>
-                ))}
+                {SortedReactions.map(r => {
+                    const isDisabled = r === MessageReactionType.DONATE 
+                        && message.reactions.some(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === MessageReactionType.DONATE);
+                    return (
+                        <TouchableOpacity
+                            key={r}
+                            style={{opacity: isDisabled ? 0.35 : undefined}}
+                            disabled={isDisabled}
+                            onPress={() => {
+                                ctx.hide();
+                                this.handleReactionSetUnset(message, r);
+                            }}
+                        >
+                            <View style={{ width: 52, height: 52, alignItems: 'center', justifyContent: 'center' }}>
+                                <Image source={reactionsImagesMap[r]} style={{ width: 36, height: 36 }} />
+                            </View>
+                        </TouchableOpacity>
+                    );
+                })}
             </View>
         ));
 

@@ -7,7 +7,8 @@ export const showDonationReactionWarning = async () => {
         const builder = new AlertBlanketBuilder();
 
         builder.title('Premium reaction');
-        builder.message(`Express your support with a donation to the author`);
+        // android doesn't support line separator
+        builder.message(`Express your support with a\u00a0donation\u00a0to\u00a0the\u00a0author`);
 
         builder.view(
             <View marginBottom={24} paddingTop={8}>
