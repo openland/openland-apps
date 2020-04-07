@@ -24,29 +24,30 @@ const DiscoverCollectionsItem = (props: DiscoverCollectionsItem) => {
             type: 'collections',
             title: props.item.title,
             collectionId: props.item.id,
+            description: props.item.description,
         });
     }, [props.item.id]);
-    const {image} = props.item;
+    const { image } = props.item;
     const [path, setPath] = React.useState('');
 
     React.useEffect(() => {
         return DownloadManagerInstance.watch(image.uuid, layoutCollection(), state => {
             if (state.path) {
-                let newPath = Platform.select({ios: state.path, android: 'file://' + state.path});
+                let newPath = Platform.select({ ios: state.path, android: 'file://' + state.path });
                 setPath(newPath);
             }
         });
     }, [image]);
-    const {styles, delayPressIn, handlePressIn, handlePressOut} = usePressableView();
+    const { styles, delayPressIn, handlePressIn, handlePressOut } = usePressableView();
 
     return (
-        <Animated.View style={{width: 167, height: 162, marginRight: 8, ...styles}}>
+        <Animated.View style={{ width: 167, height: 162, marginRight: 8, ...styles }}>
             <TouchableWithoutFeedback delayPressIn={delayPressIn} onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut}>
                 <View flexDirection="column" borderRadius={RadiusStyles.Large} paddingVertical={8}>
                     <DiscoverCover width={167} height={94} path={path} marginBottom={8} />
                     <View flexGrow={1} flexShrink={1} flexDirection="column">
-                        <Text style={{...TextStyles.Label1, color: theme.foregroundPrimary}} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{props.item.title}</Text>
-                        <Text style={{...TextStyles.Subhead, color: theme.foregroundTertiary}} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
+                        <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{props.item.title}</Text>
+                        <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
                             {plural(props.item.chatsCount, ['group', 'groups'])}
                         </Text>
                     </View>
@@ -59,13 +60,13 @@ const DiscoverCollectionsItem = (props: DiscoverCollectionsItem) => {
 export const DiscoverCollectionsList = () => {
     let router = React.useContext(SRouterContext)!;
     let client = useClient();
-    let {discoverCollections} = client.useDiscoverCollectionsShort({first: 10}, { fetchPolicy: 'cache-and-network' });
+    let { discoverCollections } = client.useDiscoverCollectionsShort({ first: 10 }, { fetchPolicy: 'cache-and-network' });
     let items = discoverCollections && discoverCollections.items || [];
     let cursor = discoverCollections && discoverCollections.cursor;
 
-    return (    
+    return (
         <ZListGroup
-            header="Collections" 
+            header="Collections"
             actionRight={items.length === 10 ? {
                 title: 'See all', onPress: () => router.push('Collections', {
                     initialCollections: items,
