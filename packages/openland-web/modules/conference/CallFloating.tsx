@@ -14,7 +14,6 @@ import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { VideoComponent } from './ScreenShareModal';
 import { XView } from 'react-mental';
-import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 import { showVideoCallModal } from './CallModal';
 
 const AVATAR_SIZE = 48;

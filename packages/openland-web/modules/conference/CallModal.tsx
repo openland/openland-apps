@@ -15,7 +15,6 @@ import { USelect } from 'openland-web/components/unicorn/USelect';
 import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { TextStyles } from 'openland-web/utils/TextStyles';
-import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { DataSourceMessageItem, DataSourceDateItem, DataSourceNewDividerItem } from 'openland-engines/messenger/ConversationEngine';
 import { YoutubeParty } from './YoutubeParty';
 import { VolumeSpace } from './VolumeSpace';

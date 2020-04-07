@@ -9,7 +9,6 @@ import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { useStreamManager, MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { css, cx } from 'linaria';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { showVideoCallModal } from './CallModal';
 
 const animatedAvatarStyle = css`
