@@ -64,7 +64,7 @@ export const CallPeer = (props: CallPeerProps) => {
                     callState.conversationId && ['connected', 'completed'].indexOf(s) === -1
                         ? 100
                         : 0
-                }%)`;
+                    }%)`;
             }
         });
         return () => {
@@ -146,7 +146,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                                 mediaSessionManager={calls.getMediaSession()}
                             />
                         ))}
-                        {AppConfig.isNonProduction() && callState.conversationId && <UButton
+                        {callState.conversationId && <UButton
                             size="small"
                             style='primary'
                             marginRight={8}
@@ -186,21 +186,21 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                                     callState.conversationId
                                         ? () => calls.leaveCall()
                                         : () =>
-                                              calls.joinCall(
-                                                  props.chat.id,
-                                                  props.chat.__typename === 'PrivateRoom',
-                                                  props.chat.__typename === 'PrivateRoom'
-                                                      ? {
-                                                            id: props.chat.user.id,
-                                                            title: props.chat.user.name,
-                                                            picture: props.chat.user.photo,
-                                                        }
-                                                      : {
-                                                            id: props.chat.id,
-                                                            title: props.chat.title,
-                                                            picture: props.chat.photo,
-                                                        },
-                                              )
+                                            calls.joinCall(
+                                                props.chat.id,
+                                                props.chat.__typename === 'PrivateRoom',
+                                                props.chat.__typename === 'PrivateRoom'
+                                                    ? {
+                                                        id: props.chat.user.id,
+                                                        title: props.chat.user.name,
+                                                        picture: props.chat.user.photo,
+                                                    }
+                                                    : {
+                                                        id: props.chat.id,
+                                                        title: props.chat.title,
+                                                        picture: props.chat.photo,
+                                                    },
+                                            )
                                 }
                             />
                         )}

@@ -150,21 +150,21 @@ const Controls = React.memo((props: {
                     marginHorizontal={4}
                 />
 
-                {AppConfig.isNonProduction() && <UButton
+                <UButton
                     flexShrink={1}
                     style={'secondary'}
                     text={props.layout === 'grid' ? 'Grid' : 'Volume Space'}
                     onClick={() => props.setLayout(props.layout === 'grid' ? 'volume-space' : 'grid')}
                     marginHorizontal={4}
-                />}
+                />
 
-                {AppConfig.isNonProduction() && <UButton
+                <UButton
                     flexShrink={1}
                     style={props.showLink ? 'primary' : 'secondary'}
                     text={'Link'}
                     onClick={() => props.setShowLink(!props.showLink)}
                     marginHorizontal={4}
-                />}
+                />
             </div>
         </div>
     );
@@ -255,9 +255,6 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     let [showLink, setShowLink] = React.useState(false);
     const [link, setLink] = React.useState<string | undefined>();
     React.useEffect(() => {
-        if (!AppConfig.isNonProduction()) {
-            return;
-        }
         // on message with linkm open it in iframe
         let ds = props.messenger.getConversation(props.chatId).dataSource;
         let processItem = (item: DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem) => {

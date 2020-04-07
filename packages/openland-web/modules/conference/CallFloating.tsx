@@ -207,7 +207,7 @@ const VideoMediaView = React.memo((props: {
     return (
         <XView width={VIDEO_SIZE} height={VIDEO_SIZE} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" backgroundColor="gray" alignItems="center" justifyContent="center">
             {stream ?
-                <VideoComponent stream={(stream as AppUserMediaStreamWeb)._stream} cover={true} videoClass={VideoRadius} switching={true}/> :
+                <VideoComponent stream={(stream as AppUserMediaStreamWeb)._stream} cover={true} videoClass={VideoRadius} switching={true} /> :
                 <div key={'animtateing_wrapper'} ref={props.avatarRef}>
                     <UAvatar
                         size="large"
@@ -320,17 +320,22 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
 
     const buttons = (
         <>
-            {AppConfig.isNonProduction() &&
-                <UButton
-                    flexShrink={0}
-                    style='primary'
-                    text={'Join video call'}
-                    onClick={() => {
-                        showVideoCallModal({ calls, chatId: props.id, client, messenger });
-                    }}
-                    marginHorizontal={4}
-                />
-            }
+            <UButton
+                flexShrink={0}
+                style='primary'
+                text={'Join video call'}
+                onClick={() => {
+                    showVideoCallModal({ calls, chatId: props.id, client, messenger });
+                }}
+                marginHorizontal={4}
+            />
+            {callState.videoEnabled && <UButton
+                flexShrink={0}
+                style="success"
+                text={'Video'}
+                onClick={() => calls.switchVideo()}
+                marginHorizontal={4}
+            />}
             <UButton
                 flexShrink={0}
                 style="success"
