@@ -96,7 +96,6 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
 
     React.useEffect(() => {
         calls.joinCall(props.id, room.__typename === 'PrivateRoom');
-        return InCallManager.stop;
     }, []);
 
     let onCallEnd = React.useCallback(() => {
@@ -222,14 +221,14 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                 </ASSafeAreaView>}
 
             <SAnimated.View name={`call-controls-${key}`} style={{ justifyContent: 'space-around', alignItems: 'center', bottom: 56, flexDirection: 'row', position: 'absolute', width: '100%' }}>
-                {AppConfig.isNonProduction() && <TouchableOpacity
+                <TouchableOpacity
                     onPress={props.hide}
                     style={{ width: 56, height: 56 }}
                 >
                     <View backgroundColor="rgba(0,0,0,0.15)" width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
                         <Image source={require('assets/ic-close-24.png')} style={{ tintColor: 'white' }} />
                     </View>
-                </TouchableOpacity>}
+                </TouchableOpacity>
 
                 <TouchableOpacity
                     onPress={() => {
@@ -251,7 +250,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                     </View>
                 </TouchableOpacity>
 
-                {AppConfig.isNonProduction() && <TouchableOpacity
+                <TouchableOpacity
                     onPress={() => {
                         calls.switchVideo();
                     }}
@@ -267,7 +266,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                     <View backgroundColor={calls.state.outVideo ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
                         <Image source={calls.state.outVideo ? require('assets/ic-camera-video-24.png') : require('assets/ic-camera-video-24.png')} style={{ tintColor: calls.state.outVideo ? 'black' : 'white' }} />
                     </View>
-                </TouchableOpacity>}
+                </TouchableOpacity>
 
                 <TouchableOpacity
                     onPress={() => {
