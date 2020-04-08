@@ -150,13 +150,6 @@ query RoomTiny($id: ID!) {
         ...RoomShort
     }
 }
-query RoomSuper($id: ID!) {
-    roomSuper(id: $id) {
-        id
-        featured
-        listed
-    }
-}
 mutation PinMessage($chatId: ID!, $messageId: ID!) {
     pinMessage: gammaPinMessage(chatId: $chatId, messageId: $messageId) {
         ...RoomShort
@@ -364,35 +357,11 @@ query RoomSearch($query: String, $sort: String, $page: Int) {
         }
     }
 }
-mutation RoomAlterFeatured($roomId: ID!, $featured: Boolean!) {
-    betaRoomAlterFeatured(roomId: $roomId, featured: $featured) {
-        id
-        listed
-        featured
-    }
-}
-mutation RoomAlterHidden($roomId: ID!, $listed: Boolean!) {
-    betaRoomAlterListed(roomId: $roomId, listed: $listed) {
-        id
-        listed
-        featured
-    }
-}
 query RoomMembersShort($roomId: ID!) {
     members: roomMembers(roomId: $roomId) {
         user {
             id
         }
-    }
-}
-query RoomMembers($roomId: ID!) {
-    members: roomMembers(roomId: $roomId) {
-        user {
-            ...UserShort
-        }
-        role
-        membership
-        canKick
     }
 }
 query RoomMembersTiny($roomId: ID!) {
@@ -406,26 +375,6 @@ query RoomMembersTiny($roomId: ID!) {
                 id
                 name
             }
-        }
-    }
-}
-query ChatMembersSearch($cid: ID!, $query: String, $first: Int!, $after: String) {
-    members: chatMembersSearch(cid: $cid, query: $query, first: $first, after: $after) {
-        edges {
-            user: node {
-                id
-                name
-                shortname
-                photo
-                primaryOrganization {
-                    id
-                    name
-                }
-            }
-            cursor
-        }
-        pageInfo {
-            hasNextPage
         }
     }
 }

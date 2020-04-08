@@ -162,34 +162,34 @@ const DeleteButton = (props: DeleteButtonProps) => {
 //     );
 // };
 
-const AlterOrgPublishedButton = ({
-    orgId,
-    published,
-    accountId,
-}: {
-    orgId: string;
-    published: boolean;
-    accountId: string;
-}) => {
-    const client = useClient();
-
-    return (
-        <UButton
-            text={published ? 'Hide from search' : 'Publish'}
-            style="secondary"
-            action={async () => {
-                await client.mutateOrganizationAlterPublished({
-                    organizationId: orgId,
-                    published: !published,
-                });
-
-                await client.refetchSuperAccount({
-                    accountId,
-                });
-            }}
-        />
-    );
-};
+// const AlterOrgPublishedButton = ({
+//     orgId,
+//     published,
+//     accountId,
+// }: {
+//     orgId: string;
+//     published: boolean;
+//     accountId: string;
+// }) => {
+//     const client = useClient();
+//
+//     return (
+//         <UButton
+//             text={published ? 'Hide from search' : 'Publish'}
+//             style="secondary"
+//             action={async () => {
+//                 await client.mutateOrganizationAlterPublished({
+//                     organizationId: orgId,
+//                     published: !published,
+//                 });
+//
+//                 await client.refetchSuperAccount({
+//                     accountId,
+//                 });
+//             }}
+//         />
+//     );
+// };
 
 const AddMemberForm = ({ hide, accountId }: { accountId: string; hide: () => void }) => {
     const client = useClient();
@@ -561,11 +561,11 @@ export default withApp('Super Organization', ['super-admin', 'software-developer
                 {actionsButton && <SuspendButton accountId={accountId} />}
                 {actionsButton && <PendButton accountId={accountId} />}
                 {actionsButton && <DeleteButton accountId={accountId} orgId={superAccount.orgId} />}
-                <AlterOrgPublishedButton
-                    accountId={accountId}
-                    orgId={superAccount.orgId}
-                    published={superAccount.published}
-                />
+                {/*<AlterOrgPublishedButton*/}
+                {/*    accountId={accountId}*/}
+                {/*    orgId={superAccount.orgId}*/}
+                {/*    published={superAccount.published}*/}
+                {/*/>*/}
             </XView>
             <div>Members</div>
             <div>{superAccount.members.length + ' total'}</div>

@@ -10,7 +10,7 @@ import { MobileMessenger } from '../messenger/MobileMessenger';
 import { SRouting } from 'react-native-s/SRouting';
 import { Root } from './Root';
 import { PageProps } from '../components/PageProps';
-import { SessionStateFull } from 'openland-api/spacex.types';
+import { Account_sessionState } from 'openland-api/spacex.types';
 import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
 import { resolveInternalLink, saveLinkIfInvite, joinInviteIfHave } from '../utils/resolveInternalLink';
 import { ZModalProvider } from 'openland-mobile/components/ZModal';
@@ -108,7 +108,7 @@ const AppContainer = React.memo<{ children?: any, loading: boolean, onLayout?: (
 export let NON_PRODUCTION = false;
 export let SUPER_ADMIN = false;
 
-export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull, dimensions?: { width: number, height: number } }> {
+export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: Account_sessionState, dimensions?: { width: number, height: number } }> {
 
     private history: any;
     private pendingDeepLink?: string;

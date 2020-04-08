@@ -16,7 +16,6 @@ object Operations {
         if (name == "ChatInit") return ChatInit
         if (name == "ChatInitFromUnread") return ChatInitFromUnread
         if (name == "ChatJoin") return ChatJoin
-        if (name == "ChatMembersSearch") return ChatMembersSearch
         if (name == "ChatMentionSearch") return ChatMentionSearch
         if (name == "Comments") return Comments
         if (name == "Conference") return Conference
@@ -68,7 +67,6 @@ object Operations {
         if (name == "OauthContext") return OauthContext
         if (name == "Online") return Online
         if (name == "Organization") return Organization
-        if (name == "OrganizationByPrefix") return OrganizationByPrefix
         if (name == "OrganizationMembers") return OrganizationMembers
         if (name == "OrganizationMembersShort") return OrganizationMembersShort
         if (name == "OrganizationProfile") return OrganizationProfile
@@ -86,7 +84,6 @@ object Operations {
         if (name == "RoomFeaturedMembers") return RoomFeaturedMembers
         if (name == "RoomInviteInfo") return RoomInviteInfo
         if (name == "RoomInviteLink") return RoomInviteLink
-        if (name == "RoomMembers") return RoomMembers
         if (name == "RoomMembersPaginated") return RoomMembersPaginated
         if (name == "RoomMembersShort") return RoomMembersShort
         if (name == "RoomMembersTiny") return RoomMembersTiny
@@ -94,7 +91,6 @@ object Operations {
         if (name == "RoomPico") return RoomPico
         if (name == "RoomSearch") return RoomSearch
         if (name == "RoomSocialImage") return RoomSocialImage
-        if (name == "RoomSuper") return RoomSuper
         if (name == "RoomTiny") return RoomTiny
         if (name == "RoomWithoutMembers") return RoomWithoutMembers
         if (name == "Settings") return Settings
@@ -138,7 +134,6 @@ object Operations {
         if (name == "CreateCardSetupIntent") return CreateCardSetupIntent
         if (name == "CreateDepositIntent") return CreateDepositIntent
         if (name == "CreateOrganization") return CreateOrganization
-        if (name == "CreateUserProfileAndOrganization") return CreateUserProfileAndOrganization
         if (name == "DebugMails") return DebugMails
         if (name == "DeleteComment") return DeleteComment
         if (name == "DeleteNotification") return DeleteNotification
@@ -183,7 +178,6 @@ object Operations {
         if (name == "MyNotificationCenterMarkSeqRead") return MyNotificationCenterMarkSeqRead
         if (name == "OrganizationActivateByInvite") return OrganizationActivateByInvite
         if (name == "OrganizationAddMember") return OrganizationAddMember
-        if (name == "OrganizationAlterPublished") return OrganizationAlterPublished
         if (name == "OrganizationChangeMemberRole") return OrganizationChangeMemberRole
         if (name == "OrganizationCreatePublicInvite") return OrganizationCreatePublicInvite
         if (name == "OrganizationMemberRemove") return OrganizationMemberRemove
@@ -201,8 +195,6 @@ object Operations {
         if (name == "ReportContent") return ReportContent
         if (name == "ReportOnline") return ReportOnline
         if (name == "RoomAddMembers") return RoomAddMembers
-        if (name == "RoomAlterFeatured") return RoomAlterFeatured
-        if (name == "RoomAlterHidden") return RoomAlterHidden
         if (name == "RoomChangeRole") return RoomChangeRole
         if (name == "RoomCreate") return RoomCreate
         if (name == "RoomDeleteMessage") return RoomDeleteMessage

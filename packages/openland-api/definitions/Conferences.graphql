@@ -1,3 +1,49 @@
+fragment ConferenceFull on Conference {
+    id
+    startTime
+    peers {
+        id
+        user {
+            ...UserShort
+        }
+        connection {
+            state
+            sdp
+            ice
+        }
+    }
+    iceServers {
+        urls
+        username
+        credential
+    }
+}
+fragment ConferenceShort on Conference {
+    id
+    startTime
+    iceServers {
+        urls
+        username
+        credential
+    }
+}
+
+fragment MediaStreamFull on MediaStream{
+    id
+    peerId
+    state
+    seq
+    sdp
+    ice
+    settings{
+        videoIn
+        videoOut
+        audioIn
+        audioOut
+        iceTransportPolicy
+    }
+}
+
 query Conference($id: ID!) {
     conference(id: $id) {
         ...ConferenceFull

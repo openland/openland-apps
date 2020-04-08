@@ -1,4 +1,4 @@
-import { SessionStateFull } from 'openland-api/spacex.types';
+import { Account_sessionState } from 'openland-api/spacex.types';
 import { SRouter } from 'react-native-s/SRouter';
 import { backoff } from 'openland-y-utils/timer';
 import { getClient } from '../../utils/graphqlClient';
@@ -7,7 +7,7 @@ import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { AppStorage as Storage } from 'openland-y-runtime/AppStorage';
 import { trackEvent } from 'openland-mobile/analytics';
 
-export const resolveNextPage = (session: SessionStateFull) => {
+export const resolveNextPage = (session: Account_sessionState) => {
     if (!session.isProfileCreated) {
         return 'SignupUser';
     } else if (!session.isAccountExists) {

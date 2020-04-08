@@ -1,12 +1,17 @@
 import * as React from 'react';
-import * as Types from 'openland-api/spacex.types';
+import {
+    UserShort,
+    OrganizationShort,
+    Account_myProfile,
+    Account_sessionState
+} from 'openland-api/spacex.types';
 import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 
 export interface UserInfo {
-    user: Types.UserShort | null;
-    organization: Types.OrganizationShort | null;
-    profile: Types.Account_myProfile | null;
+    user: UserShort | null;
+    organization: OrganizationShort | null;
+    profile: Account_myProfile | null;
     isLoggedIn: boolean;
     isAccountExists: boolean;
     isAccountPicked: boolean;
@@ -19,11 +24,11 @@ export interface UserInfo {
 export const UserInfoContext = React.createContext<UserInfo | undefined>(undefined);
 
 export interface UserInfoProps {
-    user?: Types.UserShort | null;
-    organization?: Types.OrganizationShort | null;
-    sessionState: Types.SessionStateFull;
+    user?: UserShort | null;
+    organization?: OrganizationShort | null;
+    sessionState: Account_sessionState;
     roles: string[];
-    profile: Types.Account_myProfile | null;
+    profile: Account_myProfile | null;
 }
 
 export class UserInfoProvider extends React.Component<UserInfoProps> {

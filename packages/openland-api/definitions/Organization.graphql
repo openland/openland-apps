@@ -1,3 +1,61 @@
+fragment OrganizationProfileFull on OrganizationProfile {
+    id
+    name
+    photoRef {
+        uuid
+        crop {
+            x
+            y
+            w
+            h
+        }
+    }
+    website
+    websiteTitle
+    about
+    twitter
+    facebook
+    linkedin
+    instagram
+
+    shortname
+    private: alphaIsPrivate
+    featured: alphaFeatured
+    published: alphaPublished
+    editorial: alphaEditorial
+}
+fragment OrganizationWithoutMembersFragment on Organization {
+    id
+    superAccountId
+    isMine
+    isPrivate: alphaIsPrivate
+    isOwner: betaIsOwner
+    isAdmin: betaIsAdmin
+    featured: alphaFeatured
+    isCommunity: alphaIsCommunity
+    name
+    photo
+
+    shortname
+
+    website
+    about
+    twitter
+    facebook
+    linkedin
+    instagram
+
+    membersCount
+
+    requests: alphaOrganizationMemberRequests {
+        role
+        user {
+            ...UserFull
+        }
+    }
+
+    roomsCount: betaPublicRoomsCount
+}
 query MyOrganizations {
     myOrganizations {
         ...OrganizationShort
@@ -92,16 +150,6 @@ mutation OrganizationMemberRemove($userId: ID!, $organizationId: ID!) {
 }
 mutation OrganizationActivateByInvite($inviteKey: String!) {
     joinAppInvite(key: $inviteKey)
-}
-mutation OrganizationAlterPublished($organizationId: ID!, $published: Boolean!) {
-    alphaAlterPublished(id: $organizationId, published: $published) {
-        ...OrganizationSearch
-    }
-}
-query OrganizationByPrefix($query: String!) {
-    organizationByPrefix: alphaOrganizationByPrefix(query: $query) {
-        ...OrganizationSearch
-    }
 }
 query OrganizationPublicRooms($organizationId: ID!, $first: Int!, $after: ID) {
     organizationPublicRooms(id: $organizationId, first: $first, after: $after) {

@@ -1,3 +1,24 @@
+fragment AppFull on AppProfile {
+    id
+
+    name
+    shortname
+    photoRef {
+        uuid
+        crop {
+            x
+            y
+            w
+            h
+        }
+    }
+    about
+
+    token {
+        salt
+    }
+}
+
 query MyApps {
     apps: myApps {
         ...AppFull
@@ -20,7 +41,15 @@ mutation RefreshAppToken($appId: ID!) {
 }
 mutation AddAppToChat($appId: ID!, $chatId: ID!) {
     addAppToChat(appId: $appId, chatId: $chatId) {
-        ...AppChat
+        chat {
+            ... on PrivateRoom {
+                id
+            }
+            ... on SharedRoom {
+                id
+            }
+        }
+        webhook
     }
 }
 query UserStorage($namespace: String!, $keys: [String!]!) {

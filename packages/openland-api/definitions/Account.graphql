@@ -7,7 +7,14 @@ query Account {
         authEmail
     }
     sessionState: sessionState {
-        ...SessionStateFull
+        isLoggedIn
+        isActivated
+        isProfileCreated
+        isAccountActivated
+        isAccountExists
+        isAccountPicked
+        isCompleted
+        isBlocked
     }
     myPermissions {
         roles
@@ -87,20 +94,6 @@ query ProfilePrefill {
         firstName
         lastName
         picture
-    }
-}
-mutation CreateUserProfileAndOrganization(
-    $user: ProfileInput!
-    $organization: CreateOrganizationInput!
-) {
-    alphaCreateUserProfileAndOrganization(user: $user, organization: $organization) {
-        user {
-            ...UserFull
-        }
-        organization {
-            id
-            name
-        }
     }
 }
 mutation ReportOnline($active: Boolean, $platform: String) {

@@ -4,22 +4,6 @@ import com.openland.spacex.*
 import com.openland.spacex.gen.*
 import org.json.*
 
-internal val AppChatSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("chat", "chat", notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    inline("PrivateRoom", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID")))
-                    )),
-                    inline("SharedRoom", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID")))
-                    ))
-                ))),
-            field("webhook", "webhook", notNull(scalar("String")))
-        )
-
 internal val AppFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -897,20 +881,6 @@ internal val CommentUpdateFragmentSelector = obj(
             ))
         )
 
-internal val CommunitySearchSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("superAccountId", "superAccountId", notNull(scalar("ID"))),
-            field("name", "name", notNull(scalar("String"))),
-            field("photo", "photo", scalar("String")),
-            field("isMine", "isMine", notNull(scalar("Boolean"))),
-            field("about", "about", scalar("String")),
-            field("status", "status", notNull(scalar("String"))),
-            field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
-            field("membersCount", "membersCount", notNull(scalar("Int"))),
-            field("betaPublicRoomsCount", "roomsCount", notNull(scalar("Int")))
-        )
-
 internal val ConferenceFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -1640,28 +1610,6 @@ internal val OrganizationProfileFullSelector = obj(
             field("alphaEditorial", "editorial", notNull(scalar("Boolean")))
         )
 
-internal val OrganizationSearchSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("superAccountId", "superAccountId", notNull(scalar("ID"))),
-            field("name", "name", notNull(scalar("String"))),
-            field("photo", "photo", scalar("String")),
-            field("isMine", "isMine", notNull(scalar("Boolean"))),
-            field("about", "about", scalar("String")),
-            field("status", "status", notNull(scalar("String"))),
-            field("membersCount", "membersCount", notNull(scalar("Int"))),
-            field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
-            field("alphaOrganizationMembers", "members", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("user", "user", notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("name", "name", notNull(scalar("String"))),
-                            field("photo", "photo", scalar("String"))
-                        )))
-                )))))
-        )
-
 internal val OrganizationWithoutMembersFragmentSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -1980,18 +1928,6 @@ internal val RoomPreviewSelector = obj(
                     ))))),
                 field("onlineMembersCount", "onlineMembersCount", notNull(scalar("Int")))
             ))
-        )
-
-internal val SessionStateFullSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("isLoggedIn", "isLoggedIn", notNull(scalar("Boolean"))),
-            field("isActivated", "isActivated", notNull(scalar("Boolean"))),
-            field("isProfileCreated", "isProfileCreated", notNull(scalar("Boolean"))),
-            field("isAccountActivated", "isAccountActivated", notNull(scalar("Boolean"))),
-            field("isAccountExists", "isAccountExists", notNull(scalar("Boolean"))),
-            field("isAccountPicked", "isAccountPicked", notNull(scalar("Boolean"))),
-            field("isCompleted", "isCompleted", notNull(scalar("Boolean"))),
-            field("isBlocked", "isBlocked", notNull(scalar("Boolean")))
         )
 
 internal val SettingsFullSelector = obj(

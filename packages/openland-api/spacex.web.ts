@@ -5,22 +5,6 @@ import { WebDefinitions, OperationDefinition, Definitions as AllDefinitions } fr
 // @ts-ignore
 const { list, notNull, scalar, field, obj, inline, fragment, args, fieldValue, refValue, intValue, floatValue, stringValue, boolValue, listValue, objectValue } = WebDefinitions;
 
-const AppChatSelector = obj(
-            field('__typename', '__typename', args(), notNull(scalar('String'))),
-            field('chat', 'chat', args(), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    inline('PrivateRoom', obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        field('id', 'id', args(), notNull(scalar('ID')))
-                    )),
-                    inline('SharedRoom', obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        field('id', 'id', args(), notNull(scalar('ID')))
-                    ))
-                ))),
-            field('webhook', 'webhook', args(), notNull(scalar('String')))
-        );
-
 const AppFullSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -898,20 +882,6 @@ const CommentUpdateFragmentSelector = obj(
             ))
         );
 
-const CommunitySearchSelector = obj(
-            field('__typename', '__typename', args(), notNull(scalar('String'))),
-            field('id', 'id', args(), notNull(scalar('ID'))),
-            field('superAccountId', 'superAccountId', args(), notNull(scalar('ID'))),
-            field('name', 'name', args(), notNull(scalar('String'))),
-            field('photo', 'photo', args(), scalar('String')),
-            field('isMine', 'isMine', args(), notNull(scalar('Boolean'))),
-            field('about', 'about', args(), scalar('String')),
-            field('status', 'status', args(), notNull(scalar('String'))),
-            field('alphaFeatured', 'featured', args(), notNull(scalar('Boolean'))),
-            field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
-            field('betaPublicRoomsCount', 'roomsCount', args(), notNull(scalar('Int')))
-        );
-
 const ConferenceFullSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -1641,28 +1611,6 @@ const OrganizationProfileFullSelector = obj(
             field('alphaEditorial', 'editorial', args(), notNull(scalar('Boolean')))
         );
 
-const OrganizationSearchSelector = obj(
-            field('__typename', '__typename', args(), notNull(scalar('String'))),
-            field('id', 'id', args(), notNull(scalar('ID'))),
-            field('superAccountId', 'superAccountId', args(), notNull(scalar('ID'))),
-            field('name', 'name', args(), notNull(scalar('String'))),
-            field('photo', 'photo', args(), scalar('String')),
-            field('isMine', 'isMine', args(), notNull(scalar('Boolean'))),
-            field('about', 'about', args(), scalar('String')),
-            field('status', 'status', args(), notNull(scalar('String'))),
-            field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
-            field('alphaFeatured', 'featured', args(), notNull(scalar('Boolean'))),
-            field('alphaOrganizationMembers', 'members', args(), notNull(list(notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('user', 'user', args(), notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('name', 'name', args(), notNull(scalar('String'))),
-                            field('photo', 'photo', args(), scalar('String'))
-                        )))
-                )))))
-        );
-
 const OrganizationWithoutMembersFragmentSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -1981,18 +1929,6 @@ const RoomPreviewSelector = obj(
                     ))))),
                 field('onlineMembersCount', 'onlineMembersCount', args(), notNull(scalar('Int')))
             ))
-        );
-
-const SessionStateFullSelector = obj(
-            field('__typename', '__typename', args(), notNull(scalar('String'))),
-            field('isLoggedIn', 'isLoggedIn', args(), notNull(scalar('Boolean'))),
-            field('isActivated', 'isActivated', args(), notNull(scalar('Boolean'))),
-            field('isProfileCreated', 'isProfileCreated', args(), notNull(scalar('Boolean'))),
-            field('isAccountActivated', 'isAccountActivated', args(), notNull(scalar('Boolean'))),
-            field('isAccountExists', 'isAccountExists', args(), notNull(scalar('Boolean'))),
-            field('isAccountPicked', 'isAccountPicked', args(), notNull(scalar('Boolean'))),
-            field('isCompleted', 'isCompleted', args(), notNull(scalar('Boolean'))),
-            field('isBlocked', 'isBlocked', args(), notNull(scalar('Boolean')))
         );
 
 const SettingsFullSelector = obj(
@@ -2551,7 +2487,14 @@ const AccountSelector = obj(
                 )),
             field('sessionState', 'sessionState', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('SessionState', SessionStateFullSelector)
+                    field('isLoggedIn', 'isLoggedIn', args(), notNull(scalar('Boolean'))),
+                    field('isActivated', 'isActivated', args(), notNull(scalar('Boolean'))),
+                    field('isProfileCreated', 'isProfileCreated', args(), notNull(scalar('Boolean'))),
+                    field('isAccountActivated', 'isAccountActivated', args(), notNull(scalar('Boolean'))),
+                    field('isAccountExists', 'isAccountExists', args(), notNull(scalar('Boolean'))),
+                    field('isAccountPicked', 'isAccountPicked', args(), notNull(scalar('Boolean'))),
+                    field('isCompleted', 'isCompleted', args(), notNull(scalar('Boolean'))),
+                    field('isBlocked', 'isBlocked', args(), notNull(scalar('Boolean')))
                 ))),
             field('myPermissions', 'myPermissions', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -2710,31 +2653,6 @@ const ChatJoinSelector = obj(
                             ))
                     ))
                 ))
-        );
-const ChatMembersSearchSelector = obj(
-            field('chatMembersSearch', 'members', args(fieldValue("cid", refValue('cid')), fieldValue("query", refValue('query')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('edges', 'edges', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('node', 'user', args(), notNull(obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    field('id', 'id', args(), notNull(scalar('ID'))),
-                                    field('name', 'name', args(), notNull(scalar('String'))),
-                                    field('shortname', 'shortname', args(), scalar('String')),
-                                    field('photo', 'photo', args(), scalar('String')),
-                                    field('primaryOrganization', 'primaryOrganization', args(), obj(
-                                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                            field('id', 'id', args(), notNull(scalar('ID'))),
-                                            field('name', 'name', args(), notNull(scalar('String')))
-                                        ))
-                                ))),
-                            field('cursor', 'cursor', args(), notNull(scalar('String')))
-                        ))))),
-                    field('pageInfo', 'pageInfo', args(), notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('hasNextPage', 'hasNextPage', args(), notNull(scalar('Boolean')))
-                        )))
-                )))
         );
 const ChatMentionSearchSelector = obj(
             field('chatMentionSearch', 'mentions', args(fieldValue("cid", refValue('cid')), fieldValue("query", refValue('query')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
@@ -3508,12 +3426,6 @@ const OrganizationSelector = obj(
                     fragment('Organization', OrganizationFullSelector)
                 )))
         );
-const OrganizationByPrefixSelector = obj(
-            field('alphaOrganizationByPrefix', 'organizationByPrefix', args(fieldValue("query", refValue('query'))), obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('Organization', OrganizationSearchSelector)
-                ))
-        );
 const OrganizationMembersSelector = obj(
             field('organization', 'organization', args(fieldValue("id", refValue('organizationId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -3970,18 +3882,6 @@ const RoomInviteInfoSelector = obj(
 const RoomInviteLinkSelector = obj(
             field('betaRoomInviteLink', 'link', args(fieldValue("roomId", refValue('roomId'))), notNull(scalar('String')))
         );
-const RoomMembersSelector = obj(
-            field('roomMembers', 'members', args(fieldValue("roomId", refValue('roomId'))), notNull(list(notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('user', 'user', args(), notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            fragment('User', UserShortSelector)
-                        ))),
-                    field('role', 'role', args(), notNull(scalar('String'))),
-                    field('membership', 'membership', args(), notNull(scalar('String'))),
-                    field('canKick', 'canKick', args(), notNull(scalar('Boolean')))
-                )))))
-        );
 const RoomMembersPaginatedSelector = obj(
             field('roomMembers', 'members', args(fieldValue("roomId", refValue('roomId')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -4090,14 +3990,6 @@ const RoomSearchSelector = obj(
         );
 const RoomSocialImageSelector = obj(
             field('roomSocialImage', 'roomSocialImage', args(fieldValue("roomId", refValue('roomId'))), scalar('String'))
-        );
-const RoomSuperSelector = obj(
-            field('roomSuper', 'roomSuper', args(fieldValue("id", refValue('id'))), obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('id', 'id', args(), notNull(scalar('ID'))),
-                    field('featured', 'featured', args(), notNull(scalar('Boolean'))),
-                    field('listed', 'listed', args(), notNull(scalar('Boolean')))
-                ))
         );
 const RoomTinySelector = obj(
             field('room', 'room', args(fieldValue("id", refValue('id'))), obj(
@@ -4406,7 +4298,18 @@ const AccountInviteJoinSelector = obj(
 const AddAppToChatSelector = obj(
             field('addAppToChat', 'addAppToChat', args(fieldValue("appId", refValue('appId')), fieldValue("chatId", refValue('chatId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('AppChat', AppChatSelector)
+                    field('chat', 'chat', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            inline('PrivateRoom', obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('id', 'id', args(), notNull(scalar('ID')))
+                            )),
+                            inline('SharedRoom', obj(
+                                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                field('id', 'id', args(), notNull(scalar('ID')))
+                            ))
+                        ))),
+                    field('webhook', 'webhook', args(), notNull(scalar('String')))
                 )))
         );
 const AddCommentSelector = obj(
@@ -4546,20 +4449,6 @@ const CreateOrganizationSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('id', 'id', args(), notNull(scalar('ID'))),
                     field('name', 'name', args(), notNull(scalar('String')))
-                )))
-        );
-const CreateUserProfileAndOrganizationSelector = obj(
-            field('alphaCreateUserProfileAndOrganization', 'alphaCreateUserProfileAndOrganization', args(fieldValue("user", refValue('user')), fieldValue("organization", refValue('organization'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('user', 'user', args(), obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            fragment('User', UserFullSelector)
-                        )),
-                    field('organization', 'organization', args(), obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('name', 'name', args(), notNull(scalar('String')))
-                        ))
                 )))
         );
 const DebugMailsSelector = obj(
@@ -4827,12 +4716,6 @@ const OrganizationAddMemberSelector = obj(
                         )))
                 )))))
         );
-const OrganizationAlterPublishedSelector = obj(
-            field('alphaAlterPublished', 'alphaAlterPublished', args(fieldValue("id", refValue('organizationId')), fieldValue("published", refValue('published'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('Organization', OrganizationSearchSelector)
-                )))
-        );
 const OrganizationChangeMemberRoleSelector = obj(
             field('alphaOrganizationChangeMemberRole', 'alphaOrganizationChangeMemberRole', args(fieldValue("memberId", refValue('memberId')), fieldValue("newRole", refValue('newRole')), fieldValue("organizationId", refValue('organizationId'))), notNull(scalar('String')))
         );
@@ -4972,22 +4855,6 @@ const RoomAddMembersSelector = obj(
                             fragment('UserBadge', UserBadgeSelector)
                         ))
                 )))))
-        );
-const RoomAlterFeaturedSelector = obj(
-            field('betaRoomAlterFeatured', 'betaRoomAlterFeatured', args(fieldValue("roomId", refValue('roomId')), fieldValue("featured", refValue('featured'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('id', 'id', args(), notNull(scalar('ID'))),
-                    field('listed', 'listed', args(), notNull(scalar('Boolean'))),
-                    field('featured', 'featured', args(), notNull(scalar('Boolean')))
-                )))
-        );
-const RoomAlterHiddenSelector = obj(
-            field('betaRoomAlterListed', 'betaRoomAlterListed', args(fieldValue("roomId", refValue('roomId')), fieldValue("listed", refValue('listed'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('id', 'id', args(), notNull(scalar('ID'))),
-                    field('listed', 'listed', args(), notNull(scalar('Boolean'))),
-                    field('featured', 'featured', args(), notNull(scalar('Boolean')))
-                )))
         );
 const RoomChangeRoleSelector = obj(
             field('betaRoomChangeRole', 'betaRoomChangeRole', args(fieldValue("roomId", refValue('roomId')), fieldValue("userId", refValue('userId')), fieldValue("newRole", refValue('newRole'))), notNull(obj(
@@ -5439,7 +5306,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     Account: {
         kind: 'query',
         name: 'Account',
-        body: 'query Account{me:me{__typename ...UserShort}myProfile{__typename id authEmail}sessionState:sessionState{__typename ...SessionStateFull}myPermissions{__typename roles}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment SessionStateFull on SessionState{__typename isLoggedIn isActivated isProfileCreated isAccountActivated isAccountExists isAccountPicked isCompleted isBlocked}',
+        body: 'query Account{me:me{__typename ...UserShort}myProfile{__typename id authEmail}sessionState:sessionState{__typename isLoggedIn isActivated isProfileCreated isAccountActivated isAccountExists isAccountPicked isCompleted isBlocked}myPermissions{__typename roles}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
         selector: AccountSelector
     },
     AccountAppInvite: {
@@ -5489,12 +5356,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'ChatJoin',
         body: 'query ChatJoin($id:ID!){room(id:$id){__typename ... on SharedRoom{__typename id title description photo membersCount onlineMembersCount previewMembers{__typename id photo name}isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}owner{__typename id firstName}}}}',
         selector: ChatJoinSelector
-    },
-    ChatMembersSearch: {
-        kind: 'query',
-        name: 'ChatMembersSearch',
-        body: 'query ChatMembersSearch($cid:ID!,$query:String,$first:Int!,$after:String){members:chatMembersSearch(cid:$cid,query:$query,first:$first,after:$after){__typename edges{__typename user:node{__typename id name shortname photo primaryOrganization{__typename id name}}cursor}pageInfo{__typename hasNextPage}}}',
-        selector: ChatMembersSearchSelector
     },
     ChatMentionSearch: {
         kind: 'query',
@@ -5802,12 +5663,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query Organization($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationFull}}fragment OrganizationFull on Organization{__typename id superAccountId isMine isPrivate:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity name photo shortname website about twitter facebook linkedin instagram membersCount members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}}fragment UserFull on User{__typename id name firstName lastName photo phone email website about location isBot isYou online lastSeen linkedin instagram twitter facebook shortname audienceSize primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
         selector: OrganizationSelector
     },
-    OrganizationByPrefix: {
-        kind: 'query',
-        name: 'OrganizationByPrefix',
-        body: 'query OrganizationByPrefix($query:String!){organizationByPrefix:alphaOrganizationByPrefix(query:$query){__typename ...OrganizationSearch}}fragment OrganizationSearch on Organization{__typename id superAccountId name photo isMine about status membersCount featured:alphaFeatured members:alphaOrganizationMembers{__typename user{__typename id name photo}}}',
-        selector: OrganizationByPrefixSelector
-    },
     OrganizationMembers: {
         kind: 'query',
         name: 'OrganizationMembers',
@@ -5910,12 +5765,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query RoomInviteLink($roomId:ID!){link:betaRoomInviteLink(roomId:$roomId)}',
         selector: RoomInviteLinkSelector
     },
-    RoomMembers: {
-        kind: 'query',
-        name: 'RoomMembers',
-        body: 'query RoomMembers($roomId:ID!){members:roomMembers(roomId:$roomId){__typename user{__typename ...UserShort}role membership canKick}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
-        selector: RoomMembersSelector
-    },
     RoomMembersPaginated: {
         kind: 'query',
         name: 'RoomMembersPaginated',
@@ -5957,12 +5806,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'RoomSocialImage',
         body: 'query RoomSocialImage($roomId:ID!){roomSocialImage(roomId:$roomId)}',
         selector: RoomSocialImageSelector
-    },
-    RoomSuper: {
-        kind: 'query',
-        name: 'RoomSuper',
-        body: 'query RoomSuper($id:ID!){roomSuper(id:$id){__typename id featured listed}}',
-        selector: RoomSuperSelector
     },
     RoomTiny: {
         kind: 'query',
@@ -6093,7 +5936,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     AddAppToChat: {
         kind: 'mutation',
         name: 'AddAppToChat',
-        body: 'mutation AddAppToChat($appId:ID!,$chatId:ID!){addAppToChat(appId:$appId,chatId:$chatId){__typename ...AppChat}}fragment AppChat on AppChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}webhook}',
+        body: 'mutation AddAppToChat($appId:ID!,$chatId:ID!){addAppToChat(appId:$appId,chatId:$chatId){__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}webhook}}',
         selector: AddAppToChatSelector
     },
     AddComment: {
@@ -6221,12 +6064,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'CreateOrganization',
         body: 'mutation CreateOrganization($input:CreateOrganizationInput!){organization:createOrganization(input:$input){__typename id name}}',
         selector: CreateOrganizationSelector
-    },
-    CreateUserProfileAndOrganization: {
-        kind: 'mutation',
-        name: 'CreateUserProfileAndOrganization',
-        body: 'mutation CreateUserProfileAndOrganization($user:ProfileInput!,$organization:CreateOrganizationInput!){alphaCreateUserProfileAndOrganization(user:$user,organization:$organization){__typename user{__typename ...UserFull}organization{__typename id name}}}fragment UserFull on User{__typename id name firstName lastName photo phone email website about location isBot isYou online lastSeen linkedin instagram twitter facebook shortname audienceSize primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
-        selector: CreateUserProfileAndOrganizationSelector
     },
     DebugMails: {
         kind: 'mutation',
@@ -6492,12 +6329,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'mutation OrganizationAddMember($userIds:[ID!],$organizationId:ID!){alphaOrganizationMemberAdd(userIds:$userIds,organizationId:$organizationId){__typename role user{__typename ...UserShort}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
         selector: OrganizationAddMemberSelector
     },
-    OrganizationAlterPublished: {
-        kind: 'mutation',
-        name: 'OrganizationAlterPublished',
-        body: 'mutation OrganizationAlterPublished($organizationId:ID!,$published:Boolean!){alphaAlterPublished(id:$organizationId,published:$published){__typename ...OrganizationSearch}}fragment OrganizationSearch on Organization{__typename id superAccountId name photo isMine about status membersCount featured:alphaFeatured members:alphaOrganizationMembers{__typename user{__typename id name photo}}}',
-        selector: OrganizationAlterPublishedSelector
-    },
     OrganizationChangeMemberRole: {
         kind: 'mutation',
         name: 'OrganizationChangeMemberRole',
@@ -6599,18 +6430,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'RoomAddMembers',
         body: 'mutation RoomAddMembers($roomId:ID!,$invites:[RoomInviteInput!]!){alphaRoomInvite(roomId:$roomId,invites:$invites){__typename user{__typename ...UserShort}role membership canKick badge{__typename ...UserBadge}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment UserBadge on UserBadge{__typename id name verified}',
         selector: RoomAddMembersSelector
-    },
-    RoomAlterFeatured: {
-        kind: 'mutation',
-        name: 'RoomAlterFeatured',
-        body: 'mutation RoomAlterFeatured($roomId:ID!,$featured:Boolean!){betaRoomAlterFeatured(roomId:$roomId,featured:$featured){__typename id listed featured}}',
-        selector: RoomAlterFeaturedSelector
-    },
-    RoomAlterHidden: {
-        kind: 'mutation',
-        name: 'RoomAlterHidden',
-        body: 'mutation RoomAlterHidden($roomId:ID!,$listed:Boolean!){betaRoomAlterListed(roomId:$roomId,listed:$listed){__typename id listed featured}}',
-        selector: RoomAlterHiddenSelector
     },
     RoomChangeRole: {
         kind: 'mutation',
