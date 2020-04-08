@@ -4,10 +4,7 @@ import { OpenlandClient } from 'openland-api/spacex';
 import { XView } from 'react-mental';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
-import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
-import { VideoComponent, showVideoModal } from './ScreenShareModal';
-import { css, cx } from 'linaria';
-import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
+import { css } from 'linaria';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalController } from 'openland-x/showModal';
@@ -18,16 +15,7 @@ import { TextStyles } from 'openland-web/utils/TextStyles';
 import { DataSourceMessageItem, DataSourceDateItem, DataSourceNewDividerItem } from 'openland-engines/messenger/ConversationEngine';
 import { YoutubeParty } from './YoutubeParty';
 import { VolumeSpace } from './VolumeSpace';
-
-const animatedAvatarStyle = css`
-    position: absolute;
-    z-index: 3;
-`;
-
-const compactAvatarStyle = css`
-    top: 16px;
-    left: 16px;
-`;
+import { VideoPeer } from './VideoPeer';
 
 const controlsStyle = css`
     position: absolute;
@@ -49,16 +37,6 @@ const controlsContainerStyle = css`
     padding: 8px 4px;
     background-color: var(--backgroundTertiary);
     border-radius: 24px;
-`;
-
-const borderStyle = css`
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    z-index: 3;
-    pointer-events: none;
 `;
 
 const SettingsModal = React.memo((props: {}) => {
@@ -169,54 +147,6 @@ const Controls = React.memo((props: {
     );
 });
 
-const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: Conference_conference_peers, calls: CallsEngine }) => {
-    let [stream, setStream] = React.useState<MediaStream>();
-    const ref = React.useRef<HTMLDivElement>(null);
-    const [localPeer, setLocalPeer] = React.useState(props.mediaSession.getPeerId());
-    const isLocal = props.peer.id === props.mediaSession.getPeerId();
-    React.useEffect(() => {
-        // mediaSession initiating without peerId. Like waaat
-        let d0 = props.calls.listenState(() => setLocalPeer(props.mediaSession.getPeerId()));
-        let d1: () => void;
-        if (isLocal) {
-            d1 = props.mediaSession.listenOutVideo(s => {
-                setStream((s as AppUserMediaStreamWeb)?._stream);
-            });
-        } else {
-            d1 = props.mediaSession.listenPeerVideo(props.peer.id, s => {
-                setStream((s as AppUserMediaStreamWeb)?._stream);
-            });
-        }
-        let d2 = props.mediaSession.analizer.subscribePeer(props.peer.id, v => {
-            if (ref.current) {
-                ref.current.style.border = v ? '2px solid white' : '';
-            }
-        });
-        return () => {
-            d0();
-            d1();
-            d2();
-        };
-    }, [localPeer]);
-
-    const onClick = React.useCallback(() => stream ? showVideoModal(stream) : undefined, [stream]);
-
-    return (
-        <XView backgroundColor="gray" alignItems="center" justifyContent="center" flexGrow={1}>
-            {stream && <VideoComponent stream={stream} cover={true} onClick={onClick} mirror={isLocal} />}
-            <div key={'animtateing_wrapper'} className={cx(animatedAvatarStyle, stream && compactAvatarStyle)}>
-                <UAvatar
-                    size={stream ? 'large' : 'xxx-large'}
-                    id={props.peer.user.id}
-                    title={props.peer.user.name}
-                    photo={props.peer.user.photo}
-                />
-            </div>
-            <div ref={ref} className={borderStyle} />
-        </XView>
-    );
-});
-
 const LinkFrame = React.memo((props: { link?: string, mediaSession: MediaSessionManager, messenger: MessengerEngine }) => {
     let url = props.link ? new URL(props.link) : undefined;
     const isYoutube = props.link?.includes('youtube') || props.link?.includes('youtu.be');
@@ -323,7 +253,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
         <XView flexDirection="row" flexGrow={1} backgroundColor="gray" alignItems="stretch">
             {<XView flexDirection={rotated ? 'row' : 'column'} justifyContent="flex-start" flexGrow={1} flexShrink={1}>
                 {layout === 'grid' && mediaSession && slices.map((s, i) => (
-                    <XView key={`container-${i}`} flexDirection={rotated ? 'column' : 'row'} justifyContent="flex-start" flexShrink={1} flexGrow={1}>{s.map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} />)}</XView>
+                    <XView key={`container-${i}`} flexDirection={rotated ? 'column' : 'row'} justifyContent="flex-start" flexShrink={1} flexGrow={1}>{s.map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} callState={callState} />)}</XView>
                 ))}
                 {layout === 'volume-space' && mediaSession && <VolumeSpace mediaSession={mediaSession} peers={[...conference ? conference.conference.peers : []]} />}
                 <Controls calls={props.calls} ctx={props.ctx} showLink={showLink} setShowLink={setShowLink} layout={layout} setLayout={setLayout} />

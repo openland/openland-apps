@@ -38,6 +38,13 @@ export const PlaceholderColor = [
     `linear-gradient(138deg, ${PlaceholderPurple.start}, ${PlaceholderPurple.end})`,
 ];
 
+const getPlaceholderIndex = (id: string) => Math.abs(doSimpleHash(id)) % 6;
+
+export const getPlaceholderColorById = (id: string) => {
+    let index = getPlaceholderIndex(id);
+    return PlaceholderColor[index];
+};
+
 export const AvatarSizes: {
     [key in UAvatarSize]: {
         size: number;
@@ -241,7 +248,7 @@ export const UAvatar = XMemo<UAvatarProps>(props => {
             content = <AvatarImage {...props} />;
         }
     } else {
-        const phIndex = Math.abs(doSimpleHash(id)) % 6;
+        const phIndex = getPlaceholderIndex(id);
         content = <AvatarPlaceholder {...props} index={phIndex} />;
     }
 

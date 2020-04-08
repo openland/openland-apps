@@ -61,7 +61,7 @@ interface LoaderRenderProps {
     static?: boolean;
 }
 
-const SvgLoader = React.memo((props: LoaderRenderProps) => {
+export const SvgLoader = React.memo((props: LoaderRenderProps) => {
     const size = {
         small: '16',
         medium: '24',
