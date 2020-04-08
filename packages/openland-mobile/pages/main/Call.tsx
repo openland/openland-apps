@@ -25,7 +25,6 @@ import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager'
 import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { AppUserMediaStreamNative } from 'openland-y-runtime-native/AppUserMedia';
 import { RTCView } from 'react-native-webrtc';
-import { AppConfig } from 'openland-y-runtime-native/AppConfig';
 
 const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaSession: MediaSessionManager, calls: CallsEngine, h: number, mirror?: boolean }) => {
     let [stream, setStream] = React.useState<string>();
