@@ -1333,6 +1333,24 @@ internal val FeedUpdateFragmentSelector = obj(
             ))
         )
 
+internal val MediaStreamFullSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("peerId", "peerId", scalar("ID")),
+            field("state", "state", notNull(scalar("String"))),
+            field("seq", "seq", notNull(scalar("Int"))),
+            field("sdp", "sdp", scalar("String")),
+            field("ice", "ice", notNull(list(notNull(scalar("String"))))),
+            field("settings", "settings", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("videoIn", "videoIn", notNull(scalar("Boolean"))),
+                    field("videoOut", "videoOut", notNull(scalar("Boolean"))),
+                    field("audioIn", "audioIn", notNull(scalar("Boolean"))),
+                    field("audioOut", "audioOut", notNull(scalar("Boolean"))),
+                    field("iceTransportPolicy", "iceTransportPolicy", scalar("String"))
+                )))
+        )
+
 internal val NotificationFragmentSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),

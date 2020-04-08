@@ -3,16 +3,12 @@ query Conference($id: ID!) {
         ...ConferenceFull
     }
 }
+
 query ConferenceMedia($id: ID!, $peerId: ID!) {
     conferenceMedia(id: $id, peerId: $peerId) {
         id
-        streams {
-            id
-            peerId
-            state
-            seq
-            sdp
-            ice
+        streams{
+            ...MediaStreamFull
         }
         iceServers {
             urls
@@ -62,78 +58,48 @@ mutation ConferenceCandidate($id: ID!, $ownPeerId: ID!, $peerId: ID!, $candidate
 mutation MediaOffer($id: ID!, $peerId: ID!, $offer: String!, $seq: Int!) {
     mediaStreamOffer(id: $id, peerId: $peerId, offer: $offer, seq: $seq) {
         id
-        streams {
-            id
-            peerId
-            state
-            seq
-            sdp
-            ice
+        streams{
+            ...MediaStreamFull
         }
     }
 }
 mutation MediaNegotiationNeeded($id: ID!, $peerId: ID!, $seq: Int!) {
     mediaStreamNegotiationNeeded(id: $id, peerId: $peerId, seq: $seq) {
         id
-        streams {
-            id
-            peerId
-            state
-            seq
-            sdp
-            ice
+        streams{
+            ...MediaStreamFull
         }
     }
 }
 mutation MediaFailed($id: ID!, $peerId: ID!) {
     mediaStreamFailed(id: $id, peerId: $peerId) {
         id
-        streams {
-            id
-            peerId
-            state
-            seq
-            sdp
-            ice
+        streams{
+            ...MediaStreamFull
         }
     }
 }
 mutation MediaAnswer($id: ID!, $peerId: ID!, $answer: String!, $seq: Int!) {
     mediaStreamAnswer(id: $id, peerId: $peerId, answer: $answer, seq: $seq) {
         id
-        streams {
-            id
-            peerId
-            state
-            seq
-            sdp
-            ice
+        streams{
+            ...MediaStreamFull
         }
     }
 }
 mutation MediaCandidate($id: ID!, $peerId: ID!, $candidate: String!) {
     mediaStreamCandidate(id: $id, peerId: $peerId, candidate: $candidate) {
         id
-        streams {
-            id
-            peerId
-            state
-            seq
-            sdp
-            ice
+        streams{
+            ...MediaStreamFull
         }
     }
 }
 subscription ConferenceMediaWatch($id: ID!, $peerId: ID!) {
     media: alphaConferenceMediaWatch(id: $id, peerId: $peerId) {
         id
-        streams {
-            id
-            peerId
-            state
-            seq
-            sdp
-            ice
+        streams{
+            ...MediaStreamFull
         }
     }
 }

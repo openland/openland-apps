@@ -10,18 +10,13 @@ internal val MediaNegotiationNeededSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("streams", "streams", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("peerId", "peerId", scalar("ID")),
-                            field("state", "state", notNull(scalar("String"))),
-                            field("seq", "seq", notNull(scalar("Int"))),
-                            field("sdp", "sdp", scalar("String")),
-                            field("ice", "ice", notNull(list(notNull(scalar("String")))))
+                            fragment("MediaStream", MediaStreamFullSelector)
                         )))))
                 )))
         )
 val MediaNegotiationNeeded = object: OperationDefinition {
     override val name = "MediaNegotiationNeeded"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation MediaNegotiationNeeded(\$id:ID!,\$peerId:ID!,\$seq:Int!){mediaStreamNegotiationNeeded(id:\$id,peerId:\$peerId,seq:\$seq){__typename id streams{__typename id peerId state seq sdp ice}}}"
+    override val body = "mutation MediaNegotiationNeeded(\$id:ID!,\$peerId:ID!,\$seq:Int!){mediaStreamNegotiationNeeded(id:\$id,peerId:\$peerId,seq:\$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}"
     override val selector = MediaNegotiationNeededSelector
 }

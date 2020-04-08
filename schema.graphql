@@ -1145,11 +1145,17 @@ type MediaStream {
   settings: MediaStreamSettings!
 }
 
+enum MediaStreamIceTransportPolicy {
+  all
+  relay
+}
+
 type MediaStreamSettings {
   videoIn: Boolean!
   videoOut: Boolean!
   audioIn: Boolean!
   audioOut: Boolean!
+  iceTransportPolicy: MediaStreamIceTransportPolicy
 }
 
 enum MediaStreamState {
@@ -1583,6 +1589,8 @@ type Mutation {
   debugQueueWeeklyPaidLeaderboard: Boolean!
   debugSendHiddenMessage(uid: ID!, message: String!): Boolean!
   debugFixBrokenDonations: Boolean!
+  debugCreateTransfer(fromUid: ID!, toUid: ID!, amount: Int!): String!
+  debugSetCommission(cid: ID!, percents: Int!): Boolean!
   settingsUpdate(settings: UpdateSettingsInput): Settings!
   sendEmailChangeCode(newEmail: String!): String!
   changeEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2371,6 +2379,7 @@ type Query {
   debugUserMetrics(id: ID!): DebugUserMetrics!
   debugGlobalCounters: DebugGlobalCounters!
   debugServerId: String!
+  debugClientIp: String
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!

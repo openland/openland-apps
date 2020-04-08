@@ -1,0 +1,15 @@
+fragment MediaStreamFull on MediaStream{
+    id
+    peerId
+    state
+    seq
+    sdp
+    ice
+    settings{
+        videoIn
+        videoOut
+        audioIn
+        audioOut
+        iceTransportPolicy
+    }
+}

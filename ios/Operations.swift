@@ -1327,6 +1327,24 @@ private let FeedUpdateFragmentSelector = obj(
             ))
         )
 
+private let MediaStreamFullSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("peerId", "peerId", scalar("ID")),
+            field("state", "state", notNull(scalar("String"))),
+            field("seq", "seq", notNull(scalar("Int"))),
+            field("sdp", "sdp", scalar("String")),
+            field("ice", "ice", notNull(list(notNull(scalar("String"))))),
+            field("settings", "settings", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("videoIn", "videoIn", notNull(scalar("Boolean"))),
+                    field("videoOut", "videoOut", notNull(scalar("Boolean"))),
+                    field("audioIn", "audioIn", notNull(scalar("Boolean"))),
+                    field("audioOut", "audioOut", notNull(scalar("Boolean"))),
+                    field("iceTransportPolicy", "iceTransportPolicy", scalar("String"))
+                )))
+        )
+
 private let NotificationFragmentSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -2763,12 +2781,7 @@ private let ConferenceMediaSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("streams", "streams", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("peerId", "peerId", scalar("ID")),
-                            field("state", "state", notNull(scalar("String"))),
-                            field("seq", "seq", notNull(scalar("Int"))),
-                            field("sdp", "sdp", scalar("String")),
-                            field("ice", "ice", notNull(list(notNull(scalar("String")))))
+                            fragment("MediaStream", MediaStreamFullSelector)
                         ))))),
                     field("iceServers", "iceServers", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
@@ -4738,12 +4751,7 @@ private let MediaAnswerSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("streams", "streams", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("peerId", "peerId", scalar("ID")),
-                            field("state", "state", notNull(scalar("String"))),
-                            field("seq", "seq", notNull(scalar("Int"))),
-                            field("sdp", "sdp", scalar("String")),
-                            field("ice", "ice", notNull(list(notNull(scalar("String")))))
+                            fragment("MediaStream", MediaStreamFullSelector)
                         )))))
                 )))
         )
@@ -4753,12 +4761,7 @@ private let MediaCandidateSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("streams", "streams", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("peerId", "peerId", scalar("ID")),
-                            field("state", "state", notNull(scalar("String"))),
-                            field("seq", "seq", notNull(scalar("Int"))),
-                            field("sdp", "sdp", scalar("String")),
-                            field("ice", "ice", notNull(list(notNull(scalar("String")))))
+                            fragment("MediaStream", MediaStreamFullSelector)
                         )))))
                 )))
         )
@@ -4768,12 +4771,7 @@ private let MediaFailedSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("streams", "streams", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("peerId", "peerId", scalar("ID")),
-                            field("state", "state", notNull(scalar("String"))),
-                            field("seq", "seq", notNull(scalar("Int"))),
-                            field("sdp", "sdp", scalar("String")),
-                            field("ice", "ice", notNull(list(notNull(scalar("String")))))
+                            fragment("MediaStream", MediaStreamFullSelector)
                         )))))
                 )))
         )
@@ -4783,12 +4781,7 @@ private let MediaNegotiationNeededSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("streams", "streams", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("peerId", "peerId", scalar("ID")),
-                            field("state", "state", notNull(scalar("String"))),
-                            field("seq", "seq", notNull(scalar("Int"))),
-                            field("sdp", "sdp", scalar("String")),
-                            field("ice", "ice", notNull(list(notNull(scalar("String")))))
+                            fragment("MediaStream", MediaStreamFullSelector)
                         )))))
                 )))
         )
@@ -4798,12 +4791,7 @@ private let MediaOfferSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("streams", "streams", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("peerId", "peerId", scalar("ID")),
-                            field("state", "state", notNull(scalar("String"))),
-                            field("seq", "seq", notNull(scalar("Int"))),
-                            field("sdp", "sdp", scalar("String")),
-                            field("ice", "ice", notNull(list(notNull(scalar("String")))))
+                            fragment("MediaStream", MediaStreamFullSelector)
                         )))))
                 )))
         )
@@ -5305,12 +5293,7 @@ private let ConferenceMediaWatchSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("streams", "streams", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("peerId", "peerId", scalar("ID")),
-                            field("state", "state", notNull(scalar("String"))),
-                            field("seq", "seq", notNull(scalar("Int"))),
-                            field("sdp", "sdp", scalar("String")),
-                            field("ice", "ice", notNull(list(notNull(scalar("String")))))
+                            fragment("MediaStream", MediaStreamFullSelector)
                         )))))
                 )))
         )
@@ -5531,7 +5514,7 @@ class Operations {
     let ConferenceMedia = OperationDefinition(
         "ConferenceMedia",
         .query, 
-        "query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename id streams{__typename id peerId state seq sdp ice}iceServers{__typename urls username credential}}}",
+        "query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}iceServers{__typename urls username credential}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}",
         ConferenceMediaSelector
     )
     let Dialogs = OperationDefinition(
@@ -6443,31 +6426,31 @@ class Operations {
     let MediaAnswer = OperationDefinition(
         "MediaAnswer",
         .mutation, 
-        "mutation MediaAnswer($id:ID!,$peerId:ID!,$answer:String!,$seq:Int!){mediaStreamAnswer(id:$id,peerId:$peerId,answer:$answer,seq:$seq){__typename id streams{__typename id peerId state seq sdp ice}}}",
+        "mutation MediaAnswer($id:ID!,$peerId:ID!,$answer:String!,$seq:Int!){mediaStreamAnswer(id:$id,peerId:$peerId,answer:$answer,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}",
         MediaAnswerSelector
     )
     let MediaCandidate = OperationDefinition(
         "MediaCandidate",
         .mutation, 
-        "mutation MediaCandidate($id:ID!,$peerId:ID!,$candidate:String!){mediaStreamCandidate(id:$id,peerId:$peerId,candidate:$candidate){__typename id streams{__typename id peerId state seq sdp ice}}}",
+        "mutation MediaCandidate($id:ID!,$peerId:ID!,$candidate:String!){mediaStreamCandidate(id:$id,peerId:$peerId,candidate:$candidate){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}",
         MediaCandidateSelector
     )
     let MediaFailed = OperationDefinition(
         "MediaFailed",
         .mutation, 
-        "mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename id peerId state seq sdp ice}}}",
+        "mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}",
         MediaFailedSelector
     )
     let MediaNegotiationNeeded = OperationDefinition(
         "MediaNegotiationNeeded",
         .mutation, 
-        "mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!,$seq:Int!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId,seq:$seq){__typename id streams{__typename id peerId state seq sdp ice}}}",
+        "mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!,$seq:Int!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}",
         MediaNegotiationNeededSelector
     )
     let MediaOffer = OperationDefinition(
         "MediaOffer",
         .mutation, 
-        "mutation MediaOffer($id:ID!,$peerId:ID!,$offer:String!,$seq:Int!){mediaStreamOffer(id:$id,peerId:$peerId,offer:$offer,seq:$seq){__typename id streams{__typename id peerId state seq sdp ice}}}",
+        "mutation MediaOffer($id:ID!,$peerId:ID!,$offer:String!,$seq:Int!){mediaStreamOffer(id:$id,peerId:$peerId,offer:$offer,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}",
         MediaOfferSelector
     )
     let MessageSetDonationReaction = OperationDefinition(
@@ -6917,7 +6900,7 @@ class Operations {
     let ConferenceMediaWatch = OperationDefinition(
         "ConferenceMediaWatch",
         .subscription, 
-        "subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename id peerId state seq sdp ice}}}",
+        "subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}",
         ConferenceMediaWatchSelector
     )
     let ConferenceWatch = OperationDefinition(

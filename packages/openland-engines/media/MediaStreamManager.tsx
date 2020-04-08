@@ -63,7 +63,7 @@ export class MediaStreamManager {
                 credential: v.credential ? v.credential : undefined,
                 username: v.username ? v.username : undefined,
             })),
-            // iceTransportPolicy: 'relay',
+            iceTransportPolicy: streamConfig.settings.iceTransportPolicy || undefined,
         });
 
         this.peerConnection.onicecandidate = (ev) => {
