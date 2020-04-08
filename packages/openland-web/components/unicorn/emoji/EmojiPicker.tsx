@@ -147,11 +147,10 @@ const titleContainerStyle = css`
     font-size: 15px;
     line-height: 40px;
     font-weight: 600;
-    top: 0px;
+    top: 0;
     z-index: 2;
     background-color: #fff;
     padding-left: 16px;
-    color: var(--foregroundPrimary);
     @supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
         background-color: rgba(255, 255, 255, 0.72);
         backdrop-filter: blur(16px);
@@ -225,43 +224,43 @@ interface EmojiSection {
 const sections: EmojiSection[] = [
     {
         title: 'Smileys & people',
-        emoji: pickerEmoji.filter(v => v.category === 0 || v.category === 1),
+        emoji: pickerEmoji.filter((v) => v.category === 0 || v.category === 1),
         start: 0,
         end: 0,
     },
     {
         title: 'Animals & Nature',
-        emoji: pickerEmoji.filter(v => v.category === 2),
+        emoji: pickerEmoji.filter((v) => v.category === 2),
         start: 0,
         end: 0,
     },
     {
         title: 'Food & Drink',
-        emoji: pickerEmoji.filter(v => v.category === 3),
+        emoji: pickerEmoji.filter((v) => v.category === 3),
         start: 0,
         end: 0,
     },
     {
         title: 'Travel & Places',
-        emoji: pickerEmoji.filter(v => v.category === 4 || v.category === 5),
+        emoji: pickerEmoji.filter((v) => v.category === 4 || v.category === 5),
         start: 0,
         end: 0,
     },
     {
         title: 'Objects',
-        emoji: pickerEmoji.filter(v => v.category === 6),
+        emoji: pickerEmoji.filter((v) => v.category === 6),
         start: 0,
         end: 0,
     },
     {
         title: 'Symbols',
-        emoji: pickerEmoji.filter(v => v.category === 7),
+        emoji: pickerEmoji.filter((v) => v.category === 7),
         start: 0,
         end: 0,
     },
     {
         title: 'Flags',
-        emoji: pickerEmoji.filter(v => v.category === 8),
+        emoji: pickerEmoji.filter((v) => v.category === 8),
         start: 0,
         end: 0,
     },
@@ -286,7 +285,7 @@ const RowComponent = React.memo(
         );
         return (
             <div className={emojiRowContainer}>
-                {emoji.map(v => (
+                {emoji.map((v) => (
                     <EmojiComponent
                         name={v.name}
                         value={v.value}
@@ -314,7 +313,7 @@ const Recent = React.memo((props: { index: number; onEmojiPicked: (arg: string) 
     }
     return (
         <div className={emojiRowContainer}>
-            {recent.map(v => (
+            {recent.map((v) => (
                 <EmojiComponent
                     name={v.name}
                     value={v.value}
@@ -412,7 +411,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
             setCurrentSection(0);
         } else {
             row -= 3;
-            let section = sections.findIndex(v => v.start <= row && row < v.end)! + 1;
+            let section = sections.findIndex((v) => v.start <= row && row < v.end)! + 1;
             setCurrentSection(section);
         }
     }, []);
@@ -471,7 +470,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                                         return (
                                             <div style={style}>
                                                 <div className={emojiRowContainer}>
-                                                    {currentRowEmoji.map(v => (
+                                                    {currentRowEmoji.map((v) => (
                                                         <EmojiComponent
                                                             name={v.name}
                                                             value={v.value}
@@ -528,7 +527,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                                         }
                                         let ii = index - 3;
                                         let section = sections.find(
-                                            v => v.start <= ii && ii < v.end,
+                                            (v) => v.start <= ii && ii < v.end,
                                         )!;
                                         return (
                                             <div style={style}>
@@ -627,22 +626,19 @@ export const EmojiPicker = React.memo((props: EmojiPickerProps) => {
     const [width] = useWithWidth();
     const [wrapperClassName, setWrapperClassName] = React.useState<string | undefined>(undefined);
 
-    React.useEffect(
-        () => {
-            if (width && width <= 450 && !wrapperClassName) {
-                setWrapperClassName(emojiMobileClassName);
-            }
-            if (width && width > 450) {
-                setWrapperClassName(undefined);
-            }
-        },
-        [width, wrapperClassName],
-    );
+    React.useEffect(() => {
+        if (width && width <= 450 && !wrapperClassName) {
+            setWrapperClassName(emojiMobileClassName);
+        }
+        if (width && width > 450) {
+            setWrapperClassName(undefined);
+        }
+    }, [width, wrapperClassName]);
 
     const [visible, show] = usePopper(
         {
             placement: 'top-end',
-            hideOnLeave: true,
+            hideOnLeave: false,
             hideOnClick: false,
             hideOnChildClick: false,
             wrapperClassName: wrapperClassName,
