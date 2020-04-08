@@ -13,7 +13,7 @@ import Popper from 'popper.js';
 import { css } from 'linaria';
 
 const style = css`
-    z-index: 2;
+    z-index: 3;
     pointer-events: none;
     &[x-placement^='top'] {
         & .popper-arrow {

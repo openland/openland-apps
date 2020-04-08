@@ -18,7 +18,7 @@ import { showVideoCallModal } from './CallModal';
 
 const AVATAR_SIZE = 48;
 const VIDEO_SIZE = 200;
-const OPEN_WIDTH = 360;
+const OPEN_WIDTH = 460;
 
 const FloatContainerClass = css`
     display: none;
@@ -28,7 +28,7 @@ const FloatContainerClass = css`
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    background-color: #32bb78;
+    background-color: var(--accentPay);
     flex-direction: row;
     padding: 8px 4px;
     border-radius: ${AVATAR_SIZE / 2}px;
@@ -69,6 +69,7 @@ export const useJsDrag = (
     onMove: (coords: number[]) => void,
     saved?: number[],
     initialTargetWidth?: number,
+    targetMargin?: number,
     contentRef?: React.RefObject<HTMLDivElement>,
     limitToScreen?: boolean,
     deps?: any[]
@@ -79,11 +80,14 @@ export const useJsDrag = (
         const target = targetRef.current;
         const content = contentRef?.current;
         let dragging = false;
-        let targetWidth = initialTargetWidth || target?.clientWidth || 0;
+        let targetWidth = (target?.clientWidth || initialTargetWidth || 0) + (targetMargin || 0) * 2;
         let positionShift = saved?.length ? saved : [window.innerWidth / 2 - (targetWidth), window.innerHeight / 2];
         let prev: number[] | undefined;
 
         const checkPostion = () => {
+            let newTargetWidth = (target?.clientWidth || initialTargetWidth || 0) + (targetMargin || 0) * 2;
+            positionShift[0] += (targetWidth - newTargetWidth) / 2;
+            targetWidth = newTargetWidth;
             // limit shift with screen bounds
             if (limitToScreen) {
                 if (Math.abs(positionShift[0]) > window.innerWidth / 2 - (targetWidth / 2)) {
@@ -269,10 +273,6 @@ const MediaView = React.memo((props: {
     );
 });
 
-const greenButtonStyle = css`
-    background-color: var(--accentPositiveHover);
-`;
-
 const CallFloatingComponent = React.memo((props: { id: string; private: boolean }) => {
     const isMobile = useIsMobile();
     const [forceOpen, setForceOpen] = React.useState(false);
@@ -282,7 +282,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
     const moveCallBack = React.useCallback(debounce((shift: number[]) => {
         window.localStorage.setItem('call_floating_shift', JSON.stringify(shift));
     }, 500), []);
-    useJsDrag(targetRef, containerRef, moveCallBack, JSON.parse(window.localStorage.getItem('call_floating_shift') || '{}'), AVATAR_SIZE, contentRef, true);
+    useJsDrag(targetRef, containerRef, moveCallBack, JSON.parse(window.localStorage.getItem('call_floating_shift') || '{}'), AVATAR_SIZE - 16, 8, contentRef, true);
     let messenger = React.useContext(MessengerContext);
     let calls = messenger.calls;
     let callState = calls.useState();
@@ -318,42 +318,42 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
     );
 
     const buttons = (
-        <>
+        <XView flexDirection={callState.videoEnabled ? 'column' : 'row'}>
             <UButton
                 flexShrink={0}
-                style='primary'
-                text={'Join video call'}
+                style='secondary'
+                text={'Fullscreen'}
                 onClick={() => {
                     showVideoCallModal({ calls, chatId: props.id, client, messenger });
                 }}
                 marginHorizontal={4}
             />
-            {callState.videoEnabled && <UButton
-                flexShrink={0}
-                style="success"
-                text={'Video'}
-                onClick={() => calls.switchVideo()}
-                marginHorizontal={4}
-            />}
             <UButton
                 flexShrink={0}
-                style="success"
-                text={callState.mute ? 'Unmute' : 'Mute'}
-                onClick={() => calls.setMute(!callState.mute)}
-                className={greenButtonStyle}
+                style={callState.outVideo ? 'primary' : 'secondary'}
+                text={callState.outVideo ? 'Video on' : 'Video off'}
+                onClick={() => calls.switchVideo()}
                 marginHorizontal={4}
-                marginVertical={callState.videoEnabled ? 8 : 0}
+                marginTop={callState.videoEnabled ? 8 : 0}
+            />
+            <UButton
+                flexShrink={0}
+                style={callState.mute ? 'secondary' : 'primary' }
+                text={callState.mute ? 'Mic off' : 'Mic on'}
+                onClick={() => calls.setMute(!callState.mute)}
+                marginHorizontal={4}
+                marginTop={callState.videoEnabled ? 8 : 0}
             />
 
             <UButton
                 flexShrink={0}
-                style="success"
+                style="danger"
                 text={callState.status === 'connecting' ? 'Connecting' : 'Leave'}
                 onClick={() => calls.leaveCall()}
-                className={greenButtonStyle}
                 marginHorizontal={4}
+                marginTop={callState.videoEnabled ? 8 : 0}
             />
-        </>
+        </XView>
     );
 
     return (
@@ -372,11 +372,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
                         )}
                         {!callState.videoEnabled && avatar}
                     </div>
-                    {!callState.videoEnabled ? buttons : (
-                        <XView>
-                            {buttons}
-                        </XView>
-                    )}
+                    {buttons}
                 </div>
             </div>
         )
@@ -387,7 +383,7 @@ const CallFloatingInner = React.memo((props: { id: string; private: boolean }) =
     let client = useClient();
     let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
     useTalkWatch(data && data.conference.id);
-    
+
     if (!data) {
         return null;
     }

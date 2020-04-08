@@ -105,15 +105,15 @@ const Controls = React.memo((props: {
             <div className={controlsContainerStyle}>
                 <UButton
                     flexShrink={1}
-                    style={callState.mute ? 'primary' : 'secondary'}
-                    text={callState.mute ? 'Muted' : 'Mute'}
+                    style={callState.mute ? 'secondary' : 'primary'}
+                    text={callState.mute ? 'Mic off' : 'Mic on'}
                     onClick={() => props.calls.setMute(!callState.mute)}
                     marginHorizontal={4}
                 />
                 <UButton
                     flexShrink={1}
                     style={callState.outVideo?.type === 'video' ? 'primary' : 'secondary'}
-                    text={'Video'}
+                    text={callState.outVideo?.type === 'video' ? 'Video on' : 'Video off'}
                     onClick={props.calls.switchVideo}
                     marginHorizontal={4}
                 />
@@ -238,11 +238,12 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
             props.ctx.hide();
         }
     }, [callState]);
-    React.useEffect(() => {
-        if (!props.calls.state.outVideo) {
-            props.calls.switchVideo();
-        }
-    }, []);
+    // it's rude i guess
+    // React.useEffect(() => {
+    //     if (!props.calls.state.outVideo) {
+    //         props.calls.switchVideo();
+    //     }
+    // }, []);
 
     // layout video grid
     let peers = [...conference ? conference.conference.peers : []];
