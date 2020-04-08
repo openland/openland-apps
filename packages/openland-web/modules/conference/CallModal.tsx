@@ -172,8 +172,11 @@ const Controls = React.memo((props: {
 const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: Conference_conference_peers, calls: CallsEngine }) => {
     let [stream, setStream] = React.useState<MediaStream>();
     const ref = React.useRef<HTMLDivElement>(null);
+    const [localPeer, setLocalPeer] = React.useState(props.mediaSession.getPeerId());
     const isLocal = props.peer.id === props.mediaSession.getPeerId();
     React.useEffect(() => {
+        // mediaSession initiating without peerId. Like waaat
+        let d0 = props.calls.listenState(() => setLocalPeer(props.mediaSession.getPeerId()));
         let d1: () => void;
         if (isLocal) {
             d1 = props.mediaSession.listenOutVideo(s => {
@@ -190,10 +193,11 @@ const VideoPeer = React.memo((props: { mediaSession: MediaSessionManager, peer: 
             }
         });
         return () => {
+            d0();
             d1();
             d2();
         };
-    }, []);
+    }, [localPeer]);
 
     const onClick = React.useCallback(() => stream ? showVideoModal(stream) : undefined, [stream]);
 

@@ -16,7 +16,7 @@ import { RNSDevice } from 'react-native-s/RNSDevice';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
-import { CallStatus } from 'openland-engines/CallsEngine';
+import { CallStatus, CallsEngine } from 'openland-engines/CallsEngine';
 import { formatTimerTime } from 'openland-y-utils/formatTime';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
@@ -27,23 +27,31 @@ import { AppUserMediaStreamNative } from 'openland-y-runtime-native/AppUserMedia
 import { RTCView } from 'react-native-webrtc';
 import { AppConfig } from 'openland-y-runtime-native/AppConfig';
 
-const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaSession: MediaSessionManager, h: number, mirror?: boolean }) => {
+const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaSession: MediaSessionManager, calls: CallsEngine, h: number, mirror?: boolean }) => {
     let [stream, setStream] = React.useState<string>();
+
+    const [localPeer, setLocalPeer] = React.useState(props.mediaSession.getPeerId());
     let isLocal = props.peer.id === props.mediaSession.getPeerId();
     React.useEffect(() => {
+        // mediaSession initiating without peerId. Like waaat
+        let d0 = props.calls.listenState(() => setLocalPeer(props.mediaSession.getPeerId()));
+        let d1: () => void;
         if (isLocal) {
-            return props.mediaSession.listenOutVideo(s => {
+            d1 = props.mediaSession.listenOutVideo(s => {
                 setStream((s as AppUserMediaStreamNative)?._stream.toURL());
             });
         } else {
-            return props.mediaSession.listenPeerVideo(props.peer.id, s => {
+            d1 = props.mediaSession.listenPeerVideo(props.peer.id, s => {
                 if (s) {
                     setStream((s as AppUserMediaStreamNative)?._stream.toURL());
                 }
             });
         }
-
-    });
+        return () => {
+            d0();
+            d1();
+        };
+    }, [localPeer]);
     return (
         <View flexGrow={1} height={props.h} backgroundColor="gray">
             {stream && <RTCView streamURL={stream} style={{ flexGrow: 1 }} objectFit="cover" mirror={props.mirror} />}
@@ -173,8 +181,8 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
             {Platform.OS === 'ios' && <StatusBar hidden={!!videoEnabled} />}
             {videoEnabled ?
                 <View flexDirection="row" alignItems="flex-start" width={w}>
-                    <View flexDirection="column" justifyContent="flex-start" flexGrow={1}>{peerSlice[0].map(p => <VideoView key={p.id} peer={p} mediaSession={mediaSession!} h={h1} mirror={p.id === mediaSession?.getPeerId() && mirrorSelf}/>)}</View>
-                    <View flexDirection="column" justifyContent="flex-start" flexGrow={peerSlice[1].length ? 1 : 0}>{peerSlice[1].map(p => <VideoView key={p.id} peer={p} mediaSession={mediaSession!} h={h2} mirror={p.id === mediaSession?.getPeerId() && mirrorSelf}/>)}</View>
+                    <View flexDirection="column" justifyContent="flex-start" flexGrow={1}>{peerSlice[0].map(p => <VideoView key={p.id} peer={p} mediaSession={mediaSession!} calls={calls} h={h1} mirror={p.id === mediaSession?.getPeerId() && mirrorSelf} />)}</View>
+                    <View flexDirection="column" justifyContent="flex-start" flexGrow={peerSlice[1].length ? 1 : 0}>{peerSlice[1].map(p => <VideoView key={p.id} peer={p} mediaSession={mediaSession!} calls={calls} h={h2} mirror={p.id === mediaSession?.getPeerId() && mirrorSelf} />)}</View>
                 </View> :
 
                 <ASSafeAreaView flexDirection="column" alignItems="stretch" height="100%">
