@@ -11,6 +11,7 @@ import { XCloudImage } from 'openland-x/XCloudImage';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import LinkIcon from 'openland-icons/s/ic-link-24.svg';
 import copy from 'copy-to-clipboard';
+import { useToast } from 'openland-web/components/unicorn/UToast';
 
 const descriptionBox = css`
     color: var(--foregroundPrimary);
@@ -38,6 +39,7 @@ export const DiscoverCollectionFragment = React.memo(() => {
     const client = useClient();
     const unicorn = useUnicorn();
     const { collectionId } = unicorn.query;
+    const toastHandlers = useToast();
 
     const collection = client.useDiscoverCollection({ id: collectionId }).discoverCollection;
 
@@ -47,8 +49,6 @@ export const DiscoverCollectionFragment = React.memo(() => {
     }
 
     const { id, title, description, image, chats } = collection;
-
-    console.log(collection);
 
     return (
         <Page track="discover_collection">
@@ -60,7 +60,14 @@ export const DiscoverCollectionFragment = React.memo(() => {
                         <XView flexGrow={1} />
                         <UIconButton
                             icon={<LinkIcon />}
-                            onClick={() => copy(`https://openland.com/discover/collections/${id}`)}
+                            onClick={() => {
+                                copy(`https://openland.com/discover/collections/${id}`);
+
+                                toastHandlers.show({
+                                    type: 'success',
+                                    text: 'Link copied',
+                                });
+                            }}
                         />
                     </XView>
                 )}

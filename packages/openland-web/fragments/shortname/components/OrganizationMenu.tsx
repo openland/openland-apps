@@ -15,16 +15,17 @@ import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuB
 import AlertBlanket from 'openland-x/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
 import { useStackRouter, StackRouter } from 'openland-unicorn/components/StackRouter';
+import { useToast, UToastHandlers } from 'openland-web/components/unicorn/UToast';
 
 interface OrganizationMenuProps {
     organization: OrganizationWithoutMembers_organization;
     onLeave: (id: string) => void;
 }
 
-const MenuComponent = React.memo((props: OrganizationMenuProps & { ctx: UPopperController, router: StackRouter }) => {
+const MenuComponent = React.memo((props: OrganizationMenuProps & { ctx: UPopperController, router: StackRouter, toastHandlers: UToastHandlers }) => {
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
-    const { ctx, router, organization, onLeave } = props;
+    const { ctx, router, organization, onLeave, toastHandlers } = props;
     const { id, name, isCommunity, isOwner, isAdmin, isMine, shortname } = organization;
 
     const typeString = isCommunity ? 'community' : 'organization';
@@ -33,7 +34,14 @@ const MenuComponent = React.memo((props: OrganizationMenuProps & { ctx: UPopperC
     builder.item({
         title: 'Copy link',
         icon: <CopyIcon />,
-        onClick: () => copy(`https://openland.com/${shortname || id}`)
+        onClick: () => {
+            copy(`https://openland.com/${shortname || id}`);
+
+            toastHandlers.show({
+                type: 'success',
+                text: 'Link copied',
+            });
+        }
     });
 
     if (isOwner || isAdmin) {
@@ -83,11 +91,12 @@ const MenuComponent = React.memo((props: OrganizationMenuProps & { ctx: UPopperC
 
 export const OrganizationMenu = React.memo((props: OrganizationMenuProps) => {
     const router = useStackRouter();
+    const toastHandlers = useToast();
 
     return (
         <UMoreButton
             marginRight={-8}
-            menu={ctx => <MenuComponent {...props} router={router} ctx={ctx} />}
+            menu={ctx => <MenuComponent {...props} router={router} ctx={ctx} toastHandlers={toastHandlers} />}
         />
     );
 });

@@ -6,21 +6,29 @@ import EditIcon from 'openland-icons/s/ic-edit-24.svg';
 import CopyIcon from 'openland-icons/s/ic-copy-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
+import { useToast, UToastHandlers } from 'openland-web/components/unicorn/UToast';
 
 interface UserMenuProps {
     user: User_user;
     marginLeft?: number;
 }
 
-const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperController }) => {
-    const { ctx, user } = props;
+const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperController, toastHandlers: UToastHandlers }) => {
+    const { ctx, user, toastHandlers } = props;
     const { id, isYou, shortname } = user;
     const builder = new UPopperMenuBuilder();
 
     builder.item({
         title: 'Copy link',
         icon: <CopyIcon />,
-        onClick: () => copy(`https://openland.com/${shortname || id}`),
+        onClick: () => {
+            copy(`https://openland.com/${shortname || id}`);
+
+            toastHandlers.show({
+                type: 'success',
+                text: 'Link copied',
+            });
+        },
     });
 
     if (isYou) {
@@ -34,10 +42,14 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
     return builder.build(ctx);
 });
 
-export const UserMenu = React.memo((props: UserMenuProps) => (
-    <UMoreButton
-        marginLeft={typeof props.marginLeft === 'number' ? props.marginLeft : 8}
-        marginRight={-8}
-        menu={ctx => <MenuComponent {...props} ctx={ctx} />}
-    />
-));
+export const UserMenu = React.memo((props: UserMenuProps) => {
+    const toastHandlers = useToast();
+
+    return (
+        <UMoreButton
+            marginLeft={typeof props.marginLeft === 'number' ? props.marginLeft : 8}
+            marginRight={-8}
+            menu={ctx => <MenuComponent {...props} ctx={ctx} toastHandlers={toastHandlers} />}
+        />
+    );
+});
