@@ -21,6 +21,9 @@ const boxStyle = css`
     box-shadow: 0px 3px 14px 4px #82777747;
     max-height: calc(100vh - 48px);
     max-width: calc(100vw - 20px);
+`;
+
+const boxOverflow = css`
     overflow: hidden;
 `;
 
@@ -230,6 +233,7 @@ const ModalBoxComponent = React.memo<{
                         boxStyle,
                         props.config.darkOverlay && darkOverlayStyle,
                         props.config.transparentBox && transparentBoxStyle,
+                        !props.config.overflowVisible && boxOverflow,
                         state === 'showing' && boxShowing,
                         state === 'visible' && boxVisible,
                         state === 'hiding' && boxHiding,
@@ -294,6 +298,7 @@ export interface XModalBoxConfig {
     transparentBox?: boolean;
     onCancel?: () => void;
     hideOnEsc?: boolean;
+    overflowVisible?: boolean;
 }
 
 export function showModalBox(config: XModalBoxConfig, modal: XModal) {

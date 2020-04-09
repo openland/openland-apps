@@ -254,6 +254,12 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                         props.ctx.hide();
                         props.calls.leaveCall();
                     }}
+                    videoProps={mediaSession && conference && conference.conference.peers ? {
+                        mediaSession: mediaSession,
+                        calls: props.calls,
+                        callState: callState,
+                        peer: conference.conference.peers.find(p => p.id === mediaSession.getPeerId())!,
+                    } : undefined}
                 />
             </XView>
 

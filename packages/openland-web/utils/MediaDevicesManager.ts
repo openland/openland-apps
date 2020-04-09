@@ -8,9 +8,11 @@ class MediaDevicesManager {
     private devices: MediaDeviceInfo[] = [];
     private selectedInput: MediaDeviceInfo | undefined;
     private selectedOutput: MediaDeviceInfo | undefined;
+    private selectedVideoInput: MediaDeviceInfo | undefined;
     private devicesListeners = new Set<((devices: MediaDeviceInfo[]) => void)>();
     private selectedOutputListeners = new Set<((output: MediaDeviceInfo | undefined) => void)>();
     private selectedInputListeners = new Set<((input: MediaDeviceInfo | undefined) => void)>();
+    private selectedVideoInputListeners = new Set<((input: MediaDeviceInfo | undefined) => void)>();
     private streamUpdateListeners = new Set<((srteam: AppMediaStream) => void)>();
 
     constructor() {
@@ -32,6 +34,11 @@ class MediaDevicesManager {
         }
         if (!this.selectedOutput) {
             this.selectOutput(this.devices.find(dev => dev.kind === 'audiooutput' && dev.deviceId === 'default'));
+        }
+        if (!this.selectedVideoInput) {
+            let videoInputs = this.devices.filter(dev => dev.kind === 'videoinput');
+            let defaultVideoInput = videoInputs.find(dev => dev.deviceId === 'default') || videoInputs[0];
+            this.selectVideoInput(defaultVideoInput);
         }
     }
 
@@ -68,6 +75,13 @@ class MediaDevicesManager {
         }
     }
 
+    selectVideoInput = (device: MediaDeviceInfo | undefined) => {
+        this.selectedVideoInput = device;
+        for (let l of this.selectedVideoInputListeners) {
+            l(device);
+        }
+    }
+
     listenOutputDevice = (listener: (device: MediaDeviceInfo | undefined) => void) => {
         this.selectedOutputListeners.add(listener);
         listener(this.selectedOutput);
@@ -76,23 +90,42 @@ class MediaDevicesManager {
         };
     }
 
-    useMediaDevices: () => [MediaDeviceInfo[], MediaDeviceInfo | undefined, MediaDeviceInfo | undefined, (input: MediaDeviceInfo | undefined) => void, (output: MediaDeviceInfo | undefined) => void] = () => {
+    listenVideoInputDevice = (listener: (device: MediaDeviceInfo | undefined) => void) => {
+        this.selectedVideoInputListeners.add(listener);
+        listener(this.selectedVideoInput);
+        return () => {
+            this.selectedVideoInputListeners.delete(listener);
+        };
+    }
+
+    useMediaDevices: () => {
+        devices: MediaDeviceInfo[], 
+        input: MediaDeviceInfo | undefined, 
+        output: MediaDeviceInfo | undefined, 
+        videoInput: MediaDeviceInfo | undefined, 
+        selectInput: (input: MediaDeviceInfo | undefined) => void,
+        selectOutput: (output: MediaDeviceInfo | undefined) => void,
+        selectVideoInput: (videoInput: MediaDeviceInfo | undefined) => void,
+     } = () => {
         const [devices, setDevices] = React.useState(this.devices);
         const [input, setInput] = React.useState(this.selectedInput);
-        const [output, setOutput] = React.useState(this.selectedInput);
+        const [output, setOutput] = React.useState(this.selectedOutput);
+        const [videoInput, setVideoInput] = React.useState(this.selectedVideoInput);
 
         React.useEffect(() => {
             let d1 = this.listenDevices(setDevices);
             let d2 = this.listenInputDevice(setInput);
             let d3 = this.listenOutputDevice(setOutput);
+            let d4 = this.listenVideoInputDevice(setVideoInput);
             return () => {
                 d1();
                 d2();
                 d3();
+                d4();
             };
         }, []);
 
-        return [devices, input, output, this.selectInput, this.selectOutput];
+        return {devices, input, output, videoInput, selectInput: this.selectInput, selectOutput: this.selectOutput, selectVideoInput: this.selectVideoInput};
     }
 
     getSelectedInput = () => {

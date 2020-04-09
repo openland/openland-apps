@@ -18,11 +18,6 @@ const animatedAvatarStyle = css`
     z-index: 3;
 `;
 
-const compactAvatarStyle = css`
-    top: 16px;
-    left: 16px;
-`;
-
 const peerInfo = css`
     position: absolute;
     bottom: 0;
@@ -33,15 +28,19 @@ const peerInfo = css`
     display: flex;
 `;
 
+const peerInfoCompact = css`
+    padding: 0 16px 16px;
+`;
+
 const peerName = cx(
     TextLabel1,
     css`
         color: var(--foregroundContrast);
+        margin-right: 8px;
     `
 );
 
 const peerIcon = css`
-    margin-left: 8px;
     display: flex;
     align-items: center;
     svg path {
@@ -76,11 +75,13 @@ const bgAvatarOverlay = css`
     background: var(--overlayMedium);
 `;
 
-interface VideoPeerProps {
+export interface VideoPeerProps {
     mediaSession: MediaSessionManager;
     peer: Conference_conference_peers;
     calls: CallsEngine;
     callState: CallState;
+    // for settings view
+    compact?: boolean;
 }
 
 export const VideoPeer = React.memo((props: VideoPeerProps) => {
@@ -122,30 +123,42 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     const onClick = React.useCallback(() => stream ? showVideoModal(stream) : undefined, [stream]);
 
     return (
-        <XView backgroundColor="gray" alignItems="center" justifyContent="center" flexGrow={1}>
-            <div className={bgAvatar}>
-                {bgSrc ? (
-                    <ImgWithRetry src={bgSrc} className={bgAvatarImg} />
-                ) : (
-                    <div className={bgAvatarImg} style={{background: bgColor}} />
+        <XView 
+            backgroundColor="var(--accentPay)" 
+            alignItems="center" 
+            justifyContent="center" 
+            flexGrow={1} 
+            borderRadius={props.compact ? 8 : undefined}
+        >
+            {stream && <VideoComponent stream={stream} cover={true} compact={props.compact} onClick={onClick} mirror={isLocal} />}
+            {!stream && (
+                <>
+                    <div className={bgAvatar}>
+                        {bgSrc ? (
+                            <ImgWithRetry src={bgSrc} className={bgAvatarImg} />
+                        ) : (
+                            <div className={bgAvatarImg} style={{background: bgColor}} />
+                        )}
+                        
+                        <div className={bgAvatarOverlay} />
+                    </div>
+                    <div key={'animating_wrapper'} className={cx(animatedAvatarStyle)}>
+                        <UAvatar
+                            size={props.compact ? 'large' : 'xx-large'}
+                            id={props.peer.user.id}
+                            title={props.peer.user.name}
+                            photo={props.peer.user.photo}
+                        />
+                    </div>
+                </>
+            )}
+            <div className={cx(peerInfo, props.compact && peerInfoCompact)}>
+                {!props.compact && <div className={peerName}>{props.peer.user.name}</div>}
+                {icon && (
+                    <div className={peerIcon}>
+                        {icon}
+                    </div>
                 )}
-                
-                <div className={bgAvatarOverlay} />
-            </div>
-            {stream && <VideoComponent stream={stream} cover={true} onClick={onClick} mirror={isLocal} />}
-            <div key={'animtateing_wrapper'} className={cx(animatedAvatarStyle, stream && compactAvatarStyle)}>
-                <UAvatar
-                    size={stream ? 'large' : 'xx-large'}
-                    id={props.peer.user.id}
-                    title={props.peer.user.name}
-                    photo={props.peer.user.photo}
-                />
-            </div>
-            <div className={peerInfo}>
-                <div className={peerName}>{props.peer.user.name}</div>
-                <div className={peerIcon}>
-                    {icon}
-                </div>
             </div>
         </XView>
     );

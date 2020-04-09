@@ -9,6 +9,10 @@ const videoClass = css`
     height: 100%;
 `;
 
+const videoCompact = css`
+    border-radius: 8px;
+`;
+
 const coverClass = css`
     object-fit: cover;
 `;
@@ -17,7 +21,7 @@ const mirrorClass = css`
     transform: rotateY(180deg);
 `;
 
-export const VideoComponent = React.memo((props: { stream: MediaStream, cover?: boolean, videoClass?: string, onClick?: () => void, mirror?: boolean, switching?: boolean }) => {
+export const VideoComponent = React.memo((props: { stream: MediaStream, cover?: boolean, videoClass?: string, compact?: boolean; onClick?: () => void, mirror?: boolean, switching?: boolean }) => {
     const videoRef1 = React.useRef<HTMLVideoElement>(null);
     const videoRef2 = React.useRef<HTMLVideoElement>(null);
     const swtch = React.useRef(true);
@@ -37,10 +41,24 @@ export const VideoComponent = React.memo((props: { stream: MediaStream, cover?: 
             }
         }
     }, [props.stream]);
-    return <XView width={'100%'} height={'100%'} onClick={props.onClick} cursor={props.onClick ? 'pointer' : undefined}>
-        <video id={'video-1'} key={'video-1'} ref={videoRef1} className={cx(videoClass, props.cover && coverClass, props.videoClass, props.mirror && mirrorClass)} />
-        {props.switching && <video id={'video-2'} key={'video-2'} ref={videoRef2} className={cx(videoClass, props.cover && coverClass, props.videoClass, props.mirror && mirrorClass)} />}
-    </XView>;
+    return (
+        <XView width={'100%'} height={'100%'} onClick={props.onClick} cursor={props.onClick ? 'pointer' : undefined} position="relative">
+            <video id={'video-1'} key={'video-1'} ref={videoRef1} className={cx(videoClass, props.cover && coverClass, props.videoClass, props.mirror && mirrorClass, props.compact && videoCompact)} />
+            {props.switching && <video id={'video-2'} key={'video-2'} ref={videoRef2} className={cx(videoClass, props.cover && coverClass, props.videoClass, props.mirror && mirrorClass, props.compact && videoCompact)} />}
+            {props.compact && (
+                <XView 
+                    borderRadius={8}
+                    position="absolute"
+                    borderColor="rgba(0, 0, 0, 0.04)"
+                    borderWidth={1}
+                    top={0}
+                    bottom={0}
+                    left={0}
+                    right={0}
+                />
+            )}
+        </XView>
+    );
 });
 
 export const showVideoModal = (stream: MediaStream) => {
