@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    RoomFullWithoutMembers_SharedRoom,
+    RoomChat_room_SharedRoom,
     RoomMembersPaginated_members,
     RoomMemberRole,
 } from 'openland-api/spacex.types';
@@ -38,11 +38,11 @@ const MakeFeaturedModal = (props: { ctx: XModalController; roomId: string; userI
     const [featured, setFeatured] = React.useState<boolean>(!!userBadge);
     const descriptionField = useField('input.description', userBadge ? userBadge.name : '', form, [
         {
-            checkIsValid: value => value.trim().length > 0,
+            checkIsValid: (value) => value.trim().length > 0,
             text: "Description can't be empty",
         },
         {
-            checkIsValid: value => value.trim().length <= 40,
+            checkIsValid: (value) => value.trim().length <= 40,
             text: 'Max length: 40 characters',
         },
     ]);
@@ -64,6 +64,8 @@ const MakeFeaturedModal = (props: { ctx: XModalController; roomId: string; userI
                     });
                 }
             }
+
+            await client.refetchRoomFeaturedMembers({ roomId: roomId });
 
             ctx.hide();
         });
@@ -109,14 +111,14 @@ export const showMakeFeaturedModal = (roomId: string, userId: string) => {
         {
             title: 'Member featuring',
         },
-        ctx => {
+        (ctx) => {
             return <MakeFeaturedModal ctx={ctx} userId={userId} roomId={roomId} />;
         },
     );
 };
 
 interface GroupMemberMenuProps {
-    group: RoomFullWithoutMembers_SharedRoom;
+    group: RoomChat_room_SharedRoom;
     member: RoomMembersPaginated_members;
     onRemove: (memberId: string) => void;
     updateUserRole: (uid: string, role: RoomMemberRole) => void;
@@ -145,8 +147,16 @@ const getMenuContent = (
             title: member.role === 'ADMIN' ? 'Revoke admin status' : 'Make admin',
             icon: <StarIcon />,
             action: async () => {
-                await client.mutateRoomChangeRole({ userId: user.id, roomId: id, newRole: member.role === 'ADMIN' ? RoomMemberRole.MEMBER : RoomMemberRole.ADMIN });
-                opts.updateUserRole(user.id, member.role === 'ADMIN' ? RoomMemberRole.MEMBER : RoomMemberRole.ADMIN);
+                await client.mutateRoomChangeRole({
+                    userId: user.id,
+                    roomId: id,
+                    newRole: member.role === 'ADMIN' ? RoomMemberRole.MEMBER : RoomMemberRole.ADMIN,
+                });
+                await client.refetchRoomMembersShort({ roomId: id });
+                opts.updateUserRole(
+                    user.id,
+                    member.role === 'ADMIN' ? RoomMemberRole.MEMBER : RoomMemberRole.ADMIN,
+                );
             },
         });
     }
@@ -155,7 +165,13 @@ const getMenuContent = (
         res.push({
             title: `Leave ${typeString}`,
             icon: <LeaveIcon />,
-            onClick: () => showLeaveChatConfirmation(client, id, tabRouter, group.__typename === 'SharedRoom' && group.isPremium),
+            onClick: () =>
+                showLeaveChatConfirmation(
+                    client,
+                    id,
+                    tabRouter,
+                    group.__typename === 'SharedRoom' && group.isPremium,
+                ),
         });
     }
 
@@ -168,9 +184,7 @@ const getMenuContent = (
 
                 builder.title(`Remove ${user.name} from ${group.title}`);
                 builder.message(
-                    `Are you sure you want to remove ${
-                    user.firstName
-                    }? They will no longer be able to participate in the discussion.`,
+                    `Are you sure you want to remove ${user.firstName}? They will no longer be able to participate in the discussion.`,
                 );
                 builder.action(
                     `Remove`,
@@ -180,8 +194,9 @@ const getMenuContent = (
                             roomId: group.id,
                         });
 
-                        await client.refetchRoomWithoutMembers({ id: group.id });
-                        await client.refetchRoomMembersShort({ roomId: id });
+                        await client.refetchRoomChat({ id: group.id });
+                        await client.refetchRoomMembersShort({ roomId: group.id });
+                        await client.refetchRoomFeaturedMembers({ roomId: group.id });
 
                         onRemove(user.id);
                     },
@@ -209,5 +224,5 @@ export const GroupMemberMenu = React.memo((props: GroupMemberMenuProps) => {
         return null;
     }
 
-    return <UMoreButton menu={ctx => <MenuComponent ctx={ctx} items={menuContent} />} />;
+    return <UMoreButton menu={(ctx) => <MenuComponent ctx={ctx} items={menuContent} />} />;
 });

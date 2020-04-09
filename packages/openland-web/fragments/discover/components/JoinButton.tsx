@@ -95,7 +95,6 @@ export const JoinButton = React.memo((props: JoinButtonProps) => {
         setState('loading');
         const data = await client.mutateRoomJoin({ roomId: props.group.id });
         await client.refetchRoomChat({ id: data.join.id });
-        await client.refetchRoom({ id: data.join.id });
         await setState('done');
     };
 

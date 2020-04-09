@@ -55,6 +55,7 @@ const useSharedHandlers = (room: Room_room_SharedRoom, router: SRouter) => {
             .button('Cancel', 'cancel')
             .action('Leave', 'destructive', async () => {
                 await client.mutateRoomLeave({ roomId: room.id });
+                await client.refetchRoomChat({ id: room.id });
                 setTimeout(() => {
                     router.pushAndResetRoot('Home');
                 }, 100);

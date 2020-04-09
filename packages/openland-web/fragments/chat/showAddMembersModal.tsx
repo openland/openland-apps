@@ -287,7 +287,7 @@ export const AddMembersModal = React.memo(
 
         if (isGroup) {
             data = client.useRoomMembersShort({ roomId: id });
-            let group = client.useRoomWithoutMembers({ id: id });
+            let group = client.useRoomChat({ id: id });
             isPremium =
                 !!(group.room && group.room.__typename === 'SharedRoom') && group.room.isPremium;
             isOwner =

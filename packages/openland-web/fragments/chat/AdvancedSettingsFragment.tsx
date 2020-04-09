@@ -161,7 +161,7 @@ export const AdvancedSettingsFragment = () => {
                         : {}),
                 },
             });
-            await client.refetchRoomWithoutMembers({ id: chatId });
+            await client.refetchRoomChat({ id: chatId });
         });
 
     return (

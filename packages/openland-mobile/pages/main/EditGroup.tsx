@@ -16,7 +16,7 @@ import { ZPickField } from 'openland-mobile/components/ZPickField';
 
 const EditGroupComponent = XMemo<PageProps>((props) => {
     const client = getClient();
-    const group = client.useRoomWithoutMembers({ id: props.router.params.id }, { fetchPolicy: 'network-only' }).room;
+    const group = client.useRoomChat({ id: props.router.params.id }, { fetchPolicy: 'network-only' }).room;
 
     if (!group || group.__typename !== 'SharedRoom') {
         return null;
@@ -50,7 +50,7 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
                 };
                 
                 await client.mutateRoomUpdate(variables);
-                await client.refetchRoomWithoutMembers({ id: props.router.params.id });
+                await client.refetchRoomChat({ id: props.router.params.id });
 
                 props.router.back();
             } catch (e) {

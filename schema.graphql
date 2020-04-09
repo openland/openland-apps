@@ -168,28 +168,6 @@ type CommentEntry {
   childComments: [CommentEntry!]!
 }
 
-union CommentGlobalUpdate = CommentPeerUpdated
-
-type CommentGlobalUpdateBatch {
-  seq: Int!
-  state: String!
-  fromSeq: Int!
-  updates: [CommentGlobalUpdate!]!
-}
-
-union CommentGlobalUpdateContainer = CommentGlobalUpdateSingle | CommentGlobalUpdateBatch
-
-type CommentGlobalUpdateSingle {
-  seq: Int!
-  state: String!
-  update: CommentGlobalUpdate!
-}
-
-"""DEPRECATED START"""
-type CommentGlobalUpdatesState {
-  state: String
-}
-
 union CommentPeerRoot = CommentPeerRootMessage | CommentPeerRootFeedItem
 
 type CommentPeerRootFeedItem {
@@ -199,11 +177,6 @@ type CommentPeerRootFeedItem {
 type CommentPeerRootMessage {
   message: GeneralMessage!
   chat: Room!
-}
-
-type CommentPeerUpdated {
-  seq: Int!
-  peer: CommentsPeer!
 }
 
 type CommentReceived {
@@ -267,11 +240,17 @@ type Conference {
   peers: [ConferencePeer!]!
   iceServers: [ICEServer!]!
   strategy: ConferenceStrategy!
+  kind: ConferenceKind!
 }
 
 type ConferenceJoinResult {
   peerId: ID!
   conference: Conference!
+}
+
+enum ConferenceKind {
+  CONFERENCE
+  STREAM
 }
 
 type ConferenceMedia {
@@ -302,9 +281,14 @@ enum ConferencePeerConnectionState {
   READY
 }
 
+input ConferenceSettingsInput {
+  strategy: ConferenceStrategy
+  iceTransportPolicy: MediaStreamIceTransportPolicy
+}
+
 enum ConferenceStrategy {
   MASH
-  STREAM
+  SFU
 }
 
 input ContactPersonInput {
@@ -1519,8 +1503,6 @@ type Mutation {
   paymentIntentCommit(id: ID!): Boolean!
   paymentCancel(id: ID!): Boolean!
   subscriptionCancel(id: ID!): WalletSubscription!
-  alphaCreateInvite: Invite!
-  alphaDeleteInvite(id: ID!): String!
   alphaJoinInvite(key: String!, isNewUser: Boolean): ID!
   joinAppInvite(key: String!, isNewUser: Boolean): ID!
   phonebookAdd(records: [PhonebookRecordInput!]!): Boolean!
@@ -1664,13 +1646,6 @@ type Mutation {
   commentReactionRemove(commentId: ID!, reaction: MessageReactionType!): Boolean!
   subscribeToComments(peerId: ID!, type: CommentSubscriptionType!): Boolean!
   unsubscribeFromComments(peerId: ID!): Boolean!
-
-  """Deprecated"""
-  addMessageComment(messageId: ID!, message: String, replyComment: ID, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!]): Boolean!
-  betaAddMessageComment(messageId: ID!, message: String, replyComment: ID, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!], repeatKey: String): CommentEntry!
-  betaAddFeedComment(feedItemId: ID!, message: String, replyComment: ID, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!], repeatKey: String): CommentEntry!
-  subscribeMessageComments(messageId: ID!, type: CommentSubscriptionType!): Boolean!
-  unSubscribeMessageComments(messageId: ID!): Boolean!
   setEnvVar(name: String!, value: String!): Boolean!
   setEnvVarString(name: String!, value: String!): Boolean!
   setEnvVarNumber(name: String!, value: Int!): Boolean!
@@ -1679,9 +1654,10 @@ type Mutation {
   superAccountFeatureAdd(id: ID!, featureId: ID!): SuperAccount!
   superAccountFeatureRemove(id: ID!, featureId: ID!): SuperAccount!
   shareLocation(location: GeoLocationInput!): Boolean!
-  conferenceJoin(id: ID!, strategy: ConferenceStrategy): ConferenceJoinResult!
+  conferenceJoin(id: ID!, kind: ConferenceKind): ConferenceJoinResult!
   conferenceKeepAlive(id: ID!, peerId: ID!): Conference!
   conferenceLeave(id: ID!, peerId: ID!): Conference!
+  conferenceAlterSettings(id: ID!, settings: ConferenceSettingsInput!): Conference!
   mediaStreamOffer(id: ID!, peerId: ID!, offer: String!, seq: Int): ConferenceMedia!
   mediaStreamNegotiationNeeded(id: ID!, peerId: ID!, seq: Int): ConferenceMedia!
   mediaStreamAnswer(id: ID!, peerId: ID!, answer: String!, seq: Int): ConferenceMedia!
@@ -2357,16 +2333,11 @@ type Query {
   transactionsHistory(first: Int!, after: String): WalletTransactionConnection!
   subscriptions: [WalletSubscription!]!
   stripeToken: String!
-  alphaInvites: [Invite!]
   alphaInviteInfo(key: String!): InviteInfo
   appInvite: String!
   appInviteFromUser(shortname: String!): String!
   appInviteInfo(key: String!): AppInvite
-  alphaAppInvite: String! @deprecated(reason: "renamed to 'appInvite'")
-  alphaAppInviteInfo(key: String!): AppInviteInfo @deprecated(reason: "renamed to 'appInviteInfo'")
-  alphaInvitesHistory: [InviteHistotyInfo!]
   alphaResolveInvite(key: String!): ResolveInviteEntry
-  commentGlobalUpdatesState: CommentGlobalUpdatesState!
   debugParseID(id: ID!): DebugID!
   debugCrashQuery: String!
   debugUrlInfo(url: String!): UrlAugmentation
@@ -2867,7 +2838,6 @@ input StickerPackInput {
 type Subscription {
   lifecheck: String
   walletUpdates(fromState: String!): WalletUpdateContainer!
-  commentUpdatesGlobal(fromState: String): CommentGlobalUpdateContainer
   debugEvents(fromState: String, eventsCount: Int!, randomDelays: Boolean!, seed: String!): DebugEvent!
   debugReaderState(reader: String!): String
   debugServerId: String!

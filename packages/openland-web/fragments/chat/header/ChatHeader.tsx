@@ -87,8 +87,8 @@ const HeaderLastSeen = (props: { id: string }) => {
 };
 
 const ChatOnlinesTitle = (props: { id: string }) => {
-    let client = useClient();
-    let [onlineCount, setOnlineCount] = React.useState<number>(0);
+    const client = useClient();
+    const [onlineCount, setOnlineCount] = React.useState<number>(0);
 
     getChatOnlinesCount(props.id, client, count => setOnlineCount(count));
 
@@ -105,9 +105,9 @@ const ChatOnlinesTitle = (props: { id: string }) => {
 };
 
 const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
-    let calls = props.messenger.calls;
-    let callsState = calls.useState();
-    let client = useClient();
+    const client = useClient();
+    const calls = props.messenger.calls;
+    const callsState = calls.useState();
     return (
         <div className={cx(callsState.conversationId === props.chat.id && disabledBtn)}>
             <UIconButton
@@ -133,13 +133,13 @@ const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
 };
 
 const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
-    let layout = useLayout();
+    const layout = useLayout();
     const client = useClient();
     const tabRouter = useTabRouter();
-    let chat = client.useRoomChat({ id: props.id }, { fetchPolicy: 'cache-first' }).room!;
-    let messenger = React.useContext(MessengerContext);
+    const chat = client.useRoomChat({ id: props.id }, { fetchPolicy: 'cache-first' }).room!;
+    const messenger = React.useContext(MessengerContext);
+    const [muted, setMuted] = React.useState(chat.settings.mute);
     let calls = messenger.calls;
-    let [muted, setMuted] = React.useState(chat.settings.mute);
 
     let res = new UPopperMenuBuilder();
     if (layout === 'mobile' && chat.__typename === 'SharedRoom') {

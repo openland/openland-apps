@@ -86,7 +86,7 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
             }
 
             await Promise.all(promises);
-            await client.refetchRoomWithoutMembers({ id: props.roomId });
+            await client.refetchRoomChat({ id: props.roomId });
             props.onClose();
         });
     };
@@ -135,7 +135,7 @@ const RoomEditModalBody = (props: RoomEditModalT & { onClose: Function }) => {
 
 const RoomEditModal = ({ chatId, hide }: { chatId: string; hide: () => void }) => {
     const client = useClient();
-    const data = client.useRoomWithoutMembers({ id: chatId });
+    const data = client.useRoomChat({ id: chatId });
 
     let chat = data.room as Room_room_SharedRoom;
 

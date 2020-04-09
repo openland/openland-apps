@@ -350,7 +350,7 @@ export class DialogListEngine {
             // TODO: remove. Mb implement global events seq?
             // needed for recover chat after subscription pause
             if (res.membership !== event.membership) {
-                this.engine.client.refetchRoomWithoutMembers({ id: conversationId });
+                this.engine.client.refetchRoomChat({ id: conversationId });
             }
 
             let msg = formatMessage(message);

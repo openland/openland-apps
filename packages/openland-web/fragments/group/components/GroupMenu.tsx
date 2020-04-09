@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
-import { RoomFullWithoutMembers_SharedRoom } from 'openland-api/spacex.types';
+import { RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import {
     showRoomEditModal,
@@ -15,7 +15,7 @@ import { useClient } from 'openland-api/useClient';
 import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 
 interface GroupMenu {
-    group: RoomFullWithoutMembers_SharedRoom;
+    group: RoomChat_room_SharedRoom;
 }
 
 const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController }) => {

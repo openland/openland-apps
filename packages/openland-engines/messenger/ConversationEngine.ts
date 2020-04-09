@@ -852,7 +852,7 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     handleMuteUpdated = async (mute: boolean) => {
-        await this.engine.client.updateRoomWithoutMembers({ id: this.conversationId }, (data) => {
+        await this.engine.client.updateRoomChat({ id: this.conversationId }, (data) => {
             if (data.room) {
                 data.room.settings.mute = mute;
                 return data;
@@ -862,7 +862,7 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     handlePeerUpdated = async (peer: DialogUpdateFragment_DialogPeerUpdated_peer) => {
-        await this.engine.client.updateRoomWithoutMembers({ id: this.conversationId }, (data) => {
+        await this.engine.client.updateRoomChat({ id: this.conversationId }, (data) => {
             if (data.room) {
                 if (peer.__typename === 'SharedRoom' && data.room.__typename === 'SharedRoom') {
                     data.room.title = peer.title;
@@ -881,7 +881,7 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     handlePhotoUpdated = async (photo: string) => {
-        await this.engine.client.updateRoomWithoutMembers({ id: this.conversationId }, (data) => {
+        await this.engine.client.updateRoomChat({ id: this.conversationId }, (data) => {
             if (data.room && data.room.__typename === 'SharedRoom') {
                 data.room.photo = photo;
                 return data;

@@ -92,7 +92,6 @@ object Operations {
         if (name == "RoomSearch") return RoomSearch
         if (name == "RoomSocialImage") return RoomSocialImage
         if (name == "RoomTiny") return RoomTiny
-        if (name == "RoomWithoutMembers") return RoomWithoutMembers
         if (name == "Settings") return Settings
         if (name == "SharedMedia") return SharedMedia
         if (name == "SharedMediaCounters") return SharedMediaCounters

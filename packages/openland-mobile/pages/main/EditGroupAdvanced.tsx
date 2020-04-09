@@ -81,7 +81,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                 },
             });
 
-            await client.refetchRoomWithoutMembers({ id: roomId });
+            await client.refetchRoomChat({ id: roomId });
 
             props.router.back();
         });

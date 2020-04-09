@@ -27,7 +27,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     const client = useClient();
     const unicorn = useUnicorn();
     const roomId = props.id || unicorn.id;
-    const group = client.useRoomWithoutMembers(
+    const group = client.useRoomChat(
         { id: roomId },
         { fetchPolicy: 'cache-and-network' },
     ).room;

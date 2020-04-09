@@ -18,10 +18,10 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
     }
 
     const onChatLostAccess = React.useCallback(
-        () => {
-            client.refetchRoomWithoutMembers({ id: props.id });
+        async () => {
+            await client.refetchRoomChat({ id: props.id });
         },
-        [client],
+        [],
     );
 
     // Pin message

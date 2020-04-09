@@ -11,13 +11,13 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
-import { RoomWithoutMembers_room_SharedRoom } from 'openland-api/spacex.types';
+import { RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
 import { trackEvent } from 'openland-mobile/analytics';
 import { InviteLinkView } from './components/InviteLinkView';
 import { formatError } from 'openland-y-forms/errorHandling';
 
 const ProfileGroupLinkContent = React.memo((props: PageProps) => {
-    const { id, isChannel } = props.router.params.room as RoomWithoutMembers_room_SharedRoom;
+    const { id, isChannel } = props.router.params.room as RoomChat_room_SharedRoom;
     const invite = getClient().useRoomInviteLink({ roomId: id }, { fetchPolicy: 'network-only' })
         .link;
     const link = 'https://openland.com/invite/' + invite;

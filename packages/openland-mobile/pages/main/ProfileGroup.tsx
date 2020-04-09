@@ -11,7 +11,7 @@ import {
     RoomMemberRole,
     UserShort,
     Room_room_SharedRoom_members,
-    RoomWithoutMembers_room_SharedRoom,
+    RoomChat_room_SharedRoom,
     RoomMembersPaginated_members,
 } from 'openland-api/spacex.types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
@@ -36,8 +36,8 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     const client = useClient();
     const roomId = props.router.params.id;
 
-    const room = client.useRoomWithoutMembers({ id: roomId }, { fetchPolicy: 'cache-and-network' })
-        .room as RoomWithoutMembers_room_SharedRoom;
+    const room = client.useRoomChat({ id: roomId }, { fetchPolicy: 'cache-and-network' })
+        .room as RoomChat_room_SharedRoom;
     const initialMembers = client.useRoomMembersPaginated(
         { roomId: roomId, first: 10 },
         { fetchPolicy: 'cache-and-network' },
@@ -90,6 +90,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 .button('Cancel', 'cancel')
                 .action(`Leave`, 'destructive', async () => {
                     await client.mutateRoomLeave({ roomId });
+                    await client.refetchRoomChat({ id: roomId });
                     setTimeout(() => {
                         props.router.pushAndResetRoot('Home');
                     }, 100);
@@ -106,7 +107,9 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 .button('Cancel', 'cancel')
                 .action('Remove', 'destructive', async () => {
                     await client.mutateRoomKick({ userId: user.id, roomId });
-                    await client.refetchRoomWithoutMembers({ id: roomId });
+                    await client.refetchRoomChat({ id: roomId });
+                    await client.refetchRoomMembersShort({ roomId: roomId });
+                    await client.refetchRoomFeaturedMembers({ roomId: roomId });
 
                     handleRemoveMember(user.id);
                 })
@@ -126,7 +129,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                         roomId,
                         newRole: RoomMemberRole.ADMIN,
                     });
-
+                    await client.refetchRoomMembersShort({ roomId: roomId });
                     handleChangeMemberRole(user.id, RoomMemberRole.ADMIN);
                 })
                 .show();
@@ -145,7 +148,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                         roomId,
                         newRole: RoomMemberRole.MEMBER,
                     });
-
+                    await client.refetchRoomMembersShort({ roomId: roomId });
                     handleChangeMemberRole(user.id, RoomMemberRole.MEMBER);
                 })
                 .show();

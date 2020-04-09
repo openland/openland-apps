@@ -262,9 +262,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryRoomTiny(variables: Types.RoomTinyVariables, opts?: OperationParameters): Promise<Types.RoomTiny> {
         return this.query('RoomTiny', variables, opts);
     }
-    queryRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, opts?: OperationParameters): Promise<Types.RoomWithoutMembers> {
-        return this.query('RoomWithoutMembers', variables, opts);
-    }
     querySettings(opts?: OperationParameters): Promise<Types.Settings> {
         return this.query('Settings', undefined, opts);
     }
@@ -574,9 +571,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchRoomTiny(variables: Types.RoomTinyVariables, opts?: OperationParameters): Promise<Types.RoomTiny> {
         return this.refetch('RoomTiny', variables);
     }
-    refetchRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, opts?: OperationParameters): Promise<Types.RoomWithoutMembers> {
-        return this.refetch('RoomWithoutMembers', variables);
-    }
     refetchSettings(opts?: OperationParameters): Promise<Types.Settings> {
         return this.refetch('Settings', undefined);
     }
@@ -885,9 +879,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateRoomTiny(variables: Types.RoomTinyVariables, updater: (data: Types.RoomTiny) => Types.RoomTiny | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomTiny', variables);
-    }
-    updateRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, updater: (data: Types.RoomWithoutMembers) => Types.RoomWithoutMembers | null): Promise<boolean> {
-        return this.updateQuery(updater, 'RoomWithoutMembers', variables);
     }
     updateSettings(updater: (data: Types.Settings) => Types.Settings | null): Promise<boolean> {
         return this.updateQuery(updater, 'Settings', undefined);
@@ -1367,11 +1358,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useRoomTiny(variables: Types.RoomTinyVariables, opts?: SpaceQueryWatchParameters): Types.RoomTiny;
     useRoomTiny(variables: Types.RoomTinyVariables, opts?: SpaceQueryWatchParameters): Types.RoomTiny | null {
         return this.useQuery('RoomTiny', variables, opts);
-    }
-    useRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomWithoutMembers | null;
-    useRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomWithoutMembers;
-    useRoomWithoutMembers(variables: Types.RoomWithoutMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomWithoutMembers | null {
-        return this.useQuery('RoomWithoutMembers', variables, opts);
     }
     useSettings(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Settings | null;
     useSettings(opts?: SpaceQueryWatchParameters): Types.Settings;

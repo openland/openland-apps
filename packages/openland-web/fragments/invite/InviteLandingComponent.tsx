@@ -241,7 +241,7 @@ const JoinButton = ({ roomId, text }: { roomId: string; text: string }) => {
             action={async () => {
                 trackEvent('invite_button_clicked');
                 await client.mutateRoomJoin({ roomId });
-                await client.refetchRoomWithoutMembers({ id: roomId });
+                await client.refetchRoomChat({ id: roomId });
                 router.reset(`/mail/${roomId}`);
             }}
         />

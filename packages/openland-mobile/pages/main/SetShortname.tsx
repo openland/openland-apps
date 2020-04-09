@@ -115,13 +115,13 @@ const SetOrgShortname = XMemo<PageProps>((props) => {
 
 const SetGroupShortname = XMemo<PageProps>((props) => {
     const id = props.router.params.id;
-    const profile = getClient().useRoomWithoutMembers({ id }).room as Room_room_SharedRoom;
+    const profile = getClient().useRoomChat({ id }).room as Room_room_SharedRoom;
     const handleSave = React.useCallback(async (shortname) => {
         await getClient().mutateSetRoomShortname({ 
             shortname, 
             id
         });
-        await getClient().refetchRoomWithoutMembers({ id });
+        await getClient().refetchRoomChat({ id });
     }, [id]);
 
     return (

@@ -77,6 +77,9 @@ query RoomChat($id: ID!) {
                 id
                 mute
             }
+            myBadge {
+                ...UserBadge
+            }
         }
         ... on SharedRoom {
             id
@@ -88,6 +91,8 @@ query RoomChat($id: ID!) {
             canEdit
             photo
             membersCount
+            shortname
+            featuredMembersCount
             organization {
                 ...OrganizationMedium
             }
@@ -96,6 +101,9 @@ query RoomChat($id: ID!) {
             }
             pinnedMessage {
                 ...FullMessage
+            }
+            myBadge {
+                ...UserBadge
             }
             settings {
                 id
@@ -125,11 +133,6 @@ query RoomChat($id: ID!) {
                 isYou
             }
         }
-    }
-}
-query RoomWithoutMembers($id: ID!) {
-    room(id: $id) {
-        ...RoomFullWithoutMembers
     }
 }
 query RoomFeaturedMembers($roomId: ID!) {
@@ -308,12 +311,22 @@ mutation RoomAddMembers($roomId: ID!, $invites: [RoomInviteInput!]!) {
 }
 mutation RoomKick($roomId: ID!, $userId: ID!) {
     betaRoomKick(roomId: $roomId, userId: $userId) {
-        ...RoomFull
+        ... on PrivateRoom {
+            id
+        }
+        ... on SharedRoom {
+            id
+        }
     }
 }
 mutation RoomChangeRole($roomId: ID!, $userId: ID!, $newRole: RoomMemberRole!) {
     betaRoomChangeRole(roomId: $roomId, userId: $userId, newRole: $newRole) {
-        ...RoomFull
+        ... on PrivateRoom {
+            id
+        }
+        ... on SharedRoom {
+            id
+        }
     }
 }
 mutation RoomLeave($roomId: ID!) {

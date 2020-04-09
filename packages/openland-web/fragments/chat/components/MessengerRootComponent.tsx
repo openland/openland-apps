@@ -366,7 +366,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         ) {
             if (text.length > 0) {
                 this.conversation!.messagesActionsStateEngine.clear();
-                this.conversation!.engine.client.mutateEditMessage({
+                await this.conversation!.engine.client.mutateEditMessage({
                     messageId: actionMessage.id!,
                     message: text,
                     mentions: mentionsPrepared,
