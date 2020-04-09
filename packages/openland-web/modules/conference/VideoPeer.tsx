@@ -77,7 +77,7 @@ const bgAvatarOverlay = css`
 `;
 
 interface VideoPeerProps {
-    mediaSession: MediaSessionManager; 
+    mediaSession: MediaSessionManager;
     peer: Conference_conference_peers;
     calls: CallsEngine;
     callState: CallState;
@@ -86,8 +86,11 @@ interface VideoPeerProps {
 export const VideoPeer = React.memo((props: VideoPeerProps) => {
     let [stream, setStream] = React.useState<MediaStream>();
     let [talking, setTalking] = React.useState(false);
+    const [localPeer, setLocalPeer] = React.useState(props.mediaSession.getPeerId());
     const isLocal = props.peer.id === props.mediaSession.getPeerId();
     React.useEffect(() => {
+        // mediaSession initiating without peerId. Like waaat
+        let d0 = props.calls.listenState(() => setLocalPeer(props.mediaSession.getPeerId()));
         let d1: () => void;
         if (isLocal) {
             d1 = props.mediaSession.listenOutVideo(s => {
@@ -102,10 +105,11 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
             setTalking(v);
         });
         return () => {
+            d0();
             d1();
             d2();
         };
-    }, []);
+    }, [localPeer]);
 
     const icon = props.callState.status !== 'connected' ? <SvgLoader size="small" contrast={true} />
         : talking ? <SpeakerIcon />
