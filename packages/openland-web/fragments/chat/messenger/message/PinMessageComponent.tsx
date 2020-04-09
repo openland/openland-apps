@@ -4,7 +4,7 @@ import PinIcon from 'openland-icons/s/ic-pin-24.svg';
 import CloseIcon from 'openland-icons/s/ic-close-16.svg';
 import { emoji } from 'openland-y-utils/emoji';
 import {
-    Room_room_SharedRoom_pinnedMessage_GeneralMessage,
+    RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage,
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
 } from 'openland-api/spacex.types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
@@ -13,8 +13,8 @@ import { UTopBar } from 'openland-web/components/unicorn/UTopBar';
 interface PinMessageProps {
     engine: ConversationEngine;
     message:
-    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
-    | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage;
+        | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage
+        | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage;
 }
 
 export const PinMessageComponent = React.memo((props: PinMessageProps) => {
@@ -22,7 +22,7 @@ export const PinMessageComponent = React.memo((props: PinMessageProps) => {
     const { message, engine } = props;
 
     const handlePinClick = React.useCallback(
-        e => {
+        (e) => {
             if (router && message.id) {
                 router.navigate(`/message/${message.id}`);
             }

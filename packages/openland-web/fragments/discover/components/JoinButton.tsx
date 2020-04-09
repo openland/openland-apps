@@ -1,7 +1,7 @@
 import React from 'react';
 import { XViewRouterContext } from 'react-mental';
 import { css, cx } from 'linaria';
-import { DiscoverSharedRoom, Room_room_SharedRoom } from 'openland-api/spacex.types';
+import { DiscoverSharedRoom, RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
 import { showPremiumPayConfirm } from './ShowPremiumPayConfirm';
 import { useClient } from 'openland-api/useClient';
 import { XLoader } from 'openland-x/XLoader';
@@ -13,7 +13,7 @@ interface JoinButtonProps {
     group:
         | DiscoverSharedRoom
         | Pick<
-              Room_room_SharedRoom,
+              RoomChat_room_SharedRoom,
               'id' | 'isPremium' | 'premiumSettings' | 'title' | 'photo' | 'membership'
           >;
 }
@@ -109,7 +109,7 @@ export const JoinButton = React.memo((props: JoinButtonProps) => {
                 props.group.isPremium ? buttonAddPayStyle : buttonAddPrimaryStyle,
                 isDone && buttonDoneStyle,
             )}
-            onClick={async e => {
+            onClick={async (e) => {
                 if (isDone) {
                     return;
                 }

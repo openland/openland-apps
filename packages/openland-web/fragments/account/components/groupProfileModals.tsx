@@ -3,7 +3,7 @@ import { XView } from 'react-mental';
 import { TabRouterContextProps } from 'openland-unicorn/components/TabLayout';
 import { XLoader } from 'openland-x/XLoader';
 import { showModalBox } from 'openland-x/showModalBox';
-import { Room_room_SharedRoom, SharedRoomKind } from 'openland-api/spacex.types';
+import { RoomChat_room_SharedRoom, SharedRoomKind } from 'openland-api/spacex.types';
 import { useClient } from 'openland-api/useClient';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
@@ -137,9 +137,9 @@ const RoomEditModal = ({ chatId, hide }: { chatId: string; hide: () => void }) =
     const client = useClient();
     const data = client.useRoomChat({ id: chatId });
 
-    let chat = data.room as Room_room_SharedRoom;
+    let chat = data.room as RoomChat_room_SharedRoom;
 
-    const sharedRoom = chat.__typename === 'SharedRoom' ? (chat as Room_room_SharedRoom) : null;
+    const sharedRoom = chat.__typename === 'SharedRoom' ? (chat as RoomChat_room_SharedRoom) : null;
     const isChannel = !!(sharedRoom && sharedRoom.isChannel);
 
     if (!chat) {

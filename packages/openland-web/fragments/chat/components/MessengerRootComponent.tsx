@@ -10,7 +10,7 @@ import { ConversationState } from 'openland-engines/messenger/ConversationState'
 import {
     UserShort,
     SharedRoomKind,
-    Room_room_SharedRoom_pinnedMessage_GeneralMessage,
+    RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage,
     RoomChat_room,
     RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage,
     StickerFragment,
@@ -50,7 +50,7 @@ interface MessagesComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
     pinMessage:
-    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage
     | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
     | null;
     room: RoomChat_room;
@@ -545,7 +545,7 @@ interface MessengerRootComponentProps {
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
     pinMessage:
-    | Room_room_SharedRoom_pinnedMessage_GeneralMessage
+    | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage
     | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
     | null;
     room: RoomChat_room;

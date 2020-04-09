@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import { Page } from 'openland-unicorn/Page';
+import { emoji } from 'openland-y-utils/emoji';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { useForm } from 'openland-form/useForm';
@@ -12,8 +13,7 @@ import { USelectField } from 'openland-web/components/unicorn/USelect';
 import { UTextAreaField } from 'openland-web/components/unicorn/UTextArea';
 import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { getWelcomeMessageSenders } from 'openland-y-utils/getWelcomeMessageSenders';
-import { UAvatarUploadField, StoredFileT } from 'openland-web/components/unicorn/UAvatarUpload';
+import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
 import { TextBody, TextLabel1, TextTitle3 } from 'openland-web/utils/TextStyles';
 
 const sectionStyle = css`
@@ -50,7 +50,7 @@ const userOptionContainer = css`
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 8px 0;
+    padding: 8px 16px;
 `;
 
 const userNameStyle = css`
@@ -68,7 +68,7 @@ const OptionRender = (option: OptionType) => {
     return (
         <div className={userOptionContainer}>
             <UAvatar id={option.value} photo={option.photo} title={option.label} />
-            <div className={cx(userNameStyle, TextLabel1)}>{option.label}</div>
+            <div className={cx(userNameStyle, TextLabel1)}>{emoji(option.label)}</div>
         </div>
     );
 };
@@ -78,7 +78,7 @@ export const AdvancedSettingsFragment = () => {
     const client = useClient();
     const unicorn = useUnicorn();
     const chatId = unicorn.id;
-    const rawGroup = client.useRoom({ id: chatId }).room;
+    const rawGroup = client.useRoomChat({ id: chatId }).room;
 
     const group = rawGroup && rawGroup.__typename === 'SharedRoom' ? rawGroup : undefined;
 
@@ -118,19 +118,7 @@ export const AdvancedSettingsFragment = () => {
         group.welcomeMessage.sender ? group.welcomeMessage.sender.id : null,
         form,
     );
-    const roomAdmins = client.useRoomOrganizationAdminMembers({ id: chatId });
-
-    const sendersOption = getWelcomeMessageSenders({
-        chat: group,
-        admins: (
-            (roomAdmins &&
-                roomAdmins.room &&
-                roomAdmins.room.__typename === 'SharedRoom' &&
-                roomAdmins.room.organization &&
-                roomAdmins.room.organization.adminMembers) ||
-            []
-        ).map(a => a.user),
-    });
+    const roomAdmins = client.useRoomAdminMembers({ id: chatId }).room;
 
     const handleSave = () =>
         form.doAction(async () => {
@@ -153,11 +141,11 @@ export const AdvancedSettingsFragment = () => {
                 input: {
                     ...(socialImageField.value && socialImageField.value !== socialImageChat
                         ? {
-                            socialImageRef: {
-                                uuid: socialImageField.value.uuid,
-                                crop: socialImageField.value.crop || null,
-                            },
-                        }
+                              socialImageRef: {
+                                  uuid: socialImageField.value.uuid,
+                                  crop: socialImageField.value.crop || null,
+                              },
+                          }
                         : {}),
                 },
             });
@@ -186,11 +174,20 @@ export const AdvancedSettingsFragment = () => {
                             multi={false}
                             placeholder="Sender"
                             optionRenderer={OptionRender}
-                            options={sendersOption.map(i => ({
-                                value: i.id,
-                                label: i.name,
-                                photo: i.photo,
-                            }))}
+                            options={
+                                roomAdmins &&
+                                roomAdmins.__typename === 'SharedRoom' &&
+                                roomAdmins.organization &&
+                                roomAdmins.organization.admins
+                                    ? (roomAdmins.organization.admins.map((u) => {
+                                          return {
+                                              value: u.user.id,
+                                              label: u.user.name,
+                                              photo: u.user.photo,
+                                          };
+                                      }) as any)
+                                    : []
+                            }
                         />
                         <UTextAreaField
                             field={welcomeMessageField}
@@ -215,7 +212,8 @@ export const AdvancedSettingsFragment = () => {
                     boldTitle={true}
                 />
                 <div className={cx(descriptionStyle, TextBody)}>
-                    Create custom profile form for group members and connect them to each other based on their interests
+                    Create custom profile form for group members and connect them to each other
+                    based on their interests
                 </div>
             </div>
             <div className={sectionStyle}>

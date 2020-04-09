@@ -12,7 +12,7 @@ import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/C
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, SharedRoomKind, TypingType } from 'openland-api/spacex.types';
+import { RoomTiny_room, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom, SharedRoomKind, TypingType } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
@@ -50,7 +50,7 @@ import { SUPER_ADMIN } from '../Init';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
-    chat: Room_room;
+    chat: RoomTiny_room;
     theme: ThemeGlobal;
     mountedRef: { mounted: string[] };
 }
@@ -451,8 +451,8 @@ const ConversationComponent = XMemo<PageProps>((props) => {
         return <ChatAccessDenied theme={theme} onPress={() => props.router.back()} />;
     }
 
-    let sharedRoom = room.__typename === 'SharedRoom' ? room as Room_room_SharedRoom : null;
-    let privateRoom = room.__typename === 'PrivateRoom' ? room as Room_room_PrivateRoom : null;
+    let sharedRoom = room.__typename === 'SharedRoom' ? room as RoomTiny_room_SharedRoom : null;
+    let privateRoom = room.__typename === 'PrivateRoom' ? room as RoomTiny_room_PrivateRoom : null;
 
     if (sharedRoom && sharedRoom.membership !== 'MEMBER') {
         return <ChatJoin room={sharedRoom!} theme={theme} router={props.router}/>;

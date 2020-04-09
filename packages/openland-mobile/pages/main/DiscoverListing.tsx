@@ -104,7 +104,7 @@ interface DiscoverListingContentProps {
 
 const DiscoverListingContent = React.memo((props: DiscoverListingContentProps) => {
     const [joinedChats, setJoinedChats] = React.useState(new Set<string>());
-    const onJoin = React.useCallback((room: Types.Room_room_SharedRoom) => {
+    const onJoin = React.useCallback((room: Types.RoomChat_room_SharedRoom) => {
         setJoinedChats(prev => prev.add(room.id));
     }, []);
     return (

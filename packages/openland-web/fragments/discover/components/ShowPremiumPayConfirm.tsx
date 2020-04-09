@@ -1,5 +1,5 @@
 import React from 'react';
-import { Room_room_SharedRoom } from 'openland-api/spacex.types';
+import { RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
 import { showPayConfirm } from 'openland-web/fragments/wallet/modals/showPayConfirm';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { XViewRouter } from 'react-mental';
@@ -7,7 +7,7 @@ import { OpenlandClient } from 'openland-api/spacex';
 
 interface JoinButtonPremiumProps {
     group: Pick<
-        Room_room_SharedRoom,
+        RoomChat_room_SharedRoom,
         'id' | 'isPremium' | 'premiumSettings' | 'title' | 'photo' | 'membership'
     >;
 }
@@ -32,9 +32,11 @@ export const showPremiumPayConfirm = (
         action: async () => {
             let passIsActive = false;
             if (premiumSettings.interval) {
-                passIsActive = (await client.mutateBuyPremiumChatSubscription({
-                    chatId: props.group.id,
-                })).betaBuyPremiumChatSubscription.premiumPassIsActive;
+                passIsActive = (
+                    await client.mutateBuyPremiumChatSubscription({
+                        chatId: props.group.id,
+                    })
+                ).betaBuyPremiumChatSubscription.premiumPassIsActive;
             } else {
                 passIsActive = (await client.mutateBuyPremiumChatPass({ chatId: props.group.id }))
                     .betaBuyPremiumChatPass.premiumPassIsActive;

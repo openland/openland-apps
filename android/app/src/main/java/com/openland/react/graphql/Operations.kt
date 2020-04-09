@@ -79,7 +79,7 @@ object Operations {
         if (name == "ProfilePrefill") return ProfilePrefill
         if (name == "ResolveShortName") return ResolveShortName
         if (name == "ResolvedInvite") return ResolvedInvite
-        if (name == "Room") return Room
+        if (name == "RoomAdminMembers") return RoomAdminMembers
         if (name == "RoomChat") return RoomChat
         if (name == "RoomFeaturedMembers") return RoomFeaturedMembers
         if (name == "RoomInviteInfo") return RoomInviteInfo
@@ -87,7 +87,6 @@ object Operations {
         if (name == "RoomMembersPaginated") return RoomMembersPaginated
         if (name == "RoomMembersShort") return RoomMembersShort
         if (name == "RoomMembersTiny") return RoomMembersTiny
-        if (name == "RoomOrganizationAdminMembers") return RoomOrganizationAdminMembers
         if (name == "RoomPico") return RoomPico
         if (name == "RoomSearch") return RoomSearch
         if (name == "RoomSocialImage") return RoomSocialImage

@@ -4,7 +4,7 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { Modals } from '../modals/Modals';
 import { SRouter } from 'react-native-s/SRouter';
-import { RoomMemberRole, Room_room, Room_room_SharedRoom } from 'openland-api/spacex.types';
+import { RoomTiny_room, RoomMemberRole, RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
 
@@ -12,10 +12,10 @@ interface ConversationManageButtonProps {
     muted: boolean;
     onMutedChange: () => void;
     router: SRouter;
-    room: Room_room;
+    room: RoomTiny_room;
 }
 
-const useSharedHandlers = (room: Room_room_SharedRoom, router: SRouter) => {
+const useSharedHandlers = (room: RoomChat_room_SharedRoom, router: SRouter) => {
     const client = useClient();
     const userId = getMessenger().engine.user.id;
 
@@ -80,7 +80,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         router.push('SharedMedia', { chatId: room.id });
     }, [room.id]);
 
-    const { onInvitePress, onLeavePress } = useSharedHandlers(room as Room_room_SharedRoom, router);
+    const { onInvitePress, onLeavePress } = useSharedHandlers(room as RoomChat_room_SharedRoom, router);
 
     const onPress = React.useCallback(() => {
         const builder = new ActionSheetBuilder();

@@ -43,11 +43,6 @@ subscription ChatWatch($chatId: ID!, $state: String) {
         }
     }
 }
-query Room($id: ID!) {
-    room(id: $id) {
-        ...RoomFull
-    }
-}
 query RoomPico($id: ID!) {
     room(id: $id) {
         ...RoomNano
@@ -89,10 +84,21 @@ query RoomChat($id: ID!) {
             isChannel
             role
             canEdit
+            canSendMessage
+            canUnpinMessage
             photo
             membersCount
             shortname
             featuredMembersCount
+            socialImage
+            welcomeMessage {
+                isOn
+                sender {
+                    id
+                    name
+                }
+                message
+            }
             organization {
                 ...OrganizationMedium
             }
@@ -391,13 +397,13 @@ query RoomMembersTiny($roomId: ID!) {
         }
     }
 }
-query RoomOrganizationAdminMembers($id: ID!) {
+query RoomAdminMembers($id: ID!) {
     room(id: $id) {
         ... on SharedRoom {
             id
             organization {
                 id
-                adminMembers: alphaOrganizationAdminMembers {
+                admins: alphaOrganizationAdminMembers {
                     role
                     user {
                         ...UserShort

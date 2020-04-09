@@ -16,7 +16,7 @@ import {
     DialogUpdateFragment_DialogDeleted,
     DialogUpdateFragment_DialogMuteChanged,
     DialogUpdateFragment_DialogMessageRead,
-    Room_room_PrivateRoom,
+    RoomNano_PrivateRoom,
     RoomPico_room_SharedRoom,
     TypingType,
     SharedRoomMembershipStatus,
@@ -393,7 +393,7 @@ export class DialogListEngine {
                 info.room!.__typename === 'SharedRoom' ? (info.room as RoomPico_room_SharedRoom) : null;
             let privateRoom =
                 info.room!.__typename === 'PrivateRoom'
-                    ? (info.room as Room_room_PrivateRoom)
+                    ? (info.room as RoomNano_PrivateRoom)
                     : null;
             let room = (sharedRoom || privateRoom)!;
 

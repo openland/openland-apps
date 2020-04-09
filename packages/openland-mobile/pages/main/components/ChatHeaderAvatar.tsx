@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, TouchableOpacity, Platform } from 'react-native';
 import { SRouter } from 'react-native-s/SRouter';
-import { Room_room_SharedRoom, Room_room_PrivateRoom, RoomTiny_room } from 'openland-api/spacex.types';
+import { RoomTiny_room_SharedRoom, RoomNano_PrivateRoom, RoomTiny_room } from 'openland-api/spacex.types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -9,8 +9,8 @@ import { XMemo } from 'openland-y-utils/XMemo';
 export let resolveConversationProfilePath = (room: RoomTiny_room) => {
     let path: string | undefined = undefined;
     let pathArgs: any = {};
-    let sharedRoom = room.__typename === 'SharedRoom' ? room as Room_room_SharedRoom : null;
-    let privateRoom = room.__typename === 'PrivateRoom' ? room as Room_room_PrivateRoom : null;
+    let sharedRoom = room.__typename === 'SharedRoom' ? room as RoomTiny_room_SharedRoom : null;
+    let privateRoom = room.__typename === 'PrivateRoom' ? room as RoomNano_PrivateRoom : null;
 
     if (privateRoom) {
         path = 'ProfileUser';
@@ -31,8 +31,8 @@ const ChatHeaderAvatarContent = XMemo<{ conversationId: string, router: SRouter 
 
     let path = resolveConversationProfilePath(room.room!);
 
-    let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as Room_room_SharedRoom : null;
-    let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room! as Room_room_PrivateRoom : null;
+    let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as RoomTiny_room_SharedRoom : null;
+    let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room! as RoomNano_PrivateRoom : null;
 
     return (
         <TouchableOpacity disabled={!path.path} onPress={() => props.router.push(path.path!!, path.pathArgs)} style={{ marginLeft: 16, marginRight: 12 }}>

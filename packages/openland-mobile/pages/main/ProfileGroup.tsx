@@ -10,7 +10,6 @@ import { SHeader } from 'react-native-s/SHeader';
 import {
     RoomMemberRole,
     UserShort,
-    Room_room_SharedRoom_members,
     RoomChat_room_SharedRoom,
     RoomMembersPaginated_members,
 } from 'openland-api/spacex.types';
@@ -48,57 +47,55 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     const [loading, setLoading] = React.useState(false);
 
     React.useEffect(() => {
-        members.map(u => u.user.id).map(getMessenger().engine.getOnlines().onUserAppears);
+        members.map((u) => u.user.id).map(getMessenger().engine.getOnlines().onUserAppears);
     }, members);
 
     // callbacks
     const handleAddMembers = React.useCallback(
         (addedMembers: RoomMembersPaginated_members[]) => {
-            setMembers(current => [...current, ...addedMembers]);
+            setMembers((current) => [...current, ...addedMembers]);
         },
         [members],
     );
 
     const handleRemoveMember = React.useCallback(
         (memberId: string) => {
-            setMembers(current => current.filter(m => m.user.id !== memberId));
+            setMembers((current) => current.filter((m) => m.user.id !== memberId));
         },
         [members],
     );
 
     const handleChangeMemberRole = React.useCallback(
         (memberId: string, newRole: RoomMemberRole) => {
-            setMembers(current =>
-                current.map(m => (m.user.id === memberId ? { ...m, role: newRole } : m)),
+            setMembers((current) =>
+                current.map((m) => (m.user.id === memberId ? { ...m, role: newRole } : m)),
             );
         },
         [members],
     );
 
-    const handleSend = React.useCallback(
-        () => {
-            props.router.pushAndReset('Conversation', { flexibleId: roomId });
-        },
-        [roomId],
-    );
+    const handleSend = React.useCallback(() => {
+        props.router.pushAndReset('Conversation', { flexibleId: roomId });
+    }, [roomId]);
 
-    const handleLeave = React.useCallback(
-        () => {
-            Alert.builder()
-                .title(`Leave ${typeString}?`)
-                .message(room.isPremium ? 'Leaving the group only removes it from your chat list. To cancel the associated subscription, visit Subscriptions section in your Account tab and cancel it from there.' : 'You may not be able to join it again')
-                .button('Cancel', 'cancel')
-                .action(`Leave`, 'destructive', async () => {
-                    await client.mutateRoomLeave({ roomId });
-                    await client.refetchRoomChat({ id: roomId });
-                    setTimeout(() => {
-                        props.router.pushAndResetRoot('Home');
-                    }, 100);
-                })
-                .show();
-        },
-        [roomId],
-    );
+    const handleLeave = React.useCallback(() => {
+        Alert.builder()
+            .title(`Leave ${typeString}?`)
+            .message(
+                room.isPremium
+                    ? 'Leaving the group only removes it from your chat list. To cancel the associated subscription, visit Subscriptions section in your Account tab and cancel it from there.'
+                    : 'You may not be able to join it again',
+            )
+            .button('Cancel', 'cancel')
+            .action(`Leave`, 'destructive', async () => {
+                await client.mutateRoomLeave({ roomId });
+                await client.refetchRoomChat({ id: roomId });
+                setTimeout(() => {
+                    props.router.pushAndResetRoot('Home');
+                }, 100);
+            })
+            .show();
+    }, [roomId]);
 
     const handleKick = React.useCallback(
         (user: UserShort) => {
@@ -157,7 +154,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     );
 
     const handleMemberLongPress = React.useCallback(
-        (member: Room_room_SharedRoom_members, canKick: boolean, canEdit: boolean) => {
+        (member: RoomMembersPaginated_members, canKick: boolean, canEdit: boolean) => {
             let builder = ActionSheet.builder();
 
             let user = member.user;
@@ -209,102 +206,97 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
         [roomId],
     );
 
-    const handleAddMember = React.useCallback(
-        () => {
-            trackEvent('invite_view', { invite_type: 'group' });
-            Modals.showUserMuptiplePicker(
-                props.router,
-                {
-                    title: 'Add',
-                    action: async users => {
-                        startLoader();
-                        try {
-                            const addedMembers = (await client.mutateRoomAddMembers({
-                                invites: users.map(u => ({
+    const handleAddMember = React.useCallback(() => {
+        trackEvent('invite_view', { invite_type: 'group' });
+        Modals.showUserMuptiplePicker(
+            props.router,
+            {
+                title: 'Add',
+                action: async (users) => {
+                    startLoader();
+                    try {
+                        const addedMembers = (
+                            await client.mutateRoomAddMembers({
+                                invites: users.map((u) => ({
                                     userId: u.id,
                                     role: RoomMemberRole.MEMBER,
                                 })),
                                 roomId: room.id,
-                            })).alphaRoomInvite;
+                            })
+                        ).alphaRoomInvite;
 
-                            handleAddMembers(addedMembers);
-                        } catch (e) {
-                            Alert.alert(e.message);
-                        }
-                        stopLoader();
-                        props.router.back();
-                    },
+                        handleAddMembers(addedMembers);
+                    } catch (e) {
+                        Alert.alert(e.message);
+                    }
+                    stopLoader();
+                    props.router.back();
                 },
-                room.isPremium ? 'Add people for free' : 'Add people',
-                members.map(m => m.user.id),
-                [getMessenger().engine.user.id],
-                { path: 'ProfileGroupLink', pathParams: { room } },
-            );
-        },
-        [members],
-    );
+            },
+            room.isPremium ? 'Add people for free' : 'Add people',
+            members.map((m) => m.user.id),
+            [getMessenger().engine.user.id],
+            { path: 'ProfileGroupLink', pathParams: { room } },
+        );
+    }, [members]);
 
-    const handleManageClick = React.useCallback(
-        () => {
-            let builder = new ActionSheetBuilder();
+    const handleManageClick = React.useCallback(() => {
+        let builder = new ActionSheetBuilder();
 
-            if (room.canEdit || SUPER_ADMIN) {
-                builder.action(
-                    'Edit info',
-                    () => props.router.push('EditGroup', { id: room.id }),
-                    false,
-                    require('assets/ic-edit-24.png'),
-                );
-            }
-
-            if (
-                room.role === 'OWNER' ||
-                room.role === 'ADMIN' ||
-                (room.organization && (room.organization.isAdmin || room.organization.isOwner))
-            ) {
-                builder.action(
-                    'Advanced settings',
-                    () => props.router.push('EditGroupAdvanced', { id: room.id }),
-                    false,
-                    require('assets/ic-settings-24.png'),
-                );
-            }
-
+        if (room.canEdit || SUPER_ADMIN) {
             builder.action(
-                `Leave ${typeString}`,
-                handleLeave,
+                'Edit info',
+                () => props.router.push('EditGroup', { id: room.id }),
                 false,
-                require('assets/ic-leave-24.png'),
+                require('assets/ic-edit-24.png'),
             );
+        }
 
-            builder.show();
-        },
-        [room],
-    );
+        if (
+            room.role === 'OWNER' ||
+            room.role === 'ADMIN' ||
+            (room.organization && (room.organization.isAdmin || room.organization.isOwner))
+        ) {
+            builder.action(
+                'Advanced settings',
+                () => props.router.push('EditGroupAdvanced', { id: room.id }),
+                false,
+                require('assets/ic-settings-24.png'),
+            );
+        }
 
-    const handleLoadMore = React.useCallback(
-        async () => {
-            if (members.length < (room.membersCount || 0) && !loading) {
-                setLoading(true);
+        builder.action(
+            `Leave ${typeString}`,
+            handleLeave,
+            false,
+            require('assets/ic-leave-24.png'),
+        );
 
-                const loaded = (await client.queryRoomMembersPaginated(
+        builder.show();
+    }, [room]);
+
+    const handleLoadMore = React.useCallback(async () => {
+        if (members.length < (room.membersCount || 0) && !loading) {
+            setLoading(true);
+
+            const loaded = (
+                await client.queryRoomMembersPaginated(
                     {
                         roomId,
                         first: 10,
                         after: members[members.length - 1].user.id,
                     },
                     { fetchPolicy: 'network-only' },
-                )).members;
+                )
+            ).members;
 
-                setMembers(current => [
-                    ...current,
-                    ...loaded.filter(m => !current.find(m2 => m2.user.id === m.user.id)),
-                ]);
-                setLoading(false);
-            }
-        },
-        [room, roomId, members, loading],
-    );
+            setMembers((current) => [
+                ...current,
+                ...loaded.filter((m) => !current.find((m2) => m2.user.id === m.user.id)),
+            ]);
+            setLoading(false);
+        }
+    }, [room, roomId, members, loading]);
 
     let subtitle = (
         <>
@@ -342,9 +334,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                         >
                             <PremiumBadge />
                         </View>
-                    ) : (
-                            undefined
-                        )
+                    ) : undefined
                 }
                 titleColor={highlightGroup ? theme.accentPositive : undefined}
                 title={room.title}
@@ -377,15 +367,18 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             </ZListGroup>
 
             {donateTo && Platform.OS !== 'ios' && (
-                <ProfileDonationGroup 
-                    headerMarginTop={!hasAbout ? 0 : undefined} 
-                    name={donateTo} 
-                    chatId={room.id} 
-                    shouldHide={isYou} 
+                <ProfileDonationGroup
+                    headerMarginTop={!hasAbout ? 0 : undefined}
+                    name={donateTo}
+                    chatId={room.id}
+                    shouldHide={isYou}
                 />
             )}
 
-            <ZListGroup header="Settings" headerMarginTop={(!hasDonate || Platform.OS === 'ios') && !hasAbout ? 0 : undefined}>
+            <ZListGroup
+                header="Settings"
+                headerMarginTop={(!hasDonate || Platform.OS === 'ios') && !hasAbout ? 0 : undefined}
+            >
                 <NotificationSettings id={room.id} mute={!!room.settings.mute} />
             </ZListGroup>
 

@@ -223,8 +223,8 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryResolvedInvite(variables: Types.ResolvedInviteVariables, opts?: OperationParameters): Promise<Types.ResolvedInvite> {
         return this.query('ResolvedInvite', variables, opts);
     }
-    queryRoom(variables: Types.RoomVariables, opts?: OperationParameters): Promise<Types.Room> {
-        return this.query('Room', variables, opts);
+    queryRoomAdminMembers(variables: Types.RoomAdminMembersVariables, opts?: OperationParameters): Promise<Types.RoomAdminMembers> {
+        return this.query('RoomAdminMembers', variables, opts);
     }
     queryRoomChat(variables: Types.RoomChatVariables, opts?: OperationParameters): Promise<Types.RoomChat> {
         return this.query('RoomChat', variables, opts);
@@ -246,9 +246,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: OperationParameters): Promise<Types.RoomMembersTiny> {
         return this.query('RoomMembersTiny', variables, opts);
-    }
-    queryRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts?: OperationParameters): Promise<Types.RoomOrganizationAdminMembers> {
-        return this.query('RoomOrganizationAdminMembers', variables, opts);
     }
     queryRoomPico(variables: Types.RoomPicoVariables, opts?: OperationParameters): Promise<Types.RoomPico> {
         return this.query('RoomPico', variables, opts);
@@ -532,8 +529,8 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchResolvedInvite(variables: Types.ResolvedInviteVariables, opts?: OperationParameters): Promise<Types.ResolvedInvite> {
         return this.refetch('ResolvedInvite', variables);
     }
-    refetchRoom(variables: Types.RoomVariables, opts?: OperationParameters): Promise<Types.Room> {
-        return this.refetch('Room', variables);
+    refetchRoomAdminMembers(variables: Types.RoomAdminMembersVariables, opts?: OperationParameters): Promise<Types.RoomAdminMembers> {
+        return this.refetch('RoomAdminMembers', variables);
     }
     refetchRoomChat(variables: Types.RoomChatVariables, opts?: OperationParameters): Promise<Types.RoomChat> {
         return this.refetch('RoomChat', variables);
@@ -555,9 +552,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: OperationParameters): Promise<Types.RoomMembersTiny> {
         return this.refetch('RoomMembersTiny', variables);
-    }
-    refetchRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts?: OperationParameters): Promise<Types.RoomOrganizationAdminMembers> {
-        return this.refetch('RoomOrganizationAdminMembers', variables);
     }
     refetchRoomPico(variables: Types.RoomPicoVariables, opts?: OperationParameters): Promise<Types.RoomPico> {
         return this.refetch('RoomPico', variables);
@@ -841,8 +835,8 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateResolvedInvite(variables: Types.ResolvedInviteVariables, updater: (data: Types.ResolvedInvite) => Types.ResolvedInvite | null): Promise<boolean> {
         return this.updateQuery(updater, 'ResolvedInvite', variables);
     }
-    updateRoom(variables: Types.RoomVariables, updater: (data: Types.Room) => Types.Room | null): Promise<boolean> {
-        return this.updateQuery(updater, 'Room', variables);
+    updateRoomAdminMembers(variables: Types.RoomAdminMembersVariables, updater: (data: Types.RoomAdminMembers) => Types.RoomAdminMembers | null): Promise<boolean> {
+        return this.updateQuery(updater, 'RoomAdminMembers', variables);
     }
     updateRoomChat(variables: Types.RoomChatVariables, updater: (data: Types.RoomChat) => Types.RoomChat | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomChat', variables);
@@ -864,9 +858,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateRoomMembersTiny(variables: Types.RoomMembersTinyVariables, updater: (data: Types.RoomMembersTiny) => Types.RoomMembersTiny | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomMembersTiny', variables);
-    }
-    updateRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, updater: (data: Types.RoomOrganizationAdminMembers) => Types.RoomOrganizationAdminMembers | null): Promise<boolean> {
-        return this.updateQuery(updater, 'RoomOrganizationAdminMembers', variables);
     }
     updateRoomPico(variables: Types.RoomPicoVariables, updater: (data: Types.RoomPico) => Types.RoomPico | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomPico', variables);
@@ -1294,10 +1285,10 @@ export class OpenlandClient extends BaseSpaceXClient {
     useResolvedInvite(variables: Types.ResolvedInviteVariables, opts?: SpaceQueryWatchParameters): Types.ResolvedInvite | null {
         return this.useQuery('ResolvedInvite', variables, opts);
     }
-    useRoom(variables: Types.RoomVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Room | null;
-    useRoom(variables: Types.RoomVariables, opts?: SpaceQueryWatchParameters): Types.Room;
-    useRoom(variables: Types.RoomVariables, opts?: SpaceQueryWatchParameters): Types.Room | null {
-        return this.useQuery('Room', variables, opts);
+    useRoomAdminMembers(variables: Types.RoomAdminMembersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomAdminMembers | null;
+    useRoomAdminMembers(variables: Types.RoomAdminMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomAdminMembers;
+    useRoomAdminMembers(variables: Types.RoomAdminMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomAdminMembers | null {
+        return this.useQuery('RoomAdminMembers', variables, opts);
     }
     useRoomChat(variables: Types.RoomChatVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomChat | null;
     useRoomChat(variables: Types.RoomChatVariables, opts?: SpaceQueryWatchParameters): Types.RoomChat;
@@ -1333,11 +1324,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: SpaceQueryWatchParameters): Types.RoomMembersTiny;
     useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: SpaceQueryWatchParameters): Types.RoomMembersTiny | null {
         return this.useQuery('RoomMembersTiny', variables, opts);
-    }
-    useRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomOrganizationAdminMembers | null;
-    useRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomOrganizationAdminMembers;
-    useRoomOrganizationAdminMembers(variables: Types.RoomOrganizationAdminMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomOrganizationAdminMembers | null {
-        return this.useQuery('RoomOrganizationAdminMembers', variables, opts);
     }
     useRoomPico(variables: Types.RoomPicoVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomPico | null;
     useRoomPico(variables: Types.RoomPicoVariables, opts?: SpaceQueryWatchParameters): Types.RoomPico;

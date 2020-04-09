@@ -15,7 +15,7 @@ import { SUPER_ADMIN } from '../Init';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
-import { Room_room_SharedRoom } from 'openland-api/spacex.types';
+import { RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
 
 interface ContentProps {
     name: string;
@@ -115,7 +115,7 @@ const SetOrgShortname = XMemo<PageProps>((props) => {
 
 const SetGroupShortname = XMemo<PageProps>((props) => {
     const id = props.router.params.id;
-    const profile = getClient().useRoomChat({ id }).room as Room_room_SharedRoom;
+    const profile = getClient().useRoomChat({ id }).room as RoomChat_room_SharedRoom;
     const handleSave = React.useCallback(async (shortname) => {
         await getClient().mutateSetRoomShortname({ 
             shortname, 
