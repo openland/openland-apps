@@ -8,14 +8,14 @@ import { css } from 'linaria';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalController } from 'openland-x/showModal';
-import { USelect } from 'openland-web/components/unicorn/USelect';
-import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { DataSourceMessageItem, DataSourceDateItem, DataSourceNewDividerItem } from 'openland-engines/messenger/ConversationEngine';
 import { YoutubeParty } from './YoutubeParty';
 import { VolumeSpace } from './VolumeSpace';
 import { VideoPeer } from './VideoPeer';
+import OpenlandWatermark from 'openland-icons/openland-watermark.svg';
+import { CallControls } from './CallControls';
 
 const controlsStyle = css`
     position: absolute;
@@ -39,33 +39,6 @@ const controlsContainerStyle = css`
     border-radius: 24px;
 `;
 
-const SettingsModal = React.memo((props: {}) => {
-    let [devices, input, ouput, setInput, setOutput] = MediaDevicesManager.instance().useMediaDevices();
-
-    let outputs = devices.filter(d => d.kind === 'audiooutput');
-    let inputs = devices.filter(d => d.kind === 'audioinput');
-
-    let setInputDevice = React.useCallback((val) => {
-        let device = devices.find(d => d.deviceId === val.value);
-        setInput(device);
-    }, [devices]);
-    let setOutputDevice = React.useCallback((val) => {
-        let dev = devices.find(d => d.deviceId === val.value);
-        setOutput(dev);
-    }, [devices]);
-
-    return (
-        <XView height={500} justifyContent="flex-start">
-            <XView paddingHorizontal={16} paddingVertical={8}>
-                <USelect searchable={false} onChange={setInputDevice} placeholder="Microphone" value={input?.deviceId} options={inputs.map(o => ({ value: o.deviceId, label: o.label }))} />
-            </XView>
-            <XView paddingHorizontal={16} paddingVertical={8}>
-                <USelect searchable={false} onChange={setOutputDevice} placeholder="Speakers" value={ouput?.deviceId} options={outputs.map(o => ({ value: o.deviceId, label: o.label }))} />
-            </XView>
-        </XView>
-    );
-});
-
 const Controls = React.memo((props: {
     calls: CallsEngine,
     ctx: XModalController,
@@ -75,9 +48,6 @@ const Controls = React.memo((props: {
     setLayout: (layout: 'volume-space' | 'grid') => void
 }) => {
     let callState = props.calls.useState();
-    let showSettings = React.useCallback(() => {
-        showModalBox({ title: 'Audio setting' }, () => <SettingsModal />);
-    }, []);
     return (
         <div className={controlsStyle} >
             <div className={controlsContainerStyle}>
@@ -117,13 +87,6 @@ const Controls = React.memo((props: {
                     style={'secondary'}
                     text={'Minimize call'}
                     onClick={props.ctx.hide}
-                    marginHorizontal={4}
-                />
-                <UButton
-                    flexShrink={1}
-                    style={'secondary'}
-                    text={'Settings'}
-                    onClick={showSettings}
                     marginHorizontal={4}
                 />
 
@@ -249,15 +212,50 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
             }
         );
     }, []);
+    let hideLegacyControls = true;
     return (
-        <XView flexDirection="row" flexGrow={1} backgroundColor="gray" alignItems="stretch">
-            {<XView flexDirection={rotated ? 'row' : 'column'} justifyContent="flex-start" flexGrow={1} flexShrink={1}>
-                {layout === 'grid' && mediaSession && slices.map((s, i) => (
-                    <XView key={`container-${i}`} flexDirection={rotated ? 'column' : 'row'} justifyContent="flex-start" flexShrink={1} flexGrow={1}>{s.map(p => <VideoPeer key={`peer-${p.id}`} peer={p} mediaSession={mediaSession} calls={props.calls} callState={callState} />)}</XView>
-                ))}
-                {layout === 'volume-space' && mediaSession && <VolumeSpace mediaSession={mediaSession} peers={[...conference ? conference.conference.peers : []]} />}
-                <Controls calls={props.calls} ctx={props.ctx} showLink={showLink} setShowLink={setShowLink} layout={layout} setLayout={setLayout} />
-            </XView >}
+        <XView flexDirection="row" flexGrow={1} backgroundColor="gray" alignItems="stretch" position="relative">
+            <XView position="absolute" top={12} left={12} opacity={0.72} zIndex={5}>
+                <OpenlandWatermark />
+            </XView>
+            <XView flexDirection="row" flexGrow={1} flexShrink={1}>
+                <XView flexDirection={rotated ? 'row' : 'column'} justifyContent="flex-start" flexGrow={1} flexShrink={1} position="relative">
+                    {layout === 'grid' && mediaSession && slices.map((s, i) => (
+                        <XView 
+                            key={`container-${i}`} 
+                            flexDirection={rotated ? 'column' : 'row'} 
+                            justifyContent="flex-start" 
+                            flexShrink={1} 
+                            flexGrow={1}
+                        >
+                            {s.map(p => (
+                                <VideoPeer 
+                                    key={`peer-${p.id}`} 
+                                    peer={p} 
+                                    mediaSession={mediaSession} 
+                                    calls={props.calls} 
+                                    callState={callState} 
+                                />
+                            ))}
+                        </XView>
+                    ))}
+                    {layout === 'volume-space' && mediaSession && <VolumeSpace mediaSession={mediaSession} peers={[...conference ? conference.conference.peers : []]} />}
+                    {!hideLegacyControls && <Controls calls={props.calls} ctx={props.ctx} showLink={showLink} setShowLink={setShowLink} layout={layout} setLayout={setLayout} />}
+                </XView >
+                <CallControls
+                    muted={callState.mute}
+                    cameraEnabled={callState.outVideo?.type === 'video'}
+                    screenEnabled={callState.outVideo?.type === 'screen'}
+                    onMinimize={props.ctx.hide}
+                    onMute={() => props.calls.setMute(!callState.mute)}
+                    onCameraClick={props.calls.switchVideo}
+                    onScreenClick={props.calls.switchScreenShare}
+                    onEnd={() => {
+                        props.ctx.hide();
+                        props.calls.leaveCall();
+                    }}
+                />
+            </XView>
 
             {mediaSession && showLink && (
                 <XView flexGrow={0.5} flexBasis={0} alignItems="stretch">
@@ -269,5 +267,5 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
 });
 
 export const showVideoCallModal = (props: { chatId: string, calls: CallsEngine, client: OpenlandClient, messenger: MessengerEngine }) => {
-    showModalBox({ fullScreen: true }, ctx => <CallModalConponent {...props} ctx={ctx} />);
+    showModalBox({ fullScreen: true, useTopCloser: false }, ctx => <CallModalConponent {...props} ctx={ctx} />);
 };

@@ -31,7 +31,7 @@ const wrapper = css`
 
 const wrapperActive = css`
     &::before {
-        background: var(--backgroundTertiaryTrans);
+        background: var(--ripple-color);
         transform: scale3d(1, 1, 1);
     }
 `;
@@ -43,7 +43,7 @@ const container = css`
     justify-content: center;
 
     &:hover .${wrapper}::before {
-        background: var(--backgroundTertiaryTrans);
+        background: var(--ripple-color);
         transform: scale3d(1, 1, 1);
     }
 `;
@@ -53,6 +53,7 @@ interface UIconButtonProps extends XViewProps {
     size?: UIconButtonSize;
     active?: boolean;
     loading?: boolean;
+    rippleColor?: string;
 }
 
 const widthBySize: { [key in UIconButtonSize]: number } = {
@@ -96,7 +97,7 @@ const loaderStyle = css`
 `;
 
 export const UIconButton = React.memo((props: UIconButtonProps) => {
-    const { icon, size = 'medium', active, color, loading, ...other } = props;
+    const { icon, size = 'medium', active, color, loading, rippleColor, ...other } = props;
     const width = widthBySize[size];
     const height = heightBySize[size];
     const ripple = rippleBySize[size];
@@ -112,6 +113,7 @@ export const UIconButton = React.memo((props: UIconButtonProps) => {
                             {
                                 '--ripple-size': ripple,
                                 '--icon-size': iconSize,
+                                '--ripple-color': rippleColor || 'var(--backgroundTertiaryTrans)',
                             } as React.CSSProperties
                         }
                     >
