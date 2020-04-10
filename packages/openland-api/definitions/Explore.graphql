@@ -90,6 +90,36 @@ query ExploreRooms($seed: Int!) {
     isDiscoverDone: betaIsDiscoverDone
 }
 
+query ExploreRoomsNoAuth($seed: Int!) {
+    discoverNewAndGrowing(first: 3, seed: $seed) {
+        items {
+            ...DiscoverSharedRoom
+        }
+        cursor
+    }
+    discoverPopularNow(first: 3) {
+        items {
+            room {
+                ...DiscoverSharedRoom
+            }
+            newMessages
+        }
+        cursor
+    }
+    discoverTopPremium(first: 5) {
+        items {
+            ...DiscoverSharedRoom
+        }
+        cursor
+    }
+    discoverTopFree(first: 5) {
+        items {
+            ...DiscoverSharedRoom
+        }
+        cursor
+    }
+}
+
 query SuggestedRooms {
     suggestedRooms: betaSuggestedRooms {
         ... on SharedRoom {

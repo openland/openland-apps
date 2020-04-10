@@ -12,7 +12,7 @@ import { EditorsChoiceItem } from './components/EditorsChoiceItem';
 import { getRandomSeed } from './utils/getRandomSeed';
 import { normalizePopularItems } from 'openland-y-utils/discover/normalizePopularItems';
 
-const editorsChoiceItem = css`
+export const editorsChoiceItem = css`
     width: calc(100% + 16px);
     max-width: 576px;
     flex-shrink: 0;
@@ -23,7 +23,7 @@ const editorsChoiceItem = css`
     }
 `;
 
-const sliderCollectionItem = css`
+export const sliderCollectionItem = css`
     width: 192px;
     flex-shrink: 0;
 
@@ -32,7 +32,7 @@ const sliderCollectionItem = css`
     }
 `;
 
-const listingsContainer = css`
+export const listingsContainer = css`
     margin: 0 -16px;
 
     & > * {

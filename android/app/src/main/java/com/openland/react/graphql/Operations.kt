@@ -36,6 +36,7 @@ object Operations {
         if (name == "DiscoverTopPremium") return DiscoverTopPremium
         if (name == "ExplorePeople") return ExplorePeople
         if (name == "ExploreRooms") return ExploreRooms
+        if (name == "ExploreRoomsNoAuth") return ExploreRoomsNoAuth
         if (name == "FeatureFlags") return FeatureFlags
         if (name == "FeedChannel") return FeedChannel
         if (name == "FeedChannelContent") return FeedChannelContent

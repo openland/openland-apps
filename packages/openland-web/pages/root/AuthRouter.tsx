@@ -10,6 +10,7 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useClient } from 'openland-api/useClient';
 import { AuthProfileFragment } from './AuthProfileFragment';
 import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
+// import { AuthDiscoverFragment } from './AuthDiscoverFragment';
 
 export const AuthRouter = React.memo((props: { children: any }) => {
     const router = React.useContext(XRouterContext)!;
@@ -77,11 +78,15 @@ export const AuthRouter = React.memo((props: { children: any }) => {
         }
     }
 
+    // if (!userInfo.isLoggedIn && router.path.startsWith('/discover')) {
+    //     return <AuthDiscoverFragment />;
+    // }
+
     if (shortnameItem?.__typename === 'User') {
         return <AuthProfileFragment user={shortnameItem} />;
     }
     if (shortnameItem?.__typename === 'SharedRoom') {
-        return <InviteLandingComponent signupRedirect={'/signin?redirect=' + encodeURIComponent('/' + shortname)}/>;
+        return <InviteLandingComponent signupRedirect={'/signin?redirect=' + encodeURIComponent('/' + shortname)} />;
     }
 
     // Redirect to Signup/Signin pages

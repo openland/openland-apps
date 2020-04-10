@@ -2757,6 +2757,44 @@ const ExploreRoomsSelector = obj(
                 ))),
             field('betaIsDiscoverDone', 'isDiscoverDone', args(), notNull(scalar('Boolean')))
         );
+const ExploreRoomsNoAuthSelector = obj(
+            field('discoverNewAndGrowing', 'discoverNewAndGrowing', args(fieldValue("first", intValue(3)), fieldValue("seed", refValue('seed'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('SharedRoom', DiscoverSharedRoomSelector)
+                        ))))),
+                    field('cursor', 'cursor', args(), scalar('String'))
+                ))),
+            field('discoverPopularNow', 'discoverPopularNow', args(fieldValue("first", intValue(3))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('room', 'room', args(), notNull(obj(
+                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                                    fragment('SharedRoom', DiscoverSharedRoomSelector)
+                                ))),
+                            field('newMessages', 'newMessages', args(), notNull(scalar('Int')))
+                        ))))),
+                    field('cursor', 'cursor', args(), scalar('String'))
+                ))),
+            field('discoverTopPremium', 'discoverTopPremium', args(fieldValue("first", intValue(5))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('SharedRoom', DiscoverSharedRoomSelector)
+                        ))))),
+                    field('cursor', 'cursor', args(), scalar('String'))
+                ))),
+            field('discoverTopFree', 'discoverTopFree', args(fieldValue("first", intValue(5))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('SharedRoom', DiscoverSharedRoomSelector)
+                        ))))),
+                    field('cursor', 'cursor', args(), scalar('String'))
+                )))
+        );
 const FeatureFlagsSelector = obj(
             field('featureFlags', 'featureFlags', args(), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5292,6 +5330,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'ExploreRooms',
         body: 'query ExploreRooms($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}suggestedRooms:betaSuggestedRooms{__typename ...DiscoverSharedRoom}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}isDiscoverDone:betaIsDiscoverDone}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
         selector: ExploreRoomsSelector
+    },
+    ExploreRoomsNoAuth: {
+        kind: 'query',
+        name: 'ExploreRoomsNoAuth',
+        body: 'query ExploreRoomsNoAuth($seed:Int!){discoverNewAndGrowing(first:3,seed:$seed){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverPopularNow(first:3){__typename items{__typename room{__typename ...DiscoverSharedRoom}newMessages}cursor}discoverTopPremium(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}discoverTopFree(first:5){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
+        selector: ExploreRoomsNoAuthSelector
     },
     FeatureFlags: {
         kind: 'query',
