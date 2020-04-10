@@ -11,9 +11,6 @@ const barContainer = css`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-`;
-
-const barContainerHover = css`
     cursor: pointer;
 `;
 
@@ -21,13 +18,19 @@ const lightContainer = css`
     background-color: var(--backgroundTertiary);
 `;
 
-const darkContainer = css`
-    background-color: var(--accentPay);
+const positiveContainer = css`
+    background-color: var(--accentPositive);
 `;
 
 const lightContainerHover = css`
     &:hover {
         background-color: var(--backgroundTertiaryHover);
+    }
+`;
+
+const positiveContainerHover = css`
+    &:hover {
+        background-color: #52CC66;
     }
 `;
 
@@ -77,7 +80,7 @@ const lightTitle = css`
     color: var(--foregroundPrimary);
 `;
 
-const darkTitle = css`
+const positiveTitle = css`
     color: var(--foregroundContrast);
 `;
 
@@ -88,14 +91,13 @@ const barSubtitleSpacing = css`
     text-overflow: ellipsis;
     overflow: hidden;
     height: 24px;
-    pointer-events: none;
 `;
 
 const lightSubtitle = css`
     color: var(--foregroundPrimary);
 `;
 
-const darkSubtitle = css`
+const positiveSubtitle = css`
     color: var(--foregroundContrast);
     opacity: 0.72;
 `;
@@ -122,14 +124,14 @@ const lightRightContainer = css`
     color: var(--foregroundSecondary);
 `;
 
-const darkRightContainer = css`
+const positiveRightContainer = css`
     color: var(--foregroundContrast);
 `;
 
 const barSubtitle = cx(TextBody, barSubtitleSpacing);
 
 interface UTopBarProps {
-    type: 'light' | 'dark';
+    type: 'light' | 'positive';
     leftIcon: JSX.Element;
     title: string | JSX.Element;
     subtitle: string | JSX.Element;
@@ -143,10 +145,9 @@ export const UTopBar = (props: UTopBarProps) => {
     return (
         <div 
             className={cx(
-                barContainer, 
-                props.onClick && barContainerHover, 
-                props.type === 'light' ? lightContainer : darkContainer,
-                props.onClick && props.type === 'light' && lightContainerHover
+                barContainer,
+                props.type === 'light' ? lightContainer : positiveContainer,
+                props.type === 'light' ? lightContainerHover : positiveContainerHover
             )} 
             onClick={props.onClick}
         >
@@ -158,14 +159,11 @@ export const UTopBar = (props: UTopBarProps) => {
                             color={props.type === 'light' ? 'var(--foregroundSecondary)' : 'var(--foregroundContrast)'}
                         />
                     </div>
-                    <div className={cx(barTitle, props.type === 'light' ? lightTitle : darkTitle)}>{props.title}</div>
-                    <div className={cx(barSubtitle, props.type === 'light' ? lightSubtitle : darkSubtitle)}>{props.subtitle}</div>
+                    <div className={cx(barTitle, props.type === 'light' ? lightTitle : positiveTitle)}>{props.title}</div>
+                    <div className={cx(barSubtitle, props.type === 'light' ? lightSubtitle : positiveSubtitle)}>{props.subtitle}</div>
                 </div>
                 {(props.rightText || props.rightIcon) && (
-                    <div 
-                        className={cx(rigthContainer, defaultHover, props.type === 'light' ? lightRightContainer : darkRightContainer)}
-                        onClick={props.onRightClick}
-                    >
+                    <div className={cx(rigthContainer, defaultHover, props.type === 'light' ? lightRightContainer : positiveRightContainer)} onClick={props.onRightClick}>
                         {props.rightText ? <div className={cx(TextLabel1, rightTextContainer)}>{props.rightText}</div> : null}
                         {props.rightIcon && (
                             <UIcon 

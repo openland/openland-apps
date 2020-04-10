@@ -5,13 +5,14 @@ import { XView } from 'react-mental';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
 import { ChatInfo } from 'openland-web/fragments/chat/types';
-import { Conference_conference_peers } from 'openland-api/spacex.types';
+import { Conference_conference_peers, Conference_conference_peers_user } from 'openland-api/spacex.types';
 import { useStreamManager, MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { css, cx } from 'linaria';
 import { showVideoCallModal } from './CallModal';
 import { UTopBar } from 'openland-web/components/unicorn/UTopBar';
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
 import ChevronIcon from 'openland-icons/s/ic-chevron-16.svg';
+import { OthersPopper } from 'openland-web/fragments/chat/messenger/message/content/OthersPopper';
 
 const animatedAvatarStyle = css`
     transition: filter 350ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
@@ -92,12 +93,16 @@ export const CallPeer = (props: CallPeerProps) => {
     );
 };
 
-const getSubtitle = (names: string[]) => {
-    return names.length === 0 ? ''
-        : names.length === 1 ? names[0]
-        : names.length === 2 ? `${names[0]} and ${names[1]}`
-        : names.length === 3 ? `${names[0]}, ${names[1]} and ${names[2]}`
-        : `${names[0]}, ${names[1]} and ${names.length - 2} others`;
+const getSubtitle = (users: Conference_conference_peers_user[]) => {
+    return users.length === 0 ? ''
+        : users.length === 1 ? users[0].name
+        : users.length === 2 ? `${users[0].name} and ${users[1].name}`
+        : users.length === 3 ? `${users[0].name}, ${users[1].name} and ${users[2].name}`
+        : (
+            <span>
+                {users[0].name}, {users[1].name} and <OthersPopper users={users.slice(2)}>{users.length - 2} others</OthersPopper>
+            </span>
+        );
 };
 
 export const TalkBarComponent = (props: { chat: ChatInfo }) => {
@@ -115,7 +120,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
         return null;
     }
 
-    const subtitle = getSubtitle(data.conference.peers.map(peer => peer.user.name));
+    const subtitle = getSubtitle(data.conference.peers.map(peer => peer.user));
 
     const joinCall = () => {
         calls.joinCall(
@@ -138,13 +143,13 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
 
     return data.conference.peers.length !== 0 ? (
         <UTopBar
-            type="dark"
+            type="positive"
             leftIcon={<PhoneIcon />}
             title="Call"
             subtitle={subtitle}
             rightText="Join"
             rightIcon={<ChevronIcon />}
-            onRightClick={callState.conversationId
+            onClick={callState.conversationId
                 ? () => showVideoCallModal({ calls, chatId: props.chat.id, client, messenger })
                 : joinCall}
         />

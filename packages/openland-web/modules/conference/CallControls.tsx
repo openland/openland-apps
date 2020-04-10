@@ -23,7 +23,7 @@ const wrapper = css`
     top: 0;
     bottom: 0;
     padding: 16px 0;
-    background-color: var(--accentPay);
+    background-color: var(--overlayTotal);
     transition: all 0.3s;
     width: 64px;
     overflow: hidden;
