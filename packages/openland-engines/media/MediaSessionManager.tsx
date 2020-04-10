@@ -44,7 +44,6 @@ export class MediaSessionManager {
     private mediaStream!: AppMediaStream;
     private outVideoStream?: AppMediaStream;
     private outScreenStream?: AppMediaStream;
-    private activeStream?: AppMediaStream;
     private streamConfigs!: ConferenceMediaWatch_media_streams[];
     private iceServers!: any[];
     private conferenceId!: string;
@@ -56,10 +55,10 @@ export class MediaSessionManager {
     private videoEnabled = false;
 
     readonly streams = new Map<string, MediaStreamManager>();
-    readonly peerStreams = new Map<string, MediaStreamManager>();
+    readonly peerStreamManagers = new Map<string, Set<MediaStreamManager>>();
     private streamsListeners = new Set<(streams: Map<string, MediaStreamManager>) => void>();
+    private peerVideoListeners = new Map<string, Set<(stream: AppMediaStream[]) => void>>();
     private videoEnabledListeners = new Set<() => void>();
-    private peerVideoListeners = new Map<string, Set<(stream?: AppMediaStream) => void>>();
     private dcListeners = new Set<(message: { peerId: string, data: any }) => void>();
     readonly analizer: MediaStreamsAlalizer;
     readonly volumeSpace: MediaSessionVolumeSpace;
@@ -92,33 +91,31 @@ export class MediaSessionManager {
             return;
         }
 
-        this.stopVideo();
+        // TODO: mutate addScreenShare, ref how screen share status handled
+
         this.outScreenStream.blinded = false;
-        this.notifyOutVideo(this.outScreenStream);
+        this.notifyOutVideo();
         this.handleState();
         this.onVideoEnabled();
         return this.outScreenStream;
     }
 
     stopScreenShare = async () => {
+        // TODO: mutate removeScreenShare
         if (this.outScreenStream) {
             this.outScreenStream.blinded = true;
-            let toClose = this.outScreenStream;
-            // closing stream after timeout to get chance to send black frame
-            setTimeout(() => {
-                toClose.close();
-            }, 100);
+            this.outScreenStream.close();
             this.outScreenStream = undefined;
+            this.notifyOutVideo();
         }
     }
 
     startVideo = async () => {
-        this.stopScreenShare();
         if (!this.outVideoStream) {
             this.outVideoStream = await AppUserMedia.getUserVideo();
         }
         this.outVideoStream.blinded = false;
-        this.notifyOutVideo(this.outVideoStream);
+        this.notifyOutVideo();
         this.handleState();
         this.onVideoEnabled();
         return this.outVideoStream;
@@ -130,11 +127,8 @@ export class MediaSessionManager {
             this.outVideoStream.blinded = true;
             if (AppConfig.getPlatform() !== 'mobile') {
                 // mobile webrtc will send closed stream next time in this case, it will lead to crash on other mobile
-                let toClose = this.outVideoStream;
-                // closing stream after timeout to get chance to send black frame
-                setTimeout(() => {
-                    toClose.close();
-                }, 100);
+                this.outVideoStream.close();
+                this.notifyOutVideo();
                 this.outVideoStream = undefined;
             }
 
@@ -310,33 +304,40 @@ export class MediaSessionManager {
         for (let s of this.streams.keys()) {
             if (!this.streamConfigs.find((v) => v.id === s)) {
                 console.log('[WEBRTC] Destroy stream ' + s);
-                this.streams.get(s)!.destroy();
+                let stream = this.streams.get(s);
+                stream!.destroy();
                 this.streams.delete(s);
+                let target = stream?.getTargetPeerId();
+                if (target) {
+                    this.peerStreamManagers.delete(target);
+                    this.notifyPeerStateChanged(target);
+                }
             }
         }
 
         for (let s of this.streamConfigs) {
             let ms = this.streams.get(s.id);
+            let videoStream = s.settings.videoOut ? (s.settings.videoOutSource === 'screen_share' ? this.outScreenStream : this.outVideoStream) : undefined;
             if (ms) {
-                if (this.activeStream && (ms.getVideoOutStream() !== this.activeStream)) {
-                    ms.addStream(this.activeStream);
+                if (videoStream && (ms.getVideoOutStream() !== videoStream)) {
+                    ms.addStream(videoStream);
                 }
                 ms.onStateChanged(s);
             } else {
                 console.log('[WEBRTC] Create stream ' + s.id);
 
-                ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, this.mediaStream, s, this.isPrivate ? () => this.onStatusChange('connected') : undefined, s.peerId, this.activeStream);
+                ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, s.settings.audioOut ? this.mediaStream : undefined, s, this.isPrivate ? () => this.onStatusChange('connected') : undefined, s.peerId, videoStream, s.mediaState.videoSource);
                 this.streams.set(s.id, ms);
                 let target = s.peerId;
                 if (target) {
-                    this.peerStreams.set(target, ms);
-                    ms.listenContentStream(c => {
-                        let ls = this.peerVideoListeners.get(target!);
-                        if (ls) {
-                            for (let l of ls) {
-                                l(c);
-                            }
-                        }
+                    let streamManagers = this.peerStreamManagers.get(target);
+                    if (!streamManagers) {
+                        streamManagers = new Set();
+                        this.peerStreamManagers.set(target, streamManagers);
+                    }
+                    streamManagers.add(ms);
+                    ms.listenVideoInStream(c => {
+                        this.notifyPeerStateChanged(target!);
                         if (c) {
                             this.onVideoEnabled();
                         }
@@ -390,21 +391,34 @@ export class MediaSessionManager {
         };
     }
 
-    listenPeerVideo = (peerId: string, listener: (stream?: AppMediaStream) => void) => {
+    listenPeerVideo = (peerId: string, listener: (streams: AppMediaStream[]) => void) => {
         let listeners = this.peerVideoListeners.get(peerId);
         if (!listeners) {
             listeners = new Set();
             this.peerVideoListeners.set(peerId, listeners);
         }
         listeners.add(listener);
-        let sm = this.peerStreams.get(peerId);
-        if (sm) {
-            listener(sm.getVideoInStream());
-        }
+        this.notifyPeerStateChanged(peerId);
         let lsnrs = listeners;
         return () => {
             lsnrs.delete(listener);
         };
+    }
+
+    private notifyPeerStateChanged = (peerId: string) => {
+        let streams: AppMediaStream[] = [];
+        for (let m of this.peerStreamManagers.get(peerId) || []) {
+            let s = m.getVideoOutStream();
+            if (s) {
+                streams.push(s);
+            }
+        }
+        let ls = this.peerVideoListeners.get(peerId!);
+        if (ls) {
+            for (let l of ls) {
+                l(streams);
+            }
+        }
     }
 
     notifyStreamsChanged = () => {
@@ -425,20 +439,24 @@ export class MediaSessionManager {
         this.videoEnabledListeners.forEach(l => l());
     }
 
-    private outVideoListeners = new Set<(stream: AppMediaStream) => void>();
-    listenOutVideo = (listener: (stream: AppMediaStream) => void) => {
+    private outVideoListeners = new Set<(streams: AppMediaStream[]) => void>();
+    listenOutVideo = (listener: (streams: AppMediaStream[]) => void) => {
         this.outVideoListeners.add(listener);
-        if (this.activeStream) {
-            listener(this.activeStream);
-        }
+        this.notifyOutVideo();
         return () => {
             this.outVideoListeners.delete(listener);
         };
     }
 
-    notifyOutVideo = (stream: AppMediaStream) => {
-        this.activeStream = stream;
-        this.outVideoListeners.forEach(l => l(stream));
+    notifyOutVideo = () => {
+        let res: AppMediaStream[] = [];
+        if (this.outVideoStream) {
+            res.push(this.outVideoStream);
+        }
+        if (this.outScreenStream) {
+            res.push(this.outScreenStream);
+        }
+        this.outVideoListeners.forEach(l => l(res));
     }
 
     ////

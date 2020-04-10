@@ -200,10 +200,9 @@ const VideoMediaView = React.memo((props: {
     React.useEffect(() => {
         let d: (() => void) | undefined;
         if (props.peer?.id) {
-            let m = props.mediaSessionManager.peerStreams.get(props.peer.id);
-            if (m) {
-                d = m.listenContentStream(setStream);
-            }
+            d = props.mediaSessionManager.listenPeerVideo(props.peer.id, (streams) => {
+                setStream(streams.find(s => s.source === 'camera'));
+            });
         }
         return d;
     }, [props.peer?.id]);
@@ -338,7 +337,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
             />
             <UButton
                 flexShrink={0}
-                style={callState.mute ? 'secondary' : 'primary' }
+                style={callState.mute ? 'secondary' : 'primary'}
                 text={callState.mute ? 'Mic off' : 'Mic on'}
                 onClick={() => calls.setMute(!callState.mute)}
                 marginHorizontal={4}

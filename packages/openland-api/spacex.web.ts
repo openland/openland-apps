@@ -1316,9 +1316,16 @@ const MediaStreamFullSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('videoIn', 'videoIn', args(), notNull(scalar('Boolean'))),
                     field('videoOut', 'videoOut', args(), notNull(scalar('Boolean'))),
+                    field('videoOutSource', 'videoOutSource', args(), scalar('String')),
                     field('audioIn', 'audioIn', args(), notNull(scalar('Boolean'))),
                     field('audioOut', 'audioOut', args(), notNull(scalar('Boolean'))),
                     field('iceTransportPolicy', 'iceTransportPolicy', args(), scalar('String'))
+                ))),
+            field('mediaState', 'mediaState', args(), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('videoOut', 'videoOut', args(), notNull(scalar('Boolean'))),
+                    field('videoSource', 'videoSource', args(), scalar('String')),
+                    field('audioOut', 'audioOut', args(), notNull(scalar('Boolean')))
                 )))
         );
 
@@ -4911,6 +4918,24 @@ const UserStorageSetSelector = obj(
                     field('value', 'value', args(), scalar('String'))
                 )))))
         );
+const conferenceAddScreenShareSelector = obj(
+            field('conferenceAddScreenShare', 'conferenceAddScreenShare', args(fieldValue("id", refValue('id'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('Conference', ConferenceShortSelector)
+                )))
+        );
+const conferenceAlterMediaStateSelector = obj(
+            field('conferenceAlterMediaState', 'conferenceAlterMediaState', args(fieldValue("id", refValue('id')), fieldValue("settings", refValue('settings'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('Conference', ConferenceShortSelector)
+                )))
+        );
+const conferenceRemoveScreenShareSelector = obj(
+            field('conferenceRemoveScreenShare', 'conferenceRemoveScreenShare', args(fieldValue("id", refValue('id'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('Conference', ConferenceShortSelector)
+                )))
+        );
 const ChatOnlinesCountWatchSelector = obj(
             field('chatOnlinesCount', 'chatOnlinesCount', args(fieldValue("chatId", refValue('chatId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5182,7 +5207,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ConferenceMedia: {
         kind: 'query',
         name: 'ConferenceMedia',
-        body: 'query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}iceServers{__typename urls username credential}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}',
+        body: 'query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}iceServers{__typename urls username credential}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}',
         selector: ConferenceMediaSelector
     },
     Dialogs: {
@@ -6058,31 +6083,31 @@ export const Operations: { [key: string]: OperationDefinition } = {
     MediaAnswer: {
         kind: 'mutation',
         name: 'MediaAnswer',
-        body: 'mutation MediaAnswer($id:ID!,$peerId:ID!,$answer:String!,$seq:Int!){mediaStreamAnswer(id:$id,peerId:$peerId,answer:$answer,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}',
+        body: 'mutation MediaAnswer($id:ID!,$peerId:ID!,$answer:String!,$seq:Int!){mediaStreamAnswer(id:$id,peerId:$peerId,answer:$answer,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}',
         selector: MediaAnswerSelector
     },
     MediaCandidate: {
         kind: 'mutation',
         name: 'MediaCandidate',
-        body: 'mutation MediaCandidate($id:ID!,$peerId:ID!,$candidate:String!){mediaStreamCandidate(id:$id,peerId:$peerId,candidate:$candidate){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}',
+        body: 'mutation MediaCandidate($id:ID!,$peerId:ID!,$candidate:String!){mediaStreamCandidate(id:$id,peerId:$peerId,candidate:$candidate){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}',
         selector: MediaCandidateSelector
     },
     MediaFailed: {
         kind: 'mutation',
         name: 'MediaFailed',
-        body: 'mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}',
+        body: 'mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}',
         selector: MediaFailedSelector
     },
     MediaNegotiationNeeded: {
         kind: 'mutation',
         name: 'MediaNegotiationNeeded',
-        body: 'mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!,$seq:Int!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}',
+        body: 'mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!,$seq:Int!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}',
         selector: MediaNegotiationNeededSelector
     },
     MediaOffer: {
         kind: 'mutation',
         name: 'MediaOffer',
-        body: 'mutation MediaOffer($id:ID!,$peerId:ID!,$offer:String!,$seq:Int!){mediaStreamOffer(id:$id,peerId:$peerId,offer:$offer,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}',
+        body: 'mutation MediaOffer($id:ID!,$peerId:ID!,$offer:String!,$seq:Int!){mediaStreamOffer(id:$id,peerId:$peerId,offer:$offer,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}',
         selector: MediaOfferSelector
     },
     MessageSetDonationReaction: {
@@ -6493,6 +6518,24 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'mutation UserStorageSet($namespace:String!,$data:[AppStorageValueInput!]!){userStorageSet(namespace:$namespace,data:$data){__typename id key value}}',
         selector: UserStorageSetSelector
     },
+    conferenceAddScreenShare: {
+        kind: 'mutation',
+        name: 'conferenceAddScreenShare',
+        body: 'mutation conferenceAddScreenShare($id:ID!){conferenceAddScreenShare(id:$id){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}',
+        selector: conferenceAddScreenShareSelector
+    },
+    conferenceAlterMediaState: {
+        kind: 'mutation',
+        name: 'conferenceAlterMediaState',
+        body: 'mutation conferenceAlterMediaState($id:ID!,$settings:MediaStreamMediaStateInput!){conferenceAlterMediaState(id:$id,settings:$settings){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}',
+        selector: conferenceAlterMediaStateSelector
+    },
+    conferenceRemoveScreenShare: {
+        kind: 'mutation',
+        name: 'conferenceRemoveScreenShare',
+        body: 'mutation conferenceRemoveScreenShare($id:ID!){conferenceRemoveScreenShare(id:$id){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}',
+        selector: conferenceRemoveScreenShareSelector
+    },
     ChatOnlinesCountWatch: {
         kind: 'subscription',
         name: 'ChatOnlinesCountWatch',
@@ -6514,7 +6557,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ConferenceMediaWatch: {
         kind: 'subscription',
         name: 'ConferenceMediaWatch',
-        body: 'subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}',
+        body: 'subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}',
         selector: ConferenceMediaWatchSelector
     },
     ConferenceWatch: {

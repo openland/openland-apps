@@ -1315,9 +1315,16 @@ internal val MediaStreamFullSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("videoIn", "videoIn", notNull(scalar("Boolean"))),
                     field("videoOut", "videoOut", notNull(scalar("Boolean"))),
+                    field("videoOutSource", "videoOutSource", scalar("String")),
                     field("audioIn", "audioIn", notNull(scalar("Boolean"))),
                     field("audioOut", "audioOut", notNull(scalar("Boolean"))),
                     field("iceTransportPolicy", "iceTransportPolicy", scalar("String"))
+                ))),
+            field("mediaState", "mediaState", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("videoOut", "videoOut", notNull(scalar("Boolean"))),
+                    field("videoSource", "videoSource", scalar("String")),
+                    field("audioOut", "audioOut", notNull(scalar("Boolean")))
                 )))
         )
 

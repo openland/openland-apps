@@ -12,7 +12,7 @@ export class MediaStreamManager {
     private readonly client: OpenlandClient;
     private readonly peerId: string;
     private readonly targetPeerId: string | null;
-    private audioOutStream: AppMediaStream;
+    private audioOutStream?: AppMediaStream;
     private videoOutStream?: AppMediaStream;
     private audioOutSentStreamId?: string;
     private videoOutSentStreamId?: string;
@@ -31,6 +31,7 @@ export class MediaStreamManager {
     private iceStateListeners = new Set<(iceState: IceState) => void>();
     private contentStreamListeners = new Set<(stream?: AppMediaStream) => void>();
     private dcListeners = new Set<(message: { peerId: string, data: any }) => void>();
+    private videoInStreamSource: 'camera' | 'screen_share' | null;
 
     private ignoreNextNegotiationNeeded = false;
     private _queue: ExecutionQueue;
@@ -40,11 +41,12 @@ export class MediaStreamManager {
         id: string,
         peerId: string,
         iceServers: ConferenceMedia_conferenceMedia_iceServers[],
-        stream: AppMediaStream,
+        stream: AppMediaStream | undefined,
         streamConfig: ConferenceMedia_conferenceMedia_streams,
         onReady: (() => void) | undefined,
         targetPeerId: string | null,
-        outContentStream?: AppMediaStream
+        videoOutStream: AppMediaStream | undefined,
+        videoInStreamSource: 'camera' | 'screen_share' | null,
     ) {
         this._queue = new ExecutionQueue();
         this.id = id;
@@ -55,7 +57,8 @@ export class MediaStreamManager {
         this.streamConfig = streamConfig;
         this.seq = -1;
         this.audioOutStream = stream;
-        this.videoOutStream = outContentStream;
+        this.videoOutStream = videoOutStream;
+        this.videoInStreamSource = videoInStreamSource;
         this.onReady = onReady;
         this.peerConnection = AppPeerConnectionFactory.createConnection({
             iceServers: this.iceServers.map(v => ({
@@ -100,7 +103,9 @@ export class MediaStreamManager {
             }
         };
         this.peerConnection.onStreamAdded = this.onStreamAdded;
-        this.peerConnection.addStream(this.audioOutStream);
+        if (this.audioOutStream) {
+            this.peerConnection.addStream(this.audioOutStream);
+        }
         if (this.videoOutStream) {
             this.peerConnection.addStream(this.videoOutStream);
         }
@@ -169,7 +174,7 @@ export class MediaStreamManager {
                     // damn you chrome (it can fire onnegotiationneeded here, wtf)
                     this.ignoreNextNegotiationNeeded = true;
                     // remember stream we created sdp with to check if them not changed during ignore
-                    this.audioOutSentStreamId = this.audioOutStream.id;
+                    this.audioOutSentStreamId = this.audioOutStream?.id;
                     this.videoOutSentStreamId = this.videoOutStream?.id;
                     let offer = await this.peerConnection.createOffer();
                     offer = JSON.stringify({ type: 'offer', sdp: mangleSDP(JSON.parse(offer).sdp) });
@@ -203,7 +208,7 @@ export class MediaStreamManager {
 
                     console.log('[WEBRTC]: Creating answer ' + streamConfig.seq);
                     // remember stream we created sdp with to check if them not changed during ignore
-                    this.audioOutSentStreamId = this.audioOutStream.id;
+                    this.audioOutSentStreamId = this.audioOutStream?.id;
                     this.videoOutSentStreamId = this.videoOutStream?.id;
                     let answer = await this.peerConnection.createAnswer();
                     answer = JSON.stringify({ type: 'answer', sdp: mangleSDP(JSON.parse(answer).sdp) });
@@ -244,7 +249,7 @@ export class MediaStreamManager {
 
                     // mb media changed while onnegotiationneeded was ignored (damn you chrome)
                     // check if media changed
-                    if (this.audioOutSentStreamId !== this.audioOutStream.id || this.videoOutSentStreamId !== this.videoOutStream?.id) {
+                    if (this.audioOutSentStreamId !== this.audioOutStream?.id || this.videoOutSentStreamId !== this.videoOutStream?.id) {
                         console.warn('[WEBRTC]: onnegotiationneeded ask from streams check');
                         this.negotiateIfReady();
                     }
@@ -278,18 +283,13 @@ export class MediaStreamManager {
             this.audioInStream = stream;
         }
         if (stream.hasVideo()) {
+            stream.source = this.videoInStreamSource || 'camera';
             if (this.videoInStream !== undefined) {
                 this.videoInStream.close();
             }
 
             this.videoInStream = stream;
             this.notifyVideoInStream();
-            stream.onClosed = () => {
-                if (this.videoInStream === stream) {
-                    this.videoInStream = undefined;
-                }
-                this.notifyVideoInStream();
-            };
         }
     }
 
@@ -360,7 +360,7 @@ export class MediaStreamManager {
         return this.iceConnectionState;
     }
 
-    listenContentStream = (listener: (stream?: AppMediaStream) => void) => {
+    listenVideoInStream = (listener: (stream?: AppMediaStream) => void) => {
         this.contentStreamListeners.add(listener);
         listener(this.videoInStream);
         return () => {

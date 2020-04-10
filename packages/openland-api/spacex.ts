@@ -1822,6 +1822,15 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateUserStorageSet(variables: Types.UserStorageSetVariables): Promise<Types.UserStorageSet> {
         return this.mutate('UserStorageSet', variables);
     }
+    mutateconferenceAddScreenShare(variables: Types.conferenceAddScreenShareVariables): Promise<Types.conferenceAddScreenShare> {
+        return this.mutate('conferenceAddScreenShare', variables);
+    }
+    mutateconferenceAlterMediaState(variables: Types.conferenceAlterMediaStateVariables): Promise<Types.conferenceAlterMediaState> {
+        return this.mutate('conferenceAlterMediaState', variables);
+    }
+    mutateconferenceRemoveScreenShare(variables: Types.conferenceRemoveScreenShareVariables): Promise<Types.conferenceRemoveScreenShare> {
+        return this.mutate('conferenceRemoveScreenShare', variables);
+    }
     subscribeChatOnlinesCountWatch(variables: Types.ChatOnlinesCountWatchVariables, handler: GraphqlSubscriptionHandler<Types.ChatOnlinesCountWatch>): GraphqlActiveSubscription<Types.ChatOnlinesCountWatch> {
         return this.subscribe(handler, 'ChatOnlinesCountWatch', variables);
     }

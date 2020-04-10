@@ -12,6 +12,7 @@ import SpeakerIcon from 'openland-icons/s/ic-speaking-bold-16.svg';
 import MutedIcon from 'openland-icons/s/ic-muted-bold-16.svg';
 import { SvgLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
+import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 
 const animatedAvatarStyle = css`
     position: absolute;
@@ -85,7 +86,9 @@ export interface VideoPeerProps {
 }
 
 export const VideoPeer = React.memo((props: VideoPeerProps) => {
-    let [stream, setStream] = React.useState<MediaStream>();
+    let [mainStream, setMainStream] = React.useState<AppMediaStream>();
+    // @ts-ignore
+    let [miniStream, setMiniStream] = React.useState<AppMediaStream>();
     let [talking, setTalking] = React.useState(false);
     const [localPeer, setLocalPeer] = React.useState(props.mediaSession.getPeerId());
     const isLocal = props.peer.id === props.mediaSession.getPeerId();
@@ -94,12 +97,18 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
         let d0 = props.calls.listenState(() => setLocalPeer(props.mediaSession.getPeerId()));
         let d1: () => void;
         if (isLocal) {
-            d1 = props.mediaSession.listenOutVideo(s => {
-                setStream((s as AppUserMediaStreamWeb)?._stream);
+            d1 = props.mediaSession.listenOutVideo(streams => {
+                let cam = streams.find(s => s.source === 'camera');
+                let screen = streams.find(s => s.source === 'screen_share');
+                setMainStream(screen ? screen : cam);
+                setMiniStream(screen ? cam : undefined);
             });
         } else {
-            d1 = props.mediaSession.listenPeerVideo(props.peer.id, s => {
-                setStream((s as AppUserMediaStreamWeb)?._stream);
+            d1 = props.mediaSession.listenPeerVideo(props.peer.id, streams => {
+                let cam = streams.find(s => s.source === 'camera');
+                let screen = streams.find(s => s.source === 'screen_share');
+                setMainStream(screen ? screen : cam);
+                setMiniStream(screen ? cam : undefined);
             });
         }
         let d2 = props.mediaSession.analizer.subscribePeer(props.peer.id, v => {
@@ -114,32 +123,35 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
 
     const icon = props.callState.status !== 'connected' ? <SvgLoader size="small" contrast={true} />
         : talking ? <SpeakerIcon />
-        : props.callState.mute && isLocal ? <MutedIcon />
-        : null;
+            : props.callState.mute && isLocal ? <MutedIcon />
+                : null;
 
     const bgSrc = props.peer.user.photo ? props.peer.user.photo : undefined;
     const bgColor = !props.peer.user.photo ? getPlaceholderColorById(props.peer.user.id) : undefined;
 
-    const onClick = React.useCallback(() => stream ? showVideoModal(stream) : undefined, [stream]);
+    let mainStreamWeb = (mainStream as AppUserMediaStreamWeb | undefined)?._stream;
+    // @ts-ignore
+    let miniStreamWeb = (mainStream as AppUserMediaStreamWeb | undefined)?._stream;
+    const onClick = React.useCallback(() => mainStreamWeb ? showVideoModal(mainStreamWeb) : undefined, [mainStreamWeb]);
 
     return (
-        <XView 
-            backgroundColor="var(--accentPay)" 
-            alignItems="center" 
-            justifyContent="center" 
-            flexGrow={1} 
+        <XView
+            backgroundColor="var(--accentPay)"
+            alignItems="center"
+            justifyContent="center"
+            flexGrow={1}
             borderRadius={props.compact ? 8 : undefined}
         >
-            {stream && <VideoComponent stream={stream} cover={true} compact={props.compact} onClick={onClick} mirror={isLocal} />}
-            {!stream && (
+            {mainStreamWeb && <VideoComponent stream={mainStreamWeb} cover={true} compact={props.compact} onClick={onClick} mirror={isLocal && mainStream?.source === 'camera'} />}
+            {!mainStreamWeb && (
                 <>
                     <div className={bgAvatar}>
                         {bgSrc ? (
                             <ImgWithRetry src={bgSrc} className={bgAvatarImg} />
                         ) : (
-                            <div className={bgAvatarImg} style={{background: bgColor}} />
-                        )}
-                        
+                                <div className={bgAvatarImg} style={{ background: bgColor }} />
+                            )}
+
                         <div className={bgAvatarOverlay} />
                     </div>
                     <div key={'animating_wrapper'} className={cx(animatedAvatarStyle)}>

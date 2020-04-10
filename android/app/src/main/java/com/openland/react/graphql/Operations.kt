@@ -238,6 +238,9 @@ object Operations {
         if (name == "UpdateOrganization") return UpdateOrganization
         if (name == "UpdateWelcomeMessage") return UpdateWelcomeMessage
         if (name == "UserStorageSet") return UserStorageSet
+        if (name == "conferenceAddScreenShare") return conferenceAddScreenShare
+        if (name == "conferenceAlterMediaState") return conferenceAlterMediaState
+        if (name == "conferenceRemoveScreenShare") return conferenceRemoveScreenShare
         if (name == "ChatOnlinesCountWatch") return ChatOnlinesCountWatch
         if (name == "ChatWatch") return ChatWatch
         if (name == "CommentWatch") return CommentWatch

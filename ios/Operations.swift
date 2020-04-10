@@ -1309,9 +1309,16 @@ private let MediaStreamFullSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("videoIn", "videoIn", notNull(scalar("Boolean"))),
                     field("videoOut", "videoOut", notNull(scalar("Boolean"))),
+                    field("videoOutSource", "videoOutSource", scalar("String")),
                     field("audioIn", "audioIn", notNull(scalar("Boolean"))),
                     field("audioOut", "audioOut", notNull(scalar("Boolean"))),
                     field("iceTransportPolicy", "iceTransportPolicy", scalar("String"))
+                ))),
+            field("mediaState", "mediaState", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("videoOut", "videoOut", notNull(scalar("Boolean"))),
+                    field("videoSource", "videoSource", scalar("String")),
+                    field("audioOut", "audioOut", notNull(scalar("Boolean")))
                 )))
         )
 
@@ -4904,6 +4911,24 @@ private let UserStorageSetSelector = obj(
                     field("value", "value", scalar("String"))
                 )))))
         )
+private let conferenceAddScreenShareSelector = obj(
+            field("conferenceAddScreenShare", "conferenceAddScreenShare", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Conference", ConferenceShortSelector)
+                )))
+        )
+private let conferenceAlterMediaStateSelector = obj(
+            field("conferenceAlterMediaState", "conferenceAlterMediaState", arguments(fieldValue("id", refValue("id")), fieldValue("settings", refValue("settings"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Conference", ConferenceShortSelector)
+                )))
+        )
+private let conferenceRemoveScreenShareSelector = obj(
+            field("conferenceRemoveScreenShare", "conferenceRemoveScreenShare", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Conference", ConferenceShortSelector)
+                )))
+        )
 private let ChatOnlinesCountWatchSelector = obj(
             field("chatOnlinesCount", "chatOnlinesCount", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5179,7 +5204,7 @@ class Operations {
     let ConferenceMedia = OperationDefinition(
         "ConferenceMedia",
         .query, 
-        "query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}iceServers{__typename urls username credential}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}",
+        "query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}iceServers{__typename urls username credential}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}",
         ConferenceMediaSelector
     )
     let Dialogs = OperationDefinition(
@@ -6055,31 +6080,31 @@ class Operations {
     let MediaAnswer = OperationDefinition(
         "MediaAnswer",
         .mutation, 
-        "mutation MediaAnswer($id:ID!,$peerId:ID!,$answer:String!,$seq:Int!){mediaStreamAnswer(id:$id,peerId:$peerId,answer:$answer,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}",
+        "mutation MediaAnswer($id:ID!,$peerId:ID!,$answer:String!,$seq:Int!){mediaStreamAnswer(id:$id,peerId:$peerId,answer:$answer,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}",
         MediaAnswerSelector
     )
     let MediaCandidate = OperationDefinition(
         "MediaCandidate",
         .mutation, 
-        "mutation MediaCandidate($id:ID!,$peerId:ID!,$candidate:String!){mediaStreamCandidate(id:$id,peerId:$peerId,candidate:$candidate){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}",
+        "mutation MediaCandidate($id:ID!,$peerId:ID!,$candidate:String!){mediaStreamCandidate(id:$id,peerId:$peerId,candidate:$candidate){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}",
         MediaCandidateSelector
     )
     let MediaFailed = OperationDefinition(
         "MediaFailed",
         .mutation, 
-        "mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}",
+        "mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}",
         MediaFailedSelector
     )
     let MediaNegotiationNeeded = OperationDefinition(
         "MediaNegotiationNeeded",
         .mutation, 
-        "mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!,$seq:Int!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}",
+        "mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!,$seq:Int!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}",
         MediaNegotiationNeededSelector
     )
     let MediaOffer = OperationDefinition(
         "MediaOffer",
         .mutation, 
-        "mutation MediaOffer($id:ID!,$peerId:ID!,$offer:String!,$seq:Int!){mediaStreamOffer(id:$id,peerId:$peerId,offer:$offer,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}",
+        "mutation MediaOffer($id:ID!,$peerId:ID!,$offer:String!,$seq:Int!){mediaStreamOffer(id:$id,peerId:$peerId,offer:$offer,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}",
         MediaOfferSelector
     )
     let MessageSetDonationReaction = OperationDefinition(
@@ -6490,6 +6515,24 @@ class Operations {
         "mutation UserStorageSet($namespace:String!,$data:[AppStorageValueInput!]!){userStorageSet(namespace:$namespace,data:$data){__typename id key value}}",
         UserStorageSetSelector
     )
+    let conferenceAddScreenShare = OperationDefinition(
+        "conferenceAddScreenShare",
+        .mutation, 
+        "mutation conferenceAddScreenShare($id:ID!){conferenceAddScreenShare(id:$id){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}",
+        conferenceAddScreenShareSelector
+    )
+    let conferenceAlterMediaState = OperationDefinition(
+        "conferenceAlterMediaState",
+        .mutation, 
+        "mutation conferenceAlterMediaState($id:ID!,$settings:MediaStreamMediaStateInput!){conferenceAlterMediaState(id:$id,settings:$settings){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}",
+        conferenceAlterMediaStateSelector
+    )
+    let conferenceRemoveScreenShare = OperationDefinition(
+        "conferenceRemoveScreenShare",
+        .mutation, 
+        "mutation conferenceRemoveScreenShare($id:ID!){conferenceRemoveScreenShare(id:$id){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}",
+        conferenceRemoveScreenShareSelector
+    )
     let ChatOnlinesCountWatch = OperationDefinition(
         "ChatOnlinesCountWatch",
         .subscription, 
@@ -6511,7 +6554,7 @@ class Operations {
     let ConferenceMediaWatch = OperationDefinition(
         "ConferenceMediaWatch",
         .subscription, 
-        "subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}",
+        "subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}",
         ConferenceMediaWatchSelector
     )
     let ConferenceWatch = OperationDefinition(
@@ -6801,6 +6844,9 @@ class Operations {
         if name == "UpdateOrganization" { return UpdateOrganization }
         if name == "UpdateWelcomeMessage" { return UpdateWelcomeMessage }
         if name == "UserStorageSet" { return UserStorageSet }
+        if name == "conferenceAddScreenShare" { return conferenceAddScreenShare }
+        if name == "conferenceAlterMediaState" { return conferenceAlterMediaState }
+        if name == "conferenceRemoveScreenShare" { return conferenceRemoveScreenShare }
         if name == "ChatOnlinesCountWatch" { return ChatOnlinesCountWatch }
         if name == "ChatWatch" { return ChatWatch }
         if name == "CommentWatch" { return CommentWatch }

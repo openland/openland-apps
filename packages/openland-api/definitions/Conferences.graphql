@@ -38,9 +38,15 @@ fragment MediaStreamFull on MediaStream{
     settings{
         videoIn
         videoOut
+        videoOutSource
         audioIn
         audioOut
         iceTransportPolicy
+    }
+    mediaState {
+        videoOut
+        videoSource
+        audioOut
     }
 }
 
@@ -71,6 +77,23 @@ mutation ConferenceJoin($id: ID!) {
         }
     }
 }
+
+mutation conferenceAddScreenShare($id: ID!){
+    conferenceAddScreenShare(id: $id) {
+        ...ConferenceShort
+    }
+}
+mutation conferenceRemoveScreenShare($id: ID!){
+    conferenceRemoveScreenShare(id: $id) {
+        ...ConferenceShort
+    }
+}
+mutation conferenceAlterMediaState($id: ID!, $settings: MediaStreamMediaStateInput!){
+    conferenceAlterMediaState(id: $id, settings: $settings) {
+        ...ConferenceShort
+    }
+}
+
 mutation ConferenceLeave($id: ID!, $peerId: ID!) {
     conferenceLeave(id: $id, peerId: $peerId) {
         ...ConferenceShort

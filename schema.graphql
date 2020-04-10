@@ -1127,6 +1127,7 @@ type MediaStream {
   sdp: String
   ice: [String!]!
   settings: MediaStreamSettings!
+  mediaState: MediaStreamMediaState!
 }
 
 enum MediaStreamIceTransportPolicy {
@@ -1134,9 +1135,21 @@ enum MediaStreamIceTransportPolicy {
   relay
 }
 
+type MediaStreamMediaState {
+  videoOut: Boolean!
+  videoSource: MediaStreamVideoSource
+  audioOut: Boolean!
+}
+
+input MediaStreamMediaStateInput {
+  videoOut: Boolean
+  audioOut: Boolean
+}
+
 type MediaStreamSettings {
   videoIn: Boolean!
   videoOut: Boolean!
+  videoOutSource: MediaStreamVideoSource
   audioIn: Boolean!
   audioOut: Boolean!
   iceTransportPolicy: MediaStreamIceTransportPolicy
@@ -1148,6 +1161,11 @@ enum MediaStreamState {
   WAIT_ANSWER
   NEED_ANSWER
   READY
+}
+
+enum MediaStreamVideoSource {
+  camera
+  screen_share
 }
 
 union Mention = UserMention | SharedRoomMention
@@ -1655,6 +1673,9 @@ type Mutation {
   superAccountFeatureRemove(id: ID!, featureId: ID!): SuperAccount!
   shareLocation(location: GeoLocationInput!): Boolean!
   conferenceJoin(id: ID!, kind: ConferenceKind): ConferenceJoinResult!
+  conferenceAddScreenShare(id: ID!): Conference!
+  conferenceRemoveScreenShare(id: ID!): Conference!
+  conferenceAlterMediaState(id: ID!, state: MediaStreamMediaStateInput!): Conference!
   conferenceKeepAlive(id: ID!, peerId: ID!): Conference!
   conferenceLeave(id: ID!, peerId: ID!): Conference!
   conferenceAlterSettings(id: ID!, settings: ConferenceSettingsInput!): Conference!

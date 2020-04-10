@@ -17,6 +17,6 @@ internal val MediaNegotiationNeededSelector = obj(
 val MediaNegotiationNeeded = object: OperationDefinition {
     override val name = "MediaNegotiationNeeded"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation MediaNegotiationNeeded(\$id:ID!,\$peerId:ID!,\$seq:Int!){mediaStreamNegotiationNeeded(id:\$id,peerId:\$peerId,seq:\$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut audioIn audioOut iceTransportPolicy}}"
+    override val body = "mutation MediaNegotiationNeeded(\$id:ID!,\$peerId:ID!,\$seq:Int!){mediaStreamNegotiationNeeded(id:\$id,peerId:\$peerId,seq:\$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}"
     override val selector = MediaNegotiationNeededSelector
 }

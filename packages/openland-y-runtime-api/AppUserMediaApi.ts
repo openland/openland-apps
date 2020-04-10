@@ -1,4 +1,5 @@
 export interface AppMediaStream {
+    source?: 'camera' | 'screen_share' | null;
     id: string;
     muted: boolean;
     blinded: boolean;
