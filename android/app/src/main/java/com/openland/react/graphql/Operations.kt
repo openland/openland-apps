@@ -67,12 +67,12 @@ object Operations {
         if (name == "MyWallet") return MyWallet
         if (name == "OauthContext") return OauthContext
         if (name == "Online") return Online
+        if (name == "Organization") return Organization
         if (name == "OrganizationMembers") return OrganizationMembers
         if (name == "OrganizationMembersShort") return OrganizationMembersShort
         if (name == "OrganizationProfile") return OrganizationProfile
         if (name == "OrganizationPublicInvite") return OrganizationPublicInvite
         if (name == "OrganizationPublicRooms") return OrganizationPublicRooms
-        if (name == "OrganizationWithoutMembers") return OrganizationWithoutMembers
         if (name == "Permissions") return Permissions
         if (name == "PicSharedMedia") return PicSharedMedia
         if (name == "Profile") return Profile

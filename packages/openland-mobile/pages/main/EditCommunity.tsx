@@ -20,7 +20,7 @@ const Loader = Toast.loader();
 const EditCommunityComponent = React.memo((props: PageProps) => {
     const organizationId = props.router.params.id;
     const client = getClient();
-    const organization = getClient().useOrganizationWithoutMembers({ organizationId }, { fetchPolicy: 'network-only' }).organization;
+    const organization = getClient().useOrganization({ organizationId }, { fetchPolicy: 'network-only' }).organization;
     const profile = getClient().useOrganizationProfile({ organizationId }, { fetchPolicy: 'network-only' }).organizationProfile;
 
     const form = useForm();

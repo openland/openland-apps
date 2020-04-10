@@ -17,8 +17,8 @@ fragment OrganizationProfileFull on OrganizationProfile {
     facebook
     linkedin
     instagram
-
     shortname
+    isCommunity: alphaIsCommunity
     private: alphaIsPrivate
     featured: alphaFeatured
     published: alphaPublished
@@ -39,7 +39,7 @@ fragment OrganizationFragment on Organization {
     linkedin
     instagram
     membersCount
-    isPrivate: alphaIsPrivate
+    private: alphaIsPrivate
     isOwner: betaIsOwner
     isAdmin: betaIsAdmin
     featured: alphaFeatured
@@ -55,10 +55,10 @@ query MyOrganizations {
 }
 mutation UpdateOrganization($input: UpdateOrganizationProfileInput!, $organizationId: ID) {
     updateOrganizationProfile(input: $input, id: $organizationId) {
-        ...OrganizationProfileFull
+        id
     }
 }
-query OrganizationWithoutMembers($organizationId: ID!) {
+query Organization($organizationId: ID!) {
     organization(id: $organizationId) {
         ...OrganizationFragment
     }

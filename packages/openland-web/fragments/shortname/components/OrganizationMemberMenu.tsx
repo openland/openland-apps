@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
     OrganizationMembers_organization_members,
-    OrganizationWithoutMembers_organization,
+    Organization_organization,
     OrganizationMemberRole,
 } from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
@@ -15,7 +15,7 @@ import { OpenlandClient } from 'openland-api/spacex';
 import { useClient } from 'openland-api/useClient';
 
 interface MenuContentOpts {
-    organization: OrganizationWithoutMembers_organization;
+    organization: Organization_organization;
     memberRef: React.MutableRefObject<OrganizationMembers_organization_members>;
     onRemove: (memberId: string) => void;
     onChangeRole: (memberId: string, newRole: OrganizationMemberRole) => void;
@@ -127,7 +127,7 @@ const MenuComponent = React.memo((props: { ctx: UPopperController; items: MenuIt
 );
 
 interface OrganizationMemberMenuProps {
-    organization: OrganizationWithoutMembers_organization;
+    organization: Organization_organization;
     member: OrganizationMembers_organization_members;
     onRemove: (memberId: string) => void;
     onChangeRole: (memberId: string, newRole: OrganizationMemberRole) => void;

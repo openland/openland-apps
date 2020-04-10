@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { OrganizationWithoutMembers_organization } from 'openland-api/spacex.types';
+import { Organization_organization } from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { showLeaveConfirmation } from 'openland-web/fragments/org/showLeaveConfirmation';
 import { showEditCommunityModal } from 'openland-web/fragments/account/components/showEditCommunityModal';
@@ -18,7 +18,7 @@ import { useStackRouter, StackRouter } from 'openland-unicorn/components/StackRo
 import { useToast, UToastHandlers } from 'openland-web/components/unicorn/UToast';
 
 interface OrganizationMenuProps {
-    organization: OrganizationWithoutMembers_organization;
+    organization: Organization_organization;
     onLeave: (id: string) => void;
 }
 

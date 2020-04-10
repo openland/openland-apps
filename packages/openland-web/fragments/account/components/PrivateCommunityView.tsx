@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { OrganizationWithoutMembers_organization } from 'openland-api/spacex.types';
+import { Organization_organization } from 'openland-api/spacex.types';
 import { XView } from 'react-mental';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
@@ -56,7 +56,7 @@ export const InviteImage = () => {
 };
 
 interface PrivateCommunityViewProps {
-    organization: OrganizationWithoutMembers_organization;
+    organization: Organization_organization;
 }
 
 export const PrivateCommunityView = (props: PrivateCommunityViewProps) => {

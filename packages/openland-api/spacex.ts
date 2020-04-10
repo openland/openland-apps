@@ -187,6 +187,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryOnline(variables: Types.OnlineVariables, opts?: OperationParameters): Promise<Types.Online> {
         return this.query('Online', variables, opts);
     }
+    queryOrganization(variables: Types.OrganizationVariables, opts?: OperationParameters): Promise<Types.Organization> {
+        return this.query('Organization', variables, opts);
+    }
     queryOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: OperationParameters): Promise<Types.OrganizationMembers> {
         return this.query('OrganizationMembers', variables, opts);
     }
@@ -201,9 +204,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: OperationParameters): Promise<Types.OrganizationPublicRooms> {
         return this.query('OrganizationPublicRooms', variables, opts);
-    }
-    queryOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, opts?: OperationParameters): Promise<Types.OrganizationWithoutMembers> {
-        return this.query('OrganizationWithoutMembers', variables, opts);
     }
     queryPermissions(opts?: OperationParameters): Promise<Types.Permissions> {
         return this.query('Permissions', undefined, opts);
@@ -493,6 +493,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchOnline(variables: Types.OnlineVariables, opts?: OperationParameters): Promise<Types.Online> {
         return this.refetch('Online', variables);
     }
+    refetchOrganization(variables: Types.OrganizationVariables, opts?: OperationParameters): Promise<Types.Organization> {
+        return this.refetch('Organization', variables);
+    }
     refetchOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: OperationParameters): Promise<Types.OrganizationMembers> {
         return this.refetch('OrganizationMembers', variables);
     }
@@ -507,9 +510,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: OperationParameters): Promise<Types.OrganizationPublicRooms> {
         return this.refetch('OrganizationPublicRooms', variables);
-    }
-    refetchOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, opts?: OperationParameters): Promise<Types.OrganizationWithoutMembers> {
-        return this.refetch('OrganizationWithoutMembers', variables);
     }
     refetchPermissions(opts?: OperationParameters): Promise<Types.Permissions> {
         return this.refetch('Permissions', undefined);
@@ -799,6 +799,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateOnline(variables: Types.OnlineVariables, updater: (data: Types.Online) => Types.Online | null): Promise<boolean> {
         return this.updateQuery(updater, 'Online', variables);
     }
+    updateOrganization(variables: Types.OrganizationVariables, updater: (data: Types.Organization) => Types.Organization | null): Promise<boolean> {
+        return this.updateQuery(updater, 'Organization', variables);
+    }
     updateOrganizationMembers(variables: Types.OrganizationMembersVariables, updater: (data: Types.OrganizationMembers) => Types.OrganizationMembers | null): Promise<boolean> {
         return this.updateQuery(updater, 'OrganizationMembers', variables);
     }
@@ -813,9 +816,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, updater: (data: Types.OrganizationPublicRooms) => Types.OrganizationPublicRooms | null): Promise<boolean> {
         return this.updateQuery(updater, 'OrganizationPublicRooms', variables);
-    }
-    updateOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, updater: (data: Types.OrganizationWithoutMembers) => Types.OrganizationWithoutMembers | null): Promise<boolean> {
-        return this.updateQuery(updater, 'OrganizationWithoutMembers', variables);
     }
     updatePermissions(updater: (data: Types.Permissions) => Types.Permissions | null): Promise<boolean> {
         return this.updateQuery(updater, 'Permissions', undefined);
@@ -1225,6 +1225,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useOnline(variables: Types.OnlineVariables, opts?: SpaceQueryWatchParameters): Types.Online | null {
         return this.useQuery('Online', variables, opts);
     }
+    useOrganization(variables: Types.OrganizationVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Organization | null;
+    useOrganization(variables: Types.OrganizationVariables, opts?: SpaceQueryWatchParameters): Types.Organization;
+    useOrganization(variables: Types.OrganizationVariables, opts?: SpaceQueryWatchParameters): Types.Organization | null {
+        return this.useQuery('Organization', variables, opts);
+    }
     useOrganizationMembers(variables: Types.OrganizationMembersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationMembers | null;
     useOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationMembers;
     useOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationMembers | null {
@@ -1249,11 +1254,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationPublicRooms;
     useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationPublicRooms | null {
         return this.useQuery('OrganizationPublicRooms', variables, opts);
-    }
-    useOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationWithoutMembers | null;
-    useOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationWithoutMembers;
-    useOrganizationWithoutMembers(variables: Types.OrganizationWithoutMembersVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationWithoutMembers | null {
-        return this.useQuery('OrganizationWithoutMembers', variables, opts);
     }
     usePermissions(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Permissions | null;
     usePermissions(opts?: SpaceQueryWatchParameters): Types.Permissions;

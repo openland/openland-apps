@@ -16,7 +16,7 @@ import { View, Platform, Text } from 'react-native';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import {
     OrganizationMemberRole,
-    OrganizationWithoutMembers_organization,
+    Organization_organization,
     OrganizationMembers_organization_members,
     OrganizationMembers_organization_members_user,
 } from 'openland-api/spacex.types';
@@ -32,7 +32,7 @@ import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 
-const PrivateProfile = XMemo<PageProps & { organization: OrganizationWithoutMembers_organization }>(
+const PrivateProfile = XMemo<PageProps & { organization: Organization_organization }>(
     (props) => {
         const { organization } = props;
         const theme = React.useContext(ThemeContext);
@@ -98,7 +98,7 @@ const PrivateProfile = XMemo<PageProps & { organization: OrganizationWithoutMemb
 const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
     const client = getClient();
     const settings = client.useAccountSettings();
-    const organization = client.useOrganizationWithoutMembers(
+    const organization = client.useOrganization(
         { organizationId: props.router.params.id },
         { fetchPolicy: 'cache-and-network' },
     ).organization;

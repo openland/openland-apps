@@ -28,7 +28,7 @@ const Container = (props: { children: JSX.Element | JSX.Element[] }) => (
 
 const InOtherOrganization = (props: { inOrgId: string }) => {
     const client = useClient();
-    const data = client.useOrganizationWithoutMembers({ organizationId: props.inOrgId });
+    const data = client.useOrganization({ organizationId: props.inOrgId });
     return (
         <Container>
             <UOrganizationView

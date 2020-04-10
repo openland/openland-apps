@@ -13,13 +13,13 @@ import Toast from 'openland-mobile/components/Toast';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { OrganizationWithoutMembers_organization } from 'openland-api/spacex.types';
+import { Organization_organization } from 'openland-api/spacex.types';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { trackEvent } from 'openland-mobile/analytics';
 import { InviteLinkView } from './components/InviteLinkView';
 
 const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {
-    const { id, isCommunity } = props.router.params.organization as OrganizationWithoutMembers_organization;
+    const { id, isCommunity } = props.router.params.organization as Organization_organization;
     const invite = getClient().useOrganizationPublicInvite({ organizationId: id }, { fetchPolicy: 'network-only' }).publicInvite!;
     const link = 'https://openland.com/join/' + invite.key;
     const orgType = isCommunity ? 'community' : 'organization';
@@ -94,7 +94,7 @@ const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {
 
 class OrganizationInviteLinkModalComponent extends React.PureComponent<PageProps> {
     render() {
-        const { isCommunity } = this.props.router.params.organization as OrganizationWithoutMembers_organization;
+        const { isCommunity } = this.props.router.params.organization as Organization_organization;
 
         return (
             <>

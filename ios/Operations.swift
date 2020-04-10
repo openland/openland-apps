@@ -1556,6 +1556,7 @@ private let OrganizationProfileFullSelector = obj(
             field("linkedin", "linkedin", scalar("String")),
             field("instagram", "instagram", scalar("String")),
             field("shortname", "shortname", scalar("String")),
+            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
             field("alphaIsPrivate", "private", notNull(scalar("Boolean"))),
             field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
             field("alphaPublished", "published", notNull(scalar("Boolean"))),
@@ -3197,6 +3198,12 @@ private let OnlineSelector = obj(
                     field("isBot", "isBot", notNull(scalar("Boolean")))
                 )))
         )
+private let OrganizationSelector = obj(
+            field("organization", "organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Organization", OrganizationFragmentSelector)
+                )))
+        )
 private let OrganizationMembersSelector = obj(
             field("organization", "organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -3246,12 +3253,6 @@ private let OrganizationPublicRoomsSelector = obj(
                             fragment("SharedRoom", SharedRoomViewSelector)
                         ))))),
                     field("cursor", "cursor", scalar("String"))
-                )))
-        )
-private let OrganizationWithoutMembersSelector = obj(
-            field("organization", "organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Organization", OrganizationFragmentSelector)
                 )))
         )
 private let PermissionsSelector = obj(
@@ -4889,7 +4890,7 @@ private let UpdateAppSelector = obj(
 private let UpdateOrganizationSelector = obj(
             field("updateOrganizationProfile", "updateOrganizationProfile", arguments(fieldValue("input", refValue("input")), fieldValue("id", refValue("organizationId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("OrganizationProfile", OrganizationProfileFullSelector)
+                    field("id", "id", notNull(scalar("ID")))
                 )))
         )
 private let UpdateWelcomeMessageSelector = obj(
@@ -5463,6 +5464,12 @@ class Operations {
         "query Online($userId:ID!){user:user(id:$userId){__typename id online lastSeen isBot}}",
         OnlineSelector
     )
+    let Organization = OperationDefinition(
+        "Organization",
+        .query, 
+        "query Organization($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationFragment}}fragment OrganizationFragment on Organization{__typename id isMine superAccountId name photo shortname website websiteTitle about twitter facebook linkedin instagram membersCount isPrivate:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity roomsCount:betaPublicRoomsCount}",
+        OrganizationSelector
+    )
     let OrganizationMembers = OperationDefinition(
         "OrganizationMembers",
         .query, 
@@ -5478,7 +5485,7 @@ class Operations {
     let OrganizationProfile = OperationDefinition(
         "OrganizationProfile",
         .query, 
-        "query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename id name photoRef{__typename uuid crop{__typename x y w h}}website websiteTitle about twitter facebook linkedin instagram shortname private:alphaIsPrivate featured:alphaFeatured published:alphaPublished editorial:alphaEditorial}",
+        "query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename id name photoRef{__typename uuid crop{__typename x y w h}}website websiteTitle about twitter facebook linkedin instagram shortname isCommunity:alphaIsCommunity private:alphaIsPrivate featured:alphaFeatured published:alphaPublished editorial:alphaEditorial}",
         OrganizationProfileSelector
     )
     let OrganizationPublicInvite = OperationDefinition(
@@ -5492,12 +5499,6 @@ class Operations {
         .query, 
         "query OrganizationPublicRooms($organizationId:ID!,$first:Int!,$after:ID){organizationPublicRooms(id:$organizationId,first:$first,after:$after){__typename items{__typename ...SharedRoomView}cursor}}fragment SharedRoomView on SharedRoom{__typename id title photo membersCount photo}",
         OrganizationPublicRoomsSelector
-    )
-    let OrganizationWithoutMembers = OperationDefinition(
-        "OrganizationWithoutMembers",
-        .query, 
-        "query OrganizationWithoutMembers($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationFragment}}fragment OrganizationFragment on Organization{__typename id isMine superAccountId name photo shortname website websiteTitle about twitter facebook linkedin instagram membersCount isPrivate:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity roomsCount:betaPublicRoomsCount}",
-        OrganizationWithoutMembersSelector
     )
     let Permissions = OperationDefinition(
         "Permissions",
@@ -6474,7 +6475,7 @@ class Operations {
     let UpdateOrganization = OperationDefinition(
         "UpdateOrganization",
         .mutation, 
-        "mutation UpdateOrganization($input:UpdateOrganizationProfileInput!,$organizationId:ID){updateOrganizationProfile(input:$input,id:$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename id name photoRef{__typename uuid crop{__typename x y w h}}website websiteTitle about twitter facebook linkedin instagram shortname private:alphaIsPrivate featured:alphaFeatured published:alphaPublished editorial:alphaEditorial}",
+        "mutation UpdateOrganization($input:UpdateOrganizationProfileInput!,$organizationId:ID){updateOrganizationProfile(input:$input,id:$organizationId){__typename id}}",
         UpdateOrganizationSelector
     )
     let UpdateWelcomeMessage = OperationDefinition(
@@ -6629,12 +6630,12 @@ class Operations {
         if name == "MyWallet" { return MyWallet }
         if name == "OauthContext" { return OauthContext }
         if name == "Online" { return Online }
+        if name == "Organization" { return Organization }
         if name == "OrganizationMembers" { return OrganizationMembers }
         if name == "OrganizationMembersShort" { return OrganizationMembersShort }
         if name == "OrganizationProfile" { return OrganizationProfile }
         if name == "OrganizationPublicInvite" { return OrganizationPublicInvite }
         if name == "OrganizationPublicRooms" { return OrganizationPublicRooms }
-        if name == "OrganizationWithoutMembers" { return OrganizationWithoutMembers }
         if name == "Permissions" { return Permissions }
         if name == "PicSharedMedia" { return PicSharedMedia }
         if name == "Profile" { return Profile }

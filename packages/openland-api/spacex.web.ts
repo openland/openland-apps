@@ -1563,6 +1563,7 @@ const OrganizationProfileFullSelector = obj(
             field('linkedin', 'linkedin', args(), scalar('String')),
             field('instagram', 'instagram', args(), scalar('String')),
             field('shortname', 'shortname', args(), scalar('String')),
+            field('alphaIsCommunity', 'isCommunity', args(), notNull(scalar('Boolean'))),
             field('alphaIsPrivate', 'private', args(), notNull(scalar('Boolean'))),
             field('alphaFeatured', 'featured', args(), notNull(scalar('Boolean'))),
             field('alphaPublished', 'published', args(), notNull(scalar('Boolean'))),
@@ -3204,6 +3205,12 @@ const OnlineSelector = obj(
                     field('isBot', 'isBot', args(), notNull(scalar('Boolean')))
                 )))
         );
+const OrganizationSelector = obj(
+            field('organization', 'organization', args(fieldValue("id", refValue('organizationId'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('Organization', OrganizationFragmentSelector)
+                )))
+        );
 const OrganizationMembersSelector = obj(
             field('organization', 'organization', args(fieldValue("id", refValue('organizationId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -3253,12 +3260,6 @@ const OrganizationPublicRoomsSelector = obj(
                             fragment('SharedRoom', SharedRoomViewSelector)
                         ))))),
                     field('cursor', 'cursor', args(), scalar('String'))
-                )))
-        );
-const OrganizationWithoutMembersSelector = obj(
-            field('organization', 'organization', args(fieldValue("id", refValue('organizationId'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('Organization', OrganizationFragmentSelector)
                 )))
         );
 const PermissionsSelector = obj(
@@ -4896,7 +4897,7 @@ const UpdateAppSelector = obj(
 const UpdateOrganizationSelector = obj(
             field('updateOrganizationProfile', 'updateOrganizationProfile', args(fieldValue("input", refValue('input')), fieldValue("id", refValue('organizationId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('OrganizationProfile', OrganizationProfileFullSelector)
+                    field('id', 'id', args(), notNull(scalar('ID')))
                 )))
         );
 const UpdateWelcomeMessageSelector = obj(
@@ -5466,6 +5467,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query Online($userId:ID!){user:user(id:$userId){__typename id online lastSeen isBot}}',
         selector: OnlineSelector
     },
+    Organization: {
+        kind: 'query',
+        name: 'Organization',
+        body: 'query Organization($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationFragment}}fragment OrganizationFragment on Organization{__typename id isMine superAccountId name photo shortname website websiteTitle about twitter facebook linkedin instagram membersCount isPrivate:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity roomsCount:betaPublicRoomsCount}',
+        selector: OrganizationSelector
+    },
     OrganizationMembers: {
         kind: 'query',
         name: 'OrganizationMembers',
@@ -5481,7 +5488,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     OrganizationProfile: {
         kind: 'query',
         name: 'OrganizationProfile',
-        body: 'query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename id name photoRef{__typename uuid crop{__typename x y w h}}website websiteTitle about twitter facebook linkedin instagram shortname private:alphaIsPrivate featured:alphaFeatured published:alphaPublished editorial:alphaEditorial}',
+        body: 'query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename id name photoRef{__typename uuid crop{__typename x y w h}}website websiteTitle about twitter facebook linkedin instagram shortname isCommunity:alphaIsCommunity private:alphaIsPrivate featured:alphaFeatured published:alphaPublished editorial:alphaEditorial}',
         selector: OrganizationProfileSelector
     },
     OrganizationPublicInvite: {
@@ -5495,12 +5502,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'OrganizationPublicRooms',
         body: 'query OrganizationPublicRooms($organizationId:ID!,$first:Int!,$after:ID){organizationPublicRooms(id:$organizationId,first:$first,after:$after){__typename items{__typename ...SharedRoomView}cursor}}fragment SharedRoomView on SharedRoom{__typename id title photo membersCount photo}',
         selector: OrganizationPublicRoomsSelector
-    },
-    OrganizationWithoutMembers: {
-        kind: 'query',
-        name: 'OrganizationWithoutMembers',
-        body: 'query OrganizationWithoutMembers($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationFragment}}fragment OrganizationFragment on Organization{__typename id isMine superAccountId name photo shortname website websiteTitle about twitter facebook linkedin instagram membersCount isPrivate:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity roomsCount:betaPublicRoomsCount}',
-        selector: OrganizationWithoutMembersSelector
     },
     Permissions: {
         kind: 'query',
@@ -6477,7 +6478,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     UpdateOrganization: {
         kind: 'mutation',
         name: 'UpdateOrganization',
-        body: 'mutation UpdateOrganization($input:UpdateOrganizationProfileInput!,$organizationId:ID){updateOrganizationProfile(input:$input,id:$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename id name photoRef{__typename uuid crop{__typename x y w h}}website websiteTitle about twitter facebook linkedin instagram shortname private:alphaIsPrivate featured:alphaFeatured published:alphaPublished editorial:alphaEditorial}',
+        body: 'mutation UpdateOrganization($input:UpdateOrganizationProfileInput!,$organizationId:ID){updateOrganizationProfile(input:$input,id:$organizationId){__typename id}}',
         selector: UpdateOrganizationSelector
     },
     UpdateWelcomeMessage: {

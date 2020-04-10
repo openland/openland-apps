@@ -6,11 +6,9 @@ import { useClient } from 'openland-api/useClient';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalController } from 'openland-x/showModal';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
 import { UInputField } from 'openland-web/components/unicorn/UInput';
-import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { USelectField } from 'openland-web/components/unicorn/USelect';
@@ -23,57 +21,6 @@ enum CommunityType {
     COMMUNITY_PRIVATE = 'COMMUNITY_PRIVATE',
 }
 
-interface AdminToolsProps {
-    id: string;
-    published: boolean;
-    editorial: boolean;
-    featured: boolean;
-    activated: boolean | null;
-    setActivated: (e: boolean) => void;
-    setPublished: (e: boolean) => void;
-    setEditorial: (e: boolean) => void;
-    setFeatured: (e: boolean) => void;
-}
-
-const AdminTools = (props: AdminToolsProps) => {
-    const client = useClient();
-
-    const data = client.useSuperAccount(
-        { accountId: props.id, viaOrgId: true },
-        { suspense: false },
-    );
-
-    if (!(data && data.superAccount)) {
-        return null;
-    }
-    const activated = data.superAccount.state === 'ACTIVATED';
-    if (props.activated === null) {
-        props.setActivated(activated);
-    }
-    return (
-        <XView marginTop={12}>
-            <XView marginBottom={20}>
-                <UCheckbox label="Activated" checked={props.activated || false} />
-                <UCheckbox
-                    label="Published"
-                    checked={props.published}
-                    onChange={() => props.setPublished(!props.published)}
-                />
-                <UCheckbox
-                    label="Featured"
-                    checked={props.featured}
-                    onChange={() => props.setFeatured(!props.featured)}
-                />
-                <UCheckbox
-                    label="Editorial"
-                    checked={props.editorial}
-                    onChange={() => props.setEditorial(!props.editorial)}
-                />
-            </XView>
-        </XView>
-    );
-};
-
 const EditCommunityEntity = (props: {
     id: string;
     modalCtx: XModalController;
@@ -82,39 +29,31 @@ const EditCommunityEntity = (props: {
 }) => {
     const organizationId = props.id;
     const client = useClient();
-    const data = client.useOrganizationProfile({ organizationId });
-    const org = data.organizationProfile;
-
-    // super account
-    const [activated, setActivated] = React.useState<null | boolean>(null);
-    const [featured, setFeatured] = React.useState(org.featured);
-    const [editorial, setEditorial] = React.useState(org.editorial);
-    const [published, setPublished] = React.useState(org.published);
-    // end super account
+    const data = client.useOrganizationProfile({ organizationId }).organizationProfile;
 
     const form = useForm();
     const avatarField = useField<StoredFileT | undefined | null>(
         'input.photoRef',
-        org.photoRef ? { uuid: org.photoRef.uuid, crop: org.photoRef.crop } : null,
+        data.photoRef ? { uuid: data.photoRef.uuid, crop: data.photoRef.crop } : null,
         form,
     );
-    const nameField = useField('input.name', org.name, form, [
+    const nameField = useField('input.name', data.name, form, [
         {
             checkIsValid: (value) => !!value.trim(),
             text: 'Please enter a name',
         },
     ]);
-    const initialOrgShortname = org.shortname || '';
+    const initialOrgShortname = data.shortname || '';
     const shortnameField = useShortnameField('input.shortname', initialOrgShortname, form);
-    const aboutField = useField('input.about', org.about || '', form);
-    const websiteField = useField('input.website', org.website || '', form);
-    const twitterField = useField('input.twitter', org.twitter || '', form);
-    const facebookField = useField('input.facebook', org.facebook || '', form);
-    const linkedinField = useField('input.linkedin', org.linkedin || '', form);
-    const instagramField = useField('input.instagram', org.instagram || '', form);
+    const aboutField = useField('input.about', data.about || '', form);
+    const websiteField = useField('input.website', data.website || '', form);
+    const twitterField = useField('input.twitter', data.twitter || '', form);
+    const facebookField = useField('input.facebook', data.facebook || '', form);
+    const linkedinField = useField('input.linkedin', data.linkedin || '', form);
+    const instagramField = useField('input.instagram', data.instagram || '', form);
     const typeField = useField<CommunityType>(
         'input.type',
-        org.private ? CommunityType.COMMUNITY_PRIVATE : CommunityType.COMMUNITY_PUBLIC,
+        data.private ? CommunityType.COMMUNITY_PRIVATE : CommunityType.COMMUNITY_PUBLIC,
         form,
     );
     const [errorText, setErrorText] = React.useState(form.error);
@@ -137,9 +76,6 @@ const EditCommunityEntity = (props: {
                     linkedin: linkedinField.value,
                     instagram: instagramField.value,
                     photoRef: sanitizeImageRef(avatarField.value),
-                    alphaFeatured: featured !== org.featured ? featured : org.featured,
-                    alphaPublished: published !== org.published ? published : org.published,
-                    alphaEditorial: editorial !== org.editorial ? editorial : org.editorial,
                     alphaIsPrivate: typeField.value === CommunityType.COMMUNITY_PRIVATE,
                 },
                 organizationId: organizationId,
@@ -151,7 +87,9 @@ const EditCommunityEntity = (props: {
                     organizationId,
                 });
             }
+            // await client.refetchOrganization({ organizationId });
             await client.refetchOrganizationProfile({ organizationId });
+            await client.refetchMyOrganizations();
             props.modalCtx.hide();
         });
     };
@@ -233,24 +171,6 @@ const EditCommunityEntity = (props: {
                                 </XView>
                             </XView>
                         )}
-                        {/*SUPER ADMIN*/}
-                        <XWithRole role={['super-admin', 'editor']}>
-                            <XView marginTop={28}>
-                                <div className={TextTitle3}>Superadmin</div>
-                                <AdminTools
-                                    id={props.id}
-                                    activated={activated}
-                                    editorial={editorial}
-                                    published={published}
-                                    featured={featured}
-                                    setActivated={setActivated}
-                                    setEditorial={setEditorial}
-                                    setPublished={setPublished}
-                                    setFeatured={setFeatured}
-                                />
-                            </XView>
-                        </XWithRole>
-                        {/*END SUPER ADMIN*/}
                     </XView>
                 </XScrollView3>
             </XView>
