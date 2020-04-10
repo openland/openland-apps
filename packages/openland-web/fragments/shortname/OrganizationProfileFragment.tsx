@@ -20,8 +20,7 @@ import { PrivateCommunityView } from '../account/components/PrivateCommunityView
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
-    const organization = client.useOrganization({ organizationId: props.id }, { fetchPolicy: 'cache-and-network' }).organization;
-
+    const organization = client.useOrganization({ organizationId: props.id }).organization;
     if (!organization.isMine && organization.isPrivate) {
         return <PrivateCommunityView organization={organization} />;
     }

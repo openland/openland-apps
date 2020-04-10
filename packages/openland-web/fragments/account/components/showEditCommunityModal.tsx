@@ -87,8 +87,8 @@ const EditCommunityEntity = (props: {
                     organizationId,
                 });
             }
-            // await client.refetchOrganization({ organizationId });
-            await client.refetchOrganizationProfile({ organizationId });
+            await client.refetchOrganization({ organizationId });
+            // await client.refetchOrganizationProfile({ organizationId });
             await client.refetchMyOrganizations();
             props.modalCtx.hide();
         });

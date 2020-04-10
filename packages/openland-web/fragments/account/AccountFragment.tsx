@@ -13,7 +13,6 @@ import AppsIcon from 'openland-icons/s/ic-apps-24.svg';
 import InfoIcon from 'openland-icons/s/ic-info-24.svg';
 import WalletIcon from 'openland-icons/s/ic-wallet-24.svg';
 import SubscriptionsIcon from 'openland-icons/s/ic-subscriptions-24.svg';
-import { withUserInfo } from 'openland-web/components/UserInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-api/useClient';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
@@ -34,9 +33,11 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import CommunityIcon from 'openland-icons/s/ic-community-2-24.svg';
 import OrganizationIcon from 'openland-icons/s/ic-organization-2-24.svg';
 
-const UserProfileCard = withUserInfo(({ user, profile }) => {
+const UserProfileCard = React.memo(() => {
     const isMobile = useIsMobile();
-    if (user) {
+    const client = useClient();
+    const data = client.useAccount().me;
+    if (data) {
         return (
             <XView
                 cursor="pointer"
@@ -55,20 +56,20 @@ const UserProfileCard = withUserInfo(({ user, profile }) => {
             >
                 <UAvatar
                     size="large"
-                    photo={user.photo}
-                    title={user.name}
-                    id={user.id}
+                    photo={data.photo}
+                    title={data.name}
+                    id={data.id}
                     marginRight={16}
                 />
                 <XView flexGrow={1}>
-                    <XView {...TextStyles.Title3}>{emoji(user.name)}</XView>
-                    {profile && (
+                    <XView {...TextStyles.Title3}>{emoji(data.name)}</XView>
+                    {data.email && (
                         <SelectableText
                             {...TextStyles.Body}
                             color="var(--foregroundSecondary)"
                             selectedColor="var(--foregroundContrast)"
                         >
-                            {profile.authEmail}
+                            {data.email}
                         </SelectableText>
                     )}
                 </XView>
