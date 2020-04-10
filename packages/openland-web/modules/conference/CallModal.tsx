@@ -246,10 +246,14 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                     muted={callState.mute}
                     cameraEnabled={callState.outVideo?.type === 'video'}
                     screenEnabled={callState.outVideo?.type === 'screen'}
+                    spaceEnabled={layout === 'volume-space'}
+                    toolsEnabled={showLink}
                     onMinimize={props.ctx.hide}
                     onMute={() => props.calls.setMute(!callState.mute)}
                     onCameraClick={props.calls.switchVideo}
                     onScreenClick={props.calls.switchScreenShare}
+                    onSpaceClick={() => setLayout(prev => prev === 'volume-space' ? 'grid' : 'volume-space')}
+                    onToolsClick={() => setShowLink(prev => !prev)}
                     onEnd={() => {
                         props.ctx.hide();
                         props.calls.leaveCall();

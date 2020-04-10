@@ -8,6 +8,8 @@ import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
 import CameraIcon from 'openland-icons/s/ic-camera-video-glyph-24.svg';
 import ScreenIcon from 'openland-icons/s/ic-screen-glyph-24.svg';
 import SettingsIcon from 'openland-icons/s/ic-settings-glyph-24.svg';
+import MagicIcon from 'openland-icons/s/ic-magic-glyph-24.svg';
+import ToolsIcon from 'openland-icons/s/ic-tools-glyph-24.svg';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
 import { showModalBox } from 'openland-x/showModalBox';
@@ -131,11 +133,15 @@ interface CallControlsProps {
     muted: boolean;
     cameraEnabled: boolean;
     screenEnabled: boolean;
+    spaceEnabled: boolean;
+    toolsEnabled: boolean;
     onMinimize: React.MouseEventHandler;
     onEnd: React.MouseEventHandler;
     onMute: React.MouseEventHandler;
     onCameraClick: React.MouseEventHandler;
     onScreenClick: React.MouseEventHandler;
+    onSpaceClick: React.MouseEventHandler;
+    onToolsClick: React.MouseEventHandler;
     videoProps?: VideoPeerProps;
 }
 
@@ -151,17 +157,24 @@ export const CallControls = (props: CallControlsProps) => {
             zIndex={3}
         >
             <div className={cx('x', wrapper)}>
-                <ControlItem 
-                    text="Minimize" 
-                    icon={(
-                        <UIconButton 
-                            icon={<MinimizeIcon />} 
-                            color="var(--foregroundContrast)" 
-                            rippleColor="transparent"
-                        />
-                    )}
-                    onClick={props.onMinimize}
-                />
+                <XView 
+                    position="absolute"
+                    top={8}
+                    left={0}
+                    right={0}
+                >
+                    <ControlItem
+                        text="Minimize" 
+                        icon={(
+                            <UIconButton 
+                                icon={<MinimizeIcon />} 
+                                color="var(--foregroundContrast)" 
+                                rippleColor="transparent"
+                            />
+                        )}
+                        onClick={props.onMinimize}
+                    />
+                </XView>
                 <XView flexGrow={1} flexDirection="column" justifyContent="center">
                     <ControlItem 
                         text="End" 
@@ -210,6 +223,30 @@ export const CallControls = (props: CallControlsProps) => {
                             />
                         )}
                         onClick={props.onScreenClick}
+                    />
+                    <ControlItem 
+                        text="Space" 
+                        icon={(
+                            <UIconButton 
+                                icon={<MagicIcon />} 
+                                color="var(--foregroundContrast)" 
+                                rippleColor="var(--tintBlue)"
+                                active={props.spaceEnabled}
+                            />
+                        )}
+                        onClick={props.onSpaceClick}
+                    />
+                    <ControlItem 
+                        text="Tools" 
+                        icon={(
+                            <UIconButton 
+                                icon={<ToolsIcon />} 
+                                color="var(--foregroundContrast)" 
+                                rippleColor="var(--tintBlue)"
+                                active={props.toolsEnabled}
+                            />
+                        )}
+                        onClick={props.onToolsClick}
                     />
                     <ControlItem 
                         text="Settings" 

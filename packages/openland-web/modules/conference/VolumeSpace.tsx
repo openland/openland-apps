@@ -8,25 +8,25 @@ import { VideoComponent } from './ScreenShareModal';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 
 let VolumeSpaceContainerStyle = css`
-width: 100%;
-height: 100vh;
-overflow: scroll;
+    width: 100%;
+    height: 100vh;
+    overflow: scroll;
 `;
 
 let VolumeSpaceInnerContainerStyle = css`
-position: relative;
-width: 3000px;
-height: 3000px;
+    position: relative;
+    width: 3000px;
+    height: 3000px;
 `;
 let VolumeSpaceItemStyle = css`
-position: absolute;
+    position: absolute;
 `;
 let VolumeSpaceVideoStyle = css`
-position: relative;
-width: 72px;
-height: 72px;
-border-radius: 72px;
-background-color: var(--foregroundSecondary);
+    position: relative;
+    width: 72px;
+    height: 72px;
+    border-radius: 72px;
+    background-color: var(--foregroundSecondary);
 `;
 
 const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { mediaSession: MediaSessionManager }) => {
@@ -46,7 +46,7 @@ const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { med
     });
     return (
         <>
-            {stream && <VideoComponent stream={stream} cover={true} mirror={isLocal} videoClass={VolumeSpaceVideoStyle} />}
+            {stream && <VideoComponent stream={stream} cover={true} mirror={isLocal} videoClass={VolumeSpaceVideoStyle} borderRadius={72} />}
             {!stream &&
                 <UAvatar
                     size={stream ? 'large' : 'x-large'}
