@@ -64,17 +64,20 @@ export const AppUserMedia: AppUserMediaApi = {
             audio: {
                 noiseSuppression: true,
                 autoGainControl: false,
-                advanced: [{ deviceId: deviceId ||  MediaDevicesManager.instance().getSelectedInput()?.deviceId || 'default' }],
+                advanced: [{ deviceId: deviceId || MediaDevicesManager.instance().getSelectedInput()?.deviceId || 'default' }],
             },
         });
 
         return new AppUserMediaStreamWeb(media);
     },
 
-    async getUserVideo() {
+    async getUserVideo(deviceId?: string) {
         let media = await navigator.mediaDevices.getUserMedia({
             audio: false,
-            video: true
+            video: {
+                advanced: [{ deviceId: deviceId ||  MediaDevicesManager.instance().getSelectedVideoInput()?.deviceId || 'default' }],
+
+            },
         });
 
         return new AppUserMediaStreamWeb(media);

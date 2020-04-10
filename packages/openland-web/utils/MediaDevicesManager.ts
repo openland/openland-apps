@@ -77,6 +77,9 @@ class MediaDevicesManager {
 
     selectVideoInput = (device: MediaDeviceInfo | undefined) => {
         this.selectedVideoInput = device;
+        if (device && this.selectedInput !== device) {
+            this.updateVideoOutStreamDevice(device);
+        }
         for (let l of this.selectedVideoInputListeners) {
             l(device);
         }
@@ -99,14 +102,14 @@ class MediaDevicesManager {
     }
 
     useMediaDevices: () => {
-        devices: MediaDeviceInfo[], 
-        input: MediaDeviceInfo | undefined, 
-        output: MediaDeviceInfo | undefined, 
-        videoInput: MediaDeviceInfo | undefined, 
+        devices: MediaDeviceInfo[],
+        input: MediaDeviceInfo | undefined,
+        output: MediaDeviceInfo | undefined,
+        videoInput: MediaDeviceInfo | undefined,
         selectInput: (input: MediaDeviceInfo | undefined) => void,
         selectOutput: (output: MediaDeviceInfo | undefined) => void,
         selectVideoInput: (videoInput: MediaDeviceInfo | undefined) => void,
-     } = () => {
+    } = () => {
         const [devices, setDevices] = React.useState(this.devices);
         const [input, setInput] = React.useState(this.selectedInput);
         const [output, setOutput] = React.useState(this.selectedOutput);
@@ -125,16 +128,25 @@ class MediaDevicesManager {
             };
         }, []);
 
-        return {devices, input, output, videoInput, selectInput: this.selectInput, selectOutput: this.selectOutput, selectVideoInput: this.selectVideoInput};
+        return { devices, input, output, videoInput, selectInput: this.selectInput, selectOutput: this.selectOutput, selectVideoInput: this.selectVideoInput };
     }
 
     getSelectedInput = () => {
         return this.selectedInput;
     }
 
+    getSelectedVideoInput = () => {
+        return this.selectedVideoInput;
+    }
+
     currentAudioStream: AppMediaStream | undefined;
     setAudioOutputStream = (stream: AppMediaStream) => {
         this.currentAudioStream = stream;
+    }
+
+    currentVideoStream: AppMediaStream | undefined;
+    setVideoOutputStream = (stream: AppMediaStream) => {
+        this.currentVideoStream = stream;
     }
 
     updateAudioOutStreamDevice = async (newDevice: MediaDeviceInfo) => {
@@ -149,6 +161,22 @@ class MediaDevicesManager {
             }
             for (let l of this.streamUpdateListeners) {
                 l(this.currentAudioStream);
+            }
+        }
+    }
+
+    updateVideoOutStreamDevice = async (newDevice: MediaDeviceInfo) => {
+        if (this.currentVideoStream) {
+            let media = await AppUserMedia.getUserVideo(newDevice.deviceId);
+            let str = (this.currentVideoStream as AppUserMediaStreamWeb)._stream;
+            for (let t of str.getVideoTracks()) {
+                str.removeTrack(t);
+            }
+            for (let t of (media as AppUserMediaStreamWeb)._stream.getVideoTracks()) {
+                str.addTrack(t);
+            }
+            for (let l of this.streamUpdateListeners) {
+                l(this.currentVideoStream);
             }
         }
     }

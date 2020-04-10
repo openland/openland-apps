@@ -10,6 +10,6 @@ export interface AppMediaStream {
 
 export interface AppUserMediaApi {
     getUserAudio(deviceId?: string): Promise<AppMediaStream>;
-    getUserVideo(): Promise<AppMediaStream>;
+    getUserVideo(deviceId?: string): Promise<AppMediaStream>;
     getUserScreen(): Promise<AppMediaStream>;
 }

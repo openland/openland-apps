@@ -148,6 +148,9 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         if (str.getAudioTracks().length) {
             MediaDevicesManager.instance().setAudioOutputStream(stream);
         }
+        if (str.getVideoTracks().length) {
+            MediaDevicesManager.instance().setVideoOutputStream(stream);
+        }
         for (let t of str.getTracks()) {
             // ensure track removed;
             let sender = this.trackSenders.get(t);
