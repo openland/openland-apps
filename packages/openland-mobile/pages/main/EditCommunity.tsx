@@ -6,7 +6,6 @@ import { ZListGroup } from '../../components/ZListGroup';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
@@ -18,7 +17,7 @@ import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardA
 
 const Loader = Toast.loader();
 
-const EditCommunityComponent = XMemo<PageProps>((props) => {
+const EditCommunityComponent = React.memo((props: PageProps) => {
     const organizationId = props.router.params.id;
     const client = getClient();
     const organization = getClient().useOrganizationWithoutMembers({ organizationId }, { fetchPolicy: 'network-only' }).organization;
@@ -35,7 +34,6 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
         try {
             await client.mutateUpdateOrganization({ organizationId: organization.id, input: { alphaIsPrivate: isPrivate } });
             await client.refetchOrganizationProfile({ organizationId: props.router.params.id });
-            await client.refetchOrganization({ organizationId: props.router.params.id });
         } catch (e) {
             console.warn(e);
         } finally {
@@ -55,7 +53,6 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                     }
                 });
                 await client.refetchOrganizationProfile({ organizationId });
-                await client.refetchOrganization({ organizationId });
             } catch (e) {
                 console.warn(e);
             }
@@ -85,7 +82,7 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                     />
                     <ZSelect
                         label="Type"
-                        defaultValue={organization.isPrivate}
+                        defaultValue={profile.private}
                         disabled={!organization.isOwner}
                         onChange={async (option: { label: string; value: boolean }) => {
                             await changeType(option.value);
@@ -101,7 +98,7 @@ const EditCommunityComponent = XMemo<PageProps>((props) => {
                 <ZListGroup header="Shortname" headerMarginTop={0}>
                     <ZPickField
                         label="Shortname"
-                        value={organization.shortname ? '@' + organization.shortname : undefined}
+                        value={profile.shortname ? '@' + profile.shortname : undefined}
                         path="SetShortname"
                         pathParams={{ id: organization.id, isGroup: false }}
                         description="People will be able to find your community by this shortname"

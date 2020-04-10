@@ -47,8 +47,7 @@ const getMenuContent = (opts: MenuContentOpts) => {
                     organizationId: id,
                     newRole,
                 });
-
-                await client.refetchOrganization({ organizationId: id });
+                await client.refetchOrganizationMembersShort({organizationId: id});
 
                 onChangeRole(user.id, newRole);
             },
@@ -108,7 +107,6 @@ const getMenuContent = (opts: MenuContentOpts) => {
                             organizationId: id,
                         });
 
-                        await client.refetchOrganization({ organizationId: id });
                         await client.refetchOrganizationMembersShort({ organizationId: id });
 
                         onRemove(user.id);

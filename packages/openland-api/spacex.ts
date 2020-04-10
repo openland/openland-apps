@@ -187,9 +187,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryOnline(variables: Types.OnlineVariables, opts?: OperationParameters): Promise<Types.Online> {
         return this.query('Online', variables, opts);
     }
-    queryOrganization(variables: Types.OrganizationVariables, opts?: OperationParameters): Promise<Types.Organization> {
-        return this.query('Organization', variables, opts);
-    }
     queryOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: OperationParameters): Promise<Types.OrganizationMembers> {
         return this.query('OrganizationMembers', variables, opts);
     }
@@ -496,9 +493,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchOnline(variables: Types.OnlineVariables, opts?: OperationParameters): Promise<Types.Online> {
         return this.refetch('Online', variables);
     }
-    refetchOrganization(variables: Types.OrganizationVariables, opts?: OperationParameters): Promise<Types.Organization> {
-        return this.refetch('Organization', variables);
-    }
     refetchOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: OperationParameters): Promise<Types.OrganizationMembers> {
         return this.refetch('OrganizationMembers', variables);
     }
@@ -804,9 +798,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateOnline(variables: Types.OnlineVariables, updater: (data: Types.Online) => Types.Online | null): Promise<boolean> {
         return this.updateQuery(updater, 'Online', variables);
-    }
-    updateOrganization(variables: Types.OrganizationVariables, updater: (data: Types.Organization) => Types.Organization | null): Promise<boolean> {
-        return this.updateQuery(updater, 'Organization', variables);
     }
     updateOrganizationMembers(variables: Types.OrganizationMembersVariables, updater: (data: Types.OrganizationMembers) => Types.OrganizationMembers | null): Promise<boolean> {
         return this.updateQuery(updater, 'OrganizationMembers', variables);
@@ -1233,11 +1224,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useOnline(variables: Types.OnlineVariables, opts?: SpaceQueryWatchParameters): Types.Online;
     useOnline(variables: Types.OnlineVariables, opts?: SpaceQueryWatchParameters): Types.Online | null {
         return this.useQuery('Online', variables, opts);
-    }
-    useOrganization(variables: Types.OrganizationVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Organization | null;
-    useOrganization(variables: Types.OrganizationVariables, opts?: SpaceQueryWatchParameters): Types.Organization;
-    useOrganization(variables: Types.OrganizationVariables, opts?: SpaceQueryWatchParameters): Types.Organization | null {
-        return this.useQuery('Organization', variables, opts);
     }
     useOrganizationMembers(variables: Types.OrganizationMembersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationMembers | null;
     useOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationMembers;

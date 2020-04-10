@@ -24,36 +24,26 @@ fragment OrganizationProfileFull on OrganizationProfile {
     published: alphaPublished
     editorial: alphaEditorial
 }
-fragment OrganizationWithoutMembersFragment on Organization {
+fragment OrganizationFragment on Organization {
     id
-    superAccountId
     isMine
-    isPrivate: alphaIsPrivate
-    isOwner: betaIsOwner
-    isAdmin: betaIsAdmin
-    featured: alphaFeatured
-    isCommunity: alphaIsCommunity
+    superAccountId
     name
     photo
-
     shortname
-
     website
+    websiteTitle
     about
     twitter
     facebook
     linkedin
     instagram
-
     membersCount
-
-    requests: alphaOrganizationMemberRequests {
-        role
-        user {
-            ...UserFull
-        }
-    }
-
+    isPrivate: alphaIsPrivate
+    isOwner: betaIsOwner
+    isAdmin: betaIsAdmin
+    featured: alphaFeatured
+    isCommunity: alphaIsCommunity
     roomsCount: betaPublicRoomsCount
 }
 query MyOrganizations {
@@ -68,19 +58,14 @@ mutation UpdateOrganization($input: UpdateOrganizationProfileInput!, $organizati
         ...OrganizationProfileFull
     }
 }
-query Organization($organizationId: ID!) {
-    organization(id: $organizationId) {
-        ...OrganizationFull
-    }
-}
 query OrganizationWithoutMembers($organizationId: ID!) {
     organization(id: $organizationId) {
-        ...OrganizationWithoutMembersFragment
+        ...OrganizationFragment
     }
 }
 query OrganizationMembersShort($organizationId: ID!) {
     organization(id: $organizationId) {
-        ...OrganizationWithoutMembersFragment
+        ...OrganizationFragment
         members: alphaOrganizationMembers {
             user {
                 id

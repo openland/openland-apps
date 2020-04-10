@@ -46,7 +46,6 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                 }
             });
             await client.refetchOrganizationProfile({ organizationId });
-            await client.refetchOrganization({ organizationId });
 
             props.router.back();
         });

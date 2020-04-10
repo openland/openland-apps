@@ -1501,70 +1501,28 @@ internal val NotificationCenterUpdateFragmentSelector = obj(
             ))
         )
 
-internal val UserFullSelector = obj(
+internal val OrganizationFragmentSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
-            field("name", "name", notNull(scalar("String"))),
-            field("firstName", "firstName", notNull(scalar("String"))),
-            field("lastName", "lastName", scalar("String")),
-            field("photo", "photo", scalar("String")),
-            field("phone", "phone", scalar("String")),
-            field("email", "email", scalar("String")),
-            field("website", "website", scalar("String")),
-            field("about", "about", scalar("String")),
-            field("location", "location", scalar("String")),
-            field("isBot", "isBot", notNull(scalar("Boolean"))),
-            field("isYou", "isYou", notNull(scalar("Boolean"))),
-            field("online", "online", notNull(scalar("Boolean"))),
-            field("lastSeen", "lastSeen", scalar("String")),
-            field("linkedin", "linkedin", scalar("String")),
-            field("instagram", "instagram", scalar("String")),
-            field("twitter", "twitter", scalar("String")),
-            field("facebook", "facebook", scalar("String")),
-            field("shortname", "shortname", scalar("String")),
-            field("audienceSize", "audienceSize", notNull(scalar("Int"))),
-            field("primaryOrganization", "primaryOrganization", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Organization", OrganizationShortSelector)
-                ))
-        )
-
-internal val OrganizationFullSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("superAccountId", "superAccountId", notNull(scalar("ID"))),
             field("isMine", "isMine", notNull(scalar("Boolean"))),
-            field("alphaIsPrivate", "isPrivate", notNull(scalar("Boolean"))),
-            field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
-            field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
-            field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
-            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+            field("superAccountId", "superAccountId", notNull(scalar("ID"))),
             field("name", "name", notNull(scalar("String"))),
             field("photo", "photo", scalar("String")),
             field("shortname", "shortname", scalar("String")),
             field("website", "website", scalar("String")),
+            field("websiteTitle", "websiteTitle", scalar("String")),
             field("about", "about", scalar("String")),
             field("twitter", "twitter", scalar("String")),
             field("facebook", "facebook", scalar("String")),
             field("linkedin", "linkedin", scalar("String")),
             field("instagram", "instagram", scalar("String")),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
-            field("alphaOrganizationMembers", "members", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("role", "role", notNull(scalar("String"))),
-                    field("user", "user", notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("User", UserFullSelector)
-                        )))
-                ))))),
-            field("alphaOrganizationMemberRequests", "requests", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("role", "role", notNull(scalar("String"))),
-                    field("user", "user", notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("User", UserFullSelector)
-                        )))
-                )))))
+            field("alphaIsPrivate", "isPrivate", notNull(scalar("Boolean"))),
+            field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
+            field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
+            field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
+            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+            field("betaPublicRoomsCount", "roomsCount", notNull(scalar("Int")))
         )
 
 internal val OrganizationMediumSelector = obj(
@@ -1608,37 +1566,6 @@ internal val OrganizationProfileFullSelector = obj(
             field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
             field("alphaPublished", "published", notNull(scalar("Boolean"))),
             field("alphaEditorial", "editorial", notNull(scalar("Boolean")))
-        )
-
-internal val OrganizationWithoutMembersFragmentSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("superAccountId", "superAccountId", notNull(scalar("ID"))),
-            field("isMine", "isMine", notNull(scalar("Boolean"))),
-            field("alphaIsPrivate", "isPrivate", notNull(scalar("Boolean"))),
-            field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
-            field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
-            field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
-            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
-            field("name", "name", notNull(scalar("String"))),
-            field("photo", "photo", scalar("String")),
-            field("shortname", "shortname", scalar("String")),
-            field("website", "website", scalar("String")),
-            field("about", "about", scalar("String")),
-            field("twitter", "twitter", scalar("String")),
-            field("facebook", "facebook", scalar("String")),
-            field("linkedin", "linkedin", scalar("String")),
-            field("instagram", "instagram", scalar("String")),
-            field("membersCount", "membersCount", notNull(scalar("Int"))),
-            field("alphaOrganizationMemberRequests", "requests", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("role", "role", notNull(scalar("String"))),
-                    field("user", "user", notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("User", UserFullSelector)
-                        )))
-                ))))),
-            field("betaPublicRoomsCount", "roomsCount", notNull(scalar("Int")))
         )
 
 internal val PlatformNotificationSettingsFullSelector = obj(
@@ -1809,6 +1736,34 @@ internal val TinyMessageSelector = obj(
                         field("id", "id", notNull(scalar("ID")))
                     )))))
             ))
+        )
+
+internal val UserFullSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("firstName", "firstName", notNull(scalar("String"))),
+            field("lastName", "lastName", scalar("String")),
+            field("photo", "photo", scalar("String")),
+            field("phone", "phone", scalar("String")),
+            field("email", "email", scalar("String")),
+            field("website", "website", scalar("String")),
+            field("about", "about", scalar("String")),
+            field("location", "location", scalar("String")),
+            field("isBot", "isBot", notNull(scalar("Boolean"))),
+            field("isYou", "isYou", notNull(scalar("Boolean"))),
+            field("online", "online", notNull(scalar("Boolean"))),
+            field("lastSeen", "lastSeen", scalar("String")),
+            field("linkedin", "linkedin", scalar("String")),
+            field("instagram", "instagram", scalar("String")),
+            field("twitter", "twitter", scalar("String")),
+            field("facebook", "facebook", scalar("String")),
+            field("shortname", "shortname", scalar("String")),
+            field("audienceSize", "audienceSize", notNull(scalar("Int"))),
+            field("primaryOrganization", "primaryOrganization", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Organization", OrganizationShortSelector)
+                ))
         )
 
 internal val UserNanoSelector = obj(

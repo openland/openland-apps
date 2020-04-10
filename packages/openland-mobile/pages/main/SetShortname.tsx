@@ -4,7 +4,6 @@ import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { Clipboard } from 'react-native';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
@@ -23,7 +22,7 @@ interface ContentProps {
     onSave: (shortname: string | null) => Promise<any>;
 }
 
-const SetShortnameContent = XMemo<PageProps & ContentProps>((props) => {
+const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
     const [error, setError] = React.useState<string | undefined>(undefined);
 
     const minLength = SUPER_ADMIN ? 3 : 5;
@@ -31,7 +30,7 @@ const SetShortnameContent = XMemo<PageProps & ContentProps>((props) => {
 
     const form = useForm();
     const shortnameField = useField('shortname', props.shortname || '', form);
-    
+
     React.useEffect(() => setError(undefined), [shortnameField.value]);
 
     const handleSave = () => {
@@ -50,8 +49,15 @@ const SetShortnameContent = XMemo<PageProps & ContentProps>((props) => {
         }
     };
 
-    const shortnameError = getErrorByShortname(shortnameField.value, 'Shortname', minLength, maxLength);
-    const footerShortnameText = shortnameField.value ? `This link opens ${props.name} page:\nopenland.com/${shortnameField.value}` : '';
+    const shortnameError = getErrorByShortname(
+        shortnameField.value,
+        'Shortname',
+        minLength,
+        maxLength,
+    );
+    const footerShortnameText = shortnameField.value
+        ? `This link opens ${props.name} page:\nopenland.com/${shortnameField.value}`
+        : '';
 
     return (
         <>
@@ -60,22 +66,45 @@ const SetShortnameContent = XMemo<PageProps & ContentProps>((props) => {
                 <ZListGroup
                     header={null}
                     footer={{
-                        text: 'You can choose a shortname for ' + props.name + ' in Openland.' + '\n' +
-                              'Other people will be able to find it by this shortname.' + '\n\n' +
-                              'You can use a-z, 0-9 and underscores.' + '\n' +
-                              'Minimum length is ' + minLength + ' characters.' + '\n\n' +
-                              footerShortnameText,
+                        text:
+                            'You can choose a shortname for ' +
+                            props.name +
+                            ' in Openland.' +
+                            '\n' +
+                            'Other people will be able to find it by this shortname.' +
+                            '\n\n' +
+                            'You can use a-z, 0-9 and underscores.' +
+                            '\n' +
+                            'Minimum length is ' +
+                            minLength +
+                            ' characters.' +
+                            '\n\n' +
+                            footerShortnameText,
 
                         onPress: (link: string) => {
                             if (props.shortname) {
-                                ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-copy-24.png')).show();
+                                ActionSheet.builder()
+                                    .action(
+                                        'Copy',
+                                        () => Clipboard.setString(link),
+                                        false,
+                                        require('assets/ic-copy-24.png'),
+                                    )
+                                    .show();
                             }
                         },
                         onLongPress: (link: string) => {
                             if (props.shortname) {
-                                ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-copy-24.png')).show();
+                                ActionSheet.builder()
+                                    .action(
+                                        'Copy',
+                                        () => Clipboard.setString(link),
+                                        false,
+                                        require('assets/ic-copy-24.png'),
+                                    )
+                                    .show();
                             }
-                        }
+                        },
                     }}
                 >
                     <ZInput
@@ -94,51 +123,64 @@ const SetShortnameContent = XMemo<PageProps & ContentProps>((props) => {
     );
 });
 
-const SetOrgShortname = XMemo<PageProps>((props) => {
+const SetOrgShortname = React.memo((props: PageProps) => {
     const id = props.router.params.id;
     const profile = getClient().useOrganizationProfile({ organizationId: id }).organizationProfile;
-    const handleSave = React.useCallback(async (shortname) => {
-        await getClient().mutateSetOrgShortname({ 
-            shortname, 
-            organizationId: id 
-        });
-        await Promise.all([
-            getClient().refetchOrganization({ organizationId: id }),
-            getClient().refetchOrganizationProfile({ organizationId: id }),
-        ]);
-    }, [id]);
+    const handleSave = React.useCallback(
+        async (shortname) => {
+            await getClient().mutateSetOrgShortname({
+                shortname,
+                organizationId: id,
+            });
+            await getClient().refetchOrganizationProfile({ organizationId: id });
+        },
+        [id],
+    );
 
     return (
-        <SetShortnameContent {...props} name={profile.name} shortname={profile.shortname} onSave={handleSave} />
+        <SetShortnameContent
+            {...props}
+            name={profile.name}
+            shortname={profile.shortname}
+            onSave={handleSave}
+        />
     );
 });
 
-const SetGroupShortname = XMemo<PageProps>((props) => {
+const SetGroupShortname = React.memo((props: PageProps) => {
     const id = props.router.params.id;
     const profile = getClient().useRoomChat({ id }).room as RoomChat_room_SharedRoom;
-    const handleSave = React.useCallback(async (shortname) => {
-        await getClient().mutateSetRoomShortname({ 
-            shortname, 
-            id
-        });
-        await getClient().refetchRoomChat({ id });
-    }, [id]);
+    const handleSave = React.useCallback(
+        async (shortname) => {
+            await getClient().mutateSetRoomShortname({
+                shortname,
+                id,
+            });
+            await getClient().refetchRoomChat({ id });
+        },
+        [id],
+    );
 
     return (
-        <SetShortnameContent {...props} name={profile.title} shortname={profile.shortname} onSave={handleSave} />
+        <SetShortnameContent
+            {...props}
+            name={profile.title}
+            shortname={profile.shortname}
+            onSave={handleSave}
+        />
     );
 });
 
-const SetShortnameComponent = (props: PageProps) => {
-        const isGroup = props.router.params.isGroup;
-        const Component = isGroup ? SetGroupShortname : SetOrgShortname;
+const SetShortnameComponent = React.memo((props: PageProps) => {
+    const isGroup = props.router.params.isGroup;
+    const Component = isGroup ? SetGroupShortname : SetOrgShortname;
 
-        return (
-            <>
-                <SHeader title="Shortname" />
-                <Component {...props} />
-            </>
-        );
-};
+    return (
+        <>
+            <SHeader title="Shortname" />
+            <Component {...props} />
+        </>
+    );
+});
 
 export const SetShortname = withApp(SetShortnameComponent, { navigationAppearance: 'small' });

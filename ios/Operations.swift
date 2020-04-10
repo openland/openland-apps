@@ -1495,70 +1495,28 @@ private let NotificationCenterUpdateFragmentSelector = obj(
             ))
         )
 
-private let UserFullSelector = obj(
+private let OrganizationFragmentSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
-            field("name", "name", notNull(scalar("String"))),
-            field("firstName", "firstName", notNull(scalar("String"))),
-            field("lastName", "lastName", scalar("String")),
-            field("photo", "photo", scalar("String")),
-            field("phone", "phone", scalar("String")),
-            field("email", "email", scalar("String")),
-            field("website", "website", scalar("String")),
-            field("about", "about", scalar("String")),
-            field("location", "location", scalar("String")),
-            field("isBot", "isBot", notNull(scalar("Boolean"))),
-            field("isYou", "isYou", notNull(scalar("Boolean"))),
-            field("online", "online", notNull(scalar("Boolean"))),
-            field("lastSeen", "lastSeen", scalar("String")),
-            field("linkedin", "linkedin", scalar("String")),
-            field("instagram", "instagram", scalar("String")),
-            field("twitter", "twitter", scalar("String")),
-            field("facebook", "facebook", scalar("String")),
-            field("shortname", "shortname", scalar("String")),
-            field("audienceSize", "audienceSize", notNull(scalar("Int"))),
-            field("primaryOrganization", "primaryOrganization", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Organization", OrganizationShortSelector)
-                ))
-        )
-
-private let OrganizationFullSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("superAccountId", "superAccountId", notNull(scalar("ID"))),
             field("isMine", "isMine", notNull(scalar("Boolean"))),
-            field("alphaIsPrivate", "isPrivate", notNull(scalar("Boolean"))),
-            field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
-            field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
-            field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
-            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+            field("superAccountId", "superAccountId", notNull(scalar("ID"))),
             field("name", "name", notNull(scalar("String"))),
             field("photo", "photo", scalar("String")),
             field("shortname", "shortname", scalar("String")),
             field("website", "website", scalar("String")),
+            field("websiteTitle", "websiteTitle", scalar("String")),
             field("about", "about", scalar("String")),
             field("twitter", "twitter", scalar("String")),
             field("facebook", "facebook", scalar("String")),
             field("linkedin", "linkedin", scalar("String")),
             field("instagram", "instagram", scalar("String")),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
-            field("alphaOrganizationMembers", "members", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("role", "role", notNull(scalar("String"))),
-                    field("user", "user", notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("User", UserFullSelector)
-                        )))
-                ))))),
-            field("alphaOrganizationMemberRequests", "requests", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("role", "role", notNull(scalar("String"))),
-                    field("user", "user", notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("User", UserFullSelector)
-                        )))
-                )))))
+            field("alphaIsPrivate", "isPrivate", notNull(scalar("Boolean"))),
+            field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
+            field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
+            field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
+            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+            field("betaPublicRoomsCount", "roomsCount", notNull(scalar("Int")))
         )
 
 private let OrganizationMediumSelector = obj(
@@ -1602,37 +1560,6 @@ private let OrganizationProfileFullSelector = obj(
             field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
             field("alphaPublished", "published", notNull(scalar("Boolean"))),
             field("alphaEditorial", "editorial", notNull(scalar("Boolean")))
-        )
-
-private let OrganizationWithoutMembersFragmentSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("superAccountId", "superAccountId", notNull(scalar("ID"))),
-            field("isMine", "isMine", notNull(scalar("Boolean"))),
-            field("alphaIsPrivate", "isPrivate", notNull(scalar("Boolean"))),
-            field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
-            field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
-            field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
-            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
-            field("name", "name", notNull(scalar("String"))),
-            field("photo", "photo", scalar("String")),
-            field("shortname", "shortname", scalar("String")),
-            field("website", "website", scalar("String")),
-            field("about", "about", scalar("String")),
-            field("twitter", "twitter", scalar("String")),
-            field("facebook", "facebook", scalar("String")),
-            field("linkedin", "linkedin", scalar("String")),
-            field("instagram", "instagram", scalar("String")),
-            field("membersCount", "membersCount", notNull(scalar("Int"))),
-            field("alphaOrganizationMemberRequests", "requests", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("role", "role", notNull(scalar("String"))),
-                    field("user", "user", notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("User", UserFullSelector)
-                        )))
-                ))))),
-            field("betaPublicRoomsCount", "roomsCount", notNull(scalar("Int")))
         )
 
 private let PlatformNotificationSettingsFullSelector = obj(
@@ -1803,6 +1730,34 @@ private let TinyMessageSelector = obj(
                         field("id", "id", notNull(scalar("ID")))
                     )))))
             ))
+        )
+
+private let UserFullSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("firstName", "firstName", notNull(scalar("String"))),
+            field("lastName", "lastName", scalar("String")),
+            field("photo", "photo", scalar("String")),
+            field("phone", "phone", scalar("String")),
+            field("email", "email", scalar("String")),
+            field("website", "website", scalar("String")),
+            field("about", "about", scalar("String")),
+            field("location", "location", scalar("String")),
+            field("isBot", "isBot", notNull(scalar("Boolean"))),
+            field("isYou", "isYou", notNull(scalar("Boolean"))),
+            field("online", "online", notNull(scalar("Boolean"))),
+            field("lastSeen", "lastSeen", scalar("String")),
+            field("linkedin", "linkedin", scalar("String")),
+            field("instagram", "instagram", scalar("String")),
+            field("twitter", "twitter", scalar("String")),
+            field("facebook", "facebook", scalar("String")),
+            field("shortname", "shortname", scalar("String")),
+            field("audienceSize", "audienceSize", notNull(scalar("Int"))),
+            field("primaryOrganization", "primaryOrganization", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Organization", OrganizationShortSelector)
+                ))
         )
 
 private let UserNanoSelector = obj(
@@ -3242,12 +3197,6 @@ private let OnlineSelector = obj(
                     field("isBot", "isBot", notNull(scalar("Boolean")))
                 )))
         )
-private let OrganizationSelector = obj(
-            field("organization", "organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Organization", OrganizationFullSelector)
-                )))
-        )
 private let OrganizationMembersSelector = obj(
             field("organization", "organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -3272,7 +3221,7 @@ private let OrganizationMembersShortSelector = obj(
                                     field("id", "id", notNull(scalar("ID")))
                                 )))
                         ))))),
-                    fragment("Organization", OrganizationWithoutMembersFragmentSelector)
+                    fragment("Organization", OrganizationFragmentSelector)
                 )))
         )
 private let OrganizationProfileSelector = obj(
@@ -3302,7 +3251,7 @@ private let OrganizationPublicRoomsSelector = obj(
 private let OrganizationWithoutMembersSelector = obj(
             field("organization", "organization", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Organization", OrganizationWithoutMembersFragmentSelector)
+                    fragment("Organization", OrganizationFragmentSelector)
                 )))
         )
 private let PermissionsSelector = obj(
@@ -5514,12 +5463,6 @@ class Operations {
         "query Online($userId:ID!){user:user(id:$userId){__typename id online lastSeen isBot}}",
         OnlineSelector
     )
-    let Organization = OperationDefinition(
-        "Organization",
-        .query, 
-        "query Organization($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationFull}}fragment OrganizationFull on Organization{__typename id superAccountId isMine isPrivate:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity name photo shortname website about twitter facebook linkedin instagram membersCount members:alphaOrganizationMembers{__typename role user{__typename ...UserFull}}requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}}fragment UserFull on User{__typename id name firstName lastName photo phone email website about location isBot isYou online lastSeen linkedin instagram twitter facebook shortname audienceSize primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
-        OrganizationSelector
-    )
     let OrganizationMembers = OperationDefinition(
         "OrganizationMembers",
         .query, 
@@ -5529,7 +5472,7 @@ class Operations {
     let OrganizationMembersShort = OperationDefinition(
         "OrganizationMembersShort",
         .query, 
-        "query OrganizationMembersShort($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationWithoutMembersFragment members:alphaOrganizationMembers{__typename user{__typename id}}}}fragment OrganizationWithoutMembersFragment on Organization{__typename id superAccountId isMine isPrivate:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity name photo shortname website about twitter facebook linkedin instagram membersCount requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}roomsCount:betaPublicRoomsCount}fragment UserFull on User{__typename id name firstName lastName photo phone email website about location isBot isYou online lastSeen linkedin instagram twitter facebook shortname audienceSize primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
+        "query OrganizationMembersShort($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationFragment members:alphaOrganizationMembers{__typename user{__typename id}}}}fragment OrganizationFragment on Organization{__typename id isMine superAccountId name photo shortname website websiteTitle about twitter facebook linkedin instagram membersCount isPrivate:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity roomsCount:betaPublicRoomsCount}",
         OrganizationMembersShortSelector
     )
     let OrganizationProfile = OperationDefinition(
@@ -5553,7 +5496,7 @@ class Operations {
     let OrganizationWithoutMembers = OperationDefinition(
         "OrganizationWithoutMembers",
         .query, 
-        "query OrganizationWithoutMembers($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationWithoutMembersFragment}}fragment OrganizationWithoutMembersFragment on Organization{__typename id superAccountId isMine isPrivate:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity name photo shortname website about twitter facebook linkedin instagram membersCount requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}roomsCount:betaPublicRoomsCount}fragment UserFull on User{__typename id name firstName lastName photo phone email website about location isBot isYou online lastSeen linkedin instagram twitter facebook shortname audienceSize primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
+        "query OrganizationWithoutMembers($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationFragment}}fragment OrganizationFragment on Organization{__typename id isMine superAccountId name photo shortname website websiteTitle about twitter facebook linkedin instagram membersCount isPrivate:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity roomsCount:betaPublicRoomsCount}",
         OrganizationWithoutMembersSelector
     )
     let Permissions = OperationDefinition(
@@ -6686,7 +6629,6 @@ class Operations {
         if name == "MyWallet" { return MyWallet }
         if name == "OauthContext" { return OauthContext }
         if name == "Online" { return Online }
-        if name == "Organization" { return Organization }
         if name == "OrganizationMembers" { return OrganizationMembers }
         if name == "OrganizationMembersShort" { return OrganizationMembersShort }
         if name == "OrganizationProfile" { return OrganizationProfile }

@@ -14,12 +14,12 @@ internal val OrganizationMembersShortSelector = obj(
                                     field("id", "id", notNull(scalar("ID")))
                                 )))
                         ))))),
-                    fragment("Organization", OrganizationWithoutMembersFragmentSelector)
+                    fragment("Organization", OrganizationFragmentSelector)
                 )))
         )
 val OrganizationMembersShort = object: OperationDefinition {
     override val name = "OrganizationMembersShort"
     override val kind = OperationKind.QUERY
-    override val body = "query OrganizationMembersShort(\$organizationId:ID!){organization(id:\$organizationId){__typename ...OrganizationWithoutMembersFragment members:alphaOrganizationMembers{__typename user{__typename id}}}}fragment OrganizationWithoutMembersFragment on Organization{__typename id superAccountId isMine isPrivate:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity name photo shortname website about twitter facebook linkedin instagram membersCount requests:alphaOrganizationMemberRequests{__typename role user{__typename ...UserFull}}roomsCount:betaPublicRoomsCount}fragment UserFull on User{__typename id name firstName lastName photo phone email website about location isBot isYou online lastSeen linkedin instagram twitter facebook shortname audienceSize primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}"
+    override val body = "query OrganizationMembersShort(\$organizationId:ID!){organization(id:\$organizationId){__typename ...OrganizationFragment members:alphaOrganizationMembers{__typename user{__typename id}}}}fragment OrganizationFragment on Organization{__typename id isMine superAccountId name photo shortname website websiteTitle about twitter facebook linkedin instagram membersCount isPrivate:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity roomsCount:betaPublicRoomsCount}"
     override val selector = OrganizationMembersShortSelector
 }

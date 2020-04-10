@@ -38,7 +38,10 @@ interface AdminToolsProps {
 const AdminTools = (props: AdminToolsProps) => {
     const client = useClient();
 
-    const data = client.useSuperAccount({ accountId: props.id, viaOrgId: true }, { suspense: false });
+    const data = client.useSuperAccount(
+        { accountId: props.id, viaOrgId: true },
+        { suspense: false },
+    );
 
     if (!(data && data.superAccount)) {
         return null;
@@ -97,7 +100,7 @@ const EditCommunityEntity = (props: {
     );
     const nameField = useField('input.name', org.name, form, [
         {
-            checkIsValid: value => !!value.trim(),
+            checkIsValid: (value) => !!value.trim(),
             text: 'Please enter a name',
         },
     ]);
@@ -141,16 +144,14 @@ const EditCommunityEntity = (props: {
                 },
                 organizationId: organizationId,
             };
-            let promises: Promise<any>[] = [client.mutateUpdateOrganization(variables)];
+            await client.mutateUpdateOrganization(variables);
             if (initialOrgShortname !== shortnameField.value) {
-                promises.push(client.mutateSetOrgShortname({ shortname: shortnameField.value, organizationId }));
+                await client.mutateSetOrgShortname({
+                    shortname: shortnameField.value,
+                    organizationId,
+                });
             }
-            await Promise.all(promises);
-
-            await Promise.all([
-                client.refetchOrganization({ organizationId }),
-                client.refetchOrganizationProfile({ organizationId }),
-            ]);
+            await client.refetchOrganizationProfile({ organizationId });
             props.modalCtx.hide();
         });
     };
@@ -274,7 +275,7 @@ const EditCommunityEntity = (props: {
 
 export const showEditCommunityModal = (id: string, isCommunity: boolean, isOwner: boolean) => {
     trackEvent(`navigate_${isCommunity ? 'community' : 'org'}_profile_edit`);
-    showModalBox({ title: isCommunity ? 'Edit community' : 'Edit organization' }, ctx => {
+    showModalBox({ title: isCommunity ? 'Edit community' : 'Edit organization' }, (ctx) => {
         return (
             <EditCommunityEntity
                 id={id}

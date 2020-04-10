@@ -67,7 +67,6 @@ object Operations {
         if (name == "MyWallet") return MyWallet
         if (name == "OauthContext") return OauthContext
         if (name == "Online") return Online
-        if (name == "Organization") return Organization
         if (name == "OrganizationMembers") return OrganizationMembers
         if (name == "OrganizationMembersShort") return OrganizationMembersShort
         if (name == "OrganizationProfile") return OrganizationProfile
