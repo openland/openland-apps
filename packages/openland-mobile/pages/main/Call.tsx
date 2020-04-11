@@ -25,9 +25,12 @@ import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager'
 import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { AppUserMediaStreamNative } from 'openland-y-runtime-native/AppUserMedia';
 import { RTCView } from 'react-native-webrtc';
+import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 
 const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaSession: MediaSessionManager, calls: CallsEngine, h: number, mirror?: boolean }) => {
-    let [stream, setStream] = React.useState<string>();
+    let [mainStream, setMainStream] = React.useState<AppMediaStream>();
+    // @ts-ignore
+    let [miniStream, setMiniStream] = React.useState<AppMediaStream>();
 
     const [localPeer, setLocalPeer] = React.useState(props.mediaSession.getPeerId());
     let isLocal = props.peer.id === props.mediaSession.getPeerId();
@@ -36,14 +39,18 @@ const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaS
         let d0 = props.calls.listenState(() => setLocalPeer(props.mediaSession.getPeerId()));
         let d1: () => void;
         if (isLocal) {
-            d1 = props.mediaSession.listenOutVideo(s => {
-                setStream((s as AppUserMediaStreamNative)?._stream.toURL());
+            d1 = props.mediaSession.outVideoVM.listen(streams => {
+                let cam = streams.find(s => s?.source === 'camera');
+                let screen = streams.find(s => s?.source === 'screen_share');
+                setMainStream(screen ? screen : cam);
+                setMiniStream(screen ? cam : undefined);
             });
         } else {
-            d1 = props.mediaSession.listenPeerVideo(props.peer.id, s => {
-                if (s) {
-                    setStream((s as AppUserMediaStreamNative)?._stream.toURL());
-                }
+            d1 = props.mediaSession.peerVideoVM.listen(props.peer.id, streams => {
+                let cam = [...streams.values()].find(s => s.source === 'camera');
+                let screen = [...streams.values()].find(s => s.source === 'screen_share');
+                setMainStream(screen ? screen : cam);
+                setMiniStream(screen ? cam : undefined);
             });
         }
         return () => {
@@ -51,9 +58,12 @@ const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaS
             d1();
         };
     }, [localPeer]);
+    let mainStreamNative = (mainStream as AppUserMediaStreamNative | undefined)?._stream;
+    // @ts-ignore
+    let miniStreamNative = (mainStream as AppUserMediaStreamNative | undefined)?._stream;
     return (
         <View flexGrow={1} height={props.h} backgroundColor="gray">
-            {stream && <RTCView streamURL={stream} style={{ flexGrow: 1 }} objectFit="cover" mirror={props.mirror} />}
+            {mainStreamNative && <RTCView streamURL={mainStreamNative.toURL()} style={{ flexGrow: 1 }} objectFit="cover" mirror={props.mirror} />}
             <View position="absolute" left={6} top={6}>
                 <ZAvatar size="medium" id={props.peer.user.id} title={props.peer.user.name} photo={props.peer.user.photo} />
             </View>
@@ -88,7 +98,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     }, [speaker]);
 
     let calls = getMessenger().engine.calls;
-    let callsState = calls.useState();
+    let callState = calls.useState();
 
     let conference = getClient().useConference({ id: props.id }, { suspense: false });
     useWatchCall(conference && conference.conference.id);
@@ -110,21 +120,21 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
 
     React.useEffect(() => {
 
-        if (callsState.status === 'connected') {
-            if (callsState.private) {
+        if (callState.status === 'connected') {
+            if (callState.private) {
                 setInitialTime(new Date().getTime());
-            } else if (callsState.startTime) {
-                setInitialTime(callsState.startTime);
+            } else if (callState.startTime) {
+                setInitialTime(callState.startTime);
             }
             setStatus('connected');
             ReactNativeHapticFeedback.trigger('impactMedium', { ignoreAndroidSystemSettings: false });
-        } else if (callsState.status === 'end') {
+        } else if (callState.status === 'end') {
             onCallEnd();
-        } else if (callsState.status === 'waiting') {
+        } else if (callState.status === 'waiting') {
             setStatus('waiting');
         }
 
-    }, [callsState.status]);
+    }, [callState.status]);
 
     React.useEffect(() => {
         if (status === 'connected') {
@@ -151,7 +161,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let h2 = h / peerSlice[1].length;
 
     let mediaSession = calls.getMediaSession();
-    let videoEnabled = !!(callsState.videoEnabled && mediaSession);
+    let videoEnabled = !!(callState.videoEnabled && mediaSession);
 
     // animate controls hide/show
     const [uiHidden, setHideUi] = React.useState(false);
@@ -254,16 +264,16 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                         calls.switchVideo();
                     }}
                     onLongPress={() => {
-                        if (callsState.outVideo) {
+                        if (callState.video) {
                             ReactNativeHapticFeedback.trigger('notificationSuccess');
-                            ((callsState.outVideo.stream as AppUserMediaStreamNative)._stream.getVideoTracks()[0] as any)?._switchCamera();
+                            ((callState.video as AppUserMediaStreamNative)._stream.getVideoTracks()[0] as any)?._switchCamera();
                             setMirrorSelf(m => !m);
                         }
                     }}
                     style={{ width: 56, height: 56 }}
                 >
-                    <View backgroundColor={calls.state.outVideo ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
-                        <Image source={calls.state.outVideo ? require('assets/ic-camera-video-24.png') : require('assets/ic-camera-video-24.png')} style={{ tintColor: calls.state.outVideo ? 'black' : 'white' }} />
+                    <View backgroundColor={calls.state.video ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
+                        <Image source={calls.state.video ? require('assets/ic-camera-video-24.png') : require('assets/ic-camera-video-24.png')} style={{ tintColor: calls.state.video ? 'black' : 'white' }} />
                     </View>
                 </TouchableOpacity>
 

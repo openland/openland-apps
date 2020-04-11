@@ -200,8 +200,8 @@ const VideoMediaView = React.memo((props: {
     React.useEffect(() => {
         let d: (() => void) | undefined;
         if (props.peer?.id) {
-            d = props.mediaSessionManager.listenPeerVideo(props.peer.id, (streams) => {
-                setStream(streams.find(s => s.source === 'camera'));
+            d = props.mediaSessionManager.peerVideoVM.listen(props.peer.id, (streams) => {
+                setStream([...streams.values()].find(s => s.source === 'camera'));
             });
         }
         return d;
@@ -329,8 +329,8 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
             />
             <UButton
                 flexShrink={0}
-                style={callState.outVideo ? 'primary' : 'secondary'}
-                text={callState.outVideo ? 'Video on' : 'Video off'}
+                style={callState.video ? 'primary' : 'secondary'}
+                text={callState.video ? 'Video on' : 'Video off'}
                 onClick={() => calls.switchVideo()}
                 marginHorizontal={4}
                 marginTop={callState.videoEnabled ? 8 : 0}
@@ -365,7 +365,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
                             <XView width={VIDEO_SIZE} height={VIDEO_SIZE} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" backgroundColor="gray">
                                 {avatar}
                                 <XView width={VIDEO_SIZE / 3} height={VIDEO_SIZE / 3} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" position="absolute" top={0} right={0}>
-                                    {callState.outVideo && <VideoComponent stream={(callState.outVideo.stream as AppUserMediaStreamWeb)._stream} cover={true} videoClass={VideoRadius} />}
+                                    {callState.video && <VideoComponent stream={(callState.video as AppUserMediaStreamWeb)._stream} cover={true} videoClass={VideoRadius} />}
                                 </XView>
                             </XView>
                         )}

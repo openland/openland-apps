@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { OpenlandClient } from 'openland-api/spacex';
 import { backoff } from 'openland-y-utils/timer';
 import { MediaStreamManager } from './MediaStreamManager';
@@ -12,38 +11,16 @@ import { ConferenceWatch } from 'openland-api/spacex.types';
 import { MediaStreamsAlalizer } from './MediaStreamsAlalizer';
 import { MediaSessionVolumeSpace } from './MediaSessionVolumeSpace';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
-
-export const useStreamManager = (manager: MediaSessionManager | undefined, peerId: string) => {
-    const [stream, setStream] = React.useState<MediaStreamManager>();
-    React.useEffect(() => {
-        if (!manager) {
-            return;
-        }
-        return manager.listenStreams(streams => {
-            if (manager.getPeerId() === peerId && streams.size) {
-                setStream(streams.values().next().value);
-            } else {
-                streams.forEach(s => {
-                    if (s.getTargetPeerId() === peerId) {
-                        setStream(s);
-                    }
-                });
-            }
-
-        });
-    }, [manager]);
-    return stream;
-};
+import { VMMap, VM, VMSetMap } from 'openland-y-utils/mvvm/vm';
 
 export class MediaSessionManager {
     readonly conversationId: string;
     private readonly client: OpenlandClient;
     private readonly onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void;
     private readonly onDestroyRequested: () => void;
-    private readonly onVideoEnabledCallback: () => void;
     private mediaStream!: AppMediaStream;
     private outVideoStream?: AppMediaStream;
-    private outScreenStream?: AppMediaStream;
+    private outScreenStream?: AppMediaStream & { binded?: boolean };
     private streamConfigs!: ConferenceMediaWatch_media_streams[];
     private iceServers!: any[];
     private conferenceId!: string;
@@ -52,16 +29,14 @@ export class MediaSessionManager {
     private mute: boolean;
     private isPrivate: boolean;
     private ownPeerDetected = false;
-    private videoEnabled = false;
-
-    readonly streams = new Map<string, MediaStreamManager>();
-    readonly peerStreamManagers = new Map<string, Set<MediaStreamManager>>();
-    private streamsListeners = new Set<(streams: Map<string, MediaStreamManager>) => void>();
-    private peerVideoListeners = new Map<string, Set<(stream: AppMediaStream[]) => void>>();
-    private videoEnabledListeners = new Set<() => void>();
-    private dcListeners = new Set<(message: { peerId: string, data: any }) => void>();
     readonly analizer: MediaStreamsAlalizer;
     readonly volumeSpace: MediaSessionVolumeSpace;
+
+    readonly streamsVM = new VMMap<string, MediaStreamManager>();
+    readonly peerVideoVM = new VMSetMap<string, AppMediaStream>();
+    readonly dcVM = new VM<{ peerId: string, data: any }>();
+    readonly videoEnabledVM = new VM<boolean>();
+    readonly outVideoVM = new VM<(AppMediaStream | undefined)[]>();
 
     constructor(client: OpenlandClient, conversationId: string, mute: boolean, isPrivate: boolean, onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void, onDestroyRequested: () => void, onVideoEnabled: () => void) {
         this.client = client;
@@ -69,11 +44,11 @@ export class MediaSessionManager {
         this.mute = mute;
         this.onStatusChange = onStatusChange;
         this.onDestroyRequested = onDestroyRequested;
-        this.onVideoEnabledCallback = onVideoEnabled;
         this.isPrivate = isPrivate;
         this.doInit();
         this.analizer = new MediaStreamsAlalizer(this);
         this.volumeSpace = new MediaSessionVolumeSpace(this);
+        this.videoEnabledVM.listen(onVideoEnabled);
     }
 
     setMute = (mute: boolean) => {
@@ -85,39 +60,52 @@ export class MediaSessionManager {
 
     startScreenShare = async () => {
         if (!this.outScreenStream) {
-            this.outScreenStream = await AppUserMedia.getUserScreen();
+            try {
+                this.outScreenStream = await AppUserMedia.getUserScreen();
+                this.outScreenStream.source = 'screen_share';
+            } catch (e) {
+                // ignore
+            }
         }
         if (!this.outScreenStream) {
             return;
         }
-
-        // TODO: mutate addScreenShare, ref how screen share status handled
-
+        backoff(async () => {
+            await this.client.mutateconferenceAddScreenShare({
+                id: this.conferenceId,
+            });
+        });
         this.outScreenStream.blinded = false;
-        this.notifyOutVideo();
         this.handleState();
-        this.onVideoEnabled();
+        this.videoEnabledVM.set(true);
+        this.outVideoVM.set([this.outVideoStream, this.outScreenStream]);
         return this.outScreenStream;
     }
 
     stopScreenShare = async () => {
-        // TODO: mutate removeScreenShare
+        backoff(async () => {
+            await this.client.mutateconferenceRemoveScreenShare({
+                id: this.conferenceId,
+            });
+        });
         if (this.outScreenStream) {
             this.outScreenStream.blinded = true;
             this.outScreenStream.close();
             this.outScreenStream = undefined;
-            this.notifyOutVideo();
         }
+        this.outVideoVM.set([this.outVideoStream, this.outScreenStream]);
+        return undefined;
     }
 
     startVideo = async () => {
         if (!this.outVideoStream) {
             this.outVideoStream = await AppUserMedia.getUserVideo();
+            this.outVideoStream.source = 'camera';
         }
         this.outVideoStream.blinded = false;
-        this.notifyOutVideo();
+        this.outVideoVM.set([this.outVideoStream, this.outScreenStream]);
         this.handleState();
-        this.onVideoEnabled();
+        this.videoEnabledVM.set(true);
         return this.outVideoStream;
     }
 
@@ -128,19 +116,12 @@ export class MediaSessionManager {
             if (AppConfig.getPlatform() !== 'mobile') {
                 // mobile webrtc will send closed stream next time in this case, it will lead to crash on other mobile
                 this.outVideoStream.close();
-                this.notifyOutVideo();
                 this.outVideoStream = undefined;
+                this.outVideoVM.set([this.outVideoStream, this.outScreenStream]);
             }
 
         }
-    }
-
-    onVideoEnabled = () => {
-        if (!this.videoEnabled) {
-            this.videoEnabled = true;
-            this.onVideoEnabledCallback();
-            this.notifyVideoEnabled();
-        }
+        return undefined;
     }
 
     destroy = () => {
@@ -155,8 +136,8 @@ export class MediaSessionManager {
         console.log('[WEBRTC] Destroying conference');
 
         // Destroy streams
-        for (let s of this.streams.keys()) {
-            this.streams.get(s)!.destroy();
+        for (let s of this.streamsVM.keys()) {
+            this.streamsVM.get(s)!.destroy();
         }
 
         // Destroy out media
@@ -301,23 +282,31 @@ export class MediaSessionManager {
         console.log('[WEBRTC] Apply');
 
         // Detect deletions
-        for (let s of this.streams.keys()) {
+        for (let s of this.streamsVM.keys()) {
             if (!this.streamConfigs.find((v) => v.id === s)) {
                 console.log('[WEBRTC] Destroy stream ' + s);
-                let stream = this.streams.get(s);
-                stream!.destroy();
-                this.streams.delete(s);
-                let target = stream?.getTargetPeerId();
-                if (target) {
-                    this.peerStreamManagers.delete(target);
-                    this.notifyPeerStateChanged(target);
+                let stream = this.streamsVM.get(s);
+                let appStream = stream?.getVideoInStream();
+                let peerId = stream?.getTargetPeerId();
+                if (peerId && appStream) {
+                    this.peerVideoVM.remove(peerId, appStream);
                 }
+                stream?.destroy();
+                this.streamsVM.delete(s);
             }
         }
 
+        // close screen share if it does not have streams
+        if (this.outScreenStream?.binded && !this.streamConfigs.find(s => s.settings.videoOut && s.settings.videoOutSource === 'screen_share')) {
+            this.stopScreenShare();
+        }
+
         for (let s of this.streamConfigs) {
-            let ms = this.streams.get(s.id);
+            let ms = this.streamsVM.get(s.id);
             let videoStream = s.settings.videoOut ? (s.settings.videoOutSource === 'screen_share' ? this.outScreenStream : this.outVideoStream) : undefined;
+            if (this.outScreenStream && videoStream === this.outScreenStream) {
+                this.outScreenStream.binded = true;
+            }
             if (ms) {
                 if (videoStream && (ms.getVideoOutStream() !== videoStream)) {
                     ms.addStream(videoStream);
@@ -327,31 +316,19 @@ export class MediaSessionManager {
                 console.log('[WEBRTC] Create stream ' + s.id);
 
                 ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, s.settings.audioOut ? this.mediaStream : undefined, s, this.isPrivate ? () => this.onStatusChange('connected') : undefined, s.peerId, videoStream, s.mediaState.videoSource);
-                this.streams.set(s.id, ms);
-                let target = s.peerId;
-                if (target) {
-                    let streamManagers = this.peerStreamManagers.get(target);
-                    if (!streamManagers) {
-                        streamManagers = new Set();
-                        this.peerStreamManagers.set(target, streamManagers);
+                this.streamsVM.set(s.id, ms);
+
+                ms.listenVideoInStream(c => {
+                    this.videoEnabledVM.set(!!c);
+                    if (c && s.peerId) {
+                        this.peerVideoVM.add(s.peerId, c);
                     }
-                    streamManagers.add(ms);
-                    ms.listenVideoInStream(c => {
-                        this.notifyPeerStateChanged(target!);
-                        if (c) {
-                            this.onVideoEnabled();
-                        }
-                    });
-                }
+                });
                 ms.listenDc(m => {
-                    for (let l of this.dcListeners) {
-                        l(m);
-                    }
+                    this.dcVM.set(m);
                 });
             }
         }
-
-        this.notifyStreamsChanged();
     }
 
     private doKeepAlive = () => {
@@ -380,100 +357,10 @@ export class MediaSessionManager {
         return this.peerId;
     }
 
-    ////
-    // IO
-    ////
-    listenStreams = (listener: (streams: Map<string, MediaStreamManager>) => void) => {
-        this.streamsListeners.add(listener);
-        listener(this.streams);
-        return () => {
-            this.streamsListeners.delete(listener);
-        };
-    }
-
-    listenPeerVideo = (peerId: string, listener: (streams: AppMediaStream[]) => void) => {
-        let listeners = this.peerVideoListeners.get(peerId);
-        if (!listeners) {
-            listeners = new Set();
-            this.peerVideoListeners.set(peerId, listeners);
-        }
-        listeners.add(listener);
-        this.notifyPeerStateChanged(peerId);
-        let lsnrs = listeners;
-        return () => {
-            lsnrs.delete(listener);
-        };
-    }
-
-    private notifyPeerStateChanged = (peerId: string) => {
-        let streams: AppMediaStream[] = [];
-        for (let m of this.peerStreamManagers.get(peerId) || []) {
-            let s = m.getVideoOutStream();
-            if (s) {
-                streams.push(s);
-            }
-        }
-        let ls = this.peerVideoListeners.get(peerId!);
-        if (ls) {
-            for (let l of ls) {
-                l(streams);
-            }
-        }
-    }
-
-    notifyStreamsChanged = () => {
-        this.streamsListeners.forEach(l => l(this.streams));
-    }
-
-    listenVideoEnabled = (listener: () => void) => {
-        this.videoEnabledListeners.add(listener);
-        if (this.videoEnabled) {
-            listener();
-        }
-        return () => {
-            this.videoEnabledListeners.delete(listener);
-        };
-    }
-
-    notifyVideoEnabled = () => {
-        this.videoEnabledListeners.forEach(l => l());
-    }
-
-    private outVideoListeners = new Set<(streams: AppMediaStream[]) => void>();
-    listenOutVideo = (listener: (streams: AppMediaStream[]) => void) => {
-        this.outVideoListeners.add(listener);
-        this.notifyOutVideo();
-        return () => {
-            this.outVideoListeners.delete(listener);
-        };
-    }
-
-    notifyOutVideo = () => {
-        let res: AppMediaStream[] = [];
-        if (this.outVideoStream) {
-            res.push(this.outVideoStream);
-        }
-        if (this.outScreenStream) {
-            res.push(this.outScreenStream);
-        }
-        this.outVideoListeners.forEach(l => l(res));
-    }
-
-    ////
-    // DC
-    ////
-
     sendDcMessage = (message: string) => {
-        for (let [, ms] of this.streams) {
+        for (let ms of [...this.streamsVM.values()]) {
             ms.sendDcMessage(message);
         }
-    }
-
-    listenDc = (listener: (message: { peerId: string, data: any }) => void) => {
-        this.dcListeners.add(listener);
-        return () => {
-            this.dcListeners.delete(listener);
-        };
     }
 
 }

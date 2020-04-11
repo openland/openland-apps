@@ -12,7 +12,7 @@ export class MediaSessionVolumeSpace {
     constructor(mediaSession: MediaSessionManager) {
         this.mediaSession = mediaSession;
         this.interval = setInterval(this.reportPosition, 1000);
-        this.unsubscribe = this.mediaSession.listenDc(this.onDcMessage);
+        this.unsubscribe = this.mediaSession.dcVM.listen(this.onDcMessage);
     }
 
     reportPosition = () => {
@@ -40,10 +40,7 @@ export class MediaSessionVolumeSpace {
         let distance = Math.pow(Math.pow(coords[0] - this.setlfCoords[0], 2) + Math.pow(coords[1] - this.setlfCoords[1], 2), 0.5);
         let volume = distance < this.minDinstance ? 1 : distance > this.maxDisatance ? 0 : 1 - (distance - this.minDinstance) / (this.maxDisatance - this.minDinstance);
         coords[2] = volume;
-        let streamManagers = this.mediaSession.peerStreamManagers.get(peerId);
-        for (let s of streamManagers?.values() || []) {
-            s.setVolume(volume);
-        }
+        [...this.mediaSession.streamsVM.values()].find(s => s.getTargetPeerId() === peerId)?.setVolume(volume);
     }
 
     private peerSeq: { [peerId: string]: number } = {};

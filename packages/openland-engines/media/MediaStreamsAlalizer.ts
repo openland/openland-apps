@@ -17,11 +17,12 @@ export class MediaStreamsAlalizer {
     private peerStreamAnalyzers = new Map<
         string,
         {
-            analyzer: AnalyserNode;
-            stream: MediaStream;
-            appSrteam: AppMediaStream;
+            analyzer?: AnalyserNode;
+            stream?: MediaStream;
+            appSrteam?: AppMediaStream;
             isMe?: boolean;
-            audioTrack: MediaStreamTrack;
+            audioTrack?: MediaStreamTrack;
+            manager: MediaStreamManager;
         }
     >();
     private disposeStreamsListener: (() => void) | undefined;
@@ -32,18 +33,19 @@ export class MediaStreamsAlalizer {
 
     constructor(sessionManager: MediaSessionManager) {
         this.manager = sessionManager;
-        this.disposeStreamsListener = this.manager.listenStreams(s => {
+        this.disposeStreamsListener = this.manager.streamsVM.listenAll(s => {
+            console.warn('alalla', s);
             s.forEach(sm => {
                 let peerId = sm.getTargetPeerId();
                 if (peerId) {
-                    this.initStreamsAnalizer(peerId, sm.getAudioInStream(), sm);
+                    this.initStreamsAnalizer(peerId, sm);
                 }
             });
             if (s.size) {
                 let first = s.values().next().value;
-                this.initStreamsAnalizer(first.getPeerId(), first.getAudioOutStream(), first, true);
+                this.initStreamsAnalizer(first.getPeerId(), first, true);
             }
-            if (this.buffer && !this.running) {
+            if (!this.running) {
                 this.running = true;
                 requestAnimationFrame(this.render);
             }
@@ -54,82 +56,78 @@ export class MediaStreamsAlalizer {
         audioContext = AudioContext ? new AudioContext() : undefined;
     }
 
-    initStreamsAnalizer = (peerId: string, appStream: AppMediaStream | undefined, manager: MediaStreamManager, isMe?: boolean) => {
+    initStreamsAnalizer = (peerId: string, manager: MediaStreamManager, isMe?: boolean) => {
+        console.warn('[alalla]', 'init an', peerId, isMe);
+
         // damn you safari
         if (!audioContext) {
             return;
         }
-        let ex = this.peerStreamAnalyzers.get(peerId);
-        // clean up
-        if (ex && ex.appSrteam !== appStream) {
-            ex.analyzer.disconnect();
-        }
-        // create new analyzer
-        if (appStream && (!ex || ex.appSrteam !== appStream)) {
-            let mediaStream = (appStream as AppUserMediaStreamWeb).getStream();
-            let source = (audioContext as AudioContext).createMediaStreamSource(mediaStream);
-            let audioTrack = mediaStream.getAudioTracks()[0];
-            let analyser = audioContext.createAnalyser();
-            const bufferLength = analyser.frequencyBinCount;
-            if (!this.buffer) {
-                this.buffer = new Uint8Array(bufferLength);
-                let fstep = audioContext.sampleRate / 2 / analyser.frequencyBinCount;
-                this.fStartIndex = Math.floor(85 / fstep);
-                this.fEndIndex = Math.ceil(180 / fstep + 1);
-            }
-            source.connect(analyser);
-            this.peerStreamAnalyzers.set(peerId, {
-                stream: mediaStream,
-                appSrteam: appStream,
-                analyzer: analyser,
-                isMe,
-                audioTrack
-            });
-        }
+        this.peerStreamAnalyzers.set(peerId, {
+            isMe,
+            manager
+        });
     }
 
     private lastPeer: string | undefined;
     private lastVals: { [id: string]: boolean } = {};
     private render = () => {
-        if (!this.running || !this.buffer) {
+        if (!this.running) {
             return;
         }
         // initStreamsAnalizers();
         let lastVal = 0;
         let activePeerId: string | undefined;
         for (let [key, entry] of this.peerStreamAnalyzers) {
-            if (entry.isMe && entry.stream.getAudioTracks()[0] !== entry.audioTrack) {
+            let appSrteam = entry.isMe ? entry.manager.getAudioOutStream() : entry.manager.getAudioInStream();
+            let stream = (appSrteam as AppUserMediaStreamWeb)?._stream;
+            console.warn(key, stream, stream?.getAudioTracks());
+            if ((stream?.getAudioTracks()[0]) !== entry.audioTrack) {
                 console.warn('rebind analizer');
-                entry.analyzer.disconnect();
-                entry.analyzer = audioContext.createAnalyser();
+                entry.analyzer?.disconnect();
+
+                let analyzer = audioContext.createAnalyser();
+                const bufferLength = analyzer.frequencyBinCount;
+                if (!this.buffer) {
+                    this.buffer = new Uint8Array(bufferLength);
+                    let fstep = audioContext.sampleRate / 2 / analyzer.frequencyBinCount;
+                    this.fStartIndex = Math.floor(85 / fstep);
+                    this.fEndIndex = Math.ceil(180 / fstep + 1);
+                }
+
+                entry.analyzer = analyzer;
+                entry.appSrteam = appSrteam;
+                entry.stream = stream;
                 entry.audioTrack = entry.stream.getAudioTracks()[0];
                 let source = (audioContext as AudioContext).createMediaStreamSource(entry.stream);
-                source.connect(entry.analyzer);
+                source.connect(analyzer);
             }
-            entry.analyzer.getByteFrequencyData(this.buffer);
+            if (entry.analyzer && entry.appSrteam && this.buffer) {
+                entry.analyzer.getByteFrequencyData(this.buffer);
 
-            let val = 0;
-            for (let i = this.fStartIndex; i <= this.fEndIndex; i++) {
-                val += this.buffer[i];
-            }
-            val = val / (this.fEndIndex - this.fStartIndex) / 255;
+                let val = 0;
+                for (let i = this.fStartIndex; i <= this.fEndIndex; i++) {
+                    val += this.buffer[i];
+                }
+                val = val / (this.fEndIndex - this.fStartIndex) / 255;
 
-            if (entry.isMe && entry.appSrteam.muted) {
-                val = 0;
-            }
+                if (entry.isMe && entry.appSrteam.muted) {
+                    val = 0;
+                }
 
-            if (val < 0.25) {
-                val = 0;
-            }
+                if (val < 0.25) {
+                    val = 0;
+                }
 
-            if (this.lastVals[key] !== !!val) {
-                this.lastVals[key] = !!val;
-                this.notifyValueChanged(key, !!val);
-            }
+                if (this.lastVals[key] !== !!val) {
+                    this.lastVals[key] = !!val;
+                    this.notifyValueChanged(key, !!val);
+                }
 
-            if ((val > lastVal || (!activePeerId && !this.lastPeer)) && !entry.isMe) {
-                lastVal = val;
-                activePeerId = key;
+                if ((val > lastVal || (!activePeerId && !this.lastPeer)) && !entry.isMe) {
+                    lastVal = val;
+                    activePeerId = key;
+                }
             }
         }
 
@@ -167,6 +165,7 @@ export class MediaStreamsAlalizer {
     }
 
     subscribePeer(peerId: string, listener: (val: boolean) => void) {
+        console.warn('alalal', 'subscribePeer', peerId);
         let debauncedSet = this.debouncedNotifiers.get(peerId);
         if (!debauncedSet) {
             debauncedSet = new Set();
@@ -230,6 +229,6 @@ export class MediaStreamsAlalizer {
         if (this.disposeStreamsListener) {
             this.disposeStreamsListener();
         }
-        this.peerStreamAnalyzers.forEach(v => v.analyzer.disconnect());
+        this.peerStreamAnalyzers.forEach(v => v.analyzer?.disconnect());
     }
 }

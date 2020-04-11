@@ -77,7 +77,7 @@ export const YoutubeParty = React.memo((props: { link: string, mediaSession: Med
 
         let obayTimer = window.setTimeout(() => obay.current = false, 500);
         let peerSeq: { [peerId: string]: number | undefined } = {};
-        let d = props.mediaSession.listenDc(container => {
+        let d = props.mediaSession.dcVM.listen(container => {
             if (typeof container.data === 'string') {
                 let message = JSON.parse(container.data);
                 if (!message) {

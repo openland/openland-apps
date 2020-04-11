@@ -34,12 +34,14 @@ const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { med
     const isLocal = props.id === props.mediaSession.getPeerId();
     React.useEffect(() => {
         if (isLocal) {
-            return props.mediaSession.listenOutVideo(s => {
-                setStream((s as AppUserMediaStreamWeb)?._stream);
+            return props.mediaSession.outVideoVM.listen(streams => {
+                let st = streams.find(s => s?.source === 'camera');
+                setStream((st as AppUserMediaStreamWeb)?._stream);
             });
         } else {
-            return props.mediaSession.listenPeerVideo(props.id, s => {
-                setStream((s as AppUserMediaStreamWeb)?._stream);
+            return props.mediaSession.peerVideoVM.listen(props.id, streams => {
+                let st = [...streams.values()].find(s => s?.source === 'camera');
+                setStream((st as AppUserMediaStreamWeb)?._stream);
             });
         }
 

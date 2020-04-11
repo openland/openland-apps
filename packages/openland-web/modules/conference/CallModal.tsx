@@ -60,14 +60,14 @@ const Controls = React.memo((props: {
                 />
                 <UButton
                     flexShrink={1}
-                    style={callState.outVideo?.type === 'video' ? 'primary' : 'secondary'}
-                    text={callState.outVideo?.type === 'video' ? 'Video on' : 'Video off'}
+                    style={callState.video ? 'primary' : 'secondary'}
+                    text={callState.video ? 'Video on' : 'Video off'}
                     onClick={props.calls.switchVideo}
                     marginHorizontal={4}
                 />
                 <UButton
                     flexShrink={1}
-                    style={callState.outVideo?.type === 'screen' ? 'primary' : 'secondary'}
+                    style={callState.screenShare ? 'primary' : 'secondary'}
                     text={'Screen share'}
                     onClick={props.calls.switchScreenShare}
                     marginHorizontal={4}
@@ -244,8 +244,8 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                 </XView >
                 <CallControls
                     muted={callState.mute}
-                    cameraEnabled={callState.outVideo?.type === 'video'}
-                    screenEnabled={callState.outVideo?.type === 'screen'}
+                    cameraEnabled={!!callState.video}
+                    screenEnabled={!!callState.screenShare}
                     spaceEnabled={layout === 'volume-space'}
                     toolsEnabled={showLink}
                     onMinimize={props.ctx.hide}

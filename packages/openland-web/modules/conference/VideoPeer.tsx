@@ -97,21 +97,22 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
         let d0 = props.calls.listenState(() => setLocalPeer(props.mediaSession.getPeerId()));
         let d1: () => void;
         if (isLocal) {
-            d1 = props.mediaSession.listenOutVideo(streams => {
-                let cam = streams.find(s => s.source === 'camera');
-                let screen = streams.find(s => s.source === 'screen_share');
+            d1 = props.mediaSession.outVideoVM.listen(streams => {
+                let cam = streams.find(s => s?.source === 'camera');
+                let screen = streams.find(s => s?.source === 'screen_share');
                 setMainStream(screen ? screen : cam);
                 setMiniStream(screen ? cam : undefined);
             });
         } else {
-            d1 = props.mediaSession.listenPeerVideo(props.peer.id, streams => {
-                let cam = streams.find(s => s.source === 'camera');
-                let screen = streams.find(s => s.source === 'screen_share');
+            d1 = props.mediaSession.peerVideoVM.listen(props.peer.id, streams => {
+                let cam = [...streams.values()].find(s => s.source === 'camera');
+                let screen = [...streams.values()].find(s => s.source === 'screen_share');
                 setMainStream(screen ? screen : cam);
                 setMiniStream(screen ? cam : undefined);
             });
         }
         let d2 = props.mediaSession.analizer.subscribePeer(props.peer.id, v => {
+            console.warn('alalal', 'setTalking', props.peer.id, v);
             setTalking(v);
         });
         return () => {
@@ -131,7 +132,7 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
 
     let mainStreamWeb = (mainStream as AppUserMediaStreamWeb | undefined)?._stream;
     // @ts-ignore
-    let miniStreamWeb = (mainStream as AppUserMediaStreamWeb | undefined)?._stream;
+    let miniStreamWeb = (miniStream as AppUserMediaStreamWeb | undefined)?._stream;
     const onClick = React.useCallback(() => mainStreamWeb ? showVideoModal(mainStreamWeb) : undefined, [mainStreamWeb]);
 
     return (
@@ -142,7 +143,7 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
             flexGrow={1}
             borderRadius={props.compact ? 8 : undefined}
         >
-            {mainStreamWeb && <VideoComponent stream={mainStreamWeb} cover={true} compact={props.compact} onClick={onClick} mirror={isLocal && mainStream?.source === 'camera'} />}
+            {mainStreamWeb && <VideoComponent stream={mainStreamWeb} cover={true} compact={props.compact} onClick={onClick} mirror={isLocal && (mainStream?.source === 'camera')} />}
             {!mainStreamWeb && (
                 <>
                     <div className={bgAvatar}>
