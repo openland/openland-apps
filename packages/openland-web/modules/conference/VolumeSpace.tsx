@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useJsDrag } from './CallFloating';
 import { css, cx } from 'linaria';
-import { Conference_conference_peers } from 'openland-api/spacex.types';
+import { Conference_conference_peers, FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { VideoComponent } from './ScreenShareModal';
@@ -9,6 +9,8 @@ import { UAvatar, getPlaceholderColorRawById } from 'openland-web/components/uni
 import { bezierPath } from './smooth';
 import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 import { Path, MediaSessionVolumeSpace } from 'openland-engines/media/MediaSessionVolumeSpace';
+import { ImageContent } from 'openland-web/fragments/chat/messenger/message/content/ImageContent';
+import { layoutMedia, uploadcareOptions } from 'openland-y-utils/MediaLayout';
 
 let VolumeSpaceContainerStyle = css`
     width: 100%;
@@ -60,6 +62,10 @@ let DrawControlsContainerStyle = css`
 let DrawControlsHidden = css`
     bottom: -200px;
 `;
+
+let PeerImageContainer = css`
+    position: absolute;
+`
 
 const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { mediaSession: MediaSessionManager, selfRef?: React.RefObject<HTMLDivElement> }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
@@ -118,7 +124,39 @@ const PeerPath = React.memo((props: { peer: Conference_conference_peers, pathId:
     );
 });
 
-const PeerObjects = React.memo((props: { peer: Conference_conference_peers, space: MediaSessionVolumeSpace }) => {
+const PeerImage = React.memo((props: { peer: Conference_conference_peers, imageId: string, space: MediaSessionVolumeSpace }) => {
+    const ref = React.useRef<HTMLDivElement>(null);
+    const imgRef = React.useRef<HTMLImageElement>(null);
+    React.useEffect(() => {
+        return props.space.imagesVM.listenId(props.peer.id, props.imageId, image => {
+            if (ref.current && imgRef.current) {
+                ref.current.style.transform = `translate(${image.coords[0]}px, ${image.coords[1]}px)`;
+
+                const url = `https://ucarecdn.com/${image.fileId}/-/format/auto/-/`;
+
+                const layoutModal = layoutMedia(
+                    image.imageWH[0],
+                    image.imageWH[1],
+                    image.containerWH[0],
+                    image.containerWH[1],
+                    32,
+                    32,
+                );
+
+                const srcOps = uploadcareOptions(layoutModal);
+                imgRef.current.src = url + srcOps[0];
+                imgRef.current.srcset = url + srcOps[1];
+            }
+        });
+    }, []);
+    return (
+        <div ref={ref} className={PeerImageContainer}>
+            <img ref={imgRef} />
+        </div>
+    );
+});
+
+const PeerDraw = React.memo((props: { peer: Conference_conference_peers, space: MediaSessionVolumeSpace }) => {
     let [pathIds, setPathIds] = React.useState<string[]>([]);
     React.useEffect(() => {
         return props.space.pathsVM.listen(props.peer.id, p => {
@@ -128,6 +166,22 @@ const PeerObjects = React.memo((props: { peer: Conference_conference_peers, spac
     return (
         <>
             {pathIds.map(e => <PeerPath key={e} peer={props.peer} pathId={e} space={props.space} />)}
+        </>
+    );
+});
+
+const PeerObjects = React.memo((props: { peer: Conference_conference_peers, space: MediaSessionVolumeSpace }) => {
+    let [imageIds, setImageIds] = React.useState<string[]>([]);
+    React.useEffect(() => {
+        return props.space.imagesVM.listen(props.peer.id, i => {
+            console.warn('Image!', i);
+
+            setImageIds([...i.keys()]);
+        });
+    }, []);
+    return (
+        <>
+            {imageIds.map(e => <PeerImage key={e} peer={props.peer} imageId={e} space={props.space} />)}
         </>
     );
 });
@@ -228,13 +282,15 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
 
             <div className={VolumeSpaceInnerContainerStyle} ref={innerContainerRef}>
 
-                <div className={VolumeSpaceDrawListener} ref={drawListenerRef} />
-                {props.peers.map(p => <VolumeSpaceAvatar key={p.id} {...p} mediaSession={props.mediaSession} selfRef={p.id === props.mediaSession.getPeerId() ? selfRef : undefined} />)}
-                {/* <div style={{ width: 20, height: 20, backgroundColor: 'red', position: 'absolute', left: 1490, top: 1490 }} /> */}
+                {props.peers.map(p => <PeerObjects key={p.id} peer={p} space={props.mediaSession.volumeSpace} />)}
                 <svg viewBox={'0 0 3000 3000'} className={VolumeSpaceDrawContainerStyle}>
-                    {props.peers.map(p => <PeerObjects key={p.id} peer={p} space={props.mediaSession.volumeSpace} />)}
+                    {props.peers.map(p => <PeerDraw key={p.id} peer={p} space={props.mediaSession.volumeSpace} />)}
                     {erase && <circle cx={0} cy={0} r={eraseDisatance} stroke="black" strokeWidth={3} ref={eraseCircleRef} fill="transparent" />}
                 </svg>
+
+                <div className={VolumeSpaceDrawListener} ref={drawListenerRef} />
+                {props.peers.map(p => <VolumeSpaceAvatar key={p.id} {...p} mediaSession={props.mediaSession} selfRef={p.id === props.mediaSession.getPeerId() ? selfRef : undefined} />)}
+
             </div>
             <div className={cx(DrawControlsContainerStyle, !controls && DrawControlsHidden)}>
                 <UCheckbox onChange={setErase} label="Erase" checked={erase} asSwitcher={true} />

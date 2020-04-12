@@ -1,6 +1,8 @@
 import { MediaSessionManager } from './MediaSessionManager';
 import { VMMap, VMMapMap } from 'openland-y-utils/mvvm/vm';
 import uuid from 'uuid';
+import { MessengerEngine } from 'openland-engines/MessengerEngine';
+import { DataSourceMessageItem, DataSourceNewDividerItem, DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
 
 class PeerAvatar {
     type: 'peer' = 'peer';
@@ -23,24 +25,64 @@ export class Path {
         this.path = path;
     }
 }
-type MessageType = PeerAvatar | Path;
+
+export class Image {
+    type: 'image' = 'image';
+    id: string;
+    coords: number[];
+    containerWH: number[];
+    imageWH: number[];
+    fileId?: string;
+    constructor(fileId: string | undefined, coords: number[], imageWH: number[]) {
+        this.id = `image_${uuid()}`;
+        this.coords = coords;
+        this.containerWH = imageWH;
+        this.imageWH = imageWH;
+        this.fileId = fileId;
+    }
+}
+
+type MessageType = PeerAvatar | Path | Image;
 
 export class MediaSessionVolumeSpace {
+    private messenger: MessengerEngine;
     private mediaSession: MediaSessionManager;
-    private unsubscribe: () => void;
+    private d1: () => void;
+    private d2: () => void;
     readonly selfPeer: PeerAvatar;
     readonly selfPathsVM = new VMMap<string, Path>();
+    readonly selfImagesVM = new VMMap<string, Image>();
     readonly peersVM = new VMMap<string, PeerAvatar>();
     readonly pathsVM = new VMMapMap<string, string, Path>();
+    readonly imagesVM = new VMMapMap<string, string, Image>();
     private interval: any;
     private messageSeq = 1;
     minDinstance = 50;
     maxDisatance = 200;
-    constructor(mediaSession: MediaSessionManager) {
+    constructor(messenger: MessengerEngine, mediaSession: MediaSessionManager) {
+        this.messenger = messenger;
         this.selfPeer = new PeerAvatar(mediaSession.getPeerId(), [Math.random() * 100 + 1450, Math.random() * 100 + 1450]);
         this.mediaSession = mediaSession;
         this.interval = setInterval(this.reportAll, 1000);
-        this.unsubscribe = this.mediaSession.dcVM.listen(this.onDcMessage);
+        this.d1 = this.mediaSession.dcVM.listen(this.onDcMessage);
+
+        this.d2 = messenger.getConversation(mediaSession.conversationId).subscribe({
+            onMessageSend: (file, localImage) => {
+                if (localImage && file) {
+                    (async () => {
+                        let image = new Image(undefined, this.selfPeer.coords, [localImage.width, localImage.height]);
+                        file.watch(s => {
+                            if (!image.fileId && s.uuid) {
+                                image.fileId = s.uuid;
+                                this.updateImage(image);
+                            }
+                        });
+                    })();
+                }
+            },
+            onChatLostAccess: () => {/* */ },
+            onConversationUpdated: () => {/* */ }
+        });
     }
 
     ////
@@ -48,7 +90,7 @@ export class MediaSessionVolumeSpace {
     ////
     moveSelf = (to: number[]) => {
         this.selfPeer.coords = to;
-        this.reportPeer();
+        this.reportSingle(this.selfPeer);
         [...this.peersVM.values()].map(this.updatePeerVolume);
     }
 
@@ -56,7 +98,15 @@ export class MediaSessionVolumeSpace {
         if (this.mediaSession.getPeerId()) {
             this.selfPathsVM.set(path.id, path);
             this.pathsVM.add(this.mediaSession.getPeerId(), path.id, path, true);
-            this.reportPath(path);
+            this.reportSingle({ ...path, rawPath: undefined });
+        }
+    }
+
+    updateImage = (image: Image) => {
+        if (this.mediaSession.getPeerId()) {
+            this.selfImagesVM.set(image.id, image);
+            this.imagesVM.add(this.mediaSession.getPeerId(), image.id, image, true);
+            this.reportSingle(image);
         }
     }
 
@@ -78,20 +128,14 @@ export class MediaSessionVolumeSpace {
     reportAll = () => {
         let b: MessageType[] = [];
         b.push(this.selfPeer);
+        b.push(...this.selfImagesVM.values());
         b.push(...[...this.selfPathsVM.values()].map(p => ({ ...p, rawPath: undefined })));
         this.sendBatch(b, true);
     }
 
-    reportPeer = () => {
+    reportSingle = (message: MessageType) => {
         let b: MessageType[] = [];
-        b.push(this.selfPeer);
-        this.sendBatch(b);
-    }
-
-    reportPath = (path: Path) => {
-        let b: MessageType[] = [];
-        path = { ...path, rawPath: undefined };
-        b.push(path);
+        b.push(message);
         this.sendBatch(b);
     }
 
@@ -119,6 +163,7 @@ export class MediaSessionVolumeSpace {
             this.peerSeq[container.peerId] = message.seq;
             let batch = message.batch as MessageType[];
             let pathsFull: string[] = [];
+            let iamgesFull: string[] = [];
             for (let m of batch) {
                 if (m.type === 'peer') {
                     m.peerId = container.peerId;
@@ -130,12 +175,23 @@ export class MediaSessionVolumeSpace {
                     this.pathsVM.add(container.peerId, m.id, m);
                     pathsFull.push(m.id);
                 }
+                if (m.type === 'image') {
+                    this.imagesVM.add(container.peerId, m.id, m);
+                    iamgesFull.push(m.id);
+                }
             }
-            // delete erased paths
             if (message.fullSync) {
+                // delete erased paths
                 for (let localPath of this.pathsVM.get(container.peerId)?.values() || []) {
                     if (!pathsFull.find(remotePath => remotePath === localPath.id)) {
                         this.pathsVM.deleteVal(container.peerId, localPath.id);
+                    }
+                }
+
+                // delete erased images
+                for (let localImage of this.imagesVM.get(container.peerId)?.values() || []) {
+                    if (!iamgesFull.find(remoteImage => remoteImage === localImage.id)) {
+                        this.imagesVM.deleteVal(container.peerId, localImage.id);
                     }
                 }
             }
@@ -147,7 +203,8 @@ export class MediaSessionVolumeSpace {
     }
 
     dispose = () => {
-        this.unsubscribe();
+        this.d1();
+        this.d2();
         clearInterval(this.interval);
     }
 }

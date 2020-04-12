@@ -12,8 +12,10 @@ import { MediaStreamsAlalizer } from './MediaStreamsAlalizer';
 import { MediaSessionVolumeSpace } from './MediaSessionVolumeSpace';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { VMMap, VM, VMSetMap } from 'openland-y-utils/mvvm/vm';
+import { MessengerEngine } from 'openland-engines/MessengerEngine';
 
 export class MediaSessionManager {
+    private messenger: MessengerEngine;
     readonly conversationId: string;
     private readonly client: OpenlandClient;
     private readonly onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void;
@@ -38,7 +40,8 @@ export class MediaSessionManager {
     readonly videoEnabledVM = new VM<boolean>();
     readonly outVideoVM = new VM<(AppMediaStream | undefined)[]>();
 
-    constructor(client: OpenlandClient, conversationId: string, mute: boolean, isPrivate: boolean, onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void, onDestroyRequested: () => void, onVideoEnabled: () => void) {
+    constructor(messenger: MessengerEngine, client: OpenlandClient, conversationId: string, mute: boolean, isPrivate: boolean, onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void, onDestroyRequested: () => void, onVideoEnabled: () => void) {
+        this.messenger = messenger;
         this.client = client;
         this.conversationId = conversationId;
         this.mute = mute;
@@ -47,7 +50,7 @@ export class MediaSessionManager {
         this.isPrivate = isPrivate;
         this.doInit();
         this.analizer = new MediaStreamsAlalizer(this);
-        this.volumeSpace = new MediaSessionVolumeSpace(this);
+        this.volumeSpace = new MediaSessionVolumeSpace(this.messenger, this);
         this.videoEnabledVM.listen(onVideoEnabled);
     }
 

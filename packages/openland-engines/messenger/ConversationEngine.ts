@@ -37,7 +37,7 @@ const log = createLogger('Engine-Messages');
 
 export interface ConversationStateHandler {
     onConversationUpdated(state: ConversationState): void;
-    onMessageSend(): void;
+    onMessageSend(file?: UploadingFile, localImage?: LocalImage): void;
     onChatLostAccess(): void;
 }
 
@@ -300,7 +300,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.matchmakingEngine = new MatchmakingEngine();
         this.sharedMediaEngines = {};
         this.onNewMessage = onNewMessage;
-        
+
         (async () => {
             while (true) {
                 let m = await this.updateQueue.get();
@@ -696,7 +696,7 @@ export class ConversationEngine implements MessageSendHandler {
 
             // Notify
             for (let l of this.listeners) {
-                l.onMessageSend();
+                l.onMessageSend(file, localImage);
             }
         })();
         return key;
