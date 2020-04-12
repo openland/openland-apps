@@ -1,7 +1,6 @@
 import { MediaSessionManager } from './MediaSessionManager';
-import { VMMap } from 'openland-y-utils/mvvm/vm';
+import { VMMap, VMMapMap } from 'openland-y-utils/mvvm/vm';
 import uuid from 'uuid';
-import { MediaType } from 'express';
 
 class PeerAvatar {
     type: 'peer' = 'peer';
@@ -15,13 +14,11 @@ class PeerAvatar {
 
 export class Path {
     type: 'path' = 'path';
-    peerId: string;
     id: string;
     shift?: number[];
-    rawPath?: number[];
+    rawPath?: number[][];
     path?: string;
-    constructor(peerId: string, path?: string) {
-        this.peerId = peerId;
+    constructor(path?: string) {
         this.id = `path_${uuid()}`;
         this.path = path;
     }
@@ -31,10 +28,10 @@ type MessageType = PeerAvatar | Path;
 export class MediaSessionVolumeSpace {
     private mediaSession: MediaSessionManager;
     private unsubscribe: () => void;
-    private selfPeer: PeerAvatar;
-    private selfPathsVM = new VMMap<string, Path>();
+    readonly selfPeer: PeerAvatar;
+    readonly selfPathsVM = new VMMap<string, Path>();
     readonly peersVM = new VMMap<string, PeerAvatar>();
-    readonly pathsVM = new VMMap<string, Path>();
+    readonly pathsVM = new VMMapMap<string, string, Path>();
     private interval: any;
     private messageSeq = 1;
     minDinstance = 50;
@@ -46,31 +43,21 @@ export class MediaSessionVolumeSpace {
         this.unsubscribe = this.mediaSession.dcVM.listen(this.onDcMessage);
     }
 
-    sendBatch = (batch: MessageType[]) => {
-        this.mediaSession.sendDcMessage(JSON.stringify({ channel: 'vm', seq: ++this.messageSeq, batch }));
-    }
-
-    reportAll = () => {
-        let b: MessageType[] = [];
-        b.push(this.selfPeer);
-        b.push(...this.selfPathsVM.values());
-        this.sendBatch(b);
-    }
-
-    reportPosition = () => {
-        let b: MessageType[] = [];
-        b.push(this.selfPeer);
-        this.sendBatch(b);
-    }
-
-    onSelfMoved = (to: number[]) => {
+    ////
+    // handle changes
+    ////
+    moveSelf = (to: number[]) => {
         this.selfPeer.coords = to;
-        this.reportPosition();
+        this.reportPeer();
         [...this.peersVM.values()].map(this.updatePeerVolume);
     }
 
-    getSelfCoords = () => {
-        return this.selfPeer.coords;
+    updatePath = (path: Path) => {
+        if (this.mediaSession.getPeerId()) {
+            this.selfPathsVM.set(path.id, path);
+            this.pathsVM.add(this.mediaSession.getPeerId(), path.id, path, true);
+            this.reportPath(path);
+        }
     }
 
     updatePeerVolume = (peer: PeerAvatar) => {
@@ -81,6 +68,36 @@ export class MediaSessionVolumeSpace {
         this.peersVM.set(peer.peerId, peer, true);
     }
 
+    ////
+    // send updates
+    ////
+    sendBatch = (batch: MessageType[], fullSync?: boolean) => {
+        this.mediaSession.sendDcMessage(JSON.stringify({ channel: 'vm', seq: ++this.messageSeq, batch, fullSync }));
+    }
+
+    reportAll = () => {
+        let b: MessageType[] = [];
+        b.push(this.selfPeer);
+        b.push(...[...this.selfPathsVM.values()].map(p => ({ ...p, rawPath: undefined })));
+        this.sendBatch(b, true);
+    }
+
+    reportPeer = () => {
+        let b: MessageType[] = [];
+        b.push(this.selfPeer);
+        this.sendBatch(b);
+    }
+
+    reportPath = (path: Path) => {
+        let b: MessageType[] = [];
+        path = { ...path, rawPath: undefined };
+        b.push(path);
+        this.sendBatch(b);
+    }
+
+    ////
+    // recive updates
+    ////
     private peerSeq: { [peerId: string]: number } = {};
     onDcMessage = (container: { peerId: string, data: any }) => {
         if (typeof container.data !== 'string') {
@@ -100,13 +117,26 @@ export class MediaSessionVolumeSpace {
                 return;
             }
             this.peerSeq[container.peerId] = message.seq;
-            // this.peerCoords[container.peerId] = ;
             let batch = message.batch as MessageType[];
+            let pathsFull: string[] = [];
             for (let m of batch) {
                 if (m.type === 'peer') {
                     m.peerId = container.peerId;
                     this.peersVM.set(m.peerId, m);
                     this.updatePeerVolume(m);
+                }
+
+                if (m.type === 'path') {
+                    this.pathsVM.add(container.peerId, m.id, m);
+                    pathsFull.push(m.id);
+                }
+            }
+            // delete erased paths
+            if (message.fullSync) {
+                for (let localPath of this.pathsVM.get(container.peerId)?.values() || []) {
+                    if (!pathsFull.find(remotePath => remotePath === localPath.id)) {
+                        this.pathsVM.deleteVal(container.peerId, localPath.id);
+                    }
                 }
             }
 

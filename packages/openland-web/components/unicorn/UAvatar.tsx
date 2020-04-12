@@ -30,19 +30,28 @@ export interface UAvatarProps extends XViewProps {
 }
 
 export const PlaceholderColor = [
-    `linear-gradient(138deg, ${PlaceholderOrange.start}, ${PlaceholderOrange.end})`,
-    `linear-gradient(138deg, ${PlaceholderRed.start}, ${PlaceholderRed.end})`,
-    `linear-gradient(138deg, ${PlaceholderGreen.start}, ${PlaceholderGreen.end})`,
-    `linear-gradient(138deg, ${PlaceholderBlue.start}, ${PlaceholderBlue.end})`,
-    `linear-gradient(138deg, ${PlaceholderCyan.start}, ${PlaceholderCyan.end})`,
-    `linear-gradient(138deg, ${PlaceholderPurple.start}, ${PlaceholderPurple.end})`,
+    PlaceholderOrange,
+    PlaceholderRed,
+    PlaceholderGreen,
+    PlaceholderBlue,
+    PlaceholderCyan,
+    PlaceholderPurple,
 ];
 
-const getPlaceholderIndex = (id: string) => Math.abs(doSimpleHash(id)) % 6;
+const getPlaceholderIndex = (id: string) => Math.abs(doSimpleHash(id)) % PlaceholderColor.length;
+
+export const getPlaceholderColorByIndex = (index: number) => {
+    let color = PlaceholderColor[index];
+    return `linear-gradient(138deg, ${color.start}, ${color.end})`;
+};
 
 export const getPlaceholderColorById = (id: string) => {
-    let index = getPlaceholderIndex(id);
-    return PlaceholderColor[index];
+    let color = PlaceholderColor[getPlaceholderIndex(id)];
+    return `linear-gradient(138deg, ${color.start}, ${color.end})`;
+};
+
+export const getPlaceholderColorRawById = (id: string) => {
+    return PlaceholderColor[getPlaceholderIndex(id)];
 };
 
 export const AvatarSizes: {
@@ -78,7 +87,7 @@ const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: number }) =
             alignItems="center"
             justifyContent="center"
             borderRadius={squared ? 0 : 50}
-            backgroundImage={PlaceholderColor[index]}
+            backgroundImage={getPlaceholderColorByIndex(index)}
             color="white"
             fontSize={AvatarSizes[size].placeholder}
             overflow="hidden"

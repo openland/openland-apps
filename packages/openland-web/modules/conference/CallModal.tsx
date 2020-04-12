@@ -39,6 +39,16 @@ const controlsContainerStyle = css`
     border-radius: 24px;
 `;
 
+const watermarkContainerstyle = css`
+    pointer-events: none;
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    opacity: 0.72;
+    z-index: 5;
+
+`;
+
 const Controls = React.memo((props: {
     calls: CallsEngine,
     ctx: XModalController,
@@ -216,26 +226,26 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     let hideLegacyControls = true;
     return (
         <XView flexDirection="row" flexGrow={1} backgroundColor="gray" alignItems="stretch" position="relative">
-            <XView position="absolute" top={12} left={12} opacity={0.72} zIndex={5}>
+            <div className={watermarkContainerstyle}>
                 <OpenlandWatermark />
-            </XView>
+            </div>
             <XView flexDirection="row" flexGrow={1} flexShrink={1}>
                 <XView flexDirection={rotated ? 'row' : 'column'} justifyContent="flex-start" flexGrow={1} flexShrink={1} position="relative">
                     {layout === 'grid' && mediaSession && slices.map((s, i) => (
-                        <XView 
-                            key={`container-${i}`} 
-                            flexDirection={rotated ? 'column' : 'row'} 
-                            justifyContent="flex-start" 
-                            flexShrink={1} 
+                        <XView
+                            key={`container-${i}`}
+                            flexDirection={rotated ? 'column' : 'row'}
+                            justifyContent="flex-start"
+                            flexShrink={1}
                             flexGrow={1}
                         >
                             {s.map(p => (
-                                <VideoPeer 
-                                    key={`peer-${p.id}`} 
-                                    peer={p} 
-                                    mediaSession={mediaSession} 
-                                    calls={props.calls} 
-                                    callState={callState} 
+                                <VideoPeer
+                                    key={`peer-${p.id}`}
+                                    peer={p}
+                                    mediaSession={mediaSession}
+                                    calls={props.calls}
+                                    callState={callState}
                                 />
                             ))}
                         </XView>

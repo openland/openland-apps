@@ -44,7 +44,13 @@ export class VMMap<K, T> {
         return this.vals.get(key);
     }
     delete = (key: K) => {
-        this.vals.delete(key);
+        let updated = this.vals.has(key);
+        if (updated) {
+            this.vals.delete(key);
+            for (let l of this.allListeners) {
+                l(this.vals);
+            }
+        }
         return this;
     }
     listen = (key: K, listener: (val: T) => void) => {
@@ -85,7 +91,7 @@ export class VMMap<K, T> {
 }
 
 export class VMSetMap<K, T> extends VMMap<K, Set<T>> {
-    add = (key: K, val: T) => {
+    add = (key: K, val: T, force?: boolean) => {
         let current = this.vals.get(key);
         if (!current) {
             current = new Set();
@@ -93,7 +99,7 @@ export class VMSetMap<K, T> extends VMMap<K, Set<T>> {
         }
         let updated = !current.has(val);
         current.add(val);
-        if (updated) {
+        if (updated || force) {
             this.notify(key, current);
         }
         return this;
@@ -102,8 +108,7 @@ export class VMSetMap<K, T> extends VMMap<K, Set<T>> {
     remove = (key: K, val: T) => {
         let current = this.vals.get(key);
         if (!current) {
-            current = new Set();
-            this.vals.set(key, current);
+            return this;
         }
         let updated = current.has(val);
         current.delete(val);
@@ -111,5 +116,55 @@ export class VMSetMap<K, T> extends VMMap<K, Set<T>> {
             this.notify(key, current);
         }
         return this;
+    }
+}
+
+export class VMMapMap<K, I, T> extends VMMap<K, Map<I, T>> {
+    idListeners = new Map<I, Set<(val: T) => void>>();
+    add = (key: K, id: I, val: T, force?: boolean) => {
+        let current = this.vals.get(key);
+        if (!current) {
+            current = new Map();
+            this.vals.set(key, current);
+        }
+        let updated = current.get(id) !== val;
+        current.set(id, val);
+        if (updated || force) {
+            this.notify(key, current);
+            for (let l of this.idListeners.get(id) || []) {
+                l(val);
+            }
+        }
+        return this;
+    }
+
+    deleteVal = (key: K, id: I) => {
+        let current = this.vals.get(key);
+        if (!current) {
+            return this;
+        }
+        let updated = current.has(id);
+        current.delete(id);
+        if (updated) {
+            this.notify(key, current);
+        }
+        return this;
+    }
+
+    listenId = (key: K, id: I, listener: (val: T) => void) => {
+        let idListeners = this.idListeners.get(id);
+        if (!idListeners) {
+            idListeners = new Set();
+            this.idListeners.set(id, idListeners);
+        }
+        idListeners.add(listener);
+        let val = this.vals.get(key)?.get(id);
+        if (val) {
+            listener(val);
+        }
+        return () => {
+            idListeners?.delete(listener);
+        };
+
     }
 }

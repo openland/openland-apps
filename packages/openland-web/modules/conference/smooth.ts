@@ -36,7 +36,6 @@ const bezier = (point: number[], prev: number[], prevPrev: number[], next: numbe
 
 export const bezierPath = (points: number[][]) => {
     // build the d attributes by looping over the points
-    let shift = 0;
     let prev: number[][] = [];
     return points.reduce((acc, point, i, a) => {
         if (i === 0) {
@@ -47,7 +46,6 @@ export const bezierPath = (points: number[][]) => {
             if (b) {
                 prev.push(point);
             }
-            shift -= b ? 0 : 1;
             return b ? `${acc} ${b}` : acc;
         }
     }, '');

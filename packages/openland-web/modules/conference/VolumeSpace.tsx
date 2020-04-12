@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { useJsDrag } from './CallFloating';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { VideoComponent } from './ScreenShareModal';
-import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import uuid from 'uuid';
+import { UAvatar, getPlaceholderColorRawById } from 'openland-web/components/unicorn/UAvatar';
 import { bezierPath } from './smooth';
 import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
+import { Path, MediaSessionVolumeSpace } from 'openland-engines/media/MediaSessionVolumeSpace';
 
 let VolumeSpaceContainerStyle = css`
     width: 100%;
@@ -54,6 +54,11 @@ let DrawControlsContainerStyle = css`
     width: 160px;
     border-radius: 8px;
     background-color: var(--backgroundTertiary);
+    transition: bottom 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
+`;
+
+let DrawControlsHidden = css`
+    bottom: -200px;
 `;
 
 const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { mediaSession: MediaSessionManager, selfRef?: React.RefObject<HTMLDivElement> }) => {
@@ -101,19 +106,42 @@ const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { med
         </div>
     );
 });
+
+const PeerPath = React.memo((props: { peer: Conference_conference_peers, pathId: string, space: MediaSessionVolumeSpace }) => {
+    let [path, setPath] = React.useState<string>();
+    let color = React.useMemo(() => getPlaceholderColorRawById(props.peer.user.id), []);
+    React.useEffect(() => {
+        return props.space.pathsVM.listenId(props.peer.id, props.pathId, p => setPath(p.path));
+    }, []);
+    return (
+        <path key={props.pathId} d={path} strokeWidth={2} stroke={color.end} fill="transparent" />
+    );
+});
+
+const PeerObjects = React.memo((props: { peer: Conference_conference_peers, space: MediaSessionVolumeSpace }) => {
+    let [pathIds, setPathIds] = React.useState<string[]>([]);
+    React.useEffect(() => {
+        return props.space.pathsVM.listen(props.peer.id, p => {
+            setPathIds([...p.keys()]);
+        });
+    }, []);
+    return (
+        <>
+            {pathIds.map(e => <PeerPath key={e} peer={props.peer} pathId={e} space={props.space} />)}
+        </>
+    );
+});
+const eraseDisatance = 10;
 export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManager, peers: Conference_conference_peers[] }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
     let innerContainerRef = React.useRef<HTMLDivElement>(null);
     let drawListenerRef = React.useRef<HTMLDivElement>(null);
     let selfRef = React.useRef<HTMLDivElement>(null);
-    let [selfPaths, setSelfPaths] = React.useState<Map<string, string>>(new Map());
-    let [erase, setEraseInner] = React.useState(false);
-    let eraseRef = React.useRef(false);
-    let setErase = React.useCallback((er: boolean) => {
-        eraseRef.current = er;
-        setEraseInner(er);
-    }, []);
-    useJsDrag(selfRef, selfRef, props.mediaSession.volumeSpace.onSelfMoved, props.mediaSession.volumeSpace.getSelfCoords(), undefined, undefined, undefined, undefined, [props.peers]);
+    let eraseCircleRef = React.useRef<SVGCircleElement>(null);
+    let [controls, setControls] = React.useState(false);
+    let [erase, setErase] = React.useState(false);
+
+    useJsDrag(selfRef, selfRef, props.mediaSession.volumeSpace.moveSelf, props.mediaSession.volumeSpace.selfPeer.coords, undefined, undefined, undefined, undefined, [props.peers]);
     React.useEffect(() => {
         // scroll to center
         if (containerRef.current) {
@@ -127,56 +155,74 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
 
     React.useEffect(() => {
         // draw
-        let drawObjs = new Map<string, string>();
-        let drawPaths = new Map<string, number[][]>();
 
         let down = false;
         let path: number[][] = [];
-        let id = '';
-        const eraseDisatance = 10;
+        let pathObj = new Path();
         let onMove = (ev: any) => {
-            if (!down) {
-                return;
-            }
+
             let coords = [ev.offsetX, ev.offsetY];
-            if (eraseRef.current) {
-                let deleted = false;
-                for (let [key, pth] of drawPaths) {
-                    if (pth.find(p => Math.pow(Math.pow(coords[0] - p[0], 2) + Math.pow(coords[1] - p[1], 2), 0.5) < eraseDisatance)) {
-                        drawPaths.delete(key);
-                        drawObjs.delete(key);
-                        deleted = true;
+            if (erase) {
+                // erase
+                if (down) {
+                    for (let pth of props.mediaSession.volumeSpace.selfPathsVM.values()) {
+                        if (pth.rawPath && pth.rawPath.find(p => Math.pow(Math.pow(coords[0] - p[0], 2) + Math.pow(coords[1] - p[1], 2), 0.5) < eraseDisatance)) {
+                            props.mediaSession.volumeSpace.selfPathsVM.delete(pth.id);
+                            props.mediaSession.volumeSpace.pathsVM.deleteVal(props.mediaSession.getPeerId(), pth.id);
+                        }
                     }
                 }
-                setSelfPaths(new Map(drawObjs));
-            } else {
+                // move erase cursor
+                if (eraseCircleRef.current) {
+                    eraseCircleRef.current.style.transform = `translate(${ev.offsetX}px, ${ev.offsetY}px)`;
+                }
+            } else if (down) {
+                // draw
                 path.push(coords);
-                drawObjs.set(id, bezierPath(path));
-                drawPaths.set(id, path);
-                setSelfPaths(new Map(drawObjs));
+                let strPath = bezierPath(path);
+                pathObj.path = strPath;
+                pathObj.rawPath = path;
+                props.mediaSession.volumeSpace.updatePath(pathObj);
             }
 
         };
         let onStart = () => {
-            drawListenerRef.current!.addEventListener('mousemove', onMove);
-            id = `${props.mediaSession.getPeerId()}_path_${uuid()}`;
+            if (!erase) {
+                drawListenerRef.current!.addEventListener('mousemove', onMove);
+            }
+            pathObj = new Path();
             path = [];
             down = true;
         };
 
         let onStop = () => {
-            drawListenerRef.current!.removeEventListener('mousemove', onMove);
+            if (!erase) {
+                drawListenerRef.current!.removeEventListener('mousemove', onMove);
+            } else {
+                setErase(false);
+            }
             down = false;
         };
         if (drawListenerRef.current) {
             drawListenerRef.current.addEventListener('mousedown', onStart);
-
+            if (erase) {
+                drawListenerRef.current!.addEventListener('mousemove', onMove);
+            }
             // drawListenerRef.current.addEventListener('mouseout', onStop);
             // drawListenerRef.current.addEventListener('mouseleave', onStop);
             drawListenerRef.current.addEventListener('mouseup', onStop);
         }
 
-    }, []);
+        // listen local drawings
+        let d1 = props.mediaSession.volumeSpace.selfPathsVM.listenAll(all => setControls(!!all.size));
+
+        return () => {
+            drawListenerRef.current!.removeEventListener('mousedown', onStart);
+            drawListenerRef.current!.removeEventListener('mousemove', onMove);
+            drawListenerRef.current!.removeEventListener('mouseup', onStop);
+            d1();
+        };
+    }, [erase]);
     return (
         <div className={VolumeSpaceContainerStyle} ref={containerRef}>
 
@@ -186,12 +232,13 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                 {props.peers.map(p => <VolumeSpaceAvatar key={p.id} {...p} mediaSession={props.mediaSession} selfRef={p.id === props.mediaSession.getPeerId() ? selfRef : undefined} />)}
                 {/* <div style={{ width: 20, height: 20, backgroundColor: 'red', position: 'absolute', left: 1490, top: 1490 }} /> */}
                 <svg viewBox={'0 0 3000 3000'} className={VolumeSpaceDrawContainerStyle}>
-                    {[...selfPaths.entries()].map(e => <path key={e[0]} d={e[1]} strokeWidth={2} stroke="black" fill="transparent" />)}
+                    {props.peers.map(p => <PeerObjects key={p.id} peer={p} space={props.mediaSession.volumeSpace} />)}
+                    {erase && <circle cx={0} cy={0} r={eraseDisatance} stroke="black" strokeWidth={3} ref={eraseCircleRef} fill="transparent" />}
                 </svg>
             </div>
-            <div className={DrawControlsContainerStyle}>
+            <div className={cx(DrawControlsContainerStyle, !controls && DrawControlsHidden)}>
                 <UCheckbox onChange={setErase} label="Erase" checked={erase} asSwitcher={true} />
             </div>
-        </div>
+        </div >
     );
 });
