@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useJsDrag } from './CallFloating';
 import { css, cx } from 'linaria';
-import { Conference_conference_peers, FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
+import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { VideoComponent } from './ScreenShareModal';
@@ -9,8 +9,7 @@ import { UAvatar, getPlaceholderColorRawById } from 'openland-web/components/uni
 import { bezierPath } from './smooth';
 import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 import { Path, MediaSessionVolumeSpace } from 'openland-engines/media/MediaSessionVolumeSpace';
-import { ImageContent } from 'openland-web/fragments/chat/messenger/message/content/ImageContent';
-import { layoutMedia, uploadcareOptions } from 'openland-y-utils/MediaLayout';
+import { uploadcareOptions } from 'openland-y-utils/MediaLayout';
 
 let VolumeSpaceContainerStyle = css`
     width: 100%;
@@ -64,8 +63,17 @@ let DrawControlsHidden = css`
 `;
 
 let PeerImageContainer = css`
+    overflow: visible;
     position: absolute;
-`
+`;
+
+let NoPinterEvents = css`
+    pointer-events: none;
+`;
+
+let CursorMove = css`
+    cursor: move;
+`;
 
 const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { mediaSession: MediaSessionManager, selfRef?: React.RefObject<HTMLDivElement> }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
@@ -126,32 +134,46 @@ const PeerPath = React.memo((props: { peer: Conference_conference_peers, pathId:
 
 const PeerImage = React.memo((props: { peer: Conference_conference_peers, imageId: string, space: MediaSessionVolumeSpace }) => {
     const ref = React.useRef<HTMLDivElement>(null);
+    // const resizeRef = React.useRef<HTMLDivElement>(null);
     const imgRef = React.useRef<HTMLImageElement>(null);
+    const onImageMove = React.useCallback((coords: number[]) => {
+        let img = props.space.selfImagesVM.get(props.imageId);
+        if (img) {
+            img.coords = coords;
+            props.space.updateImage(img);
+        }
+    }, []);
+
+    let canMove = props.space.selfImagesVM.get(props.imageId);
+    if (canMove) {
+        let coords = props.space.selfImagesVM.get(props.imageId)?.coords;
+        useJsDrag(ref, ref, onImageMove, coords);
+    }
     React.useEffect(() => {
+        
         return props.space.imagesVM.listenId(props.peer.id, props.imageId, image => {
             if (ref.current && imgRef.current) {
                 ref.current.style.transform = `translate(${image.coords[0]}px, ${image.coords[1]}px)`;
 
                 const url = `https://ucarecdn.com/${image.fileId}/-/format/auto/-/`;
 
-                const layoutModal = layoutMedia(
-                    image.imageWH[0],
-                    image.imageWH[1],
-                    image.containerWH[0],
-                    image.containerWH[1],
-                    32,
-                    32,
-                );
-
-                const srcOps = uploadcareOptions(layoutModal);
+                const srcOps = uploadcareOptions({ width: image.imageWH[0], height: image.imageWH[1] });
                 imgRef.current.src = url + srcOps[0];
                 imgRef.current.srcset = url + srcOps[1];
+
+                ref.current.style.width = `${image.containerWH[0]}px`;
+                ref.current.style.height = `${image.containerWH[1]}px`;
             }
         });
     }, []);
+    const del = React.useCallback(() => {
+        props.space.imagesVM.deleteVal(props.peer.id, props.imageId);
+        props.space.selfImagesVM.delete(props.imageId);
+    }, []);
     return (
-        <div ref={ref} className={PeerImageContainer}>
+        <div ref={ref} onDoubleClick={del} className={cx(PeerImageContainer, canMove ? CursorMove : NoPinterEvents)}>
             <img ref={imgRef} />
+            {/* <div ref={resizeRef} style={{ position: 'absolute',  width: 20, height: 20, bottom: 0, right: 0, backgroundColor: 'green' }} /> */}
         </div>
     );
 });
@@ -174,8 +196,6 @@ const PeerObjects = React.memo((props: { peer: Conference_conference_peers, spac
     let [imageIds, setImageIds] = React.useState<string[]>([]);
     React.useEffect(() => {
         return props.space.imagesVM.listen(props.peer.id, i => {
-            console.warn('Image!', i);
-
             setImageIds([...i.keys()]);
         });
     }, []);
@@ -192,6 +212,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     let drawListenerRef = React.useRef<HTMLDivElement>(null);
     let selfRef = React.useRef<HTMLDivElement>(null);
     let eraseCircleRef = React.useRef<SVGCircleElement>(null);
+    let nonDrawContentRef = React.useRef<HTMLDivElement>(null);
     let [controls, setControls] = React.useState(false);
     let [erase, setErase] = React.useState(false);
 
@@ -238,7 +259,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                 pathObj.rawPath = path;
                 props.mediaSession.volumeSpace.updatePath(pathObj);
             }
-
+            return true;
         };
         let onStart = () => {
             if (!erase) {
@@ -247,6 +268,10 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
             pathObj = new Path();
             path = [];
             down = true;
+            // disable other object while drawing
+            if (nonDrawContentRef.current) {
+                nonDrawContentRef.current.style.pointerEvents = 'none';
+            }
         };
 
         let onStop = () => {
@@ -256,6 +281,10 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                 setErase(false);
             }
             down = false;
+            // enable other object after drawing
+            if (nonDrawContentRef.current) {
+                nonDrawContentRef.current.style.pointerEvents = 'auto';
+            }
         };
         if (drawListenerRef.current) {
             drawListenerRef.current.addEventListener('mousedown', onStart);
@@ -270,27 +299,39 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
         // listen local drawings
         let d1 = props.mediaSession.volumeSpace.selfPathsVM.listenAll(all => setControls(!!all.size));
 
+        // disable other object while drawing
+        if (erase) {
+            if (nonDrawContentRef.current) {
+                nonDrawContentRef.current.style.pointerEvents = 'none';
+            }
+        }
         return () => {
             drawListenerRef.current!.removeEventListener('mousedown', onStart);
             drawListenerRef.current!.removeEventListener('mousemove', onMove);
             drawListenerRef.current!.removeEventListener('mouseup', onStop);
             d1();
+            // enable other object after drawing
+            if (nonDrawContentRef.current) {
+                nonDrawContentRef.current.style.pointerEvents = 'auto';
+            }
         };
+
     }, [erase]);
     return (
         <div className={VolumeSpaceContainerStyle} ref={containerRef}>
 
             <div className={VolumeSpaceInnerContainerStyle} ref={innerContainerRef}>
 
-                {props.peers.map(p => <PeerObjects key={p.id} peer={p} space={props.mediaSession.volumeSpace} />)}
-                <svg viewBox={'0 0 3000 3000'} className={VolumeSpaceDrawContainerStyle}>
-                    {props.peers.map(p => <PeerDraw key={p.id} peer={p} space={props.mediaSession.volumeSpace} />)}
-                    {erase && <circle cx={0} cy={0} r={eraseDisatance} stroke="black" strokeWidth={3} ref={eraseCircleRef} fill="transparent" />}
-                </svg>
-
                 <div className={VolumeSpaceDrawListener} ref={drawListenerRef} />
-                {props.peers.map(p => <VolumeSpaceAvatar key={p.id} {...p} mediaSession={props.mediaSession} selfRef={p.id === props.mediaSession.getPeerId() ? selfRef : undefined} />)}
+                <div ref={nonDrawContentRef}>
+                    {props.peers.map(p => <PeerObjects key={p.id} peer={p} space={props.mediaSession.volumeSpace} />)}
+                    <svg viewBox={'0 0 3000 3000'} className={VolumeSpaceDrawContainerStyle}>
+                        {props.peers.map(p => <PeerDraw key={p.id} peer={p} space={props.mediaSession.volumeSpace} />)}
+                        {erase && <circle cx={0} cy={0} r={eraseDisatance} stroke="black" strokeWidth={3} ref={eraseCircleRef} fill="transparent" />}
+                    </svg>
 
+                    {props.peers.map(p => <VolumeSpaceAvatar key={p.id} {...p} mediaSession={props.mediaSession} selfRef={p.id === props.mediaSession.getPeerId() ? selfRef : undefined} />)}
+                </div>
             </div>
             <div className={cx(DrawControlsContainerStyle, !controls && DrawControlsHidden)}>
                 <UCheckbox onChange={setErase} label="Erase" checked={erase} asSwitcher={true} />

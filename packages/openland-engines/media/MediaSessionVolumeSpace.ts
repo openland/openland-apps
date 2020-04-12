@@ -2,7 +2,6 @@ import { MediaSessionManager } from './MediaSessionManager';
 import { VMMap, VMMapMap } from 'openland-y-utils/mvvm/vm';
 import uuid from 'uuid';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
-import { DataSourceMessageItem, DataSourceNewDividerItem, DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
 
 class PeerAvatar {
     type: 'peer' = 'peer';
@@ -45,7 +44,6 @@ export class Image {
 type MessageType = PeerAvatar | Path | Image;
 
 export class MediaSessionVolumeSpace {
-    private messenger: MessengerEngine;
     private mediaSession: MediaSessionManager;
     private d1: () => void;
     private d2: () => void;
@@ -60,7 +58,6 @@ export class MediaSessionVolumeSpace {
     minDinstance = 50;
     maxDisatance = 200;
     constructor(messenger: MessengerEngine, mediaSession: MediaSessionManager) {
-        this.messenger = messenger;
         this.selfPeer = new PeerAvatar(mediaSession.getPeerId(), [Math.random() * 100 + 1450, Math.random() * 100 + 1450]);
         this.mediaSession = mediaSession;
         this.interval = setInterval(this.reportAll, 1000);

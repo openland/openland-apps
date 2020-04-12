@@ -85,9 +85,9 @@ export const useJsDrag = (
         let prev: number[] | undefined;
 
         const checkPostion = () => {
-            let newTargetWidth = (target?.clientWidth || initialTargetWidth || 0) + (targetMargin || 0) * 2;
-            positionShift[0] += (targetWidth - newTargetWidth) / 2;
-            targetWidth = newTargetWidth;
+            // let newTargetWidth = (target?.clientWidth || initialTargetWidth || 0) + (targetMargin || 0) * 2;
+            // positionShift[0] += (targetWidth - newTargetWidth) / 2;
+            // targetWidth = newTargetWidth;
             // limit shift with screen bounds
             if (limitToScreen) {
                 if (Math.abs(positionShift[0]) > window.innerWidth / 2 - (targetWidth / 2)) {

@@ -65,9 +65,6 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
         showVideoCallModal({ calls, chatId: props.chat.id, client, messenger });
     };
 
-    // TODO: delete
-    React.useEffect(joinCall, []);
-
     useTalkWatch(data && data.conference.id);
     if (!data) {
         return null;
