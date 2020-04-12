@@ -63,6 +63,7 @@ let DrawControlsHidden = css`
 `;
 
 let PeerImageContainer = css`
+    display: flex;
     overflow: visible;
     position: absolute;
 `;
@@ -71,8 +72,25 @@ let NoPinterEvents = css`
     pointer-events: none;
 `;
 
-let CursorMove = css`
+let MovableImageContainerStyle = css`
     cursor: move;
+    background-color: var(--backgroundTertiaryTrans);
+`;
+
+let ImageStyle = css`
+    /* object-fit: contain; */
+    width: 100%;
+    height: 100%;
+
+`;
+// style={{ position: 'absolute', width: 20, height: 20, bottom: 0, right: 0,  }}
+let ResizerAnchorStyle = css`
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    bottom: 0;
+    right: 0;
+    cursor: se-resize;
 `;
 
 const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { mediaSession: MediaSessionManager, selfRef?: React.RefObject<HTMLDivElement> }) => {
@@ -134,7 +152,7 @@ const PeerPath = React.memo((props: { peer: Conference_conference_peers, pathId:
 
 const PeerImage = React.memo((props: { peer: Conference_conference_peers, imageId: string, space: MediaSessionVolumeSpace }) => {
     const ref = React.useRef<HTMLDivElement>(null);
-    // const resizeRef = React.useRef<HTMLDivElement>(null);
+    const resizeRef = React.useRef<HTMLDivElement>(null);
     const imgRef = React.useRef<HTMLImageElement>(null);
     const onImageMove = React.useCallback((coords: number[]) => {
         let img = props.space.selfImagesVM.get(props.imageId);
@@ -144,13 +162,29 @@ const PeerImage = React.memo((props: { peer: Conference_conference_peers, imageI
         }
     }, []);
 
+    const onImageResize = React.useCallback((coords: number[]) => {
+        let img = props.space.selfImagesVM.get(props.imageId);
+        if (img) {
+            let targetWh = [Math.max(50, coords[0] - img.coords[0]), Math.max(50, coords[1] - img.coords[1])];
+            img.containerWH = targetWh;
+            props.space.updateImage(img);
+        }
+    }, []);
+
     let canMove = props.space.selfImagesVM.get(props.imageId);
     if (canMove) {
-        let coords = props.space.selfImagesVM.get(props.imageId)?.coords;
+        let img = props.space.selfImagesVM.get(props.imageId);
+        let coords = img?.coords;
         useJsDrag(ref, ref, onImageMove, coords);
+        useJsDrag(resizeRef, undefined, onImageResize, () => {
+            if (img) {
+                return [img.coords[0] + img.containerWH[0], img.coords[1] + img.containerWH[1]];
+            }
+            return undefined;
+        });
     }
     React.useEffect(() => {
-        
+
         return props.space.imagesVM.listenId(props.peer.id, props.imageId, image => {
             if (ref.current && imgRef.current) {
                 ref.current.style.transform = `translate(${image.coords[0]}px, ${image.coords[1]}px)`;
@@ -158,8 +192,12 @@ const PeerImage = React.memo((props: { peer: Conference_conference_peers, imageI
                 const url = `https://ucarecdn.com/${image.fileId}/-/format/auto/-/`;
 
                 const srcOps = uploadcareOptions({ width: image.imageWH[0], height: image.imageWH[1] });
-                imgRef.current.src = url + srcOps[0];
-                imgRef.current.srcset = url + srcOps[1];
+                imgRef.current.style.background = `url("${url + srcOps[0]}")`;
+                imgRef.current.style.backgroundSize = 'cover';
+                imgRef.current.style.backgroundRepeat = 'no-repeat';
+                imgRef.current.style.backgroundPosition = '50% 50%';
+                // imgRef.current.src = url + srcOps[0];
+                // imgRef.current.srcset = url + srcOps[1];
 
                 ref.current.style.width = `${image.containerWH[0]}px`;
                 ref.current.style.height = `${image.containerWH[1]}px`;
@@ -171,9 +209,9 @@ const PeerImage = React.memo((props: { peer: Conference_conference_peers, imageI
         props.space.selfImagesVM.delete(props.imageId);
     }, []);
     return (
-        <div ref={ref} onDoubleClick={del} className={cx(PeerImageContainer, canMove ? CursorMove : NoPinterEvents)}>
-            <img ref={imgRef} />
-            {/* <div ref={resizeRef} style={{ position: 'absolute',  width: 20, height: 20, bottom: 0, right: 0, backgroundColor: 'green' }} /> */}
+        <div ref={ref} onDoubleClick={del} className={cx(PeerImageContainer, canMove ? MovableImageContainerStyle : NoPinterEvents)}>
+            <div className={ImageStyle} ref={imgRef} />
+            <div ref={resizeRef} className={ResizerAnchorStyle} />
         </div>
     );
 });
@@ -241,7 +279,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                 // erase
                 if (down) {
                     for (let pth of props.mediaSession.volumeSpace.selfPathsVM.values()) {
-                        if (pth.rawPath && pth.rawPath.find(p => Math.pow(Math.pow(coords[0] - p[0], 2) + Math.pow(coords[1] - p[1], 2), 0.5) < eraseDisatance)) {
+                        if (pth.rawPath && (pth.rawPath.find(p => Math.pow(Math.pow(coords[0] - p[0], 2) + Math.pow(coords[1] - p[1], 2), 0.5) < eraseDisatance))) {
                             props.mediaSession.volumeSpace.selfPathsVM.delete(pth.id);
                             props.mediaSession.volumeSpace.pathsVM.deleteVal(props.mediaSession.getPeerId(), pth.id);
                         }

@@ -65,9 +65,9 @@ const TargetClass = css`
 
 export const useJsDrag = (
     targetRef: React.RefObject<HTMLDivElement>,
-    containerRef: React.RefObject<HTMLDivElement>,
+    containerRef: React.RefObject<HTMLDivElement> | undefined,
     onMove: (coords: number[]) => void,
-    saved?: number[],
+    savedCallback: (() => number[] | undefined) | number[] | undefined,
     initialTargetWidth?: number,
     targetMargin?: number,
     contentRef?: React.RefObject<HTMLDivElement>,
@@ -76,11 +76,12 @@ export const useJsDrag = (
 ) => {
 
     React.useLayoutEffect(() => {
-        const container = containerRef.current;
+        const container = containerRef?.current;
         const target = targetRef.current;
         const content = contentRef?.current;
         let dragging = false;
         let targetWidth = (target?.clientWidth || initialTargetWidth || 0) + (targetMargin || 0) * 2;
+        let saved = Array.isArray(savedCallback) ? savedCallback : undefined;
         let positionShift = saved?.length ? saved : [window.innerWidth / 2 - (targetWidth), window.innerHeight / 2];
         let prev: number[] | undefined;
 
@@ -111,7 +112,9 @@ export const useJsDrag = (
         };
 
         const onDragStart = (ev: MouseEvent | TouchEvent) => {
-            console.warn(ev);
+            if (savedCallback && !Array.isArray(savedCallback)) {
+                positionShift = savedCallback() || positionShift;
+            }
             if (ev instanceof MouseEvent) {
                 ev.preventDefault();
             }
@@ -157,7 +160,7 @@ export const useJsDrag = (
         };
 
         checkPostion();
-        if (container && target) {
+        if (target) {
             target.addEventListener('mousedown', onDragStart);
             target.addEventListener('mouseup', onDragStop);
             window.document.addEventListener('mouseup', onDragStop);
@@ -169,8 +172,10 @@ export const useJsDrag = (
             target.addEventListener('touchmove', ev => ev.preventDefault());
             window.document.addEventListener('touchmove', onDrag);
 
-            container.style.display = 'flex';
-            container.style.transform = `translate(${positionShift[0]}px, ${positionShift[1]}px)`;
+            if (container) {
+                container.style.display = 'flex';
+                container.style.transform = `translate(${positionShift[0]}px, ${positionShift[1]}px)`;
+            }
         }
 
         return () => {
