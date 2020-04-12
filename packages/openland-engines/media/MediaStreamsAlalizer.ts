@@ -34,7 +34,6 @@ export class MediaStreamsAlalizer {
     constructor(sessionManager: MediaSessionManager) {
         this.manager = sessionManager;
         this.disposeStreamsListener = this.manager.streamsVM.listenAll(s => {
-            console.warn('alalla', s);
             s.forEach(sm => {
                 let peerId = sm.getTargetPeerId();
                 if (peerId) {
@@ -57,7 +56,6 @@ export class MediaStreamsAlalizer {
     }
 
     initStreamsAnalizer = (peerId: string, manager: MediaStreamManager, isMe?: boolean) => {
-        console.warn('[alalla]', 'init an', peerId, isMe);
 
         // damn you safari
         if (!audioContext) {
@@ -81,7 +79,6 @@ export class MediaStreamsAlalizer {
         for (let [key, entry] of this.peerStreamAnalyzers) {
             let appSrteam = entry.isMe ? entry.manager.getAudioOutStream() : entry.manager.getAudioInStream();
             let stream = (appSrteam as AppUserMediaStreamWeb)?._stream;
-            console.warn(key, stream, stream?.getAudioTracks());
             if ((stream?.getAudioTracks()[0]) !== entry.audioTrack) {
                 console.warn('rebind analizer');
                 entry.analyzer?.disconnect();
@@ -165,7 +162,6 @@ export class MediaStreamsAlalizer {
     }
 
     subscribePeer(peerId: string, listener: (val: boolean) => void) {
-        console.warn('alalal', 'subscribePeer', peerId);
         let debauncedSet = this.debouncedNotifiers.get(peerId);
         if (!debauncedSet) {
             debauncedSet = new Set();
