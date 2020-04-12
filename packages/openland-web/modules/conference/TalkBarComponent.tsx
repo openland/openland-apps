@@ -27,13 +27,13 @@ export const activeAvatarStyle = css`
 const getSubtitle = (users: Conference_conference_peers_user[]) => {
     return users.length === 0 ? ''
         : users.length === 1 ? users[0].name
-        : users.length === 2 ? `${users[0].name} and ${users[1].name}`
-        : users.length === 3 ? `${users[0].name}, ${users[1].name} and ${users[2].name}`
-        : (
-            <span>
-                {users[0].name}, {users[1].name} and <OthersPopper users={users.slice(2)}>{users.length - 2} others</OthersPopper>
-            </span>
-        );
+            : users.length === 2 ? `${users[0].name} and ${users[1].name}`
+                : users.length === 3 ? `${users[0].name}, ${users[1].name} and ${users[2].name}`
+                    : (
+                        <span>
+                            {users[0].name}, {users[1].name} and <OthersPopper users={users.slice(2)}>{users.length - 2} others</OthersPopper>
+                        </span>
+                    );
 };
 
 export const TalkBarComponent = (props: { chat: ChatInfo }) => {
@@ -45,13 +45,6 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
         { id: props.chat.id },
         { fetchPolicy: 'network-only', suspense: false },
     );
-
-    useTalkWatch(data && data.conference.id);
-    if (!data) {
-        return null;
-    }
-
-    const subtitle = getSubtitle(data.conference.peers.map(peer => peer.user));
 
     const joinCall = () => {
         calls.joinCall(
@@ -72,6 +65,15 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
         showVideoCallModal({ calls, chatId: props.chat.id, client, messenger });
     };
 
+    // TODO: delete
+    React.useEffect(joinCall, []);
+
+    useTalkWatch(data && data.conference.id);
+    if (!data) {
+        return null;
+    }
+
+    const subtitle = getSubtitle(data.conference.peers.map(peer => peer.user));
     return data.conference.peers.length !== 0 ? (
         <UTopBar
             type="positive"

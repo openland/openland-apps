@@ -32,10 +32,10 @@ export class VMMap<K, T> {
     values = () => {
         return this.vals.values();
     }
-    set = (key: K, val: T) => {
+    set = (key: K, val: T, force?: boolean) => {
         let updated = this.vals.get(key) !== val;
         this.vals.set(key, val);
-        if (updated) {
+        if (updated || force) {
             this.notify(key, val);
         }
         return this;
@@ -78,7 +78,9 @@ export class VMMap<K, T> {
     listenAll = (listener: (vals: Map<K, T>) => void) => {
         this.allListeners.add(listener);
         listener(this.vals);
-        return () => this.allListeners.delete(listener);
+        return () => {
+            this.allListeners.delete(listener);
+        };
     }
 }
 

@@ -56,7 +56,8 @@ let DrawControlsContainerStyle = css`
     background-color: var(--backgroundTertiary);
 `;
 
-const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { mediaSession: MediaSessionManager }) => {
+const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { mediaSession: MediaSessionManager, selfRef?: React.RefObject<HTMLDivElement> }) => {
+    let containerRef = React.useRef<HTMLDivElement>(null);
     let [stream, setStream] = React.useState<MediaStream>();
     const isLocal = props.id === props.mediaSession.getPeerId();
     React.useEffect(() => {
@@ -66,16 +67,28 @@ const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { med
                 setStream((st as AppUserMediaStreamWeb)?._stream);
             });
         } else {
-            return props.mediaSession.peerVideoVM.listen(props.id, streams => {
+
+            // listen obj updates
+            let d1 = props.mediaSession.volumeSpace.peersVM.listen(props.id, peer => {
+                if (containerRef.current) {
+                    let scale = peer.coords[2] / 2 + 0.5;
+                    containerRef.current.style.transform = `translate(${peer.coords[0]}px, ${peer.coords[1]}px) scale(${scale}, ${scale})`;
+                }
+            });
+
+            let d2 = props.mediaSession.peerVideoVM.listen(props.id, streams => {
                 let st = [...streams.values()].find(s => s?.source === 'camera');
                 setStream((st as AppUserMediaStreamWeb)?._stream);
             });
+            return () => {
+                d1();
+                d2();
+            };
         }
 
     });
     return (
-        <>
-            {stream && <VideoComponent stream={stream} cover={true} mirror={isLocal} videoClass={VolumeSpaceVideoStyle} borderRadius={72} />}
+        <div className={VolumeSpaceItemStyle} ref={props.selfRef || containerRef}>
             {!stream &&
                 <UAvatar
                     size={stream ? 'large' : 'x-large'}
@@ -84,7 +97,8 @@ const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { med
                     photo={props.user.photo}
                 />
             }
-        </>
+            {stream && <VideoComponent stream={stream} cover={true} mirror={isLocal} videoClass={VolumeSpaceVideoStyle} borderRadius={72} />}
+        </div>
     );
 });
 export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManager, peers: Conference_conference_peers[] }) => {
@@ -109,19 +123,6 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
             console.warn(centerx, centery);
             containerRef.current.scrollBy(centerx, centery);
         }
-        // listen obj updates
-        return props.mediaSession.volumeSpace.listenPeers(peers => {
-            if (innerContainerRef.current) {
-                for (let i = 0; i < innerContainerRef.current.childElementCount; i++) {
-                    let c = innerContainerRef.current.children.item(i);
-                    let peer = peers[c?.id || -1];
-                    if (c && peer) {
-                        let scale = peer[2] / 2 + 0.5;
-                        (c as any).style.transform = `translate(${peer[0]}px, ${peer[1]}px) scale(${scale}, ${scale})`;
-                    }
-                }
-            }
-        });
     }, []);
 
     React.useEffect(() => {
@@ -182,14 +183,10 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
             <div className={VolumeSpaceInnerContainerStyle} ref={innerContainerRef}>
 
                 <div className={VolumeSpaceDrawListener} ref={drawListenerRef} />
-                {props.peers.map(p =>
-                    <div className={VolumeSpaceItemStyle} key={p.id} id={p.id} ref={p.id === props.mediaSession.getPeerId() ? selfRef : undefined}>
-                        <VolumeSpaceAvatar {...p} mediaSession={props.mediaSession} />
-                    </div>
-                )}
+                {props.peers.map(p => <VolumeSpaceAvatar key={p.id} {...p} mediaSession={props.mediaSession} selfRef={p.id === props.mediaSession.getPeerId() ? selfRef : undefined} />)}
                 {/* <div style={{ width: 20, height: 20, backgroundColor: 'red', position: 'absolute', left: 1490, top: 1490 }} /> */}
                 <svg viewBox={'0 0 3000 3000'} className={VolumeSpaceDrawContainerStyle}>
-                    {[...selfPaths.entries()].map(e => <path key={e[0]} d={e[1]} stroke="black" fill="transparent" />)}
+                    {[...selfPaths.entries()].map(e => <path key={e[0]} d={e[1]} strokeWidth={2} stroke="black" fill="transparent" />)}
                 </svg>
             </div>
             <div className={DrawControlsContainerStyle}>

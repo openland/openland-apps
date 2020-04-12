@@ -151,7 +151,8 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     }
     const mediaSession = props.calls.getMediaSession();
 
-    let [layout, setLayout] = React.useState<'grid' | 'volume-space'>('grid');
+    // TODO: recover grid by default
+    let [layout, setLayout] = React.useState<'grid' | 'volume-space'>('volume-space');
 
     // some fun - pick latest link from chat
     let [showLink, setShowLink] = React.useState(false);
