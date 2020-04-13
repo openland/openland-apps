@@ -11,7 +11,6 @@ const wrapper = css`
     align-items: center;
     justify-content: center;
     position: relative;
-    transition: transform 0.1s ease;
     transform: translateZ(0);
     svg {
         width: var(--icon-size);
@@ -21,6 +20,7 @@ const wrapper = css`
     }
     &::before {
         content: '';
+        transition: all 0.5s ease;
         transform: scale3d(0, 0, 0);
         width: var(--ripple-size);
         height: var(--ripple-size);
@@ -33,7 +33,7 @@ const wrapper = css`
 const wrapperRipple = css`
     &::before {
         background: var(--default-ripple-color);
-        transform: scale3d(1, 1, 1);
+        transform: scale3d(0, 0, 0);
     } 
 `;
 
