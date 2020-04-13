@@ -4,7 +4,7 @@ import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
     UserShort,
 } from 'openland-api/spacex.types';
-import { useImageViewer, ImageViewerCb } from 'openland-x-utils/imageViewer';
+// import { useImageViewer, ImageViewerCb } from 'openland-x-utils/imageViewer';
 import { layoutMedia, uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
 import { showModalBox } from 'openland-x/showModalBox';
@@ -17,12 +17,12 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { emoji } from 'openland-y-utils/emoji';
-import { useClient } from 'openland-api/useClient';
+// import { useClient } from 'openland-api/useClient';
 import IcDownload from 'openland-icons/s/ic-download-24.svg';
 import IcForward from 'openland-icons/s/ic-forward-24.svg';
 import IcClose from 'openland-icons/s/ic-close-24.svg';
-import IcLeft from 'openland-icons/s/ic-back-24.svg';
-import IcRight from 'openland-icons/s/ic-next-24.svg';
+// import IcLeft from 'openland-icons/s/ic-back-24.svg';
+// import IcRight from 'openland-icons/s/ic-next-24.svg';
 import { MediaLoader } from './MediaLoader';
 
 const modalImgContainer = css`
@@ -171,111 +171,111 @@ const imgSpacer = css`
     }
 `;
 
-const cursorContainer = css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    position: absolute;
-    cursor: pointer;
-    padding-top: 56px;
-    padding-left: 12px;
-    padding-right: 12px;
-    justify-content: center;
-    top: 0;
-    bottom: 0;
-    width: 64px;
-    transition: 200ms opacity ease;
-    opacity: 0.56;
-    & > div {
-        flex-grow: 0;
-        width: 40px;
-        height: 40px;
-        transition: 200ms all ease;
-        border-radius: 100%;
-    }
-    :hover {
-        opacity: 1;
-    }
-    :hover > div {
-        background-color: rgba(0, 0, 0, 0.48);
-    }
-`;
+// const cursorContainer = css`
+//     display: flex;
+//     flex-direction: row;
+//     align-items: center;
+//     position: absolute;
+//     cursor: pointer;
+//     padding-top: 56px;
+//     padding-left: 12px;
+//     padding-right: 12px;
+//     justify-content: center;
+//     top: 0;
+//     bottom: 0;
+//     width: 64px;
+//     transition: 200ms opacity ease;
+//     opacity: 0.56;
+//     & > div {
+//         flex-grow: 0;
+//         width: 40px;
+//         height: 40px;
+//         transition: 200ms all ease;
+//         border-radius: 100%;
+//     }
+//     :hover {
+//         opacity: 1;
+//     }
+//     :hover > div {
+//         background-color: rgba(0, 0, 0, 0.48);
+//     }
+// `;
 
-const prevCursorContent = css`
-    left: 0;
-`;
+// const prevCursorContent = css`
+//     left: 0;
+// `;
+//
+// const nextCursorContent = css`
+//     right: 0;
+// `;
+//
+// interface ModalControllerProps {
+//     cId: string;
+//     cursor: string;
+//     setViewerState: (data: ImageViewerCb) => void;
+//     hide: () => void;
+//     onPrevClick: () => void;
+//     onNextClick: () => void;
+// }
 
-const nextCursorContent = css`
-    right: 0;
-`;
-
-interface ModalControllerProps {
-    cId: string;
-    cursor: string;
-    setViewerState: (data: ImageViewerCb) => void;
-    hide: () => void;
-    onPrevClick: () => void;
-    onNextClick: () => void;
-}
-
-const ModalController = React.memo((props: ModalControllerProps) => {
-    const client = useClient();
-
-    const sharedInfo = client.usePicSharedMedia(
-        {
-            chatId: props.cId,
-            first: 1,
-            around: props.cursor,
-        },
-        { fetchPolicy: 'cache-and-network' },
-    ).chatSharedMedia;
-
-    useShortcuts([
-        {
-            keys: ['Escape'],
-            callback: () => props.hide(),
-        },
-        {
-            keys: ['ArrowLeft'],
-            callback: props.onPrevClick,
-        },
-        {
-            keys: ['ArrowRight'],
-            callback: props.onNextClick,
-        },
-    ]);
-
-    React.useEffect(() => {
-        (async () => {
-            await client.refetchPicSharedMedia({
-                chatId: props.cId,
-                first: 1,
-                around: props.cursor,
-            });
-            let viewerData;
-            if (sharedInfo) {
-                viewerData = useImageViewer(sharedInfo, props.cursor);
-                props.setViewerState(viewerData);
-            }
-            if (viewerData && viewerData.prevCursor) {
-                await client.refetchPicSharedMedia({
-                    chatId: props.cId,
-                    first: 1,
-                    around: viewerData.prevCursor,
-                });
-            }
-            if (viewerData && viewerData.nextCursor) {
-                await client.refetchPicSharedMedia({
-                    chatId: props.cId,
-                    first: 1,
-                    around: viewerData.nextCursor,
-                });
-            }
-        })();
-    }, [sharedInfo]);
-
-    return null;
-});
+// const ModalController = React.memo((props: ModalControllerProps) => {
+//     const client = useClient();
+//
+//     const sharedInfo = client.usePicSharedMedia(
+//         {
+//             chatId: props.cId,
+//             first: 1,
+//             around: props.cursor,
+//         },
+//         { fetchPolicy: 'cache-and-network' },
+//     ).chatSharedMedia;
+//
+//     useShortcuts([
+//         {
+//             keys: ['Escape'],
+//             callback: () => props.hide(),
+//         },
+//         {
+//             keys: ['ArrowLeft'],
+//             callback: props.onPrevClick,
+//         },
+//         {
+//             keys: ['ArrowRight'],
+//             callback: props.onNextClick,
+//         },
+//     ]);
+//
+//     React.useEffect(() => {
+//         (async () => {
+//             await client.refetchPicSharedMedia({
+//                 chatId: props.cId,
+//                 first: 1,
+//                 around: props.cursor,
+//             });
+//             let viewerData;
+//             if (sharedInfo) {
+//                 viewerData = useImageViewer(sharedInfo, props.cursor);
+//                 props.setViewerState(viewerData);
+//             }
+//             if (viewerData && viewerData.prevCursor) {
+//                 await client.refetchPicSharedMedia({
+//                     chatId: props.cId,
+//                     first: 1,
+//                     around: viewerData.prevCursor,
+//                 });
+//             }
+//             if (viewerData && viewerData.nextCursor) {
+//                 await client.refetchPicSharedMedia({
+//                     chatId: props.cId,
+//                     first: 1,
+//                     around: viewerData.nextCursor,
+//                 });
+//             }
+//         })();
+//     }, [sharedInfo]);
+//
+//     return null;
+// });
 
 interface ModalProps {
     fileId: string;
@@ -295,11 +295,18 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const imgRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
 
-    const [viewerState, setViewerState] = React.useState<ImageViewerCb | null>(null);
-    const [loaded, setLoaded] = React.useState(false);
-    const [cursor, setCursor] = React.useState(props.mId);
+    // const [viewerState, setViewerState] = React.useState<ImageViewerCb | null>(null);
+    // const [loaded, setLoaded] = React.useState(false);
+    // const [cursor, setCursor] = React.useState(props.mId);
     const [fadeout, setFadeout] = React.useState(false);
     const [cursorData, setCursorData] = React.useState({ x: 0, y: 0 });
+
+    useShortcuts([
+        {
+            keys: ['Escape'],
+            callback: () => props.hide(),
+        }
+    ]);
 
     const onLoad = React.useCallback(() => {
         if (imgRef.current && loaderRef.current) {
@@ -307,59 +314,88 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
             imgRef.current.style.visibility = 'visible';
             loaderRef.current.style.opacity = '0';
             loaderRef.current.style.display = 'none';
-            setLoaded(true);
+            // setLoaded(true);
         }
-    }, [viewerState]);
+    }, []);
+        // [viewerState]);
 
-    React.useLayoutEffect(() => {
-        if (imgRef.current && loaderRef.current && !loaded) {
-            imgRef.current.style.opacity = '0';
-            imgRef.current.style.visibility = 'hidden';
-            loaderRef.current.style.opacity = '1';
-            loaderRef.current.style.display = 'flex';
-        }
-    }, [viewerState]);
+    // React.useLayoutEffect(() => {
+    //     if (imgRef.current && loaderRef.current && !loaded) {
+    //         imgRef.current.style.opacity = '0';
+    //         imgRef.current.style.visibility = 'hidden';
+    //         loaderRef.current.style.opacity = '1';
+    //         loaderRef.current.style.display = 'flex';
+    //     }
+    // }, [viewerState]);
 
-    const onPrevClick = () => {
-        if (viewerState && viewerState.prevCursor) {
-            setCursor(viewerState.prevCursor);
-            setLoaded(false);
-        }
-    };
-    const onNextClick = () => {
-        if (viewerState && viewerState.nextCursor) {
-            setCursor(viewerState.nextCursor);
-            setLoaded(false);
-        }
-    };
+    // const onPrevClick = () => {
+    //     if (viewerState && viewerState.prevCursor) {
+    //         setCursor(viewerState.prevCursor);
+    //         setLoaded(false);
+    //     }
+    // };
+    // const onNextClick = () => {
+    //     if (viewerState && viewerState.nextCursor) {
+    //         setCursor(viewerState.nextCursor);
+    //         setLoaded(false);
+    //     }
+    // };
 
+    // const forwardCallback = React.useCallback(() => {
+    //     showChatPicker((id: string) => {
+    //         messenger.sender.shareFile(id, viewerState ? viewerState.current.fileId : props.fileId);
+    //     });
+    // }, []);
     const forwardCallback = React.useCallback(() => {
         showChatPicker((id: string) => {
-            messenger.sender.shareFile(id, viewerState ? viewerState.current.fileId : props.fileId);
+            messenger.sender.shareFile(id, props.fileId);
         });
     }, []);
 
-    const sender = viewerState
-        ? viewerState.current.senderName
-        : props.senderNameEmojify
-        ? props.senderNameEmojify
-        : props.sender
-        ? emoji(props.sender.name)
-        : '';
+    // const sender = viewerState
+    //     ? viewerState.current.senderName
+    //     : props.senderNameEmojify
+    //     ? props.senderNameEmojify
+    //     : props.sender
+    //     ? emoji(props.sender.name)
+    //     : '';
+    //
+    // const date = viewerState ? viewerState.current.date : props.date;
+    // const downloadLink =
+    //     'https://ucarecdn.com/' +
+    //     (viewerState ? viewerState.current.fileId : props.fileId) +
+    //     '/-/format/jpg/-/inline/no/pic.jpg';
+    //
+    // const url = `https://ucarecdn.com/${
+    //     viewerState ? viewerState.current.fileId : props.fileId
+    // }/-/format/auto/-/`;
+    const sender = props.senderNameEmojify
+            ? props.senderNameEmojify
+            : props.sender
+                ? emoji(props.sender.name)
+                : '';
 
-    const date = viewerState ? viewerState.current.date : props.date;
+    const date = props.date;
     const downloadLink =
         'https://ucarecdn.com/' +
-        (viewerState ? viewerState.current.fileId : props.fileId) +
+        (props.fileId) +
         '/-/format/jpg/-/inline/no/pic.jpg';
 
     const url = `https://ucarecdn.com/${
-        viewerState ? viewerState.current.fileId : props.fileId
+        props.fileId
     }/-/format/auto/-/`;
 
+    // const layoutModal = layoutMedia(
+    //     viewerState ? viewerState.current.imageWidth : props.imageWidth,
+    //     viewerState ? viewerState.current.imageHeight : props.imageHeight,
+    //     window.innerWidth,
+    //     window.innerHeight,
+    //     32,
+    //     32,
+    // );
     const layoutModal = layoutMedia(
-        viewerState ? viewerState.current.imageWidth : props.imageWidth,
-        viewerState ? viewerState.current.imageHeight : props.imageHeight,
+        props.imageWidth,
+        props.imageHeight,
         window.innerWidth,
         window.innerHeight,
         32,
@@ -373,7 +409,8 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const width = layoutModal.width;
     const height = layoutModal.height;
 
-    const preview = viewerState ? viewerState.current.filePreview : props.preview;
+    // const preview = viewerState ? viewerState.current.filePreview : props.preview;
+    const preview = props.preview;
 
     const mouseMove = React.useCallback(
         (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -397,33 +434,33 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                 className={cx(modalToolbarContainer, fadeout && fadeoutStyle)}
                 onClick={(e) => e.preventDefault()}
             >
-                {cursor && props.chatId && (
-                    <React.Suspense fallback={null}>
-                        <ModalController
-                            cId={props.chatId}
-                            cursor={cursor || ''}
-                            setViewerState={setViewerState}
-                            hide={props.hide}
-                            onPrevClick={onPrevClick}
-                            onNextClick={onNextClick}
-                        />
-                    </React.Suspense>
-                )}
+                {/*{cursor && props.chatId && (*/}
+                {/*    <React.Suspense fallback={null}>*/}
+                {/*        <ModalController*/}
+                {/*            cId={props.chatId}*/}
+                {/*            cursor={cursor || ''}*/}
+                {/*            setViewerState={setViewerState}*/}
+                {/*            hide={props.hide}*/}
+                {/*            onPrevClick={onPrevClick}*/}
+                {/*            onNextClick={onNextClick}*/}
+                {/*        />*/}
+                {/*    </React.Suspense>*/}
+                {/*)}*/}
                 {sender && date && (
                     <div className={modalInfoContainer}>
-                        {viewerState && (
-                            <div className={cx(TextLabel1, modalPrimaryText)}>
-                                {isMobile ? (
-                                    <>
-                                        {viewerState.index} of {viewerState.count}
-                                    </>
-                                ) : (
-                                    <>
-                                        Media {viewerState.index} of {viewerState.count}
-                                    </>
-                                )}
-                            </div>
-                        )}
+                        {/*{viewerState && (*/}
+                        {/*    <div className={cx(TextLabel1, modalPrimaryText)}>*/}
+                        {/*        {isMobile ? (*/}
+                        {/*            <>*/}
+                        {/*                {viewerState.index} of {viewerState.count}*/}
+                        {/*            </>*/}
+                        {/*        ) : (*/}
+                        {/*            <>*/}
+                        {/*                Media {viewerState.index} of {viewerState.count}*/}
+                        {/*            </>*/}
+                        {/*        )}*/}
+                        {/*    </div>*/}
+                        {/*)}*/}
                         {!isMobile && (
                             <div className={cx(TextCaption, modalSecondaryText)}>{sender}</div>
                         )}
@@ -492,28 +529,28 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
                     style={{ objectFit: 'contain', cursor: 'default' }}
                 />
             </div>
-            {viewerState && viewerState.hasPrevPage && (
-                <div
-                    className={cx(cursorContainer, prevCursorContent, fadeout && fadeoutStyle)}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onPrevClick();
-                    }}
-                >
-                    <UIcon icon={<IcLeft />} color={'var(--backgroundPrimary)'} />
-                </div>
-            )}
-            {viewerState && viewerState.hasNextPage && (
-                <div
-                    className={cx(cursorContainer, nextCursorContent, fadeout && fadeoutStyle)}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onNextClick();
-                    }}
-                >
-                    <UIcon icon={<IcRight />} color={'var(--backgroundPrimary)'} />
-                </div>
-            )}
+            {/*{viewerState && viewerState.hasPrevPage && (*/}
+            {/*    <div*/}
+            {/*        className={cx(cursorContainer, prevCursorContent, fadeout && fadeoutStyle)}*/}
+            {/*        onClick={(e) => {*/}
+            {/*            e.stopPropagation();*/}
+            {/*            onPrevClick();*/}
+            {/*        }}*/}
+            {/*    >*/}
+            {/*        <UIcon icon={<IcLeft />} color={'var(--backgroundPrimary)'} />*/}
+            {/*    </div>*/}
+            {/*)}*/}
+            {/*{viewerState && viewerState.hasNextPage && (*/}
+            {/*    <div*/}
+            {/*        className={cx(cursorContainer, nextCursorContent, fadeout && fadeoutStyle)}*/}
+            {/*        onClick={(e) => {*/}
+            {/*            e.stopPropagation();*/}
+            {/*            onNextClick();*/}
+            {/*        }}*/}
+            {/*    >*/}
+            {/*        <UIcon icon={<IcRight />} color={'var(--backgroundPrimary)'} />*/}
+            {/*    </div>*/}
+            {/*)}*/}
         </div>
     );
 });
