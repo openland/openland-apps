@@ -72,7 +72,8 @@ export const useJsDrag = (
     targetMargin?: number,
     contentRef?: React.RefObject<HTMLDivElement>,
     limitToScreen?: boolean,
-    deps?: any[]
+    flipping?: boolean,
+    depth?: any[]
 ) => {
 
     React.useLayoutEffect(() => {
@@ -86,9 +87,12 @@ export const useJsDrag = (
         let prev: number[] | undefined;
 
         const checkPostion = () => {
-            // let newTargetWidth = (target?.clientWidth || initialTargetWidth || 0) + (targetMargin || 0) * 2;
-            // positionShift[0] += (targetWidth - newTargetWidth) / 2;
-            // targetWidth = newTargetWidth;
+            if (flipping) {
+                let newTargetWidth = (target?.clientWidth || initialTargetWidth || 0) + (targetMargin || 0) * 2;
+                positionShift[0] += (targetWidth - newTargetWidth) / 2;
+                targetWidth = newTargetWidth;
+
+            }
             // limit shift with screen bounds
             if (limitToScreen) {
                 if (Math.abs(positionShift[0]) > window.innerWidth / 2 - (targetWidth / 2)) {
@@ -98,7 +102,7 @@ export const useJsDrag = (
             }
 
             // swap layout for left/right part of screen
-            if (container && content) {
+            if (container && content && flipping) {
                 if (positionShift[0] > 0) {
                     container.style.right = `calc(50% - ${targetWidth / 2}px)`;
                     container.style.left = 'initial';
@@ -192,7 +196,7 @@ export const useJsDrag = (
                 window.document.removeEventListener('touchmove', onDrag);
             }
         };
-    }, [deps]);
+    }, [depth]);
 };
 
 const VideoMediaView = React.memo((props: {
@@ -286,7 +290,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
     const moveCallBack = React.useCallback(debounce((shift: number[]) => {
         window.localStorage.setItem('call_floating_shift', JSON.stringify(shift));
     }, 500), []);
-    useJsDrag(targetRef, containerRef, moveCallBack, JSON.parse(window.localStorage.getItem('call_floating_shift') || '{}'), AVATAR_SIZE - 16, 8, contentRef, true);
+    useJsDrag(targetRef, containerRef, moveCallBack, JSON.parse(window.localStorage.getItem('call_floating_shift') || '{}'), AVATAR_SIZE - 16, 8, contentRef, true, true);
     let messenger = React.useContext(MessengerContext);
     let calls = messenger.calls;
     let callState = calls.useState();
