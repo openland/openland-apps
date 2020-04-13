@@ -23,6 +23,7 @@ let VolumeSpaceInnerContainerStyle = css`
     height: 3000px;
 `;
 let VolumeSpaceDrawContainerStyle = css`
+    transform: translate3d(0, 0, 0);
     position: absolute;
     width: 3000px;
     height: 3000px;
@@ -39,6 +40,7 @@ let VolumeSpaceDrawListener = css`
     left: 0;
 `;
 let AvatarItemStyle = css`
+    will-change: transform;
     position: absolute;
 `;
 let AvatarMovableStyle = css`
@@ -66,6 +68,7 @@ let DrawControlsHidden = css`
 `;
 
 let PeerImageContainer = css`
+    will-change: transform;
     pointer-events: none;
     display: flex;
     overflow: visible;
