@@ -20,7 +20,6 @@ import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
 import { CallsEngine, CallState } from 'openland-engines/CallsEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 
-const AVATAR_SIZE = 48;
 const VIDEO_WIDTH = 240;
 const VIDEO_HEIGHT = 160;
 
@@ -36,8 +35,7 @@ const FloatContainerClass = css`
     border-radius: 12px;
     overflow: hidden;
     width: 280px;
-    transition: width 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
-        opacity 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
+    transition: opacity 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
         box-shadow 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
 
@@ -101,50 +99,22 @@ export const useJsDrag = (
     containerRef: React.RefObject<HTMLDivElement> | undefined,
     onMove: (coords: number[]) => void,
     savedCallback: (() => number[] | undefined) | number[] | undefined,
-    initialTargetWidth?: number,
-    targetMargin?: number,
-    contentRef?: React.RefObject<HTMLDivElement>,
     limitToScreen?: boolean,
-    flipping?: boolean,
     depth?: any[]
 ) => {
 
     React.useLayoutEffect(() => {
         const container = containerRef?.current;
         const target = targetRef.current;
-        const content = contentRef?.current;
         let dragging = false;
-        let targetWidth = (target?.clientWidth || initialTargetWidth || 0) + (targetMargin || 0) * 2;
         let saved = Array.isArray(savedCallback) ? savedCallback : undefined;
-        let positionShift = saved?.length ? saved : [window.innerWidth / 2 - (targetWidth), window.innerHeight / 2];
+        let positionShift = saved?.length ? saved : [window.innerWidth / 2 - (target?.clientWidth || 0), window.innerHeight / 2];
         let prev: number[] | undefined;
 
         const checkPostion = () => {
-            if (flipping) {
-                let newTargetWidth = (target?.clientWidth || initialTargetWidth || 0) + (targetMargin || 0) * 2;
-                positionShift[0] += (targetWidth - newTargetWidth) / 2;
-                targetWidth = newTargetWidth;
-
-            }
-            // limit shift with screen bounds
             if (limitToScreen) {
-                if (Math.abs(positionShift[0]) > window.innerWidth / 2 - (targetWidth / 2)) {
-                    positionShift[0] = (window.innerWidth / 2 - (targetWidth / 2)) * Math.sign(positionShift[0]);
-                }
-                positionShift[1] = Math.min(window.innerHeight - (targetWidth), Math.max(0, positionShift[1]));
-            }
-
-            // swap layout for left/right part of screen
-            if (container && content && flipping) {
-                if (positionShift[0] > 0) {
-                    container.style.right = `calc(50% - ${targetWidth / 2}px)`;
-                    container.style.left = 'initial';
-                    content.style.flexDirection = 'row-reverse';
-                } else {
-                    container.style.right = 'initial';
-                    container.style.left = `calc(50% - ${targetWidth / 2}px)`;
-                    content.style.flexDirection = 'row';
-                }
+                positionShift[0] = Math.min(window.innerWidth - (target?.clientWidth || 0), Math.max(0, positionShift[0]));
+                positionShift[1] = Math.min(window.innerHeight - (target?.clientHeight || 0), Math.max(0, positionShift[1]));
             }
         };
 
@@ -359,7 +329,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
     const moveCallBack = React.useCallback(debounce((shift: number[]) => {
         window.localStorage.setItem('call_floating_shift', JSON.stringify(shift));
     }, 500), []);
-    useJsDrag(targetRef, containerRef, moveCallBack, JSON.parse(window.localStorage.getItem('call_floating_shift') || '{}'), AVATAR_SIZE - 16, 8, contentRef, true, true);
+    useJsDrag(targetRef, containerRef, moveCallBack, JSON.parse(window.localStorage.getItem('call_floating_shift') || '[]'), true);
     let messenger = React.useContext(MessengerContext);
     let calls = messenger.calls;
     let callState = calls.useState();

@@ -262,7 +262,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     let [controls, setControls] = React.useState(false);
     let [erase, setErase] = React.useState(false);
 
-    useJsDrag(selfRef, selfRef, props.mediaSession.volumeSpace.moveSelf, props.mediaSession.volumeSpace.selfPeer.coords, undefined, undefined, undefined, undefined, undefined, [props.peers]);
+    useJsDrag(selfRef, selfRef, props.mediaSession.volumeSpace.moveSelf, props.mediaSession.volumeSpace.selfPeer.coords, undefined, [props.peers]);
     React.useEffect(() => {
         // scroll to center
         if (containerRef.current) {
