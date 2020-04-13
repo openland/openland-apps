@@ -131,8 +131,8 @@ export class MediaSessionManager {
                 // mobile webrtc will send closed stream next time in this case, it will lead to crash on other mobile
                 this.outVideoStream.close();
                 this.outVideoStream = undefined;
-                this.outVideoVM.set([this.outVideoStream, this.outScreenStream]);
             }
+            this.outVideoVM.set([this.outVideoStream, this.outScreenStream]);
 
         }
         this.postVideoState(false);

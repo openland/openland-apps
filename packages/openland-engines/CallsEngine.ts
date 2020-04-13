@@ -44,7 +44,7 @@ export class CallsEngine {
         }
         this.mediaSession = new MediaSessionManager(this.messenger, this.client, conversationId, this._state.mute, !!isPrivate, (status, startTime) => this.setState({ ...this._state, status, private: !!isPrivate, startTime }), this.leaveCall, this.onVideoEnabled);
         this.mediaSession.outVideoVM.listen((s) => {
-            this.setState({... this._state, video: s.find(st => st?.source === 'camera')});
+            this.setState({... this._state, video: s.find(st => st?.source === 'camera' && !st.blinded)});
             this.setState({... this._state, screenShare: s.find(st => st?.source === 'screen_share')});
         });
         this.setState({ mute: false, status: 'connecting', conversationId, private: isPrivate, avatar });

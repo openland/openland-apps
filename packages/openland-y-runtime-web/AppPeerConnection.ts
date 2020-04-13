@@ -25,11 +25,14 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     channel?: RTCDataChannel;
     private volume?: number;
 
+    private d1: () => void;
+    private d2: () => void;
+
     constructor(connection: RTCPeerConnection) {
         this.connection = connection;
         this.connection.onicecandidate = (ev) => this.started && this.onicecandidate && this.onicecandidate({ candidate: ev.candidate ? JSON.stringify(ev.candidate) : undefined });
 
-        MediaDevicesManager.instance().listenOutputDevice(d => {
+        this.d2 = MediaDevicesManager.instance().listenOutputDevice(d => {
             if (d !== this.audioOutputDevice) {
                 this.audioOutputDevice = d;
                 // TODO how to do it in safari?
@@ -39,7 +42,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
             }
         });
 
-        MediaDevicesManager.instance().listenStreamUpdated(s => {
+        this.d1 = MediaDevicesManager.instance().listenStreamUpdated(s => {
             this.addStream(s);
         });
 
@@ -148,6 +151,8 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         return JSON.stringify(await this.connection.createAnswer({ offerToReceiveAudio: true, offerToReceiveVideo: true } as any /* WTF with typings? */));
     }
 
+    hasVideo = false;
+    hasAudio = false;
     addStream = (stream: AppMediaStream) => {
         let str = (stream as AppUserMediaStreamWeb)._stream;
         for (let t of str.getTracks()) {
@@ -157,19 +162,31 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
                 this.connection.removeTrack(sender);
             }
         }
+        let videoAdded = false;
+        let audioAdded = false;
         let tracks = str.getTracks();
         for (let sender of this.connection.getSenders()) {
             for (let i = tracks.length - 1; i >= 0; i--) {
                 let track = tracks[i];
-                console.warn(sender.track, track);
                 if (sender.track?.kind === track.kind) {
                     sender.replaceTrack(track);
                     this.trackSenders.set(track, sender);
                     tracks.splice(i, 1);
                 }
+                videoAdded = (!this.hasVideo && track.kind === 'video') || videoAdded;
+                audioAdded = (!this.hasAudio && track.kind === 'audio') || audioAdded;
+                this.hasVideo = videoAdded || this.hasVideo;
+                this.hasAudio = audioAdded || this.hasAudio;
             }
         }
         tracks.map(track => this.trackSenders.set(track, this.connection.addTrack(track, str)));
+        // wtf time!
+        // onnegotiationneeded is not called on turn video on if it's mobile on other side 
+        // looks like offer from mobile does not contain offerToReceiveVideo, even thow it is set explisetly
+        // so, let's help browser detect enviroment has changed
+        if ((videoAdded || audioAdded) && this.onnegotiationneeded) {
+            this.onnegotiationneeded();
+        }
     }
 
     addIceCandidate = (candidate: string) => {
@@ -187,6 +204,8 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         }
         this.streams.forEach(s => s.getTracks().forEach(t => t.stop()));
         this.channel?.close();
+        this.d1();
+        this.d2();
         this.connection.close();
     }
 
