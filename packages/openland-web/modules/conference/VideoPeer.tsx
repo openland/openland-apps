@@ -137,13 +137,15 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
 
     return (
         <XView
-            backgroundColor="var(--accentPay)"
             alignItems="center"
             justifyContent="center"
             flexGrow={1}
+            overflow="hidden"
             borderRadius={props.compact ? 8 : undefined}
+            position="relative"
+
         >
-            {mainStreamWeb && <VideoComponent stream={mainStreamWeb} cover={true} compact={props.compact} onClick={onClick} mirror={isLocal && (mainStream?.source === 'camera')} />}
+            {mainStreamWeb && <VideoComponent stream={mainStreamWeb} cover={true} compact={props.compact} onClick={onClick} mirror={isLocal && (mainStream?.source === 'camera')} borderRadius={props.compact ? 8 : undefined} />}
             {!mainStreamWeb && (
                 <>
                     <div className={bgAvatar}>
@@ -173,6 +175,19 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
                     </div>
                 )}
             </div>
+            {props.compact && (
+                <XView
+                    position="absolute"
+                    top={0}
+                    left={0}
+                    right={0}
+                    bottom={0}
+                    borderWidth={1}
+                    borderColor="var(--borderLight)"
+                    borderRadius={8}
+                    zIndex={2}
+                />
+            )}
         </XView>
     );
 });

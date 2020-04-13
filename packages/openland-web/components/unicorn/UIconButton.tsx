@@ -30,6 +30,13 @@ const wrapper = css`
     }
 `;
 
+const wrapperRipple = css`
+    &::before {
+        background: var(--default-ripple-color);
+        transform: scale3d(1, 1, 1);
+    } 
+`;
+
 const wrapperActive = css`
     &::before {
         background: var(--ripple-color);
@@ -55,6 +62,7 @@ interface UIconButtonProps extends XViewProps {
     active?: boolean;
     loading?: boolean;
     rippleColor?: string;
+    defaultRippleColor?: string;
 }
 
 const widthBySize: { [key in UIconButtonSize]: number } = {
@@ -98,7 +106,7 @@ const loaderStyle = css`
 `;
 
 export const UIconButton = React.memo((props: UIconButtonProps) => {
-    const { icon, size = 'medium', active, color, loading, rippleColor, ...other } = props;
+    const { icon, size = 'medium', active, color, loading, rippleColor, defaultRippleColor, ...other } = props;
     const width = widthBySize[size];
     const height = heightBySize[size];
     const ripple = rippleBySize[size];
@@ -109,12 +117,13 @@ export const UIconButton = React.memo((props: UIconButtonProps) => {
             <div className={container}>
                 {!loading && (
                     <div
-                        className={cx(wrapper, active && wrapperActive)}
+                        className={cx(wrapper, wrapperRipple, active && wrapperActive)}
                         style={
                             {
                                 '--ripple-size': ripple,
                                 '--icon-size': iconSize,
                                 '--ripple-color': rippleColor || 'var(--backgroundTertiaryTrans)',
+                                '--default-ripple-color': defaultRippleColor || 'none',
                             } as React.CSSProperties
                         }
                     >

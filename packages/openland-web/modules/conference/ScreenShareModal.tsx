@@ -53,21 +53,9 @@ export const VideoComponent = React.memo((props: VideoComponent) => {
         }
     }, [stream]);
     return (
-        <XView width={'100%'} height={'100%'} onClick={onClick} cursor={onClick ? 'pointer' : undefined} position="relative" backgroundColor="var(--overlayTotal)" {...other}>
+        <XView width={'100%'} height={'100%'} onClick={onClick} cursor={onClick ? 'pointer' : undefined} position="relative" {...other}>
             <video id={'video-1'} key={'video-1'} ref={videoRef1} className={cx(videoClassName, cover && coverClass, videoClass, mirror && mirrorClass, compact && videoCompact)} />
             {switching && <video id={'video-2'} key={'video-2'} ref={videoRef2} className={cx(videoClassName, cover && coverClass, videoClass, mirror && mirrorClass, compact && videoCompact)} />}
-            {compact && (
-                <XView 
-                    borderRadius={8}
-                    position="absolute"
-                    borderColor="rgba(0, 0, 0, 0.04)"
-                    borderWidth={1}
-                    top={0}
-                    bottom={0}
-                    left={0}
-                    right={0}
-                />
-            )}
         </XView>
     );
 });
