@@ -104,7 +104,6 @@ const ChatOnlinesTitle = (props: { id: string }) => {
 };
 
 const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
-    const client = useClient();
     const calls = props.messenger.calls;
     const callsState = calls.useState();
     return (
