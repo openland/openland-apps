@@ -246,7 +246,7 @@ export const CallControls = (props: CallControlsProps) => {
                         onClick={props.onSpaceClick}
                     />
                     <ControlItem
-                        text="Tools"
+                        text="Apps"
                         icon={(
                             <UIconButton
                                 icon={<ToolsIcon />}

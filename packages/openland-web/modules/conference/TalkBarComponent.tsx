@@ -62,7 +62,6 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                     picture: props.chat.photo,
                 },
         );
-        showVideoCallModal({ calls, chatId: props.chat.id, client, messenger });
     };
 
     useTalkWatch(data && data.conference.id);

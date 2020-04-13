@@ -34,7 +34,6 @@ import { useLastSeen } from 'openland-y-utils/LastSeen';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { AppConfig } from 'openland-y-runtime-web/AppConfig';
-import { showVideoCallModal } from 'openland-web/modules/conference/CallModal';
 
 const secondary = css`
     color: var(--foregroundSecondary);
@@ -124,7 +123,6 @@ const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
                             }
                             : { id: props.chat.id, title: props.chat.title, picture: props.chat.photo },
                     );
-                    showVideoCallModal({ calls, chatId: props.chat.id, client, messenger: props.messenger });
                 }}
                 size="large"
             />
@@ -163,7 +161,6 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
                         ? { id: chat.user.id, title: chat.user.name, picture: chat.user.photo }
                         : { id: chat.id, title: chat.title, picture: chat.photo },
                 );
-                showVideoCallModal({ calls, chatId: chat.id, client, messenger });
             },
         });
     }
