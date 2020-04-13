@@ -189,7 +189,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     if (chat.__typename === 'SharedRoom') {
         if (chat.canEdit || AppConfig.isSuperAdmin()) {
             res.item({
-                title: 'Settings',
+                title: 'Manage group',
                 icon: <SettingsIcon />,
                 action: () => showRoomEditModal(chat.id),
             });
@@ -197,8 +197,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
         if (
             chat.role === 'OWNER' ||
             chat.role === 'ADMIN' ||
-            AppConfig.isSuperAdmin() ||
-            (chat.organization && (chat.organization.isAdmin || chat.organization.isOwner))
+            AppConfig.isSuperAdmin()
         ) {
             res.item({
                 title: 'Advanced settings',

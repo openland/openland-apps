@@ -22,13 +22,13 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
     const tabRouter = useTabRouter();
     const client = useClient();
     const { ctx, group } = props;
-    const { id, canEdit, role, organization, isChannel } = group;
+    const { id, canEdit, role, isChannel } = group;
     const typeString = isChannel ? 'channel' : 'group';
     const builder = new UPopperMenuBuilder();
 
     if (canEdit || AppConfig.isSuperAdmin()) {
         builder.item({
-            title: 'Settings',
+            title: 'Manage group',
             icon: <SettingsIcon />,
             onClick: () => showRoomEditModal(id),
         });
@@ -37,7 +37,7 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
     if (
         role === 'OWNER' ||
         role === 'ADMIN' ||
-        (organization && (organization.isAdmin || organization.isOwner))
+        AppConfig.isSuperAdmin()
     ) {
         builder.item({
             title: 'Advanced settings',
