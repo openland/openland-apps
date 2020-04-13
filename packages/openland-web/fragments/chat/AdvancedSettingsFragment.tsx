@@ -118,7 +118,7 @@ export const AdvancedSettingsFragment = () => {
         group.welcomeMessage.sender ? group.welcomeMessage.sender.id : null,
         form,
     );
-    const roomAdmins = client.useRoomAdminMembers({ id: chatId }).room;
+    const roomAdmins = client.useRoomAdminMembers({ roomId: chatId }).roomAdmins;
 
     const handleSave = () =>
         form.doAction(async () => {
@@ -175,18 +175,11 @@ export const AdvancedSettingsFragment = () => {
                             placeholder="Sender"
                             optionRenderer={OptionRender}
                             options={
-                                roomAdmins &&
-                                roomAdmins.__typename === 'SharedRoom' &&
-                                roomAdmins.organization &&
-                                roomAdmins.organization.admins
-                                    ? (roomAdmins.organization.admins.map((u) => {
-                                          return {
-                                              value: u.user.id,
-                                              label: u.user.name,
-                                              photo: u.user.photo,
-                                          };
-                                      }) as any)
-                                    : []
+                                roomAdmins.map(u => ({
+                                    value: u.user.id,
+                                    label: u.user.name,
+                                    photo: u.user.photo
+                                }))
                             }
                         />
                         <UTextAreaField

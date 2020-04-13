@@ -3497,25 +3497,13 @@ const ResolvedInviteSelector = obj(
                 ))
         );
 const RoomAdminMembersSelector = obj(
-            field('room', 'room', args(fieldValue("id", refValue('id'))), obj(
+            field('roomAdmins', 'roomAdmins', args(fieldValue("roomId", refValue('roomId'))), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    inline('SharedRoom', obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        field('id', 'id', args(), notNull(scalar('ID'))),
-                        field('organization', 'organization', args(), obj(
-                                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                field('id', 'id', args(), notNull(scalar('ID'))),
-                                field('alphaOrganizationAdminMembers', 'admins', args(), notNull(list(notNull(obj(
-                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                        field('role', 'role', args(), notNull(scalar('String'))),
-                                        field('user', 'user', args(), notNull(obj(
-                                                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                                fragment('User', UserShortSelector)
-                                            )))
-                                    )))))
-                            ))
-                    ))
-                ))
+                    field('user', 'user', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('User', UserShortSelector)
+                        )))
+                )))))
         );
 const RoomChatSelector = obj(
             field('room', 'room', args(fieldValue("id", refValue('id'))), obj(
@@ -5567,7 +5555,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     RoomAdminMembers: {
         kind: 'query',
         name: 'RoomAdminMembers',
-        body: 'query RoomAdminMembers($id:ID!){room(id:$id){__typename ... on SharedRoom{__typename id organization{__typename id admins:alphaOrganizationAdminMembers{__typename role user{__typename ...UserShort}}}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
+        body: 'query RoomAdminMembers($roomId:ID!){roomAdmins(roomId:$roomId){__typename user{__typename ...UserShort}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
         selector: RoomAdminMembersSelector
     },
     RoomChat: {

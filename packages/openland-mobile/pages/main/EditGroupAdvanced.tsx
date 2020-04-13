@@ -41,7 +41,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
         group.welcomeMessage && group.welcomeMessage.message ? group.welcomeMessage.message : '';
     const welcomeMessageField = useField('welcomeMessageText', welcomeMessageText, form);
 
-    const roomAdmins = client.useRoomAdminMembers({ id: roomId }).room;
+    const roomAdmins = client.useRoomAdminMembers({ roomId: roomId }).roomAdmins;
 
     const [welcomeMessageEnabled, setWelcomeMessageEnabled] = React.useState(
         group && group.welcomeMessage ? group.welcomeMessage.isOn : false,
@@ -135,12 +135,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
 
                                         props.router.back();
                                     },
-                                    roomAdmins &&
-                                        roomAdmins.__typename === 'SharedRoom' &&
-                                        roomAdmins.organization &&
-                                        roomAdmins.organization.admins
-                                        ? (roomAdmins.organization.admins.map(u => u.user))
-                                        : [],
+                                    roomAdmins.map(u => u.user),
                                     'Choose sender',
                                     welcomeMessageSender ? welcomeMessageSender.id : undefined,
                                 );

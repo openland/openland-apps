@@ -397,19 +397,10 @@ query RoomMembersTiny($roomId: ID!) {
         }
     }
 }
-query RoomAdminMembers($id: ID!) {
-    room(id: $id) {
-        ... on SharedRoom {
-            id
-            organization {
-                id
-                admins: alphaOrganizationAdminMembers {
-                    role
-                    user {
-                        ...UserShort
-                    }
-                }
-            }
+query RoomAdminMembers($roomId: ID!) {
+    roomAdmins(roomId: $roomId) {
+        user {
+            ...UserShort
         }
     }
 }
