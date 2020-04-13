@@ -20,7 +20,7 @@ const wrapper = css`
     }
     &::before {
         content: '';
-        transition: all 0.5s ease;
+        transition: all 0.1s ease;
         transform: scale3d(0, 0, 0);
         width: var(--ripple-size);
         height: var(--ripple-size);
