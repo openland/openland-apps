@@ -38,8 +38,11 @@ let VolumeSpaceDrawListener = css`
     top: 0;
     left: 0;
 `;
-let VolumeSpaceItemStyle = css`
+let AvatarItemStyle = css`
     position: absolute;
+`;
+let AvatarMovableStyle = css`
+    cursor: move;
 `;
 let VolumeSpaceVideoStyle = css`
     position: relative;
@@ -63,34 +66,34 @@ let DrawControlsHidden = css`
 `;
 
 let PeerImageContainer = css`
+    pointer-events: none;
     display: flex;
     overflow: visible;
     position: absolute;
-`;
-
-let NoPinterEvents = css`
-    pointer-events: none;
-`;
-
-let MovableImageContainerStyle = css`
-    cursor: move;
     background-color: var(--backgroundTertiaryTrans);
 `;
 
 let ImageStyle = css`
-    /* object-fit: contain; */
     width: 100%;
     height: 100%;
-
 `;
-// style={{ position: 'absolute', width: 20, height: 20, bottom: 0, right: 0,  }}
-let ResizerAnchorStyle = css`
+let ImageResizerAnchorStyle = css`
+    pointer-events: all !important;
     position: absolute;
     width: 20px;
     height: 20px;
     bottom: 0;
     right: 0;
     cursor: se-resize;
+`;
+
+let ImageMoveAnchorStyle = css`
+    pointer-events: all !important;
+    position: absolute;
+    width: 100%;
+    height: 30px;
+    top: 0;
+    cursor: move;
 `;
 
 const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { mediaSession: MediaSessionManager, selfRef?: React.RefObject<HTMLDivElement> }) => {
@@ -125,7 +128,7 @@ const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { med
 
     });
     return (
-        <div className={VolumeSpaceItemStyle} ref={props.selfRef || containerRef}>
+        <div className={cx(AvatarItemStyle, isLocal && AvatarMovableStyle)} ref={props.selfRef || containerRef}>
             {!stream &&
                 <UAvatar
                     size={stream ? 'large' : 'x-large'}
@@ -153,6 +156,7 @@ const PeerPath = React.memo((props: { peer: Conference_conference_peers, pathId:
 const PeerImage = React.memo((props: { peer: Conference_conference_peers, imageId: string, space: MediaSessionVolumeSpace }) => {
     const ref = React.useRef<HTMLDivElement>(null);
     const resizeRef = React.useRef<HTMLDivElement>(null);
+    const moveRef = React.useRef<HTMLDivElement>(null);
     const imgRef = React.useRef<HTMLImageElement>(null);
     const onImageMove = React.useCallback((coords: number[]) => {
         let img = props.space.selfImagesVM.get(props.imageId);
@@ -175,7 +179,7 @@ const PeerImage = React.memo((props: { peer: Conference_conference_peers, imageI
     if (canMove) {
         let img = props.space.selfImagesVM.get(props.imageId);
         let coords = img?.coords;
-        useJsDrag(ref, ref, onImageMove, coords);
+        useJsDrag(moveRef, ref, onImageMove, coords);
         useJsDrag(resizeRef, undefined, onImageResize, () => {
             if (img) {
                 return [img.coords[0] + img.containerWH[0], img.coords[1] + img.containerWH[1]];
@@ -209,9 +213,10 @@ const PeerImage = React.memo((props: { peer: Conference_conference_peers, imageI
         props.space.selfImagesVM.delete(props.imageId);
     }, []);
     return (
-        <div ref={ref} onDoubleClick={del} className={cx(PeerImageContainer, canMove ? MovableImageContainerStyle : NoPinterEvents)}>
+        <div ref={ref} onDoubleClick={del} className={PeerImageContainer}>
             <div className={ImageStyle} ref={imgRef} />
-            <div ref={resizeRef} className={ResizerAnchorStyle} />
+            {canMove && <div ref={resizeRef} className={ImageResizerAnchorStyle} />}
+            {canMove && <div ref={moveRef} className={ImageMoveAnchorStyle} />}
         </div>
     );
 });
@@ -243,7 +248,7 @@ const PeerObjects = React.memo((props: { peer: Conference_conference_peers, spac
         </>
     );
 });
-const eraseDisatance = 10;
+const eraseDisatance = 80;
 export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManager, peers: Conference_conference_peers[] }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
     let innerContainerRef = React.useRef<HTMLDivElement>(null);
@@ -317,6 +322,10 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                 drawListenerRef.current!.removeEventListener('mousemove', onMove);
             } else {
                 setErase(false);
+            }
+            if (path.length < 4) {
+                props.mediaSession.volumeSpace.selfPathsVM.delete(pathObj.id);
+                props.mediaSession.volumeSpace.pathsVM.deleteVal(props.mediaSession.getPeerId(), pathObj.id);
             }
             down = false;
             // enable other object after drawing
