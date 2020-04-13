@@ -10,7 +10,10 @@ import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { formatDateTime } from 'openland-y-utils/formatTime';
-import { TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
+import {
+    TextCaption,
+    // TextLabel1
+} from 'openland-web/utils/TextStyles';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XLoader } from 'openland-x/XLoader';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
@@ -75,10 +78,10 @@ const modalInfoContainer = css`
     white-space: nowrap;
 `;
 
-const modalPrimaryText = css`
-    color: var(--backgroundPrimary);
-    margin-right: 16px;
-`;
+// const modalPrimaryText = css`
+//     color: var(--backgroundPrimary);
+//     margin-right: 16px;
+// `;
 
 const modalSecondaryText = css`
     color: var(--backgroundPrimary);
