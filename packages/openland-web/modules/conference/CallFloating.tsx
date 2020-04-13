@@ -1,24 +1,28 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { UButton } from 'openland-web/components/unicorn/UButton';
+import { UAvatar, getPlaceholderColorById } from 'openland-web/components/unicorn/UAvatar';
 import { useTalkWatch } from './useTalkWatch';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
 import { css, cx } from 'linaria';
 import { debounce } from 'openland-y-utils/timer';
-import { useIsMobile } from 'openland-web/hooks/useIsMobile';
-import { Conference_conference_peers } from 'openland-api/spacex.types';
+import { Conference_conference_peers, RoomTiny_room } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { VideoComponent } from './ScreenShareModal';
 import { XView } from 'react-mental';
-import { showVideoCallModal } from './CallModal';
+import { TextStyles } from 'openland-web/utils/TextStyles';
+import { plural } from 'openland-y-utils/plural';
+import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
+import EndIcon from 'openland-icons/s/ic-call-end-glyph-24.svg';
+import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
+import { CallsEngine, CallState } from 'openland-engines/CallsEngine';
+import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 
 const AVATAR_SIZE = 48;
-const VIDEO_SIZE = 200;
-const OPEN_WIDTH = 460;
+const VIDEO_WIDTH = 240;
+const VIDEO_HEIGHT = 160;
 
 const FloatContainerClass = css`
     display: none;
@@ -27,40 +31,69 @@ const FloatContainerClass = css`
     z-index: 2;
     flex-shrink: 0;
     align-items: center;
-    justify-content: center;
-    background-color: var(--accentPay);
+    background-color: var(--overlayHeavy);
     flex-direction: row;
-    padding: 8px 4px;
-    border-radius: ${AVATAR_SIZE / 2}px;
-    transition: max-width 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
-        opacity 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
+    border-radius: 12px;
     overflow: hidden;
-    max-width: ${AVATAR_SIZE}px;
-    opacity: 0.56;
+    width: 280px;
+    transition: width 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
+        opacity 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
+        box-shadow 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
+    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
+
     &:hover {
-        max-width: ${OPEN_WIDTH}px;
-        opacity: 1;
+        box-shadow: 0px 0px 96px rgba(0, 0, 0, 0.08), 0px 8px 48px rgba(0, 0, 0, 0.16);
     }
 `;
 
 const VideoOnClass = css`
-    max-width: ${VIDEO_SIZE + 16}px;
-    &:hover {
-        max-width: ${OPEN_WIDTH + VIDEO_SIZE}px;
-        opacity: 1;
-    }
+    width: 240px;
 `;
 
 const VideoRadius = css`
-    border-radius: ${(AVATAR_SIZE / 2) - 6}px;
+    border-radius: 8px;
+`;
+
+const PeerVideoClass = css`
+    border-radius: 0 0 8px 8px;
 `;
 
 const TargetClass = css`
     display: flex;
     flex-shrink: 0;
-    cursor: move;
+    flex-grow: 1;
+    // cursor: move;
+    cursor: pointer;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+`;
 
-    margin: 0 4px;
+const bgAvatar = css`
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    overflow: hidden;
+`;
+
+const bgAvatarImg = css`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(5px);
+    transform: scale(1.1);
+`;
+
+const bgAvatarOverlay = css`
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--overlayMedium);
 `;
 
 export const useJsDrag = (
@@ -204,7 +237,11 @@ const VideoMediaView = React.memo((props: {
     peer?: Conference_conference_peers,
     avatarRef: React.RefObject<HTMLDivElement>,
     fallback: { id: string; title: string; picture?: string | null }
+    calls: CallsEngine,
+    callState: CallState,
 }) => {
+    const bgSrc = props.peer && props.peer.user.photo ? props.peer.user.photo : undefined;
+    const bgColor = !(props.peer && props.peer.user.photo) ? props.peer && getPlaceholderColorById(props.peer.user.id) : undefined;
     const [stream, setStream] = React.useState<AppMediaStream>();
     React.useEffect(() => {
         let d: (() => void) | undefined;
@@ -215,19 +252,37 @@ const VideoMediaView = React.memo((props: {
         }
         return d;
     }, [props.peer?.id]);
+
     return (
-        <XView width={VIDEO_SIZE} height={VIDEO_SIZE} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" backgroundColor="gray" alignItems="center" justifyContent="center">
-            {stream ?
-                <VideoComponent stream={(stream as AppUserMediaStreamWeb)._stream} cover={true} videoClass={VideoRadius} switching={true} /> :
-                <div key={'animtateing_wrapper'} ref={props.avatarRef}>
+        <XView width={VIDEO_WIDTH} height={VIDEO_HEIGHT} overflow="hidden" backgroundColor="var(--overlayHeavy)" alignItems="center" justifyContent="center">
+            {stream ? (
+                <VideoComponent 
+                    stream={(stream as AppUserMediaStreamWeb)._stream}
+                    cover={true} 
+                    videoClass={PeerVideoClass}
+                    switching={true} 
+                />
+            ) : props.peer && (
+                <>
+                <div className={bgAvatar}>
+                    {bgSrc ? (
+                        <ImgWithRetry src={bgSrc} className={bgAvatarImg} />
+                    ) : (
+                            <div className={bgAvatarImg} style={{ background: bgColor }} />
+                        )}
+
+                    <div className={bgAvatarOverlay} />
+                </div>
+                <XView position="absolute" zIndex={2}>
                     <UAvatar
                         size="large"
-                        id={props.peer ? props.peer.user.id : props.fallback.id}
-                        title={props.peer ? props.peer.user.name : props.fallback.title}
-                        photo={props.peer ? props.peer.user.photo : props.fallback.picture}
+                        id={props.peer.user.id}
+                        title={props.peer.user.name}
+                        photo={props.peer.user.photo}
                     />
-                </div>
-            }
+                </XView>
+                </>
+            )}
         </XView>
     );
 });
@@ -245,11 +300,18 @@ const activeAvatarStyle = css`
     }
 `;
 
+const MediaViewAvatar = css`
+    flex-shrink: 0;
+    margin-right: 12px;
+`;
+
 const MediaView = React.memo((props: {
     peers: Conference_conference_peers[];
     fallback: { id: string; title: string; picture?: string | null };
     mediaSessionManager: MediaSessionManager;
     videoEnabled?: boolean;
+    calls: CallsEngine;
+    callState: CallState;
 }) => {
     let peerId = props.mediaSessionManager.analizer.useSpeakingPeer();
     const avatarRef = React.useRef<HTMLDivElement>(null);
@@ -265,11 +327,19 @@ const MediaView = React.memo((props: {
         }
         return d;
     }, [peerId]);
-    let peer = props.peers.find(p => p.id === peerId);
+    let peer = props.peers.find(p => p.id === peerId) || props.peers[0];
 
-    return (props.videoEnabled ?
-        <VideoMediaView peer={peer} mediaSessionManager={props.mediaSessionManager} avatarRef={avatarRef} fallback={props.fallback} /> :
-        <div key={'animtateing_wrapper'} ref={avatarRef}>
+    return (props.videoEnabled ? (
+        <VideoMediaView
+            peer={peer}
+            mediaSessionManager={props.mediaSessionManager}
+            avatarRef={avatarRef}
+            fallback={props.fallback}
+            calls={props.calls}
+            callState={props.callState}
+        />
+    ) : (
+        <div key={'animating_wrapper'} className={MediaViewAvatar} ref={avatarRef}>
             <UAvatar
                 size="small"
                 id={peer ? peer.user.id : props.fallback.id}
@@ -277,13 +347,12 @@ const MediaView = React.memo((props: {
                 photo={peer ? peer.user.photo : props.fallback.picture}
             />
         </div>
-
-    );
+    ));
 });
 
-const CallFloatingComponent = React.memo((props: { id: string; private: boolean }) => {
-    const isMobile = useIsMobile();
-    const [forceOpen, setForceOpen] = React.useState(false);
+const CallFloatingComponent = React.memo((props: { id: string; private: boolean, room: RoomTiny_room }) => {
+    // const isMobile = useIsMobile();
+    // const [forceOpen, setForceOpen] = React.useState(false);
     const targetRef = React.useRef<HTMLDivElement>(null);
     const containerRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
@@ -298,18 +367,18 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
     let client = useClient();
     let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
 
-    const onClick = React.useCallback(
-        () => {
-            if (isMobile) {
-                if (containerRef.current) {
-                    containerRef.current.style.opacity = forceOpen ? '1' : '0.56';
-                    containerRef.current.style.maxWidth = forceOpen ? '360px' : `${AVATAR_SIZE}px`;
-                }
-                setForceOpen(!forceOpen);
-            }
-        },
-        [forceOpen],
-    );
+    // const onClick = React.useCallback(
+    //     () => {
+    //         if (isMobile) {
+    //             if (containerRef.current) {
+    //                 containerRef.current.style.opacity = forceOpen ? '1' : '0.56';
+    //                 containerRef.current.style.maxWidth = forceOpen ? '360px' : `${AVATAR_SIZE}px`;
+    //             }
+    //             setForceOpen(!forceOpen);
+    //         }
+    //     },
+    //     [forceOpen],
+    // );
 
     let ms = calls.getMediaSession();
     const avatar = data && callState.avatar && ms && (
@@ -322,65 +391,93 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
                 picture: callState.avatar.picture,
             }}
             videoEnabled={callState.videoEnabled}
+            calls={calls}
+            callState={callState}
         />
     );
 
     const buttons = (
-        <XView flexDirection={callState.videoEnabled ? 'column' : 'row'}>
-            <UButton
-                flexShrink={0}
-                style='secondary'
-                text={'Fullscreen'}
-                onClick={() => {
-                    showVideoCallModal({ calls, chatId: props.id, client, messenger });
-                }}
-                marginHorizontal={4}
-            />
-            <UButton
-                flexShrink={0}
-                style={callState.video ? 'primary' : 'secondary'}
-                text={callState.video ? 'Video on' : 'Video off'}
-                onClick={() => calls.switchVideo()}
-                marginHorizontal={4}
-                marginTop={callState.videoEnabled ? 8 : 0}
-            />
-            <UButton
-                flexShrink={0}
-                style={callState.mute ? 'secondary' : 'primary'}
-                text={callState.mute ? 'Mic off' : 'Mic on'}
+        <XView flexDirection="row">
+            <UIconButton
+                size="small"
+                marginRight={12}
+                icon={<MuteIcon />}
+                color="var(--foregroundContrast)"
+                rippleColor="var(--tintOrange)"
+                defaultRippleColor="rgba(255, 255, 255, 0.16)"
+                active={callState.mute}
                 onClick={() => calls.setMute(!callState.mute)}
-                marginHorizontal={4}
-                marginTop={callState.videoEnabled ? 8 : 0}
             />
-
-            <UButton
-                flexShrink={0}
-                style="danger"
-                text={callState.status === 'connecting' ? 'Connecting' : 'Leave'}
+            <UIconButton
+                size="small"
+                icon={<EndIcon />}
+                active={true}
+                color="var(--foregroundContrast)"
+                rippleColor="var(--accentNegative)"
                 onClick={() => calls.leaveCall()}
-                marginHorizontal={4}
-                marginTop={callState.videoEnabled ? 8 : 0}
             />
         </XView>
     );
 
+    const title = props.room.__typename === 'PrivateRoom' ? props.room.user.name : props.room.title;
+    const subtitle = callState.status === 'connecting' ? 'Connecting...'
+                : props.room.__typename === 'SharedRoom' && data ? plural(data.conference.peers.length, ['member', 'members'])
+                : '';
+
     return (
         data && (
-            <div className={cx(FloatContainerClass, callState.videoEnabled && VideoOnClass)} ref={containerRef} onClick={onClick}>
-                <div style={{ display: 'flex', flexDirection: 'row' }} ref={contentRef}>
-
+            <div className={cx(FloatContainerClass, callState.videoEnabled && VideoOnClass)} ref={containerRef}>
+                <div style={{ display: 'flex', flexDirection: 'row', flexGrow: 1 }} ref={contentRef}>
                     <div className={TargetClass} ref={targetRef}>
+                        <XView 
+                            flexDirection="row"
+                            paddingVertical={8}
+                            paddingHorizontal={12}
+                            width="100%"
+                            alignItems="center"
+                            justifyContent="space-between"
+                        >
+                            {!callState.videoEnabled && avatar}
+                            <XView flexShrink={1} marginRight={14}>
+                                <XView 
+                                    {...TextStyles.Label1}
+                                    color="var(--foregroundContrast)"
+                                    flexShrink={1}
+                                    overflow="hidden"
+                                >
+                                    {title}
+                                </XView>
+                                {subtitle && (
+                                    <XView 
+                                        {...TextStyles.Subhead}
+                                        color="var(--foregroundContrast)"
+                                        opacity={0.56}
+                                        marginTop={-4}
+                                        flexShrink={1}
+                                    >
+                                        {subtitle}
+                                    </XView>
+                                )}
+                            </XView>
+                            {buttons}
+                        </XView>
                         {callState.videoEnabled && (
-                            <XView width={VIDEO_SIZE} height={VIDEO_SIZE} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" backgroundColor="gray">
+                            <XView width={VIDEO_WIDTH} height={VIDEO_HEIGHT} overflow="hidden" backgroundColor="var(--overlayHeavy)">
                                 {avatar}
-                                <XView width={VIDEO_SIZE / 3} height={VIDEO_SIZE / 3} borderRadius={(AVATAR_SIZE / 2) - 6} overflow="hidden" position="absolute" top={0} right={0}>
+                                <XView 
+                                    width={72}
+                                    height={48}
+                                    borderRadius={8}
+                                    overflow="hidden"
+                                    position="absolute"
+                                    bottom={12}
+                                    right={12}
+                                >
                                     {callState.video && <VideoComponent stream={(callState.video as AppUserMediaStreamWeb)._stream} cover={true} videoClass={VideoRadius} />}
                                 </XView>
                             </XView>
                         )}
-                        {!callState.videoEnabled && avatar}
                     </div>
-                    {buttons}
                 </div>
             </div>
         )
@@ -390,14 +487,16 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean 
 const CallFloatingInner = React.memo((props: { id: string; private: boolean }) => {
     let client = useClient();
     let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
+    // TODO: move room title to conference query
+    let room = client.useRoomTiny({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
     useTalkWatch(data && data.conference.id);
 
-    if (!data) {
+    if (!data || !(room && room.room)) {
         return null;
     }
 
     let res = data.conference.peers.length !== 0 && (
-        <CallFloatingComponent id={props.id} private={props.private} />
+        <CallFloatingComponent id={props.id} private={props.private} room={room.room} />
     );
     return ReactDOM.createPortal(res, document.body);
 });
