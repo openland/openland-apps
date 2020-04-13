@@ -88,8 +88,8 @@ mutation conferenceRemoveScreenShare($id: ID!){
         ...ConferenceShort
     }
 }
-mutation conferenceAlterMediaState($id: ID!, $settings: MediaStreamMediaStateInput!){
-    conferenceAlterMediaState(id: $id, settings: $settings) {
+mutation conferenceAlterMediaState($id: ID!, $state: MediaStreamMediaStateInput!){
+    conferenceAlterMediaState(id: $id, state: $state) {
         ...ConferenceShort
     }
 }

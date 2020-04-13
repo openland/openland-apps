@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CallsEngine, CallState } from 'openland-engines/CallsEngine';
 import { XView } from 'react-mental';
-import { Conference_conference_peers } from 'openland-api/spacex.types';
+import { Conference_conference_peers, MediaStreamVideoSource } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { VideoComponent, showVideoModal } from './ScreenShareModal';
@@ -92,10 +92,13 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     let [talking, setTalking] = React.useState(false);
     const [localPeer, setLocalPeer] = React.useState(props.mediaSession.getPeerId());
     const isLocal = props.peer.id === props.mediaSession.getPeerId();
+    const [audioEnabled, setAudioEnabled] = React.useState(true);
+    const [videoEnabled, setVideoEnabled] = React.useState(false);
     React.useEffect(() => {
         // mediaSession initiating without peerId. Like waaat
         let d0 = props.calls.listenState(() => setLocalPeer(props.mediaSession.getPeerId()));
         let d1: () => void;
+        let d3: (() => void) | undefined;
         if (isLocal) {
             d1 = props.mediaSession.outVideoVM.listen(streams => {
                 let cam = streams.find(s => s?.source === 'camera');
@@ -110,27 +113,36 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
                 setMainStream(screen ? screen : cam);
                 setMiniStream(screen ? cam : undefined);
             });
+            d3 = props.mediaSession.peerStreamMediaStateVM.listen(props.peer.id, s => {
+                let camState = [...s.values()].find(c => c.videoSource === MediaStreamVideoSource.camera);
+                if (camState) {
+                    setAudioEnabled(camState.audioOut);
+                    setVideoEnabled(camState.videoOut);
+                }
+            });
         }
         let d2 = props.mediaSession.analizer.subscribePeer(props.peer.id, v => {
-            console.warn('alalal', 'setTalking', props.peer.id, v);
             setTalking(v);
         });
         return () => {
             d0();
             d1();
             d2();
+            if (d3) {
+                d3();
+            }
         };
     }, [localPeer]);
 
     const icon = props.callState.status !== 'connected' ? <SvgLoader size="small" contrast={true} />
         : talking ? <SpeakerIcon />
-            : props.callState.mute && isLocal ? <MutedIcon />
+            : (isLocal ? props.callState.mute : !audioEnabled) ? <MutedIcon />
                 : null;
 
     const bgSrc = props.peer.user.photo ? props.peer.user.photo : undefined;
     const bgColor = !props.peer.user.photo ? getPlaceholderColorById(props.peer.user.id) : undefined;
 
-    let mainStreamWeb = (mainStream as AppUserMediaStreamWeb | undefined)?._stream;
+    let mainStreamWeb = (videoEnabled || isLocal || mainStream?.source === 'screen_share') && (mainStream as AppUserMediaStreamWeb | undefined)?._stream;
     // @ts-ignore
     let miniStreamWeb = (miniStream as AppUserMediaStreamWeb | undefined)?._stream;
     const onClick = React.useCallback(() => mainStreamWeb ? showVideoModal(mainStreamWeb) : undefined, [mainStreamWeb]);

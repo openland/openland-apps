@@ -3,7 +3,7 @@ import { backoff } from 'openland-y-utils/timer';
 import { MediaStreamManager } from './MediaStreamManager';
 import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
-import { ConferenceMediaWatch, ConferenceMediaWatch_media_streams } from 'openland-api/spacex.types';
+import { ConferenceMediaWatch, ConferenceMediaWatch_media_streams, ConferenceMediaWatch_media_streams_mediaState } from 'openland-api/spacex.types';
 import { AppBackgroundTask } from 'openland-y-runtime/AppBackgroundTask';
 import { Queue } from 'openland-y-utils/Queue';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
@@ -11,7 +11,7 @@ import { ConferenceWatch } from 'openland-api/spacex.types';
 import { MediaStreamsAlalizer } from './MediaStreamsAlalizer';
 import { MediaSessionVolumeSpace } from './MediaSessionVolumeSpace';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
-import { VMMap, VM, VMSetMap } from 'openland-y-utils/mvvm/vm';
+import { VMMap, VM, VMSetMap, VMMapMap } from 'openland-y-utils/mvvm/vm';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 
 export class MediaSessionManager {
@@ -35,7 +35,9 @@ export class MediaSessionManager {
     readonly volumeSpace: MediaSessionVolumeSpace;
 
     readonly streamsVM = new VMMap<string, MediaStreamManager>();
+    readonly peerStreamMediaStateVM = new VMMapMap<string, string, ConferenceMediaWatch_media_streams_mediaState>();
     readonly peerVideoVM = new VMSetMap<string, AppMediaStream>();
+    readonly peerMediStateVM = new VMSetMap<string, AppMediaStream>();
     readonly dcVM = new VM<{ peerId: string, data: any }>();
     readonly videoEnabledVM = new VM<boolean>();
     readonly outVideoVM = new VM<(AppMediaStream | undefined)[]>();
@@ -59,6 +61,14 @@ export class MediaSessionManager {
         if (this.mediaStream) {
             this.mediaStream.muted = mute;
         }
+        backoff(async () => {
+            await this.client.mutateconferenceAlterMediaState({
+                id: this.conferenceId,
+                state: {
+                    audioOut: !mute
+                }
+            });
+        });
     }
 
     startScreenShare = async () => {
@@ -109,6 +119,7 @@ export class MediaSessionManager {
         this.outVideoVM.set([this.outVideoStream, this.outScreenStream]);
         this.handleState();
         this.videoEnabledVM.set(true);
+        this.postVideoState(true);
         return this.outVideoStream;
     }
 
@@ -124,7 +135,19 @@ export class MediaSessionManager {
             }
 
         }
+        this.postVideoState(false);
         return undefined;
+    }
+
+    postVideoState = (enabled: boolean) => {
+        backoff(async () => {
+            await this.client.mutateconferenceAlterMediaState({
+                id: this.conferenceId,
+                state: {
+                    videoOut: enabled
+                }
+            });
+        });
     }
 
     destroy = () => {
@@ -330,6 +353,9 @@ export class MediaSessionManager {
                 ms.listenDc(m => {
                     this.dcVM.set(m);
                 });
+            }
+            if (s.peerId) {
+                this.peerStreamMediaStateVM.add(s.peerId, s.id, s.mediaState);
             }
         }
     }

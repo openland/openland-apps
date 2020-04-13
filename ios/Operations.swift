@@ -4906,7 +4906,7 @@ private let conferenceAddScreenShareSelector = obj(
                 )))
         )
 private let conferenceAlterMediaStateSelector = obj(
-            field("conferenceAlterMediaState", "conferenceAlterMediaState", arguments(fieldValue("id", refValue("id")), fieldValue("settings", refValue("settings"))), notNull(obj(
+            field("conferenceAlterMediaState", "conferenceAlterMediaState", arguments(fieldValue("id", refValue("id")), fieldValue("state", refValue("state"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceShortSelector)
                 )))
@@ -6512,7 +6512,7 @@ class Operations {
     let conferenceAlterMediaState = OperationDefinition(
         "conferenceAlterMediaState",
         .mutation, 
-        "mutation conferenceAlterMediaState($id:ID!,$settings:MediaStreamMediaStateInput!){conferenceAlterMediaState(id:$id,settings:$settings){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}",
+        "mutation conferenceAlterMediaState($id:ID!,$state:MediaStreamMediaStateInput!){conferenceAlterMediaState(id:$id,state:$state){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}",
         conferenceAlterMediaStateSelector
     )
     let conferenceRemoveScreenShare = OperationDefinition(

@@ -4913,7 +4913,7 @@ const conferenceAddScreenShareSelector = obj(
                 )))
         );
 const conferenceAlterMediaStateSelector = obj(
-            field('conferenceAlterMediaState', 'conferenceAlterMediaState', args(fieldValue("id", refValue('id')), fieldValue("settings", refValue('settings'))), notNull(obj(
+            field('conferenceAlterMediaState', 'conferenceAlterMediaState', args(fieldValue("id", refValue('id')), fieldValue("state", refValue('state'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('Conference', ConferenceShortSelector)
                 )))
@@ -6515,7 +6515,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     conferenceAlterMediaState: {
         kind: 'mutation',
         name: 'conferenceAlterMediaState',
-        body: 'mutation conferenceAlterMediaState($id:ID!,$settings:MediaStreamMediaStateInput!){conferenceAlterMediaState(id:$id,settings:$settings){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}',
+        body: 'mutation conferenceAlterMediaState($id:ID!,$state:MediaStreamMediaStateInput!){conferenceAlterMediaState(id:$id,state:$state){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}',
         selector: conferenceAlterMediaStateSelector
     },
     conferenceRemoveScreenShare: {
