@@ -49,6 +49,7 @@ export class AppUserMediaStreamWeb implements AppMediaStream {
         for (let t of this._stream.getTracks()) {
             t.stop();
         }
+        MediaDevicesManager.instance().notifyOutputStreamClosed(this);
         // this._stream.stop();
     }
 
@@ -68,7 +69,16 @@ export const AppUserMedia: AppUserMediaApi = {
             },
         });
 
-        return new AppUserMediaStreamWeb(media);
+        let res = new AppUserMediaStreamWeb(media);
+
+        if (media.getAudioTracks().length) {
+            MediaDevicesManager.instance().updateAudioOutputStreamIfeeded(res);
+        }
+        if (media.getVideoTracks().length) {
+            MediaDevicesManager.instance().updateVideoOutputStreamIfNeeded(res);
+        }
+
+        return res;
     },
 
     async getUserVideo(deviceId?: string) {
@@ -80,7 +90,13 @@ export const AppUserMedia: AppUserMediaApi = {
             },
         });
 
-        return new AppUserMediaStreamWeb(media);
+        let res = new AppUserMediaStreamWeb(media);
+
+        if (media.getVideoTracks().length) {
+            MediaDevicesManager.instance().updateVideoOutputStreamIfNeeded(res);
+        }
+
+        return res;
     },
 
     async getUserScreen() {

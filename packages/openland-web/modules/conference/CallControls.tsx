@@ -26,7 +26,8 @@ const wrapper = css`
     bottom: 0;
     padding: 16px 0;
     background-color: var(--overlayTotal);
-    transition: all 0.3s;
+    transition: width 0.3s;
+    will-change: width;
     width: 64px;
     overflow: hidden;
 
@@ -35,10 +36,14 @@ const wrapper = css`
     }
 `;
 
-const ControlItem = (props: {icon: JSX.Element, text: string, onClick: React.MouseEventHandler}) => {
+const controlTextWrapper = css`
+    will-change: transform;
+`;
+
+const ControlItem = (props: { icon: JSX.Element, text: string, onClick: React.MouseEventHandler }) => {
     return (
         <XView position="relative" onClick={props.onClick}>
-            <XView 
+            <XView
                 hoverBackgroundColor="var(--foregroundContrast)"
                 hoverOpacity={0.16}
                 position="absolute"
@@ -50,22 +55,26 @@ const ControlItem = (props: {icon: JSX.Element, text: string, onClick: React.Mou
                 cursor="pointer"
             />
             <XView
-                paddingVertical={8} 
-                paddingHorizontal={12} 
-                flexDirection="row" 
-                justifyContent="flex-end" 
+                paddingVertical={8}
+                paddingHorizontal={12}
+                flexDirection="row"
+                justifyContent="flex-end"
                 alignItems="center"
             >
-                <XView {...TextStyles.Label1} color="var(--foregroundContrast)" marginRight={12}>{props.text}</XView>
+                <XView {...TextStyles.Label1} color="var(--foregroundContrast)" marginRight={12}>
+                    <div className={controlTextWrapper}>
+                        {props.text}
+                    </div>
+                </XView>
                 {props.icon}
             </XView>
         </XView>
     );
 };
 
-const SettingsModal = React.memo((props: {ctx: XModalController, videoProps?: VideoPeerProps}) => {
-    let {devices, input, output, videoInput, selectInput, selectOutput, selectVideoInput} = MediaDevicesManager.instance().useMediaDevices();
-    let prevValues = React.useRef<{input?: MediaDeviceInfo, output?: MediaDeviceInfo, videoInput?: MediaDeviceInfo}>({input, output, videoInput}).current;
+const SettingsModal = React.memo((props: { ctx: XModalController, videoProps?: VideoPeerProps }) => {
+    let { devices, input, output, videoInput, selectInput, selectOutput, selectVideoInput } = MediaDevicesManager.instance().useMediaDevices();
+    let prevValues = React.useRef<{ input?: MediaDeviceInfo, output?: MediaDeviceInfo, videoInput?: MediaDeviceInfo }>({ input, output, videoInput }).current;
 
     let outputs = devices.filter(d => d.kind === 'audiooutput');
     let inputs = devices.filter(d => d.kind === 'audioinput');
@@ -97,7 +106,7 @@ const SettingsModal = React.memo((props: {ctx: XModalController, videoProps?: Vi
                     {props.videoProps ? <VideoPeer {...props.videoProps} compact={true} /> : null}
                 </XView>
                 <XView flexDirection="column" marginLeft={16} flexGrow={1}>
-                <XView marginBottom={16}>
+                    <XView marginBottom={16}>
                         <USelect searchable={false} onChange={setVideoInputDevice} placeholder="Camera" value={videoInput?.deviceId} options={videoInputs.map(o => ({ value: o.deviceId, label: o.label }))} />
                     </XView>
                     <XView marginBottom={16}>
@@ -150,25 +159,25 @@ export const CallControls = (props: CallControlsProps) => {
         showModalBox({ title: 'Settings', width: 560, overflowVisible: true }, (ctx) => <SettingsModal ctx={ctx} videoProps={props.videoProps} />);
     }, [props.videoProps]);
     return (
-        <XView 
-            width={64} 
-            height="100%" 
+        <XView
+            width={64}
+            height="100%"
             position="relative"
             zIndex={3}
         >
             <div className={cx('x', wrapper)}>
-                <XView 
+                <XView
                     position="absolute"
                     top={8}
                     left={0}
                     right={0}
                 >
                     <ControlItem
-                        text="Minimize" 
+                        text="Minimize"
                         icon={(
-                            <UIconButton 
-                                icon={<MinimizeIcon />} 
-                                color="var(--foregroundContrast)" 
+                            <UIconButton
+                                icon={<MinimizeIcon />}
+                                color="var(--foregroundContrast)"
                                 rippleColor="transparent"
                             />
                         )}
@@ -176,35 +185,35 @@ export const CallControls = (props: CallControlsProps) => {
                     />
                 </XView>
                 <XView flexGrow={1} flexDirection="column" justifyContent="center">
-                    <ControlItem 
-                        text="End" 
+                    <ControlItem
+                        text="End"
                         icon={(
-                            <UIconButton 
-                                icon={<EndIcon />} 
-                                color="var(--foregroundContrast)" 
-                                rippleColor="var(--accentNegative)" 
-                                active={true} 
+                            <UIconButton
+                                icon={<EndIcon />}
+                                color="var(--foregroundContrast)"
+                                rippleColor="var(--accentNegative)"
+                                active={true}
                             />
                         )}
                         onClick={props.onEnd}
                     />
-                    <ControlItem 
-                        text="Mute" 
+                    <ControlItem
+                        text="Mute"
                         icon={(
-                            <UIconButton 
-                                icon={<MuteIcon />} 
-                                color="var(--foregroundContrast)" 
+                            <UIconButton
+                                icon={<MuteIcon />}
+                                color="var(--foregroundContrast)"
                                 rippleColor="var(--tintOrange)"
                                 active={props.muted}
                             />
                         )}
                         onClick={props.onMute}
                     />
-                    <ControlItem 
+                    <ControlItem
                         text="Camera"
                         icon={(
-                            <UIconButton 
-                                icon={<CameraIcon />} 
+                            <UIconButton
+                                icon={<CameraIcon />}
                                 color="var(--foregroundContrast)"
                                 rippleColor="var(--tintBlue)"
                                 active={props.cameraEnabled}
@@ -212,47 +221,47 @@ export const CallControls = (props: CallControlsProps) => {
                         )}
                         onClick={props.onCameraClick}
                     />
-                    <ControlItem 
-                        text="Screen" 
+                    <ControlItem
+                        text="Screen"
                         icon={(
-                            <UIconButton 
-                                icon={<ScreenIcon />} 
-                                color="var(--foregroundContrast)" 
+                            <UIconButton
+                                icon={<ScreenIcon />}
+                                color="var(--foregroundContrast)"
                                 rippleColor="var(--tintBlue)"
                                 active={props.screenEnabled}
                             />
                         )}
                         onClick={props.onScreenClick}
                     />
-                    <ControlItem 
-                        text="Space" 
+                    <ControlItem
+                        text="Space"
                         icon={(
-                            <UIconButton 
-                                icon={<MagicIcon />} 
-                                color="var(--foregroundContrast)" 
+                            <UIconButton
+                                icon={<MagicIcon />}
+                                color="var(--foregroundContrast)"
                                 rippleColor="var(--tintBlue)"
                                 active={props.spaceEnabled}
                             />
                         )}
                         onClick={props.onSpaceClick}
                     />
-                    <ControlItem 
-                        text="Tools" 
+                    <ControlItem
+                        text="Tools"
                         icon={(
-                            <UIconButton 
-                                icon={<ToolsIcon />} 
-                                color="var(--foregroundContrast)" 
+                            <UIconButton
+                                icon={<ToolsIcon />}
+                                color="var(--foregroundContrast)"
                                 rippleColor="var(--tintBlue)"
                                 active={props.toolsEnabled}
                             />
                         )}
                         onClick={props.onToolsClick}
                     />
-                    <ControlItem 
-                        text="Settings" 
+                    <ControlItem
+                        text="Settings"
                         icon={(
-                            <UIconButton 
-                                icon={<SettingsIcon />} 
+                            <UIconButton
+                                icon={<SettingsIcon />}
                                 color="var(--foregroundContrast)"
                                 rippleColor="transparent"
                             />

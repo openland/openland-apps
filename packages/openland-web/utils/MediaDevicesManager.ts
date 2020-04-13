@@ -140,20 +140,34 @@ class MediaDevicesManager {
     }
 
     currentAudioStream: AppMediaStream | undefined;
-    setAudioOutputStream = (stream: AppMediaStream) => {
-        this.currentAudioStream = stream;
+    updateAudioOutputStreamIfeeded = (stream: AppMediaStream) => {
+        if (!this.currentAudioStream) {
+            this.currentAudioStream = stream;
+        }
     }
 
     currentVideoStream: AppMediaStream | undefined;
-    setVideoOutputStream = (stream: AppMediaStream) => {
-        this.currentVideoStream = stream;
+    updateVideoOutputStreamIfNeeded = (stream: AppMediaStream) => {
+        if (!this.currentVideoStream) {
+            this.currentVideoStream = stream;
+        }
+    }
+
+    notifyOutputStreamClosed = (stream: AppMediaStream) => {
+        if (stream === this.currentAudioStream) {
+            this.currentAudioStream = undefined;
+        }
+        if (stream === this.currentVideoStream) {
+            this.currentVideoStream = undefined;
+        }
     }
 
     updateAudioOutStreamDevice = async (newDevice: MediaDeviceInfo) => {
-        if (this.currentAudioStream) {
+        if (this.currentAudioStream && (this.currentAudioStream as AppUserMediaStreamWeb)._stream) {
             let media = await AppUserMedia.getUserAudio(newDevice.deviceId);
             let str = (this.currentAudioStream as AppUserMediaStreamWeb)._stream;
             for (let t of str.getAudioTracks()) {
+                t.stop();
                 str.removeTrack(t);
             }
             for (let t of (media as AppUserMediaStreamWeb)._stream.getAudioTracks()) {
@@ -166,14 +180,16 @@ class MediaDevicesManager {
     }
 
     updateVideoOutStreamDevice = async (newDevice: MediaDeviceInfo) => {
-        if (this.currentVideoStream) {
+        if (this.currentVideoStream && (this.currentVideoStream as AppUserMediaStreamWeb)._stream) {
             let media = await AppUserMedia.getUserVideo(newDevice.deviceId);
             let str = (this.currentVideoStream as AppUserMediaStreamWeb)._stream;
             for (let t of str.getVideoTracks()) {
+                t.stop();
                 str.removeTrack(t);
             }
             for (let t of (media as AppUserMediaStreamWeb)._stream.getVideoTracks()) {
                 str.addTrack(t);
+                (media as AppUserMediaStreamWeb)._stream.removeTrack(t);
             }
             for (let l of this.streamUpdateListeners) {
                 l(this.currentVideoStream);

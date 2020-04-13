@@ -173,7 +173,8 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
             if (item.type === 'message' && item.spans) {
                 let span = item.spans.find(s => s.__typename === 'MessageSpanLink');
                 let url = span?.__typename === 'MessageSpanLink' ? span.url : undefined;
-                if (url) {
+                // accept only fresh ones
+                if (url && (new Date().getTime() -  item.date < 1000 * 60 * 15)) {
                     setLink(url);
                     setShowLink(true);
                     return true;

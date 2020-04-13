@@ -110,7 +110,12 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
 
     sendDCMessage = (message: string) => {
         if (this.channel?.readyState === 'open') {
-            this.channel.send(message);
+            // it can crash on send event if state is open, wtf?
+            try {
+                this.channel.send(message);
+            } catch (e) {
+                console.error(e);
+            }
         }
     }
 
@@ -145,12 +150,6 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
 
     addStream = (stream: AppMediaStream) => {
         let str = (stream as AppUserMediaStreamWeb)._stream;
-        if (str.getAudioTracks().length) {
-            MediaDevicesManager.instance().setAudioOutputStream(stream);
-        }
-        if (str.getVideoTracks().length) {
-            MediaDevicesManager.instance().setVideoOutputStream(stream);
-        }
         for (let t of str.getTracks()) {
             // ensure track removed;
             let sender = this.trackSenders.get(t);
