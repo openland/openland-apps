@@ -501,6 +501,13 @@ type DebugID {
   type: String!
 }
 
+type DebugIpInfo {
+  ip: String!
+  locationCode: String!
+  locationName: String!
+  location: GeoLocation
+}
+
 type DebugUserMetrics {
   messagesSent: Int!
   messagesReceived: Int!
@@ -936,6 +943,19 @@ enum GlobalSearchEntryKind {
   ORGANIZATION
   USER
   SHAREDROOM
+}
+
+type GqlTrace {
+  id: ID!
+  name: String!
+  duration: Int!
+  traceData: String!
+  date: Date!
+}
+
+type GqlTraceConnection {
+  items: [GqlTrace!]!
+  cursor: ID
 }
 
 type GroupChatUpdateResponse {
@@ -2371,7 +2391,8 @@ type Query {
   debugUserMetrics(id: ID!): DebugUserMetrics!
   debugGlobalCounters: DebugGlobalCounters!
   debugServerId: String!
-  debugClientIp: String
+  debugClientIp: DebugIpInfo
+  debugGqlTraces(first: Int!, after: ID): GqlTraceConnection!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!
@@ -2494,6 +2515,7 @@ type Query {
   roomSuper(id: ID!): RoomSuper
   roomMessages(roomId: ID!, first: Int, before: ID): [RoomMessage!]!
   roomMembers(roomId: ID!, first: Int, after: ID): [RoomMember!]!
+  roomAdmins(roomId: ID!): [RoomMember!]!
   roomFeaturedMembers(roomId: ID!, first: Int): [RoomMember!]!
   roomMember(roomId: ID!, memberId: ID!): RoomMember
   roomSocialImage(roomId: ID!): String

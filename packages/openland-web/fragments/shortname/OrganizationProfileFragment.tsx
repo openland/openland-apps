@@ -21,7 +21,7 @@ import { PrivateCommunityView } from '../account/components/PrivateCommunityView
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();
     const organization = client.useOrganization({ organizationId: props.id }).organization;
-    if (!organization.isMine && organization.isPrivate) {
+    if (!organization.isMine && organization.private) {
         return <PrivateCommunityView organization={organization} />;
     }
 

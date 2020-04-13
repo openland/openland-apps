@@ -1518,7 +1518,7 @@ private let OrganizationFragmentSelector = obj(
             field("linkedin", "linkedin", scalar("String")),
             field("instagram", "instagram", scalar("String")),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
-            field("alphaIsPrivate", "isPrivate", notNull(scalar("Boolean"))),
+            field("alphaIsPrivate", "private", notNull(scalar("Boolean"))),
             field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
             field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
             field("alphaFeatured", "featured", notNull(scalar("Boolean"))),
@@ -1540,7 +1540,7 @@ private let OrganizationMediumSelector = obj(
             field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean")))
         )
 
-private let OrganizationProfileFullSelector = obj(
+private let OrganizationProfileFragmentSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             field("name", "name", notNull(scalar("String"))),
@@ -3241,7 +3241,7 @@ private let OrganizationMembersShortSelector = obj(
 private let OrganizationProfileSelector = obj(
             field("organizationProfile", "organizationProfile", arguments(fieldValue("id", refValue("organizationId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("OrganizationProfile", OrganizationProfileFullSelector)
+                    fragment("OrganizationProfile", OrganizationProfileFragmentSelector)
                 )))
         )
 private let OrganizationPublicInviteSelector = obj(
@@ -5492,7 +5492,7 @@ class Operations {
     let Organization = OperationDefinition(
         "Organization",
         .query, 
-        "query Organization($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationFragment}}fragment OrganizationFragment on Organization{__typename id isMine superAccountId name photo shortname website websiteTitle about twitter facebook linkedin instagram membersCount isPrivate:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity roomsCount:betaPublicRoomsCount}",
+        "query Organization($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationFragment}}fragment OrganizationFragment on Organization{__typename id isMine superAccountId name photo shortname website websiteTitle about twitter facebook linkedin instagram membersCount private:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity roomsCount:betaPublicRoomsCount}",
         OrganizationSelector
     )
     let OrganizationMembers = OperationDefinition(
@@ -5504,13 +5504,13 @@ class Operations {
     let OrganizationMembersShort = OperationDefinition(
         "OrganizationMembersShort",
         .query, 
-        "query OrganizationMembersShort($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationFragment members:alphaOrganizationMembers{__typename user{__typename id}}}}fragment OrganizationFragment on Organization{__typename id isMine superAccountId name photo shortname website websiteTitle about twitter facebook linkedin instagram membersCount isPrivate:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity roomsCount:betaPublicRoomsCount}",
+        "query OrganizationMembersShort($organizationId:ID!){organization(id:$organizationId){__typename ...OrganizationFragment members:alphaOrganizationMembers{__typename user{__typename id}}}}fragment OrganizationFragment on Organization{__typename id isMine superAccountId name photo shortname website websiteTitle about twitter facebook linkedin instagram membersCount private:alphaIsPrivate isOwner:betaIsOwner isAdmin:betaIsAdmin featured:alphaFeatured isCommunity:alphaIsCommunity roomsCount:betaPublicRoomsCount}",
         OrganizationMembersShortSelector
     )
     let OrganizationProfile = OperationDefinition(
         "OrganizationProfile",
         .query, 
-        "query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename ...OrganizationProfileFull}}fragment OrganizationProfileFull on OrganizationProfile{__typename id name photoRef{__typename uuid crop{__typename x y w h}}website websiteTitle about twitter facebook linkedin instagram shortname isCommunity:alphaIsCommunity private:alphaIsPrivate featured:alphaFeatured published:alphaPublished editorial:alphaEditorial}",
+        "query OrganizationProfile($organizationId:ID!){organizationProfile(id:$organizationId){__typename ...OrganizationProfileFragment}}fragment OrganizationProfileFragment on OrganizationProfile{__typename id name photoRef{__typename uuid crop{__typename x y w h}}website websiteTitle about twitter facebook linkedin instagram shortname isCommunity:alphaIsCommunity private:alphaIsPrivate featured:alphaFeatured published:alphaPublished editorial:alphaEditorial}",
         OrganizationProfileSelector
     )
     let OrganizationPublicInvite = OperationDefinition(

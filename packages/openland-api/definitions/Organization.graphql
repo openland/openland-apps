@@ -1,4 +1,4 @@
-fragment OrganizationProfileFull on OrganizationProfile {
+fragment OrganizationProfileFragment on OrganizationProfile {
     id
     name
     photoRef {
@@ -86,7 +86,7 @@ query OrganizationMembers($organizationId: ID!, $first: Int, $after: ID) {
 }
 query OrganizationProfile($organizationId: ID!) {
     organizationProfile(id: $organizationId) {
-        ...OrganizationProfileFull
+        ...OrganizationProfileFragment
     }
 }
 mutation OrganizationChangeMemberRole(

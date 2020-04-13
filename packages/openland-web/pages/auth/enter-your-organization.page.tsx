@@ -88,7 +88,7 @@ const CreateOrganizationFormInnerWeb = ({
     );
 };
 
-export const EnterYourOrganizationPageInner = ({
+const EnterYourOrganizationPageInner = ({
     isMobile,
 }: EnterYourOrganizationPageProps & EnterYourOrganizationPageOuterProps) => {
     const client = useClient();

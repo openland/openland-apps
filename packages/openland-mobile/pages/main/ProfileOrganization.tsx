@@ -103,7 +103,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
         { fetchPolicy: 'cache-and-network' },
     ).organization;
 
-    if (!organization.isMine && organization.isPrivate) {
+    if (!organization.isMine && organization.private) {
         return <PrivateProfile {...props} organization={organization} />;
     }
 
