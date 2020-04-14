@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { UserForMention } from 'openland-api/spacex.types';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { MentionItemComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';
 import { XView } from 'react-mental';
@@ -23,10 +23,11 @@ const wrapper = css`
 interface OthersPopperProps {
     users: UserForMention[];
     children?: any;
+    noStyling?: boolean;
 }
 
 export const OthersPopper = React.memo((props: OthersPopperProps) => {
-    const { users, children } = props;
+    const { users, children, noStyling = false } = props;
 
     const usersRef = React.useRef(users);
     usersRef.current = users;
@@ -53,7 +54,7 @@ export const OthersPopper = React.memo((props: OthersPopperProps) => {
     ));
 
     return (
-        <span onMouseEnter={show} className={style}>
+        <span onMouseEnter={show} className={cx(!noStyling && style)}>
             {children}
         </span>
     );

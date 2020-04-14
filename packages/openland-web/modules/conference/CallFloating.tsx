@@ -60,8 +60,7 @@ const TargetClass = css`
     display: flex;
     flex-shrink: 0;
     flex-grow: 1;
-    // cursor: move;
-    cursor: pointer;
+    cursor: move;
     width: 100%;
     flex-direction: column;
     align-items: center;
@@ -321,8 +320,6 @@ const MediaView = React.memo((props: {
 });
 
 const CallFloatingComponent = React.memo((props: { id: string; private: boolean, room: RoomTiny_room }) => {
-    // const isMobile = useIsMobile();
-    // const [forceOpen, setForceOpen] = React.useState(false);
     const targetRef = React.useRef<HTMLDivElement>(null);
     const containerRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
@@ -336,19 +333,6 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
 
     let client = useClient();
     let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
-
-    // const onClick = React.useCallback(
-    //     () => {
-    //         if (isMobile) {
-    //             if (containerRef.current) {
-    //                 containerRef.current.style.opacity = forceOpen ? '1' : '0.56';
-    //                 containerRef.current.style.maxWidth = forceOpen ? '360px' : `${AVATAR_SIZE}px`;
-    //             }
-    //             setForceOpen(!forceOpen);
-    //         }
-    //     },
-    //     [forceOpen],
-    // );
 
     let ms = calls.getMediaSession();
     const avatar = data && callState.avatar && ms && (

@@ -31,7 +31,7 @@ const getSubtitle = (users: Conference_conference_peers_user[]) => {
                 : users.length === 3 ? `${users[0].name}, ${users[1].name} and ${users[2].name}`
                     : (
                         <span>
-                            {users[0].name}, {users[1].name} and <OthersPopper users={users.slice(2)}>{users.length - 2} others</OthersPopper>
+                            {users[0].name}, {users[1].name} and <OthersPopper users={users.slice(2)} noStyling={true}>{users.length - 2} others</OthersPopper>
                         </span>
                     );
 };

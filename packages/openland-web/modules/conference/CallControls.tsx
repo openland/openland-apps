@@ -40,20 +40,35 @@ const controlTextWrapper = css`
     will-change: transform;
 `;
 
+const controlHover = cx('x', 'control-hover', css`
+    background: linear-gradient(270deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    zIndex: 4;
+    opacity: 0;
+    cursort: pointer;
+`);
+
+const controlWrapper = cx('x', css`
+    position: relative;
+    z-index: 3;
+    
+    &:hover {
+        cursor: pointer;
+        
+        .control-hover {
+            opacity: 0.16;
+        }
+    }
+`);
+
 const ControlItem = (props: { icon: JSX.Element, text: string, onClick: React.MouseEventHandler }) => {
     return (
-        <XView position="relative" onClick={props.onClick}>
-            <XView
-                hoverBackgroundColor="var(--foregroundContrast)"
-                hoverOpacity={0.16}
-                position="absolute"
-                top={0}
-                bottom={0}
-                left={0}
-                right={0}
-                zIndex={3}
-                cursor="pointer"
-            />
+        <div className={controlWrapper} onClick={props.onClick}>
+            <div className={controlHover} />
             <XView
                 paddingVertical={8}
                 paddingHorizontal={12}
@@ -66,9 +81,11 @@ const ControlItem = (props: { icon: JSX.Element, text: string, onClick: React.Mo
                         {props.text}
                     </div>
                 </XView>
-                {props.icon}
+                <XView zIndex={4}>
+                    {props.icon}
+                </XView>
             </XView>
-        </XView>
+        </div>
     );
 };
 

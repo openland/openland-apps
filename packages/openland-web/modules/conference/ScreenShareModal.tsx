@@ -61,5 +61,5 @@ export const VideoComponent = React.memo((props: VideoComponent) => {
 });
 
 export const showVideoModal = (stream: MediaStream) => {
-    showModalBox({ fullScreen: true }, ctx => <VideoComponent stream={stream} />);
+    showModalBox({ fullScreen: true }, ctx => <VideoComponent stream={stream} backgroundColor="var(--overlayTotal)" />);
 };

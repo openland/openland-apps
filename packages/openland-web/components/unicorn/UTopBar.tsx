@@ -163,7 +163,7 @@ export const UTopBar = (props: UTopBarProps) => {
                     <div className={cx(barSubtitle, props.type === 'light' ? lightSubtitle : positiveSubtitle)}>{props.subtitle}</div>
                 </div>
                 {(props.rightText || props.rightIcon) && (
-                    <div className={cx(rigthContainer, defaultHover, props.type === 'light' ? lightRightContainer : positiveRightContainer)} onClick={props.onRightClick}>
+                    <div className={cx(rigthContainer, props.onRightClick && defaultHover, props.type === 'light' ? lightRightContainer : positiveRightContainer)} onClick={props.onRightClick}>
                         {props.rightText ? <div className={cx(TextLabel1, rightTextContainer)}>{props.rightText}</div> : null}
                         {props.rightIcon && (
                             <UIcon 
