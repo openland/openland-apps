@@ -779,8 +779,8 @@ query ChatJoin($id: ID!) {
     }
 }
 
-query RoomMetaPreview($id: ID!) {
-    room(id: $id) {
+query RoomMetaPreview($shortname: String!, $id: ID!) {
+    alphaResolveShortName(shortname: $shortname) {
         ... on SharedRoom {
             id
             title

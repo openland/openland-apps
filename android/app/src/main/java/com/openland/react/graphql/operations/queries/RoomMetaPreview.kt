@@ -5,7 +5,7 @@ import com.openland.spacex.gen.*
 import org.json.*
 
 internal val RoomMetaPreviewSelector = obj(
-            field("room", "room", arguments(fieldValue("id", refValue("id"))), obj(
+            field("alphaResolveShortName", "alphaResolveShortName", arguments(fieldValue("shortname", refValue("shortname"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     inline("SharedRoom", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -21,6 +21,6 @@ internal val RoomMetaPreviewSelector = obj(
 val RoomMetaPreview = object: OperationDefinition {
     override val name = "RoomMetaPreview"
     override val kind = OperationKind.QUERY
-    override val body = "query RoomMetaPreview(\$id:ID!){room(id:\$id){__typename ... on SharedRoom{__typename id title description photo socialImage}}roomSocialImage(roomId:\$id)}"
+    override val body = "query RoomMetaPreview(\$shortname:String!,\$id:ID!){alphaResolveShortName(shortname:\$shortname){__typename ... on SharedRoom{__typename id title description photo socialImage}}roomSocialImage(roomId:\$id)}"
     override val selector = RoomMetaPreviewSelector
 }

@@ -3731,7 +3731,7 @@ const RoomMembersTinySelector = obj(
                 )))))
         );
 const RoomMetaPreviewSelector = obj(
-            field('room', 'room', args(fieldValue("id", refValue('id'))), obj(
+            field('alphaResolveShortName', 'alphaResolveShortName', args(fieldValue("shortname", refValue('shortname'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     inline('SharedRoom', obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5593,7 +5593,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     RoomMetaPreview: {
         kind: 'query',
         name: 'RoomMetaPreview',
-        body: 'query RoomMetaPreview($id:ID!){room(id:$id){__typename ... on SharedRoom{__typename id title description photo socialImage}}roomSocialImage(roomId:$id)}',
+        body: 'query RoomMetaPreview($shortname:String!,$id:ID!){alphaResolveShortName(shortname:$shortname){__typename ... on SharedRoom{__typename id title description photo socialImage}}roomSocialImage(roomId:$id)}',
         selector: RoomMetaPreviewSelector
     },
     RoomPico: {
