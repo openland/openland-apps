@@ -198,7 +198,7 @@ export default class OpenlandDocument extends Document {
                                 image: user.photo || 'https://cdn.openland.com/shared/og/og-global.png',
                             };
                         } else if (shortnameData.item.__typename === 'SharedRoom') {
-                            const { room, roomSocialImage } = await openland.queryRoomMetaPreview({ shortname: probableShortname, id: shortnameData.item.id });
+                            const { alphaResolveShortName: room, roomSocialImage } = await openland.queryRoomMetaPreview({ shortname: probableShortname, id: shortnameData.item.id });
 
                             if (room?.__typename === 'SharedRoom') {
                                 let roomImage;
