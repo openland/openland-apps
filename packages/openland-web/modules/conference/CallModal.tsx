@@ -14,7 +14,8 @@ import { DataSourceMessageItem, DataSourceDateItem, DataSourceNewDividerItem } f
 import { YoutubeParty } from './YoutubeParty';
 import { VolumeSpace } from './VolumeSpace';
 import { VideoPeer } from './VideoPeer';
-import OpenlandWatermark from 'openland-icons/openland-watermark.svg';
+import WatermarkLogo from 'openland-icons/watermark-logo.svg';
+import WatermarkShadow from 'openland-icons/watermark-shadow.svg';
 import { CallControls } from './CallControls';
 
 const controlsStyle = css`
@@ -40,13 +41,13 @@ const controlsContainerStyle = css`
 `;
 
 const watermarkContainerstyle = css`
-    pointer-events: none;
     position: absolute;
-    top: 12px;
-    left: 12px;
     opacity: 0.72;
     z-index: 5;
 
+    &:hover {
+        opacity: 1;
+    }
 `;
 
 const Controls = React.memo((props: {
@@ -226,9 +227,6 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     let hideLegacyControls = true;
     return (
         <XView flexDirection="row" flexGrow={1} backgroundColor="gray" alignItems="stretch" position="relative">
-            <div className={watermarkContainerstyle}>
-                <OpenlandWatermark />
-            </div>
             <XView flexDirection="row" flexGrow={1} flexShrink={1}>
                 <XView flexDirection={rotated ? 'row' : 'column'} justifyContent="flex-start" flexGrow={1} flexShrink={1} position="relative">
                     {layout === 'grid' && mediaSession && slices.map((s, i) => (
@@ -277,6 +275,15 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                     } : undefined}
                 />
             </XView>
+
+            <div className={watermarkContainerstyle}>
+                <XView position="absolute" top={0} left={0}>
+                    <WatermarkLogo />
+                </XView>
+                <XView position="absolute" top={0} left={0}>
+                    <WatermarkShadow />
+                </XView>
+            </div>
 
             {mediaSession && showLink && (
                 <XView flexGrow={0.5} flexBasis={0} alignItems="stretch">

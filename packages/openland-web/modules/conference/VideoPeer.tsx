@@ -27,6 +27,7 @@ const peerInfo = css`
     padding: 12px 16px;
     z-index: 3;
     display: flex;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.32) 100%);
 `;
 
 const peerInfoCompact = css`
