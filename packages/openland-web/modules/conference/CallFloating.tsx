@@ -351,7 +351,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
     );
 
     const buttons = (
-        <XView flexDirection="row">
+        <XView flexDirection="row" justifyContent="flex-end" marginLeft={'auto' as any}>
             <UIconButton
                 size="small"
                 marginRight={12}
@@ -389,7 +389,6 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
                             paddingHorizontal={12}
                             width="100%"
                             alignItems="center"
-                            justifyContent="space-between"
                         >
                             {!callState.videoEnabled && avatar}
                             <XView flexShrink={1} marginRight={14}>
