@@ -397,6 +397,8 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
                                     color="var(--foregroundContrast)"
                                     flexShrink={1}
                                     overflow="hidden"
+                                    textOverflow="ellipsis"
+                                    whiteSpace="nowrap"
                                 >
                                     {title}
                                 </XView>
