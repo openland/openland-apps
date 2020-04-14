@@ -262,23 +262,6 @@ type ConferenceMedia {
 type ConferencePeer {
   id: ID!
   user: User!
-  connection: ConferencePeerConnection
-}
-
-"""Deprecated"""
-type ConferencePeerConnection {
-  state: ConferencePeerConnectionState!
-  sdp: String
-  ice: [String!]!
-}
-
-"""Deprecated"""
-enum ConferencePeerConnectionState {
-  WAIT_OFFER
-  NEED_OFFER
-  WAIT_ANSWER
-  NEED_ANSWER
-  READY
 }
 
 input ConferenceSettingsInput {
@@ -1704,11 +1687,6 @@ type Mutation {
   mediaStreamAnswer(id: ID!, peerId: ID!, answer: String!, seq: Int): ConferenceMedia!
   mediaStreamCandidate(id: ID!, peerId: ID!, candidate: String!): ConferenceMedia!
   mediaStreamFailed(id: ID!, peerId: ID!): ConferenceMedia!
-
-  """deprecated"""
-  peerConnectionOffer(id: ID!, ownPeerId: ID!, peerId: ID!, offer: String!): Conference!
-  peerConnectionAnswer(id: ID!, ownPeerId: ID!, peerId: ID!, answer: String!): Conference!
-  peerConnectionCandidate(id: ID!, ownPeerId: ID!, peerId: ID!, candidate: String!): Conference!
   stickerPackCreate(title: String!, stickers: [StickerInput!]): StickerPack!
   stickerPackUpdate(id: ID!, input: StickerPackInput!): StickerPack!
   stickerPackAddSticker(id: ID!, input: StickerInput!): Sticker!
@@ -2393,6 +2371,7 @@ type Query {
   debugServerId: String!
   debugClientIp: DebugIpInfo
   debugGqlTraces(first: Int!, after: ID): GqlTraceConnection!
+  debugGqlTrace(id: ID!): GqlTrace!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!

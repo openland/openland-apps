@@ -87,6 +87,7 @@ object Operations {
         if (name == "RoomMembersPaginated") return RoomMembersPaginated
         if (name == "RoomMembersShort") return RoomMembersShort
         if (name == "RoomMembersTiny") return RoomMembersTiny
+        if (name == "RoomMetaPreview") return RoomMetaPreview
         if (name == "RoomPico") return RoomPico
         if (name == "RoomSearch") return RoomSearch
         if (name == "RoomSocialImage") return RoomSocialImage
@@ -122,12 +123,9 @@ object Operations {
         if (name == "CommentSetReaction") return CommentSetReaction
         if (name == "CommentUnsetReaction") return CommentUnsetReaction
         if (name == "CommitCardSetupIntent") return CommitCardSetupIntent
-        if (name == "ConferenceAnswer") return ConferenceAnswer
-        if (name == "ConferenceCandidate") return ConferenceCandidate
         if (name == "ConferenceJoin") return ConferenceJoin
         if (name == "ConferenceKeepAlive") return ConferenceKeepAlive
         if (name == "ConferenceLeave") return ConferenceLeave
-        if (name == "ConferenceOffer") return ConferenceOffer
         if (name == "CreateApp") return CreateApp
         if (name == "CreateCardSetupIntent") return CreateCardSetupIntent
         if (name == "CreateDepositIntent") return CreateDepositIntent

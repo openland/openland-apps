@@ -154,11 +154,11 @@ export default class OpenlandDocument extends Document {
                 }
             } else if (collectionId) {
                 try {
-                    let res = await openland.queryDiscoverCollectionShort({id: collectionId});
+                    let res = await openland.queryDiscoverCollectionShort({ id: collectionId });
                     let collection = res.discoverCollection;
 
                     if (collection) {
-                        const {image: {uuid, crop}, title} = collection;
+                        const { image: { uuid, crop }, title } = collection;
                         let imageLink = 'https://ucarecdn.com/' + uuid + '/';
                         if (crop) {
                             imageLink += `-/crop/${crop.w}x${crop.h}/${crop.x},${crop.y}/`;
@@ -184,9 +184,12 @@ export default class OpenlandDocument extends Document {
                     const shortnameData = await openland.queryResolveShortName({ shortname: probableShortname });
 
                     if (shortnameData.item) {
-                        // user or organization exists
-                        try {
-                            const { user } = await openland.queryUserPico({ userId: probableShortname });
+                        // default meta tags
+                        metaTagsInfo = matchMetaTags[originalUrl] || {};
+
+                        // user or group exists
+                        if (shortnameData.item.__typename === 'User') {
+                            const { user } = await openland.queryUserPico({ userId: shortnameData.item.id });
 
                             metaTagsInfo = {
                                 title: `${user.name} on Openland`,
@@ -194,10 +197,29 @@ export default class OpenlandDocument extends Document {
                                 description: `${user.firstName} uses Openland. Want to reach them? Join Openland and write a message `,
                                 image: user.photo || 'https://cdn.openland.com/shared/og/og-global.png',
                             };
+                        } else if (shortnameData.item.__typename === 'SharedRoom') {
+                            const { room, roomSocialImage } = await openland.queryRoomMetaPreview({ id: shortnameData.item.id });
 
-                        } catch (e) {
-                            // default meta tags
-                            metaTagsInfo = matchMetaTags[originalUrl] || {};
+                            if (room?.__typename === 'SharedRoom') {
+                                let roomImage;
+
+                                if (room.socialImage) {
+                                    roomImage = room.socialImage;
+                                } else if (roomSocialImage) {
+                                    roomImage = roomSocialImage;
+                                } else if (room.photo && !room.photo.startsWith('ph://')) {
+                                    roomImage = room.photo;
+                                } else {
+                                    roomImage = 'https://cdn.openland.com/shared/og/og-global.png';
+                                }
+
+                                metaTagsInfo = {
+                                    title: `${room.title} on Openland`,
+                                    url: urlPrefix + originalUrl,
+                                    description: room.description || 'Join Openland and find inspiring communities',
+                                    image: roomImage,
+                                };
+                            }
                         }
                     }
                 }

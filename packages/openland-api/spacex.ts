@@ -247,6 +247,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: OperationParameters): Promise<Types.RoomMembersTiny> {
         return this.query('RoomMembersTiny', variables, opts);
     }
+    queryRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, opts?: OperationParameters): Promise<Types.RoomMetaPreview> {
+        return this.query('RoomMetaPreview', variables, opts);
+    }
     queryRoomPico(variables: Types.RoomPicoVariables, opts?: OperationParameters): Promise<Types.RoomPico> {
         return this.query('RoomPico', variables, opts);
     }
@@ -553,6 +556,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: OperationParameters): Promise<Types.RoomMembersTiny> {
         return this.refetch('RoomMembersTiny', variables);
     }
+    refetchRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, opts?: OperationParameters): Promise<Types.RoomMetaPreview> {
+        return this.refetch('RoomMetaPreview', variables);
+    }
     refetchRoomPico(variables: Types.RoomPicoVariables, opts?: OperationParameters): Promise<Types.RoomPico> {
         return this.refetch('RoomPico', variables);
     }
@@ -858,6 +864,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateRoomMembersTiny(variables: Types.RoomMembersTinyVariables, updater: (data: Types.RoomMembersTiny) => Types.RoomMembersTiny | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomMembersTiny', variables);
+    }
+    updateRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, updater: (data: Types.RoomMetaPreview) => Types.RoomMetaPreview | null): Promise<boolean> {
+        return this.updateQuery(updater, 'RoomMetaPreview', variables);
     }
     updateRoomPico(variables: Types.RoomPicoVariables, updater: (data: Types.RoomPico) => Types.RoomPico | null): Promise<boolean> {
         return this.updateQuery(updater, 'RoomPico', variables);
@@ -1325,6 +1334,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: SpaceQueryWatchParameters): Types.RoomMembersTiny | null {
         return this.useQuery('RoomMembersTiny', variables, opts);
     }
+    useRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMetaPreview | null;
+    useRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, opts?: SpaceQueryWatchParameters): Types.RoomMetaPreview;
+    useRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, opts?: SpaceQueryWatchParameters): Types.RoomMetaPreview | null {
+        return this.useQuery('RoomMetaPreview', variables, opts);
+    }
     useRoomPico(variables: Types.RoomPicoVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomPico | null;
     useRoomPico(variables: Types.RoomPicoVariables, opts?: SpaceQueryWatchParameters): Types.RoomPico;
     useRoomPico(variables: Types.RoomPicoVariables, opts?: SpaceQueryWatchParameters): Types.RoomPico | null {
@@ -1474,12 +1488,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateCommitCardSetupIntent(variables: Types.CommitCardSetupIntentVariables): Promise<Types.CommitCardSetupIntent> {
         return this.mutate('CommitCardSetupIntent', variables);
     }
-    mutateConferenceAnswer(variables: Types.ConferenceAnswerVariables): Promise<Types.ConferenceAnswer> {
-        return this.mutate('ConferenceAnswer', variables);
-    }
-    mutateConferenceCandidate(variables: Types.ConferenceCandidateVariables): Promise<Types.ConferenceCandidate> {
-        return this.mutate('ConferenceCandidate', variables);
-    }
     mutateConferenceJoin(variables: Types.ConferenceJoinVariables): Promise<Types.ConferenceJoin> {
         return this.mutate('ConferenceJoin', variables);
     }
@@ -1488,9 +1496,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateConferenceLeave(variables: Types.ConferenceLeaveVariables): Promise<Types.ConferenceLeave> {
         return this.mutate('ConferenceLeave', variables);
-    }
-    mutateConferenceOffer(variables: Types.ConferenceOfferVariables): Promise<Types.ConferenceOffer> {
-        return this.mutate('ConferenceOffer', variables);
     }
     mutateCreateApp(variables: Types.CreateAppVariables): Promise<Types.CreateApp> {
         return this.mutate('CreateApp', variables);

@@ -892,13 +892,7 @@ const ConferenceFullSelector = obj(
                     field('user', 'user', args(), notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             fragment('User', UserShortSelector)
-                        ))),
-                    field('connection', 'connection', args(), obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('state', 'state', args(), notNull(scalar('String'))),
-                            field('sdp', 'sdp', args(), scalar('String')),
-                            field('ice', 'ice', args(), notNull(list(notNull(scalar('String')))))
-                        ))
+                        )))
                 ))))),
             field('iceServers', 'iceServers', args(), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -3736,6 +3730,20 @@ const RoomMembersTinySelector = obj(
                         )))
                 )))))
         );
+const RoomMetaPreviewSelector = obj(
+            field('room', 'room', args(fieldValue("id", refValue('id'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    inline('SharedRoom', obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('id', 'id', args(), notNull(scalar('ID'))),
+                        field('title', 'title', args(), notNull(scalar('String'))),
+                        field('description', 'description', args(), scalar('String')),
+                        field('photo', 'photo', args(), notNull(scalar('String'))),
+                        field('socialImage', 'socialImage', args(), scalar('String'))
+                    ))
+                )),
+            field('roomSocialImage', 'roomSocialImage', args(fieldValue("roomId", refValue('id'))), scalar('String'))
+        );
 const RoomPicoSelector = obj(
             field('room', 'room', args(fieldValue("id", refValue('id'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -4169,18 +4177,6 @@ const CommitCardSetupIntentSelector = obj(
                     field('id', 'id', args(), notNull(scalar('ID')))
                 )))
         );
-const ConferenceAnswerSelector = obj(
-            field('peerConnectionAnswer', 'peerConnectionAnswer', args(fieldValue("id", refValue('id')), fieldValue("peerId", refValue('peerId')), fieldValue("ownPeerId", refValue('ownPeerId')), fieldValue("answer", refValue('answer'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('Conference', ConferenceShortSelector)
-                )))
-        );
-const ConferenceCandidateSelector = obj(
-            field('peerConnectionCandidate', 'peerConnectionCandidate', args(fieldValue("id", refValue('id')), fieldValue("peerId", refValue('peerId')), fieldValue("ownPeerId", refValue('ownPeerId')), fieldValue("candidate", refValue('candidate'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('Conference', ConferenceShortSelector)
-                )))
-        );
 const ConferenceJoinSelector = obj(
             field('conferenceJoin', 'conferenceJoin', args(fieldValue("id", refValue('id'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -4199,12 +4195,6 @@ const ConferenceKeepAliveSelector = obj(
         );
 const ConferenceLeaveSelector = obj(
             field('conferenceLeave', 'conferenceLeave', args(fieldValue("id", refValue('id')), fieldValue("peerId", refValue('peerId'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('Conference', ConferenceShortSelector)
-                )))
-        );
-const ConferenceOfferSelector = obj(
-            field('peerConnectionOffer', 'peerConnectionOffer', args(fieldValue("id", refValue('id')), fieldValue("peerId", refValue('peerId')), fieldValue("ownPeerId", refValue('ownPeerId')), fieldValue("offer", refValue('offer'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('Conference', ConferenceShortSelector)
                 )))
@@ -5189,7 +5179,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     Conference: {
         kind: 'query',
         name: 'Conference',
-        body: 'query Conference($id:ID!){conference(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}connection{__typename state sdp ice}}iceServers{__typename urls username credential}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
+        body: 'query Conference($id:ID!){conference(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}}iceServers{__typename urls username credential}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
         selector: ConferenceSelector
     },
     ConferenceMedia: {
@@ -5600,6 +5590,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query RoomMembersTiny($roomId:ID!){members:roomMembers(roomId:$roomId){__typename user{__typename id name shortname photo primaryOrganization{__typename id name}}}}',
         selector: RoomMembersTinySelector
     },
+    RoomMetaPreview: {
+        kind: 'query',
+        name: 'RoomMetaPreview',
+        body: 'query RoomMetaPreview($id:ID!){room(id:$id){__typename ... on SharedRoom{__typename id title description photo socialImage}}roomSocialImage(roomId:$id)}',
+        selector: RoomMetaPreviewSelector
+    },
     RoomPico: {
         kind: 'query',
         name: 'RoomPico',
@@ -5810,18 +5806,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'mutation CommitCardSetupIntent($id:ID!,$pmid:ID!){cardCommitSetupIntent(id:$id,pmid:$pmid){__typename id}}',
         selector: CommitCardSetupIntentSelector
     },
-    ConferenceAnswer: {
-        kind: 'mutation',
-        name: 'ConferenceAnswer',
-        body: 'mutation ConferenceAnswer($id:ID!,$ownPeerId:ID!,$peerId:ID!,$answer:String!){peerConnectionAnswer(id:$id,peerId:$peerId,ownPeerId:$ownPeerId,answer:$answer){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}',
-        selector: ConferenceAnswerSelector
-    },
-    ConferenceCandidate: {
-        kind: 'mutation',
-        name: 'ConferenceCandidate',
-        body: 'mutation ConferenceCandidate($id:ID!,$ownPeerId:ID!,$peerId:ID!,$candidate:String!){peerConnectionCandidate(id:$id,peerId:$peerId,ownPeerId:$ownPeerId,candidate:$candidate){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}',
-        selector: ConferenceCandidateSelector
-    },
     ConferenceJoin: {
         kind: 'mutation',
         name: 'ConferenceJoin',
@@ -5839,12 +5823,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'ConferenceLeave',
         body: 'mutation ConferenceLeave($id:ID!,$peerId:ID!){conferenceLeave(id:$id,peerId:$peerId){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}',
         selector: ConferenceLeaveSelector
-    },
-    ConferenceOffer: {
-        kind: 'mutation',
-        name: 'ConferenceOffer',
-        body: 'mutation ConferenceOffer($id:ID!,$ownPeerId:ID!,$peerId:ID!,$offer:String!){peerConnectionOffer(id:$id,peerId:$peerId,ownPeerId:$ownPeerId,offer:$offer){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}',
-        selector: ConferenceOfferSelector
     },
     CreateApp: {
         kind: 'mutation',
@@ -6551,7 +6529,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ConferenceWatch: {
         kind: 'subscription',
         name: 'ConferenceWatch',
-        body: 'subscription ConferenceWatch($id:ID!){alphaConferenceWatch(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}connection{__typename state sdp ice}}iceServers{__typename urls username credential}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
+        body: 'subscription ConferenceWatch($id:ID!){alphaConferenceWatch(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}}iceServers{__typename urls username credential}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
         selector: ConferenceWatchSelector
     },
     DebugEventsWatch: {

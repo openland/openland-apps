@@ -6,11 +6,11 @@ fragment ConferenceFull on Conference {
         user {
             ...UserShort
         }
-        connection {
-            state
-            sdp
-            ice
-        }
+        # connection {
+        #     state
+        #     sdp
+        #     ice
+        # }
     }
     iceServers {
         urls
@@ -104,26 +104,26 @@ mutation ConferenceKeepAlive($id: ID!, $peerId: ID!) {
         ...ConferenceShort
     }
 }
-mutation ConferenceOffer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $offer: String!) {
-    peerConnectionOffer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, offer: $offer) {
-        ...ConferenceShort
-    }
-}
-mutation ConferenceAnswer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $answer: String!) {
-    peerConnectionAnswer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, answer: $answer) {
-        ...ConferenceShort
-    }
-}
-mutation ConferenceCandidate($id: ID!, $ownPeerId: ID!, $peerId: ID!, $candidate: String!) {
-    peerConnectionCandidate(
-        id: $id
-        peerId: $peerId
-        ownPeerId: $ownPeerId
-        candidate: $candidate
-    ) {
-        ...ConferenceShort
-    }
-}
+# mutation ConferenceOffer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $offer: String!) {
+#     peerConnectionOffer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, offer: $offer) {
+#         ...ConferenceShort
+#     }
+# }
+# mutation ConferenceAnswer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $answer: String!) {
+#     peerConnectionAnswer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, answer: $answer) {
+#         ...ConferenceShort
+#     }
+# }
+# mutation ConferenceCandidate($id: ID!, $ownPeerId: ID!, $peerId: ID!, $candidate: String!) {
+#     peerConnectionCandidate(
+#         id: $id
+#         peerId: $peerId
+#         ownPeerId: $ownPeerId
+#         candidate: $candidate
+#     ) {
+#         ...ConferenceShort
+#     }
+# }
 mutation MediaOffer($id: ID!, $peerId: ID!, $offer: String!, $seq: Int!) {
     mediaStreamOffer(id: $id, peerId: $peerId, offer: $offer, seq: $seq) {
         id

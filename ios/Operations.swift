@@ -885,13 +885,7 @@ private let ConferenceFullSelector = obj(
                     field("user", "user", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
-                        ))),
-                    field("connection", "connection", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("state", "state", notNull(scalar("String"))),
-                            field("sdp", "sdp", scalar("String")),
-                            field("ice", "ice", notNull(list(notNull(scalar("String")))))
-                        ))
+                        )))
                 ))))),
             field("iceServers", "iceServers", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -3729,6 +3723,20 @@ private let RoomMembersTinySelector = obj(
                         )))
                 )))))
         )
+private let RoomMetaPreviewSelector = obj(
+            field("room", "room", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    inline("SharedRoom", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("title", "title", notNull(scalar("String"))),
+                        field("description", "description", scalar("String")),
+                        field("photo", "photo", notNull(scalar("String"))),
+                        field("socialImage", "socialImage", scalar("String"))
+                    ))
+                )),
+            field("roomSocialImage", "roomSocialImage", arguments(fieldValue("roomId", refValue("id"))), scalar("String"))
+        )
 private let RoomPicoSelector = obj(
             field("room", "room", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -4162,18 +4170,6 @@ private let CommitCardSetupIntentSelector = obj(
                     field("id", "id", notNull(scalar("ID")))
                 )))
         )
-private let ConferenceAnswerSelector = obj(
-            field("peerConnectionAnswer", "peerConnectionAnswer", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId")), fieldValue("ownPeerId", refValue("ownPeerId")), fieldValue("answer", refValue("answer"))), notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Conference", ConferenceShortSelector)
-                )))
-        )
-private let ConferenceCandidateSelector = obj(
-            field("peerConnectionCandidate", "peerConnectionCandidate", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId")), fieldValue("ownPeerId", refValue("ownPeerId")), fieldValue("candidate", refValue("candidate"))), notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Conference", ConferenceShortSelector)
-                )))
-        )
 private let ConferenceJoinSelector = obj(
             field("conferenceJoin", "conferenceJoin", arguments(fieldValue("id", refValue("id"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -4192,12 +4188,6 @@ private let ConferenceKeepAliveSelector = obj(
         )
 private let ConferenceLeaveSelector = obj(
             field("conferenceLeave", "conferenceLeave", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Conference", ConferenceShortSelector)
-                )))
-        )
-private let ConferenceOfferSelector = obj(
-            field("peerConnectionOffer", "peerConnectionOffer", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId")), fieldValue("ownPeerId", refValue("ownPeerId")), fieldValue("offer", refValue("offer"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Conference", ConferenceShortSelector)
                 )))
@@ -5186,7 +5176,7 @@ class Operations {
     let Conference = OperationDefinition(
         "Conference",
         .query, 
-        "query Conference($id:ID!){conference(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}connection{__typename state sdp ice}}iceServers{__typename urls username credential}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
+        "query Conference($id:ID!){conference(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}}iceServers{__typename urls username credential}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
         ConferenceSelector
     )
     let ConferenceMedia = OperationDefinition(
@@ -5597,6 +5587,12 @@ class Operations {
         "query RoomMembersTiny($roomId:ID!){members:roomMembers(roomId:$roomId){__typename user{__typename id name shortname photo primaryOrganization{__typename id name}}}}",
         RoomMembersTinySelector
     )
+    let RoomMetaPreview = OperationDefinition(
+        "RoomMetaPreview",
+        .query, 
+        "query RoomMetaPreview($id:ID!){room(id:$id){__typename ... on SharedRoom{__typename id title description photo socialImage}}roomSocialImage(roomId:$id)}",
+        RoomMetaPreviewSelector
+    )
     let RoomPico = OperationDefinition(
         "RoomPico",
         .query, 
@@ -5807,18 +5803,6 @@ class Operations {
         "mutation CommitCardSetupIntent($id:ID!,$pmid:ID!){cardCommitSetupIntent(id:$id,pmid:$pmid){__typename id}}",
         CommitCardSetupIntentSelector
     )
-    let ConferenceAnswer = OperationDefinition(
-        "ConferenceAnswer",
-        .mutation, 
-        "mutation ConferenceAnswer($id:ID!,$ownPeerId:ID!,$peerId:ID!,$answer:String!){peerConnectionAnswer(id:$id,peerId:$peerId,ownPeerId:$ownPeerId,answer:$answer){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}",
-        ConferenceAnswerSelector
-    )
-    let ConferenceCandidate = OperationDefinition(
-        "ConferenceCandidate",
-        .mutation, 
-        "mutation ConferenceCandidate($id:ID!,$ownPeerId:ID!,$peerId:ID!,$candidate:String!){peerConnectionCandidate(id:$id,peerId:$peerId,ownPeerId:$ownPeerId,candidate:$candidate){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}",
-        ConferenceCandidateSelector
-    )
     let ConferenceJoin = OperationDefinition(
         "ConferenceJoin",
         .mutation, 
@@ -5836,12 +5820,6 @@ class Operations {
         .mutation, 
         "mutation ConferenceLeave($id:ID!,$peerId:ID!){conferenceLeave(id:$id,peerId:$peerId){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}",
         ConferenceLeaveSelector
-    )
-    let ConferenceOffer = OperationDefinition(
-        "ConferenceOffer",
-        .mutation, 
-        "mutation ConferenceOffer($id:ID!,$ownPeerId:ID!,$peerId:ID!,$offer:String!){peerConnectionOffer(id:$id,peerId:$peerId,ownPeerId:$ownPeerId,offer:$offer){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}",
-        ConferenceOfferSelector
     )
     let CreateApp = OperationDefinition(
         "CreateApp",
@@ -6548,7 +6526,7 @@ class Operations {
     let ConferenceWatch = OperationDefinition(
         "ConferenceWatch",
         .subscription, 
-        "subscription ConferenceWatch($id:ID!){alphaConferenceWatch(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}connection{__typename state sdp ice}}iceServers{__typename urls username credential}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
+        "subscription ConferenceWatch($id:ID!){alphaConferenceWatch(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}}iceServers{__typename urls username credential}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
         ConferenceWatchSelector
     )
     let DebugEventsWatch = OperationDefinition(
@@ -6681,6 +6659,7 @@ class Operations {
         if name == "RoomMembersPaginated" { return RoomMembersPaginated }
         if name == "RoomMembersShort" { return RoomMembersShort }
         if name == "RoomMembersTiny" { return RoomMembersTiny }
+        if name == "RoomMetaPreview" { return RoomMetaPreview }
         if name == "RoomPico" { return RoomPico }
         if name == "RoomSearch" { return RoomSearch }
         if name == "RoomSocialImage" { return RoomSocialImage }
@@ -6716,12 +6695,9 @@ class Operations {
         if name == "CommentSetReaction" { return CommentSetReaction }
         if name == "CommentUnsetReaction" { return CommentUnsetReaction }
         if name == "CommitCardSetupIntent" { return CommitCardSetupIntent }
-        if name == "ConferenceAnswer" { return ConferenceAnswer }
-        if name == "ConferenceCandidate" { return ConferenceCandidate }
         if name == "ConferenceJoin" { return ConferenceJoin }
         if name == "ConferenceKeepAlive" { return ConferenceKeepAlive }
         if name == "ConferenceLeave" { return ConferenceLeave }
-        if name == "ConferenceOffer" { return ConferenceOffer }
         if name == "CreateApp" { return CreateApp }
         if name == "CreateCardSetupIntent" { return CreateCardSetupIntent }
         if name == "CreateDepositIntent" { return CreateDepositIntent }

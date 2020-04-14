@@ -891,13 +891,7 @@ internal val ConferenceFullSelector = obj(
                     field("user", "user", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
-                        ))),
-                    field("connection", "connection", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("state", "state", notNull(scalar("String"))),
-                            field("sdp", "sdp", scalar("String")),
-                            field("ice", "ice", notNull(list(notNull(scalar("String")))))
-                        ))
+                        )))
                 ))))),
             field("iceServers", "iceServers", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
