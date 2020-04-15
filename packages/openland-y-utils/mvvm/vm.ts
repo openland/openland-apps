@@ -23,9 +23,10 @@ export class VM<T> {
 }
 
 export class VMMap<K, T> {
-    protected vals = new Map<K, T>();
+    vals = new Map<K, T>();
     protected listeners = new Map<K, Set<(val: T) => void>>();
     protected allListeners = new Set<(vals: Map<K, T>) => void>();
+    protected allShallowListeners = new Set<(vals: Map<K, T>) => void>();
     keys = () => {
         return this.vals.keys();
     }
@@ -37,6 +38,7 @@ export class VMMap<K, T> {
         this.vals.set(key, val);
         if (updated || force) {
             this.notify(key, val);
+            this.notifyShallow(key, val);
         }
         return this;
     }
@@ -81,11 +83,23 @@ export class VMMap<K, T> {
             l(this.vals);
         }
     }
+    notifyShallow = (key: K, val: T) => {
+        for (let l of this.allShallowListeners) {
+            l(this.vals);
+        }
+    }
     listenAll = (listener: (vals: Map<K, T>) => void) => {
         this.allListeners.add(listener);
         listener(this.vals);
         return () => {
             this.allListeners.delete(listener);
+        };
+    }
+    listenAllShallow = (listener: (vals: Map<K, T>) => void) => {
+        this.allShallowListeners.add(listener);
+        listener(this.vals);
+        return () => {
+            this.allShallowListeners.delete(listener);
         };
     }
 }
@@ -95,7 +109,7 @@ export class VMSetMap<K, T> extends VMMap<K, Set<T>> {
         let current = this.vals.get(key);
         if (!current) {
             current = new Set();
-            this.vals.set(key, current);
+            this.set(key, current);
         }
         let updated = !current.has(val);
         current.add(val);
@@ -121,12 +135,24 @@ export class VMSetMap<K, T> extends VMMap<K, Set<T>> {
 
 export class VMMapMap<K, I, T> extends VMMap<K, Map<I, T>> {
     idListeners = new Map<I, Set<(val: T) => void>>();
+    reverceMap = new Map<I, K>();
+    hasId = (id: I) => {
+        return this.reverceMap.has(id);
+    }
+    getById = (id: I) => {
+        let key = this.reverceMap.get(id);
+        if (key) {
+            return this.get(key)?.get(id);
+        }
+        return undefined;
+    }
     add = (key: K, id: I, val: T, force?: boolean) => {
         let current = this.vals.get(key);
         if (!current) {
             current = new Map();
-            this.vals.set(key, current);
+            this.set(key, current);
         }
+        this.reverceMap.set(id, key);
         let updated = current.get(id) !== val;
         current.set(id, val);
         if (updated || force) {
@@ -137,6 +163,12 @@ export class VMMapMap<K, I, T> extends VMMap<K, Map<I, T>> {
         }
         return this;
     }
+    addById = (id: I, val: T, force?: boolean) => {
+        let key = this.reverceMap.get(id);
+        if (key) {
+            this.add(key, id, val, force);
+        }
+    }
 
     deleteVal = (key: K, id: I) => {
         let current = this.vals.get(key);
@@ -145,8 +177,17 @@ export class VMMapMap<K, I, T> extends VMMap<K, Map<I, T>> {
         }
         let updated = current.has(id);
         current.delete(id);
+        this.reverceMap.delete(id);
         if (updated) {
             this.notify(key, current);
+        }
+        return this;
+    }
+
+    deleteByValId = (id: I) => {
+        let key = this.reverceMap.get(id);
+        if (key) {
+            this.deleteVal(key, id);
         }
         return this;
     }

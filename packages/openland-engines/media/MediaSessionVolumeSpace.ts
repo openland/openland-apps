@@ -2,13 +2,14 @@ import { MediaSessionManager } from './MediaSessionManager';
 import { VMMap, VMMapMap } from 'openland-y-utils/mvvm/vm';
 import uuid from 'uuid';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
+import { layoutMedia } from 'openland-y-utils/MediaLayout';
 
 class PeerAvatar {
     type: 'peer' = 'peer';
-    peerId: string;
+    id: string;
     coords: number[];
     constructor(peerId: string, coords: number[]) {
-        this.peerId = peerId;
+        this.id = peerId;
         this.coords = coords;
     }
 }
@@ -16,12 +17,20 @@ class PeerAvatar {
 export class Path {
     type: 'path' = 'path';
     id: string;
-    shift?: number[];
-    rawPath?: number[][];
-    path?: string;
-    constructor(path?: string) {
+    path: number[][];
+    constructor(path: number[][]) {
         this.id = `path_${uuid()}`;
         this.path = path;
+    }
+}
+
+export class PathIncrement {
+    type: 'path_inc' = 'path_inc';
+    pathId: string;
+    increment: number[][];
+    constructor(pathId: string, increment: number[][]) {
+        this.pathId = pathId;
+        this.increment = increment;
     }
 }
 
@@ -32,16 +41,58 @@ export class Image {
     containerWH: number[];
     imageWH: number[];
     fileId?: string;
-    constructor(fileId: string | undefined, coords: number[], imageWH: number[]) {
+    constructor(fileId: string | undefined, coords: number[], imageWH: number[], containerWH: number[]) {
         this.id = `image_${uuid()}`;
         this.coords = coords;
-        this.containerWH = imageWH;
+        this.containerWH = containerWH;
         this.imageWH = imageWH;
         this.fileId = fileId;
     }
 }
 
-type MessageType = PeerAvatar | Path | Image;
+export class Move {
+    type: 'move' = 'move';
+    id: string;
+    coords: number[];
+    constructor(id: string, coords: number[]) {
+        this.id = id;
+        this.coords = coords;
+    }
+}
+
+class Sync {
+    type: 'sync' = 'sync';
+    ids: string[];
+    deletedIDs: string[];
+    knownPeers: string[];
+    constructor(ids: string[], deletedIDs: string[], knownPeers: string[]) {
+        this.ids = ids;
+        this.deletedIDs = deletedIDs;
+        this.knownPeers = knownPeers;
+    }
+}
+
+class Reqest {
+    type: 'request' = 'request';
+    ids: string[];
+    peers: string[];
+    constructor(ids: string[], peers: string[]) {
+        this.ids = ids;
+        this.peers = peers;
+    }
+}
+
+class LostPeer {
+    type: 'lost_peer' = 'lost_peer';
+    peerId: string;
+    messages: MessageType[];
+    constructor(peerId: string, messages: MessageType[]) {
+        this.peerId = peerId;
+        this.messages = messages;
+    }
+}
+
+type MessageType = PeerAvatar | Path | Image | Sync | Move | PathIncrement | Reqest | LostPeer;
 
 export class MediaSessionVolumeSpace {
     private mediaSession: MediaSessionManager;
@@ -53,6 +104,8 @@ export class MediaSessionVolumeSpace {
     readonly peersVM = new VMMap<string, PeerAvatar>();
     readonly pathsVM = new VMMapMap<string, string, Path>();
     readonly imagesVM = new VMMapMap<string, string, Image>();
+    readonly selfDeletedIds = new Set<string>();
+    readonly knownPeers = new Set<string>();
     private interval: any;
     private messageSeq = 1;
     minDinstance = 50;
@@ -60,18 +113,19 @@ export class MediaSessionVolumeSpace {
     constructor(messenger: MessengerEngine, mediaSession: MediaSessionManager) {
         this.selfPeer = new PeerAvatar(mediaSession.getPeerId(), [Math.random() * 100 + 1450, Math.random() * 100 + 1450]);
         this.mediaSession = mediaSession;
-        this.interval = setInterval(this.reportAll, 1000);
+        this.interval = setInterval(this.sync, 1000);
         this.d1 = this.mediaSession.dcVM.listen(this.onDcMessage);
 
         this.d2 = messenger.getConversation(mediaSession.conversationId).subscribe({
             onMessageSend: (file, localImage) => {
                 if (localImage && file) {
                     (async () => {
-                        let image = new Image(undefined, this.selfPeer.coords, [localImage.width, localImage.height]);
+                        let layout = layoutMedia(localImage.width, localImage.height, 1000, 1000);
+                        let image = new Image(undefined, this.selfPeer.coords, [localImage.width, localImage.height], [layout.width, layout.height]);
                         file.watch(s => {
                             if (!image.fileId && s.uuid) {
                                 image.fileId = s.uuid;
-                                this.updateImage(image);
+                                this.addImage(image);
                             }
                         });
                     })();
@@ -83,7 +137,7 @@ export class MediaSessionVolumeSpace {
     }
 
     ////
-    // handle changes
+    // handle local commands
     ////
     moveSelf = (to: number[]) => {
         this.selfPeer.coords = to;
@@ -91,15 +145,24 @@ export class MediaSessionVolumeSpace {
         [...this.peersVM.values()].map(this.updatePeerVolume);
     }
 
-    updatePath = (path: Path) => {
+    addPath = (path: Path) => {
         if (this.mediaSession.getPeerId()) {
             this.selfPathsVM.set(path.id, path);
             this.pathsVM.add(this.mediaSession.getPeerId(), path.id, path, true);
-            this.reportSingle({ ...path, rawPath: undefined });
+            this.reportSingle(path);
         }
     }
 
-    updateImage = (image: Image) => {
+    incrementPath = (path: Path, increment: number[][]) => {
+        if (this.mediaSession.getPeerId()) {
+            path.path.push(...increment);
+            this.selfPathsVM.set(path.id, path, true);
+            this.pathsVM.add(this.mediaSession.getPeerId(), path.id, path, true);
+            this.reportSingle(new PathIncrement(path.id, increment));
+        }
+    }
+
+    addImage = (image: Image) => {
         if (this.mediaSession.getPeerId()) {
             this.selfImagesVM.set(image.id, image);
             this.imagesVM.add(this.mediaSession.getPeerId(), image.id, image, true);
@@ -107,27 +170,43 @@ export class MediaSessionVolumeSpace {
         }
     }
 
+    // yep, no access mgmt for now
+    delete = (id: string) => {
+        this.selfImagesVM.delete(id);
+        this.selfPathsVM.delete(id);
+        this.pathsVM.deleteByValId(id);
+        this.imagesVM.deleteByValId(id);
+        this.selfDeletedIds.add(id);
+        // deletions will be reported on sync
+    }
+
+    ////
+    // effects
+    ////
     updatePeerVolume = (peer: PeerAvatar) => {
         let distance = Math.pow(Math.pow(peer.coords[0] - this.selfPeer.coords[0], 2) + Math.pow(peer.coords[1] - this.selfPeer.coords[1], 2), 0.5);
         let volume = distance < this.minDinstance ? 1 : distance > this.maxDisatance ? 0 : 1 - (distance - this.minDinstance) / (this.maxDisatance - this.minDinstance);
         peer.coords[2] = volume;
-        [...this.mediaSession.streamsVM.values()].find(s => s.getTargetPeerId() === peer.peerId)?.setVolume(volume);
-        this.peersVM.set(peer.peerId, peer, true);
+        [...this.mediaSession.streamsVM.values()].find(s => s.getTargetPeerId() === peer.id)?.setVolume(volume);
+        this.peersVM.set(peer.id, peer, true);
     }
 
     ////
     // send updates
     ////
-    sendBatch = (batch: MessageType[], fullSync?: boolean) => {
-        this.mediaSession.sendDcMessage(JSON.stringify({ channel: 'vm', seq: ++this.messageSeq, batch, fullSync }));
+    sendBatch = (batch: MessageType[]) => {
+        this.mediaSession.sendDcMessage(JSON.stringify({ channel: 'vm', seq: ++this.messageSeq, batch }));
     }
 
-    reportAll = () => {
+    sync = () => {
         let b: MessageType[] = [];
         b.push(this.selfPeer);
-        b.push(...this.selfImagesVM.values());
-        b.push(...[...this.selfPathsVM.values()].map(p => ({ ...p, rawPath: undefined })));
-        this.sendBatch(b, true);
+        let selfPeerId = this.mediaSession.getPeerId();
+        if (selfPeerId) {
+            this.knownPeers.add(selfPeerId);
+        }
+        b.push(new Sync([...this.selfPathsVM.keys(), ...this.imagesVM.keys()], [...this.selfDeletedIds.values()], [...this.knownPeers.values()]));
+        this.sendBatch(b);
     }
 
     reportSingle = (message: MessageType) => {
@@ -159,40 +238,93 @@ export class MediaSessionVolumeSpace {
             }
             this.peerSeq[container.peerId] = message.seq;
             let batch = message.batch as MessageType[];
-            let pathsFull: string[] = [];
-            let iamgesFull: string[] = [];
+            this.knownPeers.add(container.peerId);
             for (let m of batch) {
+                // state
+                if (m.type === 'sync') {
+                    // delete
+                    for (let d of m.deletedIDs) {
+                        this.imagesVM.deleteByValId(d);
+                        this.pathsVM.deleteByValId(d);
+                    }
+                    // requst unknown items
+                    let ids: string[] = [];
+                    let peers: string[] = [];
+                    for (let id of m.ids) {
+                        if (!this.pathsVM.hasId(id)) {
+                            ids.push(id);
+                        }
+                    }
+                    // requst left peer content
+                    for (let peerId of m.knownPeers) {
+                        if (!this.knownPeers.has(peerId) && peerId !== this.mediaSession.getPeerId()) {
+                            peers.push(peerId);
+                        }
+                    }
+                    if (ids.length + peers.length > 0) {
+                        this.reportSingle(new Reqest(ids, peers));
+                    }
+                } else if (m.type === 'request') {
+                    let msgs: MessageType[] = [];
+                    for (let id of m.ids) {
+                        let image = this.selfImagesVM.get(id);
+                        if (image) {
+                            msgs.push(image);
+                        }
+                        let path = this.selfPathsVM.get(id);
+                        if (path) {
+                            msgs.push(path);
+                        }
+                    }
+
+                    for (let peerId of m.peers) {
+                        let lost: MessageType[] = [];
+                        let imgs = this.imagesVM.get(peerId)?.values();
+                        if (imgs) {
+                            lost.push(...imgs);
+                        }
+                        let pths = this.pathsVM.get(peerId)?.values();
+                        if (pths) {
+                            lost.push(...pths);
+                        }
+                        msgs.push(new LostPeer(peerId, lost));
+                    }
+                    this.sendBatch(msgs);
+                } else if (m.type === 'lost_peer') {
+                    this.knownPeers.add(m.peerId);
+                    for (let lost of m.messages) {
+                        if (lost.type === 'image') {
+                            this.imagesVM.add(m.peerId, lost.id, lost);
+                        } else if (lost.type === 'path') {
+                            this.pathsVM.add(m.peerId, lost.id, lost);
+                        }
+                    }
+                }
+
+                // state
                 if (m.type === 'peer') {
-                    m.peerId = container.peerId;
-                    this.peersVM.set(m.peerId, m);
+                    m.id = container.peerId;
+                    this.peersVM.set(m.id, m);
                     this.updatePeerVolume(m);
-                }
-
-                if (m.type === 'path') {
+                } else if (m.type === 'path') {
                     this.pathsVM.add(container.peerId, m.id, m);
-                    pathsFull.push(m.id);
-                }
-                if (m.type === 'image') {
+                } else if (m.type === 'path_inc') {
+                    let path = this.pathsVM.getById(m.pathId);
+                    if (path) {
+                        path.path.push(...m.increment);
+                        this.pathsVM.add(container.peerId, m.pathId, path, true);
+                    }
+                } else if (m.type === 'image') {
                     this.imagesVM.add(container.peerId, m.id, m);
-                    iamgesFull.push(m.id);
-                }
-            }
-            if (message.fullSync) {
-                // delete erased paths
-                for (let localPath of this.pathsVM.get(container.peerId)?.values() || []) {
-                    if (!pathsFull.find(remotePath => remotePath === localPath.id)) {
-                        this.pathsVM.deleteVal(container.peerId, localPath.id);
-                    }
-                }
-
-                // delete erased images
-                for (let localImage of this.imagesVM.get(container.peerId)?.values() || []) {
-                    if (!iamgesFull.find(remoteImage => remoteImage === localImage.id)) {
-                        this.imagesVM.deleteVal(container.peerId, localImage.id);
+                } else if (m.type === 'move') {
+                    // only images for now
+                    let image = this.imagesVM.getById(m.id);
+                    if (image) {
+                        image.coords = m.coords;
+                        this.imagesVM.addById(m.id, image, true);
                     }
                 }
             }
-
         } catch (e) {
             console.error('[wtf]', container.data);
             throw (e);

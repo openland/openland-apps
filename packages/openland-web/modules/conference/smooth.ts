@@ -31,7 +31,7 @@ const bezier = (point: number[], prev: number[], prevPrev: number[], next: numbe
     const [cpsX, cpsY, len1] = controlPoint(prev, prevPrev, point);
     // end control point
     const [cpeX, cpeY, len2] = controlPoint(point, prev, next, true);
-    return ((len1 + len2 > 7) || !prev || !next) ? `C ${cpsX},${cpsY} ${cpeX},${cpeY} ${point[0]},${point[1]}` : undefined;
+    return ((len1 + len2 > 3) || !prev || !next) ? `C ${cpsX},${cpsY} ${cpeX},${cpeY} ${point[0]},${point[1]}` : undefined;
 };
 
 export const bezierPath = (points: number[][]) => {
