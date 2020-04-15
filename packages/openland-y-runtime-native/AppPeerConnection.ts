@@ -74,6 +74,11 @@ class AppPeerConnectionNative implements AppPeerConnection {
         this.connection.addStream(s);
     }
 
+    removeStream = (stream: AppMediaStream) => {
+        let s = (stream as AppUserMediaStreamNative)._stream;
+        this.connection.removeStream(s);
+    }
+
     close() {
         if (!this.started) {
             return;

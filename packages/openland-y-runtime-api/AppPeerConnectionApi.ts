@@ -15,6 +15,7 @@ export interface AppPeerConnection {
     createAnswer(): Promise<string>;
 
     addStream(stream: AppMediaStream): void;
+    removeStream(stream: AppMediaStream): void;
 
     sendDCMessage(message: string): void;
     onDcMessage: ((message: any) => void) | undefined;

@@ -65,7 +65,7 @@ export class MediaSessionManager {
             await this.client.mutateconferenceAlterMediaState({
                 id: this.conferenceId,
                 state: {
-                    audioOut: !mute
+                    audioPaused: mute
                 }
             });
         });
@@ -144,7 +144,7 @@ export class MediaSessionManager {
             await this.client.mutateconferenceAlterMediaState({
                 id: this.conferenceId,
                 state: {
-                    videoOut: enabled
+                    videoPaused: !enabled
                 }
             });
         });
@@ -334,9 +334,7 @@ export class MediaSessionManager {
                 this.outScreenStream.binded = true;
             }
             if (ms) {
-                if (videoStream && (ms.getVideoOutStream() !== videoStream)) {
-                    ms.addStream(videoStream);
-                }
+                ms.setVideoStream(videoStream);
                 ms.onStateChanged(s);
             } else {
                 console.log('[WEBRTC] Create stream ' + s.id);

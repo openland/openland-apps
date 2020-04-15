@@ -93,8 +93,8 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     let [talking, setTalking] = React.useState(false);
     const [localPeer, setLocalPeer] = React.useState(props.mediaSession.getPeerId());
     const isLocal = props.peer.id === props.mediaSession.getPeerId();
-    const [audioEnabled, setAudioEnabled] = React.useState(true);
-    const [videoEnabled, setVideoEnabled] = React.useState(false);
+    const [audioPaused, setAudioPaused] = React.useState<boolean | null>(true);
+    const [videoPaused, setVideoPaused] = React.useState<boolean | null>(false);
     React.useEffect(() => {
         // mediaSession initiating without peerId. Like waaat
         let d0 = props.calls.listenState(() => setLocalPeer(props.mediaSession.getPeerId()));
@@ -117,8 +117,8 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
             d3 = props.mediaSession.peerStreamMediaStateVM.listen(props.peer.id, s => {
                 let camState = [...s.values()].find(c => c.videoSource === MediaStreamVideoSource.camera);
                 if (camState) {
-                    setAudioEnabled(camState.audioOut);
-                    setVideoEnabled(camState.videoOut);
+                    setAudioPaused(camState.audioPaused);
+                    setVideoPaused(camState.videoPaused);
                 }
             });
         }
@@ -137,13 +137,13 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
 
     const icon = props.callState.status !== 'connected' ? <SvgLoader size="small" contrast={true} />
         : talking ? <SpeakerIcon />
-            : (isLocal ? props.callState.mute : !audioEnabled) ? <MutedIcon />
+            : (isLocal ? props.callState.mute : audioPaused) ? <MutedIcon />
                 : null;
 
     const bgSrc = props.peer.user.photo ? props.peer.user.photo : undefined;
     const bgColor = !props.peer.user.photo ? getPlaceholderColorById(props.peer.user.id) : undefined;
 
-    let mainStreamWeb = (videoEnabled || isLocal || mainStream?.source === 'screen_share') && (mainStream as AppUserMediaStreamWeb | undefined)?._stream;
+    let mainStreamWeb = (!videoPaused || isLocal || mainStream?.source === 'screen_share') && (mainStream as AppUserMediaStreamWeb | undefined)?._stream;
     // @ts-ignore
     let miniStreamWeb = (miniStream as AppUserMediaStreamWeb | undefined)?._stream;
     const onClick = React.useCallback(() => mainStreamWeb ? showVideoModal(mainStreamWeb) : undefined, [mainStreamWeb]);

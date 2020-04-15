@@ -293,19 +293,15 @@ export class MediaStreamManager {
         }
     }
 
-    addStream = (stream: AppMediaStream) => {
+    setVideoStream = (stream?: AppMediaStream) => {
         this._queue.post(() => {
-            if (stream.hasAudio()) {
-                if (this.audioOutStream !== stream) {
-                    this.audioOutStream = stream;
-                    this.peerConnection.addStream(stream);
-                }
-            }
-            if (stream.hasVideo()) {
+            if (stream) {
                 if (this.videoOutStream !== stream) {
                     this.videoOutStream = stream;
                     this.peerConnection.addStream(stream);
                 }
+            } else if (this.videoOutStream) {
+                this.peerConnection.removeStream(this.videoOutStream);
             }
 
         });

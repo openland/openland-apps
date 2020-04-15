@@ -17,6 +17,6 @@ internal val MediaCandidateSelector = obj(
 val MediaCandidate = object: OperationDefinition {
     override val name = "MediaCandidate"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation MediaCandidate(\$id:ID!,\$peerId:ID!,\$candidate:String!){mediaStreamCandidate(id:\$id,peerId:\$peerId,candidate:\$candidate){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}"
+    override val body = "mutation MediaCandidate(\$id:ID!,\$peerId:ID!,\$candidate:String!){mediaStreamCandidate(id:\$id,peerId:\$peerId,candidate:\$candidate){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoPaused audioPaused videoSource}}"
     override val selector = MediaCandidateSelector
 }

@@ -1317,9 +1317,9 @@ const MediaStreamFullSelector = obj(
                 ))),
             field('mediaState', 'mediaState', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('videoOut', 'videoOut', args(), notNull(scalar('Boolean'))),
-                    field('videoSource', 'videoSource', args(), scalar('String')),
-                    field('audioOut', 'audioOut', args(), notNull(scalar('Boolean')))
+                    field('videoPaused', 'videoPaused', args(), scalar('Boolean')),
+                    field('audioPaused', 'audioPaused', args(), scalar('Boolean')),
+                    field('videoSource', 'videoSource', args(), scalar('String'))
                 )))
         );
 
@@ -5185,7 +5185,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ConferenceMedia: {
         kind: 'query',
         name: 'ConferenceMedia',
-        body: 'query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}iceServers{__typename urls username credential}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}',
+        body: 'query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}iceServers{__typename urls username credential}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoPaused audioPaused videoSource}}',
         selector: ConferenceMediaSelector
     },
     Dialogs: {
@@ -6049,31 +6049,31 @@ export const Operations: { [key: string]: OperationDefinition } = {
     MediaAnswer: {
         kind: 'mutation',
         name: 'MediaAnswer',
-        body: 'mutation MediaAnswer($id:ID!,$peerId:ID!,$answer:String!,$seq:Int!){mediaStreamAnswer(id:$id,peerId:$peerId,answer:$answer,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}',
+        body: 'mutation MediaAnswer($id:ID!,$peerId:ID!,$answer:String!,$seq:Int!){mediaStreamAnswer(id:$id,peerId:$peerId,answer:$answer,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoPaused audioPaused videoSource}}',
         selector: MediaAnswerSelector
     },
     MediaCandidate: {
         kind: 'mutation',
         name: 'MediaCandidate',
-        body: 'mutation MediaCandidate($id:ID!,$peerId:ID!,$candidate:String!){mediaStreamCandidate(id:$id,peerId:$peerId,candidate:$candidate){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}',
+        body: 'mutation MediaCandidate($id:ID!,$peerId:ID!,$candidate:String!){mediaStreamCandidate(id:$id,peerId:$peerId,candidate:$candidate){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoPaused audioPaused videoSource}}',
         selector: MediaCandidateSelector
     },
     MediaFailed: {
         kind: 'mutation',
         name: 'MediaFailed',
-        body: 'mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}',
+        body: 'mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoPaused audioPaused videoSource}}',
         selector: MediaFailedSelector
     },
     MediaNegotiationNeeded: {
         kind: 'mutation',
         name: 'MediaNegotiationNeeded',
-        body: 'mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!,$seq:Int!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}',
+        body: 'mutation MediaNegotiationNeeded($id:ID!,$peerId:ID!,$seq:Int!){mediaStreamNegotiationNeeded(id:$id,peerId:$peerId,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoPaused audioPaused videoSource}}',
         selector: MediaNegotiationNeededSelector
     },
     MediaOffer: {
         kind: 'mutation',
         name: 'MediaOffer',
-        body: 'mutation MediaOffer($id:ID!,$peerId:ID!,$offer:String!,$seq:Int!){mediaStreamOffer(id:$id,peerId:$peerId,offer:$offer,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}',
+        body: 'mutation MediaOffer($id:ID!,$peerId:ID!,$offer:String!,$seq:Int!){mediaStreamOffer(id:$id,peerId:$peerId,offer:$offer,seq:$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoPaused audioPaused videoSource}}',
         selector: MediaOfferSelector
     },
     MessageSetDonationReaction: {
@@ -6523,7 +6523,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ConferenceMediaWatch: {
         kind: 'subscription',
         name: 'ConferenceMediaWatch',
-        body: 'subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}',
+        body: 'subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoPaused audioPaused videoSource}}',
         selector: ConferenceMediaWatchSelector
     },
     ConferenceWatch: {

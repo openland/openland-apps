@@ -17,6 +17,6 @@ internal val MediaAnswerSelector = obj(
 val MediaAnswer = object: OperationDefinition {
     override val name = "MediaAnswer"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation MediaAnswer(\$id:ID!,\$peerId:ID!,\$answer:String!,\$seq:Int!){mediaStreamAnswer(id:\$id,peerId:\$peerId,answer:\$answer,seq:\$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoOut videoSource audioOut}}"
+    override val body = "mutation MediaAnswer(\$id:ID!,\$peerId:ID!,\$answer:String!,\$seq:Int!){mediaStreamAnswer(id:\$id,peerId:\$peerId,answer:\$answer,seq:\$seq){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id peerId state seq sdp ice settings{__typename videoIn videoOut videoOutSource audioIn audioOut iceTransportPolicy}mediaState{__typename videoPaused audioPaused videoSource}}"
     override val selector = MediaAnswerSelector
 }
