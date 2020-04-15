@@ -149,7 +149,7 @@ const SettingsModal = React.memo((props: { ctx: XModalController, }) => {
                         <VideoComponent stream={videoStream} cover={true} compact={true} mirror={true} />
                     )}
                 </XView>
-                <XView flexDirection="column" marginLeft={16} flexGrow={1}>
+                <XView flexDirection="column" marginLeft={16} flexGrow={1} flexShrink={1}>
                     <XView marginBottom={16}>
                         <USelect searchable={false} onChange={setVideoInputDevice} placeholder="Camera" value={localVideoInput?.deviceId} options={videoInputs.map(o => ({ value: o.deviceId, label: o.label }))} />
                     </XView>
