@@ -10,6 +10,7 @@ import { bezierPath } from './smooth';
 import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 import { Path, MediaSessionVolumeSpace } from 'openland-engines/media/MediaSessionVolumeSpace';
 import { uploadcareOptions } from 'openland-y-utils/MediaLayout';
+import { stars } from './stars';
 
 let VolumeSpaceContainerStyle = css`
     width: 100%;
@@ -30,6 +31,8 @@ let VolumeSpaceDrawContainerStyle = css`
     top: 0;
     left: 0;
     pointer-events: none;
+    background: radial-gradient(100% 100% at 50% 100%, #1C1F29 0%, #0D111A 100%),
+        radial-gradient(100% 100% at 50% 100%, #181D29 0%, #090D14 100%), #1C2029;
 `;
 
 let VolumeSpaceDrawListener = css`
@@ -251,6 +254,7 @@ const PeerObjects = React.memo((props: { peer: Conference_conference_peers, spac
         </>
     );
 });
+
 const eraseDisatance = 80;
 export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManager, peers: Conference_conference_peers[] }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
@@ -263,7 +267,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     let [erase, setErase] = React.useState(false);
 
     useJsDrag(selfRef, selfRef, props.mediaSession.volumeSpace.moveSelf, props.mediaSession.volumeSpace.selfPeer.coords, undefined, [props.peers]);
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         // scroll to center
         if (containerRef.current) {
             let centerx = (3000 - containerRef.current.clientWidth) / 2;
@@ -377,7 +381,8 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                     {props.peers.map(p => <PeerObjects key={p.id} peer={p} space={props.mediaSession.volumeSpace} />)}
                     <svg viewBox={'0 0 3000 3000'} className={VolumeSpaceDrawContainerStyle}>
                         {props.peers.map(p => <PeerDraw key={p.id} peer={p} space={props.mediaSession.volumeSpace} />)}
-                        {erase && <circle cx={0} cy={0} r={eraseDisatance} stroke="black" strokeWidth={3} ref={eraseCircleRef} fill="transparent" />}
+                        {erase && <circle cx={0} cy={0} r={eraseDisatance} stroke="white" strokeWidth={3} ref={eraseCircleRef} fill="transparent" />}
+                        {stars}
                     </svg>
 
                     {props.peers.map(p => <VolumeSpaceAvatar key={p.id} {...p} mediaSession={props.mediaSession} selfRef={p.id === props.mediaSession.getPeerId() ? selfRef : undefined} />)}
