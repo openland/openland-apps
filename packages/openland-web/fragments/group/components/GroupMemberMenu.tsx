@@ -153,6 +153,7 @@ const getMenuContent = (
                     newRole: member.role === 'ADMIN' ? RoomMemberRole.MEMBER : RoomMemberRole.ADMIN,
                 });
                 await client.refetchRoomMembersShort({ roomId: id });
+                await client.refetchRoomAdminMembers({ roomId: id });
                 opts.updateUserRole(
                     user.id,
                     member.role === 'ADMIN' ? RoomMemberRole.MEMBER : RoomMemberRole.ADMIN,
@@ -197,7 +198,7 @@ const getMenuContent = (
                         await client.refetchRoomChat({ id: group.id });
                         await client.refetchRoomMembersShort({ roomId: group.id });
                         await client.refetchRoomFeaturedMembers({ roomId: group.id });
-
+                        await client.refetchRoomAdminMembers({ roomId: id });
                         onRemove(user.id);
                     },
                     'danger',

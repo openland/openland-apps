@@ -19,6 +19,7 @@ const textareaContainer = css`
 const textAreaStyle = css`
     width: 100%;
     height: 100%;
+    max-height: 220px;
     padding-left: 16px;
     padding-right: 16px;
     padding-top: 22px;
@@ -69,6 +70,7 @@ export interface UTextAreaProps extends XViewProps {
     autofocus?: boolean;
     onChange?: (v: string) => void;
     resize?: boolean;
+    autoResize?: boolean;
 }
 
 export const UTextArea = (props: UTextAreaProps) => {
@@ -84,13 +86,18 @@ export const UTextArea = (props: UTextAreaProps) => {
     } = props;
 
     const [val, setValue] = React.useState(value || '');
+    const ref = React.createRef<HTMLTextAreaElement>();
 
     const resizing = resize ? 'vertical' : 'none';
 
-    const handleChange = (v: string) => {
-        setValue(v);
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setValue(e.target.value);
         if (onChange) {
-            onChange(v);
+            onChange(e.target.value);
+        }
+        if (props.autoResize && ref && ref.current) {
+            ref.current.style.height = "80px";
+            ref.current.style.height = (20 + ref.current.scrollHeight) + "px";
         }
     };
 
@@ -108,9 +115,10 @@ export const UTextArea = (props: UTextAreaProps) => {
                     className={textAreaStyle}
                     value={val}
                     autoFocus={autofocus}
-                    onChange={e => handleChange(e.target.value)}
+                    onChange={handleChange}
                     disabled={disabled}
                     style={{ resize: resizing }}
+                    ref={ref}
                 />
                 {placeholder && (
                     <div

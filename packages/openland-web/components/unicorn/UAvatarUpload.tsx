@@ -20,6 +20,7 @@ export interface UAvatarUploadBasicProps {
     initialUrl?: string | null;
     cropParams?: string;
     className?: string;
+    hideImageIndicator?: boolean;
 }
 
 const contentContainer = css`
@@ -27,6 +28,7 @@ const contentContainer = css`
     position: relative;
     display: flex;
     flex-shrink: 0;
+    max-width: 100%;
     align-items: center;
     justify-content: center;
     align-self: flex-start;
@@ -93,6 +95,7 @@ const hasImageIndicator = css`
 const avatarContainer = css`
     width: 96px;
     height: 96px;
+    max-width: 100%;
     position: relative;
     border-radius: 100%;
     overflow: hidden;
@@ -140,22 +143,20 @@ function prepareSrc(uuid: string, crop: UUploadCareImageCrop | null) {
 interface AvatarRenderProps extends UFileUploadRenderProps {
     dataTestId?: string;
     className?: string;
+    hideImageIndicator?: boolean;
 }
 
 const AvatarRender = (props: AvatarRenderProps) => {
     const [isLoading, setIsLoading] = React.useState(false);
     const [oldValue] = React.useState(props.value);
 
-    React.useLayoutEffect(
-        () => {
-            if (props.value !== oldValue) {
-                setIsLoading(true);
-            } else {
-                setIsLoading(false);
-            }
-        },
-        [props.value, oldValue],
-    );
+    React.useLayoutEffect(() => {
+        if (props.value !== oldValue) {
+            setIsLoading(true);
+        } else {
+            setIsLoading(false);
+        }
+    }, [props.value, oldValue]);
 
     const onLoad = () => {
         setIsLoading(false);
@@ -195,7 +196,7 @@ const AvatarRender = (props: AvatarRenderProps) => {
                     />
                 )}
             </div>
-            {hasImage && (
+            {hasImage && props.hideImageIndicator !== true && (
                 <div className={hasImageIndicator}>
                     <UIcon icon={<IcPhotoIndicator />} color="#fff" />
                 </div>
@@ -204,13 +205,13 @@ const AvatarRender = (props: AvatarRenderProps) => {
     );
 };
 
-export const UAvatarUploadBasic = React.memo<UAvatarUploadBasicProps>(props => (
+export const UAvatarUploadBasic = React.memo<UAvatarUploadBasicProps>((props) => (
     <UFileUpload
         {...props}
         initialUrl={props.initialUrl}
         cropParams={props.cropParams || '1:1'}
-        component={rp => {
-            return <AvatarRender {...rp} />;
+        component={(rp) => {
+            return <AvatarRender {...rp} hideImageIndicator={props.hideImageIndicator} />;
         }}
     />
 ));

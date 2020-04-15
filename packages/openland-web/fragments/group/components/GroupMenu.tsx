@@ -7,7 +7,6 @@ import {
     showLeaveChatConfirmation,
 } from 'openland-web/fragments/account/components/groupProfileModals';
 import SettingsIcon from 'openland-icons/s/ic-settings-24.svg';
-import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
@@ -22,29 +21,17 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
     const tabRouter = useTabRouter();
     const client = useClient();
     const { ctx, group } = props;
-    const { id, canEdit, role, isChannel } = group;
+    const { id, role, isChannel } = group;
     const typeString = isChannel ? 'channel' : 'group';
     const builder = new UPopperMenuBuilder();
 
-    if (canEdit || AppConfig.isSuperAdmin()) {
-        builder.item({
-            title: 'Manage group',
-            icon: <SettingsIcon />,
-            onClick: () => showRoomEditModal(id),
-        });
-    }
-
-    if (
-        role === 'OWNER' ||
+    if (role === 'OWNER' ||
         role === 'ADMIN' ||
-        AppConfig.isSuperAdmin()
-    ) {
+        AppConfig.isSuperAdmin()) {
         builder.item({
-            title: 'Advanced settings',
-            icon: <StarIcon />,
-            onClick: () => {
-                tabRouter.router.navigate(`/advanced/${id}`);
-            },
+            title: isChannel ? 'Manage channel' : 'Manage group',
+            icon: <SettingsIcon />,
+            onClick: () => showRoomEditModal(id, isChannel),
         });
     }
 

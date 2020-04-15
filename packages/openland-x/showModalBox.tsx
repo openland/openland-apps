@@ -258,7 +258,7 @@ const ModalBoxComponent = React.memo<{
                         </XView>
                     )}
                     {props.config.title && (
-                        <XView paddingTop={24} paddingBottom={8}>
+                        <XView paddingTop={20} paddingBottom={8}>
                             <XView
                                 paddingLeft={24}
                                 paddingRight={14}

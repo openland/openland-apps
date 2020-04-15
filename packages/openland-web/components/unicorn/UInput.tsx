@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView, XViewProps } from 'react-mental';
 import { FormField } from 'openland-form/useField';
+import { TextCaption } from 'openland-web/utils/TextStyles';
 
 const inputWrapper = css`
     display: flex;
@@ -142,12 +143,9 @@ export const UInput = React.forwardRef(
             }
         };
 
-        React.useLayoutEffect(
-            () => {
-                setValue(value || '');
-            },
-            [value],
-        );
+        React.useLayoutEffect(() => {
+            setValue(value || '');
+        }, [value]);
 
         React.useLayoutEffect(() => {
             if (prefixRef.current) {
@@ -157,21 +155,36 @@ export const UInput = React.forwardRef(
 
         return (
             <XView {...other}>
-                <div className={cx(inputWrapper, hasPlaceholder && inputWrapperWithPlaceholder, prefixText && 'has-prefix')}>
-                    <div className={cx(prefixStyle, inputTextStyle, !valueText && 'input-prefix')} ref={prefixRef}>{prefixText}</div>
+                <div
+                    className={cx(
+                        inputWrapper,
+                        hasPlaceholder && inputWrapperWithPlaceholder,
+                        prefixText && 'has-prefix',
+                    )}
+                >
+                    <div
+                        className={cx(prefixStyle, inputTextStyle, !valueText && 'input-prefix')}
+                        ref={prefixRef}
+                    >
+                        {prefixText}
+                    </div>
                     <input
                         disabled={disabled}
                         value={valueText}
-                        className={cx(inputStyle, inputTextStyle, hasPlaceholder && inputStyleWithPlaceholder)}
+                        className={cx(
+                            inputStyle,
+                            inputTextStyle,
+                            hasPlaceholder && inputStyleWithPlaceholder,
+                        )}
                         type={type}
                         pattern={pattern}
                         autoFocus={autofocus}
                         autoComplete="off"
-                        onChange={e => handleChange(e.target.value)}
+                        onChange={(e) => handleChange(e.target.value)}
                         maxLength={maxLength}
                         ref={ref}
-                        {...hasPlaceholder && { placeholder: label }}
-                        style={{left: inputShift}}
+                        {...(hasPlaceholder && { placeholder: label })}
+                        style={{ left: inputShift }}
                     />
                     {!hasPlaceholder && (
                         <div
@@ -191,15 +204,25 @@ export const UInput = React.forwardRef(
     },
 );
 
-interface UInputErrorTextProps extends XViewProps {
-    text: string;
-}
+const inputErrorStyle = css`
+    color: var(--tintRed);
+    padding-left: 16px;
+    margin-top: 8px;
+`;
 
-export const UInputErrorText = ({text, ...other}: UInputErrorTextProps) => (
-    <XView color="#d75454" paddingLeft={16} marginTop={8} fontSize={12} {...other}>
-        {text}
-    </XView>
-);
+const inputRemarkStyle = css`
+    color: var(--tintGrey);
+    padding-left: 16px;
+    margin-top: 8px;
+`;
+
+export const UInputErrorText = React.memo((props: { text: string }) => (
+    <div className={cx(inputErrorStyle, TextCaption)}>{props.text}</div>
+));
+
+export const UInputRemarkText = React.memo((props: { text: string }) => (
+    <div className={cx(inputRemarkStyle, TextCaption)}>{props.text}</div>
+));
 
 export const UInputField = React.forwardRef(
     (
@@ -207,6 +230,7 @@ export const UInputField = React.forwardRef(
             field: FormField<string>;
             errorText?: string | null;
             hideErrorText?: boolean;
+            remark?: string;
         },
         ref: React.RefObject<HTMLInputElement>,
     ) => {
@@ -215,7 +239,12 @@ export const UInputField = React.forwardRef(
             <>
                 <UInput {...field.input} {...other} ref={ref} />
                 {(field.input.invalid || props.errorText) && !props.hideErrorText && (
-                    <UInputErrorText text={props.errorText ? props.errorText : field.input.errorText} />
+                    <UInputErrorText
+                        text={props.errorText ? props.errorText : field.input.errorText}
+                    />
+                )}
+                {!!props.remark && !(field.input.invalid || props.errorText) && (
+                    <UInputRemarkText text={props.remark} />
                 )}
             </>
         );

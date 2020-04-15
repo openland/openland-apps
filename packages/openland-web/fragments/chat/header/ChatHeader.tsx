@@ -18,7 +18,6 @@ import SettingsIcon from 'openland-icons/s/ic-settings-24.svg';
 import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
 import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
 import NotificationsOffIcon from 'openland-icons/s/ic-notifications-off-24.svg';
-import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import MutedIcon from 'openland-icons/s/ic-muted-16.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
@@ -89,7 +88,7 @@ const ChatOnlinesTitle = (props: { id: string }) => {
     const client = useClient();
     const [onlineCount, setOnlineCount] = React.useState<number>(0);
 
-    getChatOnlinesCount(props.id, client, count => setOnlineCount(count));
+    getChatOnlinesCount(props.id, client, (count) => setOnlineCount(count));
 
     if (onlineCount <= 0) {
         return null;
@@ -116,11 +115,15 @@ const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
                         props.chat.__typename === 'PrivateRoom',
                         props.chat.__typename === 'PrivateRoom'
                             ? {
-                                id: props.chat.user.id,
-                                title: props.chat.user.name,
-                                picture: props.chat.user.photo,
-                            }
-                            : { id: props.chat.id, title: props.chat.title, picture: props.chat.photo },
+                                  id: props.chat.user.id,
+                                  title: props.chat.user.name,
+                                  picture: props.chat.user.photo,
+                              }
+                            : {
+                                  id: props.chat.id,
+                                  title: props.chat.title,
+                                  picture: props.chat.photo,
+                              },
                     );
                 }}
                 size="large"
@@ -183,28 +186,23 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     });
 
     if (chat.__typename === 'SharedRoom') {
-        if (chat.canEdit || AppConfig.isSuperAdmin()) {
+        if (chat.role === 'OWNER' || chat.role === 'ADMIN' || AppConfig.isSuperAdmin()) {
             res.item({
-                title: 'Manage group',
+                title: chat.isChannel ? 'Manage channel' : 'Manage group',
                 icon: <SettingsIcon />,
-                action: () => showRoomEditModal(chat.id),
-            });
-        }
-        if (
-            chat.role === 'OWNER' ||
-            chat.role === 'ADMIN' ||
-            AppConfig.isSuperAdmin()
-        ) {
-            res.item({
-                title: 'Advanced settings',
-                icon: <StarIcon />,
-                action: () => tabRouter.router.navigate(`/advanced/${chat.id}`),
+                action: () => showRoomEditModal(chat.id, chat.isChannel),
             });
         }
         res.item({
             title: 'Leave chat',
             icon: <LeaveIcon />,
-            action: () => showLeaveChatConfirmation(client, chat.id, tabRouter, chat.__typename === 'SharedRoom' && chat.isPremium),
+            action: () =>
+                showLeaveChatConfirmation(
+                    client,
+                    chat.id,
+                    tabRouter,
+                    chat.__typename === 'SharedRoom' && chat.isPremium,
+                ),
         });
     }
 
@@ -334,7 +332,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                 {showCallButton && <CallButton chat={chat} messenger={messenger} />}
 
                 <UMoreButton
-                    menu={ctx => (
+                    menu={(ctx) => (
                         <React.Suspense fallback={<div style={{ width: 240, height: 100 }} />}>
                             <MenuComponent ctx={ctx} id={chat.id} />
                         </React.Suspense>
