@@ -17,7 +17,10 @@ import { USelect } from 'openland-web/components/unicorn/USelect';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalController } from 'openland-x/showModal';
-import { VideoPeer, VideoPeerProps } from './VideoPeer';
+import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
+import { VideoComponent } from './ScreenShareModal';
+import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 
 const wrapper = css`
     position: absolute;
@@ -89,13 +92,16 @@ const ControlItem = (props: { icon: JSX.Element, text: string, onClick: React.Mo
     );
 };
 
-const SettingsModal = React.memo((props: { ctx: XModalController, videoProps?: VideoPeerProps }) => {
+const SettingsModal = React.memo((props: { ctx: XModalController, }) => {
     let { devices, input, output, videoInput, selectInput, selectOutput, selectVideoInput } = MediaDevicesManager.instance().useMediaDevices();
     let prevValues = React.useRef<{ input?: MediaDeviceInfo, output?: MediaDeviceInfo, videoInput?: MediaDeviceInfo }>({ input, output, videoInput }).current;
 
     let outputs = devices.filter(d => d.kind === 'audiooutput');
     let inputs = devices.filter(d => d.kind === 'audioinput');
     let videoInputs = devices.filter(d => d.kind === 'videoinput');
+
+    const [localVideoInput, setLocalVideoInput] = React.useState<MediaDeviceInfo | undefined>(videoInput);
+    const [localVideoStream, setLocalVideoStream] = React.useState<AppMediaStream | undefined>();
 
     let setInputDevice = React.useCallback((val) => {
         let device = devices.find(d => d.deviceId === val.value);
@@ -105,26 +111,47 @@ const SettingsModal = React.memo((props: { ctx: XModalController, videoProps?: V
         let dev = devices.find(d => d.deviceId === val.value);
         selectOutput(dev);
     }, [devices]);
-    let setVideoInputDevice = React.useCallback((val) => {
+    let setVideoInputDevice = React.useCallback(async (val) => {
         let dev = devices.find(d => d.deviceId === val.value);
-        selectVideoInput(dev);
+        setLocalVideoInput(dev);
+        let v = await AppUserMedia.getUserVideo(dev?.deviceId);
+        setLocalVideoStream(v);
     }, [devices]);
 
     const resetSettings = () => {
         selectInput(prevValues.input);
         selectOutput(prevValues.output);
-        selectVideoInput(prevValues.videoInput);
     };
+
+    let handleSave = () => {
+        if (localVideoInput?.deviceId !== videoInput?.deviceId) {
+            selectVideoInput(localVideoInput);
+        }
+        props.ctx.hide();
+    };
+
+    const setInitialVideo = async () => {
+        let v = await AppUserMedia.getUserVideo(videoInput?.deviceId);
+        setLocalVideoStream(v);
+    };
+
+    React.useEffect(() => {
+        setInitialVideo();
+    }, []);
+
+    let videoStream = (localVideoStream as AppUserMediaStreamWeb | undefined)?._stream;
 
     return (
         <XView>
             <XView paddingHorizontal={24} flexDirection="row" paddingTop={12}>
-                <XView width={170} height={128} borderRadius={8}>
-                    {props.videoProps ? <VideoPeer {...props.videoProps} compact={true} /> : null}
+                <XView width={170} height={128} borderRadius={8} backgroundColor="var(--backgroundTertiaryTrans)">
+                    {videoStream && (
+                        <VideoComponent stream={videoStream} cover={true} compact={true} mirror={true} />
+                    )}
                 </XView>
                 <XView flexDirection="column" marginLeft={16} flexGrow={1}>
                     <XView marginBottom={16}>
-                        <USelect searchable={false} onChange={setVideoInputDevice} placeholder="Camera" value={videoInput?.deviceId} options={videoInputs.map(o => ({ value: o.deviceId, label: o.label }))} />
+                        <USelect searchable={false} onChange={setVideoInputDevice} placeholder="Camera" value={localVideoInput?.deviceId} options={videoInputs.map(o => ({ value: o.deviceId, label: o.label }))} />
                     </XView>
                     <XView marginBottom={16}>
                         <USelect searchable={false} onChange={setInputDevice} placeholder="Microphone" value={input?.deviceId} options={inputs.map(o => ({ value: o.deviceId, label: o.label }))} />
@@ -140,15 +167,15 @@ const SettingsModal = React.memo((props: { ctx: XModalController, videoProps?: V
                     style="tertiary"
                     size="large"
                     onClick={() => {
-                        props.ctx.hide();
                         resetSettings();
+                        props.ctx.hide();
                     }}
                 />
                 <UButton
                     text="Save"
                     style="primary"
                     size="large"
-                    onClick={() => props.ctx.hide()}
+                    onClick={handleSave}
                 />
             </XModalFooter>
         </XView>
@@ -168,13 +195,12 @@ interface CallControlsProps {
     onScreenClick: React.MouseEventHandler;
     onSpaceClick: React.MouseEventHandler;
     onToolsClick: React.MouseEventHandler;
-    videoProps?: VideoPeerProps;
 }
 
 export const CallControls = (props: CallControlsProps) => {
     let showSettings = React.useCallback(() => {
-        showModalBox({ title: 'Settings', width: 560, overflowVisible: true }, (ctx) => <SettingsModal ctx={ctx} videoProps={props.videoProps} />);
-    }, [props.videoProps]);
+        showModalBox({ title: 'Settings', width: 560, overflowVisible: true }, (ctx) => <SettingsModal ctx={ctx} />);
+    }, []);
     return (
         <XView
             width={64}
