@@ -120,11 +120,11 @@ export const showAttachMenu = (fileCallback?: (type: 'document' | 'photo' | 'vid
         );
     }, false, require('assets/ic-document-24.png'));
 
-    if (donationCb && Platform.OS !== 'ios') {
-        builder.action(Platform.select({ ios: 'Make donation', android: 'Donation' }), () => {
-            donationCb();
-        }, false, require('assets/ic-donation-24.png'));
-    }
+    // if (donationCb && Platform.OS !== 'ios') {
+    //     builder.action(Platform.select({ ios: 'Make donation', android: 'Donation' }), () => {
+    //         donationCb();
+    //     }, false, require('assets/ic-donation-24.png'));
+    // }
 
     builder.show();
 };

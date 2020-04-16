@@ -28,7 +28,6 @@ import { trackEvent } from 'openland-mobile/analytics';
 import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
 import { SUPER_ADMIN } from '../Init';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
-import { ProfileDonationGroup } from './components/ProfileDonationGroup';
 
 const ProfileGroupComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
@@ -318,9 +317,9 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     const hasAbout = !!room.description && !!room.organization;
     const highlightGroup = room.kind === 'GROUP' && !room.isPremium;
 
-    let donateTo = room.owner && room.owner.firstName;
-    let isYou = !!(room.owner && room.owner.isYou);
-    let hasDonate = donateTo && !isYou;
+    // let donateTo = room.owner && room.owner.firstName;
+    // let isYou = !!(room.owner && room.owner.isYou);
+    let hasDonate = false; // donateTo && !isYou;
     const content = (
         <>
             <ZListHero
@@ -366,14 +365,14 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 )}
             </ZListGroup>
 
-            {donateTo && Platform.OS !== 'ios' && (
+            {/* {donateTo && Platform.OS !== 'ios' && (
                 <ProfileDonationGroup
                     headerMarginTop={!hasAbout ? 0 : undefined}
                     name={donateTo}
                     chatId={room.id}
                     shouldHide={isYou}
                 />
-            )}
+            )} */}
 
             <ZListGroup
                 header="Settings"
