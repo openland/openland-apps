@@ -18,9 +18,11 @@ export class Path {
     type: 'path' = 'path';
     id: string;
     path: number[][];
-    constructor(path: number[][]) {
+    color: string;
+    constructor(path: number[][], color: string) {
         this.id = `path_${uuid()}`;
         this.path = path;
+        this.color = color;
     }
 }
 

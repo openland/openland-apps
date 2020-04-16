@@ -23,15 +23,15 @@ const controlPoint = (current: number[], previous: number[], next: number[], rev
     // The control point position is relative to the current point
     const x = current[0] + Math.cos(angle) * length;
     const y = current[1] + Math.sin(angle) * length;
-    return [x, y, length];
+    return [x, y];
 };
 
 const bezier = (point: number[], prev: number[], prevPrev: number[], next: number[]) => {
     // start control point
-    const [cpsX, cpsY, len1] = controlPoint(prev, prevPrev, point);
+    const [cpsX, cpsY] = controlPoint(prev, prevPrev, point);
     // end control point
-    const [cpeX, cpeY, len2] = controlPoint(point, prev, next, true);
-    return ((len1 + len2 > 3) || !prev || !next) ? `C ${cpsX},${cpsY} ${cpeX},${cpeY} ${point[0]},${point[1]}` : undefined;
+    const [cpeX, cpeY] = controlPoint(point, prev, next, true);
+    return ((Math.abs(prev[0] - point[0]) + Math.abs(prev[1] - point[1]) > 4) || !prev || !next) ? `C ${cpsX},${cpsY} ${cpeX},${cpeY} ${point[0]},${point[1]}` : undefined;
 };
 
 export const bezierPath = (points: number[][]) => {

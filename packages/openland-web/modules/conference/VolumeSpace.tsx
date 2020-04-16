@@ -5,11 +5,11 @@ import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { VideoComponent } from './ScreenShareModal';
-import { UAvatar, getPlaceholderColorRawById } from 'openland-web/components/unicorn/UAvatar';
+import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { bezierPath } from './smooth';
-import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 import { Path, MediaSessionVolumeSpace } from 'openland-engines/media/MediaSessionVolumeSpace';
 import { uploadcareOptions } from 'openland-y-utils/MediaLayout';
+import { XView } from 'react-mental';
 // import { stars } from './stars';
 
 let VolumeSpaceContainerStyle = css`
@@ -67,16 +67,19 @@ let VolumeSpaceVideoStyle = css`
 `;
 let DrawControlsContainerStyle = css`
     position: absolute;
-    bottom: 16px;
-    right: 16px;
-    width: 160px;
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    top: 0;
     border-radius: 8px;
     background-color: var(--backgroundTertiary);
-    transition: bottom 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
+    opacity: 1;
+    transition: opacity 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
 `;
 
 let DrawControlsHidden = css`
-    bottom: -200px;
+    opacity: 0;
+    pointer-events: none;
 `;
 
 let PeerImageContainer = css`
@@ -109,6 +112,35 @@ let ImageMoveAnchorStyle = css`
     height: 30px;
     top: 0;
     cursor: move;
+`;
+
+let MenuEraseStyle = css`
+    position: relative;
+    overflow: hidden;
+    border: solid 2px #ccc;
+    border-radius: 24px;
+    width: 24px;
+    height: 24px;
+    margin: 8px;
+    :before, :after {
+        position: absolute;
+        content: ' ';
+        left: 9px;
+        top: -2px;
+        height: 24px;
+        width: 2px;
+        background-color: red;
+    }
+    :before {
+        transform: rotate(45deg);
+    }
+    :after {
+        transform: rotate(-45deg);
+    }
+`;
+
+let MenuEraseSelectedStyle = css`
+  border: solid 2px black;
 `;
 
 const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { mediaSession: MediaSessionManager, selfRef?: React.RefObject<HTMLDivElement> }) => {
@@ -184,11 +216,12 @@ const PeerImage = React.memo((props: { peerId: string, peer?: Conference_confere
     // worse access mgmt ever
     let canMove = (props.peer?.user.isYou || !props.peersRef.current.find(peer => peer.id === props.peerId));
     if (canMove) {
-        let img = props.space.imagesVM.getById(props.imageId);
-        let coords = img?.coords;
-        useJsDrag(moveRef, ref, onImageMove, coords);
+        useJsDrag(moveRef, ref, onImageMove, () => {
+            let img = props.space.imagesVM.getById(props.imageId);
+            return img?.coords;
+        });
         useJsDrag(resizeRef, undefined, onImageResize, () => {
-            img = props.space.imagesVM.getById(props.imageId);
+            let img = props.space.imagesVM.getById(props.imageId);
             if (img) {
                 return [img.coords[0] + img.containerWH[0], img.coords[1] + img.containerWH[1]];
             }
@@ -267,7 +300,7 @@ const Objects = React.memo((props: { peers: Conference_conference_peers[], space
 const eraseDisatance = 80;
 const PeerPath = React.memo((props: { peerId: string, peer?: Conference_conference_peers, pathId: string, space: MediaSessionVolumeSpace, peersRef: React.MutableRefObject<Conference_conference_peers[]> }) => {
     let [strPath, setPath] = React.useState<string>();
-    let color = React.useMemo(() => getPlaceholderColorRawById(props.peerId), []);
+    let [color, setColor] = React.useState<string>('white');
     React.useEffect(() => {
         let path: Path | undefined;
         // worse access mgmt ever
@@ -280,6 +313,7 @@ const PeerPath = React.memo((props: { peerId: string, peer?: Conference_conferen
         let d2 = props.space.pathsVM.listenId(props.peerId, props.pathId, p => {
             path = p;
             setPath(bezierPath(p.path));
+            setColor(p.color);
         });
         return () => {
             if (d1) {
@@ -289,7 +323,7 @@ const PeerPath = React.memo((props: { peerId: string, peer?: Conference_conferen
         };
     }, []);
     return (
-        <path key={props.pathId} d={strPath} strokeWidth={2} stroke={color.end} fill="transparent" />
+        <path key={props.pathId} d={strPath} strokeWidth={2} stroke={color} fill="transparent" />
     );
 });
 
@@ -325,6 +359,11 @@ const Drawings = React.memo((props: { peers: Conference_conference_peers[], spac
     );
 });
 
+const colors = [
+    ['#FF7919', '#3AA64C', '#3695D9'],
+    ['#000', '#fff', 'erase'],
+    ['#2458F2', '#4624F2', '#D9366C']
+];
 export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManager, peers: Conference_conference_peers[] }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
     let innerContainerRef = React.useRef<HTMLDivElement>(null);
@@ -332,8 +371,10 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     let selfRef = React.useRef<HTMLDivElement>(null);
     let eraseCircleRef = React.useRef<SVGCircleElement>(null);
     let nonDrawContentRef = React.useRef<HTMLDivElement>(null);
-    let [controls, setControls] = React.useState(false);
     let [erase, setErase] = React.useState(false);
+    let [color, setColor] = React.useState(colors[1][1]);
+    let [menu, setMenu] = React.useState(false);
+    let menuRef = React.useRef<HTMLDivElement>(null);
     let peersRef = React.useRef(props.peers);
     peersRef.current = props.peers;
 
@@ -350,10 +391,24 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     }, []);
 
     React.useEffect(() => {
+        let onContext = (ev: any) => {
+            ev.stopPropagation();
+            ev.preventDefault();
+            if (menuRef.current) {
+                menuRef.current.style.transform = `translate(${ev.offsetX - menuRef.current.clientWidth / 2}px, ${ev.offsetY - menuRef.current.clientHeight / 2}px)`;
+            }
+            setMenu(true);
+        };
+        if (drawListenerRef.current) {
+            drawListenerRef.current.oncontextmenu = onContext;
+        }
+    }, []);
+
+    React.useEffect(() => {
         // draw
 
         let down = false;
-        let path = new Path([]);
+        let path = new Path([], color);
         let onMove = (ev: any) => {
 
             let coords: number[] = [ev.offsetX, ev.offsetY];
@@ -372,12 +427,18 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
             }
             return true;
         };
-        let onStart = () => {
+        let onStart = (ev: any) => {
+            // rpevent actions on right click
+            if (ev.button !== 0) {
+                return;
+            }
+            setMenu(false);
+
             if (!erase) {
                 drawListenerRef.current!.addEventListener('mousemove', onMove);
             }
             down = true;
-            path = new Path([]);
+            path = new Path([], color);
             props.mediaSession.volumeSpace.addPath(path);
             // disable other object while drawing
             if (nonDrawContentRef.current) {
@@ -410,9 +471,6 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
             drawListenerRef.current.addEventListener('mouseup', onStop);
         }
 
-        // listen local drawings
-        let d1 = props.mediaSession.volumeSpace.selfPathsVM.listenAll(all => setControls(!!all.size));
-
         // disable other object while drawing
         if (erase) {
             if (nonDrawContentRef.current) {
@@ -423,14 +481,23 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
             drawListenerRef.current!.removeEventListener('mousedown', onStart);
             drawListenerRef.current!.removeEventListener('mousemove', onMove);
             drawListenerRef.current!.removeEventListener('mouseup', onStop);
-            d1();
             // enable other object after drawing
             if (nonDrawContentRef.current) {
                 nonDrawContentRef.current.style.pointerEvents = 'auto';
             }
         };
 
-    }, [erase]);
+    }, [erase, color]);
+
+    let selectColor = React.useCallback((c: string) => {
+        if (c === 'erase') {
+            setErase(true);
+        } else {
+            setColor(c);
+        }
+        setMenu(false);
+    }, []);
+
     return (
         <div className={VolumeSpaceContainerStyle} ref={containerRef}>
 
@@ -447,10 +514,17 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
 
                     {props.peers.map(p => <VolumeSpaceAvatar key={p.id} {...p} mediaSession={props.mediaSession} selfRef={p.id === props.mediaSession.getPeerId() ? selfRef : undefined} />)}
                 </div>
+                <div className={cx(DrawControlsContainerStyle, !menu && DrawControlsHidden)} ref={menuRef}>
+                    {colors.map((pack, i) =>
+                        <XView key={i} flexDirection="row">
+                            {pack.map(c => c === 'erase' ?
+                                <div className={cx(MenuEraseStyle, erase && MenuEraseSelectedStyle)} onClick={() => selectColor(c)} /> :
+                                <XView key={c} backgroundColor={c} width={24} height={24} borderRadius={24} borderColor={c === color ? 'black' : '#ccc'} borderWidth={2} margin={8} onClick={() => selectColor(c)} />)}
+                        </XView>
+                    )}
+                </div>
             </div>
-            <div className={cx(DrawControlsContainerStyle, !controls && DrawControlsHidden)}>
-                <UCheckbox onChange={setErase} label="Erase" checked={erase} asSwitcher={true} />
-            </div>
+
         </div >
     );
 });
