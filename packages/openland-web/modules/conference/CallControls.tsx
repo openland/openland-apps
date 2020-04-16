@@ -114,9 +114,12 @@ const SettingsModal = React.memo((props: { ctx: XModalController, }) => {
     let setVideoInputDevice = React.useCallback(async (val) => {
         let dev = devices.find(d => d.deviceId === val.value);
         setLocalVideoInput(dev);
+        if (localVideoStream) {
+            localVideoStream.close();
+        }
         let v = await AppUserMedia.getUserVideo(dev?.deviceId);
         setLocalVideoStream(v);
-    }, [devices]);
+    }, [devices, localVideoStream]);
 
     const resetSettings = () => {
         selectInput(prevValues.input);
@@ -130,14 +133,19 @@ const SettingsModal = React.memo((props: { ctx: XModalController, }) => {
         props.ctx.hide();
     };
 
-    const setInitialVideo = async () => {
-        let v = await AppUserMedia.getUserVideo(videoInput?.deviceId);
-        setLocalVideoStream(v);
-    };
-
     React.useEffect(() => {
-        setInitialVideo();
-    }, []);
+        if (!localVideoStream) {
+            (async () => {
+                let v = await AppUserMedia.getUserVideo(videoInput?.deviceId);
+                setLocalVideoStream(v);
+            })();
+        }
+        return () => {
+            if (localVideoStream) {
+                localVideoStream.close();
+            }
+        };
+    }, [localVideoStream]);
 
     let videoStream = (localVideoStream as AppUserMediaStreamWeb | undefined)?._stream;
 
