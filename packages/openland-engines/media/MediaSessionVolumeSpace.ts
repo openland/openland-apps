@@ -14,6 +14,17 @@ class PeerAvatar {
     }
 }
 
+class Pointer {
+    type: 'pointer' = 'pointer';
+    id: string;
+    coords: number[];
+    hidden?: boolean;
+    constructor(peerId: string, coords: number[]) {
+        this.id = `pointer_${peerId}`;
+        this.coords = coords;
+    }
+}
+
 export class Path {
     type: 'path' = 'path';
     id: string;
@@ -94,19 +105,21 @@ class LostPeer {
     }
 }
 
-type MessageType = PeerAvatar | Path | Image | Sync | Update | PathIncrement | Reqest | LostPeer;
+type MessageType = PeerAvatar | Path | Image | Pointer | Sync | Update | PathIncrement | Reqest | LostPeer;
 
 export class MediaSessionVolumeSpace {
     private mediaSession: MediaSessionManager;
     private d1: () => void;
     private d2: () => void;
     readonly selfPeer: PeerAvatar;
+    private selfPointer: Pointer | undefined;
     readonly selfPathsVM = new VMMap<string, Path>();
     readonly selfImagesVM = new VMMap<string, Image>();
     readonly selfDeletedIds = new Set<string>();
     readonly knownPeers = new Set<string>();
 
     readonly peersVM = new VMMap<string, PeerAvatar>();
+    readonly pointerVM = new VMMap<string, Pointer>();
     readonly pathsVM = new VMMapMap<string, string, Path>();
     readonly imagesVM = new VMMapMap<string, string, Image>();
 
@@ -156,6 +169,27 @@ export class MediaSessionVolumeSpace {
             this.selfPathsVM.set(path.id, path);
             this.pathsVM.add(this.mediaSession.getPeerId(), path.id, path, true);
             this.reportSingle(path);
+        }
+    }
+
+    movePointer = (coords: number[]) => {
+        if (this.mediaSession.getPeerId()) {
+            if (!this.selfPointer) {
+                this.selfPointer = new Pointer(this.mediaSession.getPeerId(), coords);
+            }
+            this.selfPointer.coords = coords;
+            this.pointerVM.set(this.mediaSession.getPeerId(), this.selfPointer, true);
+            if (!this.selfPointer?.hidden) {
+                this.reportSingle(this.selfPointer);
+            }
+        }
+    }
+
+    switchPointer = (show: boolean) => {
+        if (this.selfPointer) {
+            this.selfPointer.hidden = !show;
+            this.pointerVM.set(this.mediaSession.getPeerId(), this.selfPointer, true);
+            this.reportSingle(this.selfPointer);
         }
     }
 
@@ -222,11 +256,14 @@ export class MediaSessionVolumeSpace {
     sync = () => {
         let b: MessageType[] = [];
         b.push(this.selfPeer);
+        if (this.selfPointer) {
+            b.push(this.selfPointer);
+        }
         let selfPeerId = this.mediaSession.getPeerId();
         if (selfPeerId) {
             this.knownPeers.add(selfPeerId);
         }
-        b.push(new Sync([...this.selfPathsVM.keys(), ...this.imagesVM.keys()], [...this.selfDeletedIds.values()], [...this.knownPeers.values()]));
+        b.push(new Sync([...this.selfPathsVM.keys(), ...this.selfImagesVM.keys()], [...this.selfDeletedIds.values()], [...this.knownPeers.values()]));
         this.sendBatch(b);
     }
 
@@ -327,6 +364,8 @@ export class MediaSessionVolumeSpace {
                     m.id = container.peerId;
                     this.peersVM.set(m.id, m);
                     this.updatePeerVolume(m);
+                } else if (m.type === 'pointer') {
+                    this.pointerVM.set(container.peerId, m);
                 } else if (m.type === 'path') {
                     this.pathsVM.add(container.peerId, m.id, m);
                 } else if (m.type === 'path_inc') {

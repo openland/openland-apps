@@ -5,11 +5,12 @@ import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { VideoComponent } from './ScreenShareModal';
-import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
+import { UAvatar, getPlaceholderColorRawById } from 'openland-web/components/unicorn/UAvatar';
 import { bezierPath } from './smooth';
 import { Path, MediaSessionVolumeSpace } from 'openland-engines/media/MediaSessionVolumeSpace';
 import { uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { XView } from 'react-mental';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 // import { stars } from './stars';
 
 let VolumeSpaceContainerStyle = css`
@@ -141,6 +142,34 @@ let MenuEraseStyle = css`
 
 let MenuEraseSelectedStyle = css`
   border: solid 2px black;
+`;
+
+let MenuPointerStyle = css`
+    position: relative;
+    border: solid 2px #ccc;
+    border-radius: 24px;
+    width: 24px;
+    height: 24px;
+    margin: 8px;
+    :before {
+        position: absolute;
+        content: ' ';
+        left: 6px;
+        top: 6px;
+        height: 8px;
+        width: 8px;
+        background-color: red;
+        border-radius: 8px;
+    }
+`;
+let MenuPointerSelectedStyle = css`
+  border: solid 2px black;
+`;
+
+let PointerStyle = css`
+    color: #fff;
+    pointer-events: none;
+    text-align: center;
 `;
 
 const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { mediaSession: MediaSessionManager, selfRef?: React.RefObject<HTMLDivElement> }) => {
@@ -359,10 +388,32 @@ const Drawings = React.memo((props: { peers: Conference_conference_peers[], spac
     );
 });
 
+const Pointer = React.memo((props: { peer: Conference_conference_peers, space: MediaSessionVolumeSpace }) => {
+    let [show, setShow] = React.useState(false);
+    let ref = React.useRef<HTMLDivElement>(null);
+    React.useEffect(() => {
+        return props.space.pointerVM.listen(props.peer.id, p => {
+            setShow(!p.hidden);
+            if (ref.current) {
+                ref.current.style.position = 'absolute';
+                ref.current.style.transform = `translate(${p.coords[0] - 12}px, ${p.coords[1] - 12}px)`;
+            }
+        });
+    });
+    return (
+        <>
+            {show && <div className={PointerStyle} ref={ref}>
+                <XView position="absolute" left={0} right={0} top={-24} paddingHorizontal={2} paddingTop={2} paddingBottom={3} {...TextStyles.Detail} borderRadius={4} backgroundColor="var(--backgroundTertiaryTrans)">{props.peer.user.shortname || props.peer.user.name}</XView>
+                <XView width={24} height={24} borderRadius={24} borderWidth={2} borderColor="#fff" backgroundColor={getPlaceholderColorRawById(props.peer.user.id).end} />
+            </div>}
+        </>
+    );
+});
+
 const colors = [
     ['#FF7919', '#3AA64C', '#3695D9'],
     ['#000', '#fff', 'erase'],
-    ['#2458F2', '#4624F2', '#D9366C']
+    ['#2458F2', 'pointer', '#D9366C']
 ];
 export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManager, peers: Conference_conference_peers[] }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
@@ -371,8 +422,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     let selfRef = React.useRef<HTMLDivElement>(null);
     let eraseCircleRef = React.useRef<SVGCircleElement>(null);
     let nonDrawContentRef = React.useRef<HTMLDivElement>(null);
-    let [erase, setErase] = React.useState(false);
-    let [color, setColor] = React.useState(colors[1][1]);
+    let [action, setAction] = React.useState<'erase' | 'pointer' | string>(colors[1][1]);
     let [menu, setMenu] = React.useState(false);
     let menuRef = React.useRef<HTMLDivElement>(null);
     let peersRef = React.useRef(props.peers);
@@ -405,14 +455,16 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     }, []);
 
     React.useEffect(() => {
-        // draw
-
+        if ((action === 'pointer' || action === 'erase') && drawListenerRef.current) {
+            drawListenerRef.current.style.cursor = 'none';
+        }
         let down = false;
-        let path = new Path([], color);
+        let path = new Path([], action);
         let onMove = (ev: any) => {
-
             let coords: number[] = [ev.offsetX, ev.offsetY];
-            if (erase) {
+            if (action === 'pointer') {
+                props.mediaSession.volumeSpace.movePointer(coords);
+            } else if (action === 'erase') {
                 // erase
                 if (down) {
                     props.mediaSession.volumeSpace.erase(coords);
@@ -425,7 +477,6 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                 // draw
                 props.mediaSession.volumeSpace.incrementPath(path, [coords]);
             }
-            return true;
         };
         let onStart = (ev: any) => {
             // rpevent actions on right click
@@ -434,11 +485,8 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
             }
             setMenu(false);
 
-            if (!erase) {
-                drawListenerRef.current!.addEventListener('mousemove', onMove);
-            }
             down = true;
-            path = new Path([], color);
+            path = new Path([], action);
             props.mediaSession.volumeSpace.addPath(path);
             // disable other object while drawing
             if (nonDrawContentRef.current) {
@@ -447,11 +495,6 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
         };
 
         let onStop = () => {
-            if (!erase) {
-                drawListenerRef.current!.removeEventListener('mousemove', onMove);
-            } else {
-                setErase(false);
-            }
             if (path.path.length < 4) {
                 props.mediaSession.volumeSpace.delete(path.id);
             }
@@ -463,16 +506,12 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
         };
         if (drawListenerRef.current) {
             drawListenerRef.current.addEventListener('mousedown', onStart);
-            if (erase) {
-                drawListenerRef.current!.addEventListener('mousemove', onMove);
-            }
-            // drawListenerRef.current.addEventListener('mouseout', onStop);
-            // drawListenerRef.current.addEventListener('mouseleave', onStop);
+            drawListenerRef.current!.addEventListener('mousemove', onMove);
             drawListenerRef.current.addEventListener('mouseup', onStop);
         }
 
         // disable other object while drawing
-        if (erase) {
+        if (action === 'erase' || action === 'pointer') {
             if (nonDrawContentRef.current) {
                 nonDrawContentRef.current.style.pointerEvents = 'none';
             }
@@ -481,20 +520,18 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
             drawListenerRef.current!.removeEventListener('mousedown', onStart);
             drawListenerRef.current!.removeEventListener('mousemove', onMove);
             drawListenerRef.current!.removeEventListener('mouseup', onStop);
+            drawListenerRef.current!.style.cursor = 'auto';
             // enable other object after drawing
             if (nonDrawContentRef.current) {
                 nonDrawContentRef.current.style.pointerEvents = 'auto';
             }
         };
 
-    }, [erase, color]);
+    }, [action]);
 
-    let selectColor = React.useCallback((c: string) => {
-        if (c === 'erase') {
-            setErase(true);
-        } else {
-            setColor(c);
-        }
+    let selectAction = React.useCallback((a: string) => {
+        setAction(a);
+        props.mediaSession.volumeSpace.switchPointer(a === 'pointer');
         setMenu(false);
     }, []);
 
@@ -508,18 +545,24 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                     <Objects peers={props.peers} space={props.mediaSession.volumeSpace} peersRef={peersRef} />
                     <svg viewBox={'0 0 3000 3000'} className={VolumeSpaceDrawContainerStyle}>
                         <Drawings peers={props.peers} space={props.mediaSession.volumeSpace} peersRef={peersRef} />
-                        {erase && <circle cx={0} cy={0} r={eraseDisatance} stroke="white" strokeWidth={3} ref={eraseCircleRef} fill="transparent" />}
+                        {action === 'erase' && <circle cx={0} cy={0} r={eraseDisatance} stroke="white" strokeWidth={3} ref={eraseCircleRef} fill="transparent" />}
                         {/* {stars} */}
                     </svg>
 
-                    {props.peers.map(p => <VolumeSpaceAvatar key={p.id} {...p} mediaSession={props.mediaSession} selfRef={p.id === props.mediaSession.getPeerId() ? selfRef : undefined} />)}
+                    {props.peers.map(p => [
+                        <VolumeSpaceAvatar key={p.id} {...p} mediaSession={props.mediaSession} selfRef={p.id === props.mediaSession.getPeerId() ? selfRef : undefined} />,
+                        <Pointer key={'pointer_' + p.id} space={props.mediaSession.volumeSpace} peer={p} />,
+                    ])}
                 </div>
                 <div className={cx(DrawControlsContainerStyle, !menu && DrawControlsHidden)} ref={menuRef}>
                     {colors.map((pack, i) =>
                         <XView key={i} flexDirection="row">
-                            {pack.map(c => c === 'erase' ?
-                                <div className={cx(MenuEraseStyle, erase && MenuEraseSelectedStyle)} onClick={() => selectColor(c)} /> :
-                                <XView key={c} backgroundColor={c} width={24} height={24} borderRadius={24} borderColor={c === color ? 'black' : '#ccc'} borderWidth={2} margin={8} onClick={() => selectColor(c)} />)}
+                            {pack.map(c =>
+                                c === 'erase' ?
+                                    <div className={cx(MenuEraseStyle, action === 'erase' && MenuEraseSelectedStyle)} onClick={() => selectAction(c)} /> :
+                                    c === 'pointer' ?
+                                        <div className={cx(MenuPointerStyle, action === 'pointer' && MenuPointerSelectedStyle)} onClick={() => selectAction(c)} /> :
+                                        <XView key={c} backgroundColor={c} width={24} height={24} borderRadius={24} borderColor={c === action ? 'black' : '#ccc'} borderWidth={2} margin={8} onClick={() => selectAction(c)} />)}
                         </XView>
                     )}
                 </div>
