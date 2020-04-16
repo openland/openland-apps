@@ -18,7 +18,6 @@ class Pointer {
     type: 'pointer' = 'pointer';
     id: string;
     coords: number[];
-    hidden?: boolean;
     constructor(peerId: string, coords: number[]) {
         this.id = `pointer_${peerId}`;
         this.coords = coords;
@@ -159,6 +158,7 @@ export class MediaSessionVolumeSpace {
     // handle local commands
     ////
     moveSelf = (to: number[]) => {
+        this.movePointer(to);
         this.selfPeer.coords = to;
         this.reportSingle(this.selfPeer);
         [...this.peersVM.values()].map(this.updatePeerVolume);
@@ -179,17 +179,8 @@ export class MediaSessionVolumeSpace {
             }
             this.selfPointer.coords = coords;
             this.pointerVM.set(this.mediaSession.getPeerId(), this.selfPointer, true);
-            if (!this.selfPointer?.hidden) {
-                this.reportSingle(this.selfPointer);
-            }
-        }
-    }
-
-    switchPointer = (show: boolean) => {
-        if (this.selfPointer) {
-            this.selfPointer.hidden = !show;
-            this.pointerVM.set(this.mediaSession.getPeerId(), this.selfPointer, true);
             this.reportSingle(this.selfPointer);
+
         }
     }
 
