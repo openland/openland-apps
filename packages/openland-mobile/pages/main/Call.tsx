@@ -11,7 +11,7 @@ import InCallManager from 'react-native-incall-manager';
 import { SAnimated } from 'react-native-fast-animations';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-fast-animations';
-import { ZAvatar } from 'openland-mobile/components/ZAvatar';
+import { ZAvatar, getPlaceholderColors } from 'openland-mobile/components/ZAvatar';
 import { RNSDevice } from 'react-native-s/RNSDevice';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 import { getMessenger } from 'openland-mobile/utils/messenger';
@@ -22,15 +22,17 @@ import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
-import { Conference_conference_peers } from 'openland-api/spacex.types';
+import { Conference_conference_peers, MediaStreamVideoSource } from 'openland-api/spacex.types';
 import { AppUserMediaStreamNative } from 'openland-y-runtime-native/AppUserMedia';
 import { RTCView } from 'react-native-webrtc';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
+import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradient.native';
 
 const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaSession: MediaSessionManager, calls: CallsEngine, h: number, mirror?: boolean }) => {
     let [mainStream, setMainStream] = React.useState<AppMediaStream>();
     // @ts-ignore
     let [miniStream, setMiniStream] = React.useState<AppMediaStream>();
+    const [videoPaused, setVideoPaused] = React.useState<boolean | null>(false);
 
     const [localPeer, setLocalPeer] = React.useState(props.mediaSession.getPeerId());
     let isLocal = props.peer.id === props.mediaSession.getPeerId();
@@ -38,12 +40,14 @@ const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaS
         // mediaSession initiating without peerId. Like waaat
         let d0 = props.calls.listenState(() => setLocalPeer(props.mediaSession.getPeerId()));
         let d1: () => void;
+        let d2: (() => void) | undefined;
         if (isLocal) {
             d1 = props.mediaSession.outVideoVM.listen(streams => {
                 let cam = streams.find(s => s?.source === 'camera');
                 let screen = streams.find(s => s?.source === 'screen_share');
                 setMainStream(screen ? screen : cam);
                 setMiniStream(screen ? cam : undefined);
+                setVideoPaused(!!cam?.blinded);
             });
         } else {
             d1 = props.mediaSession.peerVideoVM.listen(props.peer.id, streams => {
@@ -52,21 +56,46 @@ const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaS
                 setMainStream(screen ? screen : cam);
                 setMiniStream(screen ? cam : undefined);
             });
+            d2 = props.mediaSession.peerStreamMediaStateVM.listen(props.peer.id, s => {
+                let camState = [...s.values()].find(c => c.videoSource === MediaStreamVideoSource.camera);
+                if (camState) {
+                    setVideoPaused(camState.videoPaused);
+                }
+            });
         }
         return () => {
             d0();
             d1();
+            if (d2) {
+                d2();
+            }
         };
     }, [localPeer]);
-    let mainStreamNative = (mainStream as AppUserMediaStreamNative | undefined)?._stream;
+    let colors = getPlaceholderColors(props.peer.user.id);
+    let mainStreamNative = (!videoPaused || mainStream?.source === 'screen_share') && (mainStream as AppUserMediaStreamNative | undefined)?._stream;
     // @ts-ignore
     let miniStreamNative = (mainStream as AppUserMediaStreamNative | undefined)?._stream;
     return (
         <View flexGrow={1} height={props.h} backgroundColor="gray">
             {mainStreamNative && <RTCView streamURL={mainStreamNative.toURL()} style={{ flexGrow: 1 }} objectFit="cover" mirror={props.mirror} />}
-            <View position="absolute" left={6} top={6}>
+            {mainStreamNative && <View position="absolute" left={6} top={6}>
                 <ZAvatar size="medium" id={props.peer.user.id} title={props.peer.user.name} photo={props.peer.user.photo} />
-            </View>
+            </View>}
+            {!mainStreamNative &&
+                <ZLinearGradient
+                    flexGrow={1}
+                    alignSelf="stretch"
+                    fallbackColor={colors.placeholderColor}
+                    colors={[colors.placeholderColorStart, colors.placeholderColorEnd]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                >
+                    <View alignSelf="stretch" flexGrow={1} justifyContent="center" alignItems="center">
+                        <ZAvatar size="x-large" id={props.peer.user.id} title={props.peer.user.name} photo={props.peer.user.photo} />
+                    </View>
+
+                </ZLinearGradient>
+            }
         </View>
     );
 });

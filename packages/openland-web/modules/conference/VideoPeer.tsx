@@ -105,6 +105,7 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
                 let cam = streams.find(s => s?.source === 'camera');
                 let screen = streams.find(s => s?.source === 'screen_share');
                 setMainStream(screen ? screen : cam);
+                setVideoPaused(!!cam?.blinded);
                 setMiniStream(screen ? cam : undefined);
             });
         } else {
@@ -143,7 +144,7 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     const bgSrc = props.peer.user.photo ? props.peer.user.photo : undefined;
     const bgColor = !props.peer.user.photo ? getPlaceholderColorById(props.peer.user.id) : undefined;
 
-    let mainStreamWeb = (!videoPaused || isLocal || mainStream?.source === 'screen_share') && (mainStream as AppUserMediaStreamWeb | undefined)?._stream;
+    let mainStreamWeb = (!videoPaused || mainStream?.source === 'screen_share') && (mainStream as AppUserMediaStreamWeb | undefined)?._stream;
     // @ts-ignore
     let miniStreamWeb = (miniStream as AppUserMediaStreamWeb | undefined)?._stream;
     const onClick = React.useCallback(() => mainStreamWeb ? showVideoModal(mainStreamWeb) : undefined, [mainStreamWeb]);

@@ -38,6 +38,14 @@ export const avatarSizes: { [key in ZAvatarSize]: { size: number, placeholder: n
     'xx-large': { size: 96, placeholder: 40, dotSize: 16, dotPosition: 6, dotBorderWidth: 2 },
 };
 
+export const getPlaceholderColors = (id: string) => {
+    let placeholderIndex = 0;
+    if (id) {
+        placeholderIndex = doSimpleHash(id);
+    }
+    return ZStyles.avatars[placeholderIndex % ZStyles.avatars.length];
+};
+
 const ZAvatarInner = XMemo<ZAvatarProps>((props) => {
     const theme = React.useContext(ThemeContext);
     const { size, placeholder: textSize, dotSize, dotPosition, dotBorderWidth } = avatarSizes[props.size];
@@ -58,24 +66,19 @@ const ZAvatarInner = XMemo<ZAvatarProps>((props) => {
         );
     }
 
-    let placeholderIndex = 0;
-    if (props.id) {
-        placeholderIndex = doSimpleHash(props.id);
-    }
-    let placeholderStyle = ZStyles.avatars[placeholderIndex % ZStyles.avatars.length];
     let placeholderText = '?';
     if (props.title) {
         placeholderText = extractPlaceholder(props.title);
     }
-
+    let placeholderColors = getPlaceholderColors(props.id || '');
     return (
         <View>
             <ZLinearGradient
                 width={size}
                 height={size}
                 borderRadius={size / 2}
-                fallbackColor={placeholderStyle.placeholderColor}
-                colors={[placeholderStyle.placeholderColorStart, placeholderStyle.placeholderColorEnd]}
+                fallbackColor={placeholderColors.placeholderColor}
+                colors={[placeholderColors.placeholderColorStart, placeholderColors.placeholderColorEnd]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
             >
