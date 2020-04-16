@@ -157,48 +157,38 @@ const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { med
     );
 });
 
-const PeerPath = React.memo((props: { peerId: string, peer?: Conference_conference_peers, pathId: string, space: MediaSessionVolumeSpace }) => {
-    let [path, setPath] = React.useState<string>();
-    let color = React.useMemo(() => getPlaceholderColorRawById(props.peerId), []);
-    React.useEffect(() => {
-        return props.space.pathsVM.listenId(props.peerId, props.pathId, p => {
-            let strPath = bezierPath(p.path);
-            setPath(strPath);
-        });
-    }, []);
-    return (
-        <path key={props.pathId} d={path} strokeWidth={2} stroke={color.end} fill="transparent" />
-    );
-});
+////
+// IMAGES
+////
 
-const PeerImage = React.memo((props: { peerId: string, peer?: Conference_conference_peers, imageId: string, space: MediaSessionVolumeSpace }) => {
+const PeerImage = React.memo((props: { peerId: string, peer?: Conference_conference_peers, imageId: string, space: MediaSessionVolumeSpace, peersRef: React.MutableRefObject<Conference_conference_peers[]> }) => {
     const ref = React.useRef<HTMLDivElement>(null);
     const resizeRef = React.useRef<HTMLDivElement>(null);
     const moveRef = React.useRef<HTMLDivElement>(null);
     const imgRef = React.useRef<HTMLImageElement>(null);
     const onImageMove = React.useCallback((coords: number[]) => {
-        let img = props.space.selfImagesVM.get(props.imageId);
+        let img = props.space.imagesVM.getById(props.imageId);
         if (img) {
-            img.coords = coords;
-            props.space.addImage(img);
+            props.space.update(img.id, { coords });
         }
     }, []);
 
     const onImageResize = React.useCallback((coords: number[]) => {
-        let img = props.space.selfImagesVM.get(props.imageId);
+        let img = props.space.imagesVM.getById(props.imageId);
         if (img) {
-            let targetWh = [Math.max(50, coords[0] - img.coords[0]), Math.max(50, coords[1] - img.coords[1])];
-            img.containerWH = targetWh;
-            props.space.addImage(img);
+            let containerWH = [Math.max(50, coords[0] - img.coords[0]), Math.max(50, coords[1] - img.coords[1])];
+            props.space.update(img.id, { containerWH });
         }
     }, []);
 
-    let canMove = props.peer?.user.isYou;
+    // worse access mgmt ever
+    let canMove = (props.peer?.user.isYou || !props.peersRef.current.find(peer => peer.id === props.peerId));
     if (canMove) {
-        let img = props.space.selfImagesVM.get(props.imageId);
+        let img = props.space.imagesVM.getById(props.imageId);
         let coords = img?.coords;
         useJsDrag(moveRef, ref, onImageMove, coords);
         useJsDrag(resizeRef, undefined, onImageResize, () => {
+            img = props.space.imagesVM.getById(props.imageId);
             if (img) {
                 return [img.coords[0] + img.containerWH[0], img.coords[1] + img.containerWH[1]];
             }
@@ -238,7 +228,7 @@ const PeerImage = React.memo((props: { peerId: string, peer?: Conference_confere
     );
 });
 
-const PeerObjects = React.memo((props: { peerId: string, peer?: Conference_conference_peers, space: MediaSessionVolumeSpace }) => {
+const PeerObjects = React.memo((props: { peerId: string, peer?: Conference_conference_peers, space: MediaSessionVolumeSpace, peersRef: React.MutableRefObject<Conference_conference_peers[]> }) => {
     let [imageIds, setImageIds] = React.useState<string[]>([]);
     React.useEffect(() => {
         return props.space.imagesVM.listen(props.peerId, i => {
@@ -247,12 +237,12 @@ const PeerObjects = React.memo((props: { peerId: string, peer?: Conference_confe
     }, []);
     return (
         <>
-            {imageIds.map(e => <PeerImage key={e} peerId={props.peerId} peer={props.peer} imageId={e} space={props.space} />)}
+            {imageIds.map(e => <PeerImage key={e} peerId={props.peerId} peer={props.peer} imageId={e} space={props.space} peersRef={props.peersRef} />)}
         </>
     );
 });
 
-const Objects = React.memo((props: { peers: Conference_conference_peers[], space: MediaSessionVolumeSpace }) => {
+const Objects = React.memo((props: { peers: Conference_conference_peers[], space: MediaSessionVolumeSpace, peersRef: React.MutableRefObject<Conference_conference_peers[]> }) => {
     let [peers, setPeers] = React.useState(new Map<string, Conference_conference_peers | undefined>());
     React.useEffect(() => {
         return props.space.imagesVM.listenAllShallow(spacePeers => {
@@ -265,12 +255,45 @@ const Objects = React.memo((props: { peers: Conference_conference_peers[], space
     }, []);
     return (
         <>
-            {[...peers.entries()].map(([k, p]) => <PeerObjects key={k} peerId={k} peer={p} space={props.space} />)}
+            {[...peers.entries()].map(([k, p]) => <PeerObjects key={k} peerId={k} peer={p} space={props.space} peersRef={props.peersRef} />)}
         </>
     );
 });
 
-const PeerDrawing = React.memo((props: { peerId: string, peer?: Conference_conference_peers, space: MediaSessionVolumeSpace }) => {
+////
+// DRAWINGS
+////
+
+const eraseDisatance = 80;
+const PeerPath = React.memo((props: { peerId: string, peer?: Conference_conference_peers, pathId: string, space: MediaSessionVolumeSpace, peersRef: React.MutableRefObject<Conference_conference_peers[]> }) => {
+    let [strPath, setPath] = React.useState<string>();
+    let color = React.useMemo(() => getPlaceholderColorRawById(props.peerId), []);
+    React.useEffect(() => {
+        let path: Path | undefined;
+        // worse access mgmt ever
+        let d1 = (props.peer?.user.isYou || !props.peersRef.current.find(p => p.id === props.peerId)) && props.space.eraseVM.listen(coords => {
+            if (path?.path.find(p => Math.pow(Math.pow(coords[0] - p[0], 2) + Math.pow(coords[1] - p[1], 2), 0.5) < eraseDisatance)) {
+                props.space.delete(path.id);
+            }
+        });
+
+        let d2 = props.space.pathsVM.listenId(props.peerId, props.pathId, p => {
+            path = p;
+            setPath(bezierPath(p.path));
+        });
+        return () => {
+            if (d1) {
+                d1();
+            }
+            d2();
+        };
+    }, []);
+    return (
+        <path key={props.pathId} d={strPath} strokeWidth={2} stroke={color.end} fill="transparent" />
+    );
+});
+
+const PeerDrawing = React.memo((props: { peerId: string, peer?: Conference_conference_peers, space: MediaSessionVolumeSpace, peersRef: React.MutableRefObject<Conference_conference_peers[]> }) => {
     let [pathIds, setPathIds] = React.useState<string[]>([]);
     React.useEffect(() => {
         return props.space.pathsVM.listen(props.peerId, p => {
@@ -279,12 +302,12 @@ const PeerDrawing = React.memo((props: { peerId: string, peer?: Conference_confe
     }, []);
     return (
         <>
-            {pathIds.map(e => <PeerPath key={e} peerId={props.peerId} peer={props.peer} pathId={e} space={props.space} />)}
+            {pathIds.map(e => <PeerPath key={e} peerId={props.peerId} peer={props.peer} pathId={e} space={props.space} peersRef={props.peersRef} />)}
         </>
     );
 });
 
-const Drawings = React.memo((props: { peers: Conference_conference_peers[], space: MediaSessionVolumeSpace }) => {
+const Drawings = React.memo((props: { peers: Conference_conference_peers[], space: MediaSessionVolumeSpace, peersRef: React.MutableRefObject<Conference_conference_peers[]> }) => {
     let [peers, setPeers] = React.useState(new Map<string, Conference_conference_peers | undefined>());
     React.useEffect(() => {
         return props.space.pathsVM.listenAllShallow(spacePeers => {
@@ -297,12 +320,11 @@ const Drawings = React.memo((props: { peers: Conference_conference_peers[], spac
     }, []);
     return (
         <>
-            {[...peers.entries()].map(([k, p]) => <PeerDrawing key={k} peerId={k} peer={p} space={props.space} />)}
+            {[...peers.entries()].map(([k, p]) => <PeerDrawing key={k} peerId={k} peer={p} space={props.space} peersRef={props.peersRef} />)}
         </>
     );
 });
 
-const eraseDisatance = 80;
 export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManager, peers: Conference_conference_peers[] }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
     let innerContainerRef = React.useRef<HTMLDivElement>(null);
@@ -312,6 +334,8 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     let nonDrawContentRef = React.useRef<HTMLDivElement>(null);
     let [controls, setControls] = React.useState(false);
     let [erase, setErase] = React.useState(false);
+    let peersRef = React.useRef(props.peers);
+    peersRef.current = props.peers;
 
     useJsDrag(selfRef, selfRef, props.mediaSession.volumeSpace.moveSelf, props.mediaSession.volumeSpace.selfPeer.coords, undefined, [props.peers]);
     React.useLayoutEffect(() => {
@@ -335,13 +359,8 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
             let coords: number[] = [ev.offsetX, ev.offsetY];
             if (erase) {
                 // erase
-                // TODO: erase path from same uid, not only peer - forward this event to PeerDrawing
                 if (down) {
-                    for (let pth of props.mediaSession.volumeSpace.selfPathsVM.values()) {
-                        if (pth.path && (pth.path.find(p => Math.pow(Math.pow(coords[0] - p[0], 2) + Math.pow(coords[1] - p[1], 2), 0.5) < eraseDisatance))) {
-                            props.mediaSession.volumeSpace.delete(pth.id);
-                        }
-                    }
+                    props.mediaSession.volumeSpace.erase(coords);
                 }
                 // move erase cursor
                 if (eraseCircleRef.current) {
@@ -419,9 +438,9 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
 
                 <div className={VolumeSpaceDrawListener} ref={drawListenerRef} />
                 <div ref={nonDrawContentRef}>
-                    <Objects peers={props.peers} space={props.mediaSession.volumeSpace}/>
+                    <Objects peers={props.peers} space={props.mediaSession.volumeSpace} peersRef={peersRef} />
                     <svg viewBox={'0 0 3000 3000'} className={VolumeSpaceDrawContainerStyle}>
-                        <Drawings peers={props.peers} space={props.mediaSession.volumeSpace} />
+                        <Drawings peers={props.peers} space={props.mediaSession.volumeSpace} peersRef={peersRef} />
                         {erase && <circle cx={0} cy={0} r={eraseDisatance} stroke="white" strokeWidth={3} ref={eraseCircleRef} fill="transparent" />}
                         {/* {stars} */}
                     </svg>

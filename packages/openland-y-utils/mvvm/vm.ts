@@ -1,6 +1,10 @@
 export class VM<T> {
     private val: T | undefined;
     private listeners = new Set<(val: T) => void>();
+    cold?: boolean;
+    constructor(cold?: boolean) {
+        this.cold = cold;
+    }
     set = (val: T) => {
         let updated = val !== this.val;
         this.val = val;
@@ -15,7 +19,7 @@ export class VM<T> {
     }
     listen = (listener: (val: T) => void) => {
         this.listeners.add(listener);
-        if (this.val) {
+        if (!this.cold && this.val) {
             listener(this.val);
         }
         return () => this.listeners.delete(listener);

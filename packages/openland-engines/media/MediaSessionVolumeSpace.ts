@@ -1,5 +1,5 @@
 import { MediaSessionManager } from './MediaSessionManager';
-import { VMMap, VMMapMap } from 'openland-y-utils/mvvm/vm';
+import { VMMap, VMMapMap, VM } from 'openland-y-utils/mvvm/vm';
 import uuid from 'uuid';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
@@ -50,13 +50,13 @@ export class Image {
     }
 }
 
-export class Move {
-    type: 'move' = 'move';
+export class Update {
+    type: 'update' = 'update';
     id: string;
-    coords: number[];
-    constructor(id: string, coords: number[]) {
+    change: Partial<Image>;
+    constructor(id: string, change: Partial<Image>) {
         this.id = id;
-        this.coords = coords;
+        this.change = change;
     }
 }
 
@@ -92,7 +92,7 @@ class LostPeer {
     }
 }
 
-type MessageType = PeerAvatar | Path | Image | Sync | Move | PathIncrement | Reqest | LostPeer;
+type MessageType = PeerAvatar | Path | Image | Sync | Update | PathIncrement | Reqest | LostPeer;
 
 export class MediaSessionVolumeSpace {
     private mediaSession: MediaSessionManager;
@@ -101,11 +101,15 @@ export class MediaSessionVolumeSpace {
     readonly selfPeer: PeerAvatar;
     readonly selfPathsVM = new VMMap<string, Path>();
     readonly selfImagesVM = new VMMap<string, Image>();
+    readonly selfDeletedIds = new Set<string>();
+    readonly knownPeers = new Set<string>();
+
     readonly peersVM = new VMMap<string, PeerAvatar>();
     readonly pathsVM = new VMMapMap<string, string, Path>();
     readonly imagesVM = new VMMapMap<string, string, Image>();
-    readonly selfDeletedIds = new Set<string>();
-    readonly knownPeers = new Set<string>();
+
+    readonly eraseVM = new VM<number[]>(true);
+
     private interval: any;
     private messageSeq = 1;
     minDinstance = 50;
@@ -171,6 +175,17 @@ export class MediaSessionVolumeSpace {
     }
 
     // yep, no access mgmt for now
+    update = (id: string, change: Partial<Image>) => {
+        let i = this.imagesVM.getById(id);
+        if (i) {
+            i = { ...i, ...change };
+            this.selfImagesVM.set(id, i, true);
+            this.imagesVM.addById(id, i, true);
+        }
+        this.reportSingle(new Update(id, change));
+    }
+
+    // yep, no access mgmt for now
     delete = (id: string) => {
         this.selfImagesVM.delete(id);
         this.selfPathsVM.delete(id);
@@ -178,6 +193,10 @@ export class MediaSessionVolumeSpace {
         this.imagesVM.deleteByValId(id);
         this.selfDeletedIds.add(id);
         // deletions will be reported on sync
+    }
+
+    erase = (coords: number[]) => {
+        this.eraseVM.set(coords);
     }
 
     ////
@@ -316,11 +335,11 @@ export class MediaSessionVolumeSpace {
                     }
                 } else if (m.type === 'image') {
                     this.imagesVM.add(container.peerId, m.id, m);
-                } else if (m.type === 'move') {
+                } else if (m.type === 'update') {
                     // only images for now
                     let image = this.imagesVM.getById(m.id);
                     if (image) {
-                        image.coords = m.coords;
+                        image = { ...image, ...m.change };
                         this.imagesVM.addById(m.id, image, true);
                     }
                 }
