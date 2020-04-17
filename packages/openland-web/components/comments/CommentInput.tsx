@@ -46,6 +46,7 @@ export const CommentInput = React.memo((props: CommentInputProps) => {
                 onAttach={onSentAttach}
                 onStickerSentAsync={onStickerSent}
                 rickRef={ref}
+                hideDonation={true}
                 placeholder="Write a comment..."
             />
         </div>

@@ -507,7 +507,7 @@ interface SendMessageComponentProps {
     onAttach?: (files: File[]) => void;
     autoFocus?: boolean;
     ownerName?: string;
-    isYou?: boolean;
+    hideDonation: boolean;
 }
 
 const sendMessageContainer = css`
@@ -686,10 +686,8 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                 onChange={onFileInputChange}
             />
             {!!props.onAttach && (
-                <AttachConfirmButton 
-                    chatId={props.groupId} 
-                    isChannel={props.isChannel}
-                    isYou={props.isYou}
+                <AttachConfirmButton
+                    hideDonation={props.hideDonation}
                     onAttachClick={onAttachPress} 
                     onDonationClick={onDonationPress} 
                 />

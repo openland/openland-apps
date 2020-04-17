@@ -171,7 +171,7 @@ const attachButtonContainer = css`
     flex-shrink: 0;
 `;
 
-const AttachMenu = (props: {ctx: UPopperController, onAttachClick: () => void, onDonationClick: () => void}) => {
+const AttachMenu = (props: {ctx: UPopperController, hideDonation: boolean, onAttachClick: () => void, onDonationClick: () => void}) => {
     let builder = new UPopperMenuBuilder();
 
     builder.item({
@@ -184,37 +184,29 @@ const AttachMenu = (props: {ctx: UPopperController, onAttachClick: () => void, o
         icon: <FileIcon />,
         onClick: props.onAttachClick,
     });
-    builder.item({
-        title: 'Donation',
-        icon: <DonationIcon />,
-        onClick: props.onDonationClick,
-    });
+    if (!props.hideDonation) {
+        builder.item({
+            title: 'Donation',
+            icon: <DonationIcon />,
+            onClick: props.onDonationClick,
+        });
+    }
 
     return builder.build(props.ctx, 200);
 };
 
 interface AttachConfirmButtonProps {
-    chatId?: string;
-    isYou?: boolean;
-    isChannel?: boolean;
+    hideDonation: boolean;
     onAttachClick: () => void;
     onDonationClick: () => void;
 }
 
 export const AttachConfirmButton = (props: AttachConfirmButtonProps) => {
-    const [active, show] = usePopper({placement: 'top-start'}, ctx => <AttachMenu ctx={ctx} onAttachClick={props.onAttachClick} onDonationClick={props.onDonationClick} />);
-
-    const handleClick = (e: React.MouseEvent<unknown, MouseEvent>) => {
-        if (props.chatId && !props.isChannel && !props.isYou) {
-            show(e);
-        } else {
-            props.onAttachClick();
-        }
-    };
+    const [active, show] = usePopper({placement: 'top-start'}, ctx => <AttachMenu ctx={ctx} onAttachClick={props.onAttachClick} onDonationClick={props.onDonationClick} hideDonation={props.hideDonation} />);
 
     return (
         <div className={attachButtonContainer}>
-            <UIconButton active={active} icon={<AttachIcon />} onClick={handleClick} />
+            <UIconButton active={active} icon={<AttachIcon />} onClick={show} />
         </div>
     );
 };

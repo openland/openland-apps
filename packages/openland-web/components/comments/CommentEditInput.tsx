@@ -26,6 +26,7 @@ export const CommentEditInput = React.memo((props: CommentEditInputProps) => {
             <SendMessageComponent
                 groupId={groupId}
                 onTextSentAsync={onSave}
+                hideDonation={true}
                 placeholder="Write a comment..."
                 initialText={value}
             />

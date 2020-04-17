@@ -478,6 +478,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             : this.props.room.user;
         const userFirstName = user ? user.firstName : undefined;
         const isYou = user ? user.isYou : undefined;
+        const canDonate = this.props.conversationId && !isChannel && !isYou;
         return (
             <div className={messengerContainer}>
                 {this.state.loading && <XLoader loading={true} />}
@@ -521,11 +522,11 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                         onStickerSent={this.onStickerSent}
                                         onTextChange={this.handleChange}
                                         onContentChange={this.onContentChange}
-                                        isChannel={this.props.room.__typename === 'SharedRoom' ? this.props.room.isChannel : undefined}
+                                        isChannel={isChannel}
                                         isPrivate={this.props.conversationType === 'PRIVATE'}
-                                        isYou={isYou}
                                         autoFocus={true}
                                         ownerName={userFirstName}
+                                        hideDonation={!canDonate}
                                         onEmojiPickerShow={this.startStickerPicking}
                                         onEmojiPickerHide={this.finishStickerPicking}
                                     />
