@@ -10,7 +10,7 @@ import { bezierPath } from './smooth';
 import { Path, MediaSessionVolumeSpace } from 'openland-engines/media/MediaSessionVolumeSpace';
 import { uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { XView } from 'react-mental';
-import { TextStyles } from 'openland-web/utils/TextStyles';
+import { TextDetail, TextStyles } from 'openland-web/utils/TextStyles';
 import { makeStars } from './stars';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 
@@ -401,7 +401,7 @@ const Pointer = React.memo((props: { peer: Conference_conference_peers, space: M
         });
     });
     return <div className={PointerStyle} ref={ref}>
-        <XView position="absolute" left={0} right={0} top={-24} paddingHorizontal={2} paddingTop={2} paddingBottom={3} {...TextStyles.Detail} borderRadius={4} backgroundColor="var(--backgroundTertiaryTrans)">{props.peer.user.shortname || props.peer.user.name}</XView>
+        <XView position="absolute" left={-200} right={-200} top={-24}  {...TextStyles.Detail} alignItems="center" justifyContent="center"><XView borderRadius={4} paddingHorizontal={3} paddingTop={2} paddingBottom={3} backgroundColor="var(--backgroundTertiaryTrans)">{props.peer.user.shortname || props.peer.user.name}</XView></XView>
         <XView width={24} height={24} borderRadius={24} borderWidth={2} borderColor="#fff" backgroundColor={getPlaceholderColorRawById(props.peer.user.id).end} />
     </div>;
 });
@@ -439,7 +439,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
         if (innerContainerRef.current) {
             makeStars(innerContainerRef.current);
         }
-        
+
     }, []);
 
     React.useEffect(() => {
