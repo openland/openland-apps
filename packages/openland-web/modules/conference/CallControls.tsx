@@ -232,6 +232,7 @@ export const CallControls = (props: CallControlsProps) => {
                                 icon={<MinimizeIcon />}
                                 color="var(--foregroundContrast)"
                                 rippleColor="transparent"
+                                disableHover={true}
                             />
                         )}
                         onClick={props.onMinimize}
@@ -246,6 +247,7 @@ export const CallControls = (props: CallControlsProps) => {
                                 color="var(--foregroundContrast)"
                                 rippleColor="var(--accentNegative)"
                                 active={true}
+                                disableHover={true}
                             />
                         )}
                         onClick={props.onEnd}
@@ -258,6 +260,7 @@ export const CallControls = (props: CallControlsProps) => {
                                 color="var(--foregroundContrast)"
                                 rippleColor="var(--tintOrange)"
                                 active={props.muted}
+                                disableHover={true}
                             />
                         )}
                         onClick={props.onMute}
@@ -270,6 +273,7 @@ export const CallControls = (props: CallControlsProps) => {
                                 color="var(--foregroundContrast)"
                                 rippleColor="var(--tintBlue)"
                                 active={props.cameraEnabled}
+                                disableHover={true}
                             />
                         )}
                         onClick={props.onCameraClick}
@@ -282,6 +286,7 @@ export const CallControls = (props: CallControlsProps) => {
                                 color="var(--foregroundContrast)"
                                 rippleColor="var(--tintBlue)"
                                 active={props.screenEnabled}
+                                disableHover={true}
                             />
                         )}
                         onClick={props.onScreenClick}
@@ -294,6 +299,7 @@ export const CallControls = (props: CallControlsProps) => {
                                 color="var(--foregroundContrast)"
                                 rippleColor="var(--tintBlue)"
                                 active={props.spaceEnabled}
+                                disableHover={true}
                             />
                         )}
                         onClick={props.onSpaceClick}
@@ -306,6 +312,7 @@ export const CallControls = (props: CallControlsProps) => {
                                 color="var(--foregroundContrast)"
                                 rippleColor="var(--tintBlue)"
                                 active={props.toolsEnabled}
+                                disableHover={true}
                             />
                         )}
                         onClick={props.onToolsClick}
@@ -317,6 +324,7 @@ export const CallControls = (props: CallControlsProps) => {
                                 icon={<SettingsIcon />}
                                 color="var(--foregroundContrast)"
                                 rippleColor="transparent"
+                                disableHover={true}
                             />
                         )}
                         onClick={showSettings}

@@ -49,7 +49,9 @@ const container = css`
     flex-grow: 1;
     align-items: center;
     justify-content: center;
+`;
 
+const containerHover = css`
     &:hover .${wrapper}::before {
         background: var(--ripple-color);
         transform: scale3d(1, 1, 1);
@@ -63,6 +65,7 @@ interface UIconButtonProps extends XViewProps {
     loading?: boolean;
     rippleColor?: string;
     defaultRippleColor?: string;
+    disableHover?: boolean;
 }
 
 const widthBySize: { [key in UIconButtonSize]: number } = {
@@ -114,7 +117,7 @@ export const UIconButton = React.memo((props: UIconButtonProps) => {
 
     return (
         <XView {...other} cursor="pointer" width={width} height={height}>
-            <div className={container}>
+            <div className={cx(container, !props.disableHover && containerHover)}>
                 {!loading && (
                     <div
                         className={cx(wrapper, wrapperRipple, active && wrapperActive)}
