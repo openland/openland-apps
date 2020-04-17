@@ -11,7 +11,7 @@ import { Path, MediaSessionVolumeSpace } from 'openland-engines/media/MediaSessi
 import { uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
-// import { stars } from './stars';
+import { makeStars } from './stars';
 
 let VolumeSpaceContainerStyle = css`
     width: 100%;
@@ -29,9 +29,12 @@ let VolumeSpaceInnerContainerStyle = css`
     --bluePrint-dot-size: 1px;
     --bluePrint-dot-space: 56px;
 
-    background-color: var(--bluePrint-bgColor);
-    background-size: var(--bluePrint-dot-space) var(--bluePrint-dot-space);
-    background-image: radial-gradient(circle, var(--bluePrint-dotColor) var(--bluePrint-dot-size), rgba(0, 0, 0, 0) var(--bluePrint-dot-size));
+    // background-color: var(--bluePrint-bgColor);
+    // background-size: var(--bluePrint-dot-space) var(--bluePrint-dot-space);
+    // background-image: radial-gradient(circle, var(--bluePrint-dotColor) var(--bluePrint-dot-size), rgba(0, 0, 0, 0) var(--bluePrint-dot-size));
+
+    background: radial-gradient(100% 100% at 50% 100%, #1C1F29 0%, #0D111A 100%),
+        radial-gradient(100% 100% at 50% 100%, #181D29 0%, #090D14 100%), #1C2029;
 `;
 let VolumeSpaceDrawContainerStyle = css`
     transform: translate3d(0, 0, 0);
@@ -41,8 +44,6 @@ let VolumeSpaceDrawContainerStyle = css`
     top: 0;
     left: 0;
     pointer-events: none;
-    /* background: radial-gradient(100% 100% at 50% 100%, #1C1F29 0%, #0D111A 100%),
-        radial-gradient(100% 100% at 50% 100%, #181D29 0%, #090D14 100%), #1C2029; */
 `;
 
 let VolumeSpaceDrawListener = css`
@@ -422,6 +423,12 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
             console.warn(centerx, centery);
             containerRef.current.scrollBy(centerx, centery);
         }
+
+        // create stars
+        if (innerContainerRef.current) {
+            makeStars(innerContainerRef.current);
+        }
+        
     }, []);
 
     React.useEffect(() => {
@@ -551,7 +558,6 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                     <svg viewBox={'0 0 3000 3000'} className={VolumeSpaceDrawContainerStyle}>
                         <Drawings peers={props.peers} space={props.mediaSession.volumeSpace} peersRef={peersRef} />
                         {action === 'erase' && <circle cx={0} cy={0} r={eraseDisatance} stroke="white" strokeWidth={3} ref={eraseCircleRef} fill="transparent" />}
-                        {/* {stars} */}
                     </svg>
 
                     {props.peers.map(p => <VolumeSpaceAvatar key={p.id} {...p} mediaSession={props.mediaSession} selfRef={p.id === props.mediaSession.getPeerId() ? selfRef : undefined} />)}
