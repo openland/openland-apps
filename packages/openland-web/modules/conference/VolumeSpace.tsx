@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useJsDrag } from './CallFloating';
 import { css, cx } from 'linaria';
-import { Conference_conference_peers } from 'openland-api/spacex.types';
+import { Conference_conference_peers, MediaStreamVideoSource } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { VideoComponent } from './ScreenShareModal';
@@ -12,6 +12,7 @@ import { uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { makeStars } from './stars';
+import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 
 let VolumeSpaceContainerStyle = css`
     width: 100%;
@@ -164,13 +165,15 @@ let PointerStyle = css`
 
 const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { mediaSession: MediaSessionManager, selfRef?: React.RefObject<HTMLDivElement> }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
-    let [stream, setStream] = React.useState<MediaStream>();
+    let [stream, setStream] = React.useState<AppMediaStream>();
+    const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
     const isLocal = props.id === props.mediaSession.getPeerId();
     React.useEffect(() => {
         if (isLocal) {
             return props.mediaSession.outVideoVM.listen(streams => {
                 let st = streams.find(s => s?.source === 'camera');
-                setStream((st as AppUserMediaStreamWeb)?._stream);
+                setStream(st);
+                setVideoPaused(!!st?.blinded);
             });
         } else {
 
@@ -184,15 +187,23 @@ const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { med
 
             let d2 = props.mediaSession.peerVideoVM.listen(props.id, streams => {
                 let st = [...streams.values()].find(s => s?.source === 'camera');
-                setStream((st as AppUserMediaStreamWeb)?._stream);
+                setStream(st);
+            });
+            let d3 = props.mediaSession.peerStreamMediaStateVM.listen(props.id, s => {
+                let camState = [...s.values()].find(c => c.videoSource === MediaStreamVideoSource.camera);
+                if (camState) {
+                    setVideoPaused(camState.videoPaused);
+                }
             });
             return () => {
                 d1();
                 d2();
+                d3();
             };
         }
 
     });
+    let str = !videoPaused && (stream as AppUserMediaStreamWeb | undefined)?._stream;
     return (
         <div className={cx(AvatarItemStyle, isLocal && AvatarMovableStyle)} ref={props.selfRef || containerRef}>
             {!stream &&
@@ -203,7 +214,7 @@ const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { med
                     photo={props.user.photo}
                 />
             }
-            {stream && <VideoComponent stream={stream} cover={true} mirror={isLocal} videoClass={VolumeSpaceVideoStyle} borderRadius={72} />}
+            {str && <VideoComponent stream={str} cover={true} mirror={isLocal} videoClass={VolumeSpaceVideoStyle} borderRadius={72} />}
         </div>
     );
 });

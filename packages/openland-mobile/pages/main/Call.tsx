@@ -32,7 +32,7 @@ const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaS
     let [mainStream, setMainStream] = React.useState<AppMediaStream>();
     // @ts-ignore
     let [miniStream, setMiniStream] = React.useState<AppMediaStream>();
-    const [videoPaused, setVideoPaused] = React.useState<boolean | null>(false);
+    const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
 
     const [localPeer, setLocalPeer] = React.useState(props.mediaSession.getPeerId());
     let isLocal = props.peer.id === props.mediaSession.getPeerId();

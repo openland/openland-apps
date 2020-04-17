@@ -93,8 +93,8 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     let [talking, setTalking] = React.useState(false);
     const [localPeer, setLocalPeer] = React.useState(props.mediaSession.getPeerId());
     const isLocal = props.peer.id === props.mediaSession.getPeerId();
-    const [audioPaused, setAudioPaused] = React.useState<boolean | null>(true);
-    const [videoPaused, setVideoPaused] = React.useState<boolean | null>(false);
+    const [audioPaused, setAudioPaused] = React.useState<boolean | null>(false);
+    const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
     React.useEffect(() => {
         // mediaSession initiating without peerId. Like waaat
         let d0 = props.calls.listenState(() => setLocalPeer(props.mediaSession.getPeerId()));

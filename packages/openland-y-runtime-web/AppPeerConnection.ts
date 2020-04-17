@@ -196,6 +196,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
             if (sender) {
                 this.connection.removeTrack(sender);
             }
+            this.trackSenders.delete(t);
         }
     }
 
