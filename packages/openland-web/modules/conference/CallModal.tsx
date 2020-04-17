@@ -4,7 +4,7 @@ import { OpenlandClient } from 'openland-api/spacex';
 import { XView } from 'react-mental';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalController } from 'openland-x/showModal';
@@ -41,13 +41,18 @@ const controlsContainerStyle = css`
 `;
 
 const watermarkContainerstyle = css`
+    will-change: transform;
+
     position: absolute;
     opacity: 0.72;
     z-index: 5;
-
     &:hover {
         opacity: 1;
     }
+`;
+
+const watermarkContainerSpaceStyle = css`
+    pointer-events: none;
 `;
 
 const Controls = React.memo((props: {
@@ -175,7 +180,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                 let span = item.spans.find(s => s.__typename === 'MessageSpanLink');
                 let url = span?.__typename === 'MessageSpanLink' ? span.url : undefined;
                 // accept only fresh ones
-                if (url && (new Date().getTime() -  item.date < 1000 * 60 * 15)) {
+                if (url && (new Date().getTime() - item.date < 1000 * 60 * 15)) {
                     setLink(url);
                     setShowLink(true);
                     return true;
@@ -270,7 +275,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                 />
             </XView>
 
-            <div className={watermarkContainerstyle}>
+            <div className={cx(watermarkContainerstyle, layout === 'volume-space' && watermarkContainerSpaceStyle)}>
                 <XView position="absolute" top={0} left={0}>
                     <WatermarkLogo />
                 </XView>

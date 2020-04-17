@@ -111,7 +111,7 @@ export class MediaSessionVolumeSpace {
     private d1: () => void;
     private d2: () => void;
     readonly selfPeer: PeerAvatar;
-    private selfPointer: Pointer | undefined;
+    selfPointer: Pointer | undefined;
     readonly selfPathsVM = new VMMap<string, Path>();
     readonly selfImagesVM = new VMMap<string, Image>();
     readonly selfDeletedIds = new Set<string>();
@@ -158,9 +158,14 @@ export class MediaSessionVolumeSpace {
     // handle local commands
     ////
     moveSelf = (to: number[]) => {
-        this.movePointer(to);
+        let b: MessageType[] = [];
         this.selfPeer.coords = to;
-        this.reportSingle(this.selfPeer);
+        b.push(this.selfPeer);
+        this.movePointer(to, false);
+        if (this.selfPointer) {
+            b.push(this.selfPointer);
+        }
+        this.sendBatch(b);
         [...this.peersVM.values()].map(this.updatePeerVolume);
     }
 
@@ -172,14 +177,16 @@ export class MediaSessionVolumeSpace {
         }
     }
 
-    movePointer = (coords: number[]) => {
+    movePointer = (coords: number[], report: boolean = true) => {
         if (this.mediaSession.getPeerId()) {
             if (!this.selfPointer) {
                 this.selfPointer = new Pointer(this.mediaSession.getPeerId(), coords);
             }
             this.selfPointer.coords = coords;
             this.pointerVM.set(this.mediaSession.getPeerId(), this.selfPointer, true);
-            this.reportSingle(this.selfPointer);
+            if (report) {
+                this.reportSingle(this.selfPointer);
+            }
 
         }
     }
@@ -203,13 +210,22 @@ export class MediaSessionVolumeSpace {
 
     // yep, no access mgmt for now
     update = (id: string, change: Partial<Image>) => {
+        let b: MessageType[] = [];
+        b.push(new Update(id, change));
+
         let i = this.imagesVM.getById(id);
         if (i) {
             i = { ...i, ...change };
             this.selfImagesVM.set(id, i, true);
             this.imagesVM.addById(id, i, true);
+            if (i.type === 'image') {
+                this.movePointer([i.coords[0] + i.containerWH[0] / 2, i.coords[1] + i.containerWH[1] / 2], false);
+                if (this.selfPointer) {
+                    b.push(this.selfPointer);
+                }
+            }
         }
-        this.reportSingle(new Update(id, change));
+        this.sendBatch(b);
     }
 
     // yep, no access mgmt for now
@@ -219,7 +235,7 @@ export class MediaSessionVolumeSpace {
         this.pathsVM.deleteByValId(id);
         this.imagesVM.deleteByValId(id);
         this.selfDeletedIds.add(id);
-        // deletions will be reported on sync
+        this.sync();
     }
 
     erase = (coords: number[]) => {

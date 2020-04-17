@@ -22,6 +22,13 @@ import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { VideoComponent } from './ScreenShareModal';
 import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 
+const ContainerStyle = css`
+    will-change: transform;
+    width: 64px;
+    height: 100%;
+    position: relative;
+    z-index: 3;
+`;
 const wrapper = css`
     position: absolute;
     right: 0;
@@ -30,7 +37,7 @@ const wrapper = css`
     padding: 16px 0;
     background-color: var(--overlayTotal);
     transition: width 0.3s;
-    will-change: width;
+    will-change: width transform;
     width: 64px;
     overflow: hidden;
 
@@ -210,12 +217,7 @@ export const CallControls = (props: CallControlsProps) => {
         showModalBox({ title: 'Settings', width: 560, overflowVisible: true }, (ctx) => <SettingsModal ctx={ctx} />);
     }, []);
     return (
-        <XView
-            width={64}
-            height="100%"
-            position="relative"
-            zIndex={3}
-        >
+        <div className={ContainerStyle}>
             <div className={cx('x', wrapper)}>
                 <XView
                     position="absolute"
@@ -321,6 +323,6 @@ export const CallControls = (props: CallControlsProps) => {
                     />
                 </XView>
             </div>
-        </XView>
+        </div>
     );
 };

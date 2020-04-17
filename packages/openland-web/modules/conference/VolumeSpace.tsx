@@ -54,12 +54,15 @@ let VolumeSpaceDrawListener = css`
 `;
 let AvatarItemStyle = css`
     will-change: transform;
+    transition: transform linear 50ms;
+   
     position: absolute;
     pointer-events: none;
 `;
 let AvatarMovableStyle = css`
     cursor: move;
     pointer-events: all;
+    transition: none;
 `;
 let VolumeSpaceVideoStyle = css`
     position: relative;
@@ -69,6 +72,8 @@ let VolumeSpaceVideoStyle = css`
     background-color: var(--foregroundSecondary);
 `;
 let DrawControlsContainerStyle = css`
+    will-change: transform;
+   
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -87,6 +92,7 @@ let DrawControlsHidden = css`
 
 let PeerImageContainer = css`
     will-change: transform;
+    
     pointer-events: none;
     display: flex;
     overflow: visible;
@@ -147,6 +153,9 @@ let MenuEraseSelectedStyle = css`
 `;
 
 let PointerStyle = css`
+    will-change: transform;
+    transition: transform linear 50ms;
+
     color: #fff;
     pointer-events: none;
     text-align: center;
@@ -321,6 +330,7 @@ const PeerPath = React.memo((props: { peerId: string, peer?: Conference_conferen
 
         let d2 = props.space.pathsVM.listenId(props.peerId, props.pathId, p => {
             path = p;
+            // TODO: smoth process only new points
             setPath(bezierPath(p.path));
             setColor(p.color);
         });
@@ -374,7 +384,7 @@ const Pointer = React.memo((props: { peer: Conference_conference_peers, space: M
         return props.space.pointerVM.listen(props.peer.id, p => {
             if (ref.current) {
                 ref.current.style.position = 'absolute';
-                ref.current.style.transform = `translate(${p.coords[0] - 12}px, ${p.coords[1] - 12}px)`;
+                ref.current.style.transform = `translate3d(${p.coords[0] - 12}px, ${p.coords[1] - 12}px, 0)`;
             }
         });
     });
@@ -434,6 +444,19 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
         }
         let down = false;
         let path = new Path([], action);
+
+        let lastScroll: number[] | undefined;
+        let onScroll = () => {
+            if (containerRef.current) {
+                let currentScroll = [containerRef.current.scrollLeft, containerRef.current.scrollTop];
+                let pointer = props.mediaSession.volumeSpace.selfPointer;
+                if (lastScroll && pointer) {
+                    let d = [currentScroll[0] - lastScroll[0], currentScroll[1] - lastScroll[1]];
+                    props.mediaSession.volumeSpace.movePointer([pointer.coords[0] + d[0], pointer.coords[1] + d[1]]);
+                }
+                lastScroll = currentScroll;
+            }
+        };
         let onMove = (ev: any) => {
             let coords: number[] = [ev.offsetX, ev.offsetY];
             props.mediaSession.volumeSpace.movePointer(coords);
@@ -481,6 +504,10 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
             drawListenerRef.current.addEventListener('mousedown', onStart);
             drawListenerRef.current!.addEventListener('mousemove', onMove);
             drawListenerRef.current.addEventListener('mouseup', onStop);
+
+        }
+        if (containerRef.current) {
+            containerRef.current.addEventListener('scroll', onScroll, { passive: true });
         }
 
         // disable other object while drawing
@@ -490,10 +517,16 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
             }
         }
         return () => {
-            drawListenerRef.current!.removeEventListener('mousedown', onStart);
-            drawListenerRef.current!.removeEventListener('mousemove', onMove);
-            drawListenerRef.current!.removeEventListener('mouseup', onStop);
-            drawListenerRef.current!.style.cursor = 'auto';
+            if (drawListenerRef.current) {
+                drawListenerRef.current.removeEventListener('mousedown', onStart);
+                drawListenerRef.current.removeEventListener('mousemove', onMove);
+                drawListenerRef.current.removeEventListener('mouseup', onStop);
+                drawListenerRef.current.style.cursor = 'auto';
+            }
+            if (containerRef.current) {
+                containerRef.current.removeEventListener('scroll', onScroll);
+            }
+
             // enable other object after drawing
             if (nonDrawContentRef.current) {
                 nonDrawContentRef.current.style.pointerEvents = 'auto';
