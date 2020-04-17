@@ -14,7 +14,6 @@ import { useShake } from 'openland-web/pages/auth/components/authComponents';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { URickInput } from 'openland-web/components/unicorn/URickInput';
 import { useClient } from 'openland-api/useClient';
-import { delay } from 'openland-y-utils/timer';
 import { showCheckLock } from 'openland-web/fragments/wallet/modals/showPayConfirm';
 
 let priceWrapper = css`
@@ -22,6 +21,7 @@ let priceWrapper = css`
     padding: 16px;
     border-radius: 8px;
     flex-direction: row;
+    flex-shrink: 0;
     background-color: var(--backgroundTertiaryTrans);
 `;
 
@@ -43,7 +43,7 @@ interface DonationComponentProps {
     initialPrice?: number;
     chatId?: string;
     userId?: string;
-    onDonate?: () => void;
+    onDonate?: (value: string) => void;
 }
 
 const DonationComponent = (props: DonationComponentProps & {ctx: XModalController}) => {
@@ -100,12 +100,11 @@ const DonationComponent = (props: DonationComponentProps & {ctx: XModalControlle
             let amount = parseInt(priceField.value, 10) * 100;
             try {
                 setLoading(true);
-                await delay(2000);
                 await client.mutateSendDonation({chatId: props.chatId, userId: props.userId, amount, message: messageField.value });
-                props.ctx.hide();
                 if (props.onDonate) {
-                    props.onDonate();
+                    props.onDonate(priceField.value);
                 }
+                props.ctx.hide();
             } catch (e) {
                 if (wallet.myWallet.isLocked) {
                     showCheckLock();
@@ -123,8 +122,8 @@ const DonationComponent = (props: DonationComponentProps & {ctx: XModalControlle
     }, []);
 
     return (
-        <XView paddingTop={12} flexDirection="column">
-            <XView paddingHorizontal={24} paddingBottom={24} flexGrow={1} flexDirection="column">
+        <XView paddingTop={12} flexDirection="column" flexShrink={'initial' as any}>
+            <XView paddingHorizontal={24} paddingBottom={24} flexGrow={1} flexDirection="column" flexShrink={'initial' as any}>
                 <div className={cx(priceWrapper, shakeClassName)}>
                     <UIconButton icon={<MinusIcon />} onClick={() => updatePrice(-5)} />
                     <XView flexGrow={1} justifyContent="center" marginHorizontal={16}>

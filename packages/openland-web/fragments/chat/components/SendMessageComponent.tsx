@@ -29,6 +29,7 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { Deferred } from 'openland-unicorn/components/Deferred';
 import { detectOS } from 'openland-x-utils/detectOS';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
+import { useToast } from 'openland-web/components/unicorn/UToast';
 
 interface MentionItemComponentProps {
     id: string;
@@ -548,6 +549,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     const fileInputRef = React.useRef<HTMLInputElement>(null);
     const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
     const [loading, setLoading] = React.useState<boolean>(false);
+    const toastHandlers = useToast();
     const onStickerSent = React.useCallback(
         async (sticker: StickerFragment) => {
             if (props.onStickerSentAsync) {
@@ -631,8 +633,15 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
         }
     }, []);
 
+    const onDonate = (value: string) => {
+        toastHandlers.show({
+            type: 'success',
+            text: `You’ve donated $${value}`,
+        });
+    };
+
     const onDonationPress = React.useCallback(() => {
-        showDonation({name: props.ownerName, chatId: props.groupId});
+        showDonation({name: props.ownerName, chatId: props.groupId, onDonate});
     }, [props.ownerName]);
 
     const onFileInputChange = React.useCallback(e => {

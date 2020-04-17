@@ -49,6 +49,7 @@ const container = css`
     flex-grow: 1;
     align-items: center;
     justify-content: center;
+    user-select: none;
 `;
 
 const containerHover = css`

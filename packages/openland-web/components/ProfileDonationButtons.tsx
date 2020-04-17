@@ -3,6 +3,7 @@ import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XViewRouterContext, XView } from 'react-mental';
 import { showDonation } from 'openland-web/fragments/chat/components/showDonation';
+import { useToast } from 'openland-web/components/unicorn/UToast';
 
 interface ProfileDonationButtonsProps {
     name: string;
@@ -13,9 +14,14 @@ interface ProfileDonationButtonsProps {
 
 export const ProfileDonationButtons = (props: ProfileDonationButtonsProps) => {
     let router = React.useContext(XViewRouterContext)!;
-    let onDonate = () => {
+    let toastHandlers = useToast();
+    let onDonate = (value: string) => {
         let id = props.chatId || props.userId;
         router.navigate(`/mail/${id}`);
+        toastHandlers.show({
+            type: 'success',
+            text: `You’ve donated $${value}`,
+        });
     };
 
     return !props.shouldHide ? (
