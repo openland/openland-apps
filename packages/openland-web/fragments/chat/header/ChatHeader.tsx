@@ -140,6 +140,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     const messenger = React.useContext(MessengerContext);
     const [muted, setMuted] = React.useState(chat.settings.mute);
     let calls = messenger.calls;
+    const callsState = calls.useState();
 
     let res = new UPopperMenuBuilder();
     if (layout === 'mobile' && chat.__typename === 'SharedRoom') {
@@ -164,6 +165,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
                         : { id: chat.id, title: chat.title, picture: chat.photo },
                 );
             },
+            disabled: callsState.conversationId === chat.id,
         });
     }
 

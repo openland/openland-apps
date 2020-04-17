@@ -48,7 +48,8 @@ const VideoOnClass = css`
     width: 240px;
 `;
 
-const VideoRadius = css`
+const MiniFloatingVideo = css`
+    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
     border-radius: 8px;
 `;
 
@@ -423,12 +424,11 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
                                     width={72}
                                     height={48}
                                     borderRadius={8}
-                                    overflow="hidden"
                                     position="absolute"
                                     bottom={12}
                                     right={12}
                                 >
-                                    {callState.video && <VideoComponent stream={(callState.video as AppUserMediaStreamWeb)._stream} cover={true} videoClass={VideoRadius} />}
+                                    {callState.video && <VideoComponent stream={(callState.video as AppUserMediaStreamWeb)._stream} cover={true} videoClass={MiniFloatingVideo} />}
                                 </XView>
                             </XView>
                         )}

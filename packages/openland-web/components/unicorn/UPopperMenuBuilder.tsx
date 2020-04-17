@@ -21,6 +21,7 @@ export interface MenuItem {
     closeAfterAction?: boolean;
     closeDelay?: number;
     counter?: number;
+    disabled?: boolean;
 }
 interface MenuElementItem {
     element: (ctx: UPopperController) => JSX.Element;
@@ -56,6 +57,7 @@ const MenuItemComponent = (props: { item: MenuItem, ctx: UPopperController }) =>
             onClick={!item.path ? onClick : () => { ctx.hide(); }}
             path={item.path}
             linkSelectable={false}
+            disabled={item.disabled}
         />
     );
 };
