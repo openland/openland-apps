@@ -10,7 +10,7 @@ import { bezierPath } from './smooth';
 import { Path, MediaSessionVolumeSpace } from 'openland-engines/media/MediaSessionVolumeSpace';
 import { uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { XView } from 'react-mental';
-import { TextDetail, TextStyles } from 'openland-web/utils/TextStyles';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 import { makeStars } from './stars';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 
