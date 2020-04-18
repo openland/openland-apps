@@ -13,6 +13,7 @@ import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { makeStars } from './stars';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 let VolumeSpaceContainerStyle = css`
     width: 100%;
@@ -56,7 +57,6 @@ let VolumeSpaceDrawListener = css`
 `;
 let AvatarItemStyle = css`
     will-change: transform;
-    transition: transform linear 50ms;
    
     position: absolute;
     pointer-events: none;
@@ -94,7 +94,7 @@ let DrawControlsHidden = css`
 
 let PeerImageContainer = css`
     will-change: transform;
-    
+
     pointer-events: none;
     display: flex;
     overflow: visible;
@@ -155,13 +155,18 @@ let MenuEraseSelectedStyle = css`
 `;
 
 let PointerStyle = css`
+    position: absolute;
     will-change: transform;
-    transition: transform linear 50ms;
 
     color: #fff;
     pointer-events: none;
     text-align: center;
 `;
+
+let TransitionTransform = css`
+    transition: transform linear 50ms;
+`;
+let isSafari = canUseDOM && ((window as any).safari !== undefined);
 
 const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { mediaSession: MediaSessionManager, selfRef?: React.RefObject<HTMLDivElement> }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
@@ -181,7 +186,7 @@ const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { med
             let d1 = props.mediaSession.volumeSpace.peersVM.listen(props.id, peer => {
                 if (containerRef.current) {
                     let scale = peer.coords[2] / 2 + 0.5;
-                    containerRef.current.style.transform = `translate(${peer.coords[0]}px, ${peer.coords[1]}px) scale(${scale}, ${scale})`;
+                    containerRef.current.style.transform = `translate(${peer.coords[0]}px, ${peer.coords[1]}px) scale3d(${scale}, ${scale}, ${scale})`;
                 }
             });
 
@@ -205,10 +210,10 @@ const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { med
     });
     let str = !videoPaused && (stream as AppUserMediaStreamWeb | undefined)?._stream;
     return (
-        <div className={cx(AvatarItemStyle, isLocal && AvatarMovableStyle)} ref={props.selfRef || containerRef}>
-            {!stream &&
+        <div className={cx(AvatarItemStyle, !isSafari && !isLocal && TransitionTransform, isLocal && AvatarMovableStyle)} ref={props.selfRef || containerRef}>
+            {!str &&
                 <UAvatar
-                    size={stream ? 'large' : 'x-large'}
+                    size='x-large'
                     id={props.user.id}
                     title={props.user.name}
                     photo={props.user.photo}
@@ -400,7 +405,7 @@ const Pointer = React.memo((props: { peer: Conference_conference_peers, space: M
             }
         });
     });
-    return <div className={PointerStyle} ref={ref}>
+    return <div className={cx(PointerStyle, !isSafari && TransitionTransform)} ref={ref}>
         <XView position="absolute" left={-200} right={-200} top={-24}  {...TextStyles.Detail} alignItems="center" justifyContent="center"><XView borderRadius={4} paddingHorizontal={3} paddingTop={2} paddingBottom={3} backgroundColor="var(--backgroundTertiaryTrans)">{props.peer.user.shortname || props.peer.user.name}</XView></XView>
         <XView width={24} height={24} borderRadius={24} borderWidth={2} borderColor="#fff" backgroundColor={getPlaceholderColorRawById(props.peer.user.id).end} />
     </div>;
