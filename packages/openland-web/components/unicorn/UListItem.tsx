@@ -178,7 +178,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
             {!!textRight && (
                 <SelectableText
                     {...textRightFont}
-                    color="var(--foregroundTertiary)"
+                    color="var(--tintGrey)"
                     selectedColor="var(--foregroundContrast)"
                 >
                     {textRight}

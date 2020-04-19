@@ -343,7 +343,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
                     size="large-densed"
                 />
             </XView>
-            <MessagesActionsHeader chatId={chat.id} />
+            <MessagesActionsHeader chat={chat} />
         </XView>
     );
 });

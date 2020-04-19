@@ -318,15 +318,6 @@ const showWelcomeMessageModal = (
     );
 };
 
-const listRightTextStyle = css`
-    color: var(--tintGrey);
-    margin-right: 8px;
-`;
-
-const UListRightText = React.memo((props: { text: string }) => (
-    <div className={cx(listRightTextStyle, TextBody)}>{props.text}</div>
-));
-
 const secretContainer = css`
     margin-bottom: 16px;
     display: flex;
@@ -431,7 +422,7 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                                 icon={<IcAt />}
                                 paddingHorizontal={24}
                                 onClick={() => showShortnameModal(room.id, shortname || '')}
-                                rightElement={<UListRightText text={shortname || 'None'} />}
+                                textRight={shortname || 'None'}
                             />
                         )}
                         <UListItem
@@ -439,18 +430,12 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                             icon={<IcWallet />}
                             paddingHorizontal={24}
                             // onClick={() => showShortnameModal(room.id, shortname || '')}
-                            rightElement={
-                                <UListRightText
-                                    text={
-                                        premiumSettings
-                                            ? formatMoneyInterval(
-                                                  premiumSettings.price,
-                                                  premiumSettings.interval,
-                                              )
-                                            : 'Free'
-                                    }
-                                />
-                            }
+                            textRight={premiumSettings
+                                ? formatMoneyInterval(
+                                    premiumSettings.price,
+                                    premiumSettings.interval,
+                                )
+                                : 'Free'}
                         />
                         {isShared && (
                             <UListItem
@@ -458,9 +443,7 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                                 icon={<IcGallery />}
                                 paddingHorizontal={24}
                                 onClick={() => showSocialImageModal(room.id, socialImage || '')}
-                                rightElement={
-                                    <UListRightText text={!!socialImage ? 'On' : 'Off'} />
-                                }
+                                textRight={!!socialImage ? 'On' : 'Off'}
                             />
                         )}
                         {welcomeMessage && (
@@ -469,9 +452,7 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                                 icon={<IcMessage />}
                                 paddingHorizontal={24}
                                 onClick={() => showWelcomeMessageModal(room.id, welcomeMessage)}
-                                rightElement={
-                                    <UListRightText text={welcomeMessage.isOn ? 'On' : 'Off'} />
-                                }
+                                textRight={welcomeMessage.isOn ? 'On' : 'Off'}
                             />
                         )}
                     </XView>

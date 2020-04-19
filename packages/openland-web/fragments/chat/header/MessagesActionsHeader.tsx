@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { RoomChat_room, RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { css, cx } from 'linaria';
 import { XView, XViewRouterContext } from 'react-mental';
@@ -102,16 +103,34 @@ const Counter = (props: { engine: MessagesActionsStateEngine }) => {
 
     let count = state.messages.length || 1;
     let old = countRef.current;
-    let increment = count > (old);
+    let increment = count > old;
 
     countRef.current = count;
 
-    let width = (count.toString()).length * 12;
+    let width = count.toString().length * 12;
     return (
-        <XView flexDirection="row" alignItems="center" justifyContent="flex-start" onClick={props.engine.clear} cursor="pointer">
+        <XView
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="flex-start"
+            onClick={props.engine.clear}
+            cursor="pointer"
+        >
             <span className={TextTitle3}>
-                <span key={count + '_old'} className={increment ? animateCenterDown : animateCenterUp} style={{ width, display: 'inline-block', position: 'absolute' }}>{old}</span>
-                <span key={count + '_new'} className={increment ? animateUpCenter : animateDownCenter} style={{ width, display: 'inline-block' }}>{count}</span>
+                <span
+                    key={count + '_old'}
+                    className={increment ? animateCenterDown : animateCenterUp}
+                    style={{ width, display: 'inline-block', position: 'absolute' }}
+                >
+                    {old}
+                </span>
+                <span
+                    key={count + '_new'}
+                    className={increment ? animateUpCenter : animateDownCenter}
+                    style={{ width, display: 'inline-block' }}
+                >
+                    {count}
+                </span>
                 {layout === 'desktop' && ` ${pluralForm(count, ['message', 'messages'])} selected`}
             </span>
             <XView width={32} height={32} alignItems="center" justifyContent="center">
@@ -121,9 +140,17 @@ const Counter = (props: { engine: MessagesActionsStateEngine }) => {
     );
 };
 
-const Buttons = (props: { conversation: ConversationEngine, engine: MessagesActionsStateEngine, messenger: MessengerEngine }) => {
+const Buttons = (props: {
+    conversation: ConversationEngine;
+    engine: MessagesActionsStateEngine;
+    messenger: MessengerEngine;
+    chat: RoomChat_room;
+}) => {
     let deleteCallback = React.useCallback(() => {
-        let ids = props.engine.getState().messages.filter(m => !!m.id).map(m => m.id!);
+        let ids = props.engine
+            .getState()
+            .messages.filter((m) => !!m.id)
+            .map((m) => m.id!);
         showDeleteMessagesModal(ids, props.messenger.client, props.engine.clear);
     }, []);
     const router = React.useContext(XViewRouterContext);
@@ -138,36 +165,57 @@ const Buttons = (props: { conversation: ConversationEngine, engine: MessagesActi
     }, []);
     let state = props.engine.useState();
     let canReply = props.conversation.canSendMessage;
-    let canDelete = useRole('super-admin') || (!state.messages.filter(m => !m.sender.isYou).length);
+    let canDelete =
+        useRole('super-admin') ||
+        !state.messages.filter((m) => !m.sender.isYou).length ||
+        (props.chat as RoomChat_room_SharedRoom).role === 'OWNER' ||
+        (props.chat as RoomChat_room_SharedRoom).role === 'ADMIN';
     return (
         <XView flexDirection="row">
-            <div className={canDelete ? animateUpCenter : animateCenterUp}><UButton onClick={deleteCallback} text="Delete" style="secondary" /></div>
+            {canDelete && (
+                <div className={animateUpCenter}>
+                    <UButton onClick={deleteCallback} text="Delete" style="secondary" />
+                </div>
+            )}
             {canReply && <UButton onClick={replyCallback} text="Reply" marginLeft={8} />}
             <UButton onClick={forwardCallback} text="Forward" marginLeft={8} />
         </XView>
     );
 };
 
-export const MessagesActionsHeader = (props: { chatId: string }) => {
+export const MessagesActionsHeader = (props: { chat: RoomChat_room }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
     let messenger = React.useContext(MessengerContext);
-    let conversation = messenger.getConversation(props.chatId);
+    let conversation = messenger.getConversation(props.chat.id);
     let engine = conversation.messagesActionsStateEngine;
     useShortcuts({ keys: ['Escape'], callback: () => engine.clear() });
 
     React.useEffect(() => {
-        engine.listen(state => {
+        engine.listen((state) => {
             if (containerRef.current) {
-                containerRef.current.className = cx(containerClass, state.messages.length && state.action === 'select' && containerVisibleClass);
+                containerRef.current.className = cx(
+                    containerClass,
+                    state.messages.length && state.action === 'select' && containerVisibleClass,
+                );
             }
         });
     }, []);
 
     return (
-        <div ref={containerRef} className={containerClass} >
-            <XView flexGrow={1} justifyContent="space-between" alignItems="center" flexDirection="row">
+        <div ref={containerRef} className={containerClass}>
+            <XView
+                flexGrow={1}
+                justifyContent="space-between"
+                alignItems="center"
+                flexDirection="row"
+            >
                 <Counter engine={engine} />
-                <Buttons engine={engine} conversation={conversation} messenger={messenger} />
+                <Buttons
+                    engine={engine}
+                    conversation={conversation}
+                    messenger={messenger}
+                    chat={props.chat}
+                />
             </XView>
         </div>
     );
