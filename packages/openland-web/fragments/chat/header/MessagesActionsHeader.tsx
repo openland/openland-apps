@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RoomChat_room, RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
+import { RoomChat_room } from 'openland-api/spacex.types';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { css, cx } from 'linaria';
 import { XView, XViewRouterContext } from 'react-mental';
@@ -168,8 +168,8 @@ const Buttons = (props: {
     let canDelete =
         useRole('super-admin') ||
         !state.messages.filter((m) => !m.sender.isYou).length ||
-        (props.chat as RoomChat_room_SharedRoom).role === 'OWNER' ||
-        (props.chat as RoomChat_room_SharedRoom).role === 'ADMIN';
+        (props.chat.__typename === 'SharedRoom' && props.chat.role === 'OWNER') ||
+        (props.chat.__typename === 'SharedRoom' && props.chat.role === 'ADMIN');
     return (
         <XView flexDirection="row">
             {canDelete && (
