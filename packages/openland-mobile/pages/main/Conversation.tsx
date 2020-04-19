@@ -432,7 +432,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                             )}
                             {!showInputBar && reloadButton}
                             {!showInputBar && inputPlaceholder}
-                            {showSelectedMessagesActions && <ChatSelectedActions conversation={this.engine} />}
+                            {showSelectedMessagesActions && <ChatSelectedActions conversation={this.engine} chat={this.props.chat} />}
                         </View>
                     </KeyboardSafeAreaView>
                 </SDeferred>
