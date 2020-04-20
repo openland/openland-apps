@@ -81,8 +81,14 @@ const bgAvatarImg = css`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: blur(5px);
-    transform: scale(1.1);
+    filter: blur(12px);
+    transform: scale(1.3);
+`;
+
+const bgAvatarGradient = css`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 `;
 
 const bgAvatarOverlay = css`
@@ -238,7 +244,7 @@ const VideoMediaView = React.memo((props: {
                     {bgSrc ? (
                         <ImgWithRetry src={bgSrc} className={bgAvatarImg} />
                     ) : (
-                            <div className={bgAvatarImg} style={{ background: bgColor }} />
+                            <div className={bgAvatarGradient} style={{ background: bgColor }} />
                         )}
 
                     <div className={bgAvatarOverlay} />
@@ -297,7 +303,7 @@ const MediaView = React.memo((props: {
         }
         return d;
     }, [peerId]);
-    let peer = props.peers.find(p => p.id === peerId) || props.peers[0];
+    let peer = props.peers.find(p => p.id === peerId) || props.peers[1];
 
     return (props.videoEnabled ? (
         <VideoMediaView

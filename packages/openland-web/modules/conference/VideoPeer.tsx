@@ -64,8 +64,14 @@ const bgAvatarImg = css`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: blur(5px);
+    filter: blur(24px);
     transform: scale(1.1);
+`;
+
+const bgAvatarGradient = css`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 `;
 
 const bgAvatarOverlay = css`
@@ -166,7 +172,7 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
                         {bgSrc ? (
                             <ImgWithRetry src={bgSrc} className={bgAvatarImg} />
                         ) : (
-                                <div className={bgAvatarImg} style={{ background: bgColor }} />
+                                <div className={bgAvatarGradient} style={{ background: bgColor }} />
                             )}
 
                         <div className={bgAvatarOverlay} />

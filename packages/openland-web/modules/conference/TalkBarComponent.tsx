@@ -46,6 +46,10 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
         { fetchPolicy: 'network-only', suspense: false },
     );
 
+    const openVideoModal = () => {
+        showVideoCallModal({ calls, chatId: props.chat.id, client, messenger });
+    };
+
     const joinCall = () => {
         calls.joinCall(
             props.chat.id,
@@ -62,6 +66,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
                     picture: props.chat.photo,
                 },
         );
+        openVideoModal();
     };
 
     useTalkWatch(data && data.conference.id);
@@ -79,7 +84,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
             rightText="Join"
             rightIcon={<ChevronIcon />}
             onClick={callState.conversationId
-                ? () => showVideoCallModal({ calls, chatId: props.chat.id, client, messenger })
+                ? openVideoModal
                 : joinCall}
         />
     ) : null;
