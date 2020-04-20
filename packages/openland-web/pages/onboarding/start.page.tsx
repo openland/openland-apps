@@ -18,9 +18,9 @@ const avatarWrapper = css`
     transform: translateX(-50%);
 `;
 
-const useConfetti = () => {
+export const useConfetti = () => {
     const confettiDuration = 2000;
-    const end = Date.now() + confettiDuration;
+    let end = Date.now() + confettiDuration;
     const colors = ['#CC99FF', '#A9D1F7', '#B4F0A7', '#FFFFBF', '#FFDFBE', '#FFB1B0'];
     let fireworksTimeout: any;
     let snowTimeout: any;
@@ -79,6 +79,7 @@ const useConfetti = () => {
     };
 
     const start = () => {
+        end = Date.now() + confettiDuration;
         fireworks();
 
         snowTimeout = setTimeout(() => snow(), confettiDuration);

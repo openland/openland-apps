@@ -10,7 +10,13 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useClient } from 'openland-api/useClient';
 import { AuthProfileFragment } from './AuthProfileFragment';
 import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
-// import { AuthDiscoverFragment } from './AuthDiscoverFragment';
+import { AuthDiscoverFragment } from './discover/AuthDiscoverFragment';
+import { AuthDiscoverPopularNowFragment } from './discover/AuthDiscoverPopularNowFragment';
+import { AuthDiscoverNewAndGrowingFragment } from './discover/AuthDiscoverNewAndGrowingFragment';
+import { AuthDiscoverCollectionsFragment } from './discover/AuthDiscoverCollectionsFragment';
+import { AuthDiscoverTopFreeFragment } from './discover/AuthDiscoverTopFreeFragment';
+import { AuthDiscoverTopPremiumFragment } from './discover/AuthDiscoverTopPremiumFragment';
+import { AuthDiscoverCollectionFragment } from './discover/AuthDiscoverCollectionFragment';
 
 export const AuthRouter = React.memo((props: { children: any }) => {
     const router = React.useContext(XRouterContext)!;
@@ -66,6 +72,32 @@ export const AuthRouter = React.memo((props: { children: any }) => {
     }
 
     ////////////////////////////////////////////////
+    //               Discover
+    ////////////////////////////////////////////////
+
+    if (!userInfo.isLoggedIn && router.path.startsWith('/discover')) {
+        if (router.path.startsWith('/discover/popular')) {
+            return <AuthDiscoverPopularNowFragment />;
+        } else if (router.path.startsWith('/discover/new')) {
+            return <AuthDiscoverNewAndGrowingFragment />;
+        } else if (router.path.startsWith('/discover/premium')) {
+            return <AuthDiscoverTopPremiumFragment />;
+        } else if (router.path.startsWith('/discover/free')) {
+            return <AuthDiscoverTopFreeFragment />;
+        } else if (router.path.startsWith('/discover/collections')) {
+            const splitPath = router.path.split('/');
+
+            if (splitPath.length === 4 && typeof splitPath[3] === 'string') {
+                return <AuthDiscoverCollectionFragment id={splitPath[3]} />;
+            }
+
+            return <AuthDiscoverCollectionsFragment />;
+        } else {
+            return <AuthDiscoverFragment />;
+        }
+    }
+
+    ////////////////////////////////////////////////
     //                Sign In/Up
     ////////////////////////////////////////////////
 
@@ -77,10 +109,6 @@ export const AuthRouter = React.memo((props: { children: any }) => {
             return defaultRoute;
         }
     }
-
-    // if (!userInfo.isLoggedIn && router.path.startsWith('/discover')) {
-    //     return <AuthDiscoverFragment />;
-    // }
 
     if (shortnameItem?.__typename === 'User') {
         return <AuthProfileFragment user={shortnameItem} />;

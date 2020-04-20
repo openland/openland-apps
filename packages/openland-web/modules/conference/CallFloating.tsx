@@ -19,6 +19,7 @@ import EndIcon from 'openland-icons/s/ic-call-end-glyph-24.svg';
 import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
 import { CallsEngine, CallState } from 'openland-engines/CallsEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
+import { useEffects } from './sounds/Effects';
 
 const VIDEO_WIDTH = 240;
 const VIDEO_HEIGHT = 160;
@@ -240,23 +241,23 @@ const VideoMediaView = React.memo((props: {
                 />
             ) : props.peer && (
                 <>
-                <div className={bgAvatar}>
-                    {bgSrc ? (
-                        <ImgWithRetry src={bgSrc} className={bgAvatarImg} />
-                    ) : (
-                            <div className={bgAvatarGradient} style={{ background: bgColor }} />
-                        )}
+                    <div className={bgAvatar}>
+                        {bgSrc ? (
+                            <ImgWithRetry src={bgSrc} className={bgAvatarImg} />
+                        ) : (
+                                <div className={bgAvatarGradient} style={{ background: bgColor }} />
+                            )}
 
-                    <div className={bgAvatarOverlay} />
-                </div>
-                <XView position="absolute" zIndex={2}>
-                    <UAvatar
-                        size="large"
-                        id={props.peer.user.id}
-                        title={props.peer.user.name}
-                        photo={props.peer.user.photo}
-                    />
-                </XView>
+                        <div className={bgAvatarOverlay} />
+                    </div>
+                    <XView position="absolute" zIndex={2}>
+                        <UAvatar
+                            size="large"
+                            id={props.peer.user.id}
+                            title={props.peer.user.name}
+                            photo={props.peer.user.photo}
+                        />
+                    </XView>
                 </>
             )}
         </XView>
@@ -338,6 +339,8 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
     let messenger = React.useContext(MessengerContext);
     let calls = messenger.calls;
     let callState = calls.useState();
+
+    useEffects(calls.getMediaSession());
 
     let client = useClient();
     let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });

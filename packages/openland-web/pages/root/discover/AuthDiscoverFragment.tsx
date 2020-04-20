@@ -28,7 +28,7 @@ const AuthDiscoverInner = React.memo((props: { seed: number }) => {
             alignItems="stretch"
         >
             <XScrollView3 flexGrow={1} flexBasis={0} minHeight={0}>
-                <XView maxWidth={560} alignSelf="center">
+                <XView maxWidth={592} paddingHorizontal={16} width="100%" alignSelf="center">
 
                     <USlider title="Featured" childrenCount={editorsChoice.length}>
                         {editorsChoice.map(i => (
