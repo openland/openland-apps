@@ -66,6 +66,9 @@ let AvatarMovableStyle = css`
     pointer-events: all;
     transition: none;
 `;
+let NoPointerEvents = css`
+    pointer-events: none;
+`;
 let VolumeSpaceVideoStyle = css`
     position: relative;
     width: 72px;
@@ -212,12 +215,14 @@ const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { med
     return (
         <div className={cx(AvatarItemStyle, !isSafari && !isLocal && TransitionTransform, isLocal && AvatarMovableStyle)} ref={props.selfRef || containerRef}>
             {!str &&
-                <UAvatar
-                    size='x-large'
-                    id={props.user.id}
-                    title={props.user.name}
-                    photo={props.user.photo}
-                />
+                <div className={NoPointerEvents}>
+                    <UAvatar
+                        size='x-large'
+                        id={props.user.id}
+                        title={props.user.name}
+                        photo={props.user.photo}
+                    />
+                </div>
             }
             {str && <VideoComponent stream={str} cover={true} mirror={isLocal} videoClass={VolumeSpaceVideoStyle} borderRadius={72} />}
         </div>
