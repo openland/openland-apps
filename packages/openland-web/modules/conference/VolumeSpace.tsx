@@ -524,9 +524,9 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
             }
         };
         if (drawListenerRef.current) {
-            drawListenerRef.current.addEventListener('mousedown', onStart);
-            drawListenerRef.current!.addEventListener('mousemove', onMove);
-            drawListenerRef.current.addEventListener('mouseup', onStop);
+            drawListenerRef.current.addEventListener('mousedown', onStart, { passive: true });
+            drawListenerRef.current!.addEventListener('mousemove', onMove, { passive: true });
+            drawListenerRef.current.addEventListener('mouseup', onStop, { passive: true });
 
         }
         if (containerRef.current) {

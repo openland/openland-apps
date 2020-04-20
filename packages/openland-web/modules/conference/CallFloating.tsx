@@ -39,9 +39,9 @@ const FloatContainerClass = css`
         box-shadow 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
 
-    &:hover {
+    /* &:hover {
         box-shadow: 0px 0px 96px rgba(0, 0, 0, 0.08), 0px 8px 48px rgba(0, 0, 0, 0.16);
-    }
+    } */
 `;
 
 const VideoOnClass = css`
@@ -101,7 +101,7 @@ const bgAvatarOverlay = css`
 `;
 
 export const useJsDrag = (
-    targetRef: React.RefObject<HTMLDivElement>,
+    targetRef: React.MutableRefObject<HTMLDivElement | undefined> | React.RefObject<HTMLDivElement>,
     containerRef: React.RefObject<HTMLDivElement> | undefined,
     onMove: (coords: number[]) => void,
     savedCallback: (() => number[] | undefined) | number[] | undefined,
@@ -109,7 +109,7 @@ export const useJsDrag = (
     depth?: any[]
 ) => {
 
-    React.useLayoutEffect(() => {
+    React.useEffect(() => {
         const container = containerRef?.current;
         const target = targetRef.current;
         let dragging = false;
@@ -174,16 +174,16 @@ export const useJsDrag = (
 
         checkPostion();
         if (target) {
-            target.addEventListener('mousedown', onDragStart);
-            target.addEventListener('mouseup', onDragStop);
-            window.document.addEventListener('mouseup', onDragStop);
-            window.document.addEventListener('mousemove', onDrag);
+            target.addEventListener('mousedown', onDragStart, { passive: true });
+            target.addEventListener('mouseup', onDragStop, { passive: true });
+            window.document.addEventListener('mouseup', onDragStop, { passive: true });
+            window.document.addEventListener('mousemove', onDrag, { passive: true });
 
-            target.addEventListener('touchstart', onDragStart);
-            target.addEventListener('touchend', onDragStop);
-            target.addEventListener('touchcancel', onDragStop);
-            target.addEventListener('touchmove', ev => ev.preventDefault());
-            window.document.addEventListener('touchmove', onDrag);
+            target.addEventListener('touchstart', onDragStart, { passive: true });
+            target.addEventListener('touchend', onDragStop, { passive: true });
+            target.addEventListener('touchcancel', onDragStop, { passive: true });
+            target.addEventListener('touchmove', ev => ev.preventDefault(), { passive: true });
+            window.document.addEventListener('touchmove', onDrag, { passive: true });
 
             if (container) {
                 container.style.display = 'flex';
@@ -232,11 +232,11 @@ const VideoMediaView = React.memo((props: {
     return (
         <XView width={VIDEO_WIDTH} height={VIDEO_HEIGHT} overflow="hidden" backgroundColor="var(--overlayHeavy)" alignItems="center" justifyContent="center">
             {stream ? (
-                <VideoComponent 
+                <VideoComponent
                     stream={(stream as AppUserMediaStreamWeb)._stream}
-                    cover={true} 
+                    cover={true}
                     videoClass={PeerVideoClass}
-                    switching={true} 
+                    switching={true}
                 />
             ) : props.peer && (
                 <>
@@ -315,25 +315,26 @@ const MediaView = React.memo((props: {
             callState={props.callState}
         />
     ) : (
-        <div key={'animating_wrapper'} className={MediaViewAvatar} ref={avatarRef}>
-            <UAvatar
-                size="small"
-                id={peer ? peer.user.id : props.fallback.id}
-                title={peer ? peer.user.name : props.fallback.title}
-                photo={peer ? peer.user.photo : props.fallback.picture}
-            />
-        </div>
-    ));
+            <div key={'animating_wrapper'} className={MediaViewAvatar} ref={avatarRef}>
+                <UAvatar
+                    size="small"
+                    id={peer ? peer.user.id : props.fallback.id}
+                    title={peer ? peer.user.name : props.fallback.title}
+                    photo={peer ? peer.user.photo : props.fallback.picture}
+                />
+            </div>
+        ));
 });
 
 const CallFloatingComponent = React.memo((props: { id: string; private: boolean, room: RoomTiny_room }) => {
-    const targetRef = React.useRef<HTMLDivElement>(null);
+    const targetRef = React.useRef<HTMLDivElement>();
     const containerRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
     const moveCallBack = React.useCallback(debounce((shift: number[]) => {
         window.localStorage.setItem('call_floating_shift', JSON.stringify(shift));
     }, 500), []);
-    useJsDrag(targetRef, containerRef, moveCallBack, JSON.parse(window.localStorage.getItem('call_floating_shift') || '[]'), true);
+    const [targetState, setTargetState] = React.useState<HTMLDivElement>();
+    useJsDrag(targetRef, containerRef, moveCallBack, JSON.parse(window.localStorage.getItem('call_floating_shift') || '[]'), true, [targetState]);
     let messenger = React.useContext(MessengerContext);
     let calls = messenger.calls;
     let callState = calls.useState();
@@ -380,17 +381,24 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
         </XView>
     );
 
+    const targetRefCallback = React.useCallback((e: HTMLDivElement) => {
+        if (!targetState) {
+            targetRef.current = e;
+            setTargetState(e);
+        }
+    }, []);
+
     const title = props.room.__typename === 'PrivateRoom' ? props.room.user.name : props.room.title;
     const subtitle = callState.status === 'connecting' ? 'Connecting...'
-                : props.room.__typename === 'SharedRoom' && data ? plural(data.conference.peers.length, ['member', 'members'])
-                : '';
+        : props.room.__typename === 'SharedRoom' && data ? plural(data.conference.peers.length, ['member', 'members'])
+            : '';
 
     return (
         data && (
             <div className={cx(FloatContainerClass, callState.videoEnabled && VideoOnClass)} ref={containerRef}>
                 <div style={{ display: 'flex', flexDirection: 'row', flexGrow: 1 }} ref={contentRef}>
-                    <div className={TargetClass} ref={targetRef}>
-                        <XView 
+                    <div className={TargetClass} ref={targetRefCallback}>
+                        <XView
                             flexDirection="row"
                             paddingVertical={8}
                             paddingHorizontal={12}
@@ -399,7 +407,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
                         >
                             {!callState.videoEnabled && avatar}
                             <XView flexShrink={1} marginRight={14}>
-                                <XView 
+                                <XView
                                     {...TextStyles.Label1}
                                     color="var(--foregroundContrast)"
                                     flexShrink={1}
@@ -410,7 +418,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
                                     {title}
                                 </XView>
                                 {subtitle && (
-                                    <XView 
+                                    <XView
                                         {...TextStyles.Subhead}
                                         color="var(--foregroundContrast)"
                                         opacity={0.56}
@@ -426,7 +434,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
                         {callState.videoEnabled && (
                             <XView width={VIDEO_WIDTH} height={VIDEO_HEIGHT} overflow="hidden" backgroundColor="var(--overlayHeavy)">
                                 {avatar}
-                                <XView 
+                                <XView
                                     width={72}
                                     height={48}
                                     borderRadius={8}
