@@ -3,7 +3,7 @@ import { css } from 'linaria';
 import ArrowRight from 'openland-icons/s/ic-arrow-right-16.svg';
 import ArrowLeft from 'openland-icons/s/ic-arrow-left-16.svg';
 import { UIconButton } from './UIconButton';
-import { XView } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 
@@ -97,11 +97,16 @@ const USliderRaw = React.memo((props: USliderProps) => {
     const blanketRef = React.createRef<HTMLDivElement>();
     const sliderRef = React.createRef<HTMLDivElement>();
 
-    const router = useTabRouter();
+    const tabRouter = useTabRouter();
+    const xRouter = React.useContext(XViewRouterContext);
 
     const onClick = () => {
         if (props.path) {
-            router.router.reset(props.path);
+            if (tabRouter) {
+                tabRouter.router.reset(props.path);
+            } else if (xRouter) {
+                xRouter.navigate(props.path);
+            }
         }
     };
 
