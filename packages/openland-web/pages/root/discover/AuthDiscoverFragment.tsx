@@ -1,43 +1,15 @@
 import * as React from 'react';
-import { css } from 'linaria';
-import { useIsMobile } from 'openland-web/hooks/useIsMobile';
-import {
-    AuthSidebarComponent,
-    AuthMobileHeader,
-} from 'openland-web/pages/root/AuthSidebarComponent';
 import { editorsChoiceItem, listingsContainer, sliderCollectionItem } from 'openland-web/fragments/discover/DiscoverHomeFragment';
 import { useClient } from 'openland-api/useClient';
 import { getRandomSeed } from 'openland-web/fragments/discover/utils/getRandomSeed';
-import { XView, XViewRouterContext } from 'react-mental';
+import { XView } from 'react-mental';
 import { USlider } from 'openland-web/components/unicorn/USlider';
 import { EditorsChoiceItem } from 'openland-web/fragments/discover/components/EditorsChoiceItem';
 import { ListingCompact } from 'openland-web/fragments/discover/components/ListingCompact';
 import { normalizePopularItems } from 'openland-y-utils/discover/normalizePopularItems';
 import { DiscoverCollection } from 'openland-web/fragments/discover/components/DiscoverCollection';
+import { AuthDiscoverContainer } from './AuthDiscoverContainer';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { XLoader } from 'openland-x/XLoader';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
-
-const rootContainer = css`
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-`;
-
-const mainContainer = css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1;
-`;
-
-const boxContainer = css`
-    display: flex;
-    flex-direction: column;
-    align-self: stretch;
-    flex-grow: 1;
-`;
 
 const AuthDiscoverInner = React.memo((props: { seed: number }) => {
     const client = useClient();
@@ -56,7 +28,8 @@ const AuthDiscoverInner = React.memo((props: { seed: number }) => {
             alignItems="stretch"
         >
             <XScrollView3 flexGrow={1} flexBasis={0} minHeight={0}>
-                <XView maxWidth={560} marginTop={25} alignSelf="center">
+                <XView maxWidth={560} alignSelf="center">
+
                     <USlider title="Featured" childrenCount={editorsChoice.length}>
                         {editorsChoice.map(i => (
                             <div className={editorsChoiceItem} key={i.id}>
@@ -93,37 +66,11 @@ const AuthDiscoverInner = React.memo((props: { seed: number }) => {
 });
 
 export const AuthDiscoverFragment = React.memo(() => {
-    const isMobile = useIsMobile();
     const seed = React.useMemo(getRandomSeed, []);
 
-    const xRouting = React.useMemo(
-        () => ({
-            navigate: (to: string) => {
-                if (canUseDOM) {
-                    window.location.replace(to);
-                }
-            },
-        }),
-        [],
-    );
-
     return (
-        <div className={rootContainer}>
-            {!isMobile && <AuthSidebarComponent />}
-            <div className={mainContainer}>
-                {isMobile && <AuthMobileHeader />}
-                <div className={boxContainer}>
-
-                    <XViewRouterContext.Provider value={xRouting}>
-
-                        <React.Suspense fallback={<XLoader loading={true} />}>
-                            <AuthDiscoverInner seed={seed} />
-                        </React.Suspense>
-
-                    </XViewRouterContext.Provider>
-
-                </div>
-            </div>
-        </div>
+        <AuthDiscoverContainer title="Discover">
+            <AuthDiscoverInner seed={seed} />
+        </AuthDiscoverContainer>
     );
 });

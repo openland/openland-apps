@@ -4,6 +4,7 @@ import { XCloudImage } from 'openland-x/XCloudImage';
 import { css } from 'linaria';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { XView } from 'react-mental';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 const imageContainer = css`
     position: relative;
@@ -42,8 +43,10 @@ const container = css`
 `;
 
 export const EditorsChoiceItem = React.memo((props: DiscoverEditorsChoice_discoverEditorsChoice) => {
+    const userInfo = React.useContext(UserInfoContext)!;
+
     return (
-        <XView path={`/mail/${props.chat.id}`} cursor="pointer">
+        <XView path={!userInfo.isLoggedIn ? `/${props.chat.id}` : `/mail/${props.chat.id}`} cursor="pointer">
             <div className={container}>
                 <div className={imageContainer}>
                     <XCloudImage photoRef={props.image} resize="fill" width={560} height={200} />

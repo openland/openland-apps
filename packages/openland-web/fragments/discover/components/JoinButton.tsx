@@ -11,11 +11,11 @@ import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 
 interface JoinButtonProps {
     group:
-        | DiscoverSharedRoom
-        | Pick<
-              RoomChat_room_SharedRoom,
-              'id' | 'isPremium' | 'premiumSettings' | 'title' | 'photo' | 'membership'
-          >;
+    | DiscoverSharedRoom
+    | Pick<
+        RoomChat_room_SharedRoom,
+        'id' | 'isPremium' | 'premiumSettings' | 'title' | 'photo' | 'membership'
+    >;
 }
 
 const buttonStyle = css`
@@ -130,6 +130,34 @@ export const JoinButton = React.memo((props: JoinButtonProps) => {
             {isLoading && (
                 <XLoader loading={true} transparentBackground={true} size="small" contrast={true} />
             )}
+        </div>
+    );
+});
+
+export const JoinButtonSimple = React.memo((props: JoinButtonProps) => {
+    const router = React.useContext(XViewRouterContext);
+    const onClick = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        e.stopPropagation();
+
+        if (router) {
+            router.navigate('/' + props.group.id);
+        }
+    };
+
+    return (
+        <div
+            className={cx(
+                buttonStyle,
+                props.group.isPremium ? buttonAddPayStyle : buttonAddPrimaryStyle,
+            )}
+            onClick={onClick}
+        >
+            {!props.group.isPremium && <IcAdd />}
+            {props.group.isPremium &&
+                formatMoneyInterval(
+                    props.group.premiumSettings!.price,
+                    props.group.premiumSettings!.interval,
+                )}
         </div>
     );
 });

@@ -1,11 +1,12 @@
 import React from 'react';
 import { css } from 'linaria';
-import { XView } from 'react-mental';
+import { XView, XViewRouterContext } from 'react-mental';
 import { UGroupView } from 'openland-web/components/unicorn/templates/UGroupView';
 import { TextTitle3 } from 'openland-web/utils/TextStyles';
 import ArrowRight from 'openland-icons/s/ic-arrow-right-16.svg';
 import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { DiscoverRoom } from 'openland-y-utils/discover/normalizePopularItems';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 
 const contentContainer = css`
     display: flex;
@@ -53,7 +54,7 @@ const iconContainer = css`
 `;
 
 const groupContainer = css`
-    margin: 0 -16px
+    margin: 0 -16px;
     width: calc(100% + 16px);
 `;
 
@@ -68,11 +69,17 @@ export const ListingCompact = React.memo((props: ListingCompactProps) => {
         return null;
     }
 
-    const router = useTabRouter();
+    const tabRouter = useTabRouter();
+    const xRouter = React.useContext(XViewRouterContext);
+    const userInfo = React.useContext(UserInfoContext)!;
 
     const onClick = () => {
         if (props.path) {
-            router.router.navigate(props.path);
+            if (tabRouter) {
+                tabRouter.router.navigate(props.path);
+            } else if (xRouter) {
+                xRouter.navigate(props.path);
+            }
         }
     };
 
@@ -92,7 +99,11 @@ export const ListingCompact = React.memo((props: ListingCompactProps) => {
                 <div className={groupContainer}>
                     <XView width='100%'>
                         {props.items.map(item => (
-                            <UGroupView key={'group-' + item.id} group={item} />
+                            <UGroupView
+                                key={'group-' + item.id}
+                                group={item}
+                                path={!userInfo.isLoggedIn ? `/${item.id}` : `/mail/${item.id}`}
+                            />
                         ))}
                     </XView>
                 </div>
