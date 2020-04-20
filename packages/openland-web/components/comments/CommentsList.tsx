@@ -103,14 +103,14 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Com
 export const CommentsList = React.memo((props: CommentsListProps) => {
     const { peerId } = props;
     const client = useClient();
-    const comments = client.useComments({ peerId }, { fetchPolicy: 'cache-and-network' }).comments.comments;
+    const data = client.useComments({ peerId }, { fetchPolicy: 'cache-and-network' }).comments;
 
     const updateHandler = React.useCallback(async () => {
         await client.refetchComments({ peerId });
     }, [peerId]);
 
     React.useEffect(() => {
-        return sequenceWatcher<CommentWatch>(null, (state, handler) => client.subscribeCommentWatch({ peerId, fromState: state }, handler), (updates) => {
+        return sequenceWatcher<CommentWatch>(data.state.state, (state, handler) => client.subscribeCommentWatch({ peerId, fromState: state }, handler), (updates) => {
             if (updates.event) {
                 updateHandler();
                 return updates.event.state;
@@ -121,6 +121,6 @@ export const CommentsList = React.memo((props: CommentsListProps) => {
     }, [peerId]);
 
     return (
-        <CommentsListInner {...props} comments={comments} />
+        <CommentsListInner {...props} comments={data.comments} />
     );
 });
