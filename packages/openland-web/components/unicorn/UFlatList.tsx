@@ -39,7 +39,7 @@ export const UFlatList: <T>(props: UFlatListProps<T>) => any = React.memo((props
 
     return (
         <Page onScroll={onScroll} padded={padded} track={track} maxWidth={props.maxWidth}>
-            <UHeader documentTitle={props.title} />
+            {!!props.title && <UHeader documentTitle={props.title} />}
             {props.gap && (
                 <XView height={props.gap} />
             )}
