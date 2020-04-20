@@ -37,8 +37,8 @@ export const shiftReplyMeta = (message: DataSourceMessageItem, isForward: boolea
     let isRichAttach = !!getAttachRich(lastReply);
     let isPurchaseAttach = getAttachPurchase(lastReply);
 
-    return isForward && (isImage || isSticker) 
-        || !isForward && !message.text && (isImage || isRichAttach || isSticker) 
+    return isForward && (isImage || isSticker)
+        || !isForward && !message.text && (isRichAttach || isSticker) 
         || (isPurchaseAttach && isForward);
 };
 
