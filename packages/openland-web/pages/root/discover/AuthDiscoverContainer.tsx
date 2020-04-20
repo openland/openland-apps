@@ -13,6 +13,12 @@ import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import BackIcon from 'openland-icons/s/ic-back-24.svg';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 
+const sidebarContainer = css`
+    width: 424px;
+    padding-left: 0;
+    padding-right: 0;
+`;
+
 const rootContainer = css`
     display: flex;
     flex-direction: row;
@@ -39,8 +45,6 @@ const AuthDiscoverHeader = React.memo((props: { title: string, showBack?: boolea
     const { title, showBack } = props;
     const layout = useLayout();
     const router = React.useContext(XViewRouterContext);
-    const wideHeader = !!showBack;
-    const maxWidth = 560;
 
     return (
         <XView
@@ -49,6 +53,7 @@ const AuthDiscoverHeader = React.memo((props: { title: string, showBack?: boolea
             alignItems="center"
             zIndex={2}
             backgroundColor="var(--backgroundPrimary)"
+            paddingHorizontal={!showBack ? 16 : undefined}
         >
             {layout === 'mobile' || showBack ? (
                 <XView height={56} width={56} alignItems="center" justifyContent="center">
@@ -62,7 +67,7 @@ const AuthDiscoverHeader = React.memo((props: { title: string, showBack?: boolea
                 fontSize={24}
                 flexDirection="row"
                 justifyContent="center"
-                marginRight={wideHeader && layout !== 'mobile' ? 56 : undefined}
+                marginRight={showBack && layout !== 'mobile' ? 56 : undefined}
             >
                 <XView
                     height={32}
@@ -70,9 +75,7 @@ const AuthDiscoverHeader = React.memo((props: { title: string, showBack?: boolea
                     minWidth={0}
                     flexBasis={0}
                     flexGrow={1}
-                    maxWidth={
-                        maxWidth && !showBack ? maxWidth : 600
-                    }
+                    maxWidth={showBack ? 600 : 560}
                     flexDirection="row"
                     {...TextStyles.Title1}
                 >
@@ -99,7 +102,7 @@ export const AuthDiscoverContainer = React.memo((props: { title: string, showBac
 
     return (
         <div className={rootContainer}>
-            {!isMobile && <AuthSidebarComponent />}
+            {!isMobile && <AuthSidebarComponent className={sidebarContainer} />}
             <div className={mainContainer}>
                 {isMobile && <AuthMobileHeader />}
                 <div className={boxContainer}>
