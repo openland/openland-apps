@@ -39,17 +39,12 @@ const boxContainer = css`
     flex-grow: 1;
 `;
 
-const AuthDiscoverInner = React.memo(() => {
+const AuthDiscoverInner = React.memo((props: { seed: number }) => {
     const client = useClient();
-    const seed = getRandomSeed();
 
-    let rooms = client.useExploreRoomsNoAuth({ seed }, { fetchPolicy: 'cache-and-network' });
-
-    const collections = client.useDiscoverCollectionsShort({ first: 20 });
-    const collectionsItems = collections.discoverCollections!.items;
-
-    const editorsChoice = client.useDiscoverEditorsChoice();
-    const editorsChoiceItems = editorsChoice.discoverEditorsChoice;
+    const { discoverPopularNow, discoverCollections, discoverEditorsChoice, discoverNewAndGrowing, discoverTopPremium, discoverTopFree } = client.useDiscoverNoAuth({ seed: props.seed });
+    const collections = discoverCollections ? discoverCollections.items : [];
+    const editorsChoice = discoverEditorsChoice;
 
     return (
         <XView
@@ -62,8 +57,8 @@ const AuthDiscoverInner = React.memo(() => {
         >
             <XScrollView3 flexGrow={1} flexBasis={0} minHeight={0}>
                 <XView maxWidth={560} marginTop={25} alignSelf="center">
-                    <USlider title="Featured" childrenCount={editorsChoiceItems.length}>
-                        {editorsChoiceItems.map(i => (
+                    <USlider title="Featured" childrenCount={editorsChoice.length}>
+                        {editorsChoice.map(i => (
                             <div className={editorsChoiceItem} key={i.id}>
                                 <EditorsChoiceItem {...i} />
                             </div>
@@ -72,13 +67,13 @@ const AuthDiscoverInner = React.memo(() => {
 
                     <XView marginTop={10} marginBottom={24}>
                         <div className={listingsContainer}>
-                            <ListingCompact title="Popular now" items={normalizePopularItems(rooms.discoverPopularNow.items)} path="/discover/popular" />
-                            <ListingCompact title="New and growing" items={rooms.discoverNewAndGrowing.items || []} path="/discover/new" />
+                            <ListingCompact title="Popular now" items={normalizePopularItems(discoverPopularNow.items)} path="/discover/popular" />
+                            <ListingCompact title="New and growing" items={discoverNewAndGrowing.items || []} path="/discover/new" />
                         </div>
                     </XView>
 
-                    <USlider title="Collections" path="/discover/collections" childrenCount={collectionsItems.length}>
-                        {collectionsItems.map(i => (
+                    <USlider title="Collections" path="/discover/collections" childrenCount={collections.length}>
+                        {collections.map(i => (
                             <div className={sliderCollectionItem} key={i.id}>
                                 <DiscoverCollection {...i} />
                             </div>
@@ -87,8 +82,8 @@ const AuthDiscoverInner = React.memo(() => {
 
                     <XView marginBottom={40} marginTop={20}>
                         <div className={listingsContainer}>
-                            <ListingCompact title="Top premium" items={rooms.discoverTopPremium.items || []} path="/discover/premium" />
-                            <ListingCompact title="Top free" items={rooms.discoverTopFree.items || []} path="/discover/free" />
+                            <ListingCompact title="Top premium" items={discoverTopPremium.items || []} path="/discover/premium" />
+                            <ListingCompact title="Top free" items={discoverTopFree.items || []} path="/discover/free" />
                         </div>
                     </XView>
                 </XView>
@@ -99,6 +94,7 @@ const AuthDiscoverInner = React.memo(() => {
 
 export const AuthDiscoverFragment = React.memo(() => {
     const isMobile = useIsMobile();
+    const seed = React.useMemo(getRandomSeed, []);
 
     const xRouting = React.useMemo(
         () => ({
@@ -121,7 +117,7 @@ export const AuthDiscoverFragment = React.memo(() => {
                     <XViewRouterContext.Provider value={xRouting}>
 
                         <React.Suspense fallback={<XLoader loading={true} />}>
-                            <AuthDiscoverInner />
+                            <AuthDiscoverInner seed={seed} />
                         </React.Suspense>
 
                     </XViewRouterContext.Provider>

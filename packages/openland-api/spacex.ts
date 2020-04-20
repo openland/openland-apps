@@ -73,6 +73,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: OperationParameters): Promise<Types.DiscoverNextPage> {
         return this.query('DiscoverNextPage', variables, opts);
     }
+    queryDiscoverNoAuth(variables: Types.DiscoverNoAuthVariables, opts?: OperationParameters): Promise<Types.DiscoverNoAuth> {
+        return this.query('DiscoverNoAuth', variables, opts);
+    }
     queryDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, opts?: OperationParameters): Promise<Types.DiscoverPopularNow> {
         return this.query('DiscoverPopularNow', variables, opts);
     }
@@ -93,9 +96,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryExploreRooms(variables: Types.ExploreRoomsVariables, opts?: OperationParameters): Promise<Types.ExploreRooms> {
         return this.query('ExploreRooms', variables, opts);
-    }
-    queryExploreRoomsNoAuth(variables: Types.ExploreRoomsNoAuthVariables, opts?: OperationParameters): Promise<Types.ExploreRoomsNoAuth> {
-        return this.query('ExploreRoomsNoAuth', variables, opts);
     }
     queryFeatureFlags(opts?: OperationParameters): Promise<Types.FeatureFlags> {
         return this.query('FeatureFlags', undefined, opts);
@@ -382,6 +382,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: OperationParameters): Promise<Types.DiscoverNextPage> {
         return this.refetch('DiscoverNextPage', variables);
     }
+    refetchDiscoverNoAuth(variables: Types.DiscoverNoAuthVariables, opts?: OperationParameters): Promise<Types.DiscoverNoAuth> {
+        return this.refetch('DiscoverNoAuth', variables);
+    }
     refetchDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, opts?: OperationParameters): Promise<Types.DiscoverPopularNow> {
         return this.refetch('DiscoverPopularNow', variables);
     }
@@ -402,9 +405,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchExploreRooms(variables: Types.ExploreRoomsVariables, opts?: OperationParameters): Promise<Types.ExploreRooms> {
         return this.refetch('ExploreRooms', variables);
-    }
-    refetchExploreRoomsNoAuth(variables: Types.ExploreRoomsNoAuthVariables, opts?: OperationParameters): Promise<Types.ExploreRoomsNoAuth> {
-        return this.refetch('ExploreRoomsNoAuth', variables);
     }
     refetchFeatureFlags(opts?: OperationParameters): Promise<Types.FeatureFlags> {
         return this.refetch('FeatureFlags', undefined);
@@ -691,6 +691,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateDiscoverNextPage(variables: Types.DiscoverNextPageVariables, updater: (data: Types.DiscoverNextPage) => Types.DiscoverNextPage | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverNextPage', variables);
     }
+    updateDiscoverNoAuth(variables: Types.DiscoverNoAuthVariables, updater: (data: Types.DiscoverNoAuth) => Types.DiscoverNoAuth | null): Promise<boolean> {
+        return this.updateQuery(updater, 'DiscoverNoAuth', variables);
+    }
     updateDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, updater: (data: Types.DiscoverPopularNow) => Types.DiscoverPopularNow | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverPopularNow', variables);
     }
@@ -711,9 +714,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateExploreRooms(variables: Types.ExploreRoomsVariables, updater: (data: Types.ExploreRooms) => Types.ExploreRooms | null): Promise<boolean> {
         return this.updateQuery(updater, 'ExploreRooms', variables);
-    }
-    updateExploreRoomsNoAuth(variables: Types.ExploreRoomsNoAuthVariables, updater: (data: Types.ExploreRoomsNoAuth) => Types.ExploreRoomsNoAuth | null): Promise<boolean> {
-        return this.updateQuery(updater, 'ExploreRoomsNoAuth', variables);
     }
     updateFeatureFlags(updater: (data: Types.FeatureFlags) => Types.FeatureFlags | null): Promise<boolean> {
         return this.updateQuery(updater, 'FeatureFlags', undefined);
@@ -1044,6 +1044,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverNextPage | null {
         return this.useQuery('DiscoverNextPage', variables, opts);
     }
+    useDiscoverNoAuth(variables: Types.DiscoverNoAuthVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverNoAuth | null;
+    useDiscoverNoAuth(variables: Types.DiscoverNoAuthVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverNoAuth;
+    useDiscoverNoAuth(variables: Types.DiscoverNoAuthVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverNoAuth | null {
+        return this.useQuery('DiscoverNoAuth', variables, opts);
+    }
     useDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverPopularNow | null;
     useDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverPopularNow;
     useDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverPopularNow | null {
@@ -1078,11 +1083,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useExploreRooms(variables: Types.ExploreRoomsVariables, opts?: SpaceQueryWatchParameters): Types.ExploreRooms;
     useExploreRooms(variables: Types.ExploreRoomsVariables, opts?: SpaceQueryWatchParameters): Types.ExploreRooms | null {
         return this.useQuery('ExploreRooms', variables, opts);
-    }
-    useExploreRoomsNoAuth(variables: Types.ExploreRoomsNoAuthVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ExploreRoomsNoAuth | null;
-    useExploreRoomsNoAuth(variables: Types.ExploreRoomsNoAuthVariables, opts?: SpaceQueryWatchParameters): Types.ExploreRoomsNoAuth;
-    useExploreRoomsNoAuth(variables: Types.ExploreRoomsNoAuthVariables, opts?: SpaceQueryWatchParameters): Types.ExploreRoomsNoAuth | null {
-        return this.useQuery('ExploreRoomsNoAuth', variables, opts);
     }
     useFeatureFlags(opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeatureFlags | null;
     useFeatureFlags(opts?: SpaceQueryWatchParameters): Types.FeatureFlags;

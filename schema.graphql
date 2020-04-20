@@ -1602,6 +1602,8 @@ type Mutation {
   debugFixBrokenDonations: Boolean!
   debugCreateTransfer(fromUid: ID!, toUid: ID!, amount: Int!): String!
   debugSetCommission(cid: ID!, percents: Int!): Boolean!
+  debugCalcEntitiesCount(entity: String!): Boolean!
+  debugCalcEntitiesCountAll: Boolean!
   settingsUpdate(settings: UpdateSettingsInput): Settings!
   sendEmailChangeCode(newEmail: String!): String!
   changeEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2380,6 +2382,8 @@ type Query {
   debugClientIp: DebugIpInfo
   debugGqlTraces(first: Int!, after: ID): GqlTraceConnection!
   debugGqlTrace(id: ID!): GqlTrace!
+  debugUserWallet(id: ID!): WalletAccount!
+  debugEntitiesCounter(name: String!): Int!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!

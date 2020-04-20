@@ -90,7 +90,7 @@ query ExploreRooms($seed: Int!) {
     isDiscoverDone: betaIsDiscoverDone
 }
 
-query ExploreRoomsNoAuth($seed: Int!) {
+query DiscoverNoAuth($seed: Int!) {
     discoverNewAndGrowing(first: 3, seed: $seed) {
         items {
             ...DiscoverSharedRoom
@@ -117,6 +117,29 @@ query ExploreRoomsNoAuth($seed: Int!) {
             ...DiscoverSharedRoom
         }
         cursor
+    }
+
+    discoverCollections(first: 20) {
+        items {
+            ...DiscoverChatsCollectionShort
+        }
+        cursor
+    }
+
+    discoverEditorsChoice {
+        id
+        image {
+            uuid
+            crop {
+                x
+                y
+                w
+                h
+            }
+        }
+        chat {
+            ...DiscoverSharedRoom
+        }
     }
 }
 
