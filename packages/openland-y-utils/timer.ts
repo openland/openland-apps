@@ -6,7 +6,7 @@ export async function delayForewer() {
     return new Promise(resolver => { /*Do nothing*/ });
 }
 
-export function debounce<T extends (...args: any[]) => any>(f: T, ms: number): T {
+export function debounce<T extends (...args: any[]) => any>(f: T, ms: number, tailing: boolean = true): T {
     let timer: NodeJS.Timeout | null = null;
     let argsToUse: any = undefined;
     return ((...args: any[]) => {
@@ -20,7 +20,9 @@ export function debounce<T extends (...args: any[]) => any>(f: T, ms: number): T
 
         timer = setTimeout(() => {
             if (argsToUse) {
-                f(...argsToUse);
+                if (tailing) {
+                    f(...argsToUse);
+                }
                 argsToUse = undefined;
                 timer = null;
             }
