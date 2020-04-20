@@ -303,7 +303,7 @@ const MediaView = React.memo((props: {
         }
         return d;
     }, [peerId]);
-    let peer = props.peers.find(p => p.id === peerId) || props.peers[1];
+    let peer = props.peers.find(p => p.id === peerId) || props.peers[0];
 
     return (props.videoEnabled ? (
         <VideoMediaView
