@@ -22,7 +22,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
 
     private audioOutputDevice: MediaDeviceInfo | undefined;
 
-    channel?: RTCDataChannel;
+    // channel?: RTCDataChannel;
     private volume?: number;
 
     private d1: () => void;
@@ -90,9 +90,9 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         this.connection.onnegotiationneeded = () => this.onnegotiationneeded && this.onnegotiationneeded();
         this.connection.oniceconnectionstatechange = (ev) => this.oniceconnectionstatechange && ev && ev.target && this.oniceconnectionstatechange(ev as any);
 
-        let dc = this.connection.createDataChannel('main', { ordered: true });
-        this.handleDataChannel(dc);
-        this.connection.ondatachannel = (ev => this.handleDataChannel(ev.channel));
+        // let dc = this.connection.createDataChannel('main', { ordered: true });
+        // this.handleDataChannel(dc);
+        // this.connection.ondatachannel = (ev => this.handleDataChannel(ev.channel));
         // let audio = new Audio();
         // audio.autoplay = true;
         // audio.setAttribute('playsinline', 'true');
@@ -103,23 +103,23 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     }
 
     handleDataChannel = (channel: RTCDataChannel) => {
-        this.channel = channel;
-        channel.onmessage = (ev) => {
-            if (this.onDcMessage) {
-                this.onDcMessage(ev.data);
-            }
-        };
+        // this.channel = channel;
+        // channel.onmessage = (ev) => {
+        //     if (this.onDcMessage) {
+        //         this.onDcMessage(ev.data);
+        //     }
+        // };
     }
 
     sendDCMessage = (message: string) => {
-        if (this.channel?.readyState === 'open') {
-            // it can crash on send event if state is open, wtf?
-            try {
-                this.channel.send(message);
-            } catch (e) {
-                console.error(e);
-            }
-        }
+        // if (this.channel?.readyState === 'open') {
+        //     // it can crash on send event if state is open, wtf?
+        //     try {
+        //         this.channel.send(message);
+        //     } catch (e) {
+        //         console.error(e);
+        //     }
+        // }
     }
 
     setVolume = (volume: number) => {
@@ -131,7 +131,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
 
     createOffer = async () => {
         console.log('[PC:' + this.id + '] createOffer');
-        return JSON.stringify(await this.connection.createOffer({ offerToReceiveAudio: true, offerToReceiveVideo: true } as any /* WTF with typings? */));
+        return JSON.stringify(await this.connection.createOffer());
     }
 
     setLocalDescription = async (sdp: string) => {
@@ -148,7 +148,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
 
     createAnswer = async () => {
         console.log('[PC:' + this.id + '] createAnswer');
-        return JSON.stringify(await this.connection.createAnswer({ offerToReceiveAudio: true, offerToReceiveVideo: true } as any /* WTF with typings? */));
+        return JSON.stringify(await this.connection.createAnswer());
     }
 
     hasVideo = false;
@@ -214,7 +214,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
             this.audio = undefined;
         }
         this.streams.forEach(s => s.getTracks().forEach(t => t.stop()));
-        this.channel?.close();
+        // this.channel?.close();
         this.d1();
         this.d2();
         this.connection.close();

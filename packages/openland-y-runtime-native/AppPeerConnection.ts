@@ -32,7 +32,7 @@ class AppPeerConnectionNative implements AppPeerConnection {
     }
 
     createOffer = async () => {
-        return JSON.stringify(await (this.connection as any).createOffer({ offerToReceiveAudio: true, offerToReceiveVideo: true }));
+        return JSON.stringify(await (this.connection as any).createOffer());
     }
 
     setLocalDescription = async (sdp: string) => {
@@ -44,7 +44,7 @@ class AppPeerConnectionNative implements AppPeerConnection {
     }
 
     createAnswer = async () => {
-        return JSON.stringify(await (this.connection as any).createAnswer({ offerToReceiveAudio: true, offerToReceiveVideo: true }));
+        return JSON.stringify(await (this.connection as any).createAnswer());
     }
 
     sendDCMessage = (message: string) => {
