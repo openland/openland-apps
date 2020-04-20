@@ -4,7 +4,7 @@ import { PageProps } from 'openland-mobile/components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { View, Text, StyleSheet, Image, Linking } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradient.native';
+import LinearGradient from 'react-native-linear-gradient';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import Version from 'react-native-version-number';
@@ -42,13 +42,13 @@ const SettingsAboutComponent = React.memo((props: PageProps) => {
 
     return (
         <SScrollView>
-            <ZLinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]} fallbackColor={theme.gradient0to100Start} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}>
+            <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]}>
                 <View style={styles.hero}>
                     <Image style={styles.image} source={require('assets/ic-app-icon-192.png')} />
                     <Text style={[styles.title, { color: theme.foregroundPrimary }]} allowFontScaling={false}>Openland</Text>
                     <Text style={[styles.subtitle, { color: theme.foregroundTertiary }]} allowFontScaling={false}>Version {buildNumber}</Text>
                 </View>
-            </ZLinearGradient>
+            </LinearGradient>
             <View marginTop={16}>
                 <ZListItem
                     leftIcon={require('assets/ic-info-24.png')}

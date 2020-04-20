@@ -242,20 +242,16 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
     const handleManageClick = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
 
-        if (room.canEdit || SUPER_ADMIN) {
+        if (room.role === 'OWNER' || room.role === 'ADMIN' || SUPER_ADMIN) {
             builder.action(
-                'Edit info',
+                room.isChannel ? 'Manage channel' : 'Manage group',
                 () => props.router.push('EditGroup', { id: room.id }),
                 false,
-                require('assets/ic-edit-24.png'),
+                require('assets/ic-settings-24.png'),
             );
         }
 
-        if (
-            room.role === 'OWNER' ||
-            room.role === 'ADMIN' ||
-            (room.organization && (room.organization.isAdmin || room.organization.isOwner))
-        ) {
+        if (room.role === 'OWNER' || room.role === 'ADMIN' || SUPER_ADMIN) {
             builder.action(
                 'Advanced settings',
                 () => props.router.push('EditGroupAdvanced', { id: room.id }),

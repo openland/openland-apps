@@ -42,6 +42,8 @@ import { SettingsLicenses } from './pages/main/SettingsLicenses';
 import { HomeDialogs } from './pages/main/HomeDialogs';
 import { SetShortname } from './pages/main/SetShortname';
 import { EditGroup } from './pages/main/EditGroup';
+import { EditGroupSocialImage } from './pages/main/EditGroupSocialImage';
+import { EditGroupWelcomeMessage } from './pages/main/EditGroupWelcomeMessage';
 import { EditGroupAdvanced } from './pages/main/EditGroupAdvanced';
 import { GroupInvite } from './pages/main/GroupInvite';
 import { UserPicker } from './pages/main/modals/UserPicker';
@@ -95,6 +97,8 @@ export const Routes = new SRoutesBuilder()
   .addRoute('ProfileGroup', ProfileGroup)
   .addRoute('ProfileGroupFeatured', ProfileGroupFeatured)
   .addRoute('EditGroup', EditGroup)
+  .addRoute('EditGroupSocialImage', EditGroupSocialImage)
+  .addRoute('EditGroupWelcomeMessage', EditGroupWelcomeMessage)
   .addRoute('EditGroupAdvanced', EditGroupAdvanced)
   .addRoute('SettingsProfile', SettingsProfile)
   .addRoute('SettingsNotifications', SettingsNotifications)

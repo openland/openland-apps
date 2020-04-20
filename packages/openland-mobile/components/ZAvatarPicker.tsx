@@ -20,6 +20,7 @@ export interface ZAvatarPickerRenderProps {
     url?: string;
     loading: boolean;
     showPicker: () => void;
+    fullWidth?: boolean;
 }
 
 export interface ZAvatarPickerProps {
@@ -30,6 +31,7 @@ export interface ZAvatarPickerProps {
     value?: AvatarImageRef | null;
     onChanged?: (value: AvatarImageRef | null) => void;
     render?: React.ComponentType<ZAvatarPickerRenderProps>;
+    fullWidth?: boolean;
     pickSize?: {
         width: number;
         height: number;
@@ -138,7 +140,7 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
     }
 
     let size = avatarSizes[props.size || 'x-large'].size;
-    return props.render ? <props.render url={valueUrl} loading={loading} showPicker={handlePicker} /> : (
+    return props.render ? <props.render url={valueUrl} loading={loading} showPicker={handlePicker} fullWidth={props.fullWidth} /> : (
         <TouchableOpacity onPress={handlePicker}>
             <View width={size} height={size} borderRadius={size / 2} backgroundColor={theme.backgroundTertiaryTrans}>
                 {!valueUrl && !loading && (

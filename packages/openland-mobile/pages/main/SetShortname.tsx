@@ -1,28 +1,49 @@
 import * as React from 'react';
+import { View, Image, Text } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
-import { SHeader } from 'react-native-s/SHeader';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZInput } from 'openland-mobile/components/ZInput';
-import { Clipboard } from 'react-native';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
-import ActionSheet from 'openland-mobile/components/ActionSheet';
-import { ErrorText, validateShortname, getErrorByShortname } from './SetUserShortname';
+import LinearGradient from 'react-native-linear-gradient';
+import { validateShortname, getErrorByShortname } from './SetUserShortname';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { SUPER_ADMIN } from '../Init';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 import { RoomChat_room_SharedRoom } from 'openland-api/spacex.types';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+
+const RemarkText = (props: { text: string; error: boolean }) => {
+    const theme = React.useContext(ThemeContext);
+    return (
+        <Text
+            style={{
+                ...TextStyles.Caption,
+                color: props.error ? '#F23051' : theme.foregroundTertiary,
+                marginTop: 8,
+                paddingHorizontal: 32,
+            }}
+        >
+            {props.text}
+        </Text>
+    );
+};
 
 interface ContentProps {
     name: string;
     shortname: string | null;
     onSave: (shortname: string | null) => Promise<any>;
+    isGroup: boolean;
+    isChannel: boolean;
+    isCommunity: boolean;
 }
 
 const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
+    const theme = React.useContext(ThemeContext);
     const [error, setError] = React.useState<string | undefined>(undefined);
 
     const minLength = SUPER_ADMIN ? 3 : 5;
@@ -55,68 +76,86 @@ const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
         minLength,
         maxLength,
     );
-    const footerShortnameText = shortnameField.value
-        ? `This link opens ${props.name} page:\nopenland.com/${shortnameField.value}`
-        : '';
 
     return (
         <>
             <SHeaderButton title="Save" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
-                <ZListGroup
-                    header={null}
-                    footer={{
-                        text:
-                            'You can choose a shortname for ' +
-                            props.name +
-                            ' in Openland.' +
-                            '\n' +
-                            'Other people will be able to find it by this shortname.' +
-                            '\n\n' +
-                            'You can use a-z, 0-9 and underscores.' +
-                            '\n' +
-                            'Minimum length is ' +
-                            minLength +
-                            ' characters.' +
-                            '\n\n' +
-                            footerShortnameText,
-
-                        onPress: (link: string) => {
-                            if (props.shortname) {
-                                ActionSheet.builder()
-                                    .action(
-                                        'Copy',
-                                        () => Clipboard.setString(link),
-                                        false,
-                                        require('assets/ic-copy-24.png'),
-                                    )
-                                    .show();
-                            }
-                        },
-                        onLongPress: (link: string) => {
-                            if (props.shortname) {
-                                ActionSheet.builder()
-                                    .action(
-                                        'Copy',
-                                        () => Clipboard.setString(link),
-                                        false,
-                                        require('assets/ic-copy-24.png'),
-                                    )
-                                    .show();
-                            }
-                        },
-                    }}
-                >
-                    <ZInput
-                        placeholder="Shortname"
-                        prefix="@"
-                        field={shortnameField}
-                        autoCapitalize="none"
-                        autoFocus={true}
-                    />
-
-                    {error && <ErrorText text={error} />}
-                    {!error && shortnameError && <ErrorText text={shortnameError} />}
+                <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]}>
+                    <View
+                        alignItems="center"
+                        justifyContent="center"
+                        paddingTop={16}
+                        paddingBottom={32}
+                    >
+                        <View
+                            width={80}
+                            height={80}
+                            alignItems="center"
+                            justifyContent="center"
+                            borderRadius={80}
+                            backgroundColor={theme.tintBlue}
+                        >
+                            <Image
+                                source={require('assets/ic-at-glyph-48.png')}
+                                style={{
+                                    width: 48,
+                                    height: 48,
+                                    tintColor: theme.foregroundContrast,
+                                }}
+                            />
+                        </View>
+                        <Text
+                            style={{
+                                ...TextStyles.Title2,
+                                color: theme.foregroundPrimary,
+                                textAlign: 'center',
+                                marginTop: 16,
+                            }}
+                            allowFontScaling={false}
+                        >
+                            Shortname
+                        </Text>
+                        <Text
+                            style={{
+                                ...TextStyles.Body,
+                                color: theme.foregroundTertiary,
+                                textAlign: 'center',
+                                maxWidth: 300,
+                                marginTop: 4,
+                            }}
+                            allowFontScaling={false}
+                        >
+                            {`Choose a shortname so other people can find and mention your ${
+                                props.isChannel
+                                    ? 'channel'
+                                    : props.isGroup
+                                    ? 'group'
+                                    : props.isCommunity
+                                    ? 'community'
+                                    : 'organization'
+                            }`}
+                        </Text>
+                    </View>
+                </LinearGradient>
+                <ZListGroup header={null}>
+                    <View paddingHorizontal={16}>
+                        <ZInput
+                            placeholder="Shortname"
+                            prefix="@"
+                            field={shortnameField}
+                            autoCapitalize="none"
+                            noWrapper={true}
+                        />
+                    </View>
+                    {error && <RemarkText text={error} error={true} />}
+                    {!error && shortnameError && <RemarkText text={shortnameError} error={true} />}
+                    {!error && !shortnameError && (
+                        <RemarkText
+                            text="Only a-z, 0-9 and underscores, at least 3 chars"
+                            error={false}
+                        />
+                    )}
                 </ZListGroup>
             </KeyboardAvoidingScrollView>
         </>
@@ -143,6 +182,9 @@ const SetOrgShortname = React.memo((props: PageProps) => {
             name={profile.name}
             shortname={profile.shortname}
             onSave={handleSave}
+            isGroup={false}
+            isChannel={false}
+            isCommunity={profile.isCommunity}
         />
     );
 });
@@ -167,6 +209,9 @@ const SetGroupShortname = React.memo((props: PageProps) => {
             name={profile.title}
             shortname={profile.shortname}
             onSave={handleSave}
+            isGroup={true}
+            isChannel={profile.isChannel}
+            isCommunity={false}
         />
     );
 });
@@ -177,7 +222,6 @@ const SetShortnameComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title="Shortname" />
             <Component {...props} />
         </>
     );

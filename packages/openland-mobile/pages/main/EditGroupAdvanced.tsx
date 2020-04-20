@@ -183,6 +183,7 @@ const EditGroupAdvancedComponent = XMemo<PageProps>((props) => {
                         field={socialImageField}
                         render={ZSocialPickerRender}
                         pickSize={{ width: 1200, height: 630 }}
+                        fullWidth={true}
                     />
                 </View>
             </KeyboardAvoidingScrollView>

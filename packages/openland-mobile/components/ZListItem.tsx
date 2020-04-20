@@ -219,8 +219,8 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
 }
 
 export const ZListItem = React.memo<ZListItemProps>((props) => {
-    let theme = React.useContext(ThemeContext);
-    let needStore = !!props.checkmarkField || !!props.toggleField;
+    const theme = React.useContext(ThemeContext);
+    const needStore = !!props.checkmarkField || !!props.toggleField;
     if (needStore) {
         return (
             <XStoreContext.Consumer>

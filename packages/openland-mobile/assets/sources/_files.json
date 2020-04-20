@@ -1,6 +1,34 @@
 {
     "icons": [
         {
+            "name": "ic-at-glyph",
+            "src": "ic-at-glyph-48.svg",
+            "sizes": [
+                48
+            ]
+        },
+        {
+            "name": "ic-message-glyph",
+            "src": "ic-message-glyph-48.svg",
+            "sizes": [
+                48
+            ]
+        },
+        {
+            "name": "ic-gallery-glyph",
+            "src": "ic-gallery-glyph-48.svg",
+            "sizes": [
+                48
+            ]
+        },
+        {
+            "name": "ic-wallet-glyph",
+            "src": "ic-wallet-glyph-48.svg",
+            "sizes": [
+                48
+            ]
+        },
+        {
             "name": "ic-organization",
             "src": "ic-organization-24.svg",
             "sizes": [
