@@ -8,9 +8,9 @@ export const ZShaker = React.memo(
         const shakeIt = () => {
             shakeAnimation.setValue(0);
             Animated.timing(shakeAnimation, {
-                duration: 800,
-                toValue: 3,
-                easing: Easing.bounce,
+                duration: 1600,
+                toValue: 1,
+                easing: Easing.bezier(0.36, 0.07, 0.19, 0.97),
                 useNativeDriver: true,
             }).start();
         };
@@ -25,8 +25,8 @@ export const ZShaker = React.memo(
                     transform: [
                         {
                             translateX: shakeAnimation.interpolate({
-                                inputRange: [0, 0.5, 1, 1.5, 2, 2.5, 3],
-                                outputRange: [0, -10, 0, 10, 0, -10, 0],
+                                inputRange: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+                                outputRange: [0, -2, 4, -8, 8, -8, 8, -8, 4, -2, 0],
                             }),
                         },
                     ],
