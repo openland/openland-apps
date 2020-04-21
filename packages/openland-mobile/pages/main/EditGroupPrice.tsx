@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View, Image, Text } from 'react-native';
+import { WalletSubscriptionInterval } from 'openland-api/spacex.types';
 import LinearGradient from 'react-native-linear-gradient';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
@@ -8,13 +9,12 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
-import { SScrollView } from "react-native-s/SScrollView";
+import { SScrollView } from 'react-native-s/SScrollView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
-import { ZSocialPickerRender } from 'openland-mobile/components/ZSocialPickerRender';
+import { GroupPriceSettings, DistributionType } from '../compose/CreateGroupAttrs';
 
-const EditGroupSocialImageComponent = React.memo((props: PageProps) => {
+const EditGroupPriceComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const client = getClient();
     const group = client.useRoomChat(
@@ -28,38 +28,36 @@ const EditGroupSocialImageComponent = React.memo((props: PageProps) => {
 
     const form = useForm();
 
-    const socialImageField = useField(
-        'socialImageRef',
-        group.socialImage ? { uuid: group.socialImage } : null,
+    const distributionField = useField<DistributionType>(
+        'distribution',
+        DistributionType.FREE,
         form,
     );
-
-    const handleSave = () =>
-        form.doAction(async () => {
-            try {
-                const variables = {
-                    roomId: props.router.params.id,
-                    input: {
-                        ...(socialImageField.value &&
-                            socialImageField.value.uuid !== group.socialImage && {
-                                socialImageRef: socialImageField.value,
-                            }),
-                    },
-                };
-
-                await client.mutateRoomUpdate(variables);
-                await client.refetchRoomChat({ id: props.router.params.id });
-
-                props.router.back();
-            } catch (e) {
-                console.warn('error', e);
-                props.router.back();
-            }
-        });
+    const priceField = useField<string>('price', '1', form, [
+        {
+            checkIsValid: (x) => {
+                return /^[0-9]*$/.test(x);
+            },
+            text: 'Numbers only',
+        },
+        {
+            checkIsValid: (x) => {
+                return Number(x) <= 1000;
+            },
+            text: '$1000 maximum',
+        },
+        {
+            checkIsValid: (x) => {
+                return Number(x) >= 1;
+            },
+            text: '$1 minimum',
+        },
+    ]);
+    const intervalField = useField<WalletSubscriptionInterval | null>('interval', null, form);
 
     return (
         <>
-            <SHeaderButton title="Save" onPress={handleSave} />
+            <SHeaderButton title="Save" onPress={() => props.router.back()} />
             <SScrollView>
                 <LinearGradient colors={[theme.gradient0to100Start, theme.gradient0to100End]}>
                     <View
@@ -74,10 +72,10 @@ const EditGroupSocialImageComponent = React.memo((props: PageProps) => {
                             alignItems="center"
                             justifyContent="center"
                             borderRadius={80}
-                            backgroundColor={theme.tintGreen}
+                            backgroundColor={theme.tintPurple}
                         >
                             <Image
-                                source={require('assets/ic-gallery-glyph-48.png')}
+                                source={require('assets/ic-wallet-glyph-48.png')}
                                 style={{
                                     width: 48,
                                     height: 48,
@@ -94,7 +92,7 @@ const EditGroupSocialImageComponent = React.memo((props: PageProps) => {
                             }}
                             allowFontScaling={false}
                         >
-                            Social sharing image
+                            Payments
                         </Text>
                         <Text
                             style={{
@@ -106,16 +104,16 @@ const EditGroupSocialImageComponent = React.memo((props: PageProps) => {
                             }}
                             allowFontScaling={false}
                         >
-                            Choose an image for sharing invite to the group on social networks
+                            Set up monetization of your group. All changes will affect only new
+                            members
                         </Text>
                     </View>
                 </LinearGradient>
-                <ZListGroup header={null} alignItems="center">
-                    <ZAvatarPicker
-                        field={socialImageField}
-                        render={ZSocialPickerRender}
-                        pickSize={{ width: 1200, height: 630 }}
-                        fullWidth={true}
+                <ZListGroup header={null}>
+                    <GroupPriceSettings
+                        distributionField={distributionField}
+                        intervalField={intervalField}
+                        priceField={priceField}
                     />
                 </ZListGroup>
             </SScrollView>
@@ -123,4 +121,4 @@ const EditGroupSocialImageComponent = React.memo((props: PageProps) => {
     );
 });
 
-export const EditGroupSocialImage = withApp(EditGroupSocialImageComponent, { navigationAppearance: 'small' });
+export const EditGroupPrice = withApp(EditGroupPriceComponent, { navigationAppearance: 'small' });

@@ -17,6 +17,7 @@ import { SRouterContext } from 'react-native-s/SRouterContext';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { SUPER_ADMIN } from '../Init';
 
 const SecretLabel = React.memo(() => {
     const theme = React.useContext(ThemeContext);
@@ -115,6 +116,11 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                         leftIcon={require('assets/ic-wallet-24.png')}
                         text="Payments"
                         small={true}
+                        onPress={
+                            SUPER_ADMIN
+                                ? () => router.push('EditGroupPrice', { id: group.id })
+                                : undefined
+                        }
                         description={
                             group.premiumSettings
                                 ? formatMoneyInterval(

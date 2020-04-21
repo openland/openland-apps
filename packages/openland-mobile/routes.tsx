@@ -44,7 +44,7 @@ import { SetShortname } from './pages/main/SetShortname';
 import { EditGroup } from './pages/main/EditGroup';
 import { EditGroupSocialImage } from './pages/main/EditGroupSocialImage';
 import { EditGroupWelcomeMessage } from './pages/main/EditGroupWelcomeMessage';
-import { EditGroupAdvanced } from './pages/main/EditGroupAdvanced';
+import { EditGroupPrice } from './pages/main/EditGroupPrice';
 import { GroupInvite } from './pages/main/GroupInvite';
 import { UserPicker } from './pages/main/modals/UserPicker';
 import Tasks from './pages/apps/Tasks';
@@ -99,7 +99,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('EditGroup', EditGroup)
   .addRoute('EditGroupSocialImage', EditGroupSocialImage)
   .addRoute('EditGroupWelcomeMessage', EditGroupWelcomeMessage)
-  .addRoute('EditGroupAdvanced', EditGroupAdvanced)
+  .addRoute('EditGroupPrice', EditGroupPrice)
   .addRoute('SettingsProfile', SettingsProfile)
   .addRoute('SettingsNotifications', SettingsNotifications)
   .addRoute('SettingsEmail', SettingsEmail)

@@ -30,11 +30,11 @@ const showMembersModal = (router: SRouter, res: RoomCreate) => {
         router,
         {
             title: 'Add',
-            action: async users => {
+            action: async (users) => {
                 startLoader();
                 try {
                     await getClient().mutateRoomAddMembers({
-                        invites: users.map(u => ({
+                        invites: users.map((u) => ({
                             userId: u.id,
                             role: RoomMemberRole.MEMBER,
                         })),
@@ -67,11 +67,117 @@ const showMembersModal = (router: SRouter, res: RoomCreate) => {
     );
 };
 
-enum DistributionType {
+export enum DistributionType {
     FREE = 'Free',
     PAID = 'Paid',
     SUBSCRIPTION = 'Subscription',
 }
+
+interface GroupPriceSettings {
+    distributionField: {
+        input: {
+            value: DistributionType;
+            onChange: (src: DistributionType) => void;
+            invalid: boolean;
+            errorText: string;
+        };
+        value: DistributionType;
+    };
+    priceField: {
+        input: {
+            value: string;
+            onChange: (src: string) => void;
+            invalid: boolean;
+            errorText: string;
+        };
+        value: string;
+    };
+    intervalField: {
+        input: {
+            value: WalletSubscriptionInterval | null;
+            onChange: (src: WalletSubscriptionInterval | null) => void;
+            invalid: boolean;
+            errorText: string;
+        };
+        value: WalletSubscriptionInterval | null;
+    };
+}
+
+export const GroupPriceSettings = React.memo((props: GroupPriceSettings) => {
+    const { distributionField, priceField, intervalField } = props;
+    const isSubscription = distributionField.value === DistributionType.SUBSCRIPTION;
+    return (
+        <>
+            <ZSelect
+                label="Payments"
+                modalTitle="Payments"
+                field={distributionField}
+                options={[
+                    {
+                        value: DistributionType.FREE,
+                        label: 'Free',
+                        subtitle: 'Members join for free',
+                    },
+                    {
+                        value: DistributionType.PAID,
+                        label: 'One-time payment',
+                        subtitle: 'Members pay once to join',
+                    },
+                    {
+                        value: DistributionType.SUBSCRIPTION,
+                        label: 'Subscription',
+                        subtitle: 'Recurrent membership fee',
+                    },
+                ]}
+            />
+            {distributionField.value !== DistributionType.FREE && (
+                // without this shit selector dont work!
+                <React.Suspense fallback={null}>
+                    <View
+                        flexDirection={isSubscription ? 'row' : undefined}
+                        paddingHorizontal={16}
+                        marginBottom={16}
+                    >
+                        <View
+                            flexGrow={1}
+                            flexShrink={0}
+                            flexBasis={0}
+                            marginRight={isSubscription ? 8 : undefined}
+                        >
+                            <ZInput
+                                placeholder="Price"
+                                prefix="$"
+                                field={priceField}
+                                keyboardType="numeric"
+                                noWrapper={true}
+                            />
+                        </View>
+                        {isSubscription && (
+                            <View flexGrow={1} flexShrink={0} flexBasis={0} marginLeft={8}>
+                                <ZSelect
+                                    noWrapper={true}
+                                    label="Period"
+                                    modalTitle="Period"
+                                    field={intervalField}
+                                    options={[
+                                        {
+                                            value: WalletSubscriptionInterval.WEEK,
+                                            label: 'Week',
+                                        },
+                                        {
+                                            value: WalletSubscriptionInterval.MONTH,
+                                            label: 'Month',
+                                        },
+                                    ]}
+                                />
+                            </View>
+                        )}
+                    </View>
+                </React.Suspense>
+            )}
+        </>
+    );
+});
 
 const CreateGroupComponent = React.memo((props: PageProps) => {
     const isChannel = !!props.router.params.isChannel;
@@ -89,19 +195,19 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
     );
     const priceField = useField<string>('price', '1', form, [
         {
-            checkIsValid: x => {
+            checkIsValid: (x) => {
                 return /^[0-9]*$/.test(x);
             },
             text: 'Numbers only',
         },
         {
-            checkIsValid: x => {
+            checkIsValid: (x) => {
                 return Number(x) <= 1000;
             },
             text: '$1000 maximum',
         },
         {
-            checkIsValid: x => {
+            checkIsValid: (x) => {
                 return Number(x) >= 1;
             },
             text: '$1 minimum',
@@ -109,21 +215,18 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
     ]);
     const intervalField = useField<WalletSubscriptionInterval | null>('interval', null, form);
 
-    React.useEffect(
-        () => {
-            if (distributionField.value === DistributionType.FREE) {
-                priceField.input.onChange('1');
-                intervalField.input.onChange(null);
-            }
-            if (distributionField.value === DistributionType.PAID) {
-                intervalField.input.onChange(null);
-            }
-            if (distributionField.value === DistributionType.SUBSCRIPTION) {
-                intervalField.input.onChange(WalletSubscriptionInterval.MONTH);
-            }
-        },
-        [distributionField.value],
-    );
+    React.useEffect(() => {
+        if (distributionField.value === DistributionType.FREE) {
+            priceField.input.onChange('1');
+            intervalField.input.onChange(null);
+        }
+        if (distributionField.value === DistributionType.PAID) {
+            intervalField.input.onChange(null);
+        }
+        if (distributionField.value === DistributionType.SUBSCRIPTION) {
+            intervalField.input.onChange(WalletSubscriptionInterval.MONTH);
+        }
+    }, [distributionField.value]);
 
     const handleSave = () => {
         if (titleField.value === '') {
@@ -170,8 +273,6 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
         });
     };
 
-    const isSubscription = distributionField.value === DistributionType.SUBSCRIPTION;
-
     return (
         <>
             <SHeader title={`New ${chatTypeString.toLowerCase()}`} />
@@ -182,80 +283,11 @@ const CreateGroupComponent = React.memo((props: PageProps) => {
                 </ZListGroup>
                 <ZListGroup header={null}>
                     <ZInput placeholder="Name" field={titleField} autoFocus={true} />
-                    <>
-                        <ZSelect
-                            label="Payments"
-                            modalTitle="Payments"
-                            field={distributionField}
-                            options={[
-                                {
-                                    value: DistributionType.FREE,
-                                    label: 'Free',
-                                    subtitle: 'Members join for free',
-                                },
-                                {
-                                    value: DistributionType.PAID,
-                                    label: 'One-time payment',
-                                    subtitle: 'Members pay once to join',
-                                },
-                                {
-                                    value: DistributionType.SUBSCRIPTION,
-                                    label: 'Subscription',
-                                    subtitle: 'Recurrent membership fee',
-                                },
-                            ]}
-                        />
-                        {distributionField.value !== DistributionType.FREE && (
-                            // without this shit selector dont work!
-                            <React.Suspense fallback={null}>
-                                <View
-                                    flexDirection={isSubscription ? 'row' : undefined}
-                                    paddingHorizontal={16}
-                                    marginBottom={16}
-                                >
-                                    <View
-                                        flexGrow={1}
-                                        flexShrink={0}
-                                        flexBasis={0}
-                                        marginRight={isSubscription ? 8 : undefined}
-                                    >
-                                        <ZInput
-                                            placeholder="Price"
-                                            prefix="$"
-                                            field={priceField}
-                                            keyboardType="numeric"
-                                            noWrapper={true}
-                                        />
-                                    </View>
-                                    {isSubscription && (
-                                        <View
-                                            flexGrow={1}
-                                            flexShrink={0}
-                                            flexBasis={0}
-                                            marginLeft={8}
-                                        >
-                                            <ZSelect
-                                                noWrapper={true}
-                                                label="Period"
-                                                modalTitle="Period"
-                                                field={intervalField}
-                                                options={[
-                                                    {
-                                                        value: WalletSubscriptionInterval.WEEK,
-                                                        label: 'Week',
-                                                    },
-                                                    {
-                                                        value: WalletSubscriptionInterval.MONTH,
-                                                        label: 'Month',
-                                                    },
-                                                ]}
-                                            />
-                                        </View>
-                                    )}
-                                </View>
-                            </React.Suspense>
-                        )}
-                    </>
+                    <GroupPriceSettings
+                        distributionField={distributionField}
+                        priceField={priceField}
+                        intervalField={intervalField}
+                    />
                     <ZSelect
                         label="Visibility"
                         modalTitle="Visibility"

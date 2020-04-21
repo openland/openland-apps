@@ -251,15 +251,6 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             );
         }
 
-        if (room.role === 'OWNER' || room.role === 'ADMIN' || SUPER_ADMIN) {
-            builder.action(
-                'Advanced settings',
-                () => props.router.push('EditGroupAdvanced', { id: room.id }),
-                false,
-                require('assets/ic-settings-24.png'),
-            );
-        }
-
         builder.action(
             `Leave ${typeString}`,
             handleLeave,
