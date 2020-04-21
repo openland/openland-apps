@@ -125,6 +125,10 @@ const imageWrapperRound = css`
         z-index: 2;
         pointer-events: none;
     }
+
+    & img {
+        -webkit-user-drag: none;
+    }
 `;
 
 const AvatarImage = React.memo((props: UAvatarProps) => {
