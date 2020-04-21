@@ -1319,7 +1319,24 @@ internal val MediaStreamFullSelector = obj(
                     field("videoPaused", "videoPaused", scalar("Boolean")),
                     field("audioPaused", "audioPaused", scalar("Boolean")),
                     field("videoSource", "videoSource", scalar("String"))
-                )))
+                ))),
+            field("localStreams", "localStreams", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    inline("LocalStreamAudioConfig", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("codec", "codec", notNull(scalar("String")))
+                    )),
+                    inline("LocalStreamVideoConfig", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("codec", "codec", notNull(scalar("String")))
+                    )),
+                    inline("LocalStreamDataChannelConfig", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("Int"))),
+                        field("label", "label", notNull(scalar("String"))),
+                        field("ordered", "ordered", notNull(scalar("Boolean")))
+                    ))
+                )))))
         )
 
 internal val NotificationFragmentSelector = obj(

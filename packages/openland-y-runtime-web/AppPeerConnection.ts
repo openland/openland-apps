@@ -15,14 +15,14 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     oniceconnectionstatechange: ((ev: { target: { iceConnectionState?: string | 'failed' } }) => void) | undefined = undefined;
     onStreamAdded: ((stream: AppMediaStream) => void) | undefined;
     onAudioInputChanged?: ((deviceId: string) => void) | undefined;
-    onDcMessage: ((message: any) => void) | undefined;
+    onDataChannelMessage: ((dataChannelId: number, message: any) => void) | undefined;
 
     private streams = new Set<MediaStream>();
     private trackSenders = new Map<MediaStreamTrack, RTCRtpSender>();
 
     private audioOutputDevice: MediaDeviceInfo | undefined;
 
-    // channel?: RTCDataChannel;
+    private dataChannels = new Map<number, RTCDataChannel>();
     private volume?: number;
 
     private d1: () => void;
@@ -90,9 +90,6 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         this.connection.onnegotiationneeded = () => this.onnegotiationneeded && this.onnegotiationneeded();
         this.connection.oniceconnectionstatechange = (ev) => this.oniceconnectionstatechange && ev && ev.target && this.oniceconnectionstatechange(ev as any);
 
-        // let dc = this.connection.createDataChannel('main', { ordered: true });
-        // this.handleDataChannel(dc);
-        // this.connection.ondatachannel = (ev => this.handleDataChannel(ev.channel));
         // let audio = new Audio();
         // audio.autoplay = true;
         // audio.setAttribute('playsinline', 'true');
@@ -102,24 +99,44 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         // audio.play();
     }
 
-    handleDataChannel = (channel: RTCDataChannel) => {
-        // this.channel = channel;
-        // channel.onmessage = (ev) => {
-        //     if (this.onDcMessage) {
-        //         this.onDcMessage(ev.data);
-        //     }
-        // };
+    updateDataChannels = (configs: { id: number, label: string, ordered: boolean }[]) => {
+        // delete old ones
+        for (let [id, dc] of this.dataChannels.entries()) {
+            if (!configs.find(c => c.id === id)) {
+                dc.close();
+                console.warn('[DC]', 'closed');
+                this.dataChannels.delete(id);
+            }
+        }
+        // create new
+        for (let c of configs) {
+            if (!this.dataChannels.has(c.id)) {
+                let channel = this.connection.createDataChannel(c.label, { id: c.id, negotiated: true, ordered: c.ordered });
+                console.warn('[DC]', 'created');
+
+                channel.onopen = () => {
+                    console.warn('[DC]', 'onopen');
+                };
+                channel.onmessage = (ev) => {
+                    if (this.onDataChannelMessage) {
+                        this.onDataChannelMessage(c.id, ev.data);
+                    }
+                };
+                this.dataChannels.set(c.id, channel);
+            }
+        }
     }
 
-    sendDCMessage = (message: string) => {
-        // if (this.channel?.readyState === 'open') {
-        //     // it can crash on send event if state is open, wtf?
-        //     try {
-        //         this.channel.send(message);
-        //     } catch (e) {
-        //         console.error(e);
-        //     }
-        // }
+    sendDataChannelMessage = (dataChannelId: number, message: string) => {
+        let channel = this.dataChannels.get(dataChannelId);
+        if (channel?.readyState === 'open') {
+            // it can crash on send event if state is open, wtf?
+            try {
+                channel.send(message);
+            } catch (e) {
+                console.error(e);
+            }
+        }
     }
 
     setVolume = (volume: number) => {
@@ -214,7 +231,9 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
             this.audio = undefined;
         }
         this.streams.forEach(s => s.getTracks().forEach(t => t.stop()));
-        // this.channel?.close();
+        for (let dc of this.dataChannels.values()) {
+            dc.close();
+        }
         this.d1();
         this.d2();
         this.connection.close();

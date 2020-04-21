@@ -43,6 +43,19 @@ fragment MediaStreamFull on MediaStream{
         audioPaused
         videoSource
     }
+    localStreams {
+        ... on LocalStreamAudioConfig {
+            codec
+        }
+        ... on LocalStreamVideoConfig {
+            codec
+        }
+        ... on LocalStreamDataChannelConfig {
+            id
+            label
+            ordered
+        }
+    }
 }
 
 query Conference($id: ID!) {

@@ -1,11 +1,12 @@
 import { OpenlandClient } from 'openland-api/spacex';
-import { ConferenceMedia_conferenceMedia_streams, ConferenceMedia_conferenceMedia_iceServers } from 'openland-api/spacex.types';
+import { ConferenceMedia_conferenceMedia_streams, ConferenceMedia_conferenceMedia_streams_localStreams_LocalStreamDataChannelConfig, ConferenceMedia_conferenceMedia_iceServers } from 'openland-api/spacex.types';
 import { AppPeerConnectionFactory } from 'openland-y-runtime/AppPeerConnection';
 import { AppPeerConnection, IceState } from 'openland-y-runtime-api/AppPeerConnectionApi';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { backoff } from 'openland-y-utils/timer';
 import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
 import { mangleSDP } from './mangleSDP';
+import { VMSetMap } from 'openland-y-utils/mvvm/vm';
 
 export class MediaStreamManager {
     private readonly id: string;
@@ -30,7 +31,7 @@ export class MediaStreamManager {
     private iceConnectionState: IceState = 'new';
     private iceStateListeners = new Set<(iceState: IceState) => void>();
     private contentStreamListeners = new Set<(stream?: AppMediaStream) => void>();
-    private dcListeners = new Set<(message: { peerId: string, data: any }) => void>();
+    private dcVM = new VMSetMap<number, (message: { peerId: string, data: any }) => void>();
     private videoInStreamSource: 'camera' | 'screen_share' | null;
 
     private ignoreNextNegotiationNeeded = false;
@@ -110,9 +111,9 @@ export class MediaStreamManager {
             this.peerConnection.addStream(this.videoOutStream);
         }
 
-        this.peerConnection.onDcMessage = (m) => {
+        this.peerConnection.onDataChannelMessage = (channelId, m) => {
             let message = { peerId: this.targetPeerId || this.id, data: m };
-            for (let l of this.dcListeners) {
+            for (let l of this.dcVM.get(channelId)?.values() || []) {
                 l(message);
             }
         };
@@ -159,6 +160,9 @@ export class MediaStreamManager {
     }
 
     private handleState = async (streamConfig: ConferenceMedia_conferenceMedia_streams) => {
+        let dcConfigs: ConferenceMedia_conferenceMedia_streams_localStreams_LocalStreamDataChannelConfig[] = this.streamConfig.localStreams.filter(s => s.__typename === 'LocalStreamDataChannelConfig') as ConferenceMedia_conferenceMedia_streams_localStreams_LocalStreamDataChannelConfig[];
+        this.peerConnection.updateDataChannels(dcConfigs);
+
         if (streamConfig.seq > this.seq) {
             this.seq = streamConfig.seq;
             this.streamConfig = streamConfig;
@@ -372,14 +376,14 @@ export class MediaStreamManager {
     // DC
     ////
 
-    sendDcMessage = (message: string) => {
-        this.peerConnection.sendDCMessage(message);
+    sendDcMessage = (message: string, dataChannelId: number = 0) => {
+        this.peerConnection.sendDataChannelMessage(dataChannelId, message);
     }
 
-    listenDc = (listener: (message: { peerId: string, data: any }) => void) => {
-        this.dcListeners.add(listener);
+    listenDc = (listener: (message: { peerId: string, data: any }) => void, channelId: number = 0) => {
+        this.dcVM.add(channelId, listener);
         return () => {
-            this.dcListeners.delete(listener);
+            this.dcVM.remove(channelId, listener);
         };
     }
 }

@@ -1074,6 +1074,22 @@ type KickServiceMetadata {
   kickedBy: User!
 }
 
+type LocalStreamAudioConfig {
+  codec: String!
+}
+
+union LocalStreamConfig = LocalStreamAudioConfig | LocalStreamVideoConfig | LocalStreamDataChannelConfig
+
+type LocalStreamDataChannelConfig {
+  id: Int!
+  label: String!
+  ordered: Boolean!
+}
+
+type LocalStreamVideoConfig {
+  codec: String!
+}
+
 union MatchmakingAnswer = TextMatchmakingAnswer | MultiselectMatchmakingAnswer
 
 input MatchmakingAnswerInput {
@@ -1131,6 +1147,7 @@ type MediaStream {
   ice: [String!]!
   settings: MediaStreamSettings!
   mediaState: MediaStreamMediaState!
+  localStreams: [LocalStreamConfig!]!
 }
 
 enum MediaStreamIceTransportPolicy {

@@ -12,7 +12,7 @@ class AppPeerConnectionNative implements AppPeerConnection {
     onnegotiationneeded: (() => void) | undefined;
     oniceconnectionstatechange: ((ev: { target?: { iceConnectionState?: string | 'failed' } }) => void) | undefined = undefined;
     onStreamAdded: ((stream: AppMediaStream) => void) | undefined;
-    onDcMessage: ((message: any) => void) | undefined;
+    onDataChannelMessage: ((message: any) => void) | undefined;
 
     constructor(connection: RTCPeerConnection) {
         this.connection = connection;
@@ -47,7 +47,11 @@ class AppPeerConnectionNative implements AppPeerConnection {
         return JSON.stringify(await (this.connection as any).createAnswer());
     }
 
-    sendDCMessage = (message: string) => {
+    updateDataChannels() {
+        // not implemented yet
+    }
+
+    sendDataChannelMessage = (dataChannelId: number, message: string) => {
         // not implemented yet
     }
 

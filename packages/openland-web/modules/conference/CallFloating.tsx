@@ -138,10 +138,6 @@ export const useJsDrag = (
             dragging = true;
         };
         const onDragStop = (ev: MouseEvent) => {
-            if (ev instanceof MouseEvent) {
-                ev.preventDefault();
-            }
-            ev.stopPropagation();
             dragging = false;
             prev = undefined;
         };
@@ -149,8 +145,6 @@ export const useJsDrag = (
             if (!dragging) {
                 return;
             }
-            ev.stopPropagation();
-            ev.preventDefault();
             let current: number[] = [];
             if (ev instanceof MouseEvent) {
                 current = [ev.x, ev.y];
@@ -177,7 +171,7 @@ export const useJsDrag = (
 
         checkPostion();
         if (target) {
-            target.addEventListener('mousedown', onDragStart, { passive: true });
+            target.addEventListener('mousedown', onDragStart);
             target.addEventListener('mouseup', onDragStop, { passive: true });
             window.document.addEventListener('mouseup', onDragStop, { passive: true });
             window.document.addEventListener('mousemove', onDrag, { passive: true });
@@ -185,7 +179,7 @@ export const useJsDrag = (
             target.addEventListener('touchstart', onDragStart, { passive: true });
             target.addEventListener('touchend', onDragStop, { passive: true });
             target.addEventListener('touchcancel', onDragStop, { passive: true });
-            target.addEventListener('touchmove', ev => ev.preventDefault(), { passive: true });
+            target.addEventListener('touchmove', ev => ev.preventDefault());
             window.document.addEventListener('touchmove', onDrag, { passive: true });
 
             if (container) {

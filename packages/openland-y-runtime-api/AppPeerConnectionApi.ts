@@ -17,8 +17,9 @@ export interface AppPeerConnection {
     addStream(stream: AppMediaStream): void;
     removeStream(stream: AppMediaStream): void;
 
-    sendDCMessage(message: string): void;
-    onDcMessage: ((message: any) => void) | undefined;
+    updateDataChannels(configs: { id: number, label: string, ordered: boolean }[]): void;
+    sendDataChannelMessage(dataChannelId: number, message: string): void;
+    onDataChannelMessage: ((dataChannelId: number, message: any) => void) | undefined;
     setVolume(volume: number): void;
 
     close(): void;
