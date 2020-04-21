@@ -393,7 +393,9 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
             <SHeaderButton
                 title="Share"
                 icon={require('assets/ic-share-24.png')}
-                onPress={() => Share.share({ message: `https://openland.com/discover/collections/${shortname || props.collectionId}` })}
+                onPress={() => Share.share({
+                    message: shortname ? `https://openland.com/${shortname}` : `https://openland.com/discover/collections/${props.collectionId}`
+                })}
             />
 
             <DiscoverListingContent

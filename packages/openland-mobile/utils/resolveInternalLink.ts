@@ -277,6 +277,11 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
                         getMessenger().history.navigationManager.pushAndReset('FeedChannel', { id: info.item.id });
                     } else if (info.item.__typename === 'SharedRoom') {
                         getMessenger().history.navigationManager.pushAndReset('ProfileGroup', { id: info.item.id });
+                    } else if (info.item.__typename === 'DiscoverChatsCollection') {
+                        getMessenger().history.navigationManager.pushAndReset('DiscoverListing', {
+                            type: 'collections',
+                            collectionId: info.item.id,
+                        });
                     } else {
                         Toast.failure({text: 'Nothing found', duration: 1000}).show();
                     }
