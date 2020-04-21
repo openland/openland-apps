@@ -215,13 +215,17 @@ const VideoMediaView = React.memo((props: {
     mediaSessionManager: MediaSessionManager;
     peer?: Conference_conference_peers,
     avatarRef: React.RefObject<HTMLDivElement>,
-    fallback: { id: string; title: string; picture?: string | null }
+    fallback: { id: string; title: string; photo?: string | null }
     calls: CallsEngine,
     callState: CallState,
 }) => {
-    const bgSrc = props.peer && props.peer.user.photo ? props.peer.user.photo : undefined;
-    const bgColor = !(props.peer && props.peer.user.photo) ? props.peer && getPlaceholderColorById(props.peer.user.id) : undefined;
+    const bgSrc = props.peer && props.peer.user.photo ? props.peer.user.photo : props.fallback.photo;
+    const bgColor = !(props.peer && props.peer.user.photo) 
+        ? props.peer ? getPlaceholderColorById(props.peer.user.id) : getPlaceholderColorById(props.fallback.id)
+        : undefined;
+
     const [stream, setStream] = React.useState<AppMediaStream>();
+
     React.useEffect(() => {
         let d: (() => void) | undefined;
         if (props.peer?.id) {
@@ -241,10 +245,10 @@ const VideoMediaView = React.memo((props: {
                     videoClass={PeerVideoClass}
                     switching={true}
                 />
-            ) : props.peer && (
+            ) : (
                 <>
                     <div className={bgAvatar}>
-                        {bgSrc ? (
+                        {bgSrc && !bgSrc.startsWith('ph://') ? (
                             <ImgWithRetry src={bgSrc} className={bgAvatarImg} />
                         ) : (
                                 <div className={bgAvatarGradient} style={{ background: bgColor }} />
@@ -255,9 +259,9 @@ const VideoMediaView = React.memo((props: {
                     <XView position="absolute" zIndex={2}>
                         <UAvatar
                             size="large"
-                            id={props.peer.user.id}
-                            title={props.peer.user.name}
-                            photo={props.peer.user.photo}
+                            id={props.peer ? props.peer.user.id : props.fallback.id}
+                            title={props.peer ? props.peer.user.name : props.fallback.title}
+                            photo={props.peer ? props.peer.user.photo : props.fallback.photo}
                         />
                     </XView>
                 </>
@@ -286,7 +290,7 @@ const MediaViewAvatar = css`
 
 const MediaView = React.memo((props: {
     peers: Conference_conference_peers[];
-    fallback: { id: string; title: string; picture?: string | null };
+    fallback: { id: string; title: string; photo?: string | null };
     mediaSessionManager: MediaSessionManager;
     videoEnabled?: boolean;
     calls: CallsEngine;
@@ -306,7 +310,7 @@ const MediaView = React.memo((props: {
         }
         return d;
     }, [peerId]);
-    let peer = props.peers.find(p => p.id === peerId) || props.peers[0];
+    let peer = props.peers.find(p => p.id === peerId);
 
     return (props.videoEnabled ? (
         <VideoMediaView
@@ -323,7 +327,7 @@ const MediaView = React.memo((props: {
                     size="small"
                     id={peer ? peer.user.id : props.fallback.id}
                     title={peer ? peer.user.name : props.fallback.title}
-                    photo={peer ? peer.user.photo : props.fallback.picture}
+                    photo={peer ? peer.user.photo : props.fallback.photo}
                 />
             </div>
         ));
@@ -348,14 +352,25 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
     let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
 
     let ms = calls.getMediaSession();
+
+    const title = props.room.__typename === 'PrivateRoom' ? props.room.user.name : props.room.title;
+    const subtitle = callState.status === 'connecting' ? 'Connecting...'
+        : props.room.__typename === 'SharedRoom' && data ? plural(data.conference.peers.length, ['member', 'members'])
+            : 'Call';
+    const privateAvatar = props.room.__typename === 'PrivateRoom' ? {
+        id: props.room.user.id,
+        title: props.room.user.name,
+        photo: props.room.user.photo,
+    } : undefined;
+
     const avatar = data && callState.avatar && ms && (
         <MediaView
             peers={data.conference.peers}
             mediaSessionManager={ms}
-            fallback={{
+            fallback={privateAvatar || {
                 id: callState.avatar.id,
                 title: callState.avatar.title,
-                picture: callState.avatar.picture,
+                photo: callState.avatar.picture,
             }}
             videoEnabled={callState.videoEnabled}
             calls={calls}
@@ -402,11 +417,6 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
             setTargetState(e);
         }
     }, []);
-
-    const title = props.room.__typename === 'PrivateRoom' ? props.room.user.name : props.room.title;
-    const subtitle = callState.status === 'connecting' ? 'Connecting...'
-        : props.room.__typename === 'SharedRoom' && data ? plural(data.conference.peers.length, ['member', 'members'])
-            : 'Call';
 
     return (
         data && (
