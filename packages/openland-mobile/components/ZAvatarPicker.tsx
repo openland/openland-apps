@@ -32,6 +32,7 @@ export interface ZAvatarPickerProps {
     onChanged?: (value: AvatarImageRef | null) => void;
     render?: React.ComponentType<ZAvatarPickerRenderProps>;
     fullWidth?: boolean;
+    hidePhotoIndicator?: boolean;
     pickSize?: {
         width: number;
         height: number;
@@ -148,7 +149,7 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
                         <Image source={require('assets/ic-camera-36.png')} style={{ tintColor: theme.foregroundQuaternary, width: 36, height: 36 }} />
                     </View>
                 )}
-                {!!valueUrl && (
+                {!!valueUrl && props.hidePhotoIndicator !== true && (
                     <View width={size} height={size}>
                         <ZAvatar photo={valueUrl} size={props.size || 'x-large'} />
 

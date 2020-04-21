@@ -36,6 +36,13 @@
             ]
         },
         {
+            "name": "ic-clear",
+            "src": "ic-clear-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-community",
             "src": "ic-community-24.svg",
             "sizes": [

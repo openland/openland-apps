@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, Text } from 'react-native';
+import { View, TouchableOpacity, Image, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
@@ -8,7 +8,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { useField } from 'openland-form/useField';
 import { useForm } from 'openland-form/useForm';
-import { SScrollView } from "react-native-s/SScrollView";
+import { SScrollView } from 'react-native-s/SScrollView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
@@ -37,17 +37,22 @@ const EditGroupSocialImageComponent = React.memo((props: PageProps) => {
     const handleSave = () =>
         form.doAction(async () => {
             try {
-                const variables = {
-                    roomId: props.router.params.id,
-                    input: {
-                        ...(socialImageField.value &&
-                            socialImageField.value.uuid !== group.socialImage && {
-                                socialImageRef: socialImageField.value,
-                            }),
-                    },
-                };
-
-                await client.mutateRoomUpdate(variables);
+                if (socialImageField.value && socialImageField.value.uuid !== group.socialImage) {
+                    await client.mutateRoomUpdate({
+                        roomId: props.router.params.id,
+                        input: {
+                            socialImageRef: socialImageField.value,
+                        },
+                    });
+                }
+                if (!socialImageField.value) {
+                    await client.mutateRoomUpdate({
+                        roomId: props.router.params.id,
+                        input: {
+                            socialImageRef: null,
+                        },
+                    });
+                }
                 await client.refetchRoomChat({ id: props.router.params.id });
 
                 props.router.back();
@@ -111,16 +116,48 @@ const EditGroupSocialImageComponent = React.memo((props: PageProps) => {
                     </View>
                 </LinearGradient>
                 <ZListGroup header={null} alignItems="center">
-                    <ZAvatarPicker
-                        field={socialImageField}
-                        render={ZSocialPickerRender}
-                        pickSize={{ width: 1200, height: 630 }}
-                        fullWidth={true}
-                    />
+                    <View position="relative">
+                        <ZAvatarPicker
+                            field={socialImageField}
+                            render={ZSocialPickerRender}
+                            pickSize={{ width: 1200, height: 630 }}
+                            fullWidth={true}
+                            hidePhotoIndicator={true}
+                        />
+                        {socialImageField.value && (
+                            <TouchableOpacity
+                                style={{
+                                    position: 'absolute',
+                                    right: 0,
+                                    top: 0,
+                                }}
+                                onPress={() => socialImageField.input.onChange(null)}
+                            >
+                                <View
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    width={56}
+                                    height={56}
+                                    borderRadius={12}
+                                >
+                                    <Image
+                                        source={require('assets/ic-clear-24.png')}
+                                        style={{
+                                            width: 24,
+                                            height: 24,
+                                            tintColor: theme.foregroundContrast,
+                                        }}
+                                    />
+                                </View>
+                            </TouchableOpacity>
+                        )}
+                    </View>
                 </ZListGroup>
             </SScrollView>
         </>
     );
 });
 
-export const EditGroupSocialImage = withApp(EditGroupSocialImageComponent, { navigationAppearance: 'small' });
+export const EditGroupSocialImage = withApp(EditGroupSocialImageComponent, {
+    navigationAppearance: 'small',
+});
