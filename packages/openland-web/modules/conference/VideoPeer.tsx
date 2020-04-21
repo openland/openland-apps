@@ -27,6 +27,9 @@ const peerInfo = css`
     padding: 12px 16px;
     z-index: 3;
     display: flex;
+`;
+
+const peerInfoGradient = css`
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.32) 100%);
 `;
 
@@ -64,7 +67,7 @@ const bgAvatarImg = css`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: blur(24px);
+    filter: blur(32px);
     transform: scale(1.1);
 `;
 
@@ -165,7 +168,17 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
             position="relative"
 
         >
-            {mainStreamWeb && <VideoComponent stream={mainStreamWeb} cover={true} compact={props.compact} onClick={onClick} mirror={isLocal && (mainStream?.source === 'camera')} borderRadius={props.compact ? 8 : undefined} />}
+            {mainStreamWeb && (
+                <VideoComponent
+                    stream={mainStreamWeb}
+                    cover={mainStream?.source !== 'screen_share'}
+                    compact={props.compact}
+                    onClick={onClick}
+                    mirror={isLocal && (mainStream?.source === 'camera')}
+                    borderRadius={props.compact ? 8 : undefined}
+                    backgroundColor="var(--overlayHeavy)"
+                />
+            )}
             {!mainStreamWeb && (
                 <>
                     <div className={bgAvatar}>
@@ -187,7 +200,7 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
                     </div>
                 </>
             )}
-            <div className={cx(peerInfo, props.compact && peerInfoCompact)}>
+            <div className={cx(peerInfo, props.compact && peerInfoCompact, mainStreamWeb && peerInfoGradient)}>
                 {!props.compact && <div className={peerName}>{props.peer.user.name}</div>}
                 {icon && (
                     <div className={peerIcon}>
