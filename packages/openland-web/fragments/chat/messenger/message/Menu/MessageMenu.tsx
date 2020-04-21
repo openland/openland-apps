@@ -15,6 +15,7 @@ import { showDeleteMessageModal } from 'openland-web/fragments/chat/components/M
 
 export const buildMessageMenu = (ctx: UPopperController, message: DataSourceWebMessageItem, engine: ConversationEngine, router: XViewRouter) => {
     let menu = new UPopperMenuBuilder();
+    const role = engine.role;
     menu.item({ title: 'Select', icon: <SelectIcon />, onClick: () => engine.messagesActionsStateEngine.selectToggle(message) });
     if (engine.canSendMessage) {
         menu.item({ title: 'Reply', icon: <ReplyIcon />, onClick: () => engine.messagesActionsStateEngine.reply(message) });
@@ -35,7 +36,7 @@ export const buildMessageMenu = (ctx: UPopperController, message: DataSourceWebM
     if (message.senderId === engine.engine.user.id && message.text && !hasPurchase) {
         menu.item({ title: 'Edit', icon: <EditIcon />, onClick: () => engine.messagesActionsStateEngine.edit(message) });
     }
-    if (message.senderId === engine.engine.user.id) {
+    if (message.senderId === engine.engine.user.id || role === 'ADMIN' || role === 'OWNER') {
         menu.item({
             title: 'Delete', icon: <DeleteIcon />, onClick: () => showDeleteMessageModal([message.id!], engine.engine.client)
         });

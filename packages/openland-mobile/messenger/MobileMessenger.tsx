@@ -374,6 +374,7 @@ export class MobileMessenger {
             return;
         }
         const state = conversation.messagesActionsStateEngine.getState();
+        const role = conversation.role;
         const isSelecting = state.action === 'select';
 
         if (isSelecting) {
@@ -451,7 +452,7 @@ export class MobileMessenger {
             }
         }
 
-        if (message.senderId === this.engine.user.id || SUPER_ADMIN) {
+        if (message.senderId === this.engine.user.id || SUPER_ADMIN || role === 'ADMIN' || role === 'OWNER') {
             builder.action('Delete', async () => {
                 try {
                     Alert.builder()
