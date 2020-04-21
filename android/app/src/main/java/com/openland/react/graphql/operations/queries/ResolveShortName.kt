@@ -24,12 +24,16 @@ internal val ResolveShortNameSelector = obj(
                     inline("SharedRoom", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("id", "id", notNull(scalar("ID")))
+                    )),
+                    inline("DiscoverChatsCollection", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
                     ))
                 ))
         )
 val ResolveShortName = object: OperationDefinition {
     override val name = "ResolveShortName"
     override val kind = OperationKind.QUERY
-    override val body = "query ResolveShortName(\$shortname:String!){item:alphaResolveShortName(shortname:\$shortname){__typename ... on User{__typename id isDeleted}... on Organization{__typename id isDeleted}... on FeedChannel{__typename id}... on SharedRoom{__typename id}}}"
+    override val body = "query ResolveShortName(\$shortname:String!){item:alphaResolveShortName(shortname:\$shortname){__typename ... on User{__typename id isDeleted}... on Organization{__typename id isDeleted}... on FeedChannel{__typename id}... on SharedRoom{__typename id}... on DiscoverChatsCollection{__typename id}}}"
     override val selector = ResolveShortNameSelector
 }

@@ -14,6 +14,9 @@ query ResolveShortName($shortname: String!) {
         ... on SharedRoom {
             id
         }
+        ... on DiscoverChatsCollection {
+            id
+        }
     }
 }
 query AuthResolveShortName($shortname: String!) {
@@ -23,6 +26,9 @@ query AuthResolveShortName($shortname: String!) {
         }
         ... on SharedRoom {
             ...RoomPreview
+        }
+        ... on DiscoverChatsCollection {
+            id
         }
     }
 }

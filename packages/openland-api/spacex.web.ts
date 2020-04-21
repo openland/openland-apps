@@ -2319,6 +2319,10 @@ const AuthResolveShortNameSelector = obj(
                     inline('SharedRoom', obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
                         fragment('Room', RoomPreviewSelector)
+                    )),
+                    inline('DiscoverChatsCollection', obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('id', 'id', args(), notNull(scalar('ID')))
                     ))
                 ))
         );
@@ -3422,6 +3426,10 @@ const ResolveShortNameSelector = obj(
                         field('id', 'id', args(), notNull(scalar('ID')))
                     )),
                     inline('SharedRoom', obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('id', 'id', args(), notNull(scalar('ID')))
+                    )),
+                    inline('DiscoverChatsCollection', obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
                         field('id', 'id', args(), notNull(scalar('ID')))
                     ))
@@ -5170,7 +5178,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     AuthResolveShortName: {
         kind: 'query',
         name: 'AuthResolveShortName',
-        body: 'query AuthResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename ...UserNano}... on SharedRoom{__typename ...RoomPreview}}}fragment UserNano on User{__typename id name firstName lastName photo online}fragment RoomPreview on Room{__typename ... on PrivateRoom{__typename id user{__typename ...UserShort}}... on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}matchmaking{__typename enabled}title photo membersCount description previewMembers{__typename id name photo}onlineMembersCount}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
+        body: 'query AuthResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename ...UserNano}... on SharedRoom{__typename ...RoomPreview}... on DiscoverChatsCollection{__typename id}}}fragment UserNano on User{__typename id name firstName lastName photo online}fragment RoomPreview on Room{__typename ... on PrivateRoom{__typename id user{__typename ...UserShort}}... on SharedRoom{__typename id isChannel isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}membership owner{__typename id}matchmaking{__typename enabled}title photo membersCount description previewMembers{__typename id name photo}onlineMembersCount}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
         selector: AuthResolveShortNameSelector
     },
     ChatInit: {
@@ -5560,7 +5568,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ResolveShortName: {
         kind: 'query',
         name: 'ResolveShortName',
-        body: 'query ResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename id isDeleted}... on Organization{__typename id isDeleted}... on FeedChannel{__typename id}... on SharedRoom{__typename id}}}',
+        body: 'query ResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename id isDeleted}... on Organization{__typename id isDeleted}... on FeedChannel{__typename id}... on SharedRoom{__typename id}... on DiscoverChatsCollection{__typename id}}}',
         selector: ResolveShortNameSelector
     },
     ResolvedInvite: {

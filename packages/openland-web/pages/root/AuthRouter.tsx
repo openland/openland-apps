@@ -116,6 +116,9 @@ export const AuthRouter = React.memo((props: { children: any }) => {
     if (shortnameItem?.__typename === 'SharedRoom') {
         return <InviteLandingComponent signupRedirect={'/signin?redirect=' + encodeURIComponent('/' + shortname)} />;
     }
+    if (shortnameItem?.__typename === 'DiscoverChatsCollection') {
+        return <AuthDiscoverCollectionFragment id={shortnameItem.id} />;
+    }
 
     // Redirect to Signup/Signin pages
     if (!userInfo.isLoggedIn) {
