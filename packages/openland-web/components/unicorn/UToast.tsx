@@ -97,6 +97,7 @@ export const UToast = React.memo((props: UToastProps) => {
 });
 
 export interface UToastConfig {
+    hash?: string | number;
     type?: 'text' | 'loading' | 'success' | 'failure';
     text?: string;
     backgroundColor?: string;

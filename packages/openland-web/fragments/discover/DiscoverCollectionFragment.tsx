@@ -50,6 +50,8 @@ export const DiscoverCollectionFragment = React.memo(() => {
 
     const { id, title, description, image, chats } = collection;
 
+    const [toastHash, setToastHash] = React.useState(0);
+
     return (
         <Page track="discover_collection">
             <UHeader
@@ -66,7 +68,10 @@ export const DiscoverCollectionFragment = React.memo(() => {
                                 toastHandlers.show({
                                     type: 'success',
                                     text: 'Link copied',
+                                    hash: toastHash,
                                 });
+
+                                setToastHash(current => current + 1);
                             }}
                         />
                     </XView>

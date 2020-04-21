@@ -269,7 +269,7 @@ const ToastWrapper = (props: {visible: boolean, config: UToastConfig}) => {
     return (
         <div className={toastWrapperClass}>
             <UToast
-                key={`${props.config.type}-${props.config.text || ''}`}
+                key={`${props.config.type}-${props.config.text || ''}-${props.config.hash || ''}`}
                 isVisible={props.visible}
                 {...props.config}
             />
