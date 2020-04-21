@@ -17,12 +17,14 @@ import { plural } from 'openland-y-utils/plural';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import EndIcon from 'openland-icons/s/ic-call-end-glyph-24.svg';
 import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
+import FullscreenIcon from 'openland-icons/s/ic-size-up-glyph-24.svg';
 import { CallsEngine, CallState } from 'openland-engines/CallsEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { useEffects } from './sounds/Effects';
+import { showVideoCallModal } from './CallModal';
 
-const VIDEO_WIDTH = 240;
-const VIDEO_HEIGHT = 160;
+const VIDEO_WIDTH = 280;
+const VIDEO_HEIGHT = 176;
 
 const FloatContainerClass = css`
     display: none;
@@ -35,7 +37,7 @@ const FloatContainerClass = css`
     flex-direction: row;
     border-radius: 12px;
     overflow: hidden;
-    width: 280px;
+    width: 320px;
     transition: opacity 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
         box-shadow 250ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
@@ -46,7 +48,7 @@ const FloatContainerClass = css`
 `;
 
 const VideoOnClass = css`
-    width: 240px;
+    width: ${VIDEO_WIDTH}px;
 `;
 
 const MiniFloatingVideo = css`
@@ -366,10 +368,20 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
             <UIconButton
                 size="small"
                 marginRight={12}
+                icon={<FullscreenIcon />}
+                color="var(--foregroundContrast)"
+                defaultRippleColor="rgba(255, 255, 255, 0.16)"
+                hoverRippleColor="rgba(255, 255, 255, 0.32)"
+                onClick={() => showVideoCallModal({ calls, chatId: props.id, client, messenger })}
+            />
+            <UIconButton
+                size="small"
+                marginRight={12}
                 icon={<MuteIcon />}
                 color="var(--foregroundContrast)"
                 rippleColor="var(--tintOrange)"
                 defaultRippleColor="rgba(255, 255, 255, 0.16)"
+                hoverRippleColor="rgba(255, 255, 255, 0.32)"
                 active={callState.mute}
                 onClick={() => calls.setMute(!callState.mute)}
             />
@@ -394,7 +406,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
     const title = props.room.__typename === 'PrivateRoom' ? props.room.user.name : props.room.title;
     const subtitle = callState.status === 'connecting' ? 'Connecting...'
         : props.room.__typename === 'SharedRoom' && data ? plural(data.conference.peers.length, ['member', 'members'])
-            : '';
+            : 'Call';
 
     return (
         data && (
