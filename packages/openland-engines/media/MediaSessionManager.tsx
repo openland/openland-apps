@@ -323,7 +323,6 @@ export class MediaSessionManager {
                 this.outScreenStream.binded = true;
             }
             if (ms) {
-                console.warn('handle state', videoStream);
                 ms.onStateChanged(s, videoStream);
             } else {
                 console.log('[WEBRTC] Create stream ' + s.id);

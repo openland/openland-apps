@@ -17,6 +17,7 @@ import { VideoPeer } from './VideoPeer';
 import WatermarkLogo from 'openland-icons/watermark-logo.svg';
 import WatermarkShadow from 'openland-icons/watermark-shadow.svg';
 import { CallControls } from './CallControls';
+import { useTriggerEvents } from './sounds/Effects';
 
 const controlsStyle = css`
     position: absolute;
@@ -147,12 +148,10 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
             props.ctx.hide();
         }
     }, [callState]);
-    // it's rude i guess
-    // React.useEffect(() => {
-    //     if (!props.calls.state.outVideo) {
-    //         props.calls.switchVideo();
-    //     }
-    // }, []);
+    const mediaSession = props.calls.getMediaSession();
+
+    // some fun 
+    useTriggerEvents(mediaSession);
 
     // layout video grid
     let peers = [...conference ? conference.conference.peers : []];
@@ -165,11 +164,10 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
         slices.unshift(peers.splice(peers.length - count, count));
         console.warn(count, peers.length);
     }
-    const mediaSession = props.calls.getMediaSession();
 
     let [layout, setLayout] = React.useState<'grid' | 'volume-space'>('grid');
 
-    // some fun - pick latest link from chat
+    // pick latest link from chat
     let [showLink, setShowLink] = React.useState(false);
     const [link, setLink] = React.useState<string | undefined>();
     React.useEffect(() => {

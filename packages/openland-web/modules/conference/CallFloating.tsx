@@ -20,7 +20,7 @@ import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
 import FullscreenIcon from 'openland-icons/s/ic-size-up-glyph-24.svg';
 import { CallsEngine, CallState } from 'openland-engines/CallsEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
-import { useEffects } from './sounds/Effects';
+import { useShowEffects } from './sounds/Effects';
 import { showVideoCallModal } from './CallModal';
 
 const VIDEO_WIDTH = 280;
@@ -340,7 +340,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
     let calls = messenger.calls;
     let callState = calls.useState();
 
-    useEffects(calls.getMediaSession());
+    useShowEffects(calls.getMediaSession());
 
     let client = useClient();
     let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });

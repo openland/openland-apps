@@ -18,8 +18,7 @@ const avatarWrapper = css`
     transform: translateX(-50%);
 `;
 
-export const useConfetti = () => {
-    const confettiDuration = 2000;
+export const useConfetti = (confettiDuration: number = 2000) => {
     let end = Date.now() + confettiDuration;
     const colors = ['#CC99FF', '#A9D1F7', '#B4F0A7', '#FFFFBF', '#FFDFBE', '#FFB1B0'];
     let fireworksTimeout: any;

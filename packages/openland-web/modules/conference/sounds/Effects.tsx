@@ -4,8 +4,8 @@ import { useConfetti } from 'openland-web/pages/onboarding/start.page';
 import { debounce } from 'openland-y-utils/timer';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 
-export const useEffects = (session?: MediaSessionManager) => {
-    let [startConf, resetConf] = useConfetti();
+export const useHorn = () => {
+    let [startConf, resetConf] = useConfetti(500);
 
     let hornDebounced = React.useCallback(debounce(() => {
         new Audio('/static/sounds/horn.mp3').play();
@@ -13,8 +13,13 @@ export const useEffects = (session?: MediaSessionManager) => {
         return false;
     }, 10000, false), []);
 
+    return { horn: hornDebounced, resetHorn: resetConf };
+};
+
+export const useShowEffects = (session?: MediaSessionManager) => {
+    let { horn, resetHorn } = useHorn();
+
     React.useEffect(() => {
-        let d: (() => void) | undefined;
         if (session) {
             session.dcVM.listen(m => {
                 let message: { channel: string, type: string } | undefined;
@@ -24,26 +29,27 @@ export const useEffects = (session?: MediaSessionManager) => {
                     console.error('effects cant parse message', m);
                 }
                 if (message && message.channel === 'effects' && message.type === 'horn') {
-                    hornDebounced();
+                    horn();
                 }
 
             });
         }
-        return d;
+        return resetHorn;
     }, [session]);
 
+};
+
+export const useTriggerEvents = (session?: MediaSessionManager) => {
+    let { horn, resetHorn } = useHorn();
     useShortcuts([
         {
             keys: ['h'],
             callback: () => {
-                hornDebounced();
+                horn();
                 session?.sendDcMessage(JSON.stringify({ channel: 'effects', type: 'horn' }));
                 return false;
             }
         }
     ], [session]);
-
-    return () => {
-        resetConf();
-    };
+    return resetHorn;
 };

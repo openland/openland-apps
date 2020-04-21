@@ -19,13 +19,11 @@ export function debounce<T extends (...args: any[]) => any>(f: T, ms: number, ta
         }
 
         timer = setTimeout(() => {
-            if (argsToUse) {
-                if (tailing) {
-                    f(...argsToUse);
-                }
+            if (argsToUse && tailing) {
+                f(...argsToUse);
                 argsToUse = undefined;
-                timer = null;
             }
+            timer = null;
         }, ms);
     }) as any;
 }
