@@ -9,6 +9,8 @@ export interface UFileUploadRenderProps {
     progress: number;
     value?: UploadedFile | null;
     className?: string;
+    hideImageIndicator?: boolean;
+    clearable?: boolean;
 }
 
 export interface UImageCropT {
@@ -34,6 +36,8 @@ export interface UFileUploadProps {
     initialUrl?: string | null;
     imageOnly?: boolean;
     className?: string;
+    hideImageIndicator?: boolean;
+    clearable?: boolean;
 }
 
 export interface UploadedFile {
@@ -135,6 +139,8 @@ export const UFileUpload = (props: UFileUploadProps) => {
             doUpload={doUpload}
             progress={progress}
             className={props.className}
+            hideImageIndicator={props.hideImageIndicator}
+            clearable={props.clearable}
         />
     );
 };

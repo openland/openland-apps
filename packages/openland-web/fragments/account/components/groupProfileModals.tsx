@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { TextTitle3, TextBody, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { TabRouterContextProps } from 'openland-unicorn/components/TabLayout';
 import { showModalBox } from 'openland-x/showModalBox';
 import {
+    WalletSubscriptionInterval,
     RoomChat_room_SharedRoom,
     RoomChat_room_SharedRoom_welcomeMessage,
     SharedRoomKind,
@@ -31,6 +33,7 @@ import { trackEvent } from 'openland-x-analytics';
 import { useShortnameField } from 'openland-y-utils/form/useShortnameField';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
+import { GroupPriceSettings, DistributionType } from '../../create/CreateEntityFragment';
 import IcAt from 'openland-icons/s/ic-at-24.svg';
 import IcWallet from 'openland-icons/s/ic-wallet-24.svg';
 import IcGallery from 'openland-icons/s/ic-gallery-24.svg';
@@ -71,7 +74,7 @@ const ShortnameModalBody = React.memo((props: ShortnameModalBodyProps) => {
         <>
             <XModalContent>
                 <div className={cx(modalSubtitle, TextBody)}>
-                    {`Choose a shortname so other people can find and mention your group`}
+                    Choose a shortname so other people can find and mention your group
                 </div>
                 <UInputField
                     label="Shortname"
@@ -157,17 +160,15 @@ const SocialImageModalBody = React.memo((props: SocialImageModalBodyProps) => {
             <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
                 <XModalContent>
                     <div className={cx(modalSubtitle, TextBody)}>
-                        {`Choose an image for sharing invite to the group on social networks`}
+                        Choose an image for sharing invite to the group on social networks
                     </div>
-                    <XView position="relative">
-                        <UAvatarUploadField
-                            field={imageField}
-                            cropParams="16:9"
-                            className={socialImageUploadStyle}
-                            hideImageIndicator={true}
-                            clearable={true}
-                        />
-                    </XView>
+                    <UAvatarUploadField
+                        field={imageField}
+                        cropParams="16:9"
+                        className={socialImageUploadStyle}
+                        hideImageIndicator={true}
+                        clearable={true}
+                    />
                 </XModalContent>
             </XScrollView3>
             <XModalFooter>
@@ -191,6 +192,84 @@ const showSocialImageModal = (roomId: string, image: string) => {
             title: 'Social sharing image',
         },
         (ctx) => <SocialImageModalBody roomId={roomId} image={image} hide={ctx.hide} />,
+    );
+};
+
+interface PaymentsModalBodyProps {
+    roomId: string;
+    hide: () => void;
+}
+
+const PaymentsModalBody = React.memo((props: PaymentsModalBodyProps) => {
+    const form = useForm();
+
+    const distributionField = useField<DistributionType>(
+        'input.distribution',
+        DistributionType.FREE,
+        form,
+    );
+    const priceField = useField<string>('input.price', '1', form, [
+        {
+            checkIsValid: (x) => {
+                return /^[0-9]*$/.test(x);
+            },
+            text: 'Numbers only',
+        },
+        {
+            checkIsValid: (x) => {
+                return Number(x) <= 1000;
+            },
+            text: '$1000 maximum',
+        },
+        {
+            checkIsValid: (x) => {
+                return Number(x) >= 1;
+            },
+            text: '$1 minimum',
+        },
+    ]);
+    const intervalField = useField<WalletSubscriptionInterval | null>('input.interval', null, form);
+
+    const onSave = async () => {
+        props.hide();
+    };
+    return (
+        <>
+            <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
+                <XModalContent>
+                    <div className={cx(modalSubtitle, TextBody)}>
+                        Set up monetization of your group. All changes will affect only new members
+                    </div>
+                    <XView minHeight={250}>
+                        <GroupPriceSettings
+                            distributionField={distributionField}
+                            priceField={priceField}
+                            intervalField={intervalField}
+                        />
+                    </XView>
+                </XModalContent>
+            </XScrollView3>
+            <XModalFooter>
+                <UButton text="Cancel" style="tertiary" size="large" onClick={() => props.hide()} />
+                <UButton
+                    text="Save"
+                    style="primary"
+                    size="large"
+                    onClick={onSave}
+                    loading={form.loading}
+                />
+            </XModalFooter>
+        </>
+    );
+});
+
+const showPaymentsModal = (roomId: string) => {
+    showModalBox(
+        {
+            width: 400,
+            title: 'Payments',
+        },
+        (ctx) => <PaymentsModalBody roomId={roomId} hide={ctx.hide} />,
     );
 };
 
@@ -419,18 +498,22 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                                 textRight={shortname || 'None'}
                             />
                         )}
-                        <UListItem
-                            title="Payments"
-                            icon={<IcWallet />}
-                            paddingHorizontal={24}
-                            // onClick={() => showShortnameModal(room.id, shortname || '')}
-                            textRight={premiumSettings
-                                ? formatMoneyInterval(
-                                    premiumSettings.price,
-                                    premiumSettings.interval,
-                                )
-                                : 'Free'}
-                        />
+                        <XWithRole role="super-admin">
+                            <UListItem
+                                title="Payments"
+                                icon={<IcWallet />}
+                                paddingHorizontal={24}
+                                onClick={() => showPaymentsModal(room.id)}
+                                textRight={
+                                    premiumSettings
+                                        ? formatMoneyInterval(
+                                              premiumSettings.price,
+                                              premiumSettings.interval,
+                                          )
+                                        : 'Free'
+                                }
+                            />
+                        </XWithRole>
                         {isShared && (
                             <UListItem
                                 title="Social sharing image"

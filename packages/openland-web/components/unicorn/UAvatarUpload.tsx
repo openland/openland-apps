@@ -146,8 +146,6 @@ function prepareSrc(uuid: string, crop: UUploadCareImageCrop | null) {
 interface AvatarRenderProps extends UFileUploadRenderProps {
     dataTestId?: string;
     className?: string;
-    hideImageIndicator?: boolean;
-    clearable?: boolean;
 }
 
 const AvatarRender = (props: AvatarRenderProps) => {
@@ -215,7 +213,7 @@ const AvatarRender = (props: AvatarRenderProps) => {
                     justifyContent="center"
                     alignItems="center"
                     cursor="pointer"
-                    onClick={e => {
+                    onClick={(e) => {
                         e.stopPropagation();
                         props.doClear();
                     }}
@@ -233,13 +231,7 @@ export const UAvatarUploadBasic = React.memo<UAvatarUploadBasicProps>((props) =>
         initialUrl={props.initialUrl}
         cropParams={props.cropParams || '1:1'}
         component={(rp) => {
-            return (
-                <AvatarRender
-                    {...rp}
-                    hideImageIndicator={props.hideImageIndicator}
-                    clearable={props.clearable}
-                />
-            );
+            return <AvatarRender {...rp} />;
         }}
     />
 ));
