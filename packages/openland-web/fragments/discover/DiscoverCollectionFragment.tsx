@@ -48,7 +48,7 @@ export const DiscoverCollectionFragment = React.memo(() => {
         return null;
     }
 
-    const { id, title, description, image, chats } = collection;
+    const { id, title, description, image, chats, shortname } = collection;
 
     const [toastHash, setToastHash] = React.useState(0);
 
@@ -63,7 +63,7 @@ export const DiscoverCollectionFragment = React.memo(() => {
                         <UIconButton
                             icon={<LinkIcon />}
                             onClick={() => {
-                                copy(`https://openland.com/discover/collections/${id}`);
+                                copy(`https://openland.com/discover/collections/${shortname || id}`);
 
                                 toastHandlers.show({
                                     type: 'success',

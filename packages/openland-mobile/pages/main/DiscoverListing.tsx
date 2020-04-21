@@ -341,6 +341,7 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
     const [title, setTitle] = React.useState(props.title || '');
     const [description, setDescription] = React.useState(props.description || null);
     const [image, setImage] = React.useState<Types.DiscoverChatsCollection_image | null>(null);
+    const [shortname, setShortname] = React.useState<string | null>(null);
     const [path, setPath] = React.useState('');
     const layoutCover = layoutCollectionCover();
     const loadCollections = async () => {
@@ -351,6 +352,7 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
             setRooms(res.chats);
             setDescription(res.description);
             setImage(res.image);
+            setShortname(res.shortname);
         }
         setLoading(false);
     };
@@ -391,7 +393,7 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
             <SHeaderButton
                 title="Share"
                 icon={require('assets/ic-share-24.png')}
-                onPress={() => Share.share({ message: `https://openland.com/discover/collections/${props.collectionId}` })}
+                onPress={() => Share.share({ message: `https://openland.com/discover/collections/${shortname || props.collectionId}` })}
             />
 
             <DiscoverListingContent
