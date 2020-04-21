@@ -35,7 +35,7 @@ export class MediaSessionManager {
 
     readonly streamsVM = new VMMap<string, MediaStreamManager>();
     readonly peerStreamMediaStateVM = new VMMapMap<string, string, ConferenceMediaWatch_media_streams_mediaState>();
-    readonly peerVideoVM = new VMSetMap<string, AppMediaStream>();
+    readonly peerVideoVM = new VMMapMap<string, 'camera' | 'screen_share' | undefined | null, AppMediaStream>();
     readonly peerMediStateVM = new VMSetMap<string, AppMediaStream>();
     readonly dcVM = new VM<{ peerId: string, data: any }>();
     readonly videoEnabledVM = new VM<boolean>();
@@ -304,7 +304,7 @@ export class MediaSessionManager {
                 let appStream = stream?.getVideoInStream();
                 let peerId = stream?.getTargetPeerId();
                 if (peerId && appStream) {
-                    this.peerVideoVM.remove(peerId, appStream);
+                    this.peerVideoVM.deleteVal(peerId, appStream.source);
                 }
                 stream?.destroy();
                 this.streamsVM.delete(s);
@@ -323,18 +323,19 @@ export class MediaSessionManager {
                 this.outScreenStream.binded = true;
             }
             if (ms) {
-                ms.setVideoStream(videoStream);
-                ms.onStateChanged(s);
+                console.warn('handle state', videoStream);
+                ms.onStateChanged(s, videoStream);
             } else {
                 console.log('[WEBRTC] Create stream ' + s.id);
 
-                ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, s.settings.audioOut ? this.mediaStream : undefined, s, this.isPrivate ? () => this.onStatusChange('connected') : undefined, s.peerId, videoStream, s.mediaState.videoSource);
+                ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, this.mediaStream, videoStream, s, this.isPrivate ? () => this.onStatusChange('connected') : undefined, s.peerId);
                 this.streamsVM.set(s.id, ms);
 
                 ms.listenVideoInStream(c => {
                     this.videoEnabledVM.set(!!c);
                     if (c && s.peerId) {
-                        this.peerVideoVM.add(s.peerId, c);
+                        console.warn('session', s.peerId, c);
+                        this.peerVideoVM.add(s.peerId, c.source, c);
                     }
                 });
                 ms.listenDc(m => {

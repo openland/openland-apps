@@ -17,7 +17,6 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     onAudioInputChanged?: ((deviceId: string) => void) | undefined;
     onDataChannelMessage: ((dataChannelId: number, message: any) => void) | undefined;
 
-    private streams = new Set<MediaStream>();
     private trackSenders = new Map<MediaStreamTrack, RTCRtpSender>();
 
     private audioOutputDevice: MediaDeviceInfo | undefined;
@@ -76,13 +75,10 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
                 this.audio.play();
             }
 
-            for (let stream of ev.streams) {
-                if (!this.streams.has(stream)) {
-                    this.streams.add(stream);
-                    if (this.onStreamAdded) {
-                        this.onStreamAdded(new AppUserMediaStreamWeb(stream));
-                    }
-                }
+            if (this.onStreamAdded) {
+                let str = new MediaStream();
+                str.addTrack(ev.track);
+                this.onStreamAdded(new AppUserMediaStreamWeb(str));
             }
 
         };
@@ -148,7 +144,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
 
     createOffer = async () => {
         console.log('[PC:' + this.id + '] createOffer');
-        return JSON.stringify(await this.connection.createOffer());
+        return JSON.stringify(await this.connection.createOffer({ offerToReceiveAudio: true, offerToReceiveVideo: true } as any /* WTF with typings? */));
     }
 
     setLocalDescription = async (sdp: string) => {
@@ -165,22 +161,12 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
 
     createAnswer = async () => {
         console.log('[PC:' + this.id + '] createAnswer');
-        return JSON.stringify(await this.connection.createAnswer());
+        return JSON.stringify(await this.connection.createAnswer({ offerToReceiveAudio: true, offerToReceiveVideo: true } as any /* WTF with typings? */));
     }
 
-    hasVideo = false;
-    hasAudio = false;
     addStream = (stream: AppMediaStream) => {
+        this.removeStream(stream);
         let str = (stream as AppUserMediaStreamWeb)._stream;
-        for (let t of str.getTracks()) {
-            // ensure track removed;
-            let sender = this.trackSenders.get(t);
-            if (sender) {
-                this.connection.removeTrack(sender);
-            }
-        }
-        let videoAdded = false;
-        let audioAdded = false;
         let tracks = str.getTracks();
         for (let sender of this.connection.getSenders()) {
             for (let i = tracks.length - 1; i >= 0; i--) {
@@ -190,31 +176,19 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
                     this.trackSenders.set(track, sender);
                     tracks.splice(i, 1);
                 }
-                videoAdded = (!this.hasVideo && track.kind === 'video') || videoAdded;
-                audioAdded = (!this.hasAudio && track.kind === 'audio') || audioAdded;
-                this.hasVideo = videoAdded || this.hasVideo;
-                this.hasAudio = audioAdded || this.hasAudio;
             }
         }
         tracks.map(track => this.trackSenders.set(track, this.connection.addTrack(track, str)));
-        // wtf time!
-        // onnegotiationneeded is not called on turn video on if it's mobile on other side 
-        // looks like offer from mobile does not contain offerToReceiveVideo, even thow it is set explisetly
-        // so, let's help browser detect enviroment has changed
-        if ((videoAdded || audioAdded) && this.onnegotiationneeded) {
-            this.onnegotiationneeded();
-        }
     }
 
     removeStream = (stream: AppMediaStream) => {
         let str = (stream as AppUserMediaStreamWeb)._stream;
-        for (let t of str.getTracks()) {
-            let sender = this.trackSenders.get(t);
+        str.getTracks().map(track => {
+            let sender = this.trackSenders.get(track);
             if (sender) {
                 this.connection.removeTrack(sender);
             }
-            this.trackSenders.delete(t);
-        }
+        });
     }
 
     addIceCandidate = (candidate: string) => {
@@ -230,7 +204,6 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
             this.audio.pause();
             this.audio = undefined;
         }
-        this.streams.forEach(s => s.getTracks().forEach(t => t.stop()));
         for (let dc of this.dataChannels.values()) {
             dc.close();
         }
