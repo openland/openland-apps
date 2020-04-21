@@ -36,7 +36,6 @@ import IcWallet from 'openland-icons/s/ic-wallet-24.svg';
 import IcGallery from 'openland-icons/s/ic-gallery-24.svg';
 import IcMessage from 'openland-icons/s/ic-message-24.svg';
 import IcLock from 'openland-icons/s/ic-lock-16.svg';
-// import IcClear from 'openland-icons/s/ic-clear-16.svg';
 
 const modalSubtitle = css`
     color: var(--foregroundPrimary);
@@ -128,6 +127,15 @@ const SocialImageModalBody = React.memo((props: SocialImageModalBodyProps) => {
     );
     const onSave = async () => {
         await form.doAction(async () => {
+            if (!imageField.value) {
+                await client.mutateRoomUpdate({
+                    roomId: props.roomId,
+                    input: {
+                        socialImageRef: null,
+                    },
+                });
+                await client.refetchRoomChat({ id: props.roomId });
+            }
             if (imageField.value?.uuid !== props.image) {
                 await client.mutateRoomUpdate({
                     roomId: props.roomId,
@@ -157,22 +165,8 @@ const SocialImageModalBody = React.memo((props: SocialImageModalBodyProps) => {
                             cropParams="16:9"
                             className={socialImageUploadStyle}
                             hideImageIndicator={true}
+                            clearable={true}
                         />
-                        {/*{!!imageField.value?.uuid && (*/}
-                        {/*    <XView*/}
-                        {/*        width={56}*/}
-                        {/*        height={56}*/}
-                        {/*        position="absolute"*/}
-                        {/*        right={0}*/}
-                        {/*        top={0}*/}
-                        {/*        justifyContent="center"*/}
-                        {/*        alignItems="center"*/}
-                        {/*        cursor="pointer"*/}
-                        {/*        onClick={() => imageField.input.onChange(null)}*/}
-                        {/*    >*/}
-                        {/*        <UIcon icon={<IcClear />} size={24} color="#fff" />*/}
-                        {/*    </XView>*/}
-                        {/*)}*/}
                     </XView>
                 </XModalContent>
             </XScrollView3>

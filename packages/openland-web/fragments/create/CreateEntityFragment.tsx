@@ -10,10 +10,7 @@ import { UInputField, UInputErrorText } from 'openland-web/components/unicorn/UI
 import { UTextAreaField } from 'openland-web/components/unicorn/UTextArea';
 import { USelectField } from 'openland-web/components/unicorn/USelect';
 import { UAvatarUploadField, StoredFileT } from 'openland-web/components/unicorn/UAvatarUpload';
-import {
-    SharedRoomKind,
-    WalletSubscriptionInterval,
-} from 'openland-api/spacex.types';
+import { SharedRoomKind, WalletSubscriptionInterval } from 'openland-api/spacex.types';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { showModalBox } from 'openland-x/showModalBox';
@@ -183,7 +180,7 @@ const ExplorePeopleFragment = React.memo((props: ExplorePeopleFragmentProps) => 
     const onInputChange = (data: { label: string; value: string }[]) => {
         const newSelected = new Map();
         const newOpts: { label: string; value: string }[] = [];
-        data.map(i => {
+        data.map((i) => {
             newSelected.set(i.value, i.label);
             newOpts.push({
                 label: i.label,
@@ -217,7 +214,7 @@ const ExplorePeopleFragment = React.memo((props: ExplorePeopleFragmentProps) => 
     return (
         <div className={exploreContainer}>
             <SearchBox
-                onInputChange={text => {
+                onInputChange={(text) => {
                     setSearchPeopleQuery(text);
                     return text;
                 }}
@@ -274,7 +271,7 @@ const CreatingContainer = React.memo((props: CreatingContainerProps) => {
     });
 
     const [shakeClassName, shake] = useShake();
-    
+
     const handleBack = React.useCallback(() => {
         setSettingsPage(true);
     }, []);
@@ -286,7 +283,7 @@ const CreatingContainer = React.memo((props: CreatingContainerProps) => {
             }
             shake();
             return false;
-        } 
+        }
         return true;
     };
     const onNext = () => {
@@ -366,108 +363,46 @@ const CreatingContainer = React.memo((props: CreatingContainerProps) => {
     );
 });
 
-enum DistributionType {
+export enum DistributionType {
     FREE = 'Free',
     PAID = 'Paid',
     SUBSCRIPTION = 'Subscription',
 }
 
-interface CreateEntityGroupProps {
-    entityType: 'group' | 'channel';
-    inOrgId?: string;
-    ctx: XModalController;
+interface GroupPriceSettingsProps {
+    distributionField: {
+        input: {
+            value: DistributionType;
+            onChange: (src: DistributionType) => void;
+            invalid: boolean;
+            errorText: string;
+        };
+        value: DistributionType;
+    };
+    priceField: {
+        input: {
+            value: string;
+            onChange: (src: string) => void;
+            invalid: boolean;
+            errorText: string;
+        };
+        value: string;
+    };
+    intervalField: {
+        input: {
+            value: WalletSubscriptionInterval | null;
+            onChange: (src: WalletSubscriptionInterval | null) => void;
+            invalid: boolean;
+            errorText: string;
+        };
+        value: WalletSubscriptionInterval | null;
+    };
 }
 
-const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) => {
-    const [people, setPeople] = React.useState<Map<string, string> | null>(null);
-
-    const router = React.useContext(XViewRouterContext)!;
-    const client = useClient();
-    const form = useForm();
-
-    const secretField = useField<boolean>('input.secret', false, form);
-    const distributionField = useField<DistributionType>(
-        'input.distribution',
-        DistributionType.FREE,
-        form,
-    );
-    const priceField = useField<string>('input.price', '1', form, [
-        {
-            checkIsValid: x => {
-                return /^[0-9]*$/.test(x);
-            },
-            text: 'Numbers only',
-        },
-        {
-            checkIsValid: x => {
-                return Number(x) <= 1000;
-            },
-            text: '$1000 maximum',
-        },
-        {
-            checkIsValid: x => {
-                return Number(x) >= 1;
-            },
-            text: '$1 minimum',
-        },
-    ]);
-    const intervalField = useField<WalletSubscriptionInterval | null>('input.interval', null, form);
-    const titleField = useField('input.title', '', form, [
-        {
-            checkIsValid: value => !!value.trim(),
-            text: 'Please enter name',
-        },
-    ]);
-    const avatarField = useField<StoredFileT | undefined | null>('input.avatar', null, form);
-
-    React.useEffect(
-        () => {
-            if (distributionField.value === DistributionType.FREE) {
-                priceField.input.onChange('1');
-                intervalField.input.onChange(null);
-            }
-            if (distributionField.value === DistributionType.PAID) {
-                intervalField.input.onChange(null);
-            }
-            if (distributionField.value === DistributionType.SUBSCRIPTION) {
-                intervalField.input.onChange(WalletSubscriptionInterval.MONTH);
-            }
-        },
-        [distributionField.value],
-    );
-
-    const onPeopleChange = (data: Map<string, string> | null) => {
-        setPeople(data);
-    };
-
-    const doSubmit = async () => {
-        const isPaid = [DistributionType.PAID, DistributionType.SUBSCRIPTION].includes(distributionField.value);
-        const group = (await client.mutateRoomCreate({
-            title: titleField.value,
-            kind: secretField.value ? SharedRoomKind.GROUP : SharedRoomKind.PUBLIC,
-            photoRef: sanitizeImageRef(avatarField.value),
-            members: !!people ? [...people.keys()] : [],
-            organizationId: props.inOrgId || '',
-            channel: props.entityType === 'channel',
-            price:  isPaid ? parseInt(priceField.value, 10) * 100 : undefined,
-            interval: intervalField.value,
-        })).room;
-
-        props.ctx.hide();
-        router.navigate('/mail/' + group.id);
-    };
-
+export const GroupPriceSettings = React.memo((props: GroupPriceSettingsProps) => {
+    const { distributionField, priceField, intervalField } = props;
     return (
-        <CreatingContainer
-            ctx={props.ctx}
-            title={`New ${props.entityType}`}
-            titleField={titleField}
-            avatarField={avatarField}
-            onPeopleChange={onPeopleChange}
-            handleDone={doSubmit}
-            hasError={!!priceField.input.errorText}
-            useInvitesPage={distributionField.value === DistributionType.FREE}
-        >
+        <>
             <div className={otherInputContainer}>
                 <USelectField
                     placeholder="Payments"
@@ -510,9 +445,10 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
                             prefix="$"
                             hideErrorText={true}
                         />
-                        {distributionField.value !== DistributionType.SUBSCRIPTION && priceField.input.errorText && (
-                            <UInputErrorText text={priceField.input.errorText} />
-                        )}
+                        {distributionField.value !== DistributionType.SUBSCRIPTION &&
+                            priceField.input.errorText && (
+                                <UInputErrorText text={priceField.input.errorText} />
+                            )}
                         {distributionField.value === DistributionType.SUBSCRIPTION && (
                             <USelectField
                                 placeholder="Period"
@@ -531,11 +467,118 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
                             />
                         )}
                     </div>
-                    {distributionField.value === DistributionType.SUBSCRIPTION && priceField.input.errorText && (
-                        <UInputErrorText text={priceField.input.errorText} />
-                    )}
+                    {distributionField.value === DistributionType.SUBSCRIPTION &&
+                        priceField.input.errorText && (
+                            <UInputErrorText text={priceField.input.errorText} />
+                        )}
                 </>
             )}
+        </>
+    );
+});
+
+interface CreateEntityGroupProps {
+    entityType: 'group' | 'channel';
+    inOrgId?: string;
+    ctx: XModalController;
+}
+
+const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) => {
+    const [people, setPeople] = React.useState<Map<string, string> | null>(null);
+
+    const router = React.useContext(XViewRouterContext)!;
+    const client = useClient();
+    const form = useForm();
+
+    const secretField = useField<boolean>('input.secret', false, form);
+    const distributionField = useField<DistributionType>(
+        'input.distribution',
+        DistributionType.FREE,
+        form,
+    );
+    const priceField = useField<string>('input.price', '1', form, [
+        {
+            checkIsValid: (x) => {
+                return /^[0-9]*$/.test(x);
+            },
+            text: 'Numbers only',
+        },
+        {
+            checkIsValid: (x) => {
+                return Number(x) <= 1000;
+            },
+            text: '$1000 maximum',
+        },
+        {
+            checkIsValid: (x) => {
+                return Number(x) >= 1;
+            },
+            text: '$1 minimum',
+        },
+    ]);
+    const intervalField = useField<WalletSubscriptionInterval | null>('input.interval', null, form);
+    const titleField = useField('input.title', '', form, [
+        {
+            checkIsValid: (value) => !!value.trim(),
+            text: 'Please enter name',
+        },
+    ]);
+    const avatarField = useField<StoredFileT | undefined | null>('input.avatar', null, form);
+
+    React.useEffect(() => {
+        if (distributionField.value === DistributionType.FREE) {
+            priceField.input.onChange('1');
+            intervalField.input.onChange(null);
+        }
+        if (distributionField.value === DistributionType.PAID) {
+            intervalField.input.onChange(null);
+        }
+        if (distributionField.value === DistributionType.SUBSCRIPTION) {
+            intervalField.input.onChange(WalletSubscriptionInterval.MONTH);
+        }
+    }, [distributionField.value]);
+
+    const onPeopleChange = (data: Map<string, string> | null) => {
+        setPeople(data);
+    };
+
+    const doSubmit = async () => {
+        const isPaid = [DistributionType.PAID, DistributionType.SUBSCRIPTION].includes(
+            distributionField.value,
+        );
+        const group = (
+            await client.mutateRoomCreate({
+                title: titleField.value,
+                kind: secretField.value ? SharedRoomKind.GROUP : SharedRoomKind.PUBLIC,
+                photoRef: sanitizeImageRef(avatarField.value),
+                members: !!people ? [...people.keys()] : [],
+                organizationId: props.inOrgId || '',
+                channel: props.entityType === 'channel',
+                price: isPaid ? parseInt(priceField.value, 10) * 100 : undefined,
+                interval: intervalField.value,
+            })
+        ).room;
+
+        props.ctx.hide();
+        router.navigate('/mail/' + group.id);
+    };
+
+    return (
+        <CreatingContainer
+            ctx={props.ctx}
+            title={`New ${props.entityType}`}
+            titleField={titleField}
+            avatarField={avatarField}
+            onPeopleChange={onPeopleChange}
+            handleDone={doSubmit}
+            hasError={!!priceField.input.errorText}
+            useInvitesPage={distributionField.value === DistributionType.FREE}
+        >
+            <GroupPriceSettings
+                distributionField={distributionField}
+                priceField={priceField}
+                intervalField={intervalField}
+            />
             {!props.inOrgId && (
                 <div className={otherInputContainer}>
                     <USelectField
@@ -554,7 +597,7 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
                                 labelShort: 'Secret',
                                 label: 'Secret',
                                 subtitle: 'Only people with invite link can see it',
-                            }
+                            },
                         ]}
                     />
                 </div>
@@ -579,7 +622,7 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
     const descriptionField = useField('input.description', '', form);
     const titleField = useField('input.title', '', form, [
         {
-            checkIsValid: value => !!value.trim(),
+            checkIsValid: (value) => !!value.trim(),
             text: 'Please enter name',
         },
     ]);
@@ -590,16 +633,18 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
     };
 
     const doSubmit = async () => {
-        const organization = (await client.mutateCreateOrganization({
-            input: {
-                personal: false,
-                name: titleField.value,
-                about: descriptionField.value.trim(),
-                photoRef: sanitizeImageRef(avatarField.value),
-                isCommunity: props.entityType === 'community',
-                isPrivate: secretField.value,
-            },
-        })).organization;
+        const organization = (
+            await client.mutateCreateOrganization({
+                input: {
+                    personal: false,
+                    name: titleField.value,
+                    about: descriptionField.value.trim(),
+                    photoRef: sanitizeImageRef(avatarField.value),
+                    isCommunity: props.entityType === 'community',
+                    isPrivate: secretField.value,
+                },
+            })
+        ).organization;
 
         if (!!people) {
             await client.mutateOrganizationAddMember({
@@ -657,7 +702,7 @@ export const showCreatingGroupFragment = (props: {
     entityType: 'group' | 'channel';
     inOrgId?: string;
 }) => {
-    showModalBox({ fullScreen: true, useTopCloser: false, hideOnEsc: false }, ctx => (
+    showModalBox({ fullScreen: true, useTopCloser: false, hideOnEsc: false }, (ctx) => (
         <CreateEntityComponentGroup {...props} ctx={ctx} />
     ));
 };
@@ -671,7 +716,7 @@ export const showCreatingOrgFragment = (props: { entityType: 'community' | 'orga
         trackEvent('navigate_new_community');
     }
 
-    showModalBox({ fullScreen: true, useTopCloser: false, hideOnEsc: false }, ctx => (
+    showModalBox({ fullScreen: true, useTopCloser: false, hideOnEsc: false }, (ctx) => (
         <CreateEntityComponentOrg {...props} ctx={ctx} />
     ));
 };

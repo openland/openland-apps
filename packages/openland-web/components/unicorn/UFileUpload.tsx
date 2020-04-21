@@ -82,7 +82,7 @@ export const UFileUpload = (props: UFileUploadProps) => {
                 doStartUpload(file);
             }
         },
-        [props.initialUrl],
+        [props.initialUrl, props.value],
     );
 
     const doUpload = () => {

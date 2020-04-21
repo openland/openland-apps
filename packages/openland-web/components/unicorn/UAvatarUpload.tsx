@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
+import { XView } from 'react-mental';
 import {
     UFileUpload,
     UUploadCareImageCrop,
@@ -12,6 +13,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcPhoto from 'openland-icons/s/ic-camera-36.svg';
 import IcPhotoIndicator from 'openland-icons/s/ic-camera-16.svg';
+import IcClear from 'openland-icons/s/ic-clear-16.svg';
 import { FormField } from 'openland-form/useField';
 
 export interface UAvatarUploadBasicProps {
@@ -21,6 +23,7 @@ export interface UAvatarUploadBasicProps {
     cropParams?: string;
     className?: string;
     hideImageIndicator?: boolean;
+    clearable?: boolean;
 }
 
 const contentContainer = css`
@@ -144,6 +147,7 @@ interface AvatarRenderProps extends UFileUploadRenderProps {
     dataTestId?: string;
     className?: string;
     hideImageIndicator?: boolean;
+    clearable?: boolean;
 }
 
 const AvatarRender = (props: AvatarRenderProps) => {
@@ -201,6 +205,24 @@ const AvatarRender = (props: AvatarRenderProps) => {
                     <UIcon icon={<IcPhotoIndicator />} color="#fff" />
                 </div>
             )}
+            {hasImage && props.clearable && (
+                <XView
+                    width={56}
+                    height={56}
+                    position="absolute"
+                    right={0}
+                    top={0}
+                    justifyContent="center"
+                    alignItems="center"
+                    cursor="pointer"
+                    onClick={e => {
+                        e.stopPropagation();
+                        props.doClear();
+                    }}
+                >
+                    <UIcon icon={<IcClear />} size={24} color="#fff" />
+                </XView>
+            )}
         </div>
     );
 };
@@ -211,7 +233,13 @@ export const UAvatarUploadBasic = React.memo<UAvatarUploadBasicProps>((props) =>
         initialUrl={props.initialUrl}
         cropParams={props.cropParams || '1:1'}
         component={(rp) => {
-            return <AvatarRender {...rp} hideImageIndicator={props.hideImageIndicator} />;
+            return (
+                <AvatarRender
+                    {...rp}
+                    hideImageIndicator={props.hideImageIndicator}
+                    clearable={props.clearable}
+                />
+            );
         }}
     />
 ));
