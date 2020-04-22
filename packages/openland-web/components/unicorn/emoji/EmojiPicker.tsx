@@ -162,14 +162,10 @@ const titleTextStyle = css`
     display: flex;
     flex-direction: row;
     align-items: center;
-    cursor: pointer;
 
     & > span {
         color: var(--foregroundPrimary);
         margin-right: 4px;
-    }
-    &:hover {
-        opacity: 0.56;
     }
 `;
 
