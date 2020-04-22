@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { ViewStyle, StyleProp, ActivityIndicator } from 'react-native';
+import { ViewStyle, StyleProp } from 'react-native';
+import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { ZAnimatedView } from './ZAnimatedView';
 
 export const ZLoaderContext = React.createContext<() => () => void>(() => () => { /* */ });
@@ -33,7 +34,7 @@ export const ZLoaderContaienr = React.memo((props: { loaderStyle?: StyleProp<Vie
                 opactiy={loadersCount > 0 ? 1 : 0}
                 pointerEvents={loadersCount > 0 ? 'none' : 'box-none'}
             >
-                <ActivityIndicator />
+                <LoaderSpinner />
             </ZAnimatedView>
         </ZLoaderContext.Provider>
     );
