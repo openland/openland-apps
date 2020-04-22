@@ -238,9 +238,13 @@ type Conference {
   id: ID!
   startTime: Date
   peers: [ConferencePeer!]!
+  kind: ConferenceKind!
   iceServers: [ICEServer!]!
   strategy: ConferenceStrategy!
-  kind: ConferenceKind!
+}
+
+input ConferenceJoinInput {
+  media: LocalMediaInput!
 }
 
 type ConferenceJoinResult {
@@ -257,6 +261,7 @@ type ConferenceMedia {
   id: ID!
   streams: [MediaStream!]!
   iceServers: [ICEServer!]!
+  localMedia: LocalMediaState!
 }
 
 type ConferencePeer {
@@ -982,6 +987,12 @@ type ICEServer {
   credential: String
 }
 
+enum IceTransportPolicy {
+  ALL
+  RELAY
+  NONE
+}
+
 type Image {
   url: String!
   metadata: FileMetadata
@@ -1074,6 +1085,20 @@ type KickServiceMetadata {
   kickedBy: User!
 }
 
+input LocalMediaInput {
+  supportsVideo: Boolean!
+  supportsAudio: Boolean!
+  wantSendVideo: Boolean!
+  wantSendAudio: Boolean!
+  wantSendScreencast: Boolean!
+}
+
+type LocalMediaState {
+  sendVideo: Boolean!
+  sendAudio: Boolean!
+  sendScreencast: Boolean!
+}
+
 type LocalStreamAudioConfig {
   codec: String!
 }
@@ -1138,16 +1163,42 @@ input MatchmakingRoomInput {
   questions: [MatchmakingQuestionInput!]
 }
 
+enum MediaKind {
+  AUDIO
+  VIDEO
+}
+
+type MediaReceiver {
+  peerId: ID
+  kind: MediaKind!
+  videoSource: VideoSource
+}
+
+type MediaSender {
+  kind: MediaKind!
+  videoSource: VideoSource
+  codecParams: String
+}
+
 type MediaStream {
   id: ID!
-  peerId: ID
-  state: MediaStreamState!
+
+  """Negotiation state"""
   seq: Int!
+  state: MediaStreamState!
   sdp: String
+
+  """ICE Candidates"""
   ice: [String!]!
+  iceTransportPolicy: IceTransportPolicy!
+
+  """Tracks"""
+  receivers: [MediaReceiver!]!
+  senders: [MediaSender!]!
   settings: MediaStreamSettings!
   mediaState: MediaStreamMediaState!
   localStreams: [LocalStreamConfig!]!
+  peerId: ID
 }
 
 enum MediaStreamIceTransportPolicy {
@@ -1159,8 +1210,6 @@ type MediaStreamMediaState {
   videoPaused: Boolean
   audioPaused: Boolean
   videoSource: MediaStreamVideoSource
-
-  """deprecated"""
   videoOut: Boolean!
   audioOut: Boolean!
 }
@@ -1168,8 +1217,6 @@ type MediaStreamMediaState {
 input MediaStreamMediaStateInput {
   videoPaused: Boolean
   audioPaused: Boolean
-
-  """deprecated"""
   videoOut: Boolean
   audioOut: Boolean
 }
@@ -1629,6 +1676,12 @@ type Mutation {
 
   """Deprecated"""
   updateSettings(settings: UpdateSettingsInput): Settings!
+  conferenceAlterMediaState(id: ID!, state: MediaStreamMediaStateInput!): Conference!
+  conferenceAddScreenShare(id: ID!): Conference!
+  conferenceRemoveScreenShare(id: ID!): Conference!
+  conferenceAlterSettings(id: ID!, settings: ConferenceSettingsInput!): Conference!
+  mediaStreamNegotiationNeeded(id: ID!, peerId: ID!, seq: Int): ConferenceMedia!
+  mediaStreamFailed(id: ID!, peerId: ID!): ConferenceMedia!
   createOauthApp(input: OauthAppInput!): OauthApp!
   updateOauthApp(id: ID!, input: OauthAppInput!): OauthApp!
   betaOrganizationMemberRequestApprove(userId: ID!, organizationId: ID!): Organization!
@@ -1685,6 +1738,8 @@ type Mutation {
   deleteApp(appId: ID!): Boolean!
   addAppToChat(appId: ID!, chatId: ID!): AppChat!
   userStorageSet(namespace: String!, data: [AppStorageValueInput!]!): [AppStorageValue!]!
+  userEventBusPublish(topic: String!, message: String!): Boolean!
+  globalEventBusPublish(topic: String!, message: String!): Boolean!
   betaAddComment(peerId: ID!, message: String, replyComment: ID, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!], repeatKey: String): CommentEntry!
   betaAddStickerComment(peerId: ID!, stickerId: ID!, replyComment: ID, repeatKey: String): CommentEntry!
   editComment(id: ID!, message: String, mentions: [MentionInput!], fileAttachments: [FileAttachmentInput!], spans: [MessageSpanInput!]): Boolean!
@@ -1694,6 +1749,13 @@ type Mutation {
   commentReactionRemove(commentId: ID!, reaction: MessageReactionType!): Boolean!
   subscribeToComments(peerId: ID!, type: CommentSubscriptionType!): Boolean!
   unsubscribeFromComments(peerId: ID!): Boolean!
+  conferenceJoin(id: ID!, input: ConferenceJoinInput, kind: ConferenceKind): ConferenceJoinResult!
+  conferenceKeepAlive(id: ID!, peerId: ID!): Conference!
+  conferenceLeave(id: ID!, peerId: ID!): Conference!
+  conferenceRequestLocalMediaChange(id: ID!, media: LocalMediaInput!): Conference!
+  mediaStreamOffer(id: ID!, peerId: ID!, offer: String!, seq: Int): ConferenceMedia!
+  mediaStreamAnswer(id: ID!, peerId: ID!, answer: String!, seq: Int): ConferenceMedia!
+  mediaStreamCandidate(id: ID!, peerId: ID!, candidate: String!): ConferenceMedia!
   setEnvVar(name: String!, value: String!): Boolean!
   setEnvVarString(name: String!, value: String!): Boolean!
   setEnvVarNumber(name: String!, value: Int!): Boolean!
@@ -1702,18 +1764,6 @@ type Mutation {
   superAccountFeatureAdd(id: ID!, featureId: ID!): SuperAccount!
   superAccountFeatureRemove(id: ID!, featureId: ID!): SuperAccount!
   shareLocation(location: GeoLocationInput!): Boolean!
-  conferenceJoin(id: ID!, kind: ConferenceKind): ConferenceJoinResult!
-  conferenceAddScreenShare(id: ID!): Conference!
-  conferenceRemoveScreenShare(id: ID!): Conference!
-  conferenceAlterMediaState(id: ID!, state: MediaStreamMediaStateInput!): Conference!
-  conferenceKeepAlive(id: ID!, peerId: ID!): Conference!
-  conferenceLeave(id: ID!, peerId: ID!): Conference!
-  conferenceAlterSettings(id: ID!, settings: ConferenceSettingsInput!): Conference!
-  mediaStreamOffer(id: ID!, peerId: ID!, offer: String!, seq: Int): ConferenceMedia!
-  mediaStreamNegotiationNeeded(id: ID!, peerId: ID!, seq: Int): ConferenceMedia!
-  mediaStreamAnswer(id: ID!, peerId: ID!, answer: String!, seq: Int): ConferenceMedia!
-  mediaStreamCandidate(id: ID!, peerId: ID!, candidate: String!): ConferenceMedia!
-  mediaStreamFailed(id: ID!, peerId: ID!): ConferenceMedia!
   stickerPackCreate(title: String!, stickers: [StickerInput!]): StickerPack!
   stickerPackUpdate(id: ID!, input: StickerPackInput!): StickerPack!
   stickerPackAddSticker(id: ID!, input: StickerInput!): Sticker!
@@ -2437,14 +2487,14 @@ type Query {
   messageComments(messageId: ID!): CommentsPeer!
   feedItemComments(feedItemId: ID!): CommentsPeer!
   comments(peerId: ID!): CommentsPeer!
+  conference(id: ID!): Conference!
+  conferenceMedia(id: ID!, peerId: ID!): ConferenceMedia!
   dialogsState: DialogUpdateState!
   envVars: [EnvVar!]
   envVar(name: String!): EnvVar
   featureFlags: [FeatureFlag!]!
   myLocation: UserLocation!
   shouldShareLocation: Boolean!
-  conference(id: ID!): Conference!
-  conferenceMedia(id: ID!, peerId: ID!): ConferenceMedia!
   myStickers: UserStickers!
   createdStickerPacks: [StickerPack!]!
   stickersByEmoji(emoji: String!): [Sticker!]!
@@ -2896,19 +2946,23 @@ type Subscription {
 
   """Deprecated"""
   watchSettings: Settings!
+  alphaConferenceWatch(id: ID!): Conference!
+  alphaConferenceMediaWatch(id: ID!, peerId: ID!): ConferenceMedia!
   permissionsUpdates: PermissionRequest!
   waitingPermissionRequestsUpdates: PermissionRequest!
   alphaSubscribeChatOnline(conversations: [ID!]!): OnlineEvent!
   alphaSubscribeOnline(users: [ID!]!): OnlineEvent!
   chatOnlinesCount(chatId: ID!): ChatOnlineEvent!
   chatLocationUpdates(id: ID!): UserLocation!
+  userEventBus(topic: String!): UserEventBusMessage!
+  globalEventBus(topic: String!): UserEventBusMessage!
   chatUpdates(chatId: ID!, fromState: String): ChatUpdateContainer!
   commentUpdates(peerId: ID!, fromState: String): CommentUpdateContainer
+  conferenceWatch(id: ID!): Conference!
+  conferenceMediaWatch(id: ID!, peerId: ID!): ConferenceMedia!
   dialogsUpdates(fromState: String): DialogUpdateContainer!
   homeFeedUpdates(fromState: String): FeedUpdateContainer!
   shouldShareLocationUpdates: Boolean!
-  alphaConferenceWatch(id: ID!): Conference!
-  alphaConferenceMediaWatch(id: ID!, peerId: ID!): ConferenceMedia!
   notificationCenterUpdates(fromState: String): NotificationCenterUpdateContainer
   typings: TypingEvent!
   conversationTypings(conversationId: ID!): TypingEvent!
@@ -3191,6 +3245,10 @@ type UserEdge {
   cursor: String!
 }
 
+type UserEventBusMessage {
+  message: String!
+}
+
 type UserLocation {
   id: ID!
   isSharing: Boolean!
@@ -3205,6 +3263,11 @@ type UserMention {
 type UserStickers {
   packs: [StickerPack!]!
   favorites: [Sticker!]!
+}
+
+enum VideoSource {
+  CAMERA
+  SCREEN
 }
 
 type WalletAccount {

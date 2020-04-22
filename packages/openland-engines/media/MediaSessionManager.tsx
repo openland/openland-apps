@@ -8,7 +8,7 @@ import { AppBackgroundTask } from 'openland-y-runtime/AppBackgroundTask';
 import { Queue } from 'openland-y-utils/Queue';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 import { ConferenceWatch } from 'openland-api/spacex.types';
-import { MediaStreamsAlalizer } from './MediaStreamsAlalizer';
+import { MediaStreamsAlalyzer } from './MediaStreamsAlalyzer';
 import { MediaSessionVolumeSpace } from './MediaSessionVolumeSpace';
 import { VMMap, VM, VMSetMap, VMMapMap } from 'openland-y-utils/mvvm/vm';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
@@ -30,7 +30,7 @@ export class MediaSessionManager {
     private mute: boolean;
     private isPrivate: boolean;
     private ownPeerDetected = false;
-    readonly analizer: MediaStreamsAlalizer;
+    readonly analyzer: MediaStreamsAlalyzer;
     readonly volumeSpace: MediaSessionVolumeSpace;
 
     readonly streamsVM = new VMMap<string, MediaStreamManager>();
@@ -50,7 +50,7 @@ export class MediaSessionManager {
         this.onDestroyRequested = onDestroyRequested;
         this.isPrivate = isPrivate;
         this.doInit();
-        this.analizer = new MediaStreamsAlalizer(this);
+        this.analyzer = new MediaStreamsAlalyzer(this);
         this.volumeSpace = new MediaSessionVolumeSpace(this.messenger, this);
         this.videoEnabledVM.listen(onVideoEnabled);
     }
@@ -145,7 +145,7 @@ export class MediaSessionManager {
         }
         this.destroyed = true;
 
-        this.analizer.dispose();
+        this.analyzer.dispose();
         this.volumeSpace.dispose();
 
         console.log('[WEBRTC] Destroying conference');

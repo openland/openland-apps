@@ -5,7 +5,6 @@ import { AppPeerConnection, IceState } from 'openland-y-runtime-api/AppPeerConne
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { backoff } from 'openland-y-utils/timer';
 import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
-import { mangleSDP } from './mangleSDP';
 import { VMSetMap } from 'openland-y-utils/mvvm/vm';
 
 export class MediaStreamManager {
@@ -143,7 +142,6 @@ export class MediaStreamManager {
 
                     console.log('[WEBRTC]: Creating offer ' + streamConfig.seq);
                     let offer = await this.peerConnection.createOffer();
-                    offer = JSON.stringify({ type: 'offer', sdp: mangleSDP(JSON.parse(offer).sdp) });
 
                     await this.peerConnection.setLocalDescription(offer);
                     this.localDescription = offer;
@@ -172,7 +170,6 @@ export class MediaStreamManager {
 
                     console.log('[WEBRTC]: Creating answer ' + streamConfig.seq);
                     let answer = await this.peerConnection.createAnswer();
-                    answer = JSON.stringify({ type: 'answer', sdp: mangleSDP(JSON.parse(answer).sdp) });
                     await this.peerConnection.setLocalDescription(answer);
                     this.localDescription = answer;
 

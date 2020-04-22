@@ -11,7 +11,7 @@ const AudioContext = canUseDOM && (window.AudioContext // Default
     || false);
 let audioContext: any;
 
-export class MediaStreamsAlalizer {
+export class MediaStreamsAlalyzer {
     private manager: MediaSessionManager;
     private buffer: Uint8Array | undefined;
     private peerStreamAnalyzers = new Map<
