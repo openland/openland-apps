@@ -13,8 +13,6 @@ import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { MatchmakingStartComponent } from '../matchmaking/MatchmakingStartFragment';
-import { showModalBox } from 'openland-x/showModalBox';
 import { trackEvent } from 'openland-x-analytics';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
@@ -262,11 +260,7 @@ const JoinLinkButton = (props: {
         trackEvent('invite_button_clicked');
         props.onAccept(true);
         const res = await client.mutateRoomJoinInviteLink({ invite: props.invite });
-        if (props.matchmaking) {
-            router.reset(`/matchmaking/${res.join.id}/start`);
-        } else {
-            router.reset(`/mail/${res.join.id}`);
-        }
+        router.reset(`/mail/${res.join.id}`);
         setTimeout(() => props.onAccept(false), 500);
 
         return () => clearTimeout(timer);
@@ -372,7 +366,6 @@ const resolveRoomButton = (
     room: RoomPreview_SharedRoom,
     buttonText: string,
     key?: string,
-    matchmaking?: boolean,
 ) => {
     const [loading, setLoading] = React.useState(false);
     if (room && room.isPremium && room.premiumSettings && !room.premiumPassIsActive) {
@@ -439,7 +432,6 @@ const resolveRoomButton = (
                 invite={key}
                 onAccept={setLoading}
                 text={buttonText}
-                matchmaking={matchmaking}
             />
         );
     } else if (room && room.membership === 'REQUESTED') {
@@ -499,7 +491,6 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     let organization: ResolvedInvite_invite_InviteInfo_organization | undefined;
 
     // let invitedByUser;
-    let matchmaking;
 
     if (invite.invite && invite.invite.__typename === 'InviteInfo' && invite.invite.organization) {
         organization = invite.invite.organization;
@@ -509,12 +500,10 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     if (invite.invite && invite.invite.__typename === 'RoomInvite') {
         room = invite.invite.room;
         // invitedByUser = invite.invite.invitedByUser;
-        matchmaking = !!(room.matchmaking && room.matchmaking.enabled);
     }
 
     if (invite.shortnameItem && invite.shortnameItem.__typename === 'SharedRoom') {
         room = invite.shortnameItem;
-        matchmaking = !!(room.matchmaking && room.matchmaking.enabled);
         Cookie.set('x-openland-shortname', key, { path: '/' });
     }
 
@@ -549,23 +538,12 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
                 }
                 alignSelf="center"
                 flexShrink={0}
-                path={!matchmaking ? signupRedirect : undefined}
-                onClick={
-                    matchmaking && signupRedirect
-                        ? () => {
-                              showModalBox({ fullScreen: true, useTopCloser: false }, () => (
-                                  <MatchmakingStartComponent
-                                      onStart={() => router!.navigate(signupRedirect)}
-                                  />
-                              ));
-                          }
-                        : undefined
-                }
+                path={signupRedirect}
                 zIndex={2}
             />
         );
     } else if (room) {
-        button = resolveRoomButton(room, buttonText, key, matchmaking);
+        button = resolveRoomButton(room, buttonText, key);
     } else if (organization) {
         button = (
             <UButton

@@ -23,9 +23,6 @@ fragment RoomPreview on Room {
         owner{
             id
         }
-        matchmaking{
-            enabled
-        }
         title
         photo
         membersCount

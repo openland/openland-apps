@@ -185,19 +185,7 @@ const EnterYourOrganizationPageInner = ({
                     // can not remove cookie or update will break
                     // Cookie.remove('x-openland-invite');
                     await client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
-                    if (
-                        room.join.__typename === 'SharedRoom' &&
-                        room.join.matchmaking &&
-                        room.join.matchmaking.enabled &&
-                        room.join.matchmaking.questions &&
-                        room.join.matchmaking.questions.length
-                    ) {
-                        window.location.href = `/matchmaking/${room.join.id}/ask/${
-                            room.join.matchmaking.questions[0].id
-                            }`;
-                    } else {
-                        window.location.href = `/mail/${room.join.id}`;
-                    }
+                    window.location.href = `/mail/${room.join.id}`;
                 } else {
                     window.location.href = `/invite/${inviteKey}`;
                 }

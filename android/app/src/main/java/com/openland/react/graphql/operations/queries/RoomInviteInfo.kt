@@ -32,10 +32,6 @@ internal val RoomInviteInfoSelector = obj(
                                         field("photo", "photo", scalar("String")),
                                         field("name", "name", notNull(scalar("String")))
                                     ))))),
-                                field("matchmaking", "matchmaking", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("enabled", "enabled", notNull(scalar("Boolean")))
-                                    )),
                                 field("isPremium", "isPremium", notNull(scalar("Boolean"))),
                                 field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean"))),
                                 field("premiumSubscription", "premiumSubscription", obj(
@@ -65,6 +61,6 @@ internal val RoomInviteInfoSelector = obj(
 val RoomInviteInfo = object: OperationDefinition {
     override val name = "RoomInviteInfo"
     override val kind = OperationKind.QUERY
-    override val body = "query RoomInviteInfo(\$invite:String!){invite:betaRoomInviteInfo(invite:\$invite){__typename id room{__typename ... on SharedRoom{__typename id kind isChannel title photo socialImage description organization{__typename ...OrganizationShort}membership membersCount onlineMembersCount previewMembers{__typename id photo name}matchmaking{__typename enabled}isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}owner{__typename id firstName}}}invitedByUser{__typename ...UserShort}}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}"
+    override val body = "query RoomInviteInfo(\$invite:String!){invite:betaRoomInviteInfo(invite:\$invite){__typename id room{__typename ... on SharedRoom{__typename id kind isChannel title photo socialImage description organization{__typename ...OrganizationShort}membership membersCount onlineMembersCount previewMembers{__typename id photo name}isPremium premiumPassIsActive premiumSubscription{__typename id state}premiumSettings{__typename id price interval}owner{__typename id firstName}}}invitedByUser{__typename ...UserShort}}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}"
     override val selector = RoomInviteInfoSelector
 }

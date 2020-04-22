@@ -228,19 +228,6 @@ routes.add('/wallet/', '/unicorn/index');
 
 routes.add('/group/:id', '/unicorn/index');
 routes.add('/group/:id/', '/unicorn/index');
-routes.add('/group/:id/user/:uid', '/unicorn/index');
-routes.add('/group/:id/user/:uid/', '/unicorn/index');
-routes.add('/group/:id/myprofile/edit', '/unicorn/index');
-routes.add('/group/:id/myprofile/edit/', '/unicorn/index');
-routes.add('/group/:id/users', '/unicorn/index');
-routes.add('/group/:id/users/', '/unicorn/index');
-
-//
-// Advanced settings
-//
-
-routes.add('/advanced/:id', '/unicorn/index');
-routes.add('/advanced/:id/', '/unicorn/index');
 
 //
 // Message
@@ -250,20 +237,6 @@ routes.add('/message/:messageId', '/unicorn/index');
 routes.add('/message/:messageId/', '/unicorn/index');
 routes.add('/message/:messageId/comment/:commentId', '/unicorn/index');
 routes.add('/message/:messageId/comment/:commentId/', '/unicorn/index');
-
-//
-// Matchmaking
-//
-routes.add('/matchmaking/:roomId/start', '/unicorn/index');
-routes.add('/matchmaking/:roomId/start/', '/unicorn/index');
-routes.add('/matchmaking/:roomId/ask/:res', '/unicorn/index');
-routes.add('/matchmaking/:roomId/ask/:res/', '/unicorn/index');
-routes.add('/matchmaking/:roomId/created', '/unicorn/index');
-routes.add('/matchmaking/:roomId/created/', '/unicorn/index');
-routes.add('/matchmaking/:roomId/users', '/unicorn/index');
-routes.add('/matchmaking/:roomId/users/', '/unicorn/index');
-routes.add('/matchmaking/:roomId/install', '/unicorn/index');
-routes.add('/matchmaking/:roomId/install/', '/unicorn/index');
 
 //
 // Oauth

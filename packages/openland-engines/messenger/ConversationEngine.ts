@@ -21,7 +21,6 @@ import { prepareLegacyMentions } from 'openland-engines/legacy/legacymentions';
 import * as Types from 'openland-api/spacex.types';
 import { createLogger } from 'mental-log';
 import { MessagesActionsStateEngine } from './MessagesActionsState';
-import { MatchmakingEngine } from 'openland-engines/matchmaking/MatchmakingState';
 import { SharedMediaEngine, SharedMediaItemType } from 'openland-engines/messenger/SharedMediaEngine';
 import { prepareLegacySpans, findSpans } from 'openland-y-utils/findSpans';
 import { Span } from 'openland-y-utils/spans/Span';
@@ -83,7 +82,7 @@ export interface DataSourceMessageItem {
     peerRootId?: string;
     peerRootType?: 'CommentPeerRootMessage' | 'CommentPeerRootFeedItem';
     notificationId?: string;
-    notificationType?: 'new_comment' | 'unsupported' | 'mm';
+    notificationType?: 'new_comment' | 'unsupported';
     room?: Types.RoomNano;
     overrideName: string | null;
     overrideAvatar: Types.FullMessage_ServiceMessage_overrideAvatar | null;
@@ -272,7 +271,6 @@ export class ConversationEngine implements MessageSendHandler {
     private localMessagesMap = new Map<string, string>();
     private sharedMediaEngines: Record<SharedMediaItemType, SharedMediaEngine> | {};
     readonly messagesActionsStateEngine: MessagesActionsStateEngine;
-    readonly matchmakingEngine: MatchmakingEngine;
     readonly onNewMessage: (event: Types.ChatUpdateFragment_ChatMessageReceived, cid: string) => void;
 
     role?: Types.RoomMemberRole | null;
@@ -297,7 +295,6 @@ export class ConversationEngine implements MessageSendHandler {
         // this.dataSourceLogger = new DataSourceLogger('conv:' + conversationId, this.dataSource);
 
         this.messagesActionsStateEngine = new MessagesActionsStateEngine(this.engine);
-        this.matchmakingEngine = new MatchmakingEngine();
         this.sharedMediaEngines = {};
         this.onNewMessage = onNewMessage;
 

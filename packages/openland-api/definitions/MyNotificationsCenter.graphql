@@ -39,18 +39,6 @@ fragment NotificationFragment on Notification {
                 }
             }
         }
-        ... on NewMatchmakingProfilesNotification {
-            room {
-                peer {
-                    ... on SharedRoom {
-                        ...RoomNano
-                    }
-                }
-            }
-            profiles {
-                ...MatchmakingProfileFragment
-            }
-        }
     }
 }
 query MyNotifications($first: Int!, $before: ID) {

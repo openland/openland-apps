@@ -20,7 +20,6 @@ import { trackEvent } from 'openland-x-analytics';
 import { throttle, delay } from 'openland-y-utils/timer';
 import { SendMessageComponent } from './SendMessageComponent';
 import { PinMessageComponent } from 'openland-web/fragments/chat/messenger/message/PinMessageComponent';
-import { MemberProfilesComponent } from 'openland-web/fragments/chat/messenger/message/MemberProfilesComponent';
 import { pluralForm, plural } from 'openland-y-utils/plural';
 import { MessageListComponent } from '../messenger/view/MessageListComponent';
 import { TypingsView } from '../messenger/typings/TypingsView';
@@ -464,11 +463,6 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
             this.props.room.__typename === 'SharedRoom' &&
             this.props.room.isChannel;
 
-        const memberProfiles =
-            this.props.room.__typename === 'SharedRoom' &&
-            this.props.room.matchmaking &&
-            this.props.room.matchmaking.enabled;
-
         const pin = this.props.pinMessage;
         const showInput = !this.state.hideInput && this.conversation.canSendMessage;
         const membersCount =
@@ -484,9 +478,6 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 {this.state.loading && <XLoader loading={true} />}
                 {!this.state.loading && (
                     <>
-                        {memberProfiles && (
-                            <MemberProfilesComponent chatId={this.props.room.id} />
-                        )}
                         {pin && (
                             <PinMessageComponent message={pin} engine={this.conversation} />
                         )}

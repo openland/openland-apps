@@ -30,9 +30,6 @@ fragment RoomShort on Room {
         pinnedMessage {
             ...FullMessage
         }
-        matchmaking {
-            ...MatchmakingRoomFragment
-        }
         organization {
             ...OrganizationShort
         }

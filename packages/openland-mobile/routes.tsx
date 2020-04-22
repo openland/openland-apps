@@ -79,7 +79,6 @@ import { SetFeedChannelShortname } from './pages/main/SetFeedChannelShortname';
 import { FeedPublishTo } from './pages/feed/FeedPublishTo';
 import { FeedChannelAddWriter } from './pages/feed/FeedChannelAddWriter';
 import { FeedChannelEditAdvanced } from './pages/feed/FeedChannelEditAdvanced';
-import { MatchmakingProfile } from './pages/matchmaking/MatchmakingProfile';
 import { SharedMedia } from './pages/shared-media/SharedMedia';
 import { PowerUps } from './pages/dev/PowerUps';
 import { Wallet } from './pages/wallet/Wallet';
@@ -182,8 +181,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('FeedChannelWriters', FeedChannelWriters)
   .addRoute('FeedPublishTo', FeedPublishTo)
   .addRoute('FeedChannelAddWriter', FeedChannelAddWriter)
-
-  .addRoute('MatchmakingProfile', MatchmakingProfile)
 
   .addRoute('SharedMedia', SharedMedia)
 

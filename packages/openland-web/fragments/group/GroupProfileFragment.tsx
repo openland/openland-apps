@@ -10,15 +10,12 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UFlatList } from 'openland-web/components/unicorn/UFlatList';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
-import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { GroupMenu } from './components/GroupMenu';
 import { showAddMembersModal } from '../chat/showAddMembersModal';
 import { UAddItem } from 'openland-web/components/unicorn/templates/UAddButton';
 import { UListText } from 'openland-web/components/unicorn/UListText';
 import { GroupMemberMenu } from './components/GroupMemberMenu';
 import { RoomMembersPaginated_members, RoomMemberRole } from 'openland-api/spacex.types';
-import IcUser from 'openland-icons/s/ic-user-24.svg';
-import IcCopy from 'openland-icons/s/ic-copy-24.svg';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { ProfileDonationButtons } from 'openland-web/components/ProfileDonationButtons';
@@ -53,16 +50,10 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         description,
         organization,
         settings,
-        matchmaking,
         isPremium,
         premiumSettings,
         owner,
     } = group;
-
-    const memberProfiles = matchmaking && matchmaking.enabled;
-    const myMemberProfile = matchmaking && matchmaking.myProfile;
-    const otherMemberProfiles =
-        myMemberProfile && matchmaking && matchmaking.profiles && matchmaking.profiles.length > 1;
 
     const [members, setMembers] = React.useState(initialMembers);
     const [loading, setLoading] = React.useState(false);
@@ -158,26 +149,6 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
             </UListGroup>
             {owner && (
                 <ProfileDonationButtons shouldHide={owner.isYou} name={owner.firstName} chatId={id} />
-            )}
-            {memberProfiles && (
-                <UListGroup marginTop={20}>
-                    <UListItem
-                        title={myMemberProfile ? 'My member profile' : 'Create member profile'}
-                        icon={<IcUser />}
-                        useRadius={true}
-                        path={
-                            myMemberProfile ? `/group/${id}/user/${myMemberProfile.user.id}` : `/matchmaking/${id}/start`
-                        }
-                    />
-                    <UListItem
-                        title={`Member profiles ${
-                            otherMemberProfiles ? matchmaking!.profiles!.length - 1 : ''
-                            }`}
-                        icon={<IcCopy />}
-                        useRadius={true}
-                        path={`/group/${id}/users`}
-                    />
-                </UListGroup>
             )}
             {organization && (
                 <UListGroup header={organization.isCommunity ? 'Community' : 'Organization'}>

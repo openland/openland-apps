@@ -14,18 +14,10 @@ import { NotificationsFragment } from 'openland-web/fragments/notifications/Nofi
 import { DownloadAppsFragment } from 'openland-web/fragments/account/SettingsDownloadAppsFragment';
 import { InviteFriendsFragment } from 'openland-web/fragments/account/SettingsInviteFriendsFragment';
 import { GroupProfileFragment } from 'openland-web/fragments/group/GroupProfileFragment';
-import { MemberProfileFragment } from 'openland-web/fragments/group/MemberProfileFragment';
-import { MemberProfileEditFragment } from 'openland-web/fragments/group/MemberProfileEditFragment';
 import { MessageFragment } from 'openland-web/fragments/message/MessageFragment';
 import { FeedFragment } from 'openland-web/fragments/feed/FeedFragment';
 import { WalletFragment } from 'openland-web/fragments/wallet/WalletFragment';
 import { SubscriptionsFragment } from 'openland-web/fragments/wallet/SubscriptionsFragment';
-import { AdvancedSettingsFragment } from 'openland-web/fragments/chat/AdvancedSettingsFragment';
-import { MatchmakingFragment } from 'openland-web/fragments/matchmaking/MatchmakingFragment';
-import { MatchmakingStartFragment } from 'openland-web/fragments/matchmaking/MatchmakingStartFragment';
-import { MatchmakingCreatedFragment } from 'openland-web/fragments/matchmaking/MatchmakingCreatedFragment';
-import { MatchmakingUsersFragment } from 'openland-web/fragments/matchmaking/MatchmakingUsersFragment';
-import { MatchmakingAppFragment } from 'openland-web/fragments/matchmaking/MatchmakingAppFragment';
 import { FeedItemFragment } from 'openland-web/fragments/feed/FeedItemFragment';
 import { useStackRouter } from 'openland-unicorn/components/StackRouter';
 import { SharedMediaFragment } from 'openland-web/fragments/chat/sharedMedia/SharedMediaFragment';
@@ -33,13 +25,13 @@ import { SettingsAboutFragment } from 'openland-web/fragments/account/SettingsAb
 import { SettingsLicensesFragment } from 'openland-web/fragments/account/SettingsLicensesFragment';
 import { InviteLandingComponent } from 'openland-web/fragments/invite/InviteLandingComponent';
 import { UserProfileFragment } from 'openland-web/fragments/shortname/UserProfileFragment';
-// import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { DiscoverPopularNowFragment } from 'openland-web/fragments/discover/DiscoverPopularNowFragment';
 import { DiscoverNewAndGrowingFragment } from 'openland-web/fragments/discover/DiscoverNewAndGrowingFragment';
 import { DiscoverCollectionsFragment } from 'openland-web/fragments/discover/DiscoverCollectionsFragment';
 import { DiscoverTopPremiumFragment } from 'openland-web/fragments/discover/DiscoverTopPremiumFragment';
 import { DiscoverTopFreeFragment } from 'openland-web/fragments/discover/DiscoverTopFreeFragment';
 import { DiscoverCollectionFragment } from 'openland-web/fragments/discover/DiscoverCollectionFragment';
+// import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 
 // temporary stub for /mail/ -> not found bug
 const TemporaryStubMail = React.memo(() => {
@@ -127,13 +119,7 @@ routing.addRoute('/subscriptions', () => SubscriptionsFragment);
 
 // Profile
 routing.addRoute('/group/:id', () => GroupProfileFragment);
-routing.addRoute('/group/:id/user/:uid', () => MemberProfileFragment);
-routing.addRoute('/group/:id/myprofile/edit', () => MemberProfileEditFragment);
-routing.addRoute('/group/:id/users', () => MatchmakingUsersFragment);
 routing.addRoute('/:shortname', () => ShortnameFragment);
-
-// Advanced settings
-routing.addRoute('/advanced/:id', () => AdvancedSettingsFragment);
 
 // Invites
 routing.addRoute('/invite/:invite', () => InviteLandingComponent);
@@ -150,12 +136,5 @@ routing.addRoute('/mail/c/:id', () => ShortnameFragment);
 routing.addRoute('/direcory/u/:id', () => ShortnameFragment);
 routing.addRoute('/direcory/o/:id', () => ShortnameFragment);
 routing.addRoute('/direcory/c/:id', () => ShortnameFragment);
-
-// Matchmaking
-routing.addRoute('/matchmaking/:roomId/start', () => MatchmakingStartFragment);
-routing.addRoute('/matchmaking/:roomId/ask/:res', () => MatchmakingFragment);
-routing.addRoute('/matchmaking/:roomId/created', () => MatchmakingCreatedFragment);
-routing.addRoute('/matchmaking/:roomId/users', () => MatchmakingUsersFragment);
-routing.addRoute('/matchmaking/:roomId/install', () => MatchmakingAppFragment);
 
 export const Routing = routing;

@@ -142,12 +142,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryInitFeed(variables: Types.InitFeedVariables, opts?: OperationParameters): Promise<Types.InitFeed> {
         return this.query('InitFeed', variables, opts);
     }
-    queryMatchmakingProfile(variables: Types.MatchmakingProfileVariables, opts?: OperationParameters): Promise<Types.MatchmakingProfile> {
-        return this.query('MatchmakingProfile', variables, opts);
-    }
-    queryMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: OperationParameters): Promise<Types.MatchmakingRoom> {
-        return this.query('MatchmakingRoom', variables, opts);
-    }
     queryMessage(variables: Types.MessageVariables, opts?: OperationParameters): Promise<Types.Message> {
         return this.query('Message', variables, opts);
     }
@@ -451,12 +445,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchInitFeed(variables: Types.InitFeedVariables, opts?: OperationParameters): Promise<Types.InitFeed> {
         return this.refetch('InitFeed', variables);
     }
-    refetchMatchmakingProfile(variables: Types.MatchmakingProfileVariables, opts?: OperationParameters): Promise<Types.MatchmakingProfile> {
-        return this.refetch('MatchmakingProfile', variables);
-    }
-    refetchMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: OperationParameters): Promise<Types.MatchmakingRoom> {
-        return this.refetch('MatchmakingRoom', variables);
-    }
     refetchMessage(variables: Types.MessageVariables, opts?: OperationParameters): Promise<Types.Message> {
         return this.refetch('Message', variables);
     }
@@ -759,12 +747,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateInitFeed(variables: Types.InitFeedVariables, updater: (data: Types.InitFeed) => Types.InitFeed | null): Promise<boolean> {
         return this.updateQuery(updater, 'InitFeed', variables);
-    }
-    updateMatchmakingProfile(variables: Types.MatchmakingProfileVariables, updater: (data: Types.MatchmakingProfile) => Types.MatchmakingProfile | null): Promise<boolean> {
-        return this.updateQuery(updater, 'MatchmakingProfile', variables);
-    }
-    updateMatchmakingRoom(variables: Types.MatchmakingRoomVariables, updater: (data: Types.MatchmakingRoom) => Types.MatchmakingRoom | null): Promise<boolean> {
-        return this.updateQuery(updater, 'MatchmakingRoom', variables);
     }
     updateMessage(variables: Types.MessageVariables, updater: (data: Types.Message) => Types.Message | null): Promise<boolean> {
         return this.updateQuery(updater, 'Message', variables);
@@ -1158,16 +1140,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useInitFeed(variables: Types.InitFeedVariables, opts?: SpaceQueryWatchParameters): Types.InitFeed;
     useInitFeed(variables: Types.InitFeedVariables, opts?: SpaceQueryWatchParameters): Types.InitFeed | null {
         return this.useQuery('InitFeed', variables, opts);
-    }
-    useMatchmakingProfile(variables: Types.MatchmakingProfileVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.MatchmakingProfile | null;
-    useMatchmakingProfile(variables: Types.MatchmakingProfileVariables, opts?: SpaceQueryWatchParameters): Types.MatchmakingProfile;
-    useMatchmakingProfile(variables: Types.MatchmakingProfileVariables, opts?: SpaceQueryWatchParameters): Types.MatchmakingProfile | null {
-        return this.useQuery('MatchmakingProfile', variables, opts);
-    }
-    useMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.MatchmakingRoom | null;
-    useMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: SpaceQueryWatchParameters): Types.MatchmakingRoom;
-    useMatchmakingRoom(variables: Types.MatchmakingRoomVariables, opts?: SpaceQueryWatchParameters): Types.MatchmakingRoom | null {
-        return this.useQuery('MatchmakingRoom', variables, opts);
     }
     useMessage(variables: Types.MessageVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Message | null;
     useMessage(variables: Types.MessageVariables, opts?: SpaceQueryWatchParameters): Types.Message;
@@ -1598,15 +1570,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateMarkSequenceRead(variables: Types.MarkSequenceReadVariables): Promise<Types.MarkSequenceRead> {
         return this.mutate('MarkSequenceRead', variables);
-    }
-    mutateMatchmakingConnect(variables: Types.MatchmakingConnectVariables): Promise<Types.MatchmakingConnect> {
-        return this.mutate('MatchmakingConnect', variables);
-    }
-    mutateMatchmakingProfileFill(variables: Types.MatchmakingProfileFillVariables): Promise<Types.MatchmakingProfileFill> {
-        return this.mutate('MatchmakingProfileFill', variables);
-    }
-    mutateMatchmakingRoomSave(variables: Types.MatchmakingRoomSaveVariables): Promise<Types.MatchmakingRoomSave> {
-        return this.mutate('MatchmakingRoomSave', variables);
     }
     mutateMediaAnswer(variables: Types.MediaAnswerVariables): Promise<Types.MediaAnswer> {
         return this.mutate('MediaAnswer', variables);

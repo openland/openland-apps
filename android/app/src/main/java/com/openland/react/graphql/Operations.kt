@@ -52,8 +52,6 @@ object Operations {
         if (name == "GlobalCounter") return GlobalCounter
         if (name == "GlobalSearch") return GlobalSearch
         if (name == "InitFeed") return InitFeed
-        if (name == "MatchmakingProfile") return MatchmakingProfile
-        if (name == "MatchmakingRoom") return MatchmakingRoom
         if (name == "Message") return Message
         if (name == "MessagesBatch") return MessagesBatch
         if (name == "MessagesSearch") return MessagesSearch
@@ -160,9 +158,6 @@ object Operations {
         if (name == "FeedReactionRemove") return FeedReactionRemove
         if (name == "MakeCardDefault") return MakeCardDefault
         if (name == "MarkSequenceRead") return MarkSequenceRead
-        if (name == "MatchmakingConnect") return MatchmakingConnect
-        if (name == "MatchmakingProfileFill") return MatchmakingProfileFill
-        if (name == "MatchmakingRoomSave") return MatchmakingRoomSave
         if (name == "MediaAnswer") return MediaAnswer
         if (name == "MediaCandidate") return MediaCandidate
         if (name == "MediaFailed") return MediaFailed

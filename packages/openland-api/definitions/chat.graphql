@@ -102,9 +102,6 @@ query RoomChat($id: ID!) {
             organization {
                 ...OrganizationMedium
             }
-            matchmaking {
-                ...MatchmakingRoomFragment
-            }
             pinnedMessage {
                 ...FullMessage
             }
@@ -482,9 +479,6 @@ query RoomInviteInfo($invite: String!) {
                     photo
                     name
                 }
-                matchmaking {
-                    enabled
-                }
                 isPremium
                 premiumPassIsActive
                 premiumSubscription {
@@ -553,9 +547,6 @@ query ResolvedInvite($key: String!) {
                         id
                         photo
                         name
-                    }
-                    matchmaking {
-                        enabled
                     }
                     isPremium
                     premiumPassIsActive

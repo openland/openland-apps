@@ -666,76 +666,6 @@ internal val FullMessageSelector = obj(
             ))
         )
 
-internal val MatchmakingProfileFragmentSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("chatCreated", "chatCreated", notNull(scalar("Boolean"))),
-            field("user", "user", notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("isYou", "isYou", notNull(scalar("Boolean"))),
-                    field("name", "name", notNull(scalar("String"))),
-                    field("photo", "photo", scalar("String")),
-                    field("isBot", "isBot", notNull(scalar("Boolean"))),
-                    field("primaryOrganization", "primaryOrganization", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("name", "name", notNull(scalar("String")))
-                        ))
-                ))),
-            field("answers", "answers", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    inline("TextMatchmakingAnswer", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("question", "question", notNull(obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("id", "id", notNull(scalar("ID"))),
-                                field("title", "title", notNull(scalar("String"))),
-                                field("subtitle", "subtitle", notNull(scalar("String")))
-                            ))),
-                        field("answer", "answer", notNull(scalar("String")))
-                    )),
-                    inline("MultiselectMatchmakingAnswer", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("question", "question", notNull(obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("id", "id", notNull(scalar("ID"))),
-                                field("title", "title", notNull(scalar("String"))),
-                                field("subtitle", "subtitle", notNull(scalar("String")))
-                            ))),
-                        field("tags", "tags", notNull(list(notNull(scalar("String")))))
-                    ))
-                )))))
-        )
-
-internal val MatchmakingRoomFragmentSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("enabled", "enabled", notNull(scalar("Boolean"))),
-            field("questions", "questions", list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    inline("TextMatchmakingQuestion", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("title", "title", notNull(scalar("String"))),
-                        field("subtitle", "subtitle", notNull(scalar("String")))
-                    )),
-                    inline("MultiselectMatchmakingQuestion", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("title", "title", notNull(scalar("String"))),
-                        field("subtitle", "subtitle", notNull(scalar("String"))),
-                        field("tags", "tags", notNull(list(notNull(scalar("String")))))
-                    ))
-                )))),
-            field("myProfile", "myProfile", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("MatchmakingProfile", MatchmakingProfileFragmentSelector)
-                )),
-            field("profiles", "profiles", list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("MatchmakingProfile", MatchmakingProfileFragmentSelector)
-                ))))
-        )
-
 internal val RoomShortSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             inline("PrivateRoom", obj(
@@ -775,10 +705,6 @@ internal val RoomShortSelector = obj(
                 field("pinnedMessage", "pinnedMessage", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", FullMessageSelector)
-                    )),
-                field("matchmaking", "matchmaking", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("MatchmakingRoom", MatchmakingRoomFragmentSelector)
                     )),
                 field("organization", "organization", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -1394,23 +1320,6 @@ internal val NotificationFragmentSelector = obj(
                                         field("type", "type", scalar("String"))
                                     ))
                             )))
-                    )),
-                    inline("NewMatchmakingProfilesNotification", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("room", "room", notNull(obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("peer", "peer", notNull(obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        inline("SharedRoom", obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            fragment("Room", RoomNanoSelector)
-                                        ))
-                                    )))
-                            ))),
-                        field("profiles", "profiles", notNull(list(notNull(obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                fragment("MatchmakingProfile", MatchmakingProfileFragmentSelector)
-                            )))))
                     ))
                 )))))
         )
@@ -1648,10 +1557,6 @@ internal val RoomPreviewSelector = obj(
                 field("owner", "owner", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("id", "id", notNull(scalar("ID")))
-                    )),
-                field("matchmaking", "matchmaking", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("enabled", "enabled", notNull(scalar("Boolean")))
                     )),
                 field("title", "title", notNull(scalar("String"))),
                 field("photo", "photo", notNull(scalar("String"))),
