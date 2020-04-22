@@ -307,11 +307,11 @@
         "rsync": "^0.6.1",
         "ts-jest": "^22.0.4",
         "ts-node": "^6.1.1",
-        "tslib": "^1.9.0",
+        "tslib": "1.11.1",
         "tslint": "^5.8.0",
         "tslint-config-prettier": "1.18.0",
         "tslint-react": "^3.5.1",
-        "typescript": "3.8.0-beta",
+        "typescript": "3.8.3",
         "watchman": "^1.0.0"
     },
     "resolutions": {

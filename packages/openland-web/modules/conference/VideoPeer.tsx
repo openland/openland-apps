@@ -132,7 +132,7 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
                 }
             });
         }
-        let d2 = props.mediaSession.analizer.subscribePeer(props.peer.id, v => {
+        let d2 = props.mediaSession.analyzer.subscribePeer(props.peer.id, v => {
             setTalking(v);
         });
         return () => {

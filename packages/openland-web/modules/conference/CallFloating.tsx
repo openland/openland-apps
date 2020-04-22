@@ -290,12 +290,12 @@ const MediaView = React.memo((props: {
     calls: CallsEngine;
     callState: CallState;
 }) => {
-    let peerId = props.mediaSessionManager.analizer.useSpeakingPeer();
+    let peerId = props.mediaSessionManager.analyzer.useSpeakingPeer();
     const avatarRef = React.useRef<HTMLDivElement>(null);
     React.useEffect(() => {
         let d: (() => void) | undefined;
         if (peerId) {
-            d = props.mediaSessionManager.analizer.subscribePeer(peerId, v => {
+            d = props.mediaSessionManager.analyzer.subscribePeer(peerId, v => {
                 // animate
                 if (avatarRef.current) {
                     avatarRef.current.className = cx(v && activeAvatarStyle);
