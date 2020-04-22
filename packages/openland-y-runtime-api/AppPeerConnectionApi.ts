@@ -5,7 +5,7 @@ export interface AppPeerConnection {
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined;
     onnegotiationneeded: (() => void) | undefined;
     oniceconnectionstatechange: ((ev: { target: { iceConnectionState: IceState } }) => void) | undefined;
-    onStreamAdded: ((stream: AppMediaStream) => void) | undefined;
+    onstreamadded: ((stream: AppMediaStream) => void) | undefined;
 
     addIceCandidate(candidate: string): Promise<void>;
 
@@ -17,9 +17,6 @@ export interface AppPeerConnection {
     addStream(stream: AppMediaStream): void;
     removeStream(stream: AppMediaStream): void;
 
-    updateDataChannels(configs: { id: number, label: string, ordered: boolean }[]): void;
-    sendDataChannelMessage(dataChannelId: number, message: string): void;
-    onDataChannelMessage: ((dataChannelId: number, message: any) => void) | undefined;
     setVolume(volume: number): void;
 
     close(): void;

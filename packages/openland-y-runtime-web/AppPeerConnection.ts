@@ -13,9 +13,8 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined = undefined;
     onnegotiationneeded: (() => void) | undefined = undefined;
     oniceconnectionstatechange: ((ev: { target: { iceConnectionState?: string | 'failed' } }) => void) | undefined = undefined;
-    onStreamAdded: ((stream: AppMediaStream) => void) | undefined;
+    onstreamadded: ((stream: AppMediaStream) => void) | undefined;
     onAudioInputChanged?: ((deviceId: string) => void) | undefined;
-    onDataChannelMessage: ((dataChannelId: number, message: any) => void) | undefined;
 
     private trackSenders = new Map<MediaStreamTrack, RTCRtpSender>();
 
@@ -75,10 +74,10 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
                 this.audio.play();
             }
 
-            if (this.onStreamAdded) {
+            if (this.onstreamadded) {
                 let str = new MediaStream();
                 str.addTrack(ev.track);
-                this.onStreamAdded(new AppUserMediaStreamWeb(str));
+                this.onstreamadded(new AppUserMediaStreamWeb(str));
             }
 
         };
@@ -93,46 +92,6 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         // audio.srcObject = ev.streams[0];
         // audio.load();
         // audio.play();
-    }
-
-    updateDataChannels = (configs: { id: number, label: string, ordered: boolean }[]) => {
-        // delete old ones
-        for (let [id, dc] of this.dataChannels.entries()) {
-            if (!configs.find(c => c.id === id)) {
-                dc.close();
-                console.warn('[DC]', 'closed');
-                this.dataChannels.delete(id);
-            }
-        }
-        // create new
-        for (let c of configs) {
-            if (!this.dataChannels.has(c.id)) {
-                let channel = this.connection.createDataChannel(c.label, { id: c.id, negotiated: true, ordered: c.ordered });
-                console.warn('[DC]', 'created');
-
-                channel.onopen = () => {
-                    console.warn('[DC]', 'onopen');
-                };
-                channel.onmessage = (ev) => {
-                    if (this.onDataChannelMessage) {
-                        this.onDataChannelMessage(c.id, ev.data);
-                    }
-                };
-                this.dataChannels.set(c.id, channel);
-            }
-        }
-    }
-
-    sendDataChannelMessage = (dataChannelId: number, message: string) => {
-        let channel = this.dataChannels.get(dataChannelId);
-        if (channel?.readyState === 'open') {
-            // it can crash on send event if state is open, wtf?
-            try {
-                channel.send(message);
-            } catch (e) {
-                console.error(e);
-            }
-        }
     }
 
     setVolume = (volume: number) => {

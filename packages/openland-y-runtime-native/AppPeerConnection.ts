@@ -11,8 +11,7 @@ class AppPeerConnectionNative implements AppPeerConnection {
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined;
     onnegotiationneeded: (() => void) | undefined;
     oniceconnectionstatechange: ((ev: { target?: { iceConnectionState?: string | 'failed' } }) => void) | undefined = undefined;
-    onStreamAdded: ((stream: AppMediaStream) => void) | undefined;
-    onDataChannelMessage: ((message: any) => void) | undefined;
+    onstreamadded: ((stream: AppMediaStream) => void) | undefined;
 
     #currentStreams = new Map<string, MediaStream>();
 
@@ -31,9 +30,9 @@ class AppPeerConnectionNative implements AppPeerConnection {
                 return;
             }
             this.#currentStreams.set(ev.stream.id, ev.stream);
-            if (this.onStreamAdded) {
+            if (this.onstreamadded) {
                 console.warn('[webrtc]', 'onaddstream', ev.stream.toURL());
-                this.onStreamAdded(new AppUserMediaStreamNative(ev.stream));
+                this.onstreamadded(new AppUserMediaStreamNative(ev.stream));
             }
         };
         this.connection.onremovestream = ((ev: { stream: MediaStream } /* Typings are wrong */) => {
@@ -65,14 +64,6 @@ class AppPeerConnectionNative implements AppPeerConnection {
 
     createAnswer = async () => {
         return JSON.stringify(await (this.connection as any).createAnswer());
-    }
-
-    updateDataChannels() {
-        // not implemented yet
-    }
-
-    sendDataChannelMessage = (dataChannelId: number, message: string) => {
-        // not implemented yet
     }
 
     setVolume = (volume: number) => {
