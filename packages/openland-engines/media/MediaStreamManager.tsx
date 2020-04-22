@@ -1,5 +1,5 @@
 import { OpenlandClient } from 'openland-api/spacex';
-import { ConferenceMedia_conferenceMedia_streams, ConferenceMedia_conferenceMedia_streams_localStreams_LocalStreamDataChannelConfig, ConferenceMedia_conferenceMedia_iceServers, MediaStreamVideoSource } from 'openland-api/spacex.types';
+import { ConferenceMedia_conferenceMedia_streams, ConferenceMedia_conferenceMedia_iceServers, MediaStreamVideoSource } from 'openland-api/spacex.types';
 import { AppPeerConnectionFactory } from 'openland-y-runtime/AppPeerConnection';
 import { AppPeerConnection, IceState } from 'openland-y-runtime-api/AppPeerConnectionApi';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
