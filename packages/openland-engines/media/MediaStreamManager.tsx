@@ -92,17 +92,10 @@ export class MediaStreamManager {
                 });
             }
         };
-        this.peerConnection.onStreamAdded = this.onStreamAdded;
+        this.peerConnection.onstreamadded = this.onStreamAdded;
         if (this.audioOutStream) {
             this.peerConnection.addStream(this.audioOutStream);
         }
-
-        this.peerConnection.onDataChannelMessage = (channelId, m) => {
-            let message = { peerId: this.targetPeerId || this.id, data: m };
-            for (let l of this.dcVM.get(channelId)?.values() || []) {
-                l(message);
-            }
-        };
         this._queue.post(() => this.handleState(this.streamConfig));
     }
 
@@ -126,9 +119,7 @@ export class MediaStreamManager {
             this.streamConfig = streamConfig;
             seqBumped = true;
         }
-
-        let dcConfigs: ConferenceMedia_conferenceMedia_streams_localStreams_LocalStreamDataChannelConfig[] = this.streamConfig.localStreams.filter(s => s.__typename === 'LocalStreamDataChannelConfig') as ConferenceMedia_conferenceMedia_streams_localStreams_LocalStreamDataChannelConfig[];
-        this.peerConnection.updateDataChannels(dcConfigs);
+        
         this.updateVideoStream();
 
         if (seqBumped) {
@@ -314,7 +305,7 @@ export class MediaStreamManager {
     ////
 
     sendDcMessage = (message: string, dataChannelId: number = 0) => {
-        this.peerConnection.sendDataChannelMessage(dataChannelId, message);
+        //
     }
 
     listenDc = (listener: (message: { peerId: string, data: any }) => void, channelId: number = 0) => {
