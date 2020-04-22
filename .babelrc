@@ -14,7 +14,21 @@
                         // }
                     }
                 ],
-                "inline-react-svg",
+                [
+                    "inline-react-svg",
+                    {
+                        "svgo": {
+                            "plugins": [
+                                {
+                                    "cleanupIDs": {
+                                        "minify": false
+                                    }
+                                }
+                            ]
+            
+                        }
+                    }
+                ],
                 "transform-react-constant-elements",
                 "transform-react-remove-prop-types",
                 [
@@ -40,7 +54,21 @@
                     }
                 ],
                 "transform-mental",
-                "inline-react-svg",
+                [
+                    "inline-react-svg",
+                    {
+                        "svgo": {
+                            "plugins": [
+                                {
+                                    "cleanupIDs": {
+                                        "minify": false
+                                    }
+                                }
+                            ]
+            
+                        }
+                    }
+                ],
                 "transform-react-constant-elements",
                 "transform-react-remove-prop-types",
                 [
