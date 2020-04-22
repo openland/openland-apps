@@ -18,8 +18,8 @@ const boxStyle = css`
     flex-direction: column;
     background-color: white;
     border-radius: 8px;
-    box-shadow: 0px 3px 14px 4px #82777747;
-    max-height: calc(100vh - 48px);
+    box-shadow: 0 3px 14px 4px #82777747;
+    max-height: 95%;
     max-width: calc(100vw - 20px);
 `;
 
