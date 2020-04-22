@@ -1,10 +1,10 @@
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0)">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.25C12.5523 2.25 13 2.69772 13 3.25V11H20.75C21.3023 11 21.75 11.4477 21.75 12C21.75 12.5523 21.3023 13 20.75 13H13V20.75C13 21.3023 12.5523 21.75 12 21.75C11.4477 21.75 11 21.3023 11 20.75V13H3.25C2.69772 13 2.25 12.5523 2.25 12C2.25 11.4477 2.69772 11 3.25 11H11V3.25C11 2.69772 11.4477 2.25 12 2.25Z" fill="black"/>
-</g>
-<defs>
-<clipPath id="clip0">
-<rect width="24" height="24" fill="white"/>
-</clipPath>
-</defs>
+    <g clip-path="url(#ic-add-24_svg__clip0)">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.25C12.5523 2.25 13 2.69772 13 3.25V11H20.75C21.3023 11 21.75 11.4477 21.75 12C21.75 12.5523 21.3023 13 20.75 13H13V20.75C13 21.3023 12.5523 21.75 12 21.75C11.4477 21.75 11 21.3023 11 20.75V13H3.25C2.69772 13 2.25 12.5523 2.25 12C2.25 11.4477 2.69772 11 3.25 11H11V3.25C11 2.69772 11.4477 2.25 12 2.25Z" fill="black"/>
+    </g>
+    <defs>
+        <clipPath id="ic-add-24_svg__clip0">
+            <rect width="24" height="24" fill="white"/>
+        </clipPath>
+    </defs>
 </svg>

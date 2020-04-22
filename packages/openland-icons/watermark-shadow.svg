@@ -1,17 +1,17 @@
 <svg width="320" height="160" viewBox="0 0 320 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0)">
-<g filter="url(#filter0_f)">
-<ellipse cx="88" cy="4" rx="160" ry="84" fill="black" fill-opacity="0.16"/>
-</g>
-</g>
-<defs>
-<filter id="filter0_f" x="-144" y="-152" width="464" height="312" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="36" result="effect1_foregroundBlur"/>
-</filter>
-<clipPath id="clip0">
-<rect width="320" height="160" fill="white"/>
-</clipPath>
-</defs>
+    <g clip-path="url(#watermark-shadow_svg__clip0)">
+        <g filter="url(#watermark-shadow_svg__filter0_f)">
+            <ellipse cx="88" cy="4" rx="160" ry="84" fill="black" fill-opacity="0.16"/>
+        </g>
+    </g>
+    <defs>
+        <filter id="watermark-shadow_svg__filter0_f" x="-144" y="-152" width="464" height="312" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+            <feGaussianBlur stdDeviation="36" result="effect1_foregroundBlur"/>
+        </filter>
+        <clipPath id="watermark-shadow_svg__clip0">
+            <rect width="320" height="160" fill="white"/>
+        </clipPath>
+    </defs>
 </svg>
