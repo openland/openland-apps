@@ -4317,6 +4317,9 @@ private let FeedReactionAddSelector = obj(
 private let FeedReactionRemoveSelector = obj(
             field("feedReactionRemove", "feedReactionRemove", arguments(fieldValue("feedItemId", refValue("feedItemId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
+private let GlobalEventBusPublishSelector = obj(
+            field("globalEventBusPublish", "globalEventBusPublish", arguments(fieldValue("topic", refValue("topic")), fieldValue("message", refValue("message"))), notNull(scalar("Boolean")))
+        )
 private let MakeCardDefaultSelector = obj(
             field("cardMakeDefault", "cardMakeDefault", arguments(fieldValue("id", refValue("id"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -4931,6 +4934,12 @@ private let FeedUpdatesSelector = obj(
                             fragment("FeedUpdate", FeedUpdateFragmentSelector)
                         ))))),
                     field("state", "state", notNull(scalar("String")))
+                )))
+        )
+private let GlobalEventBusSelector = obj(
+            field("globalEventBus", "globalEventBus", arguments(fieldValue("topic", refValue("topic"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("message", "message", notNull(scalar("String")))
                 )))
         )
 private let MyNotificationsCenterSelector = obj(
@@ -5919,6 +5928,12 @@ class Operations {
         "mutation FeedReactionRemove($feedItemId:ID!,$reaction:MessageReactionType!){feedReactionRemove(feedItemId:$feedItemId,reaction:$reaction)}",
         FeedReactionRemoveSelector
     )
+    let GlobalEventBusPublish = OperationDefinition(
+        "GlobalEventBusPublish",
+        .mutation, 
+        "mutation GlobalEventBusPublish($topic:String,$message:String){globalEventBusPublish(topic:$topic,message:$message)}",
+        GlobalEventBusPublishSelector
+    )
     let MakeCardDefault = OperationDefinition(
         "MakeCardDefault",
         .mutation, 
@@ -6435,6 +6450,12 @@ class Operations {
         "subscription FeedUpdates($state:String){event:homeFeedUpdates(fromState:$state){__typename updates{__typename ...FeedUpdateFragment}state}}fragment FeedUpdateFragment on FeedUpdate{__typename ... on FeedItemReceived{__typename item{__typename ...FeedItemFull}}... on FeedItemUpdated{__typename item{__typename ...FeedItemFull}}... on FeedItemDeleted{__typename item{__typename ...FeedItemFull}}... on FeedRebuildNeeded{__typename feed:homeFeed{__typename items{__typename ...FeedItemFull}cursor}}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{__typename id date author{__typename ...FeedPostAuthorFragment}source{__typename ...FeedPostSourceFragment}edited canEdit commentsCount message fallback reactions{__typename user{__typename ...UserShort}reaction}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{__typename ...UserShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment FeedPostSourceFragment on FeedPostSource{__typename ... on FeedChannel{__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename id title about photo subscribed myRole subscribersCount shortname isGlobal socialImage postsCount}fragment SlideFragment on Slide{__typename ... on TextSlide{__typename id text spans{__typename ...SpanFragment}cover{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}coverAlign attachments{__typename ... on User{__typename ...UserShort}... on SharedRoom{__typename id kind title roomPhoto:photo membersCount membership canSendMessage organization{__typename id name photo}}... on Organization{__typename ...OrganizationShort}}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}",
         FeedUpdatesSelector
     )
+    let GlobalEventBus = OperationDefinition(
+        "GlobalEventBus",
+        .subscription, 
+        "subscription GlobalEventBus($topic:String){globalEventBus(topic:$topic){__typename message}}",
+        GlobalEventBusSelector
+    )
     let MyNotificationsCenter = OperationDefinition(
         "MyNotificationsCenter",
         .subscription, 
@@ -6616,6 +6637,7 @@ class Operations {
         if name == "FeedEditPost" { return FeedEditPost }
         if name == "FeedReactionAdd" { return FeedReactionAdd }
         if name == "FeedReactionRemove" { return FeedReactionRemove }
+        if name == "GlobalEventBusPublish" { return GlobalEventBusPublish }
         if name == "MakeCardDefault" { return MakeCardDefault }
         if name == "MarkSequenceRead" { return MarkSequenceRead }
         if name == "MediaAnswer" { return MediaAnswer }
@@ -6702,6 +6724,7 @@ class Operations {
         if name == "DebugEventsWatch" { return DebugEventsWatch }
         if name == "DialogsWatch" { return DialogsWatch }
         if name == "FeedUpdates" { return FeedUpdates }
+        if name == "GlobalEventBus" { return GlobalEventBus }
         if name == "MyNotificationsCenter" { return MyNotificationsCenter }
         if name == "OnlineWatch" { return OnlineWatch }
         if name == "SettingsWatch" { return SettingsWatch }
