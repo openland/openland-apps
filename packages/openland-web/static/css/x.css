@@ -64,12 +64,28 @@ body {
     --overlayLight: rgba(0, 0, 0, 0.24);
 
     --tintRed: #F23051;
+    --tintRedHover: #FF4060;
+    --tintRedActive: #D92140;
     --tintOrange: #FF9F1A;
+    --tintOrangeHover: #FFBB33;
+    --tintOrangeActive: #F27F0C;
     --tintGreen: #40B855;
+    --tintGreenHover: #52CC66;
+    --tintGreenActive: #32A645;
     --tintCyan: #36BED9;
+    --tintCyanHover: #45CBE5;
+    --tintCyanActive: #26A1BF;
     --tintBlue: #248BF2;
+    --tintBlueHover: #3399FF;
+    --tintBlueActive: #1677D9;
     --tintPurple: #7A24F2;
+    --tintPurpleHover: #8833FF;
+    --tintPurpleActive: #6114CC;
     --tintPink: #E539AC;
+    --tintPinkHover: #F249BA;
+    --tintPinkActive: #CC1F93;
     --tintGrey: #71747A;
+    --tintGreyHover: #81848A;
+    --tintGreyActive: #5C5F66;
     --tintInverted: rgba(255, 255, 255, 0.32);
 }

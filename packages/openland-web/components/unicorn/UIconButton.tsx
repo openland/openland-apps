@@ -72,6 +72,7 @@ interface UIconButtonProps extends XViewProps {
     rippleColor?: string;
     defaultRippleColor?: string;
     hoverRippleColor?: string;
+    hoverActiveRippleColor?: string;
     disableHover?: boolean;
 }
 
@@ -116,24 +117,44 @@ const loaderStyle = css`
 `;
 
 export const UIconButton = React.memo((props: UIconButtonProps) => {
-    const { icon, size = 'medium', active, color, loading, rippleColor, defaultRippleColor, hoverRippleColor, ...other } = props;
+    const {
+        icon,
+        size = 'medium',
+        active,
+        color,
+        loading,
+        rippleColor,
+        defaultRippleColor,
+        hoverRippleColor,
+        hoverActiveRippleColor,
+        ...other
+    } = props;
     const width = widthBySize[size];
     const height = heightBySize[size];
     const ripple = rippleBySize[size];
     const iconSize = iconBySize[size];
+    const hasHover = (!props.disableHover && !active) || hoverActiveRippleColor;
 
     return (
         <XView {...other} cursor="pointer" width={width} height={height}>
-            <div className={cx(container, (!props.disableHover && !active) && containerHover)}>
+            <div className={cx(container, hasHover && containerHover)}>
                 {!loading && (
                     <div
-                        className={cx(wrapper, wrapperRipple, active && wrapperActive, defaultRippleColor && wrapperRippleTransform)}
+                        className={cx(
+                            wrapper,
+                            wrapperRipple,
+                            active && wrapperActive,
+                            defaultRippleColor && wrapperRippleTransform,
+                        )}
                         style={
                             {
                                 '--ripple-size': ripple,
                                 '--icon-size': iconSize,
                                 '--ripple-color': rippleColor || 'var(--backgroundTertiaryTrans)',
-                                '--hover-ripple-color': hoverRippleColor || rippleColor || 'var(--backgroundTertiaryTrans)',
+                                '--hover-ripple-color':
+                                    (active ? hoverActiveRippleColor : hoverRippleColor) ||
+                                    rippleColor ||
+                                    'var(--backgroundTertiaryTrans)',
                                 '--default-ripple-color': defaultRippleColor || 'none',
                             } as React.CSSProperties
                         }
