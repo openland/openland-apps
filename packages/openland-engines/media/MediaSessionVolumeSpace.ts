@@ -75,16 +75,20 @@ export class Image {
     }
 }
 
-// export class SimpleText {
-//     type: 'simple_text' = 'simple_text';
-//     id: string;
-//     local = true;
-//     constructor(){
-//         id = ``
-//     }
-// }
+export class SimpleText {
+    type: 'simple_text' = 'simple_text';
+    id: string;
+    seq = 0;
+    local = true;
+    text = '';
+    coords: number[];
+    constructor(coords: number[]) {
+        this.id = `simple_text_${uuid()}`;
+        this.coords = coords;
+    }
+}
 
-type Updateable = Image;
+type Updateable = Image | SimpleText;
 
 export class Update {
     type: 'update' = 'update';
@@ -128,7 +132,7 @@ class LostPeer {
     }
 }
 
-type SpaceObject = Path | Image | PeerAvatar | Pointer;
+type SpaceObject = Path | Image | PeerAvatar | Pointer | SimpleText;
 type MessageType = SpaceObject | Sync | Update | PathIncrement | Reqest | LostPeer;
 
 export class MediaSessionVolumeSpace {
@@ -143,16 +147,18 @@ export class MediaSessionVolumeSpace {
     readonly selfDeletedIds = new Set<string>();
     readonly knownPeers = new Set<string>();
 
-    readonly peersVM = new VMMap<string, PeerAvatar>();
-    readonly pointerVM = new VMMap<string, Pointer>();
+    readonly peersVM = new VMMapMap<string, string, PeerAvatar>();
+    readonly pointerVM = new VMMapMap<string, string, Pointer>();
     readonly pathsVM = new VMMapMap<string, string, Path>();
     readonly imagesVM = new VMMapMap<string, string, Image>();
+    readonly simpleTextsVM = new VMMapMap<string, string, SimpleText>();
 
     readonly storages = {
         peer: this.peersVM,
         pointer: this.pointerVM,
         path: this.pathsVM,
-        image: this.imagesVM
+        image: this.imagesVM,
+        simple_text: this.simpleTextsVM
     };
 
     readonly eraseVM = new VM<number[]>(true);
@@ -186,7 +192,7 @@ export class MediaSessionVolumeSpace {
                         file.watch(s => {
                             if (!image.fileId && s.uuid) {
                                 image.fileId = s.uuid;
-                                this.addImage(image);
+                                this.addSpaceObject(image);
                             }
                         });
                     })();
@@ -214,6 +220,10 @@ export class MediaSessionVolumeSpace {
     ////
     // handle local commands
     ////
+
+    //
+    // user presense
+    //
     moveSelf = (to: number[]) => {
         let b: MessageType[] = [];
         this.selfPeer.coords = to;
@@ -223,14 +233,7 @@ export class MediaSessionVolumeSpace {
             b.push(this.selfPointer);
         }
         this.sendBatch(b);
-        [...this.peersVM.values()].map(this.updatePeerVolume);
-    }
-
-    addPath = (path: Path) => {
-        if (this.mediaSession.getPeerId()) {
-            this.pathsVM.add(this.mediaSession.getPeerId(), path.id, path, true);
-            this.reportSingle(path);
-        }
+        [...this.peersVM.values()].flatMap(v => [...v.values()]).map(this.updatePeerVolume);
     }
 
     movePointer = (coords: number[], report: boolean = true) => {
@@ -239,11 +242,21 @@ export class MediaSessionVolumeSpace {
                 this.selfPointer = new Pointer(this.mediaSession.getPeerId(), coords);
             }
             this.selfPointer.coords = coords;
-            this.pointerVM.set(this.mediaSession.getPeerId(), this.selfPointer, true);
+            this.pointerVM.add(this.mediaSession.getPeerId(), this.mediaSession.getPeerId(), this.selfPointer, true);
             if (report) {
                 this.reportSingle(this.selfPointer);
             }
 
+        }
+    }
+
+    //
+    // drawings
+    //
+    addPath = (path: Path) => {
+        if (this.mediaSession.getPeerId()) {
+            this.pathsVM.add(this.mediaSession.getPeerId(), path.id, path, true);
+            this.reportSingle(path);
         }
     }
 
@@ -256,30 +269,33 @@ export class MediaSessionVolumeSpace {
         }
     }
 
-    addImage = (image: Image) => {
-        if (this.mediaSession.getPeerId()) {
-            this.imagesVM.add(this.mediaSession.getPeerId(), image.id, image, true);
-            this.reportSingle(image);
+    //
+    // generic
+    //
+
+    addSpaceObject = (obj: SpaceObject) => {
+        let peerId = this.mediaSession.getPeerId();
+        if (peerId) {
+            let s = this.storages[obj.type];
+            if (s) {
+                // TODO: figure out how to resolve typings here
+                s.add(peerId, peerId, obj as any);
+            }
+            this.reportSingle(obj);
         }
     }
 
     // yep, no access mgmt for now
     update = (id: string, change: Partial<Updateable> & Pick<Updateable, 'type'>) => {
-        let store = this.storages[change.type];
-        let target = store?.getById(id);
+        let b: MessageType[] = [];
+        let target = this.applyUpdate(id, change);
         if (!target) {
             return;
         }
-
-        let b: MessageType[] = [];
-
-        target = { ...target, ...change };
-        target.seq++;
-        this.imagesVM.addById(id, target, true);
-
         b.push(new Update(id, { ...change, type: target.type, seq: target.seq }));
 
         // tweaks
+        // TODO: pass to handlers on refactor
         if (target.type === 'image') {
             this.movePointer([target.coords[0] + target.containerWH[0] / 2, target.coords[1] + target.containerWH[1] / 2], false);
             if (this.selfPointer) {
@@ -290,15 +306,25 @@ export class MediaSessionVolumeSpace {
         this.sendBatch(b);
     }
 
+    applyUpdate = (id: string, change: Partial<Updateable> & Pick<Updateable, 'type'>, increment: boolean = true) => {
+        let store = this.storages[change.type];
+        let target = store?.getById(id);
+        if (!target) {
+            return;
+        }
+        target = { ...target, ...change } as Updateable;
+        if (increment) {
+            target.seq++;
+        }
+        // TODO: figure out how to resolve typings here
+        store.addById(id, target as any, true);
+        return target;
+    }
+
     // yep, no access mgmt for now
     delete = (id: string) => {
         Object.keys(this.storages).map(k => {
-            let s = this.storages[k];
-            if (s instanceof VMMapMap) {
-                s.deleteByValId(id);
-            } else if (s instanceof VMMap) {
-                s.delete(id);
-            }
+            let s = this.storages[k].deleteByValId(id);
         });
         this.selfObjects.delete(id);
         this.remoteObjects.delete(id);
@@ -313,14 +339,14 @@ export class MediaSessionVolumeSpace {
     }
 
     ////
-    // effects
+    // side effects
     ////
     updatePeerVolume = (peer: PeerAvatar) => {
         let distance = Math.pow(Math.pow(peer.coords[0] - this.selfPeer.coords[0], 2) + Math.pow(peer.coords[1] - this.selfPeer.coords[1], 2), 0.5);
         let volume = distance < this.minDinstance ? 1 : distance > this.maxDisatance ? 0 : 1 - (distance - this.minDinstance) / (this.maxDisatance - this.minDinstance);
         peer.coords[2] = volume;
         [...this.mediaSession.streamsVM.values()].find(s => s.getTargetPeerId() === peer.id)?.setVolume(volume);
-        this.peersVM.set(peer.id, peer, true);
+        this.peersVM.add(peer.id, peer.id, peer, true);
     }
 
     ////
@@ -390,12 +416,7 @@ export class MediaSessionVolumeSpace {
                 // delete
                 m.deletedIDs.map(id => {
                     Object.keys(this.storages).map(k => {
-                        let s = this.storages[k];
-                        if (s instanceof VMMapMap) {
-                            s.deleteByValId(id);
-                        } else if (s instanceof VMMap) {
-                            s.delete(id);
-                        }
+                        this.storages[k].deleteByValId(id);
                     });
 
                     this.selfObjects.delete(id);
@@ -462,29 +483,23 @@ export class MediaSessionVolumeSpace {
             // 
             // content added
             //
+            let s = this.storages[m.type];
+            if (s) {
+                s.add(container.peerId, container.peerId, m);
+            }
+            // side effect
+            // TODO: move to handler on refactor
             if (m.type === 'peer') {
-                m.id = container.peerId;
-                this.peersVM.set(m.id, m);
                 this.updatePeerVolume(m);
-            } else if (m.type === 'pointer') {
-                this.pointerVM.set(container.peerId, m);
-            } else if (m.type === 'path') {
-                this.pathsVM.add(container.peerId, m.id, m);
-            } else if (m.type === 'image') {
-                this.imagesVM.add(container.peerId, m.id, m);
             }
 
             //
             // content updated
             //
             if (m.type === 'update') {
-                let store = this.storages[m.change.type];
-                let target = store?.getById(m.id);
-                if (target && target.seq < m.change.seq) {
-                    let updated = { ...target, ...m.change };
-                    store?.addById(m.id, updated, true);
-                }
+                this.applyUpdate(m.id, m.change, false);
             } else if (m.type === 'path_inc') {
+                // TODO: move to handler on refactor
                 let path = this.pathsVM.getById(m.id);
                 if (path) {
                     path.path.push(...m.increment);
