@@ -30,6 +30,7 @@ export class VMMap<K, T> {
     vals = new Map<K, T>();
     protected listeners = new Map<K, Set<(val: T) => void>>();
     protected allListeners = new Set<(vals: Map<K, T>) => void>();
+    protected allValuesListeners = new Set<(val: T) => void>();
     protected allShallowListeners = new Set<(vals: Map<K, T>) => void>();
     keys = () => {
         return this.vals.keys();
@@ -106,6 +107,15 @@ export class VMMap<K, T> {
             this.allShallowListeners.delete(listener);
         };
     }
+    listenAllValues = (listener: (val: T) => void) => {
+        this.allValuesListeners.add(listener);
+        for (let [, v] of this.vals) {
+            listener(v);
+        }
+        return () => {
+            this.allValuesListeners.delete(listener);
+        };
+    }
 }
 
 export class VMSetMap<K, T> extends VMMap<K, Set<T>> {
@@ -139,6 +149,7 @@ export class VMSetMap<K, T> extends VMMap<K, Set<T>> {
 
 export class VMMapMap<K, I, T> extends VMMap<K, Map<I, T>> {
     idListeners = new Map<I, Set<(val: T) => void>>();
+    allIdListeners = new Set<(val: T) => void>();
     reverceMap = new Map<I, K>();
     hasId = (id: I) => {
         return this.reverceMap.has(id);
@@ -162,6 +173,9 @@ export class VMMapMap<K, I, T> extends VMMap<K, Map<I, T>> {
         if (updated || force) {
             this.notify(key, current);
             for (let l of this.idListeners.get(id) || []) {
+                l(val);
+            }
+            for (let l of this.allIdListeners) {
                 l(val);
             }
         }
@@ -209,6 +223,15 @@ export class VMMapMap<K, I, T> extends VMMap<K, Map<I, T>> {
         }
         return () => {
             idListeners?.delete(listener);
+        };
+
+    }
+
+    listenAllIds = (listener: (val: T) => void) => {
+        this.allIdListeners.add(listener);
+        // TODO: iterate all values?
+        return () => {
+            this.allIdListeners.delete(listener);
         };
 
     }

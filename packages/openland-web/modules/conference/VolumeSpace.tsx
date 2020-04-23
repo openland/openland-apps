@@ -241,7 +241,7 @@ const PeerImage = React.memo((props: { peerId: string, peer?: Conference_confere
     const onImageMove = React.useCallback((coords: number[]) => {
         let img = props.space.imagesVM.getById(props.imageId);
         if (img) {
-            props.space.update(img.id, { coords });
+            props.space.update(img.id, { coords, type: 'image' });
         }
     }, []);
 
@@ -249,7 +249,7 @@ const PeerImage = React.memo((props: { peerId: string, peer?: Conference_confere
         let img = props.space.imagesVM.getById(props.imageId);
         if (img) {
             let containerWH = [Math.max(50, coords[0] - img.coords[0]), Math.max(50, coords[1] - img.coords[1])];
-            props.space.update(img.id, { containerWH });
+            props.space.update(img.id, { containerWH, type: 'image' });
         }
     }, []);
 
@@ -346,6 +346,7 @@ const PeerPath = React.memo((props: { peerId: string, peer?: Conference_conferen
         // worse access mgmt ever
         let d1 = (props.peer?.user.isYou || !props.peersRef.current.find(p => p.id === props.peerId)) && props.space.eraseVM.listen(coords => {
             if (path?.path.find(p => Math.pow(Math.pow(coords[0] - p[0], 2) + Math.pow(coords[1] - p[1], 2), 0.5) < eraseDisatance)) {
+                console.warn('del!!');
                 props.space.delete(path.id);
             }
         });
