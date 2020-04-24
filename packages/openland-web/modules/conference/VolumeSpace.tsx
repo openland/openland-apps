@@ -195,12 +195,23 @@ let PeerTextContainer = css`
 `;
 
 let PeerTextContainerEditable = css`
+    transition: background-color 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
     pointer-events: inherit;
-    background-color: var(--backgroundTertiaryTrans);
+    & > div {
+            transition: opacity 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
+            opacity: 0;
+        }
+    :hover{
+        background-color: var(--backgroundTertiaryTrans);
+        & > div {
+            opacity: 1;
+        }
+    }
 `;
 
 let TextAreaStyle = css`
     pointer-events: inherit;
+    border-radius: 8px;
     padding: 8px;
     width: 100%;
     height: 100%;
@@ -751,7 +762,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
 
     let addText = React.useCallback(() => {
         let coords = props.mediaSession.volumeSpace.selfPointer?.coords || props.mediaSession.volumeSpace.selfPeer.coords;
-        let text = new SimpleText([coords[0] - 150, coords[1]], [300, 100], props.mediaSession.volumeSpace.colorVM.get() || '#fff', 40);
+        let text = new SimpleText([coords[0] - 150, coords[1] - 20], [300, 100], props.mediaSession.volumeSpace.colorVM.get() || '#fff', 40);
         props.mediaSession.volumeSpace.addSpaceObject(text);
         setMenu(false);
     }, []);
