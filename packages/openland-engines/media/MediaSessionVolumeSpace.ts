@@ -5,7 +5,9 @@ import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 import { GlobalEventBus } from 'openland-api/spacex.types';
-
+//
+// Objects
+//
 class PeerAvatar {
     type: 'peer' = 'peer';
     seq = 0;
@@ -13,7 +15,7 @@ class PeerAvatar {
     local = true;
     coords: number[];
     constructor(peerId: string, coords: number[]) {
-        this.id = peerId;
+        this.id = `peer_${peerId}`;
         this.coords = coords;
     }
 }
@@ -88,13 +90,25 @@ export class SimpleText {
     }
 }
 
-type Updateable = Image | SimpleText;
+type SpaceObject = Path | Image | PeerAvatar | Pointer | SimpleText;
 
-export class Update {
+//
+// Updates
+//
+
+export class Add {
+    type: 'add' = 'add';
+    objects: SpaceObject[];
+    constructor(objects: SpaceObject[]) {
+        this.objects = objects;
+    }
+}
+
+export class PartialUpdate {
     type: 'update' = 'update';
     id: string;
-    change: Partial<Updateable> & Pick<Updateable, 'type' | 'seq'>;
-    constructor(id: string, change: Partial<Updateable> & Pick<Updateable, 'type' | 'seq'>) {
+    change: Partial<SpaceObject> & Pick<SpaceObject, 'type' | 'seq'>;
+    constructor(id: string, change: Partial<SpaceObject> & Pick<SpaceObject, 'type' | 'seq'>) {
         this.id = id;
         this.change = change;
     }
@@ -125,15 +139,14 @@ class Reqest {
 class LostPeer {
     type: 'lost_peer' = 'lost_peer';
     peerId: string;
-    messages: MessageType[];
-    constructor(peerId: string, messages: MessageType[]) {
+    content: Add;
+    constructor(peerId: string, content: Add) {
         this.peerId = peerId;
-        this.messages = messages;
+        this.content = content;
     }
 }
 
-type SpaceObject = Path | Image | PeerAvatar | Pointer | SimpleText;
-type MessageType = SpaceObject | Sync | Update | PathIncrement | Reqest | LostPeer;
+type UpdateType = Add | Sync | PartialUpdate | PathIncrement | Reqest | LostPeer;
 
 export class MediaSessionVolumeSpace {
     private messenger: MessengerEngine;
@@ -158,7 +171,7 @@ export class MediaSessionVolumeSpace {
         pointer: this.pointerVM,
         path: this.pathsVM,
         image: this.imagesVM,
-        simple_text: this.simpleTextsVM
+        simple_text: this.simpleTextsVM,
     };
 
     readonly eraseVM = new VM<number[]>(true);
@@ -218,21 +231,32 @@ export class MediaSessionVolumeSpace {
     }
 
     ////
-    // handle local commands
+    // handle local actions
     ////
 
     //
     // user presense
     //
+
+    // TODO: use generic updates with side effects
     moveSelf = (to: number[]) => {
-        let b: MessageType[] = [];
+        let batch: UpdateType[] = [];
+        let add = new Add([]);
+        batch.push(add);
+
         this.selfPeer.coords = to;
-        b.push(this.selfPeer);
+        let peerId = this.mediaSession.getPeerId();
+        if (peerId) {
+            this.selfPeer.id = `peer_${peerId}`;
+            add.objects.push(this.selfPeer);
+        }
+        // tweak
         this.movePointer(to, false);
         if (this.selfPointer) {
-            b.push(this.selfPointer);
+            add.objects.push(this.selfPointer);
         }
-        this.sendBatch(b);
+
+        this.sendBatch(batch);
         [...this.peersVM.values()].flatMap(v => [...v.values()]).map(this.updatePeerVolume);
     }
 
@@ -244,7 +268,7 @@ export class MediaSessionVolumeSpace {
             this.selfPointer.coords = coords;
             this.pointerVM.add(this.mediaSession.getPeerId(), this.mediaSession.getPeerId(), this.selfPointer, true);
             if (report) {
-                this.reportSingle(this.selfPointer);
+                this.sendBatch([new Add([this.selfPointer])]);
             }
 
         }
@@ -253,66 +277,55 @@ export class MediaSessionVolumeSpace {
     //
     // drawings
     //
-    addPath = (path: Path) => {
-        if (this.mediaSession.getPeerId()) {
-            this.pathsVM.add(this.mediaSession.getPeerId(), path.id, path, true);
-            this.reportSingle(path);
-        }
-    }
-
     incrementPath = (path: Path, increment: number[][]) => {
         if (this.mediaSession.getPeerId()) {
             path.path.push(...increment);
             path.seq++;
             this.pathsVM.add(this.mediaSession.getPeerId(), path.id, path, true);
-            this.reportSingle(new PathIncrement(path.id, increment, path.seq));
+            this.sendBatch([new PathIncrement(path.id, increment, path.seq)]);
         }
     }
 
     //
     // generic
     //
-
     addSpaceObject = (obj: SpaceObject) => {
         let peerId = this.mediaSession.getPeerId();
         if (peerId) {
             let s = this.storages[obj.type];
-            if (s) {
-                // TODO: figure out how to resolve typings here
-                s.add(peerId, peerId, obj as any);
-            }
-            this.reportSingle(obj);
+            s.add(peerId, obj.id, obj as any);
+            this.sendBatch([new Add([obj])]);
         }
     }
 
     // yep, no access mgmt for now
-    update = (id: string, change: Partial<Updateable> & Pick<Updateable, 'type'>) => {
-        let b: MessageType[] = [];
+    update = (id: string, change: Partial<SpaceObject> & Pick<SpaceObject, 'type'>) => {
+        let b: UpdateType[] = [];
         let target = this.applyUpdate(id, change);
         if (!target) {
             return;
         }
-        b.push(new Update(id, { ...change, type: target.type, seq: target.seq }));
+        b.push(new PartialUpdate(id, { ...change, seq: target.seq }));
 
         // tweaks
         // TODO: pass to handlers on refactor
         if (target.type === 'image') {
             this.movePointer([target.coords[0] + target.containerWH[0] / 2, target.coords[1] + target.containerWH[1] / 2], false);
             if (this.selfPointer) {
-                b.push(this.selfPointer);
+                b.push(new Add([this.selfPointer]));
             }
         }
 
         this.sendBatch(b);
     }
 
-    applyUpdate = (id: string, change: Partial<Updateable> & Pick<Updateable, 'type'>, increment: boolean = true) => {
+    applyUpdate = (id: string, change: Partial<SpaceObject> & Pick<SpaceObject, 'type'>, increment: boolean = true) => {
         let store = this.storages[change.type];
-        let target = store?.getById(id);
+        let target = store.getById(id);
         if (!target) {
             return;
         }
-        target = { ...target, ...change } as Updateable;
+        target = { ...target, ...change } as SpaceObject;
         if (increment) {
             target.seq++;
         }
@@ -352,8 +365,7 @@ export class MediaSessionVolumeSpace {
     ////
     // send updates
     ////
-    sendBatch = (batch: MessageType[]) => {
-        batch = batch.map(m => ({ ...m, local: false }));
+    sendBatch = (batch: UpdateType[]) => {
         // this.mediaSession.sendDcMessage(JSON.stringify({ channel: 'vm', seq: ++this.messageSeq, batch }));
         if (this.mediaSession.getPeerId()) {
             this.messenger.client.mutateGlobalEventBusPublish({ topic: `space_${this.mediaSession.conversationId}`, message: JSON.stringify({ peerId: this.mediaSession.getPeerId(), data: { channel: 'vm', seq: ++this.messageSeq, batch } }) });
@@ -361,27 +373,23 @@ export class MediaSessionVolumeSpace {
     }
 
     sync = () => {
-        let b: MessageType[] = [];
-        b.push(this.selfPeer);
+        let add = new Add([]);
+        let batch: UpdateType[] = [add];
         if (this.selfPointer) {
-            b.push(this.selfPointer);
+            add.objects.push(this.selfPointer);
         }
         let selfPeerId = this.mediaSession.getPeerId();
         if (selfPeerId) {
+            this.selfPeer.id = `peer_${selfPeerId}`;
+            add.objects.push(this.selfPeer);
             this.knownPeers.add(selfPeerId);
         }
-        b.push(new Sync(
+        batch.push(new Sync(
             [...this.selfObjects.entries()].map(e => ({ id: e[0], seq: e[1].seq })),
             [...this.selfDeletedIds.values()],
             [...this.knownPeers.values()]
         ));
-        this.sendBatch(b);
-    }
-
-    reportSingle = (message: MessageType) => {
-        let b: MessageType[] = [];
-        b.push(message);
-        this.sendBatch(b);
+        this.sendBatch(batch);
     }
 
     ////
@@ -395,26 +403,26 @@ export class MediaSessionVolumeSpace {
         if (typeof container.data !== 'string') {
             return;
         }
-        let message = container.dataParsed || JSON.parse(container.data);
+        let update = container.dataParsed || JSON.parse(container.data);
 
-        if (!message) {
+        if (!update) {
             console.warn('[VM]', "can't parse message", container.data);
         }
-        if (message.channel !== 'vm') {
+        if (update.channel !== 'vm') {
             return;
         }
-        if (message.seq <= (this.peerSeq[container.peerId] || 0)) {
+        if (update.seq <= (this.peerSeq[container.peerId] || 0)) {
             console.warn('[VM]', 'seq too old', container.data);
             return;
         }
-        this.peerSeq[container.peerId] = message.seq;
-        let batch = message.batch as MessageType[];
+        this.peerSeq[container.peerId] = update.seq;
+        let batch = update.batch as UpdateType[];
         this.knownPeers.add(container.peerId);
-        for (let m of batch) {
+        for (let u of batch) {
 
-            if (m.type === 'sync') {
+            if (u.type === 'sync') {
                 // delete
-                m.deletedIDs.map(id => {
+                u.deletedIDs.map(id => {
                     Object.keys(this.storages).map(k => {
                         this.storages[k].deleteByValId(id);
                     });
@@ -425,86 +433,87 @@ export class MediaSessionVolumeSpace {
                 // requst unknown items
                 let ids: string[] = [];
                 let peers: string[] = [];
-                for (let remote of m.objects) {
+                for (let remote of u.objects) {
                     let ex = this.remoteObjects.get(remote.id);
                     if (!ex || ex.seq < remote.seq) {
                         ids.push(remote.id);
                     }
                 }
                 // requst left peer content
-                for (let peerId of m.knownPeers) {
+                for (let peerId of u.knownPeers) {
                     if (!this.knownPeers.has(peerId) && peerId !== this.mediaSession.getPeerId()) {
                         peers.push(peerId);
                     }
                 }
                 if (ids.length + peers.length > 0) {
-                    this.reportSingle(new Reqest(ids, peers));
+                    this.sendBatch([new Reqest(ids, peers)]);
                 }
-            } else if (m.type === 'request') {
-                let msgs: MessageType[] = [];
+            } else if (u.type === 'request') {
+                let add = new Add([]);
+                let b: UpdateType[] = [add];
                 // add requested objects
-                for (let id of m.ids) {
+                for (let id of u.ids) {
                     let local = this.selfObjects.get(id);
                     if (local && local.local) {
-                        msgs.push({ ...local, local: false });
+                        add.objects.push({ ...local, local: false });
                     }
                 }
 
                 // add left peer content
-                for (let peerId of m.peers) {
-                    let lost: MessageType[] = [];
+                for (let peerId of u.peers) {
+                    let lostContent = new Add([]);
                     Object.keys(this.storages).map(k => {
                         let s = this.storages[k];
                         // filter out pointer/peer - this peers are left, send only  content
                         if (k !== 'pointer' && k !== 'peer') {
-                            if (s instanceof VMMapMap) {
-                                let objects = s.get(peerId);
-                                if (objects) {
-                                    lost.push(...objects.values());
-                                }
+                            let objects = s.get(peerId);
+                            if (objects) {
+                                lostContent.objects.push(...objects.values());
                             }
                         }
                     });
-                    msgs.push(new LostPeer(peerId, lost));
+                    b.push(new LostPeer(peerId, lostContent));
                 }
-                this.sendBatch(msgs);
-            } else if (m.type === 'lost_peer') {
+                this.sendBatch(b);
+            } else if (u.type === 'lost_peer') {
                 // recieve left peer content
-                this.knownPeers.add(m.peerId);
-                for (let lost of m.messages) {
-                    if (lost.type === 'image') {
-                        this.imagesVM.add(m.peerId, lost.id, lost);
-                    } else if (lost.type === 'path') {
-                        this.pathsVM.add(m.peerId, lost.id, lost);
-                    }
-                }
+                this.knownPeers.add(u.peerId);
+                this.handleAdd(u.peerId, u.content);
             }
 
-            // 
+            //
             // content added
             //
-            let s = this.storages[m.type];
-            if (s) {
-                s.add(container.peerId, container.peerId, m);
-            }
-            // side effect
-            // TODO: move to handler on refactor
-            if (m.type === 'peer') {
-                this.updatePeerVolume(m);
+            if (u.type === 'add') {
+                this.handleAdd(container.peerId, u);
             }
 
             //
             // content updated
             //
-            if (m.type === 'update') {
-                this.applyUpdate(m.id, m.change, false);
-            } else if (m.type === 'path_inc') {
+            if (u.type === 'update') {
+                this.applyUpdate(u.id, u.change, false);
+            } else if (u.type === 'path_inc') {
                 // TODO: move to handler on refactor
-                let path = this.pathsVM.getById(m.id);
+                let path = this.pathsVM.getById(u.id);
                 if (path) {
-                    path.path.push(...m.increment);
-                    this.pathsVM.add(container.peerId, m.id, path, true);
+                    path.path.push(...u.increment);
+                    this.pathsVM.add(container.peerId, u.id, path, true);
                 }
+            }
+        }
+    }
+
+    handleAdd = (peerId: string, add: Add) => {
+        for (let obj of add.objects) {
+            let s = this.storages[obj.type];
+            if (s) {
+                s.add(peerId, obj.id, { ...obj as any, local: false }, true);
+            }
+            // side effect
+            // TODO: move to handler on refactor
+            if (obj.type === 'peer') {
+                this.updatePeerVolume(obj);
             }
         }
     }

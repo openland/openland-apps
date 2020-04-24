@@ -186,7 +186,7 @@ const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { med
         } else {
 
             // listen obj updates
-            let d1 = props.mediaSession.volumeSpace.peersVM.listenId(props.id, props.id, peer => {
+            let d1 = props.mediaSession.volumeSpace.peersVM.listenId(props.id, `peer_${props.id}`, peer => {
                 if (containerRef.current) {
                     let scale = peer.coords[2] / 2 + 0.5;
                     containerRef.current.style.transform = `translate(${peer.coords[0]}px, ${peer.coords[1]}px) scale3d(${scale}, ${scale}, ${scale})`;
@@ -404,7 +404,7 @@ const Drawings = React.memo((props: { peers: Conference_conference_peers[], spac
 const Pointer = React.memo((props: { peer: Conference_conference_peers, space: MediaSessionVolumeSpace }) => {
     let ref = React.useRef<HTMLDivElement>(null);
     React.useEffect(() => {
-        return props.space.pointerVM.listenId(props.peer.id, props.peer.id, p => {
+        return props.space.pointerVM.listenId(props.peer.id, `pointer_${props.peer.id}`, p => {
             if (ref.current) {
                 ref.current.style.position = 'absolute';
                 ref.current.style.transform = `translate3d(${p.coords[0] - 12}px, ${p.coords[1] - 12}px, 0)`;
@@ -512,7 +512,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
 
             down = true;
             path = new Path([], action);
-            props.mediaSession.volumeSpace.addPath(path);
+            props.mediaSession.volumeSpace.addSpaceObject(path);
             // disable other object while drawing
             if (nonDrawContentRef.current) {
                 nonDrawContentRef.current.style.pointerEvents = 'none';
