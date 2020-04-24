@@ -24,7 +24,7 @@ export const useShowEffects = (session?: MediaSessionManager) => {
             session.dcVM.listen(m => {
                 let message: { channel: string, type: string } | undefined;
                 try {
-                    message = typeof m.data === 'string' ? JSON.parse(m.data) : undefined;
+                    message = m.dataParsed || (typeof m.data === 'string' ? JSON.parse(m.data) : undefined);
                 } catch (e) {
                     console.error('effects cant parse message', m);
                 }
@@ -46,7 +46,7 @@ export const useTriggerEvents = (session?: MediaSessionManager) => {
             keys: ['Control', 'h'],
             callback: () => {
                 horn();
-                session?.sendDcMessage(JSON.stringify({ channel: 'effects', type: 'horn' }));
+                session?.sendDcMessage({ channel: 'effects', type: 'horn' });
                 return false;
             }
         }

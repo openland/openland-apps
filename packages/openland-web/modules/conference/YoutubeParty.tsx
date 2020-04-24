@@ -71,51 +71,54 @@ export const YoutubeParty = React.memo((props: { link: string, mediaSession: Med
                 if (jump) {
                     stateSeqRef.current++;
                 }
-                props.mediaSession.sendDcMessage(JSON.stringify({ id, time, seq: messageSeqRef.current++, stateSeq: stateSeqRef.current, palyingState: seqPalyingState.current, session, channel: 'ytb' }));
+                props.mediaSession.sendDcMessage({ id, time, seq: messageSeqRef.current++, stateSeq: stateSeqRef.current, palyingState: seqPalyingState.current, session, channel: 'ytb' });
             }
         }, 200);
 
         let obayTimer = window.setTimeout(() => obay.current = false, 500);
         let peerSeq: { [peerId: string]: number | undefined } = {};
         let d = props.mediaSession.dcVM.listen(container => {
-            if (typeof container.data === 'string') {
-                let message = JSON.parse(container.data);
-                if (!message) {
-                    console.error("can't parse message", container);
-                    return;
-                }
-                if ((message.channel !== 'ytb') || (message.id !== id)) {
-                    return;
-                }
-                if ((peerSeq[container.peerId + message.session] || -1) >= message.seq) {
-                    return;
-                }
-                if (message.stateSeq < stateSeqRef.current) {
-                    return;
-                } else if (message.stateSeq > stateSeqRef.current) {
-                    obay.current = true;
-                    window.clearTimeout(obayTimer);
-                    obayTimer = window.setTimeout(() => obay.current = false, 500);
-                    // sync time
-                    console.log('[YTB]', 'sync time', message);
-                    targetRef.current?.seekTo(message.time);
-                    // sync state
-                    if (palyingState.current !== message.palyingState) {
-                        console.log('[YTB]', 'sync state', message);
-                        if (message.palyingState) {
-                            targetRef.current?.playVideo();
-                        } else {
-                            targetRef.current?.pauseVideo();
-                        }
-                    }
-                    seqPalyingState.current = message.palyingState;
-                    stateSeqRef.current = message.stateSeq;
-                } else if ((message.time - (targetRef.current?.getCurrentTime() || 0) > 1) || initial.current) {
-                    targetRef.current?.seekTo(message.time);
-                }
-
-                peerSeq[message.peerId] = message.seq;
+            let message: { channel: string, id: string, session: string, seq: number, stateSeq: number, time: number, palyingState: boolean } | undefined;
+            try {
+                message = container.dataParsed || (typeof container.data === 'string' ? JSON.parse(container.data) : undefined);
+            } catch (e) {
+                console.error('effects cant parse message', container);
             }
+            if (!message) {
+                console.error("can't parse message", container);
+                return;
+            }
+            if ((message.channel !== 'ytb') || (message.id !== id)) {
+                return;
+            }
+            if ((peerSeq[container.peerId + message.session] || -1) >= message.seq) {
+                return;
+            }
+            if (message.stateSeq < stateSeqRef.current) {
+                return;
+            } else if (message.stateSeq > stateSeqRef.current) {
+                obay.current = true;
+                window.clearTimeout(obayTimer);
+                obayTimer = window.setTimeout(() => obay.current = false, 500);
+                // sync time
+                console.log('[YTB]', 'sync time', message);
+                targetRef.current?.seekTo(message.time);
+                // sync state
+                if (palyingState.current !== message.palyingState) {
+                    console.log('[YTB]', 'sync state', message);
+                    if (message.palyingState) {
+                        targetRef.current?.playVideo();
+                    } else {
+                        targetRef.current?.pauseVideo();
+                    }
+                }
+                seqPalyingState.current = message.palyingState;
+                stateSeqRef.current = message.stateSeq;
+            } else if ((message.time - (targetRef.current?.getCurrentTime() || 0) > 1) || initial.current) {
+                targetRef.current?.seekTo(message.time);
+            }
+
+            peerSeq[container.peerId] = message.seq;
         });
 
         return () => {

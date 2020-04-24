@@ -3,7 +3,7 @@ import { backoff } from 'openland-y-utils/timer';
 import { MediaStreamManager } from './MediaStreamManager';
 import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
-import { ConferenceMediaWatch, ConferenceMediaWatch_media_streams, ConferenceMediaWatch_media_streams_mediaState } from 'openland-api/spacex.types';
+import { ConferenceMediaWatch, ConferenceMediaWatch_media_streams, ConferenceMediaWatch_media_streams_mediaState, GlobalEventBus } from 'openland-api/spacex.types';
 import { AppBackgroundTask } from 'openland-y-runtime/AppBackgroundTask';
 import { Queue } from 'openland-y-utils/Queue';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
@@ -37,9 +37,10 @@ export class MediaSessionManager {
     readonly peerStreamMediaStateVM = new VMMapMap<string, string, ConferenceMediaWatch_media_streams_mediaState>();
     readonly peerVideoVM = new VMMapMap<string, 'camera' | 'screen_share' | undefined | null, AppMediaStream>();
     readonly peerMediStateVM = new VMSetMap<string, AppMediaStream>();
-    readonly dcVM = new VM<{ peerId: string, data: any }>();
+    readonly dcVM = new VM<{ peerId: string, data: any, dataParsed?: any }>();
     readonly videoEnabledVM = new VM<boolean>();
     readonly outVideoVM = new VM<(AppMediaStream | undefined)[]>();
+    readonly eventBusSubscription: () => void;
 
     constructor(messenger: MessengerEngine, client: OpenlandClient, conversationId: string, mute: boolean, isPrivate: boolean, onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void, onDestroyRequested: () => void, onVideoEnabled: () => void) {
         this.messenger = messenger;
@@ -53,6 +54,20 @@ export class MediaSessionManager {
         this.analyzer = new MediaStreamsAlalyzer(this);
         this.volumeSpace = new MediaSessionVolumeSpace(this.messenger, this);
         this.videoEnabledVM.listen(onVideoEnabled);
+
+        this.eventBusSubscription = reliableWatcher<GlobalEventBus>((handler) => messenger.client.subscribeGlobalEventBus({ topic: `media_session_${this.conversationId}` }, handler), m => {
+            try {
+                let message = JSON.parse(m.globalEventBus.message);
+                if (message.peerId && message.data) {
+                    if (message.peerId === this.peerId) {
+                        return;
+                    }
+                    this.dcVM.set({ peerId: message.peerId, data: '', dataParsed: message.data });
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        });
     }
 
     setMute = (mute: boolean) => {
@@ -166,6 +181,8 @@ export class MediaSessionManager {
         if (this.outScreenStream) {
             this.outScreenStream.close();
         }
+
+        this.eventBusSubscription();
 
         // Notify about leave
         if (this.conferenceId && this.peerId) {
@@ -337,9 +354,9 @@ export class MediaSessionManager {
                         this.peerVideoVM.add(s.peerId, c.source, c);
                     }
                 });
-                ms.listenDc(m => {
-                    this.dcVM.set(m);
-                });
+                // ms.listenDc(m => {
+                //     this.dcVM.set(m);
+                // });
             }
             if (s.peerId) {
                 this.peerStreamMediaStateVM.add(s.peerId, s.id, s.mediaState);
@@ -373,9 +390,12 @@ export class MediaSessionManager {
         return this.peerId;
     }
 
-    sendDcMessage = (message: string) => {
-        for (let ms of [...this.streamsVM.values()]) {
-            ms.sendDcMessage(message);
+    sendDcMessage = (data: any) => {
+        // for (let ms of [...this.streamsVM.values()]) {
+        //     ms.sendDcMessage(JSON.stringify({ peerId: this.peerId, data }));
+        // }
+        if (this.peerId) {
+            this.messenger.client.mutateGlobalEventBusPublish({ topic: `media_session_${this.conversationId}`, message: JSON.stringify({ peerId: this.peerId, data }) });
         }
     }
 

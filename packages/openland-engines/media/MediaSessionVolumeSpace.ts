@@ -3,8 +3,6 @@ import { VMMap, VMMapMap, VM } from 'openland-y-utils/mvvm/vm';
 import uuid from 'uuid';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
-import { reliableWatcher } from 'openland-api/reliableWatcher';
-import { GlobalEventBus } from 'openland-api/spacex.types';
 import { getPlaceholderColorRawById } from 'openland-web/components/unicorn/UAvatar';
 //
 // Objects
@@ -156,7 +154,6 @@ class LostPeer {
 type UpdateType = Add | Sync | PartialUpdate | PathIncrement | Reqest | LostPeer;
 
 export class MediaSessionVolumeSpace {
-    private messenger: MessengerEngine;
     private mediaSession: MediaSessionManager;
     private d1: () => void;
     private d2: () => void;
@@ -189,22 +186,11 @@ export class MediaSessionVolumeSpace {
     minDinstance = 50;
     maxDisatance = 200;
     constructor(messenger: MessengerEngine, mediaSession: MediaSessionManager) {
-        this.messenger = messenger;
         this.selfPeer = new PeerAvatar(mediaSession.getPeerId(), [Math.random() * 100 + 1450, Math.random() * 100 + 1450]);
         this.setColor(getPlaceholderColorRawById(mediaSession.messenger.user.id).end);
         this.mediaSession = mediaSession;
         this.interval = setInterval(this.sync, 1000);
-        // this.d1 = this.mediaSession.dcVM.listen(this.onDcMessage);
-        this.d1 = reliableWatcher<GlobalEventBus>((handler) => messenger.client.subscribeGlobalEventBus({ topic: `space_${this.mediaSession.conversationId}` }, handler), m => {
-            try {
-                let message = JSON.parse(m.globalEventBus.message);
-                if (message.peerId && message.data) {
-                    this.onDcMessage({ peerId: message.peerId, data: '', dataParsed: message.data });
-                }
-            } catch (e) {
-                console.error(e);
-            }
-        });
+        this.d1 = this.mediaSession.dcVM.listen(this.onDcMessage);
         this.d2 = messenger.getConversation(mediaSession.conversationId).subscribe({
             onMessageSend: (file, localImage) => {
                 if (localImage && file) {
@@ -381,10 +367,7 @@ export class MediaSessionVolumeSpace {
     // send updates
     ////
     sendBatch = (batch: UpdateType[]) => {
-        // this.mediaSession.sendDcMessage(JSON.stringify({ channel: 'vm', seq: ++this.messageSeq, batch }));
-        if (this.mediaSession.getPeerId()) {
-            this.messenger.client.mutateGlobalEventBusPublish({ topic: `space_${this.mediaSession.conversationId}`, message: JSON.stringify({ peerId: this.mediaSession.getPeerId(), data: { channel: 'vm', seq: ++this.messageSeq, batch } }) });
-        }
+        this.mediaSession.sendDcMessage({ channel: 'vm', seq: ++this.messageSeq, batch });
     }
 
     sync = () => {
@@ -412,18 +395,14 @@ export class MediaSessionVolumeSpace {
     ////
     private peerSeq: { [peerId: string]: number } = {};
     onDcMessage = (container: { peerId: string, data: any, dataParsed?: any }) => {
-        if (container.peerId === this.mediaSession.getPeerId()) {
-            return;
-        }
-        if (typeof container.data !== 'string') {
-            return;
-        }
-        let update = container.dataParsed || JSON.parse(container.data);
-
-        if (!update) {
+        let update;
+        try {
+            update = container.dataParsed || JSON.parse(container.data);
+        } catch (e) {
             console.warn('[VM]', "can't parse message", container.data);
         }
-        if (update.channel !== 'vm') {
+
+        if (update?.channel !== 'vm') {
             return;
         }
         if (update.seq <= (this.peerSeq[container.peerId] || 0)) {
