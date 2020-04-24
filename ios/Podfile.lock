@@ -284,7 +284,7 @@ PODS:
     - react-native-video/Video (= 4.4.4)
   - react-native-video/Video (4.4.4):
     - React
-  - react-native-webrtc (1.75.0):
+  - react-native-webrtc (1.75.3):
     - React
   - React-RCTActionSheet (0.61.2):
     - React-Core/RCTActionSheetHeaders (= 0.61.2)
@@ -634,7 +634,7 @@ SPEC CHECKSUMS:
   react-native-sqlite-storage: dba8e864e9a76f1aae6ddb5e7d0dc330d59f4bb3
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   react-native-video: 8c49eca5a6087de968a05b340933b10e3b58169a
-  react-native-webrtc: c5e3d631179a933548a8e49bddbd8fad02586095
+  react-native-webrtc: 86d841823e66d68cc1f86712db1c2956056bf0c2
   React-RCTActionSheet: 89b037c0fb7d2671607cb645760164e7e0c013f6
   React-RCTAnimation: e3cefa93c38c004c318f7ec04b883eb14b8b8235
   React-RCTBlob: d26ac0e313fbf14e7203473fd593ccaaeee8329e

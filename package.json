@@ -201,7 +201,7 @@
         "react-native-version-number": "^0.3.6",
         "react-native-video": "4.4.4",
         "react-native-web": "^0.9.0",
-        "react-native-webrtc": "^1.69.1",
+        "react-native-webrtc": "github:openland/react-native-webrtc",
         "react-reconciler": "0.20.2",
         "react-resize-aware": "^2.7.1",
         "react-resize-detector": "^3.2.1",
