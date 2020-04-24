@@ -6,7 +6,6 @@ import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { css, cx } from 'linaria';
 import { showModalBox } from 'openland-x/showModalBox';
-import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalController } from 'openland-x/showModal';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { TextStyles } from 'openland-web/utils/TextStyles';
@@ -20,28 +19,6 @@ import { CallControls } from './CallControls';
 import { useTriggerEvents } from './sounds/Effects';
 import { useMessageModal } from './useMessageModal';
 import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
-
-const controlsStyle = css`
-    position: absolute;
-    z-index: 3;
-    
-    bottom: 24px;
-    left: 0;
-    right: 0;
-
-    display: flex;
-    justify-content: center;
-`;
-
-const controlsContainerStyle = css`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-
-    padding: 8px 4px;
-    background-color: var(--backgroundTertiary);
-    border-radius: 24px;
-`;
 
 const watermarkContainerstyle = css`
     will-change: transform;
@@ -57,77 +34,6 @@ const watermarkContainerstyle = css`
 const watermarkContainerSpaceStyle = css`
     pointer-events: none;
 `;
-
-const Controls = React.memo((props: {
-    calls: CallsEngine,
-    ctx: XModalController,
-    showLink: boolean,
-    setShowLink: (show: boolean) => void,
-    layout: 'volume-space' | 'grid',
-    setLayout: (layout: 'volume-space' | 'grid') => void
-}) => {
-    let callState = props.calls.useState();
-    return (
-        <div className={controlsStyle} >
-            <div className={controlsContainerStyle}>
-                <UButton
-                    flexShrink={1}
-                    style={callState.mute ? 'secondary' : 'primary'}
-                    text={callState.mute ? 'Mic off' : 'Mic on'}
-                    onClick={() => props.calls.setMute(!callState.mute)}
-                    marginHorizontal={4}
-                />
-                <UButton
-                    flexShrink={1}
-                    style={callState.video ? 'primary' : 'secondary'}
-                    text={callState.video ? 'Video on' : 'Video off'}
-                    onClick={props.calls.switchVideo}
-                    marginHorizontal={4}
-                />
-                <UButton
-                    flexShrink={1}
-                    style={callState.screenShare ? 'primary' : 'secondary'}
-                    text={'Screen share'}
-                    onClick={props.calls.switchScreenShare}
-                    marginHorizontal={4}
-                />
-                <UButton
-                    flexShrink={1}
-                    style={'danger'}
-                    text={'Leave call'}
-                    onClick={() => {
-                        props.ctx.hide();
-                        props.calls.leaveCall();
-                    }}
-                    marginHorizontal={4}
-                />
-                <UButton
-                    flexShrink={1}
-                    style={'secondary'}
-                    text={'Minimize call'}
-                    onClick={props.ctx.hide}
-                    marginHorizontal={4}
-                />
-
-                <UButton
-                    flexShrink={1}
-                    style={'secondary'}
-                    text={props.layout === 'grid' ? 'Grid' : 'Volume Space'}
-                    onClick={() => props.setLayout(props.layout === 'grid' ? 'volume-space' : 'grid')}
-                    marginHorizontal={4}
-                />
-
-                <UButton
-                    flexShrink={1}
-                    style={props.showLink ? 'primary' : 'secondary'}
-                    text={'Link'}
-                    onClick={() => props.setShowLink(!props.showLink)}
-                    marginHorizontal={4}
-                />
-            </div>
-        </div>
-    );
-});
 
 const LinkFrame = React.memo((props: { link?: string, mediaSession: MediaSessionManager, messenger: MessengerEngine }) => {
     let url = props.link ? new URL(props.link) : undefined;
@@ -229,7 +135,6 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
             }
         );
     }, []);
-    let hideLegacyControls = true;
 
     const [messageOpen, showMessage] = useMessageModal({ chatId: props.chatId, name: props.chatId, onAttach: props.onAttach });
 
@@ -257,7 +162,6 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                         </XView>
                     ))}
                     {layout === 'volume-space' && mediaSession && <VolumeSpace mediaSession={mediaSession} peers={[...conference ? conference.conference.peers : []]} />}
-                    {!hideLegacyControls && <Controls calls={props.calls} ctx={props.ctx} showLink={showLink} setShowLink={setShowLink} layout={layout} setLayout={setLayout} />}
                 </XView >
                 <CallControls
                     muted={callState.mute}
