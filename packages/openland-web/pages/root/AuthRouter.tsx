@@ -18,16 +18,31 @@ import { AuthDiscoverTopFreeFragment } from './discover/AuthDiscoverTopFreeFragm
 import { AuthDiscoverTopPremiumFragment } from './discover/AuthDiscoverTopPremiumFragment';
 import { AuthDiscoverCollectionFragment } from './discover/AuthDiscoverCollectionFragment';
 
+const ShortnameResolver = React.memo((props: { shortname: string, defaultRedirect: (to: string, args?: { pages?: string[] }) => JSX.Element }) => {
+    const client = useClient();
+    const shortnameItem = client.useAuthResolveShortName({ shortname: props.shortname }, { fetchPolicy: 'network-only' }).item;
+
+    if (shortnameItem?.__typename === 'User') {
+        return <AuthProfileFragment user={shortnameItem} />;
+    }
+    if (shortnameItem?.__typename === 'SharedRoom') {
+        return <InviteLandingComponent signupRedirect={'/signin?redirect=' + encodeURIComponent('/' + props.shortname)} />;
+    }
+    if (shortnameItem?.__typename === 'DiscoverChatsCollection') {
+        return <AuthDiscoverCollectionFragment id={shortnameItem.id} />;
+    }
+
+    return props.defaultRedirect('/signin');
+});
+
 export const AuthRouter = React.memo((props: { children: any }) => {
     const router = React.useContext(XRouterContext)!;
     const userInfo = React.useContext(UserInfoContext)!;
     let redirectPath: string = extractRedirect(router);
-    const client = useClient();
 
     const { hostName, path, routeQuery } = router;
 
     const shortname = routeQuery && routeQuery.shortname ? routeQuery.shortname : null;
-    let shortnameItem = (!userInfo.isLoggedIn && shortname) ? client.useAuthResolveShortName({ shortname }, { fetchPolicy: 'network-only' }).item : null;
     if (hostName === 'app.openland.com') {
         if (canUseDOM) {
             window.location.replace(`https://openland.com${path}`);
@@ -110,14 +125,8 @@ export const AuthRouter = React.memo((props: { children: any }) => {
         }
     }
 
-    if (shortnameItem?.__typename === 'User') {
-        return <AuthProfileFragment user={shortnameItem} />;
-    }
-    if (shortnameItem?.__typename === 'SharedRoom') {
-        return <InviteLandingComponent signupRedirect={'/signin?redirect=' + encodeURIComponent('/' + shortname)} />;
-    }
-    if (shortnameItem?.__typename === 'DiscoverChatsCollection') {
-        return <AuthDiscoverCollectionFragment id={shortnameItem.id} />;
+    if (!userInfo.isLoggedIn && shortname) {
+        return <ShortnameResolver shortname={shortname} defaultRedirect={redirectIfNeeded} />;
     }
 
     // Redirect to Signup/Signin pages

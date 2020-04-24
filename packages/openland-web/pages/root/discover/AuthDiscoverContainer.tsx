@@ -6,7 +6,6 @@ import {
 } from 'openland-web/pages/root/AuthSidebarComponent';
 import { XViewRouterContext, XView } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
