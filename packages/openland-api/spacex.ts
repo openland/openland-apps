@@ -1565,6 +1565,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateFeedReactionRemove(variables: Types.FeedReactionRemoveVariables): Promise<Types.FeedReactionRemove> {
         return this.mutate('FeedReactionRemove', variables);
     }
+    mutateGlobalEventBusPublish(variables: Types.GlobalEventBusPublishVariables): Promise<Types.GlobalEventBusPublish> {
+        return this.mutate('GlobalEventBusPublish', variables);
+    }
     mutateMakeCardDefault(variables: Types.MakeCardDefaultVariables): Promise<Types.MakeCardDefault> {
         return this.mutate('MakeCardDefault', variables);
     }
@@ -1822,6 +1825,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     subscribeFeedUpdates(variables: Types.FeedUpdatesVariables, handler: GraphqlSubscriptionHandler<Types.FeedUpdates>): GraphqlActiveSubscription<Types.FeedUpdates> {
         return this.subscribe(handler, 'FeedUpdates', variables);
+    }
+    subscribeGlobalEventBus(variables: Types.GlobalEventBusVariables, handler: GraphqlSubscriptionHandler<Types.GlobalEventBus>): GraphqlActiveSubscription<Types.GlobalEventBus> {
+        return this.subscribe(handler, 'GlobalEventBus', variables);
     }
     subscribeMyNotificationsCenter(variables: Types.MyNotificationsCenterVariables, handler: GraphqlSubscriptionHandler<Types.MyNotificationsCenter>): GraphqlActiveSubscription<Types.MyNotificationsCenter> {
         return this.subscribe(handler, 'MyNotificationsCenter', variables);

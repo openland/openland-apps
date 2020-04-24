@@ -4324,6 +4324,9 @@ const FeedReactionAddSelector = obj(
 const FeedReactionRemoveSelector = obj(
             field('feedReactionRemove', 'feedReactionRemove', args(fieldValue("feedItemId", refValue('feedItemId')), fieldValue("reaction", refValue('reaction'))), notNull(scalar('Boolean')))
         );
+const GlobalEventBusPublishSelector = obj(
+            field('globalEventBusPublish', 'globalEventBusPublish', args(fieldValue("topic", refValue('topic')), fieldValue("message", refValue('message'))), notNull(scalar('Boolean')))
+        );
 const MakeCardDefaultSelector = obj(
             field('cardMakeDefault', 'cardMakeDefault', args(fieldValue("id", refValue('id'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -4938,6 +4941,12 @@ const FeedUpdatesSelector = obj(
                             fragment('FeedUpdate', FeedUpdateFragmentSelector)
                         ))))),
                     field('state', 'state', args(), notNull(scalar('String')))
+                )))
+        );
+const GlobalEventBusSelector = obj(
+            field('globalEventBus', 'globalEventBus', args(fieldValue("topic", refValue('topic'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('message', 'message', args(), notNull(scalar('String')))
                 )))
         );
 const MyNotificationsCenterSelector = obj(
@@ -5922,6 +5931,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'mutation FeedReactionRemove($feedItemId:ID!,$reaction:MessageReactionType!){feedReactionRemove(feedItemId:$feedItemId,reaction:$reaction)}',
         selector: FeedReactionRemoveSelector
     },
+    GlobalEventBusPublish: {
+        kind: 'mutation',
+        name: 'GlobalEventBusPublish',
+        body: 'mutation GlobalEventBusPublish($topic:String,$message:String){globalEventBusPublish(topic:$topic,message:$message)}',
+        selector: GlobalEventBusPublishSelector
+    },
     MakeCardDefault: {
         kind: 'mutation',
         name: 'MakeCardDefault',
@@ -6437,6 +6452,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'FeedUpdates',
         body: 'subscription FeedUpdates($state:String){event:homeFeedUpdates(fromState:$state){__typename updates{__typename ...FeedUpdateFragment}state}}fragment FeedUpdateFragment on FeedUpdate{__typename ... on FeedItemReceived{__typename item{__typename ...FeedItemFull}}... on FeedItemUpdated{__typename item{__typename ...FeedItemFull}}... on FeedItemDeleted{__typename item{__typename ...FeedItemFull}}... on FeedRebuildNeeded{__typename feed:homeFeed{__typename items{__typename ...FeedItemFull}cursor}}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{__typename id date author{__typename ...FeedPostAuthorFragment}source{__typename ...FeedPostSourceFragment}edited canEdit commentsCount message fallback reactions{__typename user{__typename ...UserShort}reaction}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{__typename ...UserShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment FeedPostSourceFragment on FeedPostSource{__typename ... on FeedChannel{__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename id title about photo subscribed myRole subscribersCount shortname isGlobal socialImage postsCount}fragment SlideFragment on Slide{__typename ... on TextSlide{__typename id text spans{__typename ...SpanFragment}cover{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}coverAlign attachments{__typename ... on User{__typename ...UserShort}... on SharedRoom{__typename id kind title roomPhoto:photo membersCount membership canSendMessage organization{__typename id name photo}}... on Organization{__typename ...OrganizationShort}}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}',
         selector: FeedUpdatesSelector
+    },
+    GlobalEventBus: {
+        kind: 'subscription',
+        name: 'GlobalEventBus',
+        body: 'subscription GlobalEventBus($topic:String){globalEventBus(topic:$topic){__typename message}}',
+        selector: GlobalEventBusSelector
     },
     MyNotificationsCenter: {
         kind: 'subscription',

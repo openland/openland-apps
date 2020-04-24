@@ -3,6 +3,8 @@ import { VMMap, VMMapMap, VM } from 'openland-y-utils/mvvm/vm';
 import uuid from 'uuid';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
+import { reliableWatcher } from 'openland-api/reliableWatcher';
+import { GlobalEventBus } from 'openland-api/spacex.types';
 
 class PeerAvatar {
     type: 'peer' = 'peer';
@@ -107,6 +109,7 @@ class LostPeer {
 type MessageType = PeerAvatar | Path | Image | Pointer | Sync | Update | PathIncrement | Reqest | LostPeer;
 
 export class MediaSessionVolumeSpace {
+    private messenger: MessengerEngine;
     private mediaSession: MediaSessionManager;
     private d1: () => void;
     private d2: () => void;
@@ -129,11 +132,21 @@ export class MediaSessionVolumeSpace {
     minDinstance = 50;
     maxDisatance = 200;
     constructor(messenger: MessengerEngine, mediaSession: MediaSessionManager) {
+        this.messenger = messenger;
         this.selfPeer = new PeerAvatar(mediaSession.getPeerId(), [Math.random() * 100 + 1450, Math.random() * 100 + 1450]);
         this.mediaSession = mediaSession;
         this.interval = setInterval(this.sync, 1000);
-        this.d1 = this.mediaSession.dcVM.listen(this.onDcMessage);
-
+        // this.d1 = this.mediaSession.dcVM.listen(this.onDcMessage);
+        this.d1 = reliableWatcher<GlobalEventBus>((handler) => messenger.client.subscribeGlobalEventBus({ topic: `space_${this.mediaSession.conversationId}` }, handler), m => {
+            try {
+                let message = JSON.parse(m.globalEventBus.message);
+                if (message.peerId && message.data) {
+                    this.onDcMessage({ peerId: message.peerId, data: '', dataParsed: message.data });
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        });
         this.d2 = messenger.getConversation(mediaSession.conversationId).subscribe({
             onMessageSend: (file, localImage) => {
                 if (localImage && file) {
@@ -257,7 +270,10 @@ export class MediaSessionVolumeSpace {
     // send updates
     ////
     sendBatch = (batch: MessageType[]) => {
-        this.mediaSession.sendDcMessage(JSON.stringify({ channel: 'vm', seq: ++this.messageSeq, batch }));
+        // this.mediaSession.sendDcMessage(JSON.stringify({ channel: 'vm', seq: ++this.messageSeq, batch }));
+        if (this.mediaSession.getPeerId()) {
+            this.messenger.client.mutateGlobalEventBusPublish({ topic: `space_${this.mediaSession.conversationId}`, message: JSON.stringify({ peerId: this.mediaSession.getPeerId(), data: { channel: 'vm', seq: ++this.messageSeq, batch } }) });
+        }
     }
 
     sync = () => {
@@ -284,117 +300,120 @@ export class MediaSessionVolumeSpace {
     // recive updates
     ////
     private peerSeq: { [peerId: string]: number } = {};
-    onDcMessage = (container: { peerId: string, data: any }) => {
+    onDcMessage = (container: { peerId: string, data: any, dataParsed?: any }) => {
+        if (container.peerId === this.mediaSession.getPeerId()) {
+            return;
+        }
         if (typeof container.data !== 'string') {
             return;
         }
-        try {
-            let message = JSON.parse(container.data);
+        let message = container.dataParsed || JSON.parse(container.data);
 
-            if (!message) {
-                console.warn('[VM]', "can't parse message", container.data);
-            }
-            if (message.channel !== 'vm') {
-                return;
-            }
-            if (message.seq <= (this.peerSeq[container.peerId] || 0)) {
-                console.warn('[VM]', 'seq too old', container.data);
-                return;
-            }
-            this.peerSeq[container.peerId] = message.seq;
-            let batch = message.batch as MessageType[];
-            this.knownPeers.add(container.peerId);
-            for (let m of batch) {
-                // state
-                if (m.type === 'sync') {
-                    // delete
-                    for (let d of m.deletedIDs) {
-                        this.imagesVM.deleteByValId(d);
-                        this.pathsVM.deleteByValId(d);
-                    }
-                    // requst unknown items
-                    let ids: string[] = [];
-                    let peers: string[] = [];
-                    for (let id of m.ids) {
-                        if (!this.pathsVM.hasId(id)) {
-                            ids.push(id);
-                        }
-                    }
-                    // requst left peer content
-                    for (let peerId of m.knownPeers) {
-                        if (!this.knownPeers.has(peerId) && peerId !== this.mediaSession.getPeerId()) {
-                            peers.push(peerId);
-                        }
-                    }
-                    if (ids.length + peers.length > 0) {
-                        this.reportSingle(new Reqest(ids, peers));
-                    }
-                } else if (m.type === 'request') {
-                    let msgs: MessageType[] = [];
-                    for (let id of m.ids) {
-                        let image = this.selfImagesVM.get(id);
-                        if (image) {
-                            msgs.push(image);
-                        }
-                        let path = this.selfPathsVM.get(id);
-                        if (path) {
-                            msgs.push(path);
-                        }
-                    }
-
-                    for (let peerId of m.peers) {
-                        let lost: MessageType[] = [];
-                        let imgs = this.imagesVM.get(peerId)?.values();
-                        if (imgs) {
-                            lost.push(...imgs);
-                        }
-                        let pths = this.pathsVM.get(peerId)?.values();
-                        if (pths) {
-                            lost.push(...pths);
-                        }
-                        msgs.push(new LostPeer(peerId, lost));
-                    }
-                    this.sendBatch(msgs);
-                } else if (m.type === 'lost_peer') {
-                    this.knownPeers.add(m.peerId);
-                    for (let lost of m.messages) {
-                        if (lost.type === 'image') {
-                            this.imagesVM.add(m.peerId, lost.id, lost);
-                        } else if (lost.type === 'path') {
-                            this.pathsVM.add(m.peerId, lost.id, lost);
-                        }
+        if (!message) {
+            console.warn('[VM]', "can't parse message", container.data);
+        }
+        if (message.channel !== 'vm') {
+            return;
+        }
+        if (message.seq <= (this.peerSeq[container.peerId] || 0)) {
+            console.warn('[VM]', 'seq too old', container.data);
+            return;
+        }
+        this.peerSeq[container.peerId] = message.seq;
+        let batch = message.batch as MessageType[];
+        this.knownPeers.add(container.peerId);
+        for (let m of batch) {
+            // state
+            if (m.type === 'sync') {
+                // delete
+                for (let d of m.deletedIDs) {
+                    this.imagesVM.deleteByValId(d);
+                    this.selfImagesVM.delete(d);
+                    this.pathsVM.deleteByValId(d);
+                    this.selfPathsVM.delete(d);
+                }
+                // requst unknown items
+                let ids: string[] = [];
+                let peers: string[] = [];
+                for (let id of m.ids) {
+                    if (!this.pathsVM.hasId(id)) {
+                        ids.push(id);
                     }
                 }
-
-                // state
-                if (m.type === 'peer') {
-                    m.id = container.peerId;
-                    this.peersVM.set(m.id, m);
-                    this.updatePeerVolume(m);
-                } else if (m.type === 'pointer') {
-                    this.pointerVM.set(container.peerId, m);
-                } else if (m.type === 'path') {
-                    this.pathsVM.add(container.peerId, m.id, m);
-                } else if (m.type === 'path_inc') {
-                    let path = this.pathsVM.getById(m.pathId);
-                    if (path) {
-                        path.path.push(...m.increment);
-                        this.pathsVM.add(container.peerId, m.pathId, path, true);
+                // requst left peer content
+                for (let peerId of m.knownPeers) {
+                    if (!this.knownPeers.has(peerId) && peerId !== this.mediaSession.getPeerId()) {
+                        peers.push(peerId);
                     }
-                } else if (m.type === 'image') {
-                    this.imagesVM.add(container.peerId, m.id, m);
-                } else if (m.type === 'update') {
-                    // only images for now
-                    let image = this.imagesVM.getById(m.id);
+                }
+                if (ids.length + peers.length > 0) {
+                    this.reportSingle(new Reqest(ids, peers));
+                }
+            } else if (m.type === 'request') {
+                let msgs: MessageType[] = [];
+                for (let id of m.ids) {
+                    let image = this.selfImagesVM.get(id);
                     if (image) {
-                        image = { ...image, ...m.change };
-                        this.imagesVM.addById(m.id, image, true);
+                        msgs.push(image);
+                    }
+                    let path = this.selfPathsVM.get(id);
+                    if (path) {
+                        msgs.push(path);
+                    }
+                }
+
+                for (let peerId of m.peers) {
+                    let lost: MessageType[] = [];
+                    let imgs = this.imagesVM.get(peerId)?.values();
+                    if (imgs) {
+                        lost.push(...imgs);
+                    }
+                    let pths = this.pathsVM.get(peerId)?.values();
+                    if (pths) {
+                        lost.push(...pths);
+                    }
+                    msgs.push(new LostPeer(peerId, lost));
+                }
+                this.sendBatch(msgs);
+            } else if (m.type === 'lost_peer') {
+                this.knownPeers.add(m.peerId);
+                for (let lost of m.messages) {
+                    if (lost.type === 'image') {
+                        this.imagesVM.add(m.peerId, lost.id, lost);
+                    } else if (lost.type === 'path') {
+                        this.pathsVM.add(m.peerId, lost.id, lost);
                     }
                 }
             }
-        } catch (e) {
-            console.error('[wtf]', container.data);
-            throw (e);
+
+            // state
+            if (m.type === 'peer') {
+                m.id = container.peerId;
+                this.peersVM.set(m.id, m);
+                this.updatePeerVolume(m);
+            } else if (m.type === 'pointer') {
+                this.pointerVM.set(container.peerId, m);
+            } else if (m.type === 'path') {
+                this.pathsVM.add(container.peerId, m.id, m);
+            } else if (m.type === 'path_inc') {
+                let path = this.pathsVM.getById(m.pathId);
+                if (path) {
+                    path.path.push(...m.increment);
+                    this.pathsVM.add(container.peerId, m.pathId, path, true);
+                }
+            } else if (m.type === 'image') {
+                this.imagesVM.add(container.peerId, m.id, m);
+            } else if (m.type === 'update') {
+                // only images for now
+                let image = this.imagesVM.getById(m.id);
+                if (image) {
+                    image = { ...image, ...m.change };
+                    if (this.selfImagesVM.vals.has(image.id)) {
+                        this.selfImagesVM.set(m.id, image, true);
+                    }
+                    this.imagesVM.addById(m.id, image, true);
+                }
+            }
         }
     }
 

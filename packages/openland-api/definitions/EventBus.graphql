@@ -1,0 +1,9 @@
+subscription GlobalEventBus($topic: String) {
+    globalEventBus(topic: $topic) {
+       message
+    }
+}
+
+mutation GlobalEventBusPublish($topic: String, $message: String){
+    globalEventBusPublish(topic: $topic, message: $message)
+}

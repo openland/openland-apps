@@ -156,6 +156,7 @@ object Operations {
         if (name == "FeedEditPost") return FeedEditPost
         if (name == "FeedReactionAdd") return FeedReactionAdd
         if (name == "FeedReactionRemove") return FeedReactionRemove
+        if (name == "GlobalEventBusPublish") return GlobalEventBusPublish
         if (name == "MakeCardDefault") return MakeCardDefault
         if (name == "MarkSequenceRead") return MarkSequenceRead
         if (name == "MediaAnswer") return MediaAnswer
@@ -242,6 +243,7 @@ object Operations {
         if (name == "DebugEventsWatch") return DebugEventsWatch
         if (name == "DialogsWatch") return DialogsWatch
         if (name == "FeedUpdates") return FeedUpdates
+        if (name == "GlobalEventBus") return GlobalEventBus
         if (name == "MyNotificationsCenter") return MyNotificationsCenter
         if (name == "OnlineWatch") return OnlineWatch
         if (name == "SettingsWatch") return SettingsWatch
