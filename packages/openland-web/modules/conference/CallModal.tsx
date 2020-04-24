@@ -18,6 +18,8 @@ import WatermarkLogo from 'openland-icons/watermark-logo.svg';
 import WatermarkShadow from 'openland-icons/watermark-shadow.svg';
 import { CallControls } from './CallControls';
 import { useTriggerEvents } from './sounds/Effects';
+import { useMessageModal } from './useMessageModal';
+import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
 
 const controlsStyle = css`
     position: absolute;
@@ -140,7 +142,7 @@ const LinkFrame = React.memo((props: { link?: string, mediaSession: MediaSession
     );
 });
 
-export const CallModalConponent = React.memo((props: { chatId: string, calls: CallsEngine, client: OpenlandClient, ctx: XModalController, messenger: MessengerEngine }) => {
+export const CallModalConponent = React.memo((props: { chatId: string, calls: CallsEngine, client: OpenlandClient, ctx: XModalController, messenger: MessengerEngine, onAttach: (files: File[]) => void }) => {
     let conference = props.client.useConference({ id: props.chatId }, { suspense: false });
     let callState = props.calls.useState();
     React.useEffect(() => {
@@ -228,6 +230,9 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
         );
     }, []);
     let hideLegacyControls = true;
+
+    const [messageOpen, showMessage] = useMessageModal({ id: props.chatId, name: props.chatId, onAttach: props.onAttach });
+
     return (
         <XView flexDirection="row" flexGrow={1} backgroundColor="gray" alignItems="stretch" position="relative">
             <XView flexDirection="row" flexGrow={1} flexShrink={1}>
@@ -259,12 +264,14 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                     cameraEnabled={!!callState.video}
                     screenEnabled={!!callState.screenShare}
                     spaceEnabled={layout === 'volume-space'}
+                    messageEnabled={messageOpen}
                     toolsEnabled={showLink}
                     onMinimize={props.ctx.hide}
                     onMute={() => props.calls.setMute(!callState.mute)}
                     onCameraClick={props.calls.switchVideo}
                     onScreenClick={props.calls.switchScreenShare}
                     onSpaceClick={() => setLayout(prev => prev === 'volume-space' ? 'grid' : 'volume-space')}
+                    onMessageClick={showMessage}
                     onToolsClick={() => setShowLink(prev => !prev)}
                     onEnd={() => {
                         props.ctx.hide();
@@ -291,6 +298,10 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     );
 });
 
-export const showVideoCallModal = (props: { chatId: string, calls: CallsEngine, client: OpenlandClient, messenger: MessengerEngine }) => {
-    showModalBox({ fullScreen: true, useTopCloser: false }, ctx => <CallModalConponent {...props} ctx={ctx} />);
+export const useVideoCallModal = (props: { chatId: string, calls: CallsEngine, client: OpenlandClient, messenger: MessengerEngine }) => {
+    const onAttach = useAttachHandler({ messenger: props.messenger, conversationId: props.chatId });
+    return React.useCallback(() =>
+        showModalBox({ fullScreen: true, useTopCloser: false }, ctx => <CallModalConponent {...props} onAttach={onAttach} ctx={ctx} />),
+        [props.chatId, props.messenger]
+    );
 };

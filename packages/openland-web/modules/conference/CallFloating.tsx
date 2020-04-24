@@ -21,7 +21,7 @@ import FullscreenIcon from 'openland-icons/s/ic-size-up-glyph-24.svg';
 import { CallsEngine, CallState } from 'openland-engines/CallsEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { useShowEffects } from './sounds/Effects';
-import { showVideoCallModal } from './CallModal';
+import { useVideoCallModal } from './CallModal';
 
 const VIDEO_WIDTH = 320;
 const VIDEO_HEIGHT = 213;
@@ -341,6 +341,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
             callState={callState}
         />
     );
+    const showVideoCallModal = useVideoCallModal({ calls, chatId: props.id, client, messenger });
 
     const buttons = (
         <XView flexDirection="row" justifyContent="flex-end" marginLeft={'auto' as any}>
@@ -351,7 +352,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
                 color="var(--foregroundContrast)"
                 defaultRippleColor="rgba(255, 255, 255, 0.16)"
                 hoverRippleColor="rgba(255, 255, 255, 0.32)"
-                onClick={() => showVideoCallModal({ calls, chatId: props.id, client, messenger })}
+                onClick={showVideoCallModal}
             />
             <UIconButton
                 size="small"

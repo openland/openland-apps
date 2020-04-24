@@ -9,6 +9,7 @@ import CameraIcon from 'openland-icons/s/ic-camera-video-glyph-24.svg';
 import ScreenIcon from 'openland-icons/s/ic-screen-glyph-24.svg';
 import SettingsIcon from 'openland-icons/s/ic-settings-glyph-24.svg';
 import MagicIcon from 'openland-icons/s/ic-magic-glyph-24.svg';
+// import MessageIcon from 'openland-icons/s/ic-message-glyph-24.svg';
 import ToolsIcon from 'openland-icons/s/ic-tools-glyph-24.svg';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
@@ -202,6 +203,7 @@ interface CallControlsProps {
     cameraEnabled: boolean;
     screenEnabled: boolean;
     spaceEnabled: boolean;
+    messageEnabled: boolean;
     toolsEnabled: boolean;
     onMinimize: React.MouseEventHandler;
     onEnd: React.MouseEventHandler;
@@ -209,6 +211,7 @@ interface CallControlsProps {
     onCameraClick: React.MouseEventHandler;
     onScreenClick: React.MouseEventHandler;
     onSpaceClick: React.MouseEventHandler;
+    onMessageClick: React.MouseEventHandler;
     onToolsClick: React.MouseEventHandler;
 }
 
@@ -304,6 +307,19 @@ export const CallControls = (props: CallControlsProps) => {
                         )}
                         onClick={props.onSpaceClick}
                     />
+                    {/* <ControlItem
+                        text="Message"
+                        icon={(
+                            <UIconButton
+                                icon={<MessageIcon />}
+                                color="var(--foregroundContrast)"
+                                rippleColor="var(--tintBlue)"
+                                active={props.messageEnabled}
+                                disableHover={true}
+                            />
+                        )}
+                        onClick={props.onMessageClick}
+                    /> */}
                     <ControlItem
                         text="Plugins"
                         icon={(

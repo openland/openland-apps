@@ -5,7 +5,7 @@ import { useClient } from 'openland-api/useClient';
 import { ChatInfo } from 'openland-web/fragments/chat/types';
 import { Conference_conference_peers_user } from 'openland-api/spacex.types';
 import { css } from 'linaria';
-import { showVideoCallModal } from './CallModal';
+import { useVideoCallModal } from './CallModal';
 import { UTopBar } from 'openland-web/components/unicorn/UTopBar';
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
 import ChevronIcon from 'openland-icons/s/ic-chevron-16.svg';
@@ -45,10 +45,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
         { id: props.chat.id },
         { fetchPolicy: 'network-only', suspense: false },
     );
-
-    const openVideoModal = () => {
-        showVideoCallModal({ calls, chatId: props.chat.id, client, messenger });
-    };
+    const openVideoModal = useVideoCallModal({ calls, chatId: props.chat.id, client, messenger });
 
     const joinCall = () => {
         calls.joinCall(

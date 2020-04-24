@@ -40,6 +40,7 @@ import { OpenlandClient } from 'openland-api/spacex';
 import { ReloadFromEndButton } from './ReloadFromEndButton';
 import { showNoiseWarning } from './NoiseWarning';
 import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarComponent';
+import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
@@ -53,6 +54,7 @@ interface MessagesComponentProps {
     | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage
     | null;
     room: RoomChat_room;
+    onAttach: (files: File[]) => void;
 }
 
 interface MessagesComponentState {
@@ -443,7 +445,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         if (files.length) {
             showAttachConfirm(
                 files,
-                res => res.map(({file, localImage}) => this.conversation!.sendFile(file, localImage)),
+                res => res.map(({ file, localImage }) => this.conversation!.sendFile(file, localImage)),
                 this.refreshFileUploadingTyping,
                 this.endFileUploadingTyping
             );
@@ -467,12 +469,13 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         const showInput = !this.state.hideInput && this.conversation.canSendMessage;
         const membersCount =
             this.props.room.__typename === 'SharedRoom' ? this.props.room.membersCount : undefined;
-        const user = this.props.room.__typename === 'SharedRoom' 
+        const user = this.props.room.__typename === 'SharedRoom'
             ? this.props.room.owner
             : this.props.room.user;
         const userFirstName = user ? user.firstName : undefined;
         const isYou = user ? user.isYou : undefined;
         const canDonate = this.props.conversationId && !isChannel && !isYou;
+
         return (
             <div className={messengerContainer}>
                 {this.state.loading && <XLoader loading={true} />}
@@ -503,7 +506,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                         engine={this.conversation.messagesActionsStateEngine}
                                     />
                                     <SendMessageComponent
-                                        onAttach={this.onAttach}
+                                        onAttach={this.props.onAttach}
                                         initialText={this.initialContent}
                                         onPressUp={this.onInputPressUp}
                                         rickRef={this.rickRef}
@@ -524,7 +527,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                                 </div>
                             </div>
                         )}
-                        {showInput && <DropZone onDrop={this.onAttach} />}
+                        {showInput && <DropZone onDrop={this.props.onAttach} />}
                     </>
                 )}
             </div>
@@ -545,6 +548,7 @@ interface MessengerRootComponentProps {
 
 export const MessengerRootComponent = React.memo((props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
+    const onAttach = useAttachHandler({ messenger: messenger, conversationId: props.conversationId });
 
     return (
         <MessagesComponent
@@ -556,6 +560,7 @@ export const MessengerRootComponent = React.memo((props: MessengerRootComponentP
             conversationType={props.conversationType}
             pinMessage={props.pinMessage}
             room={props.room}
+            onAttach={onAttach}
         />
     );
 });
