@@ -5,6 +5,7 @@ import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 import { GlobalEventBus } from 'openland-api/spacex.types';
+import { getPlaceholderColorRawById } from 'openland-web/components/unicorn/UAvatar';
 //
 // Objects
 //
@@ -190,6 +191,7 @@ export class MediaSessionVolumeSpace {
     constructor(messenger: MessengerEngine, mediaSession: MediaSessionManager) {
         this.messenger = messenger;
         this.selfPeer = new PeerAvatar(mediaSession.getPeerId(), [Math.random() * 100 + 1450, Math.random() * 100 + 1450]);
+        this.setColor(getPlaceholderColorRawById(mediaSession.messenger.user.id).end);
         this.mediaSession = mediaSession;
         this.interval = setInterval(this.sync, 1000);
         // this.d1 = this.mediaSession.dcVM.listen(this.onDcMessage);

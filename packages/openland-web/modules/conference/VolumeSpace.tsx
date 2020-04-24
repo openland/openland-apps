@@ -16,6 +16,7 @@ import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { VMMapMap } from 'openland-y-utils/mvvm/vm';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { UButton } from 'openland-web/components/unicorn/UButton';
 
 let VolumeSpaceContainerStyle = css`
     width: 100%;
@@ -87,7 +88,7 @@ let DrawControlsContainerStyle = css`
     flex-direction: column;
     left: 0;
     top: 0;
-    border-radius: 8px;
+    border-radius: 16px;
     background-color: var(--backgroundTertiary);
     opacity: 1;
     transition: opacity 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
@@ -160,6 +161,28 @@ let MoveAnchorStyle = css`
     }
 `;
 
+let DeleteAnchorStyle = css`
+    pointer-events: inherit;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    ::after{
+        pointer-events: none;
+        content: '';
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        top: 4px;
+        right: 4px;
+        background-color: var(--tintRed);
+        border-radius: 4px;
+        border: 2px solid  var(--backgroundTertiary)
+    }
+`;
+
 let PeerTextContainer = css`
     will-change: transform;
 
@@ -177,6 +200,7 @@ let PeerTextContainerEditable = css`
 `;
 
 let TextAreaStyle = css`
+    pointer-events: inherit;
     padding: 8px;
     width: 100%;
     height: 100%;
@@ -355,10 +379,11 @@ const PeerImage = React.memo((props: { peerId: string, peer?: Conference_confere
         props.space.delete(props.imageId);
     }, []);
     return (
-        <div ref={ref} onDoubleClick={del} className={PeerImageContainer}>
+        <div ref={ref} className={PeerImageContainer}>
             <div className={ImageStyle} ref={imgRef} />
             {canMove && <div ref={resizeRef} className={ResizerAnchorStyle} />}
             {canMove && <div ref={moveRef} className={MoveAnchorStyle} />}
+            {canMove && <div onClick={del} className={DeleteAnchorStyle} />}
         </div>
     );
 });
@@ -410,6 +435,9 @@ const PeerText = React.memo((props: { peerId: string, peer?: Conference_conferen
             if (ref.current && textRef.current) {
                 textRef.current.value = text.text;
                 ref.current.style.transform = `translate(${text.coords[0]}px, ${text.coords[1]}px)`;
+                if (canEdit) {
+                    textRef.current.focus({ preventScroll: true });
+                }
                 textRef.current.style.color = text.color;
                 textRef.current.style.fontSize = `${text.fontSize}px`;
 
@@ -422,10 +450,11 @@ const PeerText = React.memo((props: { peerId: string, peer?: Conference_conferen
         props.space.delete(props.textId);
     }, []);
     return (
-        <div ref={ref} onDoubleClick={del} className={cx(PeerTextContainer, canEdit && PeerTextContainerEditable)}>
+        <div ref={ref} className={cx(PeerTextContainer, canEdit && PeerTextContainerEditable)}>
             <textarea className={TextAreaStyle} ref={textRef} onChange={onTextChanged} />
             {canEdit && <div ref={moveRef} className={MoveAnchorStyle} />}
             {canEdit && <div ref={resizeRef} className={ResizerAnchorStyle} />}
+            {canEdit && <div onClick={del} className={DeleteAnchorStyle} />}
         </div>
     );
 });
@@ -445,12 +474,6 @@ const PeerObjects = React.memo((props: { peerId: string, peer?: Conference_confe
             d2();
         };
     }, []);
-    useShortcuts({
-        keys: ['Control', 't'], callback: () => {
-            let text = new SimpleText(props.space.selfPointer?.coords || props.space.selfPeer.coords, [300, 100], props.space.colorVM.get() || '#fff', 40);
-            props.space.addSpaceObject(text);
-        }
-    });
     return (
         <>
             {imageIds.map(e => <PeerImage key={`image_${e}`} peerId={props.peerId} peer={props.peer} imageId={e} space={props.space} peersRef={props.peersRef} />)}
@@ -583,7 +606,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     let selfRef = React.useRef<HTMLDivElement>(null);
     let eraseCircleRef = React.useRef<SVGCircleElement>(null);
     let nonDrawContentRef = React.useRef<HTMLDivElement>(null);
-    let [action, setAction] = React.useState<'erase' | string>(getPlaceholderColorRawById(props.mediaSession.messenger.user.id).end);
+    let [action, setAction] = React.useState<'erase' | string>(props.mediaSession.volumeSpace.colorVM.get() || '#fff');
     let [menu, setMenu] = React.useState(false);
     let menuRef = React.useRef<HTMLDivElement>(null);
     let peersRef = React.useRef(props.peers);
@@ -726,6 +749,15 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
         setMenu(false);
     }, []);
 
+    let addText = React.useCallback(() => {
+        let coords = props.mediaSession.volumeSpace.selfPointer?.coords || props.mediaSession.volumeSpace.selfPeer.coords;
+        let text = new SimpleText([coords[0] - 150, coords[1]], [300, 100], props.mediaSession.volumeSpace.colorVM.get() || '#fff', 40);
+        props.mediaSession.volumeSpace.addSpaceObject(text);
+        setMenu(false);
+    }, []);
+
+    useShortcuts({ keys: ['Control', 't'], callback: addText });
+
     return (
         <div className={VolumeSpaceContainerStyle} ref={containerRef}>
 
@@ -751,6 +783,9 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                                     <XView key={c} backgroundColor={c} width={24} height={24} borderRadius={24} borderColor={c === action ? 'black' : '#ccc'} borderWidth={2} margin={8} onClick={() => selectAction(c)} />)}
                         </XView>
                     )}
+                    <XView margin={8}>
+                        <UButton text="Text" onClick={addText} style="secondary" />
+                    </XView>
                 </div>
             </div>
 
