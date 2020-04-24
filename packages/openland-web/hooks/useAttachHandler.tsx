@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { MessengerEngine } from 'openland-engines/MessengerEngine';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { TypingType } from 'openland-api/spacex.types';
 import { showAttachConfirm } from 'openland-web/fragments/chat/components/AttachConfirm';
 
-export const useAttachHandler = (props: { messenger: MessengerEngine, conversationId: string }) => {
-    let conversation = props.messenger.getConversation(props.conversationId);
+export const useAttachHandler = (props: { conversationId: string }) => {
+    let messenger = React.useContext(MessengerContext);
+    let conversation = messenger.getConversation(props.conversationId);
 
     let refreshFileUploadingTyping = React.useCallback((filename?: string) => {
         const lowercaseFilename = filename && filename.toLowerCase();
@@ -20,17 +21,17 @@ export const useAttachHandler = (props: { messenger: MessengerEngine, conversati
             }
         }
 
-        props.messenger.client.mutateSetTyping({
+        messenger.client.mutateSetTyping({
             conversationId: props.conversationId,
             type: typingType
         });
-    }, [props.messenger]);
+    }, [messenger]);
 
     let endFileUploadingTyping = React.useCallback(() => {
-        props.messenger.client.mutateUnsetTyping({
+        messenger.client.mutateUnsetTyping({
             conversationId: props.conversationId,
         });
-    }, [props.messenger]);
+    }, [messenger]);
 
     let handleAttach = React.useCallback((files: File[]) => {
         if (files.length) {

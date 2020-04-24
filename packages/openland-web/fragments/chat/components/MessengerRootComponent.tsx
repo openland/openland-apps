@@ -548,7 +548,7 @@ interface MessengerRootComponentProps {
 
 export const MessengerRootComponent = React.memo((props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
-    const onAttach = useAttachHandler({ messenger: messenger, conversationId: props.conversationId });
+    const onAttach = useAttachHandler({ conversationId: props.conversationId });
 
     return (
         <MessagesComponent

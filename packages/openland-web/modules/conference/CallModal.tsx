@@ -231,7 +231,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     }, []);
     let hideLegacyControls = true;
 
-    const [messageOpen, showMessage] = useMessageModal({ id: props.chatId, name: props.chatId, onAttach: props.onAttach });
+    const [messageOpen, showMessage] = useMessageModal({ chatId: props.chatId, name: props.chatId, onAttach: props.onAttach });
 
     return (
         <XView flexDirection="row" flexGrow={1} backgroundColor="gray" alignItems="stretch" position="relative">
@@ -299,7 +299,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
 });
 
 export const useVideoCallModal = (props: { chatId: string, calls: CallsEngine, client: OpenlandClient, messenger: MessengerEngine }) => {
-    const onAttach = useAttachHandler({ messenger: props.messenger, conversationId: props.chatId });
+    const onAttach = useAttachHandler({ conversationId: props.chatId });
     return React.useCallback(() =>
         showModalBox({ fullScreen: true, useTopCloser: false }, ctx => <CallModalConponent {...props} onAttach={onAttach} ctx={ctx} />),
         [props.chatId, props.messenger]
