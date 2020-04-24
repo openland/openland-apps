@@ -3,7 +3,6 @@ import { withApp } from '../../components/withApp';
 import { FeedManagePost } from 'openland-mobile/feed/manage/FeedManagePost';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SlideInputLocal } from 'openland-engines/feed/types';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import Toast from 'openland-mobile/components/Toast';
 import { SHeader } from 'react-native-s/SHeader';
@@ -26,13 +25,14 @@ const FeedCreateComponent = React.memo((props: PageProps) => {
         router.push('FeedPublishTo', {
             channel,
             action: async (selectedId: string) => {
-                startLoader();
+                const loader = Toast.loader();
+                loader.show();
 
                 await engine.createPost(selectedId, slides);
 
                 router.pushAndResetRoot('Home', { initialTab: 0 });
 
-                stopLoader();
+                loader.hide();
             }
         });
     }, []);

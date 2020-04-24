@@ -1,4 +1,3 @@
-import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import { getMessenger } from './messenger';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { randomEmptyPlaceholderEmoji } from './tolerance';
@@ -14,6 +13,7 @@ import { AppLoader } from 'openland-y-runtime/AppLoader';
 
 export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?: boolean) => {
     return async () => {
+        const loader = Toast.loader();
         let link = srcLink;
         if (link.includes('?')) {
             link = link.split('?')[0];
@@ -83,7 +83,6 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
 
         let joinOraganizaion = async (invite: Partial<AccountInviteInfo_invite> | null, key: string) => {
             if (invite) {
-                stopLoader();
                 Alert.builder()
                     .title('Invite to ' + invite.title)
                     .message((invite.creator ? invite.creator.name : 'someone') + ' invites you to join ' + invite.title)
@@ -105,7 +104,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
             let genericInviteMatch = genericInvitePattern.match(link);
 
             if (genericInviteMatch && genericInviteMatch.invite) {
-                startLoader();
+                loader.show();
                 try {
                     let info = await getMessenger().engine.client.queryResolvedInvite({ key: genericInviteMatch.invite }, {fetchPolicy: 'network-only'});
                     if (info.invite) {
@@ -120,7 +119,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
                 } catch (e) {
                     Alert.alert(e.message);
                 }
-                stopLoader();
+                loader.hide();
                 return;
             }
         } catch (e) {
@@ -135,14 +134,14 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let match = roomInvitePattern.match(link) || roomInvitePatternDeep.match(srcLink);
 
         if (match && match.invite) {
-            startLoader();
+            loader.show();
             try {
                 let info = await getMessenger().engine.client.queryRoomInviteInfo({ invite: match.invite });
                 await joinRoom(info.invite, match.invite);
             } catch (e) {
                 Alert.alert(e.message);
             }
-            stopLoader();
+            loader.hide();
             return;
         }
 
@@ -154,14 +153,14 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
         let matchOrg = orgInvitePattern.match(link) || orgInvitePatternDeep.match(srcLink);
 
         if (matchOrg && matchOrg.invite) {
-            startLoader();
+            loader.show();
             try {
                 let info = await getMessenger().engine.client.queryAccountInviteInfo({ inviteKey: matchOrg.invite });
                 await joinOraganizaion(info.invite, matchOrg.invite);
             } catch (e) {
                 Alert.alert(e.message);
             }
-            stopLoader();
+            loader.hide();
             return;
         }
 
@@ -356,6 +355,7 @@ export let saveLinkIfInvite = async (srcLink: string) => {
 };
 
 export const joinInviteIfHave = async () => {
+    const loader = Toast.loader();
     let srcLink = await AsyncStorage.getItem('initial_invite_link');
 
     let link = srcLink;
@@ -404,15 +404,14 @@ export const joinInviteIfHave = async () => {
     let roomInvitePatternDeep = new UrlPattern(patternBaseDeep + 'joinroom/:invite');
     let match = roomInvitePattern.match(link) || roomInvitePatternDeep.match(srcLink);
     if (match && match.invite) {
+        loader.show();
         try {
-            startLoader();
             let info = await getMessenger().engine.client.queryRoomInviteInfo({ invite: match.invite });
-            stopLoader();
             await joinRoom(info.invite, match.invite);
         } catch (e) {
-            stopLoader();
             Alert.alert(formatError(e));
         }
+        loader.hide();
     }
 
     //
@@ -422,15 +421,14 @@ export const joinInviteIfHave = async () => {
     let orgInvitePatternDeep = new UrlPattern(patternBaseDeep + 'joinorg/:invite');
     let matchOrg = orgInvitePattern.match(link) || orgInvitePatternDeep.match(srcLink);
     if (matchOrg && matchOrg.invite) {
+        loader.show();
         try {
-            startLoader();
             let info = await getMessenger().engine.client.queryAccountInviteInfo({ inviteKey: matchOrg.invite });
-            stopLoader();
             await joinOraganizaion(info.invite, matchOrg.invite);
         } catch (e) {
-            stopLoader();
             Alert.alert(formatError(e));
         }
+        loader.hide();
     }
 
     //
@@ -440,26 +438,26 @@ export const joinInviteIfHave = async () => {
     let matchGlobal = globalInvitePattern.match(link);
     if (matchGlobal && matchGlobal.invite) {
         try {
-            startLoader();
+            loader.show();
             let info = await getMessenger().engine.client.queryResolvedInvite({ key: matchGlobal.invite }, {fetchPolicy: 'network-only'});
             if (info.invite) {
                 if (info.invite.__typename === 'AppInvite') {
                     await getMessenger().engine.client.mutateOrganizationActivateByInvite({ inviteKey: matchGlobal.invite });
                     await next(getMessenger().history.navigationManager);
-                    stopLoader();
+                    loader.hide();
                 } else if (info.invite.__typename === 'InviteInfo') {
                     await joinOraganizaion(info.invite, matchGlobal.invite);
-                    stopLoader();
+                    loader.hide();
                 } else if (info.invite.__typename === 'RoomInvite') {
                     await joinRoom(info.invite, matchGlobal.invite);
-                    stopLoader();
+                    loader.hide();
                 }
             } else {
-                stopLoader();
+                loader.hide();
                 Alert.alert('This invitation has been revoked');
             }
         } catch (e) {
-            stopLoader();
+            loader.hide();
             Alert.alert(formatError(e));
         }
     }

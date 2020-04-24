@@ -1,12 +1,12 @@
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import Toast from 'openland-mobile/components/Toast';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { showReportForm } from 'openland-mobile/components/showReportForm';
 import { DataSourceFeedPostItem } from 'openland-engines/feed/types';
 import { MessageReactionType, FeedChannelFull, FeedChannelSubscriberRole, FeedChannelWriters_writers_items, FeedChannelSubscribers_subscribers_edges_node } from 'openland-api/spacex.types';
 import { Share } from 'react-native';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 
 class FeedHandlersClass {
     private getPostLink = (id: string) => 'https://openland.com/feed/' + id;
@@ -21,7 +21,8 @@ class FeedHandlersClass {
     }
 
     Like = async (item: DataSourceFeedPostItem) => {
-        startLoader();
+        const loader = Toast.loader();
+        loader.show();
 
         const client = getClient();
         const { id, reactionsReduced } = item;
@@ -34,7 +35,7 @@ class FeedHandlersClass {
             await client.mutateFeedReactionAdd({ feedItemId: id, reaction: MessageReactionType.LIKE });
         }
 
-        stopLoader();
+        loader.hide();
     }
 
     Forward = (id: string) => {
@@ -167,54 +168,56 @@ class FeedHandlersClass {
 
     ChannelSubscribe = async (channelId: string, showLoader?: boolean) => {
         const client = getClient();
-
+        const loader = Toast.loader();
         if (showLoader !== false) {
-            startLoader();
+            loader.show();
         }
 
         await client.mutateFeedChannelSubscribe({ id: channelId });
         await client.refetchFeedChannel({ id: channelId });
 
         if (showLoader !== false) {
-            stopLoader();
+            loader.hide();
         }
     }
 
     ChannelUnsubscribe = async (channelId: string, showLoader?: boolean) => {
         const client = getClient();
-
+        const loader = Toast.loader();
         if (showLoader !== false) {
-            startLoader();
+            loader.show();
         }
 
         await client.mutateFeedChannelUnsubscribe({ id: channelId });
         await client.refetchFeedChannel({ id: channelId });
 
         if (showLoader !== false) {
-            stopLoader();
+            loader.hide();
         }
     }
 
     ChannelAddEditor = async (channelId: string, userId: string) => {
         const client = getClient();
 
-        startLoader();
+        const loader = Toast.loader();
+        loader.show();
 
         await client.mutateFeedChannelAddWriter({ id: channelId, userId });
         await client.refetchFeedChannelWriters({ id: channelId, first: 3 });
 
-        stopLoader();
+        loader.hide();
     }
 
     ChannelRemoveEditor = async (channelId: string, userId: string) => {
         const client = getClient();
 
-        startLoader();
+        const loader = Toast.loader();
+        loader.show();
 
         await client.mutateFeedChannelRemoveWriter({ id: channelId, userId });
         await client.refetchFeedChannelWriters({ id: channelId, first: 3 });
 
-        stopLoader();
+        loader.hide();
     }
 
     ChannelShare = (channel: FeedChannelFull) => {

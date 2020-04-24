@@ -12,7 +12,7 @@ import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigM
 import { Clipboard, Platform, View, TouchableOpacity, Image, Share } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
-import { startLoader, stopLoader } from '../components/ZGlobalLoader';
+import Toast from 'openland-mobile/components/Toast';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, MessageReactionType, SharedMedia_sharedMedia_edges_node_message_GeneralMessage } from 'openland-api/spacex.types';
@@ -36,7 +36,6 @@ import { AsyncSharedDocument } from 'openland-mobile/pages/shared-media/AsyncSha
 import { AsyncSharedMediaRow } from 'openland-mobile/pages/shared-media/AsyncSharedMediaRow';
 import { AsyncSharedDate } from 'openland-mobile/pages/shared-media/AsyncSharedDate';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
-import Toast from 'openland-mobile/components/Toast';
 import { showCheckLock } from 'openland-mobile/pages/main/modals/PayConfirm';
 import { showDonationReactionWarning } from './components/showDonationReactionWarning';
 
@@ -147,10 +146,11 @@ export class MobileMessenger {
                 if (attachment.fileMetadata.isImage) {
                     path = await DownloadManagerInstance.copyFileWithNewName(filePath!!, attachment.fileMetadata.name);
                 } else {
-                    startLoader();
+                    const loader = Toast.loader();
+                    loader.show();
                     await DownloadManagerInstance.init(attachment.fileId, null);
                     path = await DownloadManagerInstance.getFilePathWithRealName(attachment.fileId, null, attachment.fileMetadata.name || 'file');
-                    stopLoader();
+                    loader.hide();
                 }
                 ShareFile.open({ url: 'file://' + path });
             }
@@ -434,11 +434,12 @@ export class MobileMessenger {
 
         if (conversation.canPin) {
             builder.action('Pin', async () => {
-                startLoader();
+                const loader = Toast.loader();
+                loader.show();
                 try {
                     await this.engine.client.mutatePinMessage({ chatId: message.chatId, messageId: message.id! });
                 } finally {
-                    stopLoader();
+                    loader.hide();
                 }
             }, false, require('assets/ic-pin-24.png'));
         }

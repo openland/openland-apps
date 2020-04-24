@@ -1,9 +1,9 @@
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { CommentSubscriptionType } from 'openland-api/spacex.types';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import Toast from 'openland-mobile/components/Toast';
 
 class NotificationCenterHandlersClass {
     handlePress = (id: string, item: NotificationsDataSourceItem) => {
@@ -22,8 +22,8 @@ class NotificationCenterHandlersClass {
 
         if (item.notificationType !== 'unsupported' && item.peerRootId) {
             builder.action(item.isSubscribedMessageComments ? 'Unfollow thread' : 'Follow thread', async () => {
-                startLoader();
-
+                const loader = Toast.loader();
+                loader.show();
                 try {
                     if (item.isSubscribedMessageComments) {
                         await client.mutateUnSubscribeFromComments({ peerId: item.peerRootId! });
@@ -33,7 +33,7 @@ class NotificationCenterHandlersClass {
                 } catch (e) {
                     console.warn(e);
                 } finally {
-                    stopLoader();
+                    loader.hide();
                 }
             }, false, item.isSubscribedMessageComments ? require('assets/ic-follow-off-24.png') : require('assets/ic-follow-24.png'));
         }
@@ -74,7 +74,8 @@ class NotificationCenterHandlersClass {
     private deleteNotifications = async (ids: string[]) => {
         const client = getClient();
 
-        startLoader();
+        const loader = Toast.loader();
+        loader.show();
 
         try {
             for (let id of ids) {
@@ -83,7 +84,7 @@ class NotificationCenterHandlersClass {
         } catch (e) {
             console.warn(e);
         } finally {
-            stopLoader();
+            loader.hide();
         }
     }
 }

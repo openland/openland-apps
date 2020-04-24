@@ -6,7 +6,6 @@ import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZListItem } from '../../components/ZListItem';
-import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
@@ -29,44 +28,36 @@ const ProfileGroupLinkContent = React.memo((props: PageProps) => {
         });
     }, []);
 
-    const handleCopyClick = React.useCallback(
-        () => {
-            trackEvent('invite_link_action', {
-                invite_type: chatType,
-                action_type: 'link_copied',
-            });
+    const handleCopyClick = React.useCallback(() => {
+        trackEvent('invite_link_action', {
+            invite_type: chatType,
+            action_type: 'link_copied',
+        });
 
-            Clipboard.setString(link);
-            Toast.showCopiedLink();
-        },
-        [link],
-    );
+        Clipboard.setString(link);
+        Toast.showCopiedLink();
+    }, [link]);
 
-    const handleShareClick = React.useCallback(
-        () => {
-            trackEvent('invite_link_action', {
-                invite_type: chatType,
-                action_type: 'link_shared',
-            });
+    const handleShareClick = React.useCallback(() => {
+        trackEvent('invite_link_action', {
+            invite_type: chatType,
+            action_type: 'link_shared',
+        });
 
-            Share.share({ message: link });
-        },
-        [link],
-    );
+        Share.share({ message: link });
+    }, [link]);
 
-    const handleRevokeClick = React.useCallback(
-        async () => {
-            startLoader();
-            try {
-                await getClient().mutateRoomRenewInviteLink({ roomId: id });
-                await getClient().refetchRoomInviteLink({ roomId: id });
-            } catch (e) {
-                Alert.alert(formatError(e));
-            }
-            stopLoader();
-        },
-        [id],
-    );
+    const handleRevokeClick = React.useCallback(async () => {
+        const loader = Toast.loader();
+        loader.show();
+        try {
+            await getClient().mutateRoomRenewInviteLink({ roomId: id });
+            await getClient().refetchRoomInviteLink({ roomId: id });
+        } catch (e) {
+            Alert.alert(formatError(e));
+        }
+        loader.hide();
+    }, [id]);
 
     return (
         <>

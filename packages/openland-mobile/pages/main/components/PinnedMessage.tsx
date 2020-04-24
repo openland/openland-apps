@@ -7,7 +7,7 @@ import { FullMessage } from 'openland-api/spacex.types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 import { useClient } from 'openland-api/useClient';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
+import Toast from 'openland-mobile/components/Toast';
 
 interface PinnedMessageProps {
     message: FullMessage;
@@ -23,12 +23,13 @@ export const PinnedMessage = XMemo<PinnedMessageProps>((props) => {
     const { message, onPress, theme, showAuthor, chatId, canUnpin } = props;
 
     const handleUnpinPress = React.useCallback(async () => {
-        startLoader();
+        const loader = Toast.loader();
+        loader.show();
 
         try {
             await client.mutateUnpinMessage({ chatId });
         } finally {
-            stopLoader();
+            loader.hide();
         }
     }, [chatId]);
 

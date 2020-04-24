@@ -13,7 +13,7 @@ import { Modals } from '../main/modals/Modals';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
+import Toast from 'openland-mobile/components/Toast';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { getMessenger } from 'openland-mobile/utils/messenger';
@@ -31,7 +31,8 @@ const showMembersModal = (router: SRouter, res: RoomCreate) => {
         {
             title: 'Add',
             action: async (users) => {
-                startLoader();
+                const loader = Toast.loader();
+                loader.show();
                 try {
                     await getClient().mutateRoomAddMembers({
                         invites: users.map((u) => ({
@@ -45,7 +46,7 @@ const showMembersModal = (router: SRouter, res: RoomCreate) => {
                 } catch (e) {
                     Alert.alert(e.message);
                 }
-                stopLoader();
+                loader.hide();
             },
 
             titleEmpty: 'Skip',

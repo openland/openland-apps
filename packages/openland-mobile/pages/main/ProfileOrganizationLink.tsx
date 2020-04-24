@@ -6,7 +6,6 @@ import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZListItem } from '../../components/ZListItem';
-import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { formatError } from 'openland-y-forms/errorHandling';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import Toast from 'openland-mobile/components/Toast';
@@ -50,14 +49,15 @@ const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {
     }, [link]);
 
     const handleRevokeClick = React.useCallback(async () => {
-        startLoader();
+        const loader = Toast.loader();
+        loader.show();
         try {
             await getMessenger().engine.client.mutateOrganizationCreatePublicInvite({ organizationId: id });
             await getClient().refetchOrganizationPublicInvite({ organizationId: id });
         } catch (e) {
             Alert.alert(formatError(e));
         }
-        stopLoader();
+        loader.hide();
     }, [id]);
 
     return (

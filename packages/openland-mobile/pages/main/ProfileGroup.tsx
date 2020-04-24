@@ -13,11 +13,11 @@ import {
     RoomChat_room_SharedRoom,
     RoomMembersPaginated_members,
 } from 'openland-api/spacex.types';
-import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { UserView } from './components/UserView';
 import { useClient } from 'openland-api/useClient';
 import ActionSheet, { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
+import Toast from 'openland-mobile/components/Toast';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { NotificationSettings } from './components/NotificationSetting';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -212,7 +212,8 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             {
                 title: 'Add',
                 action: async (users) => {
-                    startLoader();
+                    const loader = Toast.loader();
+                    loader.show();
                     try {
                         const addedMembers = (
                             await client.mutateRoomAddMembers({
@@ -228,7 +229,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                     } catch (e) {
                         Alert.alert(e.message);
                     }
-                    stopLoader();
+                    loader.hide();
                     props.router.back();
                 },
             },

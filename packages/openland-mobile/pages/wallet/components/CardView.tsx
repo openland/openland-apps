@@ -10,7 +10,7 @@ import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { BrandLogo } from './BrandLogo';
 import { useClient } from 'openland-api/useClient';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
-import { stopLoader, startLoader } from 'openland-mobile/components/ZGlobalLoader';
+import Toast from 'openland-mobile/components/Toast';
 
 interface CardViewProps {
     item: MyCards_myCards;
@@ -70,7 +70,8 @@ export const CardView = (props: CardViewProps) => {
 
         if (!isDefault) {
             builder.action('Make primary', async () => {
-                startLoader();
+                const loader = Toast.loader();
+                loader.show();
 
                 try {
                     await client.mutateMakeCardDefault({ id });
@@ -78,7 +79,7 @@ export const CardView = (props: CardViewProps) => {
                 } catch (e) {
                     console.warn(e);
                 } finally {
-                    stopLoader();
+                    loader.hide();
                 }
             }, false, require('assets/ic-star-24.png'));
         }

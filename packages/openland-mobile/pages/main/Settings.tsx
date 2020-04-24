@@ -12,12 +12,13 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { trackEvent } from 'openland-mobile/analytics';
 import { ZCounter } from 'openland-mobile/components/ZCounter';
+import Toast from 'openland-mobile/components/Toast';
 
 export const handleGlobalInvitePress = async () => {
-    startLoader();
+    const loader = Toast.loader();
+    loader.show();
 
     try {
         const inviteCode = await getClient().queryAccountAppInvite({ fetchPolicy: 'network-only' });
@@ -32,7 +33,7 @@ export const handleGlobalInvitePress = async () => {
     } catch (e) {
         console.warn(e);
     } finally {
-        stopLoader();
+        loader.hide();
     }
 };
 

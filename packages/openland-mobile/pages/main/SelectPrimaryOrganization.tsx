@@ -5,9 +5,9 @@ import { SHeader } from 'react-native-s/SHeader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { Platform, View } from 'react-native';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
+import Toast from 'openland-mobile/components/Toast';
 
 const SelectPrimaryOrganizationComponent = (props: PageProps) => {
     let organizations = getClient().useMyOrganizations({ fetchPolicy: 'network-only' }).myOrganizations;
@@ -29,7 +29,8 @@ const SelectPrimaryOrganizationComponent = (props: PageProps) => {
                             }}
                             checkmark={org.isPrimary}
                             onPress={org.isPrimary ? undefined : async () => {
-                                startLoader();
+                                const loader = Toast.loader();
+                                loader.show();
 
                                 await getClient().mutateProfileUpdate({
                                     input: {
@@ -40,7 +41,7 @@ const SelectPrimaryOrganizationComponent = (props: PageProps) => {
                                 await getClient().refetchMyOrganizations();
                                 await getClient().refetchAccount();
 
-                                stopLoader();
+                                loader.hide();
 
                                 props.router.back();
                             }}

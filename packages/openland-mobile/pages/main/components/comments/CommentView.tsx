@@ -4,8 +4,8 @@ import { View, Text, TextStyle, StyleSheet, Image, TouchableWithoutFeedback, Dim
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles, HighlightAlpha, CompensationAlpha } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import Alert from 'openland-mobile/components/AlertBlanket';
+import Toast from 'openland-mobile/components/Toast';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
 import { ZRelativeDate } from 'openland-mobile/components/ZRelativeDate';
@@ -71,9 +71,9 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
 
     const handleReactionPress = React.useCallback(async (useLoader: boolean) => {
         let r = MessageReactionType.LIKE;
-
+        const loader = Toast.loader();
         if (useLoader) {
-            startLoader();
+            loader.show();
         }
         try {
             let remove = reactions && reactions.filter(userReaction => userReaction.user.id === engine.user.id && userReaction.reaction === r).length > 0;
@@ -85,7 +85,7 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
         } catch (e) {
             Alert.alert(e.message);
         } finally {
-            stopLoader();
+            loader.hide();
         }
     }, [comment, reactions]);
 

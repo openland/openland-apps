@@ -5,13 +5,13 @@ import { ZListGroup } from '../../components/ZListGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
-import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { UserView } from './components/UserView';
 import { Modals } from './modals/Modals';
 import { formatError } from 'openland-y-forms/errorHandling';
 import Alert from 'openland-mobile/components/AlertBlanket';
+import Toast from 'openland-mobile/components/Toast';
 import { View, Platform, Text } from 'react-native';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import {
@@ -169,7 +169,8 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             {
                 title: 'Add',
                 action: async (users) => {
-                    startLoader();
+                    const loader = Toast.loader();
+                    loader.show();
                     try {
                         const addedMembers = (
                             await client.mutateOrganizationAddMember({
@@ -182,7 +183,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                     } catch (e) {
                         Alert.alert(formatError(e));
                     }
-                    stopLoader();
+                    loader.hide();
                     props.router.back();
                 },
             },
@@ -229,7 +230,8 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
             builder.action(
                 'Make primary',
                 async () => {
-                    startLoader();
+                    const loader = Toast.loader();
+                    loader.show();
                     try {
                         await client.mutateProfileUpdate({
                             input: {
@@ -240,7 +242,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
 
                         props.router.back();
                     } finally {
-                        stopLoader();
+                        loader.hide();
                     }
                 },
                 false,

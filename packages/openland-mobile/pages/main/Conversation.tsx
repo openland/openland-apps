@@ -21,8 +21,8 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { MentionsSuggestions } from './components/suggestions/MentionsSuggestions';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import Alert from 'openland-mobile/components/AlertBlanket';
+import Toast from 'openland-mobile/components/Toast';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { ChannelMuteButton, ChatInputPlaceholder } from './components/ChannelMuteButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { showCallModal } from './Call';
@@ -177,8 +177,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         if (messagesActionsState.messages && messagesActionsState.messages.length > 0 && messagesActionsState.action === 'edit') {
             let messageToEdit = messagesActionsState.messages.map(convertMessageBack)[0];
-
-            startLoader();
+            const loader = Toast.loader();
+            loader.show();
             try {
                 await getClient().mutateEditMessage({
                     messageId: messageToEdit.id,
@@ -189,7 +189,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             } catch (e) {
                 Alert.alert(e.message);
             } finally {
-                stopLoader();
+                loader.hide();
             }
         } else {
             if (this.props.chat.__typename === 'SharedRoom' && mentions.filter(m => m.all === true).length) {

@@ -1,11 +1,10 @@
 import { ActionSheetBuilder } from './ActionSheet';
 import { useClient } from 'openland-api/useClient';
-import { startLoader, stopLoader } from './ZGlobalLoader';
-import Toast from './Toast';
+import Toast from 'openland-mobile/components/Toast';
 
 const report = async (id: string, type: 'SPAM' | 'INAPPROPRIATE') => {
-    startLoader();
-
+    const loader = Toast.loader();
+    loader.show();
     try {
         await useClient().mutateReportContent({ contentId: id, type });
 
@@ -13,7 +12,7 @@ const report = async (id: string, type: 'SPAM' | 'INAPPROPRIATE') => {
     } catch (e) {
         Toast.failure({ text: 'Something went wrong', duration: 1000 }).show();
     } finally {
-        stopLoader();
+        loader.hide();
     }
 };
 

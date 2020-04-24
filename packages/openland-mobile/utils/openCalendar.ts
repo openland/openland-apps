@@ -1,10 +1,11 @@
 import { Platform, Linking, Clipboard } from 'react-native';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
+import Toast from 'openland-mobile/components/Toast';
 
 export const openCalendar = (date: string) => {
     return async () => {
-        startLoader();
+        const loader = Toast.loader();
+        loader.show();
 
         if (Platform.OS === 'ios') {
             const referenceDate = new Date('2001-01-01');
@@ -15,7 +16,7 @@ export const openCalendar = (date: string) => {
             await Linking.openURL('content://com.android.calendar/time/' + date);
         }
 
-        stopLoader();
+        loader.hide();
     };
 };
 

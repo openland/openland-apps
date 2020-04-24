@@ -6,7 +6,6 @@ import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { FontStyles, RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZButton } from 'openland-mobile/components/ZButton';
@@ -17,6 +16,7 @@ import { AppStorage as Storage } from 'openland-y-runtime/AppStorage';
 import { useClient } from 'openland-api/useClient';
 import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
+import Toast from 'openland-mobile/components/Toast';
 
 interface ChatProps {
     item: RoomShort_SharedRoom;
@@ -149,9 +149,10 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
 
     const join = React.useCallback((selectedIds: string[]) => {
         (async () => {
-            startLoader();
+            const loader = Toast.loader();
+            loader.show();
             await getClient().mutateRoomsJoin({ roomsIds: selectedIds });
-            stopLoader();
+            loader.hide();
             await toHome();
         })();
     }, []);

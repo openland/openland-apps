@@ -4,7 +4,6 @@ import { FeedManagePost } from 'openland-mobile/feed/manage/FeedManagePost';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { SlideInputLocal } from 'openland-engines/feed/types';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import Toast from 'openland-mobile/components/Toast';
 import { SHeader } from 'react-native-s/SHeader';
@@ -31,13 +30,14 @@ const FeedEditComponent = React.memo((props: PageProps) => {
             return;
         }
 
-        startLoader();
+        const loader = Toast.loader();
+        loader.show();
 
         await engine.editPost(id, slides);
 
         props.router.back();
 
-        stopLoader();
+        loader.hide();
     }, []);
 
     return (

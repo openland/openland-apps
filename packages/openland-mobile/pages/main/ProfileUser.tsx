@@ -15,7 +15,6 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { SUPER_ADMIN } from '../Init';
 import { Modals } from './modals/Modals';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { showReachInfo } from 'openland-mobile/components/ZReach';
@@ -33,13 +32,14 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
             title: 'Add',
             action: async (groups) => {
                 if (groups.length > 0) {
-                    startLoader();
+                    const loader = Toast.loader();
+                    loader.show();
                     try {
                         await getMessenger().engine.client.mutateRoomsInviteUser({ userId: user.id, roomIds: groups.map(u => u.id) });
                     } catch (e) {
                         Alert.alert(formatError(e));
                     }
-                    stopLoader();
+                    loader.hide();
                 }
 
                 props.router.back();

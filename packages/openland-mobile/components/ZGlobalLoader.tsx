@@ -3,26 +3,8 @@ import { View, StyleSheet, ViewStyle } from 'react-native';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 
-var watchers: ((isLoading: boolean) => void)[] = [];
-var loading = false;
-
-export function startLoader() {
-    if (!loading) {
-        loading = true;
-        for (let w of watchers) {
-            w(true);
-        }
-    }
-}
-
-export function stopLoader() {
-    if (loading) {
-        loading = false;
-        for (let w of watchers) {
-            w(false);
-        }
-    }
-}
+let watchers: ((isLoading: boolean) => void)[] = [];
+let loading = false;
 
 const styles = StyleSheet.create({
     container: {

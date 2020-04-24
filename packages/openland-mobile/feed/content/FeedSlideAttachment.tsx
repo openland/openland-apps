@@ -7,8 +7,8 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { plural } from 'openland-y-utils/plural';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
 import { useClient } from 'openland-api/useClient';
+import Toast from 'openland-mobile/components/Toast';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -76,7 +76,8 @@ const InnerSharedRoom = React.memo((props: { item: SlideFragment_attachments_Sha
         if (kind === 'PUBLIC') {
             actionTitle = 'Join chat';
             action = async () => {
-                startLoader();
+                const loader = Toast.loader();
+                loader.show();
                 try {
                     await client.mutateRoomJoin({ roomId: id });
 
@@ -86,7 +87,7 @@ const InnerSharedRoom = React.memo((props: { item: SlideFragment_attachments_Sha
                 } catch (e) {
                     AlertBlanket.alert(e.message);
                 } finally {
-                    stopLoader();
+                    loader.hide();
                 }
             };
         }
