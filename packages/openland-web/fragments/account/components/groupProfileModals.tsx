@@ -77,6 +77,7 @@ const ShortnameModalBody = React.memo((props: ShortnameModalBodyProps) => {
                     Choose a shortname so other people can find and mention your group
                 </div>
                 <UInputField
+                    autofocus={true}
                     label="Shortname"
                     field={shortnameField}
                     remark="Only a-z, 0-9 and underscores, 3 chars min"
@@ -543,7 +544,7 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                     onClick={() => props.onClose()}
                 />
                 <UButton
-                    text="Done"
+                    text="Save"
                     style="primary"
                     size="large"
                     onClick={onSubmit}

@@ -19,7 +19,7 @@ const textareaContainer = css`
 const textAreaStyle = css`
     width: 100%;
     height: 100%;
-    max-height: 220px;
+    max-height: 300px;
     padding-left: 16px;
     padding-right: 16px;
     padding-top: 22px;
@@ -96,8 +96,8 @@ export const UTextArea = (props: UTextAreaProps) => {
             onChange(e.target.value);
         }
         if (props.autoResize && ref && ref.current) {
-            ref.current.style.height = "80px";
-            ref.current.style.height = (20 + ref.current.scrollHeight) + "px";
+            ref.current.style.cssText = 'height:' + ref.current.scrollHeight + 'px';
+            ref.current.style.resize = 'none';
         }
     };
 
