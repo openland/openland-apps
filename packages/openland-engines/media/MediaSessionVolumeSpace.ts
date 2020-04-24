@@ -26,6 +26,7 @@ class Pointer {
     seq = 0;
     local = true;
     coords: number[];
+    color?: string;
     constructor(peerId: string, coords: number[]) {
         this.id = `pointer_${peerId}`;
         this.coords = coords;
@@ -41,7 +42,6 @@ export class Path {
     color: string;
     constructor(path: number[][], color: string) {
         this.id = `path_${uuid()}`;
-        console.warn('path created', this.id);
         this.path = path;
         this.color = color;
     }
@@ -83,14 +83,20 @@ export class SimpleText {
     seq = 0;
     local = true;
     text = '';
+    color: string;
+    fontSize: number;
     coords: number[];
-    constructor(coords: number[]) {
+    containerWH: number[];
+    constructor(coords: number[], containerWH: number[], color: string, fontSize: number) {
         this.id = `simple_text_${uuid()}`;
         this.coords = coords;
+        this.containerWH = containerWH;
+        this.color = color;
+        this.fontSize = fontSize;
     }
 }
 
-type SpaceObject = Path | Image | PeerAvatar | Pointer | SimpleText;
+export type SpaceObject = Path | Image | PeerAvatar | Pointer | SimpleText;
 
 //
 // Updates
@@ -175,6 +181,7 @@ export class MediaSessionVolumeSpace {
     };
 
     readonly eraseVM = new VM<number[]>(true);
+    readonly colorVM = new VM<string>();
 
     private interval: any;
     private messageSeq = 1;
@@ -309,7 +316,7 @@ export class MediaSessionVolumeSpace {
 
         // tweaks
         // TODO: pass to handlers on refactor
-        if (target.type === 'image') {
+        if (target.type === 'image' || target.type === 'simple_text') {
             this.movePointer([target.coords[0] + target.containerWH[0] / 2, target.coords[1] + target.containerWH[1] / 2], false);
             if (this.selfPointer) {
                 b.push(new Add([this.selfPointer]));
@@ -337,18 +344,24 @@ export class MediaSessionVolumeSpace {
     // yep, no access mgmt for now
     delete = (id: string) => {
         Object.keys(this.storages).map(k => {
-            let s = this.storages[k].deleteByValId(id);
+            this.storages[k].deleteByValId(id);
         });
         this.selfObjects.delete(id);
         this.remoteObjects.delete(id);
 
         this.selfDeletedIds.add(id);
-        console.warn('delete >>', id);
         this.sync();
     }
 
     erase = (coords: number[]) => {
         this.eraseVM.set(coords);
+    }
+
+    setColor = (color: string) => {
+        this.colorVM.set(color);
+        if (this.selfPointer) {
+            this.selfPointer.color = color;
+        }
     }
 
     ////

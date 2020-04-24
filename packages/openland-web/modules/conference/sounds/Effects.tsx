@@ -43,7 +43,7 @@ export const useTriggerEvents = (session?: MediaSessionManager) => {
     let { horn, resetHorn } = useHorn();
     useShortcuts([
         {
-            keys: ['h'],
+            keys: ['Control', 'h'],
             callback: () => {
                 horn();
                 session?.sendDcMessage(JSON.stringify({ channel: 'effects', type: 'horn' }));

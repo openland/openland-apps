@@ -14,7 +14,7 @@ import { VMMap, VM, VMSetMap, VMMapMap } from 'openland-y-utils/mvvm/vm';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 
 export class MediaSessionManager {
-    private messenger: MessengerEngine;
+    messenger: MessengerEngine;
     readonly conversationId: string;
     private readonly client: OpenlandClient;
     private readonly onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void;

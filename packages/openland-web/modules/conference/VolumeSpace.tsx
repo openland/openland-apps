@@ -7,13 +7,15 @@ import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { VideoComponent } from './ScreenShareModal';
 import { UAvatar, getPlaceholderColorRawById } from 'openland-web/components/unicorn/UAvatar';
 import { bezierPath } from './smooth';
-import { Path, MediaSessionVolumeSpace } from 'openland-engines/media/MediaSessionVolumeSpace';
+import { Path, MediaSessionVolumeSpace, SpaceObject, SimpleText } from 'openland-engines/media/MediaSessionVolumeSpace';
 import { uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { makeStars } from './stars';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { VMMapMap } from 'openland-y-utils/mvvm/vm';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 let VolumeSpaceContainerStyle = css`
     width: 100%;
@@ -63,12 +65,13 @@ let AvatarItemStyle = css`
 `;
 let AvatarMovableStyle = css`
     cursor: move;
-    pointer-events: all;
+    pointer-events: inherit;
     transition: none;
 `;
 let NoPointerEvents = css`
     pointer-events: none;
 `;
+
 let VolumeSpaceVideoStyle = css`
     position: relative;
     width: 72px;
@@ -98,7 +101,6 @@ let DrawControlsHidden = css`
 let PeerImageContainer = css`
     will-change: transform;
 
-    pointer-events: none;
     display: flex;
     overflow: visible;
     position: absolute;
@@ -106,26 +108,79 @@ let PeerImageContainer = css`
 `;
 
 let ImageStyle = css`
+    pointer-events: none;
     width: 100%;
     height: 100%;
 `;
-let ImageResizerAnchorStyle = css`
-    pointer-events: all !important;
+let ResizerAnchorStyle = css`
+    pointer-events: inherit;
     position: absolute;
     width: 20px;
     height: 20px;
     bottom: 0;
     right: 0;
     cursor: se-resize;
+    ::after{
+        pointer-events: none;
+        content: '';
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        bottom: 4px;
+        right: 4px;
+        background-color: var(--foregroundTertiary);
+        border-radius: 4px;
+        border: 2px solid  var(--backgroundTertiary)
+    }
 `;
 
-let ImageMoveAnchorStyle = css`
-    pointer-events: all !important;
+let MoveAnchorStyle = css`
+    pointer-events: inherit;
     position: absolute;
     width: 100%;
     height: 30px;
     top: 0;
     cursor: move;
+
+    ::after{
+        pointer-events: none;
+        content: '';
+        position: absolute;
+        height: 4px;
+        width: 16px;
+        top: 4px;
+       
+        left: 0;
+        right: 0;
+        margin: auto;
+
+        background-color: var(--foregroundTertiary);
+        border-radius: 4px;
+        border: 2px solid  var(--backgroundTertiary)
+    }
+`;
+
+let PeerTextContainer = css`
+    will-change: transform;
+
+    border-radius: 8px;
+
+    pointer-events: none;
+    display: flex;
+    overflow: visible;
+    position: absolute;
+`;
+
+let PeerTextContainerEditable = css`
+    pointer-events: inherit;
+    background-color: var(--backgroundTertiaryTrans);
+`;
+
+let TextAreaStyle = css`
+    padding: 8px;
+    width: 100%;
+    height: 100%;
+    resize: none;
 `;
 
 let MenuEraseStyle = css`
@@ -158,6 +213,13 @@ let MenuEraseSelectedStyle = css`
 `;
 
 let PointerStyle = css`
+    width: 24px;
+    height: 24px;
+    border-radius: 24px;
+    border: 2px solid #fff;
+`;
+
+let PointerContainerStyle = css`
     position: absolute;
     will-change: transform;
 
@@ -295,22 +357,104 @@ const PeerImage = React.memo((props: { peerId: string, peer?: Conference_confere
     return (
         <div ref={ref} onDoubleClick={del} className={PeerImageContainer}>
             <div className={ImageStyle} ref={imgRef} />
-            {canMove && <div ref={resizeRef} className={ImageResizerAnchorStyle} />}
-            {canMove && <div ref={moveRef} className={ImageMoveAnchorStyle} />}
+            {canMove && <div ref={resizeRef} className={ResizerAnchorStyle} />}
+            {canMove && <div ref={moveRef} className={MoveAnchorStyle} />}
+        </div>
+    );
+});
+
+const PeerText = React.memo((props: { peerId: string, peer?: Conference_conference_peers, textId: string, space: MediaSessionVolumeSpace, peersRef: React.MutableRefObject<Conference_conference_peers[]> }) => {
+    const ref = React.useRef<HTMLDivElement>(null);
+    const moveRef = React.useRef<HTMLDivElement>(null);
+    const textRef = React.useRef<HTMLTextAreaElement>(null);
+    const resizeRef = React.useRef<HTMLDivElement>(null);
+    const onMove = React.useCallback((coords: number[]) => {
+        let t = props.space.simpleTextsVM.getById(props.textId);
+        if (t) {
+            props.space.update(t.id, { coords, type: 'simple_text' });
+        }
+    }, []);
+
+    const onResize = React.useCallback((coords: number[]) => {
+        let t = props.space.simpleTextsVM.getById(props.textId);
+        if (t) {
+            let containerWH = [Math.max(50, coords[0] - t.coords[0]), Math.max(50, coords[1] - t.coords[1])];
+            props.space.update(t.id, { containerWH, type: 'simple_text' });
+        }
+    }, []);
+
+    const onTextChanged = React.useCallback((ev: React.ChangeEvent<HTMLTextAreaElement>) => {
+        let t = props.space.simpleTextsVM.getById(props.textId);
+        if (t) {
+            props.space.update(t.id, { text: ev.target.value, type: 'simple_text' });
+        }
+    }, []);
+
+    // worse access mgmt ever
+    let canEdit = (props.peer?.user.isYou || !props.peersRef.current.find(peer => peer.id === props.peerId));
+    if (canEdit) {
+        useJsDrag(moveRef, ref, onMove, () => {
+            let text = props.space.simpleTextsVM.getById(props.textId);
+            return text?.coords;
+        });
+        useJsDrag(resizeRef, undefined, onResize, () => {
+            let text = props.space.simpleTextsVM.getById(props.textId);
+            if (text) {
+                return [text.coords[0] + text.containerWH[0], text.coords[1] + text.containerWH[1]];
+            }
+            return undefined;
+        });
+    }
+    React.useEffect(() => {
+        return props.space.simpleTextsVM.listenId(props.peerId, props.textId, text => {
+            if (ref.current && textRef.current) {
+                textRef.current.value = text.text;
+                ref.current.style.transform = `translate(${text.coords[0]}px, ${text.coords[1]}px)`;
+                textRef.current.style.color = text.color;
+                textRef.current.style.fontSize = `${text.fontSize}px`;
+
+                ref.current.style.width = `${text.containerWH[0]}px`;
+                ref.current.style.height = `${text.containerWH[1]}px`;
+            }
+        });
+    }, []);
+    const del = React.useCallback(() => {
+        props.space.delete(props.textId);
+    }, []);
+    return (
+        <div ref={ref} onDoubleClick={del} className={cx(PeerTextContainer, canEdit && PeerTextContainerEditable)}>
+            <textarea className={TextAreaStyle} ref={textRef} onChange={onTextChanged} />
+            {canEdit && <div ref={moveRef} className={MoveAnchorStyle} />}
+            {canEdit && <div ref={resizeRef} className={ResizerAnchorStyle} />}
         </div>
     );
 });
 
 const PeerObjects = React.memo((props: { peerId: string, peer?: Conference_conference_peers, space: MediaSessionVolumeSpace, peersRef: React.MutableRefObject<Conference_conference_peers[]> }) => {
     let [imageIds, setImageIds] = React.useState<string[]>([]);
+    let [textIds, setTextsIds] = React.useState<string[]>([]);
     React.useEffect(() => {
-        return props.space.imagesVM.listen(props.peerId, i => {
+        let d1 = props.space.imagesVM.listen(props.peerId, i => {
             setImageIds([...i.keys()]);
         });
+        let d2 = props.space.simpleTextsVM.listen(props.peerId, i => {
+            setTextsIds([...i.keys()]);
+        });
+        return () => {
+            d1();
+            d2();
+        };
     }, []);
+    useShortcuts({
+        keys: ['Control', 't'], callback: () => {
+            let text = new SimpleText(props.space.selfPointer?.coords || props.space.selfPeer.coords, [300, 100], props.space.colorVM.get() || '#fff', 40);
+            props.space.addSpaceObject(text);
+        }
+    });
     return (
         <>
-            {imageIds.map(e => <PeerImage key={e} peerId={props.peerId} peer={props.peer} imageId={e} space={props.space} peersRef={props.peersRef} />)}
+            {imageIds.map(e => <PeerImage key={`image_${e}`} peerId={props.peerId} peer={props.peer} imageId={e} space={props.space} peersRef={props.peersRef} />)}
+            {textIds.map(e => <PeerText key={`text_${e}`} peerId={props.peerId} peer={props.peer} textId={e} space={props.space} peersRef={props.peersRef} />)}
         </>
     );
 });
@@ -318,12 +462,19 @@ const PeerObjects = React.memo((props: { peerId: string, peer?: Conference_confe
 const Objects = React.memo((props: { peers: Conference_conference_peers[], space: MediaSessionVolumeSpace, peersRef: React.MutableRefObject<Conference_conference_peers[]> }) => {
     let [peers, setPeers] = React.useState(new Map<string, Conference_conference_peers | undefined>());
     React.useEffect(() => {
-        return props.space.imagesVM.listenAllShallow(spacePeers => {
-            let prs = new Map<string, Conference_conference_peers | undefined>();
-            for (let k of spacePeers.keys()) {
-                prs.set(k, props.peers.find(p => p.id === k));
-            }
-            setPeers(prs);
+        let ds: (() => void)[] = [];
+        for (let k of Object.keys(props.space.storages)) {
+            ds.push((props.space.storages[k] as VMMapMap<string, string, SpaceObject>).listenAllShallow((prs) => {
+                setPeers(current => {
+                    for (let pk of prs.keys()) {
+                        current.set(pk, props.peers.find(p => p.id === pk));
+                    }
+                    return new Map(current);
+                });
+            }));
+        }
+        return (() => {
+            ds.map(d => d());
         });
     }, []);
     return (
@@ -403,17 +554,20 @@ const Drawings = React.memo((props: { peers: Conference_conference_peers[], spac
 
 const Pointer = React.memo((props: { peer: Conference_conference_peers, space: MediaSessionVolumeSpace }) => {
     let ref = React.useRef<HTMLDivElement>(null);
+    let pointerRef = React.useRef<HTMLDivElement>(null);
     React.useEffect(() => {
         return props.space.pointerVM.listenId(props.peer.id, `pointer_${props.peer.id}`, p => {
-            if (ref.current) {
+            if (ref.current && pointerRef.current) {
                 ref.current.style.position = 'absolute';
                 ref.current.style.transform = `translate3d(${p.coords[0] - 12}px, ${p.coords[1] - 12}px, 0)`;
+
+                pointerRef.current.style.backgroundColor = p.color || getPlaceholderColorRawById(props.peer.user.id).end;
             }
         });
     });
-    return <div className={cx(PointerStyle, !isSafari && TransitionTransform)} ref={ref}>
+    return <div className={cx(PointerContainerStyle, !isSafari && TransitionTransform)} ref={ref}>
         <XView position="absolute" left={-200} right={-200} top={-24}  {...TextStyles.Detail} alignItems="center" justifyContent="center"><XView borderRadius={4} paddingHorizontal={3} paddingTop={2} paddingBottom={3} backgroundColor="var(--backgroundTertiaryTrans)">{props.peer.user.shortname || props.peer.user.name}</XView></XView>
-        <XView width={24} height={24} borderRadius={24} borderWidth={2} borderColor="#fff" backgroundColor={getPlaceholderColorRawById(props.peer.user.id).end} />
+        <div ref={pointerRef} className={PointerStyle} />
     </div>;
 });
 
@@ -429,7 +583,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     let selfRef = React.useRef<HTMLDivElement>(null);
     let eraseCircleRef = React.useRef<SVGCircleElement>(null);
     let nonDrawContentRef = React.useRef<HTMLDivElement>(null);
-    let [action, setAction] = React.useState<'erase' | string>(colors[1][1]);
+    let [action, setAction] = React.useState<'erase' | string>(getPlaceholderColorRawById(props.mediaSession.messenger.user.id).end);
     let [menu, setMenu] = React.useState(false);
     let menuRef = React.useRef<HTMLDivElement>(null);
     let peersRef = React.useRef(props.peers);
@@ -566,6 +720,9 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
 
     let selectAction = React.useCallback((a: string) => {
         setAction(a);
+        if (a !== 'erase') {
+            props.mediaSession.volumeSpace.setColor(a);
+        }
         setMenu(false);
     }, []);
 
