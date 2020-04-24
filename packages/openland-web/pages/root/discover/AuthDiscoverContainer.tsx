@@ -89,30 +89,17 @@ const AuthDiscoverHeader = React.memo((props: { title: string, showBack?: boolea
 export const AuthDiscoverContainer = React.memo((props: { title: string, showBack?: boolean, children: any }) => {
     const isMobile = useIsMobile();
 
-    const xRouting = React.useMemo(
-        () => ({
-            navigate: (to: string) => {
-                if (canUseDOM) {
-                    window.location.href = to;
-                }
-            },
-        }),
-        [],
-    );
-
     return (
         <div className={rootContainer}>
             {!isMobile && <AuthSidebarComponent className={sidebarContainer} />}
             <div className={mainContainer}>
                 {isMobile && <AuthMobileHeader />}
                 <div className={boxContainer}>
-                    <XViewRouterContext.Provider value={xRouting}>
-                        <AuthDiscoverHeader title={props.title} showBack={props.showBack} />
+                    <AuthDiscoverHeader title={props.title} showBack={props.showBack} />
 
-                        <React.Suspense fallback={<XLoader loading={true} />}>
-                            {props.children}
-                        </React.Suspense>
-                    </XViewRouterContext.Provider>
+                    <React.Suspense fallback={<XLoader loading={true} />}>
+                        {props.children}
+                    </React.Suspense>
                 </div>
             </div>
         </div>
