@@ -8,8 +8,6 @@ import { css, cx } from 'linaria';
 import { debounce } from 'openland-y-utils/timer';
 import { Conference_conference_peers, RoomTiny_room } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
-import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
-import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { VideoComponent } from './ScreenShareModal';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
@@ -22,6 +20,8 @@ import { CallsEngine, CallState } from 'openland-engines/CallsEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { useShowEffects } from './sounds/Effects';
 import { useVideoCallModal } from './CallModal';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 
 const VIDEO_WIDTH = 320;
 const VIDEO_HEIGHT = 213;
@@ -237,13 +237,18 @@ const VideoMediaView = React.memo((props: {
     calls: CallsEngine,
     callState: CallState,
 }) => {
-    const [stream, setStream] = React.useState<AppMediaStream>();
+    const [track, setTrack] = React.useState<AppMediaStreamTrack>();
 
     React.useEffect(() => {
         let d: (() => void) | undefined;
         if (props.peer?.id) {
-            d = props.mediaSessionManager.peerVideoVM.listen(props.peer.id, (streams) => {
-                setStream([...streams.values()].find(s => s.source === 'camera'));
+            d = props.mediaSessionManager.peerVideoVM.listen(props.peer.id, (tracks) => {
+                let tr = [...tracks.entries()].find(s => s[0] === 'camera');
+                if (tr) {
+                    setTrack(tr[1]);
+                } else {
+                    setTrack(undefined);
+                }
             });
         }
         return d;
@@ -251,9 +256,9 @@ const VideoMediaView = React.memo((props: {
 
     return (
         <XView width={VIDEO_WIDTH} height={VIDEO_HEIGHT} overflow="hidden" backgroundColor="var(--overlayHeavy)" alignItems="center" justifyContent="center">
-            {stream ? (
+            {track ? (
                 <VideoComponent
-                    stream={(stream as AppUserMediaStreamWeb)._stream}
+                    track={(track as AppUserMediaTrackWeb).track}
                     cover={true}
                     videoClass={PeerVideoClass}
                     switching={true}
@@ -277,7 +282,7 @@ const MediaView = React.memo((props: {
     calls: CallsEngine;
     callState: CallState;
 }) => {
-    let peerId = props.mediaSessionManager.analyzer.useSpeakingPeer();
+    let peerId: string | null = null; // props.mediaSessionManager.analyzer.useSpeakingPeer();
     let peer = props.peers.find(p => p.id === peerId);
 
     return props.videoEnabled ? (
@@ -439,7 +444,7 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
                                 bottom={12}
                                 right={12}
                             >
-                                {callState.video && <VideoComponent stream={(callState.video as AppUserMediaStreamWeb)._stream} cover={true} videoClass={MiniFloatingVideo} />}
+                                {callState.video && <VideoComponent track={(callState.video as AppUserMediaTrackWeb).track} cover={true} videoClass={MiniFloatingVideo} />}
                             </XView>
                         </XView>
                     </div>

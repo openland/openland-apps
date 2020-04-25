@@ -1,60 +1,33 @@
-import { AppUserMediaApi, AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppUserMediaApi, AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
 import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
 
-export class AppUserMediaStreamWeb implements AppMediaStream {
+export class AppUserMediaTrackWeb implements AppMediaStreamTrack {
     readonly id: string;
-    private _muted = false;
-    private _blinded = false;
-    readonly _stream: MediaStream;
-    onClosed: (() => void) | undefined;
+    readonly kind: 'audio' | 'video';
+    readonly track: MediaStreamTrack;
 
-    constructor(stream: MediaStream) {
-        this.id = stream.id;
-        this._stream = stream;
-    }
-    hasAudio(): boolean {
-        return !!this._stream.getAudioTracks().length;
-    }
-    hasVideo(): boolean {
-        return !!this._stream.getVideoTracks().length;
-    }
-
-    get muted() {
-        return this._muted;
-    }
-
-    set muted(val: boolean) {
-        if (this._muted !== val) {
-            this._muted = val;
-            for (let t of this._stream.getAudioTracks()) {
-                t.enabled = !val;
-            }
+    constructor(track: MediaStreamTrack) {
+        this.id = track.id;
+        this.track = track;
+        if (track.kind === 'audio') {
+            this.kind = 'audio';
+        } else if (track.kind === 'video') {
+            this.kind = 'video';
+        } else {
+            throw Error('Unknwon track kind: ' + track.kind);
         }
     }
 
-    get blinded() {
-        return this._blinded;
+    get enabled() {
+        return this.track.enabled;
     }
 
-    set blinded(val: boolean) {
-        if (this._blinded !== val) {
-            this._blinded = val;
-            for (let t of this._stream.getVideoTracks()) {
-                t.enabled = !val;
-            }
-        }
+    set enabled(v: boolean) {
+        this.track.enabled = v;
     }
 
-    close = () => {
-        for (let t of this._stream.getTracks()) {
-            t.stop();
-        }
-        MediaDevicesManager.instance().notifyOutputStreamClosed(this);
-        // this._stream.stop();
-    }
-
-    getStream = () => {
-        return this._stream;
+    stop() {
+        this.track.stop();
     }
 }
 
@@ -65,12 +38,13 @@ export const AppUserMedia: AppUserMediaApi = {
             audio: {
                 noiseSuppression: true,
                 autoGainControl: false,
-                advanced: [{ deviceId: deviceId || MediaDevicesManager.instance().getSelectedInput()?.deviceId || 'default' }],
+                advanced: [{
+                    deviceId: deviceId || MediaDevicesManager.instance().getSelectedInput()?.deviceId || 'default'
+                }],
             },
         });
 
-        let res = new AppUserMediaStreamWeb(media);
-
+        let res = new AppUserMediaTrackWeb(media.getAudioTracks()[0]);
         if (media.getAudioTracks().length) {
             MediaDevicesManager.instance().updateAudioOutputStreamIfeeded(res);
         }
@@ -85,12 +59,12 @@ export const AppUserMedia: AppUserMediaApi = {
         let media = await navigator.mediaDevices.getUserMedia({
             audio: false,
             video: {
-                advanced: [{ deviceId: deviceId ||  MediaDevicesManager.instance().getSelectedVideoInput()?.deviceId || 'default' }],
+                advanced: [{ deviceId: deviceId || MediaDevicesManager.instance().getSelectedVideoInput()?.deviceId || 'default' }],
 
             },
         });
 
-        let res = new AppUserMediaStreamWeb(media);
+        let res = new AppUserMediaTrackWeb(media.getVideoTracks()[0]);
 
         if (media.getVideoTracks().length) {
             MediaDevicesManager.instance().updateVideoOutputStreamIfNeeded(res);
@@ -101,6 +75,6 @@ export const AppUserMedia: AppUserMediaApi = {
 
     async getUserScreen() {
         let media = await (navigator.mediaDevices as any).getDisplayMedia();
-        return new AppUserMediaStreamWeb(media);
+        return new AppUserMediaTrackWeb(media.getVideoTracks()[0]);
     }
 };

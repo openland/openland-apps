@@ -1,6 +1,6 @@
 import { AppPeerConnectionApi, AppPeerConnectionConfiguration, AppPeerConnection } from 'openland-y-runtime-api/AppPeerConnectionApi';
-import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
-import { AppUserMediaStreamWeb } from './AppUserMedia';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppUserMediaTrackWeb } from './AppUserMedia';
 import { randomKey } from 'openland-y-utils/randomKey';
 import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
 
@@ -13,10 +13,10 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined = undefined;
     onnegotiationneeded: (() => void) | undefined = undefined;
     oniceconnectionstatechange: ((ev: { target: { iceConnectionState?: string | 'failed' } }) => void) | undefined = undefined;
-    onstreamadded: ((stream: AppMediaStream) => void) | undefined;
+    ontrackadded: ((stream: AppMediaStreamTrack) => void) | undefined;
     onAudioInputChanged?: ((deviceId: string) => void) | undefined;
 
-    private trackSenders = new Map<MediaStreamTrack, RTCRtpSender>();
+    private trackSenders = new Map<string, RTCRtpSender>();
 
     private audioOutputDevice: MediaDeviceInfo | undefined;
 
@@ -41,7 +41,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         });
 
         this.d1 = MediaDevicesManager.instance().listenStreamUpdated(s => {
-            this.addStream(s);
+            // this.addStream(s);
         });
 
         this.connection.ontrack = (ev) => {
@@ -74,10 +74,8 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
                 this.audio.play();
             }
 
-            if (this.onstreamadded) {
-                let str = new MediaStream();
-                str.addTrack(ev.track);
-                this.onstreamadded(new AppUserMediaStreamWeb(str));
+            if (this.ontrackadded) {
+                this.ontrackadded(new AppUserMediaTrackWeb(ev.track));
             }
 
         };
@@ -123,31 +121,20 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         return JSON.stringify(await this.connection.createAnswer({ offerToReceiveAudio: true, offerToReceiveVideo: true } as any /* WTF with typings? */));
     }
 
-    addStream = (stream: AppMediaStream) => {
-        this.removeStream(stream);
-        let str = (stream as AppUserMediaStreamWeb)._stream;
-        let tracks = str.getTracks();
-        for (let sender of this.connection.getSenders()) {
-            for (let i = tracks.length - 1; i >= 0; i--) {
-                let track = tracks[i];
-                if (sender.track?.kind === track.kind) {
-                    sender.replaceTrack(track);
-                    this.trackSenders.set(track, sender);
-                    tracks.splice(i, 1);
-                }
-            }
-        }
-        tracks.map(track => this.trackSenders.set(track, this.connection.addTrack(track, str)));
+    addTrack = (track: AppMediaStreamTrack) => {
+        this.removeTrack(track);
+        let rawTrack = (track as AppUserMediaTrackWeb).track;
+        let sender = this.connection.addTrack(rawTrack);
+        this.trackSenders.set(track.id, sender);
     }
 
-    removeStream = (stream: AppMediaStream) => {
-        let str = (stream as AppUserMediaStreamWeb)._stream;
-        str.getTracks().map(track => {
-            let sender = this.trackSenders.get(track);
-            if (sender) {
-                this.connection.removeTrack(sender);
-            }
-        });
+    removeTrack = (track: AppMediaStreamTrack) => {
+        let rawTrack: MediaStreamTrack = (track as AppUserMediaTrackWeb).track;
+        let sender = this.trackSenders.get(rawTrack.id);
+        if (sender) {
+            this.trackSenders.delete(rawTrack.id);
+            this.connection.removeTrack(sender);
+        }
     }
 
     addIceCandidate = (candidate: string) => {

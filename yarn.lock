@@ -1695,6 +1695,11 @@
   resolved "https://registry.yarnpkg.com/@oclif/screen/-/screen-1.0.4.tgz#b740f68609dfae8aa71c3a6cab15d816407ba493"
   integrity sha512-60CHpq+eqnTxLZQ4PGHYNwUX572hgpMHGPtTWMjdTMsAvlm69lZV/4ly6O3sAYkomo4NggGcomrDpBe34rxUqw==
 
+"@openland/patterns@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@openland/patterns/-/patterns-0.0.1.tgz#00fa558e6d44c4ddfae80cc2e336838c1d2a21e5"
+  integrity sha512-sZlUh/TWexptgEYQyoNqcm1RXdWme/disA9FExyP/rRJ2LqFu+QhQAgcIvDbtUy1cjIGHC8M5SZ+vOqS58WZJQ==
+
 "@openland/react-video-renderer@1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@openland/react-video-renderer/-/react-video-renderer-1.2.1.tgz#e810db7f8dd9373db21eec07388aaf62a81d946e"

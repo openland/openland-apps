@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MessengerEngine } from './MessengerEngine';
 import { OpenlandClient } from 'openland-api/spacex';
 import { MediaSessionManager } from './media/MediaSessionManager';
-import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
 
 export type CallStatus = 'initial' | 'connecting' | 'connected' | 'end' | 'waiting';
 
@@ -13,8 +13,8 @@ export interface CallState {
     startTime?: number;
     status: CallStatus;
     mute: boolean;
-    video?: AppMediaStream;
-    screenShare?: AppMediaStream;
+    video?: AppMediaStreamTrack;
+    screenShare?: AppMediaStreamTrack;
     videoEnabled?: boolean;
 }
 
@@ -44,8 +44,8 @@ export class CallsEngine {
         }
         this.mediaSession = new MediaSessionManager(this.messenger, this.client, conversationId, this._state.mute, !!isPrivate, (status, startTime) => this.setState({ ...this._state, status, private: !!isPrivate, startTime }), this.leaveCall, this.onVideoEnabled);
         this.mediaSession.outVideoVM.listen((s) => {
-            this.setState({... this._state, video: s.find(st => st?.source === 'camera' && !st.blinded)});
-            this.setState({... this._state, screenShare: s.find(st => st?.source === 'screen_share')});
+            this.setState({ ... this._state, video: s[0] ? s[0].enabled ? s[0] : undefined : undefined });
+            this.setState({ ... this._state, screenShare: s[1] ? s[1].enabled ? s[1] : undefined : undefined });
         });
         this.setState({ mute: false, status: 'connecting', conversationId, private: isPrivate, avatar });
     }

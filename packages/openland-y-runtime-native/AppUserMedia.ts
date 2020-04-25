@@ -1,54 +1,33 @@
-import { AppUserMediaApi, AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
-import { mediaDevices, MediaStream } from 'react-native-webrtc';
+import { AppUserMediaApi, AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
+import { mediaDevices, MediaStreamTrack, MediaStream } from 'react-native-webrtc';
 
-export class AppUserMediaStreamNative implements AppMediaStream {
-    _blinded = false;
-    private _muted = false;
-    readonly _stream: MediaStream;
+export class AppUserMediaStreamTrackNative implements AppMediaStreamTrack {
     readonly id: string;
-    onClosed: (() => void) | undefined;
+    readonly kind: 'audio' | 'video';
+    readonly #track: MediaStreamTrack;
 
-    constructor(stream: MediaStream) {
-        this.id = stream.id;
-        this._stream = stream;
-    }
-    hasAudio(): boolean {
-        return !!this._stream.getAudioTracks().length;
-    }
-    hasVideo(): boolean {
-        return !!this._stream.getVideoTracks().length;
-    }
-
-    get muted() {
-        return this._muted;
-    }
-
-    set muted(val: boolean) {
-        if (this._muted !== val) {
-            this._muted = val;
-            for (let t of this._stream.getAudioTracks()) {
-                t.enabled = !val;
-            }
+    constructor(track: MediaStreamTrack) {
+        this.id = track.id;
+        this.#track = track;
+        if (track.kind === 'audio') {
+            this.kind = 'audio';
+        } else if (track.kind === 'video') {
+            this.kind = 'video';
+        } else {
+            throw Error('Unknwon track kind: ' + track.kind);
         }
     }
 
-    get blinded() {
-        return this._blinded;
+    get enabled() {
+        return this.#track.enabled;
     }
 
-    set blinded(val: boolean) {
-        if (this._blinded !== val) {
-            this._blinded = val;
-            for (let t of this._stream.getVideoTracks()) {
-                t.enabled = !val;
-            }
-        }
+    set enabled(v: boolean) {
+        this.#track.enabled = v;
     }
 
-    close = () => {
-        for (let t of this._stream.getTracks()) {
-            t.stop();
-        }
+    stop = () => {
+        this.#track.stop();
     }
 }
 
@@ -58,7 +37,8 @@ export const AppUserMedia: AppUserMediaApi = {
         if (!media) {
             throw new Error('audio denied');
         }
-        return new AppUserMediaStreamNative(media as MediaStream);
+        let stream = media as MediaStream;
+        return new AppUserMediaStreamTrackNative(stream.getAudioTracks()[0]);
     },
 
     async getUserVideo() {
@@ -66,7 +46,8 @@ export const AppUserMedia: AppUserMediaApi = {
         if (!media) {
             throw new Error('video denied');
         }
-        return new AppUserMediaStreamNative(media as MediaStream);
+        let stream = media as MediaStream;
+        return new AppUserMediaStreamTrackNative(stream.getVideoTracks()[0]);
     },
 
     async getUserScreen() {

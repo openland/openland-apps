@@ -22,7 +22,7 @@ const mirrorClass = css`
 `;
 
 interface VideoComponent extends XViewProps {
-    stream: MediaStream;
+    track: MediaStreamTrack;
     cover?: boolean;
     videoClass?: string;
     compact?: boolean;
@@ -32,10 +32,15 @@ interface VideoComponent extends XViewProps {
 }
 
 export const VideoComponent = React.memo((props: VideoComponent) => {
-    const {stream, cover, videoClass, compact, mirror, switching, onClick, ...other} = props;
+    const { track, cover, videoClass, compact, mirror, switching, onClick, ...other } = props;
     const videoRef1 = React.useRef<HTMLVideoElement>(null);
     const videoRef2 = React.useRef<HTMLVideoElement>(null);
     const swtch = React.useRef(true);
+    const stream = React.useMemo(() => {
+        let res = new MediaStream();
+        res.addTrack(track);
+        return res;
+    }, [track]);
     React.useEffect(() => {
         let top = swtch.current ? videoRef1 : videoRef2;
         let bot = swtch.current ? videoRef2 : videoRef1;
@@ -60,6 +65,6 @@ export const VideoComponent = React.memo((props: VideoComponent) => {
     );
 });
 
-export const showVideoModal = (stream: MediaStream) => {
-    showModalBox({ fullScreen: true }, ctx => <VideoComponent stream={stream} backgroundColor="var(--overlayTotal)" />);
+export const showVideoModal = (track: MediaStreamTrack) => {
+    showModalBox({ fullScreen: true }, ctx => <VideoComponent track={track} backgroundColor="var(--overlayTotal)" />);
 };

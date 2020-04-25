@@ -18,10 +18,10 @@ import { USelect } from 'openland-web/components/unicorn/USelect';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalController } from 'openland-x/showModal';
-import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
 import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { VideoComponent } from './ScreenShareModal';
-import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
+import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 
 const ContainerStyle = css`
     will-change: transform;
@@ -60,7 +60,7 @@ const controlHover = cx('x', 'control-hover', css`
     right: 0;
     zIndex: 4;
     opacity: 0;
-    cursort: pointer;
+    cursor: pointer;
 `);
 
 const controlWrapper = cx('x', css`
@@ -109,7 +109,7 @@ const SettingsModal = React.memo((props: { ctx: XModalController, }) => {
     let videoInputs = devices.filter(d => d.kind === 'videoinput');
 
     const [localVideoInput, setLocalVideoInput] = React.useState<MediaDeviceInfo | undefined>(videoInput);
-    const [localVideoStream, setLocalVideoStream] = React.useState<AppMediaStream | undefined>();
+    const [localVideoStream, setLocalVideoStream] = React.useState<AppMediaStreamTrack | undefined>();
 
     let setInputDevice = React.useCallback((val) => {
         let device = devices.find(d => d.deviceId === val.value);
@@ -123,7 +123,7 @@ const SettingsModal = React.memo((props: { ctx: XModalController, }) => {
         let dev = devices.find(d => d.deviceId === val.value);
         setLocalVideoInput(dev);
         if (localVideoStream) {
-            localVideoStream.close();
+            localVideoStream.stop();
         }
         let v = await AppUserMedia.getUserVideo(dev?.deviceId);
         setLocalVideoStream(v);
@@ -150,19 +150,19 @@ const SettingsModal = React.memo((props: { ctx: XModalController, }) => {
         }
         return () => {
             if (localVideoStream) {
-                localVideoStream.close();
+                localVideoStream.stop();
             }
         };
     }, [localVideoStream]);
 
-    let videoStream = (localVideoStream as AppUserMediaStreamWeb | undefined)?._stream;
+    let videoTrack = (localVideoStream as AppUserMediaTrackWeb | undefined)?.track;
 
     return (
         <XView>
             <XView paddingHorizontal={24} flexDirection="row" paddingTop={12}>
                 <XView width={170} height={128} borderRadius={8} backgroundColor="var(--backgroundTertiaryTrans)">
-                    {videoStream && (
-                        <VideoComponent stream={videoStream} cover={true} compact={true} mirror={true} />
+                    {videoTrack && (
+                        <VideoComponent track={videoTrack} cover={true} compact={true} mirror={true} />
                     )}
                 </XView>
                 <XView flexDirection="column" marginLeft={16} flexGrow={1} flexShrink={1}>

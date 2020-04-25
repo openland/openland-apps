@@ -3,7 +3,6 @@ import { useJsDrag } from './CallFloating';
 import { css, cx } from 'linaria';
 import { Conference_conference_peers, MediaStreamVideoSource } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
-import { AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { VideoComponent } from './ScreenShareModal';
 import { UAvatar, getPlaceholderColorRawById } from 'openland-web/components/unicorn/UAvatar';
 import { bezierPath } from './smooth';
@@ -12,11 +11,12 @@ import { uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { makeStars } from './stars';
-import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { VMMapMap } from 'openland-y-utils/mvvm/vm';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UButton } from 'openland-web/components/unicorn/UButton';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 
 let VolumeSpaceContainerStyle = css`
     width: 100%;
@@ -270,15 +270,15 @@ let isSafari = canUseDOM && ((window as any).safari !== undefined);
 
 const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { mediaSession: MediaSessionManager, selfRef?: React.RefObject<HTMLDivElement> }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
-    let [stream, setStream] = React.useState<AppMediaStream>();
+    let [stream, setStream] = React.useState<AppMediaStreamTrack>();
     const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
     const isLocal = props.id === props.mediaSession.getPeerId();
     React.useEffect(() => {
         if (isLocal) {
             return props.mediaSession.outVideoVM.listen(streams => {
-                let st = streams.find(s => s?.source === 'camera');
+                let st = streams[0];
                 setStream(st);
-                setVideoPaused(!!st?.blinded);
+                setVideoPaused(!st?.enabled);
             });
         } else {
 
@@ -291,7 +291,7 @@ const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { med
             });
 
             let d2 = props.mediaSession.peerVideoVM.listen(props.id, streams => {
-                let st = [...streams.values()].find(s => s?.source === 'camera');
+                let st = streams[0];
                 setStream(st);
             });
             let d3 = props.mediaSession.peerStreamMediaStateVM.listen(props.id, s => {
@@ -308,7 +308,7 @@ const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { med
         }
 
     });
-    let str = !videoPaused && (stream as AppUserMediaStreamWeb | undefined)?._stream;
+    let str = !videoPaused && (stream as AppUserMediaTrackWeb | undefined)?.track;
     return (
         <div className={cx(AvatarItemStyle, !isSafari && !isLocal && TransitionTransform, isLocal && AvatarMovableStyle)} ref={props.selfRef || containerRef}>
             {!str &&
@@ -321,7 +321,7 @@ const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { med
                     />
                 </div>
             }
-            {str && <VideoComponent stream={str} cover={true} mirror={isLocal} videoClass={VolumeSpaceVideoStyle} borderRadius={72} />}
+            {str && <VideoComponent track={str} cover={true} mirror={isLocal} videoClass={VolumeSpaceVideoStyle} borderRadius={72} />}
         </div>
     );
 });

@@ -1,7 +1,7 @@
+import { AppUserMediaStreamTrackNative } from './AppUserMedia';
 import { AppPeerConnectionApi, AppPeerConnectionConfiguration, AppPeerConnection } from 'openland-y-runtime-api/AppPeerConnectionApi';
 import { RTCPeerConnection, RTCSessionDescription, RTCIceCandidate, EventOnAddStream, EventOnConnectionStateChange, MediaStream } from 'react-native-webrtc';
-import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
-import { AppUserMediaStreamNative } from './AppUserMedia';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
 
 class AppPeerConnectionNative implements AppPeerConnection {
 
@@ -11,7 +11,7 @@ class AppPeerConnectionNative implements AppPeerConnection {
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined;
     onnegotiationneeded: (() => void) | undefined;
     oniceconnectionstatechange: ((ev: { target?: { iceConnectionState?: string | 'failed' } }) => void) | undefined = undefined;
-    onstreamadded: ((stream: AppMediaStream) => void) | undefined;
+    ontrackadded: ((stream: AppMediaStreamTrack) => void) | undefined;
 
     #currentStreams = new Map<string, MediaStream>();
 
@@ -30,9 +30,14 @@ class AppPeerConnectionNative implements AppPeerConnection {
                 return;
             }
             this.#currentStreams.set(ev.stream.id, ev.stream);
-            if (this.onstreamadded) {
+            if (this.ontrackadded) {
                 console.warn('[webrtc]', 'onaddstream', ev.stream.toURL());
-                this.onstreamadded(new AppUserMediaStreamNative(ev.stream));
+                for (let t of ev.stream.getAudioTracks()) {
+                    this.ontrackadded(new AppUserMediaStreamTrackNative(t));
+                }
+                for (let t of ev.stream.getVideoTracks()) {
+                    this.ontrackadded(new AppUserMediaStreamTrackNative(t));
+                }
             }
         };
         this.connection.onremovestream = ((ev: { stream: MediaStream } /* Typings are wrong */) => {
@@ -74,9 +79,7 @@ class AppPeerConnectionNative implements AppPeerConnection {
     // Streams
     //
 
-    private audioStream?: MediaStream;
-    private videoStream?: MediaStream;
-    addStream = (stream: AppMediaStream) => {
+    addTrack = (stream: AppMediaStream) => {
         let s = (stream as AppUserMediaStreamNative)._stream;
         if (s.getAudioTracks().length) {
             if (this.audioStream) {
@@ -93,7 +96,7 @@ class AppPeerConnectionNative implements AppPeerConnection {
         this.connection.addStream(s);
     }
 
-    removeStream = (stream: AppMediaStream) => {
+    removeTrack = (stream: AppMediaStream) => {
         let s = (stream as AppUserMediaStreamNative)._stream;
         this.connection.removeStream(s);
     }

@@ -2,7 +2,7 @@ import { OpenlandClient } from 'openland-api/spacex';
 import { ConferenceMedia_conferenceMedia_streams, ConferenceMedia_conferenceMedia_iceServers, MediaStreamVideoSource } from 'openland-api/spacex.types';
 import { AppPeerConnectionFactory } from 'openland-y-runtime/AppPeerConnection';
 import { AppPeerConnection, IceState } from 'openland-y-runtime-api/AppPeerConnectionApi';
-import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
 import { backoff } from 'openland-y-utils/timer';
 import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
 import { VMSetMap } from 'openland-y-utils/mvvm/vm';
@@ -12,11 +12,12 @@ export class MediaStreamManager {
     private readonly client: OpenlandClient;
     private readonly peerId: string;
     private readonly targetPeerId: string | null;
-    private audioOutStream: AppMediaStream;
-    private pendingVideoOutStream?: AppMediaStream;
-    private videoOutStream?: AppMediaStream;
-    private audioInStream?: AppMediaStream;
-    private videoInStream?: AppMediaStream;
+    private audioOutTrack: AppMediaStreamTrack;
+    private pendingVideoOutTrack?: AppMediaStreamTrack;
+    private videoOutTrack?: AppMediaStreamTrack;
+    private audioInTrack?: AppMediaStreamTrack;
+    private videoInTrack?: AppMediaStreamTrack;
+    private videoInTrackScreenShare: boolean = false;
     private readonly iceServers: ConferenceMedia_conferenceMedia_iceServers[];
     private readonly peerConnection: AppPeerConnection;
     private streamConfig: ConferenceMedia_conferenceMedia_streams;
@@ -28,7 +29,7 @@ export class MediaStreamManager {
     private onReady?: () => void;
     private iceConnectionState: IceState = 'new';
     private iceStateListeners = new Set<(iceState: IceState) => void>();
-    private contentStreamListeners = new Set<(stream?: AppMediaStream) => void>();
+    private contentTrackListeners = new Set<(stream?: AppMediaStreamTrack) => void>();
     private dcVM = new VMSetMap<number, (message: { peerId: string, data: any }) => void>();
 
     private _queue: ExecutionQueue;
@@ -38,8 +39,8 @@ export class MediaStreamManager {
         id: string,
         peerId: string,
         iceServers: ConferenceMedia_conferenceMedia_iceServers[],
-        stream: AppMediaStream,
-        videoStream: AppMediaStream | undefined,
+        audioTrack: AppMediaStreamTrack,
+        videoTrack: AppMediaStreamTrack | undefined,
         streamConfig: ConferenceMedia_conferenceMedia_streams,
         onReady: (() => void) | undefined,
         targetPeerId: string | null,
@@ -52,8 +53,8 @@ export class MediaStreamManager {
         this.iceServers = iceServers;
         this.streamConfig = streamConfig;
         this.seq = -1;
-        this.audioOutStream = stream;
-        this.pendingVideoOutStream = videoStream;
+        this.audioOutTrack = audioTrack;
+        this.pendingVideoOutTrack = videoTrack;
         this.onReady = onReady;
         this.peerConnection = AppPeerConnectionFactory.createConnection({
             iceServers: this.iceServers.map(v => ({
@@ -92,15 +93,15 @@ export class MediaStreamManager {
                 });
             }
         };
-        this.peerConnection.onstreamadded = this.onStreamAdded;
-        if (this.audioOutStream) {
-            this.peerConnection.addStream(this.audioOutStream);
+        this.peerConnection.ontrackadded = this.onTrackAdded;
+        if (this.audioOutTrack) {
+            this.peerConnection.addTrack(this.audioOutTrack);
         }
         this._queue.post(() => this.handleState(this.streamConfig));
     }
 
-    onStateChanged = (streamConfig: ConferenceMedia_conferenceMedia_streams, videoStream?: AppMediaStream) => {
-        this.pendingVideoOutStream = videoStream;
+    onStateChanged = (streamConfig: ConferenceMedia_conferenceMedia_streams, videoTrack?: AppMediaStreamTrack) => {
+        this.pendingVideoOutTrack = videoTrack;
         this._queue.post(() => this.handleState(streamConfig));
     }
 
@@ -119,7 +120,7 @@ export class MediaStreamManager {
             this.streamConfig = streamConfig;
             seqBumped = true;
         }
-        
+
         this.updateVideoStream();
 
         if (seqBumped) {
@@ -214,28 +215,26 @@ export class MediaStreamManager {
         }
     }
 
-    onStreamAdded = (stream: AppMediaStream) => {
-        if (stream.hasAudio()) {
-            this.audioInStream = stream;
-        }
-        if (stream.hasVideo()) {
+    onTrackAdded = (track: AppMediaStreamTrack) => {
+        if (track.kind === 'audio') {
+            this.audioInTrack = track;
+        } else if (track.kind === 'video') {
             let isScreenShare = this.streamConfig.mediaState.videoSource === MediaStreamVideoSource.screen_share;
-            stream.source = isScreenShare ? 'screen_share' : 'camera';
-
-            this.videoInStream = stream;
+            this.videoInTrack = track;
+            this.videoInTrackScreenShare = isScreenShare;
             this.notifyVideoInStream();
         }
     }
 
     updateVideoStream = () => {
-        if (this.pendingVideoOutStream && this.streamConfig.localStreams.find(s => s.__typename === 'LocalStreamVideoConfig')) {
-            if (this.videoOutStream !== this.pendingVideoOutStream) {
-                this.videoOutStream = this.pendingVideoOutStream;
-                this.peerConnection.addStream(this.pendingVideoOutStream);
+        if (this.pendingVideoOutTrack && this.streamConfig.localStreams.find(s => s.__typename === 'LocalStreamVideoConfig')) {
+            if (this.videoOutTrack !== this.pendingVideoOutTrack) {
+                this.videoOutTrack = this.pendingVideoOutTrack;
+                this.peerConnection.addTrack(this.pendingVideoOutTrack);
             }
-        } else if (this.videoOutStream) {
-            this.peerConnection.removeStream(this.videoOutStream);
-            this.videoOutStream = undefined;
+        } else if (this.videoOutTrack) {
+            this.peerConnection.removeTrack(this.videoOutTrack);
+            this.videoOutTrack = undefined;
         }
     }
 
@@ -246,18 +245,21 @@ export class MediaStreamManager {
     ////
     // IO
     ////
-    getAudioOutStream = () => {
-        return this.audioOutStream;
+    getAudioOutTrack = () => {
+        return this.audioOutTrack;
     }
-    getVideoInStream = () => {
-        return this.videoInStream;
+    getVideoInTrack = () => {
+        return this.videoInTrack;
     }
-    getVideoOutStream = () => {
-        return this.videoOutStream;
+    isVideoInScreenshare = () => {
+        return this.videoInTrackScreenShare;
+    }
+    getVideoOutTrack = () => {
+        return this.videoOutTrack;
     }
 
-    getAudioInStream = () => {
-        return this.audioInStream;
+    getAudioInTrack = () => {
+        return this.audioInTrack;
     }
 
     getConnection = () => {
@@ -288,16 +290,16 @@ export class MediaStreamManager {
         return this.iceConnectionState;
     }
 
-    listenVideoInStream = (listener: (stream?: AppMediaStream) => void) => {
-        this.contentStreamListeners.add(listener);
-        listener(this.videoInStream);
+    listenVideoInTrack = (listener: (stream?: AppMediaStreamTrack) => void) => {
+        this.contentTrackListeners.add(listener);
+        listener(this.videoInTrack);
         return () => {
-            this.contentStreamListeners.delete(listener);
+            this.contentTrackListeners.delete(listener);
         };
     }
 
     private notifyVideoInStream = () => {
-        this.contentStreamListeners.forEach(l => l(this.videoInStream));
+        this.contentTrackListeners.forEach(l => l(this.videoInTrack));
     }
 
     ////

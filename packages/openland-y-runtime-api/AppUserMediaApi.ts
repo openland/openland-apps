@@ -1,16 +1,12 @@
-export interface AppMediaStream {
-    source?: 'camera' | 'screen_share' | null;
+export interface AppMediaStreamTrack {
     id: string;
-    muted: boolean;
-    blinded: boolean;
-    close(): void;
-    onClosed: (() => void) | undefined;
-    hasAudio(): boolean;
-    hasVideo(): boolean;
+    kind: 'video' | 'audio';
+    enabled: boolean;
+    stop(): void;
 }
 
 export interface AppUserMediaApi {
-    getUserAudio(deviceId?: string): Promise<AppMediaStream>;
-    getUserVideo(deviceId?: string): Promise<AppMediaStream>;
-    getUserScreen(): Promise<AppMediaStream>;
+    getUserAudio(deviceId?: string): Promise<AppMediaStreamTrack>;
+    getUserVideo(deviceId?: string): Promise<AppMediaStreamTrack>;
+    getUserScreen(): Promise<AppMediaStreamTrack>;
 }
