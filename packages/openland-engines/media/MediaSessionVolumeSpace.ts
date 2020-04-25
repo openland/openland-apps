@@ -154,7 +154,7 @@ class LostPeer {
 type UpdateType = Add | Sync | PartialUpdate | PathIncrement | Reqest | LostPeer;
 
 export class MediaSessionVolumeSpace {
-    private mediaSession: MediaSessionManager;
+    readonly mediaSession: MediaSessionManager;
     private d1: () => void;
     private d2: () => void;
     readonly selfPeer: PeerAvatar;

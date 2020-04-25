@@ -105,13 +105,20 @@ const bgAvatarOverlay = css`
 
 export const useJsDrag = (
     targetRef: React.MutableRefObject<HTMLDivElement | undefined> | React.RefObject<HTMLDivElement>,
-    containerRef: React.RefObject<HTMLDivElement> | undefined,
-    onMove: (coords: number[]) => void,
-    savedCallback: (() => number[] | undefined) | number[] | undefined,
-    limitToScreen?: boolean,
+    options?:
+        {
+            containerRef?: React.RefObject<HTMLDivElement>,
+            onStart?: () => void;
+            onMove?: (coords: number[]) => void,
+            onStop?: () => void;
+            savedCallback?: (() => number[] | undefined) | number[],
+            limitToScreen?: boolean,
+
+        },
     depth?: any[]
 ) => {
 
+    let { containerRef, onMove, savedCallback, limitToScreen, onStart, onStop } = options || {};
     React.useEffect(() => {
         const container = containerRef?.current;
         const target = targetRef.current;
@@ -136,10 +143,16 @@ export const useJsDrag = (
             }
             ev.stopPropagation();
             dragging = true;
+            if (onStart) {
+                onStart();
+            }
         };
         const onDragStop = (ev: MouseEvent) => {
             dragging = false;
             prev = undefined;
+            if (onStop) {
+                onStop();
+            }
         };
         const onDrag = (ev: MouseEvent | TouchEvent) => {
             if (!dragging) {
@@ -159,7 +172,9 @@ export const useJsDrag = (
                 positionShift = [positionShift[0] + moveDelta[0], positionShift[1] + moveDelta[1]];
                 checkPostion();
 
-                onMove(positionShift);
+                if (onMove) {
+                    onMove(positionShift);
+                }
                 if (container) {
                     container.style.transform = `translate(${positionShift[0]}px, ${
                         positionShift[1]
@@ -301,11 +316,11 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
     const targetRef = React.useRef<HTMLDivElement>();
     const containerRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
-    const moveCallBack = React.useCallback(debounce((shift: number[]) => {
+    const onMove = React.useCallback(debounce((shift: number[]) => {
         window.localStorage.setItem('call_floating_shift', JSON.stringify(shift));
     }, 500), []);
     const [targetState, setTargetState] = React.useState<HTMLDivElement>();
-    useJsDrag(targetRef, containerRef, moveCallBack, JSON.parse(window.localStorage.getItem('call_floating_shift') || '[]'), true, [targetState]);
+    useJsDrag(targetRef, { containerRef, onMove, savedCallback: JSON.parse(window.localStorage.getItem('call_floating_shift') || '[]'), limitToScreen: true }, [targetState]);
     let messenger = React.useContext(MessengerContext);
     let calls = messenger.calls;
     let callState = calls.useState();
