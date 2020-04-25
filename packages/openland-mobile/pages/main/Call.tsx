@@ -23,13 +23,13 @@ import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { Conference_conference_peers, MediaStreamVideoSource } from 'openland-api/spacex.types';
-import { AppUserMediaStreamNative } from 'openland-y-runtime-native/AppUserMedia';
-import { RTCView } from 'react-native-webrtc';
-import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
+import { RTCView, MediaStreamTrack, MediaStream } from 'react-native-webrtc';
 import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradient.native';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppUserMediaStreamTrackNative } from 'openland-y-runtime-native/AppUserMedia';
 
 const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaSession: MediaSessionManager, calls: CallsEngine, h: number, mirror?: boolean }) => {
-    let [mainStream, setMainStream] = React.useState<AppMediaStream>();
+    let [mainStream, setMainStream] = React.useState<AppMediaStreamTrack>();
     // @ts-ignore
     let [miniStream, setMiniStream] = React.useState<AppMediaStream>();
     const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
@@ -43,16 +43,16 @@ const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaS
         let d2: (() => void) | undefined;
         if (isLocal) {
             d1 = props.mediaSession.outVideoVM.listen(streams => {
-                let cam = streams.find(s => s?.source === 'camera');
-                let screen = streams.find(s => s?.source === 'screen_share');
+                let cam = streams[0];
+                let screen = streams[1];
                 setMainStream(screen ? screen : cam);
                 setMiniStream(screen ? cam : undefined);
-                setVideoPaused(!!cam?.blinded);
+                setVideoPaused(!cam?.enabled);
             });
         } else {
             d1 = props.mediaSession.peerVideoVM.listen(props.peer.id, streams => {
-                let cam = [...streams.values()].find(s => s.source === 'camera');
-                let screen = [...streams.values()].find(s => s.source === 'screen_share');
+                let cam = streams[0];
+                let screen = streams[1];
                 setMainStream(screen ? screen : cam);
                 setMiniStream(screen ? cam : undefined);
             });
@@ -72,16 +72,29 @@ const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaS
         };
     }, [localPeer]);
     let colors = getPlaceholderColors(props.peer.user.id);
-    let mainStreamNative = (!videoPaused || mainStream?.source === 'screen_share') && (mainStream as AppUserMediaStreamNative | undefined)?._stream;
+    let track: MediaStreamTrack | null = null;
+    if (!videoPaused || mainStream) {
+        track = (mainStream as AppUserMediaStreamTrackNative).track;
+    }
+    const stream = React.useMemo(() => {
+        if (track) {
+            let res = new MediaStream(undefined);
+            res.addTrack(track);
+            return res;
+        } else {
+            return null;
+        }
+    }, [track]);
+    // let mainStreamNative = (!videoPaused || mainStream?.source === 'screen_share') && (mainStream as AppUserMediaStreamNative | undefined)?._stream;
     // @ts-ignore
-    let miniStreamNative = (mainStream as AppUserMediaStreamNative | undefined)?._stream;
+    // let miniStreamNative = (mainStream as AppUserMediaStreamNative | undefined)?._stream;
     return (
         <View flexGrow={1} height={props.h} backgroundColor="gray">
-            {mainStreamNative && <RTCView streamURL={mainStreamNative.toURL()} style={{ flexGrow: 1 }} objectFit="cover" mirror={props.mirror} />}
-            {mainStreamNative && <View position="absolute" left={6} top={6}>
+            {stream && <RTCView streamURL={stream.toURL()} style={{ flexGrow: 1 }} objectFit="cover" mirror={props.mirror} />}
+            {stream && <View position="absolute" left={6} top={6}>
                 <ZAvatar size="medium" id={props.peer.user.id} title={props.peer.user.name} photo={props.peer.user.photo} />
             </View>}
-            {!mainStreamNative &&
+            {!stream &&
                 <ZLinearGradient
                     flexGrow={1}
                     alignSelf="stretch"
@@ -295,7 +308,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                     onLongPress={() => {
                         if (callState.video) {
                             ReactNativeHapticFeedback.trigger('notificationSuccess');
-                            ((callState.video as AppUserMediaStreamNative)._stream.getVideoTracks()[0] as any)?._switchCamera();
+                            (callState.video as any)?._switchCamera();
                             setMirrorSelf(m => !m);
                         }
                     }}

@@ -51,7 +51,6 @@ export const AppUserMedia: AppUserMediaApi = {
         if (media.getVideoTracks().length) {
             MediaDevicesManager.instance().updateVideoOutputStreamIfNeeded(res);
         }
-
         return res;
     },
 
@@ -65,11 +64,9 @@ export const AppUserMedia: AppUserMediaApi = {
         });
 
         let res = new AppUserMediaTrackWeb(media.getVideoTracks()[0]);
-
         if (media.getVideoTracks().length) {
             MediaDevicesManager.instance().updateVideoOutputStreamIfNeeded(res);
         }
-
         return res;
     },
 

@@ -1,7 +1,7 @@
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
 
 import * as React from 'react';
-import { AppUserMedia, AppUserMediaStreamWeb } from 'openland-y-runtime-web/AppUserMedia';
-import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppUserMedia } from 'openland-y-runtime-web/AppUserMedia';
 let mediaDevicesManagerInstance: MediaDevicesManager | undefined;
 
 class MediaDevicesManager {
@@ -13,7 +13,7 @@ class MediaDevicesManager {
     private selectedOutputListeners = new Set<((output: MediaDeviceInfo | undefined) => void)>();
     private selectedInputListeners = new Set<((input: MediaDeviceInfo | undefined) => void)>();
     private selectedVideoInputListeners = new Set<((input: MediaDeviceInfo | undefined) => void)>();
-    private streamUpdateListeners = new Set<((srteam: AppMediaStream) => void)>();
+    private streamUpdateListeners = new Set<((track: AppMediaStreamTrack) => void)>();
 
     constructor() {
         (async () => {
@@ -139,21 +139,21 @@ class MediaDevicesManager {
         return this.selectedVideoInput;
     }
 
-    currentAudioStream: AppMediaStream | undefined;
-    updateAudioOutputStreamIfeeded = (stream: AppMediaStream) => {
+    currentAudioStream: AppMediaStreamTrack | undefined;
+    updateAudioOutputStreamIfeeded = (stream: AppMediaStreamTrack) => {
         if (!this.currentAudioStream) {
             this.currentAudioStream = stream;
         }
     }
 
-    currentVideoStream: AppMediaStream | undefined;
-    updateVideoOutputStreamIfNeeded = (stream: AppMediaStream) => {
+    currentVideoStream: AppMediaStreamTrack | undefined;
+    updateVideoOutputStreamIfNeeded = (stream: AppMediaStreamTrack) => {
         if (!this.currentVideoStream) {
             this.currentVideoStream = stream;
         }
     }
 
-    notifyOutputStreamClosed = (stream: AppMediaStream) => {
+    notifyOutputStreamClosed = (stream: AppMediaStreamTrack) => {
         if (stream === this.currentAudioStream) {
             this.currentAudioStream = undefined;
         }
@@ -163,41 +163,41 @@ class MediaDevicesManager {
     }
 
     updateAudioOutStreamDevice = async (newDevice: MediaDeviceInfo) => {
-        if (this.currentAudioStream && (this.currentAudioStream as AppUserMediaStreamWeb)._stream) {
-            let media = await AppUserMedia.getUserAudio(newDevice.deviceId);
-            let str = (this.currentAudioStream as AppUserMediaStreamWeb)._stream;
-            for (let t of str.getAudioTracks()) {
-                t.stop();
-                str.removeTrack(t);
-            }
-            for (let t of (media as AppUserMediaStreamWeb)._stream.getAudioTracks()) {
-                str.addTrack(t);
-            }
-            for (let l of this.streamUpdateListeners) {
-                l(this.currentAudioStream);
-            }
-        }
+        // if (this.currentAudioStream && (this.currentAudioStream as AppUserMediaStreamWeb)._stream) {
+        //     let media = await AppUserMedia.getUserAudio(newDevice.deviceId);
+        //     let str = (this.currentAudioStream as AppUserMediaStreamWeb)._stream;
+        //     for (let t of str.getAudioTracks()) {
+        //         t.stop();
+        //         str.removeTrack(t);
+        //     }
+        //     for (let t of (media as AppUserMediaStreamWeb)._stream.getAudioTracks()) {
+        //         str.addTrack(t);
+        //     }
+        //     for (let l of this.streamUpdateListeners) {
+        //         l(this.currentAudioStream);
+        //     }
+        // }
     }
 
     updateVideoOutStreamDevice = async (newDevice: MediaDeviceInfo) => {
-        if (this.currentVideoStream && (this.currentVideoStream as AppUserMediaStreamWeb)._stream) {
-            let media = await AppUserMedia.getUserVideo(newDevice.deviceId);
-            let str = (this.currentVideoStream as AppUserMediaStreamWeb)._stream;
-            for (let t of str.getVideoTracks()) {
-                t.stop();
-                str.removeTrack(t);
-            }
-            for (let t of (media as AppUserMediaStreamWeb)._stream.getVideoTracks()) {
-                str.addTrack(t);
-                (media as AppUserMediaStreamWeb)._stream.removeTrack(t);
-            }
-            for (let l of this.streamUpdateListeners) {
-                l(this.currentVideoStream);
-            }
-        }
+        // if (this.currentVideoStream && (this.currentVideoStream as AppUserMediaStreamWeb)._stream) {
+        //     let media = await AppUserMedia.getUserVideo(newDevice.deviceId);
+        //     let str = (this.currentVideoStream as AppUserMediaStreamWeb)._stream;
+        //     for (let t of str.getVideoTracks()) {
+        //         t.stop();
+        //         str.removeTrack(t);
+        //     }
+        //     for (let t of (media as AppUserMediaStreamWeb)._stream.getVideoTracks()) {
+        //         str.addTrack(t);
+        //         (media as AppUserMediaStreamWeb)._stream.removeTrack(t);
+        //     }
+        //     for (let l of this.streamUpdateListeners) {
+        //         l(this.currentVideoStream);
+        //     }
+        // }
     }
 
-    listenStreamUpdated = (listener: (stream: AppMediaStream) => void) => {
+    listenStreamUpdated = (listener: (stream: AppMediaStreamTrack) => void) => {
         this.streamUpdateListeners.add(listener);
         return () => {
             this.streamUpdateListeners.delete(listener);

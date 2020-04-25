@@ -4,11 +4,11 @@ import { mediaDevices, MediaStreamTrack, MediaStream } from 'react-native-webrtc
 export class AppUserMediaStreamTrackNative implements AppMediaStreamTrack {
     readonly id: string;
     readonly kind: 'audio' | 'video';
-    readonly #track: MediaStreamTrack;
+    readonly track: MediaStreamTrack;
 
     constructor(track: MediaStreamTrack) {
         this.id = track.id;
-        this.#track = track;
+        this.track = track;
         if (track.kind === 'audio') {
             this.kind = 'audio';
         } else if (track.kind === 'video') {
@@ -19,15 +19,15 @@ export class AppUserMediaStreamTrackNative implements AppMediaStreamTrack {
     }
 
     get enabled() {
-        return this.#track.enabled;
+        return this.track.enabled;
     }
 
     set enabled(v: boolean) {
-        this.#track.enabled = v;
+        this.track.enabled = v;
     }
 
     stop = () => {
-        this.#track.stop();
+        this.track.stop();
     }
 }
 

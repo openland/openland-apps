@@ -2,7 +2,7 @@ import { AppPeerConnectionApi, AppPeerConnectionConfiguration, AppPeerConnection
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
 import { AppUserMediaTrackWeb } from './AppUserMedia';
 import { randomKey } from 'openland-y-utils/randomKey';
-import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
+// import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
 
 export class AppPeerConnectionWeb implements AppPeerConnection {
     private id = randomKey();
@@ -23,26 +23,26 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     private dataChannels = new Map<number, RTCDataChannel>();
     private volume?: number;
 
-    private d1: () => void;
-    private d2: () => void;
+    // private d1: () => void;
+    // private d2: () => void;
 
     constructor(connection: RTCPeerConnection) {
         this.connection = connection;
         this.connection.onicecandidate = (ev) => this.started && this.onicecandidate && this.onicecandidate({ candidate: ev.candidate ? JSON.stringify(ev.candidate) : undefined });
 
-        this.d2 = MediaDevicesManager.instance().listenOutputDevice(d => {
-            if (d !== this.audioOutputDevice) {
-                this.audioOutputDevice = d;
-                // TODO how to do it in safari?
-                if (this.audio && (this.audio as any).setSinkId) {
-                    (this.audio as any).setSinkId(this.audioOutputDevice?.deviceId);
-                }
-            }
-        });
+        // this.d2 = MediaDevicesManager.instance().listenOutputDevice(d => {
+        //     if (d !== this.audioOutputDevice) {
+        //         this.audioOutputDevice = d;
+        //         // TODO how to do it in safari?
+        //         if (this.audio && (this.audio as any).setSinkId) {
+        //             (this.audio as any).setSinkId(this.audioOutputDevice?.deviceId);
+        //         }
+        //     }
+        // });
 
-        this.d1 = MediaDevicesManager.instance().listenStreamUpdated(s => {
-            // this.addStream(s);
-        });
+        // this.d1 = MediaDevicesManager.instance().listenStreamUpdated(s => {
+        //     // this.addStream(s);
+        // });
 
         this.connection.ontrack = (ev) => {
             console.warn(ev.track);
@@ -122,7 +122,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     }
 
     addTrack = (track: AppMediaStreamTrack) => {
-        this.removeTrack(track);
+        this.removeTrack(track); // WTF?
         let rawTrack = (track as AppUserMediaTrackWeb).track;
         let sender = this.connection.addTrack(rawTrack);
         this.trackSenders.set(track.id, sender);
@@ -153,8 +153,8 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         for (let dc of this.dataChannels.values()) {
             dc.close();
         }
-        this.d1();
-        this.d2();
+        // this.d1();
+        // this.d2();
         this.connection.close();
     }
 

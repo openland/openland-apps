@@ -13,7 +13,7 @@ class AppPeerConnectionNative implements AppPeerConnection {
     oniceconnectionstatechange: ((ev: { target?: { iceConnectionState?: string | 'failed' } }) => void) | undefined = undefined;
     ontrackadded: ((stream: AppMediaStreamTrack) => void) | undefined;
 
-    #currentStreams = new Map<string, MediaStream>();
+    #trackStreams = new Map<string, MediaStream>();
 
     constructor(connection: RTCPeerConnection) {
         this.connection = connection;
@@ -25,11 +25,6 @@ class AppPeerConnectionNative implements AppPeerConnection {
                 return;
             }
             console.warn('[webrtc]', 'Received new stream ' + ev.stream.id);
-            if (this.#currentStreams.has(ev.stream.id)) {
-                console.warn('[webrtc]', 'Unexpected second stream!');
-                return;
-            }
-            this.#currentStreams.set(ev.stream.id, ev.stream);
             if (this.ontrackadded) {
                 console.warn('[webrtc]', 'onaddstream', ev.stream.toURL());
                 for (let t of ev.stream.getAudioTracks()) {
@@ -40,15 +35,15 @@ class AppPeerConnectionNative implements AppPeerConnection {
                 }
             }
         };
-        this.connection.onremovestream = ((ev: { stream: MediaStream } /* Typings are wrong */) => {
-            if (!this.started) {
-                return;
-            }
-            console.warn('[webrtc]', 'Stream was removed: ' + ev.stream.id);
-            if (!this.#currentStreams.has(ev.stream.id)) {
-                this.#currentStreams.delete(ev.stream.id);
-            }
-        }) as any;
+        // this.connection.onremovestream = ((ev: { stream: MediaStream } /* Typings are wrong */) => {
+        //     if (!this.started) {
+        //         return;
+        //     }
+        //     console.warn('[webrtc]', 'Stream was removed: ' + ev.stream.id);
+        //     // if (!this.#currentStreams.has(ev.stream.id)) {
+        //     //     this.#currentStreams.delete(ev.stream.id);
+        //     // }
+        // }) as any;
     }
 
     addIceCandidate = async (candidate: string) => {
@@ -79,26 +74,20 @@ class AppPeerConnectionNative implements AppPeerConnection {
     // Streams
     //
 
-    addTrack = (stream: AppMediaStream) => {
-        let s = (stream as AppUserMediaStreamNative)._stream;
-        if (s.getAudioTracks().length) {
-            if (this.audioStream) {
-                this.connection.removeStream(this.audioStream);
-            }
-            this.audioStream = s;
-        }
-        if (s.getVideoTracks().length) {
-            if (this.videoStream) {
-                this.connection.removeStream(this.videoStream);
-            }
-            this.videoStream = s;
-        }
-        this.connection.addStream(s);
+    addTrack = (track: AppMediaStreamTrack) => {
+        this.removeTrack(track); // WTF?
+        let rawTrack = (track as AppUserMediaStreamTrackNative).track;
+        let stream = new MediaStream(undefined);
+        stream.addTrack(rawTrack);
+        this.connection.addStream(stream);
+        this.#trackStreams.set(track.id, stream);
     }
 
-    removeTrack = (stream: AppMediaStream) => {
-        let s = (stream as AppUserMediaStreamNative)._stream;
-        this.connection.removeStream(s);
+    removeTrack = (track: AppMediaStreamTrack) => {
+        let stream = this.#trackStreams.get(track.id);
+        if (stream) {
+            this.connection.removeStream(stream);
+        }
     }
 
     //
@@ -110,7 +99,7 @@ class AppPeerConnectionNative implements AppPeerConnection {
             return;
         }
         this.started = false;
-        this.#currentStreams.clear();
+        this.#trackStreams.clear();
         this.connection.close();
     }
 }
