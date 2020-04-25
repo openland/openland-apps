@@ -17,6 +17,7 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
+import { YoutubeParty } from './YoutubeParty';
 
 let VolumeSpaceContainerStyle = css`
     width: 100%;
@@ -196,7 +197,6 @@ let PeerTextContainer = css`
 
 let PeerTextContainerEditable = css`
     transition: background-color 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
-    pointer-events: inherit;
     & > div {
             transition: opacity 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
             opacity: 0;
@@ -209,6 +209,10 @@ let PeerTextContainerEditable = css`
     }
 `;
 
+let PointerEventsInherit = css`
+    pointer-events: inherit;
+`;
+
 let TextAreaStyle = css`
     pointer-events: inherit;
     border-radius: 8px;
@@ -216,6 +220,13 @@ let TextAreaStyle = css`
     width: 100%;
     height: 100%;
     resize: none;
+`;
+
+let YtbPartyStyle = css`
+    pointer-events: inherit;
+    width: 100%;
+    height: 100%;
+    opacity: 1 !important;
 `;
 
 let MenuEraseStyle = css`
@@ -335,7 +346,7 @@ const PeerImage = React.memo((props: { peerId: string, peer?: Conference_confere
     const resizeRef = React.useRef<HTMLDivElement>(null);
     const moveRef = React.useRef<HTMLDivElement>(null);
     const imgRef = React.useRef<HTMLImageElement>(null);
-    const onImageMove = React.useCallback((coords: number[]) => {
+    const onMove = React.useCallback((coords: number[]) => {
         let img = props.space.imagesVM.getById(props.imageId);
         if (img) {
             props.space.update(img.id, { coords, type: 'image' });
@@ -353,16 +364,24 @@ const PeerImage = React.memo((props: { peerId: string, peer?: Conference_confere
     // worse access mgmt ever
     let canMove = (props.peer?.user.isYou || !props.peersRef.current.find(peer => peer.id === props.peerId));
     if (canMove) {
-        useJsDrag(moveRef, ref, onImageMove, () => {
-            let img = props.space.imagesVM.getById(props.imageId);
-            return img?.coords;
-        });
-        useJsDrag(resizeRef, undefined, onImageResize, () => {
-            let img = props.space.imagesVM.getById(props.imageId);
-            if (img) {
-                return [img.coords[0] + img.containerWH[0], img.coords[1] + img.containerWH[1]];
+        useJsDrag(moveRef, {
+            containerRef: ref,
+            onMove,
+            savedCallback: () => {
+                let img = props.space.imagesVM.getById(props.imageId);
+                return img?.coords;
             }
-            return undefined;
+        });
+
+        useJsDrag(resizeRef, {
+            onMove: onImageResize,
+            savedCallback: () => {
+                let img = props.space.imagesVM.getById(props.imageId);
+                if (img) {
+                    return [img.coords[0] + img.containerWH[0], img.coords[1] + img.containerWH[1]];
+                }
+                return undefined;
+            }
         });
     }
     React.useEffect(() => {
@@ -403,7 +422,9 @@ const PeerText = React.memo((props: { peerId: string, peer?: Conference_conferen
     const ref = React.useRef<HTMLDivElement>(null);
     const moveRef = React.useRef<HTMLDivElement>(null);
     const textRef = React.useRef<HTMLTextAreaElement>(null);
+    const ytbContainerRef = React.useRef<HTMLDivElement>(null);
     const resizeRef = React.useRef<HTMLDivElement>(null);
+    const [ytbLink, setYtbLink] = React.useState<string>();
     const onMove = React.useCallback((coords: number[]) => {
         let t = props.space.simpleTextsVM.getById(props.textId);
         if (t) {
@@ -418,6 +439,16 @@ const PeerText = React.memo((props: { peerId: string, peer?: Conference_conferen
             props.space.update(t.id, { containerWH, type: 'simple_text' });
         }
     }, []);
+    const onJsDragStart = React.useCallback(() => {
+        if (ytbContainerRef.current) {
+            ytbContainerRef.current.style.pointerEvents = 'none';
+        }
+    }, []);
+    const onJsDragStop = React.useCallback(() => {
+        if (ytbContainerRef.current) {
+            ytbContainerRef.current.style.pointerEvents = 'inherit';
+        }
+    }, []);
 
     const onTextChanged = React.useCallback((ev: React.ChangeEvent<HTMLTextAreaElement>) => {
         let t = props.space.simpleTextsVM.getById(props.textId);
@@ -429,31 +460,47 @@ const PeerText = React.memo((props: { peerId: string, peer?: Conference_conferen
     // worse access mgmt ever
     let canEdit = (props.peer?.user.isYou || !props.peersRef.current.find(peer => peer.id === props.peerId));
     if (canEdit) {
-        useJsDrag(moveRef, ref, onMove, () => {
-            let text = props.space.simpleTextsVM.getById(props.textId);
-            return text?.coords;
-        });
-        useJsDrag(resizeRef, undefined, onResize, () => {
-            let text = props.space.simpleTextsVM.getById(props.textId);
-            if (text) {
-                return [text.coords[0] + text.containerWH[0], text.coords[1] + text.containerWH[1]];
+        useJsDrag(moveRef, {
+            containerRef: ref,
+            onMove,
+            onStart: onJsDragStart,
+            onStop: onJsDragStop,
+            savedCallback: () => {
+                let text = props.space.simpleTextsVM.getById(props.textId);
+                return text?.coords;
             }
-            return undefined;
+        });
+        useJsDrag(resizeRef, {
+            onMove: onResize,
+            onStart: onJsDragStart,
+            onStop: onJsDragStop,
+
+            savedCallback: () => {
+                let text = props.space.simpleTextsVM.getById(props.textId);
+                if (text) {
+                    return [text.coords[0] + text.containerWH[0], text.coords[1] + text.containerWH[1]];
+                }
+                return undefined;
+            }
         });
     }
     React.useEffect(() => {
         return props.space.simpleTextsVM.listenId(props.peerId, props.textId, text => {
-            if (ref.current && textRef.current) {
-                textRef.current.value = text.text;
+            if (ref.current) {
                 ref.current.style.transform = `translate(${text.coords[0]}px, ${text.coords[1]}px)`;
-                if (canEdit) {
-                    textRef.current.focus({ preventScroll: true });
+                if (textRef.current) {
+                    textRef.current.value = text.text;
+                    if (canEdit) {
+                        textRef.current.focus({ preventScroll: true });
+                    }
+                    textRef.current.style.color = text.color;
+                    textRef.current.style.fontSize = `${text.fontSize}px`;
                 }
-                textRef.current.style.color = text.color;
-                textRef.current.style.fontSize = `${text.fontSize}px`;
 
                 ref.current.style.width = `${text.containerWH[0]}px`;
                 ref.current.style.height = `${text.containerWH[1]}px`;
+
+                setYtbLink(text.text.includes('youtube') || text.text.includes('youtu.be') ? text.text : undefined);
             }
         });
     }, []);
@@ -461,8 +508,10 @@ const PeerText = React.memo((props: { peerId: string, peer?: Conference_conferen
         props.space.delete(props.textId);
     }, []);
     return (
-        <div ref={ref} className={cx(PeerTextContainer, canEdit && PeerTextContainerEditable)}>
-            <textarea className={TextAreaStyle} ref={textRef} onChange={onTextChanged} />
+        <div ref={ref} className={cx(PeerTextContainer, canEdit && PeerTextContainerEditable, (canEdit || ytbLink) && PointerEventsInherit)}>
+            {!ytbLink && <textarea className={TextAreaStyle} ref={textRef} onChange={onTextChanged} />}
+            {ytbLink && <div ref={ytbContainerRef} className={YtbPartyStyle}><YoutubeParty link={ytbLink} mediaSession={props.space.mediaSession}/></div>}
+
             {canEdit && <div ref={moveRef} className={MoveAnchorStyle} />}
             {canEdit && <div ref={resizeRef} className={ResizerAnchorStyle} />}
             {canEdit && <div onClick={del} className={DeleteAnchorStyle} />}
@@ -623,7 +672,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     let peersRef = React.useRef(props.peers);
     peersRef.current = props.peers;
 
-    useJsDrag(selfRef, selfRef, props.mediaSession.volumeSpace.moveSelf, props.mediaSession.volumeSpace.selfPeer.coords, undefined, [props.peers]);
+    useJsDrag(selfRef, { containerRef: selfRef, onMove: props.mediaSession.volumeSpace.moveSelf, savedCallback: props.mediaSession.volumeSpace.selfPeer.coords }, [props.peers]);
     React.useLayoutEffect(() => {
         // scroll to center
         if (containerRef.current) {

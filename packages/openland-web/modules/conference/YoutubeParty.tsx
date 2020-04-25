@@ -7,7 +7,7 @@ import { css } from 'linaria';
 interface YtbInstance {
     getCurrentTime(): number;
     getDuration(): number;
-    seekTo(time: number): void;
+    seekTo(time: number, allowSeekAhead?: boolean): void;
     playVideo(): void;
     pauseVideo(): void;
 }
@@ -16,7 +16,8 @@ const YtbContainerStyle = css`
     width: 100%;
     height: 100%;
 `;
-export const YoutubeParty = React.memo((props: { link: string, mediaSession: MediaSessionManager }) => {
+
+export const YoutubeParty = React.memo((props: { link: string, mediaSession: MediaSessionManager, controls?: boolean }) => {
     let id: string | undefined;
     let url = new URL(props.link);
     if (props.link.includes('youtu.be')) {
@@ -24,28 +25,32 @@ export const YoutubeParty = React.memo((props: { link: string, mediaSession: Med
     } else {
         id = url.searchParams.get('v') || undefined;
     }
-    console.warn('[YTB]', id);
+
+    const [ready, setReady] = React.useState(false);
 
     const targetRef = React.useRef<YtbInstance>();
     const onReady = React.useCallback((ev: { target: YtbInstance }) => {
         targetRef.current = ev.target;
+        setReady(true);
     }, []);
 
     const stateSeqRef = React.useRef(0);
     const messageSeqRef = React.useRef(0);
-    const palyingState = React.useRef(false);
+    const palyingState = React.useRef<boolean>();
     const seqPalyingState = React.useRef(false);
     const obay = React.useRef(true);
-    const initial = React.useRef(true);
+    const ignorePlay = React.useRef(false);
     const onPlay = React.useCallback(() => {
-        if (!palyingState.current) {
+        if (ignorePlay.current) {
+            targetRef.current?.pauseVideo();
+        } else if (!palyingState.current) {
             palyingState.current = true;
             if ((seqPalyingState.current !== palyingState.current) && !obay.current) {
                 seqPalyingState.current = palyingState.current;
                 stateSeqRef.current++;
             }
         }
-        initial.current = false;
+        ignorePlay.current = false;
     }, []);
     const onPause = React.useCallback(() => {
         if (palyingState.current) {
@@ -55,11 +60,12 @@ export const YoutubeParty = React.memo((props: { link: string, mediaSession: Med
                 stateSeqRef.current++;
             }
         }
-
     }, []);
     React.useEffect(() => {
+        if (!ready) {
+            return;
+        }
         let session = uuid();
-        initial.current = true;
         stateSeqRef.current = 0;
         messageSeqRef.current = 0;
         let lastTime = 0;
@@ -76,6 +82,13 @@ export const YoutubeParty = React.memo((props: { link: string, mediaSession: Med
         }, 200);
 
         let obayTimer = window.setTimeout(() => obay.current = false, 500);
+
+        let doObay = () => {
+            obay.current = true;
+            window.clearTimeout(obayTimer);
+            obayTimer = window.setTimeout(() => obay.current = false, 500);
+        };
+
         let peerSeq: { [peerId: string]: number | undefined } = {};
         let d = props.mediaSession.dcVM.listen(container => {
             let message: { channel: string, id: string, session: string, seq: number, stateSeq: number, time: number, palyingState: boolean } | undefined;
@@ -94,15 +107,11 @@ export const YoutubeParty = React.memo((props: { link: string, mediaSession: Med
             if ((peerSeq[container.peerId + message.session] || -1) >= message.seq) {
                 return;
             }
+
             if (message.stateSeq < stateSeqRef.current) {
                 return;
             } else if (message.stateSeq > stateSeqRef.current) {
-                obay.current = true;
-                window.clearTimeout(obayTimer);
-                obayTimer = window.setTimeout(() => obay.current = false, 500);
-                // sync time
-                console.log('[YTB]', 'sync time', message);
-                targetRef.current?.seekTo(message.time);
+                doObay();
                 // sync state
                 if (palyingState.current !== message.palyingState) {
                     console.log('[YTB]', 'sync state', message);
@@ -112,10 +121,17 @@ export const YoutubeParty = React.memo((props: { link: string, mediaSession: Med
                         targetRef.current?.pauseVideo();
                     }
                 }
+                // sync time
+                console.log('[YTB]', 'sync time', message);
+                targetRef.current?.seekTo(message.time, true);
+
+                // prevent fresh session to play paused video (seek from initial state will start playing)
+                if (messageSeqRef.current === 0) {
+                    ignorePlay.current = !message.palyingState;
+                }
+
                 seqPalyingState.current = message.palyingState;
                 stateSeqRef.current = message.stateSeq;
-            } else if ((message.time - (targetRef.current?.getCurrentTime() || 0) > 1) || initial.current) {
-                targetRef.current?.seekTo(message.time);
             }
 
             peerSeq[container.peerId] = message.seq;
@@ -125,7 +141,7 @@ export const YoutubeParty = React.memo((props: { link: string, mediaSession: Med
             clearInterval(interval);
             d();
         };
-    }, [id]);
+    }, [id, ready]);
 
     return <YouTube
         containerClassName={YtbContainerStyle}
@@ -134,6 +150,7 @@ export const YoutubeParty = React.memo((props: { link: string, mediaSession: Med
         opts={{
             width: '100%',
             height: '100%',
+            playerVars: { controls: props.controls !== false ? 1 : 0, disablekb: props.controls === false ? 1 : 0 }
         }}
         onPlay={onPlay}
         onPause={onPause}
