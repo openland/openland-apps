@@ -1,6 +1,6 @@
 import { AppUserMediaStreamTrackNative } from './AppUserMedia';
 import { AppPeerConnectionApi, AppPeerConnectionConfiguration, AppPeerConnection } from 'openland-y-runtime-api/AppPeerConnectionApi';
-import { RTCPeerConnection, RTCSessionDescription, RTCIceCandidate, EventOnAddStream, EventOnConnectionStateChange, MediaStream } from 'react-native-webrtc';
+import { RTCPeerConnection, RTCSessionDescription, RTCIceCandidate, EventOnAddStream, MediaStream } from 'react-native-webrtc';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
 
 class AppPeerConnectionNative implements AppPeerConnection {
