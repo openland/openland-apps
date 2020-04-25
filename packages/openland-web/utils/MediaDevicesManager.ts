@@ -1,7 +1,6 @@
+import * as React from 'react';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
 
-import * as React from 'react';
-import { AppUserMedia } from 'openland-y-runtime-web/AppUserMedia';
 let mediaDevicesManagerInstance: MediaDevicesManager | undefined;
 
 class MediaDevicesManager {

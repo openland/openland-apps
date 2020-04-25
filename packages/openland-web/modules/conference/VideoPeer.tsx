@@ -100,7 +100,7 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     let [mainStreamScreenCast, setMainStreamScreenCast] = React.useState<boolean>(false);
     // @ts-ignore
     let [miniStream, setMiniStream] = React.useState<AppMediaStream>();
-    let [talking, setTalking] = React.useState(false);
+    let [talking] = React.useState(false);
     const [localPeer, setLocalPeer] = React.useState(props.mediaSession.getPeerId());
     const isLocal = props.peer.id === props.mediaSession.getPeerId();
     const [audioPaused, setAudioPaused] = React.useState<boolean | null>(false);

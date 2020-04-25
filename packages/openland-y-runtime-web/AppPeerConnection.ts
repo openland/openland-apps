@@ -11,15 +11,10 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     private started = true;
 
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined = undefined;
-    onnegotiationneeded: (() => void) | undefined = undefined;
-    oniceconnectionstatechange: ((ev: { target: { iceConnectionState?: string | 'failed' } }) => void) | undefined = undefined;
     ontrackadded: ((stream: AppMediaStreamTrack) => void) | undefined;
-    onAudioInputChanged?: ((deviceId: string) => void) | undefined;
 
     private trackSenders = new Map<string, RTCRtpSender>();
-
     private audioOutputDevice: MediaDeviceInfo | undefined;
-
     private dataChannels = new Map<number, RTCDataChannel>();
     private volume?: number;
 
@@ -79,24 +74,6 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
             }
 
         };
-
-        this.connection.onnegotiationneeded = () => this.onnegotiationneeded && this.onnegotiationneeded();
-        this.connection.oniceconnectionstatechange = (ev) => this.oniceconnectionstatechange && ev && ev.target && this.oniceconnectionstatechange(ev as any);
-
-        // let audio = new Audio();
-        // audio.autoplay = true;
-        // audio.setAttribute('playsinline', 'true');
-        // audio.controls = false;
-        // audio.srcObject = ev.streams[0];
-        // audio.load();
-        // audio.play();
-    }
-
-    setVolume = (volume: number) => {
-        this.volume = volume;
-        if (this.audio) {
-            this.audio.volume = volume;
-        }
     }
 
     createOffer = async () => {

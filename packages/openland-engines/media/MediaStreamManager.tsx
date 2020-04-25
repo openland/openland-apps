@@ -1,7 +1,7 @@
 import { OpenlandClient } from 'openland-api/spacex';
 import { ConferenceMedia_conferenceMedia_streams, ConferenceMedia_conferenceMedia_iceServers, MediaStreamVideoSource } from 'openland-api/spacex.types';
 import { AppPeerConnectionFactory } from 'openland-y-runtime/AppPeerConnection';
-import { AppPeerConnection, IceState } from 'openland-y-runtime-api/AppPeerConnectionApi';
+import { AppPeerConnection } from 'openland-y-runtime-api/AppPeerConnectionApi';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
 import { backoff } from 'openland-y-utils/timer';
 import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
@@ -27,8 +27,6 @@ export class MediaStreamManager {
     private appliedCandidates = new Set<string>();
     private destroyed = false;
     private onReady?: () => void;
-    private iceConnectionState: IceState = 'new';
-    private iceStateListeners = new Set<(iceState: IceState) => void>();
     private contentTrackListeners = new Set<(stream?: AppMediaStreamTrack) => void>();
     private dcVM = new VMSetMap<number, (message: { peerId: string, data: any }) => void>();
 
@@ -82,17 +80,6 @@ export class MediaStreamManager {
             });
         };
 
-        this.peerConnection.oniceconnectionstatechange = (ev) => {
-            console.warn('[WEBRTC]: oniceconnectionstatechange ' + ev.target.iceConnectionState);
-            this.iceConnectionState = ev.target.iceConnectionState;
-            this.notifyIceState(this.iceConnectionState);
-            if (ev.target.iceConnectionState === 'failed') {
-                this.destroy();
-                backoff(async () => {
-                    await this.client.mutateMediaFailed({ id: this.id, peerId: this.peerId });
-                });
-            }
-        };
         this.peerConnection.ontrackadded = this.onTrackAdded;
         if (this.audioOutTrack) {
             this.peerConnection.addTrack(this.audioOutTrack);
@@ -238,10 +225,6 @@ export class MediaStreamManager {
         }
     }
 
-    setVolume = (volume: number) => {
-        this.peerConnection.setVolume(volume);
-    }
-
     ////
     // IO
     ////
@@ -272,22 +255,6 @@ export class MediaStreamManager {
 
     getPeerId = () => {
         return this.peerId;
-    }
-
-    listenIceState = (listener: (iceState: IceState) => void) => {
-        this.iceStateListeners.add(listener);
-        listener(this.iceConnectionState);
-        return () => {
-            this.iceStateListeners.forEach(l => this.iceStateListeners.delete(l));
-        };
-    }
-
-    private notifyIceState = (iceState: IceState) => {
-        this.iceStateListeners.forEach(l => l(iceState));
-    }
-
-    getIceState = () => {
-        return this.iceConnectionState;
     }
 
     listenVideoInTrack = (listener: (stream?: AppMediaStreamTrack) => void) => {

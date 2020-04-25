@@ -12,14 +12,6 @@ export class NicePeerConnection {
     readonly #peerConnection: AppPeerConnection;
     readonly #lock = new AsyncLock();
     #closed = false;
-    #sendStreams = new Map<string, {
-        enabled: boolean,
-        tracks: {
-            id: string, 
-            enabled: boolean,
-            type: string
-        }[]
-    }>();
 
     constructor(opts: AppPeerConnectionConfiguration) {
         this.#peerConnection = AppPeerConnectionFactory.createConnection(opts);

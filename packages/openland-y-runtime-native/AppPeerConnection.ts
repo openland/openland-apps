@@ -9,8 +9,6 @@ class AppPeerConnectionNative implements AppPeerConnection {
     private started = true;
 
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined;
-    onnegotiationneeded: (() => void) | undefined;
-    oniceconnectionstatechange: ((ev: { target?: { iceConnectionState?: string | 'failed' } }) => void) | undefined = undefined;
     ontrackadded: ((stream: AppMediaStreamTrack) => void) | undefined;
 
     #trackStreams = new Map<string, MediaStream>();
@@ -18,8 +16,6 @@ class AppPeerConnectionNative implements AppPeerConnection {
     constructor(connection: RTCPeerConnection) {
         this.connection = connection;
         this.connection.onicecandidate = (ev: any) => (this.started && this.onicecandidate) ? this.onicecandidate({ candidate: ev.candidate ? JSON.stringify(ev.candidate) : undefined }) : undefined;
-        this.connection.onnegotiationneeded = () => this.onnegotiationneeded && this.onnegotiationneeded();
-        this.connection.oniceconnectionstatechange = (ev: EventOnConnectionStateChange) => this.oniceconnectionstatechange && ev && ev.target && this.oniceconnectionstatechange(ev);
         this.connection.onaddstream = (ev: EventOnAddStream) => {
             if (!this.started) {
                 return;
