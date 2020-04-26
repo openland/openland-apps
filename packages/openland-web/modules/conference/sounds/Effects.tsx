@@ -16,7 +16,7 @@ export const useHorn = () => {
     return { horn: hornDebounced, resetHorn: resetConf };
 };
 
-export const useShowEffects = (session?: MediaSessionManager) => {
+export const useShowEffects = (session: MediaSessionManager | null) => {
     let { horn, resetHorn } = useHorn();
 
     React.useEffect(() => {
@@ -39,7 +39,7 @@ export const useShowEffects = (session?: MediaSessionManager) => {
 
 };
 
-export const useTriggerEvents = (session?: MediaSessionManager) => {
+export const useTriggerEvents = (session: MediaSessionManager | null) => {
     let { horn, resetHorn } = useHorn();
     useShortcuts([
         {

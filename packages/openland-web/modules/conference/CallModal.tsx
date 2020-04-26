@@ -50,13 +50,14 @@ const LinkFrame = React.memo((props: { link?: string, mediaSession: MediaSession
 
 export const CallModalConponent = React.memo((props: { chatId: string, calls: CallsEngine, client: OpenlandClient, ctx: XModalController, messenger: MessengerEngine, onAttach: (files: File[]) => void }) => {
     let conference = props.client.useConference({ id: props.chatId }, { suspense: false });
-    let callState = props.calls.useState();
+    let currentMediaSession = props.calls.useCurrentSession();
+    let mediaSession = React.useMemo(() => currentMediaSession!, []);
+    let state = mediaSession.state.useValue();
     React.useEffect(() => {
-        if (callState.status === 'end') {
+        if (!currentMediaSession) {
             props.ctx.hide();
         }
-    }, [callState]);
-    const mediaSession = props.calls.getMediaSession();
+    }, [mediaSession]);
 
     // some fun 
     useTriggerEvents(mediaSession);
@@ -150,7 +151,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                             flexShrink={1}
                             flexGrow={1}
                         >
-                            {s.map(p => (
+                            {/* {s.map(p => (
                                 <VideoPeer
                                     key={`peer-${p.id}`}
                                     peer={p}
@@ -158,22 +159,22 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                                     calls={props.calls}
                                     callState={callState}
                                 />
-                            ))}
+                            ))} */}
                         </XView>
                     ))}
                     {/* {layout === 'volume-space' && mediaSession && <VolumeSpace mediaSession={mediaSession} peers={[...conference ? conference.conference.peers : []]} />} */}
                 </XView >
                 <CallControls
-                    muted={callState.mute}
-                    cameraEnabled={!!callState.video}
-                    screenEnabled={!!callState.screenShare}
+                    muted={!state.sender.audioEnabled}
+                    cameraEnabled={state.sender.videoEnabled}
+                    screenEnabled={state.sender.screencastEnabled}
                     spaceEnabled={layout === 'volume-space'}
                     messageEnabled={messageOpen}
                     toolsEnabled={showLink}
                     onMinimize={props.ctx.hide}
-                    onMute={() => props.calls.setMute(!callState.mute)}
-                    onCameraClick={props.calls.switchVideo}
-                    onScreenClick={props.calls.switchScreenShare}
+                    onMute={() => mediaSession.setAudioEnabled(!state.sender.audioEnabled)}
+                    onCameraClick={() => { /**/ }}
+                    onScreenClick={() => { /**/ }}
                     onSpaceClick={() => setLayout(prev => prev === 'volume-space' ? 'grid' : 'volume-space')}
                     onMessageClick={showMessage}
                     onToolsClick={() => setShowLink(prev => !prev)}

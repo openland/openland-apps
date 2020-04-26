@@ -16,7 +16,7 @@ import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import EndIcon from 'openland-icons/s/ic-call-end-glyph-24.svg';
 import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
 import FullscreenIcon from 'openland-icons/s/ic-size-up-glyph-24.svg';
-import { CallsEngine, CallState } from 'openland-engines/CallsEngine';
+import { CallsEngine } from 'openland-engines/CallsEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { useShowEffects } from './sounds/Effects';
 import { useVideoCallModal } from './CallModal';
@@ -249,25 +249,24 @@ const VideoMediaView = React.memo((props: {
     mediaSessionManager: MediaSessionManager;
     peer?: Conference_conference_peers,
     fallback: { id: string; title: string; photo?: string | null }
-    calls: CallsEngine,
-    callState: CallState,
+    calls: CallsEngine
 }) => {
     const [track, setTrack] = React.useState<AppMediaStreamTrack>();
 
-    React.useEffect(() => {
-        let d: (() => void) | undefined;
-        if (props.peer?.id) {
-            d = props.mediaSessionManager.peerVideoVM.listen(props.peer.id, (tracks) => {
-                let tr = [...tracks.entries()].find(s => s[0] === 'camera');
-                if (tr) {
-                    setTrack(tr[1]);
-                } else {
-                    setTrack(undefined);
-                }
-            });
-        }
-        return d;
-    }, [props.peer?.id]);
+    // React.useEffect(() => {
+    //     let d: (() => void) | undefined;
+    //     if (props.peer?.id) {
+    //         d = props.mediaSessionManager.peerVideoVM.listen(props.peer.id, (tracks) => {
+    //             let tr = [...tracks.entries()].find(s => s[0] === 'camera');
+    //             if (tr) {
+    //                 setTrack(tr[1]);
+    //             } else {
+    //                 setTrack(undefined);
+    //             }
+    //         });
+    //     }
+    //     return d;
+    // }, [props.peer?.id]);
 
     return (
         <XView width={VIDEO_WIDTH} height={VIDEO_HEIGHT} overflow="hidden" backgroundColor="var(--overlayHeavy)" alignItems="center" justifyContent="center">
@@ -295,7 +294,6 @@ const MediaView = React.memo((props: {
     mediaSessionManager: MediaSessionManager;
     videoEnabled?: boolean;
     calls: CallsEngine;
-    callState: CallState;
 }) => {
     let peerId: string | null = null; // props.mediaSessionManager.analyzer.useSpeakingPeer();
     let peer = props.peers.find(p => p.id === peerId);
@@ -306,7 +304,7 @@ const MediaView = React.memo((props: {
             mediaSessionManager={props.mediaSessionManager}
             fallback={props.fallback}
             calls={props.calls}
-            callState={props.callState}
+            // callState={props.callState}
         />
     ) : (
             <AvatarCover
@@ -317,7 +315,7 @@ const MediaView = React.memo((props: {
         );
 });
 
-const CallFloatingComponent = React.memo((props: { id: string; private: boolean, room: RoomTiny_room }) => {
+const CallFloatingComponent = React.memo((props: { id: string; room: RoomTiny_room }) => {
     const targetRef = React.useRef<HTMLDivElement>();
     const containerRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
@@ -328,39 +326,38 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
     useJsDrag(targetRef, { containerRef, onMove, savedCallback: JSON.parse(window.localStorage.getItem('call_floating_shift') || '[]'), limitToScreen: true }, [targetState]);
     let messenger = React.useContext(MessengerContext);
     let calls = messenger.calls;
-    let callState = calls.useState();
+    let ms = calls.useCurrentSession();
 
-    useShowEffects(calls.getMediaSession());
+    useShowEffects(ms);
 
     let client = useClient();
     let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
 
-    let ms = calls.getMediaSession();
-
     const title = props.room.__typename === 'PrivateRoom' ? props.room.user.name : props.room.title;
-    const subtitle = callState.status === 'connecting' ? 'Waiting...'
-        : props.room.__typename === 'SharedRoom' && data ? plural(data.conference.peers.length, ['member', 'members'])
-            : 'Call';
+    // const subtitle = callState.status === 'connecting' ? 'Waiting...'
+    //     : props.room.__typename === 'SharedRoom' && data ? plural(data.conference.peers.length, ['member', 'members'])
+    //         : 'Call';
+    const subtitle = '!';
     const privateAvatar = props.room.__typename === 'PrivateRoom' ? {
         id: props.room.user.id,
         title: props.room.user.name,
         photo: props.room.user.photo,
     } : undefined;
 
-    const avatar = data && callState.avatar && ms && (
-        <MediaView
-            peers={data.conference.peers}
-            mediaSessionManager={ms}
-            fallback={privateAvatar || {
-                id: callState.avatar.id,
-                title: callState.avatar.title,
-                photo: callState.avatar.picture,
-            }}
-            videoEnabled={callState.videoEnabled}
-            calls={calls}
-            callState={callState}
-        />
-    );
+    // const avatar = data && callState.avatar && ms && (
+    //     <MediaView
+    //         peers={data.conference.peers}
+    //         mediaSessionManager={ms}
+    //         fallback={privateAvatar || {
+    //             id: callState.avatar.id,
+    //             title: callState.avatar.title,
+    //             photo: callState.avatar.picture,
+    //         }}
+    //         videoEnabled={callState.videoEnabled}
+    //         calls={calls}
+    //     />
+    // );
+    const avatar = null;
     const showVideoCallModal = useVideoCallModal({ calls, chatId: props.id, client, messenger });
 
     const buttons = (
@@ -383,8 +380,8 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
                 defaultRippleColor="rgba(255, 255, 255, 0.16)"
                 hoverRippleColor="rgba(255, 255, 255, 0.32)"
                 hoverActiveRippleColor="var(--tintOrangeHover)"
-                active={callState.mute}
-                onClick={() => calls.setMute(!callState.mute)}
+                // active={callState.mute}
+                // onClick={() => calls.setMute(!callState.mute)}
             />
             <UIconButton
                 size="small"
@@ -405,71 +402,72 @@ const CallFloatingComponent = React.memo((props: { id: string; private: boolean,
         }
     }, []);
 
-    return (
-        data && (
-            <div className={cx(FloatContainerClass, callState.videoEnabled && VideoOnClass)} ref={containerRef}>
-                <div style={{ display: 'flex', flexDirection: 'row', flexGrow: 1 }} ref={contentRef}>
-                    <div className={TargetClass} ref={targetRefCallback}>
-                        <XView
-                            flexDirection="row"
-                            paddingVertical={7}
-                            paddingHorizontal={12}
-                            width="100%"
-                            alignItems="center"
-                        >
-                            <XView flexShrink={1} marginRight={14}>
-                                <XView
-                                    {...TextStyles.Label1}
-                                    color="var(--foregroundContrast)"
-                                    flexShrink={1}
-                                    overflow="hidden"
-                                    textOverflow="ellipsis"
-                                    whiteSpace="nowrap"
-                                >
-                                    {title}
-                                </XView>
-                                {subtitle && (
-                                    <XView
-                                        {...TextStyles.Subhead}
-                                        color="var(--foregroundContrast)"
-                                        opacity={0.56}
-                                        marginTop={-2}
-                                        flexShrink={1}
-                                    >
-                                        {subtitle}
-                                    </XView>
-                                )}
-                            </XView>
-                            {buttons}
-                        </XView>
-                        <XView
-                            width={VIDEO_WIDTH}
-                            height={VIDEO_HEIGHT}
-                            overflow="hidden"
-                            backgroundColor="var(--overlayHeavy)"
-                            justifyContent="center"
-                            alignItems="center"
-                        >
-                            {avatar}
-                            <XView
-                                width={72}
-                                height={48}
-                                borderRadius={8}
-                                position="absolute"
-                                bottom={12}
-                                right={12}
-                            >
-                                {callState.video && <VideoComponent track={(callState.video as AppUserMediaTrackWeb).track} cover={true} videoClass={MiniFloatingVideo} />}
-                            </XView>
-                        </XView>
-                    </div>
-                </div>
-            </div>
-        )
-    );
+    // return (
+    //     data && (
+    //         <div className={cx(FloatContainerClass, callState.videoEnabled && VideoOnClass)} ref={containerRef}>
+    //             <div style={{ display: 'flex', flexDirection: 'row', flexGrow: 1 }} ref={contentRef}>
+    //                 <div className={TargetClass} ref={targetRefCallback}>
+    //                     <XView
+    //                         flexDirection="row"
+    //                         paddingVertical={7}
+    //                         paddingHorizontal={12}
+    //                         width="100%"
+    //                         alignItems="center"
+    //                     >
+    //                         <XView flexShrink={1} marginRight={14}>
+    //                             <XView
+    //                                 {...TextStyles.Label1}
+    //                                 color="var(--foregroundContrast)"
+    //                                 flexShrink={1}
+    //                                 overflow="hidden"
+    //                                 textOverflow="ellipsis"
+    //                                 whiteSpace="nowrap"
+    //                             >
+    //                                 {title}
+    //                             </XView>
+    //                             {subtitle && (
+    //                                 <XView
+    //                                     {...TextStyles.Subhead}
+    //                                     color="var(--foregroundContrast)"
+    //                                     opacity={0.56}
+    //                                     marginTop={-2}
+    //                                     flexShrink={1}
+    //                                 >
+    //                                     {subtitle}
+    //                                 </XView>
+    //                             )}
+    //                         </XView>
+    //                         {buttons}
+    //                     </XView>
+    //                     <XView
+    //                         width={VIDEO_WIDTH}
+    //                         height={VIDEO_HEIGHT}
+    //                         overflow="hidden"
+    //                         backgroundColor="var(--overlayHeavy)"
+    //                         justifyContent="center"
+    //                         alignItems="center"
+    //                     >
+    //                         {avatar}
+    //                         <XView
+    //                             width={72}
+    //                             height={48}
+    //                             borderRadius={8}
+    //                             position="absolute"
+    //                             bottom={12}
+    //                             right={12}
+    //                         >
+    //                             {callState.video && <VideoComponent track={(callState.video as AppUserMediaTrackWeb).track} cover={true} videoClass={MiniFloatingVideo} />}
+    //                         </XView>
+    //                     </XView>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     )
+    // );
+    return null;
 });
 
-const CallFloatingInner = React.memo((props: { id: string; private: boolean }) => {
+const CallFloatingInner = React.memo((props: { id: string }) => {
     let client = useClient();
     let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
     // TODO: move room title to conference query
@@ -481,16 +479,16 @@ const CallFloatingInner = React.memo((props: { id: string; private: boolean }) =
     }
 
     let res = data.conference.peers.length !== 0 && (
-        <CallFloatingComponent id={props.id} private={props.private} room={room.room} />
+        <CallFloatingComponent id={props.id} room={room.room} />
     );
     return ReactDOM.createPortal(res, document.body);
 });
 
 export const CallFloating = React.memo(() => {
     let calls = React.useContext(MessengerContext).calls;
-    let callState = calls.useState();
-    if (!callState.conversationId) {
+    let currentMediaSession = calls.useCurrentSession();
+    if (!currentMediaSession) {
         return null;
     }
-    return <CallFloatingInner id={callState.conversationId} private={!!callState.private} />;
+    return <CallFloatingInner id={currentMediaSession.conversationId} />;
 });

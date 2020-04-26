@@ -154,10 +154,10 @@ class LostPeer {
 type UpdateType = Add | Sync | PartialUpdate | PathIncrement | Reqest | LostPeer;
 
 export class MediaSessionVolumeSpace {
-    readonly mediaSession: MediaSessionManager;
+    // readonly mediaSession: MediaSessionManager;
     // private d1: () => void;
-    private d2: () => void;
-    readonly selfPeer: PeerAvatar;
+    // private d2: () => void;
+    // readonly selfPeer: PeerAvatar;
     selfPointer: Pointer | undefined;
     readonly selfObjects = new Map<string, SpaceObject>();
     readonly remoteObjects = new Map<string, SpaceObject>();
@@ -186,39 +186,39 @@ export class MediaSessionVolumeSpace {
     minDinstance = 50;
     maxDisatance = 200;
     constructor(messenger: MessengerEngine, mediaSession: MediaSessionManager) {
-        this.selfPeer = new PeerAvatar(mediaSession.getPeerId(), [Math.random() * 100 + 1450, Math.random() * 100 + 1450]);
-        this.setColor(getPlaceholderColorRawById(mediaSession.messenger.user.id).end);
-        this.mediaSession = mediaSession;
-        this.interval = setInterval(this.sync, 1000);
-        // this.d1 = this.mediaSession.dcVM.listen(this.onDcMessage);
-        this.d2 = messenger.getConversation(mediaSession.conversationId).subscribe({
-            onMessageSend: (file, localImage) => {
-                if (localImage && file) {
-                    (async () => {
-                        let layout = layoutMedia(localImage.width, localImage.height, 1000, 1000);
-                        let image = new Image(undefined, this.selfPeer.coords, [localImage.width, localImage.height], [layout.width, layout.height]);
-                        file.watch(s => {
-                            if (!image.fileId && s.uuid) {
-                                image.fileId = s.uuid;
-                                this.addSpaceObject(image);
-                            }
-                        });
-                    })();
-                }
-            },
-            onChatLostAccess: () => {/* */ },
-            onConversationUpdated: () => {/* */ }
-        });
+        // this.selfPeer = new PeerAvatar(mediaSession.getPeerId(), [Math.random() * 100 + 1450, Math.random() * 100 + 1450]);
+        // this.setColor(getPlaceholderColorRawById(mediaSession.messenger.user.id).end);
+        // this.mediaSession = mediaSession;
+        // this.interval = setInterval(this.sync, 1000);
+        // // this.d1 = this.mediaSession.dcVM.listen(this.onDcMessage);
+        // this.d2 = messenger.getConversation(mediaSession.conversationId).subscribe({
+        //     onMessageSend: (file, localImage) => {
+        //         if (localImage && file) {
+        //             (async () => {
+        //                 let layout = layoutMedia(localImage.width, localImage.height, 1000, 1000);
+        //                 let image = new Image(undefined, this.selfPeer.coords, [localImage.width, localImage.height], [layout.width, layout.height]);
+        //                 file.watch(s => {
+        //                     if (!image.fileId && s.uuid) {
+        //                         image.fileId = s.uuid;
+        //                         this.addSpaceObject(image);
+        //                     }
+        //                 });
+        //             })();
+        //         }
+        //     },
+        //     onChatLostAccess: () => {/* */ },
+        //     onConversationUpdated: () => {/* */ }
+        // });
 
-        // local/remote objects index
-        Object.keys(this.storages).map(k => {
-            let s = this.storages[k];
-            if (s instanceof VMMapMap) {
-                s.listenAllIds(this.onObjUpdate);
-            } else if (s instanceof VMMap) {
-                s.listenAllValues(this.onObjUpdate);
-            }
-        });
+        // // local/remote objects index
+        // Object.keys(this.storages).map(k => {
+        //     let s = this.storages[k];
+        //     if (s instanceof VMMapMap) {
+        //         s.listenAllIds(this.onObjUpdate);
+        //     } else if (s instanceof VMMap) {
+        //         s.listenAllValues(this.onObjUpdate);
+        //     }
+        // });
     }
 
     onObjUpdate = (obj: SpaceObject) => {
@@ -235,62 +235,62 @@ export class MediaSessionVolumeSpace {
 
     // TODO: use generic updates with side effects
     moveSelf = (to: number[]) => {
-        let batch: UpdateType[] = [];
-        let add = new Add([]);
-        batch.push(add);
+        // let batch: UpdateType[] = [];
+        // let add = new Add([]);
+        // batch.push(add);
 
-        this.selfPeer.coords = to;
-        let peerId = this.mediaSession.getPeerId();
-        if (peerId) {
-            this.selfPeer.id = `peer_${peerId}`;
-            add.objects.push(this.selfPeer);
-        }
-        // tweak
-        this.movePointer(to, false);
-        if (this.selfPointer) {
-            add.objects.push(this.selfPointer);
-        }
+        // this.selfPeer.coords = to;
+        // let peerId = this.mediaSession.getPeerId();
+        // if (peerId) {
+        //     this.selfPeer.id = `peer_${peerId}`;
+        //     add.objects.push(this.selfPeer);
+        // }
+        // // tweak
+        // this.movePointer(to, false);
+        // if (this.selfPointer) {
+        //     add.objects.push(this.selfPointer);
+        // }
 
-        this.sendBatch(batch);
-        [...this.peersVM.values()].flatMap(v => [...v.values()]).map(this.updatePeerVolume);
+        // this.sendBatch(batch);
+        // [...this.peersVM.values()].flatMap(v => [...v.values()]).map(this.updatePeerVolume);
     }
 
     movePointer = (coords: number[], report: boolean = true) => {
-        if (this.mediaSession.getPeerId()) {
-            if (!this.selfPointer) {
-                this.selfPointer = new Pointer(this.mediaSession.getPeerId(), coords);
-            }
-            this.selfPointer.coords = coords;
-            this.pointerVM.add(this.mediaSession.getPeerId(), this.mediaSession.getPeerId(), this.selfPointer, true);
-            if (report) {
-                this.sendBatch([new Add([this.selfPointer])]);
-            }
+        // if (this.mediaSession.getPeerId()) {
+        //     if (!this.selfPointer) {
+        //         this.selfPointer = new Pointer(this.mediaSession.getPeerId(), coords);
+        //     }
+        //     this.selfPointer.coords = coords;
+        //     this.pointerVM.add(this.mediaSession.getPeerId(), this.mediaSession.getPeerId(), this.selfPointer, true);
+        //     if (report) {
+        //         this.sendBatch([new Add([this.selfPointer])]);
+        //     }
 
-        }
+        // }
     }
 
     //
     // drawings
     //
     incrementPath = (path: Path, increment: number[][]) => {
-        if (this.mediaSession.getPeerId()) {
-            path.path.push(...increment);
-            path.seq++;
-            this.pathsVM.add(this.mediaSession.getPeerId(), path.id, path, true);
-            this.sendBatch([new PathIncrement(path.id, increment, path.seq)]);
-        }
+        // if (this.mediaSession.getPeerId()) {
+        //     path.path.push(...increment);
+        //     path.seq++;
+        //     this.pathsVM.add(this.mediaSession.getPeerId(), path.id, path, true);
+        //     this.sendBatch([new PathIncrement(path.id, increment, path.seq)]);
+        // }
     }
 
     //
     // generic
     //
     addSpaceObject = (obj: SpaceObject) => {
-        let peerId = this.mediaSession.getPeerId();
-        if (peerId) {
-            let s = this.storages[obj.type];
-            s.add(peerId, obj.id, obj as any);
-            this.sendBatch([new Add([obj])]);
-        }
+        // let peerId = this.mediaSession.getPeerId();
+        // if (peerId) {
+        //     let s = this.storages[obj.type];
+        //     s.add(peerId, obj.id, obj as any);
+        //     this.sendBatch([new Add([obj])]);
+        // }
     }
 
     // yep, no access mgmt for now
@@ -356,11 +356,11 @@ export class MediaSessionVolumeSpace {
     // side effects
     ////
     updatePeerVolume = (peer: PeerAvatar) => {
-        let distance = Math.pow(Math.pow(peer.coords[0] - this.selfPeer.coords[0], 2) + Math.pow(peer.coords[1] - this.selfPeer.coords[1], 2), 0.5);
-        let volume = distance < this.minDinstance ? 1 : distance > this.maxDisatance ? 0 : 1 - (distance - this.minDinstance) / (this.maxDisatance - this.minDinstance);
-        peer.coords[2] = volume;
-        // [...this.mediaSession.streamsVM.values()].find(s => s.getTargetPeerId() === peer.id)?.setVolume(volume);
-        this.peersVM.add(peer.id, peer.id, peer, true);
+        // let distance = Math.pow(Math.pow(peer.coords[0] - this.selfPeer.coords[0], 2) + Math.pow(peer.coords[1] - this.selfPeer.coords[1], 2), 0.5);
+        // let volume = distance < this.minDinstance ? 1 : distance > this.maxDisatance ? 0 : 1 - (distance - this.minDinstance) / (this.maxDisatance - this.minDinstance);
+        // peer.coords[2] = volume;
+        // // [...this.mediaSession.streamsVM.values()].find(s => s.getTargetPeerId() === peer.id)?.setVolume(volume);
+        // this.peersVM.add(peer.id, peer.id, peer, true);
     }
 
     ////
@@ -376,12 +376,12 @@ export class MediaSessionVolumeSpace {
         if (this.selfPointer) {
             add.objects.push(this.selfPointer);
         }
-        let selfPeerId = this.mediaSession.getPeerId();
-        if (selfPeerId) {
-            this.selfPeer.id = `peer_${selfPeerId}`;
-            add.objects.push(this.selfPeer);
-            this.knownPeers.add(selfPeerId);
-        }
+        // let selfPeerId = this.mediaSession.getPeerId();
+        // if (selfPeerId) {
+        //     this.selfPeer.id = `peer_${selfPeerId}`;
+        //     add.objects.push(this.selfPeer);
+        //     this.knownPeers.add(selfPeerId);
+        // }
         batch.push(new Sync(
             [...this.selfObjects.entries()].map(e => ({ id: e[0], seq: e[1].seq })),
             [...this.selfDeletedIds.values()],
@@ -435,9 +435,9 @@ export class MediaSessionVolumeSpace {
                 }
                 // requst left peer content
                 for (let peerId of u.knownPeers) {
-                    if (!this.knownPeers.has(peerId) && peerId !== this.mediaSession.getPeerId()) {
-                        peers.push(peerId);
-                    }
+                    // if (!this.knownPeers.has(peerId) && peerId !== this.mediaSession.getPeerId()) {
+                    //     peers.push(peerId);
+                    // }
                 }
                 if (ids.length + peers.length > 0) {
                     this.sendBatch([new Reqest(ids, peers)]);
@@ -514,7 +514,7 @@ export class MediaSessionVolumeSpace {
 
     dispose = () => {
         // this.d1();
-        this.d2();
+        // this.d2();
         clearInterval(this.interval);
     }
 }

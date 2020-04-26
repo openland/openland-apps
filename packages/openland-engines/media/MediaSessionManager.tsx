@@ -3,137 +3,134 @@ import { backoff } from 'openland-y-utils/timer';
 import { MediaStreamManager } from './MediaStreamManager';
 import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
-import { ConferenceMediaWatch, ConferenceMediaWatch_media_streams, ConferenceMediaWatch_media_streams_mediaState } from 'openland-api/spacex.types';
+import { ConferenceMediaWatch, ConferenceMediaWatch_media_streams, ConferenceMediaWatch_media_streams_mediaState, ConferenceMedia_conferenceMedia_iceServers } from 'openland-api/spacex.types';
 import { AppBackgroundTask } from 'openland-y-runtime/AppBackgroundTask';
-import { Queue } from 'openland-y-utils/Queue';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 import { ConferenceWatch } from 'openland-api/spacex.types';
-// import { MediaStreamsAlalyzer } from './MediaStreamsAlalyzer';
-// import { MediaSessionVolumeSpace } from './MediaSessionVolumeSpace';
-import { VMMap, VM, VMMapMap } from 'openland-y-utils/mvvm/vm';
+import { VM, VMMapMap } from 'openland-y-utils/mvvm/vm';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
+import { InvalidateSync } from '@openland/patterns';
+import { MediaSessionState, MediaSessionCommand, reduceState } from './MediaSessionState';
+import { Reducer } from 'openland-y-utils/reducer';
+import uuid from 'uuid/v4';
 
 export class MediaSessionManager {
-    messenger: MessengerEngine;
+
+    // Configuration
+    readonly id: string = uuid();
+    readonly messenger: MessengerEngine;
     readonly conversationId: string;
-    private readonly client: OpenlandClient;
-    private readonly onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void;
-    private readonly onDestroyRequested: () => void;
-    private outAudioTrack!: AppMediaStreamTrack;
-    private outVideoTrack?: AppMediaStreamTrack;
-    private outScreenTrack?: AppMediaStreamTrack;
-    private outScreenTrackBinded: boolean = false;
-    private streamConfigs!: ConferenceMediaWatch_media_streams[];
-    private iceServers!: any[];
+    readonly client: OpenlandClient;
+    iceServers!: ConferenceMedia_conferenceMedia_iceServers[];
+
+    // Public fields
+    onConnected: (() => void) | null = null;
+    onDestoy: (() => void) | null = null;
+    state: Reducer<MediaSessionState, MediaSessionCommand>;
+
+    // Audio track
+    private audioEnabled: boolean;
+    private audioTrackPromise?: Promise<AppMediaStreamTrack | null>;
+    private audioTrack: AppMediaStreamTrack | null = null;
+
+    // Video track
+    private videoEnabled: boolean = false;
+    private videoTrackPromise?: Promise<AppMediaStreamTrack | null>;
+    private videoTrack: AppMediaStreamTrack | null = null;
+
+    // Screencast track
+    private screencastEnabled: boolean = false;
+    private screencastGeneration = 0;
+    private screencastTrackPromise?: Promise<AppMediaStreamTrack | null>;
+    private screencastTrack: AppMediaStreamTrack | null = null;
+
+    // Transport
+    private connectionsSubscription: (() => void) | null = null;
+    private connectionsInvalidateSync: InvalidateSync;
+    private connections = new Map<string, MediaStreamManager>();
+    private connectionConfigs!: ConferenceMediaWatch_media_streams[];
+
+    // Lifecycle
     private conferenceId!: string;
     private peerId!: string;
-    private destroyed = false;
-    private mute: boolean;
-    private isPrivate: boolean;
+    private kickDetectorSubscription: (() => void) | null = null;
     private ownPeerDetected = false;
-    // readonly analyzer: MediaStreamsAlalyzer;
-    // readonly volumeSpace: MediaSessionVolumeSpace;
+    private destroyed = false;
 
-    readonly streamsVM = new VMMap<string, MediaStreamManager>();
-    readonly peerStreamMediaStateVM = new VMMapMap<string, string, ConferenceMediaWatch_media_streams_mediaState>();
-    readonly peerVideoVM = new VMMapMap<string, 'camera' | 'screen_share' | undefined | null, AppMediaStreamTrack>();
-    readonly videoEnabledVM = new VM<boolean>();
-    readonly outVideoVM = new VM<(AppMediaStreamTrack | undefined)[]>();
-
-    constructor(messenger: MessengerEngine, client: OpenlandClient, conversationId: string, mute: boolean, isPrivate: boolean, onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void, onDestroyRequested: () => void, onVideoEnabled: () => void) {
+    constructor(messenger: MessengerEngine, conversationId: string) {
         this.messenger = messenger;
-        this.client = client;
+        this.client = messenger.client;
         this.conversationId = conversationId;
-        this.mute = mute;
-        this.onStatusChange = onStatusChange;
-        this.onDestroyRequested = onDestroyRequested;
-        this.isPrivate = isPrivate;
+
+        // Initial state
+        this.audioEnabled = true;
+        this.videoEnabled = false;
+        this.screencastEnabled = false;
+
+        // Initialize reducer
+        this.state = new Reducer(reduceState, {
+            sender: {
+                audioEnabled: this.audioEnabled,
+                videoEnabled: this.videoEnabled,
+                screencastEnabled: this.screencastEnabled,
+
+                audioTrack: null,
+                videoTrack: null,
+                screencastTrack: null
+            },
+            receivers: []
+        });
+        this.connectionsInvalidateSync = new InvalidateSync(this.handleState);
         this.doInit();
-        // this.analyzer = new MediaStreamsAlalyzer(this);
-        // this.volumeSpace = new MediaSessionVolumeSpace(this.messenger, this);
-        this.videoEnabledVM.listen(onVideoEnabled);
     }
 
-    setMute = (mute: boolean) => {
-        this.mute = mute;
-        if (this.outAudioTrack) {
-            this.outAudioTrack.enabled = !mute;
+    //
+    // Audio
+    //
+
+    setAudioEnabled = (audioEnabled: boolean) => {
+
+        // Update State
+        this.audioEnabled = audioEnabled;
+        this.state.dispatch({ command: 'sender', sender: { audioEnabled } });
+
+        // Update track
+        if (this.audioTrack) {
+            this.audioTrack.enabled = this.audioEnabled;
         }
-        backoff(async () => {
-            await this.client.mutateconferenceAlterMediaState({
-                id: this.conferenceId,
-                state: {
-                    audioPaused: mute
-                }
-            });
-        });
+
+        // TODO: Update server
     }
+
+    //
+    // Video
+    //
+
+    setVideoEnabled = (videoEnabled: boolean) => {
+
+        // Update state
+        this.videoEnabled = videoEnabled;
+        this.state.dispatch({ command: 'sender', sender: { videoEnabled } });
+
+        // Update track
+        this.doLoadVideoIfNeeded();
+        if (this.videoTrack) {
+            this.videoTrack.enabled = videoEnabled;
+        }
+
+        // TODO: Update server
+    }
+
+    //
+    // Screencast
+    //
 
     startScreenShare = async () => {
-        if (!this.outScreenTrack) {
-            try {
-                this.outScreenTrack = await AppUserMedia.getUserScreen();
-            } catch (e) {
-                // ignore
-            }
-        }
-        if (!this.outScreenTrack) {
-            return;
-        }
-        backoff(async () => {
-            await this.client.mutateconferenceAddScreenShare({
-                id: this.conferenceId,
-            });
-        });
-        this.outScreenTrack.enabled = true;
-        this.handleState();
-        this.videoEnabledVM.set(true);
-        this.outVideoVM.set([this.outVideoTrack, this.outScreenTrack]);
+        // TODO: Implement
     }
 
     stopScreenShare = async () => {
-        backoff(async () => {
-            await this.client.mutateconferenceRemoveScreenShare({
-                id: this.conferenceId,
-            });
-        });
-        if (this.outScreenTrack) {
-            this.outScreenTrack.enabled = false;
-            this.outScreenTrack.stop();
-            this.outScreenTrack = undefined;
-        }
-        this.outVideoVM.set([this.outVideoTrack, this.outScreenTrack]);
-    }
-
-    startVideo = async () => {
-        if (!this.outVideoTrack) {
-            this.outVideoTrack = await AppUserMedia.getUserVideo();
-        }
-        this.outVideoTrack.enabled = true;
-        this.outVideoVM.set([this.outVideoTrack, this.outScreenTrack]);
-        this.handleState();
-        this.videoEnabledVM.set(true);
-        this.postVideoState(true);
-    }
-
-    stopVideo = async () => {
-        if (this.outVideoTrack) {
-            this.outVideoTrack.enabled = false;
-            this.outVideoVM.set([this.outVideoTrack, this.outScreenTrack]);
-
-        }
-        this.postVideoState(false);
-    }
-
-    postVideoState = (enabled: boolean) => {
-        backoff(async () => {
-            await this.client.mutateconferenceAlterMediaState({
-                id: this.conferenceId,
-                state: {
-                    videoPaused: !enabled
-                }
-            });
-        });
+        // TODO: Implement
     }
 
     destroy = () => {
@@ -142,28 +139,38 @@ export class MediaSessionManager {
         }
         this.destroyed = true;
 
-        // this.analyzer.dispose();
-        // this.volumeSpace.dispose();
-
         console.log('[WEBRTC] Destroying conference');
 
         // Destroy streams
-        for (let s of this.streamsVM.keys()) {
-            this.streamsVM.get(s)!.destroy();
+        for (let s of this.connections.keys()) {
+            this.connections.get(s)!.destroy();
         }
 
         // Stop Tracks
-        if (this.outAudioTrack) {
-            this.outAudioTrack.stop();
+        if (this.audioTrack) {
+            this.audioTrack.stop();
+            this.audioTrack = null;
         }
-        if (this.outVideoTrack) {
-            this.outVideoTrack.stop();
+        if (this.videoTrack) {
+            this.videoTrack.stop();
+            this.videoTrack = null;
         }
-        if (this.outScreenTrack) {
-            this.outScreenTrack.stop();
+        if (this.screencastTrack) {
+            this.screencastTrack.stop();
+            this.screencastTrack = null;
         }
 
-        // this.eventBusSubscription();
+        // Connections invalidate sync
+        if (this.connectionsSubscription) {
+            this.connectionsSubscription();
+            this.connectionsSubscription = null;
+        }
+
+        // Kick detector
+        if (this.kickDetectorSubscription) {
+            this.kickDetectorSubscription();
+            this.kickDetectorSubscription = null;
+        }
 
         // Notify about leave
         if (this.conferenceId && this.peerId) {
@@ -175,6 +182,92 @@ export class MediaSessionManager {
             });
         }
     }
+
+    //
+    // Media State
+    //
+
+    private startMedia = () => {
+
+        // Request audio
+        this.doLoadAudioIfNeeded();
+
+        // Subscribe for media streams
+        this.connectionsSubscription = reliableWatcher<ConferenceMediaWatch>((handler) => this.client.subscribeConferenceMediaWatch({ peerId: this.peerId, id: this.conferenceId }, handler), (src) => {
+            let streams = src.media.streams;
+            this.connectionConfigs = streams;
+            this.connectionsInvalidateSync.invalidate();
+        });
+    }
+
+    private handleState = async () => {
+        if (this.destroyed) {
+            return;
+        }
+        console.log('[WEBRTC] Apply');
+
+        // Detect deletions
+        // for (let s of this.connections.keys()) {
+        //     if (!this.connectionConfigs.find((v) => v.id === s)) {
+        //         console.log('[WEBRTC] Destroy stream ' + s);
+        //         let stream = this.connections.get(s);
+        //         let appStream = stream?.getVideoInTrack();
+        //         let peerId = stream?.getTargetPeerId();
+        //         if (peerId && appStream && stream) {
+        //             if (stream.isVideoInScreenshare()) {
+        //                 this.peerVideoVM.deleteVal(peerId, 'screen_share');
+        //             } else {
+        //                 this.peerVideoVM.deleteVal(peerId, 'camera');
+        //             }
+        //         }
+        //         stream?.destroy();
+        //         this.connections.delete(s);
+        //     }
+        // }
+
+        // close screen share if it does not have streams
+        // if (this.outScreenTrackBinded && !this.connectionConfigs.find(s => s.settings.videoOut && s.settings.videoOutSource === 'screen_share')) {
+        //     this.stopScreenShare();
+        // }
+
+        // for (let s of this.connectionConfigs) {
+        //     let ms = this.connections.get(s.id);
+        //     let videoTrack = s.settings.videoOut ? (s.settings.videoOutSource === 'screen_share' ? this.outScreenTrack : this.outVideoTrack) : undefined;
+        //     if (this.outScreenTrack && videoTrack === this.outScreenTrack) {
+        //         this.outScreenTrackBinded = true;
+        //     }
+        //     if (ms) {
+        //         ms.onStateChanged(s, videoTrack);
+        //     } else {
+        //         console.log('[WEBRTC] Create stream ' + s.id);
+
+        //         ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, this.outAudioTrack, videoTrack, s, this.isPrivate ? () => this.onStatusChange('connected') : undefined, s.peerId);
+        //         this.connections.set(s.id, ms);
+
+        //         ms.listenVideoInTrack(c => {
+        //             this.videoEnabledVM.set(!!c);
+        //             if (c && s.peerId) {
+        //                 console.warn('session', s.peerId, c);
+        //                 if (ms?.isVideoInScreenshare) {
+        //                     this.peerVideoVM.add(s.peerId, 'screen_share', c);
+        //                 } else {
+        //                     this.peerVideoVM.add(s.peerId, 'camera', c);
+        //                 }
+        //             }
+        //         });
+        //         // ms.listenDc(m => {
+        //         //     this.dcVM.set(m);
+        //         // });
+        //     }
+        //     if (s.peerId) {
+        //         this.peerStreamMediaStateVM.add(s.peerId, s.id, s.mediaState);
+        //     }
+        // }
+    }
+
+    //
+    // Lifecycle
+    //
 
     private doInit = () => {
         console.log('[WEBRTC] Starting conference');
@@ -217,140 +310,30 @@ export class MediaSessionManager {
             this.iceServers = joinConference.conference.iceServers;
             this.conferenceId = conferenceId;
             this.peerId = joinConference.peerId;
-            this.onStatusChange(this.isPrivate ? 'waiting' : 'connected', !this.isPrivate ? joinConference.conference.startTime : undefined);
-            this.doStart();
 
-            this.detectOwnPeerRemoved();
+            // TODO: Reimplement
+            // this.onStatusChange(this.isPrivate ? 'waiting' : 'connected', !this.isPrivate ? joinConference.conference.startTime : undefined);
 
-            return;
-        })();
-    }
-
-    private detectOwnPeerRemoved = async () => {
-        let queue = new Queue();
-        let subscription = reliableWatcher<ConferenceWatch>((handler) => this.client.subscribeConferenceWatch({ id: this.conferenceId }, handler), (src) => {
-            queue.post(src);
-        });
-        while (!this.destroyed) {
-            try {
-                let peers = (await queue.get()).alphaConferenceWatch.peers;
-                let ownPeerDetected = !!(peers as any[]).find(p => p.id === this.peerId);
+            // Start kick detection
+            this.kickDetectorSubscription = reliableWatcher<ConferenceWatch>((handler) => this.client.subscribeConferenceWatch({ id: this.conferenceId }, handler), (src) => {
+                let ownPeerDetected = !!(src.alphaConferenceWatch.peers).find(p => p.id === this.peerId);
                 if (this.ownPeerDetected && !ownPeerDetected) {
-                    this.onDestroyRequested();
+                    this.destroy();
+                    if (this.onDestoy) {
+                        this.onDestoy();
+                    }
                 }
                 this.ownPeerDetected = ownPeerDetected;
-            } catch (e) {
-                console.warn(e);
-            }
-        }
-        subscription();
-    }
-
-    private doStart = () => {
-
-        // Start keep alive
-        this.doKeepAlive();
-
-        // Request media
-        AppUserMedia.getUserAudio()
-            .then((str) => {
-                if (this.destroyed) {
-                    str.stop();
-                } else {
-                    this.outAudioTrack = str;
-                    this.outAudioTrack.enabled = !this.mute;
-                    this.handleState();
-                }
-            })
-            .catch((e) => {
-                // Just ignore...
             });
 
-        // Load media streams
-        let queue = new Queue();
-        let subscription = reliableWatcher<ConferenceMediaWatch>((handler) => this.client.subscribeConferenceMediaWatch({ peerId: this.peerId, id: this.conferenceId }, handler), (src) => {
-            queue.post(src);
-        });
+            // Start keep alive
+            this.doKeepAlive();
 
-        (async () => {
-            while (!this.destroyed) {
-                try {
-                    let state = (await queue.get()).media;
-                    let streams = state.streams;
-                    this.streamConfigs = streams;
-                    this.handleState();
-                } catch (e) {
-                    console.warn(e);
-                }
-            }
-            subscription();
-        })();
+            // Start Media
+            this.startMedia();
 
-    }
-
-    private handleState = () => {
-        if (!this.outAudioTrack || !this.streamConfigs || this.destroyed) {
             return;
-        }
-        console.log('[WEBRTC] Apply');
-
-        // Detect deletions
-        for (let s of this.streamsVM.keys()) {
-            if (!this.streamConfigs.find((v) => v.id === s)) {
-                console.log('[WEBRTC] Destroy stream ' + s);
-                let stream = this.streamsVM.get(s);
-                let appStream = stream?.getVideoInTrack();
-                let peerId = stream?.getTargetPeerId();
-                if (peerId && appStream && stream) {
-                    if (stream.isVideoInScreenshare()) {
-                        this.peerVideoVM.deleteVal(peerId, 'screen_share');
-                    } else {
-                        this.peerVideoVM.deleteVal(peerId, 'camera');
-                    }
-                }
-                stream?.destroy();
-                this.streamsVM.delete(s);
-            }
-        }
-
-        // close screen share if it does not have streams
-        if (this.outScreenTrackBinded && !this.streamConfigs.find(s => s.settings.videoOut && s.settings.videoOutSource === 'screen_share')) {
-            this.stopScreenShare();
-        }
-
-        for (let s of this.streamConfigs) {
-            let ms = this.streamsVM.get(s.id);
-            let videoTrack = s.settings.videoOut ? (s.settings.videoOutSource === 'screen_share' ? this.outScreenTrack : this.outVideoTrack) : undefined;
-            if (this.outScreenTrack && videoTrack === this.outScreenTrack) {
-                this.outScreenTrackBinded = true;
-            }
-            if (ms) {
-                ms.onStateChanged(s, videoTrack);
-            } else {
-                console.log('[WEBRTC] Create stream ' + s.id);
-
-                ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, this.outAudioTrack, videoTrack, s, this.isPrivate ? () => this.onStatusChange('connected') : undefined, s.peerId);
-                this.streamsVM.set(s.id, ms);
-
-                ms.listenVideoInTrack(c => {
-                    this.videoEnabledVM.set(!!c);
-                    if (c && s.peerId) {
-                        console.warn('session', s.peerId, c);
-                        if (ms?.isVideoInScreenshare) {
-                            this.peerVideoVM.add(s.peerId, 'screen_share', c);
-                        } else {
-                            this.peerVideoVM.add(s.peerId, 'camera', c);
-                        }
-                    }
-                });
-                // ms.listenDc(m => {
-                //     this.dcVM.set(m);
-                // });
-            }
-            if (s.peerId) {
-                this.peerStreamMediaStateVM.add(s.peerId, s.id, s.mediaState);
-            }
-        }
+        })();
     }
 
     private doKeepAlive = () => {
@@ -375,7 +358,84 @@ export class MediaSessionManager {
         }, 1000);
     }
 
-    getPeerId = () => {
-        return this.peerId;
+    //
+    // Sender's tracks
+    //
+
+    private onAudioTrackLoaded = () => {
+        // Update connections
+        for (let connection of this.connections.values()) {
+            connection.setAudioTrack(this.audioTrack);
+        }
+
+        // Update State
+        this.state.dispatch({ command: 'sender', sender: { audioTrack: this.audioTrack } });
+    }
+
+    private onVideoTrackLoaded = () => {
+        // Update connections
+        for (let connection of this.connections.values()) {
+            connection.setVideoTrack(this.videoTrack);
+        }
+
+        // Update State
+        this.state.dispatch({ command: 'sender', sender: { videoTrack: this.videoTrack } });
+    }
+
+    private onScreencastTrackLoaded = () => {
+        // TODO: Handle
+    }
+    private onScreencastTrackUnloaded = () => {
+        // TODO: Handle
+    }
+
+    private async doLoadAudioIfNeeded() {
+        if (!this.audioTrackPromise) {
+            this.audioTrackPromise = (async () => {
+                try {
+                    let audio = await AppUserMedia.getUserAudio();
+                    if (this.destroyed) {
+                        return null;
+                    }
+
+                    // Configure audio track
+                    audio.enabled = this.audioEnabled;
+
+                    // Save audio track
+                    this.audioTrack = audio;
+                    this.onAudioTrackLoaded();
+                    return audio;
+                } catch (e) {
+                    console.warn(e);
+                }
+                return null;
+            })();
+        }
+        await this.audioTrackPromise;
+    }
+
+    private async doLoadVideoIfNeeded() {
+        if (!this.videoTrackPromise) {
+            this.videoTrackPromise = (async () => {
+                try {
+                    let video = await AppUserMedia.getUserVideo();
+                    if (this.destroyed) {
+                        return null;
+                    }
+
+                    // Configure video track
+                    video.enabled = this.videoEnabled;
+
+                    // Save video track
+                    this.videoTrack = video;
+                    this.onVideoTrackLoaded();
+                    return video;
+                } catch (e) {
+                    console.warn(e);
+                }
+                return null;
+            })();
+        }
+        await this.videoTrackPromise;
     }
 }

@@ -16,7 +16,7 @@ import { RNSDevice } from 'react-native-s/RNSDevice';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
-import { CallStatus, CallsEngine } from 'openland-engines/CallsEngine';
+import { CallsEngine } from 'openland-engines/CallsEngine';
 import { formatTimerTime } from 'openland-y-utils/formatTime';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
@@ -34,43 +34,43 @@ const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaS
     let [miniStream, setMiniStream] = React.useState<AppMediaStream>();
     const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
 
-    const [localPeer, setLocalPeer] = React.useState(props.mediaSession.getPeerId());
-    let isLocal = props.peer.id === props.mediaSession.getPeerId();
-    React.useEffect(() => {
-        // mediaSession initiating without peerId. Like waaat
-        let d0 = props.calls.listenState(() => setLocalPeer(props.mediaSession.getPeerId()));
-        let d1: () => void;
-        let d2: (() => void) | undefined;
-        if (isLocal) {
-            d1 = props.mediaSession.outVideoVM.listen(streams => {
-                let cam = streams[0];
-                let screen = streams[1];
-                setMainStream(screen ? screen : cam);
-                setMiniStream(screen ? cam : undefined);
-                setVideoPaused(!cam?.enabled);
-            });
-        } else {
-            d1 = props.mediaSession.peerVideoVM.listen(props.peer.id, streams => {
-                let cam = streams[0];
-                let screen = streams[1];
-                setMainStream(screen ? screen : cam);
-                setMiniStream(screen ? cam : undefined);
-            });
-            d2 = props.mediaSession.peerStreamMediaStateVM.listen(props.peer.id, s => {
-                let camState = [...s.values()].find(c => c.videoSource === MediaStreamVideoSource.camera);
-                if (camState) {
-                    setVideoPaused(camState.videoPaused);
-                }
-            });
-        }
-        return () => {
-            d0();
-            d1();
-            if (d2) {
-                d2();
-            }
-        };
-    }, [localPeer]);
+    // const [localPeer, setLocalPeer] = React.useState(props.mediaSession.getPeerId());
+    // let isLocal = props.peer.id === props.mediaSession.getPeerId();
+    // React.useEffect(() => {
+    //     // mediaSession initiating without peerId. Like waaat
+    //     let d0 = props.calls.listenState(() => setLocalPeer(props.mediaSession.getPeerId()));
+    //     let d1: () => void;
+    //     let d2: (() => void) | undefined;
+    //     if (isLocal) {
+    //         d1 = props.mediaSession.outVideoVM.listen(streams => {
+    //             let cam = streams[0];
+    //             let screen = streams[1];
+    //             setMainStream(screen ? screen : cam);
+    //             setMiniStream(screen ? cam : undefined);
+    //             setVideoPaused(!cam?.enabled);
+    //         });
+    //     } else {
+    //         d1 = props.mediaSession.peerVideoVM.listen(props.peer.id, streams => {
+    //             let cam = streams[0];
+    //             let screen = streams[1];
+    //             setMainStream(screen ? screen : cam);
+    //             setMiniStream(screen ? cam : undefined);
+    //         });
+    //         d2 = props.mediaSession.peerStreamMediaStateVM.listen(props.peer.id, s => {
+    //             let camState = [...s.values()].find(c => c.videoSource === MediaStreamVideoSource.camera);
+    //             if (camState) {
+    //                 setVideoPaused(camState.videoPaused);
+    //             }
+    //         });
+    //     }
+    //     return () => {
+    //         d0();
+    //         d1();
+    //         if (d2) {
+    //             d2();
+    //         }
+    //     };
+    // }, [localPeer]);
     let colors = getPlaceholderColors(props.peer.user.id);
     let track: MediaStreamTrack | null = null;
     if (!videoPaused || mainStream) {
@@ -117,7 +117,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let theme = React.useContext(ThemeContext);
     let [mute, setMute] = React.useState(false);
     let [speaker, setSpeaker] = React.useState(false);
-    let [status, setStatus] = React.useState<CallStatus>('initial');
+    // let [status, setStatus] = React.useState<CallStatus>('initial');
     let [timer, setTimer] = React.useState(0);
     let [initialTime, setInitialTime] = React.useState(0);
     let room = getClient().useRoomTiny({ id: props.id }).room!!;
@@ -140,43 +140,43 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     }, [speaker]);
 
     let calls = getMessenger().engine.calls;
-    let callState = calls.useState();
+    // let callState = calls.useState();
 
     let conference = getClient().useConference({ id: props.id }, { suspense: false });
     useWatchCall(conference && conference.conference.id);
 
     React.useEffect(() => {
-        calls.joinCall(props.id, room.__typename === 'PrivateRoom');
+        calls.joinCall(props.id);
     }, []);
 
-    let onCallEnd = React.useCallback(() => {
-        InCallManager.stop({ busytone: '_BUNDLE_' });
-        calls.leaveCall();
-        setStatus('end');
+    // let onCallEnd = React.useCallback(() => {
+    //     InCallManager.stop({ busytone: '_BUNDLE_' });
+    //     calls.leaveCall();
+    //     setStatus('end');
 
-        setTimeout(() => {
-            SStatusBar.setBarStyle(theme.statusBar);
-            props.hide();
-        }, 2000);
-    }, []);
+    //     setTimeout(() => {
+    //         SStatusBar.setBarStyle(theme.statusBar);
+    //         props.hide();
+    //     }, 2000);
+    // }, []);
 
-    React.useEffect(() => {
+    // React.useEffect(() => {
 
-        if (callState.status === 'connected') {
-            if (callState.private) {
-                setInitialTime(new Date().getTime());
-            } else if (callState.startTime) {
-                setInitialTime(callState.startTime);
-            }
-            setStatus('connected');
-            ReactNativeHapticFeedback.trigger('impactMedium', { ignoreAndroidSystemSettings: false });
-        } else if (callState.status === 'end') {
-            onCallEnd();
-        } else if (callState.status === 'waiting') {
-            setStatus('waiting');
-        }
+    //     if (callState.status === 'connected') {
+    //         if (callState.private) {
+    //             setInitialTime(new Date().getTime());
+    //         } else if (callState.startTime) {
+    //             setInitialTime(callState.startTime);
+    //         }
+    //         setStatus('connected');
+    //         ReactNativeHapticFeedback.trigger('impactMedium', { ignoreAndroidSystemSettings: false });
+    //     } else if (callState.status === 'end') {
+    //         onCallEnd();
+    //     } else if (callState.status === 'waiting') {
+    //         setStatus('waiting');
+    //     }
 
-    }, [callState.status]);
+    // }, [callState.status]);
 
     React.useEffect(() => {
         if (status === 'connected') {
@@ -202,8 +202,8 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let h1 = h / peerSlice[0].length;
     let h2 = h / peerSlice[1].length;
 
-    let mediaSession = calls.getMediaSession();
-    let videoEnabled = !!(callState.videoEnabled && mediaSession);
+    // let mediaSession = calls.getMediaSession();
+    // let videoEnabled = !!(callState.videoEnabled && mediaSession);
 
     // animate controls hide/show
     const [uiHidden, setHideUi] = React.useState(false);
@@ -227,114 +227,114 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     const [mirrorSelf, setMirrorSelf] = React.useState(true);
 
     return (
-        <TouchableOpacity delayPressIn={10} delayPressOut={10} activeOpacity={1} onPress={switchUi}>
-            {Platform.OS === 'ios' && <StatusBar hidden={!!videoEnabled} />}
-            {videoEnabled ?
-                <View flexDirection="row" alignItems="flex-start" width={w}>
-                    <View flexDirection="column" justifyContent="flex-start" flexGrow={1}>{peerSlice[0].map(p => <VideoView key={p.id} peer={p} mediaSession={mediaSession!} calls={calls} h={h1} mirror={p.id === mediaSession?.getPeerId() && mirrorSelf} />)}</View>
-                    <View flexDirection="column" justifyContent="flex-start" flexGrow={peerSlice[1].length ? 1 : 0}>{peerSlice[1].map(p => <VideoView key={p.id} peer={p} mediaSession={mediaSession!} calls={calls} h={h2} mirror={p.id === mediaSession?.getPeerId() && mirrorSelf} />)}</View>
-                </View> :
+        // <TouchableOpacity delayPressIn={10} delayPressOut={10} activeOpacity={1} onPress={switchUi}>
+        //     {Platform.OS === 'ios' && <StatusBar hidden={!!videoEnabled} />}
+        //     {videoEnabled ?
+        //         <View flexDirection="row" alignItems="flex-start" width={w}>
+        //             <View flexDirection="column" justifyContent="flex-start" flexGrow={1}>{peerSlice[0].map(p => <VideoView key={p.id} peer={p} mediaSession={mediaSession!} calls={calls} h={h1} mirror={p.id === mediaSession?.getPeerId() && mirrorSelf} />)}</View>
+        //             <View flexDirection="column" justifyContent="flex-start" flexGrow={peerSlice[1].length ? 1 : 0}>{peerSlice[1].map(p => <VideoView key={p.id} peer={p} mediaSession={mediaSession!} calls={calls} h={h2} mirror={p.id === mediaSession?.getPeerId() && mirrorSelf} />)}</View>
+        //         </View> :
 
-                <ASSafeAreaView flexDirection="column" alignItems="stretch" height="100%">
-                    {!videoEnabled && <View alignItems="center" justifyContent="center" flexDirection="column" marginBottom={40}>
-                        <View marginTop={67} flexDirection="row" borderWidth={10} borderRadius={120} borderColor="rgba(0, 0, 0, 0.05)">
-                            <ZAvatar size="xx-large" id={room.id} title={title} photo={photo} />
-                        </View>
-                        <Text
-                            style={{ fontSize: 28, fontWeight: FontStyles.Weight.Medium, color: 'white', textAlign: 'center', marginTop: 25 }}
-                            numberOfLines={4}
-                        >
-                            {title}
-                        </Text>
-                        <Text
-                            style={{ fontSize: 16, color: 'white', textAlign: 'center', marginTop: 8, opacity: 0.8 }}
-                        >
-                            {
-                                status === 'end' ? 'Call ended ' :
-                                    status === 'waiting' ? 'Waiting...' :
-                                        status === 'connected' ? '' : 'Connecting...'
-                            }
-                            {['connected', 'end'].includes(status) ? formatTimerTime(timer) : ''}
-                        </Text>
-                    </View>}
+        //         <ASSafeAreaView flexDirection="column" alignItems="stretch" height="100%">
+        //             {!videoEnabled && <View alignItems="center" justifyContent="center" flexDirection="column" marginBottom={40}>
+        //                 <View marginTop={67} flexDirection="row" borderWidth={10} borderRadius={120} borderColor="rgba(0, 0, 0, 0.05)">
+        //                     <ZAvatar size="xx-large" id={room.id} title={title} photo={photo} />
+        //                 </View>
+        //                 <Text
+        //                     style={{ fontSize: 28, fontWeight: FontStyles.Weight.Medium, color: 'white', textAlign: 'center', marginTop: 25 }}
+        //                     numberOfLines={4}
+        //                 >
+        //                     {title}
+        //                 </Text>
+        //                 <Text
+        //                     style={{ fontSize: 16, color: 'white', textAlign: 'center', marginTop: 8, opacity: 0.8 }}
+        //                 >
+        //                     {
+        //                         status === 'end' ? 'Call ended ' :
+        //                             status === 'waiting' ? 'Waiting...' :
+        //                                 status === 'connected' ? '' : 'Connecting...'
+        //                     }
+        //                     {['connected', 'end'].includes(status) ? formatTimerTime(timer) : ''}
+        //                 </Text>
+        //             </View>}
 
-                    {room.__typename === 'SharedRoom' &&
-                        <View flexDirection="row" alignItems="center" flexWrap="wrap" marginHorizontal={18}>
-                            {conference && conference.conference.peers.map(p => {
-                                return <View key={p.id} margin={10} >
-                                    <ZAvatar size="medium" id={p.user.id} title={p.user.name} photo={p.user.photo} />
-                                </View>;
+        //             {room.__typename === 'SharedRoom' &&
+        //                 <View flexDirection="row" alignItems="center" flexWrap="wrap" marginHorizontal={18}>
+        //                     {conference && conference.conference.peers.map(p => {
+        //                         return <View key={p.id} margin={10} >
+        //                             <ZAvatar size="medium" id={p.user.id} title={p.user.name} photo={p.user.photo} />
+        //                         </View>;
 
-                            })}
-                            <View height={100} width={1} />
-                        </View>
-                    }
-                </ASSafeAreaView>}
+        //                     })}
+        //                     <View height={100} width={1} />
+        //                 </View>
+        //             }
+        //         </ASSafeAreaView>}
 
-            <SAnimated.View name={`call-controls-${key}`} style={{ justifyContent: 'space-around', alignItems: 'center', bottom: 56, flexDirection: 'row', position: 'absolute', width: '100%' }}>
-                <TouchableOpacity
-                    onPress={props.hide}
-                    style={{ width: 56, height: 56 }}
-                >
-                    <View backgroundColor="rgba(0,0,0,0.15)" width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
-                        <Image source={require('assets/ic-close-24.png')} style={{ tintColor: 'white' }} />
-                    </View>
-                </TouchableOpacity>
+        //     <SAnimated.View name={`call-controls-${key}`} style={{ justifyContent: 'space-around', alignItems: 'center', bottom: 56, flexDirection: 'row', position: 'absolute', width: '100%' }}>
+        //         <TouchableOpacity
+        //             onPress={props.hide}
+        //             style={{ width: 56, height: 56 }}
+        //         >
+        //             <View backgroundColor="rgba(0,0,0,0.15)" width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
+        //                 <Image source={require('assets/ic-close-24.png')} style={{ tintColor: 'white' }} />
+        //             </View>
+        //         </TouchableOpacity>
 
-                <TouchableOpacity
-                    onPress={() => {
-                        setSpeaker((s) => !s);
-                    }}
-                    style={{ width: 56, height: 56 }}
-                >
-                    <View backgroundColor={speaker ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
-                        <Image source={require('assets/ic-speaker-30.png')} style={{ tintColor: speaker ? 'black' : 'white' }} />
-                    </View>
-                </TouchableOpacity>
+        //         <TouchableOpacity
+        //             onPress={() => {
+        //                 setSpeaker((s) => !s);
+        //             }}
+        //             style={{ width: 56, height: 56 }}
+        //         >
+        //             <View backgroundColor={speaker ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
+        //                 <Image source={require('assets/ic-speaker-30.png')} style={{ tintColor: speaker ? 'black' : 'white' }} />
+        //             </View>
+        //         </TouchableOpacity>
 
-                <TouchableOpacity
-                    onPress={onCallEnd}
-                    style={{ width: 70, height: 70 }}
-                >
-                    <View backgroundColor="#f6564e" width={70} height={70} borderRadius={35} alignItems="center" justifyContent="center">
-                        <Image source={require('assets/ic-call-end-36.png')} style={{ tintColor: 'white' }} />
-                    </View>
-                </TouchableOpacity>
+        //         <TouchableOpacity
+        //             onPress={onCallEnd}
+        //             style={{ width: 70, height: 70 }}
+        //         >
+        //             <View backgroundColor="#f6564e" width={70} height={70} borderRadius={35} alignItems="center" justifyContent="center">
+        //                 <Image source={require('assets/ic-call-end-36.png')} style={{ tintColor: 'white' }} />
+        //             </View>
+        //         </TouchableOpacity>
 
-                <TouchableOpacity
-                    onPress={() => {
-                        calls.switchVideo();
-                    }}
-                    onLongPress={() => {
-                        if (callState.video) {
-                            ReactNativeHapticFeedback.trigger('notificationSuccess');
-                            (callState.video as any)?._switchCamera();
-                            setMirrorSelf(m => !m);
-                        }
-                    }}
-                    style={{ width: 56, height: 56 }}
-                >
-                    <View backgroundColor={calls.state.video ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
-                        <Image source={calls.state.video ? require('assets/ic-camera-video-24.png') : require('assets/ic-camera-video-24.png')} style={{ tintColor: calls.state.video ? 'black' : 'white' }} />
-                    </View>
-                </TouchableOpacity>
+        //         <TouchableOpacity
+        //             onPress={() => {
+        //                 calls.switchVideo();
+        //             }}
+        //             onLongPress={() => {
+        //                 if (callState.video) {
+        //                     ReactNativeHapticFeedback.trigger('notificationSuccess');
+        //                     (callState.video as any)?._switchCamera();
+        //                     setMirrorSelf(m => !m);
+        //                 }
+        //             }}
+        //             style={{ width: 56, height: 56 }}
+        //         >
+        //             <View backgroundColor={calls.state.video ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
+        //                 <Image source={calls.state.video ? require('assets/ic-camera-video-24.png') : require('assets/ic-camera-video-24.png')} style={{ tintColor: calls.state.video ? 'black' : 'white' }} />
+        //             </View>
+        //         </TouchableOpacity>
 
-                <TouchableOpacity
-                    onPress={() => {
-                        setMute((s) => {
-                            calls.setMute(!s);
-                            return !s;
-                        });
-                    }}
-                    style={{ width: 56, height: 56 }}
-                >
-                    <View backgroundColor={mute ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
-                        <Image source={mute ? require('assets/ic-mic-off-30.png') : require('assets/ic-mic-on-30.png')} style={{ tintColor: mute ? 'black' : 'white' }} />
-                    </View>
-                </TouchableOpacity>
-            </SAnimated.View>
-        </TouchableOpacity>
-
+        //         <TouchableOpacity
+        //             onPress={() => {
+        //                 setMute((s) => {
+        //                     calls.setMute(!s);
+        //                     return !s;
+        //                 });
+        //             }}
+        //             style={{ width: 56, height: 56 }}
+        //         >
+        //             <View backgroundColor={mute ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
+        //                 <Image source={mute ? require('assets/ic-mic-off-30.png') : require('assets/ic-mic-on-30.png')} style={{ tintColor: mute ? 'black' : 'white' }} />
+        //             </View>
+        //         </TouchableOpacity>
+        //     </SAnimated.View>
+        // </TouchableOpacity>
+        null
     );
 });
 

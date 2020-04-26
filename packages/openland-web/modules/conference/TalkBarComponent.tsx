@@ -39,7 +39,7 @@ const getSubtitle = (users: Conference_conference_peers_user[]) => {
 export const TalkBarComponent = (props: { chat: ChatInfo }) => {
     let messenger = React.useContext(MessengerContext);
     let calls = messenger.calls;
-    let callState = calls.useState();
+    let currentSession = calls.useCurrentSession();
     let client = useClient();
     let data = client.useConference(
         { id: props.chat.id },
@@ -48,21 +48,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
     const openVideoModal = useVideoCallModal({ calls, chatId: props.chat.id, client, messenger });
 
     const joinCall = () => {
-        calls.joinCall(
-            props.chat.id,
-            props.chat.__typename === 'PrivateRoom',
-            props.chat.__typename === 'PrivateRoom'
-                ? {
-                    id: props.chat.user.id,
-                    title: props.chat.user.name,
-                    picture: props.chat.user.photo,
-                }
-                : {
-                    id: props.chat.id,
-                    title: props.chat.title,
-                    picture: props.chat.photo,
-                },
-        );
+        calls.joinCall(props.chat.id);
         openVideoModal();
     };
 
@@ -80,7 +66,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
             subtitle={subtitle}
             rightText="Join"
             rightIcon={<ChevronIcon />}
-            onClick={callState.conversationId
+            onClick={currentSession && currentSession.conversationId
                 ? openVideoModal
                 : joinCall}
         />

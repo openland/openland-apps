@@ -104,28 +104,12 @@ const ChatOnlinesTitle = (props: { id: string }) => {
 
 const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
     const calls = props.messenger.calls;
-    const callsState = calls.useState();
+    const currentSession = calls.useCurrentSession();
     return (
-        <div className={cx(callsState.conversationId === props.chat.id && disabledBtn)}>
+        <div className={cx(currentSession && currentSession.conversationId === props.chat.id && disabledBtn)}>
             <UIconButton
                 icon={<PhoneIcon />}
-                onClick={() => {
-                    calls.joinCall(
-                        props.chat.id,
-                        props.chat.__typename === 'PrivateRoom',
-                        props.chat.__typename === 'PrivateRoom'
-                            ? {
-                                  id: props.chat.user.id,
-                                  title: props.chat.user.name,
-                                  picture: props.chat.user.photo,
-                              }
-                            : {
-                                  id: props.chat.id,
-                                  title: props.chat.title,
-                                  picture: props.chat.photo,
-                              },
-                    );
-                }}
+                onClick={() => { calls.joinCall(props.chat.id); }}
                 size="large"
             />
         </div>
@@ -140,7 +124,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     const messenger = React.useContext(MessengerContext);
     const [muted, setMuted] = React.useState(chat.settings.mute);
     let calls = messenger.calls;
-    const callsState = calls.useState();
+    const currentSession = calls.useCurrentSession();
 
     let res = new UPopperMenuBuilder();
     if (layout === 'mobile' && chat.__typename === 'SharedRoom') {
@@ -157,15 +141,9 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
             title: 'Call',
             icon: <PhoneIcon />,
             action: () => {
-                calls.joinCall(
-                    chat.id,
-                    chat.__typename === 'PrivateRoom',
-                    chat.__typename === 'PrivateRoom'
-                        ? { id: chat.user.id, title: chat.user.name, picture: chat.user.photo }
-                        : { id: chat.id, title: chat.title, picture: chat.photo },
-                );
+                calls.joinCall(chat.id);
             },
-            disabled: callsState.conversationId === chat.id,
+            disabled: currentSession ? currentSession.conversationId === chat.id : false,
         });
     }
 
