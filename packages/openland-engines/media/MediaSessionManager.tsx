@@ -3,14 +3,14 @@ import { backoff } from 'openland-y-utils/timer';
 import { MediaStreamManager } from './MediaStreamManager';
 import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
-import { ConferenceMediaWatch, ConferenceMediaWatch_media_streams, ConferenceMediaWatch_media_streams_mediaState, GlobalEventBus } from 'openland-api/spacex.types';
+import { ConferenceMediaWatch, ConferenceMediaWatch_media_streams, ConferenceMediaWatch_media_streams_mediaState } from 'openland-api/spacex.types';
 import { AppBackgroundTask } from 'openland-y-runtime/AppBackgroundTask';
 import { Queue } from 'openland-y-utils/Queue';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 import { ConferenceWatch } from 'openland-api/spacex.types';
 // import { MediaStreamsAlalyzer } from './MediaStreamsAlalyzer';
 // import { MediaSessionVolumeSpace } from './MediaSessionVolumeSpace';
-import { VMMap, VM, VMSetMap, VMMapMap } from 'openland-y-utils/mvvm/vm';
+import { VMMap, VM, VMMapMap } from 'openland-y-utils/mvvm/vm';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 
 export class MediaSessionManager {
@@ -37,7 +37,6 @@ export class MediaSessionManager {
     readonly streamsVM = new VMMap<string, MediaStreamManager>();
     readonly peerStreamMediaStateVM = new VMMapMap<string, string, ConferenceMediaWatch_media_streams_mediaState>();
     readonly peerVideoVM = new VMMapMap<string, 'camera' | 'screen_share' | undefined | null, AppMediaStreamTrack>();
-    readonly peerMediStateVM = new VMSetMap<string, AppMediaStreamTrack>();
     readonly videoEnabledVM = new VM<boolean>();
     readonly outVideoVM = new VM<(AppMediaStreamTrack | undefined)[]>();
 
@@ -379,14 +378,4 @@ export class MediaSessionManager {
     getPeerId = () => {
         return this.peerId;
     }
-
-    sendDcMessage = (data: any) => {
-        // for (let ms of [...this.streamsVM.values()]) {
-        //     ms.sendDcMessage(JSON.stringify({ peerId: this.peerId, data }));
-        // }
-        if (this.peerId) {
-            this.messenger.client.mutateGlobalEventBusPublish({ topic: `media_session_${this.conversationId}`, message: JSON.stringify({ peerId: this.peerId, data }) });
-        }
-    }
-
 }

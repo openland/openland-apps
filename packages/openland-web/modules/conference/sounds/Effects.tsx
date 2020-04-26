@@ -46,7 +46,7 @@ export const useTriggerEvents = (session?: MediaSessionManager) => {
             keys: ['Control', 'h'],
             callback: () => {
                 horn();
-                session?.sendDcMessage({ channel: 'effects', type: 'horn' });
+                // session?.sendDcMessage({ channel: 'effects', type: 'horn' });
                 return false;
             }
         }

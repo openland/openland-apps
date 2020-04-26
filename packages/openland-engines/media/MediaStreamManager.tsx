@@ -5,7 +5,6 @@ import { AppPeerConnection } from 'openland-y-runtime-api/AppPeerConnectionApi';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
 import { backoff } from 'openland-y-utils/timer';
 import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
-import { VMSetMap } from 'openland-y-utils/mvvm/vm';
 
 export class MediaStreamManager {
     private readonly id: string;

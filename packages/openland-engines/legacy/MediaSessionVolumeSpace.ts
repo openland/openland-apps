@@ -367,7 +367,7 @@ export class MediaSessionVolumeSpace {
     // send updates
     ////
     sendBatch = (batch: UpdateType[]) => {
-        this.mediaSession.sendDcMessage({ channel: 'vm', seq: ++this.messageSeq, batch });
+        // this.mediaSession.sendDcMessage({ channel: 'vm', seq: ++this.messageSeq, batch });
     }
 
     sync = () => {

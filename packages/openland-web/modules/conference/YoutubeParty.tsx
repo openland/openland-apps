@@ -77,7 +77,7 @@ export const YoutubeParty = React.memo((props: { link: string, mediaSession: Med
                 if (jump) {
                     stateSeqRef.current++;
                 }
-                props.mediaSession.sendDcMessage({ id, time, seq: messageSeqRef.current++, stateSeq: stateSeqRef.current, palyingState: seqPalyingState.current, session, channel: 'ytb' });
+                // props.mediaSession.sendDcMessage({ id, time, seq: messageSeqRef.current++, stateSeq: stateSeqRef.current, palyingState: seqPalyingState.current, session, channel: 'ytb' });
             }
         }, 200);
 
