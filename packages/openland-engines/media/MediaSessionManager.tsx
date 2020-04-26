@@ -9,7 +9,7 @@ import { Queue } from 'openland-y-utils/Queue';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 import { ConferenceWatch } from 'openland-api/spacex.types';
 // import { MediaStreamsAlalyzer } from './MediaStreamsAlalyzer';
-import { MediaSessionVolumeSpace } from './MediaSessionVolumeSpace';
+// import { MediaSessionVolumeSpace } from './MediaSessionVolumeSpace';
 import { VMMap, VM, VMSetMap, VMMapMap } from 'openland-y-utils/mvvm/vm';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 
@@ -32,16 +32,14 @@ export class MediaSessionManager {
     private isPrivate: boolean;
     private ownPeerDetected = false;
     // readonly analyzer: MediaStreamsAlalyzer;
-    readonly volumeSpace: MediaSessionVolumeSpace;
+    // readonly volumeSpace: MediaSessionVolumeSpace;
 
     readonly streamsVM = new VMMap<string, MediaStreamManager>();
     readonly peerStreamMediaStateVM = new VMMapMap<string, string, ConferenceMediaWatch_media_streams_mediaState>();
     readonly peerVideoVM = new VMMapMap<string, 'camera' | 'screen_share' | undefined | null, AppMediaStreamTrack>();
     readonly peerMediStateVM = new VMSetMap<string, AppMediaStreamTrack>();
-    readonly dcVM = new VM<{ peerId: string, data: any, dataParsed?: any }>();
     readonly videoEnabledVM = new VM<boolean>();
     readonly outVideoVM = new VM<(AppMediaStreamTrack | undefined)[]>();
-    readonly eventBusSubscription: () => void;
 
     constructor(messenger: MessengerEngine, client: OpenlandClient, conversationId: string, mute: boolean, isPrivate: boolean, onStatusChange: (status: 'waiting' | 'connected', startTime?: number) => void, onDestroyRequested: () => void, onVideoEnabled: () => void) {
         this.messenger = messenger;
@@ -53,22 +51,8 @@ export class MediaSessionManager {
         this.isPrivate = isPrivate;
         this.doInit();
         // this.analyzer = new MediaStreamsAlalyzer(this);
-        this.volumeSpace = new MediaSessionVolumeSpace(this.messenger, this);
+        // this.volumeSpace = new MediaSessionVolumeSpace(this.messenger, this);
         this.videoEnabledVM.listen(onVideoEnabled);
-
-        this.eventBusSubscription = reliableWatcher<GlobalEventBus>((handler) => messenger.client.subscribeGlobalEventBus({ topic: `media_session_${this.conversationId}` }, handler), m => {
-            try {
-                let message = JSON.parse(m.globalEventBus.message);
-                if (message.peerId && message.data) {
-                    if (message.peerId === this.peerId) {
-                        return;
-                    }
-                    this.dcVM.set({ peerId: message.peerId, data: '', dataParsed: message.data });
-                }
-            } catch (e) {
-                console.error(e);
-            }
-        });
     }
 
     setMute = (mute: boolean) => {
@@ -160,7 +144,7 @@ export class MediaSessionManager {
         this.destroyed = true;
 
         // this.analyzer.dispose();
-        this.volumeSpace.dispose();
+        // this.volumeSpace.dispose();
 
         console.log('[WEBRTC] Destroying conference');
 
@@ -180,7 +164,7 @@ export class MediaSessionManager {
             this.outScreenTrack.stop();
         }
 
-        this.eventBusSubscription();
+        // this.eventBusSubscription();
 
         // Notify about leave
         if (this.conferenceId && this.peerId) {

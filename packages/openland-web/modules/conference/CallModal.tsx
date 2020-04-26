@@ -11,7 +11,7 @@ import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { DataSourceMessageItem, DataSourceDateItem, DataSourceNewDividerItem } from 'openland-engines/messenger/ConversationEngine';
 import { YoutubeParty } from './YoutubeParty';
-import { VolumeSpace } from './VolumeSpace';
+// import { VolumeSpace } from './VolumeSpace';
 import { VideoPeer } from './VideoPeer';
 import WatermarkLogo from 'openland-icons/watermark-logo.svg';
 import WatermarkShadow from 'openland-icons/watermark-shadow.svg';
@@ -161,7 +161,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                             ))}
                         </XView>
                     ))}
-                    {layout === 'volume-space' && mediaSession && <VolumeSpace mediaSession={mediaSession} peers={[...conference ? conference.conference.peers : []]} />}
+                    {/* {layout === 'volume-space' && mediaSession && <VolumeSpace mediaSession={mediaSession} peers={[...conference ? conference.conference.peers : []]} />} */}
                 </XView >
                 <CallControls
                     muted={callState.mute}

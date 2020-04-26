@@ -28,7 +28,6 @@ export class MediaStreamManager {
     private destroyed = false;
     private onReady?: () => void;
     private contentTrackListeners = new Set<(stream?: AppMediaStreamTrack) => void>();
-    private dcVM = new VMSetMap<number, (message: { peerId: string, data: any }) => void>();
 
     private _queue: ExecutionQueue;
     private pendingNegotiation = false;
@@ -267,20 +266,5 @@ export class MediaStreamManager {
 
     private notifyVideoInStream = () => {
         this.contentTrackListeners.forEach(l => l(this.videoInTrack));
-    }
-
-    ////
-    // DC
-    ////
-
-    sendDcMessage = (message: string, dataChannelId: number = 0) => {
-        //
-    }
-
-    listenDc = (listener: (message: { peerId: string, data: any }) => void, channelId: number = 0) => {
-        this.dcVM.add(channelId, listener);
-        return () => {
-            this.dcVM.remove(channelId, listener);
-        };
     }
 }

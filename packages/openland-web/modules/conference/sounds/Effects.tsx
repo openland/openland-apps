@@ -21,18 +21,18 @@ export const useShowEffects = (session?: MediaSessionManager) => {
 
     React.useEffect(() => {
         if (session) {
-            session.dcVM.listen(m => {
-                let message: { channel: string, type: string } | undefined;
-                try {
-                    message = m.dataParsed || (typeof m.data === 'string' ? JSON.parse(m.data) : undefined);
-                } catch (e) {
-                    console.error('effects cant parse message', m);
-                }
-                if (message && message.channel === 'effects' && message.type === 'horn') {
-                    horn();
-                }
+            // session.dcVM.listen(m => {
+            //     let message: { channel: string, type: string } | undefined;
+            //     try {
+            //         message = m.dataParsed || (typeof m.data === 'string' ? JSON.parse(m.data) : undefined);
+            //     } catch (e) {
+            //         console.error('effects cant parse message', m);
+            //     }
+            //     if (message && message.channel === 'effects' && message.type === 'horn') {
+            //         horn();
+            //     }
 
-            });
+            // });
         }
         return resetHorn;
     }, [session]);

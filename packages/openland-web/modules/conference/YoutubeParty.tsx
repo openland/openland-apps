@@ -90,56 +90,56 @@ export const YoutubeParty = React.memo((props: { link: string, mediaSession: Med
         };
 
         let peerSeq: { [peerId: string]: number | undefined } = {};
-        let d = props.mediaSession.dcVM.listen(container => {
-            let message: { channel: string, id: string, session: string, seq: number, stateSeq: number, time: number, palyingState: boolean } | undefined;
-            try {
-                message = container.dataParsed || (typeof container.data === 'string' ? JSON.parse(container.data) : undefined);
-            } catch (e) {
-                console.error('effects cant parse message', container);
-            }
-            if (!message) {
-                console.error("can't parse message", container);
-                return;
-            }
-            if ((message.channel !== 'ytb') || (message.id !== id)) {
-                return;
-            }
-            if ((peerSeq[container.peerId + message.session] || -1) >= message.seq) {
-                return;
-            }
+        // let d = props.mediaSession.dcVM.listen(container => {
+        //     let message: { channel: string, id: string, session: string, seq: number, stateSeq: number, time: number, palyingState: boolean } | undefined;
+        //     try {
+        //         message = container.dataParsed || (typeof container.data === 'string' ? JSON.parse(container.data) : undefined);
+        //     } catch (e) {
+        //         console.error('effects cant parse message', container);
+        //     }
+        //     if (!message) {
+        //         console.error("can't parse message", container);
+        //         return;
+        //     }
+        //     if ((message.channel !== 'ytb') || (message.id !== id)) {
+        //         return;
+        //     }
+        //     if ((peerSeq[container.peerId + message.session] || -1) >= message.seq) {
+        //         return;
+        //     }
 
-            if (message.stateSeq < stateSeqRef.current) {
-                return;
-            } else if (message.stateSeq > stateSeqRef.current) {
-                doObay();
-                // sync state
-                if (palyingState.current !== message.palyingState) {
-                    console.log('[YTB]', 'sync state', message);
-                    if (message.palyingState) {
-                        targetRef.current?.playVideo();
-                    } else {
-                        targetRef.current?.pauseVideo();
-                    }
-                }
-                // sync time
-                console.log('[YTB]', 'sync time', message);
-                targetRef.current?.seekTo(message.time, true);
+        //     if (message.stateSeq < stateSeqRef.current) {
+        //         return;
+        //     } else if (message.stateSeq > stateSeqRef.current) {
+        //         doObay();
+        //         // sync state
+        //         if (palyingState.current !== message.palyingState) {
+        //             console.log('[YTB]', 'sync state', message);
+        //             if (message.palyingState) {
+        //                 targetRef.current?.playVideo();
+        //             } else {
+        //                 targetRef.current?.pauseVideo();
+        //             }
+        //         }
+        //         // sync time
+        //         console.log('[YTB]', 'sync time', message);
+        //         targetRef.current?.seekTo(message.time, true);
 
-                // prevent fresh session to play paused video (seek from initial state will start playing)
-                if (messageSeqRef.current === 0) {
-                    ignorePlay.current = !message.palyingState;
-                }
+        //         // prevent fresh session to play paused video (seek from initial state will start playing)
+        //         if (messageSeqRef.current === 0) {
+        //             ignorePlay.current = !message.palyingState;
+        //         }
 
-                seqPalyingState.current = message.palyingState;
-                stateSeqRef.current = message.stateSeq;
-            }
+        //         seqPalyingState.current = message.palyingState;
+        //         stateSeqRef.current = message.stateSeq;
+        //     }
 
-            peerSeq[container.peerId] = message.seq;
-        });
+        //     peerSeq[container.peerId] = message.seq;
+        // });
 
         return () => {
             clearInterval(interval);
-            d();
+            // d();
         };
     }, [id, ready]);
 

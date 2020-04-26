@@ -1,4 +1,4 @@
-import { MediaSessionManager } from './MediaSessionManager';
+import { MediaSessionManager } from '../media/MediaSessionManager';
 import { VMMap, VMMapMap, VM } from 'openland-y-utils/mvvm/vm';
 import uuid from 'uuid';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
@@ -155,7 +155,7 @@ type UpdateType = Add | Sync | PartialUpdate | PathIncrement | Reqest | LostPeer
 
 export class MediaSessionVolumeSpace {
     readonly mediaSession: MediaSessionManager;
-    private d1: () => void;
+    // private d1: () => void;
     private d2: () => void;
     readonly selfPeer: PeerAvatar;
     selfPointer: Pointer | undefined;
@@ -190,7 +190,7 @@ export class MediaSessionVolumeSpace {
         this.setColor(getPlaceholderColorRawById(mediaSession.messenger.user.id).end);
         this.mediaSession = mediaSession;
         this.interval = setInterval(this.sync, 1000);
-        this.d1 = this.mediaSession.dcVM.listen(this.onDcMessage);
+        // this.d1 = this.mediaSession.dcVM.listen(this.onDcMessage);
         this.d2 = messenger.getConversation(mediaSession.conversationId).subscribe({
             onMessageSend: (file, localImage) => {
                 if (localImage && file) {
@@ -513,7 +513,7 @@ export class MediaSessionVolumeSpace {
     }
 
     dispose = () => {
-        this.d1();
+        // this.d1();
         this.d2();
         clearInterval(this.interval);
     }
