@@ -112,33 +112,29 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                             }
                         />
                     )}
-                    <ZListItem
-                        leftIcon={require('assets/ic-wallet-24.png')}
-                        text="Payments"
-                        small={true}
-                        onPress={
-                            SUPER_ADMIN
-                                ? () => router.push('EditGroupPrice', { id: group.id })
-                                : undefined
-                        }
-                        description={
-                            group.premiumSettings
-                                ? formatMoneyInterval(
-                                      group.premiumSettings.price,
-                                      group.premiumSettings.interval,
-                                  )
-                                : 'Free'
-                        }
-                    />
-                    {isShared && (
+                    {SUPER_ADMIN && (
                         <ZListItem
-                            leftIcon={require('assets/ic-gallery-24.png')}
-                            text="Social sharing image"
+                            leftIcon={require('assets/ic-wallet-24.png')}
+                            text="Payments"
                             small={true}
-                            description={!!group.socialImage ? 'On' : 'Off'}
-                            onPress={() => router.push('EditGroupSocialImage', { id: group.id })}
+                            onPress={() => router.push('EditGroupPrice', { id: group.id })}
+                            description={
+                                group.premiumSettings
+                                    ? formatMoneyInterval(
+                                          group.premiumSettings.price,
+                                          group.premiumSettings.interval,
+                                      )
+                                    : 'Free'
+                            }
                         />
                     )}
+                    <ZListItem
+                        leftIcon={require('assets/ic-gallery-24.png')}
+                        text="Social sharing image"
+                        small={true}
+                        description={!!group.socialImage ? 'On' : 'Off'}
+                        onPress={() => router.push('EditGroupSocialImage', { id: group.id })}
+                    />
                     {group.welcomeMessage && (
                         <ZListItem
                             leftIcon={require('assets/ic-message-24.png')}

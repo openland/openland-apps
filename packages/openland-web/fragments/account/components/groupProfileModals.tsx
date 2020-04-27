@@ -60,13 +60,11 @@ const ShortnameModalBody = React.memo((props: ShortnameModalBodyProps) => {
     const shortnameField = useShortnameField('input.shortname', props.shortname || '', form);
     const onSave = async () => {
         await form.doAction(async () => {
-            if (shortnameField.value && shortnameField.value !== props.shortname) {
-                await client.mutateSetRoomShortname({
-                    id: props.roomId,
-                    shortname: shortnameField.value,
-                });
-                await client.refetchRoomChat({ id: props.roomId });
-            }
+            await client.mutateSetRoomShortname({
+                id: props.roomId,
+                shortname: shortnameField.value,
+            });
+            await client.refetchRoomChat({ id: props.roomId });
             props.hide();
         });
     };
@@ -80,7 +78,8 @@ const ShortnameModalBody = React.memo((props: ShortnameModalBodyProps) => {
                     autofocus={true}
                     label="Shortname"
                     field={shortnameField}
-                    remark="Only a-z, 0-9 and underscores, 3 chars min"
+                    remark={form.error ? undefined : 'Only a-z, 0-9 and underscores, 3 chars min'}
+                    errorText={form.error ? form.error : undefined}
                 />
             </XModalContent>
             <XModalFooter>
@@ -515,15 +514,13 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                                 }
                             />
                         </XWithRole>
-                        {isShared && (
-                            <UListItem
-                                title="Social sharing image"
-                                icon={<IcGallery />}
-                                paddingHorizontal={24}
-                                onClick={() => showSocialImageModal(room.id, socialImage || '')}
-                                textRight={!!socialImage ? 'On' : 'Off'}
-                            />
-                        )}
+                        <UListItem
+                            title="Social sharing image"
+                            icon={<IcGallery />}
+                            paddingHorizontal={24}
+                            onClick={() => showSocialImageModal(room.id, socialImage || '')}
+                            textRight={!!socialImage ? 'On' : 'Off'}
+                        />
                         {welcomeMessage && (
                             <UListItem
                                 title="Welcome message"

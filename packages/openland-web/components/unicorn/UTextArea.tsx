@@ -95,18 +95,16 @@ export const UTextArea = (props: UTextAreaProps) => {
         if (onChange) {
             onChange(e.target.value);
         }
+    };
+
+    React.useLayoutEffect(() => {
+        setValue(value || '');
         if (props.autoResize && ref && ref.current) {
+            ref.current.style.cssText = 'auto';
             ref.current.style.cssText = 'height:' + ref.current.scrollHeight + 'px';
             ref.current.style.resize = 'none';
         }
-    };
-
-    React.useLayoutEffect(
-        () => {
-            setValue(value || '');
-        },
-        [value],
-    );
+    }, [value]);
 
     return (
         <XView {...other} position="relative">
