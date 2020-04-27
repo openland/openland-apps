@@ -180,8 +180,8 @@ const AvatarRender = (props: AvatarRenderProps) => {
             <div className={cx(avatarContainer, 'avatar-container')}>
                 {hasImage && (
                     <XCloudImage
-                        width={value && value.crop && isFreeCrop ? value.crop.width : 96}
-                        height={value && value.crop && isFreeCrop ? value.crop.height : 96}
+                        width={value && value.crop && isFreeCrop ? value.crop.width : undefined}
+                        height={value && value.crop && isFreeCrop ? value.crop.height : undefined}
                         srcCloud={prepareSrc(value!!.uuid, value!!.crop)}
                         resize={'fill'}
                         onLoad={onLoad}
