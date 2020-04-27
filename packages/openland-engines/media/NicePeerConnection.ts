@@ -1,4 +1,4 @@
-import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppPeerConnectionFactory } from 'openland-y-runtime/AppPeerConnection';
 import { AppPeerConnectionConfiguration, AppPeerConnection } from 'openland-y-runtime-api/AppPeerConnectionApi';
 import { AsyncLock } from '@openland/patterns';

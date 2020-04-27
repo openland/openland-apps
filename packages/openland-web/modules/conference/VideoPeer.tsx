@@ -12,7 +12,7 @@ import SpeakerIcon from 'openland-icons/s/ic-speaking-bold-16.svg';
 import MutedIcon from 'openland-icons/s/ic-muted-bold-16.svg';
 import { SvgLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
-import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 
 const animatedAvatarStyle = css`
     position: absolute;

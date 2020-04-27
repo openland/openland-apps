@@ -1,7 +1,7 @@
 import { ConferenceMedia_conferenceMedia_streams } from 'openland-api/spacex.types';
 import { AppPeerConnectionFactory } from 'openland-y-runtime/AppPeerConnection';
 import { AppPeerConnection } from 'openland-y-runtime-api/AppPeerConnectionApi';
-import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { backoff } from 'openland-y-utils/timer';
 import { MediaSessionManager } from './MediaSessionManager';
 import { InvalidateSync } from '@openland/patterns';

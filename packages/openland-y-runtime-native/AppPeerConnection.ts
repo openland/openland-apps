@@ -1,45 +1,87 @@
-import { AppUserMediaStreamTrackNative } from './AppUserMedia';
+import { AppPeerTransceiverParams, AppRtpSender, AppRtpReceiver, AppRtpTransceiver } from './../openland-y-runtime-api/AppPeerConnectionApi';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppPeerConnectionApi, AppPeerConnectionConfiguration, AppPeerConnection } from 'openland-y-runtime-api/AppPeerConnectionApi';
-import { RTCPeerConnection, RTCSessionDescription, RTCIceCandidate, EventOnAddStream, MediaStream } from 'react-native-webrtc';
-import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
+import { RTCPeerConnection, RTCSessionDescription, RTCIceCandidate } from 'react-native-webrtc';
+import { AppUserMediaStreamTrackNative } from './AppUserMedia';
+
+export class AppRtpReceiverNative implements AppRtpReceiver {
+    raw: any;
+    readonly track: AppUserMediaStreamTrackNative;
+
+    constructor(raw: any) {
+        this.raw = raw;
+        this.track = new AppUserMediaStreamTrackNative(raw.track);
+    }
+}
+
+export class AppRtpSenderNative implements AppRtpSender {
+    raw: any;
+
+    constructor(raw: RTCRtpSender) {
+        this.raw = raw;
+    }
+
+    replaceTrack(track: AppMediaStreamTrack | null) {
+        if (track) {
+            let rawTrack = (track as AppUserMediaStreamTrackNative).track;
+            this.raw.replaceTrack(rawTrack);
+        } else {
+            this.raw.replaceTrack(null);
+        }
+    }
+}
+
+export class AppRtpTransceiverNative implements AppRtpTransceiver {
+
+    raw: any;
+    readonly id: string;
+    readonly sender: AppRtpSender;
+    readonly receiver: AppRtpReceiver;
+
+    constructor(id: string, raw: RTCRtpTransceiver) {
+        this.raw = raw;
+        this.id = id;
+        this.sender = new AppRtpSenderNative(raw.sender);
+        this.receiver = new AppRtpReceiverNative(raw.receiver);
+    }
+
+    get mid() {
+        return this.raw.mid;
+    }
+
+    get direction() {
+        return this.raw.direction;
+    }
+
+    set direction(value: 'inactive' | 'recvonly' | 'sendonly' | 'sendrecv' | 'stopped') {
+        this.raw.direction = value;
+    }
+
+    get currentDirection() {
+        return this.raw.currentDirection;
+    }
+
+    stop = () => {
+        this.raw.stop();
+    }
+}
 
 class AppPeerConnectionNative implements AppPeerConnection {
 
     private connection: RTCPeerConnection;
     private started = true;
-
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined;
-    ontrackadded: ((stream: AppMediaStreamTrack) => void) | undefined;
-
-    #trackStreams = new Map<string, MediaStream>();
 
     constructor(connection: RTCPeerConnection) {
         this.connection = connection;
-        this.connection.onicecandidate = (ev: any) => (this.started && this.onicecandidate) ? this.onicecandidate({ candidate: ev.candidate ? JSON.stringify(ev.candidate) : undefined }) : undefined;
-        this.connection.onaddstream = (ev: EventOnAddStream) => {
+        this.connection.onicecandidate = (ev: any) => {
             if (!this.started) {
                 return;
             }
-            console.warn('[webrtc]', 'Received new stream ' + ev.stream.id);
-            if (this.ontrackadded) {
-                console.warn('[webrtc]', 'onaddstream', ev.stream.toURL());
-                for (let t of ev.stream.getAudioTracks()) {
-                    this.ontrackadded(new AppUserMediaStreamTrackNative(t));
-                }
-                for (let t of ev.stream.getVideoTracks()) {
-                    this.ontrackadded(new AppUserMediaStreamTrackNative(t));
-                }
+            if (this.onicecandidate) {
+                this.onicecandidate({ candidate: ev.candidate ? JSON.stringify(ev.candidate) : undefined });
             }
         };
-        // this.connection.onremovestream = ((ev: { stream: MediaStream } /* Typings are wrong */) => {
-        //     if (!this.started) {
-        //         return;
-        //     }
-        //     console.warn('[webrtc]', 'Stream was removed: ' + ev.stream.id);
-        //     // if (!this.#currentStreams.has(ev.stream.id)) {
-        //     //     this.#currentStreams.delete(ev.stream.id);
-        //     // }
-        // }) as any;
     }
 
     addIceCandidate = async (candidate: string) => {
@@ -47,7 +89,7 @@ class AppPeerConnectionNative implements AppPeerConnection {
     }
 
     createOffer = async () => {
-        return JSON.stringify(await (this.connection as any).createOffer());
+        return JSON.stringify(await this.connection.createOffer());
     }
 
     setLocalDescription = async (sdp: string) => {
@@ -59,31 +101,22 @@ class AppPeerConnectionNative implements AppPeerConnection {
     }
 
     createAnswer = async () => {
-        return JSON.stringify(await (this.connection as any).createAnswer());
+        return JSON.stringify(await this.connection.createAnswer());
     }
 
-    setVolume = (volume: number) => {
-        // not implemented yet
-    }
-
-    // 
-    // Streams
-    //
-
-    addTrack = (track: AppMediaStreamTrack) => {
-        this.removeTrack(track); // WTF?
-        let rawTrack = (track as AppUserMediaStreamTrackNative).track;
-        let stream = new MediaStream(undefined);
-        stream.addTrack(rawTrack);
-        this.connection.addStream(stream);
-        this.#trackStreams.set(track.id, stream);
-    }
-
-    removeTrack = (track: AppMediaStreamTrack) => {
-        let stream = this.#trackStreams.get(track.id);
-        if (stream) {
-            this.connection.removeStream(stream);
+    addTranseiver = async (arg: 'audio' | 'video' | AppMediaStreamTrack, params?: AppPeerTransceiverParams) => {
+        let transceiver: any;
+        if (arg === 'audio') {
+            transceiver = await (this.connection as any).addTransceiver('audio', params);
+        } else if (arg === 'video') {
+            transceiver = await (this.connection as any).addTransceiver('video', params);
+        } else {
+            let track = (arg as AppUserMediaStreamTrackNative).track;
+            transceiver = await (this.connection as any).addTransceiver(track, params);
         }
+        let res = new AppRtpTransceiverNative(transceiver.receiver.track.id, transceiver);
+        // this.transeivers.set(res.id, res);
+        return res;
     }
 
     //
@@ -95,7 +128,7 @@ class AppPeerConnectionNative implements AppPeerConnection {
             return;
         }
         this.started = false;
-        this.#trackStreams.clear();
+        // this.#trackStreams.clear();
         this.connection.close();
     }
 }

@@ -25,7 +25,7 @@ import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager'
 import { Conference_conference_peers, MediaStreamVideoSource } from 'openland-api/spacex.types';
 import { RTCView, MediaStreamTrack, MediaStream } from 'react-native-webrtc';
 import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradient.native';
-import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppUserMediaStreamTrackNative } from 'openland-y-runtime-native/AppUserMedia';
 
 const VideoView = React.memo((props: { peer: Conference_conference_peers, mediaSession: MediaSessionManager, calls: CallsEngine, h: number, mirror?: boolean }) => {

@@ -1,6 +1,30 @@
-import { AppMediaStreamTrack } from './AppUserMediaApi';
+import { AppMediaStreamTrack } from './AppMediaStream';
+
+export interface AppRtpReceiver {
+    readonly track: AppMediaStreamTrack;
+}
+
+export interface AppRtpSender {
+    replaceTrack(track: AppMediaStreamTrack): void;
+}
+
+export interface AppRtpTransceiver {
+    readonly id: string;
+    readonly sender: AppRtpSender;
+    readonly receiver: AppRtpReceiver;
+    readonly mid: string | null;
+    direction: 'inactive' | 'recvonly' | 'sendonly' | 'sendrecv' | 'stopped';
+    readonly currentDirection: 'inactive' | 'recvonly' | 'sendonly' | 'sendrecv' | 'stopped' | null;
+    stop(): void;
+}
+
+export interface AppPeerTransceiverParams {
+    direction?: 'inactive' | 'recvonly' | 'sendonly' | 'sendrecv';
+}
 
 export interface AppPeerConnection {
+
+    // Negotiation
     createOffer(): Promise<string>;
     createAnswer(): Promise<string>;
     addIceCandidate(candidate: string): Promise<void>;
@@ -8,9 +32,9 @@ export interface AppPeerConnection {
     setRemoteDescription(sdp: string): Promise<void>;
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined;
 
-    ontrackadded: ((track: AppMediaStreamTrack) => void) | undefined;
-    addTrack(track: AppMediaStreamTrack): void;
-    removeTrack(track: AppMediaStreamTrack): void;
+    // Transceivers
+    addTranseiver(kind: 'audio' | 'video', params?: AppPeerTransceiverParams): Promise<AppRtpTransceiver>;
+    addTranseiver(track: AppMediaStreamTrack, params?: AppPeerTransceiverParams): Promise<AppRtpTransceiver>;
 
     close(): void;
 }

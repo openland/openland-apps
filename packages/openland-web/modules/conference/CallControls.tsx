@@ -18,7 +18,7 @@ import { USelect } from 'openland-web/components/unicorn/USelect';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalController } from 'openland-x/showModal';
-import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { VideoComponent } from './ScreenShareModal';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';

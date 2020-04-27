@@ -20,7 +20,7 @@ import { CallsEngine } from 'openland-engines/CallsEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { useShowEffects } from './sounds/Effects';
 import { useVideoCallModal } from './CallModal';
-import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 
 const VIDEO_WIDTH = 320;

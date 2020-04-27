@@ -1,79 +1,113 @@
-import { AppPeerConnectionApi, AppPeerConnectionConfiguration, AppPeerConnection } from 'openland-y-runtime-api/AppPeerConnectionApi';
-import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppPeerTransceiverParams } from './../openland-y-runtime-api/AppPeerConnectionApi';
+import {
+    AppPeerConnectionApi,
+    AppPeerConnectionConfiguration,
+    AppPeerConnection,
+    AppRtpTransceiver,
+    AppRtpSender,
+    AppRtpReceiver
+} from 'openland-y-runtime-api/AppPeerConnectionApi';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppUserMediaTrackWeb } from './AppUserMedia';
 import { randomKey } from 'openland-y-utils/randomKey';
 // import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
 
+export class AppRtpReceiverWeb implements AppRtpReceiver {
+    raw: RTCRtpReceiver;
+    readonly track: AppUserMediaTrackWeb;
+
+    constructor(raw: RTCRtpReceiver) {
+        this.raw = raw;
+        this.track = new AppUserMediaTrackWeb(raw.track);
+    }
+}
+
+export class AppRtpSenderWeb implements AppRtpSender {
+    raw: RTCRtpSender;
+
+    constructor(raw: RTCRtpSender) {
+        this.raw = raw;
+    }
+
+    replaceTrack(track: AppMediaStreamTrack | null) {
+        if (track) {
+            let rawTrack = (track as AppUserMediaTrackWeb).track;
+            this.raw.replaceTrack(rawTrack);
+        } else {
+            this.raw.replaceTrack(null);
+        }
+    }
+}
+
+export class AppRtpTransceiverWeb implements AppRtpTransceiver {
+
+    raw: RTCRtpTransceiver;
+    readonly id: string;
+    readonly sender: AppRtpSender;
+    readonly receiver: AppRtpReceiver;
+
+    constructor(id: string, raw: RTCRtpTransceiver) {
+        this.raw = raw;
+        this.id = id;
+        this.sender = new AppRtpSenderWeb(raw.sender);
+        this.receiver = new AppRtpReceiverWeb(raw.receiver);
+    }
+
+    get mid() {
+        return this.raw.mid;
+    }
+
+    get direction() {
+        return this.raw.direction;
+    }
+
+    set direction(value: 'inactive' | 'recvonly' | 'sendonly' | 'sendrecv' | 'stopped') {
+        this.raw.direction = value;
+    }
+
+    get currentDirection() {
+        return this.raw.currentDirection;
+    }
+
+    stop = () => {
+        this.raw.stop();
+    }
+}
+
 export class AppPeerConnectionWeb implements AppPeerConnection {
     private id = randomKey();
     private connection: RTCPeerConnection;
-    private audio?: HTMLAudioElement;
     private started = true;
+    private audioTracks = new Map<string, HTMLAudioElement>();
+    private transeivers = new Map<string, AppRtpTransceiverWeb>();
 
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined = undefined;
-    ontrackadded: ((stream: AppMediaStreamTrack) => void) | undefined;
-
-    private trackSenders = new Map<string, RTCRtpSender>();
-    private audioOutputDevice: MediaDeviceInfo | undefined;
-    private dataChannels = new Map<number, RTCDataChannel>();
-    private volume?: number;
-
-    // private d1: () => void;
-    // private d2: () => void;
 
     constructor(connection: RTCPeerConnection) {
         this.connection = connection;
-        this.connection.onicecandidate = (ev) => this.started && this.onicecandidate && this.onicecandidate({ candidate: ev.candidate ? JSON.stringify(ev.candidate) : undefined });
-
-        // this.d2 = MediaDevicesManager.instance().listenOutputDevice(d => {
-        //     if (d !== this.audioOutputDevice) {
-        //         this.audioOutputDevice = d;
-        //         // TODO how to do it in safari?
-        //         if (this.audio && (this.audio as any).setSinkId) {
-        //             (this.audio as any).setSinkId(this.audioOutputDevice?.deviceId);
-        //         }
-        //     }
-        // });
-
-        // this.d1 = MediaDevicesManager.instance().listenStreamUpdated(s => {
-        //     // this.addStream(s);
-        // });
-
-        this.connection.ontrack = (ev) => {
-            console.warn(ev.track);
+        this.connection.onicecandidate = (ev) => {
             if (!this.started) {
                 return;
             }
-
-            if (ev.track.kind === 'audio') {
-                // Remove existing
-                if (this.audio) {
-                    this.audio.pause();
-                    this.audio = undefined;
-                }
-
-                // Create audio object and play stream
-                this.audio = new Audio();
-                if ((this.audio as any).setSinkId) {
-                    (this.audio as any).setSinkId(this.audioOutputDevice?.deviceId);
-                }
-                if (this.volume) {
-                    this.audio.volume = this.volume;
-                }
-
-                this.audio.autoplay = true;
-                this.audio.setAttribute('playsinline', 'true');
-                this.audio.controls = false;
-                this.audio.srcObject = ev.streams[0];
-                this.audio.load();
-                this.audio.play();
+            if (this.onicecandidate) {
+                this.onicecandidate({ candidate: ev.candidate ? JSON.stringify(ev.candidate) : undefined });
             }
-
-            if (this.ontrackadded) {
-                this.ontrackadded(new AppUserMediaTrackWeb(ev.track));
-            }
-
         };
+    }
+
+    addTranseiver = async (arg: 'audio' | 'video' | AppMediaStreamTrack, params?: AppPeerTransceiverParams) => {
+        let transceiver: RTCRtpTransceiver;
+        if (arg === 'audio') {
+            transceiver = this.connection.addTransceiver('audio', params);
+        } else if (arg === 'video') {
+            transceiver = this.connection.addTransceiver('video', params);
+        } else {
+            let track = (arg as AppUserMediaTrackWeb).track;
+            transceiver = this.connection.addTransceiver(track, params);
+        }
+        let res = new AppRtpTransceiverWeb(transceiver.receiver.track.id, transceiver);
+        this.transeivers.set(res.id, res);
+        return res;
     }
 
     createOffer = async () => {
@@ -85,33 +119,19 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         console.log('[PC:' + this.id + '] setLocalDescription');
         console.log('[PC:' + this.id + ']', sdp);
         await this.connection.setLocalDescription(JSON.parse(sdp));
+        this._applyTranseivers();
     }
 
     setRemoteDescription = async (sdp: string) => {
         console.log('[PC:' + this.id + '] setRemoteDescription');
         console.log('[PC:' + this.id + ']', sdp);
         await this.connection.setRemoteDescription(JSON.parse(sdp));
+        this._applyTranseivers();
     }
 
     createAnswer = async () => {
         console.log('[PC:' + this.id + '] createAnswer');
         return JSON.stringify(await this.connection.createAnswer({ offerToReceiveAudio: true, offerToReceiveVideo: true } as any /* WTF with typings? */));
-    }
-
-    addTrack = (track: AppMediaStreamTrack) => {
-        this.removeTrack(track); // WTF?
-        let rawTrack = (track as AppUserMediaTrackWeb).track;
-        let sender = this.connection.addTrack(rawTrack);
-        this.trackSenders.set(track.id, sender);
-    }
-
-    removeTrack = (track: AppMediaStreamTrack) => {
-        let rawTrack: MediaStreamTrack = (track as AppUserMediaTrackWeb).track;
-        let sender = this.trackSenders.get(rawTrack.id);
-        if (sender) {
-            this.trackSenders.delete(rawTrack.id);
-            this.connection.removeTrack(sender);
-        }
     }
 
     addIceCandidate = (candidate: string) => {
@@ -123,20 +143,53 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
             return;
         }
         this.started = false;
-        if (this.audio) {
-            this.audio.pause();
-            this.audio = undefined;
-        }
-        for (let dc of this.dataChannels.values()) {
-            dc.close();
-        }
-        // this.d1();
-        // this.d2();
         this.connection.close();
     }
 
-    getConnection = () => {
-        return this.connection;
+    private _applyTranseivers() {
+        if (!this.started) {
+            return;
+        }
+
+        //
+        // Merge Transeivers
+        //
+
+        for (let t of this.connection.getTransceivers()) {
+            if (this.transeivers.has(t.receiver.track.id)) {
+                continue;
+            }
+            this.transeivers.set(t.receiver.track.id, new AppRtpTransceiverWeb(t.receiver.track.id, t));
+        }
+
+        //
+        // Play incoming audio
+        //
+        // NOTE: Initially i wanted to remove audio tracks
+        //       when transeiver is stopped, but i expect
+        //       that audio and be played a little bit longer 
+        //       after transceiver stopping. I don't think that 
+        //       it will eat many resources anyway.
+        //
+
+        for (let t of this.connection.getTransceivers()) {
+            if (t.receiver.track.kind === 'audio') {
+                if (this.audioTracks.has(t.receiver.track.id)) {
+                    continue;
+                } else {
+                    let audio = new Audio();
+                    let stream = new MediaStream();
+                    stream.addTrack(t.receiver.track);
+                    audio.autoplay = true;
+                    audio.setAttribute('playsinline', 'true');
+                    audio.controls = false;
+                    audio.srcObject = stream;
+                    audio.load();
+                    audio.play();
+                    this.audioTracks.set(t.receiver.track.id, audio);
+                }
+            }
+        }
     }
 }
 

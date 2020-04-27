@@ -1,4 +1,4 @@
-import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 
 export interface MediaSessionReceiver {
     id: string;

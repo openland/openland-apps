@@ -1,4 +1,5 @@
-import { AppUserMediaApi, AppMediaStreamTrack } from 'openland-y-runtime-api/AppUserMediaApi';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
+import { AppUserMediaApi } from 'openland-y-runtime-api/AppUserMediaApi';
 import { mediaDevices, MediaStreamTrack, MediaStream } from 'react-native-webrtc';
 
 export class AppUserMediaStreamTrackNative implements AppMediaStreamTrack {

@@ -1,9 +1,4 @@
-export interface AppMediaStreamTrack {
-    id: string;
-    kind: 'video' | 'audio';
-    enabled: boolean;
-    stop(): void;
-}
+import { AppMediaStreamTrack } from './AppMediaStream';
 
 export interface AppUserMediaApi {
     getUserAudio(deviceId?: string): Promise<AppMediaStreamTrack>;
