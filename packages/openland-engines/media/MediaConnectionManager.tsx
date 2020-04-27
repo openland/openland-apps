@@ -21,6 +21,7 @@ export class MediaConnectionManager {
     private videoTrack: AppMediaStreamTrack | null = null;
     private screencastTransceiver: AppRtpTransceiver | null = null;
     private screencastTrack: AppMediaStreamTrack | null = null;
+    private receivers = new Map<string, Map<'audio' | 'video' | 'screencast', AppRtpTransceiver>>();
 
     // Peer connection
     private readonly peerConnection: AppPeerConnection;
@@ -105,7 +106,6 @@ export class MediaConnectionManager {
         if (track && track.kind !== 'audio') {
             throw Error('Expected audio track, got: ' + track.kind);
         }
-        console.log('setAudioTrack:' + track);
         this.audioTrack = track;
         if (this.audioTransceiver) {
             this.audioTransceiver.sender.replaceTrack((track as any).raw);
@@ -116,10 +116,18 @@ export class MediaConnectionManager {
         if (track && track.kind !== 'video') {
             throw Error('Expected video track, got: ' + track.kind);
         }
-        console.log('setVideoTrack:' + track);
         this.videoTrack = track;
         if (this.videoTransceiver) {
             this.videoTransceiver.sender.replaceTrack((track as any).raw);
+        }
+    }
+    setScreencastTrack(track: AppMediaStreamTrack | null) {
+        if (track && track.kind !== 'video') {
+            throw Error('Expected video track, got: ' + track.kind);
+        }
+        this.screencastTrack = track;
+        if (this.screencastTransceiver) {
+            this.screencastTransceiver.sender.replaceTrack((track as any).raw);
         }
     }
 
@@ -160,40 +168,8 @@ export class MediaConnectionManager {
             //
             if (!this.localOffer) {
 
-                //
-                // Creating required transceivers if needed
-                // NOTE: Only offerrer side is responsible for this 
-                //       and we expect answerer to just confirm offer
-                //
-                let hasAudio = false;
-                for (let sender of config.senders) {
-                    if (sender.kind === MediaKind.AUDIO) {
-                        // Audio track
-                        if (hasAudio) {
-                            // Ignoring multiple audio senders for future compatibility
-                            continue;
-                        }
-                        hasAudio = true;
-
-                        // Create if needed
-                        if (!this.audioTransceiver) {
-                            this.audioTransceiver = await this.peerConnection.addTranseiver('audio', { direction: 'sendonly' });
-                            if (this.audioTrack) {
-                                this.audioTransceiver.sender.replaceTrack(this.audioTrack);
-                            }
-                        }
-                    } else if (sender.kind === MediaKind.VIDEO) {
-                        if (sender.videoSource === VideoSource.CAMERA || sender.videoSource === null) {
-                            // Camera
-                        } else if (sender.videoSource === VideoSource.SCREEN) {
-                            // Screen
-                        }
-                    }
-                }
-                // Disable audio transceiver if not sending any audio
-                if (!hasAudio && this.audioTransceiver) {
-                    this.audioTransceiver.direction = 'inactive';
-                }
+                // Configure transceivers
+                await this.prepareTransceivers(config);
 
                 // Create Offer
                 console.log('[WEBRTC]: Creating offer');
@@ -201,6 +177,24 @@ export class MediaConnectionManager {
                 await this.peerConnection.setLocalDescription(offer);
                 this.localDescriptionSet = true;
                 this.localOffer = offer;
+
+                // Log mids
+                if (this.audioTransceiver) {
+                    console.log('[WEBRTC]: Audio MID: ' + this.audioTransceiver.mid);
+                }
+                if (this.videoTransceiver) {
+                    console.log('[WEBRTC]: Video MID: ' + this.videoTransceiver.mid);
+                }
+                if (this.screencastTransceiver) {
+                    console.log('[WEBRTC]: Screencast MID: ' + this.screencastTransceiver.mid);
+                }
+
+                for (let peerId of this.receivers.keys()) {
+                    let refs = this.receivers.get(peerId)!;
+                    for (let kind of refs.keys()) {
+                        console.log('[WEBRTC]: Receive ' + peerId + ':' + kind + ':' + refs.get(kind)!.mid);
+                    }
+                }
             }
 
             if (!this.localOfferSent) {
@@ -261,8 +255,6 @@ export class MediaConnectionManager {
                 this.remoteDescriptionSet = true;
                 this.remoteAnwer = answer;
             }
-
-            // TODO: Apply transcievers
         }
 
         // Apply ICE
@@ -278,6 +270,182 @@ export class MediaConnectionManager {
                         await this.peerConnection.addIceCandidate(ice);
                     });
                 }
+            }
+        }
+    }
+
+    private prepareTransceivers = async (config: ConferenceMedia_conferenceMedia_streams) => {
+
+        //
+        // Creating trascievers and configuring them before 
+        // making an offer
+        //
+        // NOTE: This code expects that in every connection
+        //       one of the sides are leader that always makes
+        //       offers and other, secondady, peer can only
+        //       generate anwers.
+        //
+        //       Mesh and SFU schedulers are both follow 
+        //       this constraint.
+        //
+        //
+
+        //
+        // Create missing senders
+        //
+
+        for (let sender of config.senders) {
+            if (sender.kind === MediaKind.AUDIO) {
+                await this.createAudioSenderTransceiverIfNeeded();
+            } else if (sender.kind === MediaKind.VIDEO) {
+                // NOTE: Do not change this condition. We tread null video source as camera one
+                //       for future compatibility
+                if (sender.videoSource === VideoSource.CAMERA || sender.videoSource === null) {
+                    await this.createVideoSenderTransceiverIfNeeded();
+                } else if (sender.videoSource === VideoSource.SCREEN) {
+                    await this.createScreencastSenderTransceiverIfNeeded();
+                }
+            }
+        }
+
+        //
+        // Create missing receivers
+        //
+
+        for (let receiver of config.receivers) {
+            // Not supporting detached receivers for now
+            if (!receiver.peerId) {
+                continue;
+            }
+            if (receiver.kind === MediaKind.AUDIO) {
+                await this.createAudioReceiverIfNeeded(receiver.peerId);
+            } else if (receiver.kind === MediaKind.VIDEO) {
+                // NOTE: Do not change this condition. We tread null video source as camera one
+                //       for future compatibility
+                if (receiver.videoSource === VideoSource.CAMERA || receiver.videoSource === null) {
+                    await this.createVideoReceiverIfNeeded(receiver.peerId);
+                } else if (receiver.videoSource === VideoSource.SCREEN) {
+                    await this.createScreencastReceiverIfNeeded(receiver.peerId);
+                }
+            }
+        }
+
+        //
+        // Configure senders
+        //
+
+        if (this.audioTransceiver) {
+            if (config.senders.find((s) => s.kind === MediaKind.AUDIO)) {
+                this.audioTransceiver.direction = 'sendonly';
+            } else {
+                this.audioTransceiver.direction = 'inactive';
+            }
+        }
+        if (this.videoTransceiver) {
+            if (config.senders.find((s) => s.kind === MediaKind.VIDEO && s.videoSource === null || s.videoSource === VideoSource.CAMERA)) {
+                this.videoTransceiver.direction = 'sendonly';
+            } else {
+                this.videoTransceiver.direction = 'inactive';
+            }
+        }
+        if (this.screencastTransceiver) {
+            if (config.senders.find((s) => s.kind === MediaKind.VIDEO && s.videoSource === VideoSource.SCREEN)) {
+                this.screencastTransceiver.direction = 'sendonly';
+            } else {
+                this.screencastTransceiver.direction = 'inactive';
+            }
+        }
+
+        //
+        // Configure receivers
+        //
+        for (let peerId of this.receivers.keys()) {
+            let refs = this.receivers.get(peerId)!;
+            for (let kind of refs.keys()) {
+                let transceiver = refs.get(kind)!;
+                if (kind === 'audio') {
+                    if (config.receivers.find((r) => r.peerId === peerId && r.kind === MediaKind.AUDIO)) {
+                        transceiver.direction = 'recvonly';
+                    } else {
+                        transceiver.direction = 'inactive';
+                    }
+                } else if (kind === 'video') {
+                    if (config.receivers.find((r) => r.peerId === peerId && r.kind === MediaKind.VIDEO && (
+                        r.videoSource === null || r.videoSource === VideoSource.CAMERA
+                    ))) {
+                        transceiver.direction = 'recvonly';
+                    } else {
+                        transceiver.direction = 'inactive';
+                    }
+                } else if (kind === 'screencast') {
+                    if (config.receivers.find((r) => r.peerId === peerId && r.kind === MediaKind.VIDEO &&
+                        r.videoSource === VideoSource.SCREEN
+                    )) {
+                        transceiver.direction = 'recvonly';
+                    } else {
+                        transceiver.direction = 'inactive';
+                    }
+                }
+            }
+        }
+    }
+
+    private createAudioReceiverIfNeeded = async (peerId: string) => {
+        if (!this.receivers.has(peerId)) {
+            this.receivers.set(peerId, new Map());
+        }
+        let refs = this.receivers.get(peerId)!;
+        if (!refs.has('audio')) {
+            refs.set('audio', await this.peerConnection.addTranseiver('audio', { direction: 'recvonly' }));
+        }
+    }
+
+    private createVideoReceiverIfNeeded = async (peerId: string) => {
+        if (!this.receivers.has(peerId)) {
+            this.receivers.set(peerId, new Map());
+        }
+        let refs = this.receivers.get(peerId)!;
+        if (!refs.has('video')) {
+            refs.set('video', await this.peerConnection.addTranseiver('video', { direction: 'recvonly' }));
+        }
+    }
+
+    private createScreencastReceiverIfNeeded = async (peerId: string) => {
+        if (!this.receivers.has(peerId)) {
+            this.receivers.set(peerId, new Map());
+        }
+        let refs = this.receivers.get(peerId)!;
+        if (!refs.has('screencast')) {
+            refs.set('screencast', await this.peerConnection.addTranseiver('video', { direction: 'recvonly' }));
+        }
+    }
+
+    private createAudioSenderTransceiverIfNeeded = async () => {
+        // Create if needed
+        if (!this.audioTransceiver) {
+            this.audioTransceiver = await this.peerConnection.addTranseiver('audio', { direction: 'sendonly' });
+            if (this.audioTrack) {
+                this.audioTransceiver.sender.replaceTrack(this.audioTrack);
+            }
+        }
+    }
+
+    private createVideoSenderTransceiverIfNeeded = async () => {
+        // Create if needed
+        if (!this.videoTransceiver) {
+            this.videoTransceiver = await this.peerConnection.addTranseiver('video', { direction: 'sendonly' });
+            if (this.videoTrack) {
+                this.videoTransceiver.sender.replaceTrack(this.videoTrack);
+            }
+        }
+    }
+
+    private createScreencastSenderTransceiverIfNeeded = async () => {
+        // Create if needed
+        if (!this.screencastTransceiver) {
+            this.screencastTransceiver = await this.peerConnection.addTranseiver('video', { direction: 'sendonly' });
+            if (this.screencastTrack) {
+                this.screencastTransceiver.sender.replaceTrack(this.screencastTrack);
             }
         }
     }

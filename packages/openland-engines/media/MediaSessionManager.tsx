@@ -353,9 +353,16 @@ export class MediaSessionManager {
 
     private onScreencastTrackLoaded = () => {
         // TODO: Handle
+        // Update connections
+        for (let connection of this.connections.values()) {
+            connection.setScreencastTrack(this.screencastTrack);
+        }
     }
     private onScreencastTrackUnloaded = () => {
         // TODO: Handle
+        for (let connection of this.connections.values()) {
+            connection.setScreencastTrack(null);
+        }
     }
 
     private async doLoadAudioIfNeeded() {
