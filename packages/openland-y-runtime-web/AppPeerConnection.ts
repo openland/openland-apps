@@ -1,4 +1,4 @@
-import { AppPeerTransceiverParams } from './../openland-y-runtime-api/AppPeerConnectionApi';
+import { AppPeerTransceiverParams, AppSessionDescription } from './../openland-y-runtime-api/AppPeerConnectionApi';
 import {
     AppPeerConnectionApi,
     AppPeerConnectionConfiguration,
@@ -116,26 +116,34 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
 
     createOffer = async () => {
         console.log('[PC:' + this.id + '] createOffer');
-        return JSON.stringify(await this.connection.createOffer({ offerToReceiveAudio: true, offerToReceiveVideo: true } as any /* WTF with typings? */));
+        let res = await this.connection.createOffer();
+        return {
+            type: res.type! as 'offer',
+            sdp: res.sdp!
+        };
     }
 
-    setLocalDescription = async (sdp: string) => {
+    setLocalDescription = async (sdp: AppSessionDescription) => {
         console.log('[PC:' + this.id + '] setLocalDescription');
-        console.log('[PC:' + this.id + ']', sdp);
-        await this.connection.setLocalDescription(JSON.parse(sdp));
+        console.log('[PC:' + this.id + ']', sdp.sdp);
+        await this.connection.setLocalDescription(sdp);
         this._applyTranseivers();
     }
 
-    setRemoteDescription = async (sdp: string) => {
+    setRemoteDescription = async (sdp: AppSessionDescription) => {
         console.log('[PC:' + this.id + '] setRemoteDescription');
-        console.log('[PC:' + this.id + ']', sdp);
-        await this.connection.setRemoteDescription(JSON.parse(sdp));
+        console.log('[PC:' + this.id + ']', sdp.sdp);
+        await this.connection.setRemoteDescription(sdp);
         this._applyTranseivers();
     }
 
     createAnswer = async () => {
         console.log('[PC:' + this.id + '] createAnswer');
-        return JSON.stringify(await this.connection.createAnswer({ offerToReceiveAudio: true, offerToReceiveVideo: true } as any /* WTF with typings? */));
+        let res = await this.connection.createAnswer({ offerToReceiveAudio: true, offerToReceiveVideo: true } as any /* WTF with typings? */);
+        return {
+            type: res.type! as 'answer',
+            sdp: res.sdp!
+        };
     }
 
     addIceCandidate = (candidate: string) => {

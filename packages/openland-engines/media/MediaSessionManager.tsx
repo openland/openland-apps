@@ -193,6 +193,7 @@ export class MediaSessionManager {
 
         // Subscribe for media streams
         this.connectionsSubscription = reliableWatcher<ConferenceMediaWatch>((handler) => this.client.subscribeConferenceMediaWatch({ peerId: this.peerId, id: this.conferenceId }, handler), (src) => {
+            console.log('[WEBRTC] Update');
             let streams = src.media.streams;
             this.connectionConfigs = streams;
             this.connectionsInvalidateSync.invalidate();
@@ -206,62 +207,31 @@ export class MediaSessionManager {
         console.log('[WEBRTC] Apply');
 
         // Detect deletions
-        // for (let s of this.connections.keys()) {
-        //     if (!this.connectionConfigs.find((v) => v.id === s)) {
-        //         console.log('[WEBRTC] Destroy stream ' + s);
-        //         let stream = this.connections.get(s);
-        //         let appStream = stream?.getVideoInTrack();
-        //         let peerId = stream?.getTargetPeerId();
-        //         if (peerId && appStream && stream) {
-        //             if (stream.isVideoInScreenshare()) {
-        //                 this.peerVideoVM.deleteVal(peerId, 'screen_share');
-        //             } else {
-        //                 this.peerVideoVM.deleteVal(peerId, 'camera');
-        //             }
-        //         }
-        //         stream?.destroy();
-        //         this.connections.delete(s);
-        //     }
-        // }
+        for (let s of this.connections.keys()) {
+            if (!this.connectionConfigs.find((v) => v.id === s)) {
+                console.log('[WEBRTC] Destroy stream ' + s);
+                let stream = this.connections.get(s);
+                this.connections.delete(s);
+                if (stream) {
+                    stream.destroy();
+                }
+            }
+        }
 
-        // close screen share if it does not have streams
-        // if (this.outScreenTrackBinded && !this.connectionConfigs.find(s => s.settings.videoOut && s.settings.videoOutSource === 'screen_share')) {
-        //     this.stopScreenShare();
-        // }
-
-        // for (let s of this.connectionConfigs) {
-        //     let ms = this.connections.get(s.id);
-        //     let videoTrack = s.settings.videoOut ? (s.settings.videoOutSource === 'screen_share' ? this.outScreenTrack : this.outVideoTrack) : undefined;
-        //     if (this.outScreenTrack && videoTrack === this.outScreenTrack) {
-        //         this.outScreenTrackBinded = true;
-        //     }
-        //     if (ms) {
-        //         ms.onStateChanged(s, videoTrack);
-        //     } else {
-        //         console.log('[WEBRTC] Create stream ' + s.id);
-
-        //         ms = new MediaStreamManager(this.client, s.id, this.peerId, this.iceServers, this.outAudioTrack, videoTrack, s, this.isPrivate ? () => this.onStatusChange('connected') : undefined, s.peerId);
-        //         this.connections.set(s.id, ms);
-
-        //         ms.listenVideoInTrack(c => {
-        //             this.videoEnabledVM.set(!!c);
-        //             if (c && s.peerId) {
-        //                 console.warn('session', s.peerId, c);
-        //                 if (ms?.isVideoInScreenshare) {
-        //                     this.peerVideoVM.add(s.peerId, 'screen_share', c);
-        //                 } else {
-        //                     this.peerVideoVM.add(s.peerId, 'camera', c);
-        //                 }
-        //             }
-        //         });
-        //         // ms.listenDc(m => {
-        //         //     this.dcVM.set(m);
-        //         // });
-        //     }
-        //     if (s.peerId) {
-        //         this.peerStreamMediaStateVM.add(s.peerId, s.id, s.mediaState);
-        //     }
-        // }
+        // Update or create new
+        for (let s of this.connectionConfigs) {
+            let ms = this.connections.get(s.id);
+            if (ms) {
+                console.log('[WEBRTC] Update stream ' + s.id);
+                ms.dispatch(s);
+            } else {
+                console.log('[WEBRTC] Add stream ' + s.id);
+                ms = new MediaConnectionManager(s.id, this.peerId, s, this);
+                ms.setAudioTrack(this.audioTrack);
+                ms.setVideoTrack(this.videoTrack);
+                this.connections.set(s.id, ms);
+            }
+        }
     }
 
     //

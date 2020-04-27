@@ -1,4 +1,4 @@
-import { AppPeerTransceiverParams, AppRtpSender, AppRtpReceiver, AppRtpTransceiver } from './../openland-y-runtime-api/AppPeerConnectionApi';
+import { AppPeerTransceiverParams, AppRtpSender, AppRtpReceiver, AppRtpTransceiver, AppSessionDescription } from './../openland-y-runtime-api/AppPeerConnectionApi';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppPeerConnectionApi, AppPeerConnectionConfiguration, AppPeerConnection } from 'openland-y-runtime-api/AppPeerConnectionApi';
 import { RTCPeerConnection, RTCSessionDescription, RTCIceCandidate } from 'react-native-webrtc';
@@ -90,21 +90,29 @@ class AppPeerConnectionNative implements AppPeerConnection {
     }
 
     createOffer = async () => {
-        return JSON.stringify(await this.connection.createOffer());
+        let res = await this.connection.createOffer();
+        return {
+            type: 'offer' as 'offer',
+            sdp: res.sdp
+        };
     }
 
-    setLocalDescription = async (sdp: string) => {
-        await this.connection.setLocalDescription(new RTCSessionDescription(JSON.parse(sdp)));
+    setLocalDescription = async (sdp: AppSessionDescription) => {
+        await this.connection.setLocalDescription(new RTCSessionDescription(sdp));
         this._applyTranseivers();
     }
 
-    setRemoteDescription = async (sdp: string) => {
-        await this.connection.setRemoteDescription(new RTCSessionDescription(JSON.parse(sdp)));
+    setRemoteDescription = async (sdp: AppSessionDescription) => {
+        await this.connection.setRemoteDescription(new RTCSessionDescription(sdp));
         this._applyTranseivers();
     }
 
     createAnswer = async () => {
-        return JSON.stringify(await this.connection.createAnswer());
+        let res = await this.connection.createAnswer();
+        return {
+            type: 'answer' as 'answer',
+            sdp: res.sdp
+        };
     }
 
     addTranseiver = async (arg: 'audio' | 'video' | AppMediaStreamTrack, params?: AppPeerTransceiverParams) => {

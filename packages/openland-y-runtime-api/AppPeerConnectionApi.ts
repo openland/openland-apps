@@ -1,5 +1,10 @@
 import { AppMediaStreamTrack } from './AppMediaStream';
 
+export interface AppSessionDescription {
+    type: 'offer' | 'answer';
+    sdp: string;
+}
+
 export interface AppRtpReceiver {
     readonly track: AppMediaStreamTrack;
 }
@@ -25,11 +30,11 @@ export interface AppPeerTransceiverParams {
 export interface AppPeerConnection {
 
     // Negotiation
-    createOffer(): Promise<string>;
-    createAnswer(): Promise<string>;
+    createOffer(): Promise<AppSessionDescription>;
+    createAnswer(): Promise<AppSessionDescription>;
     addIceCandidate(candidate: string): Promise<void>;
-    setLocalDescription(sdp: string): Promise<void>;
-    setRemoteDescription(sdp: string): Promise<void>;
+    setLocalDescription(sdp: AppSessionDescription): Promise<void>;
+    setRemoteDescription(sdp: AppSessionDescription): Promise<void>;
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined;
 
     // Transceivers
