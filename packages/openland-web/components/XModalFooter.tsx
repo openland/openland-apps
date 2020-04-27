@@ -10,6 +10,7 @@ export const XModalFooter = React.memo<{ children?: any } & XViewProps>(props =>
             justifyContent="flex-end"
             alignItems="center"
             paddingHorizontal={24}
+            borderRadius="0 0 8px 8px"
             {...props}
         />
     );

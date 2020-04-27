@@ -120,8 +120,6 @@ const EmojiSuggestionComponent = (props: { name: string; value: string; display:
 const mentionsContainer = css`
     position: absolute;
     bottom: calc(100% + 16px);
-    left: 56px;
-    right: 56px;
     box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
     background-color: white;
     border-radius: 8px;
@@ -132,6 +130,11 @@ const mentionsContainer = css`
         transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
     z-index: 2;
+`;
+
+const sendMessageMentions = css`
+    left: 56px;
+    right: 56px;
 `;
 
 export interface AutoCompleteComponentRef {
@@ -161,6 +164,7 @@ export const AutoCompleteComponent = React.memo(
                 isPrivate?: boolean;
                 membersCount?: number | null;
                 activeWord: string | null;
+                containerClassName?: string;
                 onSelected: (mention: MentionToSend) => void;
                 onEmojiSelected: (emoji: { name: string; value: string }) => void;
             },
@@ -168,7 +172,7 @@ export const AutoCompleteComponent = React.memo(
         ) => {
             const client = useClient();
             const listRef = React.useRef<UNavigableListRef>(null);
-            const fallbackRender = React.useRef<any>(<div className={mentionsContainer} />);
+            const fallbackRender = React.useRef<any>(<div className={cx(mentionsContainer, props.containerClassName)} />);
             const containerRef = React.useRef<HTMLDivElement>(null);
 
             const forceClose = React.useRef<boolean>(false);
@@ -445,7 +449,7 @@ export const AutoCompleteComponent = React.memo(
                 fallbackRender.current = (
                     <div
                         ref={containerRef}
-                        className={mentionsContainer}
+                        className={cx(mentionsContainer, props.containerClassName)}
                         onMouseDown={e => e.preventDefault()}
                     >
                         <UNavigableReactWindow
@@ -463,7 +467,7 @@ export const AutoCompleteComponent = React.memo(
                 fallbackRender.current = (
                     <div
                         ref={containerRef}
-                        className={mentionsContainer}
+                        className={cx(mentionsContainer, props.containerClassName)}
                         onMouseDown={e => e.preventDefault()}
                     >
                         {/* <UButton text={'filtered-' + filtered.length} onClick={() => props.onEmojiSelected({ name: '1f923', value: '🤣' })} /> */}
@@ -668,6 +672,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     isChannel={props.isChannel}
                     isPrivate={props.isPrivate}
                     ref={suggestRef}
+                    containerClassName={sendMessageMentions}
                 />
             </Deferred>
             <input

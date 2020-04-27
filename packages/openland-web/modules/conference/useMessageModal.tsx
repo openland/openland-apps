@@ -13,16 +13,23 @@ import DonationIcon from 'openland-icons/s/ic-donation-24.svg';
 import { fileListToArray } from 'openland-web/fragments/chat/components/DropZone';
 import { useDonationModal } from 'openland-web/fragments/chat/components/showDonation';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-// import { AutoCompleteComponent, AutoCompleteComponentRef } from 'openland-web/fragments/chat/components/SendMessageComponent';
-// import { Deferred } from 'openland-unicorn/components/Deferred';
-// import { MentionToSend } from 'openland-engines/messenger/MessageSender';
+import { AutoCompleteComponent, AutoCompleteComponentRef } from 'openland-web/fragments/chat/components/SendMessageComponent';
+import { Deferred } from 'openland-unicorn/components/Deferred';
+import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { XModalController } from 'openland-x/showModal';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
-// import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
+import { StickerFragment } from 'openland-api/spacex.types';
+import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 
 const inputStyle = css`
     min-height: 88px;
     max-height: 250px;
+`;
+
+const mentionsStyle = css`
+    max-height: 140px;
+    left: 0;
+    right: 0;
 `;
 
 const IconButton = (props: { caption: string, icon: JSX.Element, onClick: React.MouseEventHandler }) => {
@@ -35,9 +42,9 @@ const IconButton = (props: { caption: string, icon: JSX.Element, onClick: React.
 interface MessageModalProps {
     chatId: string;
     name: string;
-    // isChannel?: boolean;
-    // isPrivate?: boolean;
-    // membersCount?: number;
+    isChannel?: boolean;
+    isPrivate?: boolean;
+    membersCount?: number;
     onAttach: (files: File[], cb?: () => void) => void;
 }
 
@@ -47,7 +54,8 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
     let isMobile = os === 'Android' || os === 'iOS';
     let inputRef = React.useRef<URickInputInstance>(null);
     let fileInputRef = React.useRef<HTMLInputElement>(null);
-    // let suggestRef = React.useRef<AutoCompleteComponentRef>(null);
+    let conversation = messenger.getConversation(props.chatId);
+    let suggestRef = React.useRef<AutoCompleteComponentRef>(null);
     // TODO pass different ids
     let showDonation = useDonationModal({ name: props.name, chatId: props.chatId, onDonate: () => props.ctx.hide() });
     let onFileInputChange = React.useCallback(e => {
@@ -74,51 +82,55 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
         let data = editor.getText();
         const { text, mentions } = convertFromInputValue(data);
         if (text.length > 0) {
-            let conversation = messenger.getConversation(props.chatId);
             conversation.sendMessage(text, mentions);
         }
         props.ctx.hide();
     };
-    // const [activeWord, setActiveWord] = React.useState<string | null>(null);
-    // const onAutocompleteWordChange = React.useCallback((word: string) => {
-    //     setActiveWord(word);
-    // }, []);
-    // const onUserPicked = React.useCallback((mention: MentionToSend) => {
-    //     inputRef.current!.commitSuggestion('mention', mention);
-    // }, []);
-    // const onEmojiPicked = React.useCallback((emoji: { name: string; value: string }) => {
-    //     inputRef.current!.commitSuggestion('emoji', emoji);
-    // }, []);
+    let onStickerSent = (sticker: StickerFragment) => {
+        // TODO: add typing?
+        conversation.sendSticker(sticker);
+        props.ctx.hide();
+    };
+    const [activeWord, setActiveWord] = React.useState<string | null>(null);
+    const onAutocompleteWordChange = React.useCallback((word: string) => {
+        setActiveWord(word);
+    }, []);
+    const onUserPicked = React.useCallback((mention: MentionToSend) => {
+        inputRef.current!.commitSuggestion('mention', mention);
+    }, []);
+    const onEmojiPicked = React.useCallback((emoji: { name: string; value: string }) => {
+        inputRef.current!.commitSuggestion('emoji', emoji);
+    }, []);
 
-    // let onPressUp = React.useCallback(() => {
-    //     let s = suggestRef.current;
-    //     if (s && s.isActive()) {
-    //         s.onPressUp();
-    //         return true;
-    //     }
-    //     return false;
-    // }, []);
-    // let onPressDown = React.useCallback(() => {
-    //     let s = suggestRef.current;
-    //     if (s) {
-    //         return s.onPressDown();
-    //     }
-    //     return false;
-    // }, []);
-    // let onPressTab = React.useCallback(() => {
-    //     let s = suggestRef.current;
-    //     if (s) {
-    //         return s.onPressEnter();
-    //     }
-    //     return false;
-    // }, []);
+    let onPressUp = React.useCallback(() => {
+        let s = suggestRef.current;
+        if (s && s.isActive()) {
+            s.onPressUp();
+            return true;
+        }
+        return false;
+    }, []);
+    let onPressDown = React.useCallback(() => {
+        let s = suggestRef.current;
+        if (s) {
+            return s.onPressDown();
+        }
+        return false;
+    }, []);
+    let onPressTab = React.useCallback(() => {
+        let s = suggestRef.current;
+        if (s) {
+            return s.onPressEnter();
+        }
+        return false;
+    }, []);
     let onPressEnter = async () => {
-        // let s = suggestRef.current;
-        // if (s) {
-        //     if (s.onPressEnter()) {
-        //         return true;
-        //     }
-        // }
+        let s = suggestRef.current;
+        if (s) {
+            if (s.onPressEnter()) {
+                return true;
+            }
+        }
         onSend();
         return true;
     };
@@ -133,7 +145,7 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
                         style={{ display: 'none' }}
                         onChange={onFileInputChange}
                     />
-                    {/* <Deferred>
+                    <Deferred>
                         <AutoCompleteComponent
                             onSelected={onUserPicked}
                             onEmojiSelected={onEmojiPicked}
@@ -143,21 +155,23 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
                             isChannel={props.isChannel}
                             isPrivate={props.isPrivate}
                             ref={suggestRef}
+                            containerClassName={mentionsStyle}
                         />
-                    </Deferred> */}
+                    </Deferred>
                     <URickInput
                         ref={inputRef}
                         className={inputStyle}
                         placeholder="Write a message..."
                         withShortcutsButton={!isMobile}
                         autofocus={true}
-                        // autocompletePrefixes={['@', ':', ...Object.keys(emojiWordMap)]}
-                        // onAutocompleteWordChange={onAutocompleteWordChange}
-                        // onPressUp={onPressUp}
-                        // onPressDown={onPressDown}
-                        // onPressTab={onPressTab}
+                        autocompletePrefixes={['@', ':', ...Object.keys(emojiWordMap)]}
+                        onAutocompleteWordChange={onAutocompleteWordChange}
+                        onPressUp={onPressUp}
+                        onPressDown={onPressDown}
+                        onPressTab={onPressTab}
                         onPressEnter={onPressEnter}
                         onFilesPaste={props.onAttach}
+                        onStickerSent={onStickerSent}
                     />
                 </XView>
                 <XView flexDirection="row" paddingHorizontal={20} paddingBottom={20}>
@@ -192,6 +206,7 @@ export const useMessageModal = (props: MessageModalProps): [boolean, () => void]
         showModalBox({
             title: `Message to ${props.name}`,
             titleTruncation: true,
+            overflowVisible: true,
             width: 480,
             onCancel: () => setOpen(false)
         },
