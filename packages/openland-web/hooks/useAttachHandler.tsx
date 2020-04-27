@@ -41,7 +41,7 @@ export const useAttachHandler = (props: { conversationId: string }) => {
                     if (onAttach) {
                         onAttach();
                     }
-                    return res.map(({ file, localImage }) => conversation!.sendFile(file, localImage))
+                    return res.map(({ file, localImage }) => conversation!.sendFile(file, localImage));
                 },
                 refreshFileUploadingTyping,
                 endFileUploadingTyping

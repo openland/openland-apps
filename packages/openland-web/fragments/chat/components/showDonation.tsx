@@ -15,6 +15,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { URickInput } from 'openland-web/components/unicorn/URickInput';
 import { useClient } from 'openland-api/useClient';
 import { showCheckLock } from 'openland-web/fragments/wallet/modals/showPayConfirm';
+import { useToast } from 'openland-web/components/unicorn/UToast';
 
 let priceWrapper = css`
     display: flex;
@@ -161,10 +162,23 @@ const DonationComponent = (props: DonationComponentProps & { ctx: XModalControll
     );
 };
 
-export const showDonation = (props: DonationComponentProps & { name?: string | null }) => {
-    showModalBox({ title: props.name ? `Donate to ${props.name}` : 'Donate', titleTruncation: true, width: 400 }, (ctx) => {
-        return (
-            <DonationComponent ctx={ctx} {...props} />
-        );
-    });
+export const useDonationModal = (props: DonationComponentProps & { name?: string | null }) => {
+    const toastHandlers = useToast();
+    const onDonate = (value: string) => {
+        if (props.onDonate) {
+            props.onDonate(value);
+        }
+        toastHandlers.show({
+            type: 'success',
+            text: `You’ve donated $${value}`,
+        });
+    };
+
+    return React.useCallback(() => {
+        showModalBox({ title: props.name ? `Donate to ${props.name}` : 'Donate', titleTruncation: true, width: 400 }, (ctx) => {
+            return (
+                <DonationComponent ctx={ctx} {...props} onDonate={onDonate} />
+            );
+        });
+    }, [props.chatId, props.userId]);
 };

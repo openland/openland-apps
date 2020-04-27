@@ -21,7 +21,7 @@ import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 import { TextLabel1, TextDensed, TextBody, TextStyles } from 'openland-web/utils/TextStyles';
 import { fileListToArray } from './DropZone';
 import { AttachConfirmButton } from './AttachConfirm';
-import { showDonation } from './showDonation';
+import { useDonationModal } from './showDonation';
 import { XLoader } from 'openland-x/XLoader';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { onEmojiSent } from 'openland-web/components/unicorn/emoji/Recent';
@@ -29,7 +29,6 @@ import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import { Deferred } from 'openland-unicorn/components/Deferred';
 import { detectOS } from 'openland-x-utils/detectOS';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
-import { useToast } from 'openland-web/components/unicorn/UToast';
 
 interface MentionItemComponentProps {
     id: string;
@@ -549,7 +548,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     const fileInputRef = React.useRef<HTMLInputElement>(null);
     const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
     const [loading, setLoading] = React.useState<boolean>(false);
-    const toastHandlers = useToast();
+    const showDonation = useDonationModal({ name: props.ownerName, chatId: props.groupId });
     const onStickerSent = React.useCallback(
         async (sticker: StickerFragment) => {
             if (props.onStickerSentAsync) {
@@ -633,16 +632,9 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
         }
     }, []);
 
-    const onDonate = (value: string) => {
-        toastHandlers.show({
-            type: 'success',
-            text: `You’ve donated $${value}`,
-        });
-    };
-
     const onDonationPress = React.useCallback(() => {
-        showDonation({ name: props.ownerName, chatId: props.groupId, onDonate });
-    }, [props.ownerName]);
+        showDonation();
+    }, [showDonation]);
 
     const onFileInputChange = React.useCallback(e => {
         if (props.onAttach) {

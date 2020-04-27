@@ -11,7 +11,7 @@ import MediaIcon from 'openland-icons/s/ic-gallery-24.svg';
 import FileIcon from 'openland-icons/s/ic-document-24.svg';
 import DonationIcon from 'openland-icons/s/ic-donation-24.svg';
 import { fileListToArray } from 'openland-web/fragments/chat/components/DropZone';
-import { showDonation } from 'openland-web/fragments/chat/components/showDonation';
+import { useDonationModal } from 'openland-web/fragments/chat/components/showDonation';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 // import { AutoCompleteComponent, AutoCompleteComponentRef } from 'openland-web/fragments/chat/components/SendMessageComponent';
 // import { Deferred } from 'openland-unicorn/components/Deferred';
@@ -48,6 +48,8 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
     let inputRef = React.useRef<URickInputInstance>(null);
     let fileInputRef = React.useRef<HTMLInputElement>(null);
     // let suggestRef = React.useRef<AutoCompleteComponentRef>(null);
+    // TODO pass different ids
+    let showDonation = useDonationModal({ name: props.name, chatId: props.chatId, onDonate: () => props.ctx.hide() });
     let onFileInputChange = React.useCallback(e => {
         if (props.onAttach) {
             props.onAttach(fileListToArray(e.target.files), () => props.ctx.hide());
@@ -62,9 +64,8 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
         }
     }, []);
     let onDonationPress = React.useCallback(() => {
-        // TODO pass different ids
-        showDonation({ name: props.name, chatId: props.chatId });
-    }, []);
+        showDonation();
+    }, [showDonation]);
     let onSend = () => {
         let editor = inputRef.current;
         if (!editor) {

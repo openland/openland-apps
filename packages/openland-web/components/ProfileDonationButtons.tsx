@@ -2,8 +2,7 @@ import * as React from 'react';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XViewRouterContext, XView } from 'react-mental';
-import { showDonation } from 'openland-web/fragments/chat/components/showDonation';
-import { useToast } from 'openland-web/components/unicorn/UToast';
+import { useDonationModal } from 'openland-web/fragments/chat/components/showDonation';
 
 interface ProfileDonationButtonsProps {
     name: string;
@@ -12,46 +11,50 @@ interface ProfileDonationButtonsProps {
     shouldHide: boolean;
 }
 
+const PriceButton = (props: { price?: number, name: string, userId?: string, chatId?: string, onDonate: () => void }) => {
+    let showDonation = useDonationModal({
+        name: props.name,
+        chatId: props.chatId,
+        userId: props.userId,
+        initialPrice: props.price,
+        onDonate: props.onDonate,
+    });
+    return (
+        <UButton
+            text={props.price ? `$${props.price}` : 'Other'}
+            style="secondary"
+            onClick={showDonation}
+        />
+    );
+};
+
 export const ProfileDonationButtons = (props: ProfileDonationButtonsProps) => {
     let router = React.useContext(XViewRouterContext)!;
-    let toastHandlers = useToast();
-    let onDonate = (value: string) => {
+    let onDonate = () => {
         let id = props.chatId || props.userId;
         router.navigate(`/mail/${id}`);
-        toastHandlers.show({
-            type: 'success',
-            text: `You’ve donated $${value}`,
-        });
     };
 
     return !props.shouldHide ? (
         <UListGroup header="Make donation">
             <XView paddingHorizontal={16} flexDirection="row">
-            {[1, 3, 5].map(price => (
-                <XView marginRight={8}>
-                    <UButton 
-                        text={`$${price}`} 
-                        style="secondary" 
-                        onClick={() => showDonation({
-                            name: props.name, 
-                            userId: props.userId, 
-                            chatId: props.chatId, 
-                            initialPrice: price,
-                            onDonate
-                        })}
-                    />
-                </XView>
-            ))}
-            <UButton 
-                text="Other" 
-                style="secondary" 
-                onClick={() => showDonation({
-                    name: props.name, 
-                    userId: props.userId, 
-                    chatId: props.chatId,
-                    onDonate
-                })} 
-            />
+                {[1, 3, 5].map(price => (
+                    <XView marginRight={8}>
+                        <PriceButton
+                            price={price}
+                            name={props.name}
+                            userId={props.userId}
+                            chatId={props.chatId}
+                            onDonate={onDonate}
+                        />
+                    </XView>
+                ))}
+                <PriceButton
+                    name={props.name}
+                    userId={props.userId}
+                    chatId={props.chatId}
+                    onDonate={onDonate}
+                />
             </XView>
         </UListGroup>
     ) : null;
