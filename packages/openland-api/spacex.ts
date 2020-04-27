@@ -1580,12 +1580,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateMediaCandidate(variables: Types.MediaCandidateVariables): Promise<Types.MediaCandidate> {
         return this.mutate('MediaCandidate', variables);
     }
-    mutateMediaFailed(variables: Types.MediaFailedVariables): Promise<Types.MediaFailed> {
-        return this.mutate('MediaFailed', variables);
-    }
-    mutateMediaNegotiationNeeded(variables: Types.MediaNegotiationNeededVariables): Promise<Types.MediaNegotiationNeeded> {
-        return this.mutate('MediaNegotiationNeeded', variables);
-    }
     mutateMediaOffer(variables: Types.MediaOfferVariables): Promise<Types.MediaOffer> {
         return this.mutate('MediaOffer', variables);
     }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CallsEngine } from 'openland-engines/CallsEngine';
 import { XView } from 'react-mental';
-import { Conference_conference_peers, MediaStreamVideoSource } from 'openland-api/spacex.types';
+import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { VideoComponent, showVideoModal } from './ScreenShareModal';

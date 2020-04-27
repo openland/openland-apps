@@ -70,6 +70,7 @@ class AppPeerConnectionNative implements AppPeerConnection {
 
     private connection: RTCPeerConnection;
     private started = true;
+    private transeivers = new Map<string, AppRtpTransceiverNative>();
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined;
 
     constructor(connection: RTCPeerConnection) {
@@ -94,10 +95,12 @@ class AppPeerConnectionNative implements AppPeerConnection {
 
     setLocalDescription = async (sdp: string) => {
         await this.connection.setLocalDescription(new RTCSessionDescription(JSON.parse(sdp)));
+        this._applyTranseivers();
     }
 
     setRemoteDescription = async (sdp: string) => {
         await this.connection.setRemoteDescription(new RTCSessionDescription(JSON.parse(sdp)));
+        this._applyTranseivers();
     }
 
     createAnswer = async () => {
@@ -114,9 +117,18 @@ class AppPeerConnectionNative implements AppPeerConnection {
             let track = (arg as AppUserMediaStreamTrackNative).track;
             transceiver = await (this.connection as any).addTransceiver(track, params);
         }
-        let res = new AppRtpTransceiverNative(transceiver.receiver.track.id, transceiver);
-        // this.transeivers.set(res.id, res);
+
+        // Could be some race conditions
+        if (this.transeivers.has(transceiver.id)) {
+            return this.transeivers.get(transceiver.id)!;
+        }
+        let res = new AppRtpTransceiverNative(transceiver.id, transceiver);
+        this.transeivers.set(res.id, res);
         return res;
+    }
+
+    getTranseivers() {
+        return [...this.transeivers.values()];
     }
 
     //
@@ -130,6 +142,27 @@ class AppPeerConnectionNative implements AppPeerConnection {
         this.started = false;
         // this.#trackStreams.clear();
         this.connection.close();
+    }
+
+    //
+    // Update transceivers
+    //
+
+    private _applyTranseivers() {
+        if (!this.started) {
+            return;
+        }
+
+        //
+        // Merge Transeivers
+        //
+
+        for (let t of (this.connection as any).getTransceivers()) {
+            if (this.transeivers.has(t.id)) {
+                continue;
+            }
+            this.transeivers.set(t.id, new AppRtpTransceiverNative(t.id, t));
+        }
     }
 }
 

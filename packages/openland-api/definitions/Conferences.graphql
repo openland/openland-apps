@@ -25,36 +25,23 @@ fragment ConferenceShort on Conference {
 
 fragment MediaStreamFull on MediaStream{
     id
-    peerId
-    state
+
     seq
+    state
     sdp
+    
     ice
-    settings{
-        videoIn
-        videoOut
-        videoOutSource
-        audioIn
-        audioOut
-        iceTransportPolicy
-    }
-    mediaState {
-        videoPaused
-        audioPaused
+    iceTransportPolicy
+
+    receivers {
+        peerId
+        kind
         videoSource
     }
-    localStreams {
-        ... on LocalStreamAudioConfig {
-            codec
-        }
-        ... on LocalStreamVideoConfig {
-            codec
-        }
-        ... on LocalStreamDataChannelConfig {
-            id
-            label
-            ordered
-        }
+    senders {
+        kind
+        videoSource
+        codecParams
     }
 }
 
@@ -120,22 +107,6 @@ mutation MediaOffer($id: ID!, $peerId: ID!, $offer: String!, $seq: Int!) {
         }
     }
 }
-mutation MediaNegotiationNeeded($id: ID!, $peerId: ID!, $seq: Int!) {
-    mediaStreamNegotiationNeeded(id: $id, peerId: $peerId, seq: $seq) {
-        id
-        streams{
-            ...MediaStreamFull
-        }
-    }
-}
-mutation MediaFailed($id: ID!, $peerId: ID!) {
-    mediaStreamFailed(id: $id, peerId: $peerId) {
-        id
-        streams{
-            ...MediaStreamFull
-        }
-    }
-}
 mutation MediaAnswer($id: ID!, $peerId: ID!, $answer: String!, $seq: Int!) {
     mediaStreamAnswer(id: $id, peerId: $peerId, answer: $answer, seq: $seq) {
         id
@@ -152,6 +123,7 @@ mutation MediaCandidate($id: ID!, $peerId: ID!, $candidate: String!) {
         }
     }
 }
+
 subscription ConferenceMediaWatch($id: ID!, $peerId: ID!) {
     media: alphaConferenceMediaWatch(id: $id, peerId: $peerId) {
         id

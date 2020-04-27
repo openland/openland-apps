@@ -110,6 +110,10 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         return res;
     }
 
+    getTranseivers() {
+        return [...this.transeivers.values()];
+    }
+
     createOffer = async () => {
         console.log('[PC:' + this.id + '] createOffer');
         return JSON.stringify(await this.connection.createOffer({ offerToReceiveAudio: true, offerToReceiveVideo: true } as any /* WTF with typings? */));

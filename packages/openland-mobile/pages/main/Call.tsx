@@ -22,7 +22,7 @@ import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
-import { Conference_conference_peers, MediaStreamVideoSource } from 'openland-api/spacex.types';
+import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { RTCView, MediaStreamTrack, MediaStream } from 'react-native-webrtc';
 import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradient.native';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';

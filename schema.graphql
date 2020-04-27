@@ -1666,6 +1666,7 @@ type Mutation {
   debugFixBrokenDonations: Boolean!
   debugCreateTransfer(fromUid: ID!, toUid: ID!, amount: Int!): String!
   debugSetCommission(cid: ID!, percents: Int!): Boolean!
+  debugFixEditedMessagesAugmentation: Boolean!
   debugCalcEntitiesCount(entity: String!): Boolean!
   debugCalcEntitiesCountAll: Boolean!
   settingsUpdate(settings: UpdateSettingsInput): Settings!

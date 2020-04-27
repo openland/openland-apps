@@ -161,8 +161,6 @@ object Operations {
         if (name == "MarkSequenceRead") return MarkSequenceRead
         if (name == "MediaAnswer") return MediaAnswer
         if (name == "MediaCandidate") return MediaCandidate
-        if (name == "MediaFailed") return MediaFailed
-        if (name == "MediaNegotiationNeeded") return MediaNegotiationNeeded
         if (name == "MediaOffer") return MediaOffer
         if (name == "MessageSetDonationReaction") return MessageSetDonationReaction
         if (name == "MessageSetReaction") return MessageSetReaction

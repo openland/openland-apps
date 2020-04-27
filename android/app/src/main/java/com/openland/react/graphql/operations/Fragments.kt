@@ -1226,42 +1226,22 @@ internal val FeedUpdateFragmentSelector = obj(
 internal val MediaStreamFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
-            field("peerId", "peerId", scalar("ID")),
-            field("state", "state", notNull(scalar("String"))),
             field("seq", "seq", notNull(scalar("Int"))),
+            field("state", "state", notNull(scalar("String"))),
             field("sdp", "sdp", scalar("String")),
             field("ice", "ice", notNull(list(notNull(scalar("String"))))),
-            field("settings", "settings", notNull(obj(
+            field("iceTransportPolicy", "iceTransportPolicy", notNull(scalar("String"))),
+            field("receivers", "receivers", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    field("videoIn", "videoIn", notNull(scalar("Boolean"))),
-                    field("videoOut", "videoOut", notNull(scalar("Boolean"))),
-                    field("videoOutSource", "videoOutSource", scalar("String")),
-                    field("audioIn", "audioIn", notNull(scalar("Boolean"))),
-                    field("audioOut", "audioOut", notNull(scalar("Boolean"))),
-                    field("iceTransportPolicy", "iceTransportPolicy", scalar("String"))
-                ))),
-            field("mediaState", "mediaState", notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("videoPaused", "videoPaused", scalar("Boolean")),
-                    field("audioPaused", "audioPaused", scalar("Boolean")),
+                    field("peerId", "peerId", scalar("ID")),
+                    field("kind", "kind", notNull(scalar("String"))),
                     field("videoSource", "videoSource", scalar("String"))
-                ))),
-            field("localStreams", "localStreams", notNull(list(notNull(obj(
+                ))))),
+            field("senders", "senders", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    inline("LocalStreamAudioConfig", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("codec", "codec", notNull(scalar("String")))
-                    )),
-                    inline("LocalStreamVideoConfig", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("codec", "codec", notNull(scalar("String")))
-                    )),
-                    inline("LocalStreamDataChannelConfig", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("Int"))),
-                        field("label", "label", notNull(scalar("String"))),
-                        field("ordered", "ordered", notNull(scalar("Boolean")))
-                    ))
+                    field("kind", "kind", notNull(scalar("String"))),
+                    field("videoSource", "videoSource", scalar("String")),
+                    field("codecParams", "codecParams", scalar("String"))
                 )))))
         )
 

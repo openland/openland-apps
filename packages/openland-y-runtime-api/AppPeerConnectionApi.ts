@@ -35,6 +35,7 @@ export interface AppPeerConnection {
     // Transceivers
     addTranseiver(kind: 'audio' | 'video', params?: AppPeerTransceiverParams): Promise<AppRtpTransceiver>;
     addTranseiver(track: AppMediaStreamTrack, params?: AppPeerTransceiverParams): Promise<AppRtpTransceiver>;
+    getTranseivers(): AppRtpTransceiver[];
 
     close(): void;
 }

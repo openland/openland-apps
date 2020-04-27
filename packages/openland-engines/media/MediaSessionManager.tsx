@@ -1,13 +1,12 @@
 import { OpenlandClient } from 'openland-api/spacex';
 import { backoff } from 'openland-y-utils/timer';
-import { MediaStreamManager } from './MediaStreamManager';
+import { MediaConnectionManager } from './MediaConnectionManager';
 import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { ConferenceMediaWatch, ConferenceMediaWatch_media_streams, ConferenceMedia_conferenceMedia_iceServers } from 'openland-api/spacex.types';
 import { AppBackgroundTask } from 'openland-y-runtime/AppBackgroundTask';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 import { ConferenceWatch } from 'openland-api/spacex.types';
-import { VM, VMMapMap } from 'openland-y-utils/mvvm/vm';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { InvalidateSync } from '@openland/patterns';
 import { MediaSessionState, MediaSessionCommand, reduceState } from './MediaSessionState';
@@ -47,7 +46,7 @@ export class MediaSessionManager {
     // Transport
     private connectionsSubscription: (() => void) | null = null;
     private connectionsInvalidateSync: InvalidateSync;
-    private connections = new Map<string, MediaStreamManager>();
+    private connections = new Map<string, MediaConnectionManager>();
     private connectionConfigs!: ConferenceMediaWatch_media_streams[];
 
     // Lifecycle
