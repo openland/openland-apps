@@ -33,11 +33,16 @@ export const useAttachHandler = (props: { conversationId: string }) => {
         });
     }, [messenger]);
 
-    let handleAttach = React.useCallback((files: File[]) => {
+    let handleAttach = React.useCallback((files: File[], onAttach?: () => void) => {
         if (files.length) {
             showAttachConfirm(
                 files,
-                res => res.map(({ file, localImage }) => conversation!.sendFile(file, localImage)),
+                res => {
+                    if (onAttach) {
+                        onAttach();
+                    }
+                    return res.map(({ file, localImage }) => conversation!.sendFile(file, localImage))
+                },
                 refreshFileUploadingTyping,
                 endFileUploadingTyping
             );

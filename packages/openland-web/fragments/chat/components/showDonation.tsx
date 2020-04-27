@@ -46,7 +46,7 @@ interface DonationComponentProps {
     onDonate?: (value: string) => void;
 }
 
-const DonationComponent = (props: DonationComponentProps & {ctx: XModalController}) => {
+const DonationComponent = (props: DonationComponentProps & { ctx: XModalController }) => {
     let client = useClient();
     let wallet = client.useMyWallet();
     let form = useForm();
@@ -96,11 +96,11 @@ const DonationComponent = (props: DonationComponentProps & {ctx: XModalControlle
         if (priceField.input.invalid) {
             return;
         }
-        form.doAction(async() => {
+        form.doAction(async () => {
             let amount = parseInt(priceField.value, 10) * 100;
             try {
                 setLoading(true);
-                await client.mutateSendDonation({chatId: props.chatId, userId: props.userId, amount, message: messageField.value });
+                await client.mutateSendDonation({ chatId: props.chatId, userId: props.userId, amount, message: messageField.value });
                 if (props.onDonate) {
                     props.onDonate(priceField.value);
                 }
@@ -129,10 +129,10 @@ const DonationComponent = (props: DonationComponentProps & {ctx: XModalControlle
                     <XView flexGrow={1} justifyContent="center" marginHorizontal={16}>
                         <input
                             ref={inputRef}
-                            className={cx(TextTitle1, priceClass)} 
-                            placeholder="$0" 
-                            value={price ? `$${price}` : ''} 
-                            onChange={e => handlePriceChange(e.target.value)} 
+                            className={cx(TextTitle1, priceClass)}
+                            placeholder="$0"
+                            value={price ? `$${price}` : ''}
+                            onChange={e => handlePriceChange(e.target.value)}
                         />
                     </XView>
                     <UIconButton icon={<PlusIcon />} onClick={() => updatePrice(5)} />
@@ -140,18 +140,18 @@ const DonationComponent = (props: DonationComponentProps & {ctx: XModalControlle
                 {priceField.input.errorText && (
                     <UInputErrorText text={priceField.input.errorText} />
                 )}
-                <URickInput 
+                <URickInput
                     placeholder="Your message"
                     onTextChange={messageField.input.onChange}
                     hideEmoji={true}
                     className={messageClass}
                 />
             </XView>
-            <XView 
-                paddingHorizontal={24} 
-                paddingVertical={16} 
-                flexDirection="row" 
-                justifyContent="flex-end" 
+            <XView
+                paddingHorizontal={24}
+                paddingVertical={16}
+                flexDirection="row"
+                justifyContent="flex-end"
                 backgroundColor="var(--backgroundTertiary)"
             >
                 <UButton text="Cancel" style="tertiary" size="large" shape="square" onClick={() => props.ctx.hide()} />
@@ -161,8 +161,8 @@ const DonationComponent = (props: DonationComponentProps & {ctx: XModalControlle
     );
 };
 
-export const showDonation = (props: DonationComponentProps & {name?: string | null}) => {
-    showModalBox({ title: props.name ? `Donate to ${props.name}` : 'Donate', width: 400 }, (ctx) => {
+export const showDonation = (props: DonationComponentProps & { name?: string | null }) => {
+    showModalBox({ title: props.name ? `Donate to ${props.name}` : 'Donate', titleTruncation: true, width: 400 }, (ctx) => {
         return (
             <DonationComponent ctx={ctx} {...props} />
         );

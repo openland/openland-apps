@@ -80,6 +80,12 @@ const overlayFullScreenStyle = css`
     height: 100%;
 `;
 
+const titleStyle = css`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+`;
+
 const Loader = (
     <XView height="100px" alignItems="center" justifyContent="center">
         <XLoader loading={true} />
@@ -191,22 +197,22 @@ const ModalBoxComponent = React.memo<{
 
     const boxInlineStyle = isFullscreen
         ? {
-              top: 0,
-              right: 0,
-              bottom: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              maxWidth: 'initial',
-              maxHeight: 'initial',
-              borderRadius: 0,
-              transition: 'none',
-          }
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            maxWidth: 'initial',
+            maxHeight: 'initial',
+            borderRadius: 0,
+            transition: 'none',
+        }
         : {
-              top,
-              left,
-              width: props.config.flowing ? 'auto' : props.config.width ? props.config.width : 440,
-          };
+            top,
+            left,
+            width: props.config.flowing ? 'auto' : props.config.width ? props.config.width : 440,
+        };
 
     return (
         <XModalBoxContext.Provider
@@ -266,7 +272,9 @@ const ModalBoxComponent = React.memo<{
                                 alignItems="center"
                                 {...TextStyles.Title1}
                             >
-                                {props.config.title}
+                                <div className={cx(props.config.titleTruncation && titleStyle)}>
+                                    {props.config.title}
+                                </div>
                                 {!isFullscreen && props.config.useTopCloser && (
                                     <UIconButton
                                         onClick={tryHide}
@@ -290,6 +298,7 @@ const ModalBoxComponent = React.memo<{
 
 export interface XModalBoxConfig {
     title?: string;
+    titleTruncation?: boolean;
     width?: number;
     fullScreen?: boolean | 'on-mobile';
     flowing?: boolean;

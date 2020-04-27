@@ -135,7 +135,7 @@ const mentionsContainer = css`
     z-index: 2;
 `;
 
-interface AutoCompleteComponentRef {
+export interface AutoCompleteComponentRef {
     onPressUp(): boolean;
     onPressDown(): boolean;
     onPressEnter(): boolean;
@@ -153,7 +153,7 @@ interface Placeholder { __typename: 'placeholder'; }
 
 type ListItem = (MentionToSend | Cursor | Divider | Placeholder) & { selectable?: boolean };
 
-const AutoCompleteComponent = React.memo(
+export const AutoCompleteComponent = React.memo(
     React.forwardRef(
         (
             props: {
@@ -297,7 +297,7 @@ const AutoCompleteComponent = React.memo(
                                 <XView height={1} backgroundColor="var(--border)" flexGrow={1} marginHorizontal={16} />
                             </XView>
                         );
-                    }  else if (v.__typename === 'placeholder') {
+                    } else if (v.__typename === 'placeholder') {
                         return (
                             <div className={cx(mentionContainer, placeholderContainer)}>
                                 <UIcon className={listItemIcon} color="var(--foregroundSecondary)" icon={<AtIcon />} />
@@ -396,9 +396,9 @@ const AutoCompleteComponent = React.memo(
                             res.unshift({ __typename: 'AllMention' });
                         }
                     }
-                    
+
                     if (res.length === 0 && currentWord === '@') {
-                        res = [{__typename: 'placeholder', selectable: false}];
+                        res = [{ __typename: 'placeholder', selectable: false }];
                     }
                     setUsers(res);
                 }
@@ -641,7 +641,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     };
 
     const onDonationPress = React.useCallback(() => {
-        showDonation({name: props.ownerName, chatId: props.groupId, onDonate});
+        showDonation({ name: props.ownerName, chatId: props.groupId, onDonate });
     }, [props.ownerName]);
 
     const onFileInputChange = React.useCallback(e => {
@@ -688,8 +688,8 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
             {!!props.onAttach && (
                 <AttachConfirmButton
                     hideDonation={props.hideDonation}
-                    onAttachClick={onAttachPress} 
-                    onDonationClick={onDonationPress} 
+                    onAttachClick={onAttachPress}
+                    onDonationClick={onDonationPress}
                 />
             )}
             <XView

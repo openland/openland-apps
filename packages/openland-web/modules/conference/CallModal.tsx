@@ -48,7 +48,7 @@ const LinkFrame = React.memo((props: { link?: string, mediaSession: MediaSession
     );
 });
 
-export const CallModalConponent = React.memo((props: { chatId: string, calls: CallsEngine, client: OpenlandClient, ctx: XModalController, messenger: MessengerEngine, onAttach: (files: File[]) => void }) => {
+export const CallModalConponent = React.memo((props: { chatId: string, calls: CallsEngine, client: OpenlandClient, ctx: XModalController, messenger: MessengerEngine, onAttach: (files: File[], cb?: () => void) => void }) => {
     let conference = props.client.useConference({ id: props.chatId }, { suspense: false });
     let currentMediaSession = props.calls.useCurrentSession();
     let mediaSession = React.useMemo(() => currentMediaSession!, []);
