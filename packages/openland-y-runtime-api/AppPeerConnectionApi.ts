@@ -38,9 +38,9 @@ export interface AppPeerConnection {
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined;
 
     // Transceivers
-    addTranseiver(kind: 'audio' | 'video', params?: AppPeerTransceiverParams): Promise<AppRtpTransceiver>;
-    addTranseiver(track: AppMediaStreamTrack, params?: AppPeerTransceiverParams): Promise<AppRtpTransceiver>;
-    getTranseivers(): AppRtpTransceiver[];
+    addTransceiver(kind: 'audio' | 'video', params?: AppPeerTransceiverParams): Promise<AppRtpTransceiver>;
+    addTransceiver(track: AppMediaStreamTrack, params?: AppPeerTransceiverParams): Promise<AppRtpTransceiver>;
+    getTransceivers(): AppRtpTransceiver[];
 
     close(): void;
 }

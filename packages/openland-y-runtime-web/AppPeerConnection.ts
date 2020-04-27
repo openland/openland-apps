@@ -95,7 +95,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         };
     }
 
-    addTranseiver = async (arg: 'audio' | 'video' | AppMediaStreamTrack, params?: AppPeerTransceiverParams) => {
+    addTransceiver = async (arg: 'audio' | 'video' | AppMediaStreamTrack, params?: AppPeerTransceiverParams) => {
         let transceiver: RTCRtpTransceiver;
         if (arg === 'audio') {
             transceiver = this.connection.addTransceiver('audio', params);
@@ -110,7 +110,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         return res;
     }
 
-    getTranseivers() {
+    getTransceivers() {
         return [...this.transeivers.values()];
     }
 

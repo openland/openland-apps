@@ -115,7 +115,7 @@ class AppPeerConnectionNative implements AppPeerConnection {
         };
     }
 
-    addTranseiver = async (arg: 'audio' | 'video' | AppMediaStreamTrack, params?: AppPeerTransceiverParams) => {
+    addTransceiver = async (arg: 'audio' | 'video' | AppMediaStreamTrack, params?: AppPeerTransceiverParams) => {
         let transceiver: any;
         if (arg === 'audio') {
             transceiver = await (this.connection as any).addTransceiver('audio', params);
@@ -135,7 +135,7 @@ class AppPeerConnectionNative implements AppPeerConnection {
         return res;
     }
 
-    getTranseivers() {
+    getTransceivers() {
         return [...this.transeivers.values()];
     }
 

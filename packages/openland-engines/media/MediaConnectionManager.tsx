@@ -235,7 +235,8 @@ export class MediaConnectionManager {
                 this.localAnswer = answer;
             }
 
-            // TODO: Apply transcievers
+            // Handle senders
+            await this.extractTransceivers(config);
 
             // Send answer
             if (!this.localAnswerSent) {
@@ -390,13 +391,30 @@ export class MediaConnectionManager {
         }
     }
 
+    private extractTransceivers = async (config: ConferenceMedia_conferenceMedia_streams) => {
+        let transceivers = this.peerConnection.getTransceivers();
+
+        // Check audio sender
+        if (!this.audioTransceiver) {
+            if (config.senders.find((v) => v.kind === MediaKind.AUDIO)) {
+                let at = transceivers.find((tr) => tr.direction === 'sendonly' && tr.receiver.track.kind === 'audio');
+                if (at) {
+                    this.audioTransceiver = at;
+                    if (this.audioTrack) {
+                        at.sender.replaceTrack(this.audioTrack);
+                    }
+                }
+            }
+        }
+    }
+
     private createAudioReceiverIfNeeded = async (peerId: string) => {
         if (!this.receivers.has(peerId)) {
             this.receivers.set(peerId, new Map());
         }
         let refs = this.receivers.get(peerId)!;
         if (!refs.has('audio')) {
-            refs.set('audio', await this.peerConnection.addTranseiver('audio', { direction: 'recvonly' }));
+            refs.set('audio', await this.peerConnection.addTransceiver('audio', { direction: 'recvonly' }));
         }
     }
 
@@ -406,7 +424,7 @@ export class MediaConnectionManager {
         }
         let refs = this.receivers.get(peerId)!;
         if (!refs.has('video')) {
-            refs.set('video', await this.peerConnection.addTranseiver('video', { direction: 'recvonly' }));
+            refs.set('video', await this.peerConnection.addTransceiver('video', { direction: 'recvonly' }));
         }
     }
 
@@ -416,14 +434,14 @@ export class MediaConnectionManager {
         }
         let refs = this.receivers.get(peerId)!;
         if (!refs.has('screencast')) {
-            refs.set('screencast', await this.peerConnection.addTranseiver('video', { direction: 'recvonly' }));
+            refs.set('screencast', await this.peerConnection.addTransceiver('video', { direction: 'recvonly' }));
         }
     }
 
     private createAudioSenderTransceiverIfNeeded = async () => {
         // Create if needed
         if (!this.audioTransceiver) {
-            this.audioTransceiver = await this.peerConnection.addTranseiver('audio', { direction: 'sendonly' });
+            this.audioTransceiver = await this.peerConnection.addTransceiver('audio', { direction: 'sendonly' });
             if (this.audioTrack) {
                 this.audioTransceiver.sender.replaceTrack(this.audioTrack);
             }
@@ -433,7 +451,7 @@ export class MediaConnectionManager {
     private createVideoSenderTransceiverIfNeeded = async () => {
         // Create if needed
         if (!this.videoTransceiver) {
-            this.videoTransceiver = await this.peerConnection.addTranseiver('video', { direction: 'sendonly' });
+            this.videoTransceiver = await this.peerConnection.addTransceiver('video', { direction: 'sendonly' });
             if (this.videoTrack) {
                 this.videoTransceiver.sender.replaceTrack(this.videoTrack);
             }
@@ -443,7 +461,7 @@ export class MediaConnectionManager {
     private createScreencastSenderTransceiverIfNeeded = async () => {
         // Create if needed
         if (!this.screencastTransceiver) {
-            this.screencastTransceiver = await this.peerConnection.addTranseiver('video', { direction: 'sendonly' });
+            this.screencastTransceiver = await this.peerConnection.addTransceiver('video', { direction: 'sendonly' });
             if (this.screencastTrack) {
                 this.screencastTransceiver.sender.replaceTrack(this.screencastTrack);
             }
