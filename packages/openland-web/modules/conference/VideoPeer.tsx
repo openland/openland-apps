@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CallsEngine } from 'openland-engines/CallsEngine';
 import { XView } from 'react-mental';
-import { Conference_conference_peers } from 'openland-api/spacex.types';
+import { UserShort } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { VideoComponent, showVideoModal } from './ScreenShareModal';
@@ -86,13 +86,13 @@ const bgAvatarOverlay = css`
     background: var(--overlayMedium);
 `;
 export interface PeerMedia {
-    videoTrack: AppMediaStreamTrack | null;
-    audioTrack: AppMediaStreamTrack | null;
-    screencastTrack: AppMediaStreamTrack | null;
+    isLocal?: boolean;
+    videoTrack?: AppMediaStreamTrack | null;
+    audioTrack?: AppMediaStreamTrack | null;
+    screencastTrack?: AppMediaStreamTrack | null;
 }
 export interface VideoPeerProps extends PeerMedia {
-    peer: Conference_conference_peers;
-    isLocal?: boolean;
+    user: UserShort;
     // for settings view
     compact?: boolean;
 }
@@ -108,8 +108,8 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     //         : (isLocal ? props.callState.mute : audioPaused) ? <MutedIcon />
     //             : null;
 
-    const bgSrc = props.peer.user.photo ? props.peer.user.photo : undefined;
-    const bgColor = !props.peer.user.photo ? getPlaceholderColorById(props.peer.user.id) : undefined;
+    const bgSrc = props.user.photo ? props.user.photo : undefined;
+    const bgColor = !props.user.photo ? getPlaceholderColorById(props.user.id) : undefined;
 
     let mainStreamWeb = props.screencastTrack ? props.screencastTrack : props.videoTrack;
     // @ts-ignore
@@ -151,15 +151,15 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
                     <div key={'animating_wrapper'} className={cx(animatedAvatarStyle)}>
                         <UAvatar
                             size={props.compact ? 'large' : 'xx-large'}
-                            id={props.peer.user.id}
-                            title={props.peer.user.name}
-                            photo={props.peer.user.photo}
+                            id={props.user.id}
+                            title={props.user.name}
+                            photo={props.user.photo}
                         />
                     </div>
                 </>
             )}
             <div className={cx(peerInfo, props.compact && peerInfoCompact, mainStreamWeb && peerInfoGradient)}>
-                {!props.compact && <div className={peerName}>{props.peer.user.name}</div>}
+                {!props.compact && <div className={peerName}>{props.user.name}</div>}
                 {/* {icon && (
                     <div className={peerIcon}>
                         {icon}
