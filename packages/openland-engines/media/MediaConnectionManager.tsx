@@ -439,6 +439,44 @@ export class MediaConnectionManager {
                 }
             }
         }
+
+        for (let receiver of config.receivers) {
+            if (!receiver.peerId) {
+                continue;
+            }
+            if (!receiver.mid) {
+                continue;
+            }
+            if (!this.receivers.has(receiver.peerId)) {
+                this.receivers.set(receiver.peerId, new Map());
+            }
+            let refs = this.receivers.get(receiver.peerId)!;
+            if (receiver.kind === MediaKind.AUDIO) {
+                if (!refs.has('audio')) {
+                    let at = transceivers.find((tr) => tr.mid === receiver.mid);
+                    if (at) {
+                        refs.set('audio', at);
+                        this.session.onReceiverAdded(receiver.peerId, 'audio', at.receiver.track);
+                    }
+                }
+            } else if (receiver.kind === MediaKind.VIDEO && (receiver.videoSource === null || receiver.videoSource === VideoSource.CAMERA)) {
+                if (!refs.has('video')) {
+                    let at = transceivers.find((tr) => tr.mid === receiver.mid);
+                    if (at) {
+                        refs.set('video', at);
+                        this.session.onReceiverAdded(receiver.peerId, 'video', at.receiver.track);
+                    }
+                }
+            } else if (receiver.kind === MediaKind.VIDEO && receiver.videoSource === VideoSource.SCREEN) {
+                if (!refs.has('screencast')) {
+                    let at = transceivers.find((tr) => tr.mid === receiver.mid);
+                    if (at) {
+                        refs.set('screencast', at);
+                        this.session.onReceiverAdded(receiver.peerId, 'screencast', at.receiver.track);
+                    }
+                }
+            }
+        }
     }
 
     private createAudioReceiverIfNeeded = async (peerId: string) => {
