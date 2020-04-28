@@ -40,7 +40,7 @@ fragment ConferenceShort on Conference {
     }
 }
 
-fragment MediaStreamFull on MediaStream{
+fragment MediaStreamFull on MediaStream {
     id
 
     seq
@@ -54,11 +54,13 @@ fragment MediaStreamFull on MediaStream{
         peerId
         kind
         videoSource
+        mid
     }
     senders {
         kind
         videoSource
         codecParams
+        mid
     }
 }
 

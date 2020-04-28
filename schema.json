@@ -18962,6 +18962,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "mid",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -19050,6 +19062,18 @@
           },
           {
             "name": "codecParams",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "mid",
             "description": "",
             "args": [],
             "type": {
@@ -29700,6 +29724,24 @@
                   "ofType": null
                 },
                 "defaultValue": null
+              },
+              {
+                "name": "hints",
+                "description": "",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "MediaStreamHint",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null
               }
             ],
             "type": {
@@ -38344,6 +38386,61 @@
         ],
         "inputFields": null,
         "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "MediaStreamHint",
+        "description": "",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "peerId",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "kind",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "MediaKind",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "videoSource",
+            "description": "",
+            "type": {
+              "kind": "ENUM",
+              "name": "VideoSource",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "mid",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },

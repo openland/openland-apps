@@ -23,6 +23,6 @@ internal val ConferenceMediaSelector = obj(
 val ConferenceMedia = object: OperationDefinition {
     override val name = "ConferenceMedia"
     override val kind = OperationKind.QUERY
-    override val body = "query ConferenceMedia(\$id:ID!,\$peerId:ID!){conferenceMedia(id:\$id,peerId:\$peerId){__typename id streams{__typename ...MediaStreamFull}iceServers{__typename urls username credential}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource}senders{__typename kind videoSource codecParams}}"
+    override val body = "query ConferenceMedia(\$id:ID!,\$peerId:ID!){conferenceMedia(id:\$id,peerId:\$peerId){__typename id streams{__typename ...MediaStreamFull}iceServers{__typename urls username credential}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}"
     override val selector = ConferenceMediaSelector
 }

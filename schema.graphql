@@ -1173,12 +1173,14 @@ type MediaReceiver {
   peerId: ID
   kind: MediaKind!
   videoSource: VideoSource
+  mid: String
 }
 
 type MediaSender {
   kind: MediaKind!
   videoSource: VideoSource
   codecParams: String
+  mid: String
 }
 
 type MediaStream {
@@ -1200,6 +1202,13 @@ type MediaStream {
   mediaState: MediaStreamMediaState!
   localStreams: [LocalStreamConfig!]!
   peerId: ID
+}
+
+input MediaStreamHint {
+  peerId: ID
+  kind: MediaKind!
+  videoSource: VideoSource
+  mid: String
 }
 
 enum MediaStreamIceTransportPolicy {
@@ -1755,7 +1764,7 @@ type Mutation {
   conferenceKeepAlive(id: ID!, peerId: ID!): Conference!
   conferenceLeave(id: ID!, peerId: ID!): Conference!
   conferenceRequestLocalMediaChange(id: ID!, media: LocalMediaInput!): Conference!
-  mediaStreamOffer(id: ID!, peerId: ID!, offer: String!, seq: Int): ConferenceMedia!
+  mediaStreamOffer(id: ID!, peerId: ID!, offer: String!, seq: Int, hints: [MediaStreamHint!]): ConferenceMedia!
   mediaStreamAnswer(id: ID!, peerId: ID!, answer: String!, seq: Int): ConferenceMedia!
   mediaStreamCandidate(id: ID!, peerId: ID!, candidate: String!): ConferenceMedia!
   setEnvVar(name: String!, value: String!): Boolean!

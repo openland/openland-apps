@@ -17,6 +17,6 @@ internal val ConferenceMediaWatchSelector = obj(
 val ConferenceMediaWatch = object: OperationDefinition {
     override val name = "ConferenceMediaWatch"
     override val kind = OperationKind.SUBSCRIPTION
-    override val body = "subscription ConferenceMediaWatch(\$id:ID!,\$peerId:ID!){media:alphaConferenceMediaWatch(id:\$id,peerId:\$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource}senders{__typename kind videoSource codecParams}}"
+    override val body = "subscription ConferenceMediaWatch(\$id:ID!,\$peerId:ID!){media:alphaConferenceMediaWatch(id:\$id,peerId:\$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}"
     override val selector = ConferenceMediaWatchSelector
 }

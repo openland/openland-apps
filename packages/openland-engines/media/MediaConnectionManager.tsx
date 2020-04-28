@@ -170,6 +170,8 @@ export class MediaConnectionManager {
 
                 // Configure transceivers
                 await this.prepareTransceivers(config);
+                await this.configureReceivers(config);
+                await this.configureSenders(config);
 
                 // Create Offer
                 console.log('[WEBRTC]: Creating offer');
@@ -227,6 +229,11 @@ export class MediaConnectionManager {
                 this.remoteOffer = offer;
             }
 
+            // Handle senders
+            await this.extractTransceivers(config);
+            // Dynamically created senders have invalid state. We have to reconfigure them.
+            await this.configureSenders(config);
+
             // Generate answer
             if (!this.localAnswer) {
                 let answer = await this.peerConnection.createAnswer();
@@ -234,9 +241,6 @@ export class MediaConnectionManager {
                 this.localDescriptionSet = true;
                 this.localAnswer = answer;
             }
-
-            // Handle senders
-            await this.extractTransceivers(config);
 
             // Send answer
             if (!this.localAnswerSent) {
@@ -330,36 +334,9 @@ export class MediaConnectionManager {
                 }
             }
         }
+    }
 
-        //
-        // Configure senders
-        //
-
-        if (this.audioTransceiver) {
-            if (config.senders.find((s) => s.kind === MediaKind.AUDIO)) {
-                this.audioTransceiver.direction = 'sendonly';
-            } else {
-                this.audioTransceiver.direction = 'inactive';
-            }
-        }
-        if (this.videoTransceiver) {
-            if (config.senders.find((s) => s.kind === MediaKind.VIDEO && s.videoSource === null || s.videoSource === VideoSource.CAMERA)) {
-                this.videoTransceiver.direction = 'sendonly';
-            } else {
-                this.videoTransceiver.direction = 'inactive';
-            }
-        }
-        if (this.screencastTransceiver) {
-            if (config.senders.find((s) => s.kind === MediaKind.VIDEO && s.videoSource === VideoSource.SCREEN)) {
-                this.screencastTransceiver.direction = 'sendonly';
-            } else {
-                this.screencastTransceiver.direction = 'inactive';
-            }
-        }
-
-        //
-        // Configure receivers
-        //
+    private configureReceivers = async (config: ConferenceMedia_conferenceMedia_streams) => {
         for (let peerId of this.receivers.keys()) {
             let refs = this.receivers.get(peerId)!;
             for (let kind of refs.keys()) {
@@ -391,17 +368,73 @@ export class MediaConnectionManager {
         }
     }
 
+    private configureSenders = async (config: ConferenceMedia_conferenceMedia_streams) => {
+        if (this.audioTransceiver) {
+            if (config.senders.find((s) => s.kind === MediaKind.AUDIO)) {
+                this.audioTransceiver.direction = 'sendonly';
+            } else {
+                this.audioTransceiver.direction = 'inactive';
+            }
+        }
+        if (this.videoTransceiver) {
+            if (config.senders.find((s) => s.kind === MediaKind.VIDEO && s.videoSource === null || s.videoSource === VideoSource.CAMERA)) {
+                this.videoTransceiver.direction = 'sendonly';
+            } else {
+                this.videoTransceiver.direction = 'inactive';
+            }
+        }
+        if (this.screencastTransceiver) {
+            if (config.senders.find((s) => s.kind === MediaKind.VIDEO && s.videoSource === VideoSource.SCREEN)) {
+                this.screencastTransceiver.direction = 'sendonly';
+            } else {
+                this.screencastTransceiver.direction = 'inactive';
+            }
+        }
+    }
+
     private extractTransceivers = async (config: ConferenceMedia_conferenceMedia_streams) => {
         let transceivers = this.peerConnection.getTransceivers();
 
         // Check audio sender
         if (!this.audioTransceiver) {
-            if (config.senders.find((v) => v.kind === MediaKind.AUDIO)) {
-                let at = transceivers.find((tr) => tr.direction === 'sendonly' && tr.receiver.track.kind === 'audio');
+            const audioSender = config.senders.find((v) => v.kind === MediaKind.AUDIO);
+            if (audioSender && audioSender.mid) {
+                let at = transceivers.find((tr) => tr.mid === audioSender.mid);
                 if (at) {
                     this.audioTransceiver = at;
+                    console.log('[WEBRTC]: Found audio track: ' + audioSender.mid);
                     if (this.audioTrack) {
                         at.sender.replaceTrack(this.audioTrack);
+                    }
+                }
+            }
+        }
+
+        // Check video sender
+        if (!this.videoTransceiver) {
+            const videoSender = config.senders.find((v) => v.kind === MediaKind.VIDEO && (v.videoSource === null || v.videoSource === VideoSource.CAMERA));
+            if (videoSender && videoSender.mid) {
+                let at = transceivers.find((tr) => tr.mid === videoSender.mid);
+                if (at) {
+                    this.videoTransceiver = at;
+                    console.log('[WEBRTC]: Found video track: ' + videoSender.mid);
+                    if (this.videoTrack) {
+                        at.sender.replaceTrack(this.videoTrack);
+                    }
+                }
+            }
+        }
+
+        // Check screencast sender
+        if (!this.screencastTransceiver) {
+            const screencastSender = config.senders.find((v) => v.kind === MediaKind.VIDEO && v.videoSource === VideoSource.SCREEN);
+            if (screencastSender && screencastSender.mid) {
+                let at = transceivers.find((tr) => tr.mid === screencastSender.mid);
+                if (at) {
+                    this.screencastTransceiver = at;
+                    console.log('[WEBRTC]: Found screencast track: ' + screencastSender.mid);
+                    if (this.screencastTrack) {
+                        at.sender.replaceTrack(this.screencastTrack);
                     }
                 }
             }
@@ -427,7 +460,7 @@ export class MediaConnectionManager {
         let refs = this.receivers.get(peerId)!;
         if (!refs.has('video')) {
             let transceiver = await this.peerConnection.addTransceiver('video', { direction: 'recvonly' });
-            refs.set('video', transceiver );
+            refs.set('video', transceiver);
             this.session.onReceiverAdded(peerId, 'audio', transceiver.receiver.track);
         }
     }

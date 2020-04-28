@@ -1255,13 +1255,15 @@ internal val MediaStreamFullSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("peerId", "peerId", scalar("ID")),
                     field("kind", "kind", notNull(scalar("String"))),
-                    field("videoSource", "videoSource", scalar("String"))
+                    field("videoSource", "videoSource", scalar("String")),
+                    field("mid", "mid", scalar("String"))
                 ))))),
             field("senders", "senders", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("kind", "kind", notNull(scalar("String"))),
                     field("videoSource", "videoSource", scalar("String")),
-                    field("codecParams", "codecParams", scalar("String"))
+                    field("codecParams", "codecParams", scalar("String")),
+                    field("mid", "mid", scalar("String"))
                 )))))
         )
 
