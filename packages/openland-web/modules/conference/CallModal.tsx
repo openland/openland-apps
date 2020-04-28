@@ -162,7 +162,8 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                         >
                             {s.map(p => {
                                 let media: PeerMedia = { videoTrack: null, audioTrack: null, screencastTrack: null };
-                                if (p.id === state.sender.id) {
+                                let isLocal = p.id === state.sender.id;
+                                if (isLocal) {
                                     media = {
                                         videoTrack: state.sender.videoEnabled ? state.sender.videoTrack : null,
                                         audioTrack: state.sender.audioEnabled ? state.sender.audioTrack : null,
@@ -174,7 +175,8 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                                 return <VideoPeer
                                     key={`peer-${p.id}`}
                                     peer={p}
-                                    media={media}
+                                    {...media}
+                                    isLocal={isLocal}
                                 />;
                             })}
 

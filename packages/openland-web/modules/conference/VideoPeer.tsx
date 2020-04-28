@@ -90,10 +90,9 @@ export interface PeerMedia {
     audioTrack: AppMediaStreamTrack | null;
     screencastTrack: AppMediaStreamTrack | null;
 }
-export interface VideoPeerProps {
+export interface VideoPeerProps extends PeerMedia {
     peer: Conference_conference_peers;
-    media: PeerMedia;
-    local?: boolean;
+    isLocal?: boolean;
     // for settings view
     compact?: boolean;
 }
@@ -112,9 +111,9 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     const bgSrc = props.peer.user.photo ? props.peer.user.photo : undefined;
     const bgColor = !props.peer.user.photo ? getPlaceholderColorById(props.peer.user.id) : undefined;
 
-    let mainStreamWeb = props.media?.screencastTrack ? props.media?.screencastTrack : props.media?.videoTrack;
+    let mainStreamWeb = props.screencastTrack ? props.screencastTrack : props.videoTrack;
     // @ts-ignore
-    let miniStreamWeb = props.media?.screencastTrack ? props.media?.videoTrack : undefined;
+    let miniStreamWeb = props.screencastTrack ? props.videoTrack : undefined;
     const onClick = React.useCallback(() => mainStreamWeb ? showVideoModal((mainStreamWeb as AppUserMediaTrackWeb).track) : undefined, [mainStreamWeb]);
 
     return (
@@ -130,10 +129,10 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
             {mainStreamWeb && (
                 <VideoComponent
                     track={(mainStreamWeb as AppUserMediaTrackWeb).track}
-                    cover={!props.media?.screencastTrack}
+                    cover={!props.screencastTrack}
                     compact={props.compact}
                     onClick={onClick}
-                    mirror={props.local && !props.media?.screencastTrack}
+                    mirror={props.isLocal && !props.screencastTrack}
                     borderRadius={props.compact ? 8 : undefined}
                     backgroundColor="var(--overlayHeavy)"
                 />
