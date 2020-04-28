@@ -161,7 +161,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                             flexGrow={1}
                         >
                             {s.map(p => {
-                                let rid = state.receiversIds[p.id];
+                                let rid = state.localIds[p.id];
                                 let receiver = rid && state.receivers[rid] || {};
                                 return <VideoPeer
                                     key={`peer-${p.id}`}
