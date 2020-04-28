@@ -22,10 +22,11 @@ import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
 
 const watermarkContainerstyle = css`
     will-change: transform;
-
     position: absolute;
     opacity: 0.72;
     z-index: 5;
+    cursor:pointer;
+
     &:hover {
         opacity: 1;
     }
@@ -194,7 +195,10 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                 />
             </XView>
 
-            <div className={cx(watermarkContainerstyle, layout === 'volume-space' && watermarkContainerSpaceStyle)}>
+            <div
+                className={cx(watermarkContainerstyle, layout === 'volume-space' && watermarkContainerSpaceStyle)}
+                onClick={props.ctx.hide}
+            >
                 <XView position="absolute" top={0} left={0}>
                     <WatermarkLogo />
                 </XView>
