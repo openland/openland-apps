@@ -12,7 +12,7 @@ import { TextStyles } from 'openland-web/utils/TextStyles';
 import { DataSourceMessageItem, DataSourceDateItem, DataSourceNewDividerItem } from 'openland-engines/messenger/ConversationEngine';
 import { YoutubeParty } from './YoutubeParty';
 // import { VolumeSpace } from './VolumeSpace';
-import { VideoPeer } from './VideoPeer';
+import { VideoPeer, PeerMedia } from './VideoPeer';
 import WatermarkLogo from 'openland-icons/watermark-logo.svg';
 import WatermarkShadow from 'openland-icons/watermark-shadow.svg';
 import { CallControls } from './CallControls';
@@ -72,7 +72,6 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     while (divider) {
         let count = Math.ceil(peers.length / divider--);
         slices.unshift(peers.splice(peers.length - count, count));
-        console.warn(count, peers.length);
     }
 
     let [layout, setLayout] = React.useState<'grid' | 'volume-space'>('grid');
@@ -153,7 +152,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
         <XView flexDirection="row" flexGrow={1} backgroundColor="gray" alignItems="stretch" position="relative">
             <XView flexDirection="row" flexGrow={1} flexShrink={1}>
                 <XView flexDirection={rotated ? 'row' : 'column'} justifyContent="flex-start" flexGrow={1} flexShrink={1} position="relative">
-                    {layout === 'grid' && mediaSession && slices.map((s, i) => (
+                    {layout === 'grid' && slices.map((s, i) => (
                         <XView
                             key={`container-${i}`}
                             flexDirection={rotated ? 'column' : 'row'}
@@ -161,15 +160,24 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                             flexShrink={1}
                             flexGrow={1}
                         >
-                            {/* {s.map(p => (
-                                <VideoPeer
+                            {s.map(p => {
+                                let media: PeerMedia = { videoTrack: null, audioTrack: null, screencastTrack: null };
+                                if (p.id === state.sender.id) {
+                                    media = {
+                                        videoTrack: state.sender.videoEnabled ? state.sender.videoTrack : null,
+                                        audioTrack: state.sender.audioEnabled ? state.sender.audioTrack : null,
+                                        screencastTrack: state.sender.screencastEnabled ? state.sender.screencastTrack : null,
+                                    };
+                                } else {
+                                    media = { ...media, ...state.receivers.get(p.id) };
+                                }
+                                return <VideoPeer
                                     key={`peer-${p.id}`}
                                     peer={p}
-                                    mediaSession={mediaSession}
-                                    calls={props.calls}
-                                    callState={callState}
-                                />
-                            ))} */}
+                                    media={media}
+                                />;
+                            })}
+
                         </XView>
                     ))}
                     {/* {layout === 'volume-space' && mediaSession && <VolumeSpace mediaSession={mediaSession} peers={[...conference ? conference.conference.peers : []]} />} */}
@@ -183,8 +191,8 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                     toolsEnabled={showLink}
                     onMinimize={props.ctx.hide}
                     onMute={() => mediaSession.setAudioEnabled(!state.sender.audioEnabled)}
-                    onCameraClick={() => { /**/ }}
-                    onScreenClick={() => { /**/ }}
+                    onCameraClick={() => mediaSession.setVideoEnabled(!state.sender.videoEnabled)}
+                    onScreenClick={() => state.sender.screencastEnabled ? mediaSession.startScreenShare() : mediaSession.stopScreenShare()}
                     onSpaceClick={() => setLayout(prev => prev === 'volume-space' ? 'grid' : 'volume-space')}
                     onMessageClick={showMessage}
                     onToolsClick={() => setShowLink(prev => !prev)}

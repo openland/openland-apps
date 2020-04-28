@@ -414,7 +414,9 @@ export class MediaConnectionManager {
         }
         let refs = this.receivers.get(peerId)!;
         if (!refs.has('audio')) {
-            refs.set('audio', await this.peerConnection.addTransceiver('audio', { direction: 'recvonly' }));
+            let transceiver = await this.peerConnection.addTransceiver('audio', { direction: 'recvonly' });
+            refs.set('audio', transceiver);
+            this.session.onReceiverAdded(peerId, 'audio', transceiver.receiver.track);
         }
     }
 
@@ -424,7 +426,9 @@ export class MediaConnectionManager {
         }
         let refs = this.receivers.get(peerId)!;
         if (!refs.has('video')) {
-            refs.set('video', await this.peerConnection.addTransceiver('video', { direction: 'recvonly' }));
+            let transceiver = await this.peerConnection.addTransceiver('video', { direction: 'recvonly' });
+            refs.set('video', transceiver );
+            this.session.onReceiverAdded(peerId, 'audio', transceiver.receiver.track);
         }
     }
 
@@ -434,7 +438,9 @@ export class MediaConnectionManager {
         }
         let refs = this.receivers.get(peerId)!;
         if (!refs.has('screencast')) {
-            refs.set('screencast', await this.peerConnection.addTransceiver('video', { direction: 'recvonly' }));
+            let transceiver = await this.peerConnection.addTransceiver('video', { direction: 'recvonly' });
+            refs.set('screencast', transceiver);
+            this.session.onReceiverAdded(peerId, 'screencast', transceiver.receiver.track);
         }
     }
 

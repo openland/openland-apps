@@ -85,68 +85,24 @@ const bgAvatarOverlay = css`
     right: 0;
     background: var(--overlayMedium);
 `;
-
+export interface PeerMedia {
+    videoTrack: AppMediaStreamTrack | null;
+    audioTrack: AppMediaStreamTrack | null;
+    screencastTrack: AppMediaStreamTrack | null;
+}
 export interface VideoPeerProps {
-    mediaSession: MediaSessionManager;
     peer: Conference_conference_peers;
-    calls: CallsEngine;
-    // callState: CallState;
+    media: PeerMedia;
+    local?: boolean;
     // for settings view
     compact?: boolean;
 }
 
 export const VideoPeer = React.memo((props: VideoPeerProps) => {
-    let [mainStream, setMainStream] = React.useState<AppMediaStreamTrack>();
-    let [mainStreamScreenCast, setMainStreamScreenCast] = React.useState<boolean>(false);
     // @ts-ignore
-    let [miniStream, setMiniStream] = React.useState<AppMediaStream>();
-    let [talking] = React.useState(false);
-    // const [localPeer, setLocalPeer] = React.useState(props.mediaSession.getPeerId());
-    // const isLocal = props.peer.id === props.mediaSession.getPeerId();
     const [audioPaused, setAudioPaused] = React.useState<boolean | null>(false);
+    // @ts-ignore
     const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
-    // React.useEffect(() => {
-    //     // mediaSession initiating without peerId. Like waaat
-    //     let d0 = props.calls.listenState(() => setLocalPeer(props.mediaSession.getPeerId()));
-    //     let d1: () => void;
-    //     let d3: (() => void) | undefined;
-    //     if (isLocal) {
-    //         d1 = props.mediaSession.outVideoVM.listen(tracks => {
-    //             let cam = tracks[0];
-    //             let screen = tracks[1];
-    //             setMainStream(screen ? screen : cam);
-    //             setMainStreamScreenCast(screen ? true : false);
-    //             setVideoPaused(!!cam?.enabled);
-    //             setMiniStream(screen ? cam : undefined);
-    //         });
-    //     } else {
-    //         d1 = props.mediaSession.peerVideoVM.listen(props.peer.id, streams => {
-    //             let cam = [...streams.entries()].find(s => s[0] === 'camera');
-    //             let screen = [...streams.entries()].find(s => s[0] === 'screen_share');
-    //             setMainStream(screen ? screen[1] : (cam ? cam[1] : undefined));
-    //             setMainStreamScreenCast(screen ? true : false);
-    //             setMiniStream(screen ? cam : undefined);
-    //         });
-    //         d3 = props.mediaSession.peerStreamMediaStateVM.listen(props.peer.id, s => {
-    //             let camState = [...s.values()].find(c => c.videoSource === MediaStreamVideoSource.camera);
-    //             if (camState) {
-    //                 setAudioPaused(camState.audioPaused);
-    //                 setVideoPaused(camState.videoPaused);
-    //             }
-    //         });
-    //     }
-    //     // let d2 = props.mediaSession.analyzer.subscribePeer(props.peer.id, v => {
-    //     //     setTalking(v);
-    //     // });
-    //     return () => {
-    //         d0();
-    //         d1();
-    //         // d2();
-    //         if (d3) {
-    //             d3();
-    //         }
-    //     };
-    // }, [localPeer]);
 
     // const icon = props.callState.status !== 'connected' ? <SvgLoader size="small" contrast={true} />
     //     : talking ? <SpeakerIcon />
@@ -156,10 +112,10 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     const bgSrc = props.peer.user.photo ? props.peer.user.photo : undefined;
     const bgColor = !props.peer.user.photo ? getPlaceholderColorById(props.peer.user.id) : undefined;
 
-    let mainStreamWeb = (!videoPaused || mainStreamScreenCast) && (mainStream as AppUserMediaTrackWeb | undefined)?.track;
+    let mainStreamWeb = props.media?.screencastTrack ? props.media?.screencastTrack : props.media?.videoTrack;
     // @ts-ignore
-    let miniStreamWeb = (miniStream as AppUserMediaStreamWeb | undefined)?._stream;
-    const onClick = React.useCallback(() => mainStreamWeb ? showVideoModal(mainStreamWeb) : undefined, [mainStreamWeb]);
+    let miniStreamWeb = props.media?.screencastTrack ? props.media?.videoTrack : undefined;
+    const onClick = React.useCallback(() => mainStreamWeb ? showVideoModal((mainStreamWeb as AppUserMediaTrackWeb).track) : undefined, [mainStreamWeb]);
 
     return (
         <XView
@@ -173,11 +129,11 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
         >
             {mainStreamWeb && (
                 <VideoComponent
-                    track={mainStreamWeb}
-                    cover={!mainStreamScreenCast}
+                    track={(mainStreamWeb as AppUserMediaTrackWeb).track}
+                    cover={!props.media?.screencastTrack}
                     compact={props.compact}
                     onClick={onClick}
-                    // mirror={isLocal && !mainStreamScreenCast}
+                    mirror={props.local && !props.media?.screencastTrack}
                     borderRadius={props.compact ? 8 : undefined}
                     backgroundColor="var(--overlayHeavy)"
                 />

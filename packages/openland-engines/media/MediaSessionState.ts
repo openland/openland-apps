@@ -8,6 +8,7 @@ export interface MediaSessionReceiver {
 }
 
 export interface MediaSessionSender {
+    id: string | null;
     audioEnabled: boolean;
     videoEnabled: boolean;
     screencastEnabled: boolean;
@@ -19,12 +20,12 @@ export interface MediaSessionSender {
 
 export interface MediaSessionState {
     sender: MediaSessionSender;
-    receivers: MediaSessionReceiver[];
+    receivers: Map<string, MediaSessionReceiver>;
 }
 
 export type MediaSessionCommand =
     | { command: 'sender', sender: Partial<MediaSessionSender> }
-    | { command: 'receiver', receiver: Partial<MediaSessionReceiver> };
+    | { command: 'receiver', receiver: Partial<MediaSessionReceiver> & Pick<MediaSessionReceiver, 'id'> };
 
 export function reduceState(src: MediaSessionState, command: MediaSessionCommand): MediaSessionState {
     if (command.command === 'sender') {
@@ -35,8 +36,20 @@ export function reduceState(src: MediaSessionState, command: MediaSessionCommand
                 ...command.sender
             }
         };
-    } else if (command.receiver === 'receiver') {
-        // TODO: Implement
+    } else if (command.command === 'receiver') {
+        let receiver =
+            src.receivers.get(command.receiver.id) ||
+            {
+                id: command.receiver.id,
+                audioTrack: null,
+                videoTrack: null,
+                screencastTrack: null
+            };
+        src.receivers.set(command.receiver.id, { ...receiver, ...command.receiver });
+        return {
+            ...src,
+            receivers: new Map(src.receivers)
+        };
     }
     throw Error('Unknown command');
 }

@@ -69,6 +69,7 @@ export class MediaSessionManager {
         // Initialize reducer
         this.state = new Reducer(reduceState, {
             sender: {
+                id: null,
                 audioEnabled: this.audioEnabled,
                 videoEnabled: this.videoEnabled,
                 screencastEnabled: this.screencastEnabled,
@@ -77,7 +78,7 @@ export class MediaSessionManager {
                 videoTrack: null,
                 screencastTrack: null
             },
-            receivers: []
+            receivers: new Map()
         });
         this.connectionsInvalidateSync = new InvalidateSync(this.handleState);
         this.doInit();
@@ -279,6 +280,7 @@ export class MediaSessionManager {
             this.iceServers = joinConference.conference.iceServers;
             this.conferenceId = conferenceId;
             this.peerId = joinConference.peerId;
+            this.state.dispatch({ command: 'sender', sender: { id: this.peerId } });
 
             // TODO: Reimplement
             // this.onStatusChange(this.isPrivate ? 'waiting' : 'connected', !this.isPrivate ? joinConference.conference.startTime : undefined);
@@ -413,5 +415,25 @@ export class MediaSessionManager {
             })();
         }
         await this.videoTrackPromise;
+    }
+
+    //
+    // Collect recievers
+    //
+
+    onReceiverAdded = (peerId: string, type: 'audio' | 'video' | 'screencast', track: AppMediaStreamTrack) => {
+        let command: MediaSessionCommand = { command: 'receiver', receiver: { id: peerId } };
+        if (type === 'audio') {
+            command.receiver.audioTrack = track;
+        } else if (type === 'video') {
+            command.receiver.videoTrack = track;
+        } else if (type === 'screencast') {
+            command.receiver.screencastTrack = track;
+        }
+        this.state.dispatch(command);
+    }
+
+    getPeerId = () => {
+        return this.peerId;
     }
 }
