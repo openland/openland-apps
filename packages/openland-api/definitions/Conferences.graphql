@@ -17,6 +17,8 @@ fragment ConferenceFull on Conference {
         ...on SharedRoom {
             id
             title
+            isChannel
+            membersCount
         }
         ...on PrivateRoom {
             id

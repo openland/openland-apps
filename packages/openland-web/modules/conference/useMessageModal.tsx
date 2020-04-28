@@ -20,6 +20,9 @@ import { XModalController } from 'openland-x/showModal';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { StickerFragment } from 'openland-api/spacex.types';
 import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
+import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
+import { showNoiseWarning } from 'openland-web/fragments/chat/components/NoiseWarning';
+import { plural } from 'openland-y-utils/plural';
 
 const inputStyle = css`
     min-height: 88px;
@@ -41,7 +44,7 @@ const IconButton = (props: { caption: string, icon: JSX.Element, onClick: React.
 
 interface MessageModalProps {
     chatId: string;
-    name: string;
+    name?: string;
     isChannel?: boolean;
     isPrivate?: boolean;
     membersCount?: number;
@@ -74,17 +77,32 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
     let onDonationPress = React.useCallback(() => {
         showDonation();
     }, [showDonation]);
-    let onSend = () => {
+    let onSend = async () => {
         let editor = inputRef.current;
         if (!editor) {
-            return;
+            return false;
         }
         let data = editor.getText();
         const { text, mentions } = convertFromInputValue(data);
+        const mentionsPrepared = prepareLegacyMentionsForSend(text, mentions);
         if (text.length > 0) {
+            if (mentionsPrepared.filter(m => m.all === true).length) {
+                try {
+                    const chatType = props.isChannel ? 'channel' : 'group';
+                    const membersType = props.isChannel ? ['follower', 'followers'] : ['member', 'members'];
+
+                    await showNoiseWarning(
+                        `Notify all ${!!props.membersCount ? plural(props.membersCount, membersType) : membersType[1]}?`,
+                        `By using @All, you’re about to notify all ${chatType} ${membersType[1]} even when they muted this chat. Please use it only for important messages`
+                    );
+                } catch {
+                    return false;
+                }
+            }
             conversation.sendMessage(text, mentions);
         }
         props.ctx.hide();
+        return true;
     };
     let onStickerSent = (sticker: StickerFragment) => {
         // TODO: add typing?
@@ -131,8 +149,7 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
                 return true;
             }
         }
-        onSend();
-        return true;
+        return await onSend();
     };
     return (
         <XView flexDirection="column" paddingTop={12}>
@@ -204,7 +221,7 @@ export const useMessageModal = (props: MessageModalProps): [boolean, () => void]
     const show = () => {
         setOpen(true);
         showModalBox({
-            title: `Message to ${props.name}`,
+            title: props.name ? `Message to ${props.name}` : `Message`,
             titleTruncation: true,
             overflowVisible: true,
             width: 480,

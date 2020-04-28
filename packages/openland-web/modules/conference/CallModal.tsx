@@ -137,7 +137,16 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
         );
     }, []);
 
-    const [messageOpen, showMessage] = useMessageModal({ chatId: props.chatId, name: props.chatId, onAttach: props.onAttach });
+    const room = conference?.conference?.room;
+    const messageName = room && room.__typename === 'PrivateRoom' ? room?.user.name : room?.title;
+    const [messageOpen, showMessage] = useMessageModal({
+        chatId: props.chatId,
+        name: messageName,
+        onAttach: props.onAttach,
+        isPrivate: !!(room && room.__typename === 'PrivateRoom'),
+        isChannel: !!(room && room.__typename === 'SharedRoom' && room.isChannel),
+        membersCount: room && room.__typename === 'SharedRoom' ? room.membersCount : undefined,
+    });
 
     return (
         <XView flexDirection="row" flexGrow={1} backgroundColor="gray" alignItems="stretch" position="relative">

@@ -9,7 +9,7 @@ import CameraIcon from 'openland-icons/s/ic-camera-video-glyph-24.svg';
 import ScreenIcon from 'openland-icons/s/ic-screen-glyph-24.svg';
 import SettingsIcon from 'openland-icons/s/ic-settings-glyph-24.svg';
 import MagicIcon from 'openland-icons/s/ic-magic-glyph-24.svg';
-// import MessageIcon from 'openland-icons/s/ic-message-glyph-24.svg';
+import MessageIcon from 'openland-icons/s/ic-message-glyph-24.svg';
 import ToolsIcon from 'openland-icons/s/ic-tools-glyph-24.svg';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
@@ -307,7 +307,7 @@ export const CallControls = (props: CallControlsProps) => {
                         )}
                         onClick={props.onSpaceClick}
                     />
-                    {/* <ControlItem
+                    <ControlItem
                         text="Message"
                         icon={(
                             <UIconButton
@@ -319,7 +319,7 @@ export const CallControls = (props: CallControlsProps) => {
                             />
                         )}
                         onClick={props.onMessageClick}
-                    /> */}
+                    />
                     <ControlItem
                         text="Plugins"
                         icon={(
