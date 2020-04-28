@@ -824,7 +824,25 @@ internal val ConferenceFullSelector = obj(
                     field("urls", "urls", notNull(list(notNull(scalar("String"))))),
                     field("username", "username", scalar("String")),
                     field("credential", "credential", scalar("String"))
-                )))))
+                ))))),
+            field("room", "room", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    inline("SharedRoom", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("title", "title", notNull(scalar("String")))
+                    )),
+                    inline("PrivateRoom", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("user", "user", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("name", "name", notNull(scalar("String"))),
+                                field("photo", "photo", scalar("String"))
+                            )))
+                    ))
+                ))
         )
 
 internal val ConferenceShortSelector = obj(

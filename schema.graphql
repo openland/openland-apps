@@ -238,6 +238,7 @@ type Conference {
   id: ID!
   startTime: Date
   peers: [ConferencePeer!]!
+  room: Room
   kind: ConferenceKind!
   iceServers: [ICEServer!]!
   strategy: ConferenceStrategy!

@@ -12,6 +12,21 @@ fragment ConferenceFull on Conference {
         username
         credential
     }
+    room {
+        __typename
+        ...on SharedRoom {
+            id
+            title
+        }
+        ...on PrivateRoom {
+            id
+            user {
+                id
+                name
+                photo
+            }
+        }
+    }
 }
 fragment ConferenceShort on Conference {
     id

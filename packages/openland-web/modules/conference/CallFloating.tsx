@@ -6,7 +6,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { useClient } from 'openland-api/useClient';
 import { css, cx } from 'linaria';
 import { debounce } from 'openland-y-utils/timer';
-import { Conference_conference_peers, RoomTiny_room } from 'openland-api/spacex.types';
+import { Conference_conference_peers, Conference_conference_room } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { VideoComponent } from './ScreenShareModal';
 import { XView } from 'react-mental';
@@ -304,7 +304,7 @@ const MediaView = React.memo((props: {
             mediaSessionManager={props.mediaSessionManager}
             fallback={props.fallback}
             calls={props.calls}
-            // callState={props.callState}
+        // callState={props.callState}
         />
     ) : (
             <AvatarCover
@@ -315,7 +315,7 @@ const MediaView = React.memo((props: {
         );
 });
 
-const CallFloatingComponent = React.memo((props: { id: string; room: RoomTiny_room }) => {
+const CallFloatingComponent = React.memo((props: { id: string; room: Conference_conference_room }) => {
     const targetRef = React.useRef<HTMLDivElement>();
     const containerRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
@@ -380,8 +380,8 @@ const CallFloatingComponent = React.memo((props: { id: string; room: RoomTiny_ro
                 defaultRippleColor="rgba(255, 255, 255, 0.16)"
                 hoverRippleColor="rgba(255, 255, 255, 0.32)"
                 hoverActiveRippleColor="var(--tintOrangeHover)"
-                // active={callState.mute}
-                // onClick={() => calls.setMute(!callState.mute)}
+            // active={callState.mute}
+            // onClick={() => calls.setMute(!callState.mute)}
             />
             <UIconButton
                 size="small"
@@ -470,16 +470,14 @@ const CallFloatingComponent = React.memo((props: { id: string; room: RoomTiny_ro
 const CallFloatingInner = React.memo((props: { id: string }) => {
     let client = useClient();
     let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
-    // TODO: move room title to conference query
-    let room = client.useRoomTiny({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
     useTalkWatch(data && data.conference.id);
 
-    if (!data || !(room && room.room)) {
+    if (!data) {
         return null;
     }
 
     let res = data.conference.peers.length !== 0 && (
-        <CallFloatingComponent id={props.id} room={room.room} />
+        <CallFloatingComponent id={props.id} room={data.conference.room!} />
     );
     return ReactDOM.createPortal(res, document.body);
 });

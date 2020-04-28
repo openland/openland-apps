@@ -18309,6 +18309,18 @@
             "deprecationReason": null
           },
           {
+            "name": "room",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "UNION",
+              "name": "Room",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "kind",
             "description": "",
             "args": [],
