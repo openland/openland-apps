@@ -21,7 +21,7 @@ export interface MediaSessionSender {
 export interface MediaSessionState {
     sender: MediaSessionSender;
     receivers: { [peerId: string]: MediaSessionReceiver | undefined };
-    localIds: { [peerId: string]: string | undefined };
+    receiversIds: { [peerId: string]: string | undefined };
 }
 
 export type MediaSessionCommand =
@@ -60,19 +60,19 @@ export function reduceState(src: MediaSessionState, command: MediaSessionCommand
             };
         let receivers = { ...src.receivers };
         receivers[command.receiver.id] = { ...receiver, ...command.receiver };
-        let localIds = { ...src.localIds };
-        localIds[command.receiver.id] = command.receiver.id;
+        let receiversIds = { ...src.receiversIds };
+        receiversIds[command.receiver.id] = command.receiver.id;
         return {
             ...src,
             receivers,
-            localIds
+            receiversIds
         };
     } else if (command.command === 'localPeerId') {
-        let localIds = { ...src.localIds };
-        localIds[command.peerId] = 'local';
+        let receiversIds = { ...src.receiversIds };
+        receiversIds[command.peerId] = 'local';
         return {
             ...src,
-            localIds,
+            receiversIds,
         };
     }
     throw Error('Unknown command');
