@@ -78,7 +78,7 @@ export class MediaSessionManager {
                 videoTrack: null,
                 screencastTrack: null
             },
-            receivers: new Map()
+            receivers: {}
         });
         this.connectionsInvalidateSync = new InvalidateSync(this.handleState);
         this.doInit();

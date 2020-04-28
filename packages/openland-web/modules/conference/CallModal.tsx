@@ -170,7 +170,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                                         screencastTrack: state.sender.screencastEnabled ? state.sender.screencastTrack : null,
                                     };
                                 } else {
-                                    media = { ...media, ...state.receivers.get(p.id) };
+                                    media = { ...media, ...state.receivers[p.id] };
                                 }
                                 return <VideoPeer
                                     key={`peer-${p.id}`}

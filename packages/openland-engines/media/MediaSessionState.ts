@@ -20,7 +20,7 @@ export interface MediaSessionSender {
 
 export interface MediaSessionState {
     sender: MediaSessionSender;
-    receivers: Map<string, MediaSessionReceiver>;
+    receivers: { [peerId: string]: MediaSessionReceiver | undefined };
 }
 
 export type MediaSessionCommand =
@@ -38,17 +38,18 @@ export function reduceState(src: MediaSessionState, command: MediaSessionCommand
         };
     } else if (command.command === 'receiver') {
         let receiver =
-            src.receivers.get(command.receiver.id) ||
+            src.receivers[command.receiver.id] ||
             {
                 id: command.receiver.id,
                 audioTrack: null,
                 videoTrack: null,
                 screencastTrack: null
             };
-        src.receivers.set(command.receiver.id, { ...receiver, ...command.receiver });
+        let receivers = { ...src.receivers };
+        receivers[command.receiver.id] = { ...receiver, ...command.receiver };
         return {
             ...src,
-            receivers: new Map(src.receivers)
+            receivers
         };
     }
     throw Error('Unknown command');
