@@ -69,7 +69,6 @@ export class MediaSessionManager {
         // Initialize reducer
         this.state = new Reducer(reduceState, {
             sender: {
-                id: null,
                 audioEnabled: this.audioEnabled,
                 videoEnabled: this.videoEnabled,
                 screencastEnabled: this.screencastEnabled,
@@ -78,7 +77,8 @@ export class MediaSessionManager {
                 videoTrack: null,
                 screencastTrack: null
             },
-            receivers: {}
+            receivers: {},
+            receiversIds: {},
         });
         this.connectionsInvalidateSync = new InvalidateSync(this.handleState);
         this.doInit();
@@ -280,7 +280,7 @@ export class MediaSessionManager {
             this.iceServers = joinConference.conference.iceServers;
             this.conferenceId = conferenceId;
             this.peerId = joinConference.peerId;
-            this.state.dispatch({ command: 'sender', sender: { id: this.peerId } });
+            this.state.dispatch({ command: 'localPeerId', peerId: this.peerId });
 
             // TODO: Reimplement
             // this.onStatusChange(this.isPrivate ? 'waiting' : 'connected', !this.isPrivate ? joinConference.conference.startTime : undefined);
