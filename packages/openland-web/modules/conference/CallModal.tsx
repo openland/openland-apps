@@ -12,7 +12,7 @@ import { TextStyles } from 'openland-web/utils/TextStyles';
 import { DataSourceMessageItem, DataSourceDateItem, DataSourceNewDividerItem } from 'openland-engines/messenger/ConversationEngine';
 import { YoutubeParty } from './YoutubeParty';
 // import { VolumeSpace } from './VolumeSpace';
-import { VideoPeer } from './VideoPeer';
+import { VideoPeer, PeerMedia } from './VideoPeer';
 import WatermarkLogo from 'openland-icons/watermark-logo.svg';
 import WatermarkShadow from 'openland-icons/watermark-shadow.svg';
 import { CallControls } from './CallControls';
@@ -161,12 +161,22 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                             flexGrow={1}
                         >
                             {s.map(p => {
-                                let rid = state.receiversIds[p.id];
-                                let receiver = rid && state.receivers[rid] || {};
+                                let media: PeerMedia = { videoTrack: null, audioTrack: null, screencastTrack: null };
+                                let isLocal = p.id === state.sender.id;
+                                if (isLocal) {
+                                    media = {
+                                        videoTrack: state.sender.videoEnabled ? state.sender.videoTrack : null,
+                                        audioTrack: state.sender.audioEnabled ? state.sender.audioTrack : null,
+                                        screencastTrack: state.sender.screencastEnabled ? state.sender.screencastTrack : null,
+                                    };
+                                } else {
+                                    media = { ...media, ...state.receivers[p.id] };
+                                }
                                 return <VideoPeer
                                     key={`peer-${p.id}`}
-                                    user={p.user}
-                                    {...receiver}
+                                    peer={p}
+                                    {...media}
+                                    isLocal={isLocal}
                                 />;
                             })}
 
