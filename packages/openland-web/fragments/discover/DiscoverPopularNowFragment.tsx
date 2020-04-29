@@ -27,8 +27,8 @@ export const DiscoverPopularNowFragment = React.memo(() => {
         setLoading(true);
         const first = 10;
 
-        const loaded = await client.queryDiscoverPopularNow({ first, after });
-        const { items, cursor } = loaded.discoverPopularNow;
+        const loaded = (await client.queryDiscoverPopularNow({ first, after })).discoverPopularNow;
+        const { items, cursor } = loaded;
 
         setAfter(cursor);
         setDisplayItems(prev => prev.concat(normalizePopularItems(items)));

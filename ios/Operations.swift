@@ -2385,6 +2385,27 @@ private let ConferenceMediaSelector = obj(
                         )))))
                 )))
         )
+private let DebugGqlTraceSelector = obj(
+            field("debugGqlTrace", "debugGqlTrace", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("duration", "duration", notNull(scalar("Int"))),
+                    field("traceData", "traceData", notNull(scalar("String"))),
+                    field("date", "date", notNull(scalar("Date")))
+                )))
+        )
+private let DebugGqlTracesSelector = obj(
+            field("debugGqlTraces", "debugGqlTraces", arguments(fieldValue("first", refValue("first")), fieldValue("after", refValue("after"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("cursor", "cursor", scalar("ID")),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String")))
+                        )))))
+                )))
+        )
 private let DialogsSelector = obj(
             field("dialogs", "dialogs", arguments(fieldValue("first", intValue(20)), fieldValue("after", refValue("after"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5094,6 +5115,18 @@ class Operations {
         "query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}iceServers{__typename urls username credential}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}",
         ConferenceMediaSelector
     )
+    let DebugGqlTrace = OperationDefinition(
+        "DebugGqlTrace",
+        .query, 
+        "query DebugGqlTrace($id:ID!){debugGqlTrace(id:$id){__typename id name duration traceData date}}",
+        DebugGqlTraceSelector
+    )
+    let DebugGqlTraces = OperationDefinition(
+        "DebugGqlTraces",
+        .query, 
+        "query DebugGqlTraces($first:Int!,$after:ID){debugGqlTraces(first:$first,after:$after){__typename cursor items{__typename id name}}}",
+        DebugGqlTracesSelector
+    )
     let Dialogs = OperationDefinition(
         "Dialogs",
         .query, 
@@ -6471,6 +6504,8 @@ class Operations {
         if name == "Comments" { return Comments }
         if name == "Conference" { return Conference }
         if name == "ConferenceMedia" { return ConferenceMedia }
+        if name == "DebugGqlTrace" { return DebugGqlTrace }
+        if name == "DebugGqlTraces" { return DebugGqlTraces }
         if name == "Dialogs" { return Dialogs }
         if name == "DiscoverCollection" { return DiscoverCollection }
         if name == "DiscoverCollectionShort" { return DiscoverCollectionShort }

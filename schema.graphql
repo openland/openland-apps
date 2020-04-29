@@ -1164,6 +1164,11 @@ input MatchmakingRoomInput {
   questions: [MatchmakingQuestionInput!]
 }
 
+enum MediaDirection {
+  SEND
+  RECEIVE
+}
+
 enum MediaKind {
   AUDIO
   VIDEO
@@ -1208,7 +1213,8 @@ input MediaStreamHint {
   peerId: ID
   kind: MediaKind!
   videoSource: VideoSource
-  mid: String
+  direction: MediaDirection!
+  mid: String!
 }
 
 enum MediaStreamIceTransportPolicy {
@@ -1796,7 +1802,7 @@ type Mutation {
   deleteNotification(notificationId: ID!): Boolean!
   notificationCenterMarkSeqRead(toSeq: Int!): Boolean!
   debugCreateNotification(uid: ID!, text: String!): Boolean!
-  createOrganization(input: CreateOrganizationInput!): OrganizationProfile!
+  createOrganization(input: CreateOrganizationInput!): Organization!
   updateOrganizationProfile(input: UpdateOrganizationProfileInput!, id: ID): OrganizationProfile!
   deleteOrganization(id: ID!): Boolean!
   registerWebPush(endpoint: String!): String!
