@@ -1,4 +1,4 @@
-import { ConferenceMedia_conferenceMedia_streams, MediaKind, VideoSource } from 'openland-api/spacex.types';
+import { ConferenceMedia_conferenceMedia_streams, MediaKind, VideoSource, MediaStreamHint, MediaDirection } from 'openland-api/spacex.types';
 import { AppPeerConnectionFactory } from 'openland-y-runtime/AppPeerConnection';
 import { AppPeerConnection, AppRtpTransceiver, AppSessionDescription } from 'openland-y-runtime-api/AppPeerConnectionApi';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
@@ -200,11 +200,68 @@ export class MediaConnectionManager {
             }
 
             if (!this.localOfferSent) {
+                let hints: MediaStreamHint[] = [];
+                if (this.audioTransceiver && this.audioTransceiver.mid) {
+                    hints.push({
+                        kind: MediaKind.AUDIO,
+                        direction: MediaDirection.SEND,
+                        mid: this.audioTransceiver.mid
+                    });
+                }
+                if (this.videoTransceiver && this.videoTransceiver.mid) {
+                    hints.push({
+                        kind: MediaKind.VIDEO,
+                        videoSource: VideoSource.CAMERA,
+                        direction: MediaDirection.SEND,
+                        mid: this.videoTransceiver.mid
+                    });
+                }
+                if (this.screencastTransceiver && this.screencastTransceiver.mid) {
+                    hints.push({
+                        kind: MediaKind.VIDEO,
+                        videoSource: VideoSource.SCREEN,
+                        direction: MediaDirection.SEND,
+                        mid: this.screencastTransceiver.mid
+                    });
+                }
+                for (let peerId of this.receivers.keys()) {
+                    let refs = this.receivers.get(peerId)!;
+                    for (let kind of refs.keys()) {
+                        let tr = refs.get(kind)!;
+                        if (kind === 'audio' && tr.mid) {
+                            hints.push({
+                                peerId,
+                                kind: MediaKind.AUDIO,
+                                direction: MediaDirection.RECEIVE,
+                                mid: tr.mid
+                            });
+                        }
+                        if (kind === 'video' && tr.mid) {
+                            hints.push({
+                                peerId,
+                                kind: MediaKind.VIDEO,
+                                videoSource: VideoSource.CAMERA,
+                                direction: MediaDirection.RECEIVE,
+                                mid: tr.mid
+                            });
+                        }
+                        if (kind === 'screencast' && tr.mid) {
+                            hints.push({
+                                peerId,
+                                kind: MediaKind.VIDEO,
+                                videoSource: VideoSource.SCREEN,
+                                direction: MediaDirection.RECEIVE,
+                                mid: tr.mid
+                            });
+                        }
+                    }
+                }
                 await this.client.mutateMediaOffer({
                     id: this.id,
                     peerId: this.peerId,
                     offer: JSON.stringify(this.localOffer),
-                    seq: config.seq
+                    seq: config.seq,
+                    hints: hints
                 });
                 this.localOfferSent = true;
             }

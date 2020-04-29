@@ -118,8 +118,8 @@ mutation ConferenceKeepAlive($id: ID!, $peerId: ID!) {
         ...ConferenceShort
     }
 }
-mutation MediaOffer($id: ID!, $peerId: ID!, $offer: String!, $seq: Int!) {
-    mediaStreamOffer(id: $id, peerId: $peerId, offer: $offer, seq: $seq) {
+mutation MediaOffer($id: ID!, $peerId: ID!, $offer: String!, $seq: Int!, $hints: [MediaStreamHint!]) {
+    mediaStreamOffer(id: $id, peerId: $peerId, offer: $offer, seq: $seq, hints: $hints) {
         id
         streams{
             ...MediaStreamFull

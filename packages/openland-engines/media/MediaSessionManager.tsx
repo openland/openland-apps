@@ -230,6 +230,7 @@ export class MediaSessionManager {
                 ms = new MediaConnectionManager(s.id, this.peerId, s, this);
                 ms.setAudioTrack(this.audioTrack);
                 ms.setVideoTrack(this.videoTrack);
+                ms.setScreencastTrack(this.screencastTrack);
                 this.connections.set(s.id, ms);
             }
         }
