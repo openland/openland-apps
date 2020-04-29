@@ -20,6 +20,8 @@ object Operations {
         if (name == "Comments") return Comments
         if (name == "Conference") return Conference
         if (name == "ConferenceMedia") return ConferenceMedia
+        if (name == "DebugGqlTrace") return DebugGqlTrace
+        if (name == "DebugGqlTraces") return DebugGqlTraces
         if (name == "Dialogs") return Dialogs
         if (name == "DiscoverCollection") return DiscoverCollection
         if (name == "DiscoverCollectionShort") return DiscoverCollectionShort

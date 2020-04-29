@@ -1,0 +1,18 @@
+query DebugGqlTrace($id: ID!) {
+    debugGqlTrace(id: $id) {
+        id
+        name
+        duration
+        traceData
+        date
+    }
+}
+query DebugGqlTraces($first: Int!, $after: ID) {
+    debugGqlTraces(first: $first, after: $after) {
+        cursor
+        items {
+            id
+            name
+        }
+    }
+}

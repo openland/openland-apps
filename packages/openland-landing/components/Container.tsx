@@ -1,32 +1,45 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 
-let containerClass = css`
+const box = css`
     margin: 0 auto;
-    padding: 0 20px;
-    width: 1180px;
-    min-width: 320px;
-    position: relative;
+    padding: 0 16px;
+    box-sizing: border-box;
 
-    @media (max-width: 767px) {
-        padding: 0 15px;
-        width: 100%;
+    @media (min-width: 1600px) {
+        width: 1172px;
+
+        &.is-small {
+            width: 1027px;
+        }
     }
 
-    @media (min-width: 768px) and (max-width: 999px) {
-        padding: 0 25px;
+    @media (min-width: 960px) and (max-width: 1599px) {
+        width: 960px;
+    }
+
+    @media (min-width: 768px) and (max-width: 959px) {
         width: 768px;
     }
 
-    @media (min-width: 1000px) and (max-width: 1179px) {
-        width: 1000px;
+    @media (max-width: 767px) {
+        min-width: 320px;
+        max-width: 400px;
+
+        &.in-header {
+            max-width: initial;
+        }
     }
 `;
 
 interface ContainerProps {
-    children?: any;
+    isSmall?: boolean;
+    inHeader?: boolean;
+    children: any;
 }
 
-export const Container = (props: ContainerProps) => (
-    <div className={containerClass}>{props.children}</div>
-);
+export const Container = React.memo((props: ContainerProps) => (
+    <div className={cx(box, props.isSmall && 'is-small', props.inHeader && 'in-header')}>
+        {props.children}
+    </div>
+));

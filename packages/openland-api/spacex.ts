@@ -46,6 +46,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: OperationParameters): Promise<Types.ConferenceMedia> {
         return this.query('ConferenceMedia', variables, opts);
     }
+    queryDebugGqlTrace(variables: Types.DebugGqlTraceVariables, opts?: OperationParameters): Promise<Types.DebugGqlTrace> {
+        return this.query('DebugGqlTrace', variables, opts);
+    }
+    queryDebugGqlTraces(variables: Types.DebugGqlTracesVariables, opts?: OperationParameters): Promise<Types.DebugGqlTraces> {
+        return this.query('DebugGqlTraces', variables, opts);
+    }
     queryDialogs(variables: Types.DialogsVariables, opts?: OperationParameters): Promise<Types.Dialogs> {
         return this.query('Dialogs', variables, opts);
     }
@@ -349,6 +355,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: OperationParameters): Promise<Types.ConferenceMedia> {
         return this.refetch('ConferenceMedia', variables);
     }
+    refetchDebugGqlTrace(variables: Types.DebugGqlTraceVariables, opts?: OperationParameters): Promise<Types.DebugGqlTrace> {
+        return this.refetch('DebugGqlTrace', variables);
+    }
+    refetchDebugGqlTraces(variables: Types.DebugGqlTracesVariables, opts?: OperationParameters): Promise<Types.DebugGqlTraces> {
+        return this.refetch('DebugGqlTraces', variables);
+    }
     refetchDialogs(variables: Types.DialogsVariables, opts?: OperationParameters): Promise<Types.Dialogs> {
         return this.refetch('Dialogs', variables);
     }
@@ -651,6 +663,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateConferenceMedia(variables: Types.ConferenceMediaVariables, updater: (data: Types.ConferenceMedia) => Types.ConferenceMedia | null): Promise<boolean> {
         return this.updateQuery(updater, 'ConferenceMedia', variables);
+    }
+    updateDebugGqlTrace(variables: Types.DebugGqlTraceVariables, updater: (data: Types.DebugGqlTrace) => Types.DebugGqlTrace | null): Promise<boolean> {
+        return this.updateQuery(updater, 'DebugGqlTrace', variables);
+    }
+    updateDebugGqlTraces(variables: Types.DebugGqlTracesVariables, updater: (data: Types.DebugGqlTraces) => Types.DebugGqlTraces | null): Promise<boolean> {
+        return this.updateQuery(updater, 'DebugGqlTraces', variables);
     }
     updateDialogs(variables: Types.DialogsVariables, updater: (data: Types.Dialogs) => Types.Dialogs | null): Promise<boolean> {
         return this.updateQuery(updater, 'Dialogs', variables);
@@ -980,6 +998,16 @@ export class OpenlandClient extends BaseSpaceXClient {
     useConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: SpaceQueryWatchParameters): Types.ConferenceMedia;
     useConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: SpaceQueryWatchParameters): Types.ConferenceMedia | null {
         return this.useQuery('ConferenceMedia', variables, opts);
+    }
+    useDebugGqlTrace(variables: Types.DebugGqlTraceVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DebugGqlTrace | null;
+    useDebugGqlTrace(variables: Types.DebugGqlTraceVariables, opts?: SpaceQueryWatchParameters): Types.DebugGqlTrace;
+    useDebugGqlTrace(variables: Types.DebugGqlTraceVariables, opts?: SpaceQueryWatchParameters): Types.DebugGqlTrace | null {
+        return this.useQuery('DebugGqlTrace', variables, opts);
+    }
+    useDebugGqlTraces(variables: Types.DebugGqlTracesVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DebugGqlTraces | null;
+    useDebugGqlTraces(variables: Types.DebugGqlTracesVariables, opts?: SpaceQueryWatchParameters): Types.DebugGqlTraces;
+    useDebugGqlTraces(variables: Types.DebugGqlTracesVariables, opts?: SpaceQueryWatchParameters): Types.DebugGqlTraces | null {
+        return this.useQuery('DebugGqlTraces', variables, opts);
     }
     useDialogs(variables: Types.DialogsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Dialogs | null;
     useDialogs(variables: Types.DialogsVariables, opts?: SpaceQueryWatchParameters): Types.Dialogs;

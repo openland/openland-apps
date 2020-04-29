@@ -2392,6 +2392,27 @@ const ConferenceMediaSelector = obj(
                         )))))
                 )))
         );
+const DebugGqlTraceSelector = obj(
+            field('debugGqlTrace', 'debugGqlTrace', args(fieldValue("id", refValue('id'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('name', 'name', args(), notNull(scalar('String'))),
+                    field('duration', 'duration', args(), notNull(scalar('Int'))),
+                    field('traceData', 'traceData', args(), notNull(scalar('String'))),
+                    field('date', 'date', args(), notNull(scalar('Date')))
+                )))
+        );
+const DebugGqlTracesSelector = obj(
+            field('debugGqlTraces', 'debugGqlTraces', args(fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('cursor', 'cursor', args(), scalar('ID')),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('name', 'name', args(), notNull(scalar('String')))
+                        )))))
+                )))
+        );
 const DialogsSelector = obj(
             field('dialogs', 'dialogs', args(fieldValue("first", intValue(20)), fieldValue("after", refValue('after'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5096,6 +5117,18 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'ConferenceMedia',
         body: 'query ConferenceMedia($id:ID!,$peerId:ID!){conferenceMedia(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}iceServers{__typename urls username credential}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}',
         selector: ConferenceMediaSelector
+    },
+    DebugGqlTrace: {
+        kind: 'query',
+        name: 'DebugGqlTrace',
+        body: 'query DebugGqlTrace($id:ID!){debugGqlTrace(id:$id){__typename id name duration traceData date}}',
+        selector: DebugGqlTraceSelector
+    },
+    DebugGqlTraces: {
+        kind: 'query',
+        name: 'DebugGqlTraces',
+        body: 'query DebugGqlTraces($first:Int!,$after:ID){debugGqlTraces(first:$first,after:$after){__typename cursor items{__typename id name}}}',
+        selector: DebugGqlTracesSelector
     },
     Dialogs: {
         kind: 'query',
