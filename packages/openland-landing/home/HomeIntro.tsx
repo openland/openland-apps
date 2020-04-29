@@ -55,10 +55,10 @@ const image = css`
     position: absolute;
     top: 95px; right: 0;
     width: 625px; height: 450px;
-    background: url(/static/landing/meets/home-intro.png) no-repeat;
+    background: url(https://cdn.openland.com/shared/landing/meets/home-intro.png) no-repeat;
     background-image: -webkit-image-set(
-        url(/static/landing/meets/home-intro.png) 1x,
-        url(/static/landing/meets/home-intro@2x.png) 2x
+        url(https://cdn.openland.com/shared/landing/meets/home-intro.png) 1x,
+        url(https://cdn.openland.com/shared/landing/meets/home-intro@2x.png) 2x
     );
     background-size: 100% 100%;
 
@@ -192,19 +192,19 @@ const investorsLabel = css`
 const investorsLogos = css`
     width: 793px;
     height: 80px;
-    background: url(/static/landing/meets/home-intro-logos-lg.png) center center no-repeat;
+    background: url(https://cdn.openland.com/shared/landing/meets/home-intro-logos-lg.png) center center no-repeat;
     background-image: -webkit-image-set(
-        url(/static/landing/meets/home-intro-logos-lg.png) 1x,
-        url(/static/landing/meets/home-intro-logos-lg@2x.png) 2x
+        url(https://cdn.openland.com/shared/landing/meets/home-intro-logos-lg.png) 1x,
+        url(https://cdn.openland.com/shared/landing/meets/home-intro-logos-lg@2x.png) 2x
     );
     background-size: 100% auto;
 
     @media (min-width: 768px) and (max-width: 1599px) {
         width: 685px;
-        background: url(/static/landing/meets/home-intro-logos-md.png) center center no-repeat;
+        background: url(https://cdn.openland.com/shared/landing/meets/home-intro-logos-md.png) center center no-repeat;
         background-image: -webkit-image-set(
-            url(/static/landing/meets/home-intro-logos-md.png) 1x,
-            url(/static/landing/meets/home-intro-logos-md@2x.png) 2x
+            url(https://cdn.openland.com/shared/landing/meets/home-intro-logos-md.png) 1x,
+            url(https://cdn.openland.com/shared/landing/meets/home-intro-logos-md@2x.png) 2x
         );
         background-size: 100% auto;
     }

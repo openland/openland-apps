@@ -123,14 +123,14 @@ export const HomeScreenshots = React.memo(() => (
             <div className={screenshots}>
                 <div className={cx(screenshot, 'is-s1')}>
                     <img
-                        src="/static/landing/meets/home-screen-1.png"
-                        srcSet="/static/landing/meets/home-screen-1.png, /static/landing/meets/home-screen-1@2x.png 2x"
+                        src="https://cdn.openland.com/shared/landing/meets/home-screen-1.png"
+                        srcSet="https://cdn.openland.com/shared/landing/meets/home-screen-1.png, https://cdn.openland.com/shared/landing/meets/home-screen-1@2x.png 2x"
                     />
                 </div>
                 <div className={cx(screenshot, 'is-s2')}>
                     <img
-                        src="/static/landing/meets/home-screen-2.png"
-                        srcSet="/static/landing/meets/home-screen-2.png, /static/landing/meets/home-screen-2@2x.png 2x"
+                        src="https://cdn.openland.com/shared/landing/meets/home-screen-2.png"
+                        srcSet="https://cdn.openland.com/shared/landing/meets/home-screen-2.png, https://cdn.openland.com/shared/landing/meets/home-screen-2@2x.png 2x"
                     />
                 </div>
             </div>
@@ -139,8 +139,8 @@ export const HomeScreenshots = React.memo(() => (
             <div className={screenshots}>
                 <div className={cx(screenshot, 'is-s3')}>
                     <img
-                        src="/static/landing/meets/home-screen-3.png"
-                        srcSet="/static/landing/meets/home-screen-3.png, /static/landing/meets/home-screen-3@2x.png 2x"
+                        src="https://cdn.openland.com/shared/landing/meets/home-screen-3.png"
+                        srcSet="https://cdn.openland.com/shared/landing/meets/home-screen-3.png, https://cdn.openland.com/shared/landing/meets/home-screen-3@2x.png 2x"
                     />
                 </div>
             </div>

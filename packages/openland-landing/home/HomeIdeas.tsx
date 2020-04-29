@@ -275,14 +275,14 @@ export const HomeIdeas = React.memo(() => (
             <div className={screenshots}>
                 <div>
                     <img
-                        src="/static/landing/meets/home-ideas-s1.png"
-                        srcSet="/static/landing/meets/home-ideas-s1.png, /static/landing/meets/home-ideas-s1@2x.png 2x"
+                        src="https://cdn.openland.com/shared/landing/meets/home-ideas-s1.png"
+                        srcSet="https://cdn.openland.com/shared/landing/meets/home-ideas-s1.png, https://cdn.openland.com/shared/landing/meets/home-ideas-s1@2x.png 2x"
                     />
                 </div>
                 <div>
                     <img
-                        src="/static/landing/meets/home-ideas-s2.png"
-                        srcSet="/static/landing/meets/home-ideas-s2.png, /static/landing/meets/home-ideas-s2@2x.png 2x"
+                        src="https://cdn.openland.com/shared/landing/meets/home-ideas-s2.png"
+                        srcSet="https://cdn.openland.com/shared/landing/meets/home-ideas-s2.png, https://cdn.openland.com/shared/landing/meets/home-ideas-s2@2x.png 2x"
                     />
                 </div>
             </div>

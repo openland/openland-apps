@@ -39,10 +39,10 @@ const inner = css`
 
 const image = css`
     width: 529px; height: 501px;
-    background: url(/static/landing/meets/home-creators-lg.png) no-repeat;
+    background: url(https://cdn.openland.com/shared/landing/meets/home-creators-lg.png) no-repeat;
     background-image: -webkit-image-set(
-        url(/static/landing/meets/home-creators-lg.png) 1x,
-        url(/static/landing/meets/home-creators-lg@2x.png) 2x
+        url(https://cdn.openland.com/shared/landing/meets/home-creators-lg.png) 1x,
+        url(https://cdn.openland.com/shared/landing/meets/home-creators-lg@2x.png) 2x
     );
     background-size: 100% 100%;
     position: absolute;
@@ -51,10 +51,10 @@ const image = css`
     @media (min-width: 960px) and (max-width: 1599px) {
         top: 31px;
         width: 440px; height: 446px;
-        background: url(/static/landing/meets/home-creators-md.png) no-repeat;
+        background: url(https://cdn.openland.com/shared/landing/meets/home-creators-md.png) no-repeat;
         background-image: -webkit-image-set(
-            url(/static/landing/meets/home-creators-md.png) 1x,
-            url(/static/landing/meets/home-creators-md@2x.png) 2x
+            url(https://cdn.openland.com/shared/landing/meets/home-creators-md.png) 1x,
+            url(https://cdn.openland.com/shared/landing/meets/home-creators-md@2x.png) 2x
         );
         background-size: 100% 100%;
     }
@@ -62,10 +62,10 @@ const image = css`
     @media (min-width: 768px) and (max-width: 959px) {
         top: 42px; left: -84px;
         width: 294px; height: 298px;
-        background: url(/static/landing/meets/home-creators-md.png) no-repeat;
+        background: url(https://cdn.openland.com/shared/landing/meets/home-creators-md.png) no-repeat;
         background-image: -webkit-image-set(
-            url(/static/landing/meets/home-creators-md.png) 1x,
-            url(/static/landing/meets/home-creators-md@2x.png) 2x
+            url(https://cdn.openland.com/shared/landing/meets/home-creators-md.png) 1x,
+            url(https://cdn.openland.com/shared/landing/meets/home-creators-md@2x.png) 2x
         );
         background-size: 100% 100%;
     }
