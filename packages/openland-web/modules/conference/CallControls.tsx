@@ -23,12 +23,14 @@ import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { VideoComponent } from './ScreenShareModal';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 
+export const CONTROLS_WIDTH = 64;
+
 const ContainerStyle = css`
     will-change: transform;
-    width: 64px;
+    width: ${CONTROLS_WIDTH}px;
     height: 100%;
     position: relative;
-    z-index: 3;
+    z-index: 5;
 `;
 const wrapper = css`
     position: absolute;
@@ -38,8 +40,8 @@ const wrapper = css`
     padding: 16px 0;
     background-color: var(--overlayTotal);
     transition: width 0.3s;
-    will-change: width transform;
-    width: 64px;
+    /* will-change: width, transform; */
+    width: ${CONTROLS_WIDTH}px;
     overflow: hidden;
 
     &:hover {
@@ -58,7 +60,6 @@ const controlHover = cx('x', 'control-hover', css`
     bottom: 0;
     left: 0;
     right: 0;
-    zIndex: 4;
     opacity: 0;
     cursor: pointer;
 `);
@@ -167,13 +168,13 @@ const SettingsModal = React.memo((props: { ctx: XModalController, }) => {
                 </XView>
                 <XView flexDirection="column" marginLeft={16} flexGrow={1} flexShrink={1}>
                     <XView marginBottom={16}>
-                        <USelect searchable={false} onChange={setVideoInputDevice} placeholder="Camera" value={localVideoInput?.deviceId} options={videoInputs.map(o => ({ value: o.deviceId, label: o.label }))} />
+                        <USelect searchable={false} onChange={setOutputDevice} placeholder="Speakers" value={output?.deviceId} options={outputs.map(o => ({ value: o.deviceId, label: o.label }))} />
                     </XView>
                     <XView marginBottom={16}>
                         <USelect searchable={false} onChange={setInputDevice} placeholder="Microphone" value={input?.deviceId} options={inputs.map(o => ({ value: o.deviceId, label: o.label }))} />
                     </XView>
                     <XView marginBottom={24}>
-                        <USelect searchable={false} onChange={setOutputDevice} placeholder="Speakers" value={output?.deviceId} options={outputs.map(o => ({ value: o.deviceId, label: o.label }))} />
+                        <USelect searchable={false} onChange={setVideoInputDevice} placeholder="Camera" value={localVideoInput?.deviceId} options={videoInputs.map(o => ({ value: o.deviceId, label: o.label }))} />
                     </XView>
                 </XView>
             </XView>

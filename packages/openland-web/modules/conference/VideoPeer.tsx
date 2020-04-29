@@ -4,7 +4,7 @@ import { XView } from 'react-mental';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
-import { VideoComponent, showVideoModal } from './ScreenShareModal';
+import { VideoComponent, VideoModal } from './ScreenShareModal';
 import { css, cx } from 'linaria';
 import { UAvatar, getPlaceholderColorById } from 'openland-web/components/unicorn/UAvatar';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
@@ -114,7 +114,9 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     let mainStreamWeb = props.screencastTrack ? props.screencastTrack : props.videoTrack;
     // @ts-ignore
     let miniStreamWeb = props.screencastTrack ? props.videoTrack : undefined;
-    const onClick = React.useCallback(() => mainStreamWeb ? showVideoModal((mainStreamWeb as AppUserMediaTrackWeb).track) : undefined, [mainStreamWeb]);
+    const [modalOpen, setModalOpen] = React.useState(false);
+    const onClick = React.useCallback(() => setModalOpen(true), []);
+    const closeModal = React.useCallback(() => setModalOpen(false), []);
 
     return (
         <XView
@@ -135,6 +137,14 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
                     mirror={props.isLocal && !props.screencastTrack}
                     borderRadius={props.compact ? 8 : undefined}
                     backgroundColor="var(--overlayHeavy)"
+                />
+            )}
+            {modalOpen && mainStreamWeb && (
+                <VideoModal
+                    track={(mainStreamWeb as AppUserMediaTrackWeb).track}
+                    mirror={props.isLocal && !props.screencastTrack}
+                    cover={!props.screencastTrack}
+                    close={closeModal}
                 />
             )}
             {!mainStreamWeb && (

@@ -2,6 +2,10 @@ import * as React from 'react';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XView, XViewProps } from 'react-mental';
 import { css, cx } from 'linaria';
+import { CONTROLS_WIDTH } from './CallControls';
+import IcClose from 'openland-icons/s/ic-close-24.svg';
+import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 
 const videoClassName = css`
     position: absolute;
@@ -68,3 +72,40 @@ export const VideoComponent = React.memo((props: VideoComponent) => {
 export const showVideoModal = (track: MediaStreamTrack) => {
     showModalBox({ fullScreen: true }, ctx => <VideoComponent track={track} backgroundColor="var(--overlayTotal)" />);
 };
+
+const modalVideo = css`
+    background-color: var(--overlayHeavy);
+`;
+
+export const VideoModal = React.memo((props: VideoComponent & { close: () => void }) => {
+    const { close, ...other } = props;
+    useShortcuts({
+        keys: ['Escape'],
+        callback: close,
+    });
+    React.useEffect(() => {
+        return close;
+    });
+    return (
+        <>
+            <VideoComponent
+                position="fixed"
+                zIndex={4}
+                top={0}
+                left={0}
+                width={`calc(100% - ${CONTROLS_WIDTH}px)`}
+                videoClass={modalVideo}
+                {...other}
+            />
+            <XView position="fixed" top={16} right={CONTROLS_WIDTH + 16} zIndex={5}>
+                <UIconButton
+                    defaultRippleColor="var(--overlayMedium)"
+                    hoverRippleColor="var(--overlayLight)"
+                    color="var(--foregroundContrast)"
+                    icon={<IcClose />}
+                    onClick={close}
+                />
+            </XView>
+        </>
+    );
+});
