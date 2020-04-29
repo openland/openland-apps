@@ -108,7 +108,7 @@ export class MediaConnectionManager {
         }
         this.audioTrack = track;
         if (this.audioTransceiver) {
-            this.audioTransceiver.sender.replaceTrack((track as any).raw);
+            this.audioTransceiver.sender.replaceTrack(track);
         }
     }
 
@@ -118,7 +118,7 @@ export class MediaConnectionManager {
         }
         this.videoTrack = track;
         if (this.videoTransceiver) {
-            this.videoTransceiver.sender.replaceTrack((track as any).raw);
+            this.videoTransceiver.sender.replaceTrack(track);
         }
     }
     setScreencastTrack(track: AppMediaStreamTrack | null) {
@@ -127,7 +127,7 @@ export class MediaConnectionManager {
         }
         this.screencastTrack = track;
         if (this.screencastTransceiver) {
-            this.screencastTransceiver.sender.replaceTrack((track as any).raw);
+            this.screencastTransceiver.sender.replaceTrack(track);
         }
     }
 
@@ -556,7 +556,7 @@ export class MediaConnectionManager {
         if (!refs.has('video')) {
             let transceiver = await this.peerConnection.addTransceiver('video', { direction: 'recvonly' });
             refs.set('video', transceiver);
-            this.session.onReceiverAdded(peerId, 'audio', transceiver.receiver.track);
+            this.session.onReceiverAdded(peerId, 'video', transceiver.receiver.track);
         }
     }
 

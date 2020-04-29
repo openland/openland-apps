@@ -99,7 +99,8 @@ export class MediaSessionManager {
             this.audioTrack.enabled = this.audioEnabled;
         }
 
-        // TODO: Update server
+        // Update server
+        this.reportLocalMediaState();
     }
 
     //
@@ -118,7 +119,8 @@ export class MediaSessionManager {
             this.videoTrack.enabled = videoEnabled;
         }
 
-        // TODO: Update server
+        // Update server
+        this.reportLocalMediaState();
     }
 
     //
@@ -131,6 +133,19 @@ export class MediaSessionManager {
 
     stopScreenShare = async () => {
         // TODO: Implement
+    }
+
+    reportLocalMediaState = () => {
+        this.client.mutateconferenceRequestLocalMediaChange({
+            id: this.conferenceId,
+            media: {
+                supportsAudio: true,
+                supportsVideo: true,
+                wantSendAudio: this.audioEnabled,
+                wantSendVideo: this.videoEnabled,
+                wantSendScreencast: this.screencastEnabled,
+            }
+        });
     }
 
     destroy = () => {

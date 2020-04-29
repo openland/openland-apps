@@ -4831,6 +4831,12 @@ private let conferenceRemoveScreenShareSelector = obj(
                     fragment("Conference", ConferenceShortSelector)
                 )))
         )
+private let conferenceRequestLocalMediaChangeSelector = obj(
+            field("conferenceRequestLocalMediaChange", "conferenceRequestLocalMediaChange", arguments(fieldValue("id", refValue("id")), fieldValue("media", refValue("media"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Conference", ConferenceShortSelector)
+                )))
+        )
 private let ChatOnlinesCountWatchSelector = obj(
             field("chatOnlinesCount", "chatOnlinesCount", arguments(fieldValue("chatId", refValue("chatId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -6405,6 +6411,12 @@ class Operations {
         "mutation conferenceRemoveScreenShare($id:ID!){conferenceRemoveScreenShare(id:$id){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}",
         conferenceRemoveScreenShareSelector
     )
+    let conferenceRequestLocalMediaChange = OperationDefinition(
+        "conferenceRequestLocalMediaChange",
+        .mutation, 
+        "mutation conferenceRequestLocalMediaChange($id:ID!,$media:LocalMediaInput!){conferenceRequestLocalMediaChange(id:$id,media:$media){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}",
+        conferenceRequestLocalMediaChangeSelector
+    )
     let ChatOnlinesCountWatch = OperationDefinition(
         "ChatOnlinesCountWatch",
         .subscription, 
@@ -6719,6 +6731,7 @@ class Operations {
         if name == "conferenceAddScreenShare" { return conferenceAddScreenShare }
         if name == "conferenceAlterMediaState" { return conferenceAlterMediaState }
         if name == "conferenceRemoveScreenShare" { return conferenceRemoveScreenShare }
+        if name == "conferenceRequestLocalMediaChange" { return conferenceRequestLocalMediaChange }
         if name == "ChatOnlinesCountWatch" { return ChatOnlinesCountWatch }
         if name == "ChatWatch" { return ChatWatch }
         if name == "CommentWatch" { return CommentWatch }

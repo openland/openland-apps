@@ -4838,6 +4838,12 @@ const conferenceRemoveScreenShareSelector = obj(
                     fragment('Conference', ConferenceShortSelector)
                 )))
         );
+const conferenceRequestLocalMediaChangeSelector = obj(
+            field('conferenceRequestLocalMediaChange', 'conferenceRequestLocalMediaChange', args(fieldValue("id", refValue('id')), fieldValue("media", refValue('media'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('Conference', ConferenceShortSelector)
+                )))
+        );
 const ChatOnlinesCountWatchSelector = obj(
             field('chatOnlinesCount', 'chatOnlinesCount', args(fieldValue("chatId", refValue('chatId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -6407,6 +6413,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'conferenceRemoveScreenShare',
         body: 'mutation conferenceRemoveScreenShare($id:ID!){conferenceRemoveScreenShare(id:$id){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}',
         selector: conferenceRemoveScreenShareSelector
+    },
+    conferenceRequestLocalMediaChange: {
+        kind: 'mutation',
+        name: 'conferenceRequestLocalMediaChange',
+        body: 'mutation conferenceRequestLocalMediaChange($id:ID!,$media:LocalMediaInput!){conferenceRequestLocalMediaChange(id:$id,media:$media){__typename ...ConferenceShort}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}',
+        selector: conferenceRequestLocalMediaChangeSelector
     },
     ChatOnlinesCountWatch: {
         kind: 'subscription',

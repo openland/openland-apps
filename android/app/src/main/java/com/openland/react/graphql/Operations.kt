@@ -235,6 +235,7 @@ object Operations {
         if (name == "conferenceAddScreenShare") return conferenceAddScreenShare
         if (name == "conferenceAlterMediaState") return conferenceAlterMediaState
         if (name == "conferenceRemoveScreenShare") return conferenceRemoveScreenShare
+        if (name == "conferenceRequestLocalMediaChange") return conferenceRequestLocalMediaChange
         if (name == "ChatOnlinesCountWatch") return ChatOnlinesCountWatch
         if (name == "ChatWatch") return ChatWatch
         if (name == "CommentWatch") return CommentWatch

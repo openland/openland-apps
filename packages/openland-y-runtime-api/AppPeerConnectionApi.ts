@@ -10,7 +10,7 @@ export interface AppRtpReceiver {
 }
 
 export interface AppRtpSender {
-    replaceTrack(track: AppMediaStreamTrack): void;
+    replaceTrack(track: AppMediaStreamTrack | null): void;
 }
 
 export interface AppRtpTransceiver {

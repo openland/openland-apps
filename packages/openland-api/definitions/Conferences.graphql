@@ -108,6 +108,11 @@ mutation conferenceAlterMediaState($id: ID!, $state: MediaStreamMediaStateInput!
     }
 }
 
+mutation conferenceRequestLocalMediaChange($id: ID!, $media: LocalMediaInput!){
+    conferenceRequestLocalMediaChange(id: $id, media: $media) {
+        ...ConferenceShort
+    }
+}
 mutation ConferenceLeave($id: ID!, $peerId: ID!) {
     conferenceLeave(id: $id, peerId: $peerId) {
         ...ConferenceShort
