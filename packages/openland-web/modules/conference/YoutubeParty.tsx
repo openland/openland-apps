@@ -1,6 +1,6 @@
 import * as React from 'react';
 import YouTube from "react-youtube";
-import uuid from 'uuid';
+// import uuid from 'uuid';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { css } from 'linaria';
 
@@ -65,7 +65,7 @@ export const YoutubeParty = React.memo((props: { link: string, mediaSession: Med
         if (!ready) {
             return;
         }
-        let session = uuid();
+        // let session = uuid();
         stateSeqRef.current = 0;
         messageSeqRef.current = 0;
         let lastTime = 0;
@@ -81,15 +81,15 @@ export const YoutubeParty = React.memo((props: { link: string, mediaSession: Med
             }
         }, 200);
 
-        let obayTimer = window.setTimeout(() => obay.current = false, 500);
+        // let obayTimer = window.setTimeout(() => obay.current = false, 500);
 
-        let doObay = () => {
-            obay.current = true;
-            window.clearTimeout(obayTimer);
-            obayTimer = window.setTimeout(() => obay.current = false, 500);
-        };
+        // let doObay = () => {
+        //     obay.current = true;
+        //     window.clearTimeout(obayTimer);
+        //     obayTimer = window.setTimeout(() => obay.current = false, 500);
+        // };
 
-        let peerSeq: { [peerId: string]: number | undefined } = {};
+        // let peerSeq: { [peerId: string]: number | undefined } = {};
         // let d = props.mediaSession.dcVM.listen(container => {
         //     let message: { channel: string, id: string, session: string, seq: number, stateSeq: number, time: number, palyingState: boolean } | undefined;
         //     try {

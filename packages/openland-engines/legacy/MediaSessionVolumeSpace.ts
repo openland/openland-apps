@@ -1,9 +1,9 @@
 import { MediaSessionManager } from '../media/MediaSessionManager';
-import { VMMap, VMMapMap, VM } from 'openland-y-utils/mvvm/vm';
+import { VMMapMap, VM } from 'openland-y-utils/mvvm/vm';
 import uuid from 'uuid';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
-import { layoutMedia } from 'openland-y-utils/MediaLayout';
-import { getPlaceholderColorRawById } from 'openland-web/components/unicorn/UAvatar';
+// import { layoutMedia } from 'openland-y-utils/MediaLayout';
+// import { getPlaceholderColorRawById } from 'openland-web/components/unicorn/UAvatar';
 //
 // Objects
 //
@@ -182,7 +182,7 @@ export class MediaSessionVolumeSpace {
     readonly colorVM = new VM<string>();
 
     private interval: any;
-    private messageSeq = 1;
+    // private messageSeq = 1;
     minDinstance = 50;
     maxDisatance = 200;
     constructor(messenger: MessengerEngine, mediaSession: MediaSessionManager) {
@@ -434,11 +434,11 @@ export class MediaSessionVolumeSpace {
                     }
                 }
                 // requst left peer content
-                for (let peerId of u.knownPeers) {
-                    // if (!this.knownPeers.has(peerId) && peerId !== this.mediaSession.getPeerId()) {
-                    //     peers.push(peerId);
-                    // }
-                }
+                // for (let peerId of u.knownPeers) {
+                //     // if (!this.knownPeers.has(peerId) && peerId !== this.mediaSession.getPeerId()) {
+                //     //     peers.push(peerId);
+                //     // }
+                // }
                 if (ids.length + peers.length > 0) {
                     this.sendBatch([new Reqest(ids, peers)]);
                 }

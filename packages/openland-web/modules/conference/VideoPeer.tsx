@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { CallsEngine } from 'openland-engines/CallsEngine';
+// import { CallsEngine } from 'openland-engines/CallsEngine';
 import { XView } from 'react-mental';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
-import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
+// import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { VideoComponent, VideoModal } from './ScreenShareModal';
 import { css, cx } from 'linaria';
 import { UAvatar, getPlaceholderColorById } from 'openland-web/components/unicorn/UAvatar';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
-import SpeakerIcon from 'openland-icons/s/ic-speaking-bold-16.svg';
-import MutedIcon from 'openland-icons/s/ic-muted-bold-16.svg';
-import { SvgLoader } from 'openland-x/XLoader';
+// import SpeakerIcon from 'openland-icons/s/ic-speaking-bold-16.svg';
+// import MutedIcon from 'openland-icons/s/ic-muted-bold-16.svg';
+// import { SvgLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 
@@ -45,13 +45,13 @@ const peerName = cx(
     `
 );
 
-const peerIcon = css`
-    display: flex;
-    align-items: center;
-    svg path {
-        fill: var(--foregroundContrast);
-    }
-`;
+// const peerIcon = css`
+//     display: flex;
+//     align-items: center;
+//     svg path {
+//         fill: var(--foregroundContrast);
+//     }
+// `;
 
 const bgAvatar = css`
     position: absolute;
@@ -99,9 +99,9 @@ export interface VideoPeerProps extends PeerMedia {
 
 export const VideoPeer = React.memo((props: VideoPeerProps) => {
     // @ts-ignore
-    const [audioPaused, setAudioPaused] = React.useState<boolean | null>(false);
+    // const [audioPaused, setAudioPaused] = React.useState<boolean | null>(false);
     // @ts-ignore
-    const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
+    // const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
 
     // const icon = props.callState.status !== 'connected' ? <SvgLoader size="small" contrast={true} />
     //     : talking ? <SpeakerIcon />
@@ -113,7 +113,7 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
 
     let mainStreamWeb = props.screencastTrack ? props.screencastTrack : props.videoTrack;
     // @ts-ignore
-    let miniStreamWeb = props.screencastTrack ? props.videoTrack : undefined;
+    // let miniStreamWeb = props.screencastTrack ? props.videoTrack : undefined;
     const [modalOpen, setModalOpen] = React.useState(false);
     const onClick = React.useCallback(() => setModalOpen(true), []);
     const closeModal = React.useCallback(() => setModalOpen(false), []);

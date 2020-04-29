@@ -17,7 +17,7 @@ export const useHorn = () => {
 };
 
 export const useShowEffects = (session: MediaSessionManager | null) => {
-    let { horn, resetHorn } = useHorn();
+    let { resetHorn } = useHorn();
 
     React.useEffect(() => {
         if (session) {

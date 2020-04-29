@@ -39,8 +39,8 @@ export class MediaSessionManager {
 
     // Screencast track
     private screencastEnabled: boolean = false;
-    private screencastGeneration = 0;
-    private screencastTrackPromise?: Promise<AppMediaStreamTrack | null>;
+    // private screencastGeneration = 0;
+    // private screencastTrackPromise?: Promise<AppMediaStreamTrack | null>;
     private screencastTrack: AppMediaStreamTrack | null = null;
 
     // Transport
@@ -369,19 +369,19 @@ export class MediaSessionManager {
         this.state.dispatch({ command: 'sender', sender: { videoTrack: this.videoTrack } });
     }
 
-    private onScreencastTrackLoaded = () => {
-        // TODO: Handle
-        // Update connections
-        for (let connection of this.connections.values()) {
-            connection.setScreencastTrack(this.screencastTrack);
-        }
-    }
-    private onScreencastTrackUnloaded = () => {
-        // TODO: Handle
-        for (let connection of this.connections.values()) {
-            connection.setScreencastTrack(null);
-        }
-    }
+    // private onScreencastTrackLoaded = () => {
+    //     // TODO: Handle
+    //     // Update connections
+    //     for (let connection of this.connections.values()) {
+    //         connection.setScreencastTrack(this.screencastTrack);
+    //     }
+    // }
+    // private onScreencastTrackUnloaded = () => {
+    //     // TODO: Handle
+    //     for (let connection of this.connections.values()) {
+    //         connection.setScreencastTrack(null);
+    //     }
+    // }
 
     private async doLoadAudioIfNeeded() {
         if (!this.audioTrackPromise) {
