@@ -6,14 +6,12 @@ let routes = NRoutes();
 // Landing
 //
 
-routes.add('/start', '/landing/next');
-routes.add('/start/', '/landing/next');
-routes.add('/about', '/landing/next-about');
-routes.add('/about/', '/landing/next-about');
-routes.add('/terms', '/landing/next-terms');
-routes.add('/terms/', '/landing/next-terms');
-routes.add('/privacy', '/landing/next-privacy');
-routes.add('/privacy/', '/landing/next-privacy');
+routes.add('/about', '/landing/about');
+routes.add('/about/', '/landing/about');
+routes.add('/terms', '/landing/terms');
+routes.add('/terms/', '/landing/terms');
+routes.add('/privacy', '/landing/privacy');
+routes.add('/privacy/', '/landing/privacy');
 //
 // Authentication
 //

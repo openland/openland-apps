@@ -1,5 +1,7 @@
 export const LandingLinks = {
     home: '/',
+    discover: '/discover',
+    creators: 'https://typeform.com/',
 
     download: '/download',
     about: '/about',
@@ -10,7 +12,8 @@ export const LandingLinks = {
     signup: '/signin',
     app: '/',
 
-    careers: 'https://angel.co/openland/jobs',
+    careers: '/invite/8GbujwA',
+    support: '/invite/zOF5IpZ',
 
     apps: {
         ios: 'https://oplnd.com/ios',
@@ -26,4 +29,5 @@ export const LandingSocials = {
     linkedin: 'https://linkedin.com/company/openlandhq/',
     twitter: 'https://twitter.com/OpenlandHQ',
     facebook: 'https://facebook.com/openlandhq/',
+    instagram: 'https://instagram.com/openlandhq/',
 };
