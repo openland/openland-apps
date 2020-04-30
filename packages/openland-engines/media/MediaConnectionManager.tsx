@@ -160,6 +160,8 @@ export class MediaConnectionManager {
                 this.localAnswerSent = false;
                 this.localOffer = null;
                 this.localAnswer = null;
+                this.remoteAnwer = null;
+                this.remoteOffer = null;
             }
             this.seq = config.seq;
 
@@ -275,6 +277,7 @@ export class MediaConnectionManager {
                 this.localOffer = null;
                 this.localAnswer = null;
                 this.remoteOffer = null;
+                this.remoteAnwer = null;
             }
             this.seq = config.seq;
 
