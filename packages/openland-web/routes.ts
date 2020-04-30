@@ -20,8 +20,8 @@ routes.add('/terms', '/landing/next-terms');
 routes.add('/terms/', '/landing/next-terms');
 routes.add('/privacy', '/landing/next-privacy');
 routes.add('/privacy/', '/landing/next-privacy');
-routes.add('/new', '/landing/new/home');
-routes.add('/new/', '/landing/new/home');
+routes.add('/new', '/landing/new');
+routes.add('/new/', '/landing/new');
 
 //
 // Authentication
