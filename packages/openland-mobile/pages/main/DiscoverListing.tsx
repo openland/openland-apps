@@ -343,7 +343,7 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
     const [image, setImage] = React.useState<Types.DiscoverChatsCollection_image | null>(null);
     const [shortname, setShortname] = React.useState<string | null>(null);
     const [path, setPath] = React.useState('');
-    const layoutCover = layoutCollectionCover();
+    const [layoutCover, setLayoutCover] = React.useState(layoutCollectionCover());
     const loadCollections = async () => {
         setLoading(true);
         let res = (await getClient().queryDiscoverCollection({ id: props.collectionId }, { fetchPolicy: 'network-only' })).discoverCollection;
@@ -381,12 +381,12 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
         const showCover = preloadedContent || !loading;
 
         return (
-            <View paddingHorizontal={16} paddingBottom={24}>
+            <View paddingHorizontal={16} paddingBottom={24} onLayout={() => setLayoutCover(layoutCollectionCover())}>
                 {!!description && <Text style={[TextStyles.Body, { color: theme.foregroundPrimary, marginBottom: 16 }]}>{description}</Text>}
                 {showCover && <DiscoverCover width={layoutCover.width} height={layoutCover.height} path={path} />}
             </View>
         );
-    }, [description, image, path, loading]);
+    }, [description, image, path, loading, layoutCover]);
 
     return (
         <>
