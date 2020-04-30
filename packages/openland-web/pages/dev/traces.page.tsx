@@ -8,7 +8,7 @@ import { XLoader } from 'openland-x/XLoader';
 
 const TracesFragment = React.memo(() => {
     const client = useClient();
-    const traces = client.useDebugGqlTraces({ first: 20 }).debugGqlTraces;
+    const traces = client.useDebugGqlTraces({ first: 30 }).debugGqlTraces;
 
     const [loading, setLoading] = React.useState<boolean>(false);
     const [after, setAfter] = React.useState<string | null>(traces.cursor);
@@ -19,7 +19,7 @@ const TracesFragment = React.memo(() => {
             return;
         }
         setLoading(true);
-        const first = 10;
+        const first = 30;
 
         const loaded = await client.queryDebugGqlTraces({ first, after });
         const { items, cursor } = loaded.debugGqlTraces;
