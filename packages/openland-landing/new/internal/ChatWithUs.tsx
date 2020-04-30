@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { Heading } from './Heading';
 import { XView } from 'react-mental';
-import { Container } from 'openland-landing/components/Container';
+import { Container } from '../components/Container';
 
 const root = css`
     background: linear-gradient(0deg, #f7fafc, #f7fafc);

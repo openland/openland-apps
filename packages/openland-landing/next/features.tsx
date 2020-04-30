@@ -1,0 +1,517 @@
+import * as React from 'react';
+import { css } from 'linaria';
+import Block from './block';
+import Heading from './heading';
+
+// @ts-ignore
+import Tilt from 'react-tilt';
+
+const root = css`
+    margin-top: 65px;
+
+    @media (min-width: 1600px) {
+        padding: 90px 0;
+    }
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        padding: 86px 0;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        padding: 80px 0;
+        padding-bottom: 90px;
+    }
+
+    @media (max-width: 768px) {
+        margin-top: 40px;
+        padding: 40px 0;
+    }
+
+    background: linear-gradient(180deg, #f6f9fb 0%, rgba(255, 255, 255, 0) 100%);
+`;
+
+const wrapper = css`
+    display: flex;
+    align-items: flex-start;
+
+    @media (min-width: 1600px) {
+        margin: -60px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        margin: -50px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin: -10px;
+    }
+
+    @media (max-width: 768px) {
+        margin: -20px auto;
+        flex-direction: column;
+        align-items: center;
+        max-width: 400px;
+    }
+`;
+
+const feature = css`
+    display: inline-block;
+    width: 50%;
+
+    @media (min-width: 1600px) {
+        padding: 60px;
+    }
+
+    @media (min-width: 960px) and (max-width: 1600px) {
+        padding: 50px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        padding: 8px;
+
+        &:first-child {
+            padding-right: 15px;
+        }
+
+        &:last-child {
+            padding-left: 15px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        padding: 20px;
+        width: initial;
+
+        &:first-child {
+            margin-top: 7px;
+        }
+
+        &:last-child {
+            margin-top: 16px;
+        }
+    }
+`;
+
+const text = css`
+    position: relative;
+    margin-top: 13px;
+    color: #525273;
+    @media (min-width: 1600px) {
+        font-size: 26px;
+        line-height: 1.6;
+    }
+
+    @media (min-width: 768px) and (max-width: 1600px) {
+        font-size: 20px;
+        line-height: 1.7;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+        line-height: 1.6;
+    }
+`;
+
+const link = css`
+    position: relative;
+    color: inherit;
+    font-weight: 600;
+    font-size: 24px;
+
+    will-change: color;
+    transition: color 0.2s;
+    cursor: pointer;
+
+    @media (max-width: 1600px) {
+        font-size: 20px;
+    }
+
+    &:hover,
+    &:focus {
+        text-decoration: none;
+        color: #272750;
+        transition: color 0.01s;
+    }
+
+    &:active {
+        color: #248bf2;
+        transition: color 0.01s;
+    }
+
+    &:after {
+        display: inline-block;
+        content: '';
+
+        background: url('https://cdn.openland.com/shared/landing/link-arrow.svg') no-repeat;
+        background-size: contain;
+
+        transform: translateY(-50%);
+
+        position: absolute;
+        top: 55%;
+
+        @media (min-width: 1600px) {
+            width: 20px;
+            height: 20px;
+            right: -27px;
+        }
+
+        @media (min-width: 768px) and (max-width: 1600px) {
+            width: 16px;
+            height: 16px;
+            right: -23px;
+        }
+
+        @media (max-width: 768px) {
+            width: 14px;
+            height: 14px;
+            right: -21px;
+        }
+    }
+`;
+
+const linkWrapper = css`
+    display: block;
+    margin-top: 20px;
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-top: 5px;
+    }
+
+    @media (max-width: 768px) {
+        margin-top: 5px;
+    }
+`;
+
+const featureImage = css`
+    margin-top: 46px;
+
+    width: 100%;
+    max-width: 509px;
+    height: auto;
+
+    @media (max-width: 768px) {
+        margin-top: 20px;
+    }
+
+    @media (min-width: 768px) and (max-width: 960px) {
+        margin-top: 31px;
+    }
+
+    pointer-events: none;
+`;
+
+const popup = css`
+    position: absolute;
+    top: -80px;
+    width: 110%;
+    background-color: white;
+    padding: 32px;
+    padding-top: 16px;
+    padding-right: 16px;
+    box-shadow: 0px 9px 42px rgba(0, 0, 0, 0.07);
+    border-radius: 24px;
+    z-index: 20;
+
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 960px) {
+        width: 100%;
+    }
+
+    @media (max-width: 768px) {
+        border-radius: 16px;
+    }
+`;
+
+const popupClose = css`
+    align-self: flex-end;
+
+    width: 40px;
+    height: 40px;
+    transition: background-color 0.2s;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    cursor: pointer;
+
+    @media (max-width: 768px) {
+        position: relative;
+        right: 0;
+        top: 15px;
+    }
+
+    &:hover {
+        background-color: #eaecf0;
+    }
+`;
+
+const popupCloseIcon = css``;
+
+const popupContent = css`
+    margin-top: -30px;
+    pointer-events: none;
+`;
+
+const popupHeading = css`
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 46px;
+    color: #272750;
+
+    @media (max-width: 768px) {
+        font-size: 24px;
+        margin-bottom: -15px;
+    }
+`;
+
+const popupSection = css`
+    margin-top: 20px;
+`;
+
+const popupSectionHeading = css`
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 26px;
+    color: #272750;
+    margin-bottom: 8px;
+    margin-top: 24px;
+
+    @media (max-width: 768px) {
+        font-size: 20px;
+    }
+`;
+
+const popupSectionText = css`
+    font-size: 20px;
+    line-height: 1.8;
+
+    @media (max-width: 1600px) {
+        font-size: 17px;
+    }
+
+    color: #525273;
+    @media (max-width: 768px) {
+        font-size: 18px;
+        margin-right: 15px;
+    }
+`;
+
+const tilt = css`
+    @media (max-width: 960px) {
+        pointer-events: none;
+    }
+`;
+
+const mobileOnly = css`
+    display: none;
+
+    @media (max-width: 960px) {
+        display: inline-block;
+        width: 300px;
+    }
+`;
+
+const desktopOnly = css`
+    white-space: nowrap;
+
+    @media (max-width: 960px) {
+        display: none;
+    }
+`;
+
+export default () => {
+    const [isLeftOpen, setLeftOpen] = React.useState<boolean>(false);
+    const [isRightOpen, setRightOpen] = React.useState<boolean>(false);
+
+    return (
+        <div className={root}>
+            <Block>
+                <div className={wrapper}>
+                    <div className={feature}>
+                        <Heading>Start in seconds</Heading>
+                        <div className={text}>
+                            <span className={mobileOnly}>
+                                Start with a single chat and add more activities as you grow
+                            </span>
+                            <span className={desktopOnly}>
+                                Start your community as a simple chat
+                                <br />
+                                Connect people with member directory
+                                <br />
+                                Organize knowledge with shared media
+                            </span>
+                            <div className={linkWrapper}>
+                                <span className={link} onClick={() => setLeftOpen(true)}>
+                                    All community tools
+                                </span>
+                            </div>
+                            {isLeftOpen && (
+                                <div className={popup}>
+                                    <div className={popupClose} onClick={() => setLeftOpen(false)}>
+                                        <img
+                                            className={popupCloseIcon}
+                                            src="/static/landing/icons/close.svg"
+                                            width="21"
+                                            height="21"
+                                            alt="Close modal"
+                                        />
+                                    </div>
+                                    <div className={popupContent}>
+                                        <h2 className={popupHeading}>Community tools</h2>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>
+                                                Questions and answers
+                                            </h2>
+                                            <p className={popupSectionText}>
+                                                Dedicated chat for answering community questions
+                                                <br />
+                                                Recognition badges for experts and&nbsp;top
+                                                contributors
+                                            </p>
+                                        </div>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>
+                                                Member directory
+                                            </h2>
+                                            <p className={popupSectionText}>
+                                                Custom profiles for your own community
+                                                <br />
+                                                Pick your own questions to ask new&nbsp;members
+                                            </p>
+                                        </div>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>
+                                                Matchmaking and intros
+                                            </h2>
+                                            <p className={popupSectionText}>
+                                                Member cards to explore and connect
+                                                <br />
+                                                Secret chats to make individual and&nbsp;small group
+                                                intros
+                                            </p>
+                                        </div>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>Live sessions</h2>
+                                            <p className={popupSectionText}>
+                                                Voice conferences with crystal clear&nbsp;sound
+                                                <br />
+                                                Talk-and-chat multitasking
+                                            </p>
+                                        </div>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>
+                                                Community library
+                                            </h2>
+                                            <p className={popupSectionText}>
+                                                Shared photos, videos, files,
+                                                and&nbsp;links&nbsp;for your community
+                                                <br />
+                                                Message search to find every conversation
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                        <Tilt options={{ max: 25, scale: 1 }} className={tilt}>
+                            <img
+                                src="/static/landing/feature-1.svg"
+                                className={featureImage}
+                                width="509"
+                                height="289"
+                            />
+                        </Tilt>
+                    </div>
+                    <div className={feature}>
+                        <Heading>Easy to grow</Heading>
+                        <div className={text}>
+                            <span className={mobileOnly}>
+                                Make it easy for members to&nbsp;bring their friends
+                            </span>
+                            <span className={desktopOnly}>
+                                Help members bring their friends with invite links
+                                <br />
+                                Get featured in Openland community directory
+                                <br />
+                                Use your best posts as community entry points
+                            </span>
+                            <div className={linkWrapper}>
+                                <span className={link} onClick={() => setRightOpen(true)}>
+                                    All growth tools
+                                </span>
+                            </div>
+                            {isRightOpen && (
+                                <div className={popup}>
+                                    <div className={popupClose} onClick={() => setRightOpen(false)}>
+                                        <img
+                                            className={popupCloseIcon}
+                                            src="/static/landing/icons/close.svg"
+                                            width="21"
+                                            height="21"
+                                            alt="Close modal"
+                                        />
+                                    </div>
+                                    <div className={popupContent}>
+                                        <h2 className={popupHeading}>Growth tools</h2>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>
+                                                Invite pages and links
+                                            </h2>
+                                            <p className={popupSectionText}>
+                                                Special invite pages for your community
+                                                <br />
+                                                Easy-to-share invite link with community preview
+                                            </p>
+                                        </div>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>
+                                                Featuring on Openland
+                                            </h2>
+                                            <p className={popupSectionText}>
+                                                Get recommended to new users on Openland
+                                                <br />
+                                                Community search and leaderboards
+                                                <br />
+                                                Cross-promotion with related communities
+                                            </p>
+                                        </div>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>Sharing tools</h2>
+                                            <p className={popupSectionText}>
+                                                Public post sharing to other social apps
+                                                <br />
+                                                Widgets and buttons for websites
+                                            </p>
+                                        </div>
+                                        <div className={popupSection}>
+                                            <h2 className={popupSectionHeading}>
+                                                Member onboarding
+                                            </h2>
+                                            <p className={popupSectionText}>
+                                                Individual welcome messages to newcomers
+                                                <br />
+                                                Pinned posts and community rules
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                        <Tilt options={{ max: 25, scale: 1 }} className={tilt}>
+                            <img
+                                src="/static/landing/feature-2.svg"
+                                className={featureImage}
+                                width="509"
+                                height="289"
+                            />
+                        </Tilt>
+                    </div>
+                </div>
+            </Block>
+        </div>
+    );
+};

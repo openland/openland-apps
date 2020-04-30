@@ -1,142 +1,68 @@
 import * as React from 'react';
-import { css, cx } from 'linaria';
+import { css } from 'linaria';
 import { Container } from './Container';
-import { XView } from 'react-mental';
-import { LandingLinks } from './_links';
+import { XView, XImage } from 'react-mental';
+import BurgerIcon from 'openland-icons/landing/burger.svg';
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import { HeaderNavigationItem } from './header/HeaderNavigationItem';
+import { HeaderApp } from './header/HeaderApp';
+import { HeaderStyles } from './header/styles';
 import { MobileMenu } from './MobileMenu';
-import { HeaderApps } from './HeaderApps';
+import { LandingLinks } from './_links';
+import { XMemo } from 'openland-y-utils/XMemo';
+import { detectOS } from 'openland-x-utils/detectOS';
 
-const box = css`
-    padding: 0 0 8px;
-`;
+const buttonStyle = css`
+    border: 1px solid #1790ff;
+    background-color: #ffffff;
+    color: rgba(23, 144, 255, 0.9);
 
-const grey = css`
-    background-color: #f7fafc;
-`;
-
-const header = css`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 16px;
-    margin-bottom: 16px;
-
-    z-index: 10;
-`;
-
-const logo = css`
-    cursor: pointer;
-    margin: 0 0 -4px;
-`;
-
-const menu = css`
-    z-index: 10;
-    position: relative;
-    margin: -21px;
-    top: 5px;
-
-    @media (max-width: 767px) {
-        display: none;
+    &:focus,
+    &:hover {
+        background-color: rgba(23, 144, 255, 0.08);
+        color: rgba(23, 144, 255, 0.9);
     }
 `;
 
-const menuItem = css`
-    display: inline-block;
-    font-size: 16px;
-    margin: 20px;
-    z-index: 10;
-    cursor: pointer;
-    position: relative;
-    color: #9393a7;
-    font-weight: 600;
-    will-change: color;
-    transition: color 0.2s;
+export const Header = XMemo(() => {
+    const [showMenu, setShowMenu] = React.useState(false);
+    const os = detectOS();
 
-    &:hover,
-    &:focus {
-        color: #272750;
-        transition: color 0.01s;
-        text-decoration: none;
-        opacity: 1;
-    }
-
-    &:active {
-        color: #248bf2;
-        transition: color 0.01s;
-        text-decoration: none;
-        opacity: 1;
-    }
-`;
-
-const menuItemActive = css`
-    padding: 10px 20px;
-    color: #50a2f5;
-    background-color: rgba(36, 139, 242, 0.1);
-    border-radius: 8px;
-    opacity: 1;
-
-    will-change: color, background-color;
-    transition: color 0.2s, background-color 0.2s;
-
-    &:hover,
-    &:focus {
-        transition: color 0.01s, background-color 0.01s;
-        color: white;
-        background-color: #47a3ff;
-    }
-
-    &:active {
-        transition: color 0.01s, background-color 0.01s;
-        color: white;
-        background-color: #1d84ec;
-    }
-`;
-
-const XViewWrapper = css`
-    &,
-    & * {
-        display: inline-block;
-    }
-`;
-
-interface HeaderProps {
-    transparent?: boolean;
-}
-
-export const Header = React.memo((props: HeaderProps) => {
     return (
-        <div className={cx(box, !props.transparent && grey)}>
-            <Container inHeader={true}>
-                <div className={header}>
-                    <XView path={LandingLinks.home}>
-                        <img
-                            className={logo}
-                            src="/static/landing/logo.svg"
-                            width="155"
-                            height="52"
-                        />
-                    </XView>
-
-                    <MobileMenu />
-
-                    <div className={menu}>
-                        <span className={menuItem}>
-                            <XView path={LandingLinks.discover}>Discover</XView>
-                        </span>
-                        <a href={LandingLinks.creators} target="_blank" className={menuItem}>
-                            Creators
+        <>
+            <header className={HeaderStyles.root}>
+                <Container>
+                    <XView position="relative" flexDirection="row">
+                        <a href={LandingLinks.home} className={HeaderStyles.logo}>
+                            <XImage src="/static/landing/logotype.svg" width={145} height={42} />
                         </a>
-
-                        <HeaderApps className={menuItem} />
-
-                        <span className={XViewWrapper}>
-                            <XView path={LandingLinks.signin}>
-                                <span className={cx(menuItem, menuItemActive)}>Login</span>
-                            </XView>
-                        </span>
-                    </div>
-                </div>
-            </Container>
-        </div>
+                        <a className={HeaderStyles.opener} onClick={() => setShowMenu(true)}>
+                            <BurgerIcon />
+                        </a>
+                        <nav className={HeaderStyles.navigation}>
+                            <HeaderNavigationItem path={LandingLinks.home} content="Messenger" />
+                            <HeaderNavigationItem path={LandingLinks.download} content="Download" />
+                            <HeaderNavigationItem path={LandingLinks.about} content="About" />
+                        </nav>
+                        <div className={HeaderStyles.apps}>
+                            <HeaderApp system="ios" />
+                            <HeaderApp system="android" />
+                            {os === 'Mac' && <HeaderApp system="macos" />}
+                            {os === 'Windows' && <HeaderApp system="windows" />}
+                            {os === 'Linux' && <HeaderApp system="linux" />}
+                        </div>
+                        <div className={HeaderStyles.btn}>
+                            <UButton
+                                path={LandingLinks.signin}
+                                text="Sign in"
+                                size="large"
+                                className={buttonStyle}
+                            />
+                        </div>
+                    </XView>
+                </Container>
+            </header>
+            <MobileMenu show={showMenu} onClose={() => setShowMenu(false)} />
+        </>
     );
 });

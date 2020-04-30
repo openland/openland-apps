@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { Container } from 'openland-landing/components/Container';
+import { Container } from '../components/Container';
 import Star from './icons/ic-star.svg';
 import Arrow from './icons/ic-arrow.svg';
 

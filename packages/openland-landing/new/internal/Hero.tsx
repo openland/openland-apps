@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { Heading } from '../internal/Heading';
-import { Container } from 'openland-landing/components/Container';
+import { Container } from '../components/Container';
 
 const box = css`
     background-color: #f7fafc;

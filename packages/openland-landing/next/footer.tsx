@@ -1,17 +1,15 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
+import Block from './block';
 import { XView } from 'react-mental';
-import { Container } from 'openland-landing/components/Container';
-import { LandingLinks, LandingSocials } from './_links';
 
 const root = css`
     padding-bottom: 4px;
-    background: #f7fafc;
-
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         padding-bottom: 30px;
         padding-top: 30px;
     }
+    background: #f7fafc;
 `;
 
 const footer = css`
@@ -19,33 +17,33 @@ const footer = css`
     align-items: center;
     justify-content: space-between;
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         flex-direction: column;
         align-items: flex-start;
+
         width: 360px;
         margin: 0 auto;
     }
 `;
 
 const logo = css`
-    cursor: pointer;
-
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         position: relative;
         left: -5px;
     }
+
+    cursor: pointer;
 `;
 
 const menu = css`
     list-style-type: none;
     position: relative;
     margin: 10px -20px;
-
-    @media (max-width: 959px) {
+    @media (max-width: 960px) {
         margin: 10px -10px;
     }
 
-    @media (min-width: 768px) and (max-width: 959px) {
+    @media (min-width: 768px) and (max-width: 960px) {
         margin: 10px -15px;
     }
 
@@ -56,7 +54,7 @@ const menu = css`
         left: 25px;
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         left: 3px;
     }
 
@@ -68,13 +66,12 @@ const menu = css`
 const menuItem = css`
     display: inline-block;
     margin: 20px;
-    z-index: 20;
-
-    @media (max-width: 959px) {
+    @media (max-width: 960px) {
         margin: 8px;
     }
+    z-index: 20;
 
-    @media (min-width: 768px) and (max-width: 959px) {
+    @media (min-width: 768px) and (max-width: 960px) {
         margin: 15px;
     }
 `;
@@ -82,15 +79,15 @@ const menuItem = css`
 const menuLink = css`
     font-size: 16px;
     font-weight: 600;
+
+    @media (max-width: 960px) {
+        font-size: 16px;
+    }
     color: #9393a7;
     position: relative;
 
     will-change: color;
     transition: color 0.2s;
-
-    @media (max-width: 959px) {
-        font-size: 16px;
-    }
 
     &:hover,
     &:focus {
@@ -104,7 +101,7 @@ const menuLink = css`
         transition: color 0.01s;
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         display: block;
     }
 
@@ -122,7 +119,7 @@ const social = css`
         left: 12px;
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         margin-left: -5px;
     }
 `;
@@ -143,7 +140,7 @@ const socialItem = css`
 
     cursor: pointer;
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         background-color: #eaecf0;
     }
 
@@ -154,7 +151,7 @@ const socialItem = css`
         transition: background-color 0.01s;
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         margin: 10px;
     }
 `;
@@ -168,7 +165,7 @@ const socialLogo = css`
 `;
 
 const hideMobile = css`
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         display: none;
     }
 `;
@@ -176,9 +173,10 @@ const hideMobile = css`
 const apps = css`
     display: none;
     position: relative;
+    // margin-left: 10px;
     margin-top: 10px;
 
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         display: block;
     }
 `;
@@ -191,6 +189,7 @@ const appsLink = css`
 const links = css`
     display: flex;
     flex-direction: column;
+    // align-items: center;
     margin: -5px;
 `;
 
@@ -254,15 +253,12 @@ const popupItem = css`
 
     cursor: pointer;
 `;
-
 const popupIcon = css`
     margin-right: 20px;
 `;
-
 const popupText = css`
     font-size: 16px;
 `;
-
 const popupSeparator = css`
     border-bottom: 1px solid #8e90a6;
     opacity: 0.2;
@@ -271,20 +267,20 @@ const popupSeparator = css`
 `;
 
 const hide = css`
-    @media (min-width: 768px) and (max-width: 959px) {
+    @media (max-width: 960px) and (min-width: 769px) {
         display: none;
     }
 `;
 
-export const Footer = React.memo(() => {
+export default () => {
     const [appsIsOpen, appsSetOpen] = React.useState<boolean>(false);
     const [legalIsOpen, legalSetOpen] = React.useState<boolean>(false);
 
     return (
         <div className={root}>
-            <Container>
+            <Block>
                 <div className={footer}>
-                    <XView path={LandingLinks.home}>
+                    <XView path="/">
                         <img
                             className={logo}
                             src="/static/landing/logo-footer.svg"
@@ -295,11 +291,11 @@ export const Footer = React.memo(() => {
                     <ul className={menu}>
                         <li className={menuItem}>
                             <span className={menuLink}>
-                                <XView path={LandingLinks.about}>About</XView>
+                                <XView path="/about">About</XView>
                             </span>
                         </li>
                         <li
-                            className={cx(menuItem, hideMobile, hide)}
+                            className={cx(menuItem, hideMobile)}
                             onMouseLeave={() => appsSetOpen(false)}
                         >
                             <span
@@ -317,7 +313,7 @@ export const Footer = React.memo(() => {
                                 >
                                     <a
                                         className={popupItem}
-                                        href={LandingLinks.apps.ios}
+                                        href="https://oplnd.com/ios"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
@@ -332,7 +328,7 @@ export const Footer = React.memo(() => {
                                     </a>
                                     <a
                                         className={popupItem}
-                                        href={LandingLinks.apps.android}
+                                        href="https://oplnd.com/android"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
@@ -348,7 +344,7 @@ export const Footer = React.memo(() => {
                                     <div className={popupSeparator} />
                                     <a
                                         className={popupItem}
-                                        href={LandingLinks.apps.macos}
+                                        href="https://oplnd.com/mac"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
@@ -363,7 +359,7 @@ export const Footer = React.memo(() => {
                                     </a>
                                     <a
                                         className={popupItem}
-                                        href={LandingLinks.apps.windows}
+                                        href="https://oplnd.com/windows"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
@@ -378,7 +374,7 @@ export const Footer = React.memo(() => {
                                     </a>
                                     <a
                                         className={popupItem}
-                                        href={LandingLinks.apps.linux}
+                                        href="https://oplnd.com/linux"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
@@ -395,14 +391,14 @@ export const Footer = React.memo(() => {
                             )}
                         </li>
                         <li className={menuItem}>
-                            <span className={menuLink}>
-                                <XView path={LandingLinks.careers}>Careers</XView>
-                            </span>
-                        </li>
-                        <li className={menuItem}>
-                            <span className={menuLink}>
-                                <XView path={LandingLinks.support}>Support</XView>
-                            </span>
+                            <a
+                                className={menuLink}
+                                href="/invite/8GbujwA"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Careers
+                            </a>
                         </li>
                         <div className={menuItemWrapper}>
                             <li className={menuItem} onMouseLeave={() => legalSetOpen(false)}>
@@ -420,24 +416,32 @@ export const Footer = React.memo(() => {
                                         onMouseLeave={() => legalSetOpen(false)}
                                     >
                                         <span className={popupItem}>
-                                            <XView path={LandingLinks.terms}>
+                                            <XView path="/terms">
                                                 <span className={popupText}>Terms of Service</span>
                                             </XView>
                                         </span>
                                         <span className={popupItem}>
-                                            <XView path={LandingLinks.privacy}>
+                                            <XView path="/privacy">
                                                 <span className={popupText}>Privacy Policy</span>
                                             </XView>
                                         </span>
                                     </div>
                                 )}
                             </li>
+                            <li className={cx(menuItem, hide)}>
+                                <span className={menuLink}>
+                                    <XView path="/invite/zOF5IpZ">Chat with us</XView>
+                                </span>
+                            </li>
                         </div>
                     </ul>
                     <div className={links}>
                         <ul className={social}>
                             <li className={socialItem}>
-                                <a className={socialLink} href={LandingSocials.instagram}>
+                                <a
+                                    className={socialLink}
+                                    href="https://www.instagram.com/openlandhq/"
+                                >
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/1.svg"
@@ -447,7 +451,7 @@ export const Footer = React.memo(() => {
                                 </a>
                             </li>
                             <li className={socialItem}>
-                                <a className={socialLink} href={LandingSocials.twitter}>
+                                <a className={socialLink} href="https://twitter.com/OpenlandHQ">
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/2.svg"
@@ -457,7 +461,10 @@ export const Footer = React.memo(() => {
                                 </a>
                             </li>
                             <li className={socialItem}>
-                                <a className={socialLink} href={LandingSocials.facebook}>
+                                <a
+                                    className={socialLink}
+                                    href="https://www.facebook.com/openlandhq/"
+                                >
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/3.svg"
@@ -467,7 +474,7 @@ export const Footer = React.memo(() => {
                                 </a>
                             </li>
                             <li className={socialItem}>
-                                <a className={socialLink} href={LandingSocials.angellist}>
+                                <a className={socialLink} href="https://angel.co/company/openland">
                                     <img
                                         className={socialLogo}
                                         src="/static/landing/icons/angelist.svg"
@@ -479,16 +486,20 @@ export const Footer = React.memo(() => {
                             </li>
                         </ul>
                         <div className={apps}>
-                            <a href={LandingLinks.apps.ios} className={appsLink}>
+                            <a href="https://oplnd.com/ios" className={appsLink}>
                                 <img src="/static/landing/apps-ios.svg" width="120" height="40" />
                             </a>
-                            <a href={LandingLinks.apps.android} className={appsLink}>
-                                <img src="/static/landing/apps-android.svg" width="130" height="40" />
+                            <a href="https://oplnd.com/android" className={appsLink}>
+                                <img
+                                    src="/static/landing/apps-android.svg"
+                                    width="130"
+                                    height="40"
+                                />
                             </a>
                         </div>
                     </div>
                 </div>
-            </Container>
+            </Block>
         </div>
     );
-});
+};

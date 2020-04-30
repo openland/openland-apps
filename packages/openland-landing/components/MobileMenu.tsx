@@ -1,195 +1,132 @@
 import * as React from 'react';
-import { css, cx } from 'linaria';
+import { css } from 'linaria';
 import { XView } from 'react-mental';
+import { Container } from './Container';
+import AndroidIcon from 'openland-icons/landing/ic_android.svg';
+import IosIcon from 'openland-icons/landing/ic_ios.svg';
 import { LandingLinks } from './_links';
+import CloseIcon from 'openland-icons/landing/close.svg';
 
-const logo = css`
-    cursor: pointer;
-`;
-
-const mobileMenu = css`
-    z-index: 20;
-`;
-
-const mobileMenuTrigger = css`
-    cursor: pointer;
-    display: none;
-
-    @media (max-width: 767px) {
-        display: initial;
-    }
-`;
-
-const mobileMenuInner = css`
+let menuRootClass = css`
+    background: #1790ff;
+    color: #ffffff;
+    z-index: 100;
     position: fixed;
-    background-color: white;
     top: 0;
+    right: 0;
     bottom: 0;
     left: 0;
-    right: 0;
-`;
 
-const mobileMenuHeader = css`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-    padding-top: 16px;
-`;
-
-const mobileMenuClose = css`
-    cursor: pointer;
-`;
-
-const mobileMenuList = css`
-    margin-top: 16px;
-`;
-
-const mobileMenuItem = css`
-    padding: 0 20px;
-    line-height: 2.4;
-    font-size: 20px;
-`;
-
-const mobileMenuLink = css`
-    color: #272750;
-    &:hover,
-    &:active {
-        text-decoration: none;
-        color: #248bf2;
+    @media (min-width: 768px) {
+        display: none !important;
     }
-
-    cursor: pointer;
 `;
 
-const mobileMenuFooter = css`
+let menuInnerClass = css`
+    padding: 6px 0 0;
     position: absolute;
-    bottom: 0;
+    top: 16.5%;
+    right: 0;
+    left: 0;
 `;
 
-const blue = css`
-    &,
-    &:hover,
-    &:active {
-        color: #248bf2;
+let menuAppClass = css`
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    display: flex;
+    width: 51px;
+    height: 40px;
+
+    svg * {
+        fill: #ffffff;
     }
 `;
 
-const appsHeading = css`
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 17px;
-    color: #9393a7;
-    margin-left: 20px;
-`;
+interface MobileMenuLinkProps {
+    path: string;
+    content: string;
+    onClick: () => void;
+}
 
-const apps = css`
-    display: grid;
-    grid-template-columns: auto auto;
-    grid-gap: 14px;
-    margin: 12px 20px;
-`;
+const MobileMenuLink = (props: MobileMenuLinkProps) => (
+    <XView
+        as="a"
+        path={props.path}
+        linkSelectable={true}
+        fontSize={21}
+        lineHeight="45px"
+        fontWeight="600"
+        opacity={0.7}
+        color="#fff"
+        hoverColor="#fff"
+        textDecoration="none"
+        hoverOpacity={1}
+        hoverTextDecoration="none"
+        selectedOpacity={1}
+        onClick={props.onClick}
+    >
+        {props.content}
+    </XView>
+);
 
-export const MobileMenu = React.memo(() => {
-    const [isShown, setShown] = React.useState<boolean>(false);
+interface MobileMenuProps {
+    show: boolean;
+    onClose: any;
+}
+
+export const MobileMenu = (props: MobileMenuProps) => {
+    if (!props.show) {
+        return null;
+    }
 
     return (
-        <div className={mobileMenu}>
-            <span className={mobileMenuTrigger} onClick={() => setShown(true)}>
-                <img
-                    src="/static/landing/icons/open.svg"
-                    width="24"
-                    height="24"
-                    alt="Open menu"
-                />
-            </span>
-            {isShown && (
-                <div className={mobileMenuInner}>
-                    <div className={mobileMenuHeader}>
-                        <img
-                            className={logo}
-                            src="/static/landing/logo.svg"
-                            width="155"
-                            height="48"
-                        />
-                        <span
-                            className={mobileMenuClose}
-                            onClick={() => setShown(false)}
-                        >
-                            <img
-                                src="/static/landing/icons/close.svg"
-                                width="24"
-                                height="24"
-                                alt="Close menu"
-                            />
-                        </span>
-                    </div>
-
-                    <ul className={mobileMenuList}>
-                        <li className={mobileMenuItem}>
-                            <span className={mobileMenuLink}>
-                                <XView path={LandingLinks.discover}>Discover</XView>
-                            </span>
-                        </li>
-                        <li className={mobileMenuItem}>
-                            <span className={mobileMenuLink}>
-                                <XView path={LandingLinks.creators}>Creators</XView>
-                            </span>
-                        </li>
-
-                        <li className={mobileMenuItem}>
-                            <span className={mobileMenuLink}>
-                                <XView path={LandingLinks.about}>About</XView>
-                            </span>
-                        </li>
-                        <li className={mobileMenuItem}>
-                            <span className={mobileMenuLink}>
-                                <XView path={LandingLinks.careers}>Careers</XView>
-                            </span>
-                        </li>
-                        <li className={mobileMenuItem}>
-                            <span className={mobileMenuLink}>
-                                <XView path={LandingLinks.support}>Support</XView>
-                            </span>
-                        </li>
-                    </ul>
-
-                    <ul className={mobileMenuList}>
-                        <li className={mobileMenuItem}>
-                            <span className={cx(mobileMenuLink, blue)}>
-                                <XView path={LandingLinks.signup}>Sign up</XView>
-                            </span>
-                        </li>
-                        <li className={mobileMenuItem}>
-                            <span className={mobileMenuLink}>
-                                <XView path={LandingLinks.signin}>Login</XView>
-                            </span>
-                        </li>
-                    </ul>
-
-                    <div className={mobileMenuFooter}>
-                        <h2 className={appsHeading}>Install the app</h2>
-
-                        <div className={apps}>
-                            <a href={LandingLinks.apps.ios}>
-                                <img
-                                    src="/static/landing/apps-ios.svg"
-                                    width="120"
-                                    height="40"
-                                />
-                            </a>
-                            <a href={LandingLinks.apps.android}>
-                                <img
-                                    src="/static/landing/apps-android.svg"
-                                    width="130"
-                                    height="40"
-                                />
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            )}
+        <div className={menuRootClass}>
+            <XView
+                position="absolute"
+                paddingTop={17}
+                top={19}
+                right={15}
+                width={52}
+                height={42}
+                cursor="pointer"
+                onClick={props.onClose}
+                alignItems="center"
+            >
+                <CloseIcon />
+            </XView>
+            <div className={menuInnerClass}>
+                <Container>
+                    <MobileMenuLink
+                        path={LandingLinks.home}
+                        content="Messenger"
+                        onClick={props.onClose}
+                    />
+                    <MobileMenuLink
+                        path={LandingLinks.download}
+                        content="Download"
+                        onClick={props.onClose}
+                    />
+                    <MobileMenuLink
+                        path={LandingLinks.about}
+                        content="About"
+                        onClick={props.onClose}
+                    />
+                    <MobileMenuLink
+                        path={LandingLinks.signin}
+                        content="Sign in"
+                        onClick={props.onClose}
+                    />
+                </Container>
+            </div>
+            <XView position="absolute" bottom={14} left={10} flexDirection="row">
+                <a href={LandingLinks.apps.android} target="_blank" className={menuAppClass}>
+                    <AndroidIcon />
+                </a>
+                <a href={LandingLinks.apps.ios} target="_blank" className={menuAppClass}>
+                    <IosIcon />
+                </a>
+            </XView>
         </div>
     );
-});
+};

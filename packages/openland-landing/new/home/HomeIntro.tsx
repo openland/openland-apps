@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Container } from 'openland-landing/components/Container';
+import { Container } from '../components/Container';
 import { css } from 'linaria';
-import { HomeAppsMobile } from 'openland-landing/home/HomeApps';
+import { HomeAppsMobile } from '../home/HomeApps';
 
 const box = css`
     position: relative;

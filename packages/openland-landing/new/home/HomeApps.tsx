@@ -6,7 +6,7 @@ import Windows from './icons/ic-win.svg';
 import Linux from './icons/ic-linux.svg';
 import { XView } from 'react-mental';
 import { detectOS } from 'openland-x-utils/detectOS';
-import { LandingLinks } from 'openland-landing/components/_links';
+import { LandingLinks } from '../components/_links';
 
 const box = css`
     padding: 141px 0 166px;

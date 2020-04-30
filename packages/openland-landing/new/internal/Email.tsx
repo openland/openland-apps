@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { Container } from 'openland-landing/components/Container';
+import { Container } from '../components/Container';
 
 const box = css`
     padding: 160px 0;
