@@ -15,13 +15,13 @@ import { useToast } from 'openland-web/components/unicorn/UToast';
 
 const descriptionBox = css`
     color: var(--foregroundPrimary);
-    margin-bottom: 16px;
     white-space: pre-wrap;
     word-wrap: break-word;
 `;
 
 const imageBox = css`
     padding: 35% 0 0;
+    margin: 16px 0 0;
     position: relative;
 
     img {
