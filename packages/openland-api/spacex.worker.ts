@@ -5,7 +5,7 @@ disableTag('GraphQL-Direct');
 
 import { throwFatalError } from 'openland-y-utils/throwFatalError';
 import { WorkerInterface, WorkerHost, WebEngine } from '@openland/spacex';
-import { buildSpaceXPersistenceProvider, IndexedDBPersistenceProvider } from './spacex.persistance.web';
+import { buildSpaceXPersistenceProvider } from './spacex.persistance.web';
 
 const ctx = self as any;
 
