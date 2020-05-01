@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { withApp } from '../../components/withApp';
+import { formatDateTime } from 'openland-y-utils/formatTime';
 import { XScrollValues, XScrollView3 } from 'openland-x/XScrollView3';
 import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { useClient } from 'openland-api/useClient';
@@ -48,33 +49,50 @@ const TracesFragment = React.memo(() => {
                         hoverBackgroundColor={'#eee'}
                         borderRadius={8}
                         paddingHorizontal={16}
+                        paddingVertical={16}
+                        justifyContent="center"
                     >
-                        <XView height={50} flexDirection="row" alignItems="center">
-                            <span>
-                                {item.name.split(' ').map((i, j) => {
-                                    if (j === 0) {
+                        <XView flexDirection="column" justifyContent="center">
+                            <XView flexDirection="row" alignItems="center">
+                                <span>
+                                    {item.name.split(' ').map((i, j) => {
+                                        if (j === 0) {
+                                            return (
+                                                <span
+                                                    key={'word-1' + index + j}
+                                                    style={{ fontWeight: 'bold' }}
+                                                >
+                                                    {i}
+                                                </span>
+                                            );
+                                        }
+                                        if (j === 1) {
+                                            return (
+                                                <span key={'word-2' + index + j}>{` ${i} `}</span>
+                                            );
+                                        }
                                         return (
                                             <span
-                                                key={'word-1' + index + j}
+                                                key={'word-3' + index + j}
                                                 style={{ fontWeight: 'bold' }}
                                             >
                                                 {i}
                                             </span>
                                         );
-                                    }
-                                    if (j === 1) {
-                                        return <span key={'word-2' + index + j}>{` ${i} `}</span>;
-                                    }
-                                    return (
-                                        <span
-                                            key={'word-3' + index + j}
-                                            style={{ fontWeight: 'bold' }}
-                                        >
-                                            {i}
-                                        </span>
-                                    );
-                                })}
-                            </span>
+                                    })}
+                                </span>
+                            </XView>
+                            <XView
+                                height={50}
+                                flexDirection="row"
+                                alignItems="center"
+                                justifyContent="space-between"
+                            >
+                                <XView>
+                                    <span style={{ fontWeight: 'bold' }}>{item.duration}ms</span>
+                                </XView>
+                                <XView>{formatDateTime(Number(item.date))}</XView>
+                            </XView>
                         </XView>
                     </XView>
                 ))}

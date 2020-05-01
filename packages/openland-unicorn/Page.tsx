@@ -12,7 +12,7 @@ interface PageProps {
     padded?: boolean;
     children?: any;
     flexGrow?: number;
-    maxWidth?: number;
+    maxWidth?: number | string;
 }
 
 export const Page = React.memo((props: PageProps) => {

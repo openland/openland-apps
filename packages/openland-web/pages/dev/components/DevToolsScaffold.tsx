@@ -15,15 +15,17 @@ export function DevToolsScaffold(props: {
     bottomOffset?: boolean;
     hideSidebar?: boolean;
     scroll?: 'disable' | 'enable';
+    style?: 'wide' | 'normal';
+    maxWidth?: number | string;
 }) {
     return (
         <>
             {props.title !== undefined && <XDocumentHead title={props.title} />}
             <XDialogProviderComponent />
 
-            <XView flexGrow={1} flexDirection="row">
+            <XView flexGrow={1} flexShrink={1} flexDirection="row">
                 {props.hideSidebar !== true && (
-                    <XView width="300px" backgroundColor="var(--backgroundTertiary)">
+                    <XView flexShrink={0} width="300px" backgroundColor="var(--backgroundTertiary)">
                         <UListGroup header="Super">
                             <UListItem title="Back to mail" path="/mail" icon={<IcBack />} />
                             <UListItem title="Edit collections" path="/super/collections" />
@@ -43,9 +45,18 @@ export function DevToolsScaffold(props: {
                         </UListGroup>
                     </XView>
                 )}
-                <XView flexGrow={1}>
-                    <Page track={'DevToolsScaffold'} scroll={props.scroll || 'enable'}>
-                        {props.title !== undefined && <UListHeader text={props.title} />}
+                <XView flexGrow={1} flexShrink={1}>
+                    <Page
+                        track={'DevToolsScaffold'}
+                        scroll={props.scroll || 'enable'}
+                        style={props.style}
+                        maxWidth={props.maxWidth}
+                    >
+                        {props.title !== undefined && (
+                            <XView flexShrink={0}>
+                                <UListHeader text={props.title} />
+                            </XView>
+                        )}
                         <XView
                             paddingHorizontal={16}
                             flexGrow={1}
