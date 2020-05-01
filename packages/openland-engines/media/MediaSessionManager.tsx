@@ -448,8 +448,4 @@ export class MediaSessionManager {
         }
         this.state.dispatch(command);
     }
-
-    getPeerId = () => {
-        return this.peerId;
-    }
 }
