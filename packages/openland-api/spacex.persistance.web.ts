@@ -46,10 +46,14 @@ async function iDBGet(store: IDBObjectStore, query: IDBValidKey | IDBKeyRange): 
 }
 
 export class IndexedDBPersistenceProvider implements PersistenceProvider {
-    private store = 'gql_cache';
+    private store: string;
     private initialized = false;
     private initializing = false;
     private db!: IDBDatabase;
+
+    constructor(authId: string) {
+        this.store = 'gql_cache.' + authId;
+    }
 
     async saveRecords(records: RecordSet) {
         await this.init();
@@ -86,12 +90,13 @@ export class IndexedDBPersistenceProvider implements PersistenceProvider {
     }
 
     async init() {
+        console.log(this.store);
         if (this.initialized || this.initializing) {
             return;
         }
 
         this.initializing = true;
-        let db = await iDBOpen('spacex', 1, _db => {
+        let db = await iDBOpen('spacex', 3, _db => {
             if (!_db.objectStoreNames.contains(this.store)) {
                 _db.createObjectStore(this.store, {keyPath: 'key'});
             }
@@ -101,10 +106,10 @@ export class IndexedDBPersistenceProvider implements PersistenceProvider {
     }
 }
 
-export function buildSpaceXPersistenceProvider() {
+export function buildSpaceXPersistenceProvider(authId: string) {
     let isProd = self.location.hostname === 'openland.com';
     if (self.indexedDB && !isProd) {
-        return new IndexedDBPersistenceProvider();
+        return new IndexedDBPersistenceProvider(authId);
     }
     return new PersistenceEmptyProvider();
 }

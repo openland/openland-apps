@@ -2024,6 +2024,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/crypto-js@^3.1.45":
+  version "3.1.45"
+  resolved "https://registry.yarnpkg.com/@types/crypto-js/-/crypto-js-3.1.45.tgz#d2ccd23ae926ff05e3a99b11945e0435185cc1f1"
+  integrity sha512-/4yiILxQnVfpAtrVctuEl0qwqAToqayoPEvutyWhHPslr2D9sx85KRmIq7etC0ZYKCK8ppucoLzJukjJdAtfdA==
+
 "@types/d3-path@*":
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/@types/d3-path/-/d3-path-1.0.7.tgz#a0736fceed688a695f48265a82ff7a3369414b81"
@@ -5959,6 +5964,11 @@ crypto-browserify@^3.11.0:
 crypto-js@^3.1.9-1:
   version "3.1.9-1"
   resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.1.9-1.tgz#fda19e761fc077e01ffbfdc6e9fdfc59e8806cd8"
+
+crypto-js@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.0.0.tgz#2904ab2677a9d042856a2ea2ef80de92e4a36dcc"
+  integrity sha512-bzHZN8Pn+gS7DQA6n+iUmBfl0hO5DJq++QP3U6uTucDtk/0iGpXd/Gg7CGR0p8tJhofJyaKoWBuJI4eAO00BBg==
 
 crypto-random-string@^1.0.0:
   version "1.0.0"
