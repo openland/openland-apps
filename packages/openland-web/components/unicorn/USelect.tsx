@@ -223,6 +223,7 @@ const withMenuStyle = css`
     }
     & .Select-option.is-selected {
         position: relative;
+        padding-right: 16px;
     }
     & .Select-option.is-selected:after {
         display: block;

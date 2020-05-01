@@ -2,7 +2,7 @@ import * as React from 'react';
 import { cx, css } from 'linaria';
 import { XView } from 'react-mental';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
-import MinimizeIcon from 'openland-icons/s/ic-minimize-glyph-24.svg';
+import MinimizeIcon from 'openland-icons/s/ic-size-down-glyph-24.svg';
 import EndIcon from 'openland-icons/s/ic-call-end-glyph-24.svg';
 import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
 import CameraIcon from 'openland-icons/s/ic-camera-video-glyph-24.svg';
@@ -204,7 +204,6 @@ interface CallControlsProps {
     cameraEnabled: boolean;
     screenEnabled: boolean;
     spaceEnabled: boolean;
-    messageEnabled: boolean;
     toolsEnabled: boolean;
     onMinimize: React.MouseEventHandler;
     onEnd: React.MouseEventHandler;
@@ -315,7 +314,6 @@ export const CallControls = (props: CallControlsProps) => {
                                 icon={<MessageIcon />}
                                 color="var(--foregroundContrast)"
                                 rippleColor="var(--tintBlue)"
-                                active={props.messageEnabled}
                                 disableHover={true}
                             />
                         )}
