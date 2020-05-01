@@ -121,7 +121,7 @@ interface MessageSenderContentProps {
     sender: UserShort;
     senderNameEmojify?: string | JSX.Element;
     senderBadgeNameEmojify?: string | JSX.Element;
-    date: number;
+    date?: number;
 }
 
 export const MessageSenderContent = (props: MessageSenderContentProps) => (
@@ -134,7 +134,7 @@ export const MessageSenderContent = (props: MessageSenderContentProps) => (
         {props.sender.primaryOrganization && (
             <MessageSenderOrg organization={props.sender.primaryOrganization} />
         )}
-        <MessageTime time={props.date} />
+        {props.date && <MessageTime time={props.date} />}
     </div>
 );
 
