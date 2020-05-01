@@ -183,6 +183,7 @@ export const AppPeerConnectionFactory: AppPeerConnectionApi = {
                 username: v.username ? v.username : undefined,
             })) : [],
             iceTransportPolicy: configuration.iceTransportPolicy,
+            ...{ sdpSemantics: 'unified-plan' }
         });
         return new AppPeerConnectionNative(peerConnection);
     }
