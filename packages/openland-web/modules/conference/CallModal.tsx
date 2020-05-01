@@ -16,7 +16,7 @@ import { VideoPeer, PeerMedia } from './VideoPeer';
 import WatermarkLogo from 'openland-icons/watermark-logo.svg';
 import WatermarkShadow from 'openland-icons/watermark-shadow.svg';
 import { CallControls } from './CallControls';
-import { useTriggerEvents } from './sounds/Effects';
+import { useTriggerEvents } from './Effects';
 import { useMessageModal } from './useMessageModal';
 import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
 

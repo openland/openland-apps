@@ -18,11 +18,12 @@ import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
 import FullscreenIcon from 'openland-icons/s/ic-size-up-glyph-24.svg';
 import { CallsEngine } from 'openland-engines/CallsEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
-import { useShowEffects } from './sounds/Effects';
+import { useShowEffects } from './Effects';
 import { useVideoCallModal } from './CallModal';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { plural } from 'openland-y-utils/plural';
+import { MediaStreamsAlalyzer } from './MediaStreamsAlalyzer';
 
 const VIDEO_WIDTH = 320;
 const VIDEO_HEIGHT = 213;
@@ -294,9 +295,10 @@ const MediaView = React.memo((props: {
     peers: Conference_conference_peers[];
     fallback: { id: string; title: string; photo?: string | null };
     mediaSessionManager: MediaSessionManager;
+    analyzer: MediaStreamsAlalyzer;
     calls: CallsEngine;
 }) => {
-    let peerId: string | null = null; // props.mediaSessionManager.analyzer.useSpeakingPeer();
+    let peerId = props.analyzer.useSpeakingPeer();
     let peer = props.peers.find(p => p.id === peerId);
 
     return <VideoMediaView
@@ -308,7 +310,7 @@ const MediaView = React.memo((props: {
     />;
 });
 
-const CallFloatingComponent = React.memo((props: { id: string; room: Conference_conference_room }) => {
+const CallFloatingComponent = React.memo((props: { id: string; room: Conference_conference_room, mediaSession: MediaSessionManager }) => {
     const targetRef = React.useRef<HTMLDivElement>();
     const containerRef = React.useRef<HTMLDivElement>(null);
     const contentRef = React.useRef<HTMLDivElement>(null);
@@ -319,11 +321,15 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
     useJsDrag(targetRef, { containerRef, onMove, savedCallback: JSON.parse(window.localStorage.getItem('call_floating_shift') || '[]'), limitToScreen: true }, [targetState]);
     let messenger = React.useContext(MessengerContext);
     let calls = messenger.calls;
-    let ms = calls.useCurrentSession();
-    let mediaSession = React.useMemo(() => ms!, []);
-    let state = mediaSession.state.useValue();
+    let state = props.mediaSession.state.useValue();
 
-    useShowEffects(ms);
+    let alalyzer = React.useMemo(() => new MediaStreamsAlalyzer(), []);
+    React.useEffect(() => {
+        alalyzer.setSessionState(state);
+    }, [state]);
+    React.useEffect(() => alalyzer.dispose, []);
+
+    useShowEffects(props.mediaSession);
 
     let client = useClient();
     let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
@@ -332,10 +338,11 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
     const subtitle = props.room.__typename === 'SharedRoom' && data ? plural(data.conference.peers.length, ['member', 'members'])
         : 'Call';
 
-    const avatar = ms && (
+    const avatar = props.mediaSession && (
         <MediaView
             peers={data?.conference.peers || []}
-            mediaSessionManager={ms}
+            mediaSessionManager={props.mediaSession}
+            analyzer={alalyzer}
             fallback={props.room.__typename === 'PrivateRoom' ? {
                 id: props.room.user.id,
                 title: props.room.user.name,
@@ -371,7 +378,7 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
                 hoverRippleColor="rgba(255, 255, 255, 0.32)"
                 hoverActiveRippleColor="var(--tintOrangeHover)"
                 active={!state.sender.audioEnabled}
-                onClick={() => mediaSession.setAudioEnabled(!state.sender.audioEnabled)}
+                onClick={() => props.mediaSession.setAudioEnabled(!state.sender.audioEnabled)}
             />
             <UIconButton
                 size="small"
@@ -462,12 +469,11 @@ const CallFloatingInner = React.memo((props: { id: string }) => {
     let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
     useTalkWatch(data && data.conference.id);
 
-    if (!data) {
-        return null;
-    }
+    let messenger = React.useContext(MessengerContext);
+    let ms = messenger.calls.useCurrentSession();
 
-    let res = data.conference.peers.length !== 0 && (
-        <CallFloatingComponent id={props.id} room={data.conference.room!} />
+    let res = ms && data && data.conference.peers.length !== 0 && (
+        <CallFloatingComponent id={props.id} room={data.conference.room!} mediaSession={ms} />
     );
     return ReactDOM.createPortal(res, document.body);
 });
