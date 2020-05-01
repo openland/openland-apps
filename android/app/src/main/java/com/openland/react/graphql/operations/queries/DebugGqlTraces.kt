@@ -11,13 +11,15 @@ internal val DebugGqlTracesSelector = obj(
                     field("items", "items", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("id", "id", notNull(scalar("ID"))),
-                            field("name", "name", notNull(scalar("String")))
+                            field("name", "name", notNull(scalar("String"))),
+                            field("date", "date", notNull(scalar("Date"))),
+                            field("duration", "duration", notNull(scalar("Int")))
                         )))))
                 )))
         )
 val DebugGqlTraces = object: OperationDefinition {
     override val name = "DebugGqlTraces"
     override val kind = OperationKind.QUERY
-    override val body = "query DebugGqlTraces(\$first:Int!,\$after:ID){debugGqlTraces(first:\$first,after:\$after){__typename cursor items{__typename id name}}}"
+    override val body = "query DebugGqlTraces(\$first:Int!,\$after:ID){debugGqlTraces(first:\$first,after:\$after){__typename cursor items{__typename id name date duration}}}"
     override val selector = DebugGqlTracesSelector
 }

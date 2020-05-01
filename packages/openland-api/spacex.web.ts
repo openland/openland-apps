@@ -2410,7 +2410,9 @@ const DebugGqlTracesSelector = obj(
                     field('items', 'items', args(), notNull(list(notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('name', 'name', args(), notNull(scalar('String')))
+                            field('name', 'name', args(), notNull(scalar('String'))),
+                            field('date', 'date', args(), notNull(scalar('Date'))),
+                            field('duration', 'duration', args(), notNull(scalar('Int')))
                         )))))
                 )))
         );
@@ -5134,7 +5136,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     DebugGqlTraces: {
         kind: 'query',
         name: 'DebugGqlTraces',
-        body: 'query DebugGqlTraces($first:Int!,$after:ID){debugGqlTraces(first:$first,after:$after){__typename cursor items{__typename id name}}}',
+        body: 'query DebugGqlTraces($first:Int!,$after:ID){debugGqlTraces(first:$first,after:$after){__typename cursor items{__typename id name date duration}}}',
         selector: DebugGqlTracesSelector
     },
     Dialogs: {

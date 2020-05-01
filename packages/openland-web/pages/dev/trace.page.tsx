@@ -38,6 +38,7 @@ const foldableContent = css`
     display: flex;
     flex-direction: column;
     padding-left: var(--padding-left);
+    transition: padding .5s ease;
 `;
 
 const progress = css`
@@ -47,16 +48,8 @@ const progress = css`
     min-width: 1px;
     margin-top: 1px;
     margin-bottom: 1px;
-    animation: width 1s linear forwards;
-
-    @keyframes width {
-        from {
-            width: 0;
-        }
-        to {
-            width: var(--width);
-        }
-    }
+    width: var(--width);
+    transition: width .5s ease;
 `;
 
 function trace2tree(data: any) {
@@ -116,75 +109,92 @@ function Foldable({
     );
 }
 
+const TreeContent = React.memo((props: { traceData: any; scaleSize: number }) => {
+    const timeToP = (time: number) => {
+        return time * props.scaleSize * 0.05;
+    };
+
+    const print = React.useCallback(
+        (r: any) => {
+            let lines = [];
+            for (let field of r.fields) {
+                const canCollapse = !!field.fields.length;
+                let traceLine: any = <></>;
+
+                if (field.startOffset !== undefined) {
+                    traceLine = (
+                        <div className={traceLineStyle}>
+                            <div
+                                className={progress}
+                                style={
+                                    {
+                                        '--width': timeToP(field.duration || 0) + 'px',
+                                    } as React.CSSProperties
+                                }
+                            />
+                            <div style={{ marginLeft: 10, flexShrink: 0 }}>
+                                <span>
+                                    {`${field.duration}ms  ${field.name}`}{' '}
+                                    {canCollapse ? '-' : null}
+                                </span>
+                            </div>
+                        </div>
+                    );
+                } else {
+                    traceLine = (
+                        <div className={traceLineStyle} style={{ marginTop: 10 }}>
+                            <span>
+                                {`(${field.name})`} {canCollapse ? '-' : null}
+                            </span>
+                        </div>
+                    );
+                }
+
+                lines.push(
+                    <Foldable
+                        visible={traceLine}
+                        paddingLeft={timeToP(field.duration || 0)}
+                        foldable={print(field)}
+                        canCollapse={canCollapse}
+                    />,
+                );
+            }
+            return <div className={traceContainer}>{lines}</div>;
+        },
+        [props],
+    );
+    let root = print(trace2tree(props.traceData));
+
+    return <div className={rootContainer}>{root}</div>;
+});
+
 const TraceFragment = React.memo((props: { traceId: string }) => {
     const client = useClient();
     const trace = client.useDebugGqlTrace({ id: props.traceId }).debugGqlTrace;
     const traceData = JSON.parse(trace.traceData);
     const [scaleSize, setScaleSize] = React.useState(5);
 
-    const timeToP = (time: number) => {
-        return time * scaleSize * 0.05;
-    };
-
-    function print(r: any) {
-        let lines = [];
-        for (let field of r.fields) {
-            const canCollapse = !!field.fields.length;
-            let traceLine: any = <></>;
-
-            if (field.startOffset !== undefined) {
-                traceLine = (
-                    <div className={traceLineStyle}>
-                        <div
-                            className={progress}
-                            style={
-                                {
-                                    '--width': timeToP(field.duration || 0) + 'px',
-                                } as React.CSSProperties
-                            }
-                        />
-                        <div style={{ marginLeft: 10, flexShrink: 0 }}>
-                            <span>
-                                {`${field.duration}ms  ${field.name}`} {canCollapse ? '-' : null}
-                            </span>
-                        </div>
-                    </div>
-                );
-            } else {
-                traceLine = (
-                    <div className={traceLineStyle} style={{marginTop: 10}}>
-                        <span>
-                            {`(${field.name})`} {canCollapse ? '-' : null}
-                        </span>
-                    </div>
-                );
-            }
-
-            lines.push(
-                <Foldable
-                    visible={traceLine}
-                    paddingLeft={timeToP(field.duration || 0)}
-                    foldable={print(field)}
-                    canCollapse={canCollapse}
-                />,
-            );
-        }
-        return <div className={traceContainer}>{lines}</div>;
-    }
-    let root = print(trace2tree(traceData));
-
     return (
-        <DevToolsScaffold title={trace.name} scroll="disable">
-            <XView flexDirection="column" flexGrow={1} flexShrink={1} overflow="hidden" paddingTop={12}>
-                <input
-                    type="range"
-                    min={0}
-                    max={100}
-                    step={1}
-                    value={scaleSize}
-                    onChange={(e) => setScaleSize(Number(e.target.value))}
-                />
-                <div className={rootContainer}>{root}</div>
+        <DevToolsScaffold title={trace.name} scroll="disable" maxWidth="100%">
+            <XView
+                flexDirection="column"
+                flexGrow={1}
+                flexShrink={1}
+                overflow="hidden"
+                paddingTop={12}
+            >
+                <XView flexShrink={0} maxWidth={300} flexDirection="row">
+                    scale
+                    <input
+                        type="range"
+                        min={0}
+                        max={10}
+                        step={1}
+                        value={scaleSize}
+                        onChange={(e) => setScaleSize(Number(e.target.value))}
+                    />
+                </XView>
+                <TreeContent traceData={traceData} scaleSize={scaleSize} />
             </XView>
         </DevToolsScaffold>
     );

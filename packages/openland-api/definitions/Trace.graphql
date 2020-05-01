@@ -13,6 +13,8 @@ query DebugGqlTraces($first: Int!, $after: ID) {
         items {
             id
             name
+            date
+            duration
         }
     }
 }

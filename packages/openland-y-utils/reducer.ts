@@ -14,6 +14,13 @@ export class Reducer<T, C> {
         return this._state;
     }
 
+    listenValue(listener: (state: T) => void) {
+        this._listeners.add(listener);
+        return () => {
+            this._listeners.delete(listener);
+        };
+    }
+
     useValue() {
         let [state, setState] = React.useState(this._state);
         React.useEffect(() => {

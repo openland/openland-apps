@@ -98,30 +98,14 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
         calls.joinCall(props.id);
     }, []);
 
-    let currentMediaSession = calls.useCurrentSession();
-    let mediaSession = React.useMemo(() => currentMediaSession!, []);
-    let state: MediaSessionState;
-    if (mediaSession) {
-        state = mediaSession.state.useValue();
-    } else {
-        state = {
-            sender: {
-                id: null,
-                audioEnabled: true,
-                videoEnabled: false,
-                screencastEnabled: false,
+    let mediaSession = calls.useCurrentSession();
+    let [state, setState] = React.useState<MediaSessionState>();
+    React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
 
-                audioTrack: null,
-                videoTrack: null,
-                screencastTrack: null
-            },
-            receivers: {}
-        };
-        React.useRef('kek');
-    }
-
+    // smth with useConference here - looks like is returns first cached response each render while query returns right updated one 
+    // also, if conference will be updated (eg another peer join) it will return right response
     let conference = getClient().useConference({ id: props.id }, { suspense: false });
-    console.warn('conference peers', JSON.stringify(conference?.conference.peers, undefined, 4));
+    console.warn('useConference', conference?.conference.peers);
 
     let onCallEnd = React.useCallback(() => {
         InCallManager.stop({ busytone: '_BUNDLE_' });
@@ -176,15 +160,15 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
 
                         {s.map(p => {
                             let media: PeerMedia = { videoTrack: null, audioTrack: null, screencastTrack: null };
-                            let isLocal = p.id === state.sender.id;
+                            let isLocal = p.id === state?.sender.id;
                             if (isLocal) {
                                 media = {
-                                    videoTrack: state.sender.videoEnabled ? state.sender.videoTrack : null,
-                                    audioTrack: state.sender.audioEnabled ? state.sender.audioTrack : null,
-                                    screencastTrack: state.sender.screencastEnabled ? state.sender.screencastTrack : null,
+                                    videoTrack: state?.sender.videoEnabled ? state?.sender.videoTrack : null,
+                                    audioTrack: state?.sender.audioEnabled ? state?.sender.audioTrack : null,
+                                    screencastTrack: state?.sender.screencastEnabled ? state?.sender.screencastTrack : null,
                                 };
                             } else {
-                                media = { ...media, ...state.receivers[p.id] };
+                                media = { ...media, ...state?.receivers[p.id] };
                             }
                             return <VideoView
                                 key={`peer-${p.id}`}
@@ -230,26 +214,26 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
 
                 <TouchableOpacity
                     onPress={() => {
-                        currentMediaSession?.setVideoEnabled(state.sender.videoEnabled);
+                        mediaSession?.setVideoEnabled(!!state?.sender.videoEnabled);
                     }}
                     // onLongPress={() => {
-                    //     if (callState.video) {
+                    //     if (callState?.video) {
                     //         ReactNativeHapticFeedback.trigger('notificationSuccess');
-                    //         (callState.video as any)?._switchCamera();
+                    //         (callState?.video as any)?._switchCamera();
                     //         setMirrorSelf(m => !m);
                     //     }
                     // }}
                     style={{ width: 56, height: 56 }}
                 >
-                    <View backgroundColor={state.sender.videoEnabled ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
-                        <Image source={state.sender.videoEnabled ? require('assets/ic-camera-video-24.png') : require('assets/ic-camera-video-24.png')} style={{ tintColor: state.sender.videoEnabled ? 'black' : 'white' }} />
+                    <View backgroundColor={state?.sender.videoEnabled ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
+                        <Image source={state?.sender.videoEnabled ? require('assets/ic-camera-video-24.png') : require('assets/ic-camera-video-24.png')} style={{ tintColor: state?.sender.videoEnabled ? 'black' : 'white' }} />
                     </View>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                     onPress={() => {
                         setMute((s) => {
-                            mediaSession.setAudioEnabled(s);
+                            mediaSession?.setAudioEnabled(s);
                             return !s;
                         });
                     }}
