@@ -215,20 +215,16 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
     );
 };
 
-export const useMessageModal = (props: MessageModalProps): [boolean, () => void] => {
-    let [open, setOpen] = React.useState(false);
-
+export const useMessageModal = (props: MessageModalProps) => {
     const show = () => {
-        setOpen(true);
         showModalBox({
             title: props.name ? `Message to ${props.name}` : `Message`,
             titleTruncation: true,
             overflowVisible: true,
             width: 480,
-            onCancel: () => setOpen(false)
         },
             ctx => <MessageModal {...props} ctx={ctx} />
         );
     };
-    return [open, show];
+    return show;
 };

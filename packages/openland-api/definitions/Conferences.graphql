@@ -19,6 +19,7 @@ fragment ConferenceFull on Conference {
             title
             isChannel
             membersCount
+            photo
         }
         ...on PrivateRoom {
             id

@@ -139,7 +139,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
 
     const room = conference?.conference?.room;
     const messageName = room && room.__typename === 'PrivateRoom' ? room?.user.name : room?.title;
-    const [messageOpen, showMessage] = useMessageModal({
+    const showMessage = useMessageModal({
         chatId: props.chatId,
         name: messageName,
         onAttach: props.onAttach,
@@ -189,7 +189,6 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                     cameraEnabled={state.sender.videoEnabled}
                     screenEnabled={state.sender.screencastEnabled}
                     spaceEnabled={layout === 'volume-space'}
-                    messageEnabled={messageOpen}
                     toolsEnabled={showLink}
                     onMinimize={props.ctx.hide}
                     onMute={() => mediaSession.setAudioEnabled(!state.sender.audioEnabled)}
