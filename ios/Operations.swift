@@ -826,7 +826,8 @@ private let ConferenceFullSelector = obj(
                         field("id", "id", notNull(scalar("ID"))),
                         field("title", "title", notNull(scalar("String"))),
                         field("isChannel", "isChannel", notNull(scalar("Boolean"))),
-                        field("membersCount", "membersCount", notNull(scalar("Int")))
+                        field("membersCount", "membersCount", notNull(scalar("Int"))),
+                        field("photo", "photo", notNull(scalar("String")))
                     )),
                     inline("PrivateRoom", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -5112,7 +5113,7 @@ class Operations {
     let Conference = OperationDefinition(
         "Conference",
         .query, 
-        "query Conference($id:ID!){conference(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}}iceServers{__typename urls username credential}room{__typename ... on SharedRoom{__typename id title isChannel membersCount}... on PrivateRoom{__typename id user{__typename id name photo}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
+        "query Conference($id:ID!){conference(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}}iceServers{__typename urls username credential}room{__typename ... on SharedRoom{__typename id title isChannel membersCount photo}... on PrivateRoom{__typename id user{__typename id name photo}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
         ConferenceSelector
     )
     let ConferenceMedia = OperationDefinition(
@@ -6444,7 +6445,7 @@ class Operations {
     let ConferenceWatch = OperationDefinition(
         "ConferenceWatch",
         .subscription, 
-        "subscription ConferenceWatch($id:ID!){alphaConferenceWatch(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}}iceServers{__typename urls username credential}room{__typename ... on SharedRoom{__typename id title isChannel membersCount}... on PrivateRoom{__typename id user{__typename id name photo}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
+        "subscription ConferenceWatch($id:ID!){alphaConferenceWatch(id:$id){__typename ...ConferenceFull}}fragment ConferenceFull on Conference{__typename id startTime peers{__typename id user{__typename ...UserShort}}iceServers{__typename urls username credential}room{__typename ... on SharedRoom{__typename id title isChannel membersCount photo}... on PrivateRoom{__typename id user{__typename id name photo}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
         ConferenceWatchSelector
     )
     let DebugEventsWatch = OperationDefinition(

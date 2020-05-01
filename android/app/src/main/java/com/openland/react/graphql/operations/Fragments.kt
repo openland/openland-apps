@@ -832,7 +832,8 @@ internal val ConferenceFullSelector = obj(
                         field("id", "id", notNull(scalar("ID"))),
                         field("title", "title", notNull(scalar("String"))),
                         field("isChannel", "isChannel", notNull(scalar("Boolean"))),
-                        field("membersCount", "membersCount", notNull(scalar("Int")))
+                        field("membersCount", "membersCount", notNull(scalar("Int"))),
+                        field("photo", "photo", notNull(scalar("String")))
                     )),
                     inline("PrivateRoom", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
