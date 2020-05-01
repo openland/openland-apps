@@ -90,7 +90,6 @@ export class IndexedDBPersistenceProvider implements PersistenceProvider {
     }
 
     async init() {
-        console.log(this.store);
         if (this.initialized || this.initializing) {
             return;
         }
