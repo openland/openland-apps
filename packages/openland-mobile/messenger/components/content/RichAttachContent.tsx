@@ -257,10 +257,10 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                 {!!text && <ASText
                     maxWidth={maxWidth}
                     color={bubbleForegroundPrimary}
+                    backgroundColor="transparent"
                     marginTop={imgCompact ? (subTitle ? 6 : -21) : 0}
                     numberOfLines={5}
                     {...TextStylesAsync.Subhead}
-
                 >
                     {!subTitle && imgCompact && compactImageSource && paddedTextPrfix}
                     {text}
