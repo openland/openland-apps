@@ -10,7 +10,7 @@ import {
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppUserMediaTrackWeb } from './AppUserMedia';
 import { randomKey } from 'openland-y-utils/randomKey';
-// import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
+import uuid from 'uuid/v4';
 
 export class AppRtpReceiverWeb implements AppRtpReceiver {
     raw: RTCRtpReceiver;
@@ -80,6 +80,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     private started = true;
     private audioTracks = new Map<string, HTMLAudioElement>();
     private transeivers = new Map<string, AppRtpTransceiverWeb>();
+    private transceiverIds = new Map<RTCRtpTransceiver, string>();
 
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined = undefined;
 
@@ -105,9 +106,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
             let track = (arg as AppUserMediaTrackWeb).track;
             transceiver = this.connection.addTransceiver(track, params);
         }
-        let res = new AppRtpTransceiverWeb(transceiver.receiver.track.id, transceiver);
-        this.transeivers.set(res.id, res);
-        return res;
+        return this._wrap(transceiver);
     }
 
     getTransceivers() {
@@ -168,10 +167,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         //
 
         for (let t of this.connection.getTransceivers()) {
-            if (this.transeivers.has(t.receiver.track.id)) {
-                continue;
-            }
-            this.transeivers.set(t.receiver.track.id, new AppRtpTransceiverWeb(t.receiver.track.id, t));
+            this._wrap(t);
         }
 
         //
@@ -184,23 +180,42 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
         //       it will eat many resources anyway.
         //
 
-        for (let t of this.connection.getTransceivers()) {
-            if (t.receiver.track.kind === 'audio') {
-                if (this.audioTracks.has(t.receiver.track.id)) {
+        for (let t of this.getTransceivers()) {
+            if ((t.direction === 'recvonly' || t.direction === 'sendrecv') && t.receiver.track.kind === 'audio') {
+                if (this.audioTracks.has(t.id)) {
                     continue;
-                } else {
-                    let audio = new Audio();
-                    let stream = new MediaStream();
-                    stream.addTrack(t.receiver.track);
-                    audio.autoplay = true;
-                    audio.setAttribute('playsinline', 'true');
-                    audio.controls = false;
-                    audio.srcObject = stream;
-                    audio.load();
-                    audio.play();
-                    this.audioTracks.set(t.receiver.track.id, audio);
                 }
+                let track = (t.receiver.track as AppUserMediaTrackWeb).track;
+                track.onunmute = () => {
+                    console.log('[WEBRTC]: Unmuted!');
+                };
+                track.onmute = () => {
+                    console.log('[WEBRTC]: Muted!');
+                };
+                let audio = new Audio();
+                let stream = new MediaStream();
+                stream.addTrack((t.receiver.track as AppUserMediaTrackWeb).track);
+                audio.autoplay = true;
+                audio.setAttribute('playsinline', 'true');
+                audio.controls = false;
+                audio.srcObject = stream;
+                audio.load();
+                audio.play();
+                this.audioTracks.set(t.id, audio);
             }
+        }
+    }
+
+    private _wrap = (src: RTCRtpTransceiver) => {
+        if (this.transceiverIds.has(src)) {
+            let id = this.transceiverIds.get(src)!;
+            return this.transeivers.get(id)!;
+        } else {
+            let id = uuid();
+            let res = new AppRtpTransceiverWeb(id, src);
+            this.transceiverIds.set(src, id);
+            this.transeivers.set(id, res);
+            return res;
         }
     }
 }

@@ -1,6 +1,7 @@
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppUserMediaApi } from 'openland-y-runtime-api/AppUserMediaApi';
 import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
+import uuid from 'uuid/v4';
 
 export class AppUserMediaTrackWeb implements AppMediaStreamTrack {
     readonly id: string;
@@ -8,7 +9,7 @@ export class AppUserMediaTrackWeb implements AppMediaStreamTrack {
     readonly track: MediaStreamTrack;
 
     constructor(track: MediaStreamTrack) {
-        this.id = track.id;
+        this.id = uuid();
         this.track = track;
         if (track.kind === 'audio') {
             this.kind = 'audio';
