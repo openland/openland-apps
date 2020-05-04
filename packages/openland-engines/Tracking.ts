@@ -30,13 +30,19 @@ class TrackingEngine {
         this.storage = new AppStorageQueued('tracking-pending-' + TRACKING_STORAGE_VERSION);
     }
 
+    private log(v: string) {
+        if (!this.isProd) {
+            log.log(v);
+        }
+    }
+
     async setClient(client: OpenlandClient) {
         if (!this.client) {
             this.client = client;
 
             const fromStorage = await this.storage.getItems();
 
-            log.log('Found in storage. Count: ' + fromStorage.length);
+            this.log('Found in storage. Count: ' + fromStorage.length);
 
             this.pending = [...fromStorage, ...this.pending];
             this.processEvents();
@@ -53,7 +59,7 @@ class TrackingEngine {
             os: platform.os
         };
 
-        log.log('New event: ' + JSON.stringify(item));
+        this.log('New event: ' + JSON.stringify(item));
 
         this.isProd = platform.isProd;
         this.pending.push(item);
@@ -79,12 +85,12 @@ class TrackingEngine {
                 }
                 this.deviceId = did;
 
-                log.log('DEVICE-ID: ' + did);
+                this.log('DEVICE-ID: ' + did);
             })();
         }
 
         await this.initPromise;
-        
+
         while (this.pending.length > 0) {
             const batch = this.pending.splice(0, BATCH_SIZE);
 
@@ -94,8 +100,8 @@ class TrackingEngine {
                     events: batch,
                     isProd: this.isProd
                 });
-    
-                log.log('Send events. Count: ' + batch.length);
+
+                this.log('Send events. Count: ' + batch.length);
             });
 
             await this.storage.removeItems(batch.map(p => p.id));
