@@ -147,7 +147,7 @@ const messageWrapper = cx(
         padding: 12px 16px;
         background-color: var(--backgroundPrimary);
         border-radius: 8px;
-        box-shadow: 0px 0px 48px var(--borderLight), 0px 8px 24px var(--border);
+        /* box-shadow: 0px 0px 48px var(--borderLight), 0px 8px 24px var(--border); */
         overflow: hidden;
         flex-direction: row;
         margin-bottom: 16px;
@@ -264,7 +264,8 @@ export const useIncomingMessages = (): [JSX.Element | null, (item: IncomingMessa
             top={16}
             right={80}
             width={320}
-            height="100%"
+            height="auto"
+            maxHeight="100%"
             zIndex={4}
             overflow="hidden"
         >
