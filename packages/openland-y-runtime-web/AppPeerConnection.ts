@@ -75,7 +75,6 @@ export class AppRtpTransceiverWeb implements AppRtpTransceiver {
 }
 
 export class AppPeerConnectionWeb implements AppPeerConnection {
-    private id = randomKey();
     private connection: RTCPeerConnection;
     private started = true;
     private audioTracks = new Map<string, HTMLAudioElement>();
