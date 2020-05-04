@@ -82,7 +82,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     let [showLink, setShowLink] = React.useState(false);
     const [link, setLink] = React.useState<string | undefined>();
 
-    const [renderedMessages, setIncomingMessage] = useIncomingMessages();
+    const [renderedMessages, handleItemAdded, handleItemUpdated] = useIncomingMessages();
 
     React.useEffect(() => {
         // on message with linkm open it in iframe
@@ -116,7 +116,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                 },
                 onDataSourceItemAdded: (item) => {
                     processItem(item);
-                    setIncomingMessage(item);
+                    handleItemAdded(item);
                 },
                 onDataSourceLoadedMoreForward: (items) => {
                     // Nothing to do
@@ -129,6 +129,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                 },
                 onDataSourceItemUpdated: (item) => {
                     processItem(item);
+                    handleItemUpdated(item);
                 },
                 onDataSourceCompleted: () => {
                     // Nothing to do

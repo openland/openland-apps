@@ -245,11 +245,23 @@ const IncomingMessage = React.memo((props: { message: DataSourceMessageItem, onH
     );
 });
 
-export const useIncomingMessages = (): [JSX.Element | null, (item: IncomingMessage) => void] => {
+export const useIncomingMessages = (): [JSX.Element | null, (item: IncomingMessage) => void, (item: IncomingMessage) => void] => {
     const [messages, setMessages] = React.useState<DataSourceMessageItem[]>([]);
-    const addMessage = (item: IncomingMessage) => {
+    const pendingMessages = React.useRef<Record<string, DataSourceMessageItem | undefined>>({}).current;
+    const onMessageAdded = (item: IncomingMessage) => {
         if (item.type === 'message' && !item.isService) {
-            setMessages(prev => [item, ...prev]);
+            if (item.id) {
+                setMessages(prev => [item, ...prev]);
+            } else {
+                pendingMessages[item.key] = item;
+            }
+        }
+    };
+    const onMessageUpdated = (item: IncomingMessage) => {
+        let pending = pendingMessages[item.key];
+        if (pending && item.type === 'message' && !item.isService && item.id) {
+            onMessageAdded(item);
+            delete pendingMessages[item.key];
         }
     };
     const handleHide = (messageId: string) => {
@@ -272,5 +284,5 @@ export const useIncomingMessages = (): [JSX.Element | null, (item: IncomingMessa
             {messages.map(m => <IncomingMessage key={m.id} message={m} onHide={handleHide} />)}
         </XView>
     );
-    return [renderedMessages, addMessage];
+    return [renderedMessages, onMessageAdded, onMessageUpdated];
 };
