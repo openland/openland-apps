@@ -13724,7 +13724,7 @@ react-native-web@^0.9.0:
 
 "react-native-webrtc@github:openland/react-native-webrtc":
   version "1.75.3"
-  resolved "https://codeload.github.com/openland/react-native-webrtc/tar.gz/9c3333859b36c0488541ede9a6fc81b87e0fd89b"
+  resolved "https://codeload.github.com/openland/react-native-webrtc/tar.gz/cabcba1dd1ebcb391f67603b5e84f8e35e5f51ae"
   dependencies:
     base64-js "^1.1.2"
     event-target-shim "^1.0.5"
