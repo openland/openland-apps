@@ -38,14 +38,7 @@ const VideoView = React.memo((props: VideoViewProps) => {
     const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
 
     let track = props.screencastTrack ? props.screencastTrack : props.videoTrack;
-    let stream = React.useMemo(() => {
-        if (!track) {
-            return undefined;
-        }
-        let s = new MediaStream(undefined);
-        s.addTrack((track as AppUserMediaStreamTrackNative).track);
-        return s;
-    }, [track]);
+    let stream = React.useMemo(() => track && new MediaStream([(track as AppUserMediaStreamTrackNative).track]), [track]);
 
     let colors = getPlaceholderColors(props.peer.user.id);
     return (
@@ -102,10 +95,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let [state, setState] = React.useState<MediaSessionState>();
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
 
-    // smth with useConference here - looks like is returns first cached response each render while query returns right updated one 
-    // also, if conference will be updated (eg another peer join) it will return right response
     let conference = getClient().useConference({ id: props.id }, { suspense: false });
-    // console.warn('useConference', conference?.conference.peers);
 
     let onCallEnd = React.useCallback(() => {
         InCallManager.stop({ busytone: '_BUNDLE_' });
@@ -122,7 +112,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
         // onCallEnd();
     }, [mediaSession]);
 
-    let peers = conference ? conference.conference.peers : [];
+    let peers = [...conference ? conference.conference.peers : []];
     let slicesCount = peers.length <= 3 ? 1 : peers.length < 9 ? 2 : 3;
     let slices: Conference_conference_peers[][] = [];
     let divider = slicesCount;
@@ -214,7 +204,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
 
                 <TouchableOpacity
                     onPress={() => {
-                        mediaSession?.setVideoEnabled(!!state?.sender.videoEnabled);
+                        mediaSession?.setVideoEnabled(!state?.sender.videoEnabled);
                     }}
                     // onLongPress={() => {
                     //     if (callState?.video) {
