@@ -382,8 +382,12 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
 
         return (
             <View paddingHorizontal={16} paddingBottom={24} onLayout={() => setLayoutCover(layoutCollectionCover())}>
-                {!!description && <Text style={[TextStyles.Body, { color: theme.foregroundPrimary, marginBottom: 16 }]}>{description}</Text>}
-                {showCover && <DiscoverCover width={layoutCover.width} height={layoutCover.height} path={path} />}
+                {!!description && <Text style={[TextStyles.Body, { color: theme.foregroundPrimary }]}>{description}</Text>}
+                {showCover &&
+                    <View marginTop={16}>
+                        <DiscoverCover width={layoutCover.width} height={layoutCover.height} path={path} />
+                    </View>
+                }
             </View>
         );
     }, [description, image, path, loading, layoutCover]);
