@@ -248,7 +248,7 @@ const IncomingMessage = React.memo((props: { message: DataSourceMessageItem, onH
 export const useIncomingMessages = (): [JSX.Element | null, (item: IncomingMessage) => void] => {
     const [messages, setMessages] = React.useState<DataSourceMessageItem[]>([]);
     const addMessage = (item: IncomingMessage) => {
-        if (item.type === 'message') {
+        if (item.type === 'message' && !item.isService) {
             setMessages(prev => [item, ...prev]);
         }
     };
