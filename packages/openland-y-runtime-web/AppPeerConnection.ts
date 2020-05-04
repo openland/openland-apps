@@ -114,7 +114,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     }
 
     createOffer = async () => {
-        console.log('[PC:' + this.id + '] createOffer');
+        // console.log('[PC:' + this.id + '] createOffer');
         let res = await this.connection.createOffer();
         return {
             type: res.type! as 'offer',
@@ -123,22 +123,22 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     }
 
     setLocalDescription = async (sdp: AppSessionDescription) => {
-        console.log('[PC:' + this.id + '] setLocalDescription');
-        console.log('[PC:' + this.id + ']', sdp.sdp);
+        // console.log('[PC:' + this.id + '] setLocalDescription');
+        // console.log('[PC:' + this.id + ']', sdp.sdp);
         await this.connection.setLocalDescription(sdp);
         this._applyTranseivers();
     }
 
     setRemoteDescription = async (sdp: AppSessionDescription) => {
-        console.log('[PC:' + this.id + '] setRemoteDescription');
-        console.log('[PC:' + this.id + ']', sdp.sdp);
+        // console.log('[PC:' + this.id + '] setRemoteDescription');
+        // console.log('[PC:' + this.id + ']', sdp.sdp);
         await this.connection.setRemoteDescription(sdp);
         this._applyTranseivers();
     }
 
     createAnswer = async () => {
-        console.log('[PC:' + this.id + '] createAnswer');
-        let res = await this.connection.createAnswer({ offerToReceiveAudio: true, offerToReceiveVideo: true } as any /* WTF with typings? */);
+        // console.log('[PC:' + this.id + '] createAnswer');
+        let res = await this.connection.createAnswer();
         return {
             type: res.type! as 'answer',
             sdp: res.sdp!
@@ -185,12 +185,13 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
                 if (this.audioTracks.has(t.id)) {
                     continue;
                 }
+                console.log('[WEBRTC]: Play track: ' + t.id);
                 let track = (t.receiver.track as AppUserMediaTrackWeb).track;
                 track.onunmute = () => {
-                    console.log('[WEBRTC]: Unmuted!');
+                    console.log('[WEBRTC]: Unmuted: ' + t.id);
                 };
                 track.onmute = () => {
-                    console.log('[WEBRTC]: Muted!');
+                    console.log('[WEBRTC]: Muted: ' + t.id);
                 };
                 let audio = new Audio();
                 let stream = new MediaStream();

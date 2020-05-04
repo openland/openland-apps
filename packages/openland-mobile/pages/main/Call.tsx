@@ -105,7 +105,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     // smth with useConference here - looks like is returns first cached response each render while query returns right updated one 
     // also, if conference will be updated (eg another peer join) it will return right response
     let conference = getClient().useConference({ id: props.id }, { suspense: false });
-    console.warn('useConference', conference?.conference.peers);
+    // console.warn('useConference', conference?.conference.peers);
 
     let onCallEnd = React.useCallback(() => {
         InCallManager.stop({ busytone: '_BUNDLE_' });
