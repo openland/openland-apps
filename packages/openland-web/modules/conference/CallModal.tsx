@@ -20,6 +20,7 @@ import { useTriggerEvents } from './Effects';
 import { useMessageModal } from './useMessageModal';
 import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
 import { useIncomingMessages } from './useIncomingMessages';
+import { useRouteChange } from 'openland-web/hooks/useRouteChange';
 
 const watermarkContainerstyle = css`
     will-change: transform;
@@ -152,7 +153,12 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
         isPrivate: !!(room && room.__typename === 'PrivateRoom'),
         isChannel: !!(room && room.__typename === 'SharedRoom' && room.isChannel),
         membersCount: room && room.__typename === 'SharedRoom' ? room.membersCount : undefined,
-        minimizeCall: props.ctx.hide,
+    });
+
+    useRouteChange((route, prevRoute) => {
+        if (route.path !== prevRoute.path) {
+            props.ctx.hide();
+        }
     });
 
     return (

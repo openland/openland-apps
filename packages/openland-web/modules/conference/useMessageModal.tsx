@@ -50,7 +50,6 @@ interface MessageModalProps {
     isPrivate?: boolean;
     membersCount?: number;
     onAttach: (files: File[], cb?: () => void) => void;
-    minimizeCall: () => void;
 }
 
 const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
@@ -66,11 +65,8 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
         name: props.name,
         chatId: !props.isPrivate ? props.chatId : undefined,
         userId: props.userId,
-        onDonate: () => props.ctx.hide(),
-        onWalletLockedContinue: () => {
-            props.minimizeCall();
-            props.ctx.hide();
-        },
+        onDonate: props.ctx.hide,
+        onWalletLockedContinue: props.ctx.hide,
     });
     let onFileInputChange = React.useCallback(e => {
         if (props.onAttach) {
