@@ -82,13 +82,18 @@ const warningContainer = css`
     margin: -8px 0 20px;
 `;
 
-const CheckLock = React.memo((props: { ctx: XModalController }) => {
+const CheckLock = React.memo((props: { ctx: XModalController, onContinue?: () => void }) => {
     const builder = new AlertBlanketBuilder();
     let router = React.useContext(XViewRouterContext);
 
     builder.message("Update payment method to complete previously failed transactions and enable new purchases");
     builder.body(ctx => <div className={warningContainer} />);
-    builder.action('Continue', async () => router?.navigate('/wallet'));
+    builder.action('Continue', async () => {
+        router?.navigate('/wallet');
+        if (props.onContinue) {
+            props.onContinue();
+        }
+    });
     builder.onCancel(props.ctx.hide);
     builder.width(480);
     return (
@@ -123,10 +128,10 @@ export function showPayConfirm(props: PaymentProps) {
     });
 }
 
-export function showCheckLock() {
+export function showCheckLock(props?: { onContinue?: () => void }) {
     showModalBox({}, (ctx) => {
         return (
-            <CheckLock ctx={ctx} />
+            <CheckLock ctx={ctx} {...props} />
         );
     });
 }

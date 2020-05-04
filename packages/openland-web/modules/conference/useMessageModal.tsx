@@ -44,11 +44,13 @@ const IconButton = (props: { caption: string, icon: JSX.Element, onClick: React.
 
 interface MessageModalProps {
     chatId: string;
+    userId?: string;
     name?: string;
     isChannel?: boolean;
     isPrivate?: boolean;
     membersCount?: number;
     onAttach: (files: File[], cb?: () => void) => void;
+    minimizeCall: () => void;
 }
 
 const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
@@ -59,8 +61,17 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
     let fileInputRef = React.useRef<HTMLInputElement>(null);
     let conversation = messenger.getConversation(props.chatId);
     let suggestRef = React.useRef<AutoCompleteComponentRef>(null);
-    // TODO pass different ids
-    let showDonation = useDonationModal({ name: props.name, chatId: props.chatId, onDonate: () => props.ctx.hide() });
+
+    let showDonation = useDonationModal({
+        name: props.name,
+        chatId: !props.isPrivate ? props.chatId : undefined,
+        userId: props.userId,
+        onDonate: () => props.ctx.hide(),
+        onWalletLockedContinue: () => {
+            props.minimizeCall();
+            props.ctx.hide();
+        },
+    });
     let onFileInputChange = React.useCallback(e => {
         if (props.onAttach) {
             props.onAttach(fileListToArray(e.target.files), () => props.ctx.hide());
@@ -100,6 +111,7 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
                 }
             }
             conversation.sendMessage(text, mentions);
+            editor.clear();
         }
         props.ctx.hide();
         return true;

@@ -141,11 +141,13 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     const messageName = room && room.__typename === 'PrivateRoom' ? room?.user.name : room?.title;
     const showMessage = useMessageModal({
         chatId: props.chatId,
+        userId: room && room.__typename === 'PrivateRoom' ? room.user.id : undefined,
         name: messageName,
         onAttach: props.onAttach,
         isPrivate: !!(room && room.__typename === 'PrivateRoom'),
         isChannel: !!(room && room.__typename === 'SharedRoom' && room.isChannel),
         membersCount: room && room.__typename === 'SharedRoom' ? room.membersCount : undefined,
+        minimizeCall: props.ctx.hide,
     });
 
     return (

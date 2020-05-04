@@ -3,7 +3,7 @@ import { XScrollView3 } from 'openland-x/XScrollView3';
 import { DocumentContent } from '../messenger/message/content/DocumentContent';
 import { pluralForm } from 'openland-y-utils/plural';
 import AlertBlanket from 'openland-x/AlertBlanket';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { XModalController } from 'openland-x/showModal';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { UploadCareUploading } from 'openland-web/utils/UploadCareUploading';
@@ -16,6 +16,7 @@ import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import MediaIcon from 'openland-icons/s/ic-gallery-24.svg';
 import FileIcon from 'openland-icons/s/ic-document-24.svg';
 import DonationIcon from 'openland-icons/s/ic-donation-24.svg';
+import { TextTitle1 } from 'openland-web/utils/TextStyles';
 
 const imgClass = css`
     margin-top: 8px;
@@ -26,11 +27,7 @@ const imgClass = css`
 `;
 
 const titleClass = css`
-    padding-top: 30px;
-    padding-bottom: 20px;
-    padding-left: 40px;
-    font-weight: 600;
-    font-size: 36px;
+    padding: 20px 24px;
 `;
 
 let Img = React.memo((props: { file: File; onClick: (f: File) => void, onLoad: (img: LocalImage) => void, index: number; }) => {
@@ -39,12 +36,12 @@ let Img = React.memo((props: { file: File; onClick: (f: File) => void, onLoad: (
         let reader = new FileReader();
         let image = new Image();
         image.onload = () => {
-            const layout = layoutMedia(image.width || 0, image.height || 0, 360, 360, 32, 32);
+            const layout = layoutMedia(image.width || 0, image.height || 0, 392, 392, 32, 32);
             if (ref.current) {
                 ref.current.src = reader.result as any;
                 ref.current.width = layout.width;
                 ref.current.height = layout.height;
-                props.onLoad({index: props.index, src: (reader.result as string), width: image.width, height: image.height});
+                props.onLoad({ index: props.index, src: (reader.result as string), width: image.width, height: image.height });
             }
         };
         reader.onloadend = () => {
@@ -101,12 +98,12 @@ const Body = (props: { files: File[][]; onImageLoad: (img: LocalImage) => void; 
         hasPhoto && !hasFiles
             ? pluralForm(bodyFiles.length, ['a photo', bodyFiles.length + ' photos'])
             : pluralForm(bodyFiles.length, ['a file', bodyFiles.length + ' files'])
-    }`;
+        }`;
 
     return (
         <>
-            <span className={titleClass}>{title}</span>
-            <XScrollView3 maxHeight={500} paddingHorizontal={40} useDefaultScroll={true}>
+            <span className={cx(TextTitle1, titleClass)}>{title}</span>
+            <XScrollView3 maxHeight={500} paddingHorizontal={24} useDefaultScroll={true}>
                 {list}
                 <div style={{ height: 16 }} />
             </XScrollView3>
@@ -117,7 +114,7 @@ const Body = (props: { files: File[][]; onImageLoad: (img: LocalImage) => void; 
 const MAX_FILE_SIZE = 1e8;
 export const showAttachConfirm = (
     files: File[],
-    callback: (files: {file: UploadCareUploading, localImage?: LocalImage}[]) => void,
+    callback: (files: { file: UploadCareUploading, localImage?: LocalImage }[]) => void,
     onFileUploadingProgress?: (filename?: string) => void,
     onFileUploadingEnd?: () => void,
 ) => {
@@ -140,7 +137,7 @@ export const showAttachConfirm = (
         AlertBlanket.builder()
             .body(ctx => <Body files={filesRes} onImageLoad={saveImage} ctx={ctx} />)
             .action('Send', async () => {
-                await callback(uploading.map((u, i) => ({file: u, localImage: loadedImages[i]})).filter(({file}) => filesRes[0].includes(file.getSourceFile())));
+                await callback(uploading.map((u, i) => ({ file: u, localImage: loadedImages[i] })).filter(({ file }) => filesRes[0].includes(file.getSourceFile())));
 
                 const { name } = await uploading[0].fetchInfo();
 
@@ -171,7 +168,7 @@ const attachButtonContainer = css`
     flex-shrink: 0;
 `;
 
-const AttachMenu = (props: {ctx: UPopperController, hideDonation: boolean, onAttachClick: () => void, onDonationClick: () => void}) => {
+const AttachMenu = (props: { ctx: UPopperController, hideDonation: boolean, onAttachClick: () => void, onDonationClick: () => void }) => {
     let builder = new UPopperMenuBuilder();
 
     builder.item({
@@ -202,7 +199,7 @@ interface AttachConfirmButtonProps {
 }
 
 export const AttachConfirmButton = (props: AttachConfirmButtonProps) => {
-    const [active, show] = usePopper({placement: 'top-start'}, ctx => <AttachMenu ctx={ctx} onAttachClick={props.onAttachClick} onDonationClick={props.onDonationClick} hideDonation={props.hideDonation} />);
+    const [active, show] = usePopper({ placement: 'top-start' }, ctx => <AttachMenu ctx={ctx} onAttachClick={props.onAttachClick} onDonationClick={props.onDonationClick} hideDonation={props.hideDonation} />);
 
     return (
         <div className={attachButtonContainer}>

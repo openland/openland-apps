@@ -45,6 +45,7 @@ interface DonationComponentProps {
     chatId?: string;
     userId?: string;
     onDonate?: (value: string) => void;
+    onWalletLockedContinue?: () => void;
 }
 
 const DonationComponent = (props: DonationComponentProps & { ctx: XModalController }) => {
@@ -108,7 +109,7 @@ const DonationComponent = (props: DonationComponentProps & { ctx: XModalControll
                 props.ctx.hide();
             } catch (e) {
                 if (wallet.myWallet.isLocked) {
-                    showCheckLock();
+                    showCheckLock({ onContinue: props.onWalletLockedContinue });
                     props.ctx.hide();
                 }
                 setLoading(false);
