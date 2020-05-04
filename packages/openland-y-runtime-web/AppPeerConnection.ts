@@ -9,7 +9,6 @@ import {
 } from 'openland-y-runtime-api/AppPeerConnectionApi';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppUserMediaTrackWeb } from './AppUserMedia';
-import { randomKey } from 'openland-y-utils/randomKey';
 import uuid from 'uuid/v4';
 
 export class AppRtpReceiverWeb implements AppRtpReceiver {
