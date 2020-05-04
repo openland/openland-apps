@@ -21,6 +21,7 @@ import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradie
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppUserMediaStreamTrackNative } from 'openland-y-runtime-native/AppUserMedia';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 export interface PeerMedia {
     videoTrack: AppMediaStreamTrack | null;
@@ -206,13 +207,12 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                     onPress={() => {
                         mediaSession?.setVideoEnabled(!state?.sender.videoEnabled);
                     }}
-                    // onLongPress={() => {
-                    //     if (callState?.video) {
-                    //         ReactNativeHapticFeedback.trigger('notificationSuccess');
-                    //         (callState?.video as any)?._switchCamera();
-                    //         setMirrorSelf(m => !m);
-                    //     }
-                    // }}
+                    onLongPress={() => {
+                        if (state?.sender.videoEnabled) {
+                            ReactNativeHapticFeedback.trigger('notificationSuccess');
+                            ((state.sender.videoTrack as AppUserMediaStreamTrackNative)?.track as any)?._switchCamera();
+                        }
+                    }}
                     style={{ width: 56, height: 56 }}
                 >
                     <View backgroundColor={state?.sender.videoEnabled ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
