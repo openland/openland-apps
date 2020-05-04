@@ -11,6 +11,7 @@ import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/mess
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { showImageModal } from 'openland-web/fragments/chat/messenger/message/content/ImageContent';
+import { SpanType } from 'openland-y-utils/spans/Span';
 
 const MediaItemClass = css`
     display: flex;
@@ -34,6 +35,7 @@ const MediaItemClass = css`
         bottom: 1px;
         right: 1px;
         background: var(--overlayLight);
+        border-radius: 8px;
     }
     &:hover::after {
         opacity: 1;
@@ -44,6 +46,7 @@ const MediaItemContentClass = css`
     top: 1px;
     left: 1px;
 
+    border-radius: 8px;
     display: block;
     width: calc(100% - 2px);
     opacity: 0;
@@ -58,6 +61,7 @@ const ImgPreviewClass = css`
     width: calc(100% + 10px);
     height: calc(100% + 10px);
     filter: blur(5px);
+    border-radius: 8px;
 `;
 
 const ImgPreviewContainerClass = css`
@@ -67,8 +71,8 @@ const ImgPreviewContainerClass = css`
     bottom: 1px;
     right: 1px;
 
+    border-radius: 8px;
     overflow: hidden;
-
     transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
     will-change: opacity;
 `;
@@ -121,6 +125,18 @@ export const MediaContent = React.memo((props: MediaContentProps) => {
                     }/-/format/auto/-/scale_crop/80x80/smart/`}
                 onLoad={onLoad}
             />
+
+            <XView
+                position="absolute"
+                top={1}
+                left={1}
+                right={1}
+                bottom={1}
+                borderWidth={1}
+                borderColor="var(--borderLight)"
+                borderRadius={8}
+                zIndex={2}
+            />
         </div>
     );
 });
@@ -135,31 +151,61 @@ const messageWrapper = cx(
         overflow: hidden;
         flex-direction: row;
         margin-bottom: 16px;
+        opacity: 0;
+        transform: scale(0.84) translateY(-8px);
+        transition: transform 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
+            opacity 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
     `
 );
+
+const messageVisible = css`
+    opacity: 1;
+    transform: scale(1) translateY(0);
+`;
 
 const textContentWrapper = css`
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;  
     overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: var(--text-max-height);
 `;
+
+const heightBySpan = {
+    [SpanType.loud]: 72,
+    [SpanType.emoji]: 84,
+};
 
 type IncomingMessage = DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem;
 
-const IncomingMessage = (props: { message: DataSourceMessageItem }) => {
-    const { message } = props;
+const IncomingMessage = React.memo((props: { message: DataSourceMessageItem, onHide: (messageId: string) => void }) => {
+    const { message, onHide } = props;
+    const [visible, setVisible] = React.useState(false);
 
     const senderNameEmojify = React.useMemo(() => emoji(message.senderName), [message.senderName]);
-
     const imageAttaches =
         (message.attachments && message.attachments.filter(
             a => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage,
         ) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[]) || [];
 
-    const textContent = message.textSpans && message.textSpans.length > 1 ? (
-        <div className={textContentWrapper}>
-            <SpannedView key="text" spans={message.textSpans} />
+    React.useEffect(() => {
+        setTimeout(() => {
+            setVisible(true);
+        }, 10);
+        let timeoutId = setTimeout(() => {
+            setVisible(false);
+            onHide(message.id!);
+        }, 6000);
+
+        return () => window.clearTimeout(timeoutId);
+    }, []);
+
+    const firstSpanType = message.textSpans.map(x => x.type)[0];
+    const textMaxHeight = heightBySpan[firstSpanType] || 60;
+    const textContent = message.text ? (
+        <div className={textContentWrapper} style={{ '--text-max-height': `${textMaxHeight}px` } as React.CSSProperties}>
+            <SpannedView spans={message.textSpans} />
         </div>
     ) : message.fallback ? (
         <XView {...TextStyles.Body} color="var(--foregroundSecondary)">{message.fallback}</XView>
@@ -167,10 +213,9 @@ const IncomingMessage = (props: { message: DataSourceMessageItem }) => {
 
     let imageContent: JSX.Element | null = null;
 
-    // TODO add border to image
     if (imageAttaches[0]) {
         imageContent = (
-            <XView marginLeft={16}>
+            <XView marginLeft={16} justifyContent="center">
                 <MediaContent
                     attach={imageAttaches[0]}
                     chatId={message.chatId}
@@ -183,10 +228,10 @@ const IncomingMessage = (props: { message: DataSourceMessageItem }) => {
     }
 
     return (
-        <div className={messageWrapper}>
-            <XView marginRight={16}>
+        <div className={cx(messageWrapper, visible && messageVisible)}>
+            <XView marginRight={16} paddingTop={4}>
                 <UAvatar
-                    id={message.id!}
+                    id={message.senderId}
                     title={message.senderName}
                     photo={message.senderPhoto}
                 />
@@ -198,7 +243,7 @@ const IncomingMessage = (props: { message: DataSourceMessageItem }) => {
             {imageContent}
         </div>
     );
-};
+});
 
 export const useIncomingMessages = (): [JSX.Element | null, (item: IncomingMessage) => void] => {
     const [messages, setMessages] = React.useState<DataSourceMessageItem[]>([]);
@@ -207,17 +252,23 @@ export const useIncomingMessages = (): [JSX.Element | null, (item: IncomingMessa
             setMessages(prev => [item, ...prev]);
         }
     };
+    const handleHide = (messageId: string) => {
+        setTimeout(() => {
+            setMessages(prev => prev.filter(m => m.id !== messageId));
+        }, 150);
+    };
 
     const renderedMessages = (
         <XView
-            position="fixed"
+            position="absolute"
             top={16}
             right={80}
             width={320}
             height="100%"
             zIndex={4}
+            overflow="hidden"
         >
-            {messages.map(m => <IncomingMessage key={m.id} message={m} />)}
+            {messages.map(m => <IncomingMessage key={m.id} message={m} onHide={handleHide} />)}
         </XView>
     );
     return [renderedMessages, addMessage];

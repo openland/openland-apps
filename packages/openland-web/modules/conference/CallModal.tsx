@@ -19,6 +19,7 @@ import { CallControls } from './CallControls';
 import { useTriggerEvents } from './Effects';
 import { useMessageModal } from './useMessageModal';
 import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
+import { useIncomingMessages } from './useIncomingMessages';
 
 const watermarkContainerstyle = css`
     will-change: transform;
@@ -79,6 +80,9 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     // pick latest link from chat
     let [showLink, setShowLink] = React.useState(false);
     const [link, setLink] = React.useState<string | undefined>();
+
+    const [renderedMessages, setIncomingMessage] = useIncomingMessages();
+
     React.useEffect(() => {
         // on message with linkm open it in iframe
         let ds = props.messenger.getConversation(props.chatId).dataSource;
@@ -111,6 +115,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                 },
                 onDataSourceItemAdded: (item) => {
                     processItem(item);
+                    setIncomingMessage(item);
                 },
                 onDataSourceLoadedMoreForward: (items) => {
                     // Nothing to do
@@ -186,6 +191,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                     ))}
                     {/* {layout === 'volume-space' && mediaSession && <VolumeSpace mediaSession={mediaSession} peers={[...conference ? conference.conference.peers : []]} />} */}
                 </XView >
+                {layout === 'grid' && renderedMessages}
                 <CallControls
                     muted={!state.sender.audioEnabled}
                     cameraEnabled={state.sender.videoEnabled}
