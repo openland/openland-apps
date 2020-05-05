@@ -5,12 +5,12 @@ import { PersistenceEmptyProvider } from '@openland/spacex/lib/web/persistence/P
 
 async function getDB(authId: string) {
     let db = new Dexie('spacex');
-    let store = 'gql_cache_' + authId;
+    let store = 'gql_cache.' + authId;
     db.version(1).stores({
         [store]: 'key'
     });
-
-    return db.open();
+    await db.open();
+    return db;
 }
 
 export class DexiePersistenceProvider implements PersistenceProvider {
@@ -22,7 +22,7 @@ export class DexiePersistenceProvider implements PersistenceProvider {
 
     constructor(authId: string) {
         this.authId = authId;
-        this.store = 'gql_cache_' + authId;
+        this.store = 'gql_cache.' + authId;
     }
 
     async saveRecords(records: RecordSet) {
