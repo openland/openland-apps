@@ -13,6 +13,11 @@ async function getDB(authId: string) {
     return db;
 }
 
+export async function dropPersistenceCache() {
+    let db = new Dexie('spacex');
+    await db.delete();
+}
+
 export class DexiePersistenceProvider implements PersistenceProvider {
     private store: string;
     private authId: string;
