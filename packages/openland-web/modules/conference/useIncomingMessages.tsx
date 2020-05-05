@@ -147,7 +147,7 @@ const messageWrapper = cx(
         padding: 12px 16px;
         background-color: var(--backgroundPrimary);
         border-radius: 8px;
-        box-shadow: 0px 0px 48px var(--borderLight), 0px 8px 24px var(--border);
+        /* box-shadow: 0px 0px 48px var(--borderLight), 0px 8px 24px var(--border); */
         overflow: hidden;
         flex-direction: row;
         margin-bottom: 16px;
@@ -245,11 +245,23 @@ const IncomingMessage = React.memo((props: { message: DataSourceMessageItem, onH
     );
 });
 
-export const useIncomingMessages = (): [JSX.Element | null, (item: IncomingMessage) => void] => {
+export const useIncomingMessages = (): [JSX.Element | null, (item: IncomingMessage) => void, (item: IncomingMessage) => void] => {
     const [messages, setMessages] = React.useState<DataSourceMessageItem[]>([]);
-    const addMessage = (item: IncomingMessage) => {
+    const pendingMessages = React.useRef<Record<string, DataSourceMessageItem | undefined>>({}).current;
+    const onMessageAdded = (item: IncomingMessage) => {
         if (item.type === 'message' && !item.isService) {
-            setMessages(prev => [item, ...prev]);
+            if (item.id) {
+                setMessages(prev => [item, ...prev]);
+            } else {
+                pendingMessages[item.key] = item;
+            }
+        }
+    };
+    const onMessageUpdated = (item: IncomingMessage) => {
+        let pending = pendingMessages[item.key];
+        if (pending && item.type === 'message' && !item.isService && item.id) {
+            onMessageAdded(item);
+            delete pendingMessages[item.key];
         }
     };
     const handleHide = (messageId: string) => {
@@ -264,12 +276,13 @@ export const useIncomingMessages = (): [JSX.Element | null, (item: IncomingMessa
             top={16}
             right={80}
             width={320}
-            height="100%"
+            height="auto"
+            maxHeight="100%"
             zIndex={4}
             overflow="hidden"
         >
             {messages.map(m => <IncomingMessage key={m.id} message={m} onHide={handleHide} />)}
         </XView>
     );
-    return [renderedMessages, addMessage];
+    return [renderedMessages, onMessageAdded, onMessageUpdated];
 };

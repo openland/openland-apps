@@ -20,6 +20,7 @@ import { useTriggerEvents } from './Effects';
 import { useMessageModal } from './useMessageModal';
 import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
 import { useIncomingMessages } from './useIncomingMessages';
+import { useRouteChange } from 'openland-web/hooks/useRouteChange';
 
 const watermarkContainerstyle = css`
     will-change: transform;
@@ -81,7 +82,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     let [showLink, setShowLink] = React.useState(false);
     const [link, setLink] = React.useState<string | undefined>();
 
-    const [renderedMessages, setIncomingMessage] = useIncomingMessages();
+    const [renderedMessages, handleItemAdded, handleItemUpdated] = useIncomingMessages();
 
     React.useEffect(() => {
         // on message with linkm open it in iframe
@@ -115,7 +116,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                 },
                 onDataSourceItemAdded: (item) => {
                     processItem(item);
-                    setIncomingMessage(item);
+                    handleItemAdded(item);
                 },
                 onDataSourceLoadedMoreForward: (items) => {
                     // Nothing to do
@@ -128,6 +129,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                 },
                 onDataSourceItemUpdated: (item) => {
                     processItem(item);
+                    handleItemUpdated(item);
                 },
                 onDataSourceCompleted: () => {
                     // Nothing to do
@@ -152,7 +154,12 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
         isPrivate: !!(room && room.__typename === 'PrivateRoom'),
         isChannel: !!(room && room.__typename === 'SharedRoom' && room.isChannel),
         membersCount: room && room.__typename === 'SharedRoom' ? room.membersCount : undefined,
-        minimizeCall: props.ctx.hide,
+    });
+
+    useRouteChange((route, prevRoute) => {
+        if (route.path !== prevRoute.path) {
+            props.ctx.hide();
+        }
     });
 
     return (
