@@ -213,7 +213,7 @@ const SettingsModal = React.memo((props: { ctx: XModalController }) => {
                         <USelect
                             onChange={setOutputDevice}
                             label="Speakers"
-                            value={{value: output?.deviceId, label: output?.label}}
+                            value={output ? { value: output.deviceId, label: output.label } : null}
                             options={outputs.map((d) => ({ value: d.deviceId, label: d.label }))}
                         />
                     </XView>
@@ -221,7 +221,7 @@ const SettingsModal = React.memo((props: { ctx: XModalController }) => {
                         <USelect
                             onChange={setInputDevice}
                             label="Microphone"
-                            value={{value: input?.deviceId, label: input?.label}}
+                            value={input ? { value: input?.deviceId, label: input?.label } : null}
                             options={inputs.map((d) => ({ value: d.deviceId, label: d.label }))}
                         />
                     </XView>
@@ -229,7 +229,14 @@ const SettingsModal = React.memo((props: { ctx: XModalController }) => {
                         <USelect
                             onChange={setVideoInputDevice}
                             label="Camera"
-                            value={{value: localVideoInput?.deviceId, label: localVideoInput?.label}}
+                            value={
+                                localVideoInput
+                                    ? {
+                                          value: localVideoInput?.deviceId,
+                                          label: localVideoInput?.label,
+                                      }
+                                    : null
+                            }
                             options={videoInputs.map((d) => ({
                                 value: d.deviceId,
                                 label: d.label,
