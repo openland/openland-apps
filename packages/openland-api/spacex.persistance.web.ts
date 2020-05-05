@@ -1,114 +1,76 @@
-// import { PersistenceProvider } from '@openland/spacex/src/web/persistence/PersistenceProvider';
-// import { RecordSet } from '@openland/spacex/src/web/store/RecordStore';
-// import { PersistenceEmptyProvider } from '@openland/spacex/lib/web/persistence/PersistenceEmptyProvider';
+import { PersistenceProvider } from '@openland/spacex/lib/web/persistence/PersistenceProvider';
+import { RecordSet } from '@openland/spacex/lib/web/store/RecordStore';
+import Dexie, { Table } from 'dexie';
+import { PersistenceEmptyProvider } from '@openland/spacex/lib/web/persistence/PersistenceEmptyProvider';
 
-// async function iDBOpen(name: string, version: number, onUpgrade: (db: IDBDatabase) => void): Promise<IDBDatabase> {
-//     return new Promise((resolve, reject) => {
-//         let openRequest = indexedDB.open(name, version);
-//         openRequest.onsuccess = () => {
-//             resolve(openRequest.result);
-//         };
-//         openRequest.onerror = () => {
-//             reject(openRequest.error);
-//         };
+async function getDB(authId: string) {
+    let db = new Dexie('spacex');
+    let store = 'gql_cache.' + authId;
+    db.version(1).stores({
+        [store]: 'key'
+    });
 
-//         openRequest.onupgradeneeded = (event) => {
-//             let db: IDBDatabase = (event.target as any).result;
-//             let tx: IDBTransaction = (event.target as any).transaction;
-//             onUpgrade(db);
-//             tx.oncomplete = () => {
-//                 resolve(openRequest.result);
-//             };
-//         };
-//     });
-// }
+    return db.open();
+}
 
-// async function iDBPut(store: IDBObjectStore, value: any, key?: IDBValidKey): Promise<IDBValidKey> {
-//     return new Promise((resolve, reject) => {
-//         let req = store.put(value, key);
-//         req.onsuccess = () => resolve(req.result);
-//         req.onerror = () => {
-//             reject(req.error);
-//         };
-//     });
-// }
+export class DexiePersistenceProvider implements PersistenceProvider {
+    private store: string;
+    private authId: string;
+    private initialized = false;
+    private db!: Dexie;
+    private table!: Table;
 
-// async function iDBGet(store: IDBObjectStore, query: IDBValidKey | IDBKeyRange): Promise<any> {
-//     return new Promise((resolve, reject) => {
-//         let req = store.get(query);
-//         req.onsuccess = () => {
-//             resolve(req.result);
-//         };
-//         req.onerror = () => {
-//             reject(req.error);
-//         };
-//     });
-// }
+    constructor(authId: string) {
+        this.authId = authId;
+        this.store = 'gql_cache.' + authId;
+    }
 
-// export class IndexedDBPersistenceProvider implements PersistenceProvider {
-//     private store: string;
-//     private initialized = false;
-//     private initializing = false;
-//     private db!: IDBDatabase;
+    async saveRecords(records: RecordSet) {
+        await this.init();
 
-//     constructor(authId: string) {
-//         this.store = 'gql_cache.' + authId;
-//     }
+        await this.db.transaction('rw', this.table, async () => {
+            let itemsToAdd: any[] = [];
 
-//     async saveRecords(records: RecordSet) {
-//         await this.init();
+            for (let key in records) {
+                if (!records.hasOwnProperty(key)) {
+                    continue;
+                }
+                itemsToAdd.push(records[key]);
+            }
 
-//         let tx = this.db.transaction(this.store, 'readwrite');
-//         let store = tx.objectStore(this.store);
+            await this.table.bulkPut(itemsToAdd);
+        });
+    }
 
-//         for (let key in records) {
-//             if (!records.hasOwnProperty(key)) {
-//                 continue;
-//             }
+    async loadRecords(keys: Set<string>) {
+        await this.init();
 
-//             let value = records[key];
-//             await iDBPut(store, {key, value});
-//         }
-//     }
+        return this.db.transaction('r', this.table, async () => {
+            let res: RecordSet = {};
+            let records = (await this.table.bulkGet([...keys])).filter(v => !!v);
+            for (let record of records) {
+                res[record.key] = record;
+            }
 
-//     async loadRecords(keys: Set<string>) {
-//         await this.init();
+            return res;
+        });
+    }
 
-//         let tx = this.db.transaction(this.store, 'readonly');
-//         let store = tx.objectStore(this.store);
+    async init() {
+        if (this.initialized ) {
+            return;
+        }
+        this.initialized = true;
 
-//         let res: RecordSet = {};
+        this.db = await getDB(this.authId);
+        this.table = this.db.table(this.store);
+    }
+}
 
-//         for (let key of [...keys]) {
-//             let value = await iDBGet(store, key);
-//             if (value && value.value) {
-//                 res[key] = value.value;
-//             }
-//         }
-
-//         return res;
-//     }
-
-//     async init() {
-//         if (this.initialized || this.initializing) {
-//             return;
-//         }
-
-//         this.initializing = true;
-//         let db = await iDBOpen('spacex', 3, _db => {
-//             if (!_db.objectStoreNames.contains(this.store)) {
-//                 _db.createObjectStore(this.store, {keyPath: 'key'});
-//             }
-//         });
-//         this.db = db;
-//         this.initialized = true;
-//     }
-// }
-
-// export function buildSpaceXPersistenceProvider(authId: string) {
-//     let isProd = self.location.hostname === 'openland.com';
-//     if (self.indexedDB && !isProd) {
-//         return new IndexedDBPersistenceProvider(authId);
-//     }
-//     return new PersistenceEmptyProvider();
-// }
+export function buildSpaceXPersistenceProvider(authId: string) {
+    let isProd = self.location.hostname === 'openland.com';
+    if (self.indexedDB && !isProd) {
+        return new DexiePersistenceProvider(authId);
+    }
+    return new PersistenceEmptyProvider();
+}
