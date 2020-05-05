@@ -214,10 +214,7 @@ const ExplorePeopleFragment = React.memo((props: ExplorePeopleFragmentProps) => 
     return (
         <div className={exploreContainer}>
             <SearchBox
-                onInputChange={(text) => {
-                    setSearchPeopleQuery(text);
-                    return text;
-                }}
+                onInputChange={setSearchPeopleQuery}
                 value={options}
                 onChange={onInputChange}
             />

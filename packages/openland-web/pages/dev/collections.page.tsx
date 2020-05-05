@@ -148,11 +148,6 @@ const EditCollectionForm = React.memo((props: { hide: () => void; collection?: C
         setOptions(newOpts);
     };
 
-    const onInputChange = (data: string) => {
-        setSearchQuery(data);
-        return data;
-    };
-
     const onChange = (data: { label: string; value: string }[]) => {
         const newSelected = new Map();
         const newOpts: { label: string; value: string }[] = [];
@@ -243,7 +238,7 @@ const EditCollectionForm = React.memo((props: { hide: () => void; collection?: C
                 <div className={searchBoxWrapper}>
                     <SearchBox
                         small={true}
-                        onInputChange={onInputChange}
+                        onInputChange={setSearchQuery}
                         value={options}
                         onChange={onChange}
                     />

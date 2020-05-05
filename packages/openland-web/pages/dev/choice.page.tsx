@@ -79,11 +79,6 @@ const EditChoiceForm = React.memo((props: { hide: () => void; choice?: Choice })
         setOption(newOpts);
     };
 
-    const onInputChange = (data: string) => {
-        setSearchQuery(data);
-        return data;
-    };
-
     const onChange = (data: { label: string; value: string }[]) => {
         const newSelected = new Map();
         const newOpts: { label: string; value: string }[] = [];
@@ -145,7 +140,7 @@ const EditChoiceForm = React.memo((props: { hide: () => void; choice?: Choice })
                     <SearchBox
                         multi={false}
                         small={true}
-                        onInputChange={onInputChange}
+                        onInputChange={setSearchQuery}
                         value={option}
                         onChange={onChange}
                     />
