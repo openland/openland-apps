@@ -7,6 +7,8 @@ export class AppUserMediaTrackWeb implements AppMediaStreamTrack {
     readonly id: string;
     readonly kind: 'audio' | 'video';
     readonly track: MediaStreamTrack;
+    onmute: (() => void) | null = null;
+    onunmute: (() => void) | null = null;
 
     constructor(track: MediaStreamTrack) {
         this.id = uuid();
@@ -18,6 +20,20 @@ export class AppUserMediaTrackWeb implements AppMediaStreamTrack {
         } else {
             throw Error('Unknwon track kind: ' + track.kind);
         }
+        this.track.onmute = () => {
+            if (this.onmute) {
+                this.onmute();
+            }
+        };
+        this.track.onunmute = () => {
+            if (this.onunmute) {
+                this.onunmute();
+            }
+        };
+    }
+
+    get muted() {
+        return this.track.muted;
     }
 
     get enabled() {
