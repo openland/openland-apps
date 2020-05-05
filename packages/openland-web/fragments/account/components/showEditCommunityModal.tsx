@@ -106,12 +106,10 @@ const EditCommunityEntity = (props: {
                         {props.isCommunity && (
                             <XView marginTop={16}>
                                 <USelectField
-                                    field={typeField as any}
-                                    placeholder="Community type"
+                                    field={typeField}
+                                    label="Community type"
                                     disabled={!props.isOwner}
                                     hideSelector={!props.isOwner}
-                                    clearable={false}
-                                    searchable={false}
                                     options={[
                                         {
                                             value: CommunityType.COMMUNITY_PUBLIC,

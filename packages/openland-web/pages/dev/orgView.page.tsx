@@ -342,8 +342,7 @@ const AddFeatureModal = ({ accountId, hide }: { accountId: string; hide: () => v
                 {featureIdField.value && (
                     <USelectField
                         field={featureIdField as any}
-                        value={featureIdField.value!.id}
-                        placeholder={'feature'}
+                        label="feature"
                         options={data.featureFlags.map((v: any) => ({
                             label: v.title,
                             value: v.id,
@@ -425,8 +424,7 @@ const RemoveFeatureModal = ({ accountId, hide }: { accountId: string; hide: () =
                 {featureIdField.value && (
                     <USelectField
                         field={featureIdField as any}
-                        value={featureIdField.value!.id}
-                        placeholder={'feature'}
+                        label="feature"
                         options={data.featureFlags.map((v: any) => ({
                             label: v.title,
                             value: v.id,

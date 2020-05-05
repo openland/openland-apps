@@ -14,7 +14,7 @@ import ToolsIcon from 'openland-icons/s/ic-tools-glyph-24.svg';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
 import { showModalBox } from 'openland-x/showModalBox';
-import { USelect } from 'openland-web/components/unicorn/USelect';
+import { USelect, OptionType } from 'openland-web/components/unicorn/USelect';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalController } from 'openland-x/showModal';
@@ -53,31 +53,42 @@ const controlTextWrapper = css`
     will-change: transform;
 `;
 
-const controlHover = cx('x', 'control-hover', css`
-    background: linear-gradient(270deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    opacity: 0;
-    cursor: pointer;
-`);
-
-const controlWrapper = cx('x', css`
-    position: relative;
-    z-index: 3;
-    
-    &:hover {
+const controlHover = cx(
+    'x',
+    'control-hover',
+    css`
+        background: linear-gradient(270deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        opacity: 0;
         cursor: pointer;
-        
-        .control-hover {
-            opacity: 0.16;
-        }
-    }
-`);
+    `,
+);
 
-const ControlItem = (props: { icon: JSX.Element, text: string, onClick: React.MouseEventHandler }) => {
+const controlWrapper = cx(
+    'x',
+    css`
+        position: relative;
+        z-index: 3;
+
+        &:hover {
+            cursor: pointer;
+
+            .control-hover {
+                opacity: 0.16;
+            }
+        }
+    `,
+);
+
+const ControlItem = (props: {
+    icon: JSX.Element;
+    text: string;
+    onClick: React.MouseEventHandler;
+}) => {
     return (
         <div className={controlWrapper} onClick={props.onClick}>
             <div className={controlHover} />
@@ -89,53 +100,74 @@ const ControlItem = (props: { icon: JSX.Element, text: string, onClick: React.Mo
                 alignItems="center"
             >
                 <XView {...TextStyles.Label1} color="var(--foregroundContrast)" marginRight={12}>
-                    <div className={controlTextWrapper}>
-                        {props.text}
-                    </div>
+                    <div className={controlTextWrapper}>{props.text}</div>
                 </XView>
-                <XView zIndex={4}>
-                    {props.icon}
-                </XView>
+                <XView zIndex={4}>{props.icon}</XView>
             </XView>
         </div>
     );
 };
 
-const SettingsModal = React.memo((props: { ctx: XModalController, }) => {
-    let { devices, input, output, videoInput, selectInput, selectOutput, selectVideoInput } = MediaDevicesManager.instance().useMediaDevices();
-    let prevValues = React.useRef<{ input?: MediaDeviceInfo, output?: MediaDeviceInfo, videoInput?: MediaDeviceInfo }>({ input, output, videoInput }).current;
+const SettingsModal = React.memo((props: { ctx: XModalController }) => {
+    const {
+        devices,
+        input,
+        output,
+        videoInput,
+        selectInput,
+        selectOutput,
+        selectVideoInput,
+    } = MediaDevicesManager.instance().useMediaDevices();
+    const prevValues = React.useRef<{
+        input?: MediaDeviceInfo;
+        output?: MediaDeviceInfo;
+        videoInput?: MediaDeviceInfo;
+    }>({ input, output, videoInput }).current;
 
-    let outputs = devices.filter(d => d.kind === 'audiooutput');
-    let inputs = devices.filter(d => d.kind === 'audioinput');
-    let videoInputs = devices.filter(d => d.kind === 'videoinput');
+    const outputs = devices.filter((d) => d.kind === 'audiooutput');
+    const inputs = devices.filter((d) => d.kind === 'audioinput');
+    const videoInputs = devices.filter((d) => d.kind === 'videoinput');
 
-    const [localVideoInput, setLocalVideoInput] = React.useState<MediaDeviceInfo | undefined>(videoInput);
-    const [localVideoStream, setLocalVideoStream] = React.useState<AppMediaStreamTrack | undefined>();
+    const [localVideoInput, setLocalVideoInput] = React.useState<MediaDeviceInfo | undefined>(
+        videoInput,
+    );
+    const [localVideoStream, setLocalVideoStream] = React.useState<
+        AppMediaStreamTrack | undefined
+    >();
 
-    let setInputDevice = React.useCallback((val) => {
-        let device = devices.find(d => d.deviceId === val.value);
-        selectInput(device);
-    }, [devices]);
-    let setOutputDevice = React.useCallback((val) => {
-        let dev = devices.find(d => d.deviceId === val.value);
-        selectOutput(dev);
-    }, [devices]);
-    let setVideoInputDevice = React.useCallback(async (val) => {
-        let dev = devices.find(d => d.deviceId === val.value);
-        setLocalVideoInput(dev);
-        if (localVideoStream) {
-            localVideoStream.stop();
-        }
-        let v = await AppUserMedia.getUserVideo(dev?.deviceId);
-        setLocalVideoStream(v);
-    }, [devices, localVideoStream]);
+    const setOutputDevice = React.useCallback(
+        (val: OptionType) => {
+            const dev = devices.find((d) => d.deviceId === val.value);
+            selectOutput(dev);
+        },
+        [devices],
+    );
+    const setInputDevice = React.useCallback(
+        (val: OptionType) => {
+            const dev = devices.find((d) => d.deviceId === val.value);
+            selectInput(dev);
+        },
+        [devices],
+    );
+    const setVideoInputDevice = React.useCallback(
+        async (val: OptionType) => {
+            const dev = devices.find((d) => d.deviceId === val.value);
+            setLocalVideoInput(dev);
+            if (localVideoStream) {
+                localVideoStream.stop();
+            }
+            const v = await AppUserMedia.getUserVideo(dev?.deviceId);
+            setLocalVideoStream(v);
+        },
+        [devices, localVideoStream],
+    );
 
     const resetSettings = () => {
         selectInput(prevValues.input);
         selectOutput(prevValues.output);
     };
 
-    let handleSave = () => {
+    const handleSave = () => {
         if (localVideoInput?.deviceId !== videoInput?.deviceId) {
             selectVideoInput(localVideoInput);
         }
@@ -156,25 +188,53 @@ const SettingsModal = React.memo((props: { ctx: XModalController, }) => {
         };
     }, [localVideoStream]);
 
-    let videoTrack = (localVideoStream as AppUserMediaTrackWeb | undefined)?.track;
+    const videoTrack = (localVideoStream as AppUserMediaTrackWeb | undefined)?.track;
 
     return (
         <XView>
             <XView paddingHorizontal={24} flexDirection="row" paddingTop={12}>
-                <XView width={170} height={128} borderRadius={8} backgroundColor="var(--backgroundTertiaryTrans)">
+                <XView
+                    width={170}
+                    height={128}
+                    borderRadius={8}
+                    backgroundColor="var(--backgroundTertiaryTrans)"
+                >
                     {videoTrack && (
-                        <VideoComponent track={videoTrack} cover={true} compact={true} mirror={true} />
+                        <VideoComponent
+                            track={videoTrack}
+                            cover={true}
+                            compact={true}
+                            mirror={true}
+                        />
                     )}
                 </XView>
                 <XView flexDirection="column" marginLeft={16} flexGrow={1} flexShrink={1}>
                     <XView marginBottom={16}>
-                        <USelect searchable={false} onChange={setOutputDevice} placeholder="Speakers" value={output?.deviceId} options={outputs.map(o => ({ value: o.deviceId, label: o.label }))} />
+                        <USelect
+                            onChange={setOutputDevice}
+                            label="Speakers"
+                            value={{value: output?.deviceId, label: output?.label}}
+                            options={outputs.map((d) => ({ value: d.deviceId, label: d.label }))}
+                        />
                     </XView>
                     <XView marginBottom={16}>
-                        <USelect searchable={false} onChange={setInputDevice} placeholder="Microphone" value={input?.deviceId} options={inputs.map(o => ({ value: o.deviceId, label: o.label }))} />
+                        <USelect
+                            onChange={setInputDevice}
+                            label="Microphone"
+                            value={{value: input?.deviceId, label: input?.label}}
+                            options={inputs.map((d) => ({ value: d.deviceId, label: d.label }))}
+                        />
                     </XView>
                     <XView marginBottom={24}>
-                        <USelect searchable={false} onChange={setVideoInputDevice} placeholder="Camera" value={localVideoInput?.deviceId} options={videoInputs.map(o => ({ value: o.deviceId, label: o.label }))} />
+                        <USelect
+                            onChange={setVideoInputDevice}
+                            label="Camera"
+                            value={{value: localVideoInput?.deviceId, label: localVideoInput?.label}}
+                            options={videoInputs.map((d) => ({
+                                value: d.deviceId,
+                                label: d.label,
+                            }))}
+                        />
                     </XView>
                 </XView>
             </XView>
@@ -188,12 +248,7 @@ const SettingsModal = React.memo((props: { ctx: XModalController, }) => {
                         props.ctx.hide();
                     }}
                 />
-                <UButton
-                    text="Save"
-                    style="primary"
-                    size="large"
-                    onClick={handleSave}
-                />
+                <UButton text="Save" style="primary" size="large" onClick={handleSave} />
             </XModalFooter>
         </XView>
     );
@@ -217,34 +272,31 @@ interface CallControlsProps {
 
 export const CallControls = (props: CallControlsProps) => {
     let showSettings = React.useCallback(() => {
-        showModalBox({ title: 'Settings', width: 560, overflowVisible: true }, (ctx) => <SettingsModal ctx={ctx} />);
+        showModalBox({ title: 'Settings', width: 560, overflowVisible: true }, (ctx) => (
+            <SettingsModal ctx={ctx} />
+        ));
     }, []);
     return (
         <div className={ContainerStyle}>
             <div className={cx('x', wrapper)}>
-                <XView
-                    position="absolute"
-                    top={8}
-                    left={0}
-                    right={0}
-                >
+                <XView position="absolute" top={8} left={0} right={0}>
                     <ControlItem
                         text="Minimize"
-                        icon={(
+                        icon={
                             <UIconButton
                                 icon={<MinimizeIcon />}
                                 color="var(--foregroundContrast)"
                                 rippleColor="transparent"
                                 disableHover={true}
                             />
-                        )}
+                        }
                         onClick={props.onMinimize}
                     />
                 </XView>
                 <XView flexGrow={1} flexDirection="column" justifyContent="center">
                     <ControlItem
                         text="End"
-                        icon={(
+                        icon={
                             <UIconButton
                                 icon={<EndIcon />}
                                 color="var(--foregroundContrast)"
@@ -252,12 +304,12 @@ export const CallControls = (props: CallControlsProps) => {
                                 active={true}
                                 disableHover={true}
                             />
-                        )}
+                        }
                         onClick={props.onEnd}
                     />
                     <ControlItem
                         text="Mute"
-                        icon={(
+                        icon={
                             <UIconButton
                                 icon={<MuteIcon />}
                                 color="var(--foregroundContrast)"
@@ -265,12 +317,12 @@ export const CallControls = (props: CallControlsProps) => {
                                 active={props.muted}
                                 disableHover={true}
                             />
-                        )}
+                        }
                         onClick={props.onMute}
                     />
                     <ControlItem
                         text="Camera"
-                        icon={(
+                        icon={
                             <UIconButton
                                 icon={<CameraIcon />}
                                 color="var(--foregroundContrast)"
@@ -278,12 +330,12 @@ export const CallControls = (props: CallControlsProps) => {
                                 active={props.cameraEnabled}
                                 disableHover={true}
                             />
-                        )}
+                        }
                         onClick={props.onCameraClick}
                     />
                     <ControlItem
                         text="Screen"
-                        icon={(
+                        icon={
                             <UIconButton
                                 icon={<ScreenIcon />}
                                 color="var(--foregroundContrast)"
@@ -291,12 +343,12 @@ export const CallControls = (props: CallControlsProps) => {
                                 active={props.screenEnabled}
                                 disableHover={true}
                             />
-                        )}
+                        }
                         onClick={props.onScreenClick}
                     />
                     <ControlItem
                         text="Space"
-                        icon={(
+                        icon={
                             <UIconButton
                                 icon={<MagicIcon />}
                                 color="var(--foregroundContrast)"
@@ -304,24 +356,24 @@ export const CallControls = (props: CallControlsProps) => {
                                 active={props.spaceEnabled}
                                 disableHover={true}
                             />
-                        )}
+                        }
                         onClick={props.onSpaceClick}
                     />
                     <ControlItem
                         text="Message"
-                        icon={(
+                        icon={
                             <UIconButton
                                 icon={<MessageIcon />}
                                 color="var(--foregroundContrast)"
                                 rippleColor="var(--tintBlue)"
                                 disableHover={true}
                             />
-                        )}
+                        }
                         onClick={props.onMessageClick}
                     />
                     <ControlItem
                         text="Plugins"
-                        icon={(
+                        icon={
                             <UIconButton
                                 icon={<ToolsIcon />}
                                 color="var(--foregroundContrast)"
@@ -329,19 +381,19 @@ export const CallControls = (props: CallControlsProps) => {
                                 active={props.toolsEnabled}
                                 disableHover={true}
                             />
-                        )}
+                        }
                         onClick={props.onToolsClick}
                     />
                     <ControlItem
                         text="Settings"
-                        icon={(
+                        icon={
                             <UIconButton
                                 icon={<SettingsIcon />}
                                 color="var(--foregroundContrast)"
                                 rippleColor="transparent"
                                 disableHover={true}
                             />
-                        )}
+                        }
                         onClick={showSettings}
                     />
                 </XView>

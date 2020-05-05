@@ -2,7 +2,7 @@ import * as React from 'react';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalController } from 'openland-x/showModal';
 import { XView } from 'react-mental';
-import { USelect } from 'openland-web/components/unicorn/USelect';
+import { USelect, OptionType } from 'openland-web/components/unicorn/USelect';
 import { useClient } from 'openland-api/useClient';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import uuid from 'uuid';
@@ -23,7 +23,7 @@ const defaultError = 'We are unable to authenticate your payment method. Please 
 const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
     let client = useClient();
     let cards = client.useMyCards({ fetchPolicy: 'cache-and-network' }).myCards;
-    let [amount, setAmount] = React.useState<1000 | 2000 | 5000>(1000);
+    let [amount, setAmount] = React.useState<number>(1000);
     let [currentCard, setCurrentCard] = React.useState<string | undefined>(undefined);
     let [error, setError] = React.useState<string | undefined>(undefined);
     const [loading, setLoading] = React.useState(false);
@@ -93,20 +93,22 @@ const AddFundsComponent = React.memo((props: { ctx: XModalController }) => {
         }
     }, [currentCard, amount]);
 
+    const options = [
+        { value: 1000, label: '$10' },
+        { value: 2000, label: '$20' },
+        { value: 5000, label: '$50' }
+    ];
+
     return (
         <XView flexDirection="column">
             <XView paddingHorizontal={8}>
                 <XView paddingHorizontal={16} paddingTop={12}>
                     <USelect
-                        placeholder="Amount"
-                        value={amount}
+                        label="Amount"
+                        value={options.filter(i => i.value === amount)}
                         searchable={false}
-                        options={[
-                            { value: 1000, label: '$10' },
-                            { value: 2000, label: '$20' },
-                            { value: 5000, label: '$50' }
-                        ]}
-                        onChange={(v) => setAmount((v as any).value)}
+                        options={options}
+                        onChange={(v: OptionType) => setAmount(v.value as number)}
                     />
                 </XView>
                 <UListGroup

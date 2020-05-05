@@ -3,7 +3,7 @@ import { useForm } from 'openland-form/useForm';
 import { useClient } from 'openland-api/useClient';
 import { useField } from 'openland-form/useField';
 import { XView } from 'react-mental';
-import { USelect } from 'openland-web/components/unicorn/USelect';
+import { USelectField } from 'openland-web/components/unicorn/USelect';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
@@ -33,7 +33,7 @@ export const SettingsProfileFragment = React.memo(() => {
 
     const firstNameField = useField('input.firstName', profile.firstName || '', form, [
         {
-            checkIsValid: value => !!value && value.length > 0,
+            checkIsValid: (value) => !!value && value.length > 0,
             text: 'Please enter your name',
         },
     ]);
@@ -45,10 +45,7 @@ export const SettingsProfileFragment = React.memo(() => {
     );
     const primaryOrganizationField = useField(
         'input.primaryOrganization',
-        profile.primaryOrganization && {
-            label: profile.primaryOrganization.name,
-            value: profile.primaryOrganization.id
-        },
+        profile.primaryOrganization && profile.primaryOrganization.id,
         form,
     );
 
@@ -56,17 +53,17 @@ export const SettingsProfileFragment = React.memo(() => {
     const locationField = useField('input.location', profile.location || '', form);
     const usernameField = useField('input.username', user.shortname || '', form, [
         {
-            checkIsValid: value =>
+            checkIsValid: (value) =>
                 !!value && value.length > 0 ? value.length >= shortnameMinLength : true,
             text: 'Username must have at least ' + shortnameMinLength + ' characters.',
         },
         {
-            checkIsValid: value =>
+            checkIsValid: (value) =>
                 !!value && value.length > 0 ? value.length < shortnameMaxLength : true,
             text: 'Username must have no more than ' + shortnameMaxLength + ' characters.',
         },
         {
-            checkIsValid: value =>
+            checkIsValid: (value) =>
                 !!value && value.length > 0 ? !!value.match('^[a-z0-9_]+$') : true,
             text: 'A username can only contain a-z, 0-9, and underscores.',
         },
@@ -85,7 +82,7 @@ export const SettingsProfileFragment = React.memo(() => {
                 input: {
                     firstName: firstNameField.value,
                     lastName: lastNameField.value,
-                    primaryOrganization: primaryOrganizationField.value!.value,
+                    primaryOrganization: primaryOrganizationField.value,
                     about: aboutField.value,
                     photoRef: sanitizeImageRef(avatarField.value),
                     email: emailField.value,
@@ -110,12 +107,14 @@ export const SettingsProfileFragment = React.memo(() => {
         });
     };
 
-    const organizationsWithoutCommunity = organizations.myOrganizations.filter(i => !i.isCommunity);
+    const organizationsWithoutCommunity = organizations.myOrganizations.filter(
+        (i) => !i.isCommunity,
+    );
 
     // Temp && ugly fix for users with community as primary organizations
     if (
         profile.primaryOrganization &&
-        organizationsWithoutCommunity.filter(i => i.id === profile.primaryOrganization!.id)
+        organizationsWithoutCommunity.filter((i) => i.id === profile.primaryOrganization!.id)
             .length <= 0
     ) {
         organizationsWithoutCommunity.unshift(profile.primaryOrganization as any);
@@ -138,25 +137,19 @@ export const SettingsProfileFragment = React.memo(() => {
                         )}
                         <FormSection title="Info">
                             <XView marginBottom={16}>
-                                <UInputField
-                                    label="First name"
-                                    field={firstNameField}
-                                />
+                                <UInputField label="First name" field={firstNameField} />
                             </XView>
                             <XView marginBottom={16}>
                                 <UInputField label="Last name" field={lastNameField} />
                             </XView>
                             <XView marginBottom={16}>
-                                <USelect
-                                    {...primaryOrganizationField.input}
-                                    value={primaryOrganizationField.input.value || undefined}
-                                    placeholder="Primary organization"
-                                    options={organizationsWithoutCommunity.map(
-                                        (org: any) => ({
-                                            value: org.id,
-                                            label: org.name,
-                                        }),
-                                    )}
+                                <USelectField
+                                    field={primaryOrganizationField}
+                                    label="Primary organization"
+                                    options={organizationsWithoutCommunity.map((org: any) => ({
+                                        value: org.id,
+                                        label: org.name,
+                                    }))}
                                 />
                             </XView>
                             <XView marginBottom={16}>
@@ -178,10 +171,7 @@ export const SettingsProfileFragment = React.memo(() => {
                         </FormSection>
                         <FormSection title="Contacts">
                             <XView marginBottom={16}>
-                                <UInputField
-                                    label="Phone number"
-                                    field={phoneNumberField}
-                                />
+                                <UInputField label="Phone number" field={phoneNumberField} />
                             </XView>
                             <XView marginBottom={16}>
                                 <UInputField label="Email" field={emailField} />

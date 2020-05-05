@@ -66,7 +66,7 @@
         "react-native-web": "^0.9.0",
         "react-router": "^4.2.0",
         "react-router-dom": "^4.2.2",
-        "react-select": "^1.2.1",
+        "react-select": "3.1.0",
         "react-test-renderer": "^16.4.1",
         "react-tilt": "^0.1.4",
         "react-mental": "1.5.0",

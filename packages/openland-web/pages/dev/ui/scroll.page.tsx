@@ -4,7 +4,7 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XScrollViewReverse2 } from 'openland-x/XScrollViewReversed2';
 import { XView } from 'react-mental';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { USelect } from 'openland-web/components/unicorn/USelect';
+import { USelect, OptionType } from 'openland-web/components/unicorn/USelect';
 import { XScrollViewAnchored } from 'openland-x/XScrollViewAnchored';
 import { css } from 'linaria';
 
@@ -100,6 +100,15 @@ const TestComponent = React.memo(() => {
             </XView>
         );
     }
+
+    const options = [{
+        value: 'XScrollViewReverse2', label: 'XScrollViewReverse2'
+    }, {
+        value: 'XScrollViewAnchored', label: 'XScrollViewAnchored'
+    }, {
+        value: 'Native', label: 'Native'
+    }];
+
     return (
         <XView height={height} width={width} flexDirection="column">
             <XView height={60} flexDirection="row" alignItems="center">
@@ -116,18 +125,12 @@ const TestComponent = React.memo(() => {
             </XView>
             <XView height={60} flexDirection="row" alignItems="center">
                 <USelect
-                    placeholder="Engine"
-                    options={[{
-                        value: 'XScrollViewReverse2', label: 'XScrollViewReverse2'
-                    }, {
-                        value: 'XScrollViewAnchored', label: 'XScrollViewAnchored'
-                    }, {
-                        value: 'Native', label: 'Native'
-                    }]}
-                    value={engine}
+                    label="Engine"
+                    options={options}
+                    value={options.filter(v => v.value === engine)}
                     flexGrow={1}
                     multi={false}
-                    onChange={(p) => setEngine((p as any).value)}
+                    onChange={(p: OptionType) => setEngine(p.value as any)}
                 />
             </XView>
             {engine === 'XScrollViewReverse2' && (

@@ -55,8 +55,8 @@ export const AddSuperAdminForm = ({ hide }: { hide: () => void }) => {
                         marginBottom={10}
                     />
                     <USelectField
-                        placeholder="Role"
-                        field={roleField as any}
+                        label="Role"
+                        field={roleField}
                         options={[
                             { label: 'Editor', value: 'EDITOR' },
                             { label: 'Super Admin', value: 'SUPER_ADMIN' },

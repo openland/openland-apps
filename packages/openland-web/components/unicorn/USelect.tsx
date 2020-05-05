@@ -1,275 +1,221 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { XView } from 'react-mental';
+import { XView, XViewProps } from 'react-mental';
 import Select, {
-    ReactSelectProps,
-    Creatable,
-    ValueComponentProps,
-    ArrowRendererProps,
+    components,
+    OptionProps,
+    IndicatorProps,
+    StylesConfig,
+    InputActionMeta,
+    MultiValueProps,
+    ValueType,
 } from 'react-select';
-import { TextLabel1, TextDensed, TextBody } from 'openland-web/utils/TextStyles';
+import { emoji } from 'openland-y-utils/emoji';
+import { FormField } from 'openland-form/useField';
+import { TextStyles, TextBody, TextDensed, TextLabel1 } from 'openland-web/utils/TextStyles';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcClear from 'openland-icons/s/ic-close-16.svg';
 import IcDropdown from 'openland-icons/s/ic-dropdown-16.svg';
-import { UIcon } from './UIcon';
-import { FormField } from 'openland-form/useField';
+import IcCheck from 'openland-icons/s/ic-done-16.svg';
 
-const style = css`
-    &.Select {
-        display: flex;
-        flex-shrink: 1;
-        flex-grow: 1;
-        position: relative;
-        border-radius: 8px;
-        max-width: 100%;
-        cursor: pointer;
-    }
-    &.Select input::-webkit-contacts-auto-fill-button,
-    &.Select input::-webkit-credentials-auto-fill-button,
-    &.Select input::-ms-clear,
-    &.Select input::-ms-reveal {
-        display: none !important;
-    }
-    &.Select.is-searchable.is-open > .Select-control,
-    &.Select.is-searchable.is-focused:not(.is-open) > .Select-control {
-        cursor: pointer;
-    }
-    &.Select.has-value.is-pseudo-focused .Select-input {
-        opacity: 0;
-    }
-    & .Select-control {
-        display: flex;
-        align-items: center;
-        flex-grow: 1;
-        flex-shrink: 1;
-        padding: 6px 16px;
-        min-height: 56px;
-        overflow: hidden;
-        position: relative;
-        cursor: pointer;
-        border-radius: 8px;
-        background-color: var(--backgroundTertiaryTrans);
+type USelectSize = 'small' | 'default';
 
-        &:hover {
-            background-color: var(--backgroundTertiaryHoverTrans);
-        }
-    }
-    & .Select-input {
-        display: flex;
-        flex-grow: 1;
-        flex-shrink: 1;
-    }
-    & .Select-input > input {
-        background: none transparent;
-        border: 0 none;
-        box-shadow: none;
-        cursor: default;
-        display: flex;
-        flex-grow: 1;
-        flex-shrink: 1;
-        font-family: inherit;
-        margin: 0;
-        outline: none;
-        font-size: 15px;
-        color: var(--foregroundPrimary);
-        -webkit-appearance: none;
-    }
-    &.is-focused .Select-input > input {
-        cursor: text;
-    }
-    &.has-value.is-pseudo-focused .Select-input {
-        opacity: 0;
-    }
-    & .Select-clear-zone {
-        cursor: pointer;
-        display: flex;
-        flex-shrink: 0;
-        align-self: center;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        max-width: 40px;
-        max-height: 40px;
-    }
-    & .Select-multi-value-wrapper {
-        display: flex;
-        flex-wrap: wrap;
-        flex-grow: 1;
-        flex-shrink: 1;
-        align-items: center;
-        overflow: hidden;
-    }
-    &.Select--multi.has-value .Select-multi-value-wrapper {
-        margin-left: -4px;
-    }
-    &.Select .Select-aria-only {
-        display: none;
-    }
-    &.Select--multi.has-value .Select-input {
-        margin-left: 5px;
-    }
+interface CustomStylesConfig {
+    size: USelectSize;
+    withCustomPlaceholder: boolean;
+    hideSelector: boolean;
+    optionRender: boolean;
+}
+
+const customStyles = (config: CustomStylesConfig) =>
+    ({
+        control: (styles, state) => ({
+            ...styles,
+            cursor: 'pointer',
+            backgroundColor: 'var(--backgroundTertiaryTrans)',
+            '&:hover': {
+                backgroundColor: 'var(--backgroundTertiaryHoverTrans)',
+            },
+            padding: state.isMulti ? '0px 16px' : '8px 16px',
+            paddingLeft: state.isMulti && state.hasValue ? 4 : undefined,
+            transition: 'none',
+            boxShadow: 'none',
+            border: 'none',
+            borderRadius: 8,
+            minHeight: config.size === 'default' ? 56 : 40,
+        }),
+        container: (styles) => ({
+            ...styles,
+        }),
+        valueContainer: (styles) => ({
+            ...styles,
+            padding: 0,
+            marginTop: config.withCustomPlaceholder ? 16 : undefined,
+            overflow: config.withCustomPlaceholder ? 'visible' : undefined,
+        }),
+        input: (style) => ({
+            ...style,
+            ...TextStyles.Body,
+            color: 'var(--foregroundPrimary)',
+            paddingTop: 0,
+            paddingBottom: 4,
+            margin: 0,
+        }),
+        placeholder: (styles) => ({
+            ...styles,
+            ...TextStyles.Body,
+            color: 'var(--foregroundTertiary)',
+            marginRight: 0,
+            marginLeft: 0,
+            display: config.withCustomPlaceholder ? 'none' : undefined,
+        }),
+        dropdownIndicator: (styles) => ({
+            ...styles,
+            padding: 0,
+            display: config.hideSelector ? 'none' : undefined,
+        }),
+        indicatorSeparator: () => ({
+            display: 'none',
+        }),
+        indicatorsContainer: (styles) => ({
+            ...styles,
+        }),
+        multiValue: (styles) => ({
+            ...styles,
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            margin: 4,
+            borderRadius: 4,
+            backgroundColor: 'var(--accentPrimary)',
+            padding: '3px 8px',
+        }),
+        multiValueLabel: (styles) => ({
+            ...styles,
+            ...TextStyles.Caption,
+            padding: 0,
+            paddingLeft: 0,
+            color: '#fff',
+        }),
+        multiValueRemove: (styles) => ({
+            ...styles,
+            paddingLeft: 0,
+            paddingRight: 0,
+            marginLeft: 4,
+            color: '#fff',
+            opacity: 0.84,
+            '&:hover': {
+                backgroundColor: 'var(--accentPrimary)',
+                color: '#fff',
+                opacity: 1,
+            },
+        }),
+        menu: (styles) => ({
+            ...styles,
+            boxShadow: '0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08)',
+            borderRadius: 8,
+            display: config.hideSelector ? 'none' : undefined,
+        }),
+        menuList: (styles) => ({
+            ...styles,
+            paddingTop: 8,
+            paddingBottom: 8,
+        }),
+        option: (styles, state: any) => ({
+            ...TextStyles.Body,
+            cursor: 'pointer',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            color: 'var(--foregroundPrimary)',
+            padding: config.size === 'small' ? '8px 16px' : '6px 16px',
+            backgroundColor: state.isFocused ? 'var(--backgroundPrimaryHover)' : undefined,
+            paddingLeft: config.optionRender ? 0 : undefined,
+            minHeight: 40,
+            '& > div *': {
+                pointerEvents: 'none',
+            },
+        }),
+        singleValue: (styles) => ({
+            ...styles,
+            ...TextStyles.Body,
+            color: 'var(--foregroundPrimary)',
+            marginLeft: 0,
+            marginRight: 0,
+        }),
+    } as StylesConfig);
+
+const placeholderStyle = css`
+    pointer-events: none;
+    position: absolute;
+    padding-left: 16px;
+    padding-right: 16px;
+    font-size: 15px;
+    color: var(--foregroundTertiary);
+    line-height: 24px;
+    top: 14px;
+    transition: all 0.15s ease;
 `;
 
-const placeholderMultiStyle = css`
-    &.Select--multi .Select-placeholder {
-        color: var(--foregroundTertiary);
-        font-size: 15px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        position: absolute;
-        max-width: 100%;
-    }
+const placeholderValueStyle = css`
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--foregroundSecondary);
+    top: 8px;
 `;
 
-const placeholderSingleStyle = css`
-    &.Select--single .Select-placeholder {
-        display: none;
-    }
-    &.Select--single + .Stranger-placeholder {
-        color: var(--foregroundTertiary);
-        pointer-events: none;
-        font-size: 15px;
-        line-height: 24px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        transition: all 0.15s ease;
-        max-width: 100%;
-        position: absolute;
-        top: 14px;
-        left: 16px;
-    }
-    &.Select--single.is-searchable.is-focused + .Stranger-placeholder,
-    &.Select--single.has-value + .Stranger-placeholder {
-        font-size: 13px;
-        line-height: 18px;
-        color: var(--foregroundSecondary);
-        top: 8px;
-    }
-
-    &.Select--single.has-value .Select-multi-value-wrapper,
-    &.Select--single.is-searchable .Select-multi-value-wrapper {
-        margin-top: 18px;
-    }
+const placeholderInvalidStyle = css`
+    color: var(--accentNegative) !important;
 `;
 
-const smallStyle = css`
-    & .Select-control {
-        padding: 2px 8px;
-        min-height: 40px;
-    }
+type AnyObject = { [key: string]: any };
 
-    &.Select--single + .Stranger-placeholder {
-        top: 8px;
-        left: 8px;
-    }
-    &.Select--single.is-searchable.is-focused + .Stranger-placeholder,
-    &.Select--single.has-value + .Stranger-placeholder {
-        top: 2px;
-    }
+export type OptionType = {
+    value: string | number | boolean | null | undefined;
+    label: string | number | boolean | undefined;
+    labelShort?: string;
+    subtitle?: string;
+} & AnyObject;
 
-    &.Select--single.has-value .Select-multi-value-wrapper,
-    &.Select--single.is-searchable .Select-multi-value-wrapper {
-        margin-top: 12px;
-    }
+const arrowStyle = css`
+    transform: rotate(0deg);
 `;
 
-const Placeholder = (props: { placeholder?: string }) => (
-    <div className="Stranger-placeholder">{props.placeholder}</div>
+const arrowOpenStyle = css`
+    transform: rotate(180deg);
+`;
+
+const DropdownIndicatorComponent = (props: IndicatorProps<OptionType>) => (
+    <components.DropdownIndicator {...props}>
+        <UIcon
+            icon={
+                <IcDropdown
+                    className={cx(arrowStyle, props.selectProps.menuIsOpen && arrowOpenStyle)}
+                />
+            }
+            size={16}
+            color="var(--foregroundTertiary)"
+        />
+    </components.DropdownIndicator>
 );
 
-const withMenuStyle = css`
-    &.Select.is-disabled .Select-arrow-zone {
-        cursor: default;
-        pointer-events: none;
-        opacity: 0.35;
-    }
-    & .Select-arrow-zone {
-        cursor: pointer;
-        display: flex;
-        flex-shrink: 0;
-        align-self: center;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        max-width: 40px;
-        max-height: 40px;
-    }
-    & .Select-menu-outer {
-        background-color: #fff;
-        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
-        border-radius: 8px;
-        max-height: 268px;
-        position: absolute;
-        left: 0;
-        margin-top: 8px;
-        top: 100%;
-        width: 100%;
-        z-index: 1;
-        overflow: hidden;
-        -webkit-overflow-scrolling: touch;
-        margin-bottom: 16px;
-    }
-    & .Select-menu {
-        padding: 8px 0;
-        max-height: 266px;
-        overflow-y: auto;
-    }
-    & .Select-option {
-        background-color: #fff;
-        color: #666666;
-        cursor: pointer;
-        display: block;
-    }
-    & .Select-option.is-selected {
-        position: relative;
-        padding-right: 16px;
-    }
-    & .Select-option.is-selected:after {
-        display: block;
-        content: '';
+const ClearIndicatorComponent = (props: IndicatorProps<OptionType>) => (
+    <components.ClearIndicator {...props}>
+        <UIcon icon={<IcClear />} size={16} color="var(--foregroundTertiary)" />
+    </components.ClearIndicator>
+);
 
-        position: absolute;
-        top: 50%;
-        right: 16px;
-        transform: translateY(-50%);
-
-        width: 16px;
-        height: 16px;
-
-        background-image: url('https://cdn.openland.com/shared/web/ic-done-16-2.svg');
-        z-index: 2;
-    }
-    & .Select-option.is-focused {
-        background-color: var(--backgroundPrimaryHover);
-    }
-    & .Select-option.is-disabled {
-        opacity: 0.5;
-        cursor: default;
-    }
-    & .Select-noresults {
-        color: var(--foregroundPrimary);
-        opacity: 0.5;
-        cursor: default;
-        display: block;
-        padding: 8px 10px;
-    }
-`;
-
-const hideMenuSelector = css`
-    & .Select-menu-outer {
-        display: none;
-    }
-`;
+const MultiValueLabelComponent = (props: MultiValueProps<OptionType>) => (
+    <components.MultiValueLabel {...props}>
+        {emoji(props.data.label ? String(props.data.label) : '')}
+    </components.MultiValueLabel>
+);
 
 const optionContainer = css`
     display: flex;
     flex-direction: column;
-    padding: 6px 16px;
-`;
-
-const optionShortContainer = css`
-    min-height: 40px;
 `;
 
 const optionLabelStyle = css`
@@ -282,214 +228,149 @@ const optionSubtitleStyle = css`
     color: var(--foregroundSecondary);
 `;
 
-interface OptionType<T = string | number | boolean | undefined> {
-    value: T;
-    label: string;
-    labelShort?: string | null;
-    subtitle?: string | null;
-}
-
 const OptionRender = (option: OptionType) => {
     if (option.subtitle && option.labelShort) {
         return (
             <div className={optionContainer}>
-                <div className={cx(TextLabel1, optionLabelStyle)}>{option.label}</div>
-                <div className={cx(TextDensed, optionSubtitleStyle)}>{option.subtitle}</div>
+                <div className={cx(TextLabel1, optionLabelStyle)}>{emoji(String(option.label))}</div>
+                <div className={cx(TextDensed, optionSubtitleStyle)}>{emoji(option.subtitle)}</div>
             </div>
         );
     }
     return (
-        <div className={cx(optionContainer, optionShortContainer)}>
-            <div className={cx(TextBody, optionLabelStyle)}>{option.label}</div>
+        <div className={optionContainer}>
+            <div className={cx(TextBody, optionLabelStyle)}>{emoji(String(option.label))}</div>
         </div>
     );
 };
 
-const multiValueContainer = css`
-    background-color: var(--accentPrimary);
-    border-radius: 8px;
-    color: #fff;
-    display: flex;
-    margin: 4px;
-    padding: 4px 8px 4px 12px;
-`;
+const OptionComponent = (
+    props: OptionProps<OptionType> & {
+        customChild?: (option: OptionType) => React.ReactElement;
+    },
+) => {
+    const { data, customChild } = props;
+    const option = data as OptionType;
+    const isSelected = props.isSelected;
+    return (
+        <components.Option {...props}>
+            {customChild ? customChild(option) : <OptionRender {...option} />}
+            {isSelected && (
+                <div>
+                    <UIcon icon={<IcCheck />} color="var(--foregroundTertiary)" size={16} />
+                </div>
+            )}
+        </components.Option>
+    );
+};
 
-const multiValueSmallContainer = css`
-    padding: 0px 8px 0px 8px;
-`;
+interface USelectBasicProps {
+    options: OptionType[];
+    onInputChange?: (v: string) => void;
+    size?: USelectSize;
+    disabled?: boolean;
+    hideSelector?: boolean;
+    optionRender?: (option: OptionType) => React.ReactElement;
+    clearable?: boolean;
+    searchable?: boolean;
+    label?: string;
+    invalid?: boolean;
+}
 
-const multiValueContent = css`
-    display: flex;
-    align-items: center;
-`;
+export interface USelectProps extends USelectBasicProps, XViewProps {
+    value: ValueType<OptionType>;
+    onChange: (v: ValueType<OptionType>) => void;
+    multi?: boolean;
+}
 
-const multiValueIcon = css`
-    padding-top: 2px;
-    margin-left: 4px;
-    cursor: pointer;
-    &:hover svg {
-        path {
-            fill: #fff;
+export const USelect = React.memo((props: USelectProps) => {
+    const {
+        options,
+        value,
+        onChange,
+        onInputChange,
+        optionRender,
+        size = 'default',
+        disabled,
+        hideSelector = false,
+        multi = false,
+        clearable = false,
+        searchable = false,
+        label,
+        invalid,
+        ...xViewProps
+    } = props;
+
+    const [focus, setFocus] = React.useState(false);
+    const [inputValue, setInputValue] = React.useState('');
+
+    const onInputChangeHandler = (v: string, params: InputActionMeta) => {
+        if (params.action === 'input-change') {
+            setInputValue(v);
+            if (onInputChange) {
+                onInputChange(v);
+            }
         }
-    }
-`;
-
-interface ValueRenderProps extends ValueComponentProps {
-    size?: 'default' | 'small';
-}
-
-const MultiValueRender = (props: ValueRenderProps) => (
-    <div
-        className={cx(
-            multiValueContainer,
-            props.size === 'small' && multiValueSmallContainer,
-            TextBody,
-        )}
-    >
-        <div className={multiValueContent}>
-            {props.value.label}
-            <div onClick={() => props.onRemove!!(props.value)} className={multiValueIcon}>
-                <UIcon icon={<IcClear />} color="rgba(255, 255, 255, 0.5)" />
-            </div>
-        </div>
-    </div>
-);
-
-const singleValueContainer = css`
-    color: var(--foregroundPrimary);
-    font-size: 15px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    display: block;
-    flex-shrink: 1;
-`;
-
-const SingleValueRender = (props: ValueRenderProps) => {
-    return (
-        <div className={singleValueContainer}>
-            {props.value.labelShort ? props.value.labelShort : props.value.label || props.value.title}
-        </div>
-    );
-};
-
-const ClearRender = () => (
-    <div>
-        <UIcon icon={<IcClear />} size={20} color="var(--foregroundTertiary)" />
-    </div>
-);
-
-const arrowStyle = css`
-    transform: rotate(0deg);
-`;
-
-const arrowOpenStyle = css`
-    transform: rotate(180deg);
-`;
-
-const ArrowRender = (props: ArrowRendererProps) => {
-    const isOpen = props.isOpen;
-    return (
-        <UIcon
-            icon={<IcDropdown className={cx(arrowStyle, isOpen && arrowOpenStyle)} />}
-            size={16}
-            color="var(--foregroundTertiary)"
-        />
-    );
-};
-
-interface ContainerProps {
-    flexGrow?: number | null;
-    flexShrink?: number | null;
-    flexBasis?: number | null;
-    minHeight?: number | string | null;
-    minWidth?: number | string | null;
-    maxHeight?: number | string | null;
-    maxWidth?: number | string | null;
-    alignSelf?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | null;
-}
-
-const Container = (props: ContainerProps & { children: any }) => (
-    <XView {...props}>{props.children}</XView>
-);
-
-export type USelectBasicProps = ReactSelectProps &
-    ContainerProps & {
-        size?: 'default' | 'small';
-        options: OptionType[];
-        placeholder?: string;
-        creatable?: boolean;
-        hideSelector?: boolean;
     };
 
-export const USelect = (props: USelectBasicProps) => {
-    const { creatable, hideSelector, size = 'default', ...other } = props;
     return (
-        <>
-            {props.creatable && (
-                <Container {...other}>
-                    <Creatable
-                        clearRenderer={ClearRender}
-                        optionRenderer={props.optionRenderer ? props.optionRenderer : OptionRender}
-                        arrowRenderer={!hideSelector ? ArrowRender : null}
-                        valueComponent={valueProps =>
-                            props.multi ? (
-                                <MultiValueRender size={size} {...valueProps} />
-                            ) : (
-                                    <SingleValueRender size={size} {...valueProps} />
-                                )
-                        }
-                        clearable={props.clearable || false}
-                        className={cx(
-                            style,
-                            props.size === 'small' && smallStyle,
-                            !hideSelector ? withMenuStyle : hideMenuSelector,
-                            props.multi && placeholderMultiStyle,
-                            !props.multi && placeholderSingleStyle,
-                        )}
-                        {...other}
-                    />
-                    {!props.multi && <Placeholder placeholder={props.placeholder} />}
-                </Container>
+        <XView {...xViewProps}>
+            <Select
+                onFocus={() => setFocus(true)}
+                onBlur={() => setFocus(false)}
+                options={options}
+                value={value}
+                onChange={onChange}
+                isDisabled={disabled}
+                isMulti={multi}
+                isClearable={clearable}
+                onInputChange={onInputChangeHandler}
+                inputValue={inputValue}
+                isSearchable={searchable}
+                placeholder={label}
+                styles={customStyles({
+                    size: size,
+                    withCustomPlaceholder: !multi && size === 'default',
+                    hideSelector: hideSelector,
+                    optionRender: !!optionRender,
+                })}
+                components={{
+                    Option: optionRender
+                        ? (v) => OptionComponent({ ...v, customChild: optionRender })
+                        : (v) => OptionComponent({ ...v }),
+                    DropdownIndicator: DropdownIndicatorComponent,
+                    ClearIndicator: ClearIndicatorComponent,
+                    MultiValueLabel: MultiValueLabelComponent,
+                }}
+            />
+            {!multi && size === 'default' && (
+                <div
+                    className={cx(
+                        placeholderStyle,
+                        (focus || (Array.isArray(value) ? !!value.length : !!value)) &&
+                            placeholderValueStyle,
+                        invalid && placeholderInvalidStyle,
+                    )}
+                >
+                    {label}
+                </div>
             )}
-            {!props.creatable && (
-                <Container {...other}>
-                    <Select
-                        clearRenderer={ClearRender}
-                        optionRenderer={props.optionRenderer ? props.optionRenderer : OptionRender}
-                        arrowRenderer={!hideSelector ? ArrowRender : null}
-                        valueComponent={valueProps =>
-                            props.multi ? (
-                                <MultiValueRender size={size} {...valueProps} />
-                            ) : (
-                                    <SingleValueRender size={size} {...valueProps} />
-                                )
-                        }
-                        clearable={props.clearable || false}
-                        className={cx(
-                            style,
-                            props.size === 'small' && smallStyle,
-                            !hideSelector ? withMenuStyle : hideMenuSelector,
-                            props.multi && placeholderMultiStyle,
-                            !props.multi && placeholderSingleStyle,
-                        )}
-                        {...other}
-                    />
-                    {!props.multi && <Placeholder placeholder={props.placeholder} />}
-                </Container>
-            )}
-        </>
+        </XView>
     );
-};
+});
 
-export const USelectField = (props: USelectBasicProps & { field: FormField<OptionType> }) => {
+type UselectFieldType = string | number | boolean | null | undefined;
+
+export const USelectField = (props: USelectBasicProps & { field: FormField<UselectFieldType> }) => {
     const { field, ...other } = props;
     return (
         <USelect
-            onChange={(val: OptionType | any) => {
-                field.input.onChange(val ? val.value : null);
+            onChange={(val: OptionType) => {
+                field.input.onChange(!!val ? val.value : null);
             }}
-            value={field.input.value}
+            multi={false}
+            value={props.options.filter((i) => i.value === field.value)}
+            invalid={field.input.invalid}
             {...other}
         />
     );

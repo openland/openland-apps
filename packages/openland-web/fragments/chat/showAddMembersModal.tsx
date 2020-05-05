@@ -65,19 +65,20 @@ const AddMemberModalInner = (props: InviteModalProps) => {
 
     const onInputChange = (data: string) => {
         setSearchQuery(data);
-        return data;
     };
 
-    const onChange = (data: { label: string; value: string }[]) => {
+    const onChange = (data: { label: string; value: string }[] | null) => {
         const newSelected = new Map();
         const newOpts: { label: string; value: string }[] = [];
-        data.map(i => {
-            newSelected.set(i.value, i.label);
-            newOpts.push({
-                label: i.label,
-                value: i.value,
+        if (data) {
+            data.map(i => {
+                newSelected.set(i.value, i.label);
+                newOpts.push({
+                    label: i.label,
+                    value: i.value,
+                });
             });
-        });
+        }
         setSelectedUsers(newSelected);
         setOptions(newOpts);
     };

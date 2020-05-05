@@ -14,37 +14,42 @@ const textAlignClassName = css`
     text-align: center;
 `;
 
-const WriteFirstMessageModal = (props: { ctx: XModalController }) => {
+type SelectedType = {
+    value: string; label: string
+};
+
+const WriteFirstMessageModal = React.memo((props: { ctx: XModalController }) => {
     const router = React.useContext(XViewRouterContext);
-    const [items, setItems] = React.useState([] as DialogDataSourceItem[]);
-    const [selected, setSelected] = React.useState<DialogDataSourceItem>();
+    const [items, setItems] = React.useState<DialogDataSourceItem[]>([]);
+    const [selected, setSelected] = React.useState<SelectedType | null>(null);
     const messenger = React.useContext(MessengerContext);
     const dataSource = React.useMemo(() => messenger.dialogList.dataSource, [messenger]);
 
     React.useEffect(() => {
-        dataSource.needMore();
-        dataSource.dumbWatch(() => {
-            let itms = dataSource
-                .getItems()
-                .filter(d => (d.kind === 'GROUP' || d.kind === 'PUBLIC') && !d.isChannel);
-            setItems(itms);
-            if (itms.length) {
-                setSelected(itms[0]);
-            }
-        });
-    }, []);
+        if (!selected) {
+            dataSource.needMore();
+            dataSource.dumbWatch(() => {
+                let itms = dataSource
+                    .getItems()
+                    .filter((d) => (d.kind === 'GROUP' || d.kind === 'PUBLIC') && !d.isChannel);
+                setItems(itms);
+                if (itms.length) {
+                    setSelected({ value: itms[0].key, label: itms[0].title });
+                }
+            });
+        }
+    }, [items]);
 
-    const goToChat = React.useCallback(
-        () => {
-            if (selected && router) {
-                // todo set draft somehow
-                // setDraftMessage(selected.key, 'Hi @All! I am ~role~ at ~organization~. We do ~this and that~. Our top priority at the moment is ~achieve something~. Does anyone has any advice or connections for us?', [{ __typename: 'MessageSpanAllMention', offset: 3, length: 4 } as any as UserWithOffset]);
-                router.navigate('/mail/' + selected.key);
-                props.ctx.hide();
-            }
-        },
-        [selected],
-    );
+    const goToChat = React.useCallback(() => {
+        if (selected && router) {
+            // todo set draft somehow
+            // setDraftMessage(selected.key, 'Hi @All! I am ~role~ at ~organization~. We do ~this and that~. Our top priority at the moment is ~achieve something~. Does anyone has any advice or connections for us?', [{ __typename: 'MessageSpanAllMention', offset: 3, length: 4 } as any as UserWithOffset]);
+            router.navigate('/mail/' + selected.value);
+            props.ctx.hide();
+        }
+    }, [selected]);
+
+    console.log(selected);
 
     return (
         <XView
@@ -98,13 +103,11 @@ const WriteFirstMessageModal = (props: { ctx: XModalController }) => {
                 <XView minWidth={360} marginBottom={40}>
                     {selected && (
                         <USelect
-                            placeholder="Chats"
+                            label="Chats"
                             value={selected}
-                            onChange={(v: any) => {
-                                setSelected(v.value);
-                            }}
-                            options={items.map((i: any) => ({
-                                value: i,
+                            onChange={(v: SelectedType) => setSelected(v)}
+                            options={items.map((i: DialogDataSourceItem) => ({
+                                value: i.key,
                                 label: i.title,
                             }))}
                         />
@@ -114,10 +117,10 @@ const WriteFirstMessageModal = (props: { ctx: XModalController }) => {
             </XView>
         </XView>
     );
-};
+});
 
 export function showWriteFirstMessageModal() {
-    showModalBox({ fullScreen: true }, ctx => (
+    showModalBox({ fullScreen: true }, (ctx) => (
         <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
             <WriteFirstMessageModal ctx={ctx} />
         </XScrollView3>

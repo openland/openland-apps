@@ -405,9 +405,8 @@ export const GroupPriceSettings = React.memo((props: GroupPriceSettingsProps) =>
         <>
             <div className={otherInputContainer}>
                 <USelectField
-                    placeholder="Payments"
-                    field={distributionField as any}
-                    searchable={false}
+                    label="Payments"
+                    field={distributionField}
                     options={[
                         {
                             value: DistributionType.FREE,
@@ -451,9 +450,8 @@ export const GroupPriceSettings = React.memo((props: GroupPriceSettingsProps) =>
                             )}
                         {distributionField.value === DistributionType.SUBSCRIPTION && (
                             <USelectField
-                                placeholder="Period"
-                                field={intervalField as any}
-                                searchable={false}
+                                label="Period"
+                                field={intervalField}
                                 options={[
                                     {
                                         value: WalletSubscriptionInterval.WEEK,
@@ -582,8 +580,8 @@ const CreateEntityComponentGroup = React.memo((props: CreateEntityGroupProps) =>
             {!props.inOrgId && (
                 <div className={otherInputContainer}>
                     <USelectField
-                        placeholder="Visibility"
-                        field={secretField as any}
+                        label="Visibility"
+                        field={secretField}
                         searchable={false}
                         options={[
                             {
@@ -671,9 +669,8 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
             {props.entityType === 'community' && (
                 <div className={otherInputContainer}>
                     <USelectField
-                        placeholder="Visibility"
-                        field={secretField as any}
-                        searchable={false}
+                        label="Visibility"
+                        field={secretField}
                         options={[
                             {
                                 value: false,

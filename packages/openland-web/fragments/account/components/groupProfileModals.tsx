@@ -285,9 +285,7 @@ interface OptionType<T = string> {
     user: UserShort;
 }
 
-const OptionRender = (option: OptionType) => {
-    return <UUserView user={option.user} />;
-};
+const OptionRender = (option: OptionType) => <UUserView user={option.user} />;
 
 const WelcomeMessageModalBody = React.memo((props: WelcomeMessageModalBodyProps) => {
     const { welcomeMessage } = props;
@@ -337,11 +335,9 @@ const WelcomeMessageModalBody = React.memo((props: WelcomeMessageModalBodyProps)
                     {enabled && (
                         <XView flexGrow={1} flexShrink={1} marginTop={16}>
                             <USelectField
-                                creatable={false}
-                                multi={false}
-                                placeholder="Sender"
-                                field={messageSenderField as any}
-                                optionRenderer={OptionRender}
+                                label="Sender"
+                                field={messageSenderField}
+                                optionRender={OptionRender}
                                 options={roomAdmins.map((u) => ({
                                     value: u.user.id,
                                     label: u.user.name,
