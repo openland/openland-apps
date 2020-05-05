@@ -177,16 +177,18 @@ const ExplorePeopleFragment = React.memo((props: ExplorePeopleFragmentProps) => 
         props.onDataChange(data);
     };
 
-    const onInputChange = (data: { label: string; value: string }[]) => {
+    const onInputChange = (data: { label: string; value: string }[] | null) => {
         const newSelected = new Map();
         const newOpts: { label: string; value: string }[] = [];
-        data.map((i) => {
-            newSelected.set(i.value, i.label);
-            newOpts.push({
-                label: i.label,
-                value: i.value,
+        if (data) {
+            data.map((i) => {
+                newSelected.set(i.value, i.label);
+                newOpts.push({
+                    label: i.label,
+                    value: i.value,
+                });
             });
-        });
+        }
         setSelectedUsers(newSelected);
         setOptions(newOpts);
         onDataChange(newSelected);
@@ -214,10 +216,7 @@ const ExplorePeopleFragment = React.memo((props: ExplorePeopleFragmentProps) => 
     return (
         <div className={exploreContainer}>
             <SearchBox
-                onInputChange={(text) => {
-                    setSearchPeopleQuery(text);
-                    return text;
-                }}
+                onInputChange={setSearchPeopleQuery}
                 value={options}
                 onChange={onInputChange}
             />

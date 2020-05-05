@@ -63,10 +63,6 @@ const AddMemberModalInner = (props: InviteModalProps) => {
         ? 'community'
         : 'organization';
 
-    const onInputChange = (data: string) => {
-        setSearchQuery(data);
-    };
-
     const onChange = (data: { label: string; value: string }[] | null) => {
         const newSelected = new Map();
         const newOpts: { label: string; value: string }[] = [];
@@ -150,7 +146,7 @@ const AddMemberModalInner = (props: InviteModalProps) => {
                             <XView>
                                 <SearchBox
                                     small={true}
-                                    onInputChange={onInputChange}
+                                    onInputChange={setSearchQuery}
                                     value={options}
                                     onChange={onChange}
                                 />
