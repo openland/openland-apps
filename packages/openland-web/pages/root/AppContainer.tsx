@@ -17,7 +17,7 @@ export const AppContainer = (props: { children: any }) => {
     if (canUseDOM) {
         useShortcuts([
             {
-                keys: ['Shift', 'q'],
+                keys: ['Control', 'q'],
                 callback: () => {
                     console.warn('reset-cache-and-reload');
                     (async () => {
