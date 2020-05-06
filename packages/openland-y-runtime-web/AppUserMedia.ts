@@ -57,18 +57,12 @@ export const AppUserMedia: AppUserMediaApi = {
                 noiseSuppression: true,
                 autoGainControl: false,
                 advanced: [{
-                    deviceId: deviceId || MediaDevicesManager.instance().getSelectedInput()?.deviceId || 'default'
+                    deviceId: deviceId || MediaDevicesManager.instance().getSelectedAudioInput()?.deviceId || 'default'
                 }],
             },
         });
 
         let res = new AppUserMediaTrackWeb(media.getAudioTracks()[0]);
-        if (media.getAudioTracks().length) {
-            MediaDevicesManager.instance().updateAudioOutputStreamIfeeded(res);
-        }
-        if (media.getVideoTracks().length) {
-            MediaDevicesManager.instance().updateVideoOutputStreamIfNeeded(res);
-        }
         return res;
     },
 
@@ -82,9 +76,6 @@ export const AppUserMedia: AppUserMediaApi = {
         });
 
         let res = new AppUserMediaTrackWeb(media.getVideoTracks()[0]);
-        if (media.getVideoTracks().length) {
-            MediaDevicesManager.instance().updateVideoOutputStreamIfNeeded(res);
-        }
         return res;
     },
 
