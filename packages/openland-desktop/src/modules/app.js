@@ -47,7 +47,9 @@ module.exports = {
             if (isOSX) {
                 // this is called when the dock is clicked
                 if (!hasVisibleWindows) {
-                    mainWindow.show();
+                    if (mainWindow) {
+                        mainWindow.show();
+                    }
                 }
             }
         });
