@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { XView } from 'react-mental';
 import {
     UFileUpload,
     UUploadCareImageCrop,
