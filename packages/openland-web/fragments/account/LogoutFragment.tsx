@@ -6,12 +6,14 @@ import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { XModalContent } from 'openland-web/components/XModalContent';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XView } from 'react-mental';
+import { dropPersistenceCache } from '../../../openland-api/spacex.persistance.web';
 
 const LogoutDialog = React.memo<{ ctx: XModalController }>(props => {
     const router = React.useContext(XRouterContext)!;
     const doConfirm = React.useCallback(() => {
         props.ctx.hide();
-        setTimeout(() => {
+        setTimeout(async () => {
+            await dropPersistenceCache();
             router.push('/auth/logout/');
         });
     }, []);
