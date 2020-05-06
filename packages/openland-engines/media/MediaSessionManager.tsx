@@ -12,6 +12,7 @@ import { InvalidateSync } from '@openland/patterns';
 import { MediaSessionState, MediaSessionCommand, reduceState } from './MediaSessionState';
 import { Reducer } from 'openland-y-utils/reducer';
 import uuid from 'uuid/v4';
+import { AppMediaDeviceManager } from 'openland-y-runtime/AppMediaDeviceManager';
 
 export class MediaSessionManager {
 
@@ -31,11 +32,13 @@ export class MediaSessionManager {
     private audioEnabled: boolean;
     private audioTrackPromise?: Promise<AppMediaStreamTrack | null>;
     private audioTrack: AppMediaStreamTrack | null = null;
+    private audioDeviceSubscription: (() => void) | undefined;
 
     // Video track
     private videoEnabled: boolean = false;
     private videoTrackPromise?: Promise<AppMediaStreamTrack | null>;
     private videoTrack: AppMediaStreamTrack | null = null;
+    private videoDeviceSubscription: (() => void) | undefined;
 
     // Screencast track
     private screencastEnabled: boolean = false;
@@ -159,6 +162,14 @@ export class MediaSessionManager {
         // Destroy streams
         for (let s of this.connections.keys()) {
             this.connections.get(s)!.destroy();
+        }
+
+        // unsubscribe from device manager;
+        if (this.audioDeviceSubscription) {
+            this.audioDeviceSubscription();
+        }
+        if (this.videoDeviceSubscription) {
+            this.videoDeviceSubscription();
         }
 
         // Stop Tracks
@@ -385,50 +396,57 @@ export class MediaSessionManager {
 
     private async doLoadAudioIfNeeded() {
         if (!this.audioTrackPromise) {
-            this.audioTrackPromise = (async () => {
-                try {
-                    let audio = await AppUserMedia.getUserAudio();
+            this.audioTrackPromise = new Promise<AppMediaStreamTrack | null>(resolve => {
+                this.audioDeviceSubscription = AppMediaDeviceManager.listenAudioDeviceChange(async deviceId => {
                     if (this.destroyed) {
-                        return null;
+                        resolve(null);
                     }
-
-                    // Configure audio track
-                    audio.enabled = this.audioEnabled;
-
-                    // Save audio track
-                    this.audioTrack = audio;
-                    this.onAudioTrackLoaded();
-                    return audio;
-                } catch (e) {
-                    console.warn(e);
-                }
-                return null;
-            })();
+                    try {
+                        let audio = await AppUserMedia.getUserAudio(deviceId);
+                        // Configure audio track
+                        audio.enabled = this.audioEnabled;
+                        if (this.audioTrack) {
+                            this.audioTrack.stop();
+                        }
+                        // Save audio track
+                        this.audioTrack = audio;
+                        this.onAudioTrackLoaded();
+                        resolve(audio);
+                    } catch (e) {
+                        console.warn(e);
+                        resolve(null);
+                    }
+                });
+            });
         }
         await this.audioTrackPromise;
     }
 
     private async doLoadVideoIfNeeded() {
         if (!this.videoTrackPromise) {
-            this.videoTrackPromise = (async () => {
-                try {
-                    let video = await AppUserMedia.getUserVideo();
+            this.videoTrackPromise = new Promise<AppMediaStreamTrack | null>(resolve => {
+                this.videoDeviceSubscription = AppMediaDeviceManager.listenVideoDeviceChange(async deviceId => {
                     if (this.destroyed) {
-                        return null;
+                        resolve(null);
                     }
+                    try {
+                        let video = await AppUserMedia.getUserVideo(deviceId);
+                        // Configure video track
+                        video.enabled = this.videoEnabled;
 
-                    // Configure video track
-                    video.enabled = this.videoEnabled;
-
-                    // Save video track
-                    this.videoTrack = video;
-                    this.onVideoTrackLoaded();
-                    return video;
-                } catch (e) {
-                    console.warn(e);
-                }
-                return null;
-            })();
+                        if (this.videoTrack) {
+                            this.videoTrack.stop();
+                        }
+                        // Save video track
+                        this.videoTrack = video;
+                        this.onVideoTrackLoaded();
+                        resolve(video);
+                    } catch (e) {
+                        console.warn(e);
+                        resolve(null);
+                    }
+                });
+            });
         }
         await this.videoTrackPromise;
     }
