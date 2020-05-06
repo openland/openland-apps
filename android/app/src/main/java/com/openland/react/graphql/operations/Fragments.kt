@@ -702,6 +702,7 @@ internal val RoomShortSelector = obj(
                 field("canEdit", "canEdit", notNull(scalar("Boolean"))),
                 field("canSendMessage", "canSendMessage", notNull(scalar("Boolean"))),
                 field("membersCount", "membersCount", notNull(scalar("Int"))),
+                field("canUnpinMessage", "canUnpinMessage", notNull(scalar("Boolean"))),
                 field("pinnedMessage", "pinnedMessage", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", FullMessageSelector)

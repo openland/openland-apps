@@ -12,6 +12,7 @@ import { UTopBar } from 'openland-web/components/unicorn/UTopBar';
 
 interface PinMessageProps {
     engine: ConversationEngine;
+    canUnpin: boolean;
     message:
         | RoomChat_room_SharedRoom_pinnedMessage_GeneralMessage
         | RoomChat_room_PrivateRoom_pinnedMessage_GeneralMessage;
@@ -21,14 +22,11 @@ export const PinMessageComponent = React.memo((props: PinMessageProps) => {
     const router = React.useContext(XViewRouterContext);
     const { message, engine } = props;
 
-    const handlePinClick = React.useCallback(
-        (e) => {
-            if (router && message.id) {
-                router.navigate(`/message/${message.id}`);
-            }
-        },
-        [message.id],
-    );
+    const handlePinClick = React.useCallback(() => {
+        if (router && message.id) {
+            router.navigate(`/message/${message.id}`);
+        }
+    }, [message.id]);
 
     return (
         <UTopBar
@@ -37,14 +35,18 @@ export const PinMessageComponent = React.memo((props: PinMessageProps) => {
             title={emoji(message.sender.name)}
             subtitle={emoji(message.fallback)}
             onClick={handlePinClick}
-            rightIcon={<CloseIcon />}
-            onRightClick={(e: any) => {
-                e.stopPropagation();
-                e.preventDefault();
-                engine.engine.client.mutateUnpinMessage({
-                    chatId: engine.conversationId,
-                });
-            }}
+            rightIcon={props.canUnpin ? <CloseIcon /> : undefined}
+            onRightClick={
+                props.canUnpin
+                    ? (e: any) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          engine.engine.client.mutateUnpinMessage({
+                              chatId: engine.conversationId,
+                          });
+                      }
+                    : undefined
+            }
         />
     );
 });

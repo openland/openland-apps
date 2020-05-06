@@ -409,7 +409,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     onPress={this.handlePinnedMessagePress}
                                     theme={this.props.theme}
                                     showAuthor={showPinAuthor}
-                                    canUnpin={this.props.chat.__typename === 'PrivateRoom' || this.props.chat.canEdit || SUPER_ADMIN}
+                                    canUnpin={this.props.chat.__typename === 'PrivateRoom' || this.props.chat.canUnpinMessage || SUPER_ADMIN}
                                     chatId={this.props.chat.id}
                                 />
                             )}
