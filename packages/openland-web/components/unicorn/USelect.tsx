@@ -117,6 +117,10 @@ const customStyles = (config: CustomStylesConfig) =>
             borderRadius: 8,
             display: config.hideSelector ? 'none' : undefined,
         }),
+        menuPortal: (styles) => ({
+            ...styles,
+            zIndex: 5,
+        }),
         menuList: (styles) => ({
             ...styles,
             paddingTop: 8,
@@ -275,6 +279,7 @@ interface USelectBasicProps {
     searchable?: boolean;
     label?: string;
     invalid?: boolean;
+    useMenuPortal?: boolean;
 }
 
 export interface USelectProps extends USelectBasicProps, XViewProps {
@@ -283,7 +288,7 @@ export interface USelectProps extends USelectBasicProps, XViewProps {
     multi?: boolean;
 }
 
-export const USelect = React.memo((props: USelectProps) => {
+export const USelect = React.memo(React.forwardRef((props: USelectProps, ref: any) => {
     const {
         options,
         value,
@@ -298,6 +303,7 @@ export const USelect = React.memo((props: USelectProps) => {
         searchable = false,
         label,
         invalid,
+        useMenuPortal,
         ...xViewProps
     } = props;
 
@@ -316,6 +322,8 @@ export const USelect = React.memo((props: USelectProps) => {
     return (
         <XView {...xViewProps}>
             <Select
+                ref={ref}
+                openMenuOnFocus={true}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
                 options={options}
@@ -328,6 +336,7 @@ export const USelect = React.memo((props: USelectProps) => {
                 inputValue={inputValue}
                 isSearchable={searchable}
                 placeholder={label}
+                menuPortalTarget={useMenuPortal ? document.querySelector('body') : undefined}
                 styles={customStyles({
                     size: size,
                     withCustomPlaceholder: !multi && size === 'default',
@@ -348,7 +357,7 @@ export const USelect = React.memo((props: USelectProps) => {
                     className={cx(
                         placeholderStyle,
                         (focus || (Array.isArray(value) ? !!value.length : !!value)) &&
-                            placeholderValueStyle,
+                        placeholderValueStyle,
                         invalid && placeholderInvalidStyle,
                     )}
                 >
@@ -357,14 +366,15 @@ export const USelect = React.memo((props: USelectProps) => {
             )}
         </XView>
     );
-});
+}));
 
 type UselectFieldType = string | number | boolean | null | undefined;
 
-export const USelectField = (props: USelectBasicProps & { field: FormField<UselectFieldType> }) => {
+export const USelectField = React.forwardRef((props: USelectBasicProps & { field: FormField<UselectFieldType> }, ref: any) => {
     const { field, ...other } = props;
     return (
         <USelect
+            ref={ref}
             onChange={(val: OptionType) => {
                 field.input.onChange(!!val ? val.value : null);
             }}
@@ -374,4 +384,4 @@ export const USelectField = (props: USelectBasicProps & { field: FormField<Usele
             {...other}
         />
     );
-};
+});
