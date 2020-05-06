@@ -27,7 +27,9 @@ const watermarkContainerstyle = css`
     position: absolute;
     opacity: 0.72;
     z-index: 5;
-    cursor:pointer;
+    cursor: pointer;
+    width: 180px;
+    height: 80px;
 
     &:hover {
         opacity: 1;
@@ -37,6 +39,15 @@ const watermarkContainerstyle = css`
 const watermarkContainerSpaceStyle = css`
     pointer-events: none;
 `;
+
+const watermarkIconStyle = cx('x', css`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 320px;
+    height: 160px;
+    pointer-events: none;
+`);
 
 const LinkFrame = React.memo((props: { link?: string, mediaSession: MediaSessionManager, messenger: MessengerEngine }) => {
     let url = props.link ? new URL(props.link) : undefined;
@@ -223,12 +234,12 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                 className={cx(watermarkContainerstyle, layout === 'volume-space' && watermarkContainerSpaceStyle)}
                 onClick={props.ctx.hide}
             >
-                <XView position="absolute" top={0} left={0}>
+                <div className={watermarkIconStyle}>
                     <WatermarkLogo />
-                </XView>
-                <XView position="absolute" top={0} left={0}>
+                </div>
+                <div className={watermarkIconStyle}>
                     <WatermarkShadow />
-                </XView>
+                </div>
             </div>
 
             {mediaSession && showLink && (

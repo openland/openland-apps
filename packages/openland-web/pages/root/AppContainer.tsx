@@ -5,12 +5,29 @@ import { MessengerProvider } from 'openland-web/fragments/chat/messenger/Messeng
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { PushEngineComponent } from 'openland-web/modules/push/PushEngineComponent';
 import { useClient } from 'openland-api/useClient';
+import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { dropPersistenceCache } from 'openland-api/spacex.persistance.web';
 import { UnicornSplash } from 'openland-x/XLoader';
 
 export const AppContainer = (props: { children: any }) => {
     const client = useClient();
 
     const data = client.useAccount({ suspense: false });
+
+    if (canUseDOM) {
+        useShortcuts([
+            {
+                keys: ['Control', 'q'],
+                callback: () => {
+                    console.warn('reset-cache-and-reload');
+                    (async () => {
+                        await dropPersistenceCache();
+                        location.reload();
+                    })();
+                },
+            },
+        ]);
+    }
 
     if (!data) {
         return <UnicornSplash />;

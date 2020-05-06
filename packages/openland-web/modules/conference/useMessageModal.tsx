@@ -5,7 +5,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { URickInput, convertFromInputValue, URickInputInstance } from 'openland-web/components/unicorn/URickInput';
 import { detectOS } from 'openland-x-utils/detectOS';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import MediaIcon from 'openland-icons/s/ic-gallery-24.svg';
 import FileIcon from 'openland-icons/s/ic-document-24.svg';
@@ -23,6 +23,7 @@ import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import { showNoiseWarning } from 'openland-web/fragments/chat/components/NoiseWarning';
 import { plural } from 'openland-y-utils/plural';
+import { useShake } from 'openland-web/pages/auth/components/authComponents';
 
 const inputStyle = css`
     min-height: 88px;
@@ -60,6 +61,7 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
     let fileInputRef = React.useRef<HTMLInputElement>(null);
     let conversation = messenger.getConversation(props.chatId);
     let suggestRef = React.useRef<AutoCompleteComponentRef>(null);
+    let [shakeStyle, shake] = useShake();
 
     let showDonation = useDonationModal({
         name: props.name,
@@ -108,8 +110,11 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
             }
             conversation.sendMessage(text, mentions);
             editor.clear();
+            props.ctx.hide();
+        } else {
+            shake();
+            editor?.focus();
         }
-        props.ctx.hide();
         return true;
     };
     let onStickerSent = (sticker: StickerFragment) => {
@@ -185,7 +190,7 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
                     </Deferred>
                     <URickInput
                         ref={inputRef}
-                        className={inputStyle}
+                        className={cx(inputStyle, shakeStyle)}
                         placeholder="Write a message..."
                         withShortcutsButton={!isMobile}
                         autofocus={true}
