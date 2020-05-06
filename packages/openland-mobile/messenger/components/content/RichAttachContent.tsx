@@ -115,7 +115,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
         }
     }
 
-    onTitleClick = async () => {
+    onPress = async () => {
         if (this.props.attach.titleLink) {
             (await resolveInternalLink(this.props.attach.titleLink, () => Linking.openURL(this.props.attach.titleLink!)))();
         }
@@ -163,7 +163,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                 : 5;
 
         return (
-            <ASFlex flexDirection="column" alignItems="stretch" alignSelf="stretch">
+            <ASFlex flexDirection="column" alignItems="stretch" alignSelf="stretch" onPress={this.onPress}>
                 {!!this.props.attach.titleLinkHostname && imgCompact && (
                     <ASText
                         maxWidth={maxWidth}
@@ -236,7 +236,6 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             color={bubbleForegroundPrimary}
                             numberOfLines={imgCompact ? 1 : 3}
                             {...TextStylesAsync.Label2}
-                            onPress={this.onTitleClick}
                         >
                             {this.props.attach.title}
                             {this.props.padded && !subTitle && paddedText(message.isEdited)}
