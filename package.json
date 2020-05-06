@@ -98,7 +98,7 @@
         "decorate-component-with-props": "^1.1.0",
         "dexie": "^3.0.0",
         "diff": "^3.4.0",
-        "electron": "5.0.0",
+        "electron": "^8.2.5",
         "emoji-regex": "^8.0.0",
         "emoji-toolkit": "^5.0.3",
         "emoji.json": "^12.1.0",
