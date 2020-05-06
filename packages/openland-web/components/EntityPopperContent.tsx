@@ -19,9 +19,12 @@ const userOnlineStatus = css`
 `;
 
 const organizationTitle = css`
+    width: 184px;
     margin-top: 4px;
     color: #676d7a;
+    white-space: nowrap;
     text-overflow: ellipsis;
+    overflow: hidden;
 `;
 
 const Status = (({ variables }) => {
@@ -39,8 +42,8 @@ const Status = (({ variables }) => {
                 {user.lastSeen === 'never_online' ? (
                     'moments ago'
                 ) : (
-                        <XDate value={user.lastSeen} format="humanize_cute" />
-                    )}
+                    <XDate value={user.lastSeen} format="humanize_cute" />
+                )}
             </div>
         );
     } else if (user && user.online) {
@@ -198,7 +201,7 @@ const entityName = css`
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;  
+    -webkit-box-orient: vertical;
     text-overflow: ellipsis;
 `;
 
@@ -239,10 +242,7 @@ export const EntityPopperContent = React.memo(
                             squared={true}
                         />
                     </XView>
-                    <XView
-                        paddingRight={16}
-                        justifyContent="center"
-                    >
+                    <XView paddingRight={16} justifyContent="center">
                         <XView
                             marginBottom={4}
                             {...TextStyles.Title3}
@@ -259,9 +259,7 @@ export const EntityPopperContent = React.memo(
                                 }
                             }}
                         >
-                            <div className={entityName}>
-                                {emoji(title)}
-                            </div>
+                            <div className={entityName}>{emoji(title)}</div>
                         </XView>
                         <XView {...TextStyles.Caption} color="var(--foregroundSecondary)">
                             {subtitle}
