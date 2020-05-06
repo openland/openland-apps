@@ -240,8 +240,14 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
         );
     }, [members]);
 
+    const onSharedPress = React.useCallback(() => {
+        props.router.push('SharedMedia', { chatId: room.id });
+    }, [room.id]);
+
     const handleManageClick = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
+
+        builder.action('Shared media', onSharedPress, false, require('assets/ic-attach-24.png'));
 
         if (room.role === 'OWNER' || room.role === 'ADMIN' || SUPER_ADMIN) {
             builder.action(

@@ -24,7 +24,10 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import Toast from 'openland-mobile/components/Toast';
 
 const ProfileUserComponent = XMemo<PageProps>((props) => {
-    const { user, conversation } = getClient().useUser({ userId: props.router.params.id }, { fetchPolicy: 'cache-and-network' });
+    const { user, conversation } = getClient().useUser(
+        { userId: props.router.params.id },
+        { fetchPolicy: 'cache-and-network' },
+    );
     const theme = React.useContext(ThemeContext);
 
     const handleAddMember = React.useCallback(() => {
@@ -35,7 +38,10 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     const loader = Toast.loader();
                     loader.show();
                     try {
-                        await getMessenger().engine.client.mutateRoomsInviteUser({ userId: user.id, roomIds: groups.map(u => u.id) });
+                        await getMessenger().engine.client.mutateRoomsInviteUser({
+                            userId: user.id,
+                            roomIds: groups.map((u) => u.id),
+                        });
                     } catch (e) {
                         Alert.alert(formatError(e));
                     }
@@ -43,7 +49,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                 }
 
                 props.router.back();
-            }
+            },
         });
     }, [user.id]);
 
@@ -61,10 +67,24 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
     const handleManagePress = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
 
-        builder.action('Copy link', () => {
-            Clipboard.setString(`https://openland.com/${user.shortname || user.id}`);
-            Toast.showCopiedLink();
-        }, false, require('assets/ic-copy-24.png'));
+        if (conversation && conversation.__typename === 'PrivateRoom') {
+            builder.action(
+                'Shared media',
+                () => props.router.push('SharedMedia', { chatId: conversation.id }),
+                false,
+                require('assets/ic-attach-24.png'),
+            );
+        }
+
+        builder.action(
+            'Copy link',
+            () => {
+                Clipboard.setString(`https://openland.com/${user.shortname || user.id}`);
+                Toast.showCopiedLink();
+            },
+            false,
+            require('assets/ic-copy-24.png'),
+        );
 
         builder.show();
     }, [user.shortname, user.id]);
@@ -81,7 +101,11 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     subtitle={subtitle}
                     subtitleColor={subColor}
                     action={{
-                        title: !user.isBot ? ((myID === user.id) ? 'Edit profile' : 'Send message') : 'Open messages',
+                        title: !user.isBot
+                            ? myID === user.id
+                                ? 'Edit profile'
+                                : 'Send message'
+                            : 'Open messages',
                         onPress: () => {
                             if (myID === user.id) {
                                 props.router.push('SettingsProfile');
@@ -90,30 +114,99 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                                     flexibleId: props.router.params.id,
                                 });
                             }
-                        }
+                        },
                     }}
-                    score={(!user.isBot && user.audienceSize > 0) ? {
-                        value: user.audienceSize,
-                        onPress: handleScorePress
-                    } : undefined}
+                    score={
+                        !user.isBot && user.audienceSize > 0
+                            ? {
+                                  value: user.audienceSize,
+                                  onPress: handleScorePress,
+                              }
+                            : undefined
+                    }
                 />
 
                 <ZListGroup header="About" headerMarginTop={0}>
                     {!!user.about && <ZListItem multiline={true} text={user.about} copy={true} />}
                     {!!user.about && <View height={10} />}
-                    {!!user.shortname && <ZListItem title="Username" text={'@' + user.shortname} tall={true} copy={true} />}
-                    {!!user.email && <ZListItem title="Email" text={user.email} linkify={true} tall={true} copy={true} />}
-                    {!!user.phone && <ZListItem title="Phone" text={'tel:' + user.phone} linkify={true} tall={true} copy={true} />}
-                    {!!user.website && <ZListItem title="Website" text={user.website} linkify={true} tall={true} copy={true} />}
-                    {!!user.location && <ZListItem title="Location" text={user.location} tall={true} copy={true} />}
-                    {!!user.instagram && <ZListItem title="Instagram" text={user.instagram} linkify={true} tall={true} copy={true} />}
-                    {!!user.twitter && <ZListItem title="Twitter" text={user.twitter} linkify={true} tall={true} copy={true} />}
-                    {!!user.facebook && <ZListItem title="Facebook" text={user.facebook} linkify={true} tall={true} copy={true} />}
-                    {!!user.linkedin && <ZListItem title="LinkedIn" text={user.linkedin} linkify={true} tall={true} copy={true} />}
+                    {!!user.shortname && (
+                        <ZListItem
+                            title="Username"
+                            text={'@' + user.shortname}
+                            tall={true}
+                            copy={true}
+                        />
+                    )}
+                    {!!user.email && (
+                        <ZListItem
+                            title="Email"
+                            text={user.email}
+                            linkify={true}
+                            tall={true}
+                            copy={true}
+                        />
+                    )}
+                    {!!user.phone && (
+                        <ZListItem
+                            title="Phone"
+                            text={'tel:' + user.phone}
+                            linkify={true}
+                            tall={true}
+                            copy={true}
+                        />
+                    )}
+                    {!!user.website && (
+                        <ZListItem
+                            title="Website"
+                            text={user.website}
+                            linkify={true}
+                            tall={true}
+                            copy={true}
+                        />
+                    )}
+                    {!!user.location && (
+                        <ZListItem title="Location" text={user.location} tall={true} copy={true} />
+                    )}
+                    {!!user.instagram && (
+                        <ZListItem
+                            title="Instagram"
+                            text={user.instagram}
+                            linkify={true}
+                            tall={true}
+                            copy={true}
+                        />
+                    )}
+                    {!!user.twitter && (
+                        <ZListItem
+                            title="Twitter"
+                            text={user.twitter}
+                            linkify={true}
+                            tall={true}
+                            copy={true}
+                        />
+                    )}
+                    {!!user.facebook && (
+                        <ZListItem
+                            title="Facebook"
+                            text={user.facebook}
+                            linkify={true}
+                            tall={true}
+                            copy={true}
+                        />
+                    )}
+                    {!!user.linkedin && (
+                        <ZListItem
+                            title="LinkedIn"
+                            text={user.linkedin}
+                            linkify={true}
+                            tall={true}
+                            copy={true}
+                        />
+                    )}
                 </ZListGroup>
 
                 {/* {Platform.OS !== 'ios' && <ProfileDonationGroup name={user.firstName} userId={user.id} shouldHide={user.isYou} />} */}
-                
+
                 {!!user.primaryOrganization && (
                     <ZListGroup header="Organization">
                         <ZListItem
@@ -130,7 +223,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     </ZListGroup>
                 )}
 
-                {(myID !== user.id) && (
+                {myID !== user.id && (
                     <ZListGroup header="Settings">
                         <NotificationSettings
                             id={(conversation as User_conversation_PrivateRoom).id}
@@ -150,11 +243,21 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     {user.chatsWithBadge.map((item, index) => (
                         <ZListItem
                             leftAvatar={{
-                                photo: item.chat.__typename === 'PrivateRoom' ? item.chat.user.photo : item.chat.photo,
+                                photo:
+                                    item.chat.__typename === 'PrivateRoom'
+                                        ? item.chat.user.photo
+                                        : item.chat.photo,
                                 id: item.chat.id,
-                                title: item.chat.__typename === 'PrivateRoom' ? item.chat.user.name : item.chat.title,
+                                title:
+                                    item.chat.__typename === 'PrivateRoom'
+                                        ? item.chat.user.name
+                                        : item.chat.title,
                             }}
-                            text={item.chat.__typename === 'PrivateRoom' ? item.chat.user.name : item.chat.title}
+                            text={
+                                item.chat.__typename === 'PrivateRoom'
+                                    ? item.chat.user.name
+                                    : item.chat.title
+                            }
                             subTitle={item.badge.name}
                             path="Conversation"
                             pathParams={{ id: item.chat.id }}

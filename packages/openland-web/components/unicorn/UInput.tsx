@@ -214,6 +214,8 @@ const inputRemarkStyle = css`
     color: var(--tintGrey);
     padding-left: 16px;
     margin-top: 8px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 `;
 
 export const UInputErrorText = React.memo((props: { text: string }) => (

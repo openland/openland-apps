@@ -10,6 +10,7 @@ import {
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppUserMediaTrackWeb } from './AppUserMedia';
 import uuid from 'uuid/v4';
+import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
 
 export class AppRtpReceiverWeb implements AppRtpReceiver {
     raw: RTCRtpReceiver;
@@ -77,6 +78,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     private connection: RTCPeerConnection;
     private started = true;
     private audioTracks = new Map<string, HTMLAudioElement>();
+    private audioDevcieSubscription: () => void;
     private transeivers = new Map<string, AppRtpTransceiverWeb>();
     private transceiverIds = new Map<RTCRtpTransceiver, string>();
 
@@ -92,6 +94,11 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
                 this.onicecandidate({ candidate: ev.candidate ? JSON.stringify(ev.candidate) : undefined });
             }
         };
+        this.audioDevcieSubscription = MediaDevicesManager.instance().listenAudioOutputDevice(d => {
+            for (let t of this.audioTracks.values()) {
+                this.setAudioDevice(t, d?.deviceId);
+            }
+        });
     }
 
     addTransceiver = async (arg: 'audio' | 'video' | AppMediaStreamTrack, params?: AppPeerTransceiverParams) => {
@@ -152,6 +159,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
             return;
         }
         this.started = false;
+        this.audioDevcieSubscription();
         this.connection.close();
     }
 
@@ -197,10 +205,26 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
                 audio.autoplay = true;
                 audio.setAttribute('playsinline', 'true');
                 audio.controls = false;
+                this.setAudioDevice(audio, MediaDevicesManager.instance().getSelectedAudioInput()?.deviceId);
                 audio.srcObject = stream;
                 audio.load();
-                audio.play();
+                try {
+                    audio.play();
+                } catch (e) {
+                    // wtf safari exeption thrown before permission granted/denied
+                    console.error(e);
+                }
                 this.audioTracks.set(t.id, audio);
+            }
+        }
+    }
+
+    setAudioDevice = (audio: HTMLAudioElement, deviceId?: string) => {
+        if ((audio as any).setSinkId) {
+            try {
+                (audio as any).setSinkId(deviceId);
+            } catch (e) {
+                console.error(e);
             }
         }
     }

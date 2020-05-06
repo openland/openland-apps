@@ -57,11 +57,19 @@ const dateStyle = css`
     }
 `;
 
-const senderOrgAndDateStyle = css`
+const senderDateStyle = css`
     flex-shrink: 0;
     margin-left: 8px;
     color: var(--foregroundSecondary);
+`;
 
+const senderOrgStyle = css`
+    flex-shrink: 1;
+    margin-left: 8px;
+    color: var(--foregroundSecondary);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
     &:hover {
         color: var(--foregroundSecondary);
     }
@@ -107,14 +115,14 @@ const MessageSenderFeatured = (props: { senderBadgeNameEmojify: string | JSX.Ele
 const MessageSenderOrg = (props: { organization: UserShort_primaryOrganization }) => (
     <ULink
         path={`/${props.organization.shortname || props.organization.id}`}
-        className={cx(TextDensed, senderOrgAndDateStyle, defaultHover)}
+        className={cx(TextDensed, senderOrgStyle, defaultHover)}
     >
         {props.organization.name}
     </ULink>
 );
 
 const MessageTime = (props: { time: number }) => (
-    <div className={cx(TextCaption, senderOrgAndDateStyle)}>{formatTime(props.time)}</div>
+    <div className={cx(TextCaption, senderDateStyle)}>{formatTime(props.time)}</div>
 );
 
 interface MessageSenderContentProps {
@@ -127,7 +135,7 @@ interface MessageSenderContentProps {
 export const MessageSenderContent = (props: MessageSenderContentProps) => (
     <div className={senderContainer}>
         <MessageSenderName sender={props.sender} senderNameEmojify={props.senderNameEmojify} />
-        {props.sender.isBot && <span className={cx(TextDensed, senderOrgAndDateStyle)}>Bot</span>}
+        {props.sender.isBot && <span className={cx(TextDensed, senderDateStyle)}>Bot</span>}
         {props.senderBadgeNameEmojify && (
             <MessageSenderFeatured senderBadgeNameEmojify={props.senderBadgeNameEmojify} />
         )}
@@ -293,7 +301,6 @@ const contentContainer = css`
 
     & > .x {
         flex-shrink: 1;
-
     }
 `;
 interface MessageComponentProps {
@@ -317,7 +324,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const selectedRef = React.useRef(false);
 
     React.useEffect(() => {
-        return engine.messagesActionsStateEngine.listenSelect(message, selected => {
+        return engine.messagesActionsStateEngine.listenSelect(message, (selected) => {
             selectedRef.current = selected;
 
             if (containerRef.current) {
@@ -329,19 +336,16 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
             }
         });
     }, []);
-    const onSelect = React.useCallback(
-        () => {
-            let selection = window.getSelection();
-            if (selection && layout !== 'mobile') {
-                let range = selection.getRangeAt(0);
-                if (range.startOffset !== range.endOffset) {
-                    return;
-                }
+    const onSelect = React.useCallback(() => {
+        let selection = window.getSelection();
+        if (selection && layout !== 'mobile') {
+            let range = selection.getRangeAt(0);
+            if (range.startOffset !== range.endOffset) {
+                return;
             }
-            engine.messagesActionsStateEngine.selectToggle(message);
-        },
-        [message.id],
-    );
+        }
+        engine.messagesActionsStateEngine.selectToggle(message);
+    }, [message.id]);
 
     const buttons = (
         <div className={buttonsClass}>

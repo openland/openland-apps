@@ -41,6 +41,7 @@ import { ReloadFromEndButton } from './ReloadFromEndButton';
 import { showNoiseWarning } from './NoiseWarning';
 import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarComponent';
 import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
+import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
@@ -482,7 +483,15 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 {!this.state.loading && (
                     <>
                         {pin && (
-                            <PinMessageComponent message={pin} engine={this.conversation} />
+                            <PinMessageComponent
+                                canUnpin={
+                                    this.props.room.__typename === 'PrivateRoom' ||
+                                    this.props.room.canUnpinMessage ||
+                                    AppConfig.isSuperAdmin()
+                                }
+                                message={pin}
+                                engine={this.conversation}
+                            />
                         )}
                         <TalkBarComponent chat={this.props.room} />
                         <div className={messagesListContainer}>

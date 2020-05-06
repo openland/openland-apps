@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { XView } from 'react-mental';
 import {
     UFileUpload,
     UUploadCareImageCrop,
@@ -117,6 +116,10 @@ const avatarContainer = css`
         top: 0;
         content: '';
         background-color: transparent;
+        border-radius: 100%;
+        border: 1px solid var(--borderLight);
+        box-sizing: border-box;
+        z-index: 2;
     }
 `;
 
@@ -130,6 +133,24 @@ const avatarImage = css`
     min-width: 100%;
     max-width: 100%;
     max-height: 100%;
+`;
+
+const clearContainer = css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    cursor: pointer;
+    z-index: 2;
+    position: absolute;
+    right: 0;
+    top: 0;
+    & svg {
+        box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
+        border-radius: 100px;
+    }
 `;
 
 function prepareSrc(uuid: string, crop: UUploadCareImageCrop | null) {
@@ -204,22 +225,15 @@ const AvatarRender = (props: AvatarRenderProps) => {
                 </div>
             )}
             {hasImage && props.clearable && (
-                <XView
-                    width={56}
-                    height={56}
-                    position="absolute"
-                    right={0}
-                    top={0}
-                    justifyContent="center"
-                    alignItems="center"
-                    cursor="pointer"
+                <div
+                    className={clearContainer}
                     onClick={(e) => {
                         e.stopPropagation();
                         props.doClear();
                     }}
                 >
                     <UIcon icon={<IcClear />} size={24} color="#fff" />
-                </XView>
+                </div>
             )}
         </div>
     );

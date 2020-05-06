@@ -6,6 +6,7 @@ import {
     showRoomEditModal,
     showLeaveChatConfirmation,
 } from 'openland-web/fragments/account/components/groupProfileModals';
+import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
 import SettingsIcon from 'openland-icons/s/ic-settings-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
@@ -25,9 +26,13 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
     const typeString = isChannel ? 'channel' : 'group';
     const builder = new UPopperMenuBuilder();
 
-    if (role === 'OWNER' ||
-        role === 'ADMIN' ||
-        AppConfig.isSuperAdmin()) {
+    builder.item({
+        title: 'Shared media',
+        icon: <AttachIcon />,
+        onClick: () => tabRouter.router.navigate(`/mail/${props.group.id}/shared`),
+    });
+
+    if (role === 'OWNER' || role === 'ADMIN' || AppConfig.isSuperAdmin()) {
         builder.item({
             title: isChannel ? 'Manage channel' : 'Manage group',
             icon: <SettingsIcon />,
@@ -38,7 +43,13 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
     builder.item({
         title: `Leave ${typeString}`,
         icon: <LeaveIcon />,
-        onClick: () => showLeaveChatConfirmation(client, id, tabRouter, group.__typename === 'SharedRoom' && group.isPremium),
+        onClick: () =>
+            showLeaveChatConfirmation(
+                client,
+                id,
+                tabRouter,
+                group.__typename === 'SharedRoom' && group.isPremium,
+            ),
     });
 
     return builder.build(ctx);
@@ -48,6 +59,6 @@ export const GroupMenu = React.memo((props: GroupMenu) => (
     <UMoreButton
         marginLeft={8}
         marginRight={-8}
-        menu={ctx => <MenuComponent {...props} ctx={ctx} />}
+        menu={(ctx) => <MenuComponent {...props} ctx={ctx} />}
     />
 ));

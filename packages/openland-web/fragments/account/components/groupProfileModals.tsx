@@ -78,7 +78,12 @@ const ShortnameModalBody = React.memo((props: ShortnameModalBodyProps) => {
                     autofocus={true}
                     label="Shortname"
                     field={shortnameField}
-                    remark={form.error ? undefined : 'Only a-z, 0-9 and underscores, 3 chars min'}
+                    remark={
+                        form.error
+                            ? undefined
+                            : 'Can only contain a-z, 0-9 and underscores\n' +
+                              'Must have at least 3 chars'
+                    }
                     errorText={form.error ? form.error : undefined}
                 />
             </XModalContent>
@@ -111,6 +116,9 @@ const socialImageUploadStyle = css`
         width: 352px;
         height: 184px;
         border-radius: 8px;
+        &::after {
+          border-radius: 8px;
+        }
     }
 `;
 
@@ -273,6 +281,22 @@ const showPaymentsModal = (roomId: string) => {
     );
 };
 
+const welcomeMessageSwitchContainer = css`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin: 0 -24px;
+    padding: 0 8px;
+    cursor: pointer;
+    &:hover {
+        background-color: var(--backgroundPrimaryHover);
+    }
+    & > div {
+        pointer-events: none;
+    }
+`;
+
 interface WelcomeMessageModalBodyProps {
     hide: () => void;
     roomId: string;
@@ -289,6 +313,8 @@ const OptionRender = (option: OptionType) => <UUserView user={option.user} />;
 
 const WelcomeMessageModalBody = React.memo((props: WelcomeMessageModalBodyProps) => {
     const { welcomeMessage } = props;
+    const selectRef = React.useRef<HTMLInputElement>(null);
+    const inputRef = React.useRef<HTMLTextAreaElement>(null);
     const client = useClient();
     const form = useForm();
 
@@ -306,11 +332,23 @@ const WelcomeMessageModalBody = React.memo((props: WelcomeMessageModalBodyProps)
 
     const onSave = async () => {
         await form.doAction(async () => {
+            if (enabled && !messageSenderField.value) {
+                if (selectRef && selectRef.current) {
+                    selectRef.current.focus();
+                }
+                return;
+            }
+            if (enabled && !messageField.value.trim()) {
+                if (inputRef && inputRef.current) {
+                    inputRef.current.focus();
+                }
+                return;
+            }
             await client.mutateUpdateWelcomeMessage({
                 roomId: props.roomId,
                 welcomeMessageIsOn: enabled,
                 welcomeMessageSender: messageSenderField ? messageSenderField.value : undefined,
-                welcomeMessageText: messageField.value,
+                welcomeMessageText: messageField.value.trim(),
             });
             await client.refetchRoomChat({ id: props.roomId });
             props.hide();
@@ -324,20 +362,20 @@ const WelcomeMessageModalBody = React.memo((props: WelcomeMessageModalBodyProps)
                     <div className={cx(modalSubtitle, TextBody)}>
                         {`Send automatic tet-a-tet message to every new member of the group`}
                     </div>
-                    <XView marginHorizontal={-16}>
-                        <UCheckbox
-                            label="Welcome message"
-                            checked={enabled}
-                            onChange={setEnabled}
-                            asSwitcher={true}
-                        />
-                    </XView>
+                    <div
+                        className={welcomeMessageSwitchContainer}
+                        onClick={() => setEnabled(!enabled)}
+                    >
+                        <UCheckbox label="Welcome message" checked={enabled} asSwitcher={true} />
+                    </div>
                     {enabled && (
                         <XView flexGrow={1} flexShrink={1} marginTop={16}>
                             <USelectField
+                                ref={selectRef}
                                 label="Sender"
                                 field={messageSenderField}
                                 optionRender={OptionRender}
+                                useMenuPortal={true}
                                 options={roomAdmins.map((u) => ({
                                     value: u.user.id,
                                     label: u.user.name,
@@ -345,6 +383,7 @@ const WelcomeMessageModalBody = React.memo((props: WelcomeMessageModalBodyProps)
                                 }))}
                             />
                             <UTextAreaField
+                                ref={inputRef}
                                 field={messageField}
                                 placeholder="Message"
                                 marginTop={16}
@@ -515,7 +554,7 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                             icon={<IcGallery />}
                             paddingHorizontal={24}
                             onClick={() => showSocialImageModal(room.id, socialImage || '')}
-                            textRight={!!socialImage ? 'On' : 'Off'}
+                            textRight={!!socialImage ? 'On' : 'None'}
                         />
                         {welcomeMessage && (
                             <UListItem

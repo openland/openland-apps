@@ -95,6 +95,11 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
 
     const onPress = React.useCallback(() => {
         const builder = new ActionSheetBuilder();
+        const isPrivate = room.__typename === 'PrivateRoom';
+
+        if (!isPrivate) {
+            builder.action('Add people', onInvitePress, false, require('assets/ic-invite-24.png'));
+        }
 
         const notificationsTitle = `${muted ? 'Unmute' : 'Mute'} notifications`;
         const notificationsIcon = muted
@@ -102,7 +107,8 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
             : require('assets/ic-notifications-off-24.png');
         builder.action(notificationsTitle, onNotificationsPress, false, notificationsIcon);
 
-        const isPrivate = room.__typename === 'PrivateRoom';
+        builder.action('Shared media', onSharedPress, false, require('assets/ic-attach-24.png'));
+
         if (
             (!isPrivate && (room as RoomTiny_room_SharedRoom).role === 'OWNER') ||
             (room as RoomTiny_room_SharedRoom).role === 'ADMIN' ||
@@ -115,11 +121,6 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
                 require('assets/ic-settings-24.png'),
             );
         }
-        if (!isPrivate) {
-            builder.action('Add people', onInvitePress, false, require('assets/ic-invite-24.png'));
-        }
-
-        builder.action('Shared media', onSharedPress, false, require('assets/ic-attach-24.png'));
 
         if (!isPrivate) {
             builder.action('Leave group', onLeavePress, false, require('assets/ic-leave-24.png'));

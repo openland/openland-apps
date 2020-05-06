@@ -27,6 +27,7 @@ fragment RoomShort on Room {
         canEdit
         canSendMessage
         membersCount
+        canUnpinMessage
         pinnedMessage {
             ...FullMessage
         }

@@ -85,7 +85,6 @@ query RoomChat($id: ID!) {
             role
             canEdit
             canSendMessage
-            canUnpinMessage
             photo
             membersCount
             shortname
@@ -102,6 +101,7 @@ query RoomChat($id: ID!) {
             organization {
                 ...OrganizationMedium
             }
+            canUnpinMessage
             pinnedMessage {
                 ...FullMessage
             }
