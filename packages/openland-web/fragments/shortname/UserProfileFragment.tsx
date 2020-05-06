@@ -57,7 +57,7 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
                         marginLeft={isMobile ? 0 : 16}
                     />
                 )}
-                <UserMenu user={user} marginLeft={isMobile ? 0 : undefined} />
+                <UserMenu chat={conversation} user={user} marginLeft={isMobile ? 0 : undefined} />
             </UListHero>
             <UListGroup header="About">
                 {!!about && <UListText value={about} marginBottom={16} />}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { User_user } from 'openland-api/spacex.types';
+import { User_user, User_conversation_SharedRoom, User_conversation_PrivateRoom } from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import copy from 'copy-to-clipboard';
 import EditIcon from 'openland-icons/s/ic-edit-24.svg';
@@ -7,9 +7,11 @@ import CopyIcon from 'openland-icons/s/ic-copy-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { useToast, UToastHandlers } from 'openland-web/components/unicorn/UToast';
+import AttachIcon from "../../../../openland-icons/s/ic-attach-24-1.svg";
 
 interface UserMenuProps {
     user: User_user;
+    chat: User_conversation_SharedRoom | User_conversation_PrivateRoom | null;
     marginLeft?: number;
 }
 
@@ -17,6 +19,14 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
     const { ctx, user, toastHandlers } = props;
     const { id, isYou, shortname } = user;
     const builder = new UPopperMenuBuilder();
+
+    if (props.chat && props.chat.__typename === 'PrivateRoom') {
+        builder.item({
+            title: 'Shared media',
+            icon: <AttachIcon />,
+            path: `/mail/${props.chat.id}/shared`,
+        });
+    }
 
     builder.item({
         title: 'Copy link',

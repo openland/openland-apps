@@ -216,6 +216,7 @@ const SettingsModal = React.memo((props: { ctx: XModalController }) => {
                 <XView flexDirection="column" marginLeft={16} flexGrow={1} flexShrink={1}>
                     {!!(output || outputs.length) && <XView marginBottom={16}>
                         <USelect
+                            useMenuPortal={true}
                             onChange={setOutputDevice}
                             label="Speakers"
                             value={output ? { value: output.deviceId, label: output.label } : null}
@@ -224,6 +225,7 @@ const SettingsModal = React.memo((props: { ctx: XModalController }) => {
                     </XView>}
                     {!!(input || inputs.length) && <XView marginBottom={16}>
                         <USelect
+                            useMenuPortal={true}
                             onChange={setInputDevice}
                             label="Microphone"
                             value={input ? { value: input?.deviceId, label: input?.label } : null}
@@ -232,6 +234,7 @@ const SettingsModal = React.memo((props: { ctx: XModalController }) => {
                     </XView>}
                     {!!(localVideoInput || videoInputs.length) && <XView marginBottom={24}>
                         <USelect
+                            useMenuPortal={true}
                             onChange={setVideoInputDevice}
                             label="Camera"
                             value={
