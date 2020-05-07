@@ -15,7 +15,7 @@ import { RNSDevice } from 'react-native-s/RNSDevice';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { Conference_conference_peers } from 'openland-api/spacex.types';
+import { Conference_conference_peers, Conference_conference_peers_user } from 'openland-api/spacex.types';
 import { RTCView, MediaStream } from 'react-native-webrtc';
 import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradient.native';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
@@ -25,14 +25,8 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 
-export interface PeerMedia {
-    videoTrack: AppMediaStreamTrack | null;
-    audioTrack: AppMediaStreamTrack | null;
-    screencastTrack: AppMediaStreamTrack | null;
-}
-
-// @ts-ignore
 const PeerInfoGradient = (props: { children: any }) => {
     let theme = React.useContext(ThemeContext);
     return (
@@ -49,20 +43,86 @@ const PeerInfoGradient = (props: { children: any }) => {
     );
 };
 
+const PlaceholderGradient = (props: { id: string }) => {
+    let colors = getPlaceholderColors(props.id);
+    return (
+        <ZLinearGradient
+            flexGrow={1}
+            alignSelf="stretch"
+            fallbackColor={colors.placeholderColor}
+            colors={[colors.placeholderColorStart, colors.placeholderColorEnd]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+        />
+    );
+};
+
+const AvatarVideoView = (props: { user: Conference_conference_peers_user }) => {
+    let theme = React.useContext(ThemeContext);
+
+    return (
+        <>
+            {!props.user.photo && (
+                <View
+                    position="absolute"
+                    top={0}
+                    bottom={0}
+                    left={0}
+                    right={0}
+                >
+                    <PlaceholderGradient id={props.user.id} />
+                </View>
+            )}
+            {props.user.photo && (
+                <Image
+                    source={{ uri: props.user.photo }}
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                    }}
+                    blurRadius={Platform.select({ ios: 72, default: 24 })}
+                    resizeMode="cover"
+                />
+            )}
+            <View
+                position="absolute"
+                top={0}
+                bottom={0}
+                left={0}
+                right={0}
+                backgroundColor={theme.overlayMedium}
+            />
+            <View alignSelf="stretch" flexGrow={1} justifyContent="center" alignItems="center">
+                <ZAvatar size="x-large" id={props.user.id} title={props.user.name} photo={props.user.photo} />
+            </View>
+        </>
+    );
+};
+
+export interface PeerMedia {
+    videoTrack: AppMediaStreamTrack | null;
+    audioTrack: AppMediaStreamTrack | null;
+    screencastTrack: AppMediaStreamTrack | null;
+}
+
 interface VideoViewProps extends PeerMedia {
     peer: Conference_conference_peers;
     mirror?: boolean;
     theme: ThemeGlobal;
+    isLast: boolean;
 }
 
 const VideoView = React.memo((props: VideoViewProps) => {
+    const area = React.useContext(ASSafeAreaContext);
     // @ts-ignore
     const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
 
     let track = props.screencastTrack ? props.screencastTrack : props.videoTrack;
     let stream = React.useMemo(() => track && new MediaStream([(track as AppUserMediaStreamTrackNative).track]), [track]);
 
-    let colors = getPlaceholderColors(props.peer.user.id);
     const iconColor = props.theme.foregroundContrast;
     // @ts-ignore
     const iconByStatus = {
@@ -71,28 +131,17 @@ const VideoView = React.memo((props: VideoViewProps) => {
         speaking: <Image source={require('assets/ic-speaking-bold-16.png')} style={{ tintColor: iconColor }} />,
     };
     let icon = null;
-    let InfoWrapper = React.Fragment;
-    // let InfoWrapper = props.peer.user.photo ? PeerInfoGradient : React.Fragment;
+    let InfoWrapper = stream ? PeerInfoGradient : React.Fragment;
+
+    let infoPaddingBottom = props.isLast ? Math.max(area.bottom, 30) : 14;
+
     return (
         <View flexGrow={1} backgroundColor="gray" position="relative">
             {stream && <RTCView streamURL={stream.toURL()} style={{ flexGrow: 1 }} objectFit="cover" mirror={props.mirror} />}
             {stream && <View position="absolute" left={6} top={6}>
                 <ZAvatar size="medium" id={props.peer.user.id} title={props.peer.user.name} photo={props.peer.user.photo} />
             </View>}
-            {!stream &&
-                <ZLinearGradient
-                    flexGrow={1}
-                    alignSelf="stretch"
-                    fallbackColor={colors.placeholderColor}
-                    colors={[colors.placeholderColorStart, colors.placeholderColorEnd]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                >
-                    <View alignSelf="stretch" flexGrow={1} justifyContent="center" alignItems="center">
-                        <ZAvatar size="x-large" id={props.peer.user.id} title={props.peer.user.name} photo={props.peer.user.photo} />
-                    </View>
-                </ZLinearGradient>
-            }
+            {!stream && <AvatarVideoView user={props.peer.user} />}
             <View
                 position="absolute"
                 bottom={0}
@@ -102,8 +151,9 @@ const VideoView = React.memo((props: VideoViewProps) => {
                 <InfoWrapper>
                     <View
                         flexGrow={1}
+                        paddingTop={14}
+                        paddingBottom={infoPaddingBottom}
                         paddingHorizontal={16}
-                        paddingVertical={14}
                         flexDirection="row"
                         alignItems="center"
                     >
@@ -207,7 +257,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                 {slices.map((s, i) =>
                     <View key={i} flexDirection="column" justifyContent="flex-start" flexGrow={1}>
 
-                        {s.map(p => {
+                        {s.map((p, peerIndex) => {
                             let media: PeerMedia = { videoTrack: null, audioTrack: null, screencastTrack: null };
                             let isLocal = p.id === state?.sender.id;
                             if (isLocal) {
@@ -225,6 +275,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                                 {...media}
                                 mirror={isLocal}
                                 theme={theme}
+                                isLast={peerIndex === s.length - 1}
                             />;
 
                         })}
