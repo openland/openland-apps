@@ -26,6 +26,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { SDevice } from 'react-native-s/SDevice';
 
 const PeerInfoGradient = (props: { children: any }) => {
     let theme = React.useContext(ThemeContext);
@@ -281,6 +282,24 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                         })}
                     </View>
                 )}
+            </View>
+            <View
+                position="absolute"
+                top={SDevice.statusBarHeight + SDevice.safeArea.top}
+                left={0}
+                right={0}
+                flexDirection="row"
+                justifyContent="space-between"
+                alignItems="center"
+                paddingLeft={8}
+                paddingRight={4}
+            >
+                <TouchableOpacity onPress={props.hide}>
+                    <Image source={require('assets/logo-watermark.png')} style={{ tintColor: theme.foregroundContrast }} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={props.hide} style={{ width: 48, height: 48, justifyContent: "center", alignItems: 'center' }}>
+                    <Image source={require('assets/ic-size-down-glyph-24.png')} style={{ tintColor: theme.foregroundContrast }} />
+                </TouchableOpacity>
             </View>
 
             <SAnimated.View name={`call-controls-${key}`} style={{ justifyContent: 'space-around', alignItems: 'center', bottom: 56, flexDirection: 'row', position: 'absolute', width: '100%' }}>

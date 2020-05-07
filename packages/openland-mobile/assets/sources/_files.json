@@ -8,6 +8,13 @@
             ]
         },
         {
+            "name": "ic-size-down-glyph",
+            "src": "ic-size-down-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-message-glyph",
             "src": "ic-message-glyph-48.svg",
             "sizes": [
