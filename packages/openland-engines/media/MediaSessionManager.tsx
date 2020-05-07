@@ -13,6 +13,7 @@ import { MediaSessionState, MediaSessionCommand, reduceState } from './MediaSess
 import { Reducer } from 'openland-y-utils/reducer';
 import uuid from 'uuid/v4';
 import { AppMediaDeviceManager } from 'openland-y-runtime/AppMediaDeviceManager';
+import { MediaSessionTrackAnalyzer } from './MediaSessionTrackAnalyzer';
 
 export class MediaSessionManager {
 
@@ -52,6 +53,9 @@ export class MediaSessionManager {
     private connections = new Map<string, MediaConnectionManager>();
     private connectionConfigs!: ConferenceMediaWatch_media_streams[];
 
+    // Analyzer
+    public analyzer: MediaSessionTrackAnalyzer;
+
     // Lifecycle
     private conferenceId!: string;
     private peerId!: string;
@@ -83,6 +87,7 @@ export class MediaSessionManager {
             },
             receivers: {}
         });
+        this.analyzer = new MediaSessionTrackAnalyzer(this.state);
         this.connectionsInvalidateSync = new InvalidateSync(this.handleState);
         this.doInit();
     }
@@ -185,6 +190,9 @@ export class MediaSessionManager {
             this.screencastTrack.stop();
             this.screencastTrack = null;
         }
+
+        // Dispose analyzer
+        this.analyzer.dispose();
 
         // Connections invalidate sync
         if (this.connectionsSubscription) {

@@ -202,6 +202,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                                     peer={p}
                                     {...media}
                                     isLocal={isLocal}
+                                    analyzer={mediaSession.analyzer}
                                 />;
                             })}
 

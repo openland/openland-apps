@@ -23,7 +23,6 @@ import { useVideoCallModal } from './CallModal';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { plural } from 'openland-y-utils/plural';
-import { MediaStreamsAlalyzer } from './MediaStreamsAlalyzer';
 
 const VIDEO_WIDTH = 320;
 const VIDEO_HEIGHT = 213;
@@ -295,10 +294,9 @@ const MediaView = React.memo((props: {
     peers: Conference_conference_peers[];
     fallback: { id: string; title: string; photo?: string | null };
     mediaSessionManager: MediaSessionManager;
-    analyzer: MediaStreamsAlalyzer;
     calls: CallsEngine;
 }) => {
-    let peerId = props.analyzer.useSpeakingPeer();
+    let peerId = props.mediaSessionManager.analyzer.useSpeakingPeer();
     let peer = props.peers.find(p => p.id === peerId);
 
     return <VideoMediaView
@@ -323,12 +321,6 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
     let calls = messenger.calls;
     let state = props.mediaSession.state.useValue();
 
-    let alalyzer = React.useMemo(() => new MediaStreamsAlalyzer(), []);
-    React.useEffect(() => {
-        alalyzer.setSessionState(state);
-    }, [state]);
-    React.useEffect(() => alalyzer.dispose, []);
-
     useShowEffects(props.mediaSession);
 
     let client = useClient();
@@ -342,7 +334,6 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
         <MediaView
             peers={data?.conference.peers || []}
             mediaSessionManager={props.mediaSession}
-            analyzer={alalyzer}
             fallback={props.room.__typename === 'PrivateRoom' ? {
                 id: props.room.user.id,
                 title: props.room.user.name,
