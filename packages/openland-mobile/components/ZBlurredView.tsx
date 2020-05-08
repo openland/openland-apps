@@ -4,10 +4,10 @@ import { BlurView } from 'react-native-blur';
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
-export const ZBlurredView = React.memo<ViewProps & { intensity?: 'normal' | 'high', fallbackColor?: string, children?: any }>((props) => {
+export const ZBlurredView = React.memo<ViewProps & { intensity?: 'normal' | 'high', fallbackColor?: string, blurType?: 'dark' | 'light', children?: any }>((props) => {
     let theme = React.useContext(ThemeContext);
-    let { intensity, ...other } = props;
-    if (SDevice.renderBlurSupported && theme.blurType !== 'none') {
+    let { intensity, blurType, ...other } = props;
+    if (SDevice.renderBlurSupported && (theme.blurType !== 'none' || blurType)) {
         return (
             <View {...other}>
                 <View
@@ -17,12 +17,12 @@ export const ZBlurredView = React.memo<ViewProps & { intensity?: 'normal' | 'hig
                         right: 0,
                         top: 0,
                         bottom: 0,
-                        backgroundColor: theme.backgroundPrimary,
+                        backgroundColor: !blurType ? theme.backgroundPrimary : undefined,
                         opacity: intensity === 'high' ? 0.9 : 0.8
                     }}
                 />
                 <BlurView
-                    blurType={theme.blurType}
+                    blurType={blurType || (theme.blurType as 'dark' | 'light')}
                     blurAmount={intensity === 'high' ? 15 : 10}
                     style={{
                         position: 'absolute',

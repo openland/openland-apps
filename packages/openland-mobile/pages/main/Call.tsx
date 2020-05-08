@@ -27,6 +27,8 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { SDevice } from 'react-native-s/SDevice';
+import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
+import { CallControls } from './components/conference/CallControls';
 
 const PeerInfoGradient = (props: { children: any }) => {
     let theme = React.useContext(ThemeContext);
@@ -139,9 +141,6 @@ const VideoView = React.memo((props: VideoViewProps) => {
     return (
         <View flexGrow={1} backgroundColor="gray" position="relative">
             {stream && <RTCView streamURL={stream.toURL()} style={{ flexGrow: 1 }} objectFit="cover" mirror={props.mirror} />}
-            {stream && <View position="absolute" left={6} top={6}>
-                <ZAvatar size="medium" id={props.peer.user.id} title={props.peer.user.name} photo={props.peer.user.photo} />
-            </View>}
             {!stream && <AvatarVideoView user={props.peer.user} />}
             <View
                 position="absolute"
@@ -178,6 +177,7 @@ const VideoView = React.memo((props: VideoViewProps) => {
 
 let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let theme = React.useContext(ThemeContext);
+    let area = React.useContext(ASSafeAreaContext);
     let [mute, setMute] = React.useState(false);
     let [speaker, setSpeaker] = React.useState(false);
 
@@ -232,27 +232,52 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     }
     let w = Dimensions.get('screen').width;
 
-    // animate controls hide/show
-    const [uiHidden, setHideUi] = React.useState(false);
-    const uiHiddenRef = React.useRef(false);
-    let switchUi = React.useCallback(() => setHideUi(v => !v), []);
-    const key = React.useMemo(() => randomKey(), []);
-    React.useEffect(() => {
-        if (uiHiddenRef.current === uiHidden) {
-            return;
-        }
-        uiHiddenRef.current = uiHidden;
-        SAnimated.beginTransaction();
-        if (uiHidden) {
-            SAnimated.timing(`call-controls-${key}`, { property: 'translateY', easing: { bezier: [0.23, 1, 0.32, 1] }, from: 0, to: 150, duration: 0.15 });
-        } else {
-            SAnimated.timing(`call-controls-${key}`, { property: 'translateY', easing: 'material', from: 150, to: 0, duration: 0.25 });
-        }
-        SAnimated.commitTransaction();
-    }, [uiHidden]);
+    const title = conference?.conference.room?.__typename === 'PrivateRoom'
+        ? conference?.conference.room?.user.name
+        : conference?.conference.room?.__typename === 'SharedRoom' ? conference?.conference.room?.title
+            : 'Call';
+
+    let showControls = () => {
+        showBottomSheet({
+            containerStyle: {
+                backgroundColor: 'transparent',
+                marginHorizontal: 0,
+            },
+            view: (ctx) => (
+                <CallControls
+                    title={title}
+                    muted={mute}
+                    speaker={speaker}
+                    camera={!!state?.sender.videoEnabled}
+                    onMutedPress={() => {
+                        setMute((s) => {
+                            mediaSession?.setAudioEnabled(s);
+                            return !s;
+                        });
+                    }}
+                    onCameraPress={() => {
+                        mediaSession?.setVideoEnabled(!state?.sender.videoEnabled);
+                    }}
+                    onCameraLongPress={() => {
+                        if (state?.sender.videoEnabled) {
+                            ReactNativeHapticFeedback.trigger('notificationSuccess');
+                            ((state.sender.videoTrack as AppUserMediaStreamTrackNative)?.track as any)?._switchCamera();
+                        }
+                    }}
+                    onSpeakerPress={() => {
+                        setSpeaker((s) => !s);
+                    }}
+                    onCallEnd={() => {
+                        onCallEnd();
+                        ctx.hide();
+                    }}
+                />
+            )
+        });
+    };
 
     return (
-        <TouchableOpacity delayPressIn={10} delayPressOut={10} activeOpacity={1} onPress={switchUi}>
+        <>
             {Platform.OS === 'ios' && <StatusBar hidden={true} />}
             <View flexDirection="row" alignItems="flex-start" width={w} height="100%">
                 {slices.map((s, i) =>
@@ -301,69 +326,22 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                     <Image source={require('assets/ic-size-down-glyph-24.png')} style={{ tintColor: theme.foregroundContrast }} />
                 </TouchableOpacity>
             </View>
-
-            <SAnimated.View name={`call-controls-${key}`} style={{ justifyContent: 'space-around', alignItems: 'center', bottom: 56, flexDirection: 'row', position: 'absolute', width: '100%' }}>
+            <View
+                position="absolute"
+                bottom={Math.max(area.bottom, 30) + 4}
+                right={16}
+            >
                 <TouchableOpacity
-                    onPress={props.hide}
+                    activeOpacity={0.6}
+                    onPress={showControls}
                     style={{ width: 56, height: 56 }}
                 >
-                    <View backgroundColor="rgba(0,0,0,0.15)" width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
-                        <Image source={require('assets/ic-close-24.png')} style={{ tintColor: 'white' }} />
+                    <View backgroundColor={theme.overlayMedium} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
+                        <Image source={require('assets/ic-grid-glyph-24.png')} style={{ tintColor: theme.foregroundContrast }} />
                     </View>
                 </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={() => {
-                        setSpeaker((s) => !s);
-                    }}
-                    style={{ width: 56, height: 56 }}
-                >
-                    <View backgroundColor={speaker ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
-                        <Image source={require('assets/ic-speaker-30.png')} style={{ tintColor: speaker ? 'black' : 'white' }} />
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={onCallEnd}
-                    style={{ width: 70, height: 70 }}
-                >
-                    <View backgroundColor="#f6564e" width={70} height={70} borderRadius={35} alignItems="center" justifyContent="center">
-                        <Image source={require('assets/ic-call-end-36.png')} style={{ tintColor: 'white' }} />
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={() => {
-                        mediaSession?.setVideoEnabled(!state?.sender.videoEnabled);
-                    }}
-                    onLongPress={() => {
-                        if (state?.sender.videoEnabled) {
-                            ReactNativeHapticFeedback.trigger('notificationSuccess');
-                            ((state.sender.videoTrack as AppUserMediaStreamTrackNative)?.track as any)?._switchCamera();
-                        }
-                    }}
-                    style={{ width: 56, height: 56 }}
-                >
-                    <View backgroundColor={state?.sender.videoEnabled ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
-                        <Image source={state?.sender.videoEnabled ? require('assets/ic-camera-video-24.png') : require('assets/ic-camera-video-24.png')} style={{ tintColor: state?.sender.videoEnabled ? 'black' : 'white' }} />
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={() => {
-                        setMute((s) => {
-                            mediaSession?.setAudioEnabled(s);
-                            return !s;
-                        });
-                    }}
-                    style={{ width: 56, height: 56 }}
-                >
-                    <View backgroundColor={mute ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
-                        <Image source={mute ? require('assets/ic-mic-off-30.png') : require('assets/ic-mic-on-30.png')} style={{ tintColor: mute ? 'black' : 'white' }} />
-                    </View>
-                </TouchableOpacity>
-            </SAnimated.View>
-        </TouchableOpacity>
+            </View>
+        </>
     );
 });
 

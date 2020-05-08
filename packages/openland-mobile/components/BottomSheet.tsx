@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Platform, Keyboard } from 'react-native';
+import { View, Text, Platform, Keyboard, ViewStyle } from 'react-native';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { GQLClientContext } from 'openland-api/useClient';
@@ -15,6 +15,7 @@ interface BuildConfig {
     cancelable?: boolean;
     title?: string;
     buttonTitle?: string;
+    containerStyle?: ViewStyle;
 }
 
 export function showBottomSheet(config: BuildConfig) {
@@ -30,7 +31,7 @@ export function showBottomSheet(config: BuildConfig) {
                         </Text>
                     </View>
                 )}
-                {!config.title && <View marginTop={16}/>}
+                {!config.title && !config.containerStyle && <View marginTop={16} />}
                 <GQLClientContext.Provider value={getClient()}>
                     <React.Suspense fallback={<ZLoader />}>
                         {config.view(ctx)}
@@ -49,7 +50,7 @@ export function showBottomSheet(config: BuildConfig) {
             </ThemeContext.Provider >
         );
     }, {
-        containerStyle: { backgroundColor: theme.backgroundSecondary, padding: 0, marginHorizontal: 8 },
+        containerStyle: { backgroundColor: theme.backgroundSecondary, padding: 0, marginHorizontal: 8, ...config.containerStyle },
         showAnimation: (contentHeight, views) => {
             SAnimated.timing(views.background, { property: 'opacity', from: 0, to: 1, duration: 0.35 });
             SAnimated.setValue(views.container, 'opacity', 1);
