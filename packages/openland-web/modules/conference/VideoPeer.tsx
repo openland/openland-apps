@@ -86,6 +86,12 @@ const bgAvatarOverlay = css`
     right: 0;
     background: var(--overlayMedium);
 `;
+
+const MiniVideo = css`
+    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+`;
+
 export interface PeerMedia {
     videoTrack: AppMediaStreamTrack | null;
     audioTrack: AppMediaStreamTrack | null;
@@ -116,9 +122,8 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     const bgSrc = props.peer.user.photo ? props.peer.user.photo : undefined;
     const bgColor = !props.peer.user.photo ? getPlaceholderColorById(props.peer.user.id) : undefined;
 
-    let mainStreamWeb = props.screencastTrack ? props.screencastTrack : props.videoTrack;
-    // @ts-ignore
-    // let miniStreamWeb = props.screencastTrack ? props.videoTrack : undefined;
+    let mainStreamWeb = props.screencastTrack || props.videoTrack;
+    let miniStreamWeb = props.screencastTrack ? props.videoTrack : undefined;
     const [modalOpen, setModalOpen] = React.useState(false);
     const onClick = React.useCallback(() => setModalOpen(true), []);
     const closeModal = React.useCallback(() => setModalOpen(false), []);
@@ -152,6 +157,25 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
                     close={closeModal}
                 />
             )}
+            {miniStreamWeb &&
+
+                <XView
+                    width={72}
+                    height={48}
+                    borderRadius={8}
+                    position="absolute"
+                    bottom={12}
+                    right={12}
+                >
+                    <VideoComponent
+                        track={(miniStreamWeb as AppUserMediaTrackWeb).track}
+                        cover={true}
+                        mirror={props.isLocal}
+                        videoClass={MiniVideo}
+                        backgroundColor="var(--overlayHeavy)"
+                    />
+                </XView>
+            }
             {!mainStreamWeb && (
                 <>
                     <div className={bgAvatar}>

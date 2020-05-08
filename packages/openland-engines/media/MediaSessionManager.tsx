@@ -3,7 +3,7 @@ import { backoff } from 'openland-y-utils/timer';
 import { MediaConnectionManager } from './MediaConnectionManager';
 import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
-import { ConferenceMediaWatch, ConferenceMediaWatch_media_streams, ConferenceMedia_conferenceMedia_iceServers } from 'openland-api/spacex.types';
+import { ConferenceMediaWatch, ConferenceMediaWatch_media_streams, ConferenceMediaWatch_media_localMedia, ConferenceMedia_conferenceMedia_iceServers } from 'openland-api/spacex.types';
 import { AppBackgroundTask } from 'openland-y-runtime/AppBackgroundTask';
 import { reliableWatcher } from 'openland-api/reliableWatcher';
 import { ConferenceWatch } from 'openland-api/spacex.types';
@@ -44,7 +44,7 @@ export class MediaSessionManager {
     // Screencast track
     private screencastEnabled: boolean = false;
     // private screencastGeneration = 0;
-    // private screencastTrackPromise?: Promise<AppMediaStreamTrack | null>;
+    private screencastTrackPromise?: Promise<AppMediaStreamTrack | null>;
     private screencastTrack: AppMediaStreamTrack | null = null;
 
     // Transport
@@ -52,6 +52,7 @@ export class MediaSessionManager {
     private connectionsInvalidateSync: InvalidateSync;
     private connections = new Map<string, MediaConnectionManager>();
     private connectionConfigs!: ConferenceMediaWatch_media_streams[];
+    private localMediaConfig!: ConferenceMediaWatch_media_localMedia;
 
     // Analyzer
     public analyzer: MediaSessionTrackAnalyzer;
@@ -135,12 +136,10 @@ export class MediaSessionManager {
     // Screencast
     //
 
-    startScreenShare = async () => {
-        // TODO: Implement
-    }
-
-    stopScreenShare = async () => {
-        // TODO: Implement
+    setScreenshareEnabled = async (screencastEnabled: boolean) => {
+        this.screencastEnabled = screencastEnabled;
+        this.state.dispatch({ command: 'sender', sender: { screencastEnabled } });
+        this.reportLocalMediaState();
     }
 
     reportLocalMediaState = () => {
@@ -231,6 +230,7 @@ export class MediaSessionManager {
             console.log('[WEBRTC] Update');
             let streams = src.media.streams;
             this.connectionConfigs = streams;
+            this.localMediaConfig = src.media.localMedia;
             this.connectionsInvalidateSync.invalidate();
         });
     }
@@ -267,6 +267,12 @@ export class MediaSessionManager {
                 ms.setScreencastTrack(this.screencastTrack);
                 this.connections.set(s.id, ms);
             }
+        }
+
+        if (this.localMediaConfig.sendScreencast) {
+            this.doLoadScreencast();
+        } else {
+            this.doUnloadScreencast();
         }
     }
 
@@ -388,19 +394,22 @@ export class MediaSessionManager {
         this.state.dispatch({ command: 'sender', sender: { videoTrack: this.videoTrack } });
     }
 
-    // private onScreencastTrackLoaded = () => {
-    //     // TODO: Handle
-    //     // Update connections
-    //     for (let connection of this.connections.values()) {
-    //         connection.setScreencastTrack(this.screencastTrack);
-    //     }
-    // }
-    // private onScreencastTrackUnloaded = () => {
-    //     // TODO: Handle
-    //     for (let connection of this.connections.values()) {
-    //         connection.setScreencastTrack(null);
-    //     }
-    // }
+    private onScreencastTrackLoaded = () => {
+        // Update connections
+        for (let connection of this.connections.values()) {
+            connection.setScreencastTrack(this.screencastTrack);
+        }
+
+        this.state.dispatch({ command: 'sender', sender: { screencastTrack: this.screencastTrack } });
+
+    }
+    private onScreencastTrackUnloaded = () => {
+        for (let connection of this.connections.values()) {
+            connection.setScreencastTrack(null);
+        }
+        // Update State
+        this.state.dispatch({ command: 'sender', sender: { screencastTrack: null } });
+    }
 
     private async doLoadAudioIfNeeded() {
         if (!this.audioTrackPromise) {
@@ -459,11 +468,40 @@ export class MediaSessionManager {
         await this.videoTrackPromise;
     }
 
+    doLoadScreencast() {
+        if (!this.screencastTrackPromise) {
+            this.screencastTrackPromise = (async () => {
+                try {
+                    this.screencastTrack = await AppUserMedia.getUserScreen();
+                    if (!this.screencastEnabled) {
+                        throw new Error('inconsistent state');
+                    }
+                    this.onScreencastTrackLoaded();
+                    return this.screencastTrack;
+                } catch (e) {
+                    this.screencastTrackPromise = undefined;
+                    this.setScreenshareEnabled(false);
+                    return null;
+                }
+            })();
+        }
+    }
+
+    async doUnloadScreencast() {
+        this.screencastEnabled = false;
+        this.state.dispatch({ command: 'sender', sender: { screencastEnabled: false } });
+
+        await this.screencastTrackPromise;
+        this.screencastTrackPromise = undefined;
+        this.screencastTrack?.stop();
+        this.onScreencastTrackUnloaded();
+    }
+
     //
     // Collect recievers
     //
 
-    onReceiverAdded = (peerId: string, type: 'audio' | 'video' | 'screencast', track: AppMediaStreamTrack) => {
+    onReceiverUpdated = (peerId: string, type: 'audio' | 'video' | 'screencast', track: AppMediaStreamTrack | null) => {
         let command: MediaSessionCommand = { command: 'receiver', receiver: { id: peerId } };
         if (type === 'audio') {
             command.receiver.audioTrack = track;

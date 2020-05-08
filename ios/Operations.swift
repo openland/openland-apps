@@ -4902,7 +4902,13 @@ private let ConferenceMediaWatchSelector = obj(
                     field("streams", "streams", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("MediaStream", MediaStreamFullSelector)
-                        )))))
+                        ))))),
+                    field("localMedia", "localMedia", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("sendVideo", "sendVideo", notNull(scalar("Boolean"))),
+                            field("sendAudio", "sendAudio", notNull(scalar("Boolean"))),
+                            field("sendScreencast", "sendScreencast", notNull(scalar("Boolean")))
+                        )))
                 )))
         )
 private let ConferenceWatchSelector = obj(
@@ -6442,7 +6448,7 @@ class Operations {
     let ConferenceMediaWatch = OperationDefinition(
         "ConferenceMediaWatch",
         .subscription, 
-        "subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}",
+        "subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}localMedia{__typename sendVideo sendAudio sendScreencast}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}",
         ConferenceMediaWatchSelector
     )
     let ConferenceWatch = OperationDefinition(

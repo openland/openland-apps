@@ -444,7 +444,7 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
                                 bottom={12}
                                 right={12}
                             >
-                                {state.sender.videoTrack && <VideoComponent track={(state.sender.videoTrack as AppUserMediaTrackWeb)?.track} cover={true} videoClass={MiniFloatingVideo} mirror={true} />}
+                                {(state.sender.videoTrack && state.sender.videoEnabled) && <VideoComponent track={(state.sender.videoTrack as AppUserMediaTrackWeb)?.track} cover={true} videoClass={MiniFloatingVideo} mirror={true} />}
                             </XView>
                         </XView>
                     </div>

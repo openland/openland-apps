@@ -220,7 +220,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                     onMinimize={props.ctx.hide}
                     onMute={() => mediaSession.setAudioEnabled(!state.sender.audioEnabled)}
                     onCameraClick={() => mediaSession.setVideoEnabled(!state.sender.videoEnabled)}
-                    onScreenClick={() => state.sender.screencastEnabled ? mediaSession.startScreenShare() : mediaSession.stopScreenShare()}
+                    onScreenClick={() => mediaSession.setScreenshareEnabled(!state.sender.screencastEnabled)}
                     onSpaceClick={() => setLayout(prev => prev === 'volume-space' ? 'grid' : 'volume-space')}
                     onMessageClick={showMessage}
                     onToolsClick={() => setShowLink(prev => !prev)}
