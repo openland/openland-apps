@@ -18,7 +18,6 @@ export const CallBarComponent = XMemo<{ id: string }>((props) => {
                 alignItems="center"
                 height={40}
                 marginHorizontal={10}
-                marginTop={10}
                 borderRadius={20}
                 backgroundColor="#0084fe"
                 flexDirection="row"

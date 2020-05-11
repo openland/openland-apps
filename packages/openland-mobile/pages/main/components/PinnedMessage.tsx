@@ -9,6 +9,8 @@ import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 import { useClient } from 'openland-api/useClient';
 import Toast from 'openland-mobile/components/Toast';
 
+export const PINNED_MESSAGE_HEIGHT = 56;
+
 interface PinnedMessageProps {
     message: FullMessage;
     onPress: (id: string) => void;
@@ -38,7 +40,7 @@ export const PinnedMessage = XMemo<PinnedMessageProps>((props) => {
             {area => (
                 <ZBlurredView position="absolute" top={area.top} left={0} right={0} zIndex={2} flexDirection="row">
                     <TouchableWithoutFeedback onPress={() => onPress(message.id)}>
-                        <View flexGrow={1} flexShrink={1} height={56} flexDirection="row" paddingLeft={16} paddingRight={canUnpin ? 0 : 16} alignItems="center">
+                        <View flexGrow={1} flexShrink={1} height={PINNED_MESSAGE_HEIGHT} flexDirection="row" paddingLeft={16} paddingRight={canUnpin ? 0 : 16} alignItems="center">
                             <View width={24} height={24} marginRight={16} >
                                 <Image style={{ width: 24, height: 24, tintColor: theme.foregroundSecondary }} source={require('assets/ic-pin-24.png')} />
                             </View>
