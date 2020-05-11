@@ -1,12 +1,85 @@
 import * as React from 'react';
-import { AppMediaSessionTrackAnalyzerFactory } from 'openland-y-runtime/AppMediaSessionTrackAnalyzer';
-import { AppMediaSessionTrackAnalyzer } from 'openland-y-runtime-api/AppMediaSessionTrackAnalyzerApi';
 import { debounce } from 'openland-y-utils/timer';
 import { MediaSessionState, MediaSessionCommand } from './MediaSessionState';
 import { Reducer } from 'openland-y-utils/reducer';
 
-export class MediaSessionTrackAnalyzer {
-    analyzer: AppMediaSessionTrackAnalyzer;
+import { AppAudioTrackAnalyzer } from 'openland-y-runtime-api/AppAudioTrackAnalyzerApi';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
+import { AppAudioTrackAnalyzerFactory } from 'openland-y-runtime/AppAudioTrackAnalyzer';
+
+class MediaSessionTrackAnalyzer {
+    listeners = new Set<(peersVolume: { [id: string]: number }) => void>();
+    peerVolume: { [id: string]: number } = {};
+
+    private peerTrackAnalyzers = new Map<
+        string,
+        {
+            analyzer?: AppAudioTrackAnalyzer;
+            audioTrack: AppMediaStreamTrack | null;
+        }
+    >();
+    private interval?: NodeJS.Timeout;
+    private running = false;
+
+    setSessionState = (state: MediaSessionState) => {
+        for (let k of Object.keys(state.receivers)) {
+            let r = state.receivers[k]!;
+            this.peerTrackAnalyzers.set(k, {
+                audioTrack: r.audioTrack
+            });
+        }
+        if (state.sender.id && state.sender.audioEnabled) {
+            this.peerTrackAnalyzers.set(state.sender.id, {
+                audioTrack: (state.sender.audioEnabled && state.sender.audioTrack) || null
+            });
+        }
+        if (!this.running) {
+            this.running = true;
+            this.interval = setInterval(this.render, 50);
+        }
+    }
+
+    private render = () => {
+        if (!this.running) {
+            return;
+        }
+        for (let [key, entry] of this.peerTrackAnalyzers) {
+            if (entry.analyzer?.track !== entry.audioTrack) {
+                entry.analyzer?.disconnect();
+                entry.analyzer = undefined;
+
+                if (entry.audioTrack) {
+                    entry.analyzer = AppAudioTrackAnalyzerFactory.createAnalyzer(entry.audioTrack, [80, 180]);
+                }
+            }
+            if (entry.analyzer) {
+                this.peerVolume[key] = entry.analyzer.getVolume();
+            }
+        }
+
+        for (let l of this.listeners) {
+            l(this.peerVolume);
+        }
+    }
+
+    listenPeersVolume(listener: (peersVolume: { [id: string]: number; }) => void) {
+        this.listeners.add(listener);
+        listener(this.peerVolume);
+        return () => this.listeners.delete(listener);
+    }
+
+    dispose() {
+        this.running = false;
+        if (this.interval) {
+            clearInterval(this.interval);
+        }
+        this.peerTrackAnalyzers.forEach(v => v.analyzer?.disconnect());
+    }
+
+}
+
+export class MediaSessionTrackAnalyzerManager {
+    analyzer: MediaSessionTrackAnalyzer;
     state: MediaSessionState | undefined;
 
     analyzerSubscription: () => void;
@@ -14,7 +87,7 @@ export class MediaSessionTrackAnalyzer {
 
     constructor(stateModel: Reducer<MediaSessionState, MediaSessionCommand>) {
         this.stateSubscription = stateModel.listenValue(this.setSessionState);
-        this.analyzer = AppMediaSessionTrackAnalyzerFactory.createAnalyzer();
+        this.analyzer = new MediaSessionTrackAnalyzer();
         this.analyzerSubscription = this.analyzer.listenPeersVolume(this.onChange);
     }
 

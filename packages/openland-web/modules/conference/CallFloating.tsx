@@ -20,7 +20,6 @@ import { CallsEngine } from 'openland-engines/CallsEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { useShowEffects } from './Effects';
 import { useVideoCallModal } from './CallModal';
-import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { plural } from 'openland-y-utils/plural';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';

@@ -13,7 +13,7 @@ import SpeakerIcon from 'openland-icons/s/ic-speaking-bold-16.svg';
 // import { SvgLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
-import { MediaSessionTrackAnalyzer } from 'openland-engines/media/MediaSessionTrackAnalyzer';
+import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
 
 const animatedAvatarStyle = css`
     position: absolute;
@@ -99,7 +99,7 @@ export interface PeerMedia {
 }
 export interface VideoPeerProps extends PeerMedia {
     peer: Conference_conference_peers;
-    analyzer: MediaSessionTrackAnalyzer;
+    analyzer: MediaSessionTrackAnalyzerManager;
     isLocal?: boolean;
     // for settings view
     compact?: boolean;
