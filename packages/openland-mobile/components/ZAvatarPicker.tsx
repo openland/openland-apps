@@ -13,7 +13,7 @@ import { FormField } from 'openland-form/useField';
 
 interface AvatarImageRef {
     uuid: string;
-    crop?: { x: number, y: number, w: number, h: number } | null;
+    crop?: { x: number; y: number; w: number; h: number } | null;
 }
 
 export interface ZAvatarPickerRenderProps {
@@ -21,6 +21,8 @@ export interface ZAvatarPickerRenderProps {
     loading: boolean;
     showPicker: () => void;
     fullWidth?: boolean;
+    handleClear: () => void;
+    clearable?: boolean;
 }
 
 export interface ZAvatarPickerProps {
@@ -33,6 +35,7 @@ export interface ZAvatarPickerProps {
     render?: React.ComponentType<ZAvatarPickerRenderProps>;
     fullWidth?: boolean;
     hidePhotoIndicator?: boolean;
+    clearable?: boolean;
     pickSize?: {
         width: number;
         height: number;
@@ -45,7 +48,7 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
 
     let currentIteration = 0;
 
-    const upload = (data: { path: string, width?: number, height?: number }) => {
+    const upload = (data: { path: string; width?: number; height?: number }) => {
         setLoading(true);
         let up = ++currentIteration;
         let uploading;
@@ -57,15 +60,16 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
                     if (props.onChanged) {
                         props.onChanged({
                             uuid: v.uuid!!,
-                            ...data.width && data.height ?
-                                {
-                                    crop: {
-                                        x: 0,
-                                        y: 0,
-                                        w: data!!.width!!,
-                                        h: data!!.height!!
-                                    }
-                                } : {}
+                            ...(data.width && data.height
+                                ? {
+                                      crop: {
+                                          x: 0,
+                                          y: 0,
+                                          w: data!!.width!!,
+                                          h: data!!.height!!,
+                                      },
+                                  }
+                                : {}),
                         });
                     }
 
@@ -85,7 +89,7 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
                     width: props.pickSize ? props.pickSize.width : 1024,
                     height: props.pickSize ? props.pickSize.height : 1024,
                     writeTempFile: false,
-                    cropping: true
+                    cropping: true,
                 });
                 if (!Array.isArray(r)) {
                     res = r;
@@ -107,6 +111,13 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
             }
         } catch (e) {
             console.log(e);
+        }
+    };
+
+    const handleClear = () => {
+        setLocalPath(undefined);
+        if (props.onChanged) {
+            props.onChanged(null);
         }
     };
 
@@ -141,12 +152,38 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
     }
 
     let size = avatarSizes[props.size || 'x-large'].size;
-    return props.render ? <props.render url={valueUrl} loading={loading} showPicker={handlePicker} fullWidth={props.fullWidth} /> : (
+    return props.render ? (
+        <props.render
+            url={valueUrl}
+            loading={loading}
+            showPicker={handlePicker}
+            fullWidth={props.fullWidth}
+            handleClear={handleClear}
+            clearable={props.clearable}
+        />
+    ) : (
         <TouchableOpacity onPress={handlePicker}>
-            <View width={size} height={size} borderRadius={size / 2} backgroundColor={theme.backgroundTertiaryTrans}>
+            <View
+                width={size}
+                height={size}
+                borderRadius={size / 2}
+                backgroundColor={theme.backgroundTertiaryTrans}
+            >
                 {!valueUrl && !loading && (
-                    <View position="absolute" alignItems="center" justifyContent="center" style={{ width: size, height: size, borderRadius: size / 2 }}>
-                        <Image source={require('assets/ic-camera-36.png')} style={{ tintColor: theme.foregroundQuaternary, width: 36, height: 36 }} />
+                    <View
+                        position="absolute"
+                        alignItems="center"
+                        justifyContent="center"
+                        style={{ width: size, height: size, borderRadius: size / 2 }}
+                    >
+                        <Image
+                            source={require('assets/ic-camera-36.png')}
+                            style={{
+                                tintColor: theme.foregroundQuaternary,
+                                width: 36,
+                                height: 36,
+                            }}
+                        />
                     </View>
                 )}
                 {!!valueUrl && props.hidePhotoIndicator !== true && (
@@ -154,16 +191,47 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
                         <ZAvatar photo={valueUrl} size={props.size || 'x-large'} />
 
                         {!loading && (
-                            <View position="absolute" bottom={2} right={2} width={28} height={28} padding={2} backgroundColor={theme.backgroundPrimary} borderRadius={14}>
-                                <View width={24} height={24} backgroundColor={theme.accentPrimary} borderRadius={12} alignItems="center" justifyContent="center">
-                                    <Image source={require('assets/ic-camera-16.png')} style={{ tintColor: theme.foregroundInverted, width: 16, height: 16 }} />
+                            <View
+                                position="absolute"
+                                bottom={2}
+                                right={2}
+                                width={28}
+                                height={28}
+                                padding={2}
+                                backgroundColor={theme.backgroundPrimary}
+                                borderRadius={14}
+                            >
+                                <View
+                                    width={24}
+                                    height={24}
+                                    backgroundColor={theme.accentPrimary}
+                                    borderRadius={12}
+                                    alignItems="center"
+                                    justifyContent="center"
+                                >
+                                    <Image
+                                        source={require('assets/ic-camera-16.png')}
+                                        style={{
+                                            tintColor: theme.foregroundInverted,
+                                            width: 16,
+                                            height: 16,
+                                        }}
+                                    />
                                 </View>
                             </View>
                         )}
                     </View>
                 )}
                 {loading && (
-                    <View position="absolute" alignItems="center" justifyContent="center" width={size} height={size} borderRadius={size / 2} backgroundColor={theme.overlayLight}>
+                    <View
+                        position="absolute"
+                        alignItems="center"
+                        justifyContent="center"
+                        width={size}
+                        height={size}
+                        borderRadius={size / 2}
+                        backgroundColor={theme.overlayLight}
+                    >
                         <LoaderSpinner color={theme.foregroundContrast} />
                     </View>
                 )}
@@ -172,7 +240,7 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
     );
 };
 
-export const ZAvatarPicker = XMemo<ZAvatarPickerProps>(props => {
+export const ZAvatarPicker = XMemo<ZAvatarPickerProps>((props) => {
     const { field } = props;
     const theme = React.useContext(ThemeContext);
 

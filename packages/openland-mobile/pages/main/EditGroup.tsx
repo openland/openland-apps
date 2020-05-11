@@ -132,7 +132,7 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                         leftIcon={require('assets/ic-gallery-24.png')}
                         text="Social sharing image"
                         small={true}
-                        description={!!group.socialImage ? 'On' : 'Off'}
+                        description={!!group.socialImage ? 'On' : 'None'}
                         onPress={() => router.push('EditGroupSocialImage', { id: group.id })}
                     />
                     {group.welcomeMessage && (

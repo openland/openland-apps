@@ -20,10 +20,7 @@ const EditGroupWelcomeMessageComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const roomId = props.router.params.id;
     const client = getClient();
-    const group = client.useRoomChat(
-        { id: roomId },
-        { fetchPolicy: 'network-only' },
-    ).room;
+    const group = client.useRoomChat({ id: roomId }, { fetchPolicy: 'network-only' }).room;
 
     const roomAdmins = client.useRoomAdminMembers({ roomId: roomId }).roomAdmins;
 
@@ -51,7 +48,9 @@ const EditGroupWelcomeMessageComponent = React.memo((props: PageProps) => {
                 await client.mutateUpdateWelcomeMessage({
                     roomId,
                     welcomeMessageIsOn: welcomeMessageEnabled,
-                    welcomeMessageSender: welcomeMessageSender ? welcomeMessageSender.id : undefined,
+                    welcomeMessageSender: welcomeMessageSender
+                        ? welcomeMessageSender.id
+                        : undefined,
                     welcomeMessageText: welcomeMessageField.value,
                 });
                 await client.refetchRoomChat({ id: props.router.params.id });
@@ -116,7 +115,7 @@ const EditGroupWelcomeMessageComponent = React.memo((props: PageProps) => {
                         </Text>
                     </View>
                 </LinearGradient>
-                <ZListGroup header={null} alignItems="center">
+                <ZListGroup header={null}>
                     <ZListItem
                         text="Allow welcome message"
                         textStyle={{ ...TextStyles.Title2 }}
@@ -124,7 +123,7 @@ const EditGroupWelcomeMessageComponent = React.memo((props: PageProps) => {
                         onToggle={(value) => setWelcomeMessageEnabled(value)}
                     />
                     {welcomeMessageEnabled && (
-                        <View style={{ paddingHorizontal: 16, marginTop: 24 }}>
+                        <View style={{ paddingHorizontal: 16, marginTop: 24, flexGrow: 1 }}>
                             <ZPickField
                                 noWrapper={true}
                                 label="Sender"

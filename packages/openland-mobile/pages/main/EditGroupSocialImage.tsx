@@ -116,42 +116,14 @@ const EditGroupSocialImageComponent = React.memo((props: PageProps) => {
                     </View>
                 </LinearGradient>
                 <ZListGroup header={null} alignItems="center">
-                    <View position="relative">
-                        <ZAvatarPicker
-                            field={socialImageField}
-                            render={ZSocialPickerRender}
-                            pickSize={{ width: 1200, height: 630 }}
-                            fullWidth={true}
-                            hidePhotoIndicator={true}
-                        />
-                        {socialImageField.value && (
-                            <TouchableOpacity
-                                style={{
-                                    position: 'absolute',
-                                    right: 0,
-                                    top: 0,
-                                }}
-                                onPress={() => socialImageField.input.onChange(null)}
-                            >
-                                <View
-                                    justifyContent="center"
-                                    alignItems="center"
-                                    width={56}
-                                    height={56}
-                                    borderRadius={12}
-                                >
-                                    <Image
-                                        source={require('assets/ic-clear-24.png')}
-                                        style={{
-                                            width: 24,
-                                            height: 24,
-                                            tintColor: theme.foregroundContrast,
-                                        }}
-                                    />
-                                </View>
-                            </TouchableOpacity>
-                        )}
-                    </View>
+                    <ZAvatarPicker
+                        field={socialImageField}
+                        render={ZSocialPickerRender}
+                        pickSize={{ width: 1200, height: 630 }}
+                        fullWidth={true}
+                        hidePhotoIndicator={true}
+                        clearable={true}
+                    />
                 </ZListGroup>
             </SScrollView>
         </>

@@ -19,45 +19,74 @@ export const ZSocialPickerRender = React.memo((props: ZAvatarPickerRenderProps) 
     }
 
     return (
-        <TouchableOpacity onPress={props.showPicker}>
-            <View width={width} height={height} borderRadius={radius}>
-                {props.url && (
-                    <ZImage
-                        highPriority={true}
-                        width={width}
-                        height={height}
-                        source={props.url}
-                        borderRadius={radius}
-                    />
-                )}
-                <View
-                    position="absolute"
-                    alignItems="center"
-                    justifyContent="center"
-                    style={{
-                        width,
-                        height,
-                        borderRadius: radius,
-                        backgroundColor: props.url
-                            ? theme.overlayLight
-                            : theme.backgroundTertiaryTrans,
-                    }}
-                >
-                    {!props.loading && (
-                        <Image
-                            style={{
-                                tintColor: props.url
-                                    ? theme.foregroundContrast
-                                    : theme.foregroundQuaternary,
-                                width: 36,
-                                height: 36,
-                            }}
-                            source={require('assets/ic-camera-36.png')}
+        <View position="relative">
+            <TouchableOpacity onPress={props.showPicker}>
+                <View width={width} height={height} borderRadius={radius}>
+                    {props.url && (
+                        <ZImage
+                            highPriority={true}
+                            width={width}
+                            height={height}
+                            source={props.url}
+                            borderRadius={radius}
                         />
                     )}
-                    {props.loading && <LoaderSpinner color={theme.foregroundContrast} />}
+                    <View
+                        position="absolute"
+                        alignItems="center"
+                        justifyContent="center"
+                        style={{
+                            width,
+                            height,
+                            borderRadius: radius,
+                            backgroundColor: props.url
+                                ? theme.overlayLight
+                                : theme.backgroundTertiaryTrans,
+                        }}
+                    >
+                        {!props.loading && (
+                            <Image
+                                style={{
+                                    tintColor: props.url
+                                        ? theme.foregroundContrast
+                                        : theme.foregroundQuaternary,
+                                    width: 36,
+                                    height: 36,
+                                }}
+                                source={require('assets/ic-camera-36.png')}
+                            />
+                        )}
+                        {props.loading && <LoaderSpinner color={theme.foregroundContrast} />}
+                    </View>
                 </View>
-            </View>
-        </TouchableOpacity>
+            </TouchableOpacity>
+            {props.clearable && props.url && (
+                <TouchableOpacity
+                    onPress={props.handleClear}
+                    style={{
+                        position: 'absolute',
+                        right: 0,
+                        top: 0,
+                    }}
+                >
+                    <View
+                        justifyContent="center"
+                        alignItems="center"
+                        width={56}
+                        height={56}
+                        borderRadius={12}
+                    >
+                        <Image
+                            source={require('assets/ic-clear-24.png')}
+                            style={{
+                                width: 24,
+                                height: 24,
+                                tintColor: theme.foregroundContrast,
+                            }}
+                        />
+                    </View>
+                </TouchableOpacity>
+            )}
+        </View>
     );
 });
