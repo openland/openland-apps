@@ -327,6 +327,7 @@ const CreatingContainer = React.memo((props: CreatingContainerProps) => {
                                         field={props.titleField}
                                         label="Name"
                                         hideErrorText={true}
+                                        autofocus={true}
                                         ref={titleRef}
                                     />
                                 </div>
