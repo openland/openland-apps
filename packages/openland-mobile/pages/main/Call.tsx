@@ -173,13 +173,17 @@ const VideoView = React.memo((props: VideoViewProps) => {
     );
 });
 
-let Content = XMemo<{ id: string, hide: () => void }>((props) => {
+let Content = XMemo<{ id: string, speaker: boolean, setSpeaker: (fn: (s: boolean) => boolean) => void, hide: () => void }>((props) => {
     let theme = React.useContext(ThemeContext);
     let area = React.useContext(ASSafeAreaContext);
     let calls = getMessenger().engine.calls;
     let mediaSession = calls.useCurrentSession();
     let [state, setState] = React.useState<MediaSessionState | undefined>(mediaSession?.state.value);
-    let [speaker, setSpeaker] = React.useState(false);
+    let [speaker, setSpeaker] = React.useState(props.speaker);
+    const toggleSpeaker = () => {
+        setSpeaker(x => !x);
+        props.setSpeaker(x => !x);
+    };
 
     React.useLayoutEffect(() => {
         SStatusBar.setBarStyle('light-content');
@@ -205,6 +209,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
 
     let onCallEnd = React.useCallback(() => {
         InCallManager.stop({ busytone: '_BUNDLE_' });
+        props.setSpeaker(() => false);
         calls.leaveCall();
 
         setTimeout(() => {
@@ -246,7 +251,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                 mediaSession?.setVideoEnabled(!state?.sender.videoEnabled);
             },
             onSpeakerPress: () => {
-                setSpeaker((s) => !s);
+                toggleSpeaker();
             },
             onFlipPress: () => {
                 if (state?.sender.videoEnabled) {
@@ -326,7 +331,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     );
 });
 
-class CallContainer extends React.Component<{ id: string, modal: ZModalController }> {
+class CallContainer extends React.Component<{ id: string, modal: ZModalController, speaker: boolean, setSpeaker: (fn: (s: boolean) => boolean) => void }> {
 
     private key = randomKey();
     private ended = false;
@@ -377,7 +382,7 @@ class CallContainer extends React.Component<{ id: string, modal: ZModalControlle
             >
                 <LinearGradient colors={['#0084fe', '#004280']} style={{ flexGrow: 1, flexDirection: 'column' }}>
                     <React.Suspense fallback={<ZLoader />}>
-                        <Content id={this.props.id} hide={this.hide} />
+                        <Content id={this.props.id} hide={this.hide} speaker={this.props.speaker} setSpeaker={this.props.setSpeaker} />
                     </React.Suspense>
                 </LinearGradient>
             </SAnimated.View>
@@ -385,13 +390,13 @@ class CallContainer extends React.Component<{ id: string, modal: ZModalControlle
     }
 }
 
-export function showCallModal(id: string) {
+export function showCallModal(props: { id: string, speaker: boolean, setSpeaker: (fn: (s: boolean) => boolean) => void, }) {
 
     (async () => {
         if (await checkPermissions('microphone')) {
             showModal((ctx) => {
                 return (
-                    <CallContainer id={id} modal={ctx} />
+                    <CallContainer id={props.id} speaker={props.speaker} setSpeaker={props.setSpeaker} modal={ctx} />
                 );
             });
         }
@@ -399,3 +404,12 @@ export function showCallModal(id: string) {
     })();
 
 }
+
+export const useCallModal = (props: { id: string }) => {
+    // InCallManager doesn't handle speaker state https://github.com/react-native-webrtc/react-native-incall-manager/issues/44
+    const [speaker, setSpeaker] = React.useState(false);
+    const show = React.useCallback(() => {
+        showCallModal({ id: props.id, speaker, setSpeaker });
+    }, [props.id, speaker]);
+    return show;
+};

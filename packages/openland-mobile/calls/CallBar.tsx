@@ -4,9 +4,8 @@ import { View, TouchableOpacity, Text, Platform } from 'react-native';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { useWatchCall } from './useWatchCall';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { showCallModal } from 'openland-mobile/pages/main/Call';
 
-export const CallBarComponent = XMemo<{ id: string }>((props) => {
+export const CallBarComponent = XMemo<{ id: string, showCallModal: () => void }>((props) => {
     let conference = getClient().useConference({ id: props.id }, { suspense: false });
 
     useWatchCall(conference && conference.conference.id);
@@ -34,7 +33,7 @@ export const CallBarComponent = XMemo<{ id: string }>((props) => {
                     {r => (
                         <TouchableOpacity
                             activeOpacity={0.3}
-                            onPress={() => showCallModal(props.id)}
+                            onPress={props.showCallModal}
                             style={{ height: 28, paddingHorizontal: 12, marginHorizontal: 7, backgroundColor: 'white', borderRadius: 14, alignItems: 'center', justifyContent: 'center' }}
                             delayPressIn={0}
                         >
