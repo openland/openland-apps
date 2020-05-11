@@ -23,6 +23,7 @@ import { useVideoCallModal } from './CallModal';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { plural } from 'openland-y-utils/plural';
+import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 
 const VIDEO_WIDTH = 320;
 const VIDEO_HEIGHT = 213;
@@ -247,29 +248,13 @@ const AvatarCover = React.memo((props: { photo?: string | null, id: string, titl
 });
 
 const VideoMediaView = React.memo((props: {
-    mediaSessionManager: MediaSessionManager;
+    state: MediaSessionState;
     peer?: Conference_conference_peers,
     fallback: { id: string; title: string; photo?: string | null }
     calls: CallsEngine
 }) => {
-    // @ts-ignore
-    const [track, setTrack] = React.useState<AppMediaStreamTrack>();
-
-    // React.useEffect(() => {
-    //     let d: (() => void) | undefined;
-    //     if (props.peer?.id) {
-    //         d = props.mediaSessionManager.peerVideoVM.listen(props.peer.id, (tracks) => {
-    //             let tr = [...tracks.entries()].find(s => s[0] === 'camera');
-    //             if (tr) {
-    //                 setTrack(tr[1]);
-    //             } else {
-    //                 setTrack(undefined);
-    //             }
-    //         });
-    //     }
-    //     return d;
-    // }, [props.peer?.id]);
-
+    const receiver = props.state.receivers[props.peer?.id || ''];
+    const track = receiver?.screencastTrack || receiver?.videoTrack;
     return (
         <XView width={VIDEO_WIDTH} height={VIDEO_HEIGHT} overflow="hidden" backgroundColor="var(--overlayHeavy)" alignItems="center" justifyContent="center">
             {track ? (
@@ -294,6 +279,7 @@ const MediaView = React.memo((props: {
     peers: Conference_conference_peers[];
     fallback: { id: string; title: string; photo?: string | null };
     mediaSessionManager: MediaSessionManager;
+    state: MediaSessionState;
     calls: CallsEngine;
 }) => {
     let peerId = props.mediaSessionManager.analyzer.useSpeakingPeer();
@@ -301,7 +287,7 @@ const MediaView = React.memo((props: {
 
     return <VideoMediaView
         peer={peer}
-        mediaSessionManager={props.mediaSessionManager}
+        state={props.state}
         fallback={props.fallback}
         calls={props.calls}
     // callState={props.callState}
@@ -334,6 +320,7 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
         <MediaView
             peers={data?.conference.peers || []}
             mediaSessionManager={props.mediaSession}
+            state={state}
             fallback={props.room.__typename === 'PrivateRoom' ? {
                 id: props.room.user.id,
                 title: props.room.user.name,
