@@ -142,9 +142,10 @@ export class MediaConnectionManager {
         }
         this.destroyed = true;
 
+        // detach session peer receivers
         for (let [peerId, receivers] of this.receivers.entries()) {
             for (let kind of receivers.keys()) {
-                this.session.onReceiverUpdated(peerId, kind, null);
+                this.session.attachPeerReceiver(peerId, kind, null);
             }
         }
 
@@ -181,6 +182,9 @@ export class MediaConnectionManager {
                 await this.prepareTransceivers(config);
                 await this.configureReceivers(config);
                 await this.configureSenders(config);
+
+                // Attach receivers to peers in session
+                this.attachSessionReceivers(config);
 
                 // Create Offer
                 console.log('[WEBRTC]: Creating offer');
@@ -304,6 +308,9 @@ export class MediaConnectionManager {
             // Dynamically created senders have invalid state. We have to reconfigure them.
             await this.configureSenders(config);
 
+            // Attach receivers to peers in session
+            this.attachSessionReceivers(config);
+
             // Generate answer
             if (!this.localAnswer) {
                 console.log('[WEBRTC]: Creating answer');
@@ -418,30 +425,24 @@ export class MediaConnectionManager {
                 if (kind === 'audio') {
                     if (config.receivers.find((r) => r.peerId === peerId && r.kind === MediaKind.AUDIO)) {
                         transceiver.direction = 'recvonly';
-                        this.session.onReceiverUpdated(peerId, kind, transceiver.receiver.track);
                     } else {
                         transceiver.direction = 'inactive';
-                        this.session.onReceiverUpdated(peerId, kind, null);
                     }
                 } else if (kind === 'video') {
                     if (config.receivers.find((r) => r.peerId === peerId && r.kind === MediaKind.VIDEO && (
                         r.videoSource === null || r.videoSource === VideoSource.CAMERA
                     ))) {
                         transceiver.direction = 'recvonly';
-                        this.session.onReceiverUpdated(peerId, kind, transceiver.receiver.track);
                     } else {
                         transceiver.direction = 'inactive';
-                        this.session.onReceiverUpdated(peerId, kind, null);
                     }
                 } else if (kind === 'screencast') {
                     if (config.receivers.find((r) => r.peerId === peerId && r.kind === MediaKind.VIDEO &&
                         r.videoSource === VideoSource.SCREEN
                     )) {
                         transceiver.direction = 'recvonly';
-                        this.session.onReceiverUpdated(peerId, kind, transceiver.receiver.track);
                     } else {
                         transceiver.direction = 'inactive';
-                        this.session.onReceiverUpdated(peerId, kind, null);
                     }
                 }
             }
@@ -562,8 +563,9 @@ export class MediaConnectionManager {
                 }
             }
         }
+    }
 
-        // configure receivers 
+    private attachSessionReceivers = (config: ConferenceMedia_conferenceMedia_streams) => {
         for (let [peerId, receivers] of this.receivers.entries()) {
             for (let [kind, receiver] of receivers.entries()) {
                 let enabled = false;
@@ -578,7 +580,7 @@ export class MediaConnectionManager {
                         r.videoSource === VideoSource.SCREEN
                     );
                 }
-                this.session.onReceiverUpdated(peerId, kind, enabled ? receiver.receiver.track : null);
+                this.session.attachPeerReceiver(peerId, kind, enabled ? receiver.receiver.track : null);
             }
         }
     }

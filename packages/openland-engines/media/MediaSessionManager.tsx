@@ -501,7 +501,7 @@ export class MediaSessionManager {
     // Collect recievers
     //
 
-    onReceiverUpdated = (peerId: string, type: 'audio' | 'video' | 'screencast', track: AppMediaStreamTrack | null) => {
+    attachPeerReceiver = (peerId: string, type: 'audio' | 'video' | 'screencast', track: AppMediaStreamTrack | null) => {
         let command: MediaSessionCommand = { command: 'receiver', receiver: { id: peerId } };
         if (type === 'audio') {
             command.receiver.audioTrack = track;
