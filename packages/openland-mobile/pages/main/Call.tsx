@@ -27,8 +27,7 @@ import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { SDevice } from 'react-native-s/SDevice';
-import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
-import { CallControls } from './components/conference/CallControls';
+import { showCallControls } from './components/conference/CallControls';
 
 const PeerInfoGradient = (props: { children: any }) => {
     let theme = React.useContext(ThemeContext);
@@ -238,41 +237,30 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
             : 'Call';
 
     let showControls = () => {
-        showBottomSheet({
-            containerStyle: {
-                backgroundColor: 'transparent',
-                marginHorizontal: 0,
+        showCallControls({
+            title,
+            mute,
+            speaker,
+            camera: !!state?.sender.videoEnabled,
+            onMutePress: () => {
+                setMute((s) => {
+                    mediaSession?.setAudioEnabled(s);
+                    return !s;
+                });
             },
-            view: (ctx) => (
-                <CallControls
-                    title={title}
-                    muted={mute}
-                    speaker={speaker}
-                    camera={!!state?.sender.videoEnabled}
-                    onMutedPress={() => {
-                        setMute((s) => {
-                            mediaSession?.setAudioEnabled(s);
-                            return !s;
-                        });
-                    }}
-                    onCameraPress={() => {
-                        mediaSession?.setVideoEnabled(!state?.sender.videoEnabled);
-                    }}
-                    onCameraLongPress={() => {
-                        if (state?.sender.videoEnabled) {
-                            ReactNativeHapticFeedback.trigger('notificationSuccess');
-                            ((state.sender.videoTrack as AppUserMediaStreamTrackNative)?.track as any)?._switchCamera();
-                        }
-                    }}
-                    onSpeakerPress={() => {
-                        setSpeaker((s) => !s);
-                    }}
-                    onCallEnd={() => {
-                        onCallEnd();
-                        ctx.hide();
-                    }}
-                />
-            )
+            onCameraPress: () => {
+                mediaSession?.setVideoEnabled(!state?.sender.videoEnabled);
+            },
+            onCameraLongPress: () => {
+                if (state?.sender.videoEnabled) {
+                    ReactNativeHapticFeedback.trigger('notificationSuccess');
+                    ((state.sender.videoTrack as AppUserMediaStreamTrackNative)?.track as any)?._switchCamera();
+                }
+            },
+            onSpeakerPress: () => {
+                setSpeaker((s) => !s);
+            },
+            onCallEnd,
         });
     };
 

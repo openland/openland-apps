@@ -4,11 +4,12 @@ import { View, Image, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
 
-const CallControlItem = (props: { label: string, icon: NodeRequire, backgroundColor?: string, onPress?: () => void, onLongPress?: () => void }) => {
+const CallControlItem = (props: { label: string, icon: NodeRequire, backgroundColor?: string, disabled?: boolean, onPress?: () => void, onLongPress?: () => void }) => {
     let theme = React.useContext(ThemeContext);
     return (
-        <View alignItems="center">
+        <View alignItems="center" opacity={props.disabled ? 0.56 : 1} pointerEvents={props.disabled ? 'none' : undefined}>
             <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={props.onPress}
@@ -24,19 +25,21 @@ const CallControlItem = (props: { label: string, icon: NodeRequire, backgroundCo
     );
 };
 
-export const CallControls = (props: {
-    title: string,
-    muted: boolean,
-    speaker: boolean,
-    camera: boolean,
-    onMutedPress: () => void,
-    onSpeakerPress: () => void,
-    onCameraPress: () => void,
-    onCameraLongPress: () => void,
-    onCallEnd: () => void
-}) => {
+interface CallControlsProps {
+    title: string;
+    mute: boolean;
+    speaker: boolean;
+    camera: boolean;
+    onMutePress: () => void;
+    onSpeakerPress: () => void;
+    onCameraPress: () => void;
+    onCameraLongPress: () => void;
+    onCallEnd: () => void;
+}
+
+export const CallControls = (props: CallControlsProps) => {
     let theme = React.useContext(ThemeContext);
-    let [mute, setMute] = React.useState(props.muted);
+    let [mute, setMute] = React.useState(props.mute);
     let [speaker, setSpeaker] = React.useState(props.speaker);
     let [camera, setCamera] = React.useState(props.camera);
 
@@ -76,7 +79,7 @@ export const CallControls = (props: {
                         <CallControlItem
                             onPress={() => {
                                 setMute(x => !x);
-                                props.onMutedPress();
+                                props.onMutePress();
                             }}
                             icon={require('assets/ic-mute-glyph-24.png')}
                             label="Mute"
@@ -95,10 +98,32 @@ export const CallControls = (props: {
                         <CallControlItem
                             icon={require('assets/ic-cycle-glyph-24.png')}
                             label="Flip"
+                            disabled={true}
                         />
                     </View>
                 </View>
             </ZBlurredView>
         </View>
     );
+};
+
+export const showCallControls = (props: CallControlsProps) => {
+    showBottomSheet({
+        containerStyle: {
+            backgroundColor: 'transparent',
+            marginHorizontal: 0,
+            alignSelf: 'center',
+            width: '100%',
+            maxWidth: 450,
+        },
+        view: (ctx) => (
+            <CallControls
+                {...props}
+                onCallEnd={() => {
+                    props.onCallEnd();
+                    ctx.hide();
+                }}
+            />
+        )
+    });
 };
