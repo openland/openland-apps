@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Image, Text } from 'react-native';
+import { View, Image, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
