@@ -20,5 +20,6 @@ export const SearchBox = (props: SearchBoxProps) => (
         options={props.value || []}
         onChange={props.onChange}
         value={props.value}
+        autoFocus={true}
     />
 );
