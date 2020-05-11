@@ -21,7 +21,6 @@ import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradie
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppUserMediaStreamTrackNative } from 'openland-y-runtime-native/AppUserMedia';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
-import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
@@ -177,7 +176,9 @@ const VideoView = React.memo((props: VideoViewProps) => {
 let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let theme = React.useContext(ThemeContext);
     let area = React.useContext(ASSafeAreaContext);
-    let [mute, setMute] = React.useState(false);
+    let calls = getMessenger().engine.calls;
+    let mediaSession = calls.useCurrentSession();
+    let [state, setState] = React.useState<MediaSessionState | undefined>(mediaSession?.state.value);
     let [speaker, setSpeaker] = React.useState(false);
 
     React.useLayoutEffect(() => {
@@ -194,14 +195,10 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
         InCallManager.setForceSpeakerphoneOn(speaker);
     }, [speaker]);
 
-    let calls = getMessenger().engine.calls;
-
     React.useEffect(() => {
         calls.joinCall(props.id);
     }, []);
 
-    let mediaSession = calls.useCurrentSession();
-    let [state, setState] = React.useState<MediaSessionState>();
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
 
     let conference = getClient().useConference({ id: props.id }, { suspense: false });
@@ -239,26 +236,22 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let showControls = () => {
         showCallControls({
             title,
-            mute,
+            mute: !state?.sender.audioEnabled,
             speaker,
             camera: !!state?.sender.videoEnabled,
             onMutePress: () => {
-                setMute((s) => {
-                    mediaSession?.setAudioEnabled(s);
-                    return !s;
-                });
+                mediaSession?.setAudioEnabled(!state?.sender.audioEnabled);
             },
             onCameraPress: () => {
                 mediaSession?.setVideoEnabled(!state?.sender.videoEnabled);
             },
-            onCameraLongPress: () => {
-                if (state?.sender.videoEnabled) {
-                    ReactNativeHapticFeedback.trigger('notificationSuccess');
-                    ((state.sender.videoTrack as AppUserMediaStreamTrackNative)?.track as any)?._switchCamera();
-                }
-            },
             onSpeakerPress: () => {
                 setSpeaker((s) => !s);
+            },
+            onFlipPress: () => {
+                if (state?.sender.videoEnabled) {
+                    ((state.sender.videoTrack as AppUserMediaStreamTrackNative)?.track as any)?._switchCamera();
+                }
             },
             onCallEnd,
         });

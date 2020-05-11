@@ -33,7 +33,7 @@ interface CallControlsProps {
     onMutePress: () => void;
     onSpeakerPress: () => void;
     onCameraPress: () => void;
-    onCameraLongPress: () => void;
+    onFlipPress: () => void;
     onCallEnd: () => void;
 }
 
@@ -90,15 +90,15 @@ export const CallControls = (props: CallControlsProps) => {
                                 setCamera(x => !x);
                                 props.onCameraPress();
                             }}
-                            onLongPress={props.onCameraLongPress}
                             icon={require('assets/ic-camera-video-24.png')}
                             label="Camera"
                             backgroundColor={camera ? '#248BF2' : undefined}
                         />
                         <CallControlItem
                             icon={require('assets/ic-cycle-glyph-24.png')}
+                            onPress={props.onFlipPress}
                             label="Flip"
-                            disabled={true}
+                            disabled={!camera}
                         />
                     </View>
                 </View>
