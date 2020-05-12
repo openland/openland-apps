@@ -511,6 +511,7 @@ export class MediaSessionVolumeSpace {
         this.d1();
         this.d2();
         this.d3();
+        this.eventBus.dispose();
         clearInterval(this.interval);
     }
 }

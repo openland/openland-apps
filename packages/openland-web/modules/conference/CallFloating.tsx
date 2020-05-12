@@ -18,7 +18,7 @@ import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
 import FullscreenIcon from 'openland-icons/s/ic-size-up-glyph-24.svg';
 import { CallsEngine } from 'openland-engines/CallsEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
-import { useShowEffects } from './Effects';
+import { useEffects } from './Effects';
 import { useVideoCallModal } from './CallModal';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { plural } from 'openland-y-utils/plural';
@@ -307,7 +307,7 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
     let calls = messenger.calls;
     let state = props.mediaSession.state.useValue();
 
-    useShowEffects(props.mediaSession);
+    useEffects(props.id);
 
     let client = useClient();
     let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
