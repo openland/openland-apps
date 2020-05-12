@@ -11,7 +11,6 @@ class PeerAvatar {
     type: 'peer' = 'peer';
     seq = 0;
     id: string;
-    local = true;
     coords: number[];
     constructor(peerId: string, coords: number[]) {
         this.id = `peer_${peerId}`;
@@ -23,7 +22,6 @@ class Pointer {
     type: 'pointer' = 'pointer';
     id: string;
     seq = 0;
-    local = true;
     coords: number[];
     color?: string;
     constructor(peerId: string, coords: number[]) {
@@ -35,7 +33,6 @@ class Pointer {
 export class Path {
     type: 'path' = 'path';
     id: string;
-    local = true;
     seq = 0;
     path: number[][];
     color: string;
@@ -61,7 +58,6 @@ export class PathIncrement {
 export class Image {
     type: 'image' = 'image';
     id: string;
-    local = true;
     seq = 0;
     coords: number[];
     containerWH: number[];
@@ -80,7 +76,6 @@ export class SimpleText {
     type: 'simple_text' = 'simple_text';
     id: string;
     seq = 0;
-    local = true;
     text = '';
     color: string;
     fontSize: number;
@@ -164,8 +159,6 @@ export class MediaSessionVolumeSpace {
     private peerId?: string | null;
     selfPeer?: PeerAvatar;
     selfPointer: Pointer | undefined;
-    readonly selfObjects = new Map<string, SpaceObject>();
-    readonly remoteObjects = new Map<string, SpaceObject>();
     readonly selfDeletedIds = new Set<string>();
     readonly knownPeers = new Set<string>();
 
@@ -226,20 +219,7 @@ export class MediaSessionVolumeSpace {
             onConversationUpdated: () => {/* */ }
         });
 
-        // local/remote objects index
-        Object.keys(this.storages).map(k => {
-            let s = this.storages[k];
-            if (s instanceof VMMapMap) {
-                s.listenAllIds(this.onObjUpdate);
-            } else if (s instanceof VMMap) {
-                s.listenAllValues(this.onObjUpdate);
-            }
-        });
         this.setColor(getPlaceholderColorRawById(mediaSession.messenger.user.id).end);
-    }
-
-    onObjUpdate = (obj: SpaceObject) => {
-        (obj.local ? this.selfObjects : this.remoteObjects).set(obj.id, obj);
     }
 
     ////
@@ -349,8 +329,6 @@ export class MediaSessionVolumeSpace {
         Object.keys(this.storages).map(k => {
             this.storages[k].deleteByValId(id);
         });
-        this.selfObjects.delete(id);
-        this.remoteObjects.delete(id);
 
         this.selfDeletedIds.add(id);
         this.sync();
@@ -391,6 +369,9 @@ export class MediaSessionVolumeSpace {
     }
 
     sync = () => {
+        if (!this.peerId) {
+            return;
+        }
         let add = new Add([]);
         let batch: UpdateType[] = [add];
         if (this.selfPointer) {
@@ -399,8 +380,11 @@ export class MediaSessionVolumeSpace {
         if (this.selfPeer) {
             add.objects.push(this.selfPeer);
         }
+        let localObjectsDescriptors = Object.values(this.storages)
+            .flatMap(s => [...s.get(this.peerId || '')?.values() || []])
+            .map(e => ({ id: e.id, seq: e.seq }));
         batch.push(new Sync(
-            [...this.selfObjects.entries()].map(e => ({ id: e[0], seq: e[1].seq })),
+            localObjectsDescriptors,
             [...this.selfDeletedIds.values()],
             [...this.knownPeers.values()]
         ));
@@ -440,15 +424,12 @@ export class MediaSessionVolumeSpace {
                     Object.keys(this.storages).map(k => {
                         this.storages[k].deleteByValId(id);
                     });
-
-                    this.selfObjects.delete(id);
-                    this.remoteObjects.delete(id);
                 });
                 // requst unknown items
                 let ids: string[] = [];
                 let peers: string[] = [];
                 for (let remote of u.objects) {
-                    let ex = this.remoteObjects.get(remote.id);
+                    let ex =  Object.values(this.storages).flatMap(s => [...s.get(this.peerId || '')?.values() || []]).find(o => o.id === remote.id);
                     if (!ex || ex.seq < remote.seq) {
                         ids.push(remote.id);
                     }
@@ -467,9 +448,9 @@ export class MediaSessionVolumeSpace {
                 let b: UpdateType[] = [add];
                 // add requested objects
                 for (let id of u.ids) {
-                    let local = this.selfObjects.get(id);
-                    if (local && local.local) {
-                        add.objects.push({ ...local, local: false });
+                    let local = Object.values(this.storages).flatMap(s => [...s.get(this.peerId || '')?.values() || []]).find(o => o.id === id);
+                    if (local) {
+                        add.objects.push({ ...local });
                     }
                 }
 
