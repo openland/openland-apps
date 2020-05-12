@@ -193,6 +193,7 @@ const catalogRowContainer = css`
 `;
 
 const catalogHeaderContent = css`
+    height: 56px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -363,8 +364,6 @@ const InnerElementType = React.forwardRef<HTMLDivElement>((props: any, ref) => {
                 <div
                     key={'inner_element_emoji' + i}
                     style={{
-                        top: (pack.start + 3) * 80,
-                        left: 0,
                         width: 352,
                         height:
                             i === sections.length - 1
@@ -442,6 +441,10 @@ const CategoryButton = React.memo(
         );
     },
 );
+
+const listPaddedStyle = css`
+    padding-bottom: 20px;
+`;
 
 export const StickerComponent = React.memo<{
     onStickerSent?: (sticker: StickerFragment) => void;
@@ -540,8 +543,9 @@ export const StickerComponent = React.memo<{
             <div className={stickersContainer}>
                 {showCatalog && (
                     <FixedSizeList
+                        className={listPaddedStyle}
                         itemCount={stickersCatalog.length}
-                        itemSize={136}
+                        itemSize={148}
                         width={384 /* Bigger width to hide scrollbar */}
                         height={384}
                         overscanCount={8}
@@ -560,6 +564,7 @@ export const StickerComponent = React.memo<{
                 {!showCatalog && (
                     <VariableSizeList
                         ref={ref}
+                        className={listPaddedStyle}
                         itemCount={stickersCount}
                         itemSize={(index) => {
                             const section = stickersPack.find(
