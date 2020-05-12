@@ -2,7 +2,8 @@ import * as React from 'react';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { useConfetti } from 'openland-web/pages/onboarding/start.page';
 import { debounce } from 'openland-y-utils/timer';
-import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
+import { GlobalEventBus } from 'openland-engines/GlobalEventBus';
+import { GQLClientContext } from 'openland-api/useClient';
 
 export const useHorn = () => {
     let [startConf, resetConf] = useConfetti(500);
@@ -13,43 +14,33 @@ export const useHorn = () => {
         return false;
     }, 10000, false), []);
 
-    return { horn: hornDebounced, resetHorn: resetConf };
+    React.useEffect(() => resetConf, []);
+
+    return hornDebounced;
 };
 
-export const useShowEffects = (session: MediaSessionManager | null) => {
-    let { resetHorn } = useHorn();
-
+export const useEffects = (conversationId: string) => {
+    let horn = useHorn();
+    let client = React.useContext(GQLClientContext);
     React.useEffect(() => {
-        if (session) {
-            // session.dcVM.listen(m => {
-            //     let message: { channel: string, type: string } | undefined;
-            //     try {
-            //         message = m.dataParsed || (typeof m.data === 'string' ? JSON.parse(m.data) : undefined);
-            //     } catch (e) {
-            //         console.error('effects cant parse message', m);
-            //     }
-            //     if (message && message.channel === 'effects' && message.type === 'horn') {
-            //         horn();
-            //     }
-
-            // });
-        }
-        return resetHorn;
-    }, [session]);
-
-};
-
-export const useTriggerEvents = (session: MediaSessionManager | null) => {
-    let { horn, resetHorn } = useHorn();
-    useShortcuts([
-        {
-            keys: ['Control', 'h'],
-            callback: () => {
+        let bus = new GlobalEventBus(`call_effects_${conversationId}`, client!);
+        let d1 = bus.subscribe(m => {
+            if (m === 'horn') {
                 horn();
-                // session?.sendDcMessage({ channel: 'effects', type: 'horn' });
-                return false;
             }
+        });
+        return () => {
+            d1();
+            bus.dispose();
+        };
+    }, []);
+
+    useShortcuts([{
+        keys: ['Control', 'h'],
+        callback: () => {
+            client?.mutateGlobalEventBusPublish({ topic: `call_effects_${conversationId}`, message: 'horn' });
+            return false;
         }
-    ], [session]);
-    return resetHorn;
+    }], []);
+
 };

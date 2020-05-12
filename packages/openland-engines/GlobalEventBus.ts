@@ -27,4 +27,8 @@ export class GlobalEventBus {
     publish = async (message: string) => {
         this.client.mutateGlobalEventBusPublish({ topic: this.topic, message });
     }
+
+    dispose = () => {
+        this.eventBusSubscription();
+    }
 }
