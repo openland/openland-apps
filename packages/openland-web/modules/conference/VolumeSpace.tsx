@@ -102,6 +102,7 @@ let DrawControlsHidden = css`
 
 let PeerImageContainer = css`
     will-change: transform;
+    pointer-events: none;
 
     display: flex;
     overflow: visible;
@@ -115,7 +116,7 @@ let ImageStyle = css`
     height: 100%;
 `;
 let ResizerAnchorStyle = css`
-    pointer-events: inherit;
+    pointer-events: all;
     position: absolute;
     width: 20px;
     height: 20px;
@@ -137,7 +138,7 @@ let ResizerAnchorStyle = css`
 `;
 
 let MoveAnchorStyle = css`
-    pointer-events: inherit;
+    pointer-events: all;
     position: absolute;
     width: 100%;
     height: 30px;
@@ -163,7 +164,7 @@ let MoveAnchorStyle = css`
 `;
 
 let DeleteAnchorStyle = css`
-    pointer-events: inherit;
+    pointer-events: all;
     position: absolute;
     width: 20px;
     height: 20px;
@@ -644,7 +645,19 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     peersRef.current = props.peers;
     let state = props.mediaSession.state.useValue();
 
-    useJsDrag(selfRef, { containerRef: selfRef, onMove: props.mediaSession.space.moveSelf, savedCallback: props.mediaSession.space.selfPeer?.coords }, [props.peers, state.sender.id]);
+    let onMoveSelfStart = React.useCallback(() => {
+        if (nonDrawContentRef.current) {
+            nonDrawContentRef.current.style.pointerEvents = 'none';
+        }
+    }, []);
+
+    let onMoveSelfStop = React.useCallback(() => {
+        if (nonDrawContentRef.current) {
+            nonDrawContentRef.current.style.pointerEvents = 'auto';
+        }
+    }, []);
+
+    useJsDrag(selfRef, { containerRef: selfRef, onMove: props.mediaSession.space.moveSelf, onStart: onMoveSelfStart, onStop: onMoveSelfStop, savedCallback: props.mediaSession.space.selfPeer?.coords }, [props.peers, state.sender.id]);
     React.useLayoutEffect(() => {
         // scroll to center
         if (containerRef.current) {
@@ -695,7 +708,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                 lastScroll = currentScroll;
             }
         };
-        let onMove = (ev: any) => {
+        let onMove = (ev: MouseEvent) => {
             let coords: number[] = [ev.offsetX, ev.offsetY];
             props.mediaSession.space.movePointer(coords);
             if (action === 'erase') {
@@ -712,8 +725,8 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                 props.mediaSession.space.incrementPath(path, [coords]);
             }
         };
-        let onStart = (ev: any) => {
-            // rpevent actions on right click
+        let onStart = (ev: MouseEvent) => {
+            // pevent actions on right click
             if (ev.button !== 0) {
                 return;
             }
