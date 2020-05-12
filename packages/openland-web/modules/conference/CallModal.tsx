@@ -16,7 +16,6 @@ import { VideoPeer, PeerMedia } from './VideoPeer';
 import WatermarkLogo from 'openland-icons/watermark-logo.svg';
 import WatermarkShadow from 'openland-icons/watermark-shadow.svg';
 import { CallControls } from './CallControls';
-import { useTriggerEvents } from './Effects';
 import { useMessageModal } from './useMessageModal';
 import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
 import { useIncomingMessages } from './useIncomingMessages';
@@ -73,9 +72,6 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
         }
     }, [mediaSession]);
 
-    // some fun 
-    useTriggerEvents(mediaSession);
-
     // layout video grid
     let peers = [...conference ? conference.conference.peers : []];
     let rotated = peers.length === 3;
@@ -89,34 +85,12 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
 
     let [layout, setLayout] = React.useState<'grid' | 'volume-space'>('grid');
 
-    // pick latest link from chat
-    let [showLink, setShowLink] = React.useState(false);
-    const [link, setLink] = React.useState<string | undefined>();
-
-    const [renderedMessages, handleItemAdded, handleItemUpdated] = useIncomingMessages();
+    const [renderedMessages, handleItemAdded] = useIncomingMessages();
 
     React.useEffect(() => {
         // on message with linkm open it in iframe
         let ds = props.messenger.getConversation(props.chatId).dataSource;
-        let processItem = (item: DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem) => {
-            if (item.type === 'message' && item.spans) {
-                let span = item.spans.find(s => s.__typename === 'MessageSpanLink');
-                let url = span?.__typename === 'MessageSpanLink' ? span.url : undefined;
-                // accept only fresh ones
-                if (url && (new Date().getTime() - item.date < 1000 * 60 * 15)) {
-                    setLink(url);
-                    setShowLink(true);
-                    return true;
-                }
-            }
-            return false;
-        };
-        // check last 10 messages on start
-        for (let i = 0; i < Math.min(10, ds.getSize() - 1); i++) {
-            if (processItem(ds.getAt(i))) {
-                break;
-            }
-        }
+
         return ds.watch(
             {
                 onDataSourceInited: (items) => {
@@ -126,7 +100,6 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                     //
                 },
                 onDataSourceItemAdded: (item) => {
-                    processItem(item);
                     handleItemAdded(item);
                 },
                 onDataSourceLoadedMoreForward: (items) => {
@@ -139,8 +112,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                     // Nothing to do
                 },
                 onDataSourceItemUpdated: (item) => {
-                    processItem(item);
-                    handleItemUpdated(item);
+                    // Nothing to do
                 },
                 onDataSourceCompleted: () => {
                     // Nothing to do
@@ -216,14 +188,12 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                     cameraEnabled={state.sender.videoEnabled}
                     screenEnabled={state.sender.screencastEnabled}
                     spaceEnabled={layout === 'volume-space'}
-                    toolsEnabled={showLink}
                     onMinimize={props.ctx.hide}
                     onMute={() => mediaSession.setAudioEnabled(!state.sender.audioEnabled)}
                     onCameraClick={() => mediaSession.setVideoEnabled(!state.sender.videoEnabled)}
                     onScreenClick={() => mediaSession.setScreenshareEnabled(!state.sender.screencastEnabled)}
                     onSpaceClick={() => setLayout(prev => prev === 'volume-space' ? 'grid' : 'volume-space')}
                     onMessageClick={showMessage}
-                    onToolsClick={() => setShowLink(prev => !prev)}
                     onEnd={() => {
                         props.ctx.hide();
                         props.calls.leaveCall();
@@ -242,12 +212,6 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                     <WatermarkShadow />
                 </div>
             </div>
-
-            {mediaSession && showLink && (
-                <XView flexGrow={0.5} flexBasis={0} alignItems="stretch">
-                    <LinkFrame link={link} mediaSession={mediaSession} messenger={props.messenger} />
-                </XView>
-            )}
         </XView >
     );
 });
