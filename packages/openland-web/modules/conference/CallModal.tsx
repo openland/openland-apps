@@ -48,19 +48,6 @@ const watermarkIconStyle = cx('x', css`
     pointer-events: none;
 `);
 
-const LinkFrame = React.memo((props: { link?: string, mediaSession: MediaSessionManager, messenger: MessengerEngine }) => {
-    let url = props.link ? new URL(props.link) : undefined;
-    const isYoutube = props.link?.includes('youtube') || props.link?.includes('youtu.be');
-    // fun
-    if (url?.hostname.includes('quizzz-game')) {
-        url.searchParams.append('name', props.messenger.user.shortname || props.messenger.user.name);
-    }
-    return (
-        isYoutube ? <YoutubeParty link={props.link!} mediaSession={props.mediaSession} /> :
-            url ? <iframe width="100%" height="100%" src={url.toString()} /> : <XView width="100%" {...TextStyles.Title3} flexGrow={1} justifyContent={"center"} alignItems={"center"}>Send link to chat</XView>
-    );
-});
-
 export const CallModalConponent = React.memo((props: { chatId: string, calls: CallsEngine, client: OpenlandClient, ctx: XModalController, messenger: MessengerEngine, onAttach: (files: File[], cb?: () => void) => void }) => {
     let conference = props.client.useConference({ id: props.chatId }, { suspense: false });
     let currentMediaSession = props.calls.useCurrentSession();

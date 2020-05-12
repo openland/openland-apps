@@ -481,7 +481,7 @@ const PeerText = React.memo((props: { peerId: string, peer?: Conference_conferen
     return (
         <div ref={ref} className={cx(PeerTextContainer, canEdit && PeerTextContainerEditable, (canEdit || ytbLink) && PointerEventsInherit)}>
             {!ytbLink && <textarea className={TextAreaStyle} ref={textRef} onChange={onTextChanged} />}
-            {ytbLink && <div ref={ytbContainerRef} className={YtbPartyStyle}><YoutubeParty link={ytbLink} mediaSession={props.space.mediaSession} /></div>}
+            {ytbLink && <div ref={ytbContainerRef} className={YtbPartyStyle}><YoutubeParty key={ytbLink} link={ytbLink} scope={props.space.mediaSession.conversationId} /></div>}
 
             {canEdit && <div ref={moveRef} className={MoveAnchorStyle} />}
             {canEdit && <div ref={resizeRef} className={ResizerAnchorStyle} />}

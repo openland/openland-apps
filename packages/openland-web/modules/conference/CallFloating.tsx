@@ -219,7 +219,7 @@ export const useJsDrag = (
                 window.document.removeEventListener('touchmove', onDrag);
             }
         };
-    }, depth);
+    }, depth || []);
 };
 
 const AvatarCover = React.memo((props: { photo?: string | null, id: string, title: string }) => {

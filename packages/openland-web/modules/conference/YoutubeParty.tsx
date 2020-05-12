@@ -1,8 +1,9 @@
 import * as React from 'react';
 import YouTube from "react-youtube";
-// import uuid from 'uuid';
-import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
+import uuid from 'uuid';
 import { css } from 'linaria';
+import { GQLClientContext } from 'openland-api/useClient';
+import { GlobalEventBus } from 'openland-engines/GlobalEventBus';
 
 interface YtbInstance {
     getCurrentTime(): number;
@@ -17,7 +18,7 @@ const YtbContainerStyle = css`
     height: 100%;
 `;
 
-export const YoutubeParty = React.memo((props: { link: string, mediaSession: MediaSessionManager, controls?: boolean }) => {
+export const YoutubeParty = React.memo((props: { link: string, scope: string, controls?: boolean }) => {
     let id: string | undefined;
     let url = new URL(props.link);
     if (props.link.includes('youtu.be')) {
@@ -61,11 +62,14 @@ export const YoutubeParty = React.memo((props: { link: string, mediaSession: Med
             }
         }
     }, []);
+    let client = React.useContext(GQLClientContext)!;
     React.useEffect(() => {
-        if (!ready) {
+        if (!id || !ready) {
             return;
         }
-        // let session = uuid();
+
+        let bus = new GlobalEventBus(`scope_${props.scope}_ytb_paty_${id}`, client);
+        let session = uuid();
         stateSeqRef.current = 0;
         messageSeqRef.current = 0;
         let lastTime = 0;
@@ -77,71 +81,71 @@ export const YoutubeParty = React.memo((props: { link: string, mediaSession: Med
                 if (jump) {
                     stateSeqRef.current++;
                 }
-                // props.mediaSession.sendDcMessage({ id, time, seq: messageSeqRef.current++, stateSeq: stateSeqRef.current, palyingState: seqPalyingState.current, session, channel: 'ytb' });
+                bus.publish(JSON.stringify({ id, time, seq: messageSeqRef.current++, stateSeq: stateSeqRef.current, palyingState: seqPalyingState.current, session, channel: 'ytb' }));
             }
         }, 200);
 
-        // let obayTimer = window.setTimeout(() => obay.current = false, 500);
+        let obayTimer = window.setTimeout(() => obay.current = false, 500);
 
-        // let doObay = () => {
-        //     obay.current = true;
-        //     window.clearTimeout(obayTimer);
-        //     obayTimer = window.setTimeout(() => obay.current = false, 500);
-        // };
+        let doObay = () => {
+            obay.current = true;
+            window.clearTimeout(obayTimer);
+            obayTimer = window.setTimeout(() => obay.current = false, 500);
+        };
 
-        // let peerSeq: { [peerId: string]: number | undefined } = {};
-        // let d = props.mediaSession.dcVM.listen(container => {
-        //     let message: { channel: string, id: string, session: string, seq: number, stateSeq: number, time: number, palyingState: boolean } | undefined;
-        //     try {
-        //         message = container.dataParsed || (typeof container.data === 'string' ? JSON.parse(container.data) : undefined);
-        //     } catch (e) {
-        //         console.error('effects cant parse message', container);
-        //     }
-        //     if (!message) {
-        //         console.error("can't parse message", container);
-        //         return;
-        //     }
-        //     if ((message.channel !== 'ytb') || (message.id !== id)) {
-        //         return;
-        //     }
-        //     if ((peerSeq[container.peerId + message.session] || -1) >= message.seq) {
-        //         return;
-        //     }
+        let sessionSeq: { [peerId: string]: number | undefined } = {};
+        let d = bus.subscribe((container: string) => {
+            let message: { channel: string, id: string, session: string, seq: number, stateSeq: number, time: number, palyingState: boolean } | undefined;
+            try {
+                message = JSON.parse(container);
+            } catch (e) {
+                console.error('effects cant parse message', container);
+            }
+            if (!message) {
+                console.error("can't parse message", container);
+                return;
+            }
+            if ((message.channel !== 'ytb') || (message.id !== id)) {
+                return;
+            }
+            if ((sessionSeq[message.session] || -1) >= message.seq) {
+                return;
+            }
 
-        //     if (message.stateSeq < stateSeqRef.current) {
-        //         return;
-        //     } else if (message.stateSeq > stateSeqRef.current) {
-        //         doObay();
-        //         // sync state
-        //         if (palyingState.current !== message.palyingState) {
-        //             console.log('[YTB]', 'sync state', message);
-        //             if (message.palyingState) {
-        //                 targetRef.current?.playVideo();
-        //             } else {
-        //                 targetRef.current?.pauseVideo();
-        //             }
-        //         }
-        //         // sync time
-        //         console.log('[YTB]', 'sync time', message);
-        //         targetRef.current?.seekTo(message.time, true);
+            if (message.stateSeq < stateSeqRef.current) {
+                return;
+            } else if (message.stateSeq > stateSeqRef.current) {
+                doObay();
+                // sync state
+                if (palyingState.current !== message.palyingState) {
+                    console.log('[YTB]', 'sync state', message);
+                    if (message.palyingState) {
+                        targetRef.current?.playVideo();
+                    } else {
+                        targetRef.current?.pauseVideo();
+                    }
+                }
+                // sync time
+                console.log('[YTB]', 'sync time', message);
+                targetRef.current?.seekTo(message.time, true);
 
-        //         // prevent fresh session to play paused video (seek from initial state will start playing)
-        //         if (messageSeqRef.current === 0) {
-        //             ignorePlay.current = !message.palyingState;
-        //         }
+                // prevent fresh session to play paused video (seek from initial state will start playing)
+                if (messageSeqRef.current === 0) {
+                    ignorePlay.current = !message.palyingState;
+                }
 
-        //         seqPalyingState.current = message.palyingState;
-        //         stateSeqRef.current = message.stateSeq;
-        //     }
+                seqPalyingState.current = message.palyingState;
+                stateSeqRef.current = message.stateSeq;
+            }
 
-        //     peerSeq[container.peerId] = message.seq;
-        // });
+            sessionSeq[message.session] = message.seq;
+        });
 
         return () => {
             clearInterval(interval);
-            // d();
+            d();
         };
-    }, [id, ready]);
+    }, [ready]);
 
     return <YouTube
         containerClassName={YtbContainerStyle}
