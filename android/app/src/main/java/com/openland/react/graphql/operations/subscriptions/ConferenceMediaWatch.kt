@@ -11,12 +11,18 @@ internal val ConferenceMediaWatchSelector = obj(
                     field("streams", "streams", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("MediaStream", MediaStreamFullSelector)
-                        )))))
+                        ))))),
+                    field("localMedia", "localMedia", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("sendVideo", "sendVideo", notNull(scalar("Boolean"))),
+                            field("sendAudio", "sendAudio", notNull(scalar("Boolean"))),
+                            field("sendScreencast", "sendScreencast", notNull(scalar("Boolean")))
+                        )))
                 )))
         )
 val ConferenceMediaWatch = object: OperationDefinition {
     override val name = "ConferenceMediaWatch"
     override val kind = OperationKind.SUBSCRIPTION
-    override val body = "subscription ConferenceMediaWatch(\$id:ID!,\$peerId:ID!){media:alphaConferenceMediaWatch(id:\$id,peerId:\$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}"
+    override val body = "subscription ConferenceMediaWatch(\$id:ID!,\$peerId:ID!){media:alphaConferenceMediaWatch(id:\$id,peerId:\$peerId){__typename id streams{__typename ...MediaStreamFull}localMedia{__typename sendVideo sendAudio sendScreencast}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}"
     override val selector = ConferenceMediaWatchSelector
 }

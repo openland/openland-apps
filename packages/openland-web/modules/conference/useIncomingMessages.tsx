@@ -147,21 +147,19 @@ const messageWrapper = cx(
         padding: 12px 16px;
         background-color: var(--backgroundPrimary);
         border-radius: 8px;
-        /* box-shadow: 0px 0px 48px var(--borderLight), 0px 8px 24px var(--border); */
         overflow: hidden;
         flex-direction: row;
         margin-bottom: 16px;
-        opacity: 0;
-        transform: scale(0.84) translateY(-8px);
-        transition: transform 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
-            opacity 150ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 1;
+        width: 100%;
+        transform: translate3d(100%, 0, 0);
+        transition: transform 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
+            opacity 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
     `
 );
-
-const messageVisible = css`
-    opacity: 1;
-    transform: scale(1) translateY(0);
-`;
 
 const textContentWrapper = css`
     display: -webkit-box;
@@ -179,9 +177,19 @@ const heightBySpan = {
 
 type IncomingMessage = DataSourceMessageItem | DataSourceDateItem | DataSourceNewDividerItem;
 
-const IncomingMessage = React.memo((props: { message: DataSourceMessageItem, onHide: (messageId: string) => void }) => {
+type MessageHandlersRef = { slideDown: (height: number) => void };
+
+interface IncomingMessageProps {
+    message: DataSourceMessageItem;
+    onHide: () => void;
+    onMount: (height: number) => void;
+}
+
+const IncomingMessage = React.memo(React.forwardRef((props: IncomingMessageProps, ref: React.RefObject<MessageHandlersRef>) => {
     const { message, onHide } = props;
     const [visible, setVisible] = React.useState(false);
+    const messageRef = React.useRef<HTMLDivElement>(null);
+    const translateRef = React.useRef<number>(0);
 
     const senderNameEmojify = React.useMemo(() => emoji(message.senderName), [message.senderName]);
     const imageAttaches =
@@ -189,13 +197,46 @@ const IncomingMessage = React.memo((props: { message: DataSourceMessageItem, onH
             a => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage,
         ) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[]) || [];
 
+    const prevVisible = React.useRef<boolean>(false);
+    React.useImperativeHandle(ref, () => ({
+        slideDown: height => {
+            if (messageRef.current) {
+                translateRef.current += height + 10;
+                messageRef.current.style.transform = `translate3d(0, ${translateRef.current}px, 0)`;
+            }
+        }
+    }), []);
+
+    React.useLayoutEffect(() => {
+        if (messageRef.current) {
+            let { height } = messageRef.current.getBoundingClientRect();
+            props.onMount(height);
+        }
+    }, []);
+
+    React.useEffect(() => {
+        if (!messageRef.current) {
+            return;
+        }
+        // fade in
+        if (!prevVisible.current && visible) {
+            messageRef.current.style.transform = 'translate3d(0, 0, 0)';
+        }
+        // fade out
+        if (prevVisible.current && !visible) {
+            messageRef.current.style.opacity = '0';
+
+        }
+        prevVisible.current = visible;
+    }, [visible]);
+
     React.useEffect(() => {
         setTimeout(() => {
             setVisible(true);
         }, 10);
         let timeoutId = setTimeout(() => {
             setVisible(false);
-            onHide(message.id!);
+            onHide();
         }, 6000);
 
         return () => window.clearTimeout(timeoutId);
@@ -228,7 +269,7 @@ const IncomingMessage = React.memo((props: { message: DataSourceMessageItem, onH
     }
 
     return (
-        <div className={cx(messageWrapper, visible && messageVisible)}>
+        <div className={messageWrapper} ref={messageRef}>
             <XView marginRight={16} paddingTop={4}>
                 <UAvatar
                     id={message.senderId}
@@ -243,14 +284,16 @@ const IncomingMessage = React.memo((props: { message: DataSourceMessageItem, onH
             {imageContent}
         </div>
     );
-});
+}));
 
 export const useIncomingMessages = (): [JSX.Element | null, (item: IncomingMessage) => void, (item: IncomingMessage) => void] => {
+    const handlersRef = React.useRef<React.RefObject<MessageHandlersRef>[]>([]);
     const [messages, setMessages] = React.useState<DataSourceMessageItem[]>([]);
     const pendingMessages = React.useRef<Record<string, DataSourceMessageItem | undefined>>({}).current;
     const onMessageAdded = (item: IncomingMessage) => {
         if (item.type === 'message' && !item.isService) {
             if (item.id) {
+                handlersRef.current.unshift(React.createRef<MessageHandlersRef>());
                 setMessages(prev => [item, ...prev]);
             } else {
                 pendingMessages[item.key] = item;
@@ -264,10 +307,24 @@ export const useIncomingMessages = (): [JSX.Element | null, (item: IncomingMessa
             delete pendingMessages[item.key];
         }
     };
-    const handleHide = (messageId: string) => {
+    const handleHide = () => {
         setTimeout(() => {
-            setMessages(prev => prev.filter(m => m.id !== messageId));
-        }, 150);
+            setMessages(prev => {
+                let newMessages = prev.slice();
+                newMessages.pop();
+                return newMessages;
+            });
+            handlersRef.current?.pop();
+        }, 200);
+    };
+    const handleMount = (height: number) => {
+        messages.slice(1).forEach((message, index) => {
+            let refIndex = index + 1;
+            let messageRef = handlersRef?.current[refIndex]?.current;
+            if (messageRef) {
+                messageRef.slideDown(height);
+            }
+        });
     };
 
     const renderedMessages = (
@@ -279,9 +336,8 @@ export const useIncomingMessages = (): [JSX.Element | null, (item: IncomingMessa
             height="auto"
             maxHeight="100%"
             zIndex={4}
-            overflow="hidden"
         >
-            {messages.map(m => <IncomingMessage key={m.id} message={m} onHide={handleHide} />)}
+            {messages.map((m, i) => <IncomingMessage key={m.id} message={m} onHide={handleHide} onMount={handleMount} ref={handlersRef?.current[i]} />)}
         </XView>
     );
     return [renderedMessages, onMessageAdded, onMessageUpdated];

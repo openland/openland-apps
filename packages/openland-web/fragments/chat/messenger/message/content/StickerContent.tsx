@@ -5,7 +5,6 @@ import { StickerFragment } from 'openland-api/spacex.types';
 import { showModalBox } from 'openland-x/showModalBox';
 import { useClient } from 'openland-api/useClient';
 import { XLoader } from 'openland-x/XLoader';
-import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { UButton } from 'openland-web/components/unicorn/UButton';
@@ -136,11 +135,9 @@ export const StickerContent = React.memo((props: ImageContentProps) => {
         <div
             className={imgContainer}
             onClick={e => {
-                if (AppConfig.isNonProduction() || AppConfig.isSuperAdmin()) {
-                    e.stopPropagation();
-                    if (sticker.pack) {
-                        showStickerStickerPackModal(sticker.pack.id, sticker.pack.title);
-                    }
+                e.stopPropagation();
+                if (sticker.pack) {
+                    showStickerStickerPackModal(sticker.pack.id, sticker.pack.title);
                 }
             }}
         >

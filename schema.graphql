@@ -2549,6 +2549,7 @@ type Query {
   matchmakingRoom(peerId: ID!): MatchmakingRoom
   matchmakingProfile(peerId: ID!, uid: ID!): MatchmakingProfile
   trendingRoomsByMessages(from: Date!, to: Date!, size: Int): [TrendingRoom!]!
+  groupScreenViews(id: ID!, from: Date, to: Date): Int!
   me: User
   user(id: ID!): User!
   mySuccessfulInvitesCount: Int!

@@ -1,111 +1,120 @@
 import * as React from 'react';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { debounce } from 'openland-y-utils/timer';
-import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
-import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
+import { MediaSessionState, MediaSessionCommand } from './MediaSessionState';
+import { Reducer } from 'openland-y-utils/reducer';
 
-const AudioContext = canUseDOM && (window.AudioContext // Default
-    || (window as any).webkitAudioContext // Safari and old versions of Chrome
-    || false);
-let audioContext: any;
+import { AppAudioTrackAnalyzer } from 'openland-y-runtime-api/AppAudioTrackAnalyzerApi';
+import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
+import { AppAudioTrackAnalyzerFactory } from 'openland-y-runtime/AppAudioTrackAnalyzer';
 
-export class MediaStreamsAlalyzer {
-    private buffer: Uint8Array | undefined;
+class MediaSessionTrackAnalyzer {
+    listeners = new Set<(peersVolume: { [id: string]: number }) => void>();
+    peerVolume: { [id: string]: number } = {};
+
     private peerTrackAnalyzers = new Map<
         string,
         {
-            isMe?: boolean;
-            analyzer?: AnalyserNode;
-            stream?: MediaStream;
-            audioTrack?: MediaStreamTrack;
+            analyzer?: AppAudioTrackAnalyzer;
+            audioTrack: AppMediaStreamTrack | null;
         }
     >();
-    private disposeStreamsListener: (() => void) | undefined;
+    private interval?: NodeJS.Timeout;
     private running = false;
-
-    private fStartIndex = 0;
-    private fEndIndex = 1023;
-
-    constructor() {
-        if (audioContext?.close) {
-            audioContext?.close();
-        }
-        audioContext = AudioContext ? new AudioContext() : undefined;
-    }
 
     setSessionState = (state: MediaSessionState) => {
         for (let k of Object.keys(state.receivers)) {
             let r = state.receivers[k]!;
             this.peerTrackAnalyzers.set(k, {
-                audioTrack: r.audioTrack ? (r.audioTrack as AppUserMediaTrackWeb).track : undefined
+                audioTrack: r.audioTrack
             });
         }
         if (state.sender.id && state.sender.audioEnabled) {
             this.peerTrackAnalyzers.set(state.sender.id, {
-                isMe: true,
-                audioTrack: (state.sender.audioEnabled && state.sender.audioTrack) ? (state.sender.audioTrack as AppUserMediaTrackWeb).track : undefined
+                audioTrack: (state.sender.audioEnabled && state.sender.audioTrack) || null
             });
         }
         if (!this.running) {
             this.running = true;
-            requestAnimationFrame(this.render);
+            this.interval = setInterval(this.render, 50);
         }
     }
 
-    private lastPeer: string | undefined;
-    private lastVals: { [id: string]: boolean } = {};
     private render = () => {
         if (!this.running) {
             return;
         }
-        let lastVal = 0;
-        let activePeerId: string | undefined;
         for (let [key, entry] of this.peerTrackAnalyzers) {
-            if (entry.stream?.getAudioTracks()[0] !== entry.audioTrack) {
-                console.warn('rebind analizer');
+            if (entry.analyzer?.track !== entry.audioTrack) {
                 entry.analyzer?.disconnect();
                 entry.analyzer = undefined;
 
                 if (entry.audioTrack) {
-                    entry.stream = new MediaStream();
-                    entry.stream.addTrack(entry.audioTrack);
-
-                    let analyzer = audioContext.createAnalyser();
-                    const bufferLength = analyzer.frequencyBinCount;
-                    if (!this.buffer) {
-                        this.buffer = new Uint8Array(bufferLength);
-                        let fstep = audioContext.sampleRate / 2 / analyzer.frequencyBinCount;
-                        this.fStartIndex = Math.floor(85 / fstep);
-                        this.fEndIndex = Math.ceil(180 / fstep + 1);
-                    }
-
-                    entry.analyzer = analyzer;
-                    let source = (audioContext as AudioContext).createMediaStreamSource(entry.stream);
-                    source.connect(analyzer);
+                    entry.analyzer = AppAudioTrackAnalyzerFactory.createAnalyzer(entry.audioTrack, [80, 180]);
                 }
             }
-            if (entry.analyzer && this.buffer) {
-                entry.analyzer.getByteFrequencyData(this.buffer);
+            if (entry.analyzer) {
+                this.peerVolume[key] = entry.analyzer.getVolume();
+            }
+        }
 
-                let val = 0;
-                for (let i = this.fStartIndex; i <= this.fEndIndex; i++) {
-                    val += this.buffer[i];
-                }
-                val = val / (this.fEndIndex - this.fStartIndex) / 255;
+        for (let l of this.listeners) {
+            l(this.peerVolume);
+        }
+    }
 
-                if (val < 0.25) {
-                    val = 0;
-                }
+    listenPeersVolume(listener: (peersVolume: { [id: string]: number; }) => void) {
+        this.listeners.add(listener);
+        listener(this.peerVolume);
+        return () => this.listeners.delete(listener);
+    }
 
-                if (this.lastVals[key] !== !!val) {
-                    this.lastVals[key] = !!val;
-                    this.notifyValueChanged(key, !!val);
-                }
+    dispose() {
+        this.running = false;
+        if (this.interval) {
+            clearInterval(this.interval);
+        }
+        this.peerTrackAnalyzers.forEach(v => v.analyzer?.disconnect());
+    }
 
-                if ((val > lastVal || (!activePeerId && !this.lastPeer)) && !entry.isMe) {
-                    lastVal = val;
-                    activePeerId = key;
-                }
+}
+
+export class MediaSessionTrackAnalyzerManager {
+    analyzer: MediaSessionTrackAnalyzer;
+    state: MediaSessionState | undefined;
+
+    analyzerSubscription: () => void;
+    stateSubscription: () => void;
+
+    constructor(stateModel: Reducer<MediaSessionState, MediaSessionCommand>) {
+        this.stateSubscription = stateModel.listenValue(this.setSessionState);
+        this.analyzer = new MediaSessionTrackAnalyzer();
+        this.analyzerSubscription = this.analyzer.listenPeersVolume(this.onChange);
+    }
+
+    setSessionState = (state: MediaSessionState) => {
+        this.state = state;
+        this.analyzer.setSessionState(state);
+    }
+
+    private lastPeer: string | undefined;
+    private lastVals: { [id: string]: boolean } = {};
+    onChange = (values: { [peerId: string]: number }) => {
+        let lastVal = 0;
+        let activePeerId: string | undefined;
+        for (let [key, val] of Object.entries(values)) {
+
+            if (val < 0.25) {
+                val = 0;
+            }
+
+            if (this.lastVals[key] !== !!val) {
+                this.lastVals[key] = !!val;
+                this.notifyValueChanged(key, !!val);
+            }
+
+            if ((val > lastVal || (!activePeerId && !this.lastPeer)) && (key !== this.state?.sender.id)) {
+                lastVal = val;
+                activePeerId = key;
             }
         }
 
@@ -114,7 +123,6 @@ export class MediaStreamsAlalyzer {
             this.notifySpeakingPeerIdChangedDebaunced(activePeerId);
         }
 
-        requestAnimationFrame(this.render);
     }
 
     ////
@@ -161,6 +169,14 @@ export class MediaStreamsAlalyzer {
         };
     }
 
+    usePeer = (peerId: string) => {
+        let [val, setVal] = React.useState<boolean>();
+        React.useEffect(() => {
+            return this.subscribePeer(peerId, setVal);
+        }, []);
+        return val;
+    }
+
     private sepakingPeerListeners = new Set<(peerId: string) => void>();
     notifySpeakingPeerIdChanged = (peerId: string) => {
         for (let l of this.sepakingPeerListeners) {
@@ -187,14 +203,9 @@ export class MediaStreamsAlalyzer {
         return val;
     }
 
-    ////
-    // DISPOSE
-    ////
     dispose = () => {
-        this.running = false;
-        if (this.disposeStreamsListener) {
-            this.disposeStreamsListener();
-        }
-        this.peerTrackAnalyzers.forEach(v => v.analyzer?.disconnect());
+        this.stateSubscription();
+        this.analyzerSubscription();
+        this.analyzer.dispose();
     }
 }

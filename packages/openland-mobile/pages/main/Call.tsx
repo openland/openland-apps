@@ -15,24 +15,19 @@ import { RNSDevice } from 'react-native-s/RNSDevice';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { Conference_conference_peers } from 'openland-api/spacex.types';
+import { Conference_conference_peers, Conference_conference_peers_user } from 'openland-api/spacex.types';
 import { RTCView, MediaStream } from 'react-native-webrtc';
 import { ZLinearGradient } from 'openland-mobile/components/visual/ZLinearGradient.native';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppUserMediaStreamTrackNative } from 'openland-y-runtime-native/AppUserMedia';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
-import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { SDevice } from 'react-native-s/SDevice';
+import { showCallControls } from './components/conference/CallControls';
 
-export interface PeerMedia {
-    videoTrack: AppMediaStreamTrack | null;
-    audioTrack: AppMediaStreamTrack | null;
-    screencastTrack: AppMediaStreamTrack | null;
-}
-
-// @ts-ignore
 const PeerInfoGradient = (props: { children: any }) => {
     let theme = React.useContext(ThemeContext);
     return (
@@ -49,20 +44,86 @@ const PeerInfoGradient = (props: { children: any }) => {
     );
 };
 
+const PlaceholderGradient = (props: { id: string }) => {
+    let colors = getPlaceholderColors(props.id);
+    return (
+        <ZLinearGradient
+            flexGrow={1}
+            alignSelf="stretch"
+            fallbackColor={colors.placeholderColor}
+            colors={[colors.placeholderColorStart, colors.placeholderColorEnd]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+        />
+    );
+};
+
+const AvatarVideoView = (props: { user: Conference_conference_peers_user }) => {
+    let theme = React.useContext(ThemeContext);
+
+    return (
+        <>
+            {!props.user.photo && (
+                <View
+                    position="absolute"
+                    top={0}
+                    bottom={0}
+                    left={0}
+                    right={0}
+                >
+                    <PlaceholderGradient id={props.user.id} />
+                </View>
+            )}
+            {props.user.photo && (
+                <Image
+                    source={{ uri: props.user.photo }}
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                    }}
+                    blurRadius={Platform.select({ ios: 72, default: 24 })}
+                    resizeMode="cover"
+                />
+            )}
+            <View
+                position="absolute"
+                top={0}
+                bottom={0}
+                left={0}
+                right={0}
+                backgroundColor={theme.overlayMedium}
+            />
+            <View alignSelf="stretch" flexGrow={1} justifyContent="center" alignItems="center">
+                <ZAvatar size="x-large" id={props.user.id} title={props.user.name} photo={props.user.photo} />
+            </View>
+        </>
+    );
+};
+
+export interface PeerMedia {
+    videoTrack: AppMediaStreamTrack | null;
+    audioTrack: AppMediaStreamTrack | null;
+    screencastTrack: AppMediaStreamTrack | null;
+}
+
 interface VideoViewProps extends PeerMedia {
     peer: Conference_conference_peers;
     mirror?: boolean;
     theme: ThemeGlobal;
+    isLast: boolean;
 }
 
 const VideoView = React.memo((props: VideoViewProps) => {
+    const area = React.useContext(ASSafeAreaContext);
     // @ts-ignore
     const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
 
     let track = props.screencastTrack ? props.screencastTrack : props.videoTrack;
     let stream = React.useMemo(() => track && new MediaStream([(track as AppUserMediaStreamTrackNative).track]), [track]);
 
-    let colors = getPlaceholderColors(props.peer.user.id);
     const iconColor = props.theme.foregroundContrast;
     // @ts-ignore
     const iconByStatus = {
@@ -71,28 +132,14 @@ const VideoView = React.memo((props: VideoViewProps) => {
         speaking: <Image source={require('assets/ic-speaking-bold-16.png')} style={{ tintColor: iconColor }} />,
     };
     let icon = null;
-    let InfoWrapper = React.Fragment;
-    // let InfoWrapper = props.peer.user.photo ? PeerInfoGradient : React.Fragment;
+    let InfoWrapper = stream ? PeerInfoGradient : React.Fragment;
+
+    let infoPaddingBottom = props.isLast ? Math.max(area.bottom, 30) : 14;
+
     return (
         <View flexGrow={1} backgroundColor="gray" position="relative">
             {stream && <RTCView streamURL={stream.toURL()} style={{ flexGrow: 1 }} objectFit="cover" mirror={props.mirror} />}
-            {stream && <View position="absolute" left={6} top={6}>
-                <ZAvatar size="medium" id={props.peer.user.id} title={props.peer.user.name} photo={props.peer.user.photo} />
-            </View>}
-            {!stream &&
-                <ZLinearGradient
-                    flexGrow={1}
-                    alignSelf="stretch"
-                    fallbackColor={colors.placeholderColor}
-                    colors={[colors.placeholderColorStart, colors.placeholderColorEnd]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                >
-                    <View alignSelf="stretch" flexGrow={1} justifyContent="center" alignItems="center">
-                        <ZAvatar size="x-large" id={props.peer.user.id} title={props.peer.user.name} photo={props.peer.user.photo} />
-                    </View>
-                </ZLinearGradient>
-            }
+            {!stream && <AvatarVideoView user={props.peer.user} />}
             <View
                 position="absolute"
                 bottom={0}
@@ -102,8 +149,9 @@ const VideoView = React.memo((props: VideoViewProps) => {
                 <InfoWrapper>
                     <View
                         flexGrow={1}
+                        paddingTop={14}
+                        paddingBottom={infoPaddingBottom}
                         paddingHorizontal={16}
-                        paddingVertical={14}
                         flexDirection="row"
                         alignItems="center"
                     >
@@ -125,10 +173,17 @@ const VideoView = React.memo((props: VideoViewProps) => {
     );
 });
 
-let Content = XMemo<{ id: string, hide: () => void }>((props) => {
+let Content = XMemo<{ id: string, speaker: boolean, setSpeaker: (fn: (s: boolean) => boolean) => void, hide: () => void }>((props) => {
     let theme = React.useContext(ThemeContext);
-    let [mute, setMute] = React.useState(false);
-    let [speaker, setSpeaker] = React.useState(false);
+    let area = React.useContext(ASSafeAreaContext);
+    let calls = getMessenger().engine.calls;
+    let mediaSession = calls.useCurrentSession();
+    let [state, setState] = React.useState<MediaSessionState | undefined>(mediaSession?.state.value);
+    let [speaker, setSpeaker] = React.useState(props.speaker);
+    const toggleSpeaker = () => {
+        setSpeaker(x => !x);
+        props.setSpeaker(x => !x);
+    };
 
     React.useLayoutEffect(() => {
         SStatusBar.setBarStyle('light-content');
@@ -144,20 +199,17 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
         InCallManager.setForceSpeakerphoneOn(speaker);
     }, [speaker]);
 
-    let calls = getMessenger().engine.calls;
-
     React.useEffect(() => {
         calls.joinCall(props.id);
     }, []);
 
-    let mediaSession = calls.useCurrentSession();
-    let [state, setState] = React.useState<MediaSessionState>();
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
 
     let conference = getClient().useConference({ id: props.id }, { suspense: false });
 
     let onCallEnd = React.useCallback(() => {
         InCallManager.stop({ busytone: '_BUNDLE_' });
+        props.setSpeaker(() => false);
         calls.leaveCall();
 
         setTimeout(() => {
@@ -181,33 +233,43 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     }
     let w = Dimensions.get('screen').width;
 
-    // animate controls hide/show
-    const [uiHidden, setHideUi] = React.useState(false);
-    const uiHiddenRef = React.useRef(false);
-    let switchUi = React.useCallback(() => setHideUi(v => !v), []);
-    const key = React.useMemo(() => randomKey(), []);
-    React.useEffect(() => {
-        if (uiHiddenRef.current === uiHidden) {
-            return;
-        }
-        uiHiddenRef.current = uiHidden;
-        SAnimated.beginTransaction();
-        if (uiHidden) {
-            SAnimated.timing(`call-controls-${key}`, { property: 'translateY', easing: { bezier: [0.23, 1, 0.32, 1] }, from: 0, to: 150, duration: 0.15 });
-        } else {
-            SAnimated.timing(`call-controls-${key}`, { property: 'translateY', easing: 'material', from: 150, to: 0, duration: 0.25 });
-        }
-        SAnimated.commitTransaction();
-    }, [uiHidden]);
+    const title = conference?.conference.room?.__typename === 'PrivateRoom'
+        ? conference?.conference.room?.user.name
+        : conference?.conference.room?.__typename === 'SharedRoom' ? conference?.conference.room?.title
+            : 'Call';
+
+    let showControls = () => {
+        showCallControls({
+            title,
+            mute: !state?.sender.audioEnabled,
+            speaker,
+            camera: !!state?.sender.videoEnabled,
+            onMutePress: () => {
+                mediaSession?.setAudioEnabled(!state?.sender.audioEnabled);
+            },
+            onCameraPress: () => {
+                mediaSession?.setVideoEnabled(!state?.sender.videoEnabled);
+            },
+            onSpeakerPress: () => {
+                toggleSpeaker();
+            },
+            onFlipPress: () => {
+                if (state?.sender.videoEnabled) {
+                    ((state.sender.videoTrack as AppUserMediaStreamTrackNative)?.track as any)?._switchCamera();
+                }
+            },
+            onCallEnd,
+        });
+    };
 
     return (
-        <TouchableOpacity delayPressIn={10} delayPressOut={10} activeOpacity={1} onPress={switchUi}>
+        <>
             {Platform.OS === 'ios' && <StatusBar hidden={true} />}
             <View flexDirection="row" alignItems="flex-start" width={w} height="100%">
                 {slices.map((s, i) =>
                     <View key={i} flexDirection="column" justifyContent="flex-start" flexGrow={1}>
 
-                        {s.map(p => {
+                        {s.map((p, peerIndex) => {
                             let media: PeerMedia = { videoTrack: null, audioTrack: null, screencastTrack: null };
                             let isLocal = p.id === state?.sender.id;
                             if (isLocal) {
@@ -225,79 +287,51 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                                 {...media}
                                 mirror={isLocal}
                                 theme={theme}
+                                isLast={peerIndex === s.length - 1}
                             />;
 
                         })}
                     </View>
                 )}
             </View>
-
-            <SAnimated.View name={`call-controls-${key}`} style={{ justifyContent: 'space-around', alignItems: 'center', bottom: 56, flexDirection: 'row', position: 'absolute', width: '100%' }}>
+            <View
+                position="absolute"
+                top={SDevice.statusBarHeight + SDevice.safeArea.top}
+                left={0}
+                right={0}
+                flexDirection="row"
+                justifyContent="space-between"
+                alignItems="center"
+                paddingLeft={8}
+                paddingRight={4}
+            >
+                <TouchableOpacity onPress={props.hide}>
+                    <Image source={require('assets/logo-watermark.png')} style={{ tintColor: theme.foregroundContrast }} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={props.hide} style={{ width: 48, height: 48, justifyContent: "center", alignItems: 'center' }}>
+                    <Image source={require('assets/ic-size-down-glyph-24.png')} style={{ tintColor: theme.foregroundContrast }} />
+                </TouchableOpacity>
+            </View>
+            <View
+                position="absolute"
+                bottom={Math.max(area.bottom, 30) + 4}
+                right={16}
+            >
                 <TouchableOpacity
-                    onPress={props.hide}
+                    activeOpacity={0.6}
+                    onPress={showControls}
                     style={{ width: 56, height: 56 }}
                 >
-                    <View backgroundColor="rgba(0,0,0,0.15)" width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
-                        <Image source={require('assets/ic-close-24.png')} style={{ tintColor: 'white' }} />
+                    <View backgroundColor={theme.overlayMedium} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
+                        <Image source={require('assets/ic-grid-glyph-24.png')} style={{ tintColor: theme.foregroundContrast }} />
                     </View>
                 </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={() => {
-                        setSpeaker((s) => !s);
-                    }}
-                    style={{ width: 56, height: 56 }}
-                >
-                    <View backgroundColor={speaker ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
-                        <Image source={require('assets/ic-speaker-30.png')} style={{ tintColor: speaker ? 'black' : 'white' }} />
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={onCallEnd}
-                    style={{ width: 70, height: 70 }}
-                >
-                    <View backgroundColor="#f6564e" width={70} height={70} borderRadius={35} alignItems="center" justifyContent="center">
-                        <Image source={require('assets/ic-call-end-36.png')} style={{ tintColor: 'white' }} />
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={() => {
-                        mediaSession?.setVideoEnabled(!state?.sender.videoEnabled);
-                    }}
-                    onLongPress={() => {
-                        if (state?.sender.videoEnabled) {
-                            ReactNativeHapticFeedback.trigger('notificationSuccess');
-                            ((state.sender.videoTrack as AppUserMediaStreamTrackNative)?.track as any)?._switchCamera();
-                        }
-                    }}
-                    style={{ width: 56, height: 56 }}
-                >
-                    <View backgroundColor={state?.sender.videoEnabled ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
-                        <Image source={state?.sender.videoEnabled ? require('assets/ic-camera-video-24.png') : require('assets/ic-camera-video-24.png')} style={{ tintColor: state?.sender.videoEnabled ? 'black' : 'white' }} />
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={() => {
-                        setMute((s) => {
-                            mediaSession?.setAudioEnabled(s);
-                            return !s;
-                        });
-                    }}
-                    style={{ width: 56, height: 56 }}
-                >
-                    <View backgroundColor={mute ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
-                        <Image source={mute ? require('assets/ic-mic-off-30.png') : require('assets/ic-mic-on-30.png')} style={{ tintColor: mute ? 'black' : 'white' }} />
-                    </View>
-                </TouchableOpacity>
-            </SAnimated.View>
-        </TouchableOpacity>
+            </View>
+        </>
     );
 });
 
-class CallContainer extends React.Component<{ id: string, modal: ZModalController }> {
+class CallContainer extends React.Component<{ id: string, modal: ZModalController, speaker: boolean, setSpeaker: (fn: (s: boolean) => boolean) => void }> {
 
     private key = randomKey();
     private ended = false;
@@ -348,7 +382,7 @@ class CallContainer extends React.Component<{ id: string, modal: ZModalControlle
             >
                 <LinearGradient colors={['#0084fe', '#004280']} style={{ flexGrow: 1, flexDirection: 'column' }}>
                     <React.Suspense fallback={<ZLoader />}>
-                        <Content id={this.props.id} hide={this.hide} />
+                        <Content id={this.props.id} hide={this.hide} speaker={this.props.speaker} setSpeaker={this.props.setSpeaker} />
                     </React.Suspense>
                 </LinearGradient>
             </SAnimated.View>
@@ -356,13 +390,13 @@ class CallContainer extends React.Component<{ id: string, modal: ZModalControlle
     }
 }
 
-export function showCallModal(id: string) {
+export function showCallModal(props: { id: string, speaker: boolean, setSpeaker: (fn: (s: boolean) => boolean) => void, }) {
 
     (async () => {
         if (await checkPermissions('microphone')) {
             showModal((ctx) => {
                 return (
-                    <CallContainer id={id} modal={ctx} />
+                    <CallContainer id={props.id} speaker={props.speaker} setSpeaker={props.setSpeaker} modal={ctx} />
                 );
             });
         }
@@ -370,3 +404,12 @@ export function showCallModal(id: string) {
     })();
 
 }
+
+export const useCallModal = (props: { id: string }) => {
+    // InCallManager doesn't handle speaker state https://github.com/react-native-webrtc/react-native-incall-manager/issues/44
+    const [speaker, setSpeaker] = React.useState(false);
+    const show = React.useCallback(() => {
+        showCallModal({ id: props.id, speaker, setSpeaker });
+    }, [props.id, speaker]);
+    return show;
+};

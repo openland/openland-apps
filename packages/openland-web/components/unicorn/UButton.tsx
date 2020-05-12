@@ -17,6 +17,7 @@ export interface UButtonProps extends XViewProps {
     left?: any;
     action?: () => void;
     className?: string;
+    tabIndex?: number;
 }
 
 const textStyle = css`
@@ -99,6 +100,12 @@ const primaryActiveStyle = css`
     }
 `;
 
+const primaryFocusStyle = css`
+    &:focus {
+        background-color: var(--accentPrimaryActive);
+    }
+`;
+
 const secondaryStyle = css`
     color: var(--foregroundSecondary);
     background-color: var(--backgroundTertiaryTrans);
@@ -112,6 +119,12 @@ const secondaryHoverStyle = css`
 
 const secondaryActiveStyle = css`
     &:active {
+        background-color: #e6e7eb;
+    }
+`;
+
+const secondaryFocusStyle = css`
+    &:focus {
         background-color: #e6e7eb;
     }
 `;
@@ -133,6 +146,12 @@ const tertiaryActiveStyle = css`
     }
 `;
 
+const tertiaryFocusStyle = css`
+    &:focus {
+        opacity: 0.48;
+    }
+`;
+
 const dangerStyle = css`
     color: #fff;
     background-color: var(--accentNegative);
@@ -146,6 +165,12 @@ const dangerHoverStyle = css`
 
 const dangerActiveStyle = css`
     &:active {
+        background-color: var(--accentNegativeActive);
+    }
+`;
+
+const dangerFocusStyle = css`
+    &:focus {
         background-color: var(--accentNegativeActive);
     }
 `;
@@ -167,6 +192,12 @@ const successActiveStyle = css`
     }
 `;
 
+const successFocusStyle = css`
+    &:focus {
+        background-color: var(--accentPositiveActive);
+    }
+`;
+
 const payStyle = css`
     color: var(--foregroundInverted);
     background-color: var(--accentPay);
@@ -180,6 +211,12 @@ const payHoverStyle = css`
 
 const payActiveStyle = css`
     &:active {
+        background-color: var(--accentPayActive);
+    }
+`;
+
+const payFocusStyle = css`
+    &:focus {
         background-color: var(--accentPayActive);
     }
 `;
@@ -222,6 +259,15 @@ const styleResolverActive: { [key in UButtonStyle]: string } = {
     pay: payActiveStyle,
 };
 
+const styleResolverFocus: { [key in UButtonStyle]: string } = {
+    primary: primaryFocusStyle,
+    secondary: secondaryFocusStyle,
+    tertiary: tertiaryFocusStyle,
+    danger: dangerFocusStyle,
+    success: successFocusStyle,
+    pay: payFocusStyle,
+};
+
 const loaderStyle: { [key in UButtonStyle]: { contrast: boolean } } = {
     primary: {
         contrast: true,
@@ -243,7 +289,7 @@ const loaderStyle: { [key in UButtonStyle]: { contrast: boolean } } = {
     },
 };
 
-export const UButton = React.memo((props: UButtonProps) => {
+export const UButton = React.memo(React.forwardRef((props: UButtonProps, ref: React.RefObject<HTMLDivElement>) => {
     const {
         text,
         shape,
@@ -254,6 +300,7 @@ export const UButton = React.memo((props: UButtonProps) => {
         action,
         onClick,
         className,
+        tabIndex,
         ...other
     } = props;
 
@@ -281,7 +328,7 @@ export const UButton = React.memo((props: UButtonProps) => {
     return (
         <XView {...other} onClick={!disable ? (action ? actionCallback : onClick) : undefined}>
             <div
-                tabIndex={-1}
+                tabIndex={tabIndex !== undefined ? tabIndex : -1}
                 className={cx(
                     buttonWrapperStyle,
                     shape && shapeResolver[shape],
@@ -290,8 +337,10 @@ export const UButton = React.memo((props: UButtonProps) => {
                     styleResolver[style],
                     !(loadingState || disable) && styleResolverHover[style],
                     !(loadingState || disable) && styleResolverActive[style],
-                    className && className,
+                    !(loadingState || disable) && styleResolverFocus[style],
+                    className,
                 )}
+                ref={ref}
             >
                 {props.left}
                 <span className={cx(textStyle, loadingState && loadingStyle)}>{text}</span>
@@ -306,4 +355,4 @@ export const UButton = React.memo((props: UButtonProps) => {
             </div>
         </XView>
     );
-});
+}));

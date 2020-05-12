@@ -155,6 +155,12 @@ subscription ConferenceMediaWatch($id: ID!, $peerId: ID!) {
         streams{
             ...MediaStreamFull
         }
+        localMedia{
+            id
+            sendVideo
+            sendAudio
+            sendScreencast
+        }
     }
 }
 subscription ConferenceWatch($id: ID!) {

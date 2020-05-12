@@ -52,7 +52,11 @@ const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
     const form = useForm();
     const shortnameField = useField('shortname', props.shortname || '', form);
 
-    React.useEffect(() => setError(undefined), [shortnameField.value]);
+    React.useEffect(() => {
+        if (!shortnameField.value) {
+            setError(undefined);
+        }
+    }, [shortnameField.value]);
 
     const handleSave = () => {
         if (validateShortname(shortnameField.value, minLength, maxLength)) {
@@ -70,12 +74,16 @@ const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
         }
     };
 
-    const shortnameError = getErrorByShortname(
+    let shortnameError = getErrorByShortname(
         shortnameField.value,
         'Shortname',
         minLength,
         maxLength,
     );
+
+    if (!shortnameField.value) {
+        shortnameError = undefined;
+    }
 
     return (
         <>
@@ -145,6 +153,7 @@ const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
                             prefix="@"
                             field={shortnameField}
                             autoCapitalize="none"
+                            autoFocus={true}
                             noWrapper={true}
                         />
                     </View>
@@ -152,7 +161,7 @@ const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
                     {!error && shortnameError && <RemarkText text={shortnameError} error={true} />}
                     {!error && !shortnameError && (
                         <RemarkText
-                            text="Only a-z, 0-9 and underscores, at least 3 chars"
+                            text={`Can only contain a-z, 0-9 and underscores\nMust have at least 3 chars`}
                             error={false}
                         />
                     )}

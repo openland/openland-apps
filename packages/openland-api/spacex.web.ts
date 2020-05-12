@@ -4909,7 +4909,13 @@ const ConferenceMediaWatchSelector = obj(
                     field('streams', 'streams', args(), notNull(list(notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             fragment('MediaStream', MediaStreamFullSelector)
-                        )))))
+                        ))))),
+                    field('localMedia', 'localMedia', args(), notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('sendVideo', 'sendVideo', args(), notNull(scalar('Boolean'))),
+                            field('sendAudio', 'sendAudio', args(), notNull(scalar('Boolean'))),
+                            field('sendScreencast', 'sendScreencast', args(), notNull(scalar('Boolean')))
+                        )))
                 )))
         );
 const ConferenceWatchSelector = obj(
@@ -6445,7 +6451,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ConferenceMediaWatch: {
         kind: 'subscription',
         name: 'ConferenceMediaWatch',
-        body: 'subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}',
+        body: 'subscription ConferenceMediaWatch($id:ID!,$peerId:ID!){media:alphaConferenceMediaWatch(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}localMedia{__typename sendVideo sendAudio sendScreencast}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}',
         selector: ConferenceMediaWatchSelector
     },
     ConferenceWatch: {

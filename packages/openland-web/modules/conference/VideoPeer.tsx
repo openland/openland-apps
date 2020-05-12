@@ -8,11 +8,12 @@ import { VideoComponent, VideoModal } from './ScreenShareModal';
 import { css, cx } from 'linaria';
 import { UAvatar, getPlaceholderColorById } from 'openland-web/components/unicorn/UAvatar';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
-// import SpeakerIcon from 'openland-icons/s/ic-speaking-bold-16.svg';
+import SpeakerIcon from 'openland-icons/s/ic-speaking-bold-16.svg';
 // import MutedIcon from 'openland-icons/s/ic-muted-bold-16.svg';
 // import { SvgLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
+import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
 
 const animatedAvatarStyle = css`
     position: absolute;
@@ -45,13 +46,13 @@ const peerName = cx(
     `
 );
 
-// const peerIcon = css`
-//     display: flex;
-//     align-items: center;
-//     svg path {
-//         fill: var(--foregroundContrast);
-//     }
-// `;
+const peerIcon = css`
+    display: flex;
+    align-items: center;
+    svg path {
+        fill: var(--foregroundContrast);
+    }
+`;
 
 const bgAvatar = css`
     position: absolute;
@@ -85,6 +86,12 @@ const bgAvatarOverlay = css`
     right: 0;
     background: var(--overlayMedium);
 `;
+
+const MiniVideo = css`
+    box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+`;
+
 export interface PeerMedia {
     videoTrack: AppMediaStreamTrack | null;
     audioTrack: AppMediaStreamTrack | null;
@@ -92,6 +99,7 @@ export interface PeerMedia {
 }
 export interface VideoPeerProps extends PeerMedia {
     peer: Conference_conference_peers;
+    analyzer: MediaSessionTrackAnalyzerManager;
     isLocal?: boolean;
     // for settings view
     compact?: boolean;
@@ -103,6 +111,9 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     // @ts-ignore
     // const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
 
+    const talking = props.analyzer.usePeer(props.peer.id);
+    const icon = talking ? <SpeakerIcon /> : null;
+
     // const icon = props.callState.status !== 'connected' ? <SvgLoader size="small" contrast={true} />
     //     : talking ? <SpeakerIcon />
     //         : (isLocal ? props.callState.mute : audioPaused) ? <MutedIcon />
@@ -111,9 +122,8 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     const bgSrc = props.peer.user.photo ? props.peer.user.photo : undefined;
     const bgColor = !props.peer.user.photo ? getPlaceholderColorById(props.peer.user.id) : undefined;
 
-    let mainStreamWeb = props.screencastTrack ? props.screencastTrack : props.videoTrack;
-    // @ts-ignore
-    // let miniStreamWeb = props.screencastTrack ? props.videoTrack : undefined;
+    let mainStreamWeb = props.screencastTrack || props.videoTrack;
+    let miniStreamWeb = props.screencastTrack ? props.videoTrack : undefined;
     const [modalOpen, setModalOpen] = React.useState(false);
     const onClick = React.useCallback(() => setModalOpen(true), []);
     const closeModal = React.useCallback(() => setModalOpen(false), []);
@@ -147,6 +157,25 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
                     close={closeModal}
                 />
             )}
+            {miniStreamWeb &&
+
+                <XView
+                    width={72}
+                    height={48}
+                    borderRadius={8}
+                    position="absolute"
+                    bottom={12}
+                    right={12}
+                >
+                    <VideoComponent
+                        track={(miniStreamWeb as AppUserMediaTrackWeb).track}
+                        cover={true}
+                        mirror={props.isLocal}
+                        videoClass={MiniVideo}
+                        backgroundColor="var(--overlayHeavy)"
+                    />
+                </XView>
+            }
             {!mainStreamWeb && (
                 <>
                     <div className={bgAvatar}>
@@ -170,11 +199,11 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
             )}
             <div className={cx(peerInfo, props.compact && peerInfoCompact, mainStreamWeb && peerInfoGradient)}>
                 {!props.compact && <div className={peerName}>{props.peer.user.name}</div>}
-                {/* {icon && (
+                {icon && (
                     <div className={peerIcon}>
                         {icon}
                     </div>
-                )} */}
+                )}
             </div>
             {props.compact && (
                 <XView

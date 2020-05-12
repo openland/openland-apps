@@ -1,5 +1,21 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
+import { usePopper } from '../usePopper';
+import { XView } from 'react-mental';
+import { VariableSizeList, ListOnScrollProps } from 'react-window';
+import { pickerEmoji } from 'openland-y-utils/data/emoji-data';
+import { emojiComponentSprite } from 'openland-y-utils/emojiComponentSprite';
+import { TextLabel1 } from 'openland-web/utils/TextStyles';
+import { onEmojiSent, getRecent } from './Recent';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
+import { useWithWidth } from 'openland-web/hooks/useWithWidth';
+import IcSticker from 'openland-icons/s/ic-sticker-24.svg';
+import { StickerComponent } from '../stickers/StickerPicker';
+import { XLoader } from 'openland-x/XLoader';
+import { StickerFragment } from 'openland-api/spacex.types';
+import { findEmoji } from 'openland-y-utils/emojiSuggest';
+import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
 import IconAnimal from './ic-animal-24.svg';
 import IconAnimalFilled from './ic-animal-filled-24.svg';
 import IconFood from './ic-food-24.svg';
@@ -16,23 +32,6 @@ import IconTrasport from './ic-transport-24.svg';
 import IconTrasportFilled from './ic-transport-filled-24.svg';
 import IconRecent from './ic-recent-24.svg';
 import IconRecentFilled from './ic-recent-filled-24.svg';
-
-import { usePopper } from '../usePopper';
-import { XView } from 'react-mental';
-import { FixedSizeList, ListOnScrollProps } from 'react-window';
-import { pickerEmoji } from 'openland-y-utils/data/emoji-data';
-import { emojiComponentSprite } from 'openland-y-utils/emojiComponentSprite';
-import { TextLabel1 } from 'openland-web/utils/TextStyles';
-import { onEmojiSent, getRecent } from './Recent';
-import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import { TextTitle3, TextBody } from 'openland-web/utils/TextStyles';
-import { useWithWidth } from 'openland-web/hooks/useWithWidth';
-import IcSticker from 'openland-icons/s/ic-sticker-24.svg';
-import { StickerComponent } from '../stickers/StickerPicker';
-import { XLoader } from 'openland-x/XLoader';
-import { StickerFragment } from 'openland-api/spacex.types';
-import { findEmoji } from 'openland-y-utils/emojiSuggest';
-import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
 
 const popperContainerClass = css`
     display: flex;
@@ -324,7 +323,7 @@ const Recent = React.memo((props: { index: number; onEmojiPicked: (arg: string) 
 
 const innerElementType = React.forwardRef<HTMLDivElement>(({ children, ...rest }, ref) => (
     <div ref={ref} {...rest}>
-        <div style={{ top: 0, left: 0, width: '100%', height: 3 * 40 }}>
+        <div style={{ width: '100%', height: 3 * 40, marginBottom: 8 }}>
             <div className={titleContainerStyle}>
                 <div className={titleTextStyle}>
                     <span className={TextLabel1}>Recent</span>
@@ -335,12 +334,11 @@ const innerElementType = React.forwardRef<HTMLDivElement>(({ children, ...rest }
             <div
                 key={'inner_element_emoji' + i}
                 style={{
-                    top: (index.start + 3) * 40,
-                    left: 0,
+                    marginBottom: 8,
                     width: '100%',
                     height:
                         i === sections.length - 1
-                            ? (index.end - index.start - 4) * 40 /* WTF? */
+                            ? (index.end - index.start - 8) * 40 /* WTF? */
                             : (index.end - index.start) * 40,
                 }}
             >
@@ -376,6 +374,10 @@ const CategoryButton = React.memo(
     },
 );
 
+const listPaddedStyle = css`
+    padding-bottom: 20px;
+`;
+
 interface EmojiPickerProps {
     onEmojiPicked: (arg: string) => void;
     onStickerSent?: (sticker: StickerFragment) => void;
@@ -391,7 +393,7 @@ interface EmojiPickerBodyProps {
 }
 
 const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
-    const ref = React.useRef<FixedSizeList>(null);
+    const ref = React.useRef<VariableSizeList>(null);
     const [currentSection, setCurrentSection] = React.useState(0);
     const [stickers, setStickers] = React.useState(false);
     const [searchInput, setSearchInput] = React.useState<string>('');
@@ -449,10 +451,10 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                     {searchInput.length > 0 && foundEmoji.length > 0 && (
                         <div className={emojiContainer}>
                             <XView marginTop={8}>
-                                <FixedSizeList
+                                <VariableSizeList
                                     ref={ref}
                                     itemCount={foundEmoji.length / 8}
-                                    itemSize={40}
+                                    itemSize={() => 40}
                                     width={384}
                                     height={384}
                                     onScroll={onScroll}
@@ -479,7 +481,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                                             </div>
                                         );
                                     }}
-                                </FixedSizeList>
+                                </VariableSizeList>
                             </XView>
                         </div>
                     )}
@@ -500,10 +502,25 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                     {searchInput.length === 0 && (
                         <>
                             <div className={emojiContainer}>
-                                <FixedSizeList
+                                <VariableSizeList
                                     ref={ref}
+                                    className={listPaddedStyle}
                                     itemCount={total}
-                                    itemSize={40}
+                                    itemSize={(index) => {
+                                        if (index < 3) {
+                                            return 40;
+                                        }
+                                        let ii = index - 3;
+                                        const section = sections.find(
+                                            (v) => v.start <= ii && ii < v.end,
+                                        )!;
+                                        let i = ii - section.start;
+                                        if (i === 0) {
+                                            return 48;
+                                        } else {
+                                            return 40;
+                                        }
+                                    }}
                                     overscanCount={10}
                                     width={384 /* Bigger width to hide scrollbar */}
                                     height={384}
@@ -535,7 +552,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                                             </div>
                                         );
                                     }}
-                                </FixedSizeList>
+                                </VariableSizeList>
                             </div>
                             <XView flexDirection="row" paddingHorizontal={16} height={48}>
                                 <div

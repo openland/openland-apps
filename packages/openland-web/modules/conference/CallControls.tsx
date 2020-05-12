@@ -10,7 +10,6 @@ import ScreenIcon from 'openland-icons/s/ic-screen-glyph-24.svg';
 import SettingsIcon from 'openland-icons/s/ic-settings-glyph-24.svg';
 import MagicIcon from 'openland-icons/s/ic-magic-glyph-24.svg';
 import MessageIcon from 'openland-icons/s/ic-message-glyph-24.svg';
-import ToolsIcon from 'openland-icons/s/ic-tools-glyph-24.svg';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
 import { showModalBox } from 'openland-x/showModalBox';
@@ -274,7 +273,6 @@ interface CallControlsProps {
     cameraEnabled: boolean;
     screenEnabled: boolean;
     spaceEnabled: boolean;
-    toolsEnabled: boolean;
     onMinimize: React.MouseEventHandler;
     onEnd: React.MouseEventHandler;
     onMute: React.MouseEventHandler;
@@ -282,7 +280,6 @@ interface CallControlsProps {
     onScreenClick: React.MouseEventHandler;
     onSpaceClick: React.MouseEventHandler;
     onMessageClick: React.MouseEventHandler;
-    onToolsClick: React.MouseEventHandler;
 }
 
 export const CallControls = (props: CallControlsProps) => {
@@ -385,19 +382,6 @@ export const CallControls = (props: CallControlsProps) => {
                             />
                         }
                         onClick={props.onMessageClick}
-                    />
-                    <ControlItem
-                        text="Plugins"
-                        icon={
-                            <UIconButton
-                                icon={<ToolsIcon />}
-                                color="var(--foregroundContrast)"
-                                rippleColor="var(--tintBlue)"
-                                active={props.toolsEnabled}
-                                disableHover={true}
-                            />
-                        }
-                        onClick={props.onToolsClick}
                     />
                     <ControlItem
                         text="Settings"

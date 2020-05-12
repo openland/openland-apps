@@ -8,6 +8,48 @@
             ]
         },
         {
+            "name": "ic-grid-glyph",
+            "src": "ic-grid-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-call-end-glyph",
+            "src": "ic-call-end-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-mute-glyph",
+            "src": "ic-mute-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-cycle-glyph",
+            "src": "ic-cycle-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-speaker-glyph",
+            "src": "ic-speaker-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-size-down-glyph",
+            "src": "ic-size-down-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-message-glyph",
             "src": "ic-message-glyph-48.svg",
             "sizes": [

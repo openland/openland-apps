@@ -25,7 +25,7 @@ import Toast from 'openland-mobile/components/Toast';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ChannelMuteButton, ChatInputPlaceholder } from './components/ChannelMuteButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { showCallModal } from './Call';
+import { useCallModal } from './Call';
 import { EmojiSuggestions, EmojiSuggestionsRow } from './components/suggestions/EmojiSuggestions';
 import { showAttachMenu } from 'openland-mobile/files/showAttachMenu';
 import { MessagesActionsState } from 'openland-engines/messenger/MessagesActionsState';
@@ -37,7 +37,7 @@ import { findSpans } from 'openland-y-utils/findSpans';
 import { throttle } from 'openland-y-utils/timer';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { PinnedMessage } from './components/PinnedMessage';
+import { PinnedMessage, PINNED_MESSAGE_HEIGHT } from './components/PinnedMessage';
 import { ChatAccessDenied } from './components/ChatAccessDenied';
 import { ChatJoin } from './components/ChatJoin';
 import { emojiWordMap } from 'openland-y-utils/emojiWordMap';
@@ -52,6 +52,7 @@ interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
     chat: RoomTiny_room;
     theme: ThemeGlobal;
+    showCallModal: () => void;
     mountedRef: { mounted: string[] };
 }
 
@@ -221,10 +222,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     handleAttach = () => {
         let user = this.props.chat.__typename === 'PrivateRoom'
-                ? this.props.chat.user
-                : this.props.chat.owner;
+            ? this.props.chat.user
+            : this.props.chat.owner;
         let isChannel = this.props.chat.__typename === 'SharedRoom' && this.props.chat.isChannel;
-        let donationCb = user && user.isYou || isChannel 
+        let donationCb = user && user.isYou || isChannel
             ? undefined
             : () => {
                 if (user) {
@@ -388,7 +389,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     <SHeaderButton
                         title="Call"
                         icon={require('assets/ic-call-24.png')}
-                        onPress={async () => { showCallModal(this.props.chat.id); }}
+                        onPress={this.props.showCallModal}
                     />
                 )}
                 {!showSelectedMessagesActions && (
@@ -446,6 +447,7 @@ const ConversationComponent = XMemo<PageProps>((props) => {
     let messenger = getMessenger();
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id }, { fetchPolicy: 'cache-and-network' }).room;
     let mountedRef = React.useContext(SRouterMountedContext);
+    let showCallModal = useCallModal({ id: room?.id! });
 
     if (room === null) {
         return <ChatAccessDenied theme={theme} onPress={() => props.router.back()} />;
@@ -453,16 +455,26 @@ const ConversationComponent = XMemo<PageProps>((props) => {
 
     let sharedRoom = room.__typename === 'SharedRoom' ? room as RoomTiny_room_SharedRoom : null;
     let privateRoom = room.__typename === 'PrivateRoom' ? room as RoomTiny_room_PrivateRoom : null;
+    let hasPinnedMessage = (sharedRoom || privateRoom)?.pinnedMessage;
 
     if (sharedRoom && sharedRoom.membership !== 'MEMBER') {
-        return <ChatJoin room={sharedRoom!} theme={theme} router={props.router}/>;
+        return <ChatJoin room={sharedRoom!} theme={theme} router={props.router} />;
     }
 
     return (
         <View flexDirection="column" height="100%" width="100%">
-            <ConversationRoot key={(sharedRoom || privateRoom)!.id} router={props.router} engine={messenger.engine} chat={(sharedRoom || privateRoom)!} theme={theme} mountedRef={mountedRef} />
+            <ConversationRoot key={(sharedRoom || privateRoom)!.id} router={props.router} engine={messenger.engine} chat={(sharedRoom || privateRoom)!} showCallModal={showCallModal} theme={theme} mountedRef={mountedRef} />
             <ASSafeAreaContext.Consumer>
-                {safe => <View position="absolute" top={safe.top} right={0} left={0}><CallBarComponent id={(sharedRoom || privateRoom)!.id} /></View>}
+                {safe => (
+                    <View
+                        position="absolute"
+                        top={hasPinnedMessage ? safe.top + PINNED_MESSAGE_HEIGHT : safe.top + 10}
+                        right={0}
+                        left={0}
+                    >
+                        <CallBarComponent id={(sharedRoom || privateRoom)!.id} showCallModal={showCallModal} />
+                    </View>
+                )}
             </ASSafeAreaContext.Consumer>
         </View>
     );

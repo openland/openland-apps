@@ -24,7 +24,7 @@ export class SScrollView extends React.Component<SScrollViewProps> {
                     {area => {
                         return (
                             <Animated.ScrollView
-                                keyboardShouldPersistTaps="always"
+                                keyboardShouldPersistTaps="handled"
                                 keyboardDismissMode="interactive"
                                 {...other}
                                 ref={scrollRef}

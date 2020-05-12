@@ -280,6 +280,7 @@ interface USelectBasicProps {
     label?: string;
     invalid?: boolean;
     useMenuPortal?: boolean;
+    autoFocus?: boolean;
 }
 
 export interface USelectProps extends USelectBasicProps, XViewProps {
@@ -304,6 +305,7 @@ export const USelect = React.memo(React.forwardRef((props: USelectProps, ref: an
         label,
         invalid,
         useMenuPortal,
+        autoFocus,
         ...xViewProps
     } = props;
 
@@ -323,6 +325,7 @@ export const USelect = React.memo(React.forwardRef((props: USelectProps, ref: an
         <XView {...xViewProps}>
             <Select
                 ref={ref}
+                autoFocus={autoFocus}
                 openMenuOnFocus={true}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}

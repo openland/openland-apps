@@ -18,12 +18,11 @@ import MuteIcon from 'openland-icons/s/ic-mute-glyph-24.svg';
 import FullscreenIcon from 'openland-icons/s/ic-size-up-glyph-24.svg';
 import { CallsEngine } from 'openland-engines/CallsEngine';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
-import { useShowEffects } from './Effects';
+import { useEffects } from './Effects';
 import { useVideoCallModal } from './CallModal';
-import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { plural } from 'openland-y-utils/plural';
-import { MediaStreamsAlalyzer } from './MediaStreamsAlalyzer';
+import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 
 const VIDEO_WIDTH = 320;
 const VIDEO_HEIGHT = 213;
@@ -122,6 +121,7 @@ export const useJsDrag = (
 
     let { containerRef, onMove, savedCallback, limitToScreen, onStart, onStop } = options || {};
     React.useEffect(() => {
+        console.warn('jsdrag useEffect', targetRef);
         const container = containerRef?.current;
         const target = targetRef.current;
         let dragging = false;
@@ -219,7 +219,7 @@ export const useJsDrag = (
                 window.document.removeEventListener('touchmove', onDrag);
             }
         };
-    }, [depth]);
+    }, depth || []);
 };
 
 const AvatarCover = React.memo((props: { photo?: string | null, id: string, title: string }) => {
@@ -248,29 +248,13 @@ const AvatarCover = React.memo((props: { photo?: string | null, id: string, titl
 });
 
 const VideoMediaView = React.memo((props: {
-    mediaSessionManager: MediaSessionManager;
+    state: MediaSessionState;
     peer?: Conference_conference_peers,
     fallback: { id: string; title: string; photo?: string | null }
     calls: CallsEngine
 }) => {
-    // @ts-ignore
-    const [track, setTrack] = React.useState<AppMediaStreamTrack>();
-
-    // React.useEffect(() => {
-    //     let d: (() => void) | undefined;
-    //     if (props.peer?.id) {
-    //         d = props.mediaSessionManager.peerVideoVM.listen(props.peer.id, (tracks) => {
-    //             let tr = [...tracks.entries()].find(s => s[0] === 'camera');
-    //             if (tr) {
-    //                 setTrack(tr[1]);
-    //             } else {
-    //                 setTrack(undefined);
-    //             }
-    //         });
-    //     }
-    //     return d;
-    // }, [props.peer?.id]);
-
+    const receiver = props.state.receivers[props.peer?.id || ''];
+    const track = receiver?.screencastTrack || receiver?.videoTrack;
     return (
         <XView width={VIDEO_WIDTH} height={VIDEO_HEIGHT} overflow="hidden" backgroundColor="var(--overlayHeavy)" alignItems="center" justifyContent="center">
             {track ? (
@@ -295,15 +279,15 @@ const MediaView = React.memo((props: {
     peers: Conference_conference_peers[];
     fallback: { id: string; title: string; photo?: string | null };
     mediaSessionManager: MediaSessionManager;
-    analyzer: MediaStreamsAlalyzer;
+    state: MediaSessionState;
     calls: CallsEngine;
 }) => {
-    let peerId = props.analyzer.useSpeakingPeer();
+    let peerId = props.mediaSessionManager.analyzer.useSpeakingPeer();
     let peer = props.peers.find(p => p.id === peerId);
 
     return <VideoMediaView
         peer={peer}
-        mediaSessionManager={props.mediaSessionManager}
+        state={props.state}
         fallback={props.fallback}
         calls={props.calls}
     // callState={props.callState}
@@ -323,13 +307,7 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
     let calls = messenger.calls;
     let state = props.mediaSession.state.useValue();
 
-    let alalyzer = React.useMemo(() => new MediaStreamsAlalyzer(), []);
-    React.useEffect(() => {
-        alalyzer.setSessionState(state);
-    }, [state]);
-    React.useEffect(() => alalyzer.dispose, []);
-
-    useShowEffects(props.mediaSession);
+    useEffects(props.id);
 
     let client = useClient();
     let data = client.useConference({ id: props.id }, { fetchPolicy: 'network-only', suspense: false });
@@ -342,7 +320,7 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
         <MediaView
             peers={data?.conference.peers || []}
             mediaSessionManager={props.mediaSession}
-            analyzer={alalyzer}
+            state={state}
             fallback={props.room.__typename === 'PrivateRoom' ? {
                 id: props.room.user.id,
                 title: props.room.user.name,
@@ -453,7 +431,7 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
                                 bottom={12}
                                 right={12}
                             >
-                                {state.sender.videoTrack && <VideoComponent track={(state.sender.videoTrack as AppUserMediaTrackWeb)?.track} cover={true} videoClass={MiniFloatingVideo} mirror={true} />}
+                                {(state.sender.videoTrack && state.sender.videoEnabled) && <VideoComponent track={(state.sender.videoTrack as AppUserMediaTrackWeb)?.track} cover={true} videoClass={MiniFloatingVideo} mirror={true} />}
                             </XView>
                         </XView>
                     </div>
