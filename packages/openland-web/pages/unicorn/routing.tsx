@@ -106,6 +106,7 @@ routing.addRoute('/account', () => UserProfileFragment);
 routing.addRoute('/account/me', () => UserProfileFragment);
 routing.addRoute('/account/profile', () => SettingsProfileFragment);
 routing.addRoute('/account/notifications', () => SettingsNotificationsFragment);
+routing.addRoute('/settings/email', () => SettingsNotificationsFragment);
 routing.addRoute('/account/email', () => SettingsEmailFragment);
 routing.addRoute('/account/appearance', () => SettingsAppearanceFragment);
 routing.addRoute('/account/download', () => DownloadAppsFragment);

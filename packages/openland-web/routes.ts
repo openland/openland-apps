@@ -218,15 +218,27 @@ routes.add('/performance', '/perf/perf');
 //
 routes.add('/account', '/unicorn/index');
 routes.add('/account/me', '/unicorn/index');
+routes.add('/account/me/', '/unicorn/index');
 routes.add('/account/profile', '/unicorn/index');
+routes.add('/account/profile/', '/unicorn/index');
 routes.add('/account/appearance', '/unicorn/index');
+routes.add('/account/appearance/', '/unicorn/index');
 routes.add('/account/download', '/unicorn/index');
+routes.add('/account/download/', '/unicorn/index');
 routes.add('/account/invites', '/unicorn/index');
+routes.add('/account/invites/', '/unicorn/index');
 routes.add('/account/notifications', '/unicorn/index');
+routes.add('/account/notifications/', '/unicorn/index');
+routes.add('/settings/email', '/unicorn/index');
+routes.add('/settings/email/', '/unicorn/index');
 routes.add('/account/email', '/unicorn/index');
+routes.add('/account/email/', '/unicorn/index');
 routes.add('/account/apps', '/unicorn/index');
+routes.add('/account/apps/', '/unicorn/index');
 routes.add('/account/about', '/unicorn/index');
+routes.add('/account/about/', '/unicorn/index');
 routes.add('/account/licenses', '/unicorn/index');
+routes.add('/account/licenses/', '/unicorn/index');
 
 //
 // Wallet
