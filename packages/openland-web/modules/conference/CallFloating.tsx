@@ -121,6 +121,7 @@ export const useJsDrag = (
 
     let { containerRef, onMove, savedCallback, limitToScreen, onStart, onStop } = options || {};
     React.useEffect(() => {
+        console.warn('jsdrag useEffect', targetRef);
         const container = containerRef?.current;
         const target = targetRef.current;
         let dragging = false;
@@ -218,7 +219,7 @@ export const useJsDrag = (
                 window.document.removeEventListener('touchmove', onDrag);
             }
         };
-    }, [depth]);
+    }, depth);
 };
 
 const AvatarCover = React.memo((props: { photo?: string | null, id: string, title: string }) => {

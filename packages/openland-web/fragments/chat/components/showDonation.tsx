@@ -53,6 +53,7 @@ const DonationComponent = (props: DonationComponentProps & { ctx: XModalControll
     let wallet = client.useMyWallet();
     let form = useForm();
     let inputRef = React.useRef<HTMLInputElement>(null);
+    let donateRef = React.useRef<HTMLInputElement>(null);
     let initialPrice = props.initialPrice ? String(props.initialPrice) : '';
     let priceField = useField<string>('price', initialPrice, form, [
         {
@@ -123,6 +124,15 @@ const DonationComponent = (props: DonationComponentProps & { ctx: XModalControll
         }
     }, []);
 
+    const onMessageTab = React.useCallback(() => {
+        setTimeout(() => {
+            if (donateRef.current) {
+                donateRef.current.focus();
+            }
+        }, 50);
+        return true;
+    }, [donateRef.current]);
+
     return (
         <XView paddingTop={12} flexDirection="column" flexShrink={'initial' as any}>
             <XView paddingHorizontal={24} paddingBottom={24} flexGrow={1} flexDirection="column" flexShrink={'initial' as any}>
@@ -130,6 +140,7 @@ const DonationComponent = (props: DonationComponentProps & { ctx: XModalControll
                     <UIconButton icon={<MinusIcon />} onClick={() => updatePrice(-5)} />
                     <XView flexGrow={1} justifyContent="center" marginHorizontal={16}>
                         <input
+                            tabIndex={0}
                             ref={inputRef}
                             className={cx(TextTitle1, priceClass)}
                             placeholder="$0"
@@ -145,6 +156,7 @@ const DonationComponent = (props: DonationComponentProps & { ctx: XModalControll
                 <URickInput
                     placeholder="Your message"
                     onTextChange={messageField.input.onChange}
+                    onPressTab={onMessageTab}
                     hideEmoji={true}
                     className={messageClass}
                 />
@@ -152,12 +164,12 @@ const DonationComponent = (props: DonationComponentProps & { ctx: XModalControll
             <XView
                 paddingHorizontal={24}
                 paddingVertical={16}
-                flexDirection="row"
-                justifyContent="flex-end"
+                flexDirection={'row-reverse' as any}
+                justifyContent="flex-start"
                 backgroundColor="var(--backgroundTertiary)"
             >
-                <UButton text="Cancel" style="tertiary" size="large" shape="square" onClick={() => props.ctx.hide()} />
-                <UButton text="Donate" style="pay" size="large" shape="square" loading={loading} onClick={handleSubmit} />
+                <UButton text="Donate" ref={donateRef} style="pay" size="large" shape="square" tabIndex={0} loading={loading} onClick={handleSubmit} />
+                <UButton text="Cancel" style="tertiary" size="large" shape="square" tabIndex={0} onClick={() => props.ctx.hide()} />
             </XView>
         </XView>
     );
