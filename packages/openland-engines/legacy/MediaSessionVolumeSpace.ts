@@ -1,5 +1,5 @@
 import { MediaSessionManager } from '../media/MediaSessionManager';
-import { VMMapMap, VM, VMMap } from 'openland-y-utils/mvvm/vm';
+import { VMMapMap, VM } from 'openland-y-utils/mvvm/vm';
 import uuid from 'uuid';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { getPlaceholderColorRawById } from 'openland-web/components/unicorn/UAvatar';
@@ -117,11 +117,9 @@ export class PartialUpdate {
 class Sync {
     type: 'sync' = 'sync';
     objects: { id: string, seq: number }[];
-    deletedIDs: string[];
     knownPeers: string[];
-    constructor(objects: { id: string, seq: number }[], deletedIDs: string[], knownPeers: string[]) {
+    constructor(objects: { id: string, seq: number }[], knownPeers: string[]) {
         this.objects = objects;
-        this.deletedIDs = deletedIDs;
         this.knownPeers = knownPeers;
     }
 }
@@ -159,7 +157,6 @@ export class MediaSessionVolumeSpace {
     private peerId?: string | null;
     selfPeer?: PeerAvatar;
     selfPointer: Pointer | undefined;
-    readonly selfDeletedIds = new Set<string>();
     readonly knownPeers = new Set<string>();
 
     readonly peersVM = new VMMapMap<string, string, PeerAvatar>();
@@ -168,7 +165,7 @@ export class MediaSessionVolumeSpace {
     readonly imagesVM = new VMMapMap<string, string, Image>();
     readonly simpleTextsVM = new VMMapMap<string, string, SimpleText>();
 
-    readonly storages = {
+    readonly storages: { [key: string]: VMMapMap<string, string, SpaceObject> } = {
         peer: this.peersVM,
         pointer: this.pointerVM,
         path: this.pathsVM,
@@ -326,11 +323,7 @@ export class MediaSessionVolumeSpace {
 
     // yep, no access mgmt for now
     delete = (id: string) => {
-        Object.keys(this.storages).map(k => {
-            this.storages[k].deleteByValId(id);
-        });
-
-        this.selfDeletedIds.add(id);
+        Object.values(this.storages).map(s => s.deleteByValId(id));
         this.sync();
     }
 
@@ -385,7 +378,6 @@ export class MediaSessionVolumeSpace {
             .map(e => ({ id: e.id, seq: e.seq }));
         batch.push(new Sync(
             localObjectsDescriptors,
-            [...this.selfDeletedIds.values()],
             [...this.knownPeers.values()]
         ));
         this.sendBatch(batch);
@@ -419,17 +411,19 @@ export class MediaSessionVolumeSpace {
         for (let u of batch) {
 
             if (u.type === 'sync') {
-                // delete
-                u.deletedIDs.map(id => {
-                    Object.keys(this.storages).map(k => {
-                        this.storages[k].deleteByValId(id);
-                    });
-                });
+                for (let s of Object.values(this.storages)) {
+                    let peerStorage = s.get(message.peerId || '');
+                    for (let o of peerStorage?.values() || []) {
+                        if (!u.objects.find(d => d.id === o.id)) {
+                            peerStorage?.delete(o.id);
+                        }
+                    }
+                }
                 // requst unknown items
                 let ids: string[] = [];
                 let peers: string[] = [];
                 for (let remote of u.objects) {
-                    let ex =  Object.values(this.storages).flatMap(s => [...s.get(this.peerId || '')?.values() || []]).find(o => o.id === remote.id);
+                    let ex = Object.values(this.storages).flatMap(s => [...s.get(this.peerId || '')?.values() || []]).find(o => o.id === remote.id);
                     if (!ex || ex.seq < remote.seq) {
                         ids.push(remote.id);
                     }
@@ -503,7 +497,7 @@ export class MediaSessionVolumeSpace {
         for (let obj of add.objects) {
             let s = this.storages[obj.type];
             if (s) {
-                s.add(peerId, obj.id, { ...obj as any, local: false }, true);
+                s.add(peerId, obj.id, obj, true);
             }
             // side effect
             // TODO: move to handler on refactor
