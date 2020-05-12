@@ -415,7 +415,7 @@ export class MediaSessionVolumeSpace {
                     let peerStorage = s.get(message.peerId || '');
                     for (let o of peerStorage?.values() || []) {
                         if (!u.objects.find(d => d.id === o.id)) {
-                            peerStorage?.delete(o.id);
+                            s.deleteByValId(o.id);
                         }
                     }
                 }
