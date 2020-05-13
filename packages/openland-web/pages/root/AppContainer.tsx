@@ -12,7 +12,7 @@ import { UnicornSplash } from 'openland-x/XLoader';
 export const AppContainer = (props: { children: any }) => {
     const client = useClient();
 
-    const data = client.useAccount({ suspense: false });
+    const data = client.useAccount({ suspense: false, fetchPolicy: 'network-only' });
 
     if (canUseDOM) {
         useShortcuts([
