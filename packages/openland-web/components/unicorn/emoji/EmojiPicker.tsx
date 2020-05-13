@@ -419,8 +419,6 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
         }
     }, []);
 
-    console.log(foundEmoji);
-
     return (
         <div className={popperContainerClass}>
             <XView flexDirection="row">
