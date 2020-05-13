@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { XViewRouterContext, XViewRouteContext, XViewRoute } from 'react-mental';
-import { css } from 'linaria';
 import { GlobalSearch_items } from 'openland-api/spacex.types';
 import { XListView } from 'openland-web/components/XListView';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
@@ -24,6 +24,16 @@ export const dialogSearchWrapperClassName = css`
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
+`;
+
+const containerStyle = css`
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  flex-grow: 1;
+  flex-basis: 0;
+  min-height: 0;
+  transform: translateZ(0);
 `;
 
 export interface DialogListViewProps {
@@ -178,7 +188,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
     );
 
     return (
-        <XView flexGrow={1} flexBasis={0} minHeight={0}>
+        <div className={containerStyle}>
             <USearchInput
                 value={query}
                 onChange={setQuery}
@@ -208,7 +218,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                 )}
             </XView>
             <CallFloating />
-        </XView>
+        </div>
     );
 });
 
