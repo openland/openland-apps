@@ -155,6 +155,7 @@ const messageWrapper = cx(
         left: 0;
         opacity: 1;
         width: 100%;
+        box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
         transform: translate3d(100%, 0, 0);
         transition: transform 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
             opacity 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99);

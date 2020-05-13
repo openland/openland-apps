@@ -20,6 +20,8 @@ const richWrapper = css`
     flex-direction: row;
     flex-shrink: 1;
     max-width: 680px;
+    min-height: 160px;
+    max-height: 192px;
     background-color: var(--backgroundTertiary);
     border-radius: 8px;
     overflow: hidden;
@@ -34,6 +36,7 @@ const richWrapper = css`
     @media (max-width: 1100px) {
         flex-direction: column;
         max-width: 360px;
+        max-height: 400px;
     }
 `;
 
@@ -44,12 +47,12 @@ const richImageContainer = css`
     flex-shrink: 0;
     flex-direction: row;
     align-items: center;
-    min-height: 120px;
-    max-width: 50%;
+    justify-content: center;
     cursor: pointer;
-    min-width: var(--image-width);
-    min-height: var(--image-height);
-
+    width: var(--image-width);
+    height: var(--image-height);
+    max-width: 50%;
+    min-height: 100%;
     border: 1px solid var(--borderLight);
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
@@ -60,13 +63,11 @@ const richImageContainer = css`
         border-bottom-left-radius: 0;
 
         min-width: 100%;
+        max-height: 50%;
     }
 `;
 
 const richImageStyle = css`
-    position: absolute;
-    left: 0;
-    top: var(--image-top-position);
     object-fit: cover;
     flex-shrink: 0;
     width: 100%;
@@ -75,6 +76,7 @@ const richImageStyle = css`
     @media (max-width: 1100px) {
         position: initial;
         height: auto;
+        min-height: 100%;
     }
 `;
 
@@ -98,7 +100,7 @@ const imgContentContainer = css`
 
 const textContentContainer = css`
     padding-top: 12px;
-    padding-bottom: 16px;
+    padding-bottom: 12px;
     padding-left: 16px;
     padding-right: 24px;
     width: 100%;
@@ -139,8 +141,8 @@ const titleStyle = css`
 
 const textStyle = css`
     color: var(--foregroundPrimary);
-    margin-top: 2px;
-    -webkit-line-clamp: 4;
+    margin-top: 4px;
+    -webkit-line-clamp: 3;
 `;
 
 const deleteButton = css`
@@ -203,6 +205,8 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
         return <InternalAttachContent attach={attach} />;
     }
 
+    const isShortView = !attach.title || !attach.text || ((attach.title && attach.title.length < 80) || (attach.text && attach.text.length < 105));
+
     const handleDeleteClick = React.useCallback(
         (e: React.MouseEvent) => {
             e.stopPropagation();
@@ -234,8 +238,8 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
         layout = layoutMedia(
             attach.image.metadata.imageWidth || 0,
             attach.image.metadata.imageHeight || 0,
-            300,
-            300,
+            336,
+            isShortView ? 160 : 192,
             24,
             24,
         );
@@ -254,11 +258,6 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
                     // width={layout.width}
                     // height={layout.height}
                     src={attach.image.url}
-                    style={
-                        {
-                            '--image-top-position': `calc(50% - ${layout.height / 2})`,
-                        } as React.CSSProperties
-                    }
                 />
             </div>
         );
