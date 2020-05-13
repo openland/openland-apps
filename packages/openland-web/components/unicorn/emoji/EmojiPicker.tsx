@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { usePopper } from '../usePopper';
 import { XView } from 'react-mental';
-import { VariableSizeList, ListOnScrollProps } from 'react-window';
+import { VariableSizeList, FixedSizeList, ListOnScrollProps } from 'react-window';
 import { pickerEmoji } from 'openland-y-utils/data/emoji-data';
 import { emojiComponentSprite } from 'openland-y-utils/emojiComponentSprite';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
@@ -419,6 +419,8 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
         }
     }, []);
 
+    console.log(foundEmoji);
+
     return (
         <div className={popperContainerClass}>
             <XView flexDirection="row">
@@ -451,13 +453,11 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                     {searchInput.length > 0 && foundEmoji.length > 0 && (
                         <div className={emojiContainer}>
                             <XView marginTop={8}>
-                                <VariableSizeList
-                                    ref={ref}
+                                <FixedSizeList
                                     itemCount={foundEmoji.length / 8}
-                                    itemSize={() => 40}
+                                    itemSize={40}
                                     width={384}
                                     height={384}
-                                    onScroll={onScroll}
                                 >
                                     {({ index: rowIndex, style }) => {
                                         const currentRowEmoji = foundEmoji.slice(
@@ -481,7 +481,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                                             </div>
                                         );
                                     }}
-                                </VariableSizeList>
+                                </FixedSizeList>
                             </XView>
                         </div>
                     )}
