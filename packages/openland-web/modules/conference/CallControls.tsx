@@ -30,6 +30,24 @@ const ContainerStyle = css`
     height: 100%;
     position: relative;
     z-index: 5;
+
+    .desktop-minimize {
+        display: flex;
+    }
+
+    .mobile-minimize {
+        display: none;
+    }
+
+    @media (max-height: 520px) {
+        .desktop-minimize {
+            display: none;
+        }
+
+        .mobile-minimize {
+            display: flex;
+        }        
+    }
 `;
 const wrapper = css`
     position: absolute;
@@ -47,6 +65,18 @@ const wrapper = css`
         width: 192px;
     }
 `;
+
+const buttonsWrapper = cx('x', css`
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    overflow: auto;
+    
+    @media (max-height: 520px) {
+       justify-content: flex-start;      
+    }
+`);
 
 const controlTextWrapper = css`
     will-change: transform;
@@ -86,10 +116,11 @@ const controlWrapper = cx(
 const ControlItem = (props: {
     icon: JSX.Element;
     text: string;
+    className?: string;
     onClick: React.MouseEventHandler;
 }) => {
     return (
-        <div className={controlWrapper} onClick={props.onClick}>
+        <div className={cx(controlWrapper, props.className)} onClick={props.onClick}>
             <div className={controlHover} />
             <XView
                 paddingVertical={8}
@@ -288,6 +319,7 @@ export const CallControls = (props: CallControlsProps) => {
             <SettingsModal ctx={ctx} />
         ));
     }, []);
+
     return (
         <div className={ContainerStyle}>
             <div className={cx('x', wrapper)}>
@@ -302,10 +334,24 @@ export const CallControls = (props: CallControlsProps) => {
                                 disableHover={true}
                             />
                         }
+                        className="desktop-minimize"
                         onClick={props.onMinimize}
                     />
                 </XView>
-                <XView flexGrow={1} flexDirection="column" justifyContent="center">
+                <div className={buttonsWrapper}>
+                    <ControlItem
+                        text="Minimize"
+                        icon={
+                            <UIconButton
+                                icon={<MinimizeIcon />}
+                                color="var(--foregroundContrast)"
+                                rippleColor="transparent"
+                                disableHover={true}
+                            />
+                        }
+                        className="mobile-minimize"
+                        onClick={props.onMinimize}
+                    />
                     <ControlItem
                         text="End"
                         icon={
@@ -395,7 +441,7 @@ export const CallControls = (props: CallControlsProps) => {
                         }
                         onClick={showSettings}
                     />
-                </XView>
+                </div>
             </div>
         </div>
     );
