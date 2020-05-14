@@ -245,7 +245,15 @@ export class MediaSessionVolumeSpace {
         }
 
         this.sendBatch(batch);
-        [...this.peersVM.values()].flatMap(v => [...v.values()]).map(this.updatePeerVolume);
+        [...this.peersVM.values()]
+            // imagine it's flatmap (hermes ¯\_(ツ)_/¯)
+            .map(v => [...v.values()])
+            .reduce((res, v) => {
+                res.push(...v);
+                return res;
+            }, [])
+            //
+            .map(this.updatePeerVolume);
     }
 
     movePointer = (coords: number[], report: boolean = true) => {
@@ -349,6 +357,7 @@ export class MediaSessionVolumeSpace {
         let distance = Math.pow(Math.pow(peer.coords[0] - this.selfPeer.coords[0], 2) + Math.pow(peer.coords[1] - this.selfPeer.coords[1], 2), 0.5);
         let volume = distance < this.minDinstance ? 1 : distance > this.maxDisatance ? 0 : 1 - (distance - this.minDinstance) / (this.maxDisatance - this.minDinstance);
         peer.coords[2] = volume;
+        // TODO: recover volume control
         // [...this.mediaSession.streamsVM.values()].find(s => s.getTargetPeerId() === peer.id)?.setVolume(volume);
         this.peersVM.add(peer.id, peer.id, peer, true);
     }
@@ -375,7 +384,13 @@ export class MediaSessionVolumeSpace {
             add.objects.push(this.selfPeer);
         }
         let localObjectsDescriptors = Object.values(this.storages)
-            .flatMap(s => [...s.get(this.peerId || '')?.values() || []])
+            // imagine it's flatmap (hermes ¯\_(ツ)_/¯)
+            .map(s => [...s.get(this.peerId || '')?.values() || []])
+            .reduce((res, v) => {
+                res.push(...v);
+                return res;
+            }, [])
+            //
             .map(e => ({ id: e.id, seq: e.seq }));
         batch.push(new Sync(
             localObjectsDescriptors,
@@ -424,7 +439,15 @@ export class MediaSessionVolumeSpace {
                 let ids: string[] = [];
                 let peers: string[] = [];
                 for (let remote of u.objects) {
-                    let ex = Object.values(this.storages).flatMap(s => [...s.get(this.peerId || '')?.values() || []]).find(o => o.id === remote.id);
+                    let ex = Object.values(this.storages)
+                        // imagine it's flatmap (hermes ¯\_(ツ)_/¯)
+                        .map(s => [...s.get(this.peerId || '')?.values() || []])
+                        .reduce((res, v) => {
+                            res.push(...v);
+                            return res;
+                        }, [])
+                        //
+                        .find(o => o.id === remote.id);
                     if (!ex || ex.seq < remote.seq) {
                         ids.push(remote.id);
                     }
@@ -443,7 +466,15 @@ export class MediaSessionVolumeSpace {
                 let b: UpdateType[] = [add];
                 // add requested objects
                 for (let id of u.ids) {
-                    let local = Object.values(this.storages).flatMap(s => [...s.get(this.peerId || '')?.values() || []]).find(o => o.id === id);
+                    let local = Object.values(this.storages)
+                        // imagine it's flatmap (hermes ¯\_(ツ)_/¯)
+                        .map(s => [...s.get(this.peerId || '')?.values() || []])
+                        .reduce((res, v) => {
+                            res.push(...v);
+                            return res;
+                        }, [])
+                        // 
+                        .find(o => o.id === id);
                     if (local) {
                         add.objects.push({ ...local });
                     }
