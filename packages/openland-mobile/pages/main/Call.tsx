@@ -27,6 +27,7 @@ import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { SDevice } from 'react-native-s/SDevice';
 import { showCallControls } from './components/conference/CallControls';
+import { plural } from 'openland-y-utils/plural';
 
 const PeerInfoGradient = (props: { children: any }) => {
     let theme = React.useContext(ThemeContext);
@@ -223,24 +224,31 @@ let Content = XMemo<{ id: string, speaker: boolean, setSpeaker: (fn: (s: boolean
         // onCallEnd();
     }, [mediaSession]);
 
-    let peers = [...conference ? conference.conference.peers : []];
-    let slicesCount = peers.length <= 3 ? 1 : peers.length < 9 ? 2 : 3;
+    let peersLeft = [...conference ? conference.conference.peers : []];
+    let slicesCount = peersLeft.length <= 3 ? 1 : peersLeft.length < 9 ? 2 : 3;
     let slices: Conference_conference_peers[][] = [];
     let divider = slicesCount;
     while (divider) {
-        let count = Math.ceil(peers.length / divider--);
-        slices.unshift(peers.splice(peers.length - count, count));
+        let count = Math.ceil(peersLeft.length / divider--);
+        slices.unshift(peersLeft.splice(peersLeft.length - count, count));
     }
     let w = Dimensions.get('screen').width;
 
-    const title = conference?.conference.room?.__typename === 'PrivateRoom'
-        ? conference?.conference.room?.user.name
-        : conference?.conference.room?.__typename === 'SharedRoom' ? conference?.conference.room?.title
+    const room = conference?.conference?.room;
+    const peers = [...conference ? conference.conference.peers : []];
+
+    const title = room?.__typename === 'PrivateRoom'
+        ? room?.user.name
+        : room?.__typename === 'SharedRoom' ? room?.title
             : 'Call';
+    const subtitle = room?.__typename === 'PrivateRoom'
+        ? 'On call' : room?.__typename === 'SharedRoom' ? `${plural(peers.length, ['member', 'members'])} on call`
+            : '';
 
     let showControls = () => {
         showCallControls({
             title,
+            subtitle,
             mute: !state?.sender.audioEnabled,
             speaker,
             camera: !!state?.sender.videoEnabled,
@@ -301,27 +309,37 @@ let Content = XMemo<{ id: string, speaker: boolean, setSpeaker: (fn: (s: boolean
                 justifyContent="space-between"
                 alignItems="center"
                 paddingLeft={8}
-                paddingRight={4}
+                paddingRight={16}
             >
                 <TouchableOpacity onPress={props.hide}>
                     <Image source={require('assets/logo-watermark.png')} style={{ tintColor: theme.foregroundContrast }} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={props.hide} style={{ width: 48, height: 48, justifyContent: "center", alignItems: 'center' }}>
+                <TouchableOpacity
+                    onPress={props.hide}
+                    style={{
+                        width: 40,
+                        height: 40,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                        borderRadius: 20
+                    }}
+                >
                     <Image source={require('assets/ic-size-down-glyph-24.png')} style={{ tintColor: theme.foregroundContrast }} />
                 </TouchableOpacity>
             </View>
             <View
                 position="absolute"
-                bottom={Math.max(area.bottom, 30) + 4}
-                right={16}
+                bottom={Math.max(area.bottom, 30) - 8}
+                right={8}
             >
                 <TouchableOpacity
                     activeOpacity={0.6}
                     onPress={showControls}
-                    style={{ width: 56, height: 56 }}
+                    style={{ width: 56, height: 56, justifyContent: 'center', alignItems: 'center' }}
                 >
-                    <View backgroundColor={theme.overlayMedium} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
-                        <Image source={require('assets/ic-grid-glyph-24.png')} style={{ tintColor: theme.foregroundContrast }} />
+                    <View backgroundColor={theme.overlayMedium} width={40} height={40} borderRadius={28} alignItems="center" justifyContent="center">
+                        <Image source={require('assets/ic-burger-glyph-24.png')} style={{ tintColor: theme.foregroundContrast }} />
                     </View>
                 </TouchableOpacity>
             </View>

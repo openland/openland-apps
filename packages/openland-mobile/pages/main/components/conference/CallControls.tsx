@@ -27,6 +27,7 @@ const CallControlItem = (props: { label: string, icon: NodeRequire, backgroundCo
 
 interface CallControlsProps {
     title: string;
+    subtitle: string;
     mute: boolean;
     speaker: boolean;
     camera: boolean;
@@ -48,7 +49,7 @@ export const CallControls = (props: CallControlsProps) => {
             <ZBlurredView
                 fallbackColor={theme.overlayHeavy}
                 blurType="dark"
-                intensity="high"
+                intensity="normal"
                 style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
@@ -57,10 +58,13 @@ export const CallControls = (props: CallControlsProps) => {
                 }}
             >
                 <View flexDirection="column" flexGrow={1}>
-                    <Text style={{ paddingVertical: 15, ...TextStyles.Title2, color: theme.foregroundContrast }}>
+                    <Text style={{ paddingTop: 15, ...TextStyles.Title2, color: theme.foregroundContrast }}>
                         {props.title}
                     </Text>
-                    <View flexGrow={1} flexDirection="row" justifyContent="space-between">
+                    <Text style={{ marginTop: 4, ...TextStyles.Subhead, color: 'rgba(255, 255, 255, 0.56)' }}>
+                        {props.subtitle}
+                    </Text>
+                    <View flexGrow={1} marginTop={15} flexDirection="row" justifyContent="space-between">
                         <CallControlItem
                             onPress={props.onCallEnd}
                             icon={require('assets/ic-call-end-glyph-24.png')}

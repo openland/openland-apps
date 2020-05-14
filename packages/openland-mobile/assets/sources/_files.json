@@ -8,6 +8,13 @@
             ]
         },
         {
+            "name": "ic-burger-glyph",
+            "src": "ic-burger-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-grid-glyph",
             "src": "ic-grid-glyph-24.svg",
             "sizes": [
