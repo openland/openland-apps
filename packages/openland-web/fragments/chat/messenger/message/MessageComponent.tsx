@@ -17,7 +17,6 @@ import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { useUserPopper } from 'openland-web/components/EntityPoppers';
 import { defaultHover } from 'openland-web/utils/Styles';
 import { usePreviousState } from 'openland-y-utils/usePreviousState';
-import { XView } from 'react-mental';
 
 import IcPending from 'openland-icons/s/ic-pending-16.svg';
 import IcSuccess from 'openland-icons/s/ic-success-16.svg';
@@ -301,6 +300,19 @@ const contentContainer = css`
     flex-shrink: 1;
 `;
 
+const sendingIconContainer = css`
+    display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 16px;
+    height: 16px;
+    margin-left: 16px;
+    margin-right: 16px;
+`;
+
 type SendingIndicatorT = 'sending' | 'sent' | 'hide';
 
 interface MessageComponentProps {
@@ -451,10 +463,10 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
 
                         <div className={contentContainer}>
                             {content}
-                            <XView marginHorizontal={24} width={16} height={16} flexShrink={0}>
+                            <div className={sendingIconContainer}>
                                 {sendingIndicator === 'sending' && <IcPending />}
                                 {sendingIndicator === 'sent' && <IcSuccess />}
-                            </XView>
+                            </div>
                         </div>
                         {(message.commentsCount > 0 ||
                             engine.isChannel ||
