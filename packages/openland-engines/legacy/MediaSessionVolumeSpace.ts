@@ -2,8 +2,9 @@ import { MediaSessionManager } from '../media/MediaSessionManager';
 import { VMMapMap, VM } from 'openland-y-utils/mvvm/vm';
 import uuid from 'uuid';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
-import { getPlaceholderColorRawById } from 'openland-web/components/unicorn/UAvatar';
 import { GlobalEventBus } from 'openland-engines/GlobalEventBus';
+import { PlaceholderColors } from 'openland-y-utils/themes/placeholders';
+import { doSimpleHash } from 'openland-y-utils/hash';
 //
 // Objects
 //
@@ -216,7 +217,7 @@ export class MediaSessionVolumeSpace {
             onConversationUpdated: () => {/* */ }
         });
 
-        this.setColor(getPlaceholderColorRawById(mediaSession.messenger.user.id).end);
+        this.setColor(PlaceholderColors[Math.abs(doSimpleHash(mediaSession.messenger.user.id)) % PlaceholderColors.length].end);
     }
 
     ////

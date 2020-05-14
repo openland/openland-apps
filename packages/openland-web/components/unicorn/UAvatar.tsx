@@ -5,14 +5,7 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 import { emoji } from 'openland-y-utils/emoji';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { css, cx } from 'linaria';
-import {
-    PlaceholderOrange,
-    PlaceholderRed,
-    PlaceholderGreen,
-    PlaceholderBlue,
-    PlaceholderCyan,
-    PlaceholderPurple,
-} from 'openland-y-utils/themes/placeholders';
+import { PlaceholderColors } from 'openland-y-utils/themes/placeholders';
 import { useReloadImage } from 'openland-web/components/ImgWithRetry';
 
 export type UAvatarSize = 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' | 'xxx-large';
@@ -29,29 +22,20 @@ export interface UAvatarProps extends XViewProps {
     squared?: boolean;
 }
 
-export const PlaceholderColor = [
-    PlaceholderOrange,
-    PlaceholderRed,
-    PlaceholderGreen,
-    PlaceholderBlue,
-    PlaceholderCyan,
-    PlaceholderPurple,
-];
-
-const getPlaceholderIndex = (id: string) => Math.abs(doSimpleHash(id)) % PlaceholderColor.length;
+const getPlaceholderIndex = (id: string) => Math.abs(doSimpleHash(id)) % PlaceholderColors.length;
 
 export const getPlaceholderColorByIndex = (index: number) => {
-    let color = PlaceholderColor[index];
+    let color = PlaceholderColors[index];
     return `linear-gradient(138deg, ${color.start}, ${color.end})`;
 };
 
 export const getPlaceholderColorById = (id: string) => {
-    let color = PlaceholderColor[getPlaceholderIndex(id)];
+    let color = PlaceholderColors[getPlaceholderIndex(id)];
     return `linear-gradient(138deg, ${color.start}, ${color.end})`;
 };
 
 export const getPlaceholderColorRawById = (id: string) => {
-    return PlaceholderColor[getPlaceholderIndex(id)];
+    return PlaceholderColors[getPlaceholderIndex(id)];
 };
 
 export const AvatarSizes: {

@@ -2,9 +2,9 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { doSimpleHash } from 'openland-y-utils/hash';
-import { PlaceholderColor } from 'openland-web/components/unicorn/UAvatar';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { ULink } from 'openland-web/components/unicorn/ULink';
+import { PlaceholderColors } from 'openland-y-utils/themes/placeholders';
 
 const phBackgrounds = [
     css`background-image: linear-gradient(138deg, #ffb600, #ff8d00);`,
@@ -41,7 +41,7 @@ const avatarLink = css`
 const AvatarPlaceholder = React.memo((props: { title: string, titleEmoji: any, id: string }) => {
     const { title, id } = props;
     const ph = extractPlaceholder(title);
-    const phIndex = Math.abs(doSimpleHash(id)) % PlaceholderColor.length;
+    const phIndex = Math.abs(doSimpleHash(id)) % PlaceholderColors.length;
 
     return (
         <ULink path={`/${id}`} className={avatarLink}>
