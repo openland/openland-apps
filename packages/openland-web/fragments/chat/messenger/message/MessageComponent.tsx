@@ -16,7 +16,7 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { useUserPopper } from 'openland-web/components/EntityPoppers';
 import { defaultHover } from 'openland-web/utils/Styles';
-import { usePreviousState } from 'openland-x-utils/usePreviousState';
+import { usePreviousState } from 'openland-y-utils/usePreviousState';
 import { XView } from 'react-mental';
 
 import IcPending from 'openland-icons/s/ic-pending-16.svg';
