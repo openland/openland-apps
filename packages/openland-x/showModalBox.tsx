@@ -242,7 +242,7 @@ const ModalBoxComponent = React.memo<{
                         !props.config.overflowVisible && boxOverflow,
                         state === 'showing' && boxShowing,
                         state === 'visible' && boxVisible,
-                        state === 'hiding' && boxHiding,
+                        state === 'hiding' && !isFullscreen && boxHiding,
                     )}
                     style={boxInlineStyle}
                 >
