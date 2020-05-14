@@ -254,9 +254,7 @@ let Content = XMemo<{ id: string, speaker: boolean, setSpeaker: (fn: (s: boolean
                 toggleSpeaker();
             },
             onFlipPress: () => {
-                if (state?.sender.videoEnabled) {
-                    ((state.sender.videoTrack as AppUserMediaStreamTrackNative)?.track as any)?._switchCamera();
-                }
+                ((state?.sender.videoTrack as AppUserMediaStreamTrackNative)?.track as any)?._switchCamera();
             },
             onCallEnd,
         });
