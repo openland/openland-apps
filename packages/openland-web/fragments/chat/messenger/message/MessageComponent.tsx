@@ -16,6 +16,7 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { useUserPopper } from 'openland-web/components/EntityPoppers';
 import { defaultHover } from 'openland-web/utils/Styles';
+import { usePreviousState } from 'openland-x-utils/usePreviousState';
 import { XView } from 'react-mental';
 
 import IcPending from 'openland-icons/s/ic-pending-16.svg';
@@ -298,11 +299,10 @@ const contentContainer = css`
     flex-wrap: nowrap;
     justify-content: space-between;
     flex-shrink: 1;
-
-    & > .x {
-        flex-shrink: 1;
-    }
 `;
+
+type SendingIndicatorT = 'sending' | 'sent' | 'hide';
+
 interface MessageComponentProps {
     message: DataSourceWebMessageItem;
     engine: ConversationEngine;
@@ -311,7 +311,27 @@ interface MessageComponentProps {
 export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const { engine, message } = props;
     const containerRef = React.useRef<HTMLDivElement>(null);
+
+    const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
+    const prevSendingIndicator = usePreviousState<SendingIndicatorT>(sendingIndicator);
+
     const layout = useLayout();
+
+    React.useEffect(() => {
+        let timer: any;
+        if (message.isSending) {
+            setSendingIndicator('sending');
+        }
+        if (!message.isSending && prevSendingIndicator === 'sending') {
+            setSendingIndicator('sent');
+            timer = setTimeout(() => {
+                setSendingIndicator('hide');
+            }, 500);
+        }
+        return () => {
+            clearInterval(timer);
+        };
+    }, [message.isSending, sendingIndicator, prevSendingIndicator]);
 
     const attachesClassNames = cx(
         message.attachTop && 'message-attached-top',
@@ -382,36 +402,6 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
         />
     );
 
-    const [isSendingShown, setSendingShown] = React.useState<boolean>(false);
-    const [hadLag, setLag] = React.useState<boolean>(false);
-    const [isSentShown, setSentShown] = React.useState<boolean>(false);
-
-    React.useEffect(() => {
-        const timeout = setTimeout(() => {
-            if (message.isSending) {
-                setSendingShown(true);
-                setLag(true);
-            }
-        }, 500);
-
-        return () => {
-            clearInterval(timeout);
-            setSendingShown(false);
-        };
-    }, [message.isSending]);
-
-    React.useEffect(() => {
-        if (hadLag) {
-            setSentShown(true);
-        }
-
-        const timeout = setTimeout(() => {
-            setSentShown(false);
-        }, 250);
-
-        return () => clearInterval(timeout);
-    }, [hadLag]);
-
     const content = (
         <MessageContent
             id={message.id}
@@ -461,9 +451,9 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
 
                         <div className={contentContainer}>
                             {content}
-                            <XView marginHorizontal={24} width={16} height={16}>
-                                {isSendingShown && !isSentShown && <IcPending />}
-                                {isSentShown && !isSendingShown && <IcSuccess />}
+                            <XView marginHorizontal={24} width={16} height={16} flexShrink={0}>
+                                {sendingIndicator === 'sending' && <IcPending />}
+                                {sendingIndicator === 'sent' && <IcSuccess />}
                             </XView>
                         </div>
                         {(message.commentsCount > 0 ||

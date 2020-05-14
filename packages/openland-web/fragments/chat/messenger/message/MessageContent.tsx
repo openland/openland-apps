@@ -22,6 +22,7 @@ import { XViewRouterContext } from 'react-mental';
 
 const wrapper = css`
     flex-grow: 1;
+    flex-shrink: 1;
 `;
 
 const textWrapper = css`

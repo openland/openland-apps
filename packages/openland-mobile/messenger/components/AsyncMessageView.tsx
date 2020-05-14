@@ -12,6 +12,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { UnsupportedContent } from './content/UnsupportedContent';
+import { usePreviousState } from 'openland-x-utils/usePreviousState';
 
 const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMessageItem, theme: ThemeGlobal }>((props) => {
     const [selected, toggleSelect] = useMessageSelected(props.engine.messagesActionsStateEngine, props.message);
@@ -45,10 +46,31 @@ export interface AsyncMessageViewProps {
     onReactionsPress: (message: DataSourceMessageItem) => void;
 }
 
+type SendingIndicatorT = 'sending' | 'sent' | 'hide';
+
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const theme = useThemeGlobal();
     const { conversationId, message, engine, onMessageDoublePress, onMessagePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress } = props;
     const { isOut, attachTop, attachBottom, commentsCount, reactions, sender, isSending } = message;
+
+    const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
+    const prevSendingIndicator = usePreviousState<SendingIndicatorT>(sendingIndicator);
+
+    React.useEffect(() => {
+        let timer: any;
+        if (isSending) {
+            setSendingIndicator('sending');
+        }
+        if (!isSending && prevSendingIndicator === 'sending') {
+            setSendingIndicator('sent');
+            timer = setTimeout(() => {
+                setSendingIndicator('hide');
+            }, 500);
+        }
+        return () => {
+            clearInterval(timer);
+        };
+    }, [isSending, sendingIndicator, prevSendingIndicator]);
 
     const messageRef = React.useRef(message);
     messageRef.current = message;
@@ -89,23 +111,6 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const showReactions = ((engine.isChannel || commentsCount > 0) || reactions.length > 0) && !isSending;
     const marginTop = attachTop ? 4 : 12;
     const marginBottom = attachBottom && showReactions ? 6 : 0;
-    const [tooLong, setTooLong] = React.useState(false);
-
-    React.useEffect(() => {
-        if (message.isSending && !tooLong) {
-            setTimeout(() => {
-                if (messageRef.current.isSending) {
-                    setTooLong(true);
-                }
-            }, 500);
-        }
-        if (!message.isSending && tooLong) {
-            setTimeout(() => {
-                console.warn('too long false');
-                setTooLong(false);
-            }, 250);
-        }
-    }, [message.isSending, tooLong]);
 
     return (
         <ASFlex flexDirection="column" alignItems="stretch" onPress={handlePress} onLongPress={handleLongPress}>
@@ -129,12 +134,20 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                     {isOut && (
                         <ASFlex flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" alignItems="flex-end" justifyContent="flex-end">
                             <ASFlex marginRight={12} marginBottom={10} width={16} height={16}>
-                                {tooLong && (
+                                {sendingIndicator === 'sending' && (
                                     <ASImage
-                                        source={message.isSending ? require('assets/ic-recent-16.png') : require('assets/ic-success-16.png')}
+                                        source={require('assets/ic-recent-16.png')}
                                         width={16}
                                         height={16}
-                                        tintColor={message.isSending ? theme.foregroundQuaternary : theme.accentPositive}
+                                        tintColor={theme.foregroundQuaternary}
+                                    />
+                                )}
+                                {sendingIndicator === 'sent' && (
+                                    <ASImage
+                                        source={require('assets/ic-success-16.png')}
+                                        width={16}
+                                        height={16}
+                                        tintColor={theme.accentPositive}
                                     />
                                 )}
                             </ASFlex>
