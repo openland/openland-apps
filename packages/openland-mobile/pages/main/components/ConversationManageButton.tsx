@@ -109,17 +109,19 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
 
         builder.action('Shared media', onSharedPress, false, require('assets/ic-attach-24.png'));
 
-        if (
-            (!isPrivate && (room as RoomTiny_room_SharedRoom).role === 'OWNER') ||
-            (room as RoomTiny_room_SharedRoom).role === 'ADMIN' ||
-            SUPER_ADMIN
-        ) {
-            builder.action(
-                (room as RoomTiny_room_SharedRoom).isChannel ? 'Manage channel' : 'Manage group',
-                () => props.router.push('EditGroup', { id: room.id }),
-                false,
-                require('assets/ic-settings-24.png'),
-            );
+        if (!isPrivate) {
+            if (
+                ((room as RoomTiny_room_SharedRoom).role === 'OWNER') ||
+                (room as RoomTiny_room_SharedRoom).role === 'ADMIN' ||
+                SUPER_ADMIN
+            ) {
+                builder.action(
+                    (room as RoomTiny_room_SharedRoom).isChannel ? 'Manage channel' : 'Manage group',
+                    () => props.router.push('EditGroup', { id: room.id }),
+                    false,
+                    require('assets/ic-settings-24.png'),
+                );
+            }
         }
 
         if (!isPrivate) {

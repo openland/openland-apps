@@ -86,7 +86,7 @@ const MenuComponent = React.memo((props: OrganizationMenuProps & { ctx: UPopperC
         });
     }
 
-    return builder.build(ctx);
+    return builder.build(ctx, 240);
 });
 
 export const OrganizationMenu = React.memo((props: OrganizationMenuProps) => {

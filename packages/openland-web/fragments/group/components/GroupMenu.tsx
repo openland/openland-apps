@@ -52,7 +52,7 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
             ),
     });
 
-    return builder.build(ctx);
+    return builder.build(ctx, 240);
 });
 
 export const GroupMenu = React.memo((props: GroupMenu) => (

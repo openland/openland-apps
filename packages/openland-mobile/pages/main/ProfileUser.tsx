@@ -67,6 +67,16 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
     const handleManagePress = React.useCallback(() => {
         let builder = new ActionSheetBuilder();
 
+        builder.action(
+            'Copy link',
+            () => {
+                Clipboard.setString(`https://openland.com/${user.shortname || user.id}`);
+                Toast.showCopiedLink();
+            },
+            false,
+            require('assets/ic-link-24.png'),
+        );
+
         if (conversation && conversation.__typename === 'PrivateRoom') {
             builder.action(
                 'Shared media',
@@ -75,16 +85,6 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                 require('assets/ic-attach-24.png'),
             );
         }
-
-        builder.action(
-            'Copy link',
-            () => {
-                Clipboard.setString(`https://openland.com/${user.shortname || user.id}`);
-                Toast.showCopiedLink();
-            },
-            false,
-            require('assets/ic-copy-24.png'),
-        );
 
         builder.show();
     }, [user.shortname, user.id]);
