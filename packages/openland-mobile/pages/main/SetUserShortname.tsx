@@ -35,15 +35,15 @@ export const getErrorByShortname = (shortname: string | null, label: 'Shortname'
 
     if (typeof shortname === 'string') {
         if (!shortname.match('^[a-z0-9_]+$')) {
-            validateResult = 'A ' + label.toLowerCase() + ' can only contain a-z, 0-9, and underscores.';
+            validateResult = 'Can only contain a-z, 0-9, and underscores';
         }
 
         if (shortname.length < min) {
-            validateResult = label + ' must have at least ' + min + ' characters.';
+            validateResult = 'Must have at least ' + min + ' chars';
         }
 
         if (shortname.length > max) {
-            validateResult = label + ' must have no more than ' + max + ' characters.';
+            validateResult = 'Must have no more than ' + max + ' chars';
         }
     }
 

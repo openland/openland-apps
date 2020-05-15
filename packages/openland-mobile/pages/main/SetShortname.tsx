@@ -161,7 +161,7 @@ const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
                     {!error && shortnameError && <RemarkText text={shortnameError} error={true} />}
                     {!error && !shortnameError && (
                         <RemarkText
-                            text={`Can only contain a-z, 0-9 and underscores\nMust have at least 3 chars`}
+                            text={`Only a-z, 0-9 and underscores, at least 3 chars`}
                             error={false}
                         />
                     )}

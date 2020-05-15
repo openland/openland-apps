@@ -25,15 +25,15 @@ import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInputField } from 'openland-web/components/unicorn/UInput';
-import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
 import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 import { USelectField } from 'openland-web/components/unicorn/USelect';
 import { UTextAreaField } from 'openland-web/components/unicorn/UTextArea';
-import { trackEvent } from 'openland-x-analytics';
 import { useShortnameField } from 'openland-y-utils/form/useShortnameField';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
+import { MentionItemComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';
 import { GroupPriceSettings, DistributionType } from '../../create/CreateEntityFragment';
+import { trackEvent } from 'openland-x-analytics';
 import IcAt from 'openland-icons/s/ic-at-24.svg';
 import IcWallet from 'openland-icons/s/ic-wallet-24.svg';
 import IcGallery from 'openland-icons/s/ic-gallery-24.svg';
@@ -81,8 +81,7 @@ const ShortnameModalBody = React.memo((props: ShortnameModalBodyProps) => {
                     remark={
                         form.error
                             ? undefined
-                            : 'Can only contain a-z, 0-9 and underscores\n' +
-                              'Must have at least 3 chars'
+                            : 'Only a-z, 0-9 and underscores, at least 3 chars'
                     }
                     errorText={form.error ? form.error : undefined}
                 />
@@ -117,7 +116,7 @@ const socialImageUploadStyle = css`
         height: 184px;
         border-radius: 8px;
         &::after {
-          border-radius: 8px;
+            border-radius: 8px;
         }
     }
 `;
@@ -309,7 +308,16 @@ interface OptionType<T = string> {
     user: UserShort;
 }
 
-const OptionRender = (option: OptionType) => <UUserView user={option.user} />;
+const OptionRender = (option: OptionType) => (
+    <MentionItemComponent
+        id={option.user.id}
+        photo={option.user.photo}
+        title={option.user.name}
+        subtitle={
+            option.user.primaryOrganization ? option.user.primaryOrganization.name : undefined
+        }
+    />
+);
 
 const WelcomeMessageModalBody = React.memo((props: WelcomeMessageModalBodyProps) => {
     const { welcomeMessage } = props;

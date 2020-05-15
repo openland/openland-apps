@@ -9,7 +9,7 @@ export const useShortnameField = (title: string, initialShortname: string, form:
         {
             checkIsValid: value =>
                 !!value && value.length > 0 ? value.length >= shortnameMinLength : true,
-            text: 'Shortname must have at least ' + shortnameMinLength + ' characters.',
+            text: 'Must have at least ' + shortnameMinLength + ' chars.',
         },
         {
             checkIsValid: value =>
@@ -19,7 +19,7 @@ export const useShortnameField = (title: string, initialShortname: string, form:
         {
             checkIsValid: value =>
                 !!value && value.length > 0 ? !!value.match('^[a-z0-9_]+$') : true,
-            text: 'A shortname can only contain a-z, 0-9, and underscores.',
+            text: 'Can only contain a-z, 0-9 and underscores',
         },
     ]);
 

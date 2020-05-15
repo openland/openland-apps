@@ -137,6 +137,8 @@ const customStyles = (config: CustomStylesConfig) =>
             padding: config.size === 'small' ? '8px 16px' : '6px 16px',
             backgroundColor: state.isFocused ? 'var(--backgroundPrimaryHover)' : undefined,
             paddingLeft: config.optionRender ? 0 : undefined,
+            paddingTop: config.optionRender ? 0 : undefined,
+            paddingBottom: config.optionRender ? 0 : undefined,
             minHeight: 40,
             '& > div *': {
                 pointerEvents: 'none',
@@ -309,7 +311,6 @@ export const USelect = React.memo(React.forwardRef((props: USelectProps, ref: an
         ...xViewProps
     } = props;
 
-    const [focus, setFocus] = React.useState(false);
     const [inputValue, setInputValue] = React.useState('');
 
     const onInputChangeHandler = (v: string, params: InputActionMeta) => {
@@ -327,8 +328,6 @@ export const USelect = React.memo(React.forwardRef((props: USelectProps, ref: an
                 ref={ref}
                 autoFocus={autoFocus}
                 openMenuOnFocus={true}
-                onFocus={() => setFocus(true)}
-                onBlur={() => setFocus(false)}
                 options={options}
                 value={value}
                 onChange={onChange}
@@ -359,7 +358,7 @@ export const USelect = React.memo(React.forwardRef((props: USelectProps, ref: an
                 <div
                     className={cx(
                         placeholderStyle,
-                        (focus || (Array.isArray(value) ? !!value.length : !!value)) &&
+                        (Array.isArray(value) ? !!value.length : !!value) &&
                         placeholderValueStyle,
                         invalid && placeholderInvalidStyle,
                     )}

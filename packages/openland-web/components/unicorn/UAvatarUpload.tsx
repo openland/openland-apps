@@ -106,7 +106,9 @@ const avatarContainer = css`
     justify-content: center;
     flex-direction: column;
     background-color: var(--backgroundTertiary);
+`;
 
+const hasImageAvatarContainer = css`
     &::after {
         display: block;
         position: absolute;
@@ -147,9 +149,29 @@ const clearContainer = css`
     position: absolute;
     right: 0;
     top: 0;
+    &:hover {
+      opacity: 0.72;
+    }
     & svg {
         box-shadow: 0px 0px 48px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.08);
         border-radius: 100px;
+    }
+`;
+
+const clearContainerIcon = css`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        background-color: rgba(0, 0, 0, 0.2);
+        z-index: -1;
     }
 `;
 
@@ -198,7 +220,13 @@ const AvatarRender = (props: AvatarRenderProps) => {
                 props.className && props.className,
             )}
         >
-            <div className={cx(avatarContainer, 'avatar-container')}>
+            <div
+                className={cx(
+                    avatarContainer,
+                    hasImage && hasImageAvatarContainer,
+                    'avatar-container',
+                )}
+            >
                 {hasImage && (
                     <XCloudImage
                         width={value && value.crop && isFreeCrop ? value.crop.width : undefined}
@@ -232,7 +260,9 @@ const AvatarRender = (props: AvatarRenderProps) => {
                         props.doClear();
                     }}
                 >
-                    <UIcon icon={<IcClear />} size={24} color="#fff" />
+                    <div className={clearContainerIcon}>
+                        <UIcon icon={<IcClear />} size={24} color="#fff" />
+                    </div>
                 </div>
             )}
         </div>
