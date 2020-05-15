@@ -5,6 +5,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
+import { getMessenger } from 'openland-mobile/utils/messenger';
+import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
+import { AppUserMediaStreamTrackNative } from 'openland-y-runtime-native/AppUserMedia';
+import { plural } from 'openland-y-utils/plural';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 
 const CallControlItem = (props: { label: string, icon: NodeRequire, backgroundColor?: string, disabled?: boolean, onPress?: () => void, onLongPress?: () => void }) => {
     let theme = React.useContext(ThemeContext);
@@ -26,23 +31,40 @@ const CallControlItem = (props: { label: string, icon: NodeRequire, backgroundCo
 };
 
 interface CallControlsProps {
-    title: string;
-    subtitle: string;
-    mute: boolean;
+    id: string;
     speaker: boolean;
-    camera: boolean;
-    onMutePress: () => void;
     onSpeakerPress: () => void;
-    onCameraPress: () => void;
-    onFlipPress: () => void;
     onCallEnd: () => void;
 }
 
 export const CallControls = (props: CallControlsProps) => {
+    let calls = getMessenger().engine.calls;
+    let mediaSession = calls.useCurrentSession();
+    let [state, setState] = React.useState<MediaSessionState | undefined>(mediaSession?.state.value);
+
+    React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
+
     let theme = React.useContext(ThemeContext);
-    let [mute, setMute] = React.useState(props.mute);
     let [speaker, setSpeaker] = React.useState(props.speaker);
-    let [camera, setCamera] = React.useState(props.camera);
+
+    let mute = !state?.sender.audioEnabled;
+    let camera = !!state?.sender.videoEnabled;
+    let handleMute = () => mediaSession?.setAudioEnabled(!state?.sender.audioEnabled);
+    let handleCamera = () => mediaSession?.setVideoEnabled(!state?.sender.videoEnabled);
+    let handleFlip = () => {
+        ((state?.sender.videoTrack as AppUserMediaStreamTrackNative)?.track as any)?._switchCamera();
+    };
+
+    let conference = getClient().useConference({ id: props.id }, { suspense: false });
+    let room = conference?.conference?.room;
+    let peers = [...conference ? conference.conference.peers : []];
+
+    let title = room?.__typename === 'PrivateRoom'
+        ? room?.user.name
+        : room?.__typename === 'SharedRoom' ? room?.title
+            : 'Call';
+
+    const subtitle = room?.__typename === 'SharedRoom' ? `${plural(peers.length, ['member', 'members'])} on call` : 'On call';
 
     return (
         <View borderRadius={18} overflow="hidden">
@@ -59,10 +81,10 @@ export const CallControls = (props: CallControlsProps) => {
             >
                 <View flexDirection="column" flexGrow={1}>
                     <Text style={{ paddingTop: 15, ...TextStyles.Title2, color: theme.foregroundContrast }}>
-                        {props.title}
+                        {title}
                     </Text>
                     <Text style={{ marginTop: 4, ...TextStyles.Subhead, color: 'rgba(255, 255, 255, 0.56)' }}>
-                        {props.subtitle}
+                        {subtitle}
                     </Text>
                     <View flexGrow={1} marginTop={15} flexDirection="row" justifyContent="space-between">
                         <CallControlItem
@@ -81,26 +103,20 @@ export const CallControls = (props: CallControlsProps) => {
                             backgroundColor={speaker ? '#248BF2' : undefined}
                         />
                         <CallControlItem
-                            onPress={() => {
-                                setMute(x => !x);
-                                props.onMutePress();
-                            }}
+                            onPress={handleMute}
                             icon={require('assets/ic-mute-glyph-24.png')}
                             label="Mute"
                             backgroundColor={mute ? '#FF9F1A' : undefined}
                         />
                         <CallControlItem
-                            onPress={() => {
-                                setCamera(x => !x);
-                                props.onCameraPress();
-                            }}
+                            onPress={handleCamera}
                             icon={require('assets/ic-camera-video-24.png')}
                             label="Camera"
                             backgroundColor={camera ? '#248BF2' : undefined}
                         />
                         <CallControlItem
                             icon={require('assets/ic-cycle-glyph-24.png')}
-                            onPress={props.onFlipPress}
+                            onPress={handleFlip}
                             label="Flip"
                             disabled={!camera}
                         />

@@ -27,7 +27,6 @@ import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { SDevice } from 'react-native-s/SDevice';
 import { showCallControls } from './components/conference/CallControls';
-import { plural } from 'openland-y-utils/plural';
 
 const PeerInfoGradient = (props: { children: any }) => {
     let theme = React.useContext(ThemeContext);
@@ -234,36 +233,11 @@ let Content = XMemo<{ id: string, speaker: boolean, setSpeaker: (fn: (s: boolean
     }
     let w = Dimensions.get('screen').width;
 
-    const room = conference?.conference?.room;
-    const peers = [...conference ? conference.conference.peers : []];
-
-    const title = room?.__typename === 'PrivateRoom'
-        ? room?.user.name
-        : room?.__typename === 'SharedRoom' ? room?.title
-            : 'Call';
-    const subtitle = room?.__typename === 'PrivateRoom'
-        ? 'On call' : room?.__typename === 'SharedRoom' ? `${plural(peers.length, ['member', 'members'])} on call`
-            : '';
-
     let showControls = () => {
         showCallControls({
-            title,
-            subtitle,
-            mute: !state?.sender.audioEnabled,
+            id: props.id,
             speaker,
-            camera: !!state?.sender.videoEnabled,
-            onMutePress: () => {
-                mediaSession?.setAudioEnabled(!state?.sender.audioEnabled);
-            },
-            onCameraPress: () => {
-                mediaSession?.setVideoEnabled(!state?.sender.videoEnabled);
-            },
-            onSpeakerPress: () => {
-                toggleSpeaker();
-            },
-            onFlipPress: () => {
-                ((state?.sender.videoTrack as AppUserMediaStreamTrackNative)?.track as any)?._switchCamera();
-            },
+            onSpeakerPress: toggleSpeaker,
             onCallEnd,
         });
     };
