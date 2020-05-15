@@ -20,6 +20,10 @@ fragment ConferenceFull on Conference {
             isChannel
             membersCount
             photo
+            owner {
+                id
+                name
+            }
         }
         ...on PrivateRoom {
             id
@@ -156,7 +160,7 @@ subscription ConferenceMediaWatch($id: ID!, $peerId: ID!) {
             ...MediaStreamFull
         }
         localMedia{
-            id
+            # id
             sendVideo
             sendAudio
             sendScreencast

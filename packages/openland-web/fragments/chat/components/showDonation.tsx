@@ -9,7 +9,7 @@ import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import MinusIcon from 'openland-icons/s/ic-minus-24.svg';
 import PlusIcon from 'openland-icons/s/ic-plus-24.svg';
 import { css, cx } from 'linaria';
-import { TextTitle1 } from 'openland-web/utils/TextStyles';
+import { TextTitle1, TextStyles } from 'openland-web/utils/TextStyles';
 import { useShake } from 'openland-web/pages/auth/components/authComponents';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { URickInput } from 'openland-web/components/unicorn/URickInput';
@@ -23,6 +23,7 @@ let priceWrapper = css`
     border-radius: 8px;
     flex-direction: row;
     flex-shrink: 0;
+    margin-top: 12px;
     background-color: var(--backgroundTertiaryTrans);
 `;
 
@@ -44,6 +45,8 @@ interface DonationComponentProps {
     initialPrice?: number;
     chatId?: string;
     userId?: string;
+    name?: string;
+    chatTitle?: string;
     onDonate?: (value: string) => void;
     onWalletLockedContinue?: () => void;
 }
@@ -134,8 +137,13 @@ const DonationComponent = (props: DonationComponentProps & { ctx: XModalControll
     }, [donateRef.current]);
 
     return (
-        <XView paddingTop={12} flexDirection="column" flexShrink={'initial' as any}>
+        <XView flexDirection="column" flexShrink={'initial' as any}>
             <XView paddingHorizontal={24} paddingBottom={24} flexGrow={1} flexDirection="column" flexShrink={'initial' as any}>
+                {props.chatTitle && (
+                    <XView {...TextStyles.Body} color="var(--foregroundPrimary)" marginBottom={8}>
+                        {props.name} is the owner of {props.chatTitle}
+                    </XView>
+                )}
                 <div className={cx(priceWrapper, shakeClassName)}>
                     <UIconButton icon={<MinusIcon />} onClick={() => updatePrice(-5)} />
                     <XView flexGrow={1} justifyContent="center" marginHorizontal={16}>
@@ -175,7 +183,7 @@ const DonationComponent = (props: DonationComponentProps & { ctx: XModalControll
     );
 };
 
-export const useDonationModal = (props: DonationComponentProps & { name?: string | null }) => {
+export const useDonationModal = (props: DonationComponentProps) => {
     const toastHandlers = useToast();
     const onDonate = (value: string) => {
         if (props.onDonate) {

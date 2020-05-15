@@ -8,13 +8,15 @@ interface ProfileDonationButtonsProps {
     name: string;
     userId?: string;
     chatId?: string;
+    chatTitle?: string;
     shouldHide: boolean;
 }
 
-const PriceButton = (props: { price?: number, name: string, userId?: string, chatId?: string, onDonate: () => void }) => {
+const PriceButton = (props: { price?: number, name: string, userId?: string, chatId?: string, chatTitle?: string, onDonate: () => void }) => {
     let showDonation = useDonationModal({
         name: props.name,
         chatId: props.chatId,
+        chatTitle: props.chatTitle,
         userId: props.userId,
         initialPrice: props.price,
         onDonate: props.onDonate,
@@ -45,6 +47,7 @@ export const ProfileDonationButtons = (props: ProfileDonationButtonsProps) => {
                             name={props.name}
                             userId={props.userId}
                             chatId={props.chatId}
+                            chatTitle={props.chatTitle}
                             onDonate={onDonate}
                         />
                     </XView>
@@ -53,6 +56,7 @@ export const ProfileDonationButtons = (props: ProfileDonationButtonsProps) => {
                     name={props.name}
                     userId={props.userId}
                     chatId={props.chatId}
+                    chatTitle={props.chatTitle}
                     onDonate={onDonate}
                 />
             </XView>

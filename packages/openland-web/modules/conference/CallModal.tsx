@@ -111,10 +111,13 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     }, []);
 
     const room = conference?.conference?.room;
-    const messageName = room && room.__typename === 'PrivateRoom' ? room?.user.name : room?.title;
+    const messageName = room && room.__typename === 'PrivateRoom' ? room?.user.name
+        : room && room.__typename === 'SharedRoom' ? room.owner?.name
+            : '';
     const showMessage = useMessageModal({
         chatId: props.chatId,
         userId: room && room.__typename === 'PrivateRoom' ? room.user.id : undefined,
+        chatTitle: room && room.__typename === 'SharedRoom' ? room.title : undefined,
         name: messageName,
         onAttach: props.onAttach,
         isPrivate: !!(room && room.__typename === 'PrivateRoom'),

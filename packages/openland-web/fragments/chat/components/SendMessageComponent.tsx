@@ -494,6 +494,7 @@ interface SendMessageComponentProps {
     groupId?: string;
     isChannel?: boolean;
     isPrivate?: boolean;
+    chatTitle?: string;
     membersCount?: number | null;
     onTextSent?: (text: URickTextValue) => boolean;
     onTextSentAsync?: (text: URickTextValue) => Promise<boolean>;
@@ -552,7 +553,7 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     const fileInputRef = React.useRef<HTMLInputElement>(null);
     const suggestRef = React.useRef<AutoCompleteComponentRef>(null);
     const [loading, setLoading] = React.useState<boolean>(false);
-    const showDonation = useDonationModal({ name: props.ownerName, chatId: props.groupId });
+    const showDonation = useDonationModal({ name: props.ownerName, chatId: props.groupId, chatTitle: props.chatTitle });
     const onStickerSent = React.useCallback(
         async (sticker: StickerFragment) => {
             if (props.onStickerSentAsync) {

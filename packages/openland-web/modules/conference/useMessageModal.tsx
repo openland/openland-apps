@@ -47,6 +47,7 @@ interface MessageModalProps {
     chatId: string;
     userId?: string;
     name?: string;
+    chatTitle?: string;
     isChannel?: boolean;
     isPrivate?: boolean;
     membersCount?: number;
@@ -66,6 +67,7 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
     let showDonation = useDonationModal({
         name: props.name,
         chatId: !props.isPrivate ? props.chatId : undefined,
+        chatTitle: props.chatTitle,
         userId: props.userId,
         onDonate: props.ctx.hide,
         onWalletLockedContinue: props.ctx.hide,

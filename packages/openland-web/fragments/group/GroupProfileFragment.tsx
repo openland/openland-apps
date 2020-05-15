@@ -148,7 +148,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                 {!!description && <UListText value={description} />}
             </UListGroup>
             {owner && (
-                <ProfileDonationButtons shouldHide={owner.isYou} name={owner.firstName} chatId={id} />
+                <ProfileDonationButtons shouldHide={owner.isYou} name={owner.firstName} chatId={id} chatTitle={title} />
             )}
             {organization && (
                 <UListGroup header={organization.isCommunity ? 'Community' : 'Organization'}>
