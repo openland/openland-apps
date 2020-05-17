@@ -108,6 +108,7 @@ export class MediaConnectionManager {
         }
         this.audioTrack = track;
         if (this.audioTransceiver) {
+            console.log(track);
             this.audioTransceiver.sender.replaceTrack(track);
         }
     }
@@ -493,6 +494,7 @@ export class MediaConnectionManager {
                     this.audioTransceiver = at;
                     console.log('[WEBRTC]: Found audio track: ' + audioSender.mid);
                     if (this.audioTrack) {
+                        console.log(this.audioTrack);
                         at.sender.replaceTrack(this.audioTrack);
                     }
                 }
@@ -623,6 +625,7 @@ export class MediaConnectionManager {
         if (!this.audioTransceiver) {
             this.audioTransceiver = await this.peerConnection.addTransceiver('audio', { direction: 'sendonly' });
             if (this.audioTrack) {
+                console.log(this.audioTrack);
                 this.audioTransceiver.sender.replaceTrack(this.audioTrack);
             }
         }

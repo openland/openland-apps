@@ -94,6 +94,9 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
                 this.onicecandidate({ candidate: ev.candidate ? JSON.stringify(ev.candidate) : undefined });
             }
         };
+        this.connection.onnegotiationneeded = () => {
+            console.warn('onnegotiationneeded');
+        };
         this.audioDevcieSubscription = MediaDevicesManager.instance().listenAudioOutputDevice(d => {
             for (let t of this.audioTracks.values()) {
                 this.setAudioDevice(t, d?.deviceId);
@@ -245,6 +248,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
 
 export const AppPeerConnectionFactory: AppPeerConnectionApi = {
     createConnection(configuration: AppPeerConnectionConfiguration) {
+        require('webrtc-adapter');
         let peerConnection = new RTCPeerConnection({
             iceServers: configuration.iceServers && configuration.iceServers.map(v => ({
                 urls: v.urls,
