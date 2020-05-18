@@ -84,7 +84,7 @@ const senderBadgeStyle = css`
     margin-left: 4px;
 `;
 
-const MessageSenderName = (props: {
+export const MessageSenderName = (props: {
     sender: UserShort;
     senderNameEmojify?: string | JSX.Element;
 }) => {

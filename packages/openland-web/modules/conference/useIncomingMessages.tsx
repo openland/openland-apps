@@ -7,7 +7,7 @@ import { TextStyles } from 'openland-web/utils/TextStyles';
 import { emoji } from 'openland-y-utils/emoji';
 
 import { SpannedView } from 'openland-web/fragments/chat/messenger/message/content/SpannedView';
-import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
+import { MessageSenderName } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { showImageModal } from 'openland-web/fragments/chat/messenger/message/content/ImageContent';
@@ -15,7 +15,7 @@ import { SpanType } from 'openland-y-utils/spans/Span';
 
 const MediaItemClass = css`
     display: flex;
-    width: 40px;
+    width: 42px;
     position: relative;
     overflow: hidden;
     cursor: pointer;
@@ -202,7 +202,7 @@ const IncomingMessage = React.memo(React.forwardRef((props: IncomingMessageProps
     React.useImperativeHandle(ref, () => ({
         slideDown: height => {
             if (messageRef.current) {
-                translateRef.current += height + 10;
+                translateRef.current += height + 16;
                 messageRef.current.style.transform = `translate3d(0, ${translateRef.current}px, 0)`;
             }
         }
@@ -244,9 +244,11 @@ const IncomingMessage = React.memo(React.forwardRef((props: IncomingMessageProps
     }, []);
 
     const firstSpanType = message.textSpans.map(x => x.type)[0];
-    const textMaxHeight = heightBySpan[firstSpanType] || 60;
+    const maxHeight = heightBySpan[firstSpanType];
+    const textMaxHeight = maxHeight || 72;
+
     const textContent = message.text ? (
-        <div className={textContentWrapper} style={{ '--text-max-height': `${textMaxHeight}px` } as React.CSSProperties}>
+        <div className={textContentWrapper} style={{ '--text-max-height': `${textMaxHeight}px`, lineHeight: !maxHeight ? `${24}px` : undefined } as React.CSSProperties}>
             <SpannedView spans={message.textSpans} />
         </div>
     ) : message.fallback ? (
@@ -278,8 +280,8 @@ const IncomingMessage = React.memo(React.forwardRef((props: IncomingMessageProps
                     photo={message.senderPhoto}
                 />
             </XView>
-            <XView flexGrow={1} flexShrink={1}>
-                <MessageSenderContent sender={message.sender} senderNameEmojify={senderNameEmojify} />
+            <XView flexGrow={1} flexShrink={1} alignItems="flex-start">
+                <MessageSenderName sender={message.sender} senderNameEmojify={senderNameEmojify} />
                 {textContent}
             </XView>
             {imageContent}

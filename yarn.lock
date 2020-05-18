@@ -14100,7 +14100,7 @@ react-native-web@^0.9.0:
 
 "react-native-webrtc@github:openland/react-native-webrtc":
   version "1.75.3"
-  resolved "https://codeload.github.com/openland/react-native-webrtc/tar.gz/d58f1f07cc88c5891d9dde06628d43f9089296d5"
+  resolved "https://codeload.github.com/openland/react-native-webrtc/tar.gz/3f650f161e08412253090f0763cd203fc244d063"
   dependencies:
     base64-js "^1.1.2"
     event-target-shim "^1.0.5"
@@ -17393,9 +17393,10 @@ webpack@4.29.0:
     watchpack "^1.5.0"
     webpack-sources "^1.3.0"
 
-webrtc-adapter@^6.4.6:
-  version "6.4.8"
-  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-6.4.8.tgz#eeca3f0d5b40c0e629b865ef2a936a0b658274de"
+webrtc-adapter@6.4.6:
+  version "6.4.6"
+  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-6.4.6.tgz#734e5e8f555706a43c95950b25baf9dab310a729"
+  integrity sha512-b2Kp7aPDc1y8qZkTWEaPN3BRqrrhObJeqNgu0i84HrkVFxzAJDiR2wU/4dK/hN7LvNYjvSQ/N7iN8aiEZ6qkLw==
   dependencies:
     rtcpeerconnection-shim "^1.2.14"
     sdp "^2.9.0"

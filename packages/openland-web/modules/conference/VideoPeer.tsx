@@ -198,7 +198,7 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
                 </>
             )}
             <div className={cx(peerInfo, props.compact && peerInfoCompact, mainStreamWeb && peerInfoGradient)}>
-                {!props.compact && <div className={peerName}>{props.peer.user.name}</div>}
+                {!props.compact && <div className={peerName}>{props.peer.user.firstName}</div>}
                 {icon && (
                     <div className={peerIcon}>
                         {icon}

@@ -29,6 +29,7 @@ let VolumeSpaceInnerContainerStyle = css`
     position: relative;
     width: 3000px;
     height: 3000px;
+    z-index: 1;
 
     --bluePrint-bgColor: #1C1F29;
     --bluePrint-dotColor: #313545;
@@ -38,7 +39,14 @@ let VolumeSpaceInnerContainerStyle = css`
     // background-color: var(--bluePrint-bgColor);
     // background-size: var(--bluePrint-dot-space) var(--bluePrint-dot-space);
     // background-image: radial-gradient(circle, var(--bluePrint-dotColor) var(--bluePrint-dot-size), rgba(0, 0, 0, 0) var(--bluePrint-dot-size));
-
+`;
+let VolumeSpaceInnerContainerBackground = css`
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
     background: radial-gradient(100% 100% at 50% 100%, #1C1F29 0%, #0D111A 100%),
         radial-gradient(100% 100% at 50% 100%, #181D29 0%, #090D14 100%), #1C2029;
 `;
@@ -807,7 +815,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
         <div className={VolumeSpaceContainerStyle} ref={containerRef}>
 
             <div className={VolumeSpaceInnerContainerStyle} ref={innerContainerRef}>
-
+                <div className={VolumeSpaceInnerContainerBackground} />
                 <div className={VolumeSpaceDrawListener} ref={drawListenerRef} />
                 <div ref={nonDrawContentRef}>
                     <Objects peers={props.peers} space={props.mediaSession.space} peersRef={peersRef} />
