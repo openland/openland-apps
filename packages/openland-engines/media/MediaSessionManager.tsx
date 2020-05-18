@@ -15,7 +15,7 @@ import uuid from 'uuid/v4';
 import { AppMediaDeviceManager } from 'openland-y-runtime/AppMediaDeviceManager';
 import { MediaSessionTrackAnalyzerManager } from './MediaSessionTrackAnalyzer';
 import { MediaSessionVolumeSpace } from 'openland-engines/legacy/MediaSessionVolumeSpace';
-import { AppPeerConnectionFactory } from 'openland-y-runtime-web/AppPeerConnection';
+import { AppPeerConnectionFactory } from 'openland-y-runtime/AppPeerConnection';
 import sdpTransform from 'sdp-transform';
 
 export class MediaSessionManager {
