@@ -35,6 +35,7 @@ const AuthDiscoverCollectionsInner = React.memo(() => {
 
     return (
         <UFlatList
+            gap={16}
             padded={true}
             track="discover_collections"
             grid={true}

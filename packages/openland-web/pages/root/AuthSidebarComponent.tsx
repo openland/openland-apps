@@ -7,7 +7,7 @@ import IcIos from 'openland-icons/s/ic-apple-16.svg';
 import IcAndroid from 'openland-icons/s/ic-playmarket-24.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { TextTitle1, TextBody, TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
+import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
 import { detectOS } from 'openland-x-utils/detectOS';
 import { trackEvent } from 'openland-x-analytics';
 
@@ -17,8 +17,9 @@ const sidebarContainer = css`
     align-items: center;
     justify-content: center;
     background-color: var(--backgroundTertiary);
-    padding: 112px;
+    padding: 112px 0;
     user-select: none;
+    width: 424px;
 `;
 
 const logoContainer = css`
@@ -32,21 +33,20 @@ const logoTitleContainer = css`
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-right: -16px;
+    margin: 16px -24px 0 0;
 `;
 
 const logoTitle = css`
     color: var(--foregroundPrimary);
     margin-right: 8px;
-    padding-bottom: 4px;
 `;
 
 const logoSubtitle = css`
     text-align: center;
-    max-width: 210px;
+    max-width: 230px;
     align-self: center;
     color: var(--foregroundSecondary);
-    margin-bottom: 32px;
+    margin: 7px 0 33px;
 `;
 
 const logoStyle = css`
@@ -62,7 +62,7 @@ const buttonContainer = css`
     width: 200px;
     background-color: var(--backgroundTertiaryTrans);
     border-radius: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 17px;
     cursor: pointer;
     padding: 8px 0 8px 16px;
     color: var(--foregroundSecondary);
@@ -72,6 +72,10 @@ const buttonContainer = css`
         & path {
             fill: var(--accentPrimary);
         }
+    }
+
+    &:last-of-type {
+        margin-bottom: 31px;
     }
 `;
 
@@ -87,6 +91,18 @@ const buttonTextContainer = css`
     margin-left: 16px;
     display: flex;
     flex-direction: column;
+`;
+
+const buttonNounContainer = css`
+    font-size: 13px;
+    line-height: 18px;
+`;
+
+const buttonTitleContainer = css`
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 24px;
+    margin-top: -3px;
 `;
 
 interface DownloadButtonProps {
@@ -106,8 +122,8 @@ const DownloadButton = (props: DownloadButtonProps) => (
     >
         {props.ios ? <IcIos className={buttonIcon} /> : <IcAndroid className={buttonIcon} />}
         <div className={buttonTextContainer}>
-            <div className={TextCaption}>{props.ios ? 'Download on the' : 'Get it on'}</div>
-            <div className={TextLabel1}>{props.ios ? 'App Store' : 'Google Play'}</div>
+            <div className={buttonNounContainer}>{props.ios ? 'Download on the' : 'Get it on'}</div>
+            <div className={buttonTitleContainer}>{props.ios ? 'App Store' : 'Google Play'}</div>
         </div>
     </a>
 );

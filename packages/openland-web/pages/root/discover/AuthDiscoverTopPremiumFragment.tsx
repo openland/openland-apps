@@ -37,6 +37,7 @@ const AuthDiscoverTopPremiumInner = React.memo(() => {
 
     return (
         <UFlatList
+            gap={16}
             padded={true}
             track="discover_top_premium"
             loading={loading}

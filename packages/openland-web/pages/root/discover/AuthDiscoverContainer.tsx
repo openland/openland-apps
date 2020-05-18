@@ -12,12 +12,6 @@ import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import BackIcon from 'openland-icons/s/ic-back-24.svg';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 
-const sidebarContainer = css`
-    width: 424px;
-    padding-left: 0;
-    padding-right: 0;
-`;
-
 const rootContainer = css`
     display: flex;
     flex-direction: row;
@@ -90,7 +84,7 @@ export const AuthDiscoverContainer = React.memo((props: { title: string, showBac
 
     return (
         <div className={rootContainer}>
-            {!isMobile && <AuthSidebarComponent className={sidebarContainer} />}
+            {!isMobile && <AuthSidebarComponent />}
             <div className={mainContainer}>
                 {isMobile && <AuthMobileHeader />}
                 <div className={boxContainer}>
