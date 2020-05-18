@@ -4143,7 +4143,7 @@ const CommitCardSetupIntentSelector = obj(
                 )))
         );
 const ConferenceJoinSelector = obj(
-            field('conferenceJoin', 'conferenceJoin', args(fieldValue("id", refValue('id'))), notNull(obj(
+            field('conferenceJoin', 'conferenceJoin', args(fieldValue("id", refValue('id')), fieldValue("input", refValue('input'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('peerId', 'peerId', args(), notNull(scalar('ID'))),
                     field('conference', 'conference', args(), notNull(obj(
@@ -5760,7 +5760,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ConferenceJoin: {
         kind: 'mutation',
         name: 'ConferenceJoin',
-        body: 'mutation ConferenceJoin($id:ID!){conferenceJoin(id:$id){__typename peerId conference{__typename ...ConferenceShort}}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}',
+        body: 'mutation ConferenceJoin($id:ID!,$input:ConferenceJoinInput){conferenceJoin(id:$id,input:$input){__typename peerId conference{__typename ...ConferenceShort}}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}',
         selector: ConferenceJoinSelector
     },
     ConferenceKeepAlive: {

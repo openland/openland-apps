@@ -159,6 +159,21 @@ type ChatUserEdge {
   cursor: String!
 }
 
+input CodecCapabilities {
+  kind: String!
+  mimeType: String!
+  preferredPayloadType: Int!
+  clockRate: Int!
+  channels: Int
+  parameters: [CodecParameter!]!
+  rtcpFeedback: [MediaRtcpFeedback!]!
+}
+
+input CodecParameter {
+  key: String!
+  value: String!
+}
+
 type CommentEntry {
   id: ID!
   deleted: Boolean!
@@ -246,6 +261,7 @@ type Conference {
 
 input ConferenceJoinInput {
   media: LocalMediaInput!
+  capabilities: MediaCapabilities
 }
 
 type ConferenceJoinResult {
@@ -1164,9 +1180,20 @@ input MatchmakingRoomInput {
   questions: [MatchmakingQuestionInput!]
 }
 
+input MediaCapabilities {
+  codecs: [CodecCapabilities!]!
+  headerExtensions: [MediaHeaderExtension!]!
+}
+
 enum MediaDirection {
   SEND
   RECEIVE
+}
+
+input MediaHeaderExtension {
+  kind: String!
+  uri: String!
+  preferredId: Int!
 }
 
 enum MediaKind {
@@ -1179,6 +1206,11 @@ type MediaReceiver {
   kind: MediaKind!
   videoSource: VideoSource
   mid: String
+}
+
+input MediaRtcpFeedback {
+  type: String!
+  value: String
 }
 
 type MediaSender {
@@ -1685,7 +1717,7 @@ type Mutation {
   debugFixEditedMessagesAugmentation: Boolean!
   debugCalcEntitiesCount(entity: String!): Boolean!
   debugCalcEntitiesCountAll: Boolean!
-  settingsUpdate(settings: UpdateSettingsInput): Settings!
+  settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailChangeCode(newEmail: String!): String!
   changeEmail(sessionId: String!, confirmationCode: String!): Boolean!
   sendPhonePairCode(phone: String!): String!
@@ -1818,6 +1850,7 @@ type Mutation {
   matchmakingProfileFill(peerId: ID!, input: MatchmakingProfileFillInput!): MatchmakingProfile!
   matchmakingConnect(peerId: ID!, uid: ID!): Boolean!
   createHistoricUserMetricsReport: Boolean!
+  queueWeeklyRoomScreenViewsLeaderboard: Boolean!
   typingSend(conversationId: ID!, type: TypingType!): String!
   typingCancel(conversationId: ID!): String!
 
@@ -2461,7 +2494,7 @@ type Query {
   debugCheckTasksIndex: String!
   debug2WayDirectChatsCounter: Int!
   debugUserMetrics(id: ID!): DebugUserMetrics!
-  debugGlobalCounters: DebugGlobalCounters!
+  debugGlobalCounters(uid: ID): DebugGlobalCounters!
   debugServerId: String!
   debugClientIp: DebugIpInfo
   debugGqlTraces(first: Int!, after: ID): GqlTraceConnection!

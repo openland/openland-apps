@@ -88,8 +88,8 @@ query ConferenceMedia($id: ID!, $peerId: ID!) {
         }
     }
 }
-mutation ConferenceJoin($id: ID!) {
-    conferenceJoin(id: $id) {
+mutation ConferenceJoin($id: ID!, $input: ConferenceJoinInput) {
+    conferenceJoin(id: $id, input: $input) {
         peerId
         conference {
             ...ConferenceShort

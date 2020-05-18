@@ -4136,7 +4136,7 @@ private let CommitCardSetupIntentSelector = obj(
                 )))
         )
 private let ConferenceJoinSelector = obj(
-            field("conferenceJoin", "conferenceJoin", arguments(fieldValue("id", refValue("id"))), notNull(obj(
+            field("conferenceJoin", "conferenceJoin", arguments(fieldValue("id", refValue("id")), fieldValue("input", refValue("input"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("peerId", "peerId", notNull(scalar("ID"))),
                     field("conference", "conference", notNull(obj(
@@ -5757,7 +5757,7 @@ class Operations {
     let ConferenceJoin = OperationDefinition(
         "ConferenceJoin",
         .mutation, 
-        "mutation ConferenceJoin($id:ID!){conferenceJoin(id:$id){__typename peerId conference{__typename ...ConferenceShort}}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}",
+        "mutation ConferenceJoin($id:ID!,$input:ConferenceJoinInput){conferenceJoin(id:$id,input:$input){__typename peerId conference{__typename ...ConferenceShort}}}fragment ConferenceShort on Conference{__typename id startTime iceServers{__typename urls username credential}}",
         ConferenceJoinSelector
     )
     let ConferenceKeepAlive = OperationDefinition(

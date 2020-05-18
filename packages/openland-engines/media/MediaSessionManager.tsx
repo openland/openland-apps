@@ -15,6 +15,9 @@ import uuid from 'uuid/v4';
 import { AppMediaDeviceManager } from 'openland-y-runtime/AppMediaDeviceManager';
 import { MediaSessionTrackAnalyzerManager } from './MediaSessionTrackAnalyzer';
 import { MediaSessionVolumeSpace } from 'openland-engines/legacy/MediaSessionVolumeSpace';
+import { AppPeerConnectionFactory } from 'openland-y-runtime-web/AppPeerConnection';
+import sdpTransform from 'sdp-transform';
+
 export class MediaSessionManager {
 
     // Configuration
@@ -289,9 +292,102 @@ export class MediaSessionManager {
     // Lifecycle
     //
 
+    private getCapabilities = async () => {
+        let pc = AppPeerConnectionFactory.createConnection({ iceServers: [], iceTransportPolicy: 'all' });
+        try {
+            pc.addTransceiver('audio');
+            pc.addTransceiver('video');
+            let sdp = (await pc.createOffer()).sdp;
+            let parsed = sdpTransform.parse(sdp);
+
+            // Source:
+            // https://github.com/versatica/mediasoup-client/blob/v3/src/handlers/sdp/commonUtils.ts
+
+            let headerExtensions: { kind: string, uri: string, preferredId: number }[] = [];
+            let codecs = new Map<number, {
+                kind: string,
+                mimeType: string,
+                preferredPayloadType: number,
+                clockRate: number,
+                channels?: number,
+                parameters: { key: string, value: string }[],
+                rtcpFeedback: { type: string, value?: string }[]
+            }>();
+            for (let m of parsed.media) {
+                if (m.ext) {
+                    for (let e of m.ext) {
+                        if (e['encrypt-uri']) {
+                            continue;
+                        }
+                        headerExtensions.push({
+                            kind: m.type,
+                            uri: e.uri,
+                            preferredId: e.value
+                        });
+                    }
+                }
+
+                // Codecs
+                for (const rtp of m.rtp) {
+                    const codec = {
+                        kind: m.type,
+                        mimeType: `${m.type}/${rtp.codec}`,
+                        preferredPayloadType: rtp.payload,
+                        clockRate: rtp.rate!,
+                        channels: rtp.encoding,
+                        parameters: [],
+                        rtcpFeedback: []
+                    };
+                    codecs.set(codec.preferredPayloadType, codec);
+                }
+
+                // Codecs Parameters
+                if (m.fmtp) {
+                    for (const fmtp of m.fmtp || []) {
+                        const parameters = sdpTransform.parseParams(fmtp.config);
+                        const codec = codecs.get(fmtp.payload);
+                        if (!codec) {
+                            continue;
+                        }
+                        if (parameters) {
+                            for (let k of Object.keys(parameters)) {
+                                codec.parameters.push({ key: k, value: String(parameters[k]) });
+                            }
+                        }
+                    }
+                }
+
+                // Codecs RTCP feedback
+                if (m.rtcpFb) {
+                    for (let fb of m.rtcpFb) {
+                        const codec = codecs.get(fb.payload);
+                        if (!codec) {
+                            continue;
+                        }
+                        const feedback = {
+                            type: fb.type,
+                            value: fb.subtype
+                        };
+                        codec.rtcpFeedback.push(feedback);
+                    }
+                }
+            }
+            return {
+                headerExtensions,
+                codecs: [...codecs.values()].map((v) => ({ ...v }))
+            };
+        } finally {
+            pc.close();
+        }
+    }
+
     private doInit = () => {
         console.log('[WEBRTC] Starting conference');
         (async () => {
+
+            // Start resolve capabilities
+            let rtpCapabilities = backoff(this.getCapabilities);
+
             // Resolve conference
             let conferenceId = (await backoff(async () => {
                 if (this.destroyed) {
@@ -306,11 +402,20 @@ export class MediaSessionManager {
             console.log('[WEBRTC] Resolved conference');
 
             // Joining
+            let capabilities = await rtpCapabilities;
+            console.log('[WEBRTC] Resolved Capabilities');
+            console.log(capabilities);
             let joinConference = (await backoff(async () => {
                 if (this.destroyed) {
                     return null;
                 }
-                return (await this.client.mutateConferenceJoin({ id: conferenceId })).conferenceJoin;
+                return (await this.client.mutateConferenceJoin({
+                    id: conferenceId,
+                    input: {
+                        capabilities,
+                        media: { supportsVideo: true, supportsAudio: true, wantSendVideo: false, wantSendAudio: true, wantSendScreencast: false }
+                    }
+                })).conferenceJoin;
             }))!;
             if (!joinConference) {
                 return;
