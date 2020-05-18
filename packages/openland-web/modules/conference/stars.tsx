@@ -18,7 +18,7 @@ export const makeStars = (node: HTMLElement) => {
         canvas.height = 3000;
         let ctx = canvas.getContext('2d');
 
-        const makeStar = (starProps?: {x?: number, y?: number, r?: number, opacity?: number}) => {
+        const makeStar = (starProps?: { x?: number, y?: number, r?: number, opacity?: number }) => {
             let props = starProps || {};
             let x = typeof props.x === 'number' ? props.x : getRandomInt(3000);
             let y = typeof props.y === 'number' ? props.y : getRandomInt(3000);
@@ -32,16 +32,16 @@ export const makeStars = (node: HTMLElement) => {
                 ctx.fill();
             }
         };
-        
+
         // ursa
-        makeStar({x: 1480, y: 200, r: 2});
-        makeStar({x: 1550, y: 190, r: 2});
-        makeStar({x: 1600, y: 220, r: 2});
-        makeStar({x: 1650, y: 240, r: 2});
-        makeStar({x: 1780, y: 234, r: 2});
-        makeStar({x: 1658, y: 298, r: 2});
-        makeStar({x: 1780, y: 300, r: 2});
-        
+        makeStar({ x: 1480, y: 200, r: 2 });
+        makeStar({ x: 1550, y: 190, r: 2 });
+        makeStar({ x: 1600, y: 220, r: 2 });
+        makeStar({ x: 1650, y: 240, r: 2 });
+        makeStar({ x: 1780, y: 234, r: 2 });
+        makeStar({ x: 1658, y: 298, r: 2 });
+        makeStar({ x: 1780, y: 300, r: 2 });
+
         for (let i = 0; i < 200; i++) {
             makeStar();
         }

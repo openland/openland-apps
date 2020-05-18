@@ -3,6 +3,7 @@ import { css, cx } from 'linaria';
 import { TextBody, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { UIcon } from './UIcon';
 import { defaultHover } from 'openland-web/utils/Styles';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 
 const barContainer = css`
     height: 40px;
@@ -43,6 +44,10 @@ const barContent = css`
     justify-content: space-between;
     flex-grow: 1;
     flex-basis: 0;
+`;
+
+const desktopBarContent = css`
+    margin: 0 54px;
 `;
 
 const barMainContent = css`
@@ -87,7 +92,7 @@ const positiveTitle = css`
 const barTitle = cx(TextLabel1, barTitleSpacing);
 
 const barSubtitleSpacing = css`
-    white-space: pre-wrap;
+    white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     height: 24px;
@@ -103,21 +108,22 @@ const positiveSubtitle = css`
 `;
 
 const rigthContainer = css`
-    min-width: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 16px;
     height: 40px;
+    flex-shrink: 0;
 `;
 
 const rightTextContainer = css`
-    margin-right: 8px;
+    margin-right: -4px;
+    margin-left: 8px;
 `;
 
 const rightIconContainer = css`
     position: relative;
     top: 1px;
+    width: 40px;
 `;
 
 const lightRightContainer = css`
@@ -142,20 +148,22 @@ interface UTopBarProps {
 }
 
 export const UTopBar = (props: UTopBarProps) => {
+    const isMobile = useIsMobile();
+
     return (
-        <div 
+        <div
             className={cx(
                 barContainer,
                 props.type === 'light' ? lightContainer : positiveContainer,
                 props.type === 'light' ? lightContainerHover : positiveContainerHover
-            )} 
+            )}
             onClick={props.onClick}
         >
-            <div className={barContent}>
+            <div className={cx(barContent, !isMobile && desktopBarContent)}>
                 <div className={barMainContent}>
                     <div className={iconContainer}>
-                        <UIcon 
-                            icon={props.leftIcon} 
+                        <UIcon
+                            icon={props.leftIcon}
                             color={props.type === 'light' ? 'var(--foregroundSecondary)' : 'var(--foregroundContrast)'}
                         />
                     </div>
@@ -166,11 +174,11 @@ export const UTopBar = (props: UTopBarProps) => {
                     <div className={cx(rigthContainer, props.onRightClick && defaultHover, props.type === 'light' ? lightRightContainer : positiveRightContainer)} onClick={props.onRightClick}>
                         {props.rightText ? <div className={cx(TextLabel1, rightTextContainer)}>{props.rightText}</div> : null}
                         {props.rightIcon && (
-                            <UIcon 
-                                className={rightIconContainer} 
-                                size={16} 
-                                icon={props.rightIcon} 
-                                color={props.type === 'light' ? 'var(--foregroundSecondary)' : 'var(--foregroundContrast)'}  
+                            <UIcon
+                                className={rightIconContainer}
+                                size={16}
+                                icon={props.rightIcon}
+                                color={props.type === 'light' ? 'var(--foregroundSecondary)' : 'var(--foregroundContrast)'}
                             />
                         )}
                     </div>
