@@ -5,9 +5,9 @@ disableTag('GraphQL-Direct');
 
 import { throwFatalError } from 'openland-y-utils/throwFatalError';
 import { WorkerInterface, WorkerHost, WebEngine } from '@openland/spacex';
-import { buildSpaceXPersistenceProvider } from './spacex.persistance.web';
-import sha256 from 'crypto-js/sha256';
-import { isElectronWorker } from '../openland-y-utils/isElectron';
+// import { buildSpaceXPersistenceProvider } from './spacex.persistance.web';
+// import sha256 from 'crypto-js/sha256';
+// import { isElectronWorker } from '../openland-y-utils/isElectron';
 
 const ctx = self as any;
 
@@ -33,9 +33,9 @@ const initHandler = (ev: MessageEvent) => {
         endpoint: msg.endpoint,
         connectionParams: msg.token && { ['x-openland-token']: msg.token }
     });
-    if (msg.token && isElectronWorker()) {
-        (engine as any).store.persistence.persistence = buildSpaceXPersistenceProvider(sha256(msg.token).toString());
-    }
+    // if (msg.token && isElectronWorker()) {
+    //     (engine as any).store.persistence.persistence = buildSpaceXPersistenceProvider(sha256(msg.token).toString());
+    // }
 
     // Create Host
     host = new WorkerHost({
