@@ -8,6 +8,20 @@
             ]
         },
         {
+            "name": "ic-camera-video-glyph",
+            "src": "ic-camera-video-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-call-end-glyph",
+            "src": "ic-call-end-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-burger-glyph",
             "src": "ic-burger-glyph-24.svg",
             "sizes": [
@@ -17,13 +31,6 @@
         {
             "name": "ic-grid-glyph",
             "src": "ic-grid-glyph-24.svg",
-            "sizes": [
-                24
-            ]
-        },
-        {
-            "name": "ic-call-end-glyph",
-            "src": "ic-call-end-glyph-24.svg",
             "sizes": [
                 24
             ]

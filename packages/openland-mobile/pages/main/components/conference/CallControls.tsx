@@ -2,9 +2,8 @@ import * as React from 'react';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { View, Image, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { showBottomSheet } from 'openland-mobile/components/BottomSheet';
+import { showBottomSheet, BottomSheetConfig } from 'openland-mobile/components/BottomSheet';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 import { AppUserMediaStreamTrackNative } from 'openland-y-runtime-native/AppUserMedia';
@@ -13,6 +12,7 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 
 const CallControlItem = (props: { label: string, icon: NodeRequire, backgroundColor?: string, disabled?: boolean, onPress?: () => void, onLongPress?: () => void }) => {
     let theme = React.useContext(ThemeContext);
+
     return (
         <View alignItems="center" opacity={props.disabled ? 0.56 : 1} pointerEvents={props.disabled ? 'none' : undefined}>
             <TouchableOpacity
@@ -54,6 +54,10 @@ export const CallControls = (props: CallControlsProps) => {
     let handleFlip = () => {
         ((state?.sender.videoTrack as AppUserMediaStreamTrackNative)?.track as any)?._switchCamera();
     };
+    let handleSpeaker = () => {
+        setSpeaker(x => !x);
+        props.onSpeakerPress();
+    };
 
     let conference = getClient().useConference({ id: props.id }, { suspense: false });
     let room = conference?.conference?.room;
@@ -68,15 +72,13 @@ export const CallControls = (props: CallControlsProps) => {
 
     return (
         <View borderRadius={18} overflow="hidden">
-            <ZBlurredView
-                fallbackColor={theme.overlayHeavy}
-                blurType="dark"
-                intensity="normal"
+            <View
                 style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     paddingHorizontal: 16,
                     paddingBottom: 15,
+                    backgroundColor: theme.overlayHeavy,
                 }}
             >
                 <View flexDirection="column" flexGrow={1}>
@@ -94,10 +96,7 @@ export const CallControls = (props: CallControlsProps) => {
                             backgroundColor="#F23051"
                         />
                         <CallControlItem
-                            onPress={() => {
-                                setSpeaker(x => !x);
-                                props.onSpeakerPress();
-                            }}
+                            onPress={handleSpeaker}
                             icon={require('assets/ic-speaker-glyph-24.png')}
                             label="Speaker"
                             backgroundColor={speaker ? '#248BF2' : undefined}
@@ -110,7 +109,7 @@ export const CallControls = (props: CallControlsProps) => {
                         />
                         <CallControlItem
                             onPress={handleCamera}
-                            icon={require('assets/ic-camera-video-24.png')}
+                            icon={require('assets/ic-camera-video-glyph-24.png')}
                             label="Camera"
                             backgroundColor={camera ? '#248BF2' : undefined}
                         />
@@ -122,12 +121,12 @@ export const CallControls = (props: CallControlsProps) => {
                         />
                     </View>
                 </View>
-            </ZBlurredView>
+            </View>
         </View>
     );
 };
 
-export const showCallControls = (props: CallControlsProps) => {
+export const showCallControls = (props: CallControlsProps & { showAnimation?: BottomSheetConfig['showAnimation'] }) => {
     showBottomSheet({
         containerStyle: {
             backgroundColor: 'transparent',
@@ -136,6 +135,7 @@ export const showCallControls = (props: CallControlsProps) => {
             width: '100%',
             maxWidth: 450,
         },
+        showAnimation: props.showAnimation,
         view: (ctx) => (
             <CallControls
                 {...props}

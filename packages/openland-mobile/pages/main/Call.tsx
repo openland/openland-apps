@@ -242,6 +242,21 @@ let Content = XMemo<{ id: string, speaker: boolean, setSpeaker: (fn: (s: boolean
         });
     };
 
+    React.useLayoutEffect(() => {
+        showCallControls({
+            id: props.id,
+            speaker,
+            onSpeakerPress: toggleSpeaker,
+            onCallEnd,
+            showAnimation: (_, views) => {
+                SAnimated.setValue(views.container, 'opacity', 1);
+                SAnimated.timing(views.background, { property: 'opacity', from: 0, to: 1, duration: 0.25 });
+                SAnimated.timing(views.container, { property: 'opacity', from: 0, to: 1, duration: 0.25 });
+                SAnimated.setValue(views.container, 'translateY', 0);
+            }
+        });
+    }, []);
+
     return (
         <>
             {Platform.OS === 'ios' && <StatusBar hidden={true} />}

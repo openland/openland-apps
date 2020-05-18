@@ -5,20 +5,21 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { GQLClientContext } from 'openland-api/useClient';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZLoader } from './ZLoader';
-import { showModal, ModalProps } from 'react-native-fast-modal';
+import { showModal, ModalProps, ModalConfiguration } from 'react-native-fast-modal';
 import { ThemeController } from '../themes/ThemeControler';
 import { resolveTheme, ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SAnimated } from 'react-native-fast-animations';
 
-interface BuildConfig {
+export interface BottomSheetConfig {
     view: (ctx: ModalProps) => React.ReactElement;
     cancelable?: boolean;
     title?: string;
     buttonTitle?: string;
     containerStyle?: ViewStyle;
+    showAnimation?: ModalConfiguration['showAnimation'];
 }
 
-export function showBottomSheet(config: BuildConfig) {
+export function showBottomSheet(config: BottomSheetConfig) {
     let theme = resolveTheme(ThemeController.appearance);
     Keyboard.dismiss();
     showModal((ctx) => {
@@ -52,6 +53,11 @@ export function showBottomSheet(config: BuildConfig) {
     }, {
         containerStyle: { backgroundColor: theme.backgroundSecondary, padding: 0, marginHorizontal: 8, ...config.containerStyle },
         showAnimation: (contentHeight, views) => {
+            if (config.showAnimation) {
+                config.showAnimation(contentHeight, views);
+                return;
+            }
+
             SAnimated.timing(views.background, { property: 'opacity', from: 0, to: 1, duration: 0.35 });
             SAnimated.setValue(views.container, 'opacity', 1);
             if (Platform.OS === 'ios') {
