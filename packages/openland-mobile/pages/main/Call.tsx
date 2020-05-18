@@ -137,7 +137,7 @@ const VideoView = React.memo((props: VideoViewProps) => {
     let infoPaddingBottom = props.isLast ? Math.max(area.bottom, 30) : 14;
 
     return (
-        <View flexGrow={1} backgroundColor="gray" position="relative">
+        <View flexGrow={1} flexBasis={0} backgroundColor="gray" position="relative">
             {stream && <RTCView streamURL={stream.toURL()} style={{ flexGrow: 1 }} objectFit="cover" mirror={props.mirror} />}
             {!stream && <AvatarVideoView user={props.peer.user} />}
             <View
