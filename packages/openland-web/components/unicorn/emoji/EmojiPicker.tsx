@@ -359,10 +359,11 @@ const CategoryButton = React.memo(
         iconInactive: any;
         focused: boolean;
         offset: number;
-        onClick: (offset: number) => void;
+        onClick: (offset: number, i: number) => void;
+        index: number;
     }) => {
         return (
-            <div className={categoryButton} onClick={() => props.onClick(props.offset)}>
+            <div className={categoryButton} onClick={() => props.onClick(props.offset, props.index)}>
                 <div className={props.focused ? categoryIconActive : categoryIconInactive}>
                     <UIcon color="#1885F2" icon={props.iconActive} size={20} />
                 </div>
@@ -413,9 +414,10 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
             setCurrentSection(section);
         }
     }, []);
-    const onCategoryClick = React.useCallback((src: number) => {
+    const onCategoryClick = React.useCallback((src: number, i: number) => {
         if (ref.current) {
-            ref.current.scrollToItem(src, 'start');
+            ref.current.scrollTo((src * 40) + (8 * i));
+            // ref.current.scrollToItem(src, 'start');
         }
     }, []);
 
@@ -562,6 +564,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                                     iconInactive={<IconRecent />}
                                     focused={currentSection === 0}
                                     offset={0}
+                                    index={0}
                                     onClick={onCategoryClick}
                                 />
                                 <CategoryButton
@@ -569,6 +572,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                                     iconInactive={<IconSmile />}
                                     focused={currentSection === 1}
                                     offset={3 + sections[0].start}
+                                    index={1}
                                     onClick={onCategoryClick}
                                 />
                                 <CategoryButton
@@ -576,6 +580,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                                     iconInactive={<IconAnimal />}
                                     focused={currentSection === 2}
                                     offset={3 + sections[1].start}
+                                    index={2}
                                     onClick={onCategoryClick}
                                 />
                                 <CategoryButton
@@ -583,6 +588,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                                     iconInactive={<IconFood />}
                                     focused={currentSection === 3}
                                     offset={3 + sections[2].start}
+                                    index={3}
                                     onClick={onCategoryClick}
                                 />
                                 <CategoryButton
@@ -590,6 +596,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                                     iconInactive={<IconSport />}
                                     focused={currentSection === 4}
                                     offset={3 + sections[3].start}
+                                    index={4}
                                     onClick={onCategoryClick}
                                 />
                                 <CategoryButton
@@ -597,6 +604,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                                     iconInactive={<IconTrasport />}
                                     focused={currentSection === 5}
                                     offset={3 + sections[4].start}
+                                    index={5}
                                     onClick={onCategoryClick}
                                 />
                                 <CategoryButton
@@ -604,6 +612,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                                     iconInactive={<IconObject />}
                                     focused={currentSection === 6}
                                     offset={3 + sections[5].start}
+                                    index={6}
                                     onClick={onCategoryClick}
                                 />
                                 <CategoryButton
@@ -611,6 +620,7 @@ const EmojiPickerBody = React.memo((props: EmojiPickerBodyProps) => {
                                     iconInactive={<IconSymbol />}
                                     focused={currentSection === 7}
                                     offset={3 + sections[6].start}
+                                    index={7}
                                     onClick={onCategoryClick}
                                 />
                             </XView>
