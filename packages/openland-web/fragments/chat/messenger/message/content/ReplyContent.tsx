@@ -40,50 +40,52 @@ const forwardCaptionClass = css`
     color: var(--foregroundSecondary);
 `;
 
-export const ReplyMessagesGroup = (props: { quotedMessages: DataSourceWebMessageItem[], isForward?: boolean }) => {
-    let firstMessage = props.quotedMessages[0];
-    return (
-        <div className={replyMessageGroupClass}>
-            <MessageSenderContent
-                sender={firstMessage.sender}
-                senderNameEmojify={firstMessage.senderNameEmojify}
-                date={firstMessage.date}
-            />
-            <div>
-                {props.quotedMessages.map(q => (
-                    <div className={replyItemClass} key={q.id}>
-                        <MessageContent
-                            id={q.id}
-                            text={q.text}
-                            textSpans={q.textSpans}
-                            edited={q.isEdited}
-                            reply={q.replyWeb}
-                            attachments={q.attachments}
-                            fallback={q.fallback}
-                            isOut={q.isOut}
-                            sticker={q.sticker}
-                            isReply={true}
-                            isForward={props.isForward}
-                        />
-                    </div>
-                ))}
+export const ReplyMessagesGroup = React.memo(
+    (props: { quotedMessages: DataSourceWebMessageItem[]; isForward?: boolean }) => {
+        let firstMessage = props.quotedMessages[0];
+        return (
+            <div className={replyMessageGroupClass}>
+                <MessageSenderContent
+                    sender={firstMessage.sender}
+                    senderNameEmojify={firstMessage.senderNameEmojify}
+                    date={firstMessage.date}
+                />
+                <div>
+                    {props.quotedMessages.map((q) => (
+                        <div className={replyItemClass} key={q.id}>
+                            <MessageContent
+                                id={q.id}
+                                text={q.text}
+                                textSpans={q.textSpans}
+                                edited={q.isEdited}
+                                reply={q.replyWeb}
+                                attachments={q.attachments}
+                                fallback={q.fallback}
+                                isOut={q.isOut}
+                                sticker={q.sticker}
+                                isReply={true}
+                                isForward={props.isForward}
+                            />
+                        </div>
+                    ))}
+                </div>
             </div>
-        </div>
-    );
-};
+        );
+    },
+);
 
-const ForwardCaption = (props: {isForward?: boolean, messagesCount: number }) => {
+const ForwardCaption = React.memo((props: { isForward?: boolean; messagesCount: number }) => {
     return props.isForward ? (
         <span className={cx(TextBody, forwardCaptionClass)}>
             {props.messagesCount} forwarded {props.messagesCount === 1 ? 'message' : 'messages'}
         </span>
     ) : null;
-};
+});
 
-export const ReplyContent = (props: { quotedMessages: DataSourceWebMessageItem[], isForward: boolean }) => {
-    let content = props.quotedMessages
-        .reduce(
-            (res, message, i, source) => {
+export const ReplyContent = React.memo(
+    (props: { quotedMessages: DataSourceWebMessageItem[]; isForward: boolean }) => {
+        let content = props.quotedMessages
+            .reduce((res, message, i, source) => {
                 // group messages by sender
                 let prev = source[i - 1];
                 let group: DataSourceWebMessageItem[];
@@ -95,16 +97,18 @@ export const ReplyContent = (props: { quotedMessages: DataSourceWebMessageItem[]
                 }
                 group.push(message);
                 return res;
-            },
-            [] as DataSourceWebMessageItem[][],
-        )
-        .map((group, i) => {
-            return <ReplyMessagesGroup key={i} {...props} quotedMessages={group} />;
-        });
-    return (
-        <>
-            <ForwardCaption isForward={props.isForward} messagesCount={props.quotedMessages.length} />
-            {content}
-        </>
-    );
-};
+            }, [] as DataSourceWebMessageItem[][])
+            .map((group, i) => {
+                return <ReplyMessagesGroup key={i} {...props} quotedMessages={group} />;
+            });
+        return (
+            <>
+                <ForwardCaption
+                    isForward={props.isForward}
+                    messagesCount={props.quotedMessages.length}
+                />
+                {content}
+            </>
+        );
+    },
+);

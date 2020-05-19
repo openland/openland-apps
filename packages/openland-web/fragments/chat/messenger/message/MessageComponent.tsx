@@ -84,46 +84,47 @@ const senderBadgeStyle = css`
     margin-left: 4px;
 `;
 
-export const MessageSenderName = (props: {
-    sender: UserShort;
-    senderNameEmojify?: string | JSX.Element;
-}) => {
-    const [show] = useUserPopper({
-        user: props.sender,
-        isMe: props.sender.isYou,
-        noCardOnMe: false,
-    });
-    return (
-        <ULink
-            path={`/${props.sender.shortname || props.sender.id}`}
-            className={cx(TextLabel1, senderNameStyle)}
-        >
-            <span onMouseEnter={show}>{props.senderNameEmojify || props.sender.name}</span>
-        </ULink>
-    );
-};
+export const MessageSenderName = React.memo(
+    (props: { sender: UserShort; senderNameEmojify?: string | JSX.Element }) => {
+        const [show] = useUserPopper({
+            user: props.sender,
+            isMe: props.sender.isYou,
+            noCardOnMe: false,
+        });
+        return (
+            <ULink
+                path={`/${props.sender.shortname || props.sender.id}`}
+                className={cx(TextLabel1, senderNameStyle)}
+            >
+                <span onMouseEnter={show}>{props.senderNameEmojify || props.sender.name}</span>
+            </ULink>
+        );
+    },
+);
 
-const MessageSenderFeatured = (props: { senderBadgeNameEmojify: string | JSX.Element }) => {
-    const [show] = useCaptionPopper({ text: props.senderBadgeNameEmojify });
-    return (
-        <div className={senderBadgeStyle} onMouseEnter={show}>
-            <StarIcon />
-        </div>
-    );
-};
+const MessageSenderFeatured = React.memo(
+    (props: { senderBadgeNameEmojify: string | JSX.Element }) => {
+        const [show] = useCaptionPopper({ text: props.senderBadgeNameEmojify });
+        return (
+            <div className={senderBadgeStyle} onMouseEnter={show}>
+                <StarIcon />
+            </div>
+        );
+    },
+);
 
-const MessageSenderOrg = (props: { organization: UserShort_primaryOrganization }) => (
+const MessageSenderOrg = React.memo((props: { organization: UserShort_primaryOrganization }) => (
     <ULink
         path={`/${props.organization.shortname || props.organization.id}`}
         className={cx(TextDensed, senderOrgStyle, defaultHover)}
     >
         {props.organization.name}
     </ULink>
-);
+));
 
-const MessageTime = (props: { time: number }) => (
+const MessageTime = React.memo((props: { time: number }) => (
     <div className={cx(TextCaption, senderDateStyle)}>{formatTime(props.time)}</div>
-);
+));
 
 interface MessageSenderContentProps {
     sender: UserShort;
@@ -132,7 +133,7 @@ interface MessageSenderContentProps {
     date?: number;
 }
 
-export const MessageSenderContent = (props: MessageSenderContentProps) => (
+export const MessageSenderContent = React.memo((props: MessageSenderContentProps) => (
     <div className={senderContainer}>
         <MessageSenderName sender={props.sender} senderNameEmojify={props.senderNameEmojify} />
         {props.sender.isBot && <span className={cx(TextDensed, senderDateStyle)}>Bot</span>}
@@ -144,7 +145,7 @@ export const MessageSenderContent = (props: MessageSenderContentProps) => (
         )}
         {props.date && <MessageTime time={props.date} />}
     </div>
-);
+));
 
 ////
 // Message container

@@ -20,6 +20,10 @@ import { css, cx } from 'linaria';
 import { createSimpleSpan } from 'openland-y-utils/spans/processSpans';
 import { XViewRouterContext } from 'react-mental';
 
+type MsgAttachFile = FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
+type MsgAttachRich = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
+type MsgAttachPurchase = FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase;
+
 const wrapper = css`
     flex-grow: 1;
     flex-shrink: 1;
@@ -59,19 +63,24 @@ const replySectionWrapper = css`
     padding: 0;
 `;
 
-const ContentWrapper = React.memo((props: {className: string, isReply?: boolean, id?: string, children: any }) => {
-    const router = React.useContext(XViewRouterContext)!;
-    const onContentClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        e.stopPropagation();
-        router.navigate(`/message/${props.id}`);
-    };
+const ContentWrapper = React.memo(
+    (props: { className: string; isReply?: boolean; id?: string; children: any }) => {
+        const router = React.useContext(XViewRouterContext)!;
+        const onContentClick = (e: React.MouseEvent<HTMLDivElement>) => {
+            e.stopPropagation();
+            router.navigate(`/message/${props.id}`);
+        };
 
-    return (
-        <div className={cx(props.className, props.isReply && replyContentWrapper)} onClick={props.isReply ? onContentClick : undefined}>
-            {props.children}
-        </div>
-    );
-});
+        return (
+            <div
+                className={cx(props.className, props.isReply && replyContentWrapper)}
+                onClick={props.isReply ? onContentClick : undefined}
+            >
+                {props.children}
+            </div>
+        );
+    },
+);
 
 interface MessageContentProps {
     id?: string;
@@ -94,7 +103,7 @@ interface MessageContentProps {
     isPending?: boolean;
 }
 
-export const MessageContent = (props: MessageContentProps) => {
+export const MessageContent = React.memo((props: MessageContentProps) => {
     const {
         id,
         text,
@@ -109,29 +118,25 @@ export const MessageContent = (props: MessageContentProps) => {
         fileProgress,
         isReply = false,
         isForward = false,
-        isPending
+        isPending,
     } = props;
     const isReplyOnly = isReply && !isForward;
 
-    const imageAttaches =
-        (attachments.filter(
-            a => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage,
-        ) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[]) || [];
+    const imageAttaches = attachments.filter(
+        (a) => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage,
+    ) as MsgAttachFile[];
 
-    const documentsAttaches =
-        (attachments.filter(
-            a => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage,
-        ) as FullMessage_GeneralMessage_attachments_MessageAttachmentFile[]) || [];
+    const documentsAttaches = attachments.filter(
+        (a) => a.__typename === 'MessageAttachmentFile' && !a.fileMetadata.isImage,
+    ) as MsgAttachFile[];
 
-    const augmenationAttaches =
-        (attachments.filter(
-            a => a.__typename === 'MessageRichAttachment',
-        ) as FullMessage_GeneralMessage_attachments_MessageRichAttachment[]) || [];
+    const augmenationAttaches = attachments.filter(
+        (a) => a.__typename === 'MessageRichAttachment',
+    ) as MsgAttachRich[];
 
-    const purchaseAttaches =
-        (attachments.filter(
-            a => a.__typename === 'MessageAttachmentPurchase',
-        ) as FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase[]) || [];
+    const purchaseAttaches = attachments.filter(
+        (a) => a.__typename === 'MessageAttachmentPurchase',
+    ) as MsgAttachPurchase[];
 
     const hasText = !!text;
     const content: JSX.Element[] = [];
@@ -139,9 +144,14 @@ export const MessageContent = (props: MessageContentProps) => {
     const extraClassName = cx('x', extraWrapper, attachTop && extraInCompactWrapper);
     const textClassName = cx('x', textWrapper);
 
-    imageAttaches.map(file => {
+    imageAttaches.map((file) => {
         content.push(
-            <ContentWrapper key={'msg-' + id + '-media-' + file.fileId} className={extraClassName} id={id} isReply={isReplyOnly}>
+            <ContentWrapper
+                key={'msg-' + id + '-media-' + file.fileId}
+                className={extraClassName}
+                id={id}
+                isReply={isReplyOnly}
+            >
                 <ImageContent
                     file={file}
                     sender={props.sender}
@@ -155,9 +165,14 @@ export const MessageContent = (props: MessageContentProps) => {
         );
     });
 
-    purchaseAttaches.forEach(attach => {
+    purchaseAttaches.forEach((attach) => {
         content.push(
-            <ContentWrapper key="msg-donation" className={donationWrapper} id={id} isReply={isReplyOnly}>
+            <ContentWrapper
+                key="msg-donation"
+                className={donationWrapper}
+                id={id}
+                isReply={isReplyOnly}
+            >
                 <DonationContent amount={attach.purchase.amount} state={attach.purchase.state} />
             </ContentWrapper>,
         );
@@ -166,14 +181,23 @@ export const MessageContent = (props: MessageContentProps) => {
     if (hasText) {
         content.push(
             <ContentWrapper key="msg-text" className={textClassName} id={id} isReply={isReplyOnly}>
-                <MessageTextComponent spans={textSpans} edited={!!edited} shouldCrop={isReplyOnly} />
+                <MessageTextComponent
+                    spans={textSpans}
+                    edited={!!edited}
+                    shouldCrop={isReplyOnly}
+                />
             </ContentWrapper>,
         );
     }
 
-    documentsAttaches.map(file => {
+    documentsAttaches.map((file) => {
         content.push(
-            <ContentWrapper key={'msg-' + id + '-document-' + file.fileId} className={extraClassName} id={id} isReply={isReplyOnly}>
+            <ContentWrapper
+                key={'msg-' + id + '-document-' + file.fileId}
+                className={extraClassName}
+                id={id}
+                isReply={isReplyOnly}
+            >
                 <DocumentContent
                     file={file}
                     sender={props.sender}
@@ -186,9 +210,14 @@ export const MessageContent = (props: MessageContentProps) => {
         );
     });
 
-    augmenationAttaches.map(attach => {
+    augmenationAttaches.map((attach) => {
         content.push(
-            <ContentWrapper key={'msg-' + id + '-rich-' + attach.id} className={extraClassName} id={id} isReply={isReplyOnly}>
+            <ContentWrapper
+                key={'msg-' + id + '-rich-' + attach.id}
+                className={extraClassName}
+                id={id}
+                isReply={isReplyOnly}
+            >
                 <RichAttachContent attach={attach} canDelete={isOut} messageId={id} />
             </ContentWrapper>,
         );
@@ -196,14 +225,20 @@ export const MessageContent = (props: MessageContentProps) => {
 
     if (sticker) {
         content.push(
-            <ContentWrapper key={'msg-' + id + '-sticker-' + sticker.id} className={extraClassName} id={id} isReply={isReplyOnly}>
+            <ContentWrapper
+                key={'msg-' + id + '-sticker-' + sticker.id}
+                className={extraClassName}
+                id={id}
+                isReply={isReplyOnly}
+            >
                 <StickerContent sticker={sticker} />
             </ContentWrapper>,
         );
     }
 
     if (reply && reply.length) {
-        const hasForward = props.chatId && reply[0].source && reply[0].source.chat.id !== props.chatId;
+        const hasForward =
+            props.chatId && reply[0].source && reply[0].source.chat.id !== props.chatId;
 
         const replySection = (
             <div key={'msg-' + id + '-forward'} className={cx(extraClassName, replySectionWrapper)}>
@@ -228,5 +263,5 @@ export const MessageContent = (props: MessageContentProps) => {
         );
     }
 
-    return <div className={cx("x", wrapper)}>{content}</div>;
-};
+    return <div className={cx('x', wrapper)}>{content}</div>;
+});

@@ -28,7 +28,7 @@ const stickerContainer = css`
     justify-content: center;
 `;
 
-const StickerPackModalInner = (props: { packId: string; hide: () => void }) => {
+const StickerPackModalInner = React.memo((props: { packId: string; hide: () => void }) => {
     const [loading, setLoading] = React.useState(false);
     const client = useClient();
     const myStickerPaks = client.useMyStickers();
@@ -100,7 +100,7 @@ const StickerPackModalInner = (props: { packId: string; hide: () => void }) => {
             </XModalFooter>
         </XView>
     );
-};
+});
 
 export const showStickerStickerPackModal = (packId: string, name: string) => {
     showModalBox({ title: name, useTopCloser: true, width: 464 }, ctx => (

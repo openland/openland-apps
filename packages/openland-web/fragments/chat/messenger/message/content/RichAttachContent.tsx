@@ -38,7 +38,7 @@ const richWrapper = css`
     }
 
     &:hover .image-container::after {
-        background-color: rgba(0, 0, 0, 0.08);
+        background-color: rgba(0, 0, 0, 0.04);
         border: none;
     }
 
@@ -219,7 +219,7 @@ interface RichAttachContentProps {
     messageId?: string;
 }
 
-export const RichAttachContent = (props: RichAttachContentProps) => {
+export const RichAttachContent = React.memo((props: RichAttachContentProps) => {
     const { attach, canDelete, messageId } = props;
     const titleRef = React.useRef<HTMLDivElement>(null);
     const textRef = React.useRef<HTMLDivElement>(null);
@@ -357,4 +357,4 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
             )}
         </div>
     );
-};
+});

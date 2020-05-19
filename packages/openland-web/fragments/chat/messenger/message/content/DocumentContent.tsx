@@ -101,7 +101,7 @@ interface ModalProps {
     date?: number;
 }
 
-const ModalContent = (props: ModalProps & { hide: () => void; url?: string }) => {
+const ModalContent = React.memo((props: ModalProps & { hide: () => void; url?: string }) => {
     const messenger = React.useContext(MessengerContext);
 
     const forwardCallback = React.useCallback(() => {
@@ -166,7 +166,7 @@ const ModalContent = (props: ModalProps & { hide: () => void; url?: string }) =>
             </div>
         </div>
     );
-};
+});
 
 const showPdfModal = (props: ModalProps, url?: string) => {
     showModalBox({ fullScreen: true, darkOverlay: true, useTopCloser: false }, ctx => {
