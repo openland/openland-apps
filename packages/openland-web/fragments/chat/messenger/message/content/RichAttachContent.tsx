@@ -84,9 +84,15 @@ const richImageContainer = css`
         flex-direction: column;
         border-top-right-radius: 8px;
         border-bottom-left-radius: 0;
-
         min-width: 100%;
         max-height: 50%;
+        
+        &::after {
+          border-top-right-radius: 8px;
+          border-bottom-left-radius: 0;
+          border-right: 1px solid var(--borderLight);
+          border-bottom: none;
+        }
     }
 `;
 
