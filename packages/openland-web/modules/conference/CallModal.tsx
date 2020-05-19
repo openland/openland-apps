@@ -169,7 +169,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                     ))}
                     {layout === 'volume-space' && mediaSession && <VolumeSpace mediaSession={mediaSession} peers={[...conference ? conference.conference.peers : []]} />}
                 </XView >
-                {layout === 'grid' && renderedMessages}
+                {renderedMessages}
                 <CallControls
                     muted={!state.sender.audioEnabled}
                     cameraEnabled={state.sender.videoEnabled}
