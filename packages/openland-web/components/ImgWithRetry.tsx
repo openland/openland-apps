@@ -22,7 +22,7 @@ export const useReloadImage = (): ReturnedTuple => {
 type ImgProps = React.ImgHTMLAttributes<HTMLImageElement>;
 type Ref = React.RefObject<HTMLImageElement>;
 
-export const ImgWithRetry = React.forwardRef((props: ImgProps, ref: Ref) => {
+export const ImgWithRetry = React.memo(React.forwardRef((props: ImgProps, ref: Ref) => {
     const [key, onError] = useReloadImage();
     const handleError = React.useCallback((e) => {
         onError();
@@ -32,4 +32,4 @@ export const ImgWithRetry = React.forwardRef((props: ImgProps, ref: Ref) => {
     }, []);
 
     return <img ref={ref} key={key} {...props} onError={handleError} />;
-});
+}));
