@@ -256,6 +256,7 @@ export const AppPeerConnectionFactory: AppPeerConnectionApi = {
                 username: v.username ? v.username : undefined,
             })),
             iceTransportPolicy: configuration.iceTransportPolicy,
+            rtcpMuxPolicy: 'require'
         });
         return new AppPeerConnectionWeb(peerConnection);
     }

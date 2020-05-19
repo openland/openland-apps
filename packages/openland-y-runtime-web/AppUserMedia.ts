@@ -51,7 +51,6 @@ export class AppUserMediaTrackWeb implements AppMediaStreamTrack {
 
 export const AppUserMedia: AppUserMediaApi = {
     async getUserAudio(deviceId?: string) {
-        console.warn('getUserAudio');
         let media = await navigator.mediaDevices.getUserMedia({
             audio: {
                 noiseSuppression: true,
@@ -62,23 +61,19 @@ export const AppUserMedia: AppUserMediaApi = {
             },
         });
 
-        let res = new AppUserMediaTrackWeb(media.getAudioTracks()[0]);
-        console.warn('getUserAudio:end');
-        return res;
+        return new AppUserMediaTrackWeb(media.getAudioTracks()[0]);
     },
 
     async getUserVideo(deviceId?: string) {
-        console.warn('getUserVideo');
         let media = await navigator.mediaDevices.getUserMedia({
             audio: false,
             video: {
                 advanced: [{ deviceId: deviceId || MediaDevicesManager.instance().getSelectedVideoInput()?.deviceId || 'default' }],
-
+                height: { ideal: 720 }
             },
         });
 
         let res = new AppUserMediaTrackWeb(media.getVideoTracks()[0]);
-        console.warn('getUserVideo:end');
         return res;
     },
 
