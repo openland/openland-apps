@@ -18,6 +18,7 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { YoutubeParty } from './YoutubeParty';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
+// import { SpaceControls } from './SpaceControls';
 
 let VolumeSpaceContainerStyle = css`
     width: 100%;
@@ -47,8 +48,7 @@ let VolumeSpaceInnerContainerBackground = css`
     right: 0;
     bottom: 0;
     z-index: -1;
-    background: radial-gradient(100% 100% at 50% 100%, #1C1F29 0%, #0D111A 100%),
-        radial-gradient(100% 100% at 50% 100%, #181D29 0%, #090D14 100%), #1C2029;
+    background: var(--spaceBackgroundPrimary);
 `;
 let VolumeSpaceDrawContainerStyle = css`
     transform: translate3d(0, 0, 0);
@@ -854,6 +854,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                         <UButton text="Text" onClick={addText} style="secondary" />
                     </XView>
                 </div>
+                {/* <SpaceControls action={action} onActionChange={selectAction} /> */}
             </div>
 
         </div >

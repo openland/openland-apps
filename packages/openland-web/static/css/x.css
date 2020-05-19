@@ -63,6 +63,10 @@ body {
     --overlayMedium: rgba(0, 0, 0, 0.48);
     --overlayLight: rgba(0, 0, 0, 0.24);
 
+    --spaceBackgroundPrimary: linear-gradient(180deg, #0F0F29 0%, #261B3D 100%);
+    --spaceBackgroundSecondary: #363152;
+    --spaceBackgroundTertiary: #5A537A;
+
     --tintRed: #F23051;
     --tintRedHover: #FF4060;
     --tintRedActive: #D92140;

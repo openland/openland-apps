@@ -5,6 +5,11 @@ import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { GlobalEventBus } from 'openland-engines/GlobalEventBus';
 import { PlaceholderColors } from 'openland-y-utils/themes/placeholders';
 import { doSimpleHash } from 'openland-y-utils/hash';
+import { TintRed, TintOrange, TintGreen, TintCyan, TintBlue, TintPurple, TintPink } from 'openland-y-utils/themes/tints';
+import { ThemeLight } from 'openland-y-utils/themes/light';
+
+export const spaceColors = [TintRed.primary, TintOrange.primary, TintGreen.primary, TintCyan.primary, TintBlue.primary, TintPurple.primary, TintPink.primary, ThemeLight.foregroundContrast];
+
 //
 // Objects
 //
@@ -218,6 +223,7 @@ export class MediaSessionVolumeSpace {
         });
 
         this.setColor(PlaceholderColors[Math.abs(doSimpleHash(mediaSession.messenger.user.id)) % PlaceholderColors.length].end);
+        // this.setColor(spaceColors[Math.abs(doSimpleHash(mediaSession.messenger.user.id)) % spaceColors.length]);
     }
 
     ////
