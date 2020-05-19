@@ -133,23 +133,24 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
         if (this.isEmpty()) {
             return <ChatEmptyComponent conversation={this.props.conversation} />;
         }
-        return <XScrollViewAnchored
-            bottomAttached={this.state.bottomAttached}
-            flexGrow={1}
-            flexShrink={1}
-            justifyContent="flex-end"
-            onScroll={this.handlerScroll}
-            ref={this.scroller}
-            innerRef={this.innerScrollRef}
-            contentClassName={messagesWrapperClassName}
-        >
-            {props.children}
-        </XScrollViewAnchored>;
+        return (
+            <XScrollViewAnchored
+                bottomAttached={this.state.bottomAttached}
+                flexGrow={1}
+                flexShrink={1}
+                justifyContent="flex-end"
+                onScroll={this.handlerScroll}
+                ref={this.scroller}
+                innerRef={this.innerScrollRef}
+                contentClassName={messagesWrapperClassName}
+            >
+                {props.children}
+            </XScrollViewAnchored>
+        );
     }
 
     render() {
         return (
-
             <DataSourceRender
                 dataSource={this.dataSource}
                 reverce={true}

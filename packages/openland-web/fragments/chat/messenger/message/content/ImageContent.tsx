@@ -661,6 +661,8 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
         return <GifContent file={props.file} />;
     }
 
+    const [isLoad, setIsLoad] = React.useState(false);
+
     const imgRef = React.useRef<HTMLImageElement>(null);
     const imgPrevRef = React.useRef<HTMLImageElement>(null);
     const loaderRef = React.useRef<HTMLDivElement>(null);
@@ -712,6 +714,7 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
             imgPrevRef.current.style.visibility = 'hidden';
             loaderRef.current.style.opacity = '0';
             loaderRef.current.style.visibility = 'hidden';
+            setIsLoad(true);
         }
     }, []);
 
@@ -743,14 +746,18 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
                     } as React.CSSProperties
                 }
             />
-            <ImgWithRetry
-                ref={imgPrevRef}
-                className={imgPreviewClass}
-                width={layoutWidth}
-                height={layoutHeight}
-                src={previewSrc || undefined}
-            />
-            <MediaLoader ref={loaderRef} onContinue={onContinue} onStop={onStop} />
+            {!isLoad && (
+                <>
+                    <ImgWithRetry
+                        ref={imgPrevRef}
+                        className={imgPreviewClass}
+                        width={layoutWidth}
+                        height={layoutHeight}
+                        src={previewSrc || undefined}
+                    />
+                    <MediaLoader ref={loaderRef} onContinue={onContinue} onStop={onStop} />
+                </>
+            )}
             <ImgWithRetry
                 ref={imgRef}
                 key={src}

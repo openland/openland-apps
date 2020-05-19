@@ -6,12 +6,14 @@ import { throttle } from 'openland-y-utils/timer';
 import { VisibleTabContext } from 'openland-unicorn/components/utils/VisibleTabContext';
 
 const NativeScrollStyle = css`
-    overflow-y: overlay;
+    overflow-y: scroll;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     overflow-anchor: none;
     flex-shrink: 1;
     width: 100%;
+    will-change: transform;
+    transform: translateZ(0);
     /* height: 100%; */
 `;
 
@@ -43,7 +45,7 @@ export const XScrollViewAnchored = React.memo(
     React.forwardRef<XScrollViewReverse2RefProps, XScrollViewReverse2Props>(
         (props: XScrollViewReverse2Props, ref) => {
             const outerRef = React.useRef<HTMLDivElement>(null);
-            const scrollDumb = React.useRef<HTMLDivElement>(null);
+            // const scrollDumb = React.useRef<HTMLDivElement>(null);
             const innerRef = props.innerRef || React.useRef<HTMLDivElement>(null);
             const outerHeight = React.useRef<number>(0);
             const innerHeight = React.useRef<number>(0);
@@ -197,7 +199,7 @@ export const XScrollViewAnchored = React.memo(
                     <div className={NativeScrollStyle} ref={outerRef}>
                         <div className={cx(NativeScrollContentStyle, props.contentClassName)} ref={innerRef}>
                             {props.children}
-                            <div id="scrollDumb" ref={scrollDumb} />
+                            {/*<div id="scrollDumb" ref={scrollDumb} />*/}
                         </div>
                     </div>
                 </XView>

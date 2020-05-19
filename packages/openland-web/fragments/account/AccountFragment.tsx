@@ -33,6 +33,12 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import CommunityIcon from 'openland-icons/s/ic-community-2-24.svg';
 import OrganizationIcon from 'openland-icons/s/ic-organization-2-24.svg';
 
+const ellipsisText = css`
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
+
 const UserProfileCard = React.memo(() => {
     const isMobile = useIsMobile();
     const client = useClient();
@@ -61,8 +67,10 @@ const UserProfileCard = React.memo(() => {
                     id={data.id}
                     marginRight={16}
                 />
-                <XView flexGrow={1}>
-                    <XView {...TextStyles.Title3}>{emoji(data.name)}</XView>
+                <XView flexGrow={1} flexShrink={1}>
+                    <XView {...TextStyles.Title3}>
+                        <span className={ellipsisText}>{emoji(data.name)}</span>
+                    </XView>
                     {data.email && (
                         <SelectableText
                             {...TextStyles.Body}
@@ -181,14 +189,11 @@ const NewOptionsMenu = React.memo(() => (
 export const AccountFragment = React.memo(() => {
     const isVisible = useVisibleTab();
 
-    React.useEffect(
-        () => {
-            if (isVisible) {
-                trackEvent('navigate_account');
-            }
-        },
-        [isVisible],
-    );
+    React.useEffect(() => {
+        if (isVisible) {
+            trackEvent('navigate_account');
+        }
+    }, [isVisible]);
     const walletState = React.useContext(MessengerContext).wallet.state.useState();
 
     const [, show] = usePopper(
