@@ -6,12 +6,12 @@ import { isInternalLink } from 'openland-y-utils/isInternalLink';
 import { TextTitle3, TextBody, TextLabel2 } from 'openland-web/utils/TextStyles';
 import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
-import DeleteIcon from 'openland-icons/s/ic-close-16.svg';
-import ZoomIcon from 'openland-icons/s/ic-zoom-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { InternalAttachContent } from './InternalAttachContent';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { showImageModal } from './ImageContent';
+import DeleteIcon from 'openland-icons/s/ic-close-16.svg';
+import ZoomIcon from 'openland-icons/s/ic-zoom-16.svg';
 
 type messageRichAttach = FullMessage_GeneralMessage_attachments_MessageRichAttachment;
 
@@ -20,17 +20,26 @@ const richWrapper = css`
     flex-direction: row;
     flex-shrink: 1;
     max-width: 680px;
-    min-height: 160px;
+    min-height: 144px;
     max-height: 192px;
     background-color: var(--backgroundTertiary);
     border-radius: 8px;
     overflow: hidden;
     position: relative;
 
+    &:hover {
+        background-color: var(--backgroundTertiaryHover);
+    }
+
     &:hover .message-rich-delete,
     &:hover .message-rich-zoom {
         opacity: 1;
         transform: translateX(0);
+    }
+
+    &:hover .image-container::after {
+        background-color: rgba(0, 0, 0, 0.08);
+        border: none;
     }
 
     @media (max-width: 1100px) {
@@ -53,9 +62,23 @@ const richImageContainer = css`
     height: var(--image-height);
     max-width: 50%;
     min-height: 100%;
-    border: 1px solid var(--borderLight);
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
+
+    &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border: 1px solid var(--borderLight);
+        box-sizing: border-box;
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        border-right: none;
+    }
 
     @media (max-width: 1100px) {
         flex-direction: column;
@@ -80,19 +103,16 @@ const richImageStyle = css`
     }
 `;
 
-const imgContentContainer = css`
+const contentContainer = css`
     display: flex;
     flex-direction: row;
     justify-content: center;
     flex-grow: 1;
     flex-shrink: 1;
-
     color: var(--foregroundPrimary);
     &:hover {
         text-decoration: none;
-        background-color: var(--backgroundTertiaryHover);
     }
-
     @media (max-width: 1100px) {
         flex-direction: column;
     }
@@ -113,6 +133,8 @@ const siteIconContainer = css`
     align-items: center;
     justify-content: center;
     margin-right: 6px;
+    border-radius: 2px;
+    overflow: hidden;
 `;
 
 const siteIconImageStyle = css`
@@ -135,13 +157,13 @@ const textInner = css`
 
 const titleStyle = css`
     color: var(--foregroundPrimary);
-    margin-top: 2px;
+    margin-top: 4px;
     -webkit-line-clamp: 3;
 `;
 
 const textStyle = css`
     color: var(--foregroundPrimary);
-    margin-top: 4px;
+    margin-top: 2px;
     -webkit-line-clamp: 3;
 `;
 
@@ -205,7 +227,9 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
         return <InternalAttachContent attach={attach} />;
     }
 
-    const isShortView = !attach.title || !attach.text || ((attach.title && attach.title.length < 80) || (attach.text && attach.text.length < 105));
+    const isShortView =
+        !attach.title || !attach.text || attach.title.length < 80 || attach.text.length < 105;
+    const isXShortView = !attach.title || !attach.text || attach.title.length < 55;
 
     const handleDeleteClick = React.useCallback(
         (e: React.MouseEvent) => {
@@ -239,13 +263,13 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
             attach.image.metadata.imageWidth || 0,
             attach.image.metadata.imageHeight || 0,
             336,
-            isShortView ? 160 : 192,
+            isXShortView ? 144 : isShortView ? 160 : 192,
             24,
             24,
         );
         img = (
             <div
-                className={richImageContainer}
+                className={cx(richImageContainer, 'image-container')}
                 style={
                     {
                         '--image-width': `${layout.width}px`,
@@ -274,11 +298,10 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
             <a
                 target="_blank"
                 href={attach.titleLink || ''}
-                onClick={e => e.stopPropagation()}
-                className={imgContentContainer}
+                onClick={(e) => e.stopPropagation()}
+                className={contentContainer}
             >
                 {img}
-
                 <div className={textContentContainer}>
                     {(siteIcon || attach.titleLinkHostname) && (
                         <div className={cx(linkHostnameContainer, TextLabel2)}>
@@ -318,15 +341,14 @@ export const RichAttachContent = (props: RichAttachContentProps) => {
                 </button>
             )}
 
-            {canDelete &&
-                !!messageId && (
-                    <div
-                        className={cx(deleteButton, 'message-rich-delete')}
-                        onClick={handleDeleteClick}
-                    >
-                        <UIcon icon={<DeleteIcon />} />
-                    </div>
-                )}
+            {canDelete && !!messageId && (
+                <div
+                    className={cx(deleteButton, 'message-rich-delete')}
+                    onClick={handleDeleteClick}
+                >
+                    <UIcon icon={<DeleteIcon />} />
+                </div>
+            )}
         </div>
     );
 };
