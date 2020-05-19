@@ -82,6 +82,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
     private transeivers = new Map<string, AppRtpTransceiverWeb>();
     private transceiverIds = new Map<RTCRtpTransceiver, string>();
 
+    oniceconnectionstate: ((state: 'checking' | 'closed' | 'completed' | 'connected' | 'disconnected' | 'failed' | 'new') => void) | undefined = undefined;
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined = undefined;
 
     constructor(connection: RTCPeerConnection) {
@@ -94,8 +95,12 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
                 this.onicecandidate({ candidate: ev.candidate ? JSON.stringify(ev.candidate) : undefined });
             }
         };
-        this.connection.onnegotiationneeded = () => {
-            console.warn('onnegotiationneeded');
+        this.connection.oniceconnectionstatechange = () => {
+            if (!this.started) {
+                if (this.oniceconnectionstate) {
+                    this.oniceconnectionstate(this.connection.iceConnectionState);
+                }
+            }
         };
         this.audioDevcieSubscription = MediaDevicesManager.instance().listenAudioOutputDevice(d => {
             for (let t of this.audioTracks.values()) {

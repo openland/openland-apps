@@ -72,6 +72,7 @@ class AppPeerConnectionNative implements AppPeerConnection {
     private started = true;
     private transeivers = new Map<string, AppRtpTransceiverNative>();
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined;
+    oniceconnectionstate: ((state: 'checking' | 'closed' | 'completed' | 'connected' | 'disconnected' | 'failed' | 'new') => void) | undefined = undefined;
 
     constructor(connection: RTCPeerConnection) {
         this.connection = connection;
@@ -81,6 +82,14 @@ class AppPeerConnectionNative implements AppPeerConnection {
             }
             if (this.onicecandidate) {
                 this.onicecandidate({ candidate: ev.candidate ? JSON.stringify(ev.candidate) : undefined });
+            }
+        };
+        this.connection.oniceconnectionstatechange = (e) => {
+            if (!this.started) {
+                return;
+            }
+            if (this.oniceconnectionstate) {
+                this.oniceconnectionstate(e.target.iceConnectionState);
             }
         };
     }

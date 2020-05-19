@@ -2,7 +2,7 @@ import { ConferenceMedia_conferenceMedia_streams, MediaKind, VideoSource, MediaS
 import { AppPeerConnectionFactory } from 'openland-y-runtime/AppPeerConnection';
 import { AppPeerConnection, AppRtpTransceiver, AppSessionDescription } from 'openland-y-runtime-api/AppPeerConnectionApi';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
-import { backoff } from 'openland-y-utils/timer';
+import { backoff, delay } from 'openland-y-utils/timer';
 import { MediaSessionManager } from './MediaSessionManager';
 import { InvalidateSync } from '@openland/patterns';
 import { OpenlandClient } from 'openland-api/spacex';
@@ -58,7 +58,16 @@ export class MediaConnectionManager {
         this.seq = -1;
         this.client = session.client;
         this.invalidateSync = new InvalidateSync(async () => {
-            await this.handleState(this.currentConfig);
+            if (this.destroyed) {
+                return;
+            }
+            try {
+                await this.handleState(this.currentConfig);
+            } catch (e) {
+                console.warn(e);
+                await delay(500);
+                throw e;
+            }
         });
 
         // Create Peer Connection
@@ -77,6 +86,21 @@ export class MediaConnectionManager {
             })) : [],
             iceTransportPolicy: iceTransportPolicy,
         });
+
+        this.peerConnection.oniceconnectionstate = (state) => {
+            if (state === 'failed') {
+                console.warn('ICE failed');
+                backoff(async () => {
+                    if (this.destroyed) {
+                        return;
+                    }
+                    await this.session.client.mutateMediaFailed({
+                        id: this.id,
+                        peerId: this.peerId
+                    });
+                });
+            }
+        };
 
         // ICE Candidates if transport policy is not NONE
         if (this.currentConfig.iceTransportPolicy !== 'NONE') {

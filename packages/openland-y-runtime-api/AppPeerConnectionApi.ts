@@ -36,6 +36,7 @@ export interface AppPeerConnection {
     setLocalDescription(sdp: AppSessionDescription): Promise<void>;
     setRemoteDescription(sdp: AppSessionDescription): Promise<void>;
     onicecandidate: ((ev: { candidate?: string }) => void) | undefined;
+    oniceconnectionstate: ((state: 'checking' | 'closed' | 'completed' | 'connected' | 'disconnected' | 'failed' | 'new') => void) | undefined;
 
     // Transceivers
     addTransceiver(kind: 'audio' | 'video', params?: AppPeerTransceiverParams): Promise<AppRtpTransceiver>;

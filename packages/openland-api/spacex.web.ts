@@ -4389,6 +4389,16 @@ const MediaCandidateSelector = obj(
                         )))))
                 )))
         );
+const MediaFailedSelector = obj(
+            field('mediaStreamFailed', 'mediaStreamFailed', args(fieldValue("id", refValue('id')), fieldValue("peerId", refValue('peerId'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('streams', 'streams', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('MediaStream', MediaStreamFullSelector)
+                        )))))
+                )))
+        );
 const MediaOfferSelector = obj(
             field('mediaStreamOffer', 'mediaStreamOffer', args(fieldValue("id", refValue('id')), fieldValue("peerId", refValue('peerId')), fieldValue("offer", refValue('offer')), fieldValue("seq", refValue('seq')), fieldValue("hints", refValue('hints'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5996,6 +6006,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'MediaCandidate',
         body: 'mutation MediaCandidate($id:ID!,$peerId:ID!,$candidate:String!){mediaStreamCandidate(id:$id,peerId:$peerId,candidate:$candidate){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}',
         selector: MediaCandidateSelector
+    },
+    MediaFailed: {
+        kind: 'mutation',
+        name: 'MediaFailed',
+        body: 'mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}',
+        selector: MediaFailedSelector
     },
     MediaOffer: {
         kind: 'mutation',

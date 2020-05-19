@@ -4382,6 +4382,16 @@ private let MediaCandidateSelector = obj(
                         )))))
                 )))
         )
+private let MediaFailedSelector = obj(
+            field("mediaStreamFailed", "mediaStreamFailed", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("streams", "streams", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("MediaStream", MediaStreamFullSelector)
+                        )))))
+                )))
+        )
 private let MediaOfferSelector = obj(
             field("mediaStreamOffer", "mediaStreamOffer", arguments(fieldValue("id", refValue("id")), fieldValue("peerId", refValue("peerId")), fieldValue("offer", refValue("offer")), fieldValue("seq", refValue("seq")), fieldValue("hints", refValue("hints"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5994,6 +6004,12 @@ class Operations {
         "mutation MediaCandidate($id:ID!,$peerId:ID!,$candidate:String!){mediaStreamCandidate(id:$id,peerId:$peerId,candidate:$candidate){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}",
         MediaCandidateSelector
     )
+    let MediaFailed = OperationDefinition(
+        "MediaFailed",
+        .mutation, 
+        "mutation MediaFailed($id:ID!,$peerId:ID!){mediaStreamFailed(id:$id,peerId:$peerId){__typename id streams{__typename ...MediaStreamFull}}}fragment MediaStreamFull on MediaStream{__typename id seq state sdp ice iceTransportPolicy receivers{__typename peerId kind videoSource mid}senders{__typename kind videoSource codecParams mid}}",
+        MediaFailedSelector
+    )
     let MediaOffer = OperationDefinition(
         "MediaOffer",
         .mutation, 
@@ -6674,6 +6690,7 @@ class Operations {
         if name == "MarkSequenceRead" { return MarkSequenceRead }
         if name == "MediaAnswer" { return MediaAnswer }
         if name == "MediaCandidate" { return MediaCandidate }
+        if name == "MediaFailed" { return MediaFailed }
         if name == "MediaOffer" { return MediaOffer }
         if name == "MessageSetDonationReaction" { return MessageSetDonationReaction }
         if name == "MessageSetReaction" { return MessageSetReaction }

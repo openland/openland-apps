@@ -152,6 +152,14 @@ mutation MediaCandidate($id: ID!, $peerId: ID!, $candidate: String!) {
         }
     }
 }
+mutation MediaFailed($id: ID!, $peerId: ID!) {
+    mediaStreamFailed(id: $id, peerId: $peerId) {
+        id
+        streams {
+            ...MediaStreamFull
+        }
+    }
+}
 
 subscription ConferenceMediaWatch($id: ID!, $peerId: ID!) {
     media: alphaConferenceMediaWatch(id: $id, peerId: $peerId) {
