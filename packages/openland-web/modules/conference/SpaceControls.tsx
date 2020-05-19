@@ -179,7 +179,7 @@ export const SpaceControls = React.memo((props: { action: string, onActionChange
             </div>
         </>
     );
-    a
+
     return (
         <div className={wrapper}>
             {penOpened ? penControls : controls}
