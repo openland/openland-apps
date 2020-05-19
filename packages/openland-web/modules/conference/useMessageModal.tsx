@@ -233,7 +233,7 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
 export const useMessageModal = (props: MessageModalProps) => {
     const show = () => {
         showModalBox({
-            title: props.name ? `Message to ${props.name}` : `Message`,
+            title: props.chatTitle || props.name ? `Message to ${props.chatTitle || props.name}` : `Message`,
             titleTruncation: true,
             overflowVisible: true,
             width: 480,
