@@ -35,6 +35,7 @@ interface CallControlsProps {
     speaker: boolean;
     onSpeakerPress: () => void;
     onCallEnd: () => void;
+    onFlip: () => void;
 }
 
 export const CallControls = (props: CallControlsProps) => {
@@ -53,6 +54,7 @@ export const CallControls = (props: CallControlsProps) => {
     let handleCamera = () => mediaSession?.setVideoEnabled(!state?.sender.videoEnabled);
     let handleFlip = () => {
         ((state?.sender.videoTrack as AppUserMediaStreamTrackNative)?.track as any)?._switchCamera();
+        props.onFlip();
     };
     let handleSpeaker = () => {
         setSpeaker(x => !x);

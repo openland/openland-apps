@@ -25,7 +25,6 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { SDevice } from 'react-native-s/SDevice';
 import { showCallControls } from './components/conference/CallControls';
 
 const PeerInfoGradient = (props: { children: any }) => {
@@ -178,6 +177,7 @@ let Content = XMemo<{ id: string, speaker: boolean, setSpeaker: (fn: (s: boolean
     let area = React.useContext(ASSafeAreaContext);
     let calls = getMessenger().engine.calls;
     let mediaSession = calls.useCurrentSession();
+    let [flipped, setFlipped] = React.useState(false);
     let [state, setState] = React.useState<MediaSessionState | undefined>(mediaSession?.state.value);
     let [speaker, setSpeaker] = React.useState(props.speaker);
     const toggleSpeaker = () => {
@@ -238,6 +238,7 @@ let Content = XMemo<{ id: string, speaker: boolean, setSpeaker: (fn: (s: boolean
             id: props.id,
             speaker,
             onSpeakerPress: toggleSpeaker,
+            onFlip: () => setFlipped(x => !x),
             onCallEnd,
         });
     };
@@ -247,6 +248,7 @@ let Content = XMemo<{ id: string, speaker: boolean, setSpeaker: (fn: (s: boolean
             id: props.id,
             speaker,
             onSpeakerPress: toggleSpeaker,
+            onFlip: () => setFlipped(x => !x),
             onCallEnd,
             showAnimation: (_, views) => {
                 SAnimated.setValue(views.container, 'opacity', 1);
@@ -280,7 +282,7 @@ let Content = XMemo<{ id: string, speaker: boolean, setSpeaker: (fn: (s: boolean
                                 key={`peer-${p.id}`}
                                 peer={p}
                                 {...media}
-                                mirror={isLocal}
+                                mirror={isLocal && !flipped}
                                 theme={theme}
                                 isLast={peerIndex === s.length - 1}
                             />;
@@ -291,43 +293,38 @@ let Content = XMemo<{ id: string, speaker: boolean, setSpeaker: (fn: (s: boolean
             </View>
             <View
                 position="absolute"
-                top={SDevice.statusBarHeight + SDevice.safeArea.top}
+                top={area.top + 14}
                 left={0}
                 right={0}
                 flexDirection="row"
                 justifyContent="space-between"
                 alignItems="center"
                 paddingLeft={8}
-                paddingRight={16}
             >
                 <TouchableOpacity onPress={props.hide}>
                     <Image source={require('assets/logo-watermark.png')} style={{ tintColor: theme.foregroundContrast }} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={props.hide}
-                    style={{
-                        width: 40,
-                        height: 40,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                        borderRadius: 20
-                    }}
+                    activeOpacity={0.6}
+                    onPress={showControls}
+                    style={{ width: 72, height: 72, justifyContent: 'center', alignItems: 'center' }}
                 >
-                    <Image source={require('assets/ic-size-down-glyph-24.png')} style={{ tintColor: theme.foregroundContrast }} />
+                    <View backgroundColor="rgba(255, 255, 255, 0.08)" width={40} height={40} borderRadius={28} alignItems="center" justifyContent="center">
+                        <Image source={require('assets/ic-size-down-glyph-24.png')} style={{ tintColor: theme.foregroundContrast }} />
+                    </View>
                 </TouchableOpacity>
             </View>
             <View
                 position="absolute"
-                bottom={Math.max(area.bottom, 30) - 8}
-                right={8}
+                bottom={Math.max(area.bottom, 30) - 16}
+                right={0}
             >
                 <TouchableOpacity
                     activeOpacity={0.6}
                     onPress={showControls}
-                    style={{ width: 56, height: 56, justifyContent: 'center', alignItems: 'center' }}
+                    style={{ width: 72, height: 72, justifyContent: 'center', alignItems: 'center' }}
                 >
-                    <View backgroundColor={theme.overlayMedium} width={40} height={40} borderRadius={28} alignItems="center" justifyContent="center">
+                    <View backgroundColor="rgba(255, 255, 255, 0.08)" width={40} height={40} borderRadius={28} alignItems="center" justifyContent="center">
                         <Image source={require('assets/ic-burger-glyph-24.png')} style={{ tintColor: theme.foregroundContrast }} />
                     </View>
                 </TouchableOpacity>
