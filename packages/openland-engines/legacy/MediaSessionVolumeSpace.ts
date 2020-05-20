@@ -3,10 +3,10 @@ import { VMMapMap, VM } from 'openland-y-utils/mvvm/vm';
 import uuid from 'uuid';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { GlobalEventBus } from 'openland-engines/GlobalEventBus';
-import { PlaceholderColors } from 'openland-y-utils/themes/placeholders';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { TintRed, TintOrange, TintGreen, TintCyan, TintBlue, TintPurple, TintPink } from 'openland-y-utils/themes/tints';
 import { ThemeLight } from 'openland-y-utils/themes/light';
+import { UploadingFile, LocalImage } from 'openland-engines/messenger/types';
 
 export const spaceColors = [TintRed.primary, TintOrange.primary, TintGreen.primary, TintCyan.primary, TintBlue.primary, TintPurple.primary, TintPink.primary, ThemeLight.foregroundContrast];
 
@@ -156,7 +156,6 @@ export class MediaSessionVolumeSpace {
     readonly mediaSession: MediaSessionManager;
     private d1: () => void;
     private d2: () => void;
-    private d3: () => void;
 
     private eventBus: GlobalEventBus;
 
@@ -202,28 +201,8 @@ export class MediaSessionVolumeSpace {
         this.eventBus = new GlobalEventBus(`media_session_space_${mediaSession.conversationId}`, mediaSession.client);
         this.d2 = this.eventBus.subscribe(this.onDcMessage);
 
-        // temp hack for images
-        this.d3 = mediaSession.messenger.getConversation(mediaSession.conversationId).subscribe({
-            onMessageSend: (file, localImage) => {
-                if (localImage && file) {
-                    (async () => {
-                        let layout = layoutMedia(localImage.width, localImage.height, 1000, 1000);
-                        let image = new Image(undefined, this.selfPeer?.coords || [1500, 1500], [localImage.width, localImage.height], [layout.width, layout.height]);
-                        file.watch(s => {
-                            if (!image.fileId && s.uuid) {
-                                image.fileId = s.uuid;
-                                this.addSpaceObject(image);
-                            }
-                        });
-                    })();
-                }
-            },
-            onChatLostAccess: () => {/* */ },
-            onConversationUpdated: () => {/* */ }
-        });
-
-        this.setColor(PlaceholderColors[Math.abs(doSimpleHash(mediaSession.messenger.user.id)) % PlaceholderColors.length].end);
-        // this.setColor(spaceColors[Math.abs(doSimpleHash(mediaSession.messenger.user.id)) % spaceColors.length]);
+        const placeholderOrderColors = [spaceColors[1], spaceColors[0], spaceColors[2], spaceColors[4], spaceColors[3], spaceColors[5]];
+        this.setColor(placeholderOrderColors[Math.abs(doSimpleHash(mediaSession.messenger.user.id)) % placeholderOrderColors.length]);
     }
 
     ////
@@ -285,6 +264,24 @@ export class MediaSessionVolumeSpace {
             path.seq++;
             this.pathsVM.add(this.peerId, path.id, path, true);
             this.sendBatch([new PathIncrement(path.id, increment, path.seq)]);
+        }
+    }
+
+    //
+    // images
+    //
+    addImage = (file?: UploadingFile | undefined, localImage?: LocalImage | undefined) => {
+        if (localImage && file) {
+            (async () => {
+                let layout = layoutMedia(localImage.width, localImage.height, 600, 600);
+                let image = new Image(undefined, this.selfPeer?.coords || [1500, 1500], [localImage.width, localImage.height], [layout.width, layout.height]);
+                file.watch(s => {
+                    if (!image.fileId && s.uuid) {
+                        image.fileId = s.uuid;
+                        this.addSpaceObject(image);
+                    }
+                });
+            })();
         }
     }
 
@@ -548,7 +545,6 @@ export class MediaSessionVolumeSpace {
     dispose = () => {
         this.d1();
         this.d2();
-        this.d3();
         this.eventBus.dispose();
         clearInterval(this.interval);
     }

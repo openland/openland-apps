@@ -14,11 +14,11 @@ import { makeStars } from './stars';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { VMMapMap } from 'openland-y-utils/mvvm/vm';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
-import { UButton } from 'openland-web/components/unicorn/UButton';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { YoutubeParty } from './YoutubeParty';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
-// import { SpaceControls } from './SpaceControls';
+import { SpaceControls } from './SpaceControls';
+import { showAttachConfirm } from 'openland-web/fragments/chat/components/AttachConfirm';
 
 let VolumeSpaceContainerStyle = css`
     width: 100%;
@@ -88,24 +88,6 @@ let VolumeSpaceVideoStyle = css`
     height: 72px;
     border-radius: 72px;
     background-color: var(--foregroundSecondary);
-`;
-let DrawControlsContainerStyle = css`
-    will-change: transform;
-   
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    left: 0;
-    top: 0;
-    border-radius: 16px;
-    background-color: var(--backgroundTertiary);
-    opacity: 1;
-    transition: opacity 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
-`;
-
-let DrawControlsHidden = css`
-    opacity: 0;
-    pointer-events: none;
 `;
 
 let PeerImageContainer = css`
@@ -236,35 +218,6 @@ let YtbPartyStyle = css`
     width: 100%;
     height: 100%;
     opacity: 1 !important;
-`;
-
-let MenuEraseStyle = css`
-    position: relative;
-    overflow: hidden;
-    border: solid 2px #ccc;
-    border-radius: 24px;
-    width: 24px;
-    height: 24px;
-    margin: 8px;
-    :before, :after {
-        position: absolute;
-        content: ' ';
-        left: 9px;
-        top: -2px;
-        height: 24px;
-        width: 2px;
-        background-color: red;
-    }
-    :before {
-        transform: rotate(45deg);
-    }
-    :after {
-        transform: rotate(-45deg);
-    }
-`;
-
-let MenuEraseSelectedStyle = css`
-  border: solid 2px black;
 `;
 
 let PointerStyle = css`
@@ -634,11 +587,6 @@ const Pointer = React.memo((props: { peer: Conference_conference_peers, space: M
     </div>;
 });
 
-const colors = [
-    ['#FF7919', '#3AA64C', '#3695D9'],
-    ['#000', '#fff', 'erase'],
-    ['#2458F2', '#4624F2', '#D9366C']
-];
 export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManager, peers: Conference_conference_peers[] }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
     let innerContainerRef = React.useRef<HTMLDivElement>(null);
@@ -647,8 +595,6 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     let eraseCircleRef = React.useRef<SVGCircleElement>(null);
     let nonDrawContentRef = React.useRef<HTMLDivElement>(null);
     let [action, setAction] = React.useState<'erase' | string>(props.mediaSession.space.colorVM.get() || '#fff');
-    let [menu, setMenu] = React.useState(false);
-    let menuRef = React.useRef<HTMLDivElement>(null);
     let peersRef = React.useRef(props.peers);
     peersRef.current = props.peers;
     let state = props.mediaSession.state.useValue();
@@ -681,20 +627,6 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
             makeStars(innerContainerRef.current);
         }
 
-    }, []);
-
-    React.useEffect(() => {
-        let onContext = (ev: any) => {
-            ev.stopPropagation();
-            ev.preventDefault();
-            if (menuRef.current) {
-                menuRef.current.style.transform = `translate(${ev.offsetX - menuRef.current.clientWidth / 2}px, ${ev.offsetY - menuRef.current.clientHeight / 2}px)`;
-            }
-            setMenu(true);
-        };
-        if (drawListenerRef.current) {
-            drawListenerRef.current.oncontextmenu = onContext;
-        }
     }, []);
 
     React.useEffect(() => {
@@ -738,7 +670,6 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
             if (ev.button !== 0) {
                 return;
             }
-            setMenu(false);
 
             down = true;
             path = new Path([], action);
@@ -799,14 +730,24 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
         if (a !== 'erase') {
             props.mediaSession.space.setColor(a);
         }
-        setMenu(false);
     }, []);
 
-    let addText = React.useCallback(() => {
-        let coords = props.mediaSession.space.selfPointer?.coords || props.mediaSession.space.selfPeer?.coords || [1500, 1500];
+    let addText = React.useCallback((centered?: boolean) => {
+        let selfCoords = props.mediaSession.space.selfPointer?.coords || props.mediaSession.space.selfPeer?.coords;
+        let coords = selfCoords
+            ? (centered ? [selfCoords[0], selfCoords[1] - window.innerHeight / 2] : selfCoords)
+            : [1500, 1500];
         let text = new SimpleText([coords[0] - 150, coords[1] - 20], [300, 100], props.mediaSession.space.colorVM.get() || '#fff', 40);
         props.mediaSession.space.addSpaceObject(text);
-        setMenu(false);
+    }, []);
+
+    let addImages = React.useCallback((files: File[]) => {
+        showAttachConfirm(
+            files,
+            res => {
+                return res.map(({ file, localImage }) => props.mediaSession.space.addImage(file, localImage));
+            }
+        );
     }, []);
 
     useShortcuts({ keys: ['Control', 't'], callback: addText });
@@ -841,20 +782,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                     })}
                     {props.peers.filter(p => p.id !== state.sender.id).map(p => <Pointer key={'pointer_' + p.id} space={props.mediaSession.space} peer={p} />)}
                 </div>
-                <div className={cx(DrawControlsContainerStyle, !menu && DrawControlsHidden)} ref={menuRef}>
-                    {colors.map((pack, i) =>
-                        <XView key={i} flexDirection="row">
-                            {pack.map(c =>
-                                c === 'erase' ?
-                                    <div className={cx(MenuEraseStyle, action === 'erase' && MenuEraseSelectedStyle)} onClick={() => selectAction(c)} /> :
-                                    <XView key={c} backgroundColor={c} width={24} height={24} borderRadius={24} borderColor={c === action ? 'black' : '#ccc'} borderWidth={2} margin={8} onClick={() => selectAction(c)} />)}
-                        </XView>
-                    )}
-                    <XView margin={8}>
-                        <UButton text="Text" onClick={addText} style="secondary" />
-                    </XView>
-                </div>
-                {/* <SpaceControls action={action} onActionChange={selectAction} /> */}
+                <SpaceControls action={action} onActionChange={selectAction} onTextClick={addText} onImageClick={addImages} />
             </div>
 
         </div >

@@ -8,13 +8,21 @@ import IconImage from 'openland-icons/s/ic-gallery-glyph-24.svg';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { spaceColors } from 'openland-engines/legacy/MediaSessionVolumeSpace';
+import { fileListToArray } from 'openland-web/fragments/chat/components/DropZone';
 
 const wrapper = css`
     position: fixed;
     bottom: 16px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, 0);
     display: flex;
+    opacity: 1;
+    transition: all 250ms ease-in-out;
+`;
+
+const wrapperHidden = css`
+    opacity: 0;
+    transform: translate(-50%, calc(100% + 16px));
 `;
 
 const controlItem = css`
@@ -69,7 +77,7 @@ const penControlItem = cx(controlItem, css`
 
 const colorsPalette = css`
     margin-left: 12px;
-    margin-right: 20px;
+    /* margin-right: 20px; */
     display: flex;
     align-self: stretch;
 `;
@@ -81,8 +89,14 @@ const colorsItem = css`
     align-items: center;
     justify-content: center;
 
+    &:hover::after {
+        transform: translateY(-2px);
+    }
+
     &::after {
         content: '';
+        position: relative;
+        transition: transform 150ms;
         width: 16px;
         height: 16px;
         border-radius: 50%;
@@ -102,7 +116,7 @@ const colorsItemActive = css`
     }
 `;
 
-const sizeRange = css``;
+// const sizeRange = css``;
 
 // grab | grabbing
 // value: 0 - 100
@@ -126,10 +140,39 @@ const sizeRange = css``;
 //     );
 // };
 
-export const SpaceControls = React.memo((props: { action: string, onActionChange: (action: string) => void }) => {
-    const { action, onActionChange } = props;
+interface SpaceControlsProps {
+    action: string;
+    onActionChange: (action: string) => void;
+    onTextClick: (centered?: boolean) => void;
+    onImageClick: (files: File[]) => void;
+}
+
+export const SpaceControls = React.memo((props: SpaceControlsProps) => {
+    const { action, onActionChange, onTextClick, onImageClick } = props;
     const [penOpened, setPenOpened] = React.useState(false);
     const togglePen = () => setPenOpened(x => !x);
+    const prevColor = React.useRef<string | null>(null);
+    const fileInputRef = React.useRef<HTMLInputElement>(null);
+    const onFileInputChange = React.useCallback(e => {
+        onImageClick(fileListToArray(e.target.files));
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
+    }, []);
+    const handleTextClick = () => {
+        onTextClick(true);
+    };
+    const handleActionChange = (a: string | 'erase') => {
+        prevColor.current = a;
+        onActionChange(a);
+    };
+    const handleEraseClick = () => {
+        if (action !== 'erase') {
+            onActionChange('erase');
+        } else if (prevColor.current) {
+            onActionChange(prevColor.current);
+        }
+    };
 
     const controls = (
         <>
@@ -137,11 +180,11 @@ export const SpaceControls = React.memo((props: { action: string, onActionChange
                 <IconPen className={controlIcon} />
                 <span className={controlText}>Pen</span>
             </div>
-            <div className={controlItem}>
+            <div className={controlItem} onClick={handleTextClick}>
                 <IconText className={controlIcon} />
                 <span className={controlText}>Text</span>
             </div>
-            <div className={controlItem}>
+            <div className={controlItem} onClick={() => fileInputRef.current?.click()}>
                 <IconImage className={controlIcon} />
                 <span className={controlText}>Image</span>
             </div>
@@ -166,14 +209,14 @@ export const SpaceControls = React.memo((props: { action: string, onActionChange
                             key={color}
                             className={cx(colorsItem, color === action && colorsItemActive)}
                             style={{ '--item-color': color } as React.CSSProperties}
-                            onClick={() => onActionChange(color)}
+                            onClick={() => handleActionChange(color)}
                         />
                     ))}
                 </div>
-                <span className={controlText}>Size</span>
-                <div className={sizeRange} />
+                {/* <span className={controlText}>Size</span>
+                <div className={sizeRange} /> */}
             </div>
-            <div className={cx(controlItem, action === 'erase' && controlItemActive)} onClick={() => onActionChange('erase')}>
+            <div className={cx(controlItem, action === 'erase' && controlItemActive)} onClick={handleEraseClick}>
                 <IconErase className={controlIcon} />
                 <span className={controlText}>Erase</span>
             </div>
@@ -181,8 +224,20 @@ export const SpaceControls = React.memo((props: { action: string, onActionChange
     );
 
     return (
-        <div className={wrapper}>
-            {penOpened ? penControls : controls}
-        </div>
+        <>
+            <div className={cx(wrapper, penOpened && wrapperHidden)}>
+                {controls}
+            </div>
+            <div className={cx(wrapper, !penOpened && wrapperHidden)}>
+                {penControls}
+            </div>
+            <input
+                ref={fileInputRef}
+                type="file"
+                multiple={true}
+                style={{ display: 'none' }}
+                onChange={onFileInputChange}
+            />
+        </>
     );
 });
