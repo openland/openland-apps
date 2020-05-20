@@ -12,7 +12,6 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { UnsupportedContent } from './content/UnsupportedContent';
-import { usePreviousState } from 'openland-y-utils/usePreviousState';
 
 const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMessageItem, theme: ThemeGlobal }>((props) => {
     const [selected, toggleSelect] = useMessageSelected(props.engine.messagesActionsStateEngine, props.message);
@@ -46,7 +45,7 @@ export interface AsyncMessageViewProps {
     onReactionsPress: (message: DataSourceMessageItem) => void;
 }
 
-type SendingIndicatorT = 'sending' | 'sent' | 'hide';
+type SendingIndicatorT = 'pending' | 'sending' | 'sent' | 'hide';
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const theme = useThemeGlobal();
@@ -54,14 +53,16 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const { isOut, attachTop, attachBottom, commentsCount, reactions, sender, isSending } = message;
 
     const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
-    const prevSendingIndicator = usePreviousState<SendingIndicatorT>(sendingIndicator);
 
     React.useEffect(() => {
         let timer: any;
-        if (isSending) {
-            setSendingIndicator('sending');
+        if (isSending && sendingIndicator === 'hide') {
+            setSendingIndicator('pending');
+            timer = setTimeout(() => {
+                setSendingIndicator('sending');
+            }, 500);
         }
-        if (!isSending && prevSendingIndicator === 'sending') {
+        if (!isSending && sendingIndicator === 'sending') {
             setSendingIndicator('sent');
             timer = setTimeout(() => {
                 setSendingIndicator('hide');
@@ -70,7 +71,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
         return () => {
             clearInterval(timer);
         };
-    }, [isSending, sendingIndicator, prevSendingIndicator]);
+    }, [isSending]);
 
     const messageRef = React.useRef(message);
     messageRef.current = message;

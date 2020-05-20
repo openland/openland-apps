@@ -16,8 +16,6 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useCaptionPopper } from 'openland-web/components/CaptionPopper';
 import { useUserPopper } from 'openland-web/components/EntityPoppers';
 import { defaultHover } from 'openland-web/utils/Styles';
-import { usePreviousState } from 'openland-y-utils/usePreviousState';
-
 import IcPending from 'openland-icons/s/ic-pending-16.svg';
 import IcSuccess from 'openland-icons/s/ic-success-16.svg';
 import { isPendingAttach } from 'openland-engines/messenger/ConversationEngine';
@@ -314,7 +312,7 @@ const sendingIconContainer = css`
     margin-right: 16px;
 `;
 
-type SendingIndicatorT = 'sending' | 'sent' | 'hide';
+type SendingIndicatorT = 'pending' | 'sending' | 'sent' | 'hide';
 
 interface MessageComponentProps {
     message: DataSourceWebMessageItem;
@@ -324,18 +322,18 @@ interface MessageComponentProps {
 export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const { engine, message } = props;
     const containerRef = React.useRef<HTMLDivElement>(null);
-
     const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
-    const prevSendingIndicator = usePreviousState<SendingIndicatorT>(sendingIndicator);
-
     const layout = useLayout();
 
     React.useEffect(() => {
         let timer: any;
-        if (message.isSending) {
-            setSendingIndicator('sending');
+        if (message.isSending && sendingIndicator === 'hide') {
+            setSendingIndicator('pending');
+            timer = setTimeout(() => {
+                setSendingIndicator('sending');
+            }, 500);
         }
-        if (!message.isSending && prevSendingIndicator === 'sending') {
+        if (!message.isSending && sendingIndicator === 'sending') {
             setSendingIndicator('sent');
             timer = setTimeout(() => {
                 setSendingIndicator('hide');
@@ -344,7 +342,7 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
         return () => {
             clearInterval(timer);
         };
-    }, [message.isSending, sendingIndicator, prevSendingIndicator]);
+    }, [message.isSending]);
 
     const attachesClassNames = cx(
         message.attachTop && 'message-attached-top',
