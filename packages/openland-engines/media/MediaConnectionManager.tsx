@@ -208,9 +208,6 @@ export class MediaConnectionManager {
                 await this.configureReceivers(config);
                 await this.configureSenders(config);
 
-                // Attach receivers to peers in session
-                this.attachSessionReceivers(config);
-
                 // Create Offer
                 console.log('[WEBRTC]: Creating offer');
                 let offer = await this.peerConnection.createOffer();
@@ -363,6 +360,10 @@ export class MediaConnectionManager {
                 console.log('[WEBRTC]: Received answer');
                 console.log(answer.sdp);
                 await this.peerConnection.setRemoteDescription(answer);
+
+                // Attach receivers to peers in session
+                this.attachSessionReceivers(config);
+
                 this.remoteDescriptionSet = true;
                 this.remoteAnwer = answer;
             }

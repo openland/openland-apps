@@ -121,7 +121,6 @@ const VideoView = React.memo((props: VideoViewProps) => {
     const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
 
     let track = props.screencastTrack ? props.screencastTrack : props.videoTrack;
-    let stream = React.useMemo(() => track && new MediaStream([(track as AppUserMediaStreamTrackNative).track]), [track]);
 
     const iconColor = props.theme.foregroundContrast;
     // @ts-ignore
@@ -131,14 +130,14 @@ const VideoView = React.memo((props: VideoViewProps) => {
         speaking: <Image source={require('assets/ic-speaking-bold-16.png')} style={{ tintColor: iconColor }} />,
     };
     let icon = null;
-    let InfoWrapper = stream ? PeerInfoGradient : React.Fragment;
+    let InfoWrapper = track ? PeerInfoGradient : React.Fragment;
 
     let infoPaddingBottom = props.isLast ? Math.max(area.bottom, 30) : 14;
 
     return (
         <View flexGrow={1} flexBasis={0} backgroundColor="gray" position="relative">
-            {stream && <RTCView streamURL={stream.toURL()} style={{ flexGrow: 1 }} objectFit="cover" mirror={props.mirror} />}
-            {!stream && <AvatarVideoView user={props.peer.user} />}
+            {track && <RTCView streamURL={track.id} style={{ flexGrow: 1 }} objectFit="cover" mirror={props.mirror} />}
+            {!track && <AvatarVideoView user={props.peer.user} />}
             <View
                 position="absolute"
                 bottom={0}
