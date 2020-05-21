@@ -112,7 +112,7 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     // const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
 
     const talking = props.analyzer.usePeer(props.peer.id);
-    const icon = talking ? <SpeakerIcon /> : null;
+    const icon = (talking && props.audioTrack) ? <SpeakerIcon /> : null;
 
     // const icon = props.callState.status !== 'connected' ? <SvgLoader size="small" contrast={true} />
     //     : talking ? <SpeakerIcon />
