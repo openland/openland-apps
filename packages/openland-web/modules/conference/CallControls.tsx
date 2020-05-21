@@ -21,8 +21,11 @@ import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 import { VideoComponent } from './ScreenShareModal';
 import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 export const CONTROLS_WIDTH = 64;
+
+let isSafari = canUseDOM && ((window as any).safari !== undefined);
 
 const ContainerStyle = css`
     will-change: transform;
@@ -391,19 +394,21 @@ export const CallControls = (props: CallControlsProps) => {
                         }
                         onClick={props.onCameraClick}
                     />
-                    <ControlItem
-                        text="Screen"
-                        icon={
-                            <UIconButton
-                                icon={<ScreenIcon />}
-                                color="var(--foregroundContrast)"
-                                rippleColor="var(--tintBlue)"
-                                active={props.screenEnabled}
-                                disableHover={true}
-                            />
-                        }
-                        onClick={props.onScreenClick}
-                    />
+                    {!isSafari &&
+                        <ControlItem
+                            text="Screen"
+                            icon={
+                                <UIconButton
+                                    icon={<ScreenIcon />}
+                                    color="var(--foregroundContrast)"
+                                    rippleColor="var(--tintBlue)"
+                                    active={props.screenEnabled}
+                                    disableHover={true}
+                                />
+                            }
+                            onClick={props.onScreenClick}
+                        />
+                    }
                     <ControlItem
                         text="Space"
                         icon={
