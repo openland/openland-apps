@@ -9,6 +9,8 @@ export class AppUserMediaTrackWeb implements AppMediaStreamTrack {
     readonly track: MediaStreamTrack;
     onmute: (() => void) | null = null;
     onunmute: (() => void) | null = null;
+    _audio: HTMLAudioElement | undefined;
+    volume = 1;
 
     constructor(track: MediaStreamTrack) {
         this.id = uuid();
@@ -42,6 +44,18 @@ export class AppUserMediaTrackWeb implements AppMediaStreamTrack {
 
     set enabled(v: boolean) {
         this.track.enabled = v;
+    }
+
+    set audio(audio: HTMLAudioElement) {
+        this._audio = audio;
+        audio.volume = this.volume;
+    }
+
+    setVolume(v: number) {
+        this.volume = v;
+        if (this._audio) {
+            this._audio.volume = v;
+        }
     }
 
     stop() {

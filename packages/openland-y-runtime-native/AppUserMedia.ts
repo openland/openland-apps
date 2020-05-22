@@ -43,6 +43,10 @@ export class AppUserMediaStreamTrackNative implements AppMediaStreamTrack {
         this.track.enabled = v;
     }
 
+    setVolume(v: number) {
+        this.enabled = !!v;
+    }
+
     stop = () => {
         this.track.stop();
     }

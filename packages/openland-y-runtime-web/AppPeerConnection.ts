@@ -222,6 +222,7 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
                     // wtf safari exeption thrown before permission granted/denied
                     console.error(e);
                 }
+                (t.receiver.track as AppUserMediaTrackWeb).audio = audio;
                 this.audioTracks.set(t.id, audio);
             }
         }
