@@ -7,6 +7,7 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 import { TintRed, TintOrange, TintGreen, TintCyan, TintBlue, TintPurple, TintPink } from 'openland-y-utils/themes/tints';
 import { ThemeLight } from 'openland-y-utils/themes/light';
 import { UploadingFile, LocalImage } from 'openland-engines/messenger/types';
+import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 
 export const spaceColors = [TintRed.primary, TintOrange.primary, TintGreen.primary, TintCyan.primary, TintBlue.primary, TintPurple.primary, TintPink.primary, ThemeLight.foregroundContrast];
 
@@ -17,9 +18,11 @@ class PeerAvatar {
     type: 'peer' = 'peer';
     seq = 0;
     id: string;
+    peerId: string;
     coords: number[];
     constructor(peerId: string, coords: number[]) {
         this.id = `peer_${peerId}`;
+        this.peerId = peerId;
         this.coords = coords;
     }
 }
@@ -156,6 +159,7 @@ type UpdateType = Add | Sync | PartialUpdate | PathIncrement | Reqest | LostPeer
 
 export class MediaSessionVolumeSpace {
     readonly mediaSession: MediaSessionManager;
+    private mediaSessionState: MediaSessionState | undefined;
     private d1: () => void;
     private d2: () => void;
 
@@ -191,6 +195,7 @@ export class MediaSessionVolumeSpace {
         this.mediaSession = mediaSession;
         // subscribe for init peer
         this.d1 = mediaSession.state.listenValue(s => {
+            this.mediaSessionState = s;
             this.peerId = s.sender.id;
             if (s.sender.id && !this.selfPeer) {
                 this.selfPeer = new PeerAvatar(s.sender.id, [Math.random() * 100 + 1450, Math.random() * 100 + 1450]);
@@ -224,11 +229,6 @@ export class MediaSessionVolumeSpace {
         if (this.selfPeer) {
             this.selfPeer.coords = to;
             add.objects.push(this.selfPeer);
-        }
-        // tweak
-        this.movePointer(to, false);
-        if (this.selfPointer) {
-            add.objects.push(this.selfPointer);
         }
 
         this.sendBatch(batch);
@@ -362,8 +362,7 @@ export class MediaSessionVolumeSpace {
         let distance = Math.pow(Math.pow(peer.coords[0] - this.selfPeer.coords[0], 2) + Math.pow(peer.coords[1] - this.selfPeer.coords[1], 2), 0.5);
         let volume = distance < this.minDinstance ? 1 : distance > this.maxDisatance ? 0 : 1 - (distance - this.minDinstance) / (this.maxDisatance - this.minDinstance);
         peer.coords[2] = volume;
-        // TODO: recover volume control
-        // [...this.mediaSession.streamsVM.values()].find(s => s.getTargetPeerId() === peer.id)?.setVolume(volume);
+        this.mediaSessionState?.receivers[peer.peerId]?.audioTrack?.setVolume(volume);
         this.peersVM.add(peer.id, peer.id, peer, true);
     }
 
