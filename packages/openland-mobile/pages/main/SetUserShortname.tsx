@@ -104,7 +104,12 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
         setError(undefined);
     }, [shortnameField.value]);
 
-    const shortnameError = getErrorByShortname(shortnameField.value, 'Username', minLength, maxLength);
+    let shortnameError = getErrorByShortname(shortnameField.value, 'Username', minLength, maxLength);
+
+    if (!shortnameField.value) {
+        shortnameError = undefined;
+    }
+
     const footerUsernameText = shortnameField.value ? `This link opens a chat with you:\nopenland.com/${shortnameField.value}` : '';
 
     return (

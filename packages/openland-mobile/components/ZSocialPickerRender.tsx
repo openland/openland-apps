@@ -21,7 +21,14 @@ export const ZSocialPickerRender = React.memo((props: ZAvatarPickerRenderProps) 
     return (
         <View position="relative">
             <TouchableOpacity onPress={props.showPicker}>
-                <View width={width} height={height} borderRadius={radius}>
+                <View
+                    width={width}
+                    height={height}
+                    borderRadius={radius}
+                    borderWidth={props.url ? 1 : undefined}
+                    borderColor={props.url ? 'rgba(0, 0 ,0, 0.04)' : undefined}
+                    overflow="hidden"
+                >
                     {props.url && (
                         <ZImage
                             highPriority={true}
@@ -40,11 +47,11 @@ export const ZSocialPickerRender = React.memo((props: ZAvatarPickerRenderProps) 
                             height,
                             borderRadius: radius,
                             backgroundColor: props.url
-                                ? theme.overlayLight
+                                ? props.loading ? theme.overlayLight : undefined
                                 : theme.backgroundTertiaryTrans,
                         }}
                     >
-                        {!props.loading && (
+                        {!props.loading && !props.url && (
                             <Image
                                 style={{
                                     tintColor: props.url
@@ -82,7 +89,20 @@ export const ZSocialPickerRender = React.memo((props: ZAvatarPickerRenderProps) 
                                 width: 24,
                                 height: 24,
                                 tintColor: theme.foregroundContrast,
+                                borderRadius: 100,
+                                zIndex: 1,
                             }}
+                        />
+                        <View
+                            position="absolute"
+                            width={24}
+                            height={24}
+                            backgroundColor="rgba(0,0,0,0.2)"
+                            borderRadius={100}
+                            zIndex={0}
+                            shadowColor="rgba(0, 0, 0, 0.5)"
+                            shadowRadius={8}
+                            shadowOpacity={1}
                         />
                     </View>
                 </TouchableOpacity>

@@ -118,12 +118,11 @@ const EditGroupWelcomeMessageComponent = React.memo((props: PageProps) => {
                 <ZListGroup header={null}>
                     <ZListItem
                         text="Allow welcome message"
-                        textStyle={{ ...TextStyles.Title2 }}
                         toggle={welcomeMessageEnabled}
                         onToggle={(value) => setWelcomeMessageEnabled(value)}
                     />
                     {welcomeMessageEnabled && (
-                        <View style={{ paddingHorizontal: 16, marginTop: 24, flexGrow: 1 }}>
+                        <View style={{ paddingHorizontal: 16, marginTop: 16, flexGrow: 1 }}>
                             <ZPickField
                                 noWrapper={true}
                                 label="Sender"
