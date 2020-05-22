@@ -5,7 +5,7 @@ import { XScrollView3 } from 'openland-x/XScrollView3';
 import Lorem from 'react-lorem-component';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 // import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { useClient } from 'openland-api/useClient';
+// import { useClient } from 'openland-api/useClient';
 
 type DiscussionDef = {
     hub: string;
@@ -24,8 +24,8 @@ const discussions: DiscussionDef[] = [{
 }];
 
 const DiscussionComponent = React.memo((props: { data: DiscussionDef }) => {
-    let client = useClient();
-    let account = client.useAccount();
+    // let client = useClient();
+    // let account = client.useAccount();
     return (
         <XView flexDirection="column" paddingBottom={48}>
             <XView {...TextStyles.Subhead} opacity={0.7} paddingBottom={4}>
