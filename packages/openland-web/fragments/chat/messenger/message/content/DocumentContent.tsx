@@ -123,24 +123,23 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void; url?: s
     return (
         <div className={modalContainer} onClick={props.hide}>
             <div className={modalToolbarContainer}>
-                {(props.sender || props.senderNameEmojify) &&
-                    props.date && (
-                        <div className={modalInfoContainer}>
-                            <div className={cx(TextCaption, modalSecondaryText)}>
-                                {props.senderNameEmojify || props.sender ? props.sender!!.name : ''}
-                            </div>
-                            <div className={cx(TextCaption, modalSecondaryText)}>
-                                {formatDateTime(props.date)}
-                            </div>
+                {(props.sender || props.senderNameEmojify) && props.date && (
+                    <div className={modalInfoContainer}>
+                        <div className={cx(TextCaption, modalSecondaryText)}>
+                            {props.senderNameEmojify || props.sender ? props.sender!!.name : ''}
                         </div>
-                    )}
-                <div className={modalButtonsContainer} onClick={e => e.stopPropagation()}>
+                        <div className={cx(TextCaption, modalSecondaryText)}>
+                            {formatDateTime(props.date)}
+                        </div>
+                    </div>
+                )}
+                <div className={modalButtonsContainer} onClick={(e) => e.stopPropagation()}>
                     <a className={modalButtonStyle} href={`https://ucarecdn.com/${props.fileId}/`}>
                         <UIcon icon={<IcDownloadModal />} color="var(--backgroundPrimary)" />
                     </a>
                     <div
                         className={modalButtonStyle}
-                        onClick={e => {
+                        onClick={(e) => {
                             e.stopPropagation();
                             forwardCallback();
                         }}
@@ -152,7 +151,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void; url?: s
                     </div>
                 </div>
             </div>
-            <div className={modalContent} onClick={e => e.stopPropagation()}>
+            <div className={modalContent} onClick={(e) => e.stopPropagation()}>
                 {isElectron ? (
                     <XLoader loading={true} transparentBackground={true} contrast={true} />
                 ) : (
@@ -169,7 +168,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void; url?: s
 });
 
 const showPdfModal = (props: ModalProps, url?: string) => {
-    showModalBox({ fullScreen: true, darkOverlay: true, useTopCloser: false }, ctx => {
+    showModalBox({ fullScreen: true, darkOverlay: true, useTopCloser: false }, (ctx) => {
         return <ModalContent {...props} hide={ctx.hide} url={url} />;
     });
 };
@@ -293,7 +292,7 @@ const VideoContent = React.memo(
         file: { fileId?: string; fileMetadata: { name: string; size: number }; uri?: string };
     }) => {
         return (
-            <div className={videoContainer} onClick={e => e.stopPropagation()}>
+            <div className={videoContainer} onClick={(e) => e.stopPropagation()}>
                 <video controls={true} className={videoStyle}>
                     <source src={`https://ucarecdn.com/${props.file.fileId}/`} type="video/mp4" />
                 </video>
@@ -421,11 +420,11 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
     const fileSender = props.senderNameEmojify
         ? props.senderNameEmojify
         : props.sender && props.sender.name
-            ? props.sender.name
-            : '';
+        ? props.sender.name
+        : '';
 
-    const hasProgress = typeof progress === 'number' && progress >= 0 && progress < 1;
-    const progressStyles = {
+    const isUpload = !!progress && (progress >= 0 && progress < 1);
+    const uploadStyles = {
         borderRadius: '8px',
         backgroundColor: fileColor[fileFormat(name)],
     } as React.CSSProperties;
@@ -437,10 +436,14 @@ export const DocumentContent = React.memo((props: DocumentContentProps) => {
             href={!props.onClick ? fileSrc : undefined}
         >
             <div className={infoContent}>
-                <div className={fileIconContainer} style={hasProgress ? progressStyles : undefined}>
-                    {!hasProgress && fileIcon[fileFormat(name)]}
-                    {hasProgress ? (
-                        <MediaLoader size="small" transparent={true} />
+                <div className={fileIconContainer} style={isUpload ? uploadStyles : undefined}>
+                    {!isUpload && fileIcon[fileFormat(name)]}
+                    {isUpload ? (
+                        <MediaLoader
+                            size="small"
+                            transparent={true}
+                            progress={Math.round(progress! * 100)}
+                        />
                     ) : (
                         <div className={cx(iconInfo, 'icon-info')}>
                             <UIcon

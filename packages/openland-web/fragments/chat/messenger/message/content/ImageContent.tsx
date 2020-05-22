@@ -308,7 +308,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
         {
             keys: ['Escape'],
             callback: () => props.hide(),
-        }
+        },
     ]);
 
     const onLoad = React.useCallback(() => {
@@ -320,7 +320,7 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
             // setLoaded(true);
         }
     }, []);
-        // [viewerState]);
+    // [viewerState]);
 
     // React.useLayoutEffect(() => {
     //     if (imgRef.current && loaderRef.current && !loaded) {
@@ -373,20 +373,16 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     //     viewerState ? viewerState.current.fileId : props.fileId
     // }/-/format/auto/-/`;
     const sender = props.senderNameEmojify
-            ? props.senderNameEmojify
-            : props.sender
-                ? emoji(props.sender.name)
-                : '';
+        ? props.senderNameEmojify
+        : props.sender
+        ? emoji(props.sender.name)
+        : '';
 
     const date = props.date;
     const downloadLink =
-        'https://ucarecdn.com/' +
-        (props.fileId) +
-        '/-/format/jpg/-/inline/no/pic.jpg';
+        'https://ucarecdn.com/' + props.fileId + '/-/format/jpg/-/inline/no/pic.jpg';
 
-    const url = `https://ucarecdn.com/${
-        props.fileId
-    }/-/format/auto/-/`;
+    const url = `https://ucarecdn.com/${props.fileId}/-/format/auto/-/`;
 
     // const layoutModal = layoutMedia(
     //     viewerState ? viewerState.current.imageWidth : props.imageWidth,
@@ -568,12 +564,11 @@ export const showImageModal = (props: ModalProps) => {
 const GifContent = React.memo(
     (props: { file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile }) => {
         const gifRef = React.useRef<HTMLVideoElement>(null);
-        const loaderRef = React.useRef<HTMLDivElement>(null);
+        const [isLoad, setIsLoad] = React.useState(false);
         const onLoad = React.useCallback(() => {
-            if (gifRef.current && loaderRef.current) {
+            if (gifRef.current) {
                 gifRef.current.style.opacity = '1';
-                loaderRef.current.style.opacity = '0';
-                loaderRef.current.style.visibility = 'hidden';
+                setIsLoad(true);
             }
         }, []);
 
@@ -619,14 +614,18 @@ const GifContent = React.memo(
                         } as React.CSSProperties
                     }
                 />
-                <img
-                    className={imgPreviewClass}
-                    width={layoutWidth}
-                    height={layoutHeight}
-                    src={props.file.filePreview || undefined}
-                    style={{ top: imgPositionTop, left: imgPositionLeft }}
-                />
-                <MediaLoader ref={loaderRef} onContinue={onContinue} onStop={onStop} />
+                {!isLoad && (
+                    <>
+                        <img
+                            className={imgPreviewClass}
+                            width={layoutWidth}
+                            height={layoutHeight}
+                            src={props.file.filePreview || undefined}
+                            style={{ top: imgPositionTop, left: imgPositionLeft }}
+                        />
+                        <MediaLoader onContinue={onContinue} onStop={onStop} />
+                    </>
+                )}
                 <video
                     key={`${srcWebm}${srcMp4}`}
                     ref={gifRef}
@@ -654,6 +653,7 @@ interface ImageContentProps {
     chatId?: string;
     mId?: string;
     isPending?: boolean;
+    progress?: number;
 }
 
 export const ImageContent = React.memo((props: ImageContentProps) => {
@@ -664,8 +664,6 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
     const [isLoad, setIsLoad] = React.useState(false);
 
     const imgRef = React.useRef<HTMLImageElement>(null);
-    const imgPrevRef = React.useRef<HTMLImageElement>(null);
-    const loaderRef = React.useRef<HTMLDivElement>(null);
 
     const layout = layoutMedia(
         props.file.fileMetadata.imageWidth || 0,
@@ -708,15 +706,18 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
     }, [props.file.fileId]);
 
     const onLoad = React.useCallback(() => {
-        if (imgRef.current && imgPrevRef.current && loaderRef.current) {
+        if (imgRef.current) {
             imgRef.current.style.opacity = '1';
-            imgPrevRef.current.style.opacity = '0';
-            imgPrevRef.current.style.visibility = 'hidden';
-            loaderRef.current.style.opacity = '0';
-            loaderRef.current.style.visibility = 'hidden';
             setIsLoad(true);
         }
     }, []);
+
+    const isUpload = !!props.progress && (props.progress >= 0 && props.progress < 1);
+
+    let uploadProgress = 90;
+    if (isUpload) {
+        uploadProgress = Math.round(props.progress! * 100);
+    }
 
     return (
         <div
@@ -724,6 +725,9 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
             style={{ width: layoutWidth }}
             onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
+                if (isUpload) {
+                    return;
+                }
                 showImageModal({
                     fileId: props.file.fileId,
                     imageWidth: props.file.fileMetadata.imageWidth || 0,
@@ -746,16 +750,19 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
                     } as React.CSSProperties
                 }
             />
-            {!isLoad && (
+            {(!isLoad || isUpload) && (
                 <>
                     <ImgWithRetry
-                        ref={imgPrevRef}
                         className={imgPreviewClass}
                         width={layoutWidth}
                         height={layoutHeight}
                         src={previewSrc || undefined}
                     />
-                    <MediaLoader ref={loaderRef} onContinue={onContinue} onStop={onStop} />
+                    <MediaLoader
+                        onContinue={onContinue}
+                        onStop={onStop}
+                        progress={uploadProgress}
+                    />
                 </>
             )}
             <ImgWithRetry

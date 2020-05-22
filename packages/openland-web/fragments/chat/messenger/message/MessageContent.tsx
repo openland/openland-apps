@@ -160,6 +160,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
                     chatId={props.chatId}
                     mId={id}
                     isPending={isPending}
+                    progress={fileProgress}
                 />
             </ContentWrapper>,
         );
