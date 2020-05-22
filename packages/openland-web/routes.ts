@@ -92,6 +92,11 @@ routes.add('/discover/free', '/unicorn/index');
 routes.add('/discover/free/', '/unicorn/index');
 
 //
+// Discussions
+//
+routes.add('/discuss', '/unicorn/index');
+
+//
 // Onboardinng
 //
 

@@ -14,12 +14,49 @@ import ChatActiveIcon from './navigation/icon_chat_active.svg';
 import ProfileIcon from './navigation/icon_profile.svg';
 import ProfileActiveIcon from './navigation/icon_profile_active.svg';
 import { AuthRouter } from '../root/AuthRouter';
+import { IndexFragment } from 'openland-web/fragments/discussions/IndexFragment';
+import { useRole } from 'openland-x-permissions/XWithRole';
 
 const Unicorn = React.memo(() => {
+    let isSuperadmin = useRole('super-admin');
     const router = React.useMemo(
         () =>
+
             new TabRouter(
-                [
+                isSuperadmin ? [
+                    {
+                        icon: <DiscoverIcon />,
+                        iconActive: <DiscoverActiveIcon />,
+                        path: '/discover',
+                        component: <DiscoverFragment />,
+                        caption: 'Discover',
+                        defaultPage: true
+                    },
+                    {
+                        icon: <DiscoverIcon />,
+                        iconActive: <DiscoverActiveIcon />,
+                        path: '/discuss',
+                        component: <IndexFragment />,
+                        caption: 'Discussions',
+                        defaultPage: false
+                    },
+                    {
+                        icon: <ChatIcon />,
+                        iconActive: <ChatActiveIcon />,
+                        path: '/mail',
+                        component: <DialogsFragment />,
+                        caption: 'Chats',
+                        defaultPage: false,
+                    },
+                    {
+                        icon: <ProfileIcon />,
+                        iconActive: <ProfileActiveIcon />,
+                        path: '/account',
+                        component: <AccountFragment />,
+                        caption: 'Account',
+                        defaultPage: true
+                    },
+                ] : [
                     {
                         icon: <DiscoverIcon />,
                         iconActive: <DiscoverActiveIcon />,
