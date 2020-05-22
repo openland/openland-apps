@@ -104,6 +104,7 @@ routing.addRoute('/discover/free', () => DiscoverTopFreeFragment);
 
 // Discussions
 routing.addRoute('/discuss', () => DiscussionsFragment);
+routing.addRoute('/discuss/', () => DiscussionsFragment);
 
 // Account
 routing.addRoute('/account', () => UserProfileFragment);

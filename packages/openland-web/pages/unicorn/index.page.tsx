@@ -38,7 +38,7 @@ const Unicorn = React.memo(() => {
                         path: '/discuss',
                         component: <IndexFragment />,
                         caption: 'Discussions',
-                        defaultPage: false
+                        defaultPage: true
                     },
                     {
                         icon: <ChatIcon />,

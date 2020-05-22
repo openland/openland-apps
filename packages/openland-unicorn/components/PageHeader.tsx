@@ -13,11 +13,14 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     const layout = useLayout();
     const wideHeader = router.pages.length > 0;
 
-    let showBack = router.pages.length > 0 && (router.rootPath !== '/discover' && router.rootPath !== '/account');
+    let showBack = router.pages.length > 0 && (router.rootPath !== '/discover' && router.rootPath !== '/account' && router.rootPath !== '/discuss');
     if (router.rootPath === '/discover' && router.pages.length > 1) {
         showBack = true;
     }
     if (router.rootPath === '/account' && router.pages.length > 1) {
+        showBack = true;
+    }
+    if (router.rootPath === '/discuss' && router.pages.length > 1) {
         showBack = true;
     }
 
@@ -64,10 +67,10 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                             maxWidth && !showBack
                                 ? maxWidth
                                 : appearance === 'normal'
-                                ? 600
-                                : appearance === 'fullwidth'
-                                ? '100%'
-                                : 824
+                                    ? 600
+                                    : appearance === 'fullwidth'
+                                        ? '100%'
+                                        : 824
                         }
                         flexDirection="row"
                         paddingHorizontal={16}
