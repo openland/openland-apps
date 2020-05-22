@@ -42,10 +42,12 @@ export class Path {
     seq = 0;
     path: number[][];
     color: string;
-    constructor(path: number[][], color: string) {
+    size: number;
+    constructor(path: number[][], color: string, size: number) {
         this.id = `path_${uuid()}`;
         this.path = path;
         this.color = color;
+        this.size = size;
     }
 }
 

@@ -50,3 +50,43 @@ export const bezierPath = (points: number[][]) => {
         }
     }, '');
 };
+
+export function pointsDistance(p1: number[], p2: number[]) {
+    return Math.pow(Math.pow(p1[0] - p2[0], 2) + Math.pow(p1[1] - p2[1], 2), 0.5);
+}
+
+export function projectionOnLine(p3: number[], targetLine: [number[], number[]]) {
+    let [p1, p2] = targetLine;
+    let isValid = false;
+    let pr = [0, 0];
+
+    if (p1[0] === p2[0] && p1[1] === p2[1]) {
+        p1[0] -= 0.00001;
+    }
+
+    let u = ((p3[0] - p1[0]) * (p2[0] - p1[0])) + ((p3[1] - p1[1]) * (p2[1] - p1[1]));
+
+    let den = Math.pow(p2[0] - p1[0], 2) + Math.pow(p2[1] - p1[1], 2);
+
+    u /= den;
+
+    pr[0] = p1[0] + (u * (p2[0] - p1[0]));
+    pr[1] = p1[1] + (u * (p2[1] - p1[1]));
+
+    let minx = Math.min(p1[0], p2[0]);
+    let maxx = Math.max(p1[0], p2[0]);
+    let miny = Math.min(p1[1], p2[1]);
+    let maxy = Math.max(p1[1], p2[1]);
+
+    isValid = (pr[0] >= minx && pr[0] <= maxx) && (pr[1] >= miny && pr[1] <= maxy);
+    return isValid ? pr : null;
+}
+
+export function pointNearLine(point: number[], targetLine: [number[], number[]], distance: number) {
+    let pr = projectionOnLine(point, targetLine);
+    if (!pr) {
+        return false;
+    }
+    let d = pointsDistance(point, pr);
+    return d < distance;
+}

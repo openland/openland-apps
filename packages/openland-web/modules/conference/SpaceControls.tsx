@@ -77,7 +77,7 @@ const penControlItem = cx(controlItem, css`
 
 const colorsPalette = css`
     margin-left: 12px;
-    /* margin-right: 20px; */
+    margin-right: 20px;
     display: flex;
     align-self: stretch;
 `;
@@ -116,43 +116,127 @@ const colorsItemActive = css`
     }
 `;
 
-// const sizeRange = css``;
+const sliderWrapper = css`
+    width: 120px;
+    margin-left: 16px;
+`;
 
-// grab | grabbing
-// value: 0 - 100
-// const Slider = (props: { value: number, onChange: (value: number) => void }) => {
-//     const width = 120;
-//     const diameter = 16;
-//     const left = props.value * (width - diameter);
-//     return (
-//         <XView height={16} width={width} alignItems="center">
-//             <XView height={4} backgroundColor="var(--foregroundContrast)" />
-//             <XView
-//                 position="absolute"
-//                 width={diameter}
-//                 height={diameter}
-//                 borderRadius={diameter}
-//                 top={0}
-//                 left={left}
-//                 backgroundColor="var(--foregroundContrast)"
-//             />
-//         </XView>
-//     );
-// };
+const sliderStyles = css`
+    -webkit-appearance: none;
+    position: relative;
+
+    margin: 6px 0;
+    width: 100%;
+
+    &::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 4px;
+        cursor: pointer;
+        background: var(--rangeBg);
+        border-radius: 100px;
+    }
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background: var(--foregroundContrast);
+        cursor: pointer;
+        margin-top: -6px;
+    }
+
+    &::-moz-range-track {
+        width: 100%;
+        height: 4px;
+        cursor: pointer;
+        background: var(--rangeBg);
+        border-radius: 100px;
+    }
+
+    &::-moz-range-thumb {
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background: var(--foregroundContrast);
+        cursor: pointer;
+        border: none;
+    }
+
+    &::-moz-focus-outer {
+        border: 0;
+    }
+
+    &::-ms-track {
+        width: 100%;
+        height: 4px;
+        cursor: pointer;
+        background: var(--rangeBg);
+        color: transparent;
+        border-radius: 100px;
+    }
+
+    &::-ms-thumb {
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background: var(--foregroundContrast);
+        cursor: pointer;
+    }
+`;
+
+const convertToRange = (value: number, oldRange: [number, number], newRange: [number, number]) => {
+    let oldRangeDiff = oldRange[1] - oldRange[0];
+    let newRangeDiff = newRange[1] - newRange[0];
+    return (((value - oldRange[0]) * newRangeDiff) / oldRangeDiff) + newRange[0];
+};
+const valueToSize = (v: number) => {
+    return convertToRange(v, [0, 100], [2, 16]);
+};
+const sizeToValue = (s: number) => {
+    return convertToRange(s, [2, 16], [0, 100]);
+};
+
+const Slider = (props: { initialValue: number, onChange: (value: number) => void }) => {
+    const [value, setValue] = React.useState(props.initialValue);
+    const handleChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        let numValue = parseInt(e.target.value, 10);
+        setValue(numValue);
+        props.onChange(numValue);
+    }, []);
+
+    return (
+        <div className={sliderWrapper}>
+            <input
+                type="range"
+                className={sliderStyles}
+                style={{ '--rangeBg': `linear-gradient(to right, #fff ${value}%, rgba(255, 255, 255, 0.16) ${value}%)` } as React.CSSProperties}
+                min={0}
+                max={100}
+                value={value}
+                onChange={handleChange}
+            />
+        </div>
+    );
+};
 
 interface SpaceControlsProps {
     action: string;
+    initialPenSize: number;
     onActionChange: (action: string) => void;
     onTextClick: (centered?: boolean) => void;
     onImageClick: (files: File[]) => void;
+    onPenSizeChange: (value: number) => void;
 }
 
 export const SpaceControls = React.memo((props: SpaceControlsProps) => {
-    const { action, onActionChange, onTextClick, onImageClick } = props;
+    const { action, initialPenSize, onActionChange, onTextClick, onImageClick, onPenSizeChange } = props;
     const [penOpened, setPenOpened] = React.useState(false);
     const togglePen = () => setPenOpened(x => !x);
-    const prevColor = React.useRef<string | null>(null);
+    const prevColor = React.useRef<string | null>(action);
     const fileInputRef = React.useRef<HTMLInputElement>(null);
+    const initialPenValue = sizeToValue(initialPenSize);
+
     const onFileInputChange = React.useCallback(e => {
         onImageClick(fileListToArray(e.target.files));
         if (fileInputRef.current) {
@@ -172,6 +256,9 @@ export const SpaceControls = React.memo((props: SpaceControlsProps) => {
         } else if (prevColor.current) {
             onActionChange(prevColor.current);
         }
+    };
+    const handlePenSizeChange = (value: number) => {
+        onPenSizeChange(valueToSize(value));
     };
 
     const controls = (
@@ -213,8 +300,8 @@ export const SpaceControls = React.memo((props: SpaceControlsProps) => {
                         />
                     ))}
                 </div>
-                {/* <span className={controlText}>Size</span>
-                <div className={sizeRange} /> */}
+                <span className={controlText}>Size</span>
+                <Slider initialValue={initialPenValue} onChange={handlePenSizeChange} />
             </div>
             <div className={cx(controlItem, action === 'erase' && controlItemActive)} onClick={handleEraseClick}>
                 <IconErase className={controlIcon} />
