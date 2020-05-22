@@ -288,6 +288,9 @@ dependencies {
     // Stripe
     implementation 'com.stripe:stripe-android:13.2.0'
 
+    // Space
+    implementation 'com.jaredrummler:twodscrollview:1.0.1'
+
     // Hermes
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";

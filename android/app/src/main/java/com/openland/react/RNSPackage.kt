@@ -42,7 +42,8 @@ class RNSPackage : ReactPackage {
                 AsyncViewManager(),
                 AsyncListViewManager(),
                 SplashViewManager(),
-                StripeCardViewManager()
+                StripeCardViewManager(),
+                TwoDScrollViewManager()
         ) as MutableList<ViewManager<View, ReactShadowNode<*>>>
     }
 }

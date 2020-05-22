@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="visible" type="id"/>
+    <item name="width" type="id"/>
+    <item name="height" type="id"/>
 </resources>
