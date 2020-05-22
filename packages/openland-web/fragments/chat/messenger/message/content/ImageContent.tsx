@@ -159,7 +159,6 @@ const imgAppearClass = css`
     max-width: 100%;
     max-height: 100%;
     height: auto;
-    will-change: opacity;
     background: transparent;
     object-fit: contain;
     cursor: pointer;
