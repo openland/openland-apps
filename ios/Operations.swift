@@ -2921,6 +2921,21 @@ private let GlobalSearchSelector = obj(
                     ))
                 )))))
         )
+private let HubsSelector = obj(
+            field("hubs", "hubs", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("title", "title", notNull(scalar("String"))),
+                    field("shortname", "shortname", notNull(scalar("String"))),
+                    field("type", "type", notNull(scalar("String"))),
+                    field("owner", "owner", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("firstName", "firstName", notNull(scalar("String"))),
+                            field("lastName", "lastName", scalar("String"))
+                        ))
+                )))))
+        )
 private let InitFeedSelector = obj(
             field("alphaHomeFeed", "feed", arguments(fieldValue("first", refValue("first"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5344,6 +5359,12 @@ class Operations {
         "query GlobalSearch($query:String!,$kinds:[GlobalSearchEntryKind!]){items:alphaGlobalSearch(query:$query,kinds:$kinds){__typename ... on Organization{__typename id name about photo shortname isCommunity:alphaIsCommunity}... on User{__typename ...UserShort}... on SharedRoom{__typename id kind title canSendMessage roomPhoto:photo membersCount membership organization{__typename id name photo}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
         GlobalSearchSelector
     )
+    let Hubs = OperationDefinition(
+        "Hubs",
+        .query, 
+        "query Hubs{hubs{__typename id title shortname type owner{__typename id firstName lastName}}}",
+        HubsSelector
+    )
     let InitFeed = OperationDefinition(
         "InitFeed",
         .query, 
@@ -6580,6 +6601,7 @@ class Operations {
         if name == "FetchPushSettings" { return FetchPushSettings }
         if name == "GlobalCounter" { return GlobalCounter }
         if name == "GlobalSearch" { return GlobalSearch }
+        if name == "Hubs" { return Hubs }
         if name == "InitFeed" { return InitFeed }
         if name == "Message" { return Message }
         if name == "MessagesBatch" { return MessagesBatch }

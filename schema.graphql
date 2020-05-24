@@ -700,6 +700,30 @@ type DiscoverPage {
   tagGroup: TagGroup
 }
 
+type Discussion {
+  id: ID!
+  author: User
+  title: String!
+  hub: Hub!
+  createdAt: Date!
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type DiscussionConnection {
+  edges: [DiscussionEdge!]!
+  pageInfo: PageInfo!
+}
+
+type DiscussionEdge {
+  node: Discussion!
+  cursor: String!
+}
+
+input DiscussionInput {
+  title: String
+}
+
 type EditorsChoiceChat {
   id: ID!
   image: ImageRef!
@@ -996,6 +1020,26 @@ input GroupConversationInvite {
 type GroupConversationMember {
   user: User!
   role: String!
+}
+
+type Hub {
+  id: ID!
+  title: String!
+  type: HubType!
+  owner: User
+  shortname: String!
+}
+
+input HubInput {
+  title: String
+  shortname: String
+}
+
+enum HubType {
+  SYSTEM
+  PERSONAL
+  PUBLIC
+  SECRET
 }
 
 type ICEServer {
@@ -1725,12 +1769,12 @@ type Mutation {
 
   """Deprecated"""
   updateSettings(settings: UpdateSettingsInput): Settings!
+  hubCreate(input: HubInput!): Hub!
   conferenceAlterMediaState(id: ID!, state: MediaStreamMediaStateInput!): Conference!
   conferenceAddScreenShare(id: ID!): Conference!
   conferenceRemoveScreenShare(id: ID!): Conference!
   conferenceAlterSettings(id: ID!, settings: ConferenceSettingsInput!): Conference!
   mediaStreamNegotiationNeeded(id: ID!, peerId: ID!, seq: Int): ConferenceMedia!
-  mediaStreamFailed(id: ID!, peerId: ID!): ConferenceMedia!
   createOauthApp(input: OauthAppInput!): OauthApp!
   updateOauthApp(id: ID!, input: OauthAppInput!): OauthApp!
   betaOrganizationMemberRequestApprove(userId: ID!, organizationId: ID!): Organization!
@@ -1805,6 +1849,7 @@ type Mutation {
   mediaStreamOffer(id: ID!, peerId: ID!, offer: String!, seq: Int, hints: [MediaStreamHint!]): ConferenceMedia!
   mediaStreamAnswer(id: ID!, peerId: ID!, answer: String!, seq: Int): ConferenceMedia!
   mediaStreamCandidate(id: ID!, peerId: ID!, candidate: String!): ConferenceMedia!
+  mediaStreamFailed(id: ID!, peerId: ID!): ConferenceMedia!
   setEnvVar(name: String!, value: String!): Boolean!
   setEnvVarString(name: String!, value: String!): Boolean!
   setEnvVarNumber(name: String!, value: Int!): Boolean!
@@ -2501,9 +2546,12 @@ type Query {
   debugGqlTrace(id: ID!): GqlTrace!
   debugUserWallet(id: ID!): WalletAccount!
   debugEntitiesCounter(name: String!): Int!
+  debugEntitiesCleanerProgress(name: String!): Int!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!
+  hubs: [Hub!]!
+  hub(id: ID!): Hub
   myOauthApps: [OauthApp!]!
   oauthContext(code: String!): OauthContext
   alphaOrganizationMembers(orgId: ID!, first: Int, after: ID): [OrganizationMember!]!
@@ -2540,6 +2588,7 @@ type Query {
   conference(id: ID!): Conference!
   conferenceMedia(id: ID!, peerId: ID!): ConferenceMedia!
   dialogsState: DialogUpdateState!
+  discussions(hubs: [ID!], limit: Int!, after: String): DiscussionConnection!
   envVars: [EnvVar!]
   envVar(name: String!): EnvVar
   featureFlags: [FeatureFlag!]!
@@ -2906,7 +2955,7 @@ type SharedRoomMention {
   sharedRoom: SharedRoom!
 }
 
-union ShortNameDestination = User | Organization | FeedChannel | SharedRoom | DiscoverChatsCollection
+union ShortNameDestination = User | Organization | FeedChannel | SharedRoom | DiscoverChatsCollection | Hub
 
 type ShowNotificationMessageInfo {
   mobile: Boolean!

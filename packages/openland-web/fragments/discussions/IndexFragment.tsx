@@ -5,8 +5,11 @@ import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import IcHome from 'openland-icons/s/ic-home-24.svg';
+import { useClient } from 'openland-api/useClient';
 
 export const IndexFragment = React.memo(() => {
+    const client = useClient();
+    let hubs = client.useHubs({ suspense: false });
     return (
         <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
             <USideHeader title="Discussions" />
@@ -23,6 +26,16 @@ export const IndexFragment = React.memo(() => {
                             path={'/discuss'}
                             icon={<IcHome />}
                         />
+                        {hubs && hubs.hubs.length > 0 && (
+                            hubs.hubs.map((v) => (
+                                <UListItem
+                                    key={v.id}
+                                    title={v.title}
+                                    path={'/' + v.shortname}
+                                    icon={<IcHome />}
+                                />
+                            ))
+                        )}
                     </XView>
                 </XScrollView3>
             </XView>

@@ -1,0 +1,13 @@
+query Hubs {
+    hubs {
+        id
+        title
+        shortname
+        type
+        owner {
+            id
+            firstName
+            lastName
+        }
+    }
+}
