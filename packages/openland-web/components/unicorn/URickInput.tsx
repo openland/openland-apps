@@ -11,16 +11,36 @@ import { fileListToArray } from 'openland-web/fragments/chat/components/DropZone
 import { Span, SpanType } from 'openland-y-utils/spans/Span';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 
-const quillStyle = css`
-    flex-grow: 1;
-    border-radius: 8px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+const quillInputStyle = css`
     background-color: var(--backgroundTertiaryTrans);
 
     &:hover {
         background-color: var(--backgroundTertiaryHoverTrans);
     }
+
+    .ql-editor {
+        padding: 8px 16px;
+        padding-right: 32px;
+        font-size: 15px;
+        line-height: 24px;
+    }
+`;
+
+const quillArticleStyle = css`
+    .ql-editor p {
+        padding: 0 16px 12px;
+    }
+    .ql-editor {
+        font-size: 18px;
+        line-height: 1.58;
+    }
+`;
+
+const quillStyle = css`
+    flex-grow: 1;
+    border-radius: 8px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 
     .ql-container {
         border-radius: 8px;
@@ -28,8 +48,6 @@ const quillStyle = css`
             'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
     }
     .ql-editor {
-        padding: 8px 16px;
-        padding-right: 32px;
         font-size: 15px;
         line-height: 24px;
     }
@@ -100,7 +118,6 @@ export interface URickInputProps {
     onTextChange?: (text: string) => void;
     onContentChange?: (content: URickTextValue) => void;
     onAutocompleteWordChange?: (text: string | null) => void;
-    withShortcutsButton?: boolean;
     onStickerSent?: (sticker: StickerFragment) => void;
 
     onEmojiPickerShow?: (stickers: boolean) => void;
@@ -113,7 +130,10 @@ export interface URickInputProps {
     onPressEsc?: () => boolean;
 
     onFilesPaste?: (files: File[]) => void;
+
+    appearance: 'input' | 'article';
     className?: string;
+    withShortcutsButton?: boolean;
     hideEmoji?: boolean;
 }
 
@@ -498,6 +518,8 @@ export const URickInput = React.memo(
                     'scroll-container',
                     props.className && props.className,
                     props.withShortcutsButton && quillWithButtonStyle,
+                    props.appearance === 'article' && quillArticleStyle,
+                    props.appearance === 'input' && quillInputStyle,
                 )}
             >
                 <div ref={containerRef} />

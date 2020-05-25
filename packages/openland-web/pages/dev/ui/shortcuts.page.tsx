@@ -63,7 +63,7 @@ const ShortcutHandlerView = () => {
                 {!inner && 'Press [Ctrl + V] to add inner view'}
                 {inner && 'Press [Ctrl + X] to remove inner view'}
             </div>
-            <URickInput />
+            <URickInput appearance="input" />
             {inner && <ShortcutHandlerView />}
         </div>
     );

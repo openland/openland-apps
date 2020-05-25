@@ -11,6 +11,7 @@ export default withApp('Rick Text Input', ['super-admin', 'software-developer'],
                 <URickInput
                     placeholder="Write a message...."
                     onTextChange={(tx) => console.log(tx)}
+                    appearance="input"
                 />
             )}
         </DevDocsScaffold>
