@@ -145,6 +145,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryGlobalSearch(variables: Types.GlobalSearchVariables, opts?: OperationParameters): Promise<Types.GlobalSearch> {
         return this.query('GlobalSearch', variables, opts);
     }
+    queryHub(variables: Types.HubVariables, opts?: OperationParameters): Promise<Types.Hub> {
+        return this.query('Hub', variables, opts);
+    }
     queryHubs(opts?: OperationParameters): Promise<Types.Hubs> {
         return this.query('Hubs', undefined, opts);
     }
@@ -457,6 +460,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchGlobalSearch(variables: Types.GlobalSearchVariables, opts?: OperationParameters): Promise<Types.GlobalSearch> {
         return this.refetch('GlobalSearch', variables);
     }
+    refetchHub(variables: Types.HubVariables, opts?: OperationParameters): Promise<Types.Hub> {
+        return this.refetch('Hub', variables);
+    }
     refetchHubs(opts?: OperationParameters): Promise<Types.Hubs> {
         return this.refetch('Hubs', undefined);
     }
@@ -768,6 +774,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateGlobalSearch(variables: Types.GlobalSearchVariables, updater: (data: Types.GlobalSearch) => Types.GlobalSearch | null): Promise<boolean> {
         return this.updateQuery(updater, 'GlobalSearch', variables);
+    }
+    updateHub(variables: Types.HubVariables, updater: (data: Types.Hub) => Types.Hub | null): Promise<boolean> {
+        return this.updateQuery(updater, 'Hub', variables);
     }
     updateHubs(updater: (data: Types.Hubs) => Types.Hubs | null): Promise<boolean> {
         return this.updateQuery(updater, 'Hubs', undefined);
@@ -1172,6 +1181,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useGlobalSearch(variables: Types.GlobalSearchVariables, opts?: SpaceQueryWatchParameters): Types.GlobalSearch;
     useGlobalSearch(variables: Types.GlobalSearchVariables, opts?: SpaceQueryWatchParameters): Types.GlobalSearch | null {
         return this.useQuery('GlobalSearch', variables, opts);
+    }
+    useHub(variables: Types.HubVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Hub | null;
+    useHub(variables: Types.HubVariables, opts?: SpaceQueryWatchParameters): Types.Hub;
+    useHub(variables: Types.HubVariables, opts?: SpaceQueryWatchParameters): Types.Hub | null {
+        return this.useQuery('Hub', variables, opts);
     }
     useHubs(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Hubs | null;
     useHubs(opts?: SpaceQueryWatchParameters): Types.Hubs;

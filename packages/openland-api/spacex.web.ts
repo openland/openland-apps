@@ -2928,6 +2928,21 @@ const GlobalSearchSelector = obj(
                     ))
                 )))))
         );
+const HubSelector = obj(
+            field('hub', 'hub', args(fieldValue("id", refValue('id'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('title', 'title', args(), notNull(scalar('String'))),
+                    field('shortname', 'shortname', args(), notNull(scalar('String'))),
+                    field('type', 'type', args(), notNull(scalar('String'))),
+                    field('owner', 'owner', args(), obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            field('id', 'id', args(), notNull(scalar('ID'))),
+                            field('firstName', 'firstName', args(), notNull(scalar('String'))),
+                            field('lastName', 'lastName', args(), scalar('String'))
+                        ))
+                ))
+        );
 const HubsSelector = obj(
             field('hubs', 'hubs', args(), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5365,6 +5380,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'GlobalSearch',
         body: 'query GlobalSearch($query:String!,$kinds:[GlobalSearchEntryKind!]){items:alphaGlobalSearch(query:$query,kinds:$kinds){__typename ... on Organization{__typename id name about photo shortname isCommunity:alphaIsCommunity}... on User{__typename ...UserShort}... on SharedRoom{__typename id kind title canSendMessage roomPhoto:photo membersCount membership organization{__typename id name photo}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
         selector: GlobalSearchSelector
+    },
+    Hub: {
+        kind: 'query',
+        name: 'Hub',
+        body: 'query Hub($id:ID!){hub(id:$id){__typename id title shortname type owner{__typename id firstName lastName}}}',
+        selector: HubSelector
     },
     Hubs: {
         kind: 'query',

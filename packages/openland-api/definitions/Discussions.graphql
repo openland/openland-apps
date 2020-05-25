@@ -11,3 +11,17 @@ query Hubs {
         }
     }
 }
+
+query Hub($id: ID!) {
+    hub(id: $id) {
+        id
+        title
+        shortname
+        type
+        owner {
+            id
+            firstName
+            lastName
+        }
+    }
+}

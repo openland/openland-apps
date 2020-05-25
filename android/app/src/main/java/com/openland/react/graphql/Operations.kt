@@ -53,6 +53,7 @@ object Operations {
         if (name == "FetchPushSettings") return FetchPushSettings
         if (name == "GlobalCounter") return GlobalCounter
         if (name == "GlobalSearch") return GlobalSearch
+        if (name == "Hub") return Hub
         if (name == "Hubs") return Hubs
         if (name == "InitFeed") return InitFeed
         if (name == "Message") return Message
