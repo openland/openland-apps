@@ -3389,6 +3389,10 @@ const ResolveShortNameSelector = obj(
                     inline('DiscoverChatsCollection', obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
                         field('id', 'id', args(), notNull(scalar('ID')))
+                    )),
+                    inline('Hub', obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('id', 'id', args(), notNull(scalar('ID')))
                     ))
                 ))
         );
@@ -5515,7 +5519,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     ResolveShortName: {
         kind: 'query',
         name: 'ResolveShortName',
-        body: 'query ResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename id isDeleted}... on Organization{__typename id isDeleted}... on FeedChannel{__typename id}... on SharedRoom{__typename id}... on DiscoverChatsCollection{__typename id}}}',
+        body: 'query ResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename id isDeleted}... on Organization{__typename id isDeleted}... on FeedChannel{__typename id}... on SharedRoom{__typename id}... on DiscoverChatsCollection{__typename id}... on Hub{__typename id}}}',
         selector: ResolveShortNameSelector
     },
     ResolvedInvite: {

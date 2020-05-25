@@ -17,6 +17,9 @@ query ResolveShortName($shortname: String!) {
         ... on DiscoverChatsCollection {
             id
         }
+        ... on Hub {
+            id
+        }
     }
 }
 query AuthResolveShortName($shortname: String!) {

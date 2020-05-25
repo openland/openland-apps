@@ -7,6 +7,7 @@ import { OrganizationProfileFragment } from './OrganizationProfileFragment';
 import { FeedChannelFragment } from './FeedChannelFragment';
 import { MessengerFragment } from '../chat/MessengerFragment';
 import { DiscoverCollectionFragment } from '../discover/DiscoverCollectionFragment';
+import { HubFragment } from '../discussions/HubFragment';
 
 export const ShortnameFragment = React.memo(() => {
     let client = useClient();
@@ -29,6 +30,9 @@ export const ShortnameFragment = React.memo(() => {
         }
         if (data.__typename === 'DiscoverChatsCollection') {
             return <DiscoverCollectionFragment id={data.id} />;
+        }
+        if (data.__typename === 'Hub') {
+            return <HubFragment id={data.id} />;
         }
     }
 

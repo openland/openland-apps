@@ -3382,6 +3382,10 @@ private let ResolveShortNameSelector = obj(
                     inline("DiscoverChatsCollection", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("id", "id", notNull(scalar("ID")))
+                    )),
+                    inline("Hub", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
                     ))
                 ))
         )
@@ -5512,7 +5516,7 @@ class Operations {
     let ResolveShortName = OperationDefinition(
         "ResolveShortName",
         .query, 
-        "query ResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename id isDeleted}... on Organization{__typename id isDeleted}... on FeedChannel{__typename id}... on SharedRoom{__typename id}... on DiscoverChatsCollection{__typename id}}}",
+        "query ResolveShortName($shortname:String!){item:alphaResolveShortName(shortname:$shortname){__typename ... on User{__typename id isDeleted}... on Organization{__typename id isDeleted}... on FeedChannel{__typename id}... on SharedRoom{__typename id}... on DiscoverChatsCollection{__typename id}... on Hub{__typename id}}}",
         ResolveShortNameSelector
     )
     let ResolvedInvite = OperationDefinition(
