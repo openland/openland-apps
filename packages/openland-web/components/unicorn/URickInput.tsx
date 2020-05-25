@@ -28,11 +28,23 @@ const quillInputStyle = css`
 
 const quillArticleStyle = css`
     .ql-editor p {
-        padding: 0 16px 12px;
+        padding: 0 0px 12px;
     }
     .ql-editor {
+        padding: 16px;
         font-size: 18px;
         line-height: 1.58;
+    }
+`;
+
+const quillArticleTitleStyle = css`
+    .ql-editor p {
+        padding: 0px;
+    }
+    .ql-editor {
+        padding: 16px;
+        font-size: 32px;
+        line-height: 34px;
     }
 `;
 
@@ -46,10 +58,6 @@ const quillStyle = css`
         border-radius: 8px;
         font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif,
             'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-    }
-    .ql-editor {
-        font-size: 15px;
-        line-height: 24px;
     }
     .ql-editor.ql-blank::before {
         color: var(--foregroundTertiary);
@@ -123,15 +131,15 @@ export interface URickInputProps {
     onEmojiPickerShow?: (stickers: boolean) => void;
     onEmojiPickerHide?: () => void;
 
-    onPressEnter?: () => Promise<boolean>;
-    onPressUp?: () => boolean;
-    onPressDown?: () => boolean;
-    onPressTab?: () => boolean;
-    onPressEsc?: () => boolean;
+    onPressEnter?: () => Promise<boolean> | boolean;
+    onPressUp?: () => Promise<boolean> | boolean;
+    onPressDown?: () => Promise<boolean> | boolean;
+    onPressTab?: () => Promise<boolean> | boolean;
+    onPressEsc?: () => Promise<boolean> | boolean;
 
     onFilesPaste?: (files: File[]) => void;
 
-    appearance: 'input' | 'article';
+    appearance: 'input' | 'article' | 'article-title';
     className?: string;
     withShortcutsButton?: boolean;
     hideEmoji?: boolean;
@@ -520,6 +528,7 @@ export const URickInput = React.memo(
                     props.withShortcutsButton && quillWithButtonStyle,
                     props.appearance === 'article' && quillArticleStyle,
                     props.appearance === 'input' && quillInputStyle,
+                    props.appearance === 'article-title' && quillArticleTitleStyle,
                 )}
             >
                 <div ref={containerRef} />
