@@ -4,7 +4,6 @@ import { useClient } from 'openland-api/useClient';
 import { DiscussionEditorComponent } from './editor/DiscussionEditorComponent';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { XView } from 'react-mental';
-import { URickInput } from 'openland-web/components/unicorn/URickInput';
 
 export const HubFragment = React.memo((props: { id: string }) => {
     const client = useClient();

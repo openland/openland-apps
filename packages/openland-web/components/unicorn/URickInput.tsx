@@ -193,6 +193,27 @@ function loadQuill() {
         EmojiBlot.tagName = 'img';
         EmojiBlot.className = 'emoji';
         Quill.register(EmojiBlot);
+
+        // Basic formatting
+        let Inline = Quill.import('blots/inline');
+        let Block = Quill.import('blots/block');
+
+        class BoldBlot extends Inline { }
+        BoldBlot.blotName = 'bold';
+        BoldBlot.tagName = 'strong';
+        class ItalicBlot extends Inline { }
+        ItalicBlot.blotName = 'italic';
+        ItalicBlot.tagName = 'em';
+        class HeaderBlot extends Block {
+            static formats(node: any) {
+                return HeaderBlot.tagName.indexOf(node.tagName) + 1;
+            }
+        }
+        HeaderBlot.blotName = 'header';
+        HeaderBlot.tagName = ['H1', 'H2'];
+        Quill.register(BoldBlot);
+        Quill.register(ItalicBlot);
+        Quill.register(HeaderBlot);
     }
 }
 
