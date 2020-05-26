@@ -33,6 +33,11 @@ fragment NotificationFragment on Notification {
                             ...FeedItemFull
                         }
                     }
+                    ... on CommentPeerRootDiscussion {
+                        discussion {
+                            id
+                        }
+                    }
                 }
                 subscription {
                     type
@@ -111,6 +116,11 @@ fragment NotificationCenterUpdateFragment on NotificationCenterUpdate {
                         ... on CommentPeerRootFeedItem {
                             item {
                                 ...FeedItemFull
+                            }
+                        }
+                        ... on CommentPeerRootDiscussion {
+                            discussion {
+                                id
                             }
                         }
                     }

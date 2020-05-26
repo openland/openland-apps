@@ -32,7 +32,7 @@ import { DiscoverTopPremiumFragment } from 'openland-web/fragments/discover/Disc
 import { DiscoverTopFreeFragment } from 'openland-web/fragments/discover/DiscoverTopFreeFragment';
 import { DiscoverCollectionFragment } from 'openland-web/fragments/discover/DiscoverCollectionFragment';
 import { DiscussionsFragment } from 'openland-web/fragments/discussions/DiscussionsFragment';
-import { DraftsFragment } from 'openland-web/fragments/discussions/DraftSFragment';
+import { DraftsFragment } from 'openland-web/fragments/discussions/DraftsFragment';
 // import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 
 // temporary stub for /mail/ -> not found bug

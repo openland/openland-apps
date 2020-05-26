@@ -1371,6 +1371,13 @@ internal val NotificationFragmentSelector = obj(
                                                     field("__typename", "__typename", notNull(scalar("String"))),
                                                     fragment("FeedItem", FeedItemFullSelector)
                                                 )))
+                                        )),
+                                        inline("CommentPeerRootDiscussion", obj(
+                                            field("__typename", "__typename", notNull(scalar("String"))),
+                                            field("discussion", "discussion", notNull(obj(
+                                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                                    field("id", "id", notNull(scalar("ID")))
+                                                )))
                                         ))
                                     ))),
                                 field("subscription", "subscription", obj(
@@ -1468,6 +1475,13 @@ internal val NotificationCenterUpdateFragmentSelector = obj(
                                                 field("item", "item", notNull(obj(
                                                         field("__typename", "__typename", notNull(scalar("String"))),
                                                         fragment("FeedItem", FeedItemFullSelector)
+                                                    )))
+                                            )),
+                                            inline("CommentPeerRootDiscussion", obj(
+                                                field("__typename", "__typename", notNull(scalar("String"))),
+                                                field("discussion", "discussion", notNull(obj(
+                                                        field("__typename", "__typename", notNull(scalar("String"))),
+                                                        field("id", "id", notNull(scalar("ID")))
                                                     )))
                                             ))
                                         ))),
