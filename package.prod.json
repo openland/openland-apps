@@ -109,6 +109,6 @@
         "graphql": "14.6.0",
         "sdp-transform": "2.14.0",
         "tslib": "1.11.1",
-        "@openland/patterns": "0.0.1"
+        "@openland/patterns": "0.0.2"
     }
 }

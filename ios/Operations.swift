@@ -2734,6 +2734,12 @@ private let DiscoverTopPremiumSelector = obj(
                     field("cursor", "cursor", scalar("String"))
                 )))
         )
+private let DiscussionSelector = obj(
+            field("discussion", "discussion", arguments(fieldValue("id", refValue("id"))), obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Discussion", DiscussionSimpleSelector)
+                ))
+        )
 private let DiscussionDraftsSelector = obj(
             field("discussionMyDrafts", "discussionMyDrafts", arguments(fieldValue("first", intValue(20)), fieldValue("after", refValue("after"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -4378,6 +4384,12 @@ private let DiscussionCreateDraftSelector = obj(
                     fragment("Discussion", DiscussionSimpleSelector)
                 )))
         )
+private let DiscussionUpdateSelector = obj(
+            field("discussionUpdate", "discussionUpdate", arguments(fieldValue("id", refValue("id")), fieldValue("input", objectValue(fieldValue("title", refValue("title"))))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Discussion", DiscussionSimpleSelector)
+                )))
+        )
 private let EditCommentSelector = obj(
             field("editComment", "editComment", arguments(fieldValue("id", refValue("id")), fieldValue("message", refValue("message")), fieldValue("mentions", refValue("mentions")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
         )
@@ -5372,6 +5384,12 @@ class Operations {
         "query DiscoverTopPremium($first:Int!,$after:String){discoverTopPremium(first:$first,after:$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         DiscoverTopPremiumSelector
     )
+    let Discussion = OperationDefinition(
+        "Discussion",
+        .query, 
+        "query Discussion($id:ID!){discussion(id:$id){__typename ...DiscussionSimple}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename ...HubSimple}author{__typename id name}createdAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text}... on ImageParagraph{__typename image{__typename uuid}}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}",
+        DiscussionSelector
+    )
     let DiscussionDrafts = OperationDefinition(
         "DiscussionDrafts",
         .query, 
@@ -6031,6 +6049,12 @@ class Operations {
         .mutation, 
         "mutation DiscussionCreateDraft{discussionCreate(isDraft:true,input:{}){__typename ...DiscussionSimple}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename ...HubSimple}author{__typename id name}createdAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text}... on ImageParagraph{__typename image{__typename uuid}}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}",
         DiscussionCreateDraftSelector
+    )
+    let DiscussionUpdate = OperationDefinition(
+        "DiscussionUpdate",
+        .mutation, 
+        "mutation DiscussionUpdate($id:ID!,$title:String!){discussionUpdate(id:$id,input:{title:$title}){__typename ...DiscussionSimple}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename ...HubSimple}author{__typename id name}createdAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text}... on ImageParagraph{__typename image{__typename uuid}}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}",
+        DiscussionUpdateSelector
     )
     let EditComment = OperationDefinition(
         "EditComment",
@@ -6731,6 +6755,7 @@ class Operations {
         if name == "DiscoverSuggestedRooms" { return DiscoverSuggestedRooms }
         if name == "DiscoverTopFree" { return DiscoverTopFree }
         if name == "DiscoverTopPremium" { return DiscoverTopPremium }
+        if name == "Discussion" { return Discussion }
         if name == "DiscussionDrafts" { return DiscussionDrafts }
         if name == "Discussions" { return Discussions }
         if name == "ExplorePeople" { return ExplorePeople }
@@ -6841,6 +6866,7 @@ class Operations {
         if name == "DiscoverEditorsChoiceDelete" { return DiscoverEditorsChoiceDelete }
         if name == "DiscoverEditorsChoiceUpdate" { return DiscoverEditorsChoiceUpdate }
         if name == "DiscussionCreateDraft" { return DiscussionCreateDraft }
+        if name == "DiscussionUpdate" { return DiscussionUpdate }
         if name == "EditComment" { return EditComment }
         if name == "EditMessage" { return EditMessage }
         if name == "FeatureFlagAdd" { return FeatureFlagAdd }

@@ -2741,6 +2741,12 @@ const DiscoverTopPremiumSelector = obj(
                     field('cursor', 'cursor', args(), scalar('String'))
                 )))
         );
+const DiscussionSelector = obj(
+            field('discussion', 'discussion', args(fieldValue("id", refValue('id'))), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('Discussion', DiscussionSimpleSelector)
+                ))
+        );
 const DiscussionDraftsSelector = obj(
             field('discussionMyDrafts', 'discussionMyDrafts', args(fieldValue("first", intValue(20)), fieldValue("after", refValue('after'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -4385,6 +4391,12 @@ const DiscussionCreateDraftSelector = obj(
                     fragment('Discussion', DiscussionSimpleSelector)
                 )))
         );
+const DiscussionUpdateSelector = obj(
+            field('discussionUpdate', 'discussionUpdate', args(fieldValue("id", refValue('id')), fieldValue("input", objectValue(fieldValue('title', refValue('title'))))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('Discussion', DiscussionSimpleSelector)
+                )))
+        );
 const EditCommentSelector = obj(
             field('editComment', 'editComment', args(fieldValue("id", refValue('id')), fieldValue("message", refValue('message')), fieldValue("mentions", refValue('mentions')), fieldValue("fileAttachments", refValue('fileAttachments')), fieldValue("spans", refValue('spans'))), notNull(scalar('Boolean')))
         );
@@ -5375,6 +5387,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query DiscoverTopPremium($first:Int!,$after:String){discoverTopPremium(first:$first,after:$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
         selector: DiscoverTopPremiumSelector
     },
+    Discussion: {
+        kind: 'query',
+        name: 'Discussion',
+        body: 'query Discussion($id:ID!){discussion(id:$id){__typename ...DiscussionSimple}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename ...HubSimple}author{__typename id name}createdAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text}... on ImageParagraph{__typename image{__typename uuid}}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}',
+        selector: DiscussionSelector
+    },
     DiscussionDrafts: {
         kind: 'query',
         name: 'DiscussionDrafts',
@@ -6034,6 +6052,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'DiscussionCreateDraft',
         body: 'mutation DiscussionCreateDraft{discussionCreate(isDraft:true,input:{}){__typename ...DiscussionSimple}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename ...HubSimple}author{__typename id name}createdAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text}... on ImageParagraph{__typename image{__typename uuid}}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}',
         selector: DiscussionCreateDraftSelector
+    },
+    DiscussionUpdate: {
+        kind: 'mutation',
+        name: 'DiscussionUpdate',
+        body: 'mutation DiscussionUpdate($id:ID!,$title:String!){discussionUpdate(id:$id,input:{title:$title}){__typename ...DiscussionSimple}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename ...HubSimple}author{__typename id name}createdAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text}... on ImageParagraph{__typename image{__typename uuid}}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}',
+        selector: DiscussionUpdateSelector
     },
     EditComment: {
         kind: 'mutation',

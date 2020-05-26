@@ -76,8 +76,20 @@ query DiscussionDrafts($after: String) {
     }
 }
 
+query Discussion($id: ID!) {
+    discussion(id: $id) {
+        ...DiscussionSimple
+    }
+}
+
 mutation DiscussionCreateDraft {
     discussionCreate(isDraft: true, input: {  }) {
+        ...DiscussionSimple
+    }
+}
+
+mutation DiscussionUpdate($id: ID!, $title: String!) {
+    discussionUpdate(id: $id, input: { title: $title  }) {
         ...DiscussionSimple
     }
 }

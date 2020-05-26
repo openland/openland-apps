@@ -25,12 +25,14 @@ export const DraftsFragment = React.memo(() => {
         return (
             <>
                 <UHeader title="Drafts" appearance="fullwidth" />
-                <UButton text="Publish" loading={creating} onClick={create} />
-                {drafts.map((d) => (
-                    <XView borderRadius={16} backgroundColor="red" height={100} width={100} path={'/discuss/edit/' + d.id}>
-                        {d.title}
-                    </XView>
-                ))}
+                <XView flexDirection="column">
+                    <UButton text="Publish" loading={creating} onClick={create} alignSelf="flex-start" />
+                    {drafts.map((d) => (
+                        <XView alignSelf="stretch" borderRadius={16} borderWidth={1} borderColor="red" height={100} path={'/discuss/edit/' + d.id}>
+                            {d.title === '' ? 'Untitled discussion' : d.title}
+                        </XView>
+                    ))}
+                </XView>
             </>
         );
     } else {

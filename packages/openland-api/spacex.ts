@@ -100,6 +100,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: OperationParameters): Promise<Types.DiscoverTopPremium> {
         return this.query('DiscoverTopPremium', variables, opts);
     }
+    queryDiscussion(variables: Types.DiscussionVariables, opts?: OperationParameters): Promise<Types.Discussion> {
+        return this.query('Discussion', variables, opts);
+    }
     queryDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts?: OperationParameters): Promise<Types.DiscussionDrafts> {
         return this.query('DiscussionDrafts', variables, opts);
     }
@@ -424,6 +427,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: OperationParameters): Promise<Types.DiscoverTopPremium> {
         return this.refetch('DiscoverTopPremium', variables);
     }
+    refetchDiscussion(variables: Types.DiscussionVariables, opts?: OperationParameters): Promise<Types.Discussion> {
+        return this.refetch('Discussion', variables);
+    }
     refetchDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts?: OperationParameters): Promise<Types.DiscussionDrafts> {
         return this.refetch('DiscussionDrafts', variables);
     }
@@ -747,6 +753,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, updater: (data: Types.DiscoverTopPremium) => Types.DiscoverTopPremium | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverTopPremium', variables);
+    }
+    updateDiscussion(variables: Types.DiscussionVariables, updater: (data: Types.Discussion) => Types.Discussion | null): Promise<boolean> {
+        return this.updateQuery(updater, 'Discussion', variables);
     }
     updateDiscussionDrafts(variables: Types.DiscussionDraftsVariables, updater: (data: Types.DiscussionDrafts) => Types.DiscussionDrafts | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscussionDrafts', variables);
@@ -1133,6 +1142,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverTopPremium;
     useDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverTopPremium | null {
         return this.useQuery('DiscoverTopPremium', variables, opts);
+    }
+    useDiscussion(variables: Types.DiscussionVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Discussion | null;
+    useDiscussion(variables: Types.DiscussionVariables, opts?: SpaceQueryWatchParameters): Types.Discussion;
+    useDiscussion(variables: Types.DiscussionVariables, opts?: SpaceQueryWatchParameters): Types.Discussion | null {
+        return this.useQuery('Discussion', variables, opts);
     }
     useDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscussionDrafts | null;
     useDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts?: SpaceQueryWatchParameters): Types.DiscussionDrafts;
@@ -1617,6 +1631,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateDiscussionCreateDraft(): Promise<Types.DiscussionCreateDraft> {
         return this.mutate('DiscussionCreateDraft');
+    }
+    mutateDiscussionUpdate(variables: Types.DiscussionUpdateVariables): Promise<Types.DiscussionUpdate> {
+        return this.mutate('DiscussionUpdate', variables);
     }
     mutateEditComment(variables: Types.EditCommentVariables): Promise<Types.EditComment> {
         return this.mutate('EditComment', variables);

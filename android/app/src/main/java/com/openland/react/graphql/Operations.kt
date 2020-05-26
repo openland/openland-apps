@@ -38,6 +38,7 @@ object Operations {
         if (name == "DiscoverSuggestedRooms") return DiscoverSuggestedRooms
         if (name == "DiscoverTopFree") return DiscoverTopFree
         if (name == "DiscoverTopPremium") return DiscoverTopPremium
+        if (name == "Discussion") return Discussion
         if (name == "DiscussionDrafts") return DiscussionDrafts
         if (name == "Discussions") return Discussions
         if (name == "ExplorePeople") return ExplorePeople
@@ -148,6 +149,7 @@ object Operations {
         if (name == "DiscoverEditorsChoiceDelete") return DiscoverEditorsChoiceDelete
         if (name == "DiscoverEditorsChoiceUpdate") return DiscoverEditorsChoiceUpdate
         if (name == "DiscussionCreateDraft") return DiscussionCreateDraft
+        if (name == "DiscussionUpdate") return DiscussionUpdate
         if (name == "EditComment") return EditComment
         if (name == "EditMessage") return EditMessage
         if (name == "FeatureFlagAdd") return FeatureFlagAdd
