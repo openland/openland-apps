@@ -3,7 +3,7 @@ import { XView } from 'react-mental';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
-import { URickInput, convertFromInputValue, URickInputInstance } from 'openland-web/components/unicorn/URickInput';
+import { URickInput, URickInputInstance } from 'openland-web/components/unicorn/URickInput';
 import { detectOS } from 'openland-x-utils/detectOS';
 import { css, cx } from 'linaria';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
@@ -24,6 +24,7 @@ import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacyment
 import { showNoiseWarning } from 'openland-web/fragments/chat/components/NoiseWarning';
 import { plural } from 'openland-y-utils/plural';
 import { useShake } from 'openland-web/pages/auth/components/authComponents';
+import { extractTextAndMentions } from 'openland-web/utils/convertTextAndMentions';
 
 const inputStyle = css`
     min-height: 88px;
@@ -94,7 +95,7 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
             return false;
         }
         let data = editor.getText();
-        const { text, mentions } = convertFromInputValue(data);
+        const { text, mentions } = extractTextAndMentions(data);
         const mentionsPrepared = prepareLegacyMentionsForSend(text, mentions);
         if (text.length > 0) {
             if (mentionsPrepared.filter(m => m.all === true).length) {

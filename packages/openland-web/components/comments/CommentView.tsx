@@ -6,7 +6,7 @@ import { emoji } from 'openland-y-utils/emoji';
 import { css } from 'linaria';
 import { CommentTools } from './CommentTools';
 import { CommentInput } from './CommentInput';
-import { URickTextValue, convertFromInputValue } from 'openland-web/components/unicorn/URickInput';
+import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MessageSenderContent } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
@@ -19,6 +19,7 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import { XViewRouterContext } from 'react-mental';
+import { extractTextAndMentions } from 'openland-web/utils/convertTextAndMentions';
 
 const avatarWrapper = css`
     flex-shrink: 0;
@@ -121,7 +122,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
     );
 
     const handleEditSave = React.useCallback(async (data: URickTextValue) => {
-        const { text, mentions } = convertFromInputValue(data);
+        const { text, mentions } = extractTextAndMentions(data);
 
         if (text.length > 0) {
             await client.mutateEditComment({

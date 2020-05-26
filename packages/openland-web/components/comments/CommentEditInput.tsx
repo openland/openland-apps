@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { URickTextValue, convertToInputValue } from 'openland-web/components/unicorn/URickInput';
+import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { SendMessageComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';
 import { css } from 'linaria';
 import { Span } from 'openland-y-utils/spans/Span';
+import { convertToInputValue } from 'openland-web/utils/convertTextAndMentions';
 
 const wrapperClass = css`
     padding: 8px 0;

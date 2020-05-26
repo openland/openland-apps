@@ -26,9 +26,7 @@ import { TypingsView } from '../messenger/typings/TypingsView';
 import { XLoader } from 'openland-x/XLoader';
 import {
     URickInputInstance,
-    URickTextValue,
-    convertToInputValue,
-    convertFromInputValue,
+    URickTextValue
 } from 'openland-web/components/unicorn/URickInput';
 import { InputMessageActionComponent } from './InputMessageActionComponent';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
@@ -42,6 +40,7 @@ import { showNoiseWarning } from './NoiseWarning';
 import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarComponent';
 import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
 import { AppConfig } from 'openland-y-runtime-web/AppConfig';
+import { extractTextAndMentions, convertToInputValue } from 'openland-web/utils/convertTextAndMentions';
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
@@ -357,7 +356,7 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
         const actionState = this.conversation!.messagesActionsStateEngine.getState();
         const actionMessage = actionState.messages[0];
 
-        const { text, mentions } = convertFromInputValue(data);
+        const { text, mentions } = extractTextAndMentions(data);
         const mentionsPrepared = prepareLegacyMentionsForSend(text, mentions);
 
         if (

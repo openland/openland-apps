@@ -40,6 +40,9 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
         console.log(src);
         sync.invalidate();
     }, []);
+    const onContentChange = React.useCallback((src: URickTextValue) => {
+        console.log(src);
+    }, []);
 
     return (
         <XView>
@@ -65,6 +68,7 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
                 ref={contentRef}
                 hideEmoji={true}
                 initialContent={initialParagraph}
+                onContentChange={onContentChange}
                 appearance="article"
                 placeholder="Your story..."
             />

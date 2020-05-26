@@ -4,7 +4,7 @@ import { css } from 'linaria';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { CommentInput } from './CommentInput';
 import { CommentsList } from './CommentsList';
-import { URickTextValue, convertFromInputValue } from 'openland-web/components/unicorn/URickInput';
+import { URickTextValue } from 'openland-web/components/unicorn/URickInput';
 import { findSpans } from 'openland-y-utils/findSpans';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import UUID from 'uuid/v4';
@@ -12,6 +12,7 @@ import { StickerFragment } from 'openland-api/spacex.types';
 import { showAttachConfirm } from 'openland-web/fragments/chat/components/AttachConfirm';
 import { DropZone } from 'openland-web/fragments/chat/components/DropZone';
 import { showNoiseWarning } from 'openland-web/fragments/chat/components/NoiseWarning';
+import { extractTextAndMentions } from 'openland-web/utils/convertTextAndMentions';
 
 const wrapperClass = css`
     display: flex;
@@ -46,7 +47,7 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
     }, [highlightId]);
 
     const handleCommentSent = React.useCallback(async (data: URickTextValue) => {
-        const { text, mentions } = convertFromInputValue(data);
+        const { text, mentions } = extractTextAndMentions(data);
 
         const mentionsPrepared = prepareLegacyMentionsForSend(text, mentions);
 
