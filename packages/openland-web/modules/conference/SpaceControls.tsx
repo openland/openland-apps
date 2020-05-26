@@ -221,19 +221,30 @@ const Slider = (props: { initialValue: number, onChange: (value: number) => void
 };
 
 interface SpaceControlsProps {
-    action: string;
+    isErasing: boolean;
+    color?: string;
     initialPenSize: number;
-    onActionChange: (action: string) => void;
-    onTextClick: (centered?: boolean) => void;
+    onPenSelect: () => void;
+    onPenClose: () => void;
+    onColorChange: (color: string) => void;
+    onEraseClick: () => void;
+    onTextClick: () => void;
     onImageClick: (files: File[]) => void;
     onPenSizeChange: (value: number) => void;
 }
 
 export const SpaceControls = React.memo((props: SpaceControlsProps) => {
-    const { action, initialPenSize, onActionChange, onTextClick, onImageClick, onPenSizeChange } = props;
+    const { isErasing, color, initialPenSize, onPenSelect, onPenClose, onColorChange, onEraseClick, onTextClick, onImageClick, onPenSizeChange } = props;
     const [penOpened, setPenOpened] = React.useState(false);
-    const togglePen = () => setPenOpened(x => !x);
-    const prevColor = React.useRef<string | null>(action);
+    const togglePen = () => {
+        if (!penOpened) {
+            onPenSelect();
+        } else {
+            onPenClose();
+        }
+        setPenOpened(x => !x);
+    };
+    const prevColor = React.useRef<string | undefined>(color);
     const fileInputRef = React.useRef<HTMLInputElement>(null);
     const initialPenValue = sizeToValue(initialPenSize);
 
@@ -244,17 +255,17 @@ export const SpaceControls = React.memo((props: SpaceControlsProps) => {
         }
     }, []);
     const handleTextClick = () => {
-        onTextClick(true);
+        onTextClick();
     };
-    const handleActionChange = (a: string | 'erase') => {
+    const handleColorChange = (a: string | 'erase') => {
         prevColor.current = a;
-        onActionChange(a);
+        onColorChange(a);
     };
     const handleEraseClick = () => {
-        if (action !== 'erase') {
-            onActionChange('erase');
+        if (!isErasing) {
+            onEraseClick();
         } else if (prevColor.current) {
-            onActionChange(prevColor.current);
+            onColorChange(prevColor.current);
         }
     };
     const handlePenSizeChange = (value: number) => {
@@ -291,19 +302,19 @@ export const SpaceControls = React.memo((props: SpaceControlsProps) => {
             <div className={penControlItem}>
                 <span className={controlText}>Color</span>
                 <div className={colorsPalette}>
-                    {spaceColors.map(color => (
+                    {spaceColors.map(c => (
                         <div
-                            key={color}
-                            className={cx(colorsItem, color === action && colorsItemActive)}
-                            style={{ '--item-color': color } as React.CSSProperties}
-                            onClick={() => handleActionChange(color)}
+                            key={c}
+                            className={cx(colorsItem, color === c && colorsItemActive)}
+                            style={{ '--item-color': c } as React.CSSProperties}
+                            onClick={() => handleColorChange(c)}
                         />
                     ))}
                 </div>
                 <span className={controlText}>Size</span>
                 <Slider initialValue={initialPenValue} onChange={handlePenSizeChange} />
             </div>
-            <div className={cx(controlItem, action === 'erase' && controlItemActive)} onClick={handleEraseClick}>
+            <div className={cx(controlItem, isErasing && controlItemActive)} onClick={handleEraseClick}>
                 <IconErase className={controlIcon} />
                 <span className={controlText}>Erase</span>
             </div>

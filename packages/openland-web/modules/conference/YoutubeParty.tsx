@@ -20,7 +20,7 @@ const YtbContainerStyle = css`
 
 export const YoutubeParty = React.memo((props: { link: string, scope: string, controls?: boolean }) => {
     let id: string | undefined;
-    let url = new URL(props.link);
+    let url = props.link.startsWith('http') ? new URL(props.link) : new URL(`https://${props.link}`);
     if (props.link.includes('youtu.be')) {
         id = url.pathname.split('/')[0];
     } else {
