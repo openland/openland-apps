@@ -122,10 +122,15 @@ class AppUserMediaIpl implements AppUserMediaApi {
         let canvas = document.createElement("canvas");
         Object.assign(canvas, { width: 1, height: 1 });
         canvas.getContext('2d')?.fillRect(0, 0, 1, 1);
-        let stream = (canvas as any).captureStream();
-        let res = stream.getVideoTracks()[0];
-        res.enabled = true;
-        return new AppUserMediaTrackWeb(res);
+        try {
+            let stream = (canvas as any).captureStream();
+            let res = stream.getVideoTracks()[0];
+            res.enabled = true;
+            return new AppUserMediaTrackWeb(res);
+        } catch (e) {
+            console.error(e);
+        }
+        return null;
     }
 
     getUserAudioPromise = () => {
