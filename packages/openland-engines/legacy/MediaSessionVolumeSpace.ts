@@ -1,12 +1,11 @@
 import { MediaSessionManager } from '../media/MediaSessionManager';
 import { VMMapMap, VM } from 'openland-y-utils/mvvm/vm';
 import uuid from 'uuid';
-import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { GlobalEventBus } from 'openland-engines/GlobalEventBus';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { TintRed, TintOrange, TintGreen, TintCyan, TintBlue, TintPurple, TintPink } from 'openland-y-utils/themes/tints';
 import { ThemeLight } from 'openland-y-utils/themes/light';
-import { UploadingFile, LocalImage } from 'openland-engines/messenger/types';
+import { UploadingFile } from 'openland-engines/messenger/types';
 import { MediaSessionState } from 'openland-engines/media/MediaSessionState';
 
 export const spaceColors = [TintRed.primary, TintOrange.primary, TintGreen.primary, TintCyan.primary, TintBlue.primary, TintPurple.primary, TintPink.primary, ThemeLight.foregroundContrast];
@@ -92,12 +91,14 @@ export class SimpleText {
     fontSize: number;
     coords: number[];
     containerWH: number[];
+    createdAt: number;
     constructor(coords: number[], containerWH: number[], color: string, fontSize: number) {
         this.id = `simple_text_${uuid()}`;
         this.coords = coords;
         this.containerWH = containerWH;
         this.color = color;
         this.fontSize = fontSize;
+        this.createdAt = Date.now();
     }
 }
 
@@ -272,11 +273,9 @@ export class MediaSessionVolumeSpace {
     //
     // images
     //
-    addImage = (file?: UploadingFile | undefined, localImage?: LocalImage | undefined) => {
-        if (localImage && file) {
+    addImage = (file: UploadingFile | undefined, image: Image) => {
+        if (file) {
             (async () => {
-                let layout = layoutMedia(localImage.width, localImage.height, 600, 600);
-                let image = new Image(undefined, this.selfPeer?.coords || [1500, 1500], [localImage.width, localImage.height], [layout.width, layout.height]);
                 file.watch(s => {
                     if (!image.fileId && s.uuid) {
                         image.fileId = s.uuid;

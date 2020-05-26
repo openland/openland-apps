@@ -6,8 +6,8 @@ import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager'
 import { VideoComponent } from './ScreenShareModal';
 import { UAvatar, getPlaceholderColorRawById } from 'openland-web/components/unicorn/UAvatar';
 import { bezierPath, pointsDistance, pointNearLine } from './space-utils';
-import { Path, MediaSessionVolumeSpace, SpaceObject, SimpleText } from 'openland-engines/legacy/MediaSessionVolumeSpace';
-import { uploadcareOptions } from 'openland-y-utils/MediaLayout';
+import { Path, MediaSessionVolumeSpace, SpaceObject, SimpleText, Image } from 'openland-engines/legacy/MediaSessionVolumeSpace';
+import { uploadcareOptions, layoutMedia } from 'openland-y-utils/MediaLayout';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { makeStars } from './stars';
@@ -19,6 +19,13 @@ import { YoutubeParty } from './YoutubeParty';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { SpaceControls } from './SpaceControls';
 import { showAttachConfirm } from 'openland-web/fragments/chat/components/AttachConfirm';
+import { CONTROLS_WIDTH } from './CallControls';
+import { UploadingFile, LocalImage } from 'openland-engines/messenger/types';
+
+const TEXT_MIN_HEIGHT = 34;
+const TEXT_MIN_WIDTH = 50;
+const TEXT_LINE_HEIGHT = 24;
+const YOUTUBE_REGEX = /.*(youtube\.com|youtu\.be)\/.+/i;
 
 let VolumeSpaceContainerStyle = css`
     width: 100%;
@@ -90,95 +97,39 @@ let VolumeSpaceVideoStyle = css`
     background-color: var(--foregroundSecondary);
 `;
 
+let resizeDotStyles = css`
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    border: 1px solid #4DA6FF;
+    background-color: var(--foregroundContrast);
+    pointer-events: all;
+`;
+
 let PeerImageContainer = css`
     will-change: transform;
-    pointer-events: none;
 
     display: flex;
     overflow: visible;
     position: absolute;
-    background-color: var(--backgroundTertiaryTrans);
+    padding: 2px;
+    border-radius: 6px;
+    border: 1px solid transparent;
 `;
 
 let ImageStyle = css`
-    pointer-events: none;
     width: 100%;
     height: 100%;
-`;
-let ResizerAnchorStyle = css`
-    pointer-events: all;
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    bottom: 0;
-    right: 0;
-    cursor: se-resize;
-    ::after{
-        pointer-events: none;
-        content: '';
-        position: absolute;
-        width: 4px;
-        height: 4px;
-        bottom: 4px;
-        right: 4px;
-        background-color: var(--foregroundTertiary);
-        border-radius: 4px;
-        border: 2px solid  var(--backgroundTertiary)
-    }
-`;
-
-let MoveAnchorStyle = css`
-    pointer-events: all;
-    position: absolute;
-    width: 100%;
-    height: 30px;
-    top: 0;
-    cursor: move;
-
-    ::after{
-        pointer-events: none;
-        content: '';
-        position: absolute;
-        height: 4px;
-        width: 16px;
-        top: 4px;
-       
-        left: 0;
-        right: 0;
-        margin: auto;
-
-        background-color: var(--foregroundTertiary);
-        border-radius: 4px;
-        border: 2px solid  var(--backgroundTertiary)
-    }
-`;
-
-let DeleteAnchorStyle = css`
-    pointer-events: all;
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    top: 0;
-    right: 0;
-    cursor: pointer;
-    ::after{
-        pointer-events: none;
-        content: '';
-        position: absolute;
-        width: 4px;
-        height: 4px;
-        top: 4px;
-        right: 4px;
-        background-color: var(--tintRed);
-        border-radius: 4px;
-        border: 2px solid  var(--backgroundTertiary)
-    }
+    border-radius: 6px;
 `;
 
 let PeerTextContainer = css`
     will-change: transform;
 
-    border-radius: 8px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    padding: 4px;
 
     pointer-events: none;
     display: flex;
@@ -186,17 +137,19 @@ let PeerTextContainer = css`
     position: absolute;
 `;
 
-let PeerTextContainerEditable = css`
-    transition: background-color 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
-    & > div {
-            transition: opacity 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
-            opacity: 0;
-        }
-    :hover{
-        background-color: var(--backgroundTertiaryTrans);
-        & > div {
+let PeerObjectContainerEditable = css`
+    transition: border 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
+
+    &:hover, &:focus-within {
+        border: 1px solid #4DA6FF;
+
+        .${resizeDotStyles} {
             opacity: 1;
         }
+    }
+    .${resizeDotStyles} {
+        transition: opacity 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
+        opacity: 0;
     }
 `;
 
@@ -205,12 +158,22 @@ let PointerEventsInherit = css`
 `;
 
 let TextAreaStyle = css`
-    pointer-events: inherit;
-    border-radius: 8px;
-    padding: 8px;
+    pointer-events: none;
+    border-radius: 6px;
+    cursor: default;
     width: 100%;
     height: 100%;
     resize: none;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: ${TEXT_LINE_HEIGHT}px;
+
+    &::placeholder {
+        color: rgba(255, 255, 255, 0.56);
+        font-size: 17px;
+        font-weight: 600;
+        line-height: ${TEXT_LINE_HEIGHT}px;
+    }
 `;
 
 let YtbPartyStyle = css`
@@ -240,6 +203,11 @@ let TransitionTransform = css`
     transition: transform linear 50ms;
 `;
 let isSafari = canUseDOM && ((window as any).safari !== undefined);
+
+type CursorState = {
+    action: 'none' | 'draw' | 'erase',
+    color?: string,
+};
 
 const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { videoTrack: AppMediaStreamTrack | null, space: MediaSessionVolumeSpace, selfRef?: React.RefObject<HTMLDivElement> }) => {
     let containerRef = React.useRef<HTMLDivElement>(null);
@@ -274,11 +242,66 @@ const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { vid
 // IMAGES
 ////
 
+type Placement = 'tl' | 'tr' | 'bl' | 'br';
+
+const resizeObject = (args: {
+    placement: Placement,
+    mouseCoords: number[],
+    objCoords: number[],
+    containerWH: number[],
+}): { newCoords: number[], newContainerWH: number[] } => {
+    const { placement, containerWH, mouseCoords, objCoords } = args;
+    let newCoords = objCoords;
+    let newContainerWH = containerWH;
+    if (placement === 'tl') {
+        newContainerWH = [Math.max(TEXT_MIN_WIDTH, objCoords[0] - mouseCoords[0] + containerWH[0]), Math.max(TEXT_MIN_HEIGHT, objCoords[1] - mouseCoords[1] + containerWH[1])];
+        newCoords = [
+            newContainerWH[0] <= TEXT_MIN_WIDTH ? objCoords[0] + containerWH[0] - newContainerWH[0] : mouseCoords[0],
+            newContainerWH[1] <= TEXT_MIN_HEIGHT ? objCoords[1] + containerWH[1] - newContainerWH[1] : mouseCoords[1]
+        ];
+    }
+    if (placement === 'tr') {
+        newContainerWH = [Math.max(TEXT_MIN_WIDTH, mouseCoords[0] - objCoords[0]), Math.max(TEXT_MIN_HEIGHT, objCoords[1] - mouseCoords[1] + containerWH[1])];
+        newCoords = [objCoords[0], newContainerWH[1] <= TEXT_MIN_HEIGHT ? objCoords[1] + containerWH[1] - newContainerWH[1] : mouseCoords[1]];
+    }
+    if (placement === 'bl') {
+        newContainerWH = [Math.max(TEXT_MIN_WIDTH, objCoords[0] - mouseCoords[0] + containerWH[0]), Math.max(TEXT_MIN_HEIGHT, mouseCoords[1] - objCoords[1])];
+        newCoords = [
+            newContainerWH[0] <= TEXT_MIN_WIDTH ? objCoords[0] + containerWH[0] - newContainerWH[0] : mouseCoords[0],
+            objCoords[1],
+        ];
+    }
+    if (placement === 'br') {
+        newContainerWH = [Math.max(TEXT_MIN_WIDTH, mouseCoords[0] - objCoords[0]), Math.max(TEXT_MIN_HEIGHT, mouseCoords[1] - objCoords[1])];
+    }
+    return ({ newCoords, newContainerWH });
+};
+
+const saveResizePointer = (args: { placement: Placement, coords: number[], containerWH: number[] }) => {
+    const { placement, coords, containerWH } = args;
+    if (placement === 'tl') {
+        return [coords[0], coords[1]];
+    }
+    if (placement === 'tr') {
+        return [coords[0] + containerWH[0], coords[1]];
+    }
+    if (placement === 'bl') {
+        return [coords[0], coords[1] + containerWH[1]];
+    }
+    if (placement === 'br') {
+        return [coords[0] + containerWH[0], coords[1] + containerWH[1]];
+    }
+    return undefined;
+};
+
 const PeerImage = React.memo((props: { peerId: string, peer?: Conference_conference_peers, imageId: string, space: MediaSessionVolumeSpace, peersRef: React.MutableRefObject<Conference_conference_peers[]> }) => {
     const ref = React.useRef<HTMLDivElement>(null);
-    const resizeRef = React.useRef<HTMLDivElement>(null);
-    const moveRef = React.useRef<HTMLDivElement>(null);
     const imgRef = React.useRef<HTMLImageElement>(null);
+    const resizeRefTL = React.useRef<HTMLDivElement>(null);
+    const resizeRefTR = React.useRef<HTMLDivElement>(null);
+    const resizeRefBL = React.useRef<HTMLDivElement>(null);
+    const resizeRefBR = React.useRef<HTMLDivElement>(null);
+    const focusedRef = React.useRef(false);
     const onMove = React.useCallback((coords: number[]) => {
         let img = props.space.imagesVM.getById(props.imageId);
         if (img) {
@@ -286,35 +309,52 @@ const PeerImage = React.memo((props: { peerId: string, peer?: Conference_confere
         }
     }, []);
 
-    const onImageResize = React.useCallback((coords: number[]) => {
-        let img = props.space.imagesVM.getById(props.imageId);
-        if (img) {
-            let containerWH = [Math.max(50, coords[0] - img.coords[0]), Math.max(50, coords[1] - img.coords[1])];
-            props.space.update(img.id, { containerWH, type: 'image' });
+    const onJsDragStart = React.useCallback(() => {
+        if (ref.current) {
+            ref.current.focus({ preventScroll: true });
         }
     }, []);
 
+    const onImageResize = (placement: Placement) => (coords: number[]) => {
+        let img = props.space.imagesVM.getById(props.imageId);
+        if (img) {
+            let { newCoords, newContainerWH } = resizeObject({ placement, mouseCoords: coords, objCoords: img.coords, containerWH: img.containerWH });
+            props.space.update(img.id, { coords: newCoords, containerWH: newContainerWH, type: 'image' });
+        }
+    };
+
     // worse access mgmt ever
-    let canMove = (props.peer?.user.isYou || !props.peersRef.current.find(peer => peer.id === props.peerId));
-    if (canMove) {
-        useJsDrag(moveRef, {
+    let canEdit = (props.peer?.user.isYou || !props.peersRef.current.find(peer => peer.id === props.peerId));
+    if (canEdit) {
+        useJsDrag(ref, {
             containerRef: ref,
             onMove,
+            onStart: onJsDragStart,
             savedCallback: () => {
                 let img = props.space.imagesVM.getById(props.imageId);
                 return img?.coords;
             }
         });
 
-        useJsDrag(resizeRef, {
-            onMove: onImageResize,
-            savedCallback: () => {
-                let img = props.space.imagesVM.getById(props.imageId);
-                if (img) {
-                    return [img.coords[0] + img.containerWH[0], img.coords[1] + img.containerWH[1]];
+        let targets: [Placement, React.RefObject<HTMLDivElement>][] = [
+            ['tl', resizeRefTL],
+            ['tr', resizeRefTR],
+            ['bl', resizeRefBL],
+            ['br', resizeRefBR],
+        ];
+
+        targets.forEach(([placement, target]) => {
+            useJsDrag(target, {
+                onMove: onImageResize(placement),
+                onStart: onJsDragStart,
+                savedCallback: () => {
+                    let img = props.space.imagesVM.getById(props.imageId);
+                    if (!img) {
+                        return;
+                    }
+                    return saveResizePointer({ placement, coords: img.coords, containerWH: img.containerWH });
                 }
-                return undefined;
-            }
+            });
         });
     }
     React.useEffect(() => {
@@ -338,15 +378,43 @@ const PeerImage = React.memo((props: { peerId: string, peer?: Conference_confere
             }
         });
     }, []);
+
     const del = React.useCallback(() => {
-        props.space.delete(props.imageId);
+        if (canEdit && focusedRef.current) {
+            props.space.delete(props.imageId);
+            return true;
+        }
+        return false;
+    }, []);
+
+    useShortcuts([
+        { keys: ['Delete'], callback: del },
+        { keys: ['Backspace'], callback: del },
+    ]);
+
+    const handleFocus = React.useCallback(() => {
+        focusedRef.current = true;
+    }, []);
+    const handleBlur = React.useCallback(() => {
+        focusedRef.current = false;
     }, []);
     return (
-        <div ref={ref} className={PeerImageContainer}>
+        <div
+            ref={ref}
+            tabIndex={-2}
+            className={cx(PeerImageContainer, canEdit && PeerObjectContainerEditable)}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+        >
             <div className={ImageStyle} ref={imgRef} />
-            {canMove && <div ref={resizeRef} className={ResizerAnchorStyle} />}
-            {canMove && <div ref={moveRef} className={MoveAnchorStyle} />}
-            {canMove && <div onClick={del} className={DeleteAnchorStyle} />}
+            {canEdit && (
+                <>
+                    <div className={resizeDotStyles} style={{ left: '-4px', top: '-4px', cursor: 'nw-resize' }} ref={resizeRefTL} />
+                    <div className={resizeDotStyles} style={{ right: '-4px', top: '-4px', cursor: 'ne-resize' }} ref={resizeRefTR} />
+                    <div className={resizeDotStyles} style={{ left: '-4px', bottom: '-4px', cursor: 'sw-resize' }} ref={resizeRefBL} />
+                    <div className={resizeDotStyles} style={{ right: '-4px', bottom: '-4px', cursor: 'se-resize' }} ref={resizeRefBR} />
+                </>
+            )}
         </div>
     );
 });
@@ -356,7 +424,13 @@ const PeerText = React.memo((props: { peerId: string, peer?: Conference_conferen
     const moveRef = React.useRef<HTMLDivElement>(null);
     const textRef = React.useRef<HTMLTextAreaElement>(null);
     const ytbContainerRef = React.useRef<HTMLDivElement>(null);
-    const resizeRef = React.useRef<HTMLDivElement>(null);
+    const resizeRefTL = React.useRef<HTMLDivElement>(null);
+    const resizeRefTR = React.useRef<HTMLDivElement>(null);
+    const resizeRefBL = React.useRef<HTMLDivElement>(null);
+    const resizeRefBR = React.useRef<HTMLDivElement>(null);
+    const didResizeRef = React.useRef(false);
+    const focusedRef = React.useRef(false);
+    const textFocusedRef = React.useRef(false);
     const [ytbLink, setYtbLink] = React.useState<string>();
     const onMove = React.useCallback((coords: number[]) => {
         let t = props.space.simpleTextsVM.getById(props.textId);
@@ -365,16 +439,21 @@ const PeerText = React.memo((props: { peerId: string, peer?: Conference_conferen
         }
     }, []);
 
-    const onResize = React.useCallback((coords: number[]) => {
+    const onResize = (placement: Placement) => (coords: number[]) => {
         let t = props.space.simpleTextsVM.getById(props.textId);
-        if (t) {
-            let containerWH = [Math.max(50, coords[0] - t.coords[0]), Math.max(50, coords[1] - t.coords[1])];
-            props.space.update(t.id, { containerWH, type: 'simple_text' });
+        if (!t) {
+            return;
         }
-    }, []);
+        let { newCoords, newContainerWH } = resizeObject({ placement, mouseCoords: coords, objCoords: t.coords, containerWH: t.containerWH });
+        props.space.update(t.id, { coords: newCoords, containerWH: newContainerWH, type: 'simple_text' });
+        didResizeRef.current = true;
+    };
     const onJsDragStart = React.useCallback(() => {
         if (ytbContainerRef.current) {
             ytbContainerRef.current.style.pointerEvents = 'none';
+        }
+        if (ref.current) {
+            ref.current.focus({ preventScroll: true });
         }
     }, []);
     const onJsDragStop = React.useCallback(() => {
@@ -386,9 +465,22 @@ const PeerText = React.memo((props: { peerId: string, peer?: Conference_conferen
     const onTextChanged = React.useCallback((ev: React.ChangeEvent<HTMLTextAreaElement>) => {
         let t = props.space.simpleTextsVM.getById(props.textId);
         if (t) {
+            if (YOUTUBE_REGEX.test(ev.currentTarget.value)) {
+                let newContainerWH = [540, 320];
+                props.space.update(t.id, { containerWH: newContainerWH, text: ev.target.value, type: 'simple_text' });
+                return;
+            }
+            if (textRef.current && !didResizeRef.current) {
+                let heightToScroll = textRef.current.scrollHeight - textRef.current.clientHeight;
+                if (heightToScroll > 0) {
+                    let newContainerWH = [t.containerWH[0], t.containerWH[1] + TEXT_LINE_HEIGHT];
+                    props.space.update(t.id, { containerWH: newContainerWH, text: ev.target.value, type: 'simple_text' });
+                    return;
+                }
+            }
             props.space.update(t.id, { text: ev.target.value, type: 'simple_text' });
         }
-    }, []);
+    }, [textRef.current]);
 
     // worse access mgmt ever
     let canEdit = (props.peer?.user.isYou || !props.peersRef.current.find(peer => peer.id === props.peerId));
@@ -403,27 +495,38 @@ const PeerText = React.memo((props: { peerId: string, peer?: Conference_conferen
                 return text?.coords;
             }
         });
-        useJsDrag(resizeRef, {
-            onMove: onResize,
-            onStart: onJsDragStart,
-            onStop: onJsDragStop,
 
-            savedCallback: () => {
-                let text = props.space.simpleTextsVM.getById(props.textId);
-                if (text) {
-                    return [text.coords[0] + text.containerWH[0], text.coords[1] + text.containerWH[1]];
+        let targets: [Placement, React.RefObject<HTMLDivElement>][] = [
+            ['tl', resizeRefTL],
+            ['tr', resizeRefTR],
+            ['bl', resizeRefBL],
+            ['br', resizeRefBR],
+        ];
+
+        targets.forEach(([placement, target]) => {
+            useJsDrag(target, {
+                onMove: onResize(placement),
+                onStart: onJsDragStart,
+                onStop: onJsDragStop,
+
+                savedCallback: () => {
+                    let text = props.space.simpleTextsVM.getById(props.textId);
+                    if (!text) {
+                        return;
+                    }
+                    return saveResizePointer({ placement, coords: text.coords, containerWH: text.containerWH });
                 }
-                return undefined;
-            }
+            });
         });
     }
     React.useEffect(() => {
         return props.space.simpleTextsVM.listenId(props.peerId, props.textId, text => {
             if (ref.current) {
+                const justCreated = Date.now() - text.createdAt < 100;
                 ref.current.style.transform = `translate(${text.coords[0]}px, ${text.coords[1]}px)`;
                 if (textRef.current) {
                     textRef.current.value = text.text;
-                    if (canEdit) {
+                    if (canEdit && justCreated) {
                         textRef.current.focus({ preventScroll: true });
                     }
                     textRef.current.style.color = text.color;
@@ -433,21 +536,99 @@ const PeerText = React.memo((props: { peerId: string, peer?: Conference_conferen
                 ref.current.style.width = `${text.containerWH[0]}px`;
                 ref.current.style.height = `${text.containerWH[1]}px`;
 
-                setYtbLink(text.text.includes('youtube') || text.text.includes('youtu.be') ? text.text : undefined);
+                if (YOUTUBE_REGEX.test(text.text)) {
+                    setYtbLink(text.text);
+                }
             }
         });
     }, []);
-    const del = React.useCallback(() => {
-        props.space.delete(props.textId);
+    const handleTextFocus = React.useCallback(() => {
+        textFocusedRef.current = true;
     }, []);
+    const handleTextBlur = React.useCallback(() => {
+        if (textRef.current) {
+            textRef.current.style.pointerEvents = 'none';
+        }
+        if (moveRef.current) {
+            moveRef.current.style.display = 'block';
+        }
+        textFocusedRef.current = false;
+    }, []);
+    const clickedRef = React.useRef(false);
+    const handleClick = () => {
+        if (clickedRef.current && canEdit) {
+            if (moveRef.current) {
+                moveRef.current.style.display = 'none';
+            }
+            if (textRef.current) {
+                textRef.current.focus({ preventScroll: true });
+                textRef.current.style.pointerEvents = 'auto';
+                textRef.current.style.cursor = 'text';
+            }
+
+            clickedRef.current = false;
+            return;
+        }
+
+        clickedRef.current = true;
+        setTimeout(() => {
+            clickedRef.current = false;
+        }, 300);
+    };
+
+    const del = React.useCallback(() => {
+        if (canEdit && focusedRef.current && !textFocusedRef.current) {
+            props.space.delete(props.textId);
+            return true;
+        }
+        return false;
+    }, [canEdit]);
+
+    useShortcuts([
+        { keys: ['Delete'], callback: del },
+        { keys: ['Backspace'], callback: del },
+    ]);
+    const handleFocus = React.useCallback(() => {
+        focusedRef.current = true;
+    }, []);
+    const handleBlur = React.useCallback(() => {
+        focusedRef.current = false;
+    }, []);
+
     return (
-        <div ref={ref} className={cx(PeerTextContainer, canEdit && PeerTextContainerEditable, (canEdit || ytbLink) && PointerEventsInherit)}>
-            {!ytbLink && <textarea className={TextAreaStyle} ref={textRef} onChange={onTextChanged} />}
+        <div
+            ref={ref}
+            className={cx(
+                PeerTextContainer,
+                canEdit && PeerObjectContainerEditable,
+                (canEdit || ytbLink) && PointerEventsInherit,
+            )}
+            tabIndex={-2}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            onClick={handleClick}
+        >
+            <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, top: 0, zIndex: 10 }} ref={moveRef} />
+            {!ytbLink && (
+                <textarea
+                    className={TextAreaStyle}
+                    ref={textRef}
+                    placeholder="Your text"
+                    onChange={onTextChanged}
+                    onFocus={handleTextFocus}
+                    onBlur={handleTextBlur}
+                />
+            )}
             {ytbLink && <div ref={ytbContainerRef} className={YtbPartyStyle}><YoutubeParty key={ytbLink} link={ytbLink} scope={props.space.mediaSession.conversationId} /></div>}
 
-            {canEdit && <div ref={moveRef} className={MoveAnchorStyle} />}
-            {canEdit && <div ref={resizeRef} className={ResizerAnchorStyle} />}
-            {canEdit && <div onClick={del} className={DeleteAnchorStyle} />}
+            {canEdit && (
+                <>
+                    <div className={resizeDotStyles} style={{ left: '-4px', top: '-4px', cursor: 'nw-resize' }} ref={resizeRefTL} />
+                    <div className={resizeDotStyles} style={{ right: '-4px', top: '-4px', cursor: 'ne-resize' }} ref={resizeRefTR} />
+                    <div className={resizeDotStyles} style={{ left: '-4px', bottom: '-4px', cursor: 'sw-resize' }} ref={resizeRefBL} />
+                    <div className={resizeDotStyles} style={{ right: '-4px', bottom: '-4px', cursor: 'se-resize' }} ref={resizeRefBR} />
+                </>
+            )}
         </div>
     );
 });
@@ -616,13 +797,13 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     let selfRef = React.useRef<HTMLDivElement>(null);
     let eraseCircleRef = React.useRef<SVGCircleElement>(null);
     let nonDrawContentRef = React.useRef<HTMLDivElement>(null);
-    let [action, setAction] = React.useState<'erase' | string>(props.mediaSession.space.colorVM.get() || '#fff');
     let [penSize, setPenSize] = React.useState(2);
     let penSizeRef = React.useRef<number>(2);
     let eraseDistance = penSize * 5;
     let peersRef = React.useRef(props.peers);
     peersRef.current = props.peers;
     let state = props.mediaSession.state.useValue();
+    let [cursorState, setCursorState] = React.useState<CursorState>({ action: 'none' });
 
     let onMoveSelfStart = React.useCallback(() => {
         if (nonDrawContentRef.current) {
@@ -659,11 +840,11 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     }, []);
 
     React.useEffect(() => {
-        if ((action === 'erase') && drawListenerRef.current) {
+        if ((cursorState.action === 'erase') && drawListenerRef.current) {
             drawListenerRef.current.style.cursor = 'none';
         }
         let down = false;
-        let path = new Path([], action, penSizeRef.current);
+        let path = new Path([], cursorState.action, penSizeRef.current);
 
         let lastScroll: number[] | undefined;
         let onScroll = () => {
@@ -680,7 +861,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
         let onMove = (ev: MouseEvent) => {
             let coords: number[] = [ev.offsetX, ev.offsetY];
             props.mediaSession.space.movePointer(coords);
-            if (action === 'erase') {
+            if (cursorState.action === 'erase') {
                 // erase
                 if (down) {
                     props.mediaSession.space.erase(coords);
@@ -701,11 +882,13 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
             }
 
             down = true;
-            path = new Path([], action, penSizeRef.current);
-            props.mediaSession.space.addSpaceObject(path);
-            // disable other object while drawing
-            if (nonDrawContentRef.current) {
-                nonDrawContentRef.current.style.pointerEvents = 'none';
+            if (cursorState.action === 'draw' && cursorState.color) {
+                path = new Path([], cursorState.color, penSizeRef.current);
+                props.mediaSession.space.addSpaceObject(path);
+                // disable other object while drawing
+                if (nonDrawContentRef.current) {
+                    nonDrawContentRef.current.style.pointerEvents = 'none';
+                }
             }
         };
 
@@ -730,7 +913,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
         }
 
         // disable other object while drawing
-        if (action === 'erase') {
+        if (cursorState.action === 'erase') {
             if (nonDrawContentRef.current) {
                 nonDrawContentRef.current.style.pointerEvents = 'none';
             }
@@ -752,31 +935,70 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
             }
         };
 
-    }, [action]);
+    }, [cursorState]);
 
-    let selectAction = React.useCallback((a: string) => {
-        setAction(a);
-        if (a !== 'erase') {
-            props.mediaSession.space.setColor(a);
-        }
+    let selectColor = React.useCallback((color: string) => {
+        setCursorState({ action: 'draw', color });
+        props.mediaSession.space.setColor(color);
+    }, [props.mediaSession.space]);
+    let selectPen = React.useCallback(() => {
+        let color = props.mediaSession.space.colorVM.get();
+        setCursorState({ action: 'draw', color });
+    }, [props.mediaSession.space.colorVM.get()]);
+    let closePen = React.useCallback(() => {
+        setCursorState({ action: 'none' });
+    }, []);
+    let selectErase = React.useCallback(() => {
+        setCursorState({ action: 'erase' });
     }, []);
 
-    let addText = React.useCallback((centered?: boolean) => {
-        let selfCoords = props.mediaSession.space.selfPointer?.coords || props.mediaSession.space.selfPeer?.coords;
-        let coords = selfCoords
-            ? (centered ? [selfCoords[0], selfCoords[1] - window.innerHeight / 2] : selfCoords)
-            : [1500, 1500];
-        let text = new SimpleText([coords[0] - 150, coords[1] - 20], [300, 100], props.mediaSession.space.colorVM.get() || '#fff', 40);
+    React.useEffect(() => {
+        if (!drawListenerRef.current) {
+            return;
+        }
+        if (cursorState.action === 'draw' || cursorState.action === 'erase') {
+            drawListenerRef.current.style.pointerEvents = 'all';
+        } else {
+            drawListenerRef.current.style.pointerEvents = 'none';
+        }
+    }, [drawListenerRef.current, cursorState.action]);
+
+    const addedObjectsRef = React.useRef<number[][]>([]);
+    let getObjCoords = ({ width, height }: { width: number, height: number }): [number, number] => {
+        if (!containerRef.current) {
+            return [1500, 1500];
+        }
+        const bottomControlsHeight = 56;
+        const { scrollTop, scrollLeft, clientWidth, clientHeight } = containerRef.current;
+        let x = scrollLeft + (clientWidth - CONTROLS_WIDTH) / 2 - width / 2 + 9;
+        let y = scrollTop + (clientHeight - bottomControlsHeight) / 2 - height / 2;
+        while (addedObjectsRef.current.some(o => o[0] === x && o[1] === y)) {
+            x += height / 2;
+            y += height / 2;
+        }
+        return [x, y];
+    };
+    let addText = React.useCallback(() => {
+        const width = 240;
+        const height = TEXT_MIN_HEIGHT;
+        let coords = getObjCoords({ width, height });
+        let text = new SimpleText(coords, [width, height], '#fff', 20);
         props.mediaSession.space.addSpaceObject(text);
+        addedObjectsRef.current.push(coords);
+    }, []);
+
+    let addImage = React.useCallback(({ file, localImage }: { file: UploadingFile | undefined, localImage?: LocalImage | undefined }) => {
+        if (!localImage || !containerRef.current) {
+            return;
+        }
+        let { width, height } = layoutMedia(localImage.width, localImage.height, 800, 800, 100, 100);
+        let coords = getObjCoords({ width, height });
+        let image = new Image(undefined, coords, [width, height], [width, height]);
+        props.mediaSession.space.addImage(file, image);
     }, []);
 
     let addImages = React.useCallback((files: File[]) => {
-        showAttachConfirm(
-            files,
-            res => {
-                return res.map(({ file, localImage }) => props.mediaSession.space.addImage(file, localImage));
-            }
-        );
+        showAttachConfirm(files, res => res.map(addImage));
     }, []);
 
     useShortcuts({ keys: ['Control', 't'], callback: addText });
@@ -791,7 +1013,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                     <Objects peers={props.peers} space={props.mediaSession.space} peersRef={peersRef} />
                     <svg viewBox={'0 0 3000 3000'} className={VolumeSpaceDrawContainerStyle}>
                         <Drawings peers={props.peers} space={props.mediaSession.space} peersRef={peersRef} eraseDistance={eraseDistance} />
-                        {action === 'erase' && <circle cx={0} cy={0} r={eraseDistance} stroke="white" strokeWidth={1} ref={eraseCircleRef} fill="transparent" />}
+                        {cursorState.action === 'erase' && <circle cx={0} cy={0} r={eraseDistance} stroke="white" strokeWidth={1} ref={eraseCircleRef} fill="transparent" />}
                     </svg>
 
                     {props.peers.map(p => {
@@ -811,7 +1033,18 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                     })}
                     {props.peers.filter(p => p.id !== state.sender.id).map(p => <Pointer key={'pointer_' + p.id} space={props.mediaSession.space} peer={p} />)}
                 </div>
-                <SpaceControls action={action} initialPenSize={penSize} onActionChange={selectAction} onTextClick={addText} onImageClick={addImages} onPenSizeChange={setPenSize} />
+                <SpaceControls
+                    isErasing={cursorState.action === 'erase'}
+                    color={cursorState.color}
+                    initialPenSize={penSize}
+                    onPenSelect={selectPen}
+                    onPenClose={closePen}
+                    onColorChange={selectColor}
+                    onEraseClick={selectErase}
+                    onTextClick={addText}
+                    onImageClick={addImages}
+                    onPenSizeChange={setPenSize}
+                />
             </div>
 
         </div >
