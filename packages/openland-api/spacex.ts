@@ -22,6 +22,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryAccountSettings(opts?: OperationParameters): Promise<Types.AccountSettings> {
         return this.query('AccountSettings', undefined, opts);
     }
+    queryAuthPoints(opts?: OperationParameters): Promise<Types.AuthPoints> {
+        return this.query('AuthPoints', undefined, opts);
+    }
     queryAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, opts?: OperationParameters): Promise<Types.AuthResolveShortName> {
         return this.query('AuthResolveShortName', variables, opts);
     }
@@ -337,6 +340,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchAccountSettings(opts?: OperationParameters): Promise<Types.AccountSettings> {
         return this.refetch('AccountSettings', undefined);
     }
+    refetchAuthPoints(opts?: OperationParameters): Promise<Types.AuthPoints> {
+        return this.refetch('AuthPoints', undefined);
+    }
     refetchAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, opts?: OperationParameters): Promise<Types.AuthResolveShortName> {
         return this.refetch('AuthResolveShortName', variables);
     }
@@ -651,6 +657,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateAccountSettings(updater: (data: Types.AccountSettings) => Types.AccountSettings | null): Promise<boolean> {
         return this.updateQuery(updater, 'AccountSettings', undefined);
+    }
+    updateAuthPoints(updater: (data: Types.AuthPoints) => Types.AuthPoints | null): Promise<boolean> {
+        return this.updateQuery(updater, 'AuthPoints', undefined);
     }
     updateAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, updater: (data: Types.AuthResolveShortName) => Types.AuthResolveShortName | null): Promise<boolean> {
         return this.updateQuery(updater, 'AuthResolveShortName', variables);
@@ -976,6 +985,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useAccountSettings(opts?: SpaceQueryWatchParameters): Types.AccountSettings;
     useAccountSettings(opts?: SpaceQueryWatchParameters): Types.AccountSettings | null {
         return this.useQuery('AccountSettings', undefined, opts);
+    }
+    useAuthPoints(opts: SpaceQueryWatchParameters & { suspense: false }): Types.AuthPoints | null;
+    useAuthPoints(opts?: SpaceQueryWatchParameters): Types.AuthPoints;
+    useAuthPoints(opts?: SpaceQueryWatchParameters): Types.AuthPoints | null {
+        return this.useQuery('AuthPoints', undefined, opts);
     }
     useAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.AuthResolveShortName | null;
     useAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, opts?: SpaceQueryWatchParameters): Types.AuthResolveShortName;
@@ -1669,6 +1683,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateOrganizationMemberRemove(variables: Types.OrganizationMemberRemoveVariables): Promise<Types.OrganizationMemberRemove> {
         return this.mutate('OrganizationMemberRemove', variables);
     }
+    mutatePairPhone(variables: Types.PairPhoneVariables): Promise<Types.PairPhone> {
+        return this.mutate('PairPhone', variables);
+    }
     mutatePaymentIntentCancel(variables: Types.PaymentIntentCancelVariables): Promise<Types.PaymentIntentCancel> {
         return this.mutate('PaymentIntentCancel', variables);
     }
@@ -1761,6 +1778,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateSendMessage(variables: Types.SendMessageVariables): Promise<Types.SendMessage> {
         return this.mutate('SendMessage', variables);
+    }
+    mutateSendPhonePairCode(variables: Types.SendPhonePairCodeVariables): Promise<Types.SendPhonePairCode> {
+        return this.mutate('SendPhonePairCode', variables);
     }
     mutateSendSticker(variables: Types.SendStickerVariables): Promise<Types.SendSticker> {
         return this.mutate('SendSticker', variables);

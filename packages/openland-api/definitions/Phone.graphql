@@ -1,0 +1,14 @@
+query AuthPoints {
+    authPoints {
+        email
+        phone
+    }
+}
+
+mutation SendPhonePairCode($phone: String!) {
+    sendPhonePairCode(phone: $phone)
+}
+
+mutation PairPhone($sessionId: String!, $confirmationCode: String!) {
+    pairPhone(sessionId: $sessionId, confirmationCode: $confirmationCode)
+}

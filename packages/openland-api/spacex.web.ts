@@ -2240,6 +2240,13 @@ const AccountSettingsSelector = obj(
                     fragment('Organization', OrganizationShortSelector)
                 )))))
         );
+const AuthPointsSelector = obj(
+            field('authPoints', 'authPoints', args(), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('email', 'email', args(), scalar('String')),
+                    field('phone', 'phone', args(), scalar('String'))
+                )))
+        );
 const AuthResolveShortNameSelector = obj(
             field('alphaResolveShortName', 'item', args(fieldValue("shortname", refValue('shortname'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -4485,6 +4492,9 @@ const OrganizationMemberRemoveSelector = obj(
                     field('id', 'id', args(), notNull(scalar('ID')))
                 )))
         );
+const PairPhoneSelector = obj(
+            field('pairPhone', 'pairPhone', args(fieldValue("sessionId", refValue('sessionId')), fieldValue("confirmationCode", refValue('confirmationCode'))), notNull(scalar('Boolean')))
+        );
 const PaymentIntentCancelSelector = obj(
             field('paymentCancel', 'paymentCancel', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
         );
@@ -4735,6 +4745,9 @@ const SendDonationSelector = obj(
         );
 const SendMessageSelector = obj(
             field('sendMessage', 'sentMessage', args(fieldValue("chatId", refValue('chatId')), fieldValue("message", refValue('message')), fieldValue("replyMessages", refValue('replyMessages')), fieldValue("mentions", refValue('mentions')), fieldValue("fileAttachments", refValue('fileAttachments')), fieldValue("spans", refValue('spans')), fieldValue("repeatKey", refValue('repeatKey'))), notNull(scalar('Boolean')))
+        );
+const SendPhonePairCodeSelector = obj(
+            field('sendPhonePairCode', 'sendPhonePairCode', args(fieldValue("phone", refValue('phone'))), notNull(scalar('String')))
         );
 const SendStickerSelector = obj(
             field('sendSticker', 'sendSticker', args(fieldValue("chatId", refValue('chatId')), fieldValue("stickerId", refValue('stickerId')), fieldValue("replyMessages", refValue('replyMessages')), fieldValue("repeatKey", refValue('repeatKey'))), notNull(scalar('Boolean')))
@@ -5134,6 +5147,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'AccountSettings',
         body: 'query AccountSettings{me:me{__typename ...UserShort audienceSize}myProfile{__typename id authEmail}organizations:myOrganizations{__typename ...OrganizationShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
         selector: AccountSettingsSelector
+    },
+    AuthPoints: {
+        kind: 'query',
+        name: 'AuthPoints',
+        body: 'query AuthPoints{authPoints{__typename email phone}}',
+        selector: AuthPointsSelector
     },
     AuthResolveShortName: {
         kind: 'query',
@@ -6119,6 +6138,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'mutation OrganizationMemberRemove($userId:ID!,$organizationId:ID!){betaOrganizationMemberRemove(userId:$userId,organizationId:$organizationId){__typename id}}',
         selector: OrganizationMemberRemoveSelector
     },
+    PairPhone: {
+        kind: 'mutation',
+        name: 'PairPhone',
+        body: 'mutation PairPhone($sessionId:String!,$confirmationCode:String!){pairPhone(sessionId:$sessionId,confirmationCode:$confirmationCode)}',
+        selector: PairPhoneSelector
+    },
     PaymentIntentCancel: {
         kind: 'mutation',
         name: 'PaymentIntentCancel',
@@ -6304,6 +6329,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'SendMessage',
         body: 'mutation SendMessage($chatId:ID!,$message:String,$replyMessages:[ID!],$mentions:[MentionInput!],$fileAttachments:[FileAttachmentInput!],$spans:[MessageSpanInput!],$repeatKey:String){sentMessage:sendMessage(chatId:$chatId,message:$message,replyMessages:$replyMessages,mentions:$mentions,fileAttachments:$fileAttachments,spans:$spans,repeatKey:$repeatKey)}',
         selector: SendMessageSelector
+    },
+    SendPhonePairCode: {
+        kind: 'mutation',
+        name: 'SendPhonePairCode',
+        body: 'mutation SendPhonePairCode($phone:String!){sendPhonePairCode(phone:$phone)}',
+        selector: SendPhonePairCodeSelector
     },
     SendSticker: {
         kind: 'mutation',

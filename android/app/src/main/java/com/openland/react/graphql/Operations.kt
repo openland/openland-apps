@@ -12,6 +12,7 @@ object Operations {
         if (name == "AccountAppInviteInfo") return AccountAppInviteInfo
         if (name == "AccountInviteInfo") return AccountInviteInfo
         if (name == "AccountSettings") return AccountSettings
+        if (name == "AuthPoints") return AuthPoints
         if (name == "AuthResolveShortName") return AuthResolveShortName
         if (name == "ChatInit") return ChatInit
         if (name == "ChatInitFromUnread") return ChatInitFromUnread
@@ -176,6 +177,7 @@ object Operations {
         if (name == "OrganizationChangeMemberRole") return OrganizationChangeMemberRole
         if (name == "OrganizationCreatePublicInvite") return OrganizationCreatePublicInvite
         if (name == "OrganizationMemberRemove") return OrganizationMemberRemove
+        if (name == "PairPhone") return PairPhone
         if (name == "PaymentIntentCancel") return PaymentIntentCancel
         if (name == "PaymentIntentCommit") return PaymentIntentCommit
         if (name == "PersistEvents") return PersistEvents
@@ -207,6 +209,7 @@ object Operations {
         if (name == "RoomsJoin") return RoomsJoin
         if (name == "SendDonation") return SendDonation
         if (name == "SendMessage") return SendMessage
+        if (name == "SendPhonePairCode") return SendPhonePairCode
         if (name == "SendSticker") return SendSticker
         if (name == "SetFeedChannelShortname") return SetFeedChannelShortname
         if (name == "SetOrgShortname") return SetOrgShortname

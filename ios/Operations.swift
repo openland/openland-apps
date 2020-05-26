@@ -2233,6 +2233,13 @@ private let AccountSettingsSelector = obj(
                     fragment("Organization", OrganizationShortSelector)
                 )))))
         )
+private let AuthPointsSelector = obj(
+            field("authPoints", "authPoints", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("email", "email", scalar("String")),
+                    field("phone", "phone", scalar("String"))
+                )))
+        )
 private let AuthResolveShortNameSelector = obj(
             field("alphaResolveShortName", "item", arguments(fieldValue("shortname", refValue("shortname"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -4478,6 +4485,9 @@ private let OrganizationMemberRemoveSelector = obj(
                     field("id", "id", notNull(scalar("ID")))
                 )))
         )
+private let PairPhoneSelector = obj(
+            field("pairPhone", "pairPhone", arguments(fieldValue("sessionId", refValue("sessionId")), fieldValue("confirmationCode", refValue("confirmationCode"))), notNull(scalar("Boolean")))
+        )
 private let PaymentIntentCancelSelector = obj(
             field("paymentCancel", "paymentCancel", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
         )
@@ -4728,6 +4738,9 @@ private let SendDonationSelector = obj(
         )
 private let SendMessageSelector = obj(
             field("sendMessage", "sentMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("message", refValue("message")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("mentions", refValue("mentions")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("spans", refValue("spans")), fieldValue("repeatKey", refValue("repeatKey"))), notNull(scalar("Boolean")))
+        )
+private let SendPhonePairCodeSelector = obj(
+            field("sendPhonePairCode", "sendPhonePairCode", arguments(fieldValue("phone", refValue("phone"))), notNull(scalar("String")))
         )
 private let SendStickerSelector = obj(
             field("sendSticker", "sendSticker", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("stickerId", refValue("stickerId")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("repeatKey", refValue("repeatKey"))), notNull(scalar("Boolean")))
@@ -5131,6 +5144,12 @@ class Operations {
         .query, 
         "query AccountSettings{me:me{__typename ...UserShort audienceSize}myProfile{__typename id authEmail}organizations:myOrganizations{__typename ...OrganizationShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
         AccountSettingsSelector
+    )
+    let AuthPoints = OperationDefinition(
+        "AuthPoints",
+        .query, 
+        "query AuthPoints{authPoints{__typename email phone}}",
+        AuthPointsSelector
     )
     let AuthResolveShortName = OperationDefinition(
         "AuthResolveShortName",
@@ -6116,6 +6135,12 @@ class Operations {
         "mutation OrganizationMemberRemove($userId:ID!,$organizationId:ID!){betaOrganizationMemberRemove(userId:$userId,organizationId:$organizationId){__typename id}}",
         OrganizationMemberRemoveSelector
     )
+    let PairPhone = OperationDefinition(
+        "PairPhone",
+        .mutation, 
+        "mutation PairPhone($sessionId:String!,$confirmationCode:String!){pairPhone(sessionId:$sessionId,confirmationCode:$confirmationCode)}",
+        PairPhoneSelector
+    )
     let PaymentIntentCancel = OperationDefinition(
         "PaymentIntentCancel",
         .mutation, 
@@ -6301,6 +6326,12 @@ class Operations {
         .mutation, 
         "mutation SendMessage($chatId:ID!,$message:String,$replyMessages:[ID!],$mentions:[MentionInput!],$fileAttachments:[FileAttachmentInput!],$spans:[MessageSpanInput!],$repeatKey:String){sentMessage:sendMessage(chatId:$chatId,message:$message,replyMessages:$replyMessages,mentions:$mentions,fileAttachments:$fileAttachments,spans:$spans,repeatKey:$repeatKey)}",
         SendMessageSelector
+    )
+    let SendPhonePairCode = OperationDefinition(
+        "SendPhonePairCode",
+        .mutation, 
+        "mutation SendPhonePairCode($phone:String!){sendPhonePairCode(phone:$phone)}",
+        SendPhonePairCodeSelector
     )
     let SendSticker = OperationDefinition(
         "SendSticker",
@@ -6585,6 +6616,7 @@ class Operations {
         if name == "AccountAppInviteInfo" { return AccountAppInviteInfo }
         if name == "AccountInviteInfo" { return AccountInviteInfo }
         if name == "AccountSettings" { return AccountSettings }
+        if name == "AuthPoints" { return AuthPoints }
         if name == "AuthResolveShortName" { return AuthResolveShortName }
         if name == "ChatInit" { return ChatInit }
         if name == "ChatInitFromUnread" { return ChatInitFromUnread }
@@ -6749,6 +6781,7 @@ class Operations {
         if name == "OrganizationChangeMemberRole" { return OrganizationChangeMemberRole }
         if name == "OrganizationCreatePublicInvite" { return OrganizationCreatePublicInvite }
         if name == "OrganizationMemberRemove" { return OrganizationMemberRemove }
+        if name == "PairPhone" { return PairPhone }
         if name == "PaymentIntentCancel" { return PaymentIntentCancel }
         if name == "PaymentIntentCommit" { return PaymentIntentCommit }
         if name == "PersistEvents" { return PersistEvents }
@@ -6780,6 +6813,7 @@ class Operations {
         if name == "RoomsJoin" { return RoomsJoin }
         if name == "SendDonation" { return SendDonation }
         if name == "SendMessage" { return SendMessage }
+        if name == "SendPhonePairCode" { return SendPhonePairCode }
         if name == "SendSticker" { return SendSticker }
         if name == "SetFeedChannelShortname" { return SetFeedChannelShortname }
         if name == "SetOrgShortname" { return SetOrgShortname }

@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { View, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { PageProps } from '../../components/PageProps';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
@@ -19,6 +20,7 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const isIos = Platform.OS === 'ios';
     const { user, profile } = getClient().useProfile({ fetchPolicy: 'network-only' });
+    const { phone } = getClient().useAuthPoints({ fetchPolicy: 'network-only' }).authPoints;
 
     if (!user || !profile) {
         return null;
@@ -70,28 +72,19 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                 </ZListGroup>
 
                 <ZListGroup header="Info" headerMarginTop={0}>
-                    <ZInput
-                        placeholder="First name"
-                        field={firstNameField}
-                    />
-                    <ZInput
-                        placeholder="Last name"
-                        field={lastNameField}
-                    />
+                    <ZInput placeholder="First name" field={firstNameField} />
+                    <ZInput placeholder="Last name" field={lastNameField} />
                     <ZPickField
                         label="Primary organization"
-                        value={profile.primaryOrganization ? profile.primaryOrganization.name : undefined}
+                        value={
+                            profile.primaryOrganization
+                                ? profile.primaryOrganization.name
+                                : undefined
+                        }
                         path="SelectPrimaryOrganization"
                     />
-                    <ZInput
-                        placeholder="About"
-                        field={aboutField}
-                        multiline={true}
-                    />
-                    <ZInput
-                        placeholder="Location"
-                        field={locationField}
-                    />
+                    <ZInput placeholder="About" field={aboutField} multiline={true} />
+                    <ZInput placeholder="Location" field={locationField} />
                 </ZListGroup>
 
                 <ZListGroup header="Username" headerMarginTop={0}>
@@ -103,35 +96,38 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                 </ZListGroup>
 
                 <ZListGroup header="Contacts" headerMarginTop={0}>
-                    <ZInput
-                        placeholder="Phone"
-                        field={phoneField}
-                    />
-                    <ZInput
-                        placeholder="Email"
-                        field={emailField}
-                    />
-                    <ZInput
-                        placeholder="Website"
-                        field={websiteField}
-                    />
-                    <ZInput
-                        placeholder="Instagram"
-                        field={instagramField}
-                    />
-                    <ZInput
-                        placeholder="Twitter"
-                        field={twitterField}
-                    />
-                    <ZInput
-                        placeholder="Facebook"
-                        field={facebookField}
-                    />
-                    <ZInput
-                        placeholder="LinkedIn"
-                        field={linkedinField}
-                    />
-                    {isIos && theme.type !== 'Light' && (<View height={88} />)}
+                    <ZInput placeholder="Phone" prefix="+" field={phoneField} />
+                    {!phone && !!phoneField.value.trim() && (
+                        <TouchableOpacity
+                            style={{
+                                marginLeft: 32,
+                                marginTop: -8,
+                                marginBottom: 16,
+                                alignSelf: 'flex-start',
+                            }}
+                            onPress={() =>
+                                props.router.push('SettingsProfilePhone', {
+                                    phone: phoneField.value,
+                                })
+                            }
+                        >
+                            <View>
+                                <Text
+                                    style={{ color: theme.accentPrimary, ...TextStyles.Body }}
+                                    allowFontScaling={false}
+                                >
+                                    Pair this phone
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                    <ZInput placeholder="Email" field={emailField} />
+                    <ZInput placeholder="Website" field={websiteField} />
+                    <ZInput placeholder="Instagram" field={instagramField} />
+                    <ZInput placeholder="Twitter" field={twitterField} />
+                    <ZInput placeholder="Facebook" field={facebookField} />
+                    <ZInput placeholder="LinkedIn" field={linkedinField} />
+                    {isIos && theme.type !== 'Light' && <View height={88} />}
                 </ZListGroup>
             </KeyboardAvoidingScrollView>
         </>

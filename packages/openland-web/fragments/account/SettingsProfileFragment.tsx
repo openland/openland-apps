@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { css, cx } from 'linaria';
+import { TextBody } from 'openland-web/utils/TextStyles';
 import { useForm } from 'openland-form/useForm';
 import { useClient } from 'openland-api/useClient';
 import { useField } from 'openland-form/useField';
@@ -7,7 +9,7 @@ import { USelectField } from 'openland-web/components/unicorn/USelect';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
-import { UInputField } from 'openland-web/components/unicorn/UInput';
+import { UInput, UInputField } from 'openland-web/components/unicorn/UInput';
 import { UTextAreaField } from 'openland-web/components/unicorn/UTextArea';
 import { FormSection } from './components/FormSection';
 import { FormWrapper } from './components/FormWrapper';
@@ -16,6 +18,80 @@ import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
+import { showModalBox } from 'openland-x/showModalBox';
+import { XModalFooter } from 'openland-web/components/XModalFooter';
+import { XModalContent } from 'openland-web/components/XModalContent';
+
+const modalSubtitle = css`
+    color: var(--foregroundPrimary);
+    margin-bottom: 20px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 320px;
+`;
+
+const PairPhoneModalContent = React.memo((props: { phone: string; hide: () => void }) => {
+    const [confirmState, setConfirmState] = React.useState(false);
+    const [validCode, setValidCode] = React.useState('');
+    const [loading, setLoading] = React.useState(false);
+    const [sessionState, setSessionState] = React.useState<null | string>(null);
+    const client = useClient();
+
+    const userPhoneParse = props.phone.match(/\d/g);
+    const userPhone = userPhoneParse && userPhoneParse.join('');
+
+    const handleConfirm = async () => {
+        setConfirmState(true);
+        const data = await client.mutateSendPhonePairCode({ phone: `+${userPhone}` });
+        setSessionState(data.sendPhonePairCode);
+    };
+
+    const handleSave = async () => {
+        if (sessionState) {
+            setLoading(true);
+            await client.mutatePairPhone({
+                sessionId: sessionState,
+                confirmationCode: validCode
+            });
+            await client.refetchProfile();
+            setLoading(false);
+            props.hide();
+        }
+    };
+
+    const subtitleText = !confirmState
+        ? `Are you sure you want to pair this phone +${userPhone} ?`
+        : 'Enter confirm code';
+
+    return (
+        <>
+            <XModalContent>
+                <div className={cx(modalSubtitle, TextBody)}>{subtitleText}</div>
+                {confirmState && <UInput type="number" label="Code" value={validCode} onChange={setValidCode} />}
+            </XModalContent>
+            <XModalFooter>
+                <UButton text="Cancel" style="tertiary" size="large" onClick={() => props.hide()} />
+                <UButton
+                    text={confirmState ? 'Save' : 'Pair'}
+                    style="primary"
+                    size="large"
+                    onClick={confirmState ? handleSave : handleConfirm}
+                    loading={loading}
+                />
+            </XModalFooter>
+        </>
+    );
+});
+
+const showPairPhoneModal = (phone: string) => {
+    showModalBox(
+        {
+            width: 400,
+            title: 'Pair phone',
+        },
+        (ctx) => <PairPhoneModalContent phone={phone} hide={ctx.hide} />,
+    );
+};
 
 export const SettingsProfileFragment = React.memo(() => {
     const form = useForm();
@@ -25,6 +101,8 @@ export const SettingsProfileFragment = React.memo(() => {
     const shortnameMaxLength = 16;
 
     const { profile, user } = client.useProfile();
+    const { phone } = client.useAuthPoints().authPoints;
+
     const organizations = client.useMyOrganizations();
 
     if (!user || !profile) {
@@ -171,7 +249,24 @@ export const SettingsProfileFragment = React.memo(() => {
                         </FormSection>
                         <FormSection title="Contacts">
                             <XView marginBottom={16}>
-                                <UInputField label="Phone number" field={phoneNumberField} />
+                                <UInputField
+                                    prefix="+"
+                                    label="Phone number"
+                                    field={phoneNumberField}
+                                />
+                                {!phone && !!phoneNumberField.value.trim() && (
+                                    <XView
+                                        fontSize={15}
+                                        color="#248BF2"
+                                        marginLeft={16}
+                                        marginTop={8}
+                                        cursor="pointer"
+                                        alignSelf="flex-start"
+                                        onClick={() => showPairPhoneModal(phoneNumberField.value)}
+                                    >
+                                        Pair this phone
+                                    </XView>
+                                )}
                             </XView>
                             <XView marginBottom={16}>
                                 <UInputField label="Email" field={emailField} />
