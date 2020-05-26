@@ -3,7 +3,6 @@ import { useClient } from 'openland-api/useClient';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { XView, XViewRouterContext } from 'react-mental';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { useXRouter } from 'openland-x-routing/useXRouter';
 
 export const DraftsFragment = React.memo(() => {
     const client = useClient();
