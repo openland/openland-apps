@@ -63,7 +63,14 @@ export class AppUserMediaTrackWeb implements AppMediaStreamTrack {
     }
 }
 
-export const AppUserMedia: AppUserMediaApi = {
+class AppUserMediaIpl implements AppUserMediaApi {
+    private userAudioPromise: Promise<boolean>;
+    private userAudioPromiseResolve?: (done: boolean) => void;
+    constructor() {
+        this.userAudioPromise = new Promise(r => {
+            this.userAudioPromiseResolve = r;
+        });
+    }
     async getUserAudio(deviceId?: string) {
         let media = await navigator.mediaDevices.getUserMedia({
             audio: {
@@ -74,9 +81,12 @@ export const AppUserMedia: AppUserMediaApi = {
                 }],
             },
         });
+        if (this.userAudioPromiseResolve) {
+            this.userAudioPromiseResolve(true);
+        }
 
         return new AppUserMediaTrackWeb(media.getAudioTracks()[0]);
-    },
+    }
 
     async getUserVideo(deviceId?: string) {
         let media = await navigator.mediaDevices.getUserMedia({
@@ -89,12 +99,12 @@ export const AppUserMedia: AppUserMediaApi = {
 
         let res = new AppUserMediaTrackWeb(media.getVideoTracks()[0]);
         return res;
-    },
+    }
 
     async getUserScreen() {
         let media = await (navigator.mediaDevices as any).getDisplayMedia();
         return new AppUserMediaTrackWeb(media.getVideoTracks()[0]);
-    },
+    }
 
     getSilence() {
         let ctx = new AudioContext();
@@ -106,7 +116,7 @@ export const AppUserMedia: AppUserMediaApi = {
         let res = dst.stream.getAudioTracks()[0];
         res.enabled = true;
         return new AppUserMediaTrackWeb(res);
-    },
+    }
 
     getBlack() {
         let canvas = document.createElement("canvas");
@@ -117,4 +127,10 @@ export const AppUserMedia: AppUserMediaApi = {
         res.enabled = true;
         return new AppUserMediaTrackWeb(res);
     }
-};
+
+    getUserAudioPromise = () => {
+        return this.userAudioPromise;
+    }
+}
+
+export const AppUserMedia = new AppUserMediaIpl();

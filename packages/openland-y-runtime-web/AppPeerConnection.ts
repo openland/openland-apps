@@ -8,7 +8,7 @@ import {
     AppRtpReceiver
 } from 'openland-y-runtime-api/AppPeerConnectionApi';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
-import { AppUserMediaTrackWeb } from './AppUserMedia';
+import { AppUserMediaTrackWeb, AppUserMedia } from './AppUserMedia';
 import uuid from 'uuid/v4';
 import MediaDevicesManager from 'openland-web/utils/MediaDevicesManager';
 
@@ -216,12 +216,12 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
                 this.setAudioDevice(audio, MediaDevicesManager.instance().getSelectedAudioInput()?.deviceId);
                 audio.srcObject = stream;
                 audio.load();
-                try {
+
+                (async () => {
+                    // wait for user to allow mic use - in this case safari allows to play audio event without user input event
+                    await AppUserMedia.getUserAudioPromise();
                     audio.play();
-                } catch (e) {
-                    // wtf safari exeption thrown before permission granted/denied
-                    console.error(e);
-                }
+                })();
                 (t.receiver.track as AppUserMediaTrackWeb).audio = audio;
                 this.audioTracks.set(t.id, audio);
             }
