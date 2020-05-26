@@ -21,7 +21,12 @@ export const DiscussionEditorComponent = React.memo(() => {
                     placeholder="Title"
                 />
             </XView>
-            <URickInput ref={contentRef} hideEmoji={true} appearance="article" placeholder="Your story..." />
+            <URickInput
+                ref={contentRef}
+                hideEmoji={true}
+                appearance="article"
+                placeholder="Your story..."
+            />
         </XView>
     );
 });

@@ -10,9 +10,11 @@ import { emojiConvertToName } from 'openland-y-utils/emojiExtract';
 import { fileListToArray } from 'openland-web/fragments/chat/components/DropZone';
 import { Span, SpanType } from 'openland-y-utils/spans/Span';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
+import { XView } from 'react-mental';
 
 const quillInputStyle = css`
     background-color: var(--backgroundTertiaryTrans);
+    overflow-y: auto;
 
     &:hover {
         background-color: var(--backgroundTertiaryHoverTrans);
@@ -27,6 +29,7 @@ const quillInputStyle = css`
 `;
 
 const quillArticleStyle = css`
+    overflow-y: none;
     .ql-editor p {
         padding: 0 0px 12px;
     }
@@ -38,6 +41,7 @@ const quillArticleStyle = css`
 `;
 
 const quillArticleTitleStyle = css`
+    overflow-y: none;
     .ql-editor p {
         padding: 0px;
     }
@@ -51,8 +55,8 @@ const quillArticleTitleStyle = css`
 const quillStyle = css`
     flex-grow: 1;
     border-radius: 8px;
-    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    position: relative;
 
     .ql-container {
         border-radius: 8px;
@@ -337,8 +341,11 @@ export const URickInput = React.memo(
     React.forwardRef((props: URickInputProps, ref: React.Ref<URickInputInstance>) => {
         loadQuill();
 
+        const [popupLocation, setPopupLocation] = React.useState<{ x: number, y: number } | null>(null);
+
         let editor = React.useRef<QuillType.Quill>();
         let containerRef = React.useRef<HTMLDivElement>(null);
+        let tooltipRef = React.useRef<HTMLDivElement>(null);
 
         React.useImperativeHandle(ref, () => ({
             clear: () => {
@@ -428,7 +435,7 @@ export const URickInput = React.memo(
 
         React.useLayoutEffect(() => {
             let q = new Quill(containerRef.current!, {
-                formats: ['mention', 'emoji'],
+                formats: props.appearance === 'article' ? ['mention', 'emoji', 'bold', 'italic'] : ['mention', 'emoji'],
                 scrollingContainer: '.scroll-container',
                 placeholder: props.placeholder,
             });
@@ -505,6 +512,20 @@ export const URickInput = React.memo(
                         }
                     }
                 }
+
+                // Handle popup style
+                if (props.appearance === 'article') {
+                    let range = q.getSelection();
+                    if (range === null || range.length === 0) {
+                        setPopupLocation(null);
+                        return;
+                    }
+                    let rangeBounds = q.getBounds(range.index, range.length);
+                    setPopupLocation({
+                        y: rangeBounds.top,
+                        x: rangeBounds.left + rangeBounds.width / 2
+                    });
+                }
             });
 
             q.clipboard.addMatcher('img', (node, delta) => {
@@ -562,7 +583,62 @@ export const URickInput = React.memo(
                         onHide={props.onEmojiPickerHide}
                     />
                 )}
-            </div>
+                <div
+                    ref={tooltipRef}
+                    style={popupLocation ? {
+                        position: 'absolute',
+                        top: popupLocation.y - 44 - 10,
+                        left: popupLocation.x - 100 / 2,
+                        pointerEvents: 'all'
+                    } : { display: 'none' }}
+                >
+                    <XView
+                        width={100}
+                        height={44}
+                        backgroundColor="#292927"
+                        borderRadius={16}
+                        flexDirection="row"
+                        overflow="hidden"
+                    >
+                        <XView
+                            width={44}
+                            height={44}
+                            backgroundColor="red"
+                            onClick={(e) => {
+                                let range = editor.current!.getSelection(true);
+                                if (range && range.length > 0) {
+                                    let formats = editor.current!.getFormat(range);
+                                    if (formats.bold) {
+                                        editor.current!.format('bold', false);
+                                    } else {
+                                        editor.current!.format('bold', true);
+                                    }
+                                }
+                            }}
+                        >
+                            B
+                        </XView>
+                        <XView
+                            width={44}
+                            height={44}
+                            backgroundColor="yellow"
+                            onClick={(e) => {
+                                let range = editor.current!.getSelection(true);
+                                if (range && range.length > 0) {
+                                    let formats = editor.current!.getFormat(range);
+                                    if (formats.italic) {
+                                        editor.current!.format('italic', false);
+                                    } else {
+                                        editor.current!.format('italic', true);
+                                    }
+                                }
+                            }}
+                        >
+                            I
+                        </XView>
+                    </XView>
+                </div>
+            </div >
         );
     }),
 );
