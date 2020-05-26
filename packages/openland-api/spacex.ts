@@ -1615,6 +1615,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateDiscoverEditorsChoiceUpdate(variables: Types.DiscoverEditorsChoiceUpdateVariables): Promise<Types.DiscoverEditorsChoiceUpdate> {
         return this.mutate('DiscoverEditorsChoiceUpdate', variables);
     }
+    mutateDiscussionCreateDraft(): Promise<Types.DiscussionCreateDraft> {
+        return this.mutate('DiscussionCreateDraft');
+    }
     mutateEditComment(variables: Types.EditCommentVariables): Promise<Types.EditComment> {
         return this.mutate('EditComment', variables);
     }

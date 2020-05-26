@@ -75,3 +75,9 @@ query DiscussionDrafts($after: String) {
         cursor   
     }
 }
+
+mutation DiscussionCreateDraft {
+    discussionCreate(isDraft: true, input: {  }) {
+        ...DiscussionSimple
+    }
+}

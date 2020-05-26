@@ -4379,6 +4379,12 @@ const DiscoverEditorsChoiceUpdateSelector = obj(
                         )))
                 )))
         );
+const DiscussionCreateDraftSelector = obj(
+            field('discussionCreate', 'discussionCreate', args(fieldValue("isDraft", boolValue(true)), fieldValue("input", objectValue())), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('Discussion', DiscussionSimpleSelector)
+                )))
+        );
 const EditCommentSelector = obj(
             field('editComment', 'editComment', args(fieldValue("id", refValue('id')), fieldValue("message", refValue('message')), fieldValue("mentions", refValue('mentions')), fieldValue("fileAttachments", refValue('fileAttachments')), fieldValue("spans", refValue('spans'))), notNull(scalar('Boolean')))
         );
@@ -6022,6 +6028,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'DiscoverEditorsChoiceUpdate',
         body: 'mutation DiscoverEditorsChoiceUpdate($id:ID!,$image:ImageRefInput!,$cid:ID!){discoverEditorsChoiceUpdate(id:$id,input:{image:$image,cid:$cid}){__typename id image{__typename uuid crop{__typename x y w h}}chat{__typename id title}}}',
         selector: DiscoverEditorsChoiceUpdateSelector
+    },
+    DiscussionCreateDraft: {
+        kind: 'mutation',
+        name: 'DiscussionCreateDraft',
+        body: 'mutation DiscussionCreateDraft{discussionCreate(isDraft:true,input:{}){__typename ...DiscussionSimple}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename ...HubSimple}author{__typename id name}createdAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text}... on ImageParagraph{__typename image{__typename uuid}}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}',
+        selector: DiscussionCreateDraftSelector
     },
     EditComment: {
         kind: 'mutation',

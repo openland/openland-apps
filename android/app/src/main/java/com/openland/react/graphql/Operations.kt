@@ -147,6 +147,7 @@ object Operations {
         if (name == "DiscoverEditorsChoiceCreate") return DiscoverEditorsChoiceCreate
         if (name == "DiscoverEditorsChoiceDelete") return DiscoverEditorsChoiceDelete
         if (name == "DiscoverEditorsChoiceUpdate") return DiscoverEditorsChoiceUpdate
+        if (name == "DiscussionCreateDraft") return DiscussionCreateDraft
         if (name == "EditComment") return EditComment
         if (name == "EditMessage") return EditMessage
         if (name == "FeatureFlagAdd") return FeatureFlagAdd

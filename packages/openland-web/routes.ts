@@ -98,6 +98,8 @@ routes.add('/discuss', '/unicorn/index');
 routes.add('/discuss/', '/unicorn/index');
 routes.add('/discuss/drafts', '/unicorn/index');
 routes.add('/discuss/drafts/', '/unicorn/index');
+routes.add('/discuss/edit/:id', '/unicorn/index');
+routes.add('/discuss/edit/:id/', '/unicorn/index');
 
 //
 // Onboardinng

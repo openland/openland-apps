@@ -4372,6 +4372,12 @@ private let DiscoverEditorsChoiceUpdateSelector = obj(
                         )))
                 )))
         )
+private let DiscussionCreateDraftSelector = obj(
+            field("discussionCreate", "discussionCreate", arguments(fieldValue("isDraft", boolValue(true)), fieldValue("input", objectValue())), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Discussion", DiscussionSimpleSelector)
+                )))
+        )
 private let EditCommentSelector = obj(
             field("editComment", "editComment", arguments(fieldValue("id", refValue("id")), fieldValue("message", refValue("message")), fieldValue("mentions", refValue("mentions")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("spans", refValue("spans"))), notNull(scalar("Boolean")))
         )
@@ -6020,6 +6026,12 @@ class Operations {
         "mutation DiscoverEditorsChoiceUpdate($id:ID!,$image:ImageRefInput!,$cid:ID!){discoverEditorsChoiceUpdate(id:$id,input:{image:$image,cid:$cid}){__typename id image{__typename uuid crop{__typename x y w h}}chat{__typename id title}}}",
         DiscoverEditorsChoiceUpdateSelector
     )
+    let DiscussionCreateDraft = OperationDefinition(
+        "DiscussionCreateDraft",
+        .mutation, 
+        "mutation DiscussionCreateDraft{discussionCreate(isDraft:true,input:{}){__typename ...DiscussionSimple}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename ...HubSimple}author{__typename id name}createdAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text}... on ImageParagraph{__typename image{__typename uuid}}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}",
+        DiscussionCreateDraftSelector
+    )
     let EditComment = OperationDefinition(
         "EditComment",
         .mutation, 
@@ -6828,6 +6840,7 @@ class Operations {
         if name == "DiscoverEditorsChoiceCreate" { return DiscoverEditorsChoiceCreate }
         if name == "DiscoverEditorsChoiceDelete" { return DiscoverEditorsChoiceDelete }
         if name == "DiscoverEditorsChoiceUpdate" { return DiscoverEditorsChoiceUpdate }
+        if name == "DiscussionCreateDraft" { return DiscussionCreateDraft }
         if name == "EditComment" { return EditComment }
         if name == "EditMessage" { return EditMessage }
         if name == "FeatureFlagAdd" { return FeatureFlagAdd }
