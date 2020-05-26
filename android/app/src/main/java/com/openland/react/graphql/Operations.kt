@@ -38,6 +38,8 @@ object Operations {
         if (name == "DiscoverSuggestedRooms") return DiscoverSuggestedRooms
         if (name == "DiscoverTopFree") return DiscoverTopFree
         if (name == "DiscoverTopPremium") return DiscoverTopPremium
+        if (name == "DiscussionDrafts") return DiscussionDrafts
+        if (name == "Discussions") return Discussions
         if (name == "ExplorePeople") return ExplorePeople
         if (name == "ExploreRooms") return ExploreRooms
         if (name == "FeatureFlags") return FeatureFlags

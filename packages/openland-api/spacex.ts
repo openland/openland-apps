@@ -100,6 +100,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: OperationParameters): Promise<Types.DiscoverTopPremium> {
         return this.query('DiscoverTopPremium', variables, opts);
     }
+    queryDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts?: OperationParameters): Promise<Types.DiscussionDrafts> {
+        return this.query('DiscussionDrafts', variables, opts);
+    }
+    queryDiscussions(variables: Types.DiscussionsVariables, opts?: OperationParameters): Promise<Types.Discussions> {
+        return this.query('Discussions', variables, opts);
+    }
     queryExplorePeople(variables: Types.ExplorePeopleVariables, opts?: OperationParameters): Promise<Types.ExplorePeople> {
         return this.query('ExplorePeople', variables, opts);
     }
@@ -418,6 +424,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: OperationParameters): Promise<Types.DiscoverTopPremium> {
         return this.refetch('DiscoverTopPremium', variables);
     }
+    refetchDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts?: OperationParameters): Promise<Types.DiscussionDrafts> {
+        return this.refetch('DiscussionDrafts', variables);
+    }
+    refetchDiscussions(variables: Types.DiscussionsVariables, opts?: OperationParameters): Promise<Types.Discussions> {
+        return this.refetch('Discussions', variables);
+    }
     refetchExplorePeople(variables: Types.ExplorePeopleVariables, opts?: OperationParameters): Promise<Types.ExplorePeople> {
         return this.refetch('ExplorePeople', variables);
     }
@@ -735,6 +747,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, updater: (data: Types.DiscoverTopPremium) => Types.DiscoverTopPremium | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverTopPremium', variables);
+    }
+    updateDiscussionDrafts(variables: Types.DiscussionDraftsVariables, updater: (data: Types.DiscussionDrafts) => Types.DiscussionDrafts | null): Promise<boolean> {
+        return this.updateQuery(updater, 'DiscussionDrafts', variables);
+    }
+    updateDiscussions(variables: Types.DiscussionsVariables, updater: (data: Types.Discussions) => Types.Discussions | null): Promise<boolean> {
+        return this.updateQuery(updater, 'Discussions', variables);
     }
     updateExplorePeople(variables: Types.ExplorePeopleVariables, updater: (data: Types.ExplorePeople) => Types.ExplorePeople | null): Promise<boolean> {
         return this.updateQuery(updater, 'ExplorePeople', variables);
@@ -1115,6 +1133,16 @@ export class OpenlandClient extends BaseSpaceXClient {
     useDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverTopPremium;
     useDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverTopPremium | null {
         return this.useQuery('DiscoverTopPremium', variables, opts);
+    }
+    useDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscussionDrafts | null;
+    useDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts?: SpaceQueryWatchParameters): Types.DiscussionDrafts;
+    useDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts?: SpaceQueryWatchParameters): Types.DiscussionDrafts | null {
+        return this.useQuery('DiscussionDrafts', variables, opts);
+    }
+    useDiscussions(variables: Types.DiscussionsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Discussions | null;
+    useDiscussions(variables: Types.DiscussionsVariables, opts?: SpaceQueryWatchParameters): Types.Discussions;
+    useDiscussions(variables: Types.DiscussionsVariables, opts?: SpaceQueryWatchParameters): Types.Discussions | null {
+        return this.useQuery('Discussions', variables, opts);
     }
     useExplorePeople(variables: Types.ExplorePeopleVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ExplorePeople | null;
     useExplorePeople(variables: Types.ExplorePeopleVariables, opts?: SpaceQueryWatchParameters): Types.ExplorePeople;

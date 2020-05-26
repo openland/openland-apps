@@ -1,27 +1,77 @@
+#
+# Hubs
+#
+
+fragment HubSimple on Hub {
+    id
+    title
+    shortname
+    type
+    owner {
+        id
+        firstName
+        lastName
+    }
+}
+
 query Hubs {
     hubs {
-        id
-        title
-        shortname
-        type
-        owner {
-            id
-            firstName
-            lastName
-        }
+        ...HubSimple
     }
 }
 
 query Hub($id: ID!) {
     hub(id: $id) {
-        id
-        title
-        shortname
-        type
-        owner {
-            id
-            firstName
-            lastName
+       ...HubSimple
+    }
+}
+
+#
+# Discussions
+#
+
+
+fragment ParagraphSimple on Paragraph {
+    ... on TextParagraph {
+        text
+    }
+    ... on ImageParagraph {
+        image {
+            uuid
         }
+    }
+}
+
+fragment DiscussionSimple on Discussion {
+    id
+    title
+    content {
+       ...ParagraphSimple
+    }
+    hub {
+        ...HubSimple
+    }
+    author {
+        id
+        name
+    }
+    createdAt
+}
+
+query Discussions($hubs: [ID!]!, $after: String) {
+    discussions(hubs: $hubs, first: 20, after: $after) {
+        items {
+            ...DiscussionSimple
+        }
+        cursor   
+    }
+}
+
+query DiscussionDrafts($after: String) {
+    discussionMyDrafts(first: 20, after: $after) {
+        items {
+            ...DiscussionSimple
+        }
+        cursor   
     }
 }

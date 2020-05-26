@@ -1088,6 +1088,55 @@ private let DiscoverChatsCollectionShortSelector = obj(
                 )))
         )
 
+private let ParagraphSimpleSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("TextParagraph", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("text", "text", notNull(scalar("String")))
+            )),
+            inline("ImageParagraph", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("image", "image", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("uuid", "uuid", notNull(scalar("String")))
+                    )))
+            ))
+        )
+
+private let HubSimpleSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("shortname", "shortname", notNull(scalar("String"))),
+            field("type", "type", notNull(scalar("String"))),
+            field("owner", "owner", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("firstName", "firstName", notNull(scalar("String"))),
+                    field("lastName", "lastName", scalar("String"))
+                ))
+        )
+
+private let DiscussionSimpleSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("content", "content", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Paragraph", ParagraphSimpleSelector)
+                ))))),
+            field("hub", "hub", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Hub", HubSimpleSelector)
+                )),
+            field("author", "author", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String")))
+                )),
+            field("createdAt", "createdAt", notNull(scalar("Date")))
+        )
+
 private let FeedChannelFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -2671,6 +2720,26 @@ private let DiscoverTopPremiumSelector = obj(
                     field("cursor", "cursor", scalar("String"))
                 )))
         )
+private let DiscussionDraftsSelector = obj(
+            field("discussionMyDrafts", "discussionMyDrafts", arguments(fieldValue("first", intValue(20)), fieldValue("after", refValue("after"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("Discussion", DiscussionSimpleSelector)
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                )))
+        )
+private let DiscussionsSelector = obj(
+            field("discussions", "discussions", arguments(fieldValue("hubs", refValue("hubs")), fieldValue("first", intValue(20)), fieldValue("after", refValue("after"))), notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("items", "items", notNull(list(notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            fragment("Discussion", DiscussionSimpleSelector)
+                        ))))),
+                    field("cursor", "cursor", scalar("String"))
+                )))
+        )
 private let ExplorePeopleSelector = obj(
             field("userSearch", "items", arguments(fieldValue("query", refValue("query")), fieldValue("sort", refValue("sort")), fieldValue("page", refValue("page")), fieldValue("first", intValue(25)), fieldValue("after", refValue("after"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -2931,31 +3000,13 @@ private let GlobalSearchSelector = obj(
 private let HubSelector = obj(
             field("hub", "hub", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("title", "title", notNull(scalar("String"))),
-                    field("shortname", "shortname", notNull(scalar("String"))),
-                    field("type", "type", notNull(scalar("String"))),
-                    field("owner", "owner", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("firstName", "firstName", notNull(scalar("String"))),
-                            field("lastName", "lastName", scalar("String"))
-                        ))
+                    fragment("Hub", HubSimpleSelector)
                 ))
         )
 private let HubsSelector = obj(
             field("hubs", "hubs", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("title", "title", notNull(scalar("String"))),
-                    field("shortname", "shortname", notNull(scalar("String"))),
-                    field("type", "type", notNull(scalar("String"))),
-                    field("owner", "owner", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("firstName", "firstName", notNull(scalar("String"))),
-                            field("lastName", "lastName", scalar("String"))
-                        ))
+                    fragment("Hub", HubSimpleSelector)
                 )))))
         )
 private let InitFeedSelector = obj(
@@ -5301,6 +5352,18 @@ class Operations {
         "query DiscoverTopPremium($first:Int!,$after:String){discoverTopPremium(first:$first,after:$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}",
         DiscoverTopPremiumSelector
     )
+    let DiscussionDrafts = OperationDefinition(
+        "DiscussionDrafts",
+        .query, 
+        "query DiscussionDrafts($after:String){discussionMyDrafts(first:20,after:$after){__typename items{__typename ...DiscussionSimple}cursor}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename ...HubSimple}author{__typename id name}createdAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text}... on ImageParagraph{__typename image{__typename uuid}}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}",
+        DiscussionDraftsSelector
+    )
+    let Discussions = OperationDefinition(
+        "Discussions",
+        .query, 
+        "query Discussions($hubs:[ID!]!,$after:String){discussions(hubs:$hubs,first:20,after:$after){__typename items{__typename ...DiscussionSimple}cursor}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename ...HubSimple}author{__typename id name}createdAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text}... on ImageParagraph{__typename image{__typename uuid}}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}",
+        DiscussionsSelector
+    )
     let ExplorePeople = OperationDefinition(
         "ExplorePeople",
         .query, 
@@ -5400,13 +5463,13 @@ class Operations {
     let Hub = OperationDefinition(
         "Hub",
         .query, 
-        "query Hub($id:ID!){hub(id:$id){__typename id title shortname type owner{__typename id firstName lastName}}}",
+        "query Hub($id:ID!){hub(id:$id){__typename ...HubSimple}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}",
         HubSelector
     )
     let Hubs = OperationDefinition(
         "Hubs",
         .query, 
-        "query Hubs{hubs{__typename id title shortname type owner{__typename id firstName lastName}}}",
+        "query Hubs{hubs{__typename ...HubSimple}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}",
         HubsSelector
     )
     let InitFeed = OperationDefinition(
@@ -6642,6 +6705,8 @@ class Operations {
         if name == "DiscoverSuggestedRooms" { return DiscoverSuggestedRooms }
         if name == "DiscoverTopFree" { return DiscoverTopFree }
         if name == "DiscoverTopPremium" { return DiscoverTopPremium }
+        if name == "DiscussionDrafts" { return DiscussionDrafts }
+        if name == "Discussions" { return Discussions }
         if name == "ExplorePeople" { return ExplorePeople }
         if name == "ExploreRooms" { return ExploreRooms }
         if name == "FeatureFlags" { return FeatureFlags }

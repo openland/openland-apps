@@ -32,6 +32,7 @@ import { DiscoverTopPremiumFragment } from 'openland-web/fragments/discover/Disc
 import { DiscoverTopFreeFragment } from 'openland-web/fragments/discover/DiscoverTopFreeFragment';
 import { DiscoverCollectionFragment } from 'openland-web/fragments/discover/DiscoverCollectionFragment';
 import { DiscussionsFragment } from 'openland-web/fragments/discussions/DiscussionsFragment';
+import { DraftsFragment } from 'openland-web/fragments/discussions/DraftSFragment';
 // import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 
 // temporary stub for /mail/ -> not found bug
@@ -105,6 +106,8 @@ routing.addRoute('/discover/free', () => DiscoverTopFreeFragment);
 // Discussions
 routing.addRoute('/discuss', () => DiscussionsFragment);
 routing.addRoute('/discuss/', () => DiscussionsFragment);
+routing.addRoute('/discuss/drafts', () => DraftsFragment);
+routing.addRoute('/discuss/drafts/', () => DraftsFragment);
 
 // Account
 routing.addRoute('/account', () => UserProfileFragment);

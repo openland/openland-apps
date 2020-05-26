@@ -1094,6 +1094,55 @@ internal val DiscoverChatsCollectionShortSelector = obj(
                 )))
         )
 
+internal val ParagraphSimpleSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("TextParagraph", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("text", "text", notNull(scalar("String")))
+            )),
+            inline("ImageParagraph", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("image", "image", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("uuid", "uuid", notNull(scalar("String")))
+                    )))
+            ))
+        )
+
+internal val HubSimpleSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("shortname", "shortname", notNull(scalar("String"))),
+            field("type", "type", notNull(scalar("String"))),
+            field("owner", "owner", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("firstName", "firstName", notNull(scalar("String"))),
+                    field("lastName", "lastName", scalar("String"))
+                ))
+        )
+
+internal val DiscussionSimpleSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("content", "content", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Paragraph", ParagraphSimpleSelector)
+                ))))),
+            field("hub", "hub", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Hub", HubSimpleSelector)
+                )),
+            field("author", "author", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String")))
+                )),
+            field("createdAt", "createdAt", notNull(scalar("Date")))
+        )
+
 internal val FeedChannelFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),

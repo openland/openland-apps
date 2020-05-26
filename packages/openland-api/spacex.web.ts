@@ -1095,6 +1095,55 @@ const DiscoverChatsCollectionShortSelector = obj(
                 )))
         );
 
+const ParagraphSimpleSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            inline('TextParagraph', obj(
+                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                field('text', 'text', args(), notNull(scalar('String')))
+            )),
+            inline('ImageParagraph', obj(
+                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                field('image', 'image', args(), notNull(obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('uuid', 'uuid', args(), notNull(scalar('String')))
+                    )))
+            ))
+        );
+
+const HubSimpleSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('title', 'title', args(), notNull(scalar('String'))),
+            field('shortname', 'shortname', args(), notNull(scalar('String'))),
+            field('type', 'type', args(), notNull(scalar('String'))),
+            field('owner', 'owner', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('firstName', 'firstName', args(), notNull(scalar('String'))),
+                    field('lastName', 'lastName', args(), scalar('String'))
+                ))
+        );
+
+const DiscussionSimpleSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('title', 'title', args(), notNull(scalar('String'))),
+            field('content', 'content', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('Paragraph', ParagraphSimpleSelector)
+                ))))),
+            field('hub', 'hub', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('Hub', HubSimpleSelector)
+                )),
+            field('author', 'author', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('name', 'name', args(), notNull(scalar('String')))
+                )),
+            field('createdAt', 'createdAt', args(), notNull(scalar('Date')))
+        );
+
 const FeedChannelFullSelector = obj(
             field('__typename', '__typename', args(), notNull(scalar('String'))),
             field('id', 'id', args(), notNull(scalar('ID'))),
@@ -2678,6 +2727,26 @@ const DiscoverTopPremiumSelector = obj(
                     field('cursor', 'cursor', args(), scalar('String'))
                 )))
         );
+const DiscussionDraftsSelector = obj(
+            field('discussionMyDrafts', 'discussionMyDrafts', args(fieldValue("first", intValue(20)), fieldValue("after", refValue('after'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('Discussion', DiscussionSimpleSelector)
+                        ))))),
+                    field('cursor', 'cursor', args(), scalar('String'))
+                )))
+        );
+const DiscussionsSelector = obj(
+            field('discussions', 'discussions', args(fieldValue("hubs", refValue('hubs')), fieldValue("first", intValue(20)), fieldValue("after", refValue('after'))), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('items', 'items', args(), notNull(list(notNull(obj(
+                            field('__typename', '__typename', args(), notNull(scalar('String'))),
+                            fragment('Discussion', DiscussionSimpleSelector)
+                        ))))),
+                    field('cursor', 'cursor', args(), scalar('String'))
+                )))
+        );
 const ExplorePeopleSelector = obj(
             field('userSearch', 'items', args(fieldValue("query", refValue('query')), fieldValue("sort", refValue('sort')), fieldValue("page", refValue('page')), fieldValue("first", intValue(25)), fieldValue("after", refValue('after'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -2938,31 +3007,13 @@ const GlobalSearchSelector = obj(
 const HubSelector = obj(
             field('hub', 'hub', args(fieldValue("id", refValue('id'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('id', 'id', args(), notNull(scalar('ID'))),
-                    field('title', 'title', args(), notNull(scalar('String'))),
-                    field('shortname', 'shortname', args(), notNull(scalar('String'))),
-                    field('type', 'type', args(), notNull(scalar('String'))),
-                    field('owner', 'owner', args(), obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('firstName', 'firstName', args(), notNull(scalar('String'))),
-                            field('lastName', 'lastName', args(), scalar('String'))
-                        ))
+                    fragment('Hub', HubSimpleSelector)
                 ))
         );
 const HubsSelector = obj(
             field('hubs', 'hubs', args(), notNull(list(notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('id', 'id', args(), notNull(scalar('ID'))),
-                    field('title', 'title', args(), notNull(scalar('String'))),
-                    field('shortname', 'shortname', args(), notNull(scalar('String'))),
-                    field('type', 'type', args(), notNull(scalar('String'))),
-                    field('owner', 'owner', args(), obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('firstName', 'firstName', args(), notNull(scalar('String'))),
-                            field('lastName', 'lastName', args(), scalar('String'))
-                        ))
+                    fragment('Hub', HubSimpleSelector)
                 )))))
         );
 const InitFeedSelector = obj(
@@ -5304,6 +5355,18 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query DiscoverTopPremium($first:Int!,$after:String){discoverTopPremium(first:$first,after:$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
         selector: DiscoverTopPremiumSelector
     },
+    DiscussionDrafts: {
+        kind: 'query',
+        name: 'DiscussionDrafts',
+        body: 'query DiscussionDrafts($after:String){discussionMyDrafts(first:20,after:$after){__typename items{__typename ...DiscussionSimple}cursor}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename ...HubSimple}author{__typename id name}createdAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text}... on ImageParagraph{__typename image{__typename uuid}}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}',
+        selector: DiscussionDraftsSelector
+    },
+    Discussions: {
+        kind: 'query',
+        name: 'Discussions',
+        body: 'query Discussions($hubs:[ID!]!,$after:String){discussions(hubs:$hubs,first:20,after:$after){__typename items{__typename ...DiscussionSimple}cursor}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename ...HubSimple}author{__typename id name}createdAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text}... on ImageParagraph{__typename image{__typename uuid}}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}',
+        selector: DiscussionsSelector
+    },
     ExplorePeople: {
         kind: 'query',
         name: 'ExplorePeople',
@@ -5403,13 +5466,13 @@ export const Operations: { [key: string]: OperationDefinition } = {
     Hub: {
         kind: 'query',
         name: 'Hub',
-        body: 'query Hub($id:ID!){hub(id:$id){__typename id title shortname type owner{__typename id firstName lastName}}}',
+        body: 'query Hub($id:ID!){hub(id:$id){__typename ...HubSimple}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}',
         selector: HubSelector
     },
     Hubs: {
         kind: 'query',
         name: 'Hubs',
-        body: 'query Hubs{hubs{__typename id title shortname type owner{__typename id firstName lastName}}}',
+        body: 'query Hubs{hubs{__typename ...HubSimple}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}',
         selector: HubsSelector
     },
     InitFeed: {

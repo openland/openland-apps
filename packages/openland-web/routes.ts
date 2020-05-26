@@ -96,6 +96,8 @@ routes.add('/discover/free/', '/unicorn/index');
 //
 routes.add('/discuss', '/unicorn/index');
 routes.add('/discuss/', '/unicorn/index');
+routes.add('/discuss/drafts', '/unicorn/index');
+routes.add('/discuss/drafts/', '/unicorn/index');
 
 //
 // Onboardinng
@@ -299,6 +301,8 @@ routes.add('/direcory/c/:id/', '/unicorn/index');
 
 routes.add('/:shortname', '/unicorn/index');
 routes.add('/:shortname/', '/unicorn/index');
+routes.add('/:shortname/:id', '/unicorn/index');
+routes.add('/:shortname/:id/', '/unicorn/index');
 
 export function getRequestHandler(src: any): any {
     return routes.getRequestHandler(src);

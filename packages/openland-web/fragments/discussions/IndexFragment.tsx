@@ -26,6 +26,11 @@ export const IndexFragment = React.memo(() => {
                             path={'/discuss'}
                             icon={<IcHome />}
                         />
+                        <UListItem
+                            title="Drafts"
+                            path={'/discuss/drafts'}
+                            icon={<IcHome />}
+                        />
                         {hubs && hubs.hubs.length > 0 && (
                             hubs.hubs.map((v) => (
                                 <UListItem
