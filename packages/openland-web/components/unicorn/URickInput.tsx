@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import * as QuillType from 'quill';
 import { css, cx } from 'linaria';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
@@ -11,6 +12,7 @@ import { fileListToArray } from 'openland-web/fragments/chat/components/DropZone
 import { Span, SpanType } from 'openland-y-utils/spans/Span';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { XView } from 'react-mental';
+import { randomKey } from 'openland-y-utils/randomKey';
 
 const quillInputStyle = css`
     background-color: var(--backgroundTertiaryTrans);
@@ -152,6 +154,20 @@ export interface URickInputProps {
 let Quill: typeof QuillType.Quill;
 let QuillDelta: typeof QuillType.Delta;
 
+const ImageEmbedComponent = React.memo((props: { data: any }) => {
+    return (
+        <XView width={100} height={100} backgroundColor="red">
+            {}
+        </XView>
+    );
+});
+
+let CustomBlots = {
+    'image': ImageEmbedComponent
+};
+
+let registeredEditors = new Map<string, { attach: (key: string, component: any) => void, detach: (key: string) => void }>();
+
 function loadQuill() {
     if (!Quill) {
         // doing this shit because of SSR
@@ -197,6 +213,44 @@ function loadQuill() {
         EmojiBlot.tagName = 'img';
         EmojiBlot.className = 'emoji';
         Quill.register(EmojiBlot);
+
+        // Custom Blot
+        class CustomBlot extends Embed {
+            static create(data: any) {
+                const node = super.create() as HTMLDivElement;
+                node.dataset.id = randomKey();
+                node.dataset.type = data.type;
+                node.dataset.editorId = data.editorId;
+                node.dataset.data = JSON.stringify(data.data);
+                return node;
+            }
+
+            static value(domNode: HTMLImageElement) {
+                return { id: domNode.dataset, type: domNode.dataset.type, data: JSON.parse(domNode.dataset.data!) };
+            }
+
+            attach() {
+                super.attach();
+                let node = this.domNode as HTMLDivElement;
+                let id = node.dataset.id as string;
+                let type = node.dataset.type as string;
+                let editorId = node.dataset.editorId as string;
+                let Component = CustomBlots[type];
+                registeredEditors.get(editorId)!.attach(id, ReactDOM.createPortal(<Component data={JSON.parse(node.dataset.data!)} />, node));
+            }
+
+            detach() {
+                super.detach();
+                let node = this.domNode as HTMLDivElement;
+                let editorId = node.dataset.editorId as string;
+                let id = node.dataset.id as string;
+                registeredEditors.get(editorId)!.detach(id);
+            }
+        }
+        CustomBlot.blotName = 'custom';
+        CustomBlot.tagName = 'div';
+        CustomBlot.className = 'custom';
+        Quill.register(CustomBlot);
 
         // Basic formatting
         let Inline = Quill.import('blots/inline');
@@ -341,11 +395,27 @@ export const URickInput = React.memo(
     React.forwardRef((props: URickInputProps, ref: React.Ref<URickInputInstance>) => {
         loadQuill();
 
-        const [popupLocation, setPopupLocation] = React.useState<{ x: number, y: number } | null>(null);
+        // Embed Providers
+        const editorId = React.useMemo(() => randomKey(), []);
+        const [embeds, setEmbeds] = React.useState<{ key: string, component: any }[]>([]);
+        const attachEmbed = React.useCallback((key: string, component: any) => {
+            setEmbeds((e) => [...e, { key, component }]);
+        }, []);
+        const dettachEmbed = React.useCallback((key: string) => {
+            setEmbeds((e) => e.filter((v) => key !== key));
+        }, []);
+        React.useLayoutEffect(() => {
+            registeredEditors.set(editorId, { attach: attachEmbed, detach: dettachEmbed });
+            return () => {
+                registeredEditors.delete(editorId);
+            };
+        }, []);
 
+        // Editor
         let editor = React.useRef<QuillType.Quill>();
         let containerRef = React.useRef<HTMLDivElement>(null);
         let tooltipRef = React.useRef<HTMLDivElement>(null);
+        const [popupLocation, setPopupLocation] = React.useState<{ x: number, y: number } | null>(null);
 
         React.useImperativeHandle(ref, () => ({
             clear: () => {
@@ -435,7 +505,7 @@ export const URickInput = React.memo(
 
         React.useLayoutEffect(() => {
             let q = new Quill(containerRef.current!, {
-                formats: props.appearance === 'article' ? ['mention', 'emoji', 'bold', 'italic'] : ['mention', 'emoji'],
+                formats: props.appearance === 'article' ? ['mention', 'emoji', 'bold', 'italic', 'custom'] : ['mention', 'emoji'],
                 scrollingContainer: '.scroll-container',
                 placeholder: props.placeholder,
             });
@@ -562,83 +632,92 @@ export const URickInput = React.memo(
         }, []);
 
         return (
-            <div
-                className={cx(
-                    quillStyle,
-                    'scroll-container',
-                    props.className && props.className,
-                    props.withShortcutsButton && quillWithButtonStyle,
-                    props.appearance === 'article' && quillArticleStyle,
-                    props.appearance === 'input' && quillInputStyle,
-                    props.appearance === 'article-title' && quillArticleTitleStyle,
-                )}
-            >
-                <div ref={containerRef} />
-                {props.withShortcutsButton && <ShortcutButton />}
-                {!props.hideEmoji && (
-                    <EmojiPicker
-                        onEmojiPicked={onEmojiPicked}
-                        onStickerSent={props.onStickerSent}
-                        onShow={props.onEmojiPickerShow}
-                        onHide={props.onEmojiPickerHide}
-                    />
-                )}
+            <>
                 <div
-                    ref={tooltipRef}
-                    style={popupLocation ? {
-                        position: 'absolute',
-                        top: popupLocation.y - 44 - 10,
-                        left: popupLocation.x - 100 / 2,
-                        pointerEvents: 'all'
-                    } : { display: 'none' }}
+                    className={cx(
+                        quillStyle,
+                        'scroll-container',
+                        props.className && props.className,
+                        props.withShortcutsButton && quillWithButtonStyle,
+                        props.appearance === 'article' && quillArticleStyle,
+                        props.appearance === 'input' && quillInputStyle,
+                        props.appearance === 'article-title' && quillArticleTitleStyle,
+                    )}
                 >
-                    <XView
-                        width={100}
-                        height={44}
-                        backgroundColor="#292927"
-                        borderRadius={16}
-                        flexDirection="row"
-                        overflow="hidden"
+                    <div ref={containerRef} />
+                    {props.withShortcutsButton && <ShortcutButton />}
+                    {!props.hideEmoji && (
+                        <EmojiPicker
+                            onEmojiPicked={onEmojiPicked}
+                            onStickerSent={props.onStickerSent}
+                            onShow={props.onEmojiPickerShow}
+                            onHide={props.onEmojiPickerHide}
+                        />
+                    )}
+                    <div
+                        ref={tooltipRef}
+                        style={popupLocation ? {
+                            position: 'absolute',
+                            top: popupLocation.y - 44 - 10,
+                            left: popupLocation.x - 100 / 2,
+                            pointerEvents: 'all'
+                        } : { display: 'none' }}
                     >
                         <XView
-                            width={44}
+                            width={100}
                             height={44}
-                            backgroundColor="red"
-                            onClick={(e) => {
-                                let range = editor.current!.getSelection(true);
-                                if (range && range.length > 0) {
-                                    let formats = editor.current!.getFormat(range);
-                                    if (formats.bold) {
-                                        editor.current!.format('bold', false);
-                                    } else {
-                                        editor.current!.format('bold', true);
-                                    }
-                                }
-                            }}
+                            backgroundColor="#292927"
+                            borderRadius={16}
+                            flexDirection="row"
+                            overflow="hidden"
                         >
-                            B
-                        </XView>
-                        <XView
-                            width={44}
-                            height={44}
-                            backgroundColor="yellow"
-                            onClick={(e) => {
-                                let range = editor.current!.getSelection(true);
-                                if (range && range.length > 0) {
-                                    let formats = editor.current!.getFormat(range);
-                                    if (formats.italic) {
-                                        editor.current!.format('italic', false);
-                                    } else {
-                                        editor.current!.format('italic', true);
+                            <XView
+                                width={44}
+                                height={44}
+                                backgroundColor="red"
+                                onClick={(e) => {
+                                    let range = editor.current!.getSelection(true);
+                                    if (range && range.length > 0) {
+                                        let formats = editor.current!.getFormat(range);
+                                        if (formats.bold) {
+                                            editor.current!.format('bold', false);
+                                        } else {
+                                            editor.current!.format('bold', true);
+                                        }
                                     }
-                                }
-                            }}
-                        >
-                            I
+                                }}
+                            >
+                                B
+                            </XView>
+                            <XView
+                                width={44}
+                                height={44}
+                                backgroundColor="yellow"
+                                onClick={(e) => {
+                                    let selection = editor.current!.getSelection(true);
+                                    editor.current!.insertEmbed(selection.index, 'custom', {
+                                        editorId,
+                                        type: 'image',
+                                        data: {}
+                                    }, 'user');
+                                    // let range = editor.current!.getSelection(true);
+                                    // if (range && range.length > 0) {
+                                    //     let formats = editor.current!.getFormat(range);
+                                    //     if (formats.italic) {
+                                    //         editor.current!.format('italic', false);
+                                    //     } else {
+                                    //         editor.current!.format('italic', true);
+                                    //     }
+                                    // }
+                                }}
+                            >
+                                I
+                            </XView>
                         </XView>
-                    </XView>
+                    </div>
                 </div>
-            </div >
+                {embeds.map((v) => (<React.Fragment key={v.key} >{v.component}</React.Fragment>))}
+            </>
         );
     }),
 );
