@@ -73,5 +73,13 @@ export const AppUserMedia: AppUserMediaApi = {
 
     async getUserScreen() {
         throw Error('not implemented yet');
+    },
+
+    getSilence() {
+        return null;
+    },
+
+    getBlack() {
+        return null;
     }
 };

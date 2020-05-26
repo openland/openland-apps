@@ -94,5 +94,27 @@ export const AppUserMedia: AppUserMediaApi = {
     async getUserScreen() {
         let media = await (navigator.mediaDevices as any).getDisplayMedia();
         return new AppUserMediaTrackWeb(media.getVideoTracks()[0]);
+    },
+
+    getSilence() {
+        let ctx = new AudioContext();
+        let oscillator = ctx.createOscillator();
+        oscillator.frequency.setValueAtTime(0, ctx.currentTime);
+        let dst = ctx.createMediaStreamDestination();
+        oscillator.connect(dst);
+        oscillator.start();
+        let res = dst.stream.getAudioTracks()[0];
+        res.enabled = true;
+        return new AppUserMediaTrackWeb(res);
+    },
+
+    getBlack() {
+        let canvas = document.createElement("canvas");
+        Object.assign(canvas, { width: 1, height: 1 });
+        canvas.getContext('2d')?.fillRect(0, 0, 1, 1);
+        let stream = (canvas as any).captureStream();
+        let res = stream.getVideoTracks()[0];
+        res.enabled = true;
+        return new AppUserMediaTrackWeb(res);
     }
 };

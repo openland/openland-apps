@@ -6,6 +6,7 @@ import { backoff, delay } from 'openland-y-utils/timer';
 import { MediaSessionManager } from './MediaSessionManager';
 import { InvalidateSync } from '@openland/patterns';
 import { OpenlandClient } from 'openland-api/spacex';
+import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
 
 export class MediaConnectionManager {
     // Identification
@@ -518,10 +519,7 @@ export class MediaConnectionManager {
                 if (at) {
                     this.audioTransceiver = at;
                     console.log('[WEBRTC]: Found audio track: ' + audioSender.mid);
-                    if (this.audioTrack) {
-                        console.log(this.audioTrack);
-                        at.sender.replaceTrack(this.audioTrack);
-                    }
+                    at.sender.replaceTrack(this.audioTrack || AppUserMedia.getSilence());
                 }
             }
         }
@@ -534,9 +532,7 @@ export class MediaConnectionManager {
                 if (at) {
                     this.videoTransceiver = at;
                     console.log('[WEBRTC]: Found video track: ' + videoSender.mid);
-                    if (this.videoTrack) {
-                        at.sender.replaceTrack(this.videoTrack);
-                    }
+                    at.sender.replaceTrack(this.videoTrack || AppUserMedia.getBlack());
                 }
             }
         }
@@ -549,9 +545,7 @@ export class MediaConnectionManager {
                 if (at) {
                     this.screencastTransceiver = at;
                     console.log('[WEBRTC]: Found screencast track: ' + screencastSender.mid);
-                    if (this.screencastTrack) {
-                        at.sender.replaceTrack(this.screencastTrack);
-                    }
+                    at.sender.replaceTrack(this.screencastTrack || AppUserMedia.getBlack());
                 }
             }
         }
@@ -649,10 +643,8 @@ export class MediaConnectionManager {
         // Create if needed
         if (!this.audioTransceiver) {
             this.audioTransceiver = await this.peerConnection.addTransceiver('audio', { direction: 'sendonly' });
-            if (this.audioTrack) {
-                console.log(this.audioTrack);
-                this.audioTransceiver.sender.replaceTrack(this.audioTrack);
-            }
+            console.log(this.audioTrack);
+            this.audioTransceiver.sender.replaceTrack(this.audioTrack || AppUserMedia.getSilence());
         }
     }
 
@@ -660,9 +652,7 @@ export class MediaConnectionManager {
         // Create if needed
         if (!this.videoTransceiver) {
             this.videoTransceiver = await this.peerConnection.addTransceiver('video', { direction: 'sendonly' });
-            if (this.videoTrack) {
-                this.videoTransceiver.sender.replaceTrack(this.videoTrack);
-            }
+            this.videoTransceiver.sender.replaceTrack(this.videoTrack || AppUserMedia.getBlack());
         }
     }
 
@@ -671,7 +661,7 @@ export class MediaConnectionManager {
         if (!this.screencastTransceiver) {
             this.screencastTransceiver = await this.peerConnection.addTransceiver('video', { direction: 'sendonly' });
             if (this.screencastTrack) {
-                this.screencastTransceiver.sender.replaceTrack(this.screencastTrack);
+                this.screencastTransceiver.sender.replaceTrack(this.screencastTrack || AppUserMedia.getBlack());
             }
         }
     }

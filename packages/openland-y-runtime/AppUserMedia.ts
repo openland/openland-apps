@@ -11,5 +11,13 @@ export const AppUserMedia: AppUserMediaApi = {
 
     getUserScreen() {
         throw Error('');
+    },
+
+    getSilence() {
+        throw Error('');
+    },
+
+    getBlack() {
+        throw Error('');
     }
 };
