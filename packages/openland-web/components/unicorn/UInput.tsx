@@ -52,6 +52,10 @@ const prefixStyle = css`
     align-items: center;
 `;
 
+const prefixSmallStyle = css`
+    padding-top: 0;
+`;
+
 const inputTextStyle = css`
     font-size: 15px;
     color: var(--foregroundPrimary);
@@ -131,8 +135,7 @@ export const UInput = React.forwardRef(
         } = props;
 
         const [val, setValue] = React.useState(value || '');
-        const prefixText = prefix || '';
-        const valueText = val || '';
+        const [pref, setPref] = React.useState(prefix || '');
         const prefixRef = React.useRef<HTMLDivElement>(null);
         const [inputShift, setInputShift] = React.useState(0);
 
@@ -145,13 +148,11 @@ export const UInput = React.forwardRef(
 
         React.useLayoutEffect(() => {
             setValue(value || '');
-        }, [value]);
-
-        React.useLayoutEffect(() => {
-            if (prefixRef.current) {
-                setInputShift(prefixRef.current.getBoundingClientRect().width);
+            setPref(prefix || '');
+            if (prefix && prefixRef.current) {
+                setInputShift(prefixRef.current.clientWidth);
             }
-        }, [prefixRef.current]);
+        }, [value, prefix]);
 
         return (
             <XView {...other}>
@@ -159,18 +160,23 @@ export const UInput = React.forwardRef(
                     className={cx(
                         inputWrapper,
                         hasPlaceholder && inputWrapperWithPlaceholder,
-                        prefixText && 'has-prefix',
+                        pref && 'has-prefix',
                     )}
                 >
                     <div
-                        className={cx(prefixStyle, inputTextStyle, !valueText && 'input-prefix')}
+                        className={cx(
+                            prefixStyle,
+                            inputTextStyle,
+                            hasPlaceholder && prefixSmallStyle,
+                            !val && 'input-prefix',
+                        )}
                         ref={prefixRef}
                     >
-                        {prefixText}
+                        {pref}
                     </div>
                     <input
                         disabled={disabled}
-                        value={valueText}
+                        value={val}
                         className={cx(
                             inputStyle,
                             inputTextStyle,
@@ -190,7 +196,7 @@ export const UInput = React.forwardRef(
                         <div
                             className={cx(
                                 labelStyle,
-                                valueText && labelValueStyle,
+                                val && labelValueStyle,
                                 invalid && labelInvalidStyle,
                                 'input-label',
                             )}

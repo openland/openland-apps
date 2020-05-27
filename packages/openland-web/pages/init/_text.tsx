@@ -30,6 +30,7 @@ export const InitTexts = {
         emailInvalid:
             'Incorrect email.\nPlease check it and try again',
         emailPlaceholder: 'Email',
+        phonePlaceholder: 'Phone',
         codeInvalid: 'Invalid activation code',
         noCode: "Please enter the 6-digit code we've just sent to your email",
         wrongCodeLength:

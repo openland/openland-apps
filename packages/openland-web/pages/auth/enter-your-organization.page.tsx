@@ -13,25 +13,17 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { AuthHeaderConfig } from './root.page';
 import { ResolvedInvite } from 'openland-api/spacex.types';
 
-export type EnterYourOrganizationPageProps = { inviteKey?: string | null };
-
-export type EnterYourOrganizationPageOuterProps = {
-    isMobile: boolean;
-};
-
-export type processCreateOrganizationT = (a: { organizationFieldValue: string | null }) => void;
+type processCreateOrganizationT = (a: { organizationFieldValue: string | null }) => void;
 
 const CreateOrganizationFormInnerWeb = ({
     processCreateOrganization,
     initialOrganizationName,
     sending,
-    isMobile,
 }: {
     sending: boolean;
     initialOrganizationName?: string;
     inviteKey?: string | null;
     processCreateOrganization: processCreateOrganizationT;
-    isMobile: boolean;
 }) => {
     const form = useForm();
 
@@ -88,9 +80,7 @@ const CreateOrganizationFormInnerWeb = ({
     );
 };
 
-const EnterYourOrganizationPageInner = ({
-    isMobile,
-}: EnterYourOrganizationPageProps & EnterYourOrganizationPageOuterProps) => {
+const EnterYourOrganizationPageInner = () => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
@@ -230,18 +220,15 @@ const EnterYourOrganizationPageInner = ({
                 initialOrganizationName={initialOrganizationName}
                 sending={sending}
                 processCreateOrganization={processCreateOrganization}
-                isMobile={isMobile}
             />
         </Wrapper>
     );
 };
 
-export const EnterYourOrganizationPage = (
-    props: EnterYourOrganizationPageProps & EnterYourOrganizationPageOuterProps,
-) => {
+export const EnterYourOrganizationPage = () => {
     return (
         <React.Suspense fallback={null}>
-            <EnterYourOrganizationPageInner {...props} />
+            <EnterYourOrganizationPageInner />
         </React.Suspense>
     );
 };
