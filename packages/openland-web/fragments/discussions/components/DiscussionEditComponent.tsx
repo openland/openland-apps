@@ -4,6 +4,7 @@ import { URickInput, URickInputInstance, URickTextValue } from 'openland-web/com
 import { DiscussionSimple } from 'openland-api/spacex.types';
 import { InvalidateSync } from '@openland/patterns';
 import { useClient } from 'openland-api/useClient';
+import { URickTextArea, URichTextAreaValue } from 'openland-web/components/unicorn/URichTextArea';
 
 export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimple }) => {
     const initial = React.useMemo(() => props.data, []);
@@ -40,7 +41,7 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
         console.log(src);
         sync.invalidate();
     }, []);
-    const onContentChange = React.useCallback((src: URickTextValue) => {
+    const onContentChange = React.useCallback((src: URichTextAreaValue) => {
         console.log(src);
     }, []);
 
@@ -49,7 +50,6 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
             <XView>{saving ? 'Saving...' : 'Saved'}</XView>
             <XView>
                 <URickInput
-                    appearance="article-title"
                     onPressEnter={async () => {
                         contentRef!.current!.focus();
                         return false;
@@ -64,12 +64,14 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
                     placeholder="Title"
                 />
             </XView>
-            <URickInput
-                ref={contentRef}
-                hideEmoji={true}
-                initialContent={initialParagraph}
-                onContentChange={onContentChange}
-                appearance="article"
+            <URickTextArea
+                // ref={contentRef}
+                // hideEmoji={true}
+                // initialContent={initialParagraph}
+                // onContentChange={onContentChange}
+                // appearance="article"
+                initialValue={[]}
+                onValueChange={onContentChange}
                 placeholder="Your story..."
             />
         </XView>

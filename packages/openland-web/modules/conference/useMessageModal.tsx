@@ -205,7 +205,6 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
                         onPressEnter={onPressEnter}
                         onFilesPaste={props.onAttach}
                         onStickerSent={onStickerSent}
-                        appearance="input"
                     />
                 </XView>
                 <XView flexDirection="row" paddingHorizontal={20} paddingBottom={20}>

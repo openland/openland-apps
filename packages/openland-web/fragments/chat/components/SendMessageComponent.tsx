@@ -720,7 +720,6 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     className={(isWindows || isLinux) ? hideScrollStyle : undefined}
                     onEmojiPickerShow={props.onEmojiPickerShow}
                     onEmojiPickerHide={props.onEmojiPickerHide}
-                    appearance="input"
                 />
             </XView>
             {!loading && (

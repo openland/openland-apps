@@ -8,7 +8,6 @@ import { ShortcutButton } from './shortcuts/ShortcutsButton';
 import { emojiConvertToName } from 'openland-y-utils/emojiExtract';
 import { fileListToArray } from 'openland-web/fragments/chat/components/DropZone';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
-import { XView } from 'react-mental';
 import { getQuill } from 'openland-web/components/quill/getQuill';
 
 const quillInputStyle = css`
@@ -24,30 +23,6 @@ const quillInputStyle = css`
         padding-right: 32px;
         font-size: 15px;
         line-height: 24px;
-    }
-`;
-
-const quillArticleStyle = css`
-    overflow-y: none;
-    .ql-editor p {
-        padding: 0 0px 12px;
-    }
-    .ql-editor {
-        padding: 16px;
-        font-size: 18px;
-        line-height: 1.58;
-    }
-`;
-
-const quillArticleTitleStyle = css`
-    overflow-y: none;
-    .ql-editor p {
-        padding: 0px;
-    }
-    .ql-editor {
-        padding: 16px;
-        font-size: 32px;
-        line-height: 34px;
     }
 `;
 
@@ -120,8 +95,6 @@ export interface URickInputProps {
     onPressEsc?: () => Promise<boolean> | boolean;
 
     onFilesPaste?: (files: File[]) => void;
-
-    appearance: 'input' | 'article' | 'article-title';
     className?: string;
     withShortcutsButton?: boolean;
     hideEmoji?: boolean;
@@ -184,27 +157,9 @@ export const URickInput = React.memo(
             return res;
         }
 
-        // Embed Providers
-        // const editorId = React.useMemo(() => randomKey(), []);
-        // const [embeds, setEmbeds] = React.useState<{ key: string, component: any }[]>([]);
-        // const attachEmbed = React.useCallback((key: string, component: any) => {
-        //     setEmbeds((e) => [...e, { key, component }]);
-        // }, []);
-        // const dettachEmbed = React.useCallback((key: string) => {
-        //     setEmbeds((e) => e.filter((v) => key !== key));
-        // }, []);
-        // React.useLayoutEffect(() => {
-        //     registeredEditors.set(editorId, { attach: attachEmbed, detach: dettachEmbed });
-        //     return () => {
-        //         registeredEditors.delete(editorId);
-        //     };
-        // }, []);
-
         // Editor
         let editor = React.useRef<QuillType.Quill>();
         let containerRef = React.useRef<HTMLDivElement>(null);
-        let tooltipRef = React.useRef<HTMLDivElement>(null);
-        const [popupLocation, setPopupLocation] = React.useState<{ x: number, y: number } | null>(null);
 
         React.useImperativeHandle(ref, () => ({
             clear: () => {
@@ -294,7 +249,7 @@ export const URickInput = React.memo(
 
         React.useLayoutEffect(() => {
             let q = new Quill(containerRef.current!, {
-                formats: props.appearance === 'article' ? ['mention', 'emoji', 'bold', 'italic', 'custom'] : ['mention', 'emoji'],
+                formats: ['mention', 'emoji'],
                 scrollingContainer: '.scroll-container',
                 placeholder: props.placeholder,
             });
@@ -371,20 +326,6 @@ export const URickInput = React.memo(
                         }
                     }
                 }
-
-                // Handle popup style
-                if (props.appearance === 'article') {
-                    let range = q.getSelection();
-                    if (range === null || range.length === 0) {
-                        setPopupLocation(null);
-                        return;
-                    }
-                    let rangeBounds = q.getBounds(range.index, range.length);
-                    setPopupLocation({
-                        y: rangeBounds.top,
-                        x: rangeBounds.left + rangeBounds.width / 2
-                    });
-                }
             });
 
             q.clipboard.addMatcher('img', (node, delta) => {
@@ -428,9 +369,7 @@ export const URickInput = React.memo(
                         'scroll-container',
                         props.className && props.className,
                         props.withShortcutsButton && quillWithButtonStyle,
-                        props.appearance === 'article' && quillArticleStyle,
-                        props.appearance === 'input' && quillInputStyle,
-                        props.appearance === 'article-title' && quillArticleTitleStyle,
+                        quillInputStyle,
                     )}
                 >
                     <div ref={containerRef} />
@@ -443,69 +382,7 @@ export const URickInput = React.memo(
                             onHide={props.onEmojiPickerHide}
                         />
                     )}
-                    <div
-                        ref={tooltipRef}
-                        style={popupLocation ? {
-                            position: 'absolute',
-                            top: popupLocation.y - 44 - 10,
-                            left: popupLocation.x - 100 / 2,
-                            pointerEvents: 'all'
-                        } : { display: 'none' }}
-                    >
-                        <XView
-                            width={100}
-                            height={44}
-                            backgroundColor="#292927"
-                            borderRadius={16}
-                            flexDirection="row"
-                            overflow="hidden"
-                        >
-                            <XView
-                                width={44}
-                                height={44}
-                                backgroundColor="red"
-                                onClick={(e) => {
-                                    let range = editor.current!.getSelection(true);
-                                    if (range && range.length > 0) {
-                                        let formats = editor.current!.getFormat(range);
-                                        if (formats.bold) {
-                                            editor.current!.format('bold', false);
-                                        } else {
-                                            editor.current!.format('bold', true);
-                                        }
-                                    }
-                                }}
-                            >
-                                B
-                            </XView>
-                            <XView
-                                width={44}
-                                height={44}
-                                backgroundColor="yellow"
-                                onClick={(e) => {
-                                    // let selection = editor.current!.getSelection(true);
-                                    // editor.current!.insertEmbed(selection.index, 'custom', {
-                                    //     editorId,
-                                    //     type: 'image',
-                                    //     data: {}
-                                    // }, 'user');
-                                    // let range = editor.current!.getSelection(true);
-                                    // if (range && range.length > 0) {
-                                    //     let formats = editor.current!.getFormat(range);
-                                    //     if (formats.italic) {
-                                    //         editor.current!.format('italic', false);
-                                    //     } else {
-                                    //         editor.current!.format('italic', true);
-                                    //     }
-                                    // }
-                                }}
-                            >
-                                I
-                            </XView>
-                        </XView>
-                    </div>
                 </div>
-                {/* {embeds.map((v) => (<React.Fragment key={v.key} >{v.component}</React.Fragment>))} */}
             </>
         );
     }),

@@ -167,7 +167,6 @@ const DonationComponent = (props: DonationComponentProps & { ctx: XModalControll
                     onPressTab={onMessageTab}
                     hideEmoji={true}
                     className={messageClass}
-                    appearance="input"
                 />
             </XView>
             <XView

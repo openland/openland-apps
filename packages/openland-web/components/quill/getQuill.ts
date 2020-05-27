@@ -21,26 +21,15 @@ const emojiStyle = css`
 let Quill: typeof QuillType.Quill;
 let QuillDelta: typeof QuillType.Delta;
 
-// const ImageEmbedComponent = React.memo((props: { data: any }) => {
-//     return (
-//         <XView width={100} height={100} backgroundColor="red">
-//             {}
-//         </XView>
-//     );
-// });
-
-// let CustomBlots = {
-//     'image': ImageEmbedComponent
-// };
-
-// let registeredEditors = new Map<string, { attach: (key: string, component: any) => void, detach: (key: string) => void }>();
-
 export function getQuill() {
     if (!Quill) {
-        // doing this shit because of SSR
+
+        // Load Quill
         Quill = require('quill') as typeof QuillType.Quill;
         QuillDelta = require('quill-delta') as typeof QuillType.Delta;
         const Embed = Quill.import('blots/embed');
+        const Inline = Quill.import('blots/inline');
+        const Block = Quill.import('blots/block');
 
         // Mentions Blot
         class MentionBlot extends Embed {
@@ -81,54 +70,19 @@ export function getQuill() {
         EmojiBlot.className = 'emoji';
         Quill.register(EmojiBlot);
 
-        // Custom Blot
-        // class CustomBlot extends Embed {
-        //     static create(data: any) {
-        //         const node = super.create() as HTMLDivElement;
-        //         node.dataset.id = randomKey();
-        //         node.dataset.type = data.type;
-        //         node.dataset.editorId = data.editorId;
-        //         node.dataset.data = JSON.stringify(data.data);
-        //         return node;
-        //     }
-
-        //     static value(domNode: HTMLImageElement) {
-        //         return { id: domNode.dataset, type: domNode.dataset.type, data: JSON.parse(domNode.dataset.data!) };
-        //     }
-
-        //     attach() {
-        //         super.attach();
-        //         let node = this.domNode as HTMLDivElement;
-        //         let id = node.dataset.id as string;
-        //         let type = node.dataset.type as string;
-        //         let editorId = node.dataset.editorId as string;
-        //         let Component = CustomBlots[type];
-        //         registeredEditors.get(editorId)!.attach(id, ReactDOM.createPortal(<Component data={JSON.parse(node.dataset.data!)} />, node));
-        //     }
-
-        //     detach() {
-        //         super.detach();
-        //         let node = this.domNode as HTMLDivElement;
-        //         let editorId = node.dataset.editorId as string;
-        //         let id = node.dataset.id as string;
-        //         registeredEditors.get(editorId)!.detach(id);
-        //     }
-        // }
-        // CustomBlot.blotName = 'custom';
-        // CustomBlot.tagName = 'div';
-        // CustomBlot.className = 'custom';
-        // Quill.register(CustomBlot);
-
-        // Basic formatting
-        let Inline = Quill.import('blots/inline');
-        let Block = Quill.import('blots/block');
-
+        // Bold Formatting
         class BoldBlot extends Inline { }
         BoldBlot.blotName = 'bold';
         BoldBlot.tagName = 'strong';
+        Quill.register(BoldBlot);
+
+        // Italic Formatting
         class ItalicBlot extends Inline { }
         ItalicBlot.blotName = 'italic';
         ItalicBlot.tagName = 'em';
+        Quill.register(ItalicBlot);
+
+        // Header Formatting
         class HeaderBlot extends Block {
             static formats(node: any) {
                 return HeaderBlot.tagName.indexOf(node.tagName) + 1;
@@ -136,8 +90,6 @@ export function getQuill() {
         }
         HeaderBlot.blotName = 'header';
         HeaderBlot.tagName = ['H1', 'H2'];
-        Quill.register(BoldBlot);
-        Quill.register(ItalicBlot);
         Quill.register(HeaderBlot);
     }
 
