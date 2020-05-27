@@ -99,12 +99,22 @@ let VolumeSpaceVideoStyle = css`
 
 let resizeDotStyles = css`
     position: absolute;
-    width: 8px;
-    height: 8px;
-    border-radius: 2px;
-    border: 1px solid #4DA6FF;
-    background-color: var(--foregroundContrast);
+    padding: 2px;
+    width: 12px;
+    height: 12px;
     pointer-events: all;
+    z-index: 11;
+
+    &::after {
+        content: '';
+        box-sizing: border-box;
+        display: block;
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        border: 1px solid #4DA6FF;
+        background-color: var(--foregroundContrast);
+    }
 `;
 
 let PeerImageContainer = css`
@@ -159,7 +169,6 @@ let PointerEventsInherit = css`
 
 let TextAreaStyle = css`
     pointer-events: none;
-    border-radius: 6px;
     cursor: default;
     width: 100%;
     height: 100%;
@@ -409,10 +418,10 @@ const PeerImage = React.memo((props: { peerId: string, peer?: Conference_confere
             <div className={ImageStyle} ref={imgRef} />
             {canEdit && (
                 <>
-                    <div className={resizeDotStyles} style={{ left: '-4px', top: '-4px', cursor: 'nw-resize' }} ref={resizeRefTL} />
-                    <div className={resizeDotStyles} style={{ right: '-4px', top: '-4px', cursor: 'ne-resize' }} ref={resizeRefTR} />
-                    <div className={resizeDotStyles} style={{ left: '-4px', bottom: '-4px', cursor: 'sw-resize' }} ref={resizeRefBL} />
-                    <div className={resizeDotStyles} style={{ right: '-4px', bottom: '-4px', cursor: 'se-resize' }} ref={resizeRefBR} />
+                    <div className={resizeDotStyles} style={{ left: '-6px', top: '-6px', cursor: 'nw-resize' }} ref={resizeRefTL} />
+                    <div className={resizeDotStyles} style={{ right: '-6px', top: '-6px', cursor: 'ne-resize' }} ref={resizeRefTR} />
+                    <div className={resizeDotStyles} style={{ left: '-6px', bottom: '-6px', cursor: 'sw-resize' }} ref={resizeRefBL} />
+                    <div className={resizeDotStyles} style={{ right: '-6px', bottom: '-6px', cursor: 'se-resize' }} ref={resizeRefBR} />
                 </>
             )}
         </div>
@@ -542,6 +551,13 @@ const PeerText = React.memo((props: { peerId: string, peer?: Conference_conferen
             }
         });
     }, []);
+    const deleteEmptyText = () => {
+        if (textRef.current) {
+            if (textRef.current.value.trim() === '') {
+                props.space.delete(props.textId);
+            }
+        }
+    };
     const handleTextFocus = React.useCallback(() => {
         textFocusedRef.current = true;
     }, []);
@@ -553,6 +569,7 @@ const PeerText = React.memo((props: { peerId: string, peer?: Conference_conferen
             moveRef.current.style.display = 'block';
         }
         textFocusedRef.current = false;
+        deleteEmptyText();
     }, []);
     const clickedRef = React.useRef(false);
     const handleClick = () => {
@@ -593,6 +610,7 @@ const PeerText = React.memo((props: { peerId: string, peer?: Conference_conferen
     }, []);
     const handleBlur = React.useCallback(() => {
         focusedRef.current = false;
+        deleteEmptyText();
     }, []);
 
     return (
@@ -623,10 +641,10 @@ const PeerText = React.memo((props: { peerId: string, peer?: Conference_conferen
 
             {canEdit && (
                 <>
-                    <div className={resizeDotStyles} style={{ left: '-4px', top: '-4px', cursor: 'nw-resize' }} ref={resizeRefTL} />
-                    <div className={resizeDotStyles} style={{ right: '-4px', top: '-4px', cursor: 'ne-resize' }} ref={resizeRefTR} />
-                    <div className={resizeDotStyles} style={{ left: '-4px', bottom: '-4px', cursor: 'sw-resize' }} ref={resizeRefBL} />
-                    <div className={resizeDotStyles} style={{ right: '-4px', bottom: '-4px', cursor: 'se-resize' }} ref={resizeRefBR} />
+                    <div className={resizeDotStyles} style={{ left: '-6px', top: '-6px', cursor: 'nw-resize' }} ref={resizeRefTL} />
+                    <div className={resizeDotStyles} style={{ right: '-6px', top: '-6px', cursor: 'ne-resize' }} ref={resizeRefTR} />
+                    <div className={resizeDotStyles} style={{ left: '-6px', bottom: '-6px', cursor: 'sw-resize' }} ref={resizeRefBL} />
+                    <div className={resizeDotStyles} style={{ right: '-6px', bottom: '-6px', cursor: 'se-resize' }} ref={resizeRefBR} />
                 </>
             )}
         </div>

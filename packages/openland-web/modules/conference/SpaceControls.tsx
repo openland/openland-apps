@@ -332,7 +332,6 @@ export const SpaceControls = React.memo((props: SpaceControlsProps) => {
             <input
                 ref={fileInputRef}
                 type="file"
-                multiple={true}
                 style={{ display: 'none' }}
                 onChange={onFileInputChange}
             />
