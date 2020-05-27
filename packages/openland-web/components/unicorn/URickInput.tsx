@@ -9,7 +9,7 @@ import { emojiConvertToName } from 'openland-y-utils/emojiExtract';
 import { fileListToArray } from 'openland-web/fragments/chat/components/DropZone';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { XView } from 'react-mental';
-import { getQuill } from 'openland-web/utils/getQuill';
+import { getQuill } from 'openland-web/components/quill/getQuill';
 
 const quillInputStyle = css`
     background-color: var(--backgroundTertiaryTrans);
