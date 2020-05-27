@@ -2,15 +2,17 @@ import * as React from 'react';
 import { pages, pagesT, pagesArr } from './components/pages';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { AcceptInvitePage } from './accept-invite.page';
-import { AskActivationPage, checkCode } from './ask-activation-code.page';
+import { AskEmailCodePage } from './ask-activation-code.page';
+import { AskPhoneCodePage } from './ask-phone-code.page';
+import { checkCode } from './utils/checkCode';
 import { AskEmailPage } from './ask-email.page';
+import { AskPhonePage } from './ask-phone.page';
 import { CreateNewAccountPage } from './create-new-account.page';
 import { EnterYourOrganizationPage } from './enter-your-organization.page';
 import { IntroduceYourselfPage } from './introduce-yourself.page';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { trackEvent } from 'openland-x-analytics';
 import * as Cookie from 'js-cookie';
-import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XLoader } from 'openland-x/XLoader';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { API_AUTH_ENDPOINT } from 'openland-api/endpoint';
@@ -119,7 +121,21 @@ const backwardOut = css`
     pointer-events: none;
 `;
 
-const AuthHeaderConfigContex = React.createContext<{ setOnBack: (f?: (event: React.MouseEvent) => void) => void, setOnSkip: (f?: (event: React.MouseEvent) => void) => void, setMobileTransparent: (value?: boolean) => void }>({ setOnBack: () => {/**/ }, setOnSkip: () => {/**/ }, setMobileTransparent: () => {/**/ } });
+const AuthHeaderConfigContex = React.createContext<{
+    setOnBack: (f?: (event: React.MouseEvent) => void) => void;
+    setOnSkip: (f?: (event: React.MouseEvent) => void) => void;
+    setMobileTransparent: (value?: boolean) => void;
+}>({
+    setOnBack: () => {
+        /**/
+    },
+    setOnSkip: () => {
+        /**/
+    },
+    setMobileTransparent: () => {
+        /**/
+    },
+});
 export const AuthHeaderConfig = React.memo((props: BackSkipLogoProps) => {
     const authHeaderConfigContex = React.useContext(AuthHeaderConfigContex);
     React.useEffect(() => {
@@ -137,43 +153,60 @@ interface AuthHeaderInstance {
     setOnSkip: (callback?: (event: React.MouseEvent) => void) => void;
     setMobileTransparent: (value?: boolean) => void;
 }
-const AuthHeader = React.memo(React.forwardRef((props: {}, ref: React.Ref<AuthHeaderInstance>) => {
-    const [onBack, setOnBack] = React.useState<{ callback?: (event: React.MouseEvent) => void }>({
-        callback: (event: React.MouseEvent) => {
-            history.back();
-        }
-    });
-    const [onSkip, setOnSkip] = React.useState<{ callback?: (event: React.MouseEvent) => void }>({ callback: undefined });
-    const [mobileTransparent, setMobileTransparent] = React.useState(false);
+const AuthHeader = React.memo(
+    React.forwardRef((props: {}, ref: React.Ref<AuthHeaderInstance>) => {
+        const [onBack, setOnBack] = React.useState<{
+            callback?: (event: React.MouseEvent) => void;
+        }>({
+            callback: (event: React.MouseEvent) => {
+                history.back();
+            },
+        });
+        const [onSkip, setOnSkip] = React.useState<{
+            callback?: (event: React.MouseEvent) => void;
+        }>({ callback: undefined });
+        const [mobileTransparent, setMobileTransparent] = React.useState(false);
 
-    React.useImperativeHandle(ref, () => ({
-        setOnBack: (callback) => setOnBack({ callback }),
-        setOnSkip: (callback) => setOnSkip({ callback }),
-        setMobileTransparent: (value: boolean) => setMobileTransparent(value),
-    }));
+        React.useImperativeHandle(ref, () => ({
+            setOnBack: (callback) => setOnBack({ callback }),
+            setOnSkip: (callback) => setOnSkip({ callback }),
+            setMobileTransparent: (value: boolean) => setMobileTransparent(value),
+        }));
 
-    const onBackPressed = React.useCallback((event: React.MouseEvent) => {
-        if (onBack.callback) {
-            onBack.callback(event);
-        } else {
-            history.back();
-        }
-    }, [onBack]);
-    const onSkipPressed = React.useCallback((event: React.MouseEvent) => {
-        if (onSkip.callback) {
-            onSkip.callback(event);
-        }
-    }, [onSkip]);
+        const onBackPressed = React.useCallback(
+            (event: React.MouseEvent) => {
+                if (onBack.callback) {
+                    onBack.callback(event);
+                } else {
+                    history.back();
+                }
+            },
+            [onBack],
+        );
+        const onSkipPressed = React.useCallback(
+            (event: React.MouseEvent) => {
+                if (onSkip.callback) {
+                    onSkip.callback(event);
+                }
+            },
+            [onSkip],
+        );
 
-    return (
-        <XView position="absolute" width="100%">
-            <BackSkipLogo onBack={onBackPressed} onSkip={onSkip.callback ? onSkipPressed : undefined} mobileTransparent={mobileTransparent} />
-        </XView>
-    );
-}));
+        return (
+            <XView position="absolute" width="100%">
+                <BackSkipLogo
+                    onBack={onBackPressed}
+                    onSkip={onSkip.callback ? onSkipPressed : undefined}
+                    mobileTransparent={mobileTransparent}
+                />
+            </XView>
+        );
+    }),
+);
 
 export default () => {
-    let isSafari = ((window as any).safari !== undefined) || (/iPad|iPhone|iPod/.test(navigator.userAgent));
+    let isSafari =
+        (window as any).safari !== undefined || /iPad|iPhone|iPod/.test(navigator.userAgent);
     let router = React.useContext(XRouterContext)!;
     let page: pagesT = pages.createNewAccount;
 
@@ -184,15 +217,21 @@ export default () => {
     if (getOrgInvite(router)) {
         Cookie.set('x-openland-org-invite', getOrgInvite(router));
     }
-    
+
     if (router.path.includes('accept-invite') || checkIfIsSignInInvite(router)) {
         page = pages.acceptInvite;
     }
     if (router.path.includes('ask-activation-code')) {
         page = pages.askActivationCode;
     }
+    if (router.path.includes('ask-activation-phone-code')) {
+        page = pages.askPhoneCode;
+    }
     if (router.path.includes('ask-email')) {
         page = pages.askEmail;
+    }
+    if (router.path.includes('ask-phone')) {
+        page = pages.askPhone;
     }
     if (
         router.path.includes('enter-your-organization') ||
@@ -218,69 +257,106 @@ export default () => {
             );
         }
     }
-    const isMobile = useIsMobile();
 
-    const [email, setEmail] = React.useState(false);
+    const [phoneCodeValue, setPhoneCodeValue] = React.useState({
+        label: 'United States',
+        value: '+1',
+    });
+    const [phoneValue, setPhoneValue] = React.useState('');
+    const [phoneSending, setPhoneSending] = React.useState(false);
+    const [phoneError, setPhoneError] = React.useState('');
     const [emailValue, setEmailValue] = React.useState('');
     const [emailWasResend, setEmailWasResend] = React.useState(false);
     const [emailSending, setEmailSending] = React.useState(false);
     const [emailError, setEmailError] = React.useState('');
-    const [emailSent, setEmailSent] = React.useState(false);
     const [googleStarting, setGoogleStarting] = React.useState(false);
     const [fromOutside, setFromOutside] = React.useState(false);
     const [isExistingUser, setExistingUser] = React.useState(false);
     const [avatarId, setAvatarId] = React.useState(null);
 
-    const fireEmail = React.useCallback(
-        async (emailToFire: string) => {
-            Cookie.set('auth-type', 'email', { path: '/' });
-            let redirect = router.query ? (router.query.redirect ? router.query.redirect : null) : null;
-            if (redirect) {
-                Cookie.set('sign-redirect', redirect, { path: '/' });
+    const checkRedirect = () => {
+        let redirect = router.query ? (router.query.redirect ? router.query.redirect : null) : null;
+        if (redirect) {
+            Cookie.set('sign-redirect', redirect, { path: '/' });
+        }
+    };
+
+    const firePhone = React.useCallback(async (phoneToFire: string) => {
+        Cookie.set('auth-type', 'phone', { path: '/' });
+        checkRedirect();
+        try {
+            let res = await (
+                await fetch(API_AUTH_ENDPOINT + '/phone/sendCode', {
+                    body: JSON.stringify({
+                        phone: phoneToFire,
+                    }),
+                    headers: [['Content-Type', 'application/json']],
+                    method: 'POST',
+                })
+            ).json();
+            if (!res.ok) {
+                throw new Error(res.errorText || 'Something went wrong');
             }
-            try {
-                let res = await (await fetch(API_AUTH_ENDPOINT + '/sendCode', {
+            localStorage.setItem('authSession', res.session);
+
+            setPhoneSending(false);
+            setExistingUser(!!res.profileExists);
+            setAvatarId(res.pictureId);
+        } catch (e) {
+            throw new Error('Something went wrong');
+        }
+    }, []);
+
+    const fireEmail = React.useCallback(async (emailToFire: string) => {
+        Cookie.set('auth-type', 'email', { path: '/' });
+        checkRedirect();
+        try {
+            let res = await (
+                await fetch(API_AUTH_ENDPOINT + '/sendCode', {
                     body: JSON.stringify({
                         email: emailToFire,
                     }),
                     headers: [['Content-Type', 'application/json']],
                     method: 'POST',
-                })).json();
-                if (!res.ok) {
-                    throw new Error(res.errorText || 'Something went wrong');
-                }
-                localStorage.setItem('authSession', res.session);
-
-                setEmailSending(false);
-                setEmailSent(true);
-                setExistingUser(!!res.profileExists);
-                setAvatarId(res.pictureId);
-            } catch (e) {
-                throw new Error('Something went wrong');
+                })
+            ).json();
+            if (!res.ok) {
+                throw new Error(res.errorText || 'Something went wrong');
             }
-        },
-        [],
-    );
+            localStorage.setItem('authSession', res.session);
 
-    // googleAuth is in ref because we should call signIn function synchronously, safari will block popup otherwise 
+            setEmailSending(false);
+            setExistingUser(!!res.profileExists);
+            setAvatarId(res.pictureId);
+        } catch (e) {
+            throw new Error('Something went wrong');
+        }
+    }, []);
+
+    // googleAuth is in ref because we should call signIn function synchronously, safari will block popup otherwise
     const googleAuth = React.useRef<gapi.auth2.GoogleAuth>();
     React.useEffect(() => {
         gapi.load('auth2', async () => {
-            gapi.auth2.init({
-                client_id: "1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com",
-                scope: "profile email",
-            }).then(auth => {
-                googleAuth.current = auth;
-            });
+            gapi.auth2
+                .init({
+                    client_id:
+                        '1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com',
+                    scope: 'profile email',
+                })
+                .then((auth) => {
+                    googleAuth.current = auth;
+                });
         });
     }, []);
 
     const completeGoogleSignin = React.useCallback(async (user: gapi.auth2.GoogleUser) => {
-        let uploaded = await (await fetch(API_AUTH_ENDPOINT + '/google/getAccessToken', {
-            method: 'POST',
-            headers: [['Content-Type', 'application/json']],
-            body: JSON.stringify({ idToken: user.getAuthResponse().id_token })
-        })).json();
+        let uploaded = await (
+            await fetch(API_AUTH_ENDPOINT + '/google/getAccessToken', {
+                method: 'POST',
+                headers: [['Content-Type', 'application/json']],
+                body: JSON.stringify({ idToken: user.getAuthResponse().id_token }),
+            })
+        ).json();
 
         if (uploaded.ok) {
             completeAuth(uploaded.accessToken);
@@ -292,13 +368,14 @@ export default () => {
 
     const fireGoogle = React.useCallback(() => {
         Cookie.set('auth-type', 'google', { path: '/' });
-        let redirect = router.query ? (router.query.redirect ? router.query.redirect : null) : null;
-        if (redirect) {
-            Cookie.set('sign-redirect', redirect, { path: '/' });
-        }
+        checkRedirect();
         if (googleAuth.current) {
-            let signing = googleAuth.current.signIn({ ux_mode: isSafari ? 'popup' : 'redirect', prompt: 'consent', redirect_uri: window.origin + '/authorization/google-complete' });
-            signing.then(completeGoogleSignin).catch(e => {
+            let signing = googleAuth.current.signIn({
+                ux_mode: isSafari ? 'popup' : 'redirect',
+                prompt: 'consent',
+                redirect_uri: window.origin + '/authorization/google-complete',
+            });
+            signing.then(completeGoogleSignin).catch((e) => {
                 setGoogleStarting(false);
                 throw new Error(e);
             });
@@ -308,17 +385,20 @@ export default () => {
     React.useEffect(() => {
         if (router.path.includes('google-complete')) {
             gapi.load('auth2', async () => {
-                gapi.auth2.init({
-                    client_id: "1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com",
-                    scope: "profile email",
-                }).then(async (auth2) => {
-                    if (auth2.isSignedIn.get()) {
-                        completeGoogleSignin(auth2.currentUser.get());
-                    } else {
-                        router.replace('/authorization/signin');
-                        console.warn('google auth: not signed in');
-                    }
-                });
+                gapi.auth2
+                    .init({
+                        client_id:
+                            '1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com',
+                        scope: 'profile email',
+                    })
+                    .then(async (auth2) => {
+                        if (auth2.isSignedIn.get()) {
+                            completeGoogleSignin(auth2.currentUser.get());
+                        } else {
+                            router.replace('/authorization/signin');
+                            console.warn('google auth: not signed in');
+                        }
+                    });
             });
         } else if (router.path.includes('magic')) {
             (async () => {
@@ -338,56 +418,28 @@ export default () => {
         trackEvent('signin_google_action');
         setGoogleStarting(true);
         fireGoogle();
+    }, []);
 
+    const loginWithPhone = React.useCallback(() => {
+        setPhoneValue('');
+        setPhoneError('');
+        setPhoneSending(false);
+        setTimeout(() => {
+            router.push('/authorization/ask-phone');
+        }, 0);
     }, []);
 
     const loginWithEmail = React.useCallback(() => {
-        setEmail(true);
         setEmailValue('');
-        setEmailSending(false);
         setEmailError('');
-        setEmailSent(false);
+        setEmailSending(false);
 
         setTimeout(() => {
             router.push('/authorization/ask-email');
         }, 0);
     }, []);
 
-    if (router.query.email) {
-        let noValue = router.query.email === 'true';
-        if (email !== true) {
-            setEmail(true);
-        }
-
-        const newEmailValue = noValue ? '' : router.query.email;
-        if (emailValue !== newEmailValue) {
-            setEmailValue(newEmailValue);
-        }
-
-        const newEmailSending = noValue ? false : true;
-
-        if (emailSending !== newEmailSending) {
-            setEmailSending(newEmailSending);
-        }
-        if (emailError !== '') {
-            setEmailError('');
-        }
-        if (emailSent) {
-            setEmailSent(false);
-        }
-        if (!fromOutside) {
-            setFromOutside(true);
-        }
-
-        if (canUseDOM) {
-            if (!noValue) {
-                fireEmail(router.query.email);
-                router.push('/authorization/ask-activation-code');
-            } else {
-                router.push('/authorization/ask-email');
-            }
-        }
-    } else if (router.query.google) {
+    if (router.query.google) {
         if (!googleStarting) {
             setGoogleStarting(true);
         }
@@ -400,7 +452,7 @@ export default () => {
         }
     }
 
-    if ((fromOutside && emailSending)) {
+    if (fromOutside && (emailSending || phoneSending)) {
         page = pages.loading;
     }
     const prevPageRef = React.useRef<string>();
@@ -417,17 +469,29 @@ export default () => {
                     variables={{
                         inviteKey: router.query.redirect.split('/')[2],
                     }}
-                    isMobile={!!isMobile}
                 />
             )}
             {page === pages.createNewAccount && (
-                <XTrack
-                    event={'signin_view'}
-                    key={'signin-track'}
-                >
+                <XTrack event={'signin_view'} key={'signin-track'}>
                     <CreateNewAccountPage
+                        loginWithPhone={loginWithPhone}
                         loginWithGoogle={loginWithGoogle}
                         loginWithEmail={loginWithEmail}
+                    />
+                </XTrack>
+            )}
+            {page === pages.askPhone && (
+                <XTrack event={'signin_phone_view'}>
+                    <AskPhonePage
+                        firePhone={firePhone}
+                        phoneCodeValue={phoneCodeValue}
+                        setPhoneCodeValue={setPhoneCodeValue}
+                        phoneValue={phoneValue}
+                        setPhoneValue={setPhoneValue}
+                        phoneSending={phoneSending}
+                        setPhoneSending={setPhoneSending}
+                        phoneError={phoneError}
+                        setPhoneError={setPhoneError}
                     />
                 </XTrack>
             )}
@@ -440,48 +504,59 @@ export default () => {
                         emailSending={emailSending}
                         setEmailSending={setEmailSending}
                         setEmailError={setEmailError}
-                        setEmailSent={setEmailSent}
                         setEmailValue={setEmailValue}
-                        isMobile={!!isMobile}
                     />
                 </XTrack>
             )}
-            {page === pages.askActivationCode && (
-                !emailValue ? (
+            {page === pages.askActivationCode &&
+                (!emailValue ? (
                     <XPageRedirect path="/" />
                 ) : (
-                        <XTrack event="code_view">
-                            <AskActivationPage
-                                resendCodeClick={async () => {
-                                    trackEvent('code_resend_action');
-                                    setEmailSending(true);
-                                    await fireEmail(emailValue);
-                                    setEmailWasResend(true);
-                                }}
-                                backButtonClick={() => {
-                                    setFromOutside(false);
-                                }}
-                                avatarId={avatarId}
-                                emailWasResend={emailWasResend}
-                                setEmailWasResend={setEmailWasResend}
-                                emailSendedTo={emailValue}
-                                emailValue={emailValue}
-                                emailSending={emailSending}
-                                isMobile={!!isMobile}
-                                isExistingUser={isExistingUser}
-                            />
-                        </XTrack>
-                    )
-
-            )}
+                    <XTrack event="code_view">
+                        <AskEmailCodePage
+                            resendCodeClick={async () => {
+                                trackEvent('code_resend_action');
+                                setEmailSending(true);
+                                await fireEmail(emailValue);
+                                setEmailWasResend(true);
+                            }}
+                            backButtonClick={() => {
+                                setFromOutside(false);
+                            }}
+                            avatarId={avatarId}
+                            emailWasResend={emailWasResend}
+                            setEmailWasResend={setEmailWasResend}
+                            emailValue={emailValue}
+                            emailSending={emailSending}
+                            isExistingUser={isExistingUser}
+                        />
+                    </XTrack>
+                ))}
+            {page === pages.askPhoneCode &&
+                (!phoneValue ? (
+                    <XPageRedirect path="/" />
+                ) : (
+                    <XTrack event="code_view">
+                        <AskPhoneCodePage
+                            phoneValue={phoneValue}
+                            phoneCodeValue={phoneCodeValue}
+                            phoneSending={phoneSending}
+                            avatarId={avatarId}
+                            isExistingUser={isExistingUser}
+                            backButtonClick={() => {
+                                setFromOutside(false);
+                            }}
+                        />
+                    </XTrack>
+                ))}
             {page === pages.introduceYourself && (
                 <XTrack event="signin_profile_view">
-                    <IntroduceYourselfPage isMobile={!!isMobile} />
+                    <IntroduceYourselfPage />
                 </XTrack>
             )}
             {page === pages.enterYourOrganization && (
                 <XTrack event="signin_org_view">
-                    <EnterYourOrganizationPage inviteKey={null} isMobile={!!isMobile} />
+                    <EnterYourOrganizationPage />
                 </XTrack>
             )}
         </>
@@ -521,8 +596,7 @@ export default () => {
                     setMobileTransparent,
                 }}
             >
-
-                {prevRender && (page !== prevPage) ? (
+                {prevRender && page !== prevPage ? (
                     <>
                         <div className={cx(pageContainer, forward ? forwardOut : backwardOut)}>
                             {prevRender}
@@ -530,10 +604,10 @@ export default () => {
                         <div className={cx(pageContainer, forward ? forwardIn : backwardIn)}>
                             {render}
                         </div>
-
                     </>
-
-                ) : render}
+                ) : (
+                    render
+                )}
             </AuthHeaderConfigContex.Provider>
         </div>
     );

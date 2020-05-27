@@ -5,23 +5,30 @@ import { useField } from 'openland-form/useField';
 import { InitTexts } from 'openland-web/pages/init/_text';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, FormLayout, AuthActionButton, AuthInput, AuthInputWrapper, AuthToastWrapper, useShake } from './components/authComponents';
+import {
+    Title,
+    Subtitle,
+    FormLayout,
+    AuthActionButton,
+    AuthInput,
+    AuthInputWrapper,
+    AuthToastWrapper,
+    useShake,
+} from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { AuthHeaderConfig } from './root.page';
 
-export type CreateWithEmailProps = {
+type CreateWithEmailProps = {
     fireEmail: (email: string) => Promise<void>;
     emailError: string;
     emailValue: string;
     emailSending: boolean;
     setEmailSending: Function;
     setEmailError: Function;
-    setEmailSent: Function;
     setEmailValue: Function;
-    isMobile: boolean;
 };
 
-export const WebSignUpCreateWithEmail = ({
+const WebSignUpCreateWithEmail = ({
     emailError,
     setEmailValue,
     setEmailError,
@@ -35,18 +42,15 @@ export const WebSignUpCreateWithEmail = ({
 
     let emailField = useField('input.email', emailValue, form);
 
-    const doConfirm = React.useCallback(
-        () => {
-            form.doAction(async () => {
-                setEmailValue(emailField.value);
-                setEmailError('');
-                setTimeout(() => {
-                    loginEmailStart(emailField.value);
-                }, 100);
-            });
-        },
-        [emailField.value],
-    );
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            setEmailValue(emailField.value);
+            setEmailError('');
+            setTimeout(() => {
+                loginEmailStart(emailField.value);
+            }, 100);
+        });
+    }, [emailField.value]);
 
     const errorText = (emailField.input.invalid && emailField.input.errorText) || emailError;
     const isInvalid = !!errorText;
@@ -81,7 +85,11 @@ export const WebSignUpCreateWithEmail = ({
                         onChange={emailField.input.onChange}
                     />
                 </AuthInputWrapper>
-                <AuthActionButton text={InitTexts.auth.next} loading={emailSending} onClick={handleNext} />
+                <AuthActionButton
+                    text={InitTexts.auth.next}
+                    loading={emailSending}
+                    onClick={handleNext}
+                />
             </FormLayout>
         </>
     );
@@ -93,7 +101,7 @@ function validateEmail(email: string) {
 }
 
 export const AskEmailPage = (props: CreateWithEmailProps) => {
-    const { fireEmail, setEmailError, setEmailSending, setEmailSent } = props;
+    const { fireEmail, setEmailError, setEmailSending } = props;
     let router = React.useContext(XRouterContext)!;
 
     const loginEmailStart = async (email: string) => {
@@ -106,7 +114,6 @@ export const AskEmailPage = (props: CreateWithEmailProps) => {
         } else {
             setEmailSending(true);
             setEmailError('');
-            setEmailSent(false);
 
             try {
                 await fireEmail(email);
@@ -121,7 +128,6 @@ export const AskEmailPage = (props: CreateWithEmailProps) => {
                     setEmailError(e.message);
                 }
             }
-
         }
     };
 

@@ -40,7 +40,6 @@ const AcceptInvite = ({
     inviter,
 }: {
     inviter: { photo: string | null; name: string; id: string };
-    isMobile: boolean;
 }) => {
     const userInfo = React.useContext(UserInfoContext);
     const router = React.useContext(XRouterContext)!;
@@ -98,7 +97,6 @@ const AcceptInvite = ({
 
 export const AcceptInvitePage = (props: {
     variables: { inviteKey: string };
-    isMobile: boolean;
 }) => {
     const client = useClient();
 
@@ -137,5 +135,5 @@ export const AcceptInvitePage = (props: {
     if (!inviter) {
         return <XLoader loading={true} />;
     }
-    return <AcceptInvite inviter={inviter} isMobile={props.isMobile} />;
+    return <AcceptInvite inviter={inviter} />;
 };

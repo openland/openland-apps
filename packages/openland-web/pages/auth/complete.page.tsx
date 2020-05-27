@@ -50,7 +50,7 @@ export default class AuthenticationHandler extends React.Component<{}, { error: 
 
     async completeAuth() {
         let auth = await this.retreiveAuthentication();
-        var uploaded = await fetch(AUTH_ENDPOINT, {
+        let uploaded = await fetch(AUTH_ENDPOINT, {
             method: 'POST',
             headers: {
                 authorization: 'Bearer ' + auth.idToken,

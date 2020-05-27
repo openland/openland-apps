@@ -18,6 +18,7 @@ import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import { AuthHeaderConfig } from './root.page';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { TextCaption } from 'openland-web/utils/TextStyles';
+import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 
 const captionText = css`
     color: var(--foregroundTertiary);
@@ -34,24 +35,20 @@ const captionLink = css`
     }
 `;
 
-export type ProfileFormData = {
+type ProfileFormData = {
     firstName: string | null;
     lastName: string | null;
     photoRef: StoredFileT | null;
 };
 
-export type EnterYourOrganizationPageProps = {
+type EnterYourOrganizationPageProps = {
     initialProfileFormData?: ProfileFormData | null;
-};
-
-type IntroduceYourselfPageOuterProps = {
-    initialProfileFormData?: ProfileFormData | null;
-    isMobile: boolean;
 };
 
 const CreateProfileFormInnerWeb = (
-    props: EnterYourOrganizationPageProps & { prefill: any; isMobile: boolean },
+    props: EnterYourOrganizationPageProps & { prefill: any; },
 ) => {
+    const isMobile = useIsMobile();
     const [sending, setSending] = React.useState(false);
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
@@ -155,7 +152,7 @@ const CreateProfileFormInnerWeb = (
             <Title text="New account" />
             <Subtitle
                 text="Introduce yourself"
-                maxWidth={props.isMobile ? 230 : undefined}
+                maxWidth={isMobile ? 230 : undefined}
             />
             <XView marginTop={32} marginBottom={16} alignSelf="center">
                 <UAvatarUploadField
@@ -194,7 +191,7 @@ const CreateProfileFormInnerWeb = (
     );
 };
 
-export const IntroduceYourselfPageInner = ({ isMobile }: IntroduceYourselfPageOuterProps) => {
+const IntroduceYourselfPageInner = (props: EnterYourOrganizationPageProps) => {
     const client = useClient();
     let router = React.useContext(XRouterContext)!;
 
@@ -205,7 +202,7 @@ export const IntroduceYourselfPageInner = ({ isMobile }: IntroduceYourselfPageOu
     const profile = client.useProfile();
     const data = client.useProfilePrefill();
 
-    let usePhotoPrefill = Cookie.get('auth-type') !== 'email';
+    let usePhotoPrefill = Cookie.get('auth-type') !== 'email' && Cookie.get('auth-type') !== 'phone';
     const prefill = usePhotoPrefill && data ? data.prefill : null;
 
     const initialProfileFormData = profile.profile
@@ -230,13 +227,13 @@ export const IntroduceYourselfPageInner = ({ isMobile }: IntroduceYourselfPageOu
             <CreateProfileFormInnerWeb
                 prefill={prefill}
                 initialProfileFormData={initialProfileFormData}
-                isMobile={isMobile}
+                {...props}
             />
         </Wrapper>
     );
 };
 
-export const IntroduceYourselfPage = (props: IntroduceYourselfPageOuterProps) => {
+export const IntroduceYourselfPage = (props: EnterYourOrganizationPageProps) => {
     return (
         <React.Suspense fallback={null}>
             <IntroduceYourselfPageInner {...props} />

@@ -9,22 +9,21 @@ import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { AuthHeaderConfig } from './root.page';
 
-export type AuthMechanism = {
+type AuthMechanism = {
+    loginWithPhone: () => void;
     loginWithGoogle: () => void;
     loginWithEmail: () => void;
 };
 
-export const SignUpAuthMechanism = ({
+const SignUpAuthMechanism = ({
+    loginWithPhone,
     loginWithGoogle,
     loginWithEmail,
 }: AuthMechanism) => {
     const [width] = useWithWidth();
     return (
         <FormLayout>
-            <XView
-                alignItems="center"
-                marginBottom={16}
-            >
+            <XView alignItems="center" marginBottom={16}>
                 <Unicorn width="128" height="128" />
             </XView>
             <Title text="Openland" />
@@ -32,10 +31,18 @@ export const SignUpAuthMechanism = ({
 
             <XView alignSelf="center" width={width && width < 400 ? '100%' : 240} marginTop={32}>
                 <UButton
+                    onClick={loginWithPhone}
+                    marginBottom={16}
+                    size="large"
+                    shape="square"
+                    text="Continue with Phone"
+                />
+                <UButton
                     onClick={loginWithGoogle}
                     marginBottom={16}
                     size="large"
                     shape="square"
+                    style="secondary"
                     text="Continue with Google"
                 />
                 <UButton
@@ -52,7 +59,10 @@ export const SignUpAuthMechanism = ({
 
 export const CreateNewAccountPage = (props: AuthMechanism) => {
     const router = React.useContext(XRouterContext)!;
-    const isInvite = router.query && router.query.redirect && router.query.redirect.includes('acceptChannelInvite');
+    const isInvite =
+        router.query &&
+        router.query.redirect &&
+        router.query.redirect.includes('acceptChannelInvite');
     return (
         <XView backgroundColor="white" flexGrow={1} flexShrink={1}>
             <XDocumentHead title="Login" />

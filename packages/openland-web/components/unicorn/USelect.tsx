@@ -234,11 +234,17 @@ const optionSubtitleStyle = css`
     color: var(--foregroundSecondary);
 `;
 
+const selectedIcon = css`
+    margin-left: 8px;
+`;
+
 const OptionRender = (option: OptionType) => {
     if (option.subtitle && option.labelShort) {
         return (
             <div className={optionContainer}>
-                <div className={cx(TextLabel1, optionLabelStyle)}>{emoji(String(option.label))}</div>
+                <div className={cx(TextLabel1, optionLabelStyle)}>
+                    {emoji(String(option.label))}
+                </div>
                 <div className={cx(TextDensed, optionSubtitleStyle)}>{emoji(option.subtitle)}</div>
             </div>
         );
@@ -262,7 +268,7 @@ const OptionComponent = (
         <components.Option {...props}>
             {customChild ? customChild(option) : <OptionRender {...option} />}
             {isSelected && (
-                <div>
+                <div className={selectedIcon}>
                     <UIcon icon={<IcCheck />} color="var(--foregroundTertiary)" size={16} />
                 </div>
             )}
@@ -291,99 +297,105 @@ export interface USelectProps extends USelectBasicProps, XViewProps {
     multi?: boolean;
 }
 
-export const USelect = React.memo(React.forwardRef((props: USelectProps, ref: any) => {
-    const {
-        options,
-        value,
-        onChange,
-        onInputChange,
-        optionRender,
-        size = 'default',
-        disabled,
-        hideSelector = false,
-        multi = false,
-        clearable = false,
-        searchable = false,
-        label,
-        invalid,
-        useMenuPortal,
-        autoFocus,
-        ...xViewProps
-    } = props;
+export const USelect = React.memo(
+    React.forwardRef((props: USelectProps, ref: any) => {
+        const {
+            options,
+            value,
+            onChange,
+            onInputChange,
+            optionRender,
+            size = 'default',
+            disabled,
+            hideSelector = false,
+            multi = false,
+            clearable = false,
+            searchable = false,
+            label,
+            invalid,
+            useMenuPortal,
+            autoFocus,
+            ...xViewProps
+        } = props;
 
-    const [inputValue, setInputValue] = React.useState('');
+        const [inputValue, setInputValue] = React.useState('');
 
-    const onInputChangeHandler = (v: string, params: InputActionMeta) => {
-        if (params.action === 'input-change') {
-            setInputValue(v);
+        const onInputChangeHandler = (v: string, params: InputActionMeta) => {
+            if (params.action === 'input-change') {
+                setInputValue(v);
+            } else if (params.action === 'set-value') {
+                setInputValue('');
+            }
             if (onInputChange) {
                 onInputChange(v);
             }
-        }
-    };
+        };
 
-    return (
-        <XView {...xViewProps}>
-            <Select
-                ref={ref}
-                autoFocus={autoFocus}
-                openMenuOnFocus={true}
-                options={options}
-                value={value}
-                onChange={onChange}
-                isDisabled={disabled}
-                isMulti={multi}
-                isClearable={clearable}
-                onInputChange={onInputChangeHandler}
-                inputValue={inputValue}
-                isSearchable={searchable}
-                placeholder={label}
-                menuPortalTarget={useMenuPortal ? document.querySelector('body') : undefined}
-                styles={customStyles({
-                    size: size,
-                    withCustomPlaceholder: !multi && size === 'default',
-                    hideSelector: hideSelector,
-                    optionRender: !!optionRender,
-                })}
-                components={{
-                    Option: optionRender
-                        ? (v) => OptionComponent({ ...v, customChild: optionRender })
-                        : (v) => OptionComponent({ ...v }),
-                    DropdownIndicator: DropdownIndicatorComponent,
-                    ClearIndicator: ClearIndicatorComponent,
-                    MultiValueLabel: MultiValueLabelComponent,
-                }}
-            />
-            {!multi && size === 'default' && (
-                <div
-                    className={cx(
-                        placeholderStyle,
-                        (Array.isArray(value) ? !!value.length : !!value) &&
-                        placeholderValueStyle,
-                        invalid && placeholderInvalidStyle,
-                    )}
-                >
-                    {label}
-                </div>
-            )}
-        </XView>
-    );
-}));
+        return (
+            <XView {...xViewProps}>
+                <Select
+                    ref={ref}
+                    autoFocus={autoFocus}
+                    openMenuOnFocus={true}
+                    options={options}
+                    value={value}
+                    onChange={onChange}
+                    isDisabled={disabled}
+                    isMulti={multi}
+                    isClearable={clearable}
+                    onInputChange={onInputChangeHandler}
+                    inputValue={inputValue}
+                    isSearchable={searchable}
+                    placeholder={label}
+                    menuPortalTarget={useMenuPortal ? document.querySelector('body') : undefined}
+                    styles={customStyles({
+                        size: size,
+                        withCustomPlaceholder: !multi && size === 'default',
+                        hideSelector: hideSelector,
+                        optionRender: !!optionRender,
+                    })}
+                    components={{
+                        Option: optionRender
+                            ? (v) => OptionComponent({ ...v, customChild: optionRender })
+                            : (v) => OptionComponent({ ...v }),
+                        DropdownIndicator: DropdownIndicatorComponent,
+                        ClearIndicator: ClearIndicatorComponent,
+                        MultiValueLabel: MultiValueLabelComponent,
+                    }}
+                />
+                {!multi && size === 'default' && (
+                    <div
+                        className={cx(
+                            placeholderStyle,
+                            (Array.isArray(value) ? !!value.length : !!value) &&
+                                placeholderValueStyle,
+                            invalid && placeholderInvalidStyle,
+                        )}
+                    >
+                        {label}
+                    </div>
+                )}
+            </XView>
+        );
+    }),
+);
 
 type UselectFieldType = string | number | boolean | null | undefined;
 
-export const USelectField = React.forwardRef((props: USelectBasicProps & { field: FormField<UselectFieldType> }, ref: any) => {
-    const { field, ...other } = props;
-    return (
-        <USelect
-            ref={ref}
-            onChange={(val: OptionType) => {
-                field.input.onChange(!!val ? val.value : null);
-            }}
-            multi={false}
-            value={props.options.filter((i) => i.value === field.value)}
-            invalid={field.input.invalid}
-            {...other}
-        />
-    );
-});
+export const USelectField = React.forwardRef(
+    (props: USelectBasicProps & { field: FormField<UselectFieldType> }, ref: any) => {
+        const { field, ...other } = props;
+        return (
+            <USelect
+                ref={ref}
+                onChange={(val: OptionType) => {
+                    field.input.onChange(!!val ? val.value : null);
+                }}
+                multi={false}
+                value={props.options.filter((i) => i.value === field.value)}
+                invalid={field.input.invalid}
+                {...other}
+            />
+        );
+    },
+);
