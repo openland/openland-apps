@@ -22,7 +22,7 @@ export interface UAvatarProps extends XViewProps {
     squared?: boolean;
 }
 
-const getPlaceholderIndex = (id: string) => Math.abs(doSimpleHash(id)) % PlaceholderColors.length;
+export const getPlaceholderIndex = (id: string) => Math.abs(doSimpleHash(id)) % PlaceholderColors.length;
 
 export const getPlaceholderColorByIndex = (index: number) => {
     let color = PlaceholderColors[index];
@@ -60,8 +60,8 @@ const avatarPlaceholderStyle = css`
     -webkit-user-select: none;
 `;
 
-const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: number }) => {
-    const { title, titleEmoji, index, size = 'medium', squared } = props;
+export const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: number, fontSize: number }) => {
+    const { title, titleEmoji, index, fontSize, squared } = props;
     const ph = extractPlaceholder(title);
 
     return (
@@ -73,7 +73,7 @@ const AvatarPlaceholder = React.memo((props: UAvatarProps & { index: number }) =
             borderRadius={squared ? 0 : 50}
             backgroundImage={getPlaceholderColorByIndex(index)}
             color="white"
-            fontSize={AvatarSizes[size].placeholder}
+            fontSize={fontSize}
             overflow="hidden"
             hoverTextDecoration="none"
         >
@@ -115,9 +115,8 @@ const imageWrapperRound = css`
     }
 `;
 
-const AvatarImage = React.memo((props: UAvatarProps) => {
-    const { photo, uuid, size = 'medium', squared } = props;
-    const boxSize = AvatarSizes[size].size;
+export const AvatarImage = React.memo((props: UAvatarProps & { boxSize: number }) => {
+    const { photo, uuid, boxSize, squared } = props;
     const [imageKey, handleImageError] = useReloadImage();
 
     const ops =
@@ -240,13 +239,13 @@ export const UAvatar = XMemo<UAvatarProps>(props => {
     if (photo || uuid) {
         if (photo && photo.startsWith('ph://')) {
             const phIndex = parseInt(photo.substr(5), 10) || 0;
-            content = <AvatarPlaceholder {...props} index={phIndex} />;
+            content = <AvatarPlaceholder {...props} fontSize={AvatarSizes[size].placeholder} index={phIndex} />;
         } else {
-            content = <AvatarImage {...props} />;
+            content = <AvatarImage {...props} boxSize={AvatarSizes[size].size} />;
         }
     } else {
         const phIndex = getPlaceholderIndex(id);
-        content = <AvatarPlaceholder {...props} index={phIndex} />;
+        content = <AvatarPlaceholder {...props} fontSize={AvatarSizes[size].placeholder} index={phIndex} />;
     }
 
     const boxSize = AvatarSizes[size].size;

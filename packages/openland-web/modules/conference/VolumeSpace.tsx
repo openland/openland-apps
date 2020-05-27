@@ -3,8 +3,7 @@ import { useJsDrag } from './CallFloating';
 import { css, cx } from 'linaria';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
-import { VideoComponent } from './ScreenShareModal';
-import { UAvatar, getPlaceholderColorRawById } from 'openland-web/components/unicorn/UAvatar';
+import { getPlaceholderColorRawById } from 'openland-web/components/unicorn/UAvatar';
 import { bezierPath, pointsDistance, pointNearLine } from './space-utils';
 import { Path, MediaSessionVolumeSpace, SpaceObject, SimpleText, Image } from 'openland-engines/legacy/MediaSessionVolumeSpace';
 import { uploadcareOptions, layoutMedia } from 'openland-y-utils/MediaLayout';
@@ -14,13 +13,13 @@ import { makeStars } from './stars';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { VMMapMap } from 'openland-y-utils/mvvm/vm';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
-import { AppUserMediaTrackWeb } from 'openland-y-runtime-web/AppUserMedia';
 import { YoutubeParty } from './YoutubeParty';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { SpaceControls } from './SpaceControls';
 import { showAttachConfirm } from 'openland-web/fragments/chat/components/AttachConfirm';
 import { CONTROLS_WIDTH } from './CallControls';
 import { UploadingFile, LocalImage } from 'openland-engines/messenger/types';
+import { VolumeSpaceAvatar } from './VolumeSpaceAvatar';
 
 const TEXT_MIN_HEIGHT = 34;
 const TEXT_MIN_WIDTH = 50;
@@ -73,28 +72,6 @@ let VolumeSpaceDrawListener = css`
     height: 3000px;
     top: 0;
     left: 0;
-`;
-let AvatarItemStyle = css`
-    will-change: transform;
-   
-    position: absolute;
-    pointer-events: none;
-`;
-let AvatarMovableStyle = css`
-    cursor: move;
-    pointer-events: inherit;
-    transition: none;
-`;
-let NoPointerEvents = css`
-    pointer-events: none;
-`;
-
-let VolumeSpaceVideoStyle = css`
-    position: relative;
-    width: 72px;
-    height: 72px;
-    border-radius: 72px;
-    background-color: var(--foregroundSecondary);
 `;
 
 let resizeDotStyles = css`
@@ -217,35 +194,6 @@ type CursorState = {
     action: 'none' | 'draw' | 'erase',
     color?: string,
 };
-
-const VolumeSpaceAvatar = React.memo((props: Conference_conference_peers & { videoTrack: AppMediaStreamTrack | null, space: MediaSessionVolumeSpace, selfRef?: React.RefObject<HTMLDivElement> }) => {
-    let containerRef = React.useRef<HTMLDivElement>(null);
-    const isLocal = !!props.selfRef;
-    React.useEffect(() => {
-        // listen obj updates
-        return props.space.peersVM.listenId(props.id, `peer_${props.id}`, peer => {
-            if (containerRef.current) {
-                let scale = peer.coords[2] / 2 + 0.5;
-                containerRef.current.style.transform = `translate(${peer.coords[0]}px, ${peer.coords[1]}px) scale3d(${scale}, ${scale}, ${scale})`;
-            }
-        });
-    });
-    return (
-        <div className={cx(AvatarItemStyle, !isSafari && !isLocal && TransitionTransform, isLocal && AvatarMovableStyle)} ref={props.selfRef || containerRef}>
-            {!props.videoTrack &&
-                <div className={NoPointerEvents}>
-                    <UAvatar
-                        size='x-large'
-                        id={props.user.id}
-                        title={props.user.name}
-                        photo={props.user.photo}
-                    />
-                </div>
-            }
-            {props.videoTrack && <VideoComponent track={(props.videoTrack as AppUserMediaTrackWeb).track} cover={true} mirror={isLocal} videoClass={VolumeSpaceVideoStyle} borderRadius={72} />}
-        </div>
-    );
-});
 
 ////
 // IMAGES
@@ -1047,6 +995,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                             videoTrack={videoTrack}
                             space={props.mediaSession.space}
                             selfRef={p.id === state.sender.id ? selfRef : undefined}
+                            peersCount={props.peers.length}
                         />;
                     })}
                     {props.peers.filter(p => p.id !== state.sender.id).map(p => <Pointer key={'pointer_' + p.id} space={props.mediaSession.space} peer={p} />)}
