@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { URickInput, URickInputInstance, URickTextValue } from 'openland-web/components/unicorn/URickInput';
+import { URickInput, URickInputInstance } from 'openland-web/components/unicorn/URickInput';
 import { DiscussionSimple } from 'openland-api/spacex.types';
 import { InvalidateSync } from '@openland/patterns';
 import { useClient } from 'openland-api/useClient';
@@ -8,17 +8,17 @@ import { URickTextArea, URichTextAreaValue } from 'openland-web/components/unico
 
 export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimple }) => {
     const initial = React.useMemo(() => props.data, []);
-    const initialParagraph = React.useMemo(() => {
-        const res: URickTextValue = [];
-        for (let r of initial.content) {
-            if (r.__typename === 'TextParagraph') {
-                res.push(r.text);
-            } else {
-                throw Error('Unsupported');
-            }
-        }
-        return res;
-    }, []);
+    // const initialParagraph = React.useMemo(() => {
+    //     const res: URickTextValue = [];
+    //     for (let r of initial.content) {
+    //         if (r.__typename === 'TextParagraph') {
+    //             res.push(r.text);
+    //         } else {
+    //             throw Error('Unsupported');
+    //         }
+    //     }
+    //     return res;
+    // }, []);
     const contentRef = React.useRef<URickInputInstance>(null);
     const client = useClient();
 
