@@ -59,7 +59,6 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps & { pre
     const isMobile = useIsMobile();
     const [sending, setSending] = React.useState(false);
     const client = useClient();
-    let router = React.useContext(XRouterContext)!;
     const form = useForm();
     const { prefill } = props;
 
