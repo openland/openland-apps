@@ -20,6 +20,8 @@ import { CONTROLS_WIDTH } from './CallControls';
 import { UploadingFile, LocalImage } from 'openland-engines/messenger/types';
 import { VolumeSpaceAvatar } from './VolumeSpaceAvatar';
 import { PeerObjects, TEXT_MIN_HEIGHT } from './PeerObjects';
+import IconCursor from 'openland-icons/s/ic-cursor-space-24.svg';
+import { UIcon } from 'openland-web/components/unicorn/UIcon';
 
 let VolumeSpaceContainerStyle = css`
     width: 100%;
@@ -70,10 +72,9 @@ let VolumeSpaceDrawListener = css`
 `;
 
 let PointerStyle = css`
-    width: 24px;
-    height: 24px;
-    border-radius: 24px;
-    border: 2px solid #fff;
+    position: absolute;
+    top: -2px;
+    left: -2px;
 `;
 
 let PointerContainerStyle = css`
@@ -216,21 +217,40 @@ const Drawings = React.memo((props: { peers: Conference_conference_peers[], spac
 
 const Pointer = React.memo((props: { peer: Conference_conference_peers, space: MediaSessionVolumeSpace }) => {
     let ref = React.useRef<HTMLDivElement>(null);
-    let pointerRef = React.useRef<HTMLDivElement>(null);
+    let [pointerColor, setPointerColor] = React.useState<string | null>(null);
     React.useEffect(() => {
         return props.space.pointerVM.listenId(props.peer.id, `pointer_${props.peer.id}`, p => {
-            if (ref.current && pointerRef.current) {
+            if (ref.current) {
                 ref.current.style.position = 'absolute';
-                ref.current.style.transform = `translate3d(${p.coords[0] - 12}px, ${p.coords[1] - 12}px, 0)`;
+                ref.current.style.transform = `translate3d(${p.coords[0]}px, ${p.coords[1]}px, 0)`;
 
-                pointerRef.current.style.backgroundColor = p.color || getPlaceholderColorRawById(props.peer.user.id).end;
+                setPointerColor(p.color || getPlaceholderColorRawById(props.peer.user.id).end);
             }
         });
-    });
-    return <div className={cx(PointerContainerStyle, !isSafari && TransitionTransform)} ref={ref}>
-        <XView position="absolute" left={-200} right={-200} top={-24}  {...TextStyles.Detail} alignItems="center" justifyContent="center"><XView borderRadius={4} paddingHorizontal={3} paddingTop={2} paddingBottom={3} backgroundColor="var(--backgroundTertiaryTrans)">{props.peer.user.shortname || props.peer.user.name}</XView></XView>
-        <div ref={pointerRef} className={PointerStyle} />
-    </div>;
+    }, []);
+
+    return (
+        <div className={cx(PointerContainerStyle, !isSafari && TransitionTransform)} ref={ref}>
+            {pointerColor && (
+                <>
+                    <XView
+                        position="absolute"
+                        top={22}
+                        left={22}
+                        borderRadius={8}
+                        paddingHorizontal={8}
+                        paddingVertical={2}
+                        backgroundColor={pointerColor}
+                        {...TextStyles.Label1}
+                        color="var(--foregroundContrast)"
+                    >
+                        {props.peer.user.firstName}
+                    </XView>
+                    <UIcon icon={<IconCursor />} color={pointerColor} className={PointerStyle} />
+                </>
+            )}
+        </div>
+    );
 });
 
 export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManager, peers: Conference_conference_peers[] }) => {
