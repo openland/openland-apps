@@ -19,6 +19,8 @@ import { RoomMembersPaginated_members, RoomMemberRole } from 'openland-api/space
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 import { ProfileDonationButtons } from 'openland-web/components/ProfileDonationButtons';
+import { GroupViewsCount } from './components/GroupViewsCount';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     const client = useClient();
@@ -52,7 +54,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         settings,
         isPremium,
         premiumSettings,
-        owner,
+        owner
     } = group;
 
     const [members, setMembers] = React.useState(initialMembers);
@@ -143,6 +145,12 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
                 <UNotificationsSwitch id={id} mute={!!settings.mute} marginLeft={16} />
                 <GroupMenu group={group} />
             </UListHero>
+
+            <XWithRole role="super-admin">
+                <UListGroup header="Stats">
+                    <GroupViewsCount id={id} />
+                </UListGroup>
+            </XWithRole>
 
             <UListGroup header="About">
                 {!!description && <UListText value={description} />}

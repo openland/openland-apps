@@ -783,3 +783,7 @@ query RoomMetaPreview($shortname: String!, $id: ID!) {
 
     roomSocialImage(roomId: $id)
 }
+
+query GroupScreenViews($id: ID!, $from: Date, $to: Date) {
+    groupScreenViews(id: $id, from: $from, to: $to)
+}

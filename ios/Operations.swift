@@ -3017,6 +3017,9 @@ private let GlobalSearchSelector = obj(
                     ))
                 )))))
         )
+private let GroupScreenViewsSelector = obj(
+            field("groupScreenViews", "groupScreenViews", arguments(fieldValue("id", refValue("id")), fieldValue("from", refValue("from")), fieldValue("to", refValue("to"))), notNull(scalar("Int")))
+        )
 private let HubSelector = obj(
             field("hub", "hub", arguments(fieldValue("id", refValue("id"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5498,6 +5501,12 @@ class Operations {
         "query GlobalSearch($query:String!,$kinds:[GlobalSearchEntryKind!]){items:alphaGlobalSearch(query:$query,kinds:$kinds){__typename ... on Organization{__typename id name about photo shortname isCommunity:alphaIsCommunity}... on User{__typename ...UserShort}... on SharedRoom{__typename id kind title canSendMessage roomPhoto:photo membersCount membership organization{__typename id name photo}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
         GlobalSearchSelector
     )
+    let GroupScreenViews = OperationDefinition(
+        "GroupScreenViews",
+        .query, 
+        "query GroupScreenViews($id:ID!,$from:Date,$to:Date){groupScreenViews(id:$id,from:$from,to:$to)}",
+        GroupScreenViewsSelector
+    )
     let Hub = OperationDefinition(
         "Hub",
         .query, 
@@ -6774,6 +6783,7 @@ class Operations {
         if name == "FetchPushSettings" { return FetchPushSettings }
         if name == "GlobalCounter" { return GlobalCounter }
         if name == "GlobalSearch" { return GlobalSearch }
+        if name == "GroupScreenViews" { return GroupScreenViews }
         if name == "Hub" { return Hub }
         if name == "Hubs" { return Hubs }
         if name == "InitFeed" { return InitFeed }

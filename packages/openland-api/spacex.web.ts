@@ -3024,6 +3024,9 @@ const GlobalSearchSelector = obj(
                     ))
                 )))))
         );
+const GroupScreenViewsSelector = obj(
+            field('groupScreenViews', 'groupScreenViews', args(fieldValue("id", refValue('id')), fieldValue("from", refValue('from')), fieldValue("to", refValue('to'))), notNull(scalar('Int')))
+        );
 const HubSelector = obj(
             field('hub', 'hub', args(fieldValue("id", refValue('id'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5500,6 +5503,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'GlobalSearch',
         body: 'query GlobalSearch($query:String!,$kinds:[GlobalSearchEntryKind!]){items:alphaGlobalSearch(query:$query,kinds:$kinds){__typename ... on Organization{__typename id name about photo shortname isCommunity:alphaIsCommunity}... on User{__typename ...UserShort}... on SharedRoom{__typename id kind title canSendMessage roomPhoto:photo membersCount membership organization{__typename id name photo}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
         selector: GlobalSearchSelector
+    },
+    GroupScreenViews: {
+        kind: 'query',
+        name: 'GroupScreenViews',
+        body: 'query GroupScreenViews($id:ID!,$from:Date,$to:Date){groupScreenViews(id:$id,from:$from,to:$to)}',
+        selector: GroupScreenViewsSelector
     },
     Hub: {
         kind: 'query',
