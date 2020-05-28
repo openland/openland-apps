@@ -4,11 +4,13 @@ import { XView, XStyles } from 'react-mental';
 import { XScrollValues } from './XScrollView3';
 import { throttle } from 'openland-y-utils/timer';
 import { VisibleTabContext } from 'openland-unicorn/components/utils/VisibleTabContext';
+import { detectOS } from 'openland-x-utils/detectOS';
 
 const NativeScrollStyle = css`
     overflow-y: scroll;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
     overflow-anchor: none;
     flex-shrink: 1;
     width: 100%;
@@ -24,6 +26,21 @@ const NativeScrollContentStyle = css`
     min-height: 100% !important;
     overflow-y: hidden;
     overflow-x: hidden;
+`;
+
+const NativeWindowsScrollStyle = css`
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar {
+        width: 4px;
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--overlayLight);
+    }
 `;
 
 export interface XScrollViewReverse2Props extends XStyles {
@@ -44,6 +61,8 @@ interface XScrollViewReverse2RefProps {
 export const XScrollViewAnchored = React.memo(
     React.forwardRef<XScrollViewReverse2RefProps, XScrollViewReverse2Props>(
         (props: XScrollViewReverse2Props, ref) => {
+            const isWindows = React.useMemo(() => detectOS() === 'Windows', []);
+
             const outerRef = React.useRef<HTMLDivElement>(null);
             // const scrollDumb = React.useRef<HTMLDivElement>(null);
             const innerRef = props.innerRef || React.useRef<HTMLDivElement>(null);
@@ -196,7 +215,7 @@ export const XScrollViewAnchored = React.memo(
 
             return (
                 <XView {...other}>
-                    <div className={NativeScrollStyle} ref={outerRef}>
+                    <div className={cx(NativeScrollStyle, isWindows && NativeWindowsScrollStyle)} ref={outerRef}>
                         <div className={cx(NativeScrollContentStyle, props.contentClassName)} ref={innerRef}>
                             {props.children}
                             {/*<div id="scrollDumb" ref={scrollDumb} />*/}

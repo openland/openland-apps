@@ -2,7 +2,8 @@ import * as React from 'react';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XView, XStyles } from 'react-mental';
 import Scrollbar from 'react-scrollbars-custom';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
+import { detectOS } from 'openland-x-utils/detectOS';
 
 export interface XScrollValues {
     scrollHeight: number;
@@ -61,6 +62,7 @@ const scrollToBottomOfElement = ({
 
 const NativeScrollStyle = css`
     -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
     overflow-y: scroll;
     overflow-x: hidden;
     width: 100%;
@@ -69,6 +71,21 @@ const NativeScrollStyle = css`
     flex-shrink: 1;
     display: flex;
     flex-direction: column;
+`;
+
+export const NativeWindowsScrollStyle = css`
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar {
+        width: 4px;
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--overlayLight);
+    }
 `;
 
 const ScrollContent = css`
@@ -84,6 +101,8 @@ const NativeBackend = React.memo<{
     innerRef: any;
     children?: any;
 }>(props => {
+    const isWindows = React.useMemo(() => detectOS() === 'Windows', []);
+
     React.useEffect(() => {
         if (props.innerRef && props.innerRef.current) {
             const src = props.innerRef.current;
@@ -103,7 +122,7 @@ const NativeBackend = React.memo<{
     }, []);
 
     return (
-        <div className={NativeScrollStyle} ref={props.innerRef}>
+        <div className={cx(NativeScrollStyle, isWindows && NativeWindowsScrollStyle)} ref={props.innerRef}>
             {props.children}
         </div>
     );
