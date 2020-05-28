@@ -42,29 +42,33 @@ export interface BackSkipLogoProps {
     mobileTransparent?: boolean;
 }
 
-export const BackSkipLogo = ({
-    onBack,
-    onSkip,
-    mobileTransparent = false,
-}: BackSkipLogoProps) => {
+export const BackSkipLogo = ({ onBack, onSkip, mobileTransparent = false }: BackSkipLogoProps) => {
     const isMobile = useIsMobile();
     const modalBox = React.useContext(XModalBoxContext);
     const bg = !mobileTransparent && isMobile && bgPrimary;
     return (
         <div className={cx(wrapper, isMobile && mobileWrapper, bg)}>
             {onBack && !modalBox ? (
-                <UIconButton position="absolute" top={isMobile ? 4 : 12} left={isMobile ? 4 : 12} size="large" cursor="pointer" onClick={onBack} icon={<IcBack />} />
+                <UIconButton
+                    position="absolute"
+                    top={isMobile ? 4 : 12}
+                    left={isMobile ? 4 : 12}
+                    size="large"
+                    cursor="pointer"
+                    onClick={onBack}
+                    icon={<IcBack />}
+                />
             ) : (
-                    <div />
-                )}
+                <div />
+            )}
 
             {onSkip && !modalBox ? (
                 <XView position="absolute" top={isMobile ? 4 : 12} right={isMobile ? 4 : 12}>
                     <Skip onClick={onSkip} />
                 </XView>
             ) : (
-                    <div />
-                )}
+                <div />
+            )}
         </div>
     );
 };

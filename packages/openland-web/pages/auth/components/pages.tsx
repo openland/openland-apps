@@ -6,7 +6,6 @@ export type pagesT =
     | 'askEmail'
     | 'askPhone'
     | 'createNewAccount'
-    | 'enterYourOrganization'
     | 'introduceYourself';
 
 export const pages: { [K in pagesT]: pagesT } = {
@@ -17,8 +16,7 @@ export const pages: { [K in pagesT]: pagesT } = {
     askEmail: 'askEmail',
     askPhone: 'askPhone',
     createNewAccount: 'createNewAccount',
-    enterYourOrganization: 'enterYourOrganization',
     introduceYourself: 'introduceYourself',
 };
 
-export const pagesArr = ['acceptInvite', 'createNewAccount', 'askEmail', 'askPhone', 'askActivationCode', 'askPhoneCode', 'introduceYourself', 'enterYourOrganization'];
+export const pagesArr = ['acceptInvite', 'createNewAccount', 'askEmail', 'askPhone', 'askActivationCode', 'askPhoneCode', 'introduceYourself'];

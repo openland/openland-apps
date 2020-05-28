@@ -161,9 +161,10 @@ export const AuthRouter = React.memo((props: { children: any }) => {
         return redirectJoin('/join');
     }
 
+    // TODO: Remove account organization
     // Redirect to organization add
     if (!userInfo.isAccountExists) {
-        return redirectIfNeeded('/createOrganization');
+        return redirectIfNeeded('/createProfile');
     }
 
     ////////////////////////////////////////////////
@@ -187,6 +188,7 @@ export const AuthRouter = React.memo((props: { children: any }) => {
         return redirectJoin('/invite');
     }
 
+    // TODO: remove waitList
     // Redirect to generic 'need more info' page if signup is not completed
     if (!userInfo.isCompleted) {
         return redirectIfNeeded('/waitlist');

@@ -5,7 +5,6 @@ const rootPaths = [
     '/waitlist',
     '/suspended',
     '/createProfile',
-    '/createOrganization',
     '/signin',
 ];
 

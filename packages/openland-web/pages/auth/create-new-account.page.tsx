@@ -11,13 +11,11 @@ import { AuthHeaderConfig } from './root.page';
 
 type AuthMechanism = {
     loginWithPhone: () => void;
-    loginWithGoogle: () => void;
     loginWithEmail: () => void;
 };
 
 const SignUpAuthMechanism = ({
     loginWithPhone,
-    loginWithGoogle,
     loginWithEmail,
 }: AuthMechanism) => {
     const [width] = useWithWidth();
@@ -36,14 +34,6 @@ const SignUpAuthMechanism = ({
                     size="large"
                     shape="square"
                     text="Continue with Phone"
-                />
-                <UButton
-                    onClick={loginWithGoogle}
-                    marginBottom={16}
-                    size="large"
-                    shape="square"
-                    style="secondary"
-                    text="Continue with Google"
                 />
                 <UButton
                     onClick={loginWithEmail}

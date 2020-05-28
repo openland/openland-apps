@@ -14,7 +14,7 @@ export const ResolveInviteComponent = () => {
 
     let { inviteKey } = router.routeQuery;
 
-    inviteKey = Cookie.get('x-openland-app-invite') || Cookie.get('x-openland-org-invite') || inviteKey;
+    inviteKey = Cookie.get('x-openland-app-invite') || inviteKey;
 
     const resolvedInvite = client.useResolvedInvite({ key: inviteKey }, { suspense: false });
 

@@ -11,7 +11,15 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useClient } from 'openland-api/useClient';
 import * as Cookie from 'js-cookie';
 import { Wrapper } from '../onboarding/components/wrapper';
-import { Title, Subtitle, FormLayout, AuthActionButton, AuthInputWrapper, useShake, textClassName } from './components/authComponents';
+import {
+    Title,
+    Subtitle,
+    FormLayout,
+    AuthActionButton,
+    AuthInputWrapper,
+    useShake,
+    textClassName,
+} from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
@@ -19,6 +27,8 @@ import { AuthHeaderConfig } from './root.page';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { TextCaption } from 'openland-web/utils/TextStyles';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
+import { ResolvedInvite } from 'openland-api/spacex.types';
+import { trackEvent } from 'openland-x-analytics';
 
 const captionText = css`
     color: var(--foregroundTertiary);
@@ -45,9 +55,7 @@ type EnterYourOrganizationPageProps = {
     initialProfileFormData?: ProfileFormData | null;
 };
 
-const CreateProfileFormInnerWeb = (
-    props: EnterYourOrganizationPageProps & { prefill: any; },
-) => {
+const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps & { prefill: any }) => {
     const isMobile = useIsMobile();
     const [sending, setSending] = React.useState(false);
     const client = useClient();
@@ -58,15 +66,15 @@ const CreateProfileFormInnerWeb = (
     let firstName = useField<string>(
         'input.firstName',
         (prefill && prefill.firstName) ||
-        (props.initialProfileFormData && props.initialProfileFormData.firstName) ||
-        '',
+            (props.initialProfileFormData && props.initialProfileFormData.firstName) ||
+            '',
         form,
     );
     let lastName = useField<string>(
         'input.lastName',
         (prefill && prefill.lastName) ||
-        (props.initialProfileFormData && props.initialProfileFormData.lastName) ||
-        '',
+            (props.initialProfileFormData && props.initialProfileFormData.lastName) ||
+            '',
         form,
     );
     let photoRef = useField<StoredFileT | null>(
@@ -75,66 +83,80 @@ const CreateProfileFormInnerWeb = (
         form,
     );
 
-    const doConfirm = React.useCallback(
-        () => {
-            form.doAction(async () => {
-                if (firstName.value.trim() === '') {
-                    return;
-                }
-                const formData = {
-                    firstName: firstName.value.trim(),
-                    lastName: lastName.value.trim(),
-                    photoRef: photoRef.value
-                        ? {
-                            ...(photoRef.value as any),
-                            isImage: undefined,
-                            width: undefined,
-                            height: undefined,
-                            crop: undefined,
-                            __typename: undefined,
-                        }
-                        : undefined,
-                };
+    const doConfirm = React.useCallback(() => {
+        form.doAction(async () => {
+            if (firstName.value.trim() === '') {
+                return;
+            }
+            const formData = {
+                firstName: firstName.value.trim(),
+                lastName: lastName.value.trim(),
+                photoRef: photoRef.value
+                    ? {
+                          ...(photoRef.value as any),
+                          isImage: undefined,
+                          width: undefined,
+                          height: undefined,
+                          crop: undefined,
+                          __typename: undefined,
+                      }
+                    : undefined,
+            };
 
-                setSending(true);
+            setSending(true);
 
-                const inviteKey = Cookie.get('x-openland-invite') || Cookie.get('x-openland-app-invite') || Cookie.get ('x-openland-org-invite');
+            const inviteKey =
+                Cookie.get('x-openland-invite') || Cookie.get('x-openland-app-invite');
 
-                if (props.initialProfileFormData) {
-                    await client.mutateProfileUpdate({
-                        input: formData,
-                        inviteKey
-                    });
-                } else {
-                    await client.mutateProfileCreate({
-                        input: formData,
-                        inviteKey
-                    });
-                }
-                await client.refetchProfile();
-                await client.refetchProfilePrefill();
-                await client.refetchAccount();
-
-                if (firstName.value) {
-                    if (Cookie.get('x-openland-org-invite')) {
-                        const orgInvite = Cookie.get('x-openland-org-invite');
-                        Cookie.remove('x-openland-org-invite');
-                        window.location.href = `/join/${orgInvite}`;
-                    } else {
-                        router.push('/authorization/enter-your-organization');
-                    }
-                }
+            if (props.initialProfileFormData) {
+                await client.mutateProfileUpdate({
+                    input: formData,
+                    inviteKey,
+                });
+            } else {
+                await client.mutateProfileCreate({
+                    input: formData,
+                    inviteKey,
+                });
+            }
+            await client.mutateCreateOrganization({
+                input: {
+                    personal: false,
+                    name: firstName.value.trim(),
+                },
             });
-        },
-        [firstName.value, lastName.value, photoRef.value],
-    );
+
+            let inviteInfo: ResolvedInvite | undefined;
+            let isPremium = false;
+            if (inviteKey) {
+                inviteInfo = await client.queryResolvedInvite({ key: inviteKey });
+                if (inviteInfo.invite?.__typename === 'RoomInvite') {
+                    isPremium = inviteInfo.invite.room.isPremium;
+                }
+                if (!isPremium) {
+                    await client.mutateRoomJoinInviteLink({
+                        invite: inviteKey,
+                    });
+                }
+            }
+            await client.refetchProfile();
+            await client.refetchProfilePrefill();
+            await client.refetchAccount();
+            trackEvent('registration_complete');
+            if (isPremium) {
+                window.location.href = `/invite/${inviteKey}`;
+            } else {
+                window.location.href = '/';
+            }
+        });
+    }, [firstName.value, lastName.value, photoRef.value]);
 
     const [shakeClassName, shake] = useShake();
     const handleNext = React.useCallback(() => {
-        doConfirm();
         if (firstName.input.value.trim() === '') {
-            shake();
+            return shake();
         }
+        doConfirm();
     }, [shakeClassName, doConfirm]);
     useShortcuts({ keys: ['Enter'], callback: handleNext });
     const [width] = useWithWidth();
@@ -150,10 +172,7 @@ const CreateProfileFormInnerWeb = (
     return (
         <FormLayout>
             <Title text="New account" />
-            <Subtitle
-                text="Introduce yourself"
-                maxWidth={isMobile ? 230 : undefined}
-            />
+            <Subtitle text="Introduce yourself" maxWidth={isMobile ? 230 : undefined} />
             <XView marginTop={32} marginBottom={16} alignSelf="center">
                 <UAvatarUploadField
                     field={photoRef}
@@ -184,10 +203,22 @@ const CreateProfileFormInnerWeb = (
                     />
                 </AuthInputWrapper>
             </XView>
-            <AuthActionButton loading={sending} text={InitTexts.create_profile.next} onClick={handleNext} />
-            <p className={cx(TextCaption, captionText, textClassName)}>By creating an account you are accepting our <ULink path="/terms" className={captionLink}>Terms&nbsp;of&nbsp;service</ULink> and <ULink path="/privacy" className={captionLink}>Privacy&nbsp;policy</ULink></p>
+            <AuthActionButton
+                loading={sending}
+                text={InitTexts.create_profile.next}
+                onClick={handleNext}
+            />
+            <p className={cx(TextCaption, captionText, textClassName)}>
+                By creating an account you are accepting our{' '}
+                <ULink path="/terms" className={captionLink}>
+                    Terms&nbsp;of&nbsp;service
+                </ULink>{' '}
+                and{' '}
+                <ULink path="/privacy" className={captionLink}>
+                    Privacy&nbsp;policy
+                </ULink>
+            </p>
         </FormLayout>
-
     );
 };
 
@@ -202,26 +233,25 @@ const IntroduceYourselfPageInner = (props: EnterYourOrganizationPageProps) => {
     const profile = client.useProfile();
     const data = client.useProfilePrefill();
 
-    let usePhotoPrefill = Cookie.get('auth-type') !== 'email' && Cookie.get('auth-type') !== 'phone';
+    let usePhotoPrefill =
+        Cookie.get('auth-type') !== 'email' && Cookie.get('auth-type') !== 'phone';
     const prefill = usePhotoPrefill && data ? data.prefill : null;
 
     const initialProfileFormData = profile.profile
         ? {
-            firstName: profile.profile.firstName,
-            lastName: profile.profile.lastName,
-            photoRef: profile.profile.photoRef,
-        }
+              firstName: profile.profile.firstName,
+              lastName: profile.profile.lastName,
+              photoRef: profile.profile.photoRef,
+          }
         : null;
 
     return (
         <Wrapper>
             <XDocumentHead title="New account" />
             <AuthHeaderConfig
-                onBack={
-                    () => {
-                        router.replace('/auth/logout');
-                    }
-                }
+                onBack={() => {
+                    router.replace('/auth/logout');
+                }}
                 mobileTransparent={true}
             />
             <CreateProfileFormInnerWeb
