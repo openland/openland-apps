@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import IconPen from 'openland-icons/s/ic-appearance-glyph-24.svg';
 import IconErase from 'openland-icons/s/ic-erase-glyph-24.svg';
-import IconClose from 'openland-icons/s/ic-close-24.svg';
+import IconClose from 'openland-icons/s/ic-close-glyph-24.svg';
 import IconText from 'openland-icons/s/ic-text-glyph-24.svg';
 import IconImage from 'openland-icons/s/ic-gallery-glyph-24.svg';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
@@ -82,6 +82,16 @@ const colorsPalette = css`
     align-self: stretch;
 `;
 
+const selectedColorMark = css`
+    position: absolute;
+    top: 0;
+    width: 16px;
+    height: 2px;
+    border-radius: 0px 0px 100px 100px;
+    transition: transform 150ms cubic-bezier(0, 0, 0.2, 1);
+    will-change: transform;
+`;
+
 const colorsItem = css`
     width: 24px;
     cursor: pointer;
@@ -100,18 +110,6 @@ const colorsItem = css`
         width: 16px;
         height: 16px;
         border-radius: 50%;
-        background-color: var(--item-color);
-    }
-`;
-
-const colorsItemActive = css`
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        width: 16px;
-        height: 2px;
-        border-radius: 0px 0px 100px 100px;
         background-color: var(--item-color);
     }
 `;
@@ -289,6 +287,8 @@ export const SpaceControls = React.memo((props: SpaceControlsProps) => {
         </>
     );
 
+    const activeColorIndex = color ? spaceColors.indexOf(color) : 0;
+
     const penControls = (
         <>
             <UIconButton
@@ -302,10 +302,11 @@ export const SpaceControls = React.memo((props: SpaceControlsProps) => {
             <div className={penControlItem}>
                 <span className={controlText}>Color</span>
                 <div className={colorsPalette}>
+                    {color && <div className={selectedColorMark} style={{ backgroundColor: color, transform: `translateX(${activeColorIndex * 24 + 4}px)` }} />}
                     {spaceColors.map(c => (
                         <div
                             key={c}
-                            className={cx(colorsItem, color === c && colorsItemActive)}
+                            className={colorsItem}
                             style={{ '--item-color': c } as React.CSSProperties}
                             onClick={() => handleColorChange(c)}
                         />
