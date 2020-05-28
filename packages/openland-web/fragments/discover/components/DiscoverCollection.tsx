@@ -14,6 +14,8 @@ const collectionPhoto = css`
     overflow: hidden;
     margin-bottom: 16px;
     -webkit-mask-image: -webkit-radial-gradient(white, black);
+    background-color: var(--backgroundTertiary);
+    border-radius: 8px;
 
     &:after {
         display: block;

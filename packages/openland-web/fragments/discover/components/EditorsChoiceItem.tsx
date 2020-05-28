@@ -11,6 +11,7 @@ const imageContainer = css`
     border-radius: 8px;
     overflow: hidden;
     -webkit-mask-image: -webkit-radial-gradient(white, black);
+    background-color: var(--backgroundTertiary);
 
     &:after {
         display: block;

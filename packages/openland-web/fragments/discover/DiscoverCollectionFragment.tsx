@@ -23,13 +23,14 @@ const imageBox = css`
     padding: 35% 0 0;
     margin: 16px 0 0;
     position: relative;
+    background-color: var(--backgroundTertiary);
+    border-radius: 8px;
+    overflow: hidden;
 
     img {
         position: absolute;
         top: 0; left: 0; bottom: 0; right: 0; 
         display: block;
-        border-radius: 8px;
-        overflow: hidden;
         width: 100%!important;
         height: 100%!important;
     }
