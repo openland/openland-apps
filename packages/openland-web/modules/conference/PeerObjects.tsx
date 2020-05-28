@@ -64,6 +64,7 @@ let PeerTextContainer = css`
 
 let PeerObjectContainerEditable = css`
     transition: border 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
+    cursor: pointer;
 
     &:hover, &:focus-within {
         border: 1px solid #4DA6FF;
