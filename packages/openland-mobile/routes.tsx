@@ -20,6 +20,7 @@ import { EditCommunity } from './pages/main/EditCommunity';
 import { SignupUser } from './pages/auth/SignupUser';
 import { Waitlist } from './pages/auth/Waitlist';
 import { EmailStart, EmailCode } from './pages/auth/EmailAuth';
+import { PhoneStart, PhoneCode } from './pages/auth/PhoneAuth';
 import { SignDiscover } from './pages/auth/SignDiscover';
 import { Compose } from './pages/main/Compose';
 import { CreateGroupAttrs } from './pages/compose/CreateGroupAttrs';
@@ -48,6 +49,7 @@ import { EditGroupWelcomeMessage } from './pages/main/EditGroupWelcomeMessage';
 import { EditGroupPrice } from './pages/main/EditGroupPrice';
 import { GroupInvite } from './pages/main/GroupInvite';
 import { UserPicker } from './pages/main/modals/UserPicker';
+import { CountryPicker } from './pages/main/modals/CountryPicker';
 import Tasks from './pages/apps/Tasks';
 import { Message } from './pages/main/Message';
 import { Colors } from './pages/dev/Colors';
@@ -117,6 +119,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('GroupMultiplePicker', GroupMultiplePicker)
   .addRoute('UserMultiplePicker', UserMultiplePicker)
   .addRoute('UserPicker', UserPicker)
+  .addRoute('CountryPicker', CountryPicker)
   .addRoute('PostMentionPicker', PostMentionPicker)
   .addRoute('ProfileGroupLink', ProfileGroupLink)
   .addRoute('ProfileOrganizationGroups', ProfileOrganizationGroups)
@@ -137,6 +140,8 @@ export const Routes = new SRoutesBuilder()
   .addRoute('Login', Login)
   .addRoute('EmailStart', EmailStart)
   .addRoute('EmailCode', EmailCode)
+  .addRoute('PhoneStart', PhoneStart)
+  .addRoute('PhoneCode', PhoneCode)
 
   .addRoute('Dev', Developer)
   .addRoute('DevWorker', Worker)

@@ -1,19 +1,12 @@
 import React from 'react';
 import { View, StyleSheet, Image, Text, ViewStyle, Platform, Dimensions } from 'react-native';
-import RNRestart from 'react-native-restart';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
-import Alert from 'openland-mobile/components/AlertBlanket';
-import { AppStorage } from 'openland-mobile/utils/AppStorage';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
-import { trackEvent } from 'openland-mobile/analytics';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { API_HOST } from 'openland-y-utils/api';
-import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { AppStorage as Storage } from 'openland-y-runtime-native/AppStorage';
 
 const styles = StyleSheet.create({
     container: {
@@ -63,8 +56,7 @@ const Logo = React.memo(() => {
 });
 
 interface ButtonProps {
-    loading: boolean;
-    onGooglePress: () => void;
+    onPhonePress: () => void;
     onMailPress: () => void;
 }
 
@@ -75,16 +67,10 @@ const Buttons = React.memo((props: ButtonProps) => {
 
     return (
         <View style={styles.buttons} paddingBottom={isIos ? defaultIosPadding : 16}>
-            <ZButton
-                title="Continue with Google"
-                loading={props.loading}
-                onPress={props.onGooglePress}
-                size="large"
-            />
+            <ZButton title="Continue with Phone" onPress={props.onPhonePress} size="large" />
             <View height={16} />
             <ZButton
                 title="Continue with Email"
-                enabled={!props.loading}
                 onPress={props.onMailPress}
                 style="secondary"
                 size="large"
@@ -93,84 +79,25 @@ const Buttons = React.memo((props: ButtonProps) => {
     );
 });
 
-class LoginComponent extends React.Component<PageProps, { initing: boolean; loading: boolean }> {
-    state = {
-        initing: false,
-        loading: false,
+const LoginComponent = React.memo((props: PageProps) => {
+    const handlePhonePress = () => {
+        props.router.push('PhoneStart');
     };
 
-    handleGoogleAuth = async () => {
-        trackEvent('root_signup_google_action');
+    const handleEmailPress = () => {
+        props.router.push('EmailStart');
+    };
 
-        try {
-            this.setState({ loading: true });
-            GoogleSignin.configure({
-                webClientId:
-                    '1095846783035-rpgtqd3cbbbagg3ik0rc609olqfnt6ah.apps.googleusercontent.com',
-                iosClientId:
-                    '1095846783035-mp5t7jtqvocp6rfr696rot34r4qfobum.apps.googleusercontent.com',
-            });
-            await GoogleSignin.hasPlayServices();
-            const userInfo = await GoogleSignin.signIn();
-
-            let uploaded = await fetch('https://' + API_HOST + '/auth/google/getAccessToken', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ idToken: userInfo.idToken }),
-            });
-
-            if (uploaded.ok) {
-                let body = await uploaded.json();
-
-                if (body.ok) {
-                    await AppStorage.setToken(body.accessToken);
-                    // hotfix, spacex cache reset needed
-                    await Storage.writeKey('user_refetch_needed', true);
-                    RNRestart.Restart();
-                    return;
-                }
-            }
-
-            // TODO: Better error
-            Alert.alert('Unable to authenticate');
-        } catch (error) {
-            if (
-                error.code === statusCodes.SIGN_IN_CANCELLED ||
-                error.code === statusCodes.IN_PROGRESS
-            ) {
-                // user cancelled the login flow or operation (e.g. sign in) is in progress already
-            } else if (Platform.OS === 'ios') {
-                // can't handle cancel with latest GoogleSignIn lib - just ignore all error for now
-                // https://github.com/googlesamples/google-services/issues/426
-            } else {
-                console.warn(JSON.stringify(error));
-                Alert.alert(error.message);
-            }
-        } finally {
-            this.setState({ loading: false });
-        }
-    }
-
-    handleEmailPress = () => {
-        this.props.router.push('EmailStart');
-    }
-
-    render() {
-        return (
-            <ZTrack event="root_view">
-                <ASSafeAreaView style={{ flexGrow: 1 }}>
-                    <View style={styles.container}>
-                        <Logo />
-                        <Buttons
-                            loading={this.state.loading}
-                            onGooglePress={this.handleGoogleAuth}
-                            onMailPress={this.handleEmailPress}
-                        />
-                    </View>
-                </ASSafeAreaView>
-            </ZTrack>
-        );
-    }
-}
+    return (
+        <ZTrack event="root_view">
+            <ASSafeAreaView style={{ flexGrow: 1 }}>
+                <View style={styles.container}>
+                    <Logo />
+                    <Buttons onPhonePress={handlePhonePress} onMailPress={handleEmailPress} />
+                </View>
+            </ASSafeAreaView>
+        </ZTrack>
+    );
+});
 
 export const Login = withApp(LoginComponent, { navigationAppearance: 'small-hidden' });

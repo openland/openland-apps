@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Animated, Easing } from 'react-native';
 
 export const ZShaker = React.memo(
-    React.forwardRef<{ shake: () => void }, { children: JSX.Element }>((props, ref) => {
+    React.forwardRef<{ shake: () => void }, { children: JSX.Element | JSX.Element[] }>((props, ref) => {
         const [shakeAnimation] = React.useState(new Animated.Value(0));
 
         const shakeIt = () => {

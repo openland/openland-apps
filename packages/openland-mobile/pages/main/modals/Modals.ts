@@ -65,6 +65,18 @@ export const Modals = {
     ) {
         router.present('PostMentionPicker', { action });
     },
+    showCountryPicker(
+        router: SRouter,
+        action: ({label, value}: {label: string, value: string}) => any,
+        title?: string,
+        pushAndReset?: boolean
+    ) {
+        if (pushAndReset) {
+            router.pushAndReset('CountryPicker', { action, title });
+        } else {
+            router.push('CountryPicker', { action, title });
+        }
+    },
     showFilePreview(router: SRouter, uuid: string, name: string, size: number) {
         router.push('FilePreview', { config: { uuid, name, size } });
     }
