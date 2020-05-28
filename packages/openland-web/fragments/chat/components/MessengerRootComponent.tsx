@@ -41,6 +41,7 @@ import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarCompone
 import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
 import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 import { extractTextAndMentions, convertToInputValue } from 'openland-web/utils/convertTextAndMentions';
+import { convertServerSpan } from 'openland-y-utils/spans/utils';
 
 interface MessagesComponentProps {
     onChatLostAccess?: Function;
@@ -240,7 +241,8 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
                 return;
             }
             if (state.action === 'edit' && message && message.text) {
-                const value = convertToInputValue(message.text, message.textSpans);
+                const spans = (message.spans || []).map(span => convertServerSpan(message.text || '', span));
+                const value = convertToInputValue(message.text, spans);
 
                 this.rickRef.current.setContent(value);
                 this.rickRef.current.focus();
