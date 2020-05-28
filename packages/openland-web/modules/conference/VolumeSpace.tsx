@@ -283,9 +283,6 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     }, []);
 
     React.useEffect(() => {
-        if ((cursorState.action === 'erase') && drawListenerRef.current) {
-            drawListenerRef.current.style.cursor = 'none';
-        }
         let down = false;
         let path = new Path([], cursorState.action, penSizeRef.current);
 
@@ -313,7 +310,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                 if (eraseCircleRef.current) {
                     eraseCircleRef.current.style.transform = `translate(${ev.offsetX}px, ${ev.offsetY}px)`;
                 }
-            } else if (down) {
+            } else if (down && cursorState.action === 'draw') {
                 // draw
                 props.mediaSession.space.incrementPath(path, [coords]);
             }
@@ -394,17 +391,6 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
     let selectErase = React.useCallback(() => {
         setCursorState({ action: 'erase' });
     }, []);
-
-    React.useEffect(() => {
-        if (!drawListenerRef.current) {
-            return;
-        }
-        if (cursorState.action === 'draw' || cursorState.action === 'erase') {
-            drawListenerRef.current.style.pointerEvents = 'all';
-        } else {
-            drawListenerRef.current.style.pointerEvents = 'none';
-        }
-    }, [drawListenerRef.current, cursorState.action]);
 
     const addedObjectsRef = React.useRef<number[][]>([]);
     let getObjCoords = ({ width, height }: { width: number, height: number }): [number, number] => {
