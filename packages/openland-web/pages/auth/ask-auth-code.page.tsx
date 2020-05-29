@@ -23,12 +23,13 @@ import { ULink } from 'openland-web/components/unicorn/ULink';
 import { checkCode, AuthError, trackError } from './utils/checkCode';
 
 type ActivationCodeProps = {
-    emailValue: string;
-    emailWasResend: boolean;
-    emailSending: boolean;
+    authValue: string;
+    phoneCodeValue: { value: string; label: string };
+    authWasResend: boolean;
+    authSending: boolean;
     backButtonClick: (event?: React.MouseEvent<any>) => void;
     resendCodeClick: (event?: React.MouseEvent<any>) => void;
-    setEmailWasResend: (flag: boolean) => void;
+    setAuthWasResend: (flag: boolean) => void;
     isExistingUser: boolean;
     avatarId: string | null;
 };
@@ -39,16 +40,19 @@ const WebSignUpActivationCode = (
         codeError: string;
         setCodeError: Function;
         loginCodeStart: (codeValue: string) => void;
+        isPhoneAuth: boolean;
     },
 ) => {
     const {
-        emailValue,
+        authValue,
         resendCodeClick,
-        emailSending,
-        emailWasResend,
-        setEmailWasResend,
+        authSending,
+        authWasResend,
+        phoneCodeValue,
+        setAuthWasResend,
         codeSending,
         codeError,
+        isPhoneAuth,
         setCodeError,
         loginCodeStart,
         isExistingUser,
@@ -62,25 +66,28 @@ const WebSignUpActivationCode = (
     const doConfirm = React.useCallback(() => {
         form.doAction(async () => {
             setCodeError('');
-            setEmailWasResend(false);
+            setAuthWasResend(false);
             setTimeout(() => {
                 loginCodeStart(codeField.value);
             }, 100);
         });
-    }, [codeField.value, emailValue]);
+    }, [codeField.value, authValue]);
 
     const [shakeClassName, shake] = useShake();
+
     const handleNext = React.useCallback(() => {
         doConfirm();
         if (codeField.input.value.trim() === '') {
             shake();
         }
     }, [shakeClassName, doConfirm]);
+
     useShortcuts({ keys: ['Enter'], callback: handleNext });
+
     const handleResend = React.useCallback(() => {
         resendCodeClick();
         setCodeError('');
-        setEmailWasResend(false);
+        setAuthWasResend(false);
     }, []);
 
     const errorText = (codeField.input.invalid && codeField.input.errorText) || codeError;
@@ -94,24 +101,28 @@ const WebSignUpActivationCode = (
         if (inputRef.current) {
             inputRef.current.focus();
         }
-    }, [errorText, shakeClassName, emailWasResend]);
+    }, [errorText, shakeClassName, authWasResend]);
+
+    const sendToText = isPhoneAuth
+        ? phoneCodeValue.value.split(' ').join('') + authValue
+        : authValue;
 
     return (
         <>
             <AuthToastWrapper
-                isVisible={!emailSending && !codeSending && !!errorText}
+                isVisible={!authSending && !codeSending && !!errorText}
                 text={errorText}
             />
-            <AuthToastWrapper isVisible={emailSending} text="Sending code" type="loading" />
+            <AuthToastWrapper isVisible={authSending} text="Sending code" type="loading" />
             <AuthToastWrapper
-                isVisible={emailWasResend && !errorText}
+                isVisible={authWasResend && !errorText}
                 text="Code successfully sent"
                 type="success"
             />
             <FormLayout>
                 <Title text={InitTexts.auth.enterActivationCode} />
                 <Subtitle>
-                    We just sent it to {emailValue}.<br />
+                    We just sent it to {sendToText}.<br />
                     {InitTexts.auth.haveNotReceiveCode} <ULink onClick={handleResend}>Resend</ULink>
                 </Subtitle>
                 {!!avatarId && (
@@ -145,13 +156,23 @@ const WebSignUpActivationCode = (
     );
 };
 
-export const AskEmailCodePage = (props: ActivationCodeProps) => {
+export const AskAuthCodePage = (props: ActivationCodeProps) => {
     let router = React.useContext(XRouterContext)!;
+    const isPhoneAuth = !!router.query.phone;
+
     const [codeError, setCodeError] = React.useState('');
     const [codeSending, setCodeSending] = React.useState(false);
 
+    const onBackClick = () => {
+        const path = isPhoneAuth
+            ? '/authorization/ask-auth-data?phone=true'
+            : '/authorization/ask-auth-data';
+
+        router.replace(path);
+        props.backButtonClick();
+    };
+
     const loginCodeStart = async (codeValue: string) => {
-        console.log('loginCodeStart');
         if (codeValue === '') {
             trackError('no_code');
             return;
@@ -161,9 +182,8 @@ export const AskEmailCodePage = (props: ActivationCodeProps) => {
             return;
         } else {
             setCodeSending(true);
-
             try {
-                let token = await checkCode(codeValue);
+                let token = await checkCode(codeValue, isPhoneAuth);
                 await completeAuth(token);
             } catch (e) {
                 let message = 'Something went wrong';
@@ -172,7 +192,6 @@ export const AskEmailCodePage = (props: ActivationCodeProps) => {
                 } else if (e instanceof AuthError) {
                     message = e.message;
                 }
-
                 setCodeSending(false);
                 setTimeout(() => {
                     setCodeError(message);
@@ -184,12 +203,7 @@ export const AskEmailCodePage = (props: ActivationCodeProps) => {
     return (
         <Wrapper>
             <XDocumentHead title="Enter login code" />
-            <AuthHeaderConfig
-                onBack={() => {
-                    router.replace('/authorization/ask-email');
-                    props.backButtonClick();
-                }}
-            />
+            <AuthHeaderConfig onBack={onBackClick} />
 
             <WebSignUpActivationCode
                 {...props}
@@ -197,10 +211,8 @@ export const AskEmailCodePage = (props: ActivationCodeProps) => {
                 codeSending={codeSending}
                 loginCodeStart={loginCodeStart}
                 setCodeError={setCodeError}
-                backButtonClick={() => {
-                    router.replace('/authorization/ask-email');
-                    props.backButtonClick();
-                }}
+                backButtonClick={onBackClick}
+                isPhoneAuth={isPhoneAuth}
             />
         </Wrapper>
     );

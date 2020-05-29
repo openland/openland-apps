@@ -1,22 +1,18 @@
 export type pagesT =
     | 'loading'
     | 'acceptInvite'
-    | 'askActivationCode'
-    | 'askPhoneCode'
-    | 'askEmail'
-    | 'askPhone'
+    | 'askAuthCode'
+    | 'askAuthData'
     | 'createNewAccount'
     | 'introduceYourself';
 
 export const pages: { [K in pagesT]: pagesT } = {
     loading: 'loading',
+    askAuthCode: 'askAuthCode',
+    askAuthData: 'askAuthData',
     acceptInvite: 'acceptInvite',
-    askActivationCode: 'askActivationCode',
-    askPhoneCode: 'askPhoneCode',
-    askEmail: 'askEmail',
-    askPhone: 'askPhone',
     createNewAccount: 'createNewAccount',
     introduceYourself: 'introduceYourself',
 };
 
-export const pagesArr = ['acceptInvite', 'createNewAccount', 'askEmail', 'askPhone', 'askActivationCode', 'askPhoneCode', 'introduceYourself'];
+export const pagesArr = ['acceptInvite', 'askAuthData', 'askAuthCode', 'createNewAccount', 'introduceYourself'];

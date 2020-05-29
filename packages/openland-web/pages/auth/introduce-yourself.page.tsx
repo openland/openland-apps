@@ -55,25 +55,20 @@ type EnterYourOrganizationPageProps = {
     initialProfileFormData?: ProfileFormData | null;
 };
 
-const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps & { prefill: any }) => {
+const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
     const isMobile = useIsMobile();
     const [sending, setSending] = React.useState(false);
     const client = useClient();
     const form = useForm();
-    const { prefill } = props;
 
     let firstName = useField<string>(
         'input.firstName',
-        (prefill && prefill.firstName) ||
-            (props.initialProfileFormData && props.initialProfileFormData.firstName) ||
-            '',
+        (props.initialProfileFormData && props.initialProfileFormData.firstName) || '',
         form,
     );
     let lastName = useField<string>(
         'input.lastName',
-        (prefill && prefill.lastName) ||
-            (props.initialProfileFormData && props.initialProfileFormData.lastName) ||
-            '',
+        (props.initialProfileFormData && props.initialProfileFormData.lastName) || '',
         form,
     );
     let photoRef = useField<StoredFileT | null>(
@@ -173,10 +168,7 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps & { pre
             <Title text="New account" />
             <Subtitle text="Introduce yourself" maxWidth={isMobile ? 230 : undefined} />
             <XView marginTop={32} marginBottom={16} alignSelf="center">
-                <UAvatarUploadField
-                    field={photoRef}
-                    initialUrl={prefill ? prefill.picture : undefined}
-                />
+                <UAvatarUploadField field={photoRef} />
             </XView>
 
             <XView width={isSmallMobile ? '100%' : 320} alignSelf="center" marginBottom={16}>
@@ -232,10 +224,6 @@ const IntroduceYourselfPageInner = (props: EnterYourOrganizationPageProps) => {
     const profile = client.useProfile();
     const data = client.useProfilePrefill();
 
-    let usePhotoPrefill =
-        Cookie.get('auth-type') !== 'email' && Cookie.get('auth-type') !== 'phone';
-    const prefill = usePhotoPrefill && data ? data.prefill : null;
-
     const initialProfileFormData = profile.profile
         ? {
               firstName: profile.profile.firstName,
@@ -253,11 +241,7 @@ const IntroduceYourselfPageInner = (props: EnterYourOrganizationPageProps) => {
                 }}
                 mobileTransparent={true}
             />
-            <CreateProfileFormInnerWeb
-                prefill={prefill}
-                initialProfileFormData={initialProfileFormData}
-                {...props}
-            />
+            <CreateProfileFormInnerWeb initialProfileFormData={initialProfileFormData} {...props} />
         </Wrapper>
     );
 };

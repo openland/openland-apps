@@ -8,10 +8,8 @@ import { XLoader } from 'openland-x/XLoader';
 import { pages, pagesT, pagesArr } from './components/pages';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { AcceptInvitePage } from './accept-invite.page';
-import { AskEmailCodePage } from './ask-activation-code.page';
-import { AskPhoneCodePage } from './ask-phone-code.page';
-import { AskEmailPage } from './ask-email.page';
-import { AskPhonePage } from './ask-phone.page';
+import { AskAuthDataPage } from './ask-auth-data.page';
+import { AskAuthCodePage } from './ask-auth-code.page';
 import { CreateNewAccountPage } from './create-new-account.page';
 import { IntroduceYourselfPage } from './introduce-yourself.page';
 import { API_AUTH_ENDPOINT } from 'openland-api/endpoint';
@@ -194,7 +192,8 @@ const AuthHeader = React.memo(
 );
 
 export default () => {
-    let router = React.useContext(XRouterContext)!;
+    const router = React.useContext(XRouterContext)!;
+    const isPhoneAuth = !!router.query.phone;
     let page: pagesT = pages.createNewAccount;
 
     if (getAppInvite(router)) {
@@ -204,17 +203,11 @@ export default () => {
     if (router.path.includes('accept-invite') || checkIfIsSignInInvite(router)) {
         page = pages.acceptInvite;
     }
-    if (router.path.includes('ask-activation-code')) {
-        page = pages.askActivationCode;
+    if (router.path.includes('ask-auth-data')) {
+        page = pages.askAuthData;
     }
-    if (router.path.includes('ask-activation-phone-code')) {
-        page = pages.askPhoneCode;
-    }
-    if (router.path.includes('ask-email')) {
-        page = pages.askEmail;
-    }
-    if (router.path.includes('ask-phone')) {
-        page = pages.askPhone;
+    if (router.path.includes('ask-auth-code')) {
+        page = pages.askAuthCode;
     }
     if (router.path.includes('introduce-yourself') || router.path.includes('/createProfile')) {
         page = pages.introduceYourself;
@@ -233,13 +226,10 @@ export default () => {
         label: 'United States',
         value: '+1',
     });
-    const [phoneValue, setPhoneValue] = React.useState('');
-    const [phoneSending, setPhoneSending] = React.useState(false);
-    const [phoneError, setPhoneError] = React.useState('');
-    const [emailValue, setEmailValue] = React.useState('');
-    const [emailWasResend, setEmailWasResend] = React.useState(false);
-    const [emailSending, setEmailSending] = React.useState(false);
-    const [emailError, setEmailError] = React.useState('');
+    const [authValue, setAuthValue] = React.useState('');
+    const [authWasResend, setAuthWasResend] = React.useState(false);
+    const [authSending, setAuthSending] = React.useState(false);
+    const [authError, setAuthError] = React.useState('');
     const [fromOutside, setFromOutside] = React.useState(false);
     const [isExistingUser, setExistingUser] = React.useState(false);
     const [avatarId, setAvatarId] = React.useState(null);
@@ -251,15 +241,14 @@ export default () => {
         }
     };
 
-    const firePhone = React.useCallback(async (phoneToFire: string) => {
-        Cookie.set('auth-type', 'phone', { path: '/' });
+    const fireAuth = React.useCallback(async (dataToFire: string, isPhoneFire: boolean) => {
         checkRedirect();
+        const authHost = isPhoneFire ? '/phone/sendCode' : '/sendCode';
+        const authBody = isPhoneFire ? { phone: dataToFire } : { email: dataToFire };
         try {
             let res = await (
-                await fetch(API_AUTH_ENDPOINT + '/phone/sendCode', {
-                    body: JSON.stringify({
-                        phone: phoneToFire,
-                    }),
+                await fetch(API_AUTH_ENDPOINT + authHost, {
+                    body: JSON.stringify(authBody),
                     headers: [['Content-Type', 'application/json']],
                     method: 'POST',
                 })
@@ -269,7 +258,7 @@ export default () => {
             }
             localStorage.setItem('authSession', res.session);
 
-            setPhoneSending(false);
+            setAuthSending(false);
             setExistingUser(!!res.profileExists);
             setAvatarId(res.pictureId);
         } catch (e) {
@@ -277,52 +266,19 @@ export default () => {
         }
     }, []);
 
-    const fireEmail = React.useCallback(async (emailToFire: string) => {
-        Cookie.set('auth-type', 'email', { path: '/' });
-        checkRedirect();
-        try {
-            let res = await (
-                await fetch(API_AUTH_ENDPOINT + '/sendCode', {
-                    body: JSON.stringify({
-                        email: emailToFire,
-                    }),
-                    headers: [['Content-Type', 'application/json']],
-                    method: 'POST',
-                })
-            ).json();
-            if (!res.ok) {
-                throw new Error(res.errorText || 'Something went wrong');
-            }
-            localStorage.setItem('authSession', res.session);
-
-            setEmailSending(false);
-            setExistingUser(!!res.profileExists);
-            setAvatarId(res.pictureId);
-        } catch (e) {
-            throw new Error('Something went wrong');
-        }
-    }, []);
-
-    const loginWithPhone = React.useCallback(() => {
-        setPhoneValue('');
-        setPhoneError('');
-        setPhoneSending(false);
+    const loginWith = React.useCallback((isPhone: boolean) => {
+        setAuthValue('');
+        setAuthError('');
+        setAuthSending(false);
+        const loginPath = isPhone
+            ? '/authorization/ask-auth-data?phone=true'
+            : '/authorization/ask-auth-data';
         setTimeout(() => {
-            router.push('/authorization/ask-phone');
+            router.push(loginPath);
         }, 0);
     }, []);
 
-    const loginWithEmail = React.useCallback(() => {
-        setEmailValue('');
-        setEmailError('');
-        setEmailSending(false);
-
-        setTimeout(() => {
-            router.push('/authorization/ask-email');
-        }, 0);
-    }, []);
-
-    if (fromOutside && (emailSending || phoneSending)) {
+    if (fromOutside && authSending) {
         page = pages.loading;
     }
     const prevPageRef = React.useRef<string>();
@@ -343,80 +299,49 @@ export default () => {
             )}
             {page === pages.createNewAccount && (
                 <XTrack event={'signin_view'} key={'signin-track'}>
-                    <CreateNewAccountPage
-                        loginWithPhone={loginWithPhone}
-                        loginWithEmail={loginWithEmail}
-                    />
+                    <CreateNewAccountPage loginWith={loginWith} />
                 </XTrack>
             )}
-            {page === pages.askPhone && (
-                <XTrack event={'signin_phone_view'}>
-                    <AskPhonePage
-                        firePhone={firePhone}
+            {page === pages.askAuthData && (
+                <XTrack event={'signin_view'}>
+                    <AskAuthDataPage
+                        fireAuth={fireAuth}
+                        authError={authError}
+                        authValue={authValue}
                         phoneCodeValue={phoneCodeValue}
+                        authSending={authSending}
                         setPhoneCodeValue={setPhoneCodeValue}
-                        phoneValue={phoneValue}
-                        setPhoneValue={setPhoneValue}
-                        phoneSending={phoneSending}
-                        setPhoneSending={setPhoneSending}
-                        phoneError={phoneError}
-                        setPhoneError={setPhoneError}
+                        setAuthSending={setAuthSending}
+                        setAuthError={setAuthError}
+                        setAuthValue={setAuthValue}
                     />
                 </XTrack>
             )}
-            {page === pages.askEmail && (
-                <XTrack event={'signin_email_view'}>
-                    <AskEmailPage
-                        fireEmail={fireEmail}
-                        emailError={emailError}
-                        emailValue={emailValue}
-                        emailSending={emailSending}
-                        setEmailSending={setEmailSending}
-                        setEmailError={setEmailError}
-                        setEmailValue={setEmailValue}
+            {page === pages.askAuthCode &&
+                (!authValue ? (
+                    <XPageRedirect path="/" />
+                ) : (
+                    <AskAuthCodePage
+                        authValue={authValue}
+                        phoneCodeValue={phoneCodeValue}
+                        authWasResend={authWasResend}
+                        authSending={authSending}
+                        setAuthWasResend={setAuthWasResend}
+                        isExistingUser={isExistingUser}
+                        avatarId={avatarId}
+                        backButtonClick={() => {
+                            setFromOutside(false);
+                        }}
+                        resendCodeClick={async () => {
+                            trackEvent('code_resend_action');
+                            setAuthSending(true);
+                            const dataToFire = isPhoneAuth
+                                ? phoneCodeValue.value.split(' ').join('') + authValue
+                                : authValue;
+                            await fireAuth(dataToFire, isPhoneAuth);
+                            setAuthWasResend(true);
+                        }}
                     />
-                </XTrack>
-            )}
-            {page === pages.askActivationCode &&
-                (!emailValue ? (
-                    <XPageRedirect path="/" />
-                ) : (
-                    <XTrack event="code_view">
-                        <AskEmailCodePage
-                            resendCodeClick={async () => {
-                                trackEvent('code_resend_action');
-                                setEmailSending(true);
-                                await fireEmail(emailValue);
-                                setEmailWasResend(true);
-                            }}
-                            backButtonClick={() => {
-                                setFromOutside(false);
-                            }}
-                            avatarId={avatarId}
-                            emailWasResend={emailWasResend}
-                            setEmailWasResend={setEmailWasResend}
-                            emailValue={emailValue}
-                            emailSending={emailSending}
-                            isExistingUser={isExistingUser}
-                        />
-                    </XTrack>
-                ))}
-            {page === pages.askPhoneCode &&
-                (!phoneValue ? (
-                    <XPageRedirect path="/" />
-                ) : (
-                    <XTrack event="code_view">
-                        <AskPhoneCodePage
-                            phoneValue={phoneValue}
-                            phoneCodeValue={phoneCodeValue}
-                            phoneSending={phoneSending}
-                            avatarId={avatarId}
-                            isExistingUser={isExistingUser}
-                            backButtonClick={() => {
-                                setFromOutside(false);
-                            }}
-                        />
-                    </XTrack>
                 ))}
             {page === pages.introduceYourself && (
                 <XTrack event="signin_profile_view">

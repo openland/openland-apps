@@ -10,14 +10,10 @@ import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { AuthHeaderConfig } from './root.page';
 
 type AuthMechanism = {
-    loginWithPhone: () => void;
-    loginWithEmail: () => void;
+    loginWith: (isPhone: boolean) => void;
 };
 
-const SignUpAuthMechanism = ({
-    loginWithPhone,
-    loginWithEmail,
-}: AuthMechanism) => {
+const SignUpAuthMechanism = ({loginWith}: AuthMechanism) => {
     const [width] = useWithWidth();
     return (
         <FormLayout>
@@ -29,14 +25,14 @@ const SignUpAuthMechanism = ({
 
             <XView alignSelf="center" width={width && width < 400 ? '100%' : 240} marginTop={32}>
                 <UButton
-                    onClick={loginWithPhone}
+                    onClick={() => loginWith(true)}
                     marginBottom={16}
                     size="large"
                     shape="square"
                     text="Continue with Phone"
                 />
                 <UButton
-                    onClick={loginWithEmail}
+                    onClick={() => loginWith(false)}
                     size="large"
                     shape="square"
                     text="Continue with email"
