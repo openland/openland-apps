@@ -18,7 +18,7 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
                         spans.push({ type: 'bold', start: s.offset, end: s.offset + s.length });
                     }
                     if (s.__typename === 'MessageSpanItalic') {
-                        spans.push({ type: 'bold', start: s.offset, end: s.offset + s.length });
+                        spans.push({ type: 'italic', start: s.offset, end: s.offset + s.length });
                     }
                 }
                 res.push({ text: r.text, spans });

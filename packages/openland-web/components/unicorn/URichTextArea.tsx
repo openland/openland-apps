@@ -3,6 +3,7 @@ import { getQuill } from '../quill/getQuill';
 import * as QuillType from 'quill';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
+import { quillToParagraphs } from '../quill/quillConverters';
 
 const quillStyle = css`
     flex-grow: 1;
@@ -148,71 +149,23 @@ export function toQuillValue(src: URichTextAreaValue) {
 }
 
 export function toExternalValue(ops: QuillType.DeltaOperation[]) {
+    let paragraphs = quillToParagraphs(ops);
     let res: URichTextAreaValue = [];
-    let currentText: string | undefined = undefined;
-    let currentSpans: URichTextSpan[] = [];
-    for (let op of ops) {
-        if (typeof op.insert === 'string') {
-            let text = op.insert;
-            let paragraphs: string[];
-            let lastPart: string | undefined = undefined;
-            if (!text.endsWith('\n')) {
-                paragraphs = text.split('\n');
-                lastPart = paragraphs[paragraphs.length - 1];
-                paragraphs.pop();
-            } else {
-                paragraphs = text.split('\n');
+    for (let op of paragraphs) {
+        let text = op.segments.map((v) => v.text).join('');
+        let spans: URichTextSpan[] = [];
+        let offset = 0;
+        for (let s of op.segments) {
+            if (s.attributes.bold) {
+                spans.push({ type: 'bold', start: offset, end: offset + s.text.length });
             }
-
-            for (let p of paragraphs) {
-                let t = p;
-                let offset = 0;
-                let sp: URichTextSpan[] = [];
-                if (currentText) {
-                    t = currentText + p;
-                    offset = currentText.length;
-                    sp = [...currentSpans];
-                    currentText = undefined;
-                    currentSpans = [];
-                }
-                if (op.attributes && op.attributes.bold) {
-                    sp.push({ type: 'bold', start: offset, end: offset + p.length });
-                }
-                if (op.attributes && op.attributes.italic) {
-                    sp.push({ type: 'italic', start: offset, end: offset + p.length });
-                }
-                res.push({ text: t, spans: sp });
+            if (s.attributes.italic) {
+                spans.push({ type: 'italic', start: offset, end: offset + s.text.length });
             }
-
-            // Append tail
-            if (lastPart) {
-                let offset = 0;
-                if (currentText) {
-                    offset = currentText.length;
-                    currentText += lastPart;
-                    currentSpans = [...currentSpans];
-                } else {
-                    currentText = lastPart;
-                    currentSpans = [];
-                    offset = currentText.length;
-                }
-                if (op.attributes && op.attributes.bold) {
-                    currentSpans.push({ type: 'bold', start: offset, end: currentText.length });
-                }
-                if (op.attributes && op.attributes.italic) {
-                    currentSpans.push({ type: 'italic', start: offset, end: currentText.length });
-                }
-            }
+            offset += s.text.length;
         }
+        res.push({ text, spans });
     }
-
-    if (currentText) {
-        res.push({ text: currentText, spans: currentSpans });
-    }
-
-    // Remove last paragraph since it is always empty
-    res.pop();
-
     return res;
 }
 
@@ -247,9 +200,6 @@ export const URickTextArea = React.memo(React.forwardRef((props: URichTextAreaPr
         q.on('editor-change', () => {
             let contents = q.getContents();
             let parsed = toExternalValue(contents.ops!);
-            // console.warn('Convert');
-            // console.warn(contents);
-            // console.warn(parsed);
             props.onValueChange(parsed);
 
             // Handle selection popup
