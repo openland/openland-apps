@@ -156,7 +156,7 @@ export function toExternalValue(ops: QuillType.DeltaOperation[]) {
             let text = op.insert;
             let paragraphs: string[];
             let lastPart: string | undefined = undefined;
-            if (text.endsWith('\n')) {
+            if (!text.endsWith('\n')) {
                 paragraphs = text.split('\n');
                 lastPart = paragraphs[paragraphs.length - 1];
                 paragraphs.pop();
@@ -172,6 +172,8 @@ export function toExternalValue(ops: QuillType.DeltaOperation[]) {
                     t = currentText + p;
                     offset = currentText.length;
                     sp = [...currentSpans];
+                    currentText = undefined;
+                    currentSpans = [];
                 }
                 if (op.attributes && op.attributes.bold) {
                     sp.push({ type: 'bold', start: offset, end: offset + p.length });
@@ -184,13 +186,21 @@ export function toExternalValue(ops: QuillType.DeltaOperation[]) {
 
             // Append tail
             if (lastPart) {
-                currentText = lastPart;
-                currentSpans = [];
+                let offset = 0;
+                if (currentText) {
+                    offset = currentText.length;
+                    currentText += lastPart;
+                    currentSpans = [...currentSpans];
+                } else {
+                    currentText = lastPart;
+                    currentSpans = [];
+                    offset = currentText.length;
+                }
                 if (op.attributes && op.attributes.bold) {
-                    currentSpans.push({ type: 'bold', start: 0, end: lastPart.length });
+                    currentSpans.push({ type: 'bold', start: offset, end: currentText.length });
                 }
                 if (op.attributes && op.attributes.italic) {
-                    currentSpans.push({ type: 'italic', start: 0, end: lastPart.length });
+                    currentSpans.push({ type: 'italic', start: offset, end: currentText.length });
                 }
             }
         }
@@ -199,6 +209,9 @@ export function toExternalValue(ops: QuillType.DeltaOperation[]) {
     if (currentText) {
         res.push({ text: currentText, spans: currentSpans });
     }
+
+    // Remove last paragraph since it is always empty
+    res.pop();
 
     return res;
 }
@@ -230,6 +243,7 @@ export const URickTextArea = React.memo((props: URichTextAreaProps) => {
         q.on('editor-change', () => {
             let contents = q.getContents();
             let parsed = toExternalValue(contents.ops!);
+            // console.warn('Convert');
             // console.warn(contents);
             // console.warn(parsed);
             props.onValueChange(parsed);
