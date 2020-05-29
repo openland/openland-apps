@@ -190,7 +190,7 @@ export const URickTextArea = React.memo(React.forwardRef((props: URichTextAreaPr
 
     React.useLayoutEffect(() => {
         let q = new Quill(containerRef.current!, {
-            formats: ['bold', 'italic'],
+            formats: ['bold', 'italic', 'header'],
             scrollingContainer: '.scroll-container',
             placeholder: props.placeholder,
         });
@@ -258,6 +258,36 @@ export const URickTextArea = React.memo(React.forwardRef((props: URichTextAreaPr
         }
     }, []);
 
+    const onH1Clicked = React.useCallback(() => {
+        let ed = editor.current;
+        if (ed) {
+            let range = ed.getSelection(true);
+            if (range && range.length > 0) {
+                let formats = ed.getFormat(range);
+                if (formats.header === 1) {
+                    ed.format('header', 0);
+                } else {
+                    ed.format('header', 1);
+                }
+            }
+        }
+    }, []);
+
+    const onH2Clicked = React.useCallback(() => {
+        let ed = editor.current;
+        if (ed) {
+            let range = ed.getSelection(true);
+            if (range && range.length > 0) {
+                let formats = ed.getFormat(range);
+                if (formats.header === 2) {
+                    ed.format('header', 0);
+                } else {
+                    ed.format('header', 1);
+                }
+            }
+        }
+    }, []);
+
     return (
         <div
             className={cx(
@@ -272,12 +302,11 @@ export const URickTextArea = React.memo(React.forwardRef((props: URichTextAreaPr
                 style={popupLocation ? {
                     position: 'absolute',
                     top: popupLocation.y - 44 - 10,
-                    left: popupLocation.x - 100 / 2,
+                    left: popupLocation.x - 4 * 44 / 2,
                     pointerEvents: 'all'
                 } : { display: 'none' }}
             >
                 <XView
-                    width={100}
                     height={44}
                     backgroundColor="#292927"
                     borderRadius={16}
@@ -299,6 +328,22 @@ export const URickTextArea = React.memo(React.forwardRef((props: URichTextAreaPr
                         onClick={onItalicClicked}
                     >
                         I
+                    </XView>
+                    <XView
+                        width={44}
+                        height={44}
+                        backgroundColor="yellow"
+                        onClick={onH1Clicked}
+                    >
+                        H1
+                    </XView>
+                    <XView
+                        width={44}
+                        height={44}
+                        backgroundColor="yellow"
+                        onClick={onH2Clicked}
+                    >
+                        H2
                     </XView>
                 </XView>
             </div>

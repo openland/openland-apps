@@ -1,10 +1,12 @@
 import * as QuillType from 'quill';
 
-export interface QuillParagraph {
-    segments: {
-        text: string, attributes: { bold: boolean, italic: boolean };
-    }[];
-}
+export type QuillParagraph =
+    | {
+        type: 'body' | 'header1' | 'header2',
+        segments: {
+            text: string, attributes: { bold: boolean, italic: boolean };
+        }[];
+    };
 
 export function quillToParagraphs(ops: QuillType.DeltaOperation[]) {
     let res: QuillParagraph[] = [];
@@ -17,10 +19,17 @@ export function quillToParagraphs(ops: QuillType.DeltaOperation[]) {
             throw Error('Only text insert operations are supported');
         }
         let text = op.insert;
+        let type: 'body' | 'header1' | 'header2' = 'body';
         let attributes = {
             bold: !!(op.attributes && op.attributes.bold),
             italic: !!(op.attributes && op.attributes.italic)
         };
+        if (op.attributes && op.attributes.header === 1) {
+            type = 'header1';
+        }
+        if (op.attributes && op.attributes.header === 2) {
+            type = 'header2';
+        }
         let parts = text.split('\n');
         let last = parts.pop()!;
         for (let p of parts) {
@@ -31,10 +40,14 @@ export function quillToParagraphs(ops: QuillType.DeltaOperation[]) {
                         attributes
                     });
                 }
+                if (type !== 'body') {
+                    currentParagraph.type = type;
+                }
                 res.push(currentParagraph);
                 currentParagraph = undefined;
             } else {
                 res.push({
+                    type,
                     segments: [{
                         text: p,
                         attributes
@@ -44,12 +57,16 @@ export function quillToParagraphs(ops: QuillType.DeltaOperation[]) {
         }
         if (last !== '') {
             if (currentParagraph) {
+                if (type !== 'body') {
+                    currentParagraph.type = type;
+                }
                 currentParagraph!.segments.push({
                     text: last,
                     attributes
                 });
             } else {
                 currentParagraph = {
+                    type,
                     segments: [{
                         text: last,
                         attributes
