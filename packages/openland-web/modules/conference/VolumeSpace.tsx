@@ -3,7 +3,6 @@ import { useJsDrag } from './CallFloating';
 import { css, cx } from 'linaria';
 import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
-import { getPlaceholderColorRawById } from 'openland-web/components/unicorn/UAvatar';
 import { bezierPath, pointsDistance, pointNearLine } from './space-utils';
 import { Path, MediaSessionVolumeSpace, SpaceObject, SimpleText, Image } from 'openland-engines/legacy/MediaSessionVolumeSpace';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
@@ -22,6 +21,7 @@ import { VolumeSpaceAvatar } from './VolumeSpaceAvatar';
 import { PeerObjects, TEXT_MIN_HEIGHT } from './PeerObjects';
 import IconCursor from 'openland-icons/s/ic-cursor-space-24.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import IconSide from 'openland-icons/s/ic-side-space-24.svg';
 
 let VolumeSpaceContainerStyle = css`
     width: 100%;
@@ -215,38 +215,149 @@ const Drawings = React.memo((props: { peers: Conference_conference_peers[], spac
     );
 });
 
-const Pointer = React.memo((props: { peer: Conference_conference_peers, space: MediaSessionVolumeSpace }) => {
+const Pointer = React.memo((props: { peer: Conference_conference_peers, space: MediaSessionVolumeSpace, spaceContainerRef: React.RefObject<HTMLDivElement> }) => {
     let ref = React.useRef<HTMLDivElement>(null);
     let [pointerColor, setPointerColor] = React.useState<string | null>(null);
-    React.useEffect(() => {
-        return props.space.pointerVM.listenId(props.peer.id, `pointer_${props.peer.id}`, p => {
-            if (ref.current) {
-                ref.current.style.position = 'absolute';
-                ref.current.style.transform = `translate3d(${p.coords[0]}px, ${p.coords[1]}px, 0)`;
+    let [sideRotation, setSideRotation] = React.useState<number | null>(null);
+    let coordsRef = React.useRef<number[]>([0, 0]);
+    let scrollingRef = React.useRef(false);
 
-                setPointerColor(p.color || getPlaceholderColorRawById(props.peer.user.id).end);
+    const movePointer = () => {
+        if (ref.current && props.spaceContainerRef.current) {
+            const { scrollTop, scrollLeft, clientHeight, clientWidth } = props.spaceContainerRef.current;
+            let pointerCoords = coordsRef.current;
+            let rotation = null;
+            let sidePos = { top: 'unset', left: 'unset', right: 'unset', bottom: 'unset' };
+            if (coordsRef.current[0] < scrollLeft) {
+                rotation = 90;
+                sidePos.left = '0';
+                sidePos.top = `${coordsRef.current[1] - scrollTop}px`;
             }
+            if (coordsRef.current[0] > scrollLeft + clientWidth - CONTROLS_WIDTH) {
+                rotation = 270;
+                sidePos.right = `${CONTROLS_WIDTH}px`;
+                sidePos.top = `${coordsRef.current[1] - scrollTop}px`;
+            }
+            if (coordsRef.current[1] < scrollTop) {
+                if (rotation === 90) {
+                    rotation = 135;
+                } else if (rotation === 270) {
+                    rotation = 225;
+                } else {
+                    rotation = 180;
+                    sidePos.left = `${coordsRef.current[0] - scrollLeft}px`;
+                }
+                sidePos.top = '0';
+            }
+            if (coordsRef.current[1] > scrollTop + clientHeight) {
+                if (rotation === 90) {
+                    rotation = 45;
+                } else if (rotation === 270) {
+                    rotation = 315;
+                } else {
+                    rotation = 0;
+                    sidePos.left = `${coordsRef.current[0] - scrollLeft}px`;
+                }
+                sidePos.bottom = '0';
+                sidePos.top = 'unset';
+            }
+
+            if (rotation === null) {
+                setSideRotation(null);
+            } else {
+                setSideRotation(rotation);
+            }
+
+            if (scrollingRef.current) {
+                ref.current.style.transition = 'none';
+            } else if (!isSafari) {
+                ref.current.style.transition = 'transform linear 50ms';
+            }
+
+            ref.current.style.top = 'unset';
+            ref.current.style.left = 'unset';
+            ref.current.style.right = 'unset';
+            ref.current.style.bottom = 'unset';
+
+            if (rotation === null) {
+                ref.current.style.position = 'absolute';
+                ref.current.style.transform = `translate3d(${pointerCoords[0]}px, ${pointerCoords[1]}px, 0)`;
+            } else {
+                ref.current.style.transform = 'none';
+
+                ref.current.style.position = 'fixed';
+                ref.current.style.top = sidePos.top;
+                ref.current.style.left = sidePos.left;
+                ref.current.style.right = sidePos.right;
+                ref.current.style.bottom = sidePos.bottom;
+            }
+        }
+    };
+
+    React.useEffect(() => {
+        let timeoutId: any;
+        const onContainerScroll = () => {
+            scrollingRef.current = true;
+            window.clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                scrollingRef.current = false;
+            }, 200);
+            if (ref.current) {
+                if (scrollingRef.current) {
+                    ref.current.style.transition = 'none';
+                } else if (!isSafari) {
+                    ref.current.style.transition = 'transform linear 50ms';
+                }
+            }
+            movePointer();
+        };
+        if (props.spaceContainerRef.current) {
+            props.spaceContainerRef.current.addEventListener('scroll', onContainerScroll, { passive: true });
+        }
+
+        let pointerListener = props.space.pointerVM.listenId(props.peer.id, `pointer_${props.peer.id}`, p => {
+            coordsRef.current = p.coords;
+            setPointerColor(p.color || props.space.getColorByUserId(props.peer.user.id));
+            movePointer();
         });
+
+        return () => {
+            if (props.spaceContainerRef.current) {
+                props.spaceContainerRef.current.removeEventListener('scroll', onContainerScroll);
+            }
+            pointerListener();
+        };
     }, []);
 
     return (
         <div className={cx(PointerContainerStyle, !isSafari && TransitionTransform)} ref={ref}>
             {pointerColor && (
                 <>
-                    <XView
-                        position="absolute"
-                        top={22}
-                        left={22}
-                        borderRadius={8}
-                        paddingHorizontal={8}
-                        paddingVertical={2}
-                        backgroundColor={pointerColor}
-                        {...TextStyles.Label1}
-                        color="var(--foregroundContrast)"
-                    >
-                        {props.peer.user.firstName}
-                    </XView>
-                    <UIcon icon={<IconCursor />} color={pointerColor} className={PointerStyle} />
+                    {sideRotation === null && (
+                        <XView
+                            position="absolute"
+                            top={22}
+                            left={22}
+                            borderRadius={8}
+                            paddingHorizontal={8}
+                            paddingVertical={2}
+                            backgroundColor={pointerColor}
+                            {...TextStyles.Label1}
+                            color="var(--foregroundContrast)"
+                            width="max-content"
+                        >
+                            {props.peer.user.firstName}
+                        </XView>
+                    )}
+                    {sideRotation === null && <UIcon icon={<IconCursor />} color={pointerColor} className={PointerStyle} />}
+                    {sideRotation !== null && (
+                        <UIcon
+                            icon={<IconSide
+                                style={{ transform: `rotate(${sideRotation}deg)` }}
+                            />}
+                            color={pointerColor}
+                        />
+                    )}
                 </>
             )}
         </div>
@@ -481,7 +592,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
                             peersCount={props.peers.length}
                         />;
                     })}
-                    {props.peers.filter(p => p.id !== state.sender.id).map(p => <Pointer key={'pointer_' + p.id} space={props.mediaSession.space} peer={p} />)}
+                    {props.peers.filter(p => p.id !== state.sender.id).map(p => <Pointer key={'pointer_' + p.id} space={props.mediaSession.space} peer={p} spaceContainerRef={containerRef} />)}
                 </div>
                 <SpaceControls
                     isErasing={cursorState.action === 'erase'}

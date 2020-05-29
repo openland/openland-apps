@@ -209,8 +209,8 @@ export class MediaSessionVolumeSpace {
         this.eventBus = new GlobalEventBus(`media_session_space_${mediaSession.conversationId}`, mediaSession.client);
         this.d2 = this.eventBus.subscribe(this.onDcMessage);
 
-        const placeholderOrderColors = [spaceColors[1], spaceColors[0], spaceColors[2], spaceColors[4], spaceColors[3], spaceColors[5]];
-        this.setColor(placeholderOrderColors[Math.abs(doSimpleHash(mediaSession.messenger.user.id)) % placeholderOrderColors.length]);
+        const color = this.getColorByUserId(mediaSession.messenger.user.id);
+        this.setColor(color);
     }
 
     ////
@@ -342,6 +342,11 @@ export class MediaSessionVolumeSpace {
 
     erase = (coords: number[]) => {
         this.eraseVM.set(coords);
+    }
+
+    getColorByUserId = (id: string) => {
+        const placeholderOrderColors = [spaceColors[1], spaceColors[0], spaceColors[2], spaceColors[4], spaceColors[3], spaceColors[5]];
+        return placeholderOrderColors[Math.abs(doSimpleHash(id)) % placeholderOrderColors.length];
     }
 
     setColor = (color: string) => {
