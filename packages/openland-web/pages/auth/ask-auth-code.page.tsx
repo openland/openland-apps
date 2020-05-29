@@ -123,12 +123,7 @@ const WebSignUpActivationCode = (
                 <Title text={InitTexts.auth.enterActivationCode} />
                 <Subtitle>
                     We just sent it to {sendToText}.<br />
-                    {!isPhoneAuth && (
-                        <>
-                            {InitTexts.auth.haveNotReceiveCode}{' '}
-                            <ULink onClick={handleResend}>Resend</ULink>
-                        </>
-                    )}
+                    {InitTexts.auth.haveNotReceiveCode} <ULink onClick={handleResend}>Resend</ULink>
                 </Subtitle>
                 {!!avatarId && (
                     <XImage
