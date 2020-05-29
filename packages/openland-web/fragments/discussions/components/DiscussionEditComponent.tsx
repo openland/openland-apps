@@ -21,7 +21,7 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
                         spans.push({ type: 'italic', start: s.offset, end: s.offset + s.length });
                     }
                 }
-                res.push({ text: r.text, spans });
+                res.push({ type: 'paragraph', text: r.text, spans });
             } else {
                 throw Error('Unsupported');
             }
@@ -41,14 +41,15 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
     const sync = React.useMemo(() => {
         return new InvalidateSync(async () => {
             setSaving(true);
-            let title = syncData.current.title;
-            let content: DiscussionContentInput[] = syncData.current.content.map((v) => ({
-                type: DiscussionContentType.Text,
-                text: v.text,
-                spans: v.spans.map((s) => ({ offset: s.start, length: s.end - s.start, type: s.type === 'bold' ? MessageSpanType.Bold : MessageSpanType.Italic }))
-            }));
-            console.warn(content);
-            await client.mutateDiscussionUpdate({ id: initial.id, title, content });
+            console.warn(syncData.current.content);
+            // let title = syncData.current.title;
+            // // let content: DiscussionContentInput[] = syncData.current.content.map((v) => ({
+            // //     type: DiscussionContentType.Text,
+            // //     text: v.text,
+            // //     spans: v.spans.map((s) => ({ offset: s.start, length: s.end - s.start, type: s.type === 'bold' ? MessageSpanType.Bold : MessageSpanType.Italic }))
+            // // }));
+            // // console.warn(content);
+            // // await client.mutateDiscussionUpdate({ id: initial.id, title, content });
             setSaving(false);
         });
     }, []);
