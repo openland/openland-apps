@@ -542,7 +542,7 @@ export const VolumeSpace = React.memo((props: { mediaSession: MediaSessionManage
         const width = 240;
         const height = TEXT_MIN_HEIGHT;
         let coords = getObjCoords({ width, height });
-        let text = new SimpleText(coords, [width, height], '#fff', 20);
+        let text = new SimpleText(coords, [width, height], '#fff', 17);
         props.mediaSession.space.addSpaceObject(text);
         addedObjectsRef.current.push(coords);
     }, []);

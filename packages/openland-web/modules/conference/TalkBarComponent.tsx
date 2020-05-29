@@ -45,7 +45,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
         { id: props.chat.id },
         { fetchPolicy: 'network-only', suspense: false },
     );
-    const openVideoModal = useVideoCallModal({ calls, chatId: props.chat.id, client, messenger });
+    const openVideoModal = useVideoCallModal({ chatId: props.chat.id });
 
     const joinCall = () => {
         calls.joinCall(props.chat.id);
@@ -58,7 +58,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
     }
 
     const subtitle = getSubtitle(data.conference.peers.map(peer => peer.user));
-    return data.conference.peers.length !== 0 ? (
+    return data.conference.peers.length !== 0 && !(currentSession && currentSession.conversationId) ? (
         <UTopBar
             type="positive"
             leftIcon={<PhoneIcon />}
@@ -66,9 +66,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
             subtitle={subtitle}
             rightText="Join"
             rightIcon={<ChevronIcon />}
-            onClick={currentSession && currentSession.conversationId
-                ? openVideoModal
-                : joinCall}
+            onClick={joinCall}
         />
     ) : null;
 };
