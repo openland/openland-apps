@@ -57,13 +57,23 @@ const PrivacyText = React.memo(() => {
 const SignupUserComponent = React.memo((props: PageProps) => {
     const ref = React.useRef<{ shake: () => void }>(null);
     const prefill = getClient().useProfilePrefill().prefill;
+    const profile = getClient().useProfile();
     const form = useForm({ disableAppLoader: true });
     const photoField = useField('photoRef', null, form);
     const firstNameField = useField('firstName', (prefill && prefill.firstName) || '', form);
     const lastNameField = useField('lastName', (prefill && prefill.lastName) || '', form);
 
+    const initialProfileFormData = profile.profile
+        ? {
+            firstName: profile.profile.firstName,
+            lastName: profile.profile.lastName,
+            photoRef: profile.profile.photoRef,
+        }
+        : null;
+
     const handleSave = () => {
-        if (!firstNameField.value.trim()) {
+        const firstName = firstNameField.value.trim();
+        if (!firstName) {
             if (ref && ref.current) {
                 ref.current.shake();
             }
@@ -71,13 +81,32 @@ const SignupUserComponent = React.memo((props: PageProps) => {
         }
 
         form.doAction(async () => {
-            await getClient().mutateProfileCreate({
+            if (initialProfileFormData) {
+                await getClient().mutateProfileUpdate({
+                    input: {
+                        firstName: firstName,
+                        lastName: lastNameField.value.trim(),
+                        photoRef: photoField.value
+                    }
+                });
+            } else {
+                await getClient().mutateProfileCreate({
+                    input: {
+                        firstName: firstName,
+                        lastName: lastNameField.value.trim(),
+                        photoRef: photoField.value
+                    },
+                });
+            }
+            await getClient().mutateCreateOrganization({
                 input: {
-                    firstName: firstNameField.value.trim(),
-                    lastName: lastNameField.value.trim(),
+                    name: firstName,
+                    personal: false,
+                    isCommunity: false,
                 },
             });
             await getClient().refetchAccount();
+            await getClient().refetchAccountSettings();
             await next(props.router);
         });
     };

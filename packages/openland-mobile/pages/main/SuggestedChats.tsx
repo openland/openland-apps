@@ -137,7 +137,6 @@ export const SuggestedChats = React.memo((props: SuggestedChatsProps) => {
     const toHome = React.useCallback(async () => {
         await client.mutateBetaDiscoverSkip({ selectedTagsIds: props.selectedTagIds });
         await client.refetchDiscoverIsDone();
-        await Storage.writeKey('discover_start', null);
         props.router.pushAndResetRoot('Home');
     }, []);
 

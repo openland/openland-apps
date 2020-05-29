@@ -1,7 +1,20 @@
 import * as React from 'react';
-import { View, Linking, LayoutChangeEvent, Platform, Dimensions, LayoutAnimation, Image } from 'react-native';
+import {
+    View,
+    Linking,
+    LayoutChangeEvent,
+    Platform,
+    Dimensions,
+    LayoutAnimation,
+    Image,
+} from 'react-native';
 import { saveClient, getClient, hasClient } from '../utils/graphqlClient';
-import { buildMessenger, setMessenger, getMessenger, getMessengerNullable } from '../utils/messenger';
+import {
+    buildMessenger,
+    setMessenger,
+    getMessenger,
+    getMessengerNullable,
+} from '../utils/messenger';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { backoff } from 'openland-y-utils/timer';
 import { Routes } from '../routes';
@@ -11,8 +24,12 @@ import { SRouting } from 'react-native-s/SRouting';
 import { Root } from './Root';
 import { PageProps } from '../components/PageProps';
 import { Account_sessionState } from 'openland-api/spacex.types';
-import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
-import { resolveInternalLink, saveLinkIfInvite, joinInviteIfHave } from '../utils/resolveInternalLink';
+import { resolveNextPage } from './auth/signup';
+import {
+    resolveInternalLink,
+    saveLinkIfInvite,
+    joinInviteIfHave,
+} from '../utils/resolveInternalLink';
 import { ZModalProvider } from 'openland-mobile/components/ZModal';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { ThemeProvider, useTheme } from 'openland-mobile/themes/ThemeContext';
@@ -34,7 +51,10 @@ import { ModalProvider } from 'react-native-fast-modal';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
-    const animatedValue = React.useMemo(() => new SAnimatedShadowView('app-placeholder-' + randomKey(), { opacity: 1 }), []);
+    const animatedValue = React.useMemo(
+        () => new SAnimatedShadowView('app-placeholder-' + randomKey(), { opacity: 1 }),
+        [],
+    );
     React.useEffect(() => {
         if (!props.loading && Platform.OS !== 'android') {
             SAnimated.beginTransaction();
@@ -60,9 +80,11 @@ const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
                 pointerEvents={props.loading ? 'box-none' : 'none'}
             >
                 <View width="100%" height="100%">
-                    <AndroidSplashView style={{ alignSelf: 'stretch', flexGrow: 1, flexShrink: 1 }} splashVisible={props.loading} />
+                    <AndroidSplashView
+                        style={{ alignSelf: 'stretch', flexGrow: 1, flexShrink: 1 }}
+                        splashVisible={props.loading}
+                    />
                 </View>
-
             </View>
         );
     }
@@ -79,20 +101,28 @@ const AppPlaceholder = React.memo<{ loading: boolean }>((props) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: theme.backgroundPrimary,
-                opacity: 1
+                opacity: 1,
             }}
             pointerEvents={props.loading ? 'box-none' : 'none'}
         >
             <Image
                 fadeDuration={0}
-                source={theme.type === 'Light' ? require('assets/logo-splash.png') : require('assets/logo-splash-dark.png')}
+                source={
+                    theme.type === 'Light'
+                        ? require('assets/logo-splash.png')
+                        : require('assets/logo-splash-dark.png')
+                }
                 style={{ width: 128, height: 128 }}
             />
         </SAnimated.View>
     );
 });
 
-const AppContainer = React.memo<{ children?: any, loading: boolean, onLayout?: (e: LayoutChangeEvent) => void }>((props) => {
+const AppContainer = React.memo<{
+    children?: any;
+    loading: boolean;
+    onLayout?: (e: LayoutChangeEvent) => void;
+}>((props) => {
     return (
         <SafeAreaProvider>
             <ModalProvider />
@@ -108,8 +138,14 @@ const AppContainer = React.memo<{ children?: any, loading: boolean, onLayout?: (
 export let NON_PRODUCTION = false;
 export let SUPER_ADMIN = false;
 
-export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: Account_sessionState, dimensions?: { width: number, height: number } }> {
-
+export class Init extends React.Component<
+    PageProps,
+    {
+        state: 'start' | 'loading' | 'initial' | 'signup' | 'app';
+        sessionState?: Account_sessionState;
+        dimensions?: { width: number; height: number };
+    }
+> {
     private history: any;
     private pendingDeepLink?: string;
     private resolving = false;
@@ -117,7 +153,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
     constructor(props: PageProps) {
         super(props);
         this.state = {
-            state: 'start'
+            state: 'start',
         };
 
         console.log('BOOTSTRAP: mounting: ' + initialMode);
@@ -138,12 +174,15 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             h = Dimensions.get('screen').height;
         }
         if (Platform.OS === 'ios') {
-            if (this.state.dimensions && (this.state.dimensions.width !== w || this.state.dimensions.height !== h)) {
+            if (
+                this.state.dimensions &&
+                (this.state.dimensions.width !== w || this.state.dimensions.height !== h)
+            ) {
                 LayoutAnimation.configureNext({
                     duration: 250,
                     update: {
-                        type: 'linear'
-                    }
+                        type: 'linear',
+                    },
                 });
             }
         }
@@ -165,7 +204,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         if (this.pendingDeepLink && state !== 'loading' && state !== 'start') {
             await AppStorage.prepare();
             let userToken: string | undefined = AppStorage.token;
-            let acc = userToken && await backoff(async () => await getClient().queryAccount());
+            let acc = userToken && (await backoff(async () => await getClient().queryAccount()));
             if (!acc || !acc.me || !acc.sessionState.isAccountExists) {
                 // unauthorized
                 await saveLinkIfInvite(this.pendingDeepLink);
@@ -181,7 +220,6 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                 }
                 this.pendingDeepLink = undefined;
             }
-
         }
         this.resolving = false;
     }
@@ -193,7 +231,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
     }
     componentDidMount() {
         Linking.addEventListener('url', this.handleOpenURL);
-        Linking.getInitialURL().then(async url => await this.handleOpenURL({ url: url }));
+        Linking.getInitialURL().then(async (url) => await this.handleOpenURL({ url: url }));
         if (getMessengerNullable()) {
             this.setState({ state: 'app' });
             return;
@@ -208,11 +246,17 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             const useAccountReefetchNeeded = await Storage.readKey('user_refetch_needed');
             try {
                 if (hasClient()) {
-                    let res = (await backoff(async () => useAccountReefetchNeeded ? await getClient().refetchAccount() : await getClient().queryAccount()));
+                    let res = await backoff(async () =>
+                        useAccountReefetchNeeded
+                            ? await getClient().refetchAccount()
+                            : await getClient().queryAccount(),
+                    );
                     console.log('OPENLAND: query queries');
                     console.warn(JSON.stringify(res.me, undefined, 4));
                     if (res && res.me) {
-                        NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0 || __DEV__;
+                        NON_PRODUCTION =
+                            res.myPermissions.roles.indexOf('feature-non-production') >= 0 ||
+                            __DEV__;
                         SUPER_ADMIN = res.myPermissions.roles.indexOf('super-admin') >= 0;
                         AppConfig.setNonProduction(NON_PRODUCTION);
                         AppConfig.setSuperAdmin(SUPER_ADMIN);
@@ -228,30 +272,28 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         this.setState({ state: 'loading' });
                         let client = createClientNative(AppStorage.storage, AppStorage.token);
                         saveClient(client);
-                        res = await (useAccountReefetchNeeded ? client.refetchAccount() : client.queryAccount());
+                        res = await (useAccountReefetchNeeded
+                            ? client.refetchAccount()
+                            : client.queryAccount());
                         console.warn(JSON.stringify(res.me, undefined, 4));
                         console.warn(JSON.stringify(res.sessionState, undefined, 4));
 
-                        // res = await cachedQuery(client.client, AccountQuery, {}, 'account');
-                        // await cachedQuery(client.client, SettingsQuery, {}, 'settings')
-                        let startDiscover: null | boolean = false;
-                        await Storage.readKey('discover_start').then(data => {
-                            startDiscover = data;
-                        });
                         const defaultPage = !res.sessionState.isCompleted
                             ? resolveNextPage(res.sessionState)
-                            : startDiscover
-                                ? 'SignDiscover'
-                                : undefined;
+                            : undefined;
 
-                        this.history = SRouting.create(Routes, defaultPage, { action: resolveNextPageCompleteAction(defaultPage) });
+                        this.history = SRouting.create(Routes, defaultPage);
                         if (res.me) {
-                            NON_PRODUCTION = res.myPermissions.roles.indexOf('feature-non-production') >= 0 || __DEV__;
+                            NON_PRODUCTION =
+                                res.myPermissions.roles.indexOf('feature-non-production') >= 0 ||
+                                __DEV__;
                             SUPER_ADMIN = res.myPermissions.roles.indexOf('super-admin') >= 0;
                             AppConfig.setNonProduction(NON_PRODUCTION);
                             AppConfig.setSuperAdmin(SUPER_ADMIN);
 
-                            let messenger = buildMessenger(getClient(), res.me, { store: new NativeKeyValue('engines') });
+                            let messenger = buildMessenger(getClient(), res.me, {
+                                store: new NativeKeyValue('engines'),
+                            });
                             setMessenger(new MobileMessenger(messenger, this.history));
                             await messenger.awaitLoading();
                         }
@@ -276,7 +318,6 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         if (res && res.me) {
                             this.setState({ state: 'app' });
                             NotificationHandler.init();
-
                         } else {
                             this.setState({ state: 'signup' });
                         }
@@ -288,7 +329,6 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             } catch (e) {
                 Alert.alert(e.message);
             }
-
         })();
     }
 
@@ -301,21 +341,40 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             content = (
                 <GQLClientContext.Provider value={getClient()}>
                     <PushManager client={getClient()} />
-                    {this.state.dimensions && <Root routing={getMessenger().history} width={this.state.dimensions.width} height={this.state.dimensions.height} />}
+                    {this.state.dimensions && (
+                        <Root
+                            routing={getMessenger().history}
+                            width={this.state.dimensions.width}
+                            height={this.state.dimensions.height}
+                        />
+                    )}
                 </GQLClientContext.Provider>
             );
         } else if (this.state.state === 'initial') {
             loading = false;
             content = (
                 <>
-                    {this.state.dimensions && <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} width={this.state.dimensions.width} height={this.state.dimensions.height} />}
+                    {this.state.dimensions && (
+                        <Root
+                            routing={SRouting.create(Routes, 'Login')}
+                            padLayout={false}
+                            width={this.state.dimensions.width}
+                            height={this.state.dimensions.height}
+                        />
+                    )}
                 </>
             );
         } else if (this.state.state === 'signup') {
             loading = false;
             content = (
                 <>
-                    {this.state.dimensions && <Root routing={this.history} width={this.state.dimensions.width} height={this.state.dimensions.height} />}
+                    {this.state.dimensions && (
+                        <Root
+                            routing={this.history}
+                            width={this.state.dimensions.width}
+                            height={this.state.dimensions.height}
+                        />
+                    )}
                 </>
             );
         }
