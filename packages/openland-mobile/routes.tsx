@@ -1,4 +1,5 @@
 import { Login } from './pages/auth/Login';
+import { AuthStart, AuthCode } from './pages/auth/AuthStart';
 import { Conversation } from './pages/main/Conversation';
 import { Typography } from './pages/dev/Typography';
 import { Components } from './pages/dev/Components';
@@ -19,8 +20,6 @@ import { EditOrganization } from './pages/main/EditOrganization';
 import { EditCommunity } from './pages/main/EditCommunity';
 import { SignupUser } from './pages/auth/SignupUser';
 import { Waitlist } from './pages/auth/Waitlist';
-import { EmailStart, EmailCode } from './pages/auth/EmailAuth';
-import { PhoneStart, PhoneCode } from './pages/auth/PhoneAuth';
 import { SignDiscover } from './pages/auth/SignDiscover';
 import { Compose } from './pages/main/Compose';
 import { CreateGroupAttrs } from './pages/compose/CreateGroupAttrs';
@@ -138,10 +137,8 @@ export const Routes = new SRoutesBuilder()
 
   .addRoute('Waitlist', Waitlist)
   .addRoute('Login', Login)
-  .addRoute('EmailStart', EmailStart)
-  .addRoute('EmailCode', EmailCode)
-  .addRoute('PhoneStart', PhoneStart)
-  .addRoute('PhoneCode', PhoneCode)
+  .addRoute('AuthStart', AuthStart)
+  .addRoute('AuthCode', AuthCode)
 
   .addRoute('Dev', Developer)
   .addRoute('DevWorker', Worker)

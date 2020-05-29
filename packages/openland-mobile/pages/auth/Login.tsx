@@ -81,11 +81,11 @@ const Buttons = React.memo((props: ButtonProps) => {
 
 const LoginComponent = React.memo((props: PageProps) => {
     const handlePhonePress = () => {
-        props.router.push('PhoneStart');
+        props.router.push('AuthStart', { phone: true });
     };
 
     const handleEmailPress = () => {
-        props.router.push('EmailStart');
+        props.router.push('AuthStart');
     };
 
     return (
