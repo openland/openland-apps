@@ -53,7 +53,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
         if (!currentMediaSession) {
             props.ctx.hide();
         }
-    }, [mediaSession]);
+    }, [currentMediaSession]);
 
     // layout video grid
     let peers = [...conference ? conference.conference.peers : []];

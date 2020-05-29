@@ -213,16 +213,9 @@ let Content = XMemo<{ id: string, speaker: boolean, setSpeaker: (fn: (s: boolean
         props.setSpeaker(() => false);
         calls.leaveCall();
 
-        setTimeout(() => {
-            SStatusBar.setBarStyle(theme.statusBar);
-            props.hide();
-        }, 2000);
+        SStatusBar.setBarStyle(theme.statusBar);
+        props.hide();
     }, []);
-
-    React.useEffect(() => {
-        // detect call ended somehow 
-        // onCallEnd();
-    }, [mediaSession]);
 
     let peersLeft = [...conference ? conference.conference.peers : []];
     let slicesCount = peersLeft.length <= 3 ? 1 : peersLeft.length < 9 ? 2 : 3;

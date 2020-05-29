@@ -45,6 +45,14 @@ export const CallControls = (props: CallControlsProps) => {
 
     React.useEffect(() => mediaSession?.state.listenValue(setState), [mediaSession]);
 
+    let prevMediaSession = React.useRef(mediaSession);
+    prevMediaSession.current = mediaSession || prevMediaSession.current;
+    React.useEffect(() => {
+        if (!mediaSession && prevMediaSession.current) {
+            props.onCallEnd();
+        }
+    }, [mediaSession]);
+
     let theme = React.useContext(ThemeContext);
     let [speaker, setSpeaker] = React.useState(props.speaker);
 
