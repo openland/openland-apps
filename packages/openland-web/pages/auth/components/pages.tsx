@@ -15,4 +15,4 @@ export const pages: { [K in pagesT]: pagesT } = {
     introduceYourself: 'introduceYourself',
 };
 
-export const pagesArr = ['acceptInvite', 'askAuthData', 'askAuthCode', 'createNewAccount', 'introduceYourself'];
+export const pagesArr = ['acceptInvite', 'createNewAccount', 'askAuthData', 'askAuthCode', 'introduceYourself'];
