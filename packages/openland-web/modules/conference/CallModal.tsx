@@ -6,7 +6,7 @@ import { Conference_conference_peers } from 'openland-api/spacex.types';
 import { css, cx } from 'linaria';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalController } from 'openland-x/showModal';
-import { MessengerEngine } from 'openland-engines/MessengerEngine';
+import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import { VolumeSpace } from './VolumeSpace';
 import { VideoPeer, PeerMedia } from './VideoPeer';
 import WatermarkLogo from 'openland-icons/watermark-logo.svg';
@@ -16,6 +16,7 @@ import { useMessageModal } from './useMessageModal';
 import { useAttachHandler } from 'openland-web/hooks/useAttachHandler';
 import { useIncomingMessages } from './useIncomingMessages';
 import { useRouteChange } from 'openland-web/hooks/useRouteChange';
+import { useClient } from 'openland-api/useClient';
 
 const watermarkContainerstyle = css`
     will-change: transform;
@@ -133,7 +134,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     });
 
     return (
-        <XView flexDirection="row" flexGrow={1} backgroundColor="gray" alignItems="stretch" position="relative">
+        <XView flexDirection="row" flexGrow={1} backgroundColor="var(--overlayTotal)" alignItems="stretch" position="relative">
             <XView flexDirection="row" flexGrow={1} flexShrink={1}>
                 <XView flexDirection={rotated ? 'row' : 'column'} justifyContent="flex-start" flexGrow={1} flexShrink={1} position="relative">
                     {layout === 'grid' && slices.map((s, i) => (
@@ -203,10 +204,13 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
     );
 });
 
-export const useVideoCallModal = (props: { chatId: string, calls: CallsEngine, client: OpenlandClient, messenger: MessengerEngine }) => {
+export const useVideoCallModal = (props: { chatId: string }) => {
+    const messenger = React.useContext(MessengerContext);
+    const calls = messenger.calls;
+    let client = useClient();
     const onAttach = useAttachHandler({ conversationId: props.chatId });
     return React.useCallback(() =>
-        showModalBox({ fullScreen: true, useTopCloser: false }, ctx => <CallModalConponent {...props} onAttach={onAttach} ctx={ctx} />),
-        [props.chatId, props.messenger]
+        showModalBox({ fullScreen: true, useTopCloser: false }, ctx => <CallModalConponent chatId={props.chatId} messenger={messenger} calls={calls} client={client} onAttach={onAttach} ctx={ctx} />),
+        [props.chatId, messenger]
     );
 };

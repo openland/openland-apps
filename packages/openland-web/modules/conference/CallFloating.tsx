@@ -333,18 +333,19 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
             calls={calls}
         />
     );
-    const showVideoCallModal = useVideoCallModal({ calls, chatId: props.id, client, messenger });
+    const showVideoCallModal = useVideoCallModal({ chatId: props.id });
 
     const buttons = (
         <XView flexDirection="row" justifyContent="flex-end" marginLeft={'auto' as any}>
             <UIconButton
                 size="small"
                 marginRight={12}
-                icon={<FullscreenIcon />}
+                icon={<EndIcon />}
+                active={true}
                 color="var(--foregroundContrast)"
-                defaultRippleColor="rgba(255, 255, 255, 0.16)"
-                hoverRippleColor="rgba(255, 255, 255, 0.32)"
-                onClick={showVideoCallModal}
+                rippleColor="var(--tintRed)"
+                hoverActiveRippleColor="var(--tintRedHover)"
+                onClick={() => calls.leaveCall()}
             />
             <UIconButton
                 size="small"
@@ -360,12 +361,11 @@ const CallFloatingComponent = React.memo((props: { id: string; room: Conference_
             />
             <UIconButton
                 size="small"
-                icon={<EndIcon />}
-                active={true}
+                icon={<FullscreenIcon />}
                 color="var(--foregroundContrast)"
-                rippleColor="var(--tintRed)"
-                hoverActiveRippleColor="var(--tintRedHover)"
-                onClick={() => calls.leaveCall()}
+                defaultRippleColor="rgba(255, 255, 255, 0.16)"
+                hoverRippleColor="rgba(255, 255, 255, 0.32)"
+                onClick={showVideoCallModal}
             />
         </XView>
     );

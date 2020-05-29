@@ -33,6 +33,7 @@ import { useLastSeen } from 'openland-y-utils/LastSeen';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { AppConfig } from 'openland-y-runtime-web/AppConfig';
+import { useVideoCallModal } from 'openland-web/modules/conference/CallModal';
 
 const secondary = css`
     color: var(--foregroundSecondary);
@@ -105,11 +106,16 @@ const ChatOnlinesTitle = (props: { id: string }) => {
 const CallButton = (props: { chat: ChatInfo; messenger: MessengerEngine }) => {
     const calls = props.messenger.calls;
     const currentSession = calls.useCurrentSession();
+    const showVideoCallModal = useVideoCallModal({ chatId: props.chat.id });
+
     return (
         <div className={cx(currentSession && currentSession.conversationId === props.chat.id && disabledBtn)}>
             <UIconButton
                 icon={<PhoneIcon />}
-                onClick={() => { calls.joinCall(props.chat.id); }}
+                onClick={() => {
+                    calls.joinCall(props.chat.id);
+                    showVideoCallModal();
+                }}
                 size="large"
             />
         </div>
@@ -125,6 +131,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     const [muted, setMuted] = React.useState(chat.settings.mute);
     let calls = messenger.calls;
     const currentSession = calls.useCurrentSession();
+    const showVideoCallModal = useVideoCallModal({ chatId: chat.id });
 
     let res = new UPopperMenuBuilder();
     if (layout === 'mobile' && chat.__typename === 'SharedRoom') {
@@ -142,6 +149,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
             icon: <PhoneIcon />,
             action: () => {
                 calls.joinCall(chat.id);
+                showVideoCallModal();
             },
             disabled: currentSession ? currentSession.conversationId === chat.id : false,
         });
