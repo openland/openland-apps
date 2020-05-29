@@ -12,7 +12,6 @@ import { ZButton } from 'openland-mobile/components/ZButton';
 import { SRouter } from 'react-native-s/SRouter';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { trackEvent } from 'openland-mobile/analytics';
-import { AppStorage as Storage } from 'openland-y-runtime/AppStorage';
 import { useClient } from 'openland-api/useClient';
 import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
