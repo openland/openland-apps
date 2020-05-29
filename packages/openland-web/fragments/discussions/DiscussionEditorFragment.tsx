@@ -7,7 +7,7 @@ export const DiscussionEditorFragment = React.memo(() => {
     const unicorn = useUnicorn();
     const { id } = unicorn.query;
     const client = useClient();
-    let discussion = client.useDiscussion({ id }).discussion;
+    let discussion = client.useDiscussion({ id }, { fetchPolicy: 'network-only' }).discussion;
     if (!discussion) {
         throw Error('Unknown error');
     }

@@ -1777,6 +1777,7 @@ type Mutation {
   debugCreateTransfer(fromUid: ID!, toUid: ID!, amount: Int!): String!
   debugSetCommission(cid: ID!, percents: Int!): Boolean!
   debugFixEditedMessagesAugmentation: Boolean!
+  debugReindexUsers: Boolean!
   debugCalcEntitiesCount(entity: String!): Boolean!
   debugCalcEntitiesCountAll: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!

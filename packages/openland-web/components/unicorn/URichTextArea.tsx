@@ -222,7 +222,11 @@ export interface URichTextAreaProps {
     onValueChange: (value: URichTextAreaValue) => void;
 }
 
-export const URickTextArea = React.memo((props: URichTextAreaProps) => {
+export interface URichTextAreaInstance {
+    focus: () => void;
+}
+
+export const URickTextArea = React.memo(React.forwardRef((props: URichTextAreaProps, ref: React.Ref<URichTextAreaInstance>) => {
     const lib = React.useMemo(() => getQuill(), []);
     const Quill = lib.Quill;
     const QuillDelta = lib.QuillDelta;
@@ -263,6 +267,16 @@ export const URickTextArea = React.memo((props: URichTextAreaProps) => {
 
         editor.current = q;
     }, []);
+
+    React.useImperativeHandle(ref, () => ({
+        focus: () => {
+            let ed = editor.current;
+            if (ed) {
+                ed.focus();
+                ed.setSelection(ed.getLength(), ed.getLength());
+            }
+        },
+    }));
 
     const onBoldClicked = React.useCallback(() => {
         let ed = editor.current;
@@ -340,4 +354,4 @@ export const URickTextArea = React.memo((props: URichTextAreaProps) => {
             </div>
         </div>
     );
-});
+}));

@@ -1098,7 +1098,11 @@ internal val ParagraphSimpleSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             inline("TextParagraph", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
-                field("text", "text", notNull(scalar("String")))
+                field("text", "text", notNull(scalar("String"))),
+                field("spans", "spans", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("MessageSpan", SpanFragmentSelector)
+                    )))))
             )),
             inline("ImageParagraph", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),

@@ -34,6 +34,9 @@ query Hub($id: ID!) {
 fragment ParagraphSimple on Paragraph {
     ... on TextParagraph {
         text
+        spans {
+            ...SpanFragment
+        }
     }
     ... on ImageParagraph {
         image {
@@ -88,8 +91,8 @@ mutation DiscussionCreateDraft {
     }
 }
 
-mutation DiscussionUpdate($id: ID!, $title: String!) {
-    discussionUpdate(id: $id, input: { title: $title  }) {
+mutation DiscussionUpdate($id: ID!, $title: String!, $content: [DiscussionContentInput!]) {
+    discussionUpdate(id: $id, input: { title: $title, content: $content }) {
         ...DiscussionSimple
     }
 }
