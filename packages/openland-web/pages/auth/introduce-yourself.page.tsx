@@ -222,7 +222,6 @@ const IntroduceYourselfPageInner = (props: EnterYourOrganizationPageProps) => {
     }
 
     const profile = client.useProfile();
-    const data = client.useProfilePrefill();
 
     const initialProfileFormData = profile.profile
         ? {
