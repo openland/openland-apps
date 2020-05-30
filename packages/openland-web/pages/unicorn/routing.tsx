@@ -15,10 +15,8 @@ import { DownloadAppsFragment } from 'openland-web/fragments/account/SettingsDow
 import { InviteFriendsFragment } from 'openland-web/fragments/account/SettingsInviteFriendsFragment';
 import { GroupProfileFragment } from 'openland-web/fragments/group/GroupProfileFragment';
 import { MessageFragment } from 'openland-web/fragments/message/MessageFragment';
-import { FeedFragment } from 'openland-web/fragments/feed/FeedFragment';
 import { WalletFragment } from 'openland-web/fragments/wallet/WalletFragment';
 import { SubscriptionsFragment } from 'openland-web/fragments/wallet/SubscriptionsFragment';
-import { FeedItemFragment } from 'openland-web/fragments/feed/FeedItemFragment';
 import { useStackRouter } from 'openland-unicorn/components/StackRouter';
 import { SharedMediaFragment } from 'openland-web/fragments/chat/sharedMedia/SharedMediaFragment';
 import { SettingsAboutFragment } from 'openland-web/fragments/account/SettingsAboutFragment';
@@ -89,9 +87,6 @@ routing.addRoute('/message/:messageId/comment/:commentId', () => MessageFragment
 routing.addRoute('/notifications', () => NotificationsFragment);
 
 // Discover
-routing.addRoute('/feed', () => FeedFragment);
-routing.addRoute('/feed/:postId', () => FeedItemFragment);
-routing.addRoute('/feed/:postId/comment/:commentId', () => FeedItemFragment);
 routing.addRoute('/discover', () => DiscoverHomeFragment);
 routing.addRoute('/discover/', () => DiscoverHomeFragment);
 routing.addRoute('/discover/home', () => DiscoverHomeFragment);

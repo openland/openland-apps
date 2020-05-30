@@ -64,21 +64,6 @@ import { Inputs } from './pages/dev/Inputs';
 import { Avatars } from './pages/dev/Avatars';
 import { Videos } from './pages/dev/Videos';
 import { DocumentsExt } from './pages/dev/DocumentsExt';
-import { Feed } from './pages/feed/Feed';
-import { FeedCreate } from './pages/feed/FeedCreate';
-import { FeedEdit } from './pages/feed/FeedEdit';
-import { FeedItem } from './pages/feed/FeedItem';
-import { PostMentionPicker } from './pages/main/modals/PostMentionPicker';
-import { FeedChannels } from './pages/feed/FeedChannels';
-import { FeedChannel } from './pages/feed/FeedChannel';
-import { FeedChannelCreate } from './pages/feed/FeedChannelCreate';
-import { FeedChannelProfile } from './pages/feed/FeedChannelProfile';
-import { FeedChannelEdit } from './pages/feed/FeedChannelEdit';
-import { FeedChannelWriters } from './pages/feed/FeedChannelWriters';
-import { SetFeedChannelShortname } from './pages/main/SetFeedChannelShortname';
-import { FeedPublishTo } from './pages/feed/FeedPublishTo';
-import { FeedChannelAddWriter } from './pages/feed/FeedChannelAddWriter';
-import { FeedChannelEditAdvanced } from './pages/feed/FeedChannelEditAdvanced';
 import { SharedMedia } from './pages/shared-media/SharedMedia';
 import { PowerUps } from './pages/dev/PowerUps';
 import { Wallet } from './pages/wallet/Wallet';
@@ -117,7 +102,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('UserMultiplePicker', UserMultiplePicker)
   .addRoute('UserPicker', UserPicker)
   .addRoute('CountryPicker', CountryPicker)
-  .addRoute('PostMentionPicker', PostMentionPicker)
   .addRoute('ProfileGroupLink', ProfileGroupLink)
   .addRoute('ProfileOrganizationGroups', ProfileOrganizationGroups)
   .addRoute('DiscoverListing', DiscoverListing)
@@ -127,7 +111,6 @@ export const Routes = new SRoutesBuilder()
 
   .addRoute('SetUserShortname', SetUserShortname)
   .addRoute('SetShortname', SetShortname)
-  .addRoute('SetFeedChannelShortname', SetFeedChannelShortname)
   .addRoute('SelectPrimaryOrganization', SelectPrimaryOrganization)
 
   .addRoute('SignupUser', SignupUser)
@@ -167,20 +150,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('Collections', Collections)
 
   .addRoute('Apps/Tasks', Tasks)
-
-  .addRoute('Feed', Feed)
-  .addRoute('FeedItem', FeedItem)
-  .addRoute('FeedCreate', FeedCreate)
-  .addRoute('FeedEdit', FeedEdit)
-  .addRoute('FeedChannels', FeedChannels)
-  .addRoute('FeedChannel', FeedChannel)
-  .addRoute('FeedChannelCreate', FeedChannelCreate)
-  .addRoute('FeedChannelProfile', FeedChannelProfile)
-  .addRoute('FeedChannelEdit', FeedChannelEdit)
-  .addRoute('FeedChannelEditAdvanced', FeedChannelEditAdvanced)
-  .addRoute('FeedChannelWriters', FeedChannelWriters)
-  .addRoute('FeedPublishTo', FeedPublishTo)
-  .addRoute('FeedChannelAddWriter', FeedChannelAddWriter)
 
   .addRoute('SharedMedia', SharedMedia)
 

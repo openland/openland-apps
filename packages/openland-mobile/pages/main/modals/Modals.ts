@@ -1,6 +1,5 @@
 import { SRouter } from 'react-native-s/SRouter';
 import { UserShort } from 'openland-api/spacex.types';
-import { SlideInputLocalAttachment } from 'openland-engines/feed/types';
 
 export const Modals = {
     showGroupMuptiplePicker(
@@ -58,12 +57,6 @@ export const Modals = {
         } else {
             router.push('UserPicker', { action, title, users, selectedUser, disableUsers });
         }
-    },
-    showPostMentionPicker(
-        router: SRouter,
-        action: (item: SlideInputLocalAttachment) => any,
-    ) {
-        router.present('PostMentionPicker', { action });
     },
     showCountryPicker(
         router: SRouter,

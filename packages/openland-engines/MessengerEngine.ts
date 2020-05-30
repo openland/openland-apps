@@ -19,7 +19,6 @@ import { UserStorageEngine } from './UserStorageEngine';
 import { EngineOptions } from './EnginesOptions';
 import { InMemoryKeyValueStore } from 'openland-y-utils/InMemoryKeyValueStore';
 import { MessagesActionsStateEngine } from './messenger/MessagesActionsState';
-import { FeedEngine } from './feed/FeedEngine';
 import { WalletEngine } from './wallet/WalletEngine';
 
 const log = createLogger('Engine');
@@ -29,7 +28,6 @@ export class MessengerEngine {
     readonly sender: MessageSender;
     readonly dialogList: DialogListEngine;
     readonly notificationCenter: NotificationCenterEngine;
-    readonly feed: FeedEngine;
     readonly dialogSequence: DialogSequenceEngine;
     readonly onlineReporter: OnlineReportEngine;
     readonly user: UserShort;
@@ -69,7 +67,6 @@ export class MessengerEngine {
 
         this.dialogList = new DialogListEngine(this);
         this.notificationCenter = new NotificationCenterEngine(this);
-        this.feed = new FeedEngine(this);
 
         this.dialogSequence = new DialogSequenceEngine(this);
         this.sender = new MessageSender(client);

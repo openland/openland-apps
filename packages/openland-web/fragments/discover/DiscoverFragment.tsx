@@ -22,7 +22,6 @@ import IcStar from 'openland-icons/s/ic-star-24.svg';
 export const DiscoverFragment = React.memo(() => {
     const isMobile = useIsMobile();
     const refInput = React.useRef<USearchInputRef>(null);
-    const isNP = AppConfig.isNonProduction();
     const isVisible = useVisibleTab();
     React.useEffect(
         () => {
@@ -94,8 +93,6 @@ export const DiscoverFragment = React.memo(() => {
                                 path="/discover/recommendations"
                                 icon={<IcStar />}
                             />
-                            {/* <UListItem title="Groups" path="/discover/groups" /> */}
-                            {isNP && <UListItem title="Feed" path="/feed" />}
                         </XView>
                     )}
 

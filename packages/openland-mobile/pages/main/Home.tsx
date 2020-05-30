@@ -9,16 +9,14 @@ import { AppBarBottom, AppBarBottomItem } from '../../components/AppBarBottom';
 import { Explore } from './Explore';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { Feed } from '../feed/Feed';
 import { NotificationCenter } from './NotificationCenter';
 // import { isPad } from '../Root';
 // import { NON_PRODUCTION } from '../Init';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
-import { showFeedTutorialIfNeeded } from 'openland-mobile/feed/components/FeedTutorial';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 
 export const ActiveTabContext = React.createContext(false);
-export const SetTabContext = React.createContext<(index: number) => void>(() => {/* noop */});
+export const SetTabContext = React.createContext<(index: number) => void>(() => {/* noop */ });
 
 const DEFAULT_TAB = 1;
 
@@ -30,14 +28,7 @@ export const Home = XMemo<PageProps>((props) => {
     const discoverDone = getClient().useDiscoverIsDone({ suspense: false });
     const wallet = getClient().useMyWallet({ suspense: false });
     // const showFeed = NON_PRODUCTION && !isPad;
-    const showFeed = false;
     const failingPaymentsCount = wallet && wallet.myWallet.failingPaymentsCount || undefined;
-
-    React.useEffect(() => {
-        if (tab === 0 && showFeed) {
-            showFeedTutorialIfNeeded();
-        }
-    }, [tab]);
 
     return (
         <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>
@@ -45,9 +36,8 @@ export const Home = XMemo<PageProps>((props) => {
                 <View style={{ width: '100%', flexGrow: 1, flexBasis: 0 }}>
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 0 ? 1 : 0 }} pointerEvents={tab === 0 ? 'box-none' : 'none'}>
                         <HeaderContextChild enabled={tab === 0}>
-                            {tab === 0 && <ZTrack event={showFeed ? 'navigate_feed' : 'navigate_discover'} />}
-                            {!showFeed && <Explore {...props} />}
-                            {showFeed && <Feed {...props} />}
+                            {tab === 0 && <ZTrack event={'navigate_discover'} />}
+                            <Explore {...props} />
                         </HeaderContextChild>
                     </View>
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 1 ? 1 : 0 }} pointerEvents={tab === 1 ? 'box-none' : 'none'}>
@@ -76,23 +66,13 @@ export const Home = XMemo<PageProps>((props) => {
             </ASSafeAreaProvider>
             <View style={{ position: Platform.OS === 'ios' ? 'absolute' : 'relative', bottom: 0, left: 0, right: 0 }}>
                 <AppBarBottom>
-                    {!showFeed && (
-                        <AppBarBottomItem
-                            dot={discoverDone !== null && !discoverDone.betaIsDiscoverDone}
-                            icon={require('assets/ic-discover-24.png')}
-                            iconSelected={require('assets/ic-discover-filled-24.png')}
-                            selected={tab === 0}
-                            onPress={() => setTab(0)}
-                        />
-                    )}
-                    {showFeed && (
-                        <AppBarBottomItem
-                            icon={require('assets/ic-feed-24.png')}
-                            iconSelected={require('assets/ic-feed-filled-24.png')}
-                            selected={tab === 0}
-                            onPress={() => setTab(0)}
-                        />
-                    )}
+                    <AppBarBottomItem
+                        dot={discoverDone !== null && !discoverDone.betaIsDiscoverDone}
+                        icon={require('assets/ic-discover-24.png')}
+                        iconSelected={require('assets/ic-discover-filled-24.png')}
+                        selected={tab === 0}
+                        onPress={() => setTab(0)}
+                    />
                     <AppBarBottomItem
                         counter={counter && counter.alphaNotificationCounter.unreadCount || undefined}
                         icon={require('assets/ic-message-24.png')}
