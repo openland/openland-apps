@@ -39,7 +39,7 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
     const syncData = React.useRef<{
         title: string,
         content: URichTextAreaValue
-    }>({ title: initial.title, content: [] });
+    }>({ title: initial.title, content: initialParagraph });
     const sync = React.useMemo(() => {
         return new InvalidateSync(async () => {
 
