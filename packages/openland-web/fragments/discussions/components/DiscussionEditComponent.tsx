@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { URickInput } from 'openland-web/components/unicorn/URickInput';
-import { DiscussionSimple, DiscussionContentInput, DiscussionContentType, MessageSpanType } from 'openland-api/spacex.types';
+import { DiscussionSimple } from 'openland-api/spacex.types';
 import { InvalidateSync } from '@openland/patterns';
 import { useClient } from 'openland-api/useClient';
 import { URickTextArea, URichTextAreaValue, URichTextAreaInstance, URichTextSpan } from 'openland-web/components/unicorn/URichTextArea';
@@ -30,7 +30,7 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
         return res;
     }, []);
     const contentRef = React.useRef<URichTextAreaInstance>(null);
-    const client = useClient();
+    // const client = useClient();
 
     // Sync
     const [saving, setSaving] = React.useState(false);

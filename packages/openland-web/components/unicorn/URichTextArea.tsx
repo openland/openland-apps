@@ -241,7 +241,7 @@ export function toExternalValue(ops: QuillType.DeltaOperation[], interactive: { 
             }
             res.push({ type: 'paragraph', text, spans });
         } else if (op.type === 'interactive') {
-            let data = interactive.data.get(op.embedId)!;
+            // let data = interactive.data.get(op.embedId)!;
             let name = interactive.components.get(op.embedId)!;
             if (name === 'image') {
                 res.push({ type: 'image', width: 100, height: 100, id: null });
