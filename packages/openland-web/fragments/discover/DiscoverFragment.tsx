@@ -2,7 +2,6 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
-import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { trackEvent } from 'openland-x-analytics';
