@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as UploadCare from 'uploadcare-widget';
 import { XView } from 'react-mental';
 import { interactiveComponent } from './InteractiveComponent';
 import { XLoader } from 'openland-x/XLoader';

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as UploadCare from 'uploadcare-widget';
 import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import { getQuill } from '../quill/getQuill';
