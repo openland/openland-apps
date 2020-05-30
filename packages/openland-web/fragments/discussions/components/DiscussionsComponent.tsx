@@ -18,7 +18,7 @@ export const DiscussionsComponent = React.memo((props: { hubs: string[] | null }
     const discussions = client.useDiscussions({ hubs: props.hubs || [] }, { fetchPolicy: 'network-only' }).discussions;
     if (discussions.items.length === 0) {
         return (
-            <XView flexGrow={1} flexShrink={1} maxWidth={824} alignItems="stretch" justifyContent="center" flexDirection="column">
+            <XView flexGrow={1} flexShrink={1} alignItems="stretch" alignSelf="stretch" justifyContent="center" flexDirection="column">
                 <XView maxHeight={256} flexGrow={1} flexDirection="row" alignItems="stretch" justifyContent="center">
                     <XView maxWidth={256} flexGrow={1}>
                         <div className={scaleSVG}>
