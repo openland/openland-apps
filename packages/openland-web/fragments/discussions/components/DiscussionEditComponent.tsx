@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { URickInput } from 'openland-web/components/unicorn/URickInput';
-import { DiscussionSimple } from 'openland-api/spacex.types';
+import { DiscussionSimple, DiscussionContentInput, DiscussionContentType, MessageSpanType } from 'openland-api/spacex.types';
 import { InvalidateSync } from '@openland/patterns';
 import { URickTextArea, URichTextAreaValue, URichTextAreaInstance, URichTextSpan } from 'openland-web/components/unicorn/URichTextArea';
+import { useClient } from 'openland-api/useClient';
 
 export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimple }) => {
     const initial = React.useMemo(() => props.data, []);
@@ -21,6 +22,8 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
                     }
                 }
                 res.push({ type: 'paragraph', text: r.text, spans });
+            } else if (r.__typename === 'ImageParagraph') {
+                res.push({ type: 'image', id: r.image.uuid, width: 100, height: 100 });
             } else {
                 throw Error('Unsupported');
             }
@@ -29,7 +32,7 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
         return res;
     }, []);
     const contentRef = React.useRef<URichTextAreaInstance>(null);
-    // const client = useClient();
+    const client = useClient();
 
     // Sync
     const [saving, setSaving] = React.useState(false);
@@ -39,16 +42,40 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
     }>({ title: initial.title, content: [] });
     const sync = React.useMemo(() => {
         return new InvalidateSync(async () => {
+
+            // Check if media is ready
+            for (let c of syncData.current.content) {
+                if (c.type === 'image' && !c.id) {
+                    return;
+                }
+            }
+
+            // Save Draft
             setSaving(true);
-            console.warn(syncData.current.content);
-            // let title = syncData.current.title;
-            // // let content: DiscussionContentInput[] = syncData.current.content.map((v) => ({
-            // //     type: DiscussionContentType.Text,
-            // //     text: v.text,
-            // //     spans: v.spans.map((s) => ({ offset: s.start, length: s.end - s.start, type: s.type === 'bold' ? MessageSpanType.Bold : MessageSpanType.Italic }))
-            // // }));
-            // // console.warn(content);
-            // // await client.mutateDiscussionUpdate({ id: initial.id, title, content });
+            let title = syncData.current.title;
+            let content: DiscussionContentInput[] = [];
+            for (let c of syncData.current.content) {
+                if (c.type === 'paragraph') {
+                    content.push({
+                        type: DiscussionContentType.Text,
+                        text: c.text,
+                        spans: c.spans.map((v) => ({
+                            type: v.type === 'bold' ? MessageSpanType.Bold : (v.type === 'italic' ? MessageSpanType.Italic : MessageSpanType.Bold),
+                            offset: v.start,
+                            length: v.end - v.start
+                        }))
+                    });
+                } else if (c.type === 'image') {
+                    content.push({
+                        type: DiscussionContentType.Image,
+                        image: {
+                            uuid: c.id!
+                        }
+                    });
+                }
+            }
+            console.warn(content);
+            await client.mutateDiscussionUpdate({ id: initial.id, title, content });
             setSaving(false);
         });
     }, []);

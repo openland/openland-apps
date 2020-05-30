@@ -2,7 +2,7 @@ import { toQuillValue, toExternalValue, URichTextAreaValue } from './URichTextAr
 import * as QuillType from 'quill';
 
 function doTestToQuill(src: URichTextAreaValue, ops: QuillType.DeltaOperation[]) {
-    let res = toQuillValue(src);
+    let res = toQuillValue(src, { editorId: '!', data: new Map(), components: new Map() });
     expect(res).toEqual(ops);
 }
 
@@ -12,7 +12,7 @@ function doTestFromQuill(src: URichTextAreaValue, ops: QuillType.DeltaOperation[
 }
 
 function doTest(src: URichTextAreaValue, ops: QuillType.DeltaOperation[]) {
-    let res = toQuillValue(src);
+    let res = toQuillValue(src, { editorId: '!', data: new Map(), components: new Map() });
     expect(res).toEqual(ops);
     let dec = toExternalValue(ops, { data: new Map(), components: new Map() });
     expect(dec).toEqual(src);
@@ -89,6 +89,6 @@ describe('UIRichTextArea', () => {
     });
 
     it('should throw if new line found in paragraph text', () => {
-        expect(() => toQuillValue([{ type: 'paragraph', text: 'sample\ntext', spans: [] }])).toThrowError();
+        expect(() => toQuillValue([{ type: 'paragraph', text: 'sample\ntext', spans: [] }], { editorId: '!', data: new Map(), components: new Map() })).toThrowError();
     });
 });

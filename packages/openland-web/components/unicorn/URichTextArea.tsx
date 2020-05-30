@@ -116,7 +116,7 @@ export type URichTextSpan = { start: number, end: number, type: 'bold' | 'italic
 /**
  * Converting URickTextAreaValue to Qull DeltaOperation
  */
-export function toQuillValue(src: URichTextAreaValue) {
+export function toQuillValue(src: URichTextAreaValue, interactive: { data: Map<string, any>, components: Map<string, string>, editorId: string }) {
     let ops: QuillType.DeltaOperation[] = [];
     for (let p of src) {
         if (p.type === 'paragraph') {
@@ -220,12 +220,26 @@ export function toQuillValue(src: URichTextAreaValue) {
                     }
                 }
             }
+        } else if (p.type === 'image') {
+            if (!p.id) {
+                throw Error('Images should have IDs');
+            }
+            let id = randomKey();
+            interactive.components.set(id, 'image');
+            interactive.data.set(id, {
+                width: p.width,
+                height: p.height,
+                file: { type: 'ready', id: p.id }
+            });
+            ops.push({ insert: { interactive: { editorId: interactive.editorId, embedId: id } } });
+        } else {
+            throw Error('Invalid input');
         }
     }
     return ops;
 }
 
-export function toExternalValue(ops: QuillType.DeltaOperation[], interactive: { data: Map<string, any>, components: Map<string, any> }) {
+export function toExternalValue(ops: QuillType.DeltaOperation[], interactive: { data: Map<string, any>, components: Map<string, string> }) {
     let paragraphs = quillToParagraphs(ops);
     let res: URichTextAreaValue = [];
     for (let op of paragraphs) {
@@ -347,7 +361,7 @@ export const URickTextArea = React.memo(React.forwardRef((props: URichTextAreaPr
         registerRenderer(editorId, renderer);
 
         // Handle content changes
-        q.setContents(new QuillDelta(toQuillValue(props.initialValue)));
+        q.setContents(new QuillDelta(toQuillValue(props.initialValue, { data: interactiveMap, components: interactiveComponentMap, editorId })));
         q.on('editor-change', () => {
             doNotifyContent();
 
