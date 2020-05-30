@@ -27,6 +27,10 @@ const interactiveEmbedStyle = css`
 
 let Quill: typeof QuillType.Quill;
 let QuillDelta: typeof QuillType.Delta;
+let Block: any;
+let Inline: any;
+let Embed: any;
+let BlockEmbed: any;
 
 export function getQuill() {
     if (!Quill) {
@@ -34,10 +38,10 @@ export function getQuill() {
         // Load Quill
         Quill = require('quill') as typeof QuillType.Quill;
         QuillDelta = require('quill-delta') as typeof QuillType.Delta;
-        const Embed = Quill.import('blots/embed');
-        const Inline = Quill.import('blots/inline');
-        const Block = Quill.import('blots/block');
-        const BlockEmbed = Quill.import('blots/block/embed');
+        Embed = Quill.import('blots/embed');
+        Inline = Quill.import('blots/inline');
+        Block = Quill.import('blots/block');
+        BlockEmbed = Quill.import('blots/block/embed');
 
         // Mentions Blot
         class MentionBlot extends Embed {
@@ -122,6 +126,10 @@ export function getQuill() {
 
     return {
         Quill,
-        QuillDelta
+        QuillDelta,
+        Embed,
+        Inline,
+        Block,
+        BlockEmbed
     };
 }

@@ -25,6 +25,29 @@ const quillStyle = css`
         left: 16px;
     }
 
+    .ql-editor h1 {
+        font-size: 28px;
+        font-style: normal;
+        font-weight: 700;
+        margin-bottom: 9px;
+    }
+
+    .ql-editor h2 {
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
+        margin-bottom: 7px;
+    }
+
+    .ql-editor p {
+        font-size: 18px;
+        font-style: normal;
+        line-height: 1.58;
+        font-weight: 400;
+        word-wrap: 'break';
+        margin-bottom: 12px;
+    }
+
     /* copy of quill.snow.css, line 21 */
     /* it seems like quill styles doesn't apply every time */
     /* so we should patch them */
@@ -37,9 +60,50 @@ const quillStyle = css`
     }
 `;
 
-export type URichTextAreaValue = (URichTextParagraph | URichEmbed)[];
+const tooltipStyle = css`
+    height: 44px;
+    background-color: #292927;
+    border-radius: 6px;
+    padding: 9px 12px;
+    flex-direction: row;
+    display: flex;
+    overflow: hidden;
+    transition: opacity .1s ease .06s,transform .1s ease .06s,top .16s cubic-bezier(.29, .09, .24, .99),left .16s cubic-bezier(.29, .09, .24, .99);
+    will-change: transform opacity;
+    position: absolute;
+`;
+
+const tooltipShown = css`
+    opacity: 1;
+`;
+
+const tooltipHidden = css`
+    opacity: 0;
+`;
+
+const sidePopupStyle = css`
+    height: 44px;
+    width: 44px;
+    will-change: transform opacity;
+    position: absolute;
+    background-color: red;
+    transition: opacity .1s ease .06s,transform .1s ease .06s,top .16s cubic-bezier(.29, .09, .24, .99),left .16s cubic-bezier(.29, .09, .24, .99);
+`;
+
+const sidePopupShown = css`
+    opacity: 1;
+`;
+
+const sidePopupHidden = css`
+    opacity: 0;
+`;
+
+export type URichTextAreaValue = (URichTextParagraph | URichImage)[];
 export type URichTextParagraph = { type: 'paragraph', text: string, spans: URichTextSpan[] };
-export type URichEmbed = { type: 'embed', name: string, data: any };
+export type URichImage =
+    | {
+        type: 'image', width: number, height: number, id: string | null
+    };
 export type URichTextSpan = { start: number, end: number, type: 'bold' | 'italic' };
 
 /**
@@ -175,7 +239,11 @@ export function toExternalValue(ops: QuillType.DeltaOperation[], interactive: { 
         } else if (op.type === 'interactive') {
             let data = interactive.data.get(op.embedId)!;
             let name = interactive.components.get(op.embedId)!;
-            res.push({ type: 'embed', name, data });
+            if (name === 'image') {
+                res.push({ type: 'image', width: 100, height: 100, id: null });
+            } else {
+                throw Error('Unknown embed');
+            }
         } else {
             throw Error('Unknown type');
         }
@@ -199,8 +267,12 @@ export const URickTextArea = React.memo(React.forwardRef((props: URichTextAreaPr
     const QuillDelta = lib.QuillDelta;
     let editor = React.useRef<QuillType.Quill>();
     let containerRef = React.useRef<HTMLDivElement>(null);
-    let tooltipRef = React.useRef<HTMLDivElement>(null);
+
     const [popupLocation, setPopupLocation] = React.useState<{ x: number, y: number } | null>(null);
+    const [popupVisible, setPopupVisible] = React.useState<boolean>(false);
+    const [sidePopupLocation, setSidePopupLocation] = React.useState<{ x: number, y: number } | null>(null);
+    const [sidePopupVisible, setSidePopupVisible] = React.useState<boolean>(false);
+
     const interactiveMap = React.useMemo(() => new Map<string, any>(), []);
     const interactiveComponentMap = React.useMemo(() => new Map<string, string>(), []);
     const doNotifyContent = React.useCallback(() => {
@@ -269,15 +341,33 @@ export const URickTextArea = React.memo(React.forwardRef((props: URichTextAreaPr
 
             // Handle selection popup
             let range = q.getSelection();
-            if (range === null || range.length === 0) {
-                setPopupLocation(null);
+            if (range === null) {
+                setPopupVisible(false);
+                setSidePopupVisible(false);
                 return;
             }
-            let rangeBounds = q.getBounds(range.index, range.length);
-            setPopupLocation({
-                y: rangeBounds.top,
-                x: rangeBounds.left + rangeBounds.width / 2
-            });
+
+            // A hacky way to detect if block is empty - BR is possible only in 
+            // empty block.
+            let [block] = (q.scroll as any).descendant(lib.Block, range.index);
+            if (range.length === 0) {
+                setPopupVisible(false);
+                if (block != null && block.domNode.firstChild instanceof HTMLBRElement) {
+                    let lineBounds = q.getBounds(range.index, range.length);
+                    setSidePopupVisible(true);
+                    setSidePopupLocation({ x: lineBounds.left - 15, y: lineBounds.top - 8 });
+                } else {
+                    setSidePopupVisible(false);
+                }
+            } else {
+                let rangeBounds = q.getBounds(range.index, range.length);
+                setPopupLocation({
+                    y: rangeBounds.top,
+                    x: rangeBounds.left + rangeBounds.width / 2
+                });
+                setPopupVisible(true);
+                setSidePopupVisible(false);
+            }
         });
 
         editor.current = q;
@@ -393,61 +483,88 @@ export const URickTextArea = React.memo(React.forwardRef((props: URichTextAreaPr
             </InteraciveComponentStoreContext.Provider>
 
             <div
-                ref={tooltipRef}
+                className={cx(
+                    sidePopupStyle,
+                    sidePopupVisible && sidePopupShown,
+                    !sidePopupVisible && sidePopupHidden
+                )}
+                style={sidePopupLocation ? {
+                    top: sidePopupLocation.y,
+                    left: sidePopupLocation.x - 44
+                } : { display: 'none' }}
+            >
+                {}
+            </div>
+
+            <div
+                className={cx(
+                    tooltipStyle,
+                    popupVisible && tooltipShown,
+                    !popupVisible && tooltipHidden
+                )}
                 style={popupLocation ? {
-                    position: 'absolute',
                     top: popupLocation.y - 44 - 10,
-                    left: popupLocation.x - 5 * 44 / 2,
-                    pointerEvents: 'all'
+                    left: popupLocation.x - 182 / 2
                 } : { display: 'none' }}
             >
                 <XView
-                    height={44}
-                    backgroundColor="#292927"
-                    borderRadius={16}
-                    flexDirection="row"
-                    overflow="hidden"
+                    width={26}
+                    height={26}
+                    alignItems="center"
+                    justifyContent="center"
+                    onClick={onBoldClicked}
+                    color="white"
+                    cursor="pointer"
                 >
-                    <XView
-                        width={44}
-                        height={44}
-                        backgroundColor="red"
-                        onClick={onBoldClicked}
-                    >
-                        B
-                    </XView>
-                    <XView
-                        width={44}
-                        height={44}
-                        backgroundColor="yellow"
-                        onClick={onItalicClicked}
-                    >
-                        I
-                    </XView>
-                    <XView
-                        width={44}
-                        height={44}
-                        backgroundColor="yellow"
-                        onClick={onImageClicked}
-                    >
-                        M
-                    </XView>
-                    <XView
-                        width={44}
-                        height={44}
-                        backgroundColor="yellow"
-                        onClick={onH1Clicked}
-                    >
-                        H1
-                    </XView>
-                    <XView
-                        width={44}
-                        height={44}
-                        backgroundColor="yellow"
-                        onClick={onH2Clicked}
-                    >
-                        H2
-                    </XView>
+                    B
+                </XView>
+                <XView
+                    width={26}
+                    height={26}
+                    marginLeft={7}
+                    alignItems="center"
+                    justifyContent="center"
+                    onClick={onItalicClicked}
+                    color="white"
+                    cursor="pointer"
+                >
+                    I
+                </XView>
+                <XView
+                    width={26}
+                    height={26}
+                    marginLeft={7}
+                    alignItems="center"
+                    justifyContent="center"
+                    onClick={onImageClicked}
+                    color="white"
+                    cursor="pointer"
+                >
+                    M
+                </XView>
+                <XView
+                    width={26}
+                    height={26}
+                    marginLeft={7}
+                    alignItems="center"
+                    justifyContent="center"
+                    onClick={onH1Clicked}
+                    color="white"
+                    cursor="pointer"
+                >
+                    H1
+                </XView>
+                <XView
+                    width={26}
+                    height={26}
+                    marginLeft={7}
+                    alignItems="center"
+                    justifyContent="center"
+                    onClick={onH2Clicked}
+                    color="white"
+                    cursor="pointer"
+                >
+                    H2
                 </XView>
             </div>
         </div>

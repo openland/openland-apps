@@ -66,30 +66,32 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
     }, []);
 
     return (
-        <XView>
-            <XView>{saving ? 'Saving...' : 'Saved'}</XView>
-            <XView>
-                <URickInput
-                    onPressEnter={async () => {
-                        contentRef!.current!.focus();
-                        return false;
-                    }}
-                    onPressTab={async () => {
-                        contentRef!.current!.focus();
-                        return false;
-                    }}
-                    initialContent={[initial.title]}
-                    onTextChange={onTitleChange}
-                    hideEmoji={true}
-                    placeholder="Title"
+        <XView flexDirection="row" alignItems="flex-start" justifyContent="center" paddingRight={56}>
+            <XView flexGrow={1} flexShrink={1} maxWidth={824} paddingHorizontal={16}>
+                <XView>{saving ? 'Saving...' : 'Saved'}</XView>
+                <XView>
+                    <URickInput
+                        onPressEnter={async () => {
+                            contentRef!.current!.focus();
+                            return false;
+                        }}
+                        onPressTab={async () => {
+                            contentRef!.current!.focus();
+                            return false;
+                        }}
+                        initialContent={[initial.title]}
+                        onTextChange={onTitleChange}
+                        hideEmoji={true}
+                        placeholder="Title"
+                    />
+                </XView>
+                <URickTextArea
+                    ref={contentRef}
+                    initialValue={initialParagraph}
+                    onValueChange={onContentChange}
+                    placeholder="Your story..."
                 />
             </XView>
-            <URickTextArea
-                ref={contentRef}
-                initialValue={initialParagraph}
-                onValueChange={onContentChange}
-                placeholder="Your story..."
-            />
         </XView>
     );
 });
