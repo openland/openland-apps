@@ -22,7 +22,6 @@ const emojiStyle = css`
 
 const interactiveEmbedStyle = css`
     width: 100%;
-    background-color: red;
 `;
 
 let Quill: typeof QuillType.Quill;

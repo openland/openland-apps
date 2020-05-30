@@ -1,12 +1,16 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import * as UploadCare from 'uploadcare-widget';
+import { XView } from 'react-mental';
+import { css, cx } from 'linaria';
 import { getQuill } from '../quill/getQuill';
 import * as QuillType from 'quill';
-import { css, cx } from 'linaria';
-import { XView } from 'react-mental';
 import { quillToParagraphs } from '../quill/quillConverters';
 import { randomKey } from 'openland-y-utils/randomKey';
 import { InteractiveRenderer, registerRenderer, unregisterRenderer, InteractiveComponentStore, InteraciveComponentStoreContext, registeredComponents } from '../quill/InteractiveComponent';
+import { InteractiveImageComponentState } from '../quill/InteractiveImageComponent';
+import { showPickImage } from 'openland-web/modules/picker/showPickImage';
+import { UploadCareUploading } from 'openland-web/utils/UploadCareUploading';
 
 const quillStyle = css`
     flex-grow: 1;
@@ -23,6 +27,7 @@ const quillStyle = css`
         color: var(--foregroundTertiary);
         font-style: normal;
         left: 16px;
+        font-size: 18px;
     }
 
     .ql-editor h1 {
@@ -88,7 +93,6 @@ const sidePopupStyle = css`
     width: 44px;
     will-change: transform opacity;
     position: absolute;
-    background-color: red;
     transition: opacity .1s ease .06s,transform .1s ease .06s,top .16s cubic-bezier(.29, .09, .24, .99),left .16s cubic-bezier(.29, .09, .24, .99);
 `;
 
@@ -241,10 +245,15 @@ export function toExternalValue(ops: QuillType.DeltaOperation[], interactive: { 
             }
             res.push({ type: 'paragraph', text, spans });
         } else if (op.type === 'interactive') {
-            // let data = interactive.data.get(op.embedId)!;
+            let data = interactive.data.get(op.embedId)!;
             let name = interactive.components.get(op.embedId)!;
             if (name === 'image') {
-                res.push({ type: 'image', width: 100, height: 100, id: null });
+                let d = data as InteractiveImageComponentState;
+                let id: string | null = null;
+                if (d.file.type === 'ready') {
+                    id = d.file.id;
+                }
+                res.push({ type: 'image', width: d.width, height: d.height, id });
             } else {
                 throw Error('Unknown embed');
             }
@@ -406,7 +415,14 @@ export const URickTextArea = React.memo(React.forwardRef((props: URichTextAreaPr
     }));
 
     const onImageClicked = React.useCallback(() => {
-        addInteractiveEmbed('image', {});
+        showPickImage((picked) => {
+            let upload = new UploadCareUploading(picked.file);
+            addInteractiveEmbed('image', {
+                file: { type: 'pending', upload, file: picked.file },
+                width: picked.width,
+                height: picked.height
+            });
+        });
     }, []);
 
     const onBoldClicked = React.useCallback(() => {
@@ -497,7 +513,13 @@ export const URickTextArea = React.memo(React.forwardRef((props: URichTextAreaPr
                     left: sidePopupLocation.x - 44
                 } : { display: 'none' }}
             >
-                {}
+                <XView
+                    width={44}
+                    height={44}
+                    onClick={onImageClicked}
+                    backgroundColor="grey"
+                    borderRadius={22}
+                />
             </div>
 
             <div
@@ -508,7 +530,7 @@ export const URickTextArea = React.memo(React.forwardRef((props: URichTextAreaPr
                 )}
                 style={popupLocation ? {
                     top: popupLocation.y - 44 - 10,
-                    left: popupLocation.x - 182 / 2
+                    left: popupLocation.x - 149 / 2
                 } : { display: 'none' }}
             >
                 <XView
@@ -533,18 +555,6 @@ export const URickTextArea = React.memo(React.forwardRef((props: URichTextAreaPr
                     cursor="pointer"
                 >
                     I
-                </XView>
-                <XView
-                    width={26}
-                    height={26}
-                    marginLeft={7}
-                    alignItems="center"
-                    justifyContent="center"
-                    onClick={onImageClicked}
-                    color="white"
-                    cursor="pointer"
-                >
-                    M
                 </XView>
                 <XView
                     width={26}
