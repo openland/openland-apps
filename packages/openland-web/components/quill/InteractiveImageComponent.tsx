@@ -44,7 +44,7 @@ export const InteractiveImageComponent = interactiveComponent<InteractiveImageCo
             )}
             {props.value.file.type === 'ready' && (
                 <XView width={layoutModal.width} height={layoutModal.height}>
-                    <XCloudImage photoRef={{ uuid: props.value.file.id }} />
+                    <XCloudImage photoRef={{ uuid: props.value.file.id }} width={layoutModal.width} height={layoutModal.height} resize="fill" />
                 </XView>
             )}
         </XView>
