@@ -75,10 +75,12 @@ const tooltipStyle = css`
 
 const tooltipShown = css`
     opacity: 1;
+    pointer-events: all;
 `;
 
 const tooltipHidden = css`
     opacity: 0;
+    pointer-events: none;
 `;
 
 const sidePopupStyle = css`
@@ -92,10 +94,12 @@ const sidePopupStyle = css`
 
 const sidePopupShown = css`
     opacity: 1;
+    pointer-events: all;
 `;
 
 const sidePopupHidden = css`
     opacity: 0;
+    pointer-events: none;
 `;
 
 export type URichTextAreaValue = (URichTextParagraph | URichImage)[];
