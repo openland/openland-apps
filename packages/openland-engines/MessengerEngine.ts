@@ -52,6 +52,7 @@ export class MessengerEngine {
     private onlineWatcher: OnlineWatcher;
 
     constructor(client: OpenlandClient, user: UserShort, platform: string, options?: Partial<EngineOptions>) {
+        console.log('------------ MessengerEngine initialized ----------');
         this.options = {
             conversationBatchSize: options && options.conversationBatchSize ? options.conversationBatchSize : 15,
             feedBatchSize: options && options.feedBatchSize ? options.feedBatchSize : 15,

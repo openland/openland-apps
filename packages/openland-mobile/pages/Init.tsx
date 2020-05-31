@@ -291,6 +291,11 @@ export class Init extends React.Component<
                             AppConfig.setNonProduction(NON_PRODUCTION);
                             AppConfig.setSuperAdmin(SUPER_ADMIN);
 
+                            if (!res.sessionState.isCompleted) {
+                                this.setState({ state: 'signup' });
+                                return;
+                            }
+
                             let messenger = buildMessenger(getClient(), res.me, {
                                 store: new NativeKeyValue('engines'),
                             });

@@ -33,7 +33,7 @@ export const AppContainer = (props: { children: any }) => {
         return <UnicornSplash />;
     }
 
-    let hasMessenger = canUseDOM && !!data.me;
+    let hasMessenger = canUseDOM && !!data.me && !!data.sessionState.isCompleted;
     return (
         <>
             <PushEngineComponent enable={hasMessenger} />
