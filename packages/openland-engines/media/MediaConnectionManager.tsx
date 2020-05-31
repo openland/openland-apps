@@ -589,19 +589,7 @@ export class MediaConnectionManager {
     private attachSessionReceivers = (config: ConferenceMedia_conferenceMedia_streams) => {
         for (let [peerId, receivers] of this.receivers.entries()) {
             for (let [kind, receiver] of receivers.entries()) {
-                let enabled = false;
-                if (kind === 'audio') {
-                    enabled = !!config.receivers.find(r => r.peerId === peerId && r.kind === MediaKind.AUDIO);
-                } else if (kind === 'video') {
-                    enabled = !!config.receivers.find((r) => r.peerId === peerId && r.kind === MediaKind.VIDEO && (
-                        r.videoSource === null || r.videoSource === VideoSource.CAMERA
-                    ));
-                } else if (kind === 'screencast') {
-                    enabled = !!config.receivers.find((r) => r.peerId === peerId && r.kind === MediaKind.VIDEO &&
-                        r.videoSource === VideoSource.SCREEN
-                    );
-                }
-                this.session.attachPeerReceiver(peerId, kind, enabled ? receiver.receiver.track : null);
+                this.session.attachPeerReceiver(peerId, kind, receiver.receiver.track);
             }
         }
     }

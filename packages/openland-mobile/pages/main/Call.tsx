@@ -27,6 +27,7 @@ import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { showCallControls } from './components/conference/CallControls';
 import { Space } from './Space';
+import { useTrackUnmuted } from 'openland-y-utils/calls/useTrackUnmuted';
 
 const PeerInfoGradient = (props: { children: any }) => {
     let theme = React.useContext(ThemeContext);
@@ -112,26 +113,25 @@ export interface PeerMedia {
 interface VideoViewProps extends PeerMedia {
     peer: Conference_conference_peers;
     mirror?: boolean;
+    isLocal?: boolean;
     theme: ThemeGlobal;
     isLast: boolean;
 }
 
 const VideoView = React.memo((props: VideoViewProps) => {
     const area = React.useContext(ASSafeAreaContext);
-    // @ts-ignore
-    const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
 
-    let track = props.screencastTrack ? props.screencastTrack : props.videoTrack;
-    let stream = React.useMemo(() => track && new MediaStream([(track as AppUserMediaStreamTrackNative).track]), [track]);
+    let audioTrack = useTrackUnmuted(props.audioTrack);
+    let videoTrack = useTrackUnmuted(props.screencastTrack ? props.screencastTrack : props.videoTrack);
+    let stream = React.useMemo(() => videoTrack && new MediaStream([(videoTrack as AppUserMediaStreamTrackNative).track]), [videoTrack]);
 
     const iconColor = props.theme.foregroundContrast;
-    // @ts-ignore
     const iconByStatus = {
         loading: <LoaderSpinner size="small" color={iconColor} />,
         muted: <Image source={require('assets/ic-muted-bold-16.png')} style={{ tintColor: iconColor }} />,
         speaking: <Image source={require('assets/ic-speaking-bold-16.png')} style={{ tintColor: iconColor }} />,
     };
-    let icon = null;
+    let icon = (!props.isLocal && !audioTrack) ? iconByStatus.loading : null;
     let InfoWrapper = stream ? PeerInfoGradient : React.Fragment;
 
     let infoPaddingBottom = props.isLast ? Math.max(area.bottom, 30) : 14;
@@ -279,6 +279,7 @@ let Content = XMemo<{ id: string, speaker: boolean, setSpeaker: (fn: (s: boolean
                                 peer={p}
                                 {...media}
                                 mirror={isLocal && !flipped}
+                                isLocal={isLocal}
                                 theme={theme}
                                 isLast={peerIndex === s.length - 1}
                             />;
@@ -286,7 +287,7 @@ let Content = XMemo<{ id: string, speaker: boolean, setSpeaker: (fn: (s: boolean
                         })}
                     </View>
                 )}
-                {mode === 'space' &&  <Space mediaSession={mediaSession!} peers={conference?.conference.peers || []} />}
+                {mode === 'space' && <Space mediaSession={mediaSession!} peers={conference?.conference.peers || []} />}
             </View>
             <View
                 position="absolute"

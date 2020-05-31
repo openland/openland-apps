@@ -10,10 +10,11 @@ import { UAvatar, getPlaceholderColorById } from 'openland-web/components/unicor
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
 import SpeakerIcon from 'openland-icons/s/ic-speaking-bold-16.svg';
 // import MutedIcon from 'openland-icons/s/ic-muted-bold-16.svg';
-// import { SvgLoader } from 'openland-x/XLoader';
+import { SvgLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
+import { useTrackUnmuted } from 'openland-y-utils/calls/useTrackUnmuted';
 
 const animatedAvatarStyle = css`
     position: absolute;
@@ -111,8 +112,9 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     // @ts-ignore
     // const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
 
+    let unmutedAudioTrack = useTrackUnmuted(props.audioTrack);
     const talking = props.analyzer.usePeer(props.peer.id);
-    const icon = (talking && props.audioTrack) ? <SpeakerIcon /> : null;
+    const icon = (talking && unmutedAudioTrack) ? <SpeakerIcon /> : (!unmutedAudioTrack && !props.isLocal) ? <SvgLoader size="small" contrast={true} /> : null;
 
     // const icon = props.callState.status !== 'connected' ? <SvgLoader size="small" contrast={true} />
     //     : talking ? <SpeakerIcon />
@@ -122,8 +124,8 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     const bgSrc = props.peer.user.photo ? props.peer.user.photo : undefined;
     const bgColor = !props.peer.user.photo ? getPlaceholderColorById(props.peer.user.id) : undefined;
 
-    let mainStreamWeb = props.screencastTrack || props.videoTrack;
-    let miniStreamWeb = props.screencastTrack ? props.videoTrack : undefined;
+    let mainStreamWeb = useTrackUnmuted(props.screencastTrack || props.videoTrack);
+    let miniStreamWeb = useTrackUnmuted(props.screencastTrack ? props.videoTrack : null);
     const [modalOpen, setModalOpen] = React.useState(false);
     const onClick = React.useCallback(() => setModalOpen(true), []);
     const closeModal = React.useCallback(() => setModalOpen(false), []);
