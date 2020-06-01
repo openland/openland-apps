@@ -32,7 +32,6 @@ import { emoji } from 'openland-y-utils/emoji';
 import { useLastSeen } from 'openland-y-utils/LastSeen';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
-import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 import { useVideoCallModal } from 'openland-web/modules/conference/CallModal';
 
 const secondary = css`
@@ -174,7 +173,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     });
 
     if (chat.__typename === 'SharedRoom') {
-        if (chat.role === 'OWNER' || chat.role === 'ADMIN' || AppConfig.isSuperAdmin()) {
+        if (chat.canEdit) {
             res.item({
                 title: chat.isChannel ? 'Manage channel' : 'Manage group',
                 icon: <SettingsIcon />,
