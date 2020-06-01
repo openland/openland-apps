@@ -69,8 +69,8 @@ const bgAvatarImg = css`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: blur(32px);
-    transform: scale(1.1);
+    filter: blur(24px);
+    transform: scale(1.4);
 `;
 
 const bgAvatarGradient = css`
