@@ -41,6 +41,7 @@ const SettingsProfilePhoneComponent = React.memo((props: PageProps) => {
                 sessionId: sessionState,
                 confirmationCode: validCode,
             });
+            await client.refetchAuthPoints();
             await client.refetchProfile();
             loader.hide();
             props.router.back();

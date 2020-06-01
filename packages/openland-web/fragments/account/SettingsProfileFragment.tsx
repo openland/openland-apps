@@ -54,6 +54,7 @@ const PairPhoneModalContent = React.memo((props: { phone: string; hide: () => vo
                 confirmationCode: validCode
             });
             await client.refetchProfile();
+            await client.refetchAuthPoints();
             setLoading(false);
             props.hide();
         }

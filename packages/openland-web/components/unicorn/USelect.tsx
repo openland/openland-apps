@@ -323,13 +323,18 @@ export const USelect = React.memo(
         const onInputChangeHandler = (v: string, params: InputActionMeta) => {
             if (params.action === 'input-change') {
                 setInputValue(v);
-            } else if (params.action === 'set-value') {
-                setInputValue('');
-            }
-            if (onInputChange) {
-                onInputChange(v);
+                if (onInputChange) {
+                    onInputChange(v);
+                }
             }
         };
+
+        React.useLayoutEffect(() => {
+            setInputValue('');
+            if (onInputChange) {
+                onInputChange('');
+            }
+        }, [value]);
 
         return (
             <XView {...xViewProps}>
