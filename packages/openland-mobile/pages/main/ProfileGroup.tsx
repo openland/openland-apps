@@ -249,7 +249,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
 
         builder.action('Shared media', onSharedPress, false, require('assets/ic-attach-24.png'));
 
-        if (room.role === 'OWNER' || room.role === 'ADMIN' || SUPER_ADMIN) {
+        if (room.canEdit) {
             builder.action(
                 room.isChannel ? 'Manage channel' : 'Manage group',
                 () => props.router.push('EditGroup', { id: room.id }),

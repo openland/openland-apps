@@ -7,7 +7,6 @@ import { SRouter } from 'react-native-s/SRouter';
 import { RoomTiny_room, RoomMemberRole, RoomTiny_room_SharedRoom } from 'openland-api/spacex.types';
 import Alert from 'openland-mobile/components/AlertBlanket';
 import { useClient } from 'openland-api/useClient';
-import { SUPER_ADMIN } from '../../Init';
 
 interface ConversationManageButtonProps {
     muted: boolean;
@@ -110,11 +109,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         builder.action('Shared media', onSharedPress, false, require('assets/ic-attach-24.png'));
 
         if (!isPrivate) {
-            if (
-                ((room as RoomTiny_room_SharedRoom).role === 'OWNER') ||
-                (room as RoomTiny_room_SharedRoom).role === 'ADMIN' ||
-                SUPER_ADMIN
-            ) {
+            if ((room as RoomTiny_room_SharedRoom).canEdit) {
                 builder.action(
                     (room as RoomTiny_room_SharedRoom).isChannel ? 'Manage channel' : 'Manage group',
                     () => props.router.push('EditGroup', { id: room.id }),

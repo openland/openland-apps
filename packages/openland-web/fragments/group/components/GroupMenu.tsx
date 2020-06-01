@@ -12,7 +12,6 @@ import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { useClient } from 'openland-api/useClient';
-import { AppConfig } from 'openland-y-runtime-web/AppConfig';
 
 interface GroupMenu {
     group: RoomChat_room_SharedRoom;
@@ -22,7 +21,7 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
     const tabRouter = useTabRouter();
     const client = useClient();
     const { ctx, group } = props;
-    const { id, role, isChannel } = group;
+    const { id, isChannel, canEdit } = group;
     const typeString = isChannel ? 'channel' : 'group';
     const builder = new UPopperMenuBuilder();
 
@@ -32,7 +31,7 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
         onClick: () => tabRouter.router.navigate(`/mail/${props.group.id}/shared`),
     });
 
-    if (role === 'OWNER' || role === 'ADMIN' || AppConfig.isSuperAdmin()) {
+    if (canEdit) {
         builder.item({
             title: isChannel ? 'Manage channel' : 'Manage group',
             icon: <SettingsIcon />,
