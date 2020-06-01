@@ -1107,11 +1107,79 @@ const ParagraphSimpleSelector = obj(
             )),
             inline('ImageParagraph', obj(
                 field('__typename', '__typename', args(), notNull(scalar('String'))),
+                field('url', 'url', args(), notNull(scalar('String'))),
                 field('image', 'image', args(), notNull(obj(
                         field('__typename', '__typename', args(), notNull(scalar('String'))),
                         field('uuid', 'uuid', args(), notNull(scalar('String')))
+                    ))),
+                field('fileMetadata', 'fileMetadata', args(), notNull(obj(
+                        field('__typename', '__typename', args(), notNull(scalar('String'))),
+                        field('isImage', 'isImage', args(), notNull(scalar('Boolean'))),
+                        field('imageWidth', 'imageWidth', args(), scalar('Int')),
+                        field('imageHeight', 'imageHeight', args(), scalar('Int')),
+                        field('imageFormat', 'imageFormat', args(), scalar('String'))
                     )))
+            )),
+            inline('H1Paragraph', obj(
+                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                field('text', 'text', args(), notNull(scalar('String')))
+            )),
+            inline('H2Paragraph', obj(
+                field('__typename', '__typename', args(), notNull(scalar('String'))),
+                field('text', 'text', args(), notNull(scalar('String')))
             ))
+        );
+
+const DiscussionDraftSimpleSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('title', 'title', args(), notNull(scalar('String'))),
+            field('content', 'content', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('Paragraph', ParagraphSimpleSelector)
+                ))))),
+            field('publishedCopy', 'publishedCopy', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID')))
+                )),
+            field('hub', 'hub', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('title', 'title', args(), notNull(scalar('String'))),
+                    field('shortname', 'shortname', args(), notNull(scalar('String')))
+                )),
+            field('createdAt', 'createdAt', args(), notNull(scalar('Date'))),
+            field('updatedAt', 'updatedAt', args(), scalar('Date')),
+            field('deletedAt', 'deletedAt', args(), scalar('Date'))
+        );
+
+const DiscussionSimpleSelector = obj(
+            field('__typename', '__typename', args(), notNull(scalar('String'))),
+            field('id', 'id', args(), notNull(scalar('ID'))),
+            field('title', 'title', args(), notNull(scalar('String'))),
+            field('content', 'content', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('Paragraph', ParagraphSimpleSelector)
+                ))))),
+            field('hub', 'hub', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('title', 'title', args(), notNull(scalar('String'))),
+                    field('shortname', 'shortname', args(), notNull(scalar('String')))
+                )),
+            field('author', 'author', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID'))),
+                    field('name', 'name', args(), notNull(scalar('String')))
+                )),
+            field('draft', 'draft', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('id', 'id', args(), notNull(scalar('ID')))
+                )),
+            field('canEdit', 'canEdit', args(), notNull(scalar('Boolean'))),
+            field('createdAt', 'createdAt', args(), notNull(scalar('Date'))),
+            field('updatedAt', 'updatedAt', args(), scalar('Date')),
+            field('deletedAt', 'deletedAt', args(), scalar('Date'))
         );
 
 const HubSimpleSelector = obj(
@@ -1126,182 +1194,6 @@ const HubSimpleSelector = obj(
                     field('firstName', 'firstName', args(), notNull(scalar('String'))),
                     field('lastName', 'lastName', args(), scalar('String'))
                 ))
-        );
-
-const DiscussionSimpleSelector = obj(
-            field('__typename', '__typename', args(), notNull(scalar('String'))),
-            field('id', 'id', args(), notNull(scalar('ID'))),
-            field('title', 'title', args(), notNull(scalar('String'))),
-            field('content', 'content', args(), notNull(list(notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('Paragraph', ParagraphSimpleSelector)
-                ))))),
-            field('hub', 'hub', args(), obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('Hub', HubSimpleSelector)
-                )),
-            field('author', 'author', args(), obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('id', 'id', args(), notNull(scalar('ID'))),
-                    field('name', 'name', args(), notNull(scalar('String')))
-                )),
-            field('createdAt', 'createdAt', args(), notNull(scalar('Date')))
-        );
-
-const FeedChannelFullSelector = obj(
-            field('__typename', '__typename', args(), notNull(scalar('String'))),
-            field('id', 'id', args(), notNull(scalar('ID'))),
-            field('title', 'title', args(), notNull(scalar('String'))),
-            field('about', 'about', args(), scalar('String')),
-            field('photo', 'photo', args(), scalar('String')),
-            field('subscribed', 'subscribed', args(), notNull(scalar('Boolean'))),
-            field('myRole', 'myRole', args(), notNull(scalar('String'))),
-            field('subscribersCount', 'subscribersCount', args(), notNull(scalar('Int'))),
-            field('shortname', 'shortname', args(), scalar('String')),
-            field('isGlobal', 'isGlobal', args(), notNull(scalar('Boolean'))),
-            field('socialImage', 'socialImage', args(), scalar('String')),
-            field('postsCount', 'postsCount', args(), notNull(scalar('Int')))
-        );
-
-const FeedPostAuthorFragmentSelector = obj(
-            field('__typename', '__typename', args(), notNull(scalar('String'))),
-            inline('User', obj(
-                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                fragment('User', UserShortSelector)
-            ))
-        );
-
-const FeedPostSourceFragmentSelector = obj(
-            field('__typename', '__typename', args(), notNull(scalar('String'))),
-            inline('FeedChannel', obj(
-                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                fragment('FeedChannel', FeedChannelFullSelector)
-            ))
-        );
-
-const SlideFragmentSelector = obj(
-            field('__typename', '__typename', args(), notNull(scalar('String'))),
-            inline('TextSlide', obj(
-                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                field('id', 'id', args(), notNull(scalar('ID'))),
-                field('text', 'text', args(), notNull(scalar('String'))),
-                field('spans', 'spans', args(), notNull(list(notNull(obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        fragment('MessageSpan', SpanFragmentSelector)
-                    ))))),
-                field('cover', 'cover', args(), obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        field('url', 'url', args(), notNull(scalar('String'))),
-                        field('metadata', 'metadata', args(), obj(
-                                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                field('name', 'name', args(), notNull(scalar('String'))),
-                                field('mimeType', 'mimeType', args(), scalar('String')),
-                                field('size', 'size', args(), notNull(scalar('Int'))),
-                                field('isImage', 'isImage', args(), notNull(scalar('Boolean'))),
-                                field('imageWidth', 'imageWidth', args(), scalar('Int')),
-                                field('imageHeight', 'imageHeight', args(), scalar('Int')),
-                                field('imageFormat', 'imageFormat', args(), scalar('String'))
-                            ))
-                    )),
-                field('coverAlign', 'coverAlign', args(), scalar('String')),
-                field('attachments', 'attachments', args(), notNull(list(notNull(obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        inline('User', obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            fragment('User', UserShortSelector)
-                        )),
-                        inline('SharedRoom', obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('id', 'id', args(), notNull(scalar('ID'))),
-                            field('kind', 'kind', args(), notNull(scalar('String'))),
-                            field('title', 'title', args(), notNull(scalar('String'))),
-                            field('photo', 'roomPhoto', args(), notNull(scalar('String'))),
-                            field('membersCount', 'membersCount', args(), notNull(scalar('Int'))),
-                            field('membership', 'membership', args(), notNull(scalar('String'))),
-                            field('canSendMessage', 'canSendMessage', args(), notNull(scalar('Boolean'))),
-                            field('organization', 'organization', args(), obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    field('id', 'id', args(), notNull(scalar('ID'))),
-                                    field('name', 'name', args(), notNull(scalar('String'))),
-                                    field('photo', 'photo', args(), scalar('String'))
-                                ))
-                        )),
-                        inline('Organization', obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            fragment('Organization', OrganizationShortSelector)
-                        ))
-                    )))))
-            ))
-        );
-
-const FeedItemFullSelector = obj(
-            field('__typename', '__typename', args(), notNull(scalar('String'))),
-            inline('FeedPost', obj(
-                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                field('id', 'id', args(), notNull(scalar('ID'))),
-                field('date', 'date', args(), notNull(scalar('Date'))),
-                field('author', 'author', args(), notNull(obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        fragment('FeedPostAuthor', FeedPostAuthorFragmentSelector)
-                    ))),
-                field('source', 'source', args(), obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        fragment('FeedPostSource', FeedPostSourceFragmentSelector)
-                    )),
-                field('edited', 'edited', args(), notNull(scalar('Boolean'))),
-                field('canEdit', 'canEdit', args(), notNull(scalar('Boolean'))),
-                field('commentsCount', 'commentsCount', args(), notNull(scalar('Int'))),
-                field('message', 'message', args(), scalar('String')),
-                field('fallback', 'fallback', args(), notNull(scalar('String'))),
-                field('reactions', 'reactions', args(), notNull(list(notNull(obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        field('user', 'user', args(), notNull(obj(
-                                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                fragment('User', UserShortSelector)
-                            ))),
-                        field('reaction', 'reaction', args(), notNull(scalar('String')))
-                    ))))),
-                field('slides', 'slides', args(), notNull(list(notNull(obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        fragment('Slide', SlideFragmentSelector)
-                    )))))
-            ))
-        );
-
-const FeedUpdateFragmentSelector = obj(
-            field('__typename', '__typename', args(), notNull(scalar('String'))),
-            inline('FeedItemReceived', obj(
-                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                field('item', 'item', args(), notNull(obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        fragment('FeedItem', FeedItemFullSelector)
-                    )))
-            )),
-            inline('FeedItemUpdated', obj(
-                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                field('item', 'item', args(), notNull(obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        fragment('FeedItem', FeedItemFullSelector)
-                    )))
-            )),
-            inline('FeedItemDeleted', obj(
-                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                field('item', 'item', args(), notNull(obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        fragment('FeedItem', FeedItemFullSelector)
-                    )))
-            )),
-            inline('FeedRebuildNeeded', obj(
-                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                field('homeFeed', 'feed', args(), notNull(obj(
-                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                        field('items', 'items', args(), notNull(list(notNull(obj(
-                                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                fragment('FeedItem', FeedItemFullSelector)
-                            ))))),
-                        field('cursor', 'cursor', args(), scalar('String'))
-                    )))
-            ))
         );
 
 const MediaStreamFullSelector = obj(
@@ -1368,13 +1260,6 @@ const NotificationFragmentSelector = obj(
                                             field('chat', 'chat', args(), notNull(obj(
                                                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                                                     fragment('Room', RoomNanoSelector)
-                                                )))
-                                        )),
-                                        inline('CommentPeerRootFeedItem', obj(
-                                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                            field('item', 'item', args(), notNull(obj(
-                                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                                    fragment('FeedItem', FeedItemFullSelector)
                                                 )))
                                         )),
                                         inline('CommentPeerRootDiscussion', obj(
@@ -1473,13 +1358,6 @@ const NotificationCenterUpdateFragmentSelector = obj(
                                                 field('chat', 'chat', args(), notNull(obj(
                                                         field('__typename', '__typename', args(), notNull(scalar('String'))),
                                                         fragment('Room', RoomNanoSelector)
-                                                    )))
-                                            )),
-                                            inline('CommentPeerRootFeedItem', obj(
-                                                field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                                field('item', 'item', args(), notNull(obj(
-                                                        field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                                        fragment('FeedItem', FeedItemFullSelector)
                                                     )))
                                             )),
                                             inline('CommentPeerRootDiscussion', obj(
@@ -2745,10 +2623,10 @@ const DiscoverTopPremiumSelector = obj(
                     field('cursor', 'cursor', args(), scalar('String'))
                 )))
         );
-const DiscussionSelector = obj(
-            field('discussion', 'discussion', args(fieldValue("id", refValue('id'))), obj(
+const DiscussionDraftSelector = obj(
+            field('discussionDraft', 'discussionDraft', args(fieldValue("id", refValue('id'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('Discussion', DiscussionSimpleSelector)
+                    fragment('DiscussionDraft', DiscussionDraftSimpleSelector)
                 ))
         );
 const DiscussionDraftsSelector = obj(
@@ -2756,7 +2634,7 @@ const DiscussionDraftsSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     field('items', 'items', args(), notNull(list(notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            fragment('Discussion', DiscussionSimpleSelector)
+                            fragment('DiscussionDraft', DiscussionDraftSimpleSelector)
                         ))))),
                     field('cursor', 'cursor', args(), scalar('String'))
                 )))
@@ -2845,142 +2723,6 @@ const FeatureFlagsSelector = obj(
                     field('title', 'title', args(), notNull(scalar('String')))
                 )))))
         );
-const FeedChannelSelector = obj(
-            field('alphaFeedChannel', 'channel', args(fieldValue("id", refValue('id'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('FeedChannel', FeedChannelFullSelector)
-                )))
-        );
-const FeedChannelContentSelector = obj(
-            field('alphaFeedChannelContent', 'content', args(fieldValue("id", refValue('id')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('items', 'items', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            fragment('FeedItem', FeedItemFullSelector)
-                        ))))),
-                    field('cursor', 'cursor', args(), scalar('String'))
-                )))
-        );
-const FeedChannelSubscribersSelector = obj(
-            field('alphaFeedChannelSubscribers', 'subscribers', args(fieldValue("channelId", refValue('channelId')), fieldValue("query", refValue('query')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('edges', 'edges', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('node', 'node', args(), notNull(obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    field('user', 'user', args(), notNull(obj(
-                                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                            fragment('User', UserShortSelector)
-                                        ))),
-                                    field('role', 'role', args(), notNull(scalar('String')))
-                                ))),
-                            field('cursor', 'cursor', args(), notNull(scalar('String')))
-                        ))))),
-                    field('pageInfo', 'pageInfo', args(), notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('hasNextPage', 'hasNextPage', args(), notNull(scalar('Boolean'))),
-                            field('hasPreviousPage', 'hasPreviousPage', args(), notNull(scalar('Boolean'))),
-                            field('itemsCount', 'itemsCount', args(), notNull(scalar('Int'))),
-                            field('pagesCount', 'pagesCount', args(), notNull(scalar('Int'))),
-                            field('currentPage', 'currentPage', args(), notNull(scalar('Int'))),
-                            field('openEnded', 'openEnded', args(), notNull(scalar('Boolean')))
-                        )))
-                )))
-        );
-const FeedChannelWritersSelector = obj(
-            field('alphaFeedChannelAdmins', 'writers', args(fieldValue("id", refValue('id')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('items', 'items', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('user', 'user', args(), notNull(obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    fragment('User', UserShortSelector)
-                                ))),
-                            field('role', 'role', args(), notNull(scalar('String')))
-                        ))))),
-                    field('cursor', 'cursor', args(), scalar('String'))
-                )))
-        );
-const FeedChannelsSearchSelector = obj(
-            field('alphaFeedChannelSearch', 'search', args(fieldValue("query", refValue('query')), fieldValue("sort", refValue('sort')), fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('edges', 'edges', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('node', 'node', args(), notNull(obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    fragment('FeedChannel', FeedChannelFullSelector)
-                                ))),
-                            field('cursor', 'cursor', args(), notNull(scalar('String')))
-                        ))))),
-                    field('pageInfo', 'pageInfo', args(), notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('hasNextPage', 'hasNextPage', args(), notNull(scalar('Boolean'))),
-                            field('hasPreviousPage', 'hasPreviousPage', args(), notNull(scalar('Boolean'))),
-                            field('itemsCount', 'itemsCount', args(), notNull(scalar('Int'))),
-                            field('pagesCount', 'pagesCount', args(), notNull(scalar('Int'))),
-                            field('currentPage', 'currentPage', args(), notNull(scalar('Int'))),
-                            field('openEnded', 'openEnded', args(), notNull(scalar('Boolean')))
-                        )))
-                )))
-        );
-const FeedItemSelector = obj(
-            field('alphaFeedItem', 'item', args(fieldValue("id", refValue('id'))), obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('FeedItem', FeedItemFullSelector)
-                ))
-        );
-const FeedLoadMoreSelector = obj(
-            field('alphaHomeFeed', 'feed', args(fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('items', 'items', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            fragment('FeedItem', FeedItemFullSelector)
-                        ))))),
-                    field('cursor', 'cursor', args(), scalar('String'))
-                )))
-        );
-const FeedRecommendedChannelsSelector = obj(
-            field('alphaRecommendedChannels', 'search', args(fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('edges', 'edges', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('node', 'node', args(), notNull(obj(
-                                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                                    fragment('FeedChannel', FeedChannelFullSelector)
-                                ))),
-                            field('cursor', 'cursor', args(), notNull(scalar('String')))
-                        ))))),
-                    field('pageInfo', 'pageInfo', args(), notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            field('hasNextPage', 'hasNextPage', args(), notNull(scalar('Boolean'))),
-                            field('hasPreviousPage', 'hasPreviousPage', args(), notNull(scalar('Boolean'))),
-                            field('itemsCount', 'itemsCount', args(), notNull(scalar('Int'))),
-                            field('pagesCount', 'pagesCount', args(), notNull(scalar('Int'))),
-                            field('currentPage', 'currentPage', args(), notNull(scalar('Int'))),
-                            field('openEnded', 'openEnded', args(), notNull(scalar('Boolean')))
-                        )))
-                )))
-        );
-const FeedSubscriptionsSelector = obj(
-            field('alphaFeedMySubscriptions', 'channels', args(fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('items', 'items', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            fragment('FeedChannel', FeedChannelFullSelector)
-                        ))))),
-                    field('cursor', 'cursor', args(), scalar('String'))
-                )))
-        );
-const FeedWritableChannelsSelector = obj(
-            field('alphaWritableChannels', 'channels', args(fieldValue("first", refValue('first')), fieldValue("after", refValue('after'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('items', 'items', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            fragment('FeedChannel', FeedChannelFullSelector)
-                        ))))),
-                    field('cursor', 'cursor', args(), scalar('String'))
-                )))
-        );
 const FetchPushSettingsSelector = obj(
             field('pushSettings', 'pushSettings', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -3042,20 +2784,6 @@ const HubsSelector = obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('Hub', HubSimpleSelector)
                 )))))
-        );
-const InitFeedSelector = obj(
-            field('alphaHomeFeed', 'feed', args(fieldValue("first", refValue('first'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('items', 'items', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            fragment('FeedItem', FeedItemFullSelector)
-                        ))))),
-                    field('cursor', 'cursor', args(), scalar('String'))
-                ))),
-            field('alphaFeedMyDraftsChannel', 'drafts', args(), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('FeedChannel', FeedChannelFullSelector)
-                )))
         );
 const MessageSelector = obj(
             field('message', 'message', args(fieldValue("messageId", refValue('messageId'))), obj(
@@ -4393,15 +4121,21 @@ const DiscoverEditorsChoiceUpdateSelector = obj(
                 )))
         );
 const DiscussionCreateDraftSelector = obj(
-            field('discussionCreate', 'discussionCreate', args(fieldValue("isDraft", boolValue(true)), fieldValue("input", objectValue())), notNull(obj(
+            field('discussionCreate', 'discussionCreate', args(fieldValue("input", objectValue())), notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    fragment('DiscussionDraft', DiscussionDraftSimpleSelector)
+                )))
+        );
+const DiscussionPublishSelector = obj(
+            field('discussionDraftPublish', 'discussionDraftPublish', args(fieldValue("draftId", refValue('id'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
                     fragment('Discussion', DiscussionSimpleSelector)
                 )))
         );
 const DiscussionUpdateSelector = obj(
-            field('discussionUpdate', 'discussionUpdate', args(fieldValue("id", refValue('id')), fieldValue("input", objectValue(fieldValue('title', refValue('title')),fieldValue('content', refValue('content'))))), notNull(obj(
+            field('discussionUpdate', 'discussionUpdate', args(fieldValue("id", refValue('id')), fieldValue("input", objectValue(fieldValue('hub', refValue('hub')),fieldValue('title', refValue('title')),fieldValue('content', refValue('content'))))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('Discussion', DiscussionSimpleSelector)
+                    fragment('DiscussionDraft', DiscussionDraftSimpleSelector)
                 )))
         );
 const EditCommentSelector = obj(
@@ -4441,51 +4175,6 @@ const FeatureFlagEnableSelector = obj(
                             field('title', 'title', args(), notNull(scalar('String')))
                         )))))
                 )))
-        );
-const FeedChannelAddWriterSelector = obj(
-            field('alphaFeedChannelAddEditor', 'alphaFeedChannelAddEditor', args(fieldValue("id", refValue('id')), fieldValue("userId", refValue('userId'))), notNull(scalar('Boolean')))
-        );
-const FeedChannelCreateSelector = obj(
-            field('alphaFeedCreateChannel', 'channel', args(fieldValue("title", refValue('title')), fieldValue("about", refValue('about')), fieldValue("photoRef", refValue('photoRef')), fieldValue("global", refValue('global'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('FeedChannel', FeedChannelFullSelector)
-                )))
-        );
-const FeedChannelRemoveWriterSelector = obj(
-            field('alphaFeedChannelRemoveEditor', 'alphaFeedChannelRemoveEditor', args(fieldValue("id", refValue('id')), fieldValue("userId", refValue('userId'))), notNull(scalar('Boolean')))
-        );
-const FeedChannelSubscribeSelector = obj(
-            field('alphaFeedChannelSubscribe', 'alphaFeedChannelSubscribe', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
-        );
-const FeedChannelUnsubscribeSelector = obj(
-            field('alphaFeedChannelUnsubscribe', 'alphaFeedChannelUnsubscribe', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
-        );
-const FeedChannelUpdateSelector = obj(
-            field('alphaFeedUpdateChannel', 'channel', args(fieldValue("id", refValue('id')), fieldValue("title", refValue('title')), fieldValue("about", refValue('about')), fieldValue("photoRef", refValue('photoRef')), fieldValue("global", refValue('global'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('id', 'id', args(), notNull(scalar('ID')))
-                )))
-        );
-const FeedCreatePostSelector = obj(
-            field('alphaCreateFeedPost', 'post', args(fieldValue("channel", refValue('channel')), fieldValue("slides", refValue('slides')), fieldValue("repeatKey", refValue('repeatKey'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('FeedItem', FeedItemFullSelector)
-                )))
-        );
-const FeedDeletePostSelector = obj(
-            field('alphaDeleteFeedPost', 'alphaDeleteFeedPost', args(fieldValue("feedItemId", refValue('feedItemId'))), notNull(scalar('Boolean')))
-        );
-const FeedEditPostSelector = obj(
-            field('alphaEditFeedPost', 'editFeedPost', args(fieldValue("feedItemId", refValue('feedItemId')), fieldValue("slides", refValue('slides'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    fragment('FeedItem', FeedItemFullSelector)
-                )))
-        );
-const FeedReactionAddSelector = obj(
-            field('feedReactionAdd', 'feedReactionAdd', args(fieldValue("feedItemId", refValue('feedItemId')), fieldValue("reaction", refValue('reaction'))), notNull(scalar('Boolean')))
-        );
-const FeedReactionRemoveSelector = obj(
-            field('feedReactionRemove', 'feedReactionRemove', args(fieldValue("feedItemId", refValue('feedItemId')), fieldValue("reaction", refValue('reaction'))), notNull(scalar('Boolean')))
         );
 const GlobalEventBusPublishSelector = obj(
             field('globalEventBusPublish', 'globalEventBusPublish', args(fieldValue("topic", refValue('topic')), fieldValue("message", refValue('message'))), notNull(scalar('Boolean')))
@@ -5104,16 +4793,6 @@ const DialogsWatchSelector = obj(
                     ))
                 )))
         );
-const FeedUpdatesSelector = obj(
-            field('homeFeedUpdates', 'event', args(fieldValue("fromState", refValue('state'))), notNull(obj(
-                    field('__typename', '__typename', args(), notNull(scalar('String'))),
-                    field('updates', 'updates', args(), notNull(list(notNull(obj(
-                            field('__typename', '__typename', args(), notNull(scalar('String'))),
-                            fragment('FeedUpdate', FeedUpdateFragmentSelector)
-                        ))))),
-                    field('state', 'state', args(), notNull(scalar('String')))
-                )))
-        );
 const GlobalEventBusSelector = obj(
             field('globalEventBus', 'globalEventBus', args(fieldValue("topic", refValue('topic'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5394,22 +5073,22 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query DiscoverTopPremium($first:Int!,$after:String){discoverTopPremium(first:$first,after:$after){__typename items{__typename ...DiscoverSharedRoom}cursor}}fragment DiscoverSharedRoom on SharedRoom{__typename id kind title photo membersCount membership organization{__typename id name photo}premiumSettings{__typename id price interval}isPremium premiumPassIsActive}',
         selector: DiscoverTopPremiumSelector
     },
-    Discussion: {
+    DiscussionDraft: {
         kind: 'query',
-        name: 'Discussion',
-        body: 'query Discussion($id:ID!){discussion(id:$id){__typename ...DiscussionSimple}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename ...HubSimple}author{__typename id name}createdAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text spans{__typename ...SpanFragment}}... on ImageParagraph{__typename image{__typename uuid}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}',
-        selector: DiscussionSelector
+        name: 'DiscussionDraft',
+        body: 'query DiscussionDraft($id:ID!){discussionDraft(id:$id){__typename ...DiscussionDraftSimple}}fragment DiscussionDraftSimple on DiscussionDraft{__typename id title content{__typename ...ParagraphSimple}publishedCopy{__typename id}hub{__typename id title shortname}createdAt updatedAt deletedAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text spans{__typename ...SpanFragment}}... on ImageParagraph{__typename url image{__typename uuid}fileMetadata{__typename isImage imageWidth imageHeight imageFormat}}... on H1Paragraph{__typename text}... on H2Paragraph{__typename text}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}',
+        selector: DiscussionDraftSelector
     },
     DiscussionDrafts: {
         kind: 'query',
         name: 'DiscussionDrafts',
-        body: 'query DiscussionDrafts($after:String){discussionMyDrafts(first:20,after:$after){__typename items{__typename ...DiscussionSimple}cursor}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename ...HubSimple}author{__typename id name}createdAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text spans{__typename ...SpanFragment}}... on ImageParagraph{__typename image{__typename uuid}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}',
+        body: 'query DiscussionDrafts($after:String){discussionMyDrafts(first:20,after:$after){__typename items{__typename ...DiscussionDraftSimple}cursor}}fragment DiscussionDraftSimple on DiscussionDraft{__typename id title content{__typename ...ParagraphSimple}publishedCopy{__typename id}hub{__typename id title shortname}createdAt updatedAt deletedAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text spans{__typename ...SpanFragment}}... on ImageParagraph{__typename url image{__typename uuid}fileMetadata{__typename isImage imageWidth imageHeight imageFormat}}... on H1Paragraph{__typename text}... on H2Paragraph{__typename text}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}',
         selector: DiscussionDraftsSelector
     },
     Discussions: {
         kind: 'query',
         name: 'Discussions',
-        body: 'query Discussions($hubs:[ID!]!,$after:String){discussions(hubs:$hubs,first:20,after:$after){__typename items{__typename ...DiscussionSimple}cursor}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename ...HubSimple}author{__typename id name}createdAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text spans{__typename ...SpanFragment}}... on ImageParagraph{__typename image{__typename uuid}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}',
+        body: 'query Discussions($hubs:[ID!]!,$after:String){discussions(hubs:$hubs,first:20,after:$after){__typename items{__typename ...DiscussionSimple}cursor}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename id title shortname}author{__typename id name}draft{__typename id}canEdit createdAt updatedAt deletedAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text spans{__typename ...SpanFragment}}... on ImageParagraph{__typename url image{__typename uuid}fileMetadata{__typename isImage imageWidth imageHeight imageFormat}}... on H1Paragraph{__typename text}... on H2Paragraph{__typename text}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}',
         selector: DiscussionsSelector
     },
     ExplorePeople: {
@@ -5429,66 +5108,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'FeatureFlags',
         body: 'query FeatureFlags{featureFlags{__typename id key title}}',
         selector: FeatureFlagsSelector
-    },
-    FeedChannel: {
-        kind: 'query',
-        name: 'FeedChannel',
-        body: 'query FeedChannel($id:ID!){channel:alphaFeedChannel(id:$id){__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename id title about photo subscribed myRole subscribersCount shortname isGlobal socialImage postsCount}',
-        selector: FeedChannelSelector
-    },
-    FeedChannelContent: {
-        kind: 'query',
-        name: 'FeedChannelContent',
-        body: 'query FeedChannelContent($id:ID!,$first:Int!,$after:String){content:alphaFeedChannelContent(id:$id,first:$first,after:$after){__typename items{__typename ...FeedItemFull}cursor}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{__typename id date author{__typename ...FeedPostAuthorFragment}source{__typename ...FeedPostSourceFragment}edited canEdit commentsCount message fallback reactions{__typename user{__typename ...UserShort}reaction}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{__typename ...UserShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment FeedPostSourceFragment on FeedPostSource{__typename ... on FeedChannel{__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename id title about photo subscribed myRole subscribersCount shortname isGlobal socialImage postsCount}fragment SlideFragment on Slide{__typename ... on TextSlide{__typename id text spans{__typename ...SpanFragment}cover{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}coverAlign attachments{__typename ... on User{__typename ...UserShort}... on SharedRoom{__typename id kind title roomPhoto:photo membersCount membership canSendMessage organization{__typename id name photo}}... on Organization{__typename ...OrganizationShort}}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}',
-        selector: FeedChannelContentSelector
-    },
-    FeedChannelSubscribers: {
-        kind: 'query',
-        name: 'FeedChannelSubscribers',
-        body: 'query FeedChannelSubscribers($channelId:ID!,$query:String,$first:Int!,$after:String){subscribers:alphaFeedChannelSubscribers(channelId:$channelId,query:$query,first:$first,after:$after){__typename edges{__typename node{__typename user{__typename ...UserShort}role}cursor}pageInfo{__typename hasNextPage hasPreviousPage itemsCount pagesCount currentPage openEnded}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
-        selector: FeedChannelSubscribersSelector
-    },
-    FeedChannelWriters: {
-        kind: 'query',
-        name: 'FeedChannelWriters',
-        body: 'query FeedChannelWriters($id:ID!,$first:Int!,$after:ID){writers:alphaFeedChannelAdmins(id:$id,first:$first,after:$after){__typename items{__typename user{__typename ...UserShort}role}cursor}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
-        selector: FeedChannelWritersSelector
-    },
-    FeedChannelsSearch: {
-        kind: 'query',
-        name: 'FeedChannelsSearch',
-        body: 'query FeedChannelsSearch($query:String,$sort:String,$first:Int!,$after:String){search:alphaFeedChannelSearch(query:$query,sort:$sort,first:$first,after:$after){__typename edges{__typename node{__typename ...FeedChannelFull}cursor}pageInfo{__typename hasNextPage hasPreviousPage itemsCount pagesCount currentPage openEnded}}}fragment FeedChannelFull on FeedChannel{__typename id title about photo subscribed myRole subscribersCount shortname isGlobal socialImage postsCount}',
-        selector: FeedChannelsSearchSelector
-    },
-    FeedItem: {
-        kind: 'query',
-        name: 'FeedItem',
-        body: 'query FeedItem($id:ID!){item:alphaFeedItem(id:$id){__typename ...FeedItemFull}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{__typename id date author{__typename ...FeedPostAuthorFragment}source{__typename ...FeedPostSourceFragment}edited canEdit commentsCount message fallback reactions{__typename user{__typename ...UserShort}reaction}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{__typename ...UserShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment FeedPostSourceFragment on FeedPostSource{__typename ... on FeedChannel{__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename id title about photo subscribed myRole subscribersCount shortname isGlobal socialImage postsCount}fragment SlideFragment on Slide{__typename ... on TextSlide{__typename id text spans{__typename ...SpanFragment}cover{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}coverAlign attachments{__typename ... on User{__typename ...UserShort}... on SharedRoom{__typename id kind title roomPhoto:photo membersCount membership canSendMessage organization{__typename id name photo}}... on Organization{__typename ...OrganizationShort}}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}',
-        selector: FeedItemSelector
-    },
-    FeedLoadMore: {
-        kind: 'query',
-        name: 'FeedLoadMore',
-        body: 'query FeedLoadMore($first:Int!,$after:String){feed:alphaHomeFeed(first:$first,after:$after){__typename items{__typename ...FeedItemFull}cursor}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{__typename id date author{__typename ...FeedPostAuthorFragment}source{__typename ...FeedPostSourceFragment}edited canEdit commentsCount message fallback reactions{__typename user{__typename ...UserShort}reaction}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{__typename ...UserShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment FeedPostSourceFragment on FeedPostSource{__typename ... on FeedChannel{__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename id title about photo subscribed myRole subscribersCount shortname isGlobal socialImage postsCount}fragment SlideFragment on Slide{__typename ... on TextSlide{__typename id text spans{__typename ...SpanFragment}cover{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}coverAlign attachments{__typename ... on User{__typename ...UserShort}... on SharedRoom{__typename id kind title roomPhoto:photo membersCount membership canSendMessage organization{__typename id name photo}}... on Organization{__typename ...OrganizationShort}}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}',
-        selector: FeedLoadMoreSelector
-    },
-    FeedRecommendedChannels: {
-        kind: 'query',
-        name: 'FeedRecommendedChannels',
-        body: 'query FeedRecommendedChannels($first:Int!,$after:String){search:alphaRecommendedChannels(first:$first,after:$after){__typename edges{__typename node{__typename ...FeedChannelFull}cursor}pageInfo{__typename hasNextPage hasPreviousPage itemsCount pagesCount currentPage openEnded}}}fragment FeedChannelFull on FeedChannel{__typename id title about photo subscribed myRole subscribersCount shortname isGlobal socialImage postsCount}',
-        selector: FeedRecommendedChannelsSelector
-    },
-    FeedSubscriptions: {
-        kind: 'query',
-        name: 'FeedSubscriptions',
-        body: 'query FeedSubscriptions($first:Int!,$after:ID){channels:alphaFeedMySubscriptions(first:$first,after:$after){__typename items{__typename ...FeedChannelFull}cursor}}fragment FeedChannelFull on FeedChannel{__typename id title about photo subscribed myRole subscribersCount shortname isGlobal socialImage postsCount}',
-        selector: FeedSubscriptionsSelector
-    },
-    FeedWritableChannels: {
-        kind: 'query',
-        name: 'FeedWritableChannels',
-        body: 'query FeedWritableChannels($first:Int!,$after:ID){channels:alphaWritableChannels(first:$first,after:$after){__typename items{__typename ...FeedChannelFull}cursor}}fragment FeedChannelFull on FeedChannel{__typename id title about photo subscribed myRole subscribersCount shortname isGlobal socialImage postsCount}',
-        selector: FeedWritableChannelsSelector
     },
     FetchPushSettings: {
         kind: 'query',
@@ -5525,12 +5144,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'Hubs',
         body: 'query Hubs{hubs{__typename ...HubSimple}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}',
         selector: HubsSelector
-    },
-    InitFeed: {
-        kind: 'query',
-        name: 'InitFeed',
-        body: 'query InitFeed($first:Int!){feed:alphaHomeFeed(first:$first){__typename items{__typename ...FeedItemFull}cursor}drafts:alphaFeedMyDraftsChannel{__typename ...FeedChannelFull}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{__typename id date author{__typename ...FeedPostAuthorFragment}source{__typename ...FeedPostSourceFragment}edited canEdit commentsCount message fallback reactions{__typename user{__typename ...UserShort}reaction}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{__typename ...UserShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment FeedPostSourceFragment on FeedPostSource{__typename ... on FeedChannel{__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename id title about photo subscribed myRole subscribersCount shortname isGlobal socialImage postsCount}fragment SlideFragment on Slide{__typename ... on TextSlide{__typename id text spans{__typename ...SpanFragment}cover{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}coverAlign attachments{__typename ... on User{__typename ...UserShort}... on SharedRoom{__typename id kind title roomPhoto:photo membersCount membership canSendMessage organization{__typename id name photo}}... on Organization{__typename ...OrganizationShort}}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}',
-        selector: InitFeedSelector
     },
     Message: {
         kind: 'query',
@@ -5571,7 +5184,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     MyNotifications: {
         kind: 'query',
         name: 'MyNotifications',
-        body: 'query MyNotifications($first:Int!,$before:ID){myNotifications(first:$first,before:$before){__typename items{__typename ...NotificationFragment}cursor}}fragment NotificationFragment on Notification{__typename id text content{__typename ... on NewCommentNotification{__typename comment{__typename ...CommentEntryFragment}peer{__typename id peerRoot{__typename ... on CommentPeerRootMessage{__typename message{__typename ... on GeneralMessage{__typename id fallback message sender{__typename id name}senderBadge{__typename ...UserBadge}}}chat{__typename ...RoomNano}}... on CommentPeerRootFeedItem{__typename item{__typename ...FeedItemFull}}... on CommentPeerRootDiscussion{__typename discussion{__typename id}}}subscription{__typename type}}}}}fragment CommentEntryFragment on CommentEntry{__typename id deleted comment:betaComment{__typename ...FullMessage id}parentComment{__typename comment:betaComment{__typename id message}id}childComments{__typename id}}fragment FullMessage on ModernMessage{__typename id date sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}edited commentsCount attachments{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}socialImage{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id title style url}}fallback}... on MessageAttachmentPurchase{__typename id purchase{__typename id state amount}fallback}}quotedMessages{__typename ...QuotedMessage}reactions{__typename user{__typename ...UserShort}reaction}}spans{__typename ...SpanFragment}... on StickerMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}date commentsCount sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}quotedMessages{__typename ...QuotedMessage}reactions{__typename user{__typename ...UserShort}reaction}sticker{__typename ...StickerFragment}}... on ServiceMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}serviceMetadata{__typename ... on InviteServiceMetadata{__typename users{__typename ...UserTiny}invitedBy{__typename ...UserTiny}}... on KickServiceMetadata{__typename user{__typename ...UserTiny}kickedBy{__typename ...UserTiny}}... on TitleChangeServiceMetadata{__typename title}... on PhotoChangeServiceMetadata{__typename photo}... on PostRespondServiceMetadata{__typename respondType}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment UserBadge on UserBadge{__typename id name verified}fragment QuotedMessage on ModernMessage{__typename id date message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}}}spans{__typename ...SpanFragment}... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}commentsCount edited attachments{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}keyboard{__typename buttons{__typename id title style url}}imageFallback{__typename photo text}fallback}... on MessageAttachmentPurchase{__typename id purchase{__typename id state amount}fallback}}}... on StickerMessage{__typename id date overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}}}reactions{__typename user{__typename ...UserShort}reaction}sticker{__typename ... on ImageSticker{__typename id pack{__typename ... on StickerPack{__typename id title}}image{__typename ... on ImageRef{__typename uuid}}}}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}fragment UserTiny on User{__typename id isYou name firstName lastName photo shortname primaryOrganization{__typename ...OrganizationShort}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{__typename id date author{__typename ...FeedPostAuthorFragment}source{__typename ...FeedPostSourceFragment}edited canEdit commentsCount message fallback reactions{__typename user{__typename ...UserShort}reaction}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{__typename ...UserShort}}fragment FeedPostSourceFragment on FeedPostSource{__typename ... on FeedChannel{__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename id title about photo subscribed myRole subscribersCount shortname isGlobal socialImage postsCount}fragment SlideFragment on Slide{__typename ... on TextSlide{__typename id text spans{__typename ...SpanFragment}cover{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}coverAlign attachments{__typename ... on User{__typename ...UserShort}... on SharedRoom{__typename id kind title roomPhoto:photo membersCount membership canSendMessage organization{__typename id name photo}}... on Organization{__typename ...OrganizationShort}}}}',
+        body: 'query MyNotifications($first:Int!,$before:ID){myNotifications(first:$first,before:$before){__typename items{__typename ...NotificationFragment}cursor}}fragment NotificationFragment on Notification{__typename id text content{__typename ... on NewCommentNotification{__typename comment{__typename ...CommentEntryFragment}peer{__typename id peerRoot{__typename ... on CommentPeerRootMessage{__typename message{__typename ... on GeneralMessage{__typename id fallback message sender{__typename id name}senderBadge{__typename ...UserBadge}}}chat{__typename ...RoomNano}}... on CommentPeerRootDiscussion{__typename discussion{__typename id}}}subscription{__typename type}}}}}fragment CommentEntryFragment on CommentEntry{__typename id deleted comment:betaComment{__typename ...FullMessage id}parentComment{__typename comment:betaComment{__typename id message}id}childComments{__typename id}}fragment FullMessage on ModernMessage{__typename id date sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}edited commentsCount attachments{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}socialImage{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id title style url}}fallback}... on MessageAttachmentPurchase{__typename id purchase{__typename id state amount}fallback}}quotedMessages{__typename ...QuotedMessage}reactions{__typename user{__typename ...UserShort}reaction}}spans{__typename ...SpanFragment}... on StickerMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}date commentsCount sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}quotedMessages{__typename ...QuotedMessage}reactions{__typename user{__typename ...UserShort}reaction}sticker{__typename ...StickerFragment}}... on ServiceMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}serviceMetadata{__typename ... on InviteServiceMetadata{__typename users{__typename ...UserTiny}invitedBy{__typename ...UserTiny}}... on KickServiceMetadata{__typename user{__typename ...UserTiny}kickedBy{__typename ...UserTiny}}... on TitleChangeServiceMetadata{__typename title}... on PhotoChangeServiceMetadata{__typename photo}... on PostRespondServiceMetadata{__typename respondType}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment UserBadge on UserBadge{__typename id name verified}fragment QuotedMessage on ModernMessage{__typename id date message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}}}spans{__typename ...SpanFragment}... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}commentsCount edited attachments{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}keyboard{__typename buttons{__typename id title style url}}imageFallback{__typename photo text}fallback}... on MessageAttachmentPurchase{__typename id purchase{__typename id state amount}fallback}}}... on StickerMessage{__typename id date overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}}}reactions{__typename user{__typename ...UserShort}reaction}sticker{__typename ... on ImageSticker{__typename id pack{__typename ... on StickerPack{__typename id title}}image{__typename ... on ImageRef{__typename uuid}}}}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}fragment UserTiny on User{__typename id isYou name firstName lastName photo shortname primaryOrganization{__typename ...OrganizationShort}}',
         selector: MyNotificationsSelector
     },
     MyOrganizations: {
@@ -6063,13 +5676,19 @@ export const Operations: { [key: string]: OperationDefinition } = {
     DiscussionCreateDraft: {
         kind: 'mutation',
         name: 'DiscussionCreateDraft',
-        body: 'mutation DiscussionCreateDraft{discussionCreate(isDraft:true,input:{}){__typename ...DiscussionSimple}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename ...HubSimple}author{__typename id name}createdAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text spans{__typename ...SpanFragment}}... on ImageParagraph{__typename image{__typename uuid}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}',
+        body: 'mutation DiscussionCreateDraft{discussionCreate(input:{}){__typename ...DiscussionDraftSimple}}fragment DiscussionDraftSimple on DiscussionDraft{__typename id title content{__typename ...ParagraphSimple}publishedCopy{__typename id}hub{__typename id title shortname}createdAt updatedAt deletedAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text spans{__typename ...SpanFragment}}... on ImageParagraph{__typename url image{__typename uuid}fileMetadata{__typename isImage imageWidth imageHeight imageFormat}}... on H1Paragraph{__typename text}... on H2Paragraph{__typename text}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}',
         selector: DiscussionCreateDraftSelector
+    },
+    DiscussionPublish: {
+        kind: 'mutation',
+        name: 'DiscussionPublish',
+        body: 'mutation DiscussionPublish($id:ID!){discussionDraftPublish(draftId:$id){__typename ...DiscussionSimple}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename id title shortname}author{__typename id name}draft{__typename id}canEdit createdAt updatedAt deletedAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text spans{__typename ...SpanFragment}}... on ImageParagraph{__typename url image{__typename uuid}fileMetadata{__typename isImage imageWidth imageHeight imageFormat}}... on H1Paragraph{__typename text}... on H2Paragraph{__typename text}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}',
+        selector: DiscussionPublishSelector
     },
     DiscussionUpdate: {
         kind: 'mutation',
         name: 'DiscussionUpdate',
-        body: 'mutation DiscussionUpdate($id:ID!,$title:String!,$content:[DiscussionContentInput!]){discussionUpdate(id:$id,input:{title:$title,content:$content}){__typename ...DiscussionSimple}}fragment DiscussionSimple on Discussion{__typename id title content{__typename ...ParagraphSimple}hub{__typename ...HubSimple}author{__typename id name}createdAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text spans{__typename ...SpanFragment}}... on ImageParagraph{__typename image{__typename uuid}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}fragment HubSimple on Hub{__typename id title shortname type owner{__typename id firstName lastName}}',
+        body: 'mutation DiscussionUpdate($id:ID!,$hub:ID,$title:String!,$content:[DiscussionContentInput!]){discussionUpdate(id:$id,input:{hub:$hub,title:$title,content:$content}){__typename ...DiscussionDraftSimple}}fragment DiscussionDraftSimple on DiscussionDraft{__typename id title content{__typename ...ParagraphSimple}publishedCopy{__typename id}hub{__typename id title shortname}createdAt updatedAt deletedAt}fragment ParagraphSimple on Paragraph{__typename ... on TextParagraph{__typename text spans{__typename ...SpanFragment}}... on ImageParagraph{__typename url image{__typename uuid}fileMetadata{__typename isImage imageWidth imageHeight imageFormat}}... on H1Paragraph{__typename text}... on H2Paragraph{__typename text}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}',
         selector: DiscussionUpdateSelector
     },
     EditComment: {
@@ -6101,72 +5720,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'FeatureFlagEnable',
         body: 'mutation FeatureFlagEnable($accountId:ID!,$featureId:ID!){superAccountFeatureAdd(id:$accountId,featureId:$featureId){__typename id features{__typename id key title}}}',
         selector: FeatureFlagEnableSelector
-    },
-    FeedChannelAddWriter: {
-        kind: 'mutation',
-        name: 'FeedChannelAddWriter',
-        body: 'mutation FeedChannelAddWriter($id:ID!,$userId:ID!){alphaFeedChannelAddEditor(id:$id,userId:$userId)}',
-        selector: FeedChannelAddWriterSelector
-    },
-    FeedChannelCreate: {
-        kind: 'mutation',
-        name: 'FeedChannelCreate',
-        body: 'mutation FeedChannelCreate($title:String!,$about:String,$photoRef:ImageRefInput,$global:Boolean){channel:alphaFeedCreateChannel(title:$title,about:$about,photoRef:$photoRef,global:$global){__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename id title about photo subscribed myRole subscribersCount shortname isGlobal socialImage postsCount}',
-        selector: FeedChannelCreateSelector
-    },
-    FeedChannelRemoveWriter: {
-        kind: 'mutation',
-        name: 'FeedChannelRemoveWriter',
-        body: 'mutation FeedChannelRemoveWriter($id:ID!,$userId:ID!){alphaFeedChannelRemoveEditor(id:$id,userId:$userId)}',
-        selector: FeedChannelRemoveWriterSelector
-    },
-    FeedChannelSubscribe: {
-        kind: 'mutation',
-        name: 'FeedChannelSubscribe',
-        body: 'mutation FeedChannelSubscribe($id:ID!){alphaFeedChannelSubscribe(id:$id)}',
-        selector: FeedChannelSubscribeSelector
-    },
-    FeedChannelUnsubscribe: {
-        kind: 'mutation',
-        name: 'FeedChannelUnsubscribe',
-        body: 'mutation FeedChannelUnsubscribe($id:ID!){alphaFeedChannelUnsubscribe(id:$id)}',
-        selector: FeedChannelUnsubscribeSelector
-    },
-    FeedChannelUpdate: {
-        kind: 'mutation',
-        name: 'FeedChannelUpdate',
-        body: 'mutation FeedChannelUpdate($id:ID!,$title:String!,$about:String,$photoRef:ImageRefInput,$global:Boolean){channel:alphaFeedUpdateChannel(id:$id,title:$title,about:$about,photoRef:$photoRef,global:$global){__typename id}}',
-        selector: FeedChannelUpdateSelector
-    },
-    FeedCreatePost: {
-        kind: 'mutation',
-        name: 'FeedCreatePost',
-        body: 'mutation FeedCreatePost($channel:ID!,$slides:[SlideInput!]!,$repeatKey:String){post:alphaCreateFeedPost(channel:$channel,slides:$slides,repeatKey:$repeatKey){__typename ...FeedItemFull}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{__typename id date author{__typename ...FeedPostAuthorFragment}source{__typename ...FeedPostSourceFragment}edited canEdit commentsCount message fallback reactions{__typename user{__typename ...UserShort}reaction}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{__typename ...UserShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment FeedPostSourceFragment on FeedPostSource{__typename ... on FeedChannel{__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename id title about photo subscribed myRole subscribersCount shortname isGlobal socialImage postsCount}fragment SlideFragment on Slide{__typename ... on TextSlide{__typename id text spans{__typename ...SpanFragment}cover{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}coverAlign attachments{__typename ... on User{__typename ...UserShort}... on SharedRoom{__typename id kind title roomPhoto:photo membersCount membership canSendMessage organization{__typename id name photo}}... on Organization{__typename ...OrganizationShort}}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}',
-        selector: FeedCreatePostSelector
-    },
-    FeedDeletePost: {
-        kind: 'mutation',
-        name: 'FeedDeletePost',
-        body: 'mutation FeedDeletePost($feedItemId:ID!){alphaDeleteFeedPost(feedItemId:$feedItemId)}',
-        selector: FeedDeletePostSelector
-    },
-    FeedEditPost: {
-        kind: 'mutation',
-        name: 'FeedEditPost',
-        body: 'mutation FeedEditPost($feedItemId:ID!,$slides:[SlideInput!]!){editFeedPost:alphaEditFeedPost(feedItemId:$feedItemId,slides:$slides){__typename ...FeedItemFull}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{__typename id date author{__typename ...FeedPostAuthorFragment}source{__typename ...FeedPostSourceFragment}edited canEdit commentsCount message fallback reactions{__typename user{__typename ...UserShort}reaction}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{__typename ...UserShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment FeedPostSourceFragment on FeedPostSource{__typename ... on FeedChannel{__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename id title about photo subscribed myRole subscribersCount shortname isGlobal socialImage postsCount}fragment SlideFragment on Slide{__typename ... on TextSlide{__typename id text spans{__typename ...SpanFragment}cover{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}coverAlign attachments{__typename ... on User{__typename ...UserShort}... on SharedRoom{__typename id kind title roomPhoto:photo membersCount membership canSendMessage organization{__typename id name photo}}... on Organization{__typename ...OrganizationShort}}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}',
-        selector: FeedEditPostSelector
-    },
-    FeedReactionAdd: {
-        kind: 'mutation',
-        name: 'FeedReactionAdd',
-        body: 'mutation FeedReactionAdd($feedItemId:ID!,$reaction:MessageReactionType!){feedReactionAdd(feedItemId:$feedItemId,reaction:$reaction)}',
-        selector: FeedReactionAddSelector
-    },
-    FeedReactionRemove: {
-        kind: 'mutation',
-        name: 'FeedReactionRemove',
-        body: 'mutation FeedReactionRemove($feedItemId:ID!,$reaction:MessageReactionType!){feedReactionRemove(feedItemId:$feedItemId,reaction:$reaction)}',
-        selector: FeedReactionRemoveSelector
     },
     GlobalEventBusPublish: {
         kind: 'mutation',
@@ -6696,12 +6249,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'subscription DialogsWatch($state:String){event:dialogsUpdates(fromState:$state){__typename ... on DialogUpdateSingle{__typename state update{__typename ...DialogUpdateFragment}}... on DialogUpdateBatch{__typename state updates{__typename ...DialogUpdateFragment}}}}fragment DialogUpdateFragment on DialogUpdate{__typename ... on DialogMessageReceived{__typename cid unread globalUnread message:alphaMessage{__typename ...DialogMessage ... on ServiceMessage{__typename id serviceMetadata{__typename}}}haveMention silent{__typename mobile desktop}showNotification{__typename mobile desktop}membership}... on DialogMessageUpdated{__typename cid message:alphaMessage{__typename ...DialogMessage}haveMention}... on DialogMessageDeleted{__typename cid message:alphaMessage{__typename ...DialogMessage}prevMessage:alphaPrevMessage{__typename ...DialogMessage}unread globalUnread haveMention}... on DialogMessageRead{__typename cid mid unread globalUnread haveMention}... on DialogMuteChanged{__typename cid mute}... on DialogPeerUpdated{__typename cid peer{__typename ... on PrivateRoom{__typename id user{__typename id name photo}}... on SharedRoom{__typename id title photo}}}... on DialogDeleted{__typename cid globalUnread}... on DialogBump{__typename cid globalUnread unread topMessage{__typename ...DialogMessage ... on ServiceMessage{__typename id serviceMetadata{__typename}}}haveMention membership}}fragment DialogMessage on ModernMessage{__typename id date sender{__typename id name photo firstName}message fallback ... on GeneralMessage{__typename id quotedMessages{__typename id}}}',
         selector: DialogsWatchSelector
     },
-    FeedUpdates: {
-        kind: 'subscription',
-        name: 'FeedUpdates',
-        body: 'subscription FeedUpdates($state:String){event:homeFeedUpdates(fromState:$state){__typename updates{__typename ...FeedUpdateFragment}state}}fragment FeedUpdateFragment on FeedUpdate{__typename ... on FeedItemReceived{__typename item{__typename ...FeedItemFull}}... on FeedItemUpdated{__typename item{__typename ...FeedItemFull}}... on FeedItemDeleted{__typename item{__typename ...FeedItemFull}}... on FeedRebuildNeeded{__typename feed:homeFeed{__typename items{__typename ...FeedItemFull}cursor}}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{__typename id date author{__typename ...FeedPostAuthorFragment}source{__typename ...FeedPostSourceFragment}edited canEdit commentsCount message fallback reactions{__typename user{__typename ...UserShort}reaction}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{__typename ...UserShort}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment FeedPostSourceFragment on FeedPostSource{__typename ... on FeedChannel{__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename id title about photo subscribed myRole subscribersCount shortname isGlobal socialImage postsCount}fragment SlideFragment on Slide{__typename ... on TextSlide{__typename id text spans{__typename ...SpanFragment}cover{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}coverAlign attachments{__typename ... on User{__typename ...UserShort}... on SharedRoom{__typename id kind title roomPhoto:photo membersCount membership canSendMessage organization{__typename id name photo}}... on Organization{__typename ...OrganizationShort}}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}',
-        selector: FeedUpdatesSelector
-    },
     GlobalEventBus: {
         kind: 'subscription',
         name: 'GlobalEventBus',
@@ -6711,7 +6258,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     MyNotificationsCenter: {
         kind: 'subscription',
         name: 'MyNotificationsCenter',
-        body: 'subscription MyNotificationsCenter($state:String){event:notificationCenterUpdates(fromState:$state){__typename ... on NotificationCenterUpdateSingle{__typename seq state update{__typename ...NotificationCenterUpdateFragment}}... on NotificationCenterUpdateBatch{__typename fromSeq seq state updates{__typename ...NotificationCenterUpdateFragment}}}}fragment NotificationCenterUpdateFragment on NotificationCenterUpdate{__typename ... on NotificationReceived{__typename center{__typename id unread}notification{__typename ...NotificationFragment}}... on NotificationUpdated{__typename center{__typename id unread}notification{__typename ...NotificationFragment}}... on NotificationDeleted{__typename center{__typename id unread}notification{__typename id}}... on NotificationRead{__typename center{__typename id unread}}... on NotificationContentUpdated{__typename content{__typename ... on UpdatedNotificationContentComment{__typename peer{__typename peerRoot{__typename ... on CommentPeerRootMessage{__typename message{__typename ... on GeneralMessage{__typename id fallback message sender{__typename id name}senderBadge{__typename ...UserBadge}}}chat{__typename ...RoomNano}}... on CommentPeerRootFeedItem{__typename item{__typename ...FeedItemFull}}... on CommentPeerRootDiscussion{__typename discussion{__typename id}}}id subscription{__typename type}}comment{__typename ...CommentEntryFragment}}}}}fragment NotificationFragment on Notification{__typename id text content{__typename ... on NewCommentNotification{__typename comment{__typename ...CommentEntryFragment}peer{__typename id peerRoot{__typename ... on CommentPeerRootMessage{__typename message{__typename ... on GeneralMessage{__typename id fallback message sender{__typename id name}senderBadge{__typename ...UserBadge}}}chat{__typename ...RoomNano}}... on CommentPeerRootFeedItem{__typename item{__typename ...FeedItemFull}}... on CommentPeerRootDiscussion{__typename discussion{__typename id}}}subscription{__typename type}}}}}fragment CommentEntryFragment on CommentEntry{__typename id deleted comment:betaComment{__typename ...FullMessage id}parentComment{__typename comment:betaComment{__typename id message}id}childComments{__typename id}}fragment FullMessage on ModernMessage{__typename id date sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}edited commentsCount attachments{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}socialImage{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id title style url}}fallback}... on MessageAttachmentPurchase{__typename id purchase{__typename id state amount}fallback}}quotedMessages{__typename ...QuotedMessage}reactions{__typename user{__typename ...UserShort}reaction}}spans{__typename ...SpanFragment}... on StickerMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}date commentsCount sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}quotedMessages{__typename ...QuotedMessage}reactions{__typename user{__typename ...UserShort}reaction}sticker{__typename ...StickerFragment}}... on ServiceMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}serviceMetadata{__typename ... on InviteServiceMetadata{__typename users{__typename ...UserTiny}invitedBy{__typename ...UserTiny}}... on KickServiceMetadata{__typename user{__typename ...UserTiny}kickedBy{__typename ...UserTiny}}... on TitleChangeServiceMetadata{__typename title}... on PhotoChangeServiceMetadata{__typename photo}... on PostRespondServiceMetadata{__typename respondType}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment UserBadge on UserBadge{__typename id name verified}fragment QuotedMessage on ModernMessage{__typename id date message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}}}spans{__typename ...SpanFragment}... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}commentsCount edited attachments{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}keyboard{__typename buttons{__typename id title style url}}imageFallback{__typename photo text}fallback}... on MessageAttachmentPurchase{__typename id purchase{__typename id state amount}fallback}}}... on StickerMessage{__typename id date overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}}}reactions{__typename user{__typename ...UserShort}reaction}sticker{__typename ... on ImageSticker{__typename id pack{__typename ... on StickerPack{__typename id title}}image{__typename ... on ImageRef{__typename uuid}}}}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}fragment UserTiny on User{__typename id isYou name firstName lastName photo shortname primaryOrganization{__typename ...OrganizationShort}}fragment FeedItemFull on FeedItem{__typename ... on FeedPost{__typename id date author{__typename ...FeedPostAuthorFragment}source{__typename ...FeedPostSourceFragment}edited canEdit commentsCount message fallback reactions{__typename user{__typename ...UserShort}reaction}slides{__typename ...SlideFragment}}}fragment FeedPostAuthorFragment on FeedPostAuthor{__typename ... on User{__typename ...UserShort}}fragment FeedPostSourceFragment on FeedPostSource{__typename ... on FeedChannel{__typename ...FeedChannelFull}}fragment FeedChannelFull on FeedChannel{__typename id title about photo subscribed myRole subscribersCount shortname isGlobal socialImage postsCount}fragment SlideFragment on Slide{__typename ... on TextSlide{__typename id text spans{__typename ...SpanFragment}cover{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}coverAlign attachments{__typename ... on User{__typename ...UserShort}... on SharedRoom{__typename id kind title roomPhoto:photo membersCount membership canSendMessage organization{__typename id name photo}}... on Organization{__typename ...OrganizationShort}}}}',
+        body: 'subscription MyNotificationsCenter($state:String){event:notificationCenterUpdates(fromState:$state){__typename ... on NotificationCenterUpdateSingle{__typename seq state update{__typename ...NotificationCenterUpdateFragment}}... on NotificationCenterUpdateBatch{__typename fromSeq seq state updates{__typename ...NotificationCenterUpdateFragment}}}}fragment NotificationCenterUpdateFragment on NotificationCenterUpdate{__typename ... on NotificationReceived{__typename center{__typename id unread}notification{__typename ...NotificationFragment}}... on NotificationUpdated{__typename center{__typename id unread}notification{__typename ...NotificationFragment}}... on NotificationDeleted{__typename center{__typename id unread}notification{__typename id}}... on NotificationRead{__typename center{__typename id unread}}... on NotificationContentUpdated{__typename content{__typename ... on UpdatedNotificationContentComment{__typename peer{__typename peerRoot{__typename ... on CommentPeerRootMessage{__typename message{__typename ... on GeneralMessage{__typename id fallback message sender{__typename id name}senderBadge{__typename ...UserBadge}}}chat{__typename ...RoomNano}}... on CommentPeerRootDiscussion{__typename discussion{__typename id}}}id subscription{__typename type}}comment{__typename ...CommentEntryFragment}}}}}fragment NotificationFragment on Notification{__typename id text content{__typename ... on NewCommentNotification{__typename comment{__typename ...CommentEntryFragment}peer{__typename id peerRoot{__typename ... on CommentPeerRootMessage{__typename message{__typename ... on GeneralMessage{__typename id fallback message sender{__typename id name}senderBadge{__typename ...UserBadge}}}chat{__typename ...RoomNano}}... on CommentPeerRootDiscussion{__typename discussion{__typename id}}}subscription{__typename type}}}}}fragment CommentEntryFragment on CommentEntry{__typename id deleted comment:betaComment{__typename ...FullMessage id}parentComment{__typename comment:betaComment{__typename id message}id}childComments{__typename id}}fragment FullMessage on ModernMessage{__typename id date sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id isChannel membersCount}}}}... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}edited commentsCount attachments{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}socialImage{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}imageFallback{__typename photo text}keyboard{__typename buttons{__typename id title style url}}fallback}... on MessageAttachmentPurchase{__typename id purchase{__typename id state amount}fallback}}quotedMessages{__typename ...QuotedMessage}reactions{__typename user{__typename ...UserShort}reaction}}spans{__typename ...SpanFragment}... on StickerMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}date commentsCount sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}quotedMessages{__typename ...QuotedMessage}reactions{__typename user{__typename ...UserShort}reaction}sticker{__typename ...StickerFragment}}... on ServiceMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}serviceMetadata{__typename ... on InviteServiceMetadata{__typename users{__typename ...UserTiny}invitedBy{__typename ...UserTiny}}... on KickServiceMetadata{__typename user{__typename ...UserTiny}kickedBy{__typename ...UserTiny}}... on TitleChangeServiceMetadata{__typename title}... on PhotoChangeServiceMetadata{__typename photo}... on PostRespondServiceMetadata{__typename respondType}}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment UserBadge on UserBadge{__typename id name verified}fragment QuotedMessage on ModernMessage{__typename id date message sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}message fallback source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}}}spans{__typename ...SpanFragment}... on GeneralMessage{__typename id overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}commentsCount edited attachments{__typename fallback ... on MessageAttachmentFile{__typename id fileId fileMetadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}filePreview}... on MessageRichAttachment{__typename id title subTitle titleLink titleLinkHostname text icon{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}image{__typename url metadata{__typename name mimeType size isImage imageWidth imageHeight imageFormat}}keyboard{__typename buttons{__typename id title style url}}imageFallback{__typename photo text}fallback}... on MessageAttachmentPurchase{__typename id purchase{__typename id state amount}fallback}}}... on StickerMessage{__typename id date overrideName overrideAvatar{__typename uuid crop{__typename x y w h}}sender{__typename ...UserShort}senderBadge{__typename ...UserBadge}source{__typename ... on MessageSourceChat{__typename chat{__typename ... on PrivateRoom{__typename id}... on SharedRoom{__typename id}}}}reactions{__typename user{__typename ...UserShort}reaction}sticker{__typename ... on ImageSticker{__typename id pack{__typename ... on StickerPack{__typename id title}}image{__typename ... on ImageRef{__typename uuid}}}}}}fragment SpanFragment on MessageSpan{__typename offset length ... on MessageSpanUserMention{__typename user{__typename ...UserForMention}}... on MessageSpanMultiUserMention{__typename users{__typename ...UserForMention}}... on MessageSpanOrganizationMention{__typename organization{__typename ...OrganizationShort}}... on MessageSpanRoomMention{__typename room{__typename ...RoomNano}}... on MessageSpanLink{__typename url}... on MessageSpanDate{__typename date}}fragment UserForMention on User{__typename isYou id name photo shortname isBot primaryOrganization{__typename id name}}fragment RoomNano on Room{__typename ... on PrivateRoom{__typename id user{__typename id name photo}settings{__typename id mute}}... on SharedRoom{__typename ...RoomSharedNano}}fragment RoomSharedNano on SharedRoom{__typename id kind isChannel isPremium title roomPhoto:photo membersCount settings{__typename id mute}}fragment StickerFragment on Sticker{__typename ... on ImageSticker{__typename id pack{__typename id title}image{__typename uuid}}}fragment UserTiny on User{__typename id isYou name firstName lastName photo shortname primaryOrganization{__typename ...OrganizationShort}}',
         selector: MyNotificationsCenterSelector
     },
     OnlineWatch: {

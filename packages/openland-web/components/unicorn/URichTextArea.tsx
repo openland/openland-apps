@@ -105,12 +105,13 @@ const sidePopupHidden = css`
     pointer-events: none;
 `;
 
-export type URichTextAreaValue = (URichTextParagraph | URichImage)[];
+export type URichTextAreaValue = (URichTextParagraph | URichImage | URichTextHeader1 | URichTextHeader2)[];
 export type URichTextParagraph = { type: 'paragraph', text: string, spans: URichTextSpan[] };
-export type URichImage =
-    | {
-        type: 'image', width: number, height: number, id: string | null
-    };
+export type URichTextHeader1 = { type: 'header1', text: string };
+export type URichTextHeader2 = { type: 'header2', text: string };
+export type URichImage = {
+    type: 'image', width: number, height: number, id: string | null
+};
 export type URichTextSpan = { start: number, end: number, type: 'bold' | 'italic' };
 
 /**
@@ -232,6 +233,12 @@ export function toQuillValue(src: URichTextAreaValue, interactive: { data: Map<s
                 file: { type: 'ready', id: p.id }
             });
             ops.push({ insert: { interactive: { editorId: interactive.editorId, embedId: id } } });
+        } else if (p.type === 'header1') {
+            ops.push({ insert: p.text });
+            ops.push({ insert: '\n', attributes: { header: 1 } });
+        } else if (p.type === 'header2') {
+            ops.push({ insert: p.text });
+            ops.push({ insert: '\n', attributes: { header: 2 } });
         } else {
             throw Error('Invalid input');
         }
@@ -243,7 +250,7 @@ export function toExternalValue(ops: QuillType.DeltaOperation[], interactive: { 
     let paragraphs = quillToParagraphs(ops);
     let res: URichTextAreaValue = [];
     for (let op of paragraphs) {
-        if (op.type === 'body' || op.type === 'header1' || op.type === 'header2') {
+        if (op.type === 'body') {
             let text = op.segments.map((v) => v.text).join('');
             let spans: URichTextSpan[] = [];
             let offset = 0;
@@ -257,6 +264,12 @@ export function toExternalValue(ops: QuillType.DeltaOperation[], interactive: { 
                 offset += s.text.length;
             }
             res.push({ type: 'paragraph', text, spans });
+        } else if (op.type === 'header1') {
+            let text = op.segments.map((v) => v.text).join('');
+            res.push({ type: 'header1', text });
+        } else if (op.type === 'header2') {
+            let text = op.segments.map((v) => v.text).join('');
+            res.push({ type: 'header2', text });
         } else if (op.type === 'interactive') {
             let data = interactive.data.get(op.embedId)!;
             let name = interactive.components.get(op.embedId)!;

@@ -1106,11 +1106,79 @@ internal val ParagraphSimpleSelector = obj(
             )),
             inline("ImageParagraph", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
+                field("url", "url", notNull(scalar("String"))),
                 field("image", "image", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         field("uuid", "uuid", notNull(scalar("String")))
+                    ))),
+                field("fileMetadata", "fileMetadata", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("isImage", "isImage", notNull(scalar("Boolean"))),
+                        field("imageWidth", "imageWidth", scalar("Int")),
+                        field("imageHeight", "imageHeight", scalar("Int")),
+                        field("imageFormat", "imageFormat", scalar("String"))
                     )))
+            )),
+            inline("H1Paragraph", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("text", "text", notNull(scalar("String")))
+            )),
+            inline("H2Paragraph", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("text", "text", notNull(scalar("String")))
             ))
+        )
+
+internal val DiscussionDraftSimpleSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("content", "content", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Paragraph", ParagraphSimpleSelector)
+                ))))),
+            field("publishedCopy", "publishedCopy", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
+                )),
+            field("hub", "hub", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("title", "title", notNull(scalar("String"))),
+                    field("shortname", "shortname", notNull(scalar("String")))
+                )),
+            field("createdAt", "createdAt", notNull(scalar("Date"))),
+            field("updatedAt", "updatedAt", scalar("Date")),
+            field("deletedAt", "deletedAt", scalar("Date"))
+        )
+
+internal val DiscussionSimpleSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("content", "content", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Paragraph", ParagraphSimpleSelector)
+                ))))),
+            field("hub", "hub", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("title", "title", notNull(scalar("String"))),
+                    field("shortname", "shortname", notNull(scalar("String")))
+                )),
+            field("author", "author", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String")))
+                )),
+            field("draft", "draft", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
+                )),
+            field("canEdit", "canEdit", notNull(scalar("Boolean"))),
+            field("createdAt", "createdAt", notNull(scalar("Date"))),
+            field("updatedAt", "updatedAt", scalar("Date")),
+            field("deletedAt", "deletedAt", scalar("Date"))
         )
 
 internal val HubSimpleSelector = obj(
@@ -1125,182 +1193,6 @@ internal val HubSimpleSelector = obj(
                     field("firstName", "firstName", notNull(scalar("String"))),
                     field("lastName", "lastName", scalar("String"))
                 ))
-        )
-
-internal val DiscussionSimpleSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("title", "title", notNull(scalar("String"))),
-            field("content", "content", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Paragraph", ParagraphSimpleSelector)
-                ))))),
-            field("hub", "hub", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Hub", HubSimpleSelector)
-                )),
-            field("author", "author", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("name", "name", notNull(scalar("String")))
-                )),
-            field("createdAt", "createdAt", notNull(scalar("Date")))
-        )
-
-internal val FeedChannelFullSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("title", "title", notNull(scalar("String"))),
-            field("about", "about", scalar("String")),
-            field("photo", "photo", scalar("String")),
-            field("subscribed", "subscribed", notNull(scalar("Boolean"))),
-            field("myRole", "myRole", notNull(scalar("String"))),
-            field("subscribersCount", "subscribersCount", notNull(scalar("Int"))),
-            field("shortname", "shortname", scalar("String")),
-            field("isGlobal", "isGlobal", notNull(scalar("Boolean"))),
-            field("socialImage", "socialImage", scalar("String")),
-            field("postsCount", "postsCount", notNull(scalar("Int")))
-        )
-
-internal val FeedPostAuthorFragmentSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            inline("User", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                fragment("User", UserShortSelector)
-            ))
-        )
-
-internal val FeedPostSourceFragmentSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            inline("FeedChannel", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                fragment("FeedChannel", FeedChannelFullSelector)
-            ))
-        )
-
-internal val SlideFragmentSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            inline("TextSlide", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                field("id", "id", notNull(scalar("ID"))),
-                field("text", "text", notNull(scalar("String"))),
-                field("spans", "spans", notNull(list(notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("MessageSpan", SpanFragmentSelector)
-                    ))))),
-                field("cover", "cover", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("url", "url", notNull(scalar("String"))),
-                        field("metadata", "metadata", obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("name", "name", notNull(scalar("String"))),
-                                field("mimeType", "mimeType", scalar("String")),
-                                field("size", "size", notNull(scalar("Int"))),
-                                field("isImage", "isImage", notNull(scalar("Boolean"))),
-                                field("imageWidth", "imageWidth", scalar("Int")),
-                                field("imageHeight", "imageHeight", scalar("Int")),
-                                field("imageFormat", "imageFormat", scalar("String"))
-                            ))
-                    )),
-                field("coverAlign", "coverAlign", scalar("String")),
-                field("attachments", "attachments", notNull(list(notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        inline("User", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("User", UserShortSelector)
-                        )),
-                        inline("SharedRoom", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("kind", "kind", notNull(scalar("String"))),
-                            field("title", "title", notNull(scalar("String"))),
-                            field("photo", "roomPhoto", notNull(scalar("String"))),
-                            field("membersCount", "membersCount", notNull(scalar("Int"))),
-                            field("membership", "membership", notNull(scalar("String"))),
-                            field("canSendMessage", "canSendMessage", notNull(scalar("Boolean"))),
-                            field("organization", "organization", obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("id", "id", notNull(scalar("ID"))),
-                                    field("name", "name", notNull(scalar("String"))),
-                                    field("photo", "photo", scalar("String"))
-                                ))
-                        )),
-                        inline("Organization", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            fragment("Organization", OrganizationShortSelector)
-                        ))
-                    )))))
-            ))
-        )
-
-internal val FeedItemFullSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            inline("FeedPost", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                field("id", "id", notNull(scalar("ID"))),
-                field("date", "date", notNull(scalar("Date"))),
-                field("author", "author", notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("FeedPostAuthor", FeedPostAuthorFragmentSelector)
-                    ))),
-                field("source", "source", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("FeedPostSource", FeedPostSourceFragmentSelector)
-                    )),
-                field("edited", "edited", notNull(scalar("Boolean"))),
-                field("canEdit", "canEdit", notNull(scalar("Boolean"))),
-                field("commentsCount", "commentsCount", notNull(scalar("Int"))),
-                field("message", "message", scalar("String")),
-                field("fallback", "fallback", notNull(scalar("String"))),
-                field("reactions", "reactions", notNull(list(notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("user", "user", notNull(obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                fragment("User", UserShortSelector)
-                            ))),
-                        field("reaction", "reaction", notNull(scalar("String")))
-                    ))))),
-                field("slides", "slides", notNull(list(notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("Slide", SlideFragmentSelector)
-                    )))))
-            ))
-        )
-
-internal val FeedUpdateFragmentSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            inline("FeedItemReceived", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                field("item", "item", notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("FeedItem", FeedItemFullSelector)
-                    )))
-            )),
-            inline("FeedItemUpdated", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                field("item", "item", notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("FeedItem", FeedItemFullSelector)
-                    )))
-            )),
-            inline("FeedItemDeleted", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                field("item", "item", notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("FeedItem", FeedItemFullSelector)
-                    )))
-            )),
-            inline("FeedRebuildNeeded", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                field("homeFeed", "feed", notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("items", "items", notNull(list(notNull(obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                fragment("FeedItem", FeedItemFullSelector)
-                            ))))),
-                        field("cursor", "cursor", scalar("String"))
-                    )))
-            ))
         )
 
 internal val MediaStreamFullSelector = obj(
@@ -1367,13 +1259,6 @@ internal val NotificationFragmentSelector = obj(
                                             field("chat", "chat", notNull(obj(
                                                     field("__typename", "__typename", notNull(scalar("String"))),
                                                     fragment("Room", RoomNanoSelector)
-                                                )))
-                                        )),
-                                        inline("CommentPeerRootFeedItem", obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("item", "item", notNull(obj(
-                                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                                    fragment("FeedItem", FeedItemFullSelector)
                                                 )))
                                         )),
                                         inline("CommentPeerRootDiscussion", obj(
@@ -1472,13 +1357,6 @@ internal val NotificationCenterUpdateFragmentSelector = obj(
                                                 field("chat", "chat", notNull(obj(
                                                         field("__typename", "__typename", notNull(scalar("String"))),
                                                         fragment("Room", RoomNanoSelector)
-                                                    )))
-                                            )),
-                                            inline("CommentPeerRootFeedItem", obj(
-                                                field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("item", "item", notNull(obj(
-                                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                                        fragment("FeedItem", FeedItemFullSelector)
                                                     )))
                                             )),
                                             inline("CommentPeerRootDiscussion", obj(

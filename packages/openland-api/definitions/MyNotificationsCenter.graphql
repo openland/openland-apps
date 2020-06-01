@@ -27,12 +27,7 @@ fragment NotificationFragment on Notification {
                         chat {
                             ...RoomNano
                         }
-                    }
-                    ... on CommentPeerRootFeedItem {
-                        item {
-                            ...FeedItemFull
-                        }
-                    }
+                    }                   
                     ... on CommentPeerRootDiscussion {
                         discussion {
                             id
@@ -111,11 +106,6 @@ fragment NotificationCenterUpdateFragment on NotificationCenterUpdate {
                             }
                             chat {
                                 ...RoomNano
-                            }
-                        }
-                        ... on CommentPeerRootFeedItem {
-                            item {
-                                ...FeedItemFull
                             }
                         }
                         ... on CommentPeerRootDiscussion {

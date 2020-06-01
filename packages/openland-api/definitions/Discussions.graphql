@@ -39,10 +39,42 @@ fragment ParagraphSimple on Paragraph {
         }
     }
     ... on ImageParagraph {
+        url
         image {
             uuid
         }
+        fileMetadata {
+            isImage
+            imageWidth
+            imageHeight
+            imageFormat
+        }
     }
+    ... on H1Paragraph {
+        text
+    }
+    ... on H2Paragraph {
+        text
+    }
+}
+
+fragment DiscussionDraftSimple on DiscussionDraft {
+    id
+    title
+    content {
+       ...ParagraphSimple
+    }
+    publishedCopy {
+        id
+    }
+    hub {
+        id
+        title
+        shortname
+    }
+    createdAt
+    updatedAt
+    deletedAt
 }
 
 fragment DiscussionSimple on Discussion {
@@ -52,13 +84,23 @@ fragment DiscussionSimple on Discussion {
        ...ParagraphSimple
     }
     hub {
-        ...HubSimple
+        id
+        title
+        shortname
     }
     author {
         id
         name
     }
+
+    draft {
+        id
+    }
+    canEdit
+
     createdAt
+    updatedAt
+    deletedAt
 }
 
 query Discussions($hubs: [ID!]!, $after: String) {
@@ -73,26 +115,32 @@ query Discussions($hubs: [ID!]!, $after: String) {
 query DiscussionDrafts($after: String) {
     discussionMyDrafts(first: 20, after: $after) {
         items {
-            ...DiscussionSimple
+            ...DiscussionDraftSimple
         }
         cursor   
     }
 }
 
-query Discussion($id: ID!) {
-    discussion(id: $id) {
-        ...DiscussionSimple
+query DiscussionDraft($id: ID!) {
+    discussionDraft(id: $id) {
+        ...DiscussionDraftSimple
     }
 }
 
 mutation DiscussionCreateDraft {
-    discussionCreate(isDraft: true, input: {  }) {
-        ...DiscussionSimple
+    discussionCreate(input: {  }) {
+        ...DiscussionDraftSimple
     }
 }
 
-mutation DiscussionUpdate($id: ID!, $title: String!, $content: [DiscussionContentInput!]) {
-    discussionUpdate(id: $id, input: { title: $title, content: $content }) {
+mutation DiscussionUpdate($id: ID!, $hub: ID, $title: String!, $content: [DiscussionContentInput!]) {
+    discussionUpdate(id: $id, input: { hub: $hub, title: $title, content: $content }) {
+        ...DiscussionDraftSimple
+    }
+}
+
+mutation DiscussionPublish($id: ID!) {
+    discussionDraftPublish(draftId: $id) {
         ...DiscussionSimple
     }
 }

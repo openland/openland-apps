@@ -709,6 +709,8 @@ type Discussion {
   author: User
   title: String!
   content: [Paragraph!]!
+  draft: DiscussionDraft
+  canEdit: Boolean!
   hub: Hub
   createdAt: Date!
   updatedAt: Date
@@ -730,6 +732,25 @@ input DiscussionContentInput {
 enum DiscussionContentType {
   Text
   Image
+  H1
+  H2
+}
+
+type DiscussionDraft {
+  id: ID!
+  author: User
+  title: String!
+  content: [Paragraph!]!
+  publishedCopy: Discussion
+  hub: Hub
+  createdAt: Date!
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type DiscussionDraftConnection {
+  items: [DiscussionDraft!]!
+  cursor: String
 }
 
 input DiscussionInput {
@@ -1036,6 +1057,14 @@ type GroupConversationMember {
   role: String!
 }
 
+type H1Paragraph {
+  text: String!
+}
+
+type H2Paragraph {
+  text: String!
+}
+
 type Hub {
   id: ID!
   title: String!
@@ -1093,7 +1122,9 @@ type ImageFallback {
 }
 
 type ImageParagraph {
+  url: String!
   image: ImageRef!
+  fileMetadata: FileMetadata!
 }
 
 type ImageRef {
@@ -1870,9 +1901,9 @@ type Mutation {
   mediaStreamAnswer(id: ID!, peerId: ID!, answer: String!, seq: Int): ConferenceMedia!
   mediaStreamCandidate(id: ID!, peerId: ID!, candidate: String!): ConferenceMedia!
   mediaStreamFailed(id: ID!, peerId: ID!): ConferenceMedia!
-  discussionCreate(input: DiscussionInput!, isDraft: Boolean!): Discussion!
+  discussionCreate(input: DiscussionInput!): DiscussionDraft!
+  discussionUpdate(id: ID!, input: DiscussionInput!): DiscussionDraft!
   discussionDraftPublish(draftId: ID!): Discussion!
-  discussionUpdate(id: ID!, input: DiscussionInput!): Discussion!
   discussionsDropAll: Boolean!
   setEnvVar(name: String!, value: String!): Boolean!
   setEnvVarString(name: String!, value: String!): Boolean!
@@ -2287,7 +2318,7 @@ type PageInfo {
   openEnded: Boolean!
 }
 
-union Paragraph = TextParagraph | ImageParagraph
+union Paragraph = TextParagraph | ImageParagraph | H1Paragraph | H2Paragraph
 
 type Payment {
   id: ID!
@@ -2616,8 +2647,9 @@ type Query {
   conferenceMedia(id: ID!, peerId: ID!): ConferenceMedia!
   dialogsState: DialogUpdateState!
   discussion(id: ID!): Discussion
-  discussions(hubs: [ID!]!, first: Int!, after: String): DiscussionConnection!
-  discussionMyDrafts(first: Int!, after: String): DiscussionConnection!
+  discussionDraft(id: ID!): DiscussionDraft
+  discussions(hubs: [ID!], first: Int!, after: String): DiscussionConnection!
+  discussionMyDrafts(first: Int!, after: String): DiscussionDraftConnection!
   envVars: [EnvVar!]
   envVar(name: String!): EnvVar
   featureFlags: [FeatureFlag!]!

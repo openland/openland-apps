@@ -100,8 +100,8 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: OperationParameters): Promise<Types.DiscoverTopPremium> {
         return this.query('DiscoverTopPremium', variables, opts);
     }
-    queryDiscussion(variables: Types.DiscussionVariables, opts?: OperationParameters): Promise<Types.Discussion> {
-        return this.query('Discussion', variables, opts);
+    queryDiscussionDraft(variables: Types.DiscussionDraftVariables, opts?: OperationParameters): Promise<Types.DiscussionDraft> {
+        return this.query('DiscussionDraft', variables, opts);
     }
     queryDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts?: OperationParameters): Promise<Types.DiscussionDrafts> {
         return this.query('DiscussionDrafts', variables, opts);
@@ -117,36 +117,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryFeatureFlags(opts?: OperationParameters): Promise<Types.FeatureFlags> {
         return this.query('FeatureFlags', undefined, opts);
-    }
-    queryFeedChannel(variables: Types.FeedChannelVariables, opts?: OperationParameters): Promise<Types.FeedChannel> {
-        return this.query('FeedChannel', variables, opts);
-    }
-    queryFeedChannelContent(variables: Types.FeedChannelContentVariables, opts?: OperationParameters): Promise<Types.FeedChannelContent> {
-        return this.query('FeedChannelContent', variables, opts);
-    }
-    queryFeedChannelSubscribers(variables: Types.FeedChannelSubscribersVariables, opts?: OperationParameters): Promise<Types.FeedChannelSubscribers> {
-        return this.query('FeedChannelSubscribers', variables, opts);
-    }
-    queryFeedChannelWriters(variables: Types.FeedChannelWritersVariables, opts?: OperationParameters): Promise<Types.FeedChannelWriters> {
-        return this.query('FeedChannelWriters', variables, opts);
-    }
-    queryFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts?: OperationParameters): Promise<Types.FeedChannelsSearch> {
-        return this.query('FeedChannelsSearch', variables, opts);
-    }
-    queryFeedItem(variables: Types.FeedItemVariables, opts?: OperationParameters): Promise<Types.FeedItem> {
-        return this.query('FeedItem', variables, opts);
-    }
-    queryFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts?: OperationParameters): Promise<Types.FeedLoadMore> {
-        return this.query('FeedLoadMore', variables, opts);
-    }
-    queryFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, opts?: OperationParameters): Promise<Types.FeedRecommendedChannels> {
-        return this.query('FeedRecommendedChannels', variables, opts);
-    }
-    queryFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, opts?: OperationParameters): Promise<Types.FeedSubscriptions> {
-        return this.query('FeedSubscriptions', variables, opts);
-    }
-    queryFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts?: OperationParameters): Promise<Types.FeedWritableChannels> {
-        return this.query('FeedWritableChannels', variables, opts);
     }
     queryFetchPushSettings(opts?: OperationParameters): Promise<Types.FetchPushSettings> {
         return this.query('FetchPushSettings', undefined, opts);
@@ -165,9 +135,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryHubs(opts?: OperationParameters): Promise<Types.Hubs> {
         return this.query('Hubs', undefined, opts);
-    }
-    queryInitFeed(variables: Types.InitFeedVariables, opts?: OperationParameters): Promise<Types.InitFeed> {
-        return this.query('InitFeed', variables, opts);
     }
     queryMessage(variables: Types.MessageVariables, opts?: OperationParameters): Promise<Types.Message> {
         return this.query('Message', variables, opts);
@@ -430,8 +397,8 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: OperationParameters): Promise<Types.DiscoverTopPremium> {
         return this.refetch('DiscoverTopPremium', variables);
     }
-    refetchDiscussion(variables: Types.DiscussionVariables, opts?: OperationParameters): Promise<Types.Discussion> {
-        return this.refetch('Discussion', variables);
+    refetchDiscussionDraft(variables: Types.DiscussionDraftVariables, opts?: OperationParameters): Promise<Types.DiscussionDraft> {
+        return this.refetch('DiscussionDraft', variables);
     }
     refetchDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts?: OperationParameters): Promise<Types.DiscussionDrafts> {
         return this.refetch('DiscussionDrafts', variables);
@@ -447,36 +414,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchFeatureFlags(opts?: OperationParameters): Promise<Types.FeatureFlags> {
         return this.refetch('FeatureFlags', undefined);
-    }
-    refetchFeedChannel(variables: Types.FeedChannelVariables, opts?: OperationParameters): Promise<Types.FeedChannel> {
-        return this.refetch('FeedChannel', variables);
-    }
-    refetchFeedChannelContent(variables: Types.FeedChannelContentVariables, opts?: OperationParameters): Promise<Types.FeedChannelContent> {
-        return this.refetch('FeedChannelContent', variables);
-    }
-    refetchFeedChannelSubscribers(variables: Types.FeedChannelSubscribersVariables, opts?: OperationParameters): Promise<Types.FeedChannelSubscribers> {
-        return this.refetch('FeedChannelSubscribers', variables);
-    }
-    refetchFeedChannelWriters(variables: Types.FeedChannelWritersVariables, opts?: OperationParameters): Promise<Types.FeedChannelWriters> {
-        return this.refetch('FeedChannelWriters', variables);
-    }
-    refetchFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts?: OperationParameters): Promise<Types.FeedChannelsSearch> {
-        return this.refetch('FeedChannelsSearch', variables);
-    }
-    refetchFeedItem(variables: Types.FeedItemVariables, opts?: OperationParameters): Promise<Types.FeedItem> {
-        return this.refetch('FeedItem', variables);
-    }
-    refetchFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts?: OperationParameters): Promise<Types.FeedLoadMore> {
-        return this.refetch('FeedLoadMore', variables);
-    }
-    refetchFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, opts?: OperationParameters): Promise<Types.FeedRecommendedChannels> {
-        return this.refetch('FeedRecommendedChannels', variables);
-    }
-    refetchFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, opts?: OperationParameters): Promise<Types.FeedSubscriptions> {
-        return this.refetch('FeedSubscriptions', variables);
-    }
-    refetchFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts?: OperationParameters): Promise<Types.FeedWritableChannels> {
-        return this.refetch('FeedWritableChannels', variables);
     }
     refetchFetchPushSettings(opts?: OperationParameters): Promise<Types.FetchPushSettings> {
         return this.refetch('FetchPushSettings', undefined);
@@ -495,9 +432,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchHubs(opts?: OperationParameters): Promise<Types.Hubs> {
         return this.refetch('Hubs', undefined);
-    }
-    refetchInitFeed(variables: Types.InitFeedVariables, opts?: OperationParameters): Promise<Types.InitFeed> {
-        return this.refetch('InitFeed', variables);
     }
     refetchMessage(variables: Types.MessageVariables, opts?: OperationParameters): Promise<Types.Message> {
         return this.refetch('Message', variables);
@@ -760,8 +694,8 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, updater: (data: Types.DiscoverTopPremium) => Types.DiscoverTopPremium | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverTopPremium', variables);
     }
-    updateDiscussion(variables: Types.DiscussionVariables, updater: (data: Types.Discussion) => Types.Discussion | null): Promise<boolean> {
-        return this.updateQuery(updater, 'Discussion', variables);
+    updateDiscussionDraft(variables: Types.DiscussionDraftVariables, updater: (data: Types.DiscussionDraft) => Types.DiscussionDraft | null): Promise<boolean> {
+        return this.updateQuery(updater, 'DiscussionDraft', variables);
     }
     updateDiscussionDrafts(variables: Types.DiscussionDraftsVariables, updater: (data: Types.DiscussionDrafts) => Types.DiscussionDrafts | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscussionDrafts', variables);
@@ -777,36 +711,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateFeatureFlags(updater: (data: Types.FeatureFlags) => Types.FeatureFlags | null): Promise<boolean> {
         return this.updateQuery(updater, 'FeatureFlags', undefined);
-    }
-    updateFeedChannel(variables: Types.FeedChannelVariables, updater: (data: Types.FeedChannel) => Types.FeedChannel | null): Promise<boolean> {
-        return this.updateQuery(updater, 'FeedChannel', variables);
-    }
-    updateFeedChannelContent(variables: Types.FeedChannelContentVariables, updater: (data: Types.FeedChannelContent) => Types.FeedChannelContent | null): Promise<boolean> {
-        return this.updateQuery(updater, 'FeedChannelContent', variables);
-    }
-    updateFeedChannelSubscribers(variables: Types.FeedChannelSubscribersVariables, updater: (data: Types.FeedChannelSubscribers) => Types.FeedChannelSubscribers | null): Promise<boolean> {
-        return this.updateQuery(updater, 'FeedChannelSubscribers', variables);
-    }
-    updateFeedChannelWriters(variables: Types.FeedChannelWritersVariables, updater: (data: Types.FeedChannelWriters) => Types.FeedChannelWriters | null): Promise<boolean> {
-        return this.updateQuery(updater, 'FeedChannelWriters', variables);
-    }
-    updateFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, updater: (data: Types.FeedChannelsSearch) => Types.FeedChannelsSearch | null): Promise<boolean> {
-        return this.updateQuery(updater, 'FeedChannelsSearch', variables);
-    }
-    updateFeedItem(variables: Types.FeedItemVariables, updater: (data: Types.FeedItem) => Types.FeedItem | null): Promise<boolean> {
-        return this.updateQuery(updater, 'FeedItem', variables);
-    }
-    updateFeedLoadMore(variables: Types.FeedLoadMoreVariables, updater: (data: Types.FeedLoadMore) => Types.FeedLoadMore | null): Promise<boolean> {
-        return this.updateQuery(updater, 'FeedLoadMore', variables);
-    }
-    updateFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, updater: (data: Types.FeedRecommendedChannels) => Types.FeedRecommendedChannels | null): Promise<boolean> {
-        return this.updateQuery(updater, 'FeedRecommendedChannels', variables);
-    }
-    updateFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, updater: (data: Types.FeedSubscriptions) => Types.FeedSubscriptions | null): Promise<boolean> {
-        return this.updateQuery(updater, 'FeedSubscriptions', variables);
-    }
-    updateFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, updater: (data: Types.FeedWritableChannels) => Types.FeedWritableChannels | null): Promise<boolean> {
-        return this.updateQuery(updater, 'FeedWritableChannels', variables);
     }
     updateFetchPushSettings(updater: (data: Types.FetchPushSettings) => Types.FetchPushSettings | null): Promise<boolean> {
         return this.updateQuery(updater, 'FetchPushSettings', undefined);
@@ -825,9 +729,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateHubs(updater: (data: Types.Hubs) => Types.Hubs | null): Promise<boolean> {
         return this.updateQuery(updater, 'Hubs', undefined);
-    }
-    updateInitFeed(variables: Types.InitFeedVariables, updater: (data: Types.InitFeed) => Types.InitFeed | null): Promise<boolean> {
-        return this.updateQuery(updater, 'InitFeed', variables);
     }
     updateMessage(variables: Types.MessageVariables, updater: (data: Types.Message) => Types.Message | null): Promise<boolean> {
         return this.updateQuery(updater, 'Message', variables);
@@ -1152,10 +1053,10 @@ export class OpenlandClient extends BaseSpaceXClient {
     useDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverTopPremium | null {
         return this.useQuery('DiscoverTopPremium', variables, opts);
     }
-    useDiscussion(variables: Types.DiscussionVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Discussion | null;
-    useDiscussion(variables: Types.DiscussionVariables, opts?: SpaceQueryWatchParameters): Types.Discussion;
-    useDiscussion(variables: Types.DiscussionVariables, opts?: SpaceQueryWatchParameters): Types.Discussion | null {
-        return this.useQuery('Discussion', variables, opts);
+    useDiscussionDraft(variables: Types.DiscussionDraftVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscussionDraft | null;
+    useDiscussionDraft(variables: Types.DiscussionDraftVariables, opts?: SpaceQueryWatchParameters): Types.DiscussionDraft;
+    useDiscussionDraft(variables: Types.DiscussionDraftVariables, opts?: SpaceQueryWatchParameters): Types.DiscussionDraft | null {
+        return this.useQuery('DiscussionDraft', variables, opts);
     }
     useDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscussionDrafts | null;
     useDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts?: SpaceQueryWatchParameters): Types.DiscussionDrafts;
@@ -1181,56 +1082,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useFeatureFlags(opts?: SpaceQueryWatchParameters): Types.FeatureFlags;
     useFeatureFlags(opts?: SpaceQueryWatchParameters): Types.FeatureFlags | null {
         return this.useQuery('FeatureFlags', undefined, opts);
-    }
-    useFeedChannel(variables: Types.FeedChannelVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedChannel | null;
-    useFeedChannel(variables: Types.FeedChannelVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannel;
-    useFeedChannel(variables: Types.FeedChannelVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannel | null {
-        return this.useQuery('FeedChannel', variables, opts);
-    }
-    useFeedChannelContent(variables: Types.FeedChannelContentVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedChannelContent | null;
-    useFeedChannelContent(variables: Types.FeedChannelContentVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannelContent;
-    useFeedChannelContent(variables: Types.FeedChannelContentVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannelContent | null {
-        return this.useQuery('FeedChannelContent', variables, opts);
-    }
-    useFeedChannelSubscribers(variables: Types.FeedChannelSubscribersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedChannelSubscribers | null;
-    useFeedChannelSubscribers(variables: Types.FeedChannelSubscribersVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannelSubscribers;
-    useFeedChannelSubscribers(variables: Types.FeedChannelSubscribersVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannelSubscribers | null {
-        return this.useQuery('FeedChannelSubscribers', variables, opts);
-    }
-    useFeedChannelWriters(variables: Types.FeedChannelWritersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedChannelWriters | null;
-    useFeedChannelWriters(variables: Types.FeedChannelWritersVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannelWriters;
-    useFeedChannelWriters(variables: Types.FeedChannelWritersVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannelWriters | null {
-        return this.useQuery('FeedChannelWriters', variables, opts);
-    }
-    useFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedChannelsSearch | null;
-    useFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannelsSearch;
-    useFeedChannelsSearch(variables: Types.FeedChannelsSearchVariables, opts?: SpaceQueryWatchParameters): Types.FeedChannelsSearch | null {
-        return this.useQuery('FeedChannelsSearch', variables, opts);
-    }
-    useFeedItem(variables: Types.FeedItemVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedItem | null;
-    useFeedItem(variables: Types.FeedItemVariables, opts?: SpaceQueryWatchParameters): Types.FeedItem;
-    useFeedItem(variables: Types.FeedItemVariables, opts?: SpaceQueryWatchParameters): Types.FeedItem | null {
-        return this.useQuery('FeedItem', variables, opts);
-    }
-    useFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedLoadMore | null;
-    useFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts?: SpaceQueryWatchParameters): Types.FeedLoadMore;
-    useFeedLoadMore(variables: Types.FeedLoadMoreVariables, opts?: SpaceQueryWatchParameters): Types.FeedLoadMore | null {
-        return this.useQuery('FeedLoadMore', variables, opts);
-    }
-    useFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedRecommendedChannels | null;
-    useFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, opts?: SpaceQueryWatchParameters): Types.FeedRecommendedChannels;
-    useFeedRecommendedChannels(variables: Types.FeedRecommendedChannelsVariables, opts?: SpaceQueryWatchParameters): Types.FeedRecommendedChannels | null {
-        return this.useQuery('FeedRecommendedChannels', variables, opts);
-    }
-    useFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedSubscriptions | null;
-    useFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, opts?: SpaceQueryWatchParameters): Types.FeedSubscriptions;
-    useFeedSubscriptions(variables: Types.FeedSubscriptionsVariables, opts?: SpaceQueryWatchParameters): Types.FeedSubscriptions | null {
-        return this.useQuery('FeedSubscriptions', variables, opts);
-    }
-    useFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeedWritableChannels | null;
-    useFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts?: SpaceQueryWatchParameters): Types.FeedWritableChannels;
-    useFeedWritableChannels(variables: Types.FeedWritableChannelsVariables, opts?: SpaceQueryWatchParameters): Types.FeedWritableChannels | null {
-        return this.useQuery('FeedWritableChannels', variables, opts);
     }
     useFetchPushSettings(opts: SpaceQueryWatchParameters & { suspense: false }): Types.FetchPushSettings | null;
     useFetchPushSettings(opts?: SpaceQueryWatchParameters): Types.FetchPushSettings;
@@ -1261,11 +1112,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useHubs(opts?: SpaceQueryWatchParameters): Types.Hubs;
     useHubs(opts?: SpaceQueryWatchParameters): Types.Hubs | null {
         return this.useQuery('Hubs', undefined, opts);
-    }
-    useInitFeed(variables: Types.InitFeedVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.InitFeed | null;
-    useInitFeed(variables: Types.InitFeedVariables, opts?: SpaceQueryWatchParameters): Types.InitFeed;
-    useInitFeed(variables: Types.InitFeedVariables, opts?: SpaceQueryWatchParameters): Types.InitFeed | null {
-        return this.useQuery('InitFeed', variables, opts);
     }
     useMessage(variables: Types.MessageVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Message | null;
     useMessage(variables: Types.MessageVariables, opts?: SpaceQueryWatchParameters): Types.Message;
@@ -1646,6 +1492,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateDiscussionCreateDraft(): Promise<Types.DiscussionCreateDraft> {
         return this.mutate('DiscussionCreateDraft');
     }
+    mutateDiscussionPublish(variables: Types.DiscussionPublishVariables): Promise<Types.DiscussionPublish> {
+        return this.mutate('DiscussionPublish', variables);
+    }
     mutateDiscussionUpdate(variables: Types.DiscussionUpdateVariables): Promise<Types.DiscussionUpdate> {
         return this.mutate('DiscussionUpdate', variables);
     }
@@ -1663,39 +1512,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateFeatureFlagEnable(variables: Types.FeatureFlagEnableVariables): Promise<Types.FeatureFlagEnable> {
         return this.mutate('FeatureFlagEnable', variables);
-    }
-    mutateFeedChannelAddWriter(variables: Types.FeedChannelAddWriterVariables): Promise<Types.FeedChannelAddWriter> {
-        return this.mutate('FeedChannelAddWriter', variables);
-    }
-    mutateFeedChannelCreate(variables: Types.FeedChannelCreateVariables): Promise<Types.FeedChannelCreate> {
-        return this.mutate('FeedChannelCreate', variables);
-    }
-    mutateFeedChannelRemoveWriter(variables: Types.FeedChannelRemoveWriterVariables): Promise<Types.FeedChannelRemoveWriter> {
-        return this.mutate('FeedChannelRemoveWriter', variables);
-    }
-    mutateFeedChannelSubscribe(variables: Types.FeedChannelSubscribeVariables): Promise<Types.FeedChannelSubscribe> {
-        return this.mutate('FeedChannelSubscribe', variables);
-    }
-    mutateFeedChannelUnsubscribe(variables: Types.FeedChannelUnsubscribeVariables): Promise<Types.FeedChannelUnsubscribe> {
-        return this.mutate('FeedChannelUnsubscribe', variables);
-    }
-    mutateFeedChannelUpdate(variables: Types.FeedChannelUpdateVariables): Promise<Types.FeedChannelUpdate> {
-        return this.mutate('FeedChannelUpdate', variables);
-    }
-    mutateFeedCreatePost(variables: Types.FeedCreatePostVariables): Promise<Types.FeedCreatePost> {
-        return this.mutate('FeedCreatePost', variables);
-    }
-    mutateFeedDeletePost(variables: Types.FeedDeletePostVariables): Promise<Types.FeedDeletePost> {
-        return this.mutate('FeedDeletePost', variables);
-    }
-    mutateFeedEditPost(variables: Types.FeedEditPostVariables): Promise<Types.FeedEditPost> {
-        return this.mutate('FeedEditPost', variables);
-    }
-    mutateFeedReactionAdd(variables: Types.FeedReactionAddVariables): Promise<Types.FeedReactionAdd> {
-        return this.mutate('FeedReactionAdd', variables);
-    }
-    mutateFeedReactionRemove(variables: Types.FeedReactionRemoveVariables): Promise<Types.FeedReactionRemove> {
-        return this.mutate('FeedReactionRemove', variables);
     }
     mutateGlobalEventBusPublish(variables: Types.GlobalEventBusPublishVariables): Promise<Types.GlobalEventBusPublish> {
         return this.mutate('GlobalEventBusPublish', variables);
@@ -1960,9 +1776,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     subscribeDialogsWatch(variables: Types.DialogsWatchVariables, handler: GraphqlSubscriptionHandler<Types.DialogsWatch>): GraphqlActiveSubscription<Types.DialogsWatch> {
         return this.subscribe(handler, 'DialogsWatch', variables);
-    }
-    subscribeFeedUpdates(variables: Types.FeedUpdatesVariables, handler: GraphqlSubscriptionHandler<Types.FeedUpdates>): GraphqlActiveSubscription<Types.FeedUpdates> {
-        return this.subscribe(handler, 'FeedUpdates', variables);
     }
     subscribeGlobalEventBus(variables: Types.GlobalEventBusVariables, handler: GraphqlSubscriptionHandler<Types.GlobalEventBus>): GraphqlActiveSubscription<Types.GlobalEventBus> {
         return this.subscribe(handler, 'GlobalEventBus', variables);

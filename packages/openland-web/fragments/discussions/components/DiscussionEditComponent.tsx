@@ -1,12 +1,16 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { URickInput } from 'openland-web/components/unicorn/URickInput';
-import { DiscussionSimple, DiscussionContentInput, DiscussionContentType, MessageSpanType } from 'openland-api/spacex.types';
+import { DiscussionDraftSimple, DiscussionContentInput, DiscussionContentType, MessageSpanType } from 'openland-api/spacex.types';
 import { InvalidateSync } from '@openland/patterns';
 import { URickTextArea, URichTextAreaValue, URichTextAreaInstance, URichTextSpan } from 'openland-web/components/unicorn/URichTextArea';
 import { useClient } from 'openland-api/useClient';
+import { UButton } from 'openland-web/components/unicorn/UButton';
+import { TextStyles } from 'openland-web/utils/TextStyles';
+import { UHeader } from 'openland-unicorn/UHeader';
+import { USelect, OptionType } from 'openland-web/components/unicorn/USelect';
 
-export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimple }) => {
+export const DiscussionEditComponent = React.memo((props: { data: DiscussionDraftSimple }) => {
     const initial = React.useMemo(() => props.data, []);
     const initialParagraph = React.useMemo(() => {
         const res: URichTextAreaValue = [];
@@ -23,7 +27,11 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
                 }
                 res.push({ type: 'paragraph', text: r.text, spans });
             } else if (r.__typename === 'ImageParagraph') {
-                res.push({ type: 'image', id: r.image.uuid, width: 100, height: 100 });
+                res.push({ type: 'image', id: r.image.uuid, width: r.fileMetadata.imageWidth!, height: r.fileMetadata.imageHeight! });
+            } else if (r.__typename === 'H1Paragraph') {
+                res.push({ type: 'header1', text: r.text });
+            } else if (r.__typename === 'H2Paragraph') {
+                res.push({ type: 'header2', text: r.text });
             } else {
                 throw Error('Unsupported');
             }
@@ -33,13 +41,15 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
     }, []);
     const contentRef = React.useRef<URichTextAreaInstance>(null);
     const client = useClient();
+    const hubs = client.useHubs().hubs;
 
     // Sync
     const [saving, setSaving] = React.useState(false);
     const syncData = React.useRef<{
         title: string,
-        content: URichTextAreaValue
-    }>({ title: initial.title, content: initialParagraph });
+        content: URichTextAreaValue,
+        hub: string | null
+    }>({ title: initial.title, content: initialParagraph, hub: props.data.hub ? props.data.hub.id : null });
     const sync = React.useMemo(() => {
         return new InvalidateSync(async () => {
 
@@ -54,6 +64,7 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
             setSaving(true);
             let title = syncData.current.title;
             let content: DiscussionContentInput[] = [];
+            let hubId = syncData.current.hub;
             for (let c of syncData.current.content) {
                 if (c.type === 'paragraph') {
                     content.push({
@@ -72,10 +83,20 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
                             uuid: c.id!
                         }
                     });
+                } else if (c.type === 'header1') {
+                    content.push({
+                        type: DiscussionContentType.H1,
+                        text: c.text
+                    });
+                } else if (c.type === 'header2') {
+                    content.push({
+                        type: DiscussionContentType.H1,
+                        text: c.text
+                    });
                 }
             }
             console.warn(content);
-            await client.mutateDiscussionUpdate({ id: initial.id, title, content });
+            await client.mutateDiscussionUpdate({ id: initial.id, title, content, hub: hubId });
             setSaving(false);
         });
     }, []);
@@ -90,10 +111,37 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionSimp
         syncData.current.content = src;
         sync.invalidate();
     }, []);
+    const onHubChange = React.useCallback((src: string) => {
+        syncData.current.hub = src;
+        sync.invalidate();
+    }, []);
+
+    const publish = React.useCallback(() => {
+        client.mutateDiscussionPublish({ id: props.data.id });
+    }, []);
+
+    const pageTitle = (
+        <XView flexDirection="row" alignSelf="center" flexGrow={1} flexShrink={1}>
+            <XView flexGrow={1} {...TextStyles.Title1} alignSelf="center">Post</XView>
+            <UButton text="Publish" onClick={publish} alignSelf="flex-start" />
+        </XView>
+    );
+
+    const [hub, setHub] = React.useState(props.data.hub ? props.data.hub.id : null);
 
     return (
         <XView flexDirection="row" alignItems="flex-start" justifyContent="center" paddingRight={56}>
+            <UHeader title="Drafts" titleView={pageTitle} appearance="fullwidth" maxWidth={824} />
             <XView flexGrow={1} flexShrink={1} maxWidth={824} paddingHorizontal={16}>
+                <USelect
+                    label="Channel"
+                    options={hubs.map((v) => ({ value: v.id, label: v.title }))}
+                    value={hub ? [{ value: hub, label: hubs.find((v) => v.id === hub)!.title }] : null}
+                    onChange={(v: OptionType) => {
+                        setHub(v.value as string | null);
+                        onHubChange(v.value as string);
+                    }}
+                />
                 <XView>{saving ? 'Saving...' : 'Saved'}</XView>
                 <XView>
                     <URickInput

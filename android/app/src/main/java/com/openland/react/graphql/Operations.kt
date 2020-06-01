@@ -38,29 +38,18 @@ object Operations {
         if (name == "DiscoverSuggestedRooms") return DiscoverSuggestedRooms
         if (name == "DiscoverTopFree") return DiscoverTopFree
         if (name == "DiscoverTopPremium") return DiscoverTopPremium
-        if (name == "Discussion") return Discussion
+        if (name == "DiscussionDraft") return DiscussionDraft
         if (name == "DiscussionDrafts") return DiscussionDrafts
         if (name == "Discussions") return Discussions
         if (name == "ExplorePeople") return ExplorePeople
         if (name == "ExploreRooms") return ExploreRooms
         if (name == "FeatureFlags") return FeatureFlags
-        if (name == "FeedChannel") return FeedChannel
-        if (name == "FeedChannelContent") return FeedChannelContent
-        if (name == "FeedChannelSubscribers") return FeedChannelSubscribers
-        if (name == "FeedChannelWriters") return FeedChannelWriters
-        if (name == "FeedChannelsSearch") return FeedChannelsSearch
-        if (name == "FeedItem") return FeedItem
-        if (name == "FeedLoadMore") return FeedLoadMore
-        if (name == "FeedRecommendedChannels") return FeedRecommendedChannels
-        if (name == "FeedSubscriptions") return FeedSubscriptions
-        if (name == "FeedWritableChannels") return FeedWritableChannels
         if (name == "FetchPushSettings") return FetchPushSettings
         if (name == "GlobalCounter") return GlobalCounter
         if (name == "GlobalSearch") return GlobalSearch
         if (name == "GroupScreenViews") return GroupScreenViews
         if (name == "Hub") return Hub
         if (name == "Hubs") return Hubs
-        if (name == "InitFeed") return InitFeed
         if (name == "Message") return Message
         if (name == "MessagesBatch") return MessagesBatch
         if (name == "MessagesSearch") return MessagesSearch
@@ -150,23 +139,13 @@ object Operations {
         if (name == "DiscoverEditorsChoiceDelete") return DiscoverEditorsChoiceDelete
         if (name == "DiscoverEditorsChoiceUpdate") return DiscoverEditorsChoiceUpdate
         if (name == "DiscussionCreateDraft") return DiscussionCreateDraft
+        if (name == "DiscussionPublish") return DiscussionPublish
         if (name == "DiscussionUpdate") return DiscussionUpdate
         if (name == "EditComment") return EditComment
         if (name == "EditMessage") return EditMessage
         if (name == "FeatureFlagAdd") return FeatureFlagAdd
         if (name == "FeatureFlagDisable") return FeatureFlagDisable
         if (name == "FeatureFlagEnable") return FeatureFlagEnable
-        if (name == "FeedChannelAddWriter") return FeedChannelAddWriter
-        if (name == "FeedChannelCreate") return FeedChannelCreate
-        if (name == "FeedChannelRemoveWriter") return FeedChannelRemoveWriter
-        if (name == "FeedChannelSubscribe") return FeedChannelSubscribe
-        if (name == "FeedChannelUnsubscribe") return FeedChannelUnsubscribe
-        if (name == "FeedChannelUpdate") return FeedChannelUpdate
-        if (name == "FeedCreatePost") return FeedCreatePost
-        if (name == "FeedDeletePost") return FeedDeletePost
-        if (name == "FeedEditPost") return FeedEditPost
-        if (name == "FeedReactionAdd") return FeedReactionAdd
-        if (name == "FeedReactionRemove") return FeedReactionRemove
         if (name == "GlobalEventBusPublish") return GlobalEventBusPublish
         if (name == "MakeCardDefault") return MakeCardDefault
         if (name == "MarkSequenceRead") return MarkSequenceRead
@@ -255,7 +234,6 @@ object Operations {
         if (name == "ConferenceWatch") return ConferenceWatch
         if (name == "DebugEventsWatch") return DebugEventsWatch
         if (name == "DialogsWatch") return DialogsWatch
-        if (name == "FeedUpdates") return FeedUpdates
         if (name == "GlobalEventBus") return GlobalEventBus
         if (name == "MyNotificationsCenter") return MyNotificationsCenter
         if (name == "OnlineWatch") return OnlineWatch
