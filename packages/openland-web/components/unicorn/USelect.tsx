@@ -289,6 +289,9 @@ interface USelectBasicProps {
     invalid?: boolean;
     useMenuPortal?: boolean;
     autoFocus?: boolean;
+    onFocus?: () => void;
+    onBlur?: () => void;
+    onMenuClose?: () => void;
 }
 
 export interface USelectProps extends USelectBasicProps, XViewProps {
@@ -315,6 +318,9 @@ export const USelect = React.memo(
             invalid,
             useMenuPortal,
             autoFocus,
+            onBlur,
+            onFocus,
+            onMenuClose,
             ...xViewProps
         } = props;
 
@@ -367,13 +373,16 @@ export const USelect = React.memo(
                         ClearIndicator: ClearIndicatorComponent,
                         MultiValueLabel: MultiValueLabelComponent,
                     }}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                    onMenuClose={onMenuClose}
                 />
                 {!multi && size === 'default' && (
                     <div
                         className={cx(
                             placeholderStyle,
                             (Array.isArray(value) ? !!value.length : !!value) &&
-                                placeholderValueStyle,
+                            placeholderValueStyle,
                             invalid && placeholderInvalidStyle,
                         )}
                     >

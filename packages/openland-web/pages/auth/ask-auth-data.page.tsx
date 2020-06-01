@@ -101,10 +101,14 @@ const WebSignUpCreateWithEmail = (
 
     const errorText = (dataField.input.invalid && dataField.input.errorText) || authError;
     const isInvalid = !!errorText;
+    const countryMenuFocused = React.useRef(false);
 
     const [shakeClassName, shake] = useShake();
 
     const handleNext = React.useCallback(() => {
+        if (countryMenuFocused.current) {
+            return;
+        }
         if (dataField.input.value.trim() === '' || codeField.input.value.label === INVALID_CODE_LABEL) {
             return shake();
         }
@@ -139,6 +143,19 @@ const WebSignUpCreateWithEmail = (
         setCodeWidth(`calc(${v.length}ch + 34px)`);
         return true;
     }, [countriesCode]);
+    const handleMenuFocus = React.useCallback(() => {
+        countryMenuFocused.current = true;
+    }, []);
+    const handleMenuBlur = React.useCallback(() => {
+        setTimeout(() => {
+            countryMenuFocused.current = false;
+        }, 200);
+    }, []);
+    const handleMenuClose = React.useCallback(() => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, []);
 
     const inputContent = isPhoneAuth ? (
         <>
@@ -190,6 +207,9 @@ const WebSignUpCreateWithEmail = (
                             optionRender={OptionRender}
                             onChange={codeField.input.onChange}
                             value={codeField.input.value}
+                            onFocus={handleMenuFocus}
+                            onBlur={handleMenuBlur}
+                            onMenuClose={handleMenuClose}
                             marginTop={32}
                         />
                     </AuthInputWrapper>
@@ -201,6 +221,7 @@ const WebSignUpCreateWithEmail = (
                     text={InitTexts.auth.next}
                     loading={authSending}
                     onClick={handleNext}
+                    tabIndex={0}
                 />
             </FormLayout>
         </>
