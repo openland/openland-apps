@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { UserShort, RoomMemberRole, OrganizationMemberRole, UserBadge, FeedChannelSubscriberRole } from 'openland-api/spacex.types';
+import { UserShort, RoomMemberRole, OrganizationMemberRole, UserBadge } from 'openland-api/spacex.types';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { View, Text, Image } from 'react-native';
 import { PresenceComponent } from './PresenceComponent';
@@ -10,7 +10,6 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 interface UserViewProps {
     user: UserShort;
     memberRole?: RoomMemberRole | OrganizationMemberRole;
-    channelRole?: FeedChannelSubscriberRole;
     badge?: UserBadge | null;
     enabled?: boolean;
     onPress: () => void;
@@ -21,18 +20,13 @@ interface UserViewProps {
 }
 
 export const UserView = (props: UserViewProps) => {
-    const { user, memberRole, channelRole, badge, enabled, onPress, onLongPress, subtitle, subtitleColor, paddingRight } = props;
+    const { user, memberRole, badge, enabled, onPress, onLongPress, subtitle, subtitleColor, paddingRight } = props;
     const theme = React.useContext(ThemeContext);
 
     let showCrown = false;
     let isOwner = false;
-    if (channelRole) {
-        showCrown = channelRole === FeedChannelSubscriberRole.Creator || channelRole === FeedChannelSubscriberRole.Editor;
-        isOwner = channelRole === FeedChannelSubscriberRole.Creator;
-    } else {
-        showCrown = memberRole === 'OWNER' || memberRole === 'ADMIN';
-        isOwner = memberRole === 'OWNER';
-    }
+    showCrown = memberRole === 'OWNER' || memberRole === 'ADMIN';
+    isOwner = memberRole === 'OWNER';
 
     return (
         <ZListItemBase key={user.id} separator={false} height={56} onPress={onPress} onLongPress={onLongPress} enabled={enabled}>
