@@ -21,6 +21,9 @@ import { countriesCode } from 'openland-y-utils/countriesCodes';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { AuthHeaderConfig } from './root.page';
 import { TextBody, TextDensed } from '../../utils/TextStyles';
+import { UInput } from 'openland-web/components/unicorn/UInput';
+
+const INVALID_CODE_LABEL = 'Invalid country code';
 
 const optionContainer = css`
     display: flex;
@@ -102,7 +105,7 @@ const WebSignUpCreateWithEmail = (
     const [shakeClassName, shake] = useShake();
 
     const handleNext = React.useCallback(() => {
-        if (dataField.input.value.trim() === '') {
+        if (dataField.input.value.trim() === '' || codeField.input.value.label === INVALID_CODE_LABEL) {
             return shake();
         }
         doConfirm();
@@ -117,6 +120,59 @@ const WebSignUpCreateWithEmail = (
         }
     }, [errorText, shakeClassName]);
 
+    const [codeWidth, setCodeWidth] = React.useState<string>(`calc(${codeField.input.value.value.length}ch + 32px)`);
+
+    React.useEffect(() => {
+        setCodeWidth(`calc(${codeField.input.value.value.length}ch + 34px)`);
+    }, [codeField.input.value.value]);
+    const handleCountryCodeChange = React.useCallback((str: string) => {
+        let v = '+' + str.replace(/\s/g, '').replace(/\+/g, '');
+        if (!/^\+\d*$/.test(v)) {
+            return true;
+        }
+        let existing = countriesCode.find(country => country.value.replace(/\s/g, '') === v);
+        if (existing) {
+            codeField.input.onChange(existing);
+        } else {
+            codeField.input.onChange({ value: v, label: INVALID_CODE_LABEL });
+        }
+        setCodeWidth(`calc(${v.length}ch + 34px)`);
+        return true;
+    }, [countriesCode]);
+
+    const inputContent = isPhoneAuth ? (
+        <>
+            <UInput
+                marginTop={32}
+                marginRight={8}
+                flexShrink={1}
+                value={codeField.input.value.value}
+                hasPlaceholder={true}
+                width={codeWidth}
+                onChange={handleCountryCodeChange}
+            />
+            <UInput
+                label={InitTexts.auth.phonePlaceholder}
+                invalid={isInvalid}
+                type="number"
+                ref={inputRef}
+                hasPlaceholder={true}
+                flexGrow={1}
+                marginTop={32}
+                value={dataField.input.value}
+                onChange={dataField.input.onChange}
+            />
+        </>
+    ) : (
+            <AuthInput
+                label={InitTexts.auth.emailPlaceholder}
+                invalid={isInvalid}
+                ref={inputRef}
+                value={dataField.input.value}
+                onChange={dataField.input.onChange}
+            />
+        );
+
     return (
         <>
             <AuthToastWrapper isVisible={!!errorText} text={errorText} />
@@ -124,7 +180,7 @@ const WebSignUpCreateWithEmail = (
                 <Title text={isPhoneAuth ? 'What’s your phone?' : 'What’s your email?'} />
                 <Subtitle text="We’ll send you a login code" />
                 {isPhoneAuth && (
-                    <AuthInputWrapper>
+                    <AuthInputWrapper className={shakeClassName}>
                         <USelect
                             label="Code"
                             width="100%"
@@ -139,17 +195,7 @@ const WebSignUpCreateWithEmail = (
                     </AuthInputWrapper>
                 )}
                 <AuthInputWrapper className={shakeClassName}>
-                    <AuthInput
-                        label={
-                            isPhoneAuth
-                                ? InitTexts.auth.phonePlaceholder
-                                : InitTexts.auth.emailPlaceholder
-                        }
-                        invalid={isInvalid}
-                        ref={inputRef}
-                        value={dataField.input.value}
-                        onChange={dataField.input.onChange}
-                    />
+                    {inputContent}
                 </AuthInputWrapper>
                 <AuthActionButton
                     text={InitTexts.auth.next}

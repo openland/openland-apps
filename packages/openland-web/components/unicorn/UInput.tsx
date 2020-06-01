@@ -113,7 +113,7 @@ export interface UInputProps extends XViewProps {
     hasPlaceholder?: boolean;
     pattern?: string;
     autofocus?: boolean;
-    onChange?: (v: string) => void;
+    onChange?: (v: string) => void | boolean;
     maxLength?: number;
 }
 
@@ -140,9 +140,12 @@ export const UInput = React.forwardRef(
         const [inputShift, setInputShift] = React.useState(0);
 
         const handleChange = (v: string) => {
-            setValue(v);
+            let stopUpdate: boolean = false;
             if (onChange) {
-                onChange(v);
+                stopUpdate = !!onChange(v);
+            }
+            if (!stopUpdate) {
+                setValue(v);
             }
         };
 
