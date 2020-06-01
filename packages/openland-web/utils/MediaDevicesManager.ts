@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { AppUserMedia } from 'openland-y-runtime-web/AppUserMedia';
 
 let mediaDevicesManagerInstance: MediaDevicesManager | undefined;
 
@@ -18,6 +19,8 @@ class MediaDevicesManager {
                 this.notifyDevices(await navigator.mediaDevices.enumerateDevices());
             };
             this.notifyDevices(await navigator.mediaDevices.enumerateDevices());
+            AppUserMedia.getUserAudioPromise().then(async () => this.notifyDevices(await navigator.mediaDevices.enumerateDevices()));
+            AppUserMedia.getUserVideoPromise().then(async () => this.notifyDevices(await navigator.mediaDevices.enumerateDevices()));
         })();
     }
 

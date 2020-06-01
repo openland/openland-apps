@@ -252,8 +252,8 @@ const SettingsModal = React.memo((props: { ctx: XModalController }) => {
                             useMenuPortal={true}
                             onChange={setOutputDevice}
                             label="Speakers"
-                            value={output ? { value: output.deviceId, label: output.label } : null}
-                            options={outputs.map((d) => ({ value: d.deviceId, label: d.label }))}
+                            value={output ? { value: output.deviceId, label: output.label || 'default'} : null}
+                            options={outputs.map((d) => ({ value: d.deviceId, label: d.label || 'default' }))}
                         />
                     </XView>}
                     {!!(input || inputs.length) && <XView marginBottom={16}>
@@ -261,8 +261,8 @@ const SettingsModal = React.memo((props: { ctx: XModalController }) => {
                             useMenuPortal={true}
                             onChange={setInputDevice}
                             label="Microphone"
-                            value={input ? { value: input?.deviceId, label: input?.label } : null}
-                            options={inputs.map((d) => ({ value: d.deviceId, label: d.label }))}
+                            value={input ? { value: input?.deviceId, label: input?.label || 'default'} : null}
+                            options={inputs.map((d) => ({ value: d.deviceId, label: d.label || 'default' }))}
                         />
                     </XView>}
                     {!!(localVideoInput || videoInputs.length) && <XView marginBottom={24}>
@@ -274,13 +274,13 @@ const SettingsModal = React.memo((props: { ctx: XModalController }) => {
                                 localVideoInput
                                     ? {
                                         value: localVideoInput?.deviceId,
-                                        label: localVideoInput?.label,
+                                        label: localVideoInput?.label || 'default',
                                     }
                                     : null
                             }
                             options={videoInputs.map((d) => ({
                                 value: d.deviceId,
-                                label: d.label,
+                                label: d.label || 'default',
                             }))}
                         />
                     </XView>}

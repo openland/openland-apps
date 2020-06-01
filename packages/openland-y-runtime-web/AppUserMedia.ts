@@ -64,11 +64,16 @@ export class AppUserMediaTrackWeb implements AppMediaStreamTrack {
 }
 
 class AppUserMediaIpl implements AppUserMediaApi {
+    private userVideoPromise: Promise<boolean>;
     private userAudioPromise: Promise<boolean>;
     private userAudioPromiseResolve?: (done: boolean) => void;
+    private userVideoPromiseResolve?: (done: boolean) => void;
     constructor() {
         this.userAudioPromise = new Promise(r => {
             this.userAudioPromiseResolve = r;
+        });
+        this.userVideoPromise = new Promise(r => {
+            this.userVideoPromiseResolve = r;
         });
     }
     async getUserAudio(deviceId?: string) {
@@ -96,9 +101,11 @@ class AppUserMediaIpl implements AppUserMediaApi {
                 height: { ideal: 720 }
             },
         });
+        if (this.userVideoPromiseResolve) {
+            this.userVideoPromiseResolve(true);
+        }
 
-        let res = new AppUserMediaTrackWeb(media.getVideoTracks()[0]);
-        return res;
+        return new AppUserMediaTrackWeb(media.getVideoTracks()[0]);
     }
 
     async getUserScreen() {
@@ -135,6 +142,9 @@ class AppUserMediaIpl implements AppUserMediaApi {
 
     getUserAudioPromise = () => {
         return this.userAudioPromise;
+    }
+    getUserVideoPromise = () => {
+        return this.userVideoPromise;
     }
 }
 
