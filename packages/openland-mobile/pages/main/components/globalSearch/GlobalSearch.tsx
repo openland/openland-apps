@@ -16,6 +16,9 @@ import { SNativeConfig } from 'react-native-s/SNativeConfig';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { GlobalSearchEntryKind } from 'openland-api/spacex.types';
 import { SDeferred } from 'react-native-s/SDeferred';
+import { GlobalSearchMessages } from './GlobalSearchMessages';
+import { LoaderSpinnerWrapped } from 'openland-mobile/components/LoaderSpinner';
+import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
 
 interface GlobalSearchProps {
     query: string;
@@ -25,6 +28,7 @@ interface GlobalSearchProps {
     onOrganizationPress?: (id: string, title: string) => void;
     onUserPress?: (id: string, title: string) => void;
     onGroupPress?: (id: string, title: string) => void;
+    onMessagePress?: (id: string) => void;
 }
 
 const GlobalSearchInner = (props: GlobalSearchProps) => {
@@ -64,7 +68,7 @@ const GlobalSearchInner = (props: GlobalSearchProps) => {
                                 props.onOrganizationPress
                                     ? props.onOrganizationPress
                                     : () =>
-                                          props.router.push('ProfileOrganization', { id: item.id })
+                                        props.router.push('ProfileOrganization', { id: item.id })
                             }
                         />
                     )}
@@ -108,6 +112,15 @@ export const GlobalSearch = XMemo<GlobalSearchProps>(props => {
                         <React.Suspense fallback={SNativeConfig.loader}>
                             <SDeferred>
                                 <GlobalSearchInner {...props} />
+
+                                {props.onMessagePress && NON_PRODUCTION && (
+                                    <React.Suspense fallback={<LoaderSpinnerWrapped />}>
+                                        <GlobalSearchMessages
+                                            query={props.query}
+                                            onPress={props.onMessagePress}
+                                        />
+                                    </React.Suspense>
+                                )}
                             </SDeferred>
                         </React.Suspense>
                     </View>
