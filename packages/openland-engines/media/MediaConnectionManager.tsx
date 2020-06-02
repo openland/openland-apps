@@ -23,6 +23,7 @@ export class MediaConnectionManager {
     private screencastTransceiver: AppRtpTransceiver | null = null;
     private screencastTrack: AppMediaStreamTrack | null = null;
     private receivers = new Map<string, Map<'audio' | 'video' | 'screencast', AppRtpTransceiver>>();
+    private peerTracks: { [peerIdAndKind: string]: AppMediaStreamTrack | undefined } = {};
 
     // Peer connection
     private readonly peerConnection: AppPeerConnection;
@@ -171,6 +172,7 @@ export class MediaConnectionManager {
         // detach session peer receivers
         for (let [peerId, receivers] of this.receivers.entries()) {
             for (let kind of receivers.keys()) {
+                this.peerTracks = {};
                 this.session.attachPeerReceiver(peerId, kind, null);
             }
         }
@@ -332,7 +334,7 @@ export class MediaConnectionManager {
             await this.configureSenders(config);
 
             // Attach receivers to peers in session
-            this.attachSessionReceivers(config);
+            this.attachSessionReceivers();
 
             // Generate answer
             if (!this.localAnswer) {
@@ -363,7 +365,7 @@ export class MediaConnectionManager {
                 await this.peerConnection.setRemoteDescription(answer);
 
                 // Attach receivers to peers in session
-                this.attachSessionReceivers(config);
+                this.attachSessionReceivers();
 
                 this.remoteDescriptionSet = true;
                 this.remoteAnwer = answer;
@@ -586,10 +588,22 @@ export class MediaConnectionManager {
         }
     }
 
-    private attachSessionReceivers = (config: ConferenceMedia_conferenceMedia_streams) => {
+    private attachSessionReceivers = () => {
         for (let [peerId, receivers] of this.receivers.entries()) {
             for (let [kind, receiver] of receivers.entries()) {
-                this.session.attachPeerReceiver(peerId, kind, receiver.receiver.track);
+                let track = receiver.receiver.track;
+                let peerTrackKey = `${peerId}_${kind}`;
+                this.peerTracks[peerTrackKey] = track;
+                // attach track only when it's unmuted
+                if (receiver.receiver.track.muted === false) {
+                    this.session.attachPeerReceiver(peerId, kind, receiver.receiver.track);
+                } else {
+                    receiver.receiver.track.onunmute = () => {
+                        if (this.peerTracks[peerTrackKey] === track) {
+                            this.session.attachPeerReceiver(peerId, kind, receiver.receiver.track);
+                        }
+                    };
+                }
             }
         }
     }

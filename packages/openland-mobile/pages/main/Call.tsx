@@ -27,7 +27,6 @@ import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { showCallControls } from './components/conference/CallControls';
 import { Space } from './Space';
-import { useTrackUnmuted } from 'openland-y-utils/calls/useTrackUnmuted';
 
 const PeerInfoGradient = (props: { children: any }) => {
     let theme = React.useContext(ThemeContext);
@@ -121,8 +120,8 @@ interface VideoViewProps extends PeerMedia {
 const VideoView = React.memo((props: VideoViewProps) => {
     const area = React.useContext(ASSafeAreaContext);
 
-    let audioTrack = useTrackUnmuted(props.audioTrack);
-    let videoTrack = useTrackUnmuted(props.screencastTrack ? props.screencastTrack : props.videoTrack);
+    let audioTrack = props.audioTrack;
+    let videoTrack = props.screencastTrack ? props.screencastTrack : props.videoTrack;
     let stream = React.useMemo(() => videoTrack && new MediaStream([(videoTrack as AppUserMediaStreamTrackNative).track]), [videoTrack]);
 
     const iconColor = props.theme.foregroundContrast;

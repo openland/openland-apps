@@ -14,7 +14,6 @@ import { SvgLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
 import { MediaSessionTrackAnalyzerManager } from 'openland-engines/media/MediaSessionTrackAnalyzer';
-import { useTrackUnmuted } from 'openland-y-utils/calls/useTrackUnmuted';
 
 const animatedAvatarStyle = css`
     position: absolute;
@@ -124,8 +123,8 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     const bgSrc = props.peer.user.photo ? props.peer.user.photo + '-/scale_crop/120x120/-/progressive/yes/' : undefined;
     const bgColor = !props.peer.user.photo ? getPlaceholderColorById(props.peer.user.id) : undefined;
 
-    let mainStreamWeb = useTrackUnmuted(props.screencastTrack || props.videoTrack);
-    let miniStreamWeb = useTrackUnmuted(props.screencastTrack ? props.videoTrack : null);
+    let mainStreamWeb = props.screencastTrack || props.videoTrack;
+    let miniStreamWeb = props.screencastTrack ? props.videoTrack : null;
     const [modalOpen, setModalOpen] = React.useState(false);
     const onClick = React.useCallback(() => setModalOpen(true), []);
     const closeModal = React.useCallback(() => setModalOpen(false), []);
