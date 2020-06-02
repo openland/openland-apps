@@ -58,7 +58,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
     }
 
     const subtitle = getSubtitle(data.conference.peers.map(peer => peer.user));
-    return data.conference.peers.length !== 0 && !(currentSession && currentSession.conversationId) ? (
+    return data.conference.peers.length !== 0 ? (
         <UTopBar
             type="positive"
             leftIcon={<PhoneIcon />}
@@ -66,7 +66,7 @@ export const TalkBarComponent = (props: { chat: ChatInfo }) => {
             subtitle={subtitle}
             rightText="Join"
             rightIcon={<ChevronIcon />}
-            onClick={joinCall}
+            onClick={currentSession && currentSession.conversationId ? openVideoModal : joinCall}
         />
     ) : null;
 };
