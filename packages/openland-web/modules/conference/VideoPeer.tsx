@@ -121,7 +121,7 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     //         : (isLocal ? props.callState.mute : audioPaused) ? <MutedIcon />
     //             : null;
 
-    const bgSrc = props.peer.user.photo ? props.peer.user.photo : undefined;
+    const bgSrc = props.peer.user.photo ? props.peer.user.photo + '-/scale_crop/120x120/-/progressive/yes/' : undefined;
     const bgColor = !props.peer.user.photo ? getPlaceholderColorById(props.peer.user.id) : undefined;
 
     let mainStreamWeb = useTrackUnmuted(props.screencastTrack || props.videoTrack);

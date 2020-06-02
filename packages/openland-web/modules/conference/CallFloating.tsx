@@ -224,11 +224,12 @@ export const useJsDrag = (
 
 const AvatarCover = React.memo((props: { photo?: string | null, id: string, title: string }) => {
     const bgColor = props.id && getPlaceholderColorById(props.id);
+
     return (
         <>
             <div className={bgAvatar}>
                 {props.photo && !props.photo.startsWith('ph://') ? (
-                    <ImgWithRetry src={props.photo} className={bgAvatarImg} />
+                    <ImgWithRetry src={props.photo + '-/scale_crop/120x120/-/progressive/yes/'} className={bgAvatarImg} />
                 ) : (
                         <div className={bgAvatarGradient} style={{ background: bgColor }} />
                     )}
