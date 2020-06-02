@@ -273,6 +273,10 @@ export const RichAttachContent = React.memo((props: RichAttachContentProps) => {
             24,
             24,
         );
+
+        const ops = '-/format/auto/-/scale_crop/' + (layout.width + 'x' + layout.height) + '/center/-/quality/best/-/progressive/yes/';
+        const opsRetina = '-/format/auto/-/scale_crop/' + (layout.width * 2 + 'x' + layout.height * 2) + '/center/-/quality/best/-/progressive/yes/ 2x';
+
         img = (
             <div
                 className={cx(richImageContainer, 'image-container')}
@@ -287,7 +291,8 @@ export const RichAttachContent = React.memo((props: RichAttachContentProps) => {
                     className={richImageStyle}
                     // width={layout.width}
                     // height={layout.height}
-                    src={attach.image.url}
+                    src={attach.image.url + ops}
+                    srcSet={attach.image.url + opsRetina}
                 />
             </div>
         );
