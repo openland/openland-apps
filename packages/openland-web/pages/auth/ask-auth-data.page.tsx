@@ -24,6 +24,9 @@ import { TextBody, TextDensed } from '../../utils/TextStyles';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 
 const INVALID_CODE_LABEL = 'Invalid country code';
+const SPACE_REGEX = /\s/g;
+const removeSpace = (s: string) => s.replace(SPACE_REGEX, '');
+const US_LABEL = 'United States';
 
 const optionContainer = css`
     display: flex;
@@ -50,6 +53,15 @@ const OptionRender = (option: OptionType) => (
         <div className={cx(optionSubtitleStyle, TextDensed)}>{option.value}</div>
     </div>
 );
+
+const filterCountryOption = ({ label: rawLabel, value }: { label: string, value: string }, rawInput: string) => {
+    let label = rawLabel.toLowerCase();
+    let input = rawInput.toLowerCase();
+    if (label === US_LABEL.toLowerCase() && ['usa', 'america', 'united states of america', 'u.s.'].some(x => x.startsWith(input))) {
+        return true;
+    }
+    return label.startsWith(input) || removeSpace(value).replace(/\+/g, '').startsWith(removeSpace(rawInput));
+};
 
 type AskAuthDataProps = {
     fireAuth: (data: string, isPhoneFire: boolean) => Promise<void>;
@@ -130,11 +142,17 @@ const WebSignUpCreateWithEmail = (
         setCodeWidth(`calc(${codeField.input.value.value.length}ch + 34px)`);
     }, [codeField.input.value.value]);
     const handleCountryCodeChange = React.useCallback((str: string) => {
-        let v = '+' + str.replace(/\s/g, '').replace(/\+/g, '');
+        let v = '+' + removeSpace(str).replace(/\+/g, '');
         if (!/^\+\d*$/.test(v)) {
             return true;
         }
-        let existing = countriesCode.find(country => country.value.replace(/\s/g, '') === v);
+        let findCode = (val: string) => {
+            if (val === '+1') {
+                return { value: '+1', label: US_LABEL };
+            }
+            return countriesCode.find(country => removeSpace(country.value) === val);
+        };
+        let existing = findCode(v);
         if (existing) {
             codeField.input.onChange(existing);
         } else {
@@ -210,6 +228,7 @@ const WebSignUpCreateWithEmail = (
                             onFocus={handleMenuFocus}
                             onBlur={handleMenuBlur}
                             onMenuClose={handleMenuClose}
+                            filterOption={filterCountryOption}
                             marginTop={32}
                         />
                     </AuthInputWrapper>

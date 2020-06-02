@@ -256,7 +256,7 @@ const OptionRender = (option: OptionType) => {
     );
 };
 
-const OptionComponent = (
+const OptionComponent = React.memo((
     props: OptionProps<OptionType> & {
         customChild?: (option: OptionType) => React.ReactElement;
     },
@@ -274,7 +274,7 @@ const OptionComponent = (
             )}
         </components.Option>
     );
-};
+});
 
 interface USelectBasicProps {
     options: OptionType[];
@@ -292,6 +292,7 @@ interface USelectBasicProps {
     onFocus?: () => void;
     onBlur?: () => void;
     onMenuClose?: () => void;
+    filterOption?: (option: { label: string, value: string }, rawInput: string) => boolean;
 }
 
 export interface USelectProps extends USelectBasicProps, XViewProps {
@@ -321,6 +322,7 @@ export const USelect = React.memo(
             onBlur,
             onFocus,
             onMenuClose,
+            filterOption,
             ...xViewProps
         } = props;
 
@@ -332,6 +334,9 @@ export const USelect = React.memo(
                 if (onInputChange) {
                     onInputChange(v);
                 }
+            }
+            if (params.action === 'menu-close' && v === '') {
+                setInputValue('');
             }
         };
 
@@ -358,6 +363,7 @@ export const USelect = React.memo(
                     inputValue={inputValue}
                     isSearchable={searchable}
                     placeholder={label}
+                    filterOption={filterOption}
                     menuPortalTarget={useMenuPortal ? document.querySelector('body') : undefined}
                     styles={customStyles({
                         size: size,
@@ -367,8 +373,8 @@ export const USelect = React.memo(
                     })}
                     components={{
                         Option: optionRender
-                            ? (v) => OptionComponent({ ...v, customChild: optionRender })
-                            : (v) => OptionComponent({ ...v }),
+                            ? (v) => <OptionComponent {...v} customChild={optionRender} />
+                            : (v) => <OptionComponent {...v} />,
                         DropdownIndicator: DropdownIndicatorComponent,
                         ClearIndicator: ClearIndicatorComponent,
                         MultiValueLabel: MultiValueLabelComponent,
