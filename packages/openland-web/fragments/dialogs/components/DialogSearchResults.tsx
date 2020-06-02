@@ -3,7 +3,6 @@ import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
 import { XLoader } from 'openland-x/XLoader';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { MessagesSearch } from './MessagesSearch';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
@@ -31,7 +30,7 @@ const imageStyle = css`
 type DialogSearchResultsT = {
     variables: GlobalSearchVariables;
     onPick: (item: GlobalSearch_items) => void;
-    onMessagePick?: (chatId: string) => void;
+    onMessagePick?: (messageId: string) => void;
     paddingHorizontal?: number;
     isForwarding?: boolean;
 };
@@ -144,9 +143,7 @@ const DialogSearchResultsInner = React.memo((props: DialogSearchResultsT) => {
                 }
             })}
             {props.onMessagePick && (
-                <XWithRole role="feature-non-production">
-                    <MessagesSearch variables={props.variables} onPick={props.onMessagePick} />
-                </XWithRole>
+                <MessagesSearch variables={props.variables} onPick={props.onMessagePick} />
             )}
         </>
     );

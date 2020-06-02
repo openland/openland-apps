@@ -9,7 +9,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 interface MessagesSearchProps {
     variables: { query: string };
-    onPick: (chatId: string) => void;
+    onPick: (messageId: string) => void;
 }
 
 const MessagesSearchInner = (props: MessagesSearchProps) => {
@@ -21,7 +21,7 @@ const MessagesSearchInner = (props: MessagesSearchProps) => {
                 $and: [{ text: props.variables.query }, { isService: false }],
             }),
             sort: JSON.stringify([{ createdAt: { order: 'desc' } }]),
-            first: 100,
+            first: 30,
         },
         {
             fetchPolicy: 'network-only',
@@ -62,7 +62,7 @@ const MessagesSearchInner = (props: MessagesSearchProps) => {
                             membership: chat.__typename === 'SharedRoom' ? chat.membership : 'NONE'
                         }}
                         key={message.id}
-                        onPress={props.onPick}
+                        onPress={() => props.onPick(message.id)}
                     />
                 );
             })}

@@ -180,9 +180,9 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
     }, []);
 
     const onMessagePick = React.useCallback(
-        (chatId: string) => {
-            setQuery('');
-            router!.navigate(`/mail/${chatId}`);
+        (messageId: string) => {
+            // setQuery('');
+            router!.navigate(`/message/${messageId}`);
         },
         [query],
     );
