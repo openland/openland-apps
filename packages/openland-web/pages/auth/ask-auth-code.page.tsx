@@ -104,7 +104,7 @@ const WebSignUpActivationCode = (
     }, [errorText, shakeClassName, authWasResend]);
 
     const sendToText = isPhoneAuth
-        ? phoneCodeValue.value.split(' ').join('') + authValue
+        ? phoneCodeValue.value.split(' ').join('') + ' ' + authValue
         : authValue;
 
     return (

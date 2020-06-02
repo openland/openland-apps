@@ -115,6 +115,7 @@ export interface UInputProps extends XViewProps {
     autofocus?: boolean;
     onChange?: (v: string) => void | boolean;
     maxLength?: number;
+    onKeyDown?: React.KeyboardEventHandler;
 }
 
 export const UInput = React.forwardRef(
@@ -131,6 +132,7 @@ export const UInput = React.forwardRef(
             autofocus,
             onChange,
             maxLength,
+            onKeyDown,
             ...other
         } = props;
 
@@ -194,6 +196,7 @@ export const UInput = React.forwardRef(
                         ref={ref}
                         {...(hasPlaceholder && { placeholder: label })}
                         style={{ left: inputShift }}
+                        onKeyDown={onKeyDown}
                     />
                     {!hasPlaceholder && (
                         <div

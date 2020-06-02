@@ -22,6 +22,7 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { AuthHeaderConfig } from './root.page';
 import { TextBody, TextDensed } from '../../utils/TextStyles';
 import { UInput } from 'openland-web/components/unicorn/UInput';
+import { parsePhoneNumberFromString, AsYouType } from 'libphonenumber-js';
 
 const INVALID_CODE_LABEL = 'Invalid country code';
 const SPACE_REGEX = /\s/g;
@@ -61,6 +62,13 @@ const filterCountryOption = ({ label: rawLabel, value }: { label: string, value:
         return true;
     }
     return label.startsWith(input) || removeSpace(value).replace(/\+/g, '').startsWith(removeSpace(rawInput));
+};
+
+const findCode = (val: string) => {
+    if (val === '+1') {
+        return { value: '+1', label: US_LABEL };
+    }
+    return countriesCode.find(country => removeSpace(country.value) === val);
 };
 
 type AskAuthDataProps = {
@@ -104,12 +112,20 @@ const WebSignUpCreateWithEmail = (
             setAuthError('');
             setTimeout(() => {
                 const code = codeField.value.value.split(' ').join('');
-                const value = dataField.value.trim();
-                const dataToFire = isPhoneAuth ? code + value : value;
-                authLoginStart(dataToFire);
+                let value = dataField.value.trim();
+                if (isPhoneAuth) {
+                    let phone = new AsYouType('US');
+                    phone.input(code + value);
+                    let phoneNumber = phone.getNumber();
+
+                    if (phoneNumber) {
+                        value = phoneNumber.number as string;
+                    }
+                }
+                authLoginStart(value);
             }, 100);
         });
-    }, [dataField.value]);
+    }, [codeField.value, dataField.value]);
 
     const errorText = (dataField.input.invalid && dataField.input.errorText) || authError;
     const isInvalid = !!errorText;
@@ -129,6 +145,7 @@ const WebSignUpCreateWithEmail = (
 
     useShortcuts({ keys: ['Enter'], callback: handleNext });
 
+    const codeRef = React.useRef<HTMLInputElement>(null);
     const inputRef = React.useRef<HTMLInputElement>(null);
     React.useEffect(() => {
         if (inputRef.current) {
@@ -146,13 +163,25 @@ const WebSignUpCreateWithEmail = (
         if (!/^\+\d*$/.test(v)) {
             return true;
         }
-        let findCode = (val: string) => {
-            if (val === '+1') {
-                return { value: '+1', label: US_LABEL };
+        let existing;
+        if (v.length >= 6) {
+            try {
+                let parsedPhone = parsePhoneNumberFromString(v);
+                if (parsedPhone) {
+                    existing = findCode('+' + parsedPhone.countryCallingCode);
+                    if (existing) {
+                        dataField.input.onChange(parsedPhone.formatNational());
+                        if (inputRef.current) {
+                            inputRef.current.focus();
+                        }
+                    }
+                }
+            } catch (error) {
+                console.warn('Phone parsing failed:', error);
             }
-            return countriesCode.find(country => removeSpace(country.value) === val);
-        };
-        let existing = findCode(v);
+        } else {
+            existing = findCode(v);
+        }
         if (existing) {
             codeField.input.onChange(existing);
         } else {
@@ -161,6 +190,18 @@ const WebSignUpCreateWithEmail = (
         setCodeWidth(`calc(${v.length}ch + 34px)`);
         return true;
     }, [countriesCode]);
+    const handlePhoneChange = React.useCallback((s: string) => {
+        let val = new AsYouType('US').input(s);
+        dataField.input.onChange(val);
+    }, []);
+    const handlePhoneKeyDown = React.useCallback((e: React.KeyboardEvent) => {
+        if (e.keyCode === 8 && dataField.input.value === '') {
+            if (codeRef.current) {
+                e.preventDefault();
+                codeRef.current.focus();
+            }
+        }
+    }, [dataField.input.value]);
     const handleMenuFocus = React.useCallback(() => {
         countryMenuFocused.current = true;
     }, []);
@@ -178,6 +219,7 @@ const WebSignUpCreateWithEmail = (
     const inputContent = isPhoneAuth ? (
         <>
             <UInput
+                ref={codeRef}
                 marginTop={32}
                 marginRight={8}
                 flexShrink={1}
@@ -189,13 +231,14 @@ const WebSignUpCreateWithEmail = (
             <UInput
                 label={InitTexts.auth.phonePlaceholder}
                 invalid={isInvalid}
-                type="number"
+                type="tel"
                 ref={inputRef}
                 hasPlaceholder={true}
                 flexGrow={1}
                 marginTop={32}
                 value={dataField.input.value}
-                onChange={dataField.input.onChange}
+                onChange={handlePhoneChange}
+                onKeyDown={handlePhoneKeyDown}
             />
         </>
     ) : (
