@@ -50,6 +50,8 @@ class MediaSessionTrackAnalyzer {
 
                 if (entry.audioTrack) {
                     entry.analyzer = AppAudioTrackAnalyzerFactory.createAnalyzer(entry.audioTrack, [80, 180]);
+                } else {
+                    this.peerVolume[key] = 0;
                 }
             }
             if (entry.analyzer) {

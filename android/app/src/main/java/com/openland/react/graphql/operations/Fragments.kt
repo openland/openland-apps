@@ -818,6 +818,11 @@ internal val ConferenceFullSelector = obj(
                     field("user", "user", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             fragment("User", UserShortSelector)
+                        ))),
+                    field("mediaState", "mediaState", notNull(obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("audioPaused", "audioPaused", notNull(scalar("Boolean"))),
+                            field("videoPaused", "videoPaused", notNull(scalar("Boolean")))
                         )))
                 ))))),
             field("iceServers", "iceServers", notNull(list(notNull(obj(

@@ -6,6 +6,10 @@ fragment ConferenceFull on Conference {
         user {
             ...UserShort
         }
+        mediaState {
+            audioPaused
+            videoPaused
+        }
     }
     iceServers {
         urls

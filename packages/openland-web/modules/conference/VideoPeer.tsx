@@ -9,7 +9,7 @@ import { css, cx } from 'linaria';
 import { UAvatar, getPlaceholderColorById } from 'openland-web/components/unicorn/UAvatar';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
 import SpeakerIcon from 'openland-icons/s/ic-speaking-bold-16.svg';
-// import MutedIcon from 'openland-icons/s/ic-muted-bold-16.svg';
+import MutedIcon from 'openland-icons/s/ic-muted-bold-16.svg';
 import { SvgLoader } from 'openland-x/XLoader';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { AppMediaStreamTrack } from 'openland-y-runtime-api/AppMediaStream';
@@ -106,25 +106,24 @@ export interface VideoPeerProps extends PeerMedia {
 }
 
 export const VideoPeer = React.memo((props: VideoPeerProps) => {
-    // @ts-ignore
-    // const [audioPaused, setAudioPaused] = React.useState<boolean | null>(false);
-    // @ts-ignore
-    // const [videoPaused, setVideoPaused] = React.useState<boolean | null>(true);
-
-    let unmutedAudioTrack = useTrackUnmuted(props.audioTrack);
-    const talking = props.analyzer.usePeer(props.peer.id);
-    const icon = (talking && unmutedAudioTrack) ? <SpeakerIcon /> : (!unmutedAudioTrack && !props.isLocal) ? <SvgLoader size="small" contrast={true} /> : null;
-
-    // const icon = props.callState.status !== 'connected' ? <SvgLoader size="small" contrast={true} />
-    //     : talking ? <SpeakerIcon />
-    //         : (isLocal ? props.callState.mute : audioPaused) ? <MutedIcon />
-    //             : null;
 
     const bgSrc = props.peer.user.photo ? props.peer.user.photo + '-/scale_crop/120x120/-/progressive/yes/' : undefined;
     const bgColor = !props.peer.user.photo ? getPlaceholderColorById(props.peer.user.id) : undefined;
 
-    let mainStreamWeb = props.screencastTrack || props.videoTrack;
-    let miniStreamWeb = props.screencastTrack ? props.videoTrack : null;
+    let videoTrack = !props.peer.mediaState.videoPaused && props.videoTrack;
+    let mainTrack = props.screencastTrack || videoTrack;
+    let miniTrack = props.screencastTrack ? videoTrack : null;
+
+    const talking = props.analyzer.usePeer(props.peer.id);
+    let icon: JSX.Element | undefined;
+    if (!props.audioTrack && !props.isLocal) {
+        icon = <SvgLoader size="small" contrast={true} />;
+    } else if (props.peer.mediaState.audioPaused) {
+        icon = <MutedIcon />;
+    } else if (talking) {
+        icon = <SpeakerIcon />;
+    }
+
     const [modalOpen, setModalOpen] = React.useState(false);
     const onClick = React.useCallback(() => setModalOpen(true), []);
     const closeModal = React.useCallback(() => setModalOpen(false), []);
@@ -139,9 +138,9 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
             position="relative"
 
         >
-            {mainStreamWeb && (
+            {mainTrack && (
                 <VideoComponent
-                    track={(mainStreamWeb as AppUserMediaTrackWeb).track}
+                    track={(mainTrack as AppUserMediaTrackWeb).track}
                     cover={!props.screencastTrack}
                     compact={props.compact}
                     onClick={onClick}
@@ -150,15 +149,15 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
                     backgroundColor="var(--overlayHeavy)"
                 />
             )}
-            {modalOpen && mainStreamWeb && (
+            {modalOpen && mainTrack && (
                 <VideoModal
-                    track={(mainStreamWeb as AppUserMediaTrackWeb).track}
+                    track={(mainTrack as AppUserMediaTrackWeb).track}
                     mirror={props.isLocal && !props.screencastTrack}
                     cover={!props.screencastTrack}
                     close={closeModal}
                 />
             )}
-            {miniStreamWeb &&
+            {miniTrack &&
 
                 <XView
                     width={72}
@@ -169,7 +168,7 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
                     right={12}
                 >
                     <VideoComponent
-                        track={(miniStreamWeb as AppUserMediaTrackWeb).track}
+                        track={(miniTrack as AppUserMediaTrackWeb).track}
                         cover={true}
                         mirror={props.isLocal}
                         videoClass={MiniVideo}
@@ -177,7 +176,7 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
                     />
                 </XView>
             }
-            {!mainStreamWeb && (
+            {!mainTrack && (
                 <>
                     <div className={bgAvatar}>
                         {bgSrc ? (
@@ -198,7 +197,7 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
                     </div>
                 </>
             )}
-            <div className={cx(peerInfo, props.compact && peerInfoCompact, mainStreamWeb && peerInfoGradient)}>
+            <div className={cx(peerInfo, props.compact && peerInfoCompact, mainTrack && peerInfoGradient)}>
                 {!props.compact && <div className={peerName}>{props.peer.user.firstName}</div>}
                 {icon && (
                     <div className={peerIcon}>

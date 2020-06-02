@@ -121,7 +121,7 @@ const VideoView = React.memo((props: VideoViewProps) => {
     const area = React.useContext(ASSafeAreaContext);
 
     let audioTrack = props.audioTrack;
-    let videoTrack = props.screencastTrack ? props.screencastTrack : props.videoTrack;
+    let videoTrack = props.screencastTrack ? props.screencastTrack : (!props.peer.mediaState.videoPaused && props.videoTrack);
     let stream = React.useMemo(() => videoTrack && new MediaStream([(videoTrack as AppUserMediaStreamTrackNative).track]), [videoTrack]);
 
     const iconColor = props.theme.foregroundContrast;
@@ -130,7 +130,7 @@ const VideoView = React.memo((props: VideoViewProps) => {
         muted: <Image source={require('assets/ic-muted-bold-16.png')} style={{ tintColor: iconColor }} />,
         speaking: <Image source={require('assets/ic-speaking-bold-16.png')} style={{ tintColor: iconColor }} />,
     };
-    let icon = (!props.isLocal && !audioTrack) ? iconByStatus.loading : null;
+    let icon = (!props.isLocal && !audioTrack) ? iconByStatus.loading : props.peer.mediaState.audioPaused ? iconByStatus.muted : null;
     let InfoWrapper = stream ? PeerInfoGradient : React.Fragment;
 
     let infoPaddingBottom = props.isLast ? Math.max(area.bottom, 30) : 14;

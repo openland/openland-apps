@@ -288,6 +288,12 @@ type ConferenceMedia {
 type ConferencePeer {
   id: ID!
   user: User!
+  mediaState: ConferencePeerMediaState!
+}
+
+type ConferencePeerMediaState {
+  audioPaused: Boolean!
+  videoPaused: Boolean!
 }
 
 input ConferenceSettingsInput {
