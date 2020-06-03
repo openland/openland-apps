@@ -9,6 +9,7 @@ fragment ConferenceFull on Conference {
         mediaState {
             audioPaused
             videoPaused
+            screencastEnabled
         }
     }
     iceServers {

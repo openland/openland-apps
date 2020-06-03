@@ -111,8 +111,9 @@ export const VideoPeer = React.memo((props: VideoPeerProps) => {
     const bgColor = !props.peer.user.photo ? getPlaceholderColorById(props.peer.user.id) : undefined;
 
     let videoTrack = !props.peer.mediaState.videoPaused && props.videoTrack;
-    let mainTrack = props.screencastTrack || videoTrack;
-    let miniTrack = props.screencastTrack ? videoTrack : null;
+    let screenTrack = props.peer.mediaState.screencastEnabled && props.screencastTrack;
+    let mainTrack = screenTrack || videoTrack;
+    let miniTrack = screenTrack ? videoTrack : null;
 
     const talking = props.analyzer.usePeer(props.peer.id);
     let icon: JSX.Element | undefined;
