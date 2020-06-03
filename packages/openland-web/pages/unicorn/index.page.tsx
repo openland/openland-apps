@@ -59,32 +59,32 @@ const Unicorn = React.memo(() => {
                         defaultPage: true
                     },
                 ] : [
-                    {
-                        icon: <DiscoverIcon />,
-                        iconActive: <DiscoverActiveIcon />,
-                        path: '/discover',
-                        component: <DiscoverFragment />,
-                        caption: 'Discover',
-                        defaultPage: true
-                    },
-                    {
-                        icon: <ChatIcon />,
-                        iconActive: <ChatActiveIcon />,
-                        path: '/mail',
-                        component: <DialogsFragment />,
-                        caption: 'Chats',
-                        defaultPage: false,
-                    },
-                    {
-                        icon: <ProfileIcon />,
-                        iconActive: <ProfileActiveIcon />,
-                        path: '/account',
-                        component: <AccountFragment />,
-                        caption: 'Account',
-                        defaultPage: true
-                    },
-                ],
-                1,
+                        {
+                            icon: <DiscoverIcon />,
+                            iconActive: <DiscoverActiveIcon />,
+                            path: '/discover',
+                            component: <DiscoverFragment />,
+                            caption: 'Discover',
+                            defaultPage: true
+                        },
+                        {
+                            icon: <ChatIcon />,
+                            iconActive: <ChatActiveIcon />,
+                            path: '/mail',
+                            component: <DialogsFragment />,
+                            caption: 'Chats',
+                            defaultPage: false,
+                        },
+                        {
+                            icon: <ProfileIcon />,
+                            iconActive: <ProfileActiveIcon />,
+                            path: '/account',
+                            component: <AccountFragment />,
+                            caption: 'Account',
+                            defaultPage: true
+                        },
+                    ],
+                isSuperadmin ? 2 : 1,
                 Routing,
             ),
         [],
