@@ -264,6 +264,7 @@ const WebSignUpCreateWithEmail = (
                             width="100%"
                             size="small"
                             searchable={true}
+                            virtual={true}
                             options={countriesCode}
                             optionRender={OptionRender}
                             onChange={codeField.input.onChange}
