@@ -2,13 +2,15 @@ import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
-import { GlobalSearch_items_User, GlobalSearch_items_Organization, GlobalSearch_items_SharedRoom } from 'openland-api/spacex.types';
+import { GlobalSearch_items_User, GlobalSearch_items_Organization, GlobalSearch_items_SharedRoom, GlobalSearch_items } from 'openland-api/spacex.types';
 import { ASAvatar } from 'openland-mobile/messenger/components/ASAvatar';
 import { UserAvatar } from 'openland-mobile/messenger/components/UserAvatar';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { Platform } from 'react-native';
+import { ASView } from 'react-native-async-view/ASView';
+import { GlobalSearchProps } from './GlobalSearch';
 
 interface ItemBaseProps {
     avatar: JSX.Element;
@@ -43,7 +45,7 @@ interface ItemRoomProps extends ItemProps {
     item: GlobalSearch_items_SharedRoom;
 }
 
-export const GlobalSearchItemSharedRoom = XMemo<ItemRoomProps>((props) => {
+const GlobalSearchItemSharedRoom = XMemo<ItemRoomProps>((props) => {
     const theme = useThemeGlobal();
     const { item, onPress } = props;
     const handlePress = React.useCallback(() => onPress(item.id, item.title), [item]);
@@ -70,7 +72,7 @@ interface ItemOrganizationProps extends ItemProps {
     item: GlobalSearch_items_Organization;
 }
 
-export const GlobalSearchItemOrganization = XMemo<ItemOrganizationProps>((props) => {
+const GlobalSearchItemOrganization = XMemo<ItemOrganizationProps>((props) => {
     const theme = useThemeGlobal();
     const { item, onPress } = props;
     const handlePress = React.useCallback(() => onPress(item.id, item.name), [item]);
@@ -97,7 +99,7 @@ interface ItemUserProps extends ItemProps {
     item: GlobalSearch_items_User;
 }
 
-export const GlobalSearchItemUser = XMemo<ItemUserProps>((props) => {
+const GlobalSearchItemUser = XMemo<ItemUserProps>((props) => {
     const theme = useThemeGlobal();
     const { item, onPress } = props;
     const handlePress = React.useCallback(() => onPress(item.id, item.name), [item]);
@@ -118,5 +120,49 @@ export const GlobalSearchItemUser = XMemo<ItemUserProps>((props) => {
                 />
             }
         />
+    );
+});
+
+interface GlobalSearchItemProps extends GlobalSearchProps {
+    item: GlobalSearch_items;
+}
+
+export const GlobalSearchItem = XMemo<GlobalSearchItemProps>((props) => {
+    const { item, router, onOrganizationPress, onUserPress, onGroupPress } = props;
+
+    return (
+        <ASView style={{ height: 56 }}>
+            {item.__typename === 'Organization' && (
+                <GlobalSearchItemOrganization
+                    item={item}
+                    onPress={
+                        onOrganizationPress
+                            ? onOrganizationPress
+                            : () =>
+                                router.push('ProfileOrganization', { id: item.id })
+                    }
+                />
+            )}
+            {item.__typename === 'User' && (
+                <GlobalSearchItemUser
+                    item={item}
+                    onPress={
+                        onUserPress
+                            ? onUserPress
+                            : () => router.push('Conversation', { id: item.id })
+                    }
+                />
+            )}
+            {item.__typename === 'SharedRoom' && (
+                <GlobalSearchItemSharedRoom
+                    item={item}
+                    onPress={
+                        onGroupPress
+                            ? onGroupPress
+                            : () => router.push('Conversation', { id: item.id })
+                    }
+                />
+            )}
+        </ASView>
     );
 });

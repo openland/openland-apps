@@ -233,6 +233,7 @@ export default () => {
     const [fromOutside, setFromOutside] = React.useState(false);
     const [isExistingUser, setExistingUser] = React.useState(false);
     const [avatarId, setAvatarId] = React.useState(null);
+    const prevDataFired = React.useRef<string>();
 
     const checkRedirect = () => {
         let redirect = router.query ? (router.query.redirect ? router.query.redirect : null) : null;
@@ -245,6 +246,7 @@ export default () => {
         checkRedirect();
         const authHost = isPhoneFire ? '/phone/sendCode' : '/sendCode';
         const authBody = isPhoneFire ? { phone: dataToFire } : { email: dataToFire };
+        prevDataFired.current = dataToFire;
         try {
             let res = await (
                 await fetch(API_AUTH_ENDPOINT + authHost, {
@@ -321,28 +323,27 @@ export default () => {
                 (!authValue ? (
                     <XPageRedirect path="/" />
                 ) : (
-                    <AskAuthCodePage
-                        authValue={authValue}
-                        phoneCodeValue={phoneCodeValue}
-                        authWasResend={authWasResend}
-                        authSending={authSending}
-                        setAuthWasResend={setAuthWasResend}
-                        isExistingUser={isExistingUser}
-                        avatarId={avatarId}
-                        backButtonClick={() => {
-                            setFromOutside(false);
-                        }}
-                        resendCodeClick={async () => {
-                            trackEvent('code_resend_action');
-                            setAuthSending(true);
-                            const dataToFire = isPhoneAuth
-                                ? phoneCodeValue.value.split(' ').join('') + authValue
-                                : authValue;
-                            await fireAuth(dataToFire, isPhoneAuth);
-                            setAuthWasResend(true);
-                        }}
-                    />
-                ))}
+                        <AskAuthCodePage
+                            authValue={authValue}
+                            phoneCodeValue={phoneCodeValue}
+                            authWasResend={authWasResend}
+                            authSending={authSending}
+                            setAuthWasResend={setAuthWasResend}
+                            isExistingUser={isExistingUser}
+                            avatarId={avatarId}
+                            backButtonClick={() => {
+                                setFromOutside(false);
+                            }}
+                            resendCodeClick={async () => {
+                                trackEvent('code_resend_action');
+                                setAuthSending(true);
+                                if (prevDataFired.current) {
+                                    await fireAuth(prevDataFired.current, isPhoneAuth);
+                                }
+                                setAuthWasResend(true);
+                            }}
+                        />
+                    ))}
             {page === pages.introduceYourself && (
                 <XTrack event="signin_profile_view">
                     <IntroduceYourselfPage />
@@ -395,8 +396,8 @@ export default () => {
                         </div>
                     </>
                 ) : (
-                    render
-                )}
+                        render
+                    )}
             </AuthHeaderConfigContex.Provider>
         </div>
     );

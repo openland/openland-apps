@@ -9,6 +9,7 @@ import Select, {
     InputActionMeta,
     MultiValueProps,
     ValueType,
+    MenuListComponentProps,
 } from 'react-select';
 import { emoji } from 'openland-y-utils/emoji';
 import { FormField } from 'openland-form/useField';
@@ -17,6 +18,7 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcClear from 'openland-icons/s/ic-close-16.svg';
 import IcDropdown from 'openland-icons/s/ic-dropdown-16.svg';
 import IcCheck from 'openland-icons/s/ic-done-16.svg';
+import { FixedSizeList } from 'react-window';
 
 type USelectSize = 'small' | 'default';
 
@@ -256,7 +258,7 @@ const OptionRender = (option: OptionType) => {
     );
 };
 
-const OptionComponent = (
+const OptionComponent = React.memo((
     props: OptionProps<OptionType> & {
         customChild?: (option: OptionType) => React.ReactElement;
     },
@@ -274,7 +276,7 @@ const OptionComponent = (
             )}
         </components.Option>
     );
-};
+});
 
 interface USelectBasicProps {
     options: OptionType[];
@@ -289,9 +291,11 @@ interface USelectBasicProps {
     invalid?: boolean;
     useMenuPortal?: boolean;
     autoFocus?: boolean;
+    virtual?: boolean;
     onFocus?: () => void;
     onBlur?: () => void;
     onMenuClose?: () => void;
+    filterOption?: (option: { label: string, value: string }, rawInput: string) => boolean;
 }
 
 export interface USelectProps extends USelectBasicProps, XViewProps {
@@ -299,6 +303,37 @@ export interface USelectProps extends USelectBasicProps, XViewProps {
     onChange: (v: ValueType<OptionType>) => void;
     multi?: boolean;
 }
+
+const VirtualMenuList = (props: MenuListComponentProps<OptionType> & { children?: React.ReactNode[] }) => {
+    const { children, options, maxHeight, getValue, getStyles } = props;
+    const safeChildren = children || [];
+    const paddingBottom = 8;
+    const itemHeight = 40;
+    const itemsCount = safeChildren.length || 1;
+    const height = Math.min(itemsCount * itemHeight + paddingBottom, maxHeight);
+    const valueWrapper = getValue();
+    const value = valueWrapper ? valueWrapper[0] : undefined;
+    const initialOffset = value ? options.indexOf(value) * itemHeight : 0;
+    let noOptions = !safeChildren.length;
+
+    return (
+        <FixedSizeList
+            style={{ marginTop: 8, paddingBottom }}
+            height={height}
+            itemCount={itemsCount}
+            itemSize={itemHeight}
+            width={320}
+            initialScrollOffset={initialOffset}
+        >
+            {({ index, style }) => (
+                <div style={{ ...style, ...noOptions ? getStyles('placeholder', props) : {} }}>
+                    {noOptions ? 'No options' : safeChildren[index]}
+                </div>
+            )
+            }
+        </FixedSizeList >
+    );
+};
 
 export const USelect = React.memo(
     React.forwardRef((props: USelectProps, ref: any) => {
@@ -321,6 +356,8 @@ export const USelect = React.memo(
             onBlur,
             onFocus,
             onMenuClose,
+            filterOption,
+            virtual,
             ...xViewProps
         } = props;
 
@@ -332,6 +369,9 @@ export const USelect = React.memo(
                 if (onInputChange) {
                     onInputChange(v);
                 }
+            }
+            if (params.action === 'menu-close' && v === '') {
+                setInputValue('');
             }
         };
 
@@ -358,6 +398,7 @@ export const USelect = React.memo(
                     inputValue={inputValue}
                     isSearchable={searchable}
                     placeholder={label}
+                    filterOption={filterOption}
                     menuPortalTarget={useMenuPortal ? document.querySelector('body') : undefined}
                     styles={customStyles({
                         size: size,
@@ -367,11 +408,12 @@ export const USelect = React.memo(
                     })}
                     components={{
                         Option: optionRender
-                            ? (v) => OptionComponent({ ...v, customChild: optionRender })
-                            : (v) => OptionComponent({ ...v }),
+                            ? (v) => <OptionComponent {...v} customChild={optionRender} />
+                            : (v) => <OptionComponent {...v} />,
                         DropdownIndicator: DropdownIndicatorComponent,
                         ClearIndicator: ClearIndicatorComponent,
                         MultiValueLabel: MultiValueLabelComponent,
+                        ...virtual ? { MenuList: VirtualMenuList } : {}
                     }}
                     onFocus={onFocus}
                     onBlur={onBlur}

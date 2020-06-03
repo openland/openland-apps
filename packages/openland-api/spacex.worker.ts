@@ -31,7 +31,8 @@ const initHandler = (ev: MessageEvent) => {
 
     let engine = new WebEngine(Definitions, {
         endpoint: msg.endpoint,
-        connectionParams: msg.token && { ['x-openland-token']: msg.token }
+        connectionParams: msg.token && { ['x-openland-token']: msg.token },
+        protocol: 'openland'
     });
     // if (msg.token && isElectronWorker()) {
     //     (engine as any).store.persistence.persistence = buildSpaceXPersistenceProvider(sha256(msg.token).toString());

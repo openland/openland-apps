@@ -43,6 +43,11 @@ const DialogsComponent = XMemo<PageProps>((props) => {
             getMessenger().history.navigationManager.push('Conversation', { id });
         }
     }, [props.router.params.share, props.router.params.pressCallback]);
+
+    const handleMessagePress = React.useCallback((id: string) => {
+        getMessenger().history.navigationManager.push('Message', { messageId: id });
+    }, []);
+
     const setTab = React.useContext(SetTabContext);
 
     const dialogs = (props.router.params.share || props.router.params.pressCallback) ? new ASDataView(getMessenger().engine.dialogList.dataSource, (item) => {
@@ -73,6 +78,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
                         onGroupPress={handlePress}
                         onUserPress={handlePress}
                         kinds={(props.router.params.title || props.router.params.share) ? [GlobalSearchEntryKind.USER, GlobalSearchEntryKind.SHAREDROOM] : undefined}
+                        onMessagePress={(props.router.params.title || props.router.params.share) ? undefined : handleMessagePress}
                     />
                 )}
             >
