@@ -343,8 +343,9 @@ const Pointer = React.memo((props: { peer: Conference_conference_peers, space: M
                             paddingVertical={2}
                             backgroundColor={pointerColor}
                             {...TextStyles.Label1}
+                            whiteSpace="nowrap"
                             color="var(--foregroundContrast)"
-                            width="max-content"
+                            width="auto"
                         >
                             {props.peer.user.firstName}
                         </XView>
