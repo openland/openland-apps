@@ -121,8 +121,10 @@ const VideoView = React.memo((props: VideoViewProps) => {
     const area = React.useContext(ASSafeAreaContext);
 
     let audioTrack = props.audioTrack;
-    let videoTrack = props.screencastTrack ? props.screencastTrack : (!props.peer.mediaState.videoPaused && props.videoTrack);
-    let stream = React.useMemo(() => videoTrack && new MediaStream([(videoTrack as AppUserMediaStreamTrackNative).track]), [videoTrack]);
+    let videoTrack = !props.peer.mediaState.videoPaused && props.videoTrack;
+    let screenTrack = props.peer.mediaState.screencastEnabled && props.screencastTrack;
+    let mainTrack = screenTrack || videoTrack;
+    let stream = React.useMemo(() => mainTrack && new MediaStream([(mainTrack as AppUserMediaStreamTrackNative).track]), [mainTrack]);
 
     const iconColor = props.theme.foregroundContrast;
     const iconByStatus = {

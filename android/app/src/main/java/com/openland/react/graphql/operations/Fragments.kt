@@ -822,7 +822,8 @@ internal val ConferenceFullSelector = obj(
                     field("mediaState", "mediaState", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("audioPaused", "audioPaused", notNull(scalar("Boolean"))),
-                            field("videoPaused", "videoPaused", notNull(scalar("Boolean")))
+                            field("videoPaused", "videoPaused", notNull(scalar("Boolean"))),
+                            field("screencastEnabled", "screencastEnabled", notNull(scalar("Boolean")))
                         )))
                 ))))),
             field("iceServers", "iceServers", notNull(list(notNull(obj(
