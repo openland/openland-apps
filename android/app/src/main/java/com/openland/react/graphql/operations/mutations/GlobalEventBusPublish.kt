@@ -10,6 +10,6 @@ internal val GlobalEventBusPublishSelector = obj(
 val GlobalEventBusPublish = object: OperationDefinition {
     override val name = "GlobalEventBusPublish"
     override val kind = OperationKind.MUTATION
-    override val body = "mutation GlobalEventBusPublish(\$topic:String,\$message:String){globalEventBusPublish(topic:\$topic,message:\$message)}"
+    override val body = "mutation GlobalEventBusPublish(\$topic:String!,\$message:String!){globalEventBusPublish(topic:\$topic,message:\$message)}"
     override val selector = GlobalEventBusPublishSelector
 }

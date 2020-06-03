@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
-import { DiscussionSimple } from 'openland-api/spacex.types';
+import { PostSimple } from 'openland-api/spacex.types';
 import { ParagraphComponent } from './ParagraphComponent';
 
-export const DiscussionComponent = React.memo((props: { data: DiscussionSimple }) => {
+export const DiscussionComponent = React.memo((props: { data: PostSimple }) => {
     // let client = useClient();
     // let account = client.useAccount();
     return (
         <XView flexDirection="column" paddingBottom={48}>
             <XView {...TextStyles.Subhead} opacity={0.7} paddingBottom={4}>
-                {props.data.hub!.title.toUpperCase()}
+                {props.data.channel!.title.toUpperCase()}
             </XView>
             <XView flexDirection="row">
                 <XView {...TextStyles.Title1} paddingBottom={16} fontSize={38} fontWeight="400">

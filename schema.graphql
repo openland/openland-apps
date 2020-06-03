@@ -75,6 +75,14 @@ type CardSetupIntent {
   clientSecret: String!
 }
 
+type Channel {
+  id: ID!
+  title: String!
+  type: ChannelType!
+  owner: User
+  shortname: String!
+}
+
 type ChannelConversation implements Conversation {
   id: ID!
   flexibleId: ID!
@@ -84,6 +92,18 @@ type ChannelConversation implements Conversation {
   unreadCount: Int!
   topMessage: ConversationMessage
   settings: ConversationSettings!
+}
+
+input ChannelInput {
+  title: String
+  shortname: String
+}
+
+enum ChannelType {
+  SYSTEM
+  PERSONAL
+  PUBLIC
+  SECRET
 }
 
 type ChatLostAccess {
@@ -183,11 +203,7 @@ type CommentEntry {
   childComments: [CommentEntry!]!
 }
 
-union CommentPeerRoot = CommentPeerRootMessage | CommentPeerRootFeedItem | CommentPeerRootDiscussion
-
-type CommentPeerRootDiscussion {
-  discussion: Discussion!
-}
+union CommentPeerRoot = CommentPeerRootMessage | CommentPeerRootFeedItem | CommentPeerRootPost
 
 type CommentPeerRootFeedItem {
   item: FeedItem!
@@ -196,6 +212,10 @@ type CommentPeerRootFeedItem {
 type CommentPeerRootMessage {
   message: GeneralMessage!
   chat: Room!
+}
+
+type CommentPeerRootPost {
+  post: Post!
 }
 
 type CommentReceived {
@@ -711,61 +731,6 @@ type DiscoverPage {
   tagGroup: TagGroup
 }
 
-type Discussion {
-  id: ID!
-  author: User
-  title: String!
-  content: [Paragraph!]!
-  draft: DiscussionDraft
-  canEdit: Boolean!
-  hub: Hub
-  createdAt: Date!
-  updatedAt: Date
-  deletedAt: Date
-}
-
-type DiscussionConnection {
-  items: [Discussion!]!
-  cursor: String
-}
-
-input DiscussionContentInput {
-  type: DiscussionContentType!
-  text: String
-  spans: [MessageSpanInput!]
-  image: ImageRefInput
-}
-
-enum DiscussionContentType {
-  Text
-  Image
-  H1
-  H2
-}
-
-type DiscussionDraft {
-  id: ID!
-  author: User
-  title: String!
-  content: [Paragraph!]!
-  publishedCopy: Discussion
-  hub: Hub
-  createdAt: Date!
-  updatedAt: Date
-  deletedAt: Date
-}
-
-type DiscussionDraftConnection {
-  items: [DiscussionDraft!]!
-  cursor: String
-}
-
-input DiscussionInput {
-  hub: ID
-  title: String
-  content: [DiscussionContentInput!]
-}
-
 type EditorsChoiceChat {
   id: ID!
   image: ImageRef!
@@ -1070,26 +1035,6 @@ type H1Paragraph {
 
 type H2Paragraph {
   text: String!
-}
-
-type Hub {
-  id: ID!
-  title: String!
-  type: HubType!
-  owner: User
-  shortname: String!
-}
-
-input HubInput {
-  title: String
-  shortname: String
-}
-
-enum HubType {
-  SYSTEM
-  PERSONAL
-  PUBLIC
-  SECRET
 }
 
 type ICEServer {
@@ -1747,6 +1692,8 @@ type Mutation {
   alphaJoinInvite(key: String!, isNewUser: Boolean): ID!
   joinAppInvite(key: String!, isNewUser: Boolean): ID!
   phonebookAdd(records: [PhonebookRecordInput!]!): Boolean!
+  channelCreate(input: ChannelInput!): Channel!
+  channelCreatePublic(input: ChannelInput!): Channel!
   debugSendSMS(to: String!, message: String!): Boolean!
   debugSerializeId(id: Int!, type: String!): ID!
   debugSendEmail(type: DebugEmailType!): Boolean
@@ -1826,8 +1773,6 @@ type Mutation {
 
   """Deprecated"""
   updateSettings(settings: UpdateSettingsInput): Settings!
-  hubCreate(input: HubInput!): Hub!
-  hubCreatePublic(input: HubInput!): Hub!
   conferenceAlterMediaState(id: ID!, state: MediaStreamMediaStateInput!): Conference!
   conferenceAddScreenShare(id: ID!): Conference!
   conferenceRemoveScreenShare(id: ID!): Conference!
@@ -1908,10 +1853,6 @@ type Mutation {
   mediaStreamAnswer(id: ID!, peerId: ID!, answer: String!, seq: Int): ConferenceMedia!
   mediaStreamCandidate(id: ID!, peerId: ID!, candidate: String!): ConferenceMedia!
   mediaStreamFailed(id: ID!, peerId: ID!): ConferenceMedia!
-  discussionCreate(input: DiscussionInput!): DiscussionDraft!
-  discussionUpdate(id: ID!, input: DiscussionInput!): DiscussionDraft!
-  discussionDraftPublish(draftId: ID!): Discussion!
-  discussionsDropAll: Boolean!
   setEnvVar(name: String!, value: String!): Boolean!
   setEnvVarString(name: String!, value: String!): Boolean!
   setEnvVarNumber(name: String!, value: Int!): Boolean!
@@ -1944,6 +1885,10 @@ type Mutation {
   createOrganization(input: CreateOrganizationInput!): Organization!
   updateOrganizationProfile(input: UpdateOrganizationProfileInput!, id: ID): OrganizationProfile!
   deleteOrganization(id: ID!): Boolean!
+  postDraftCreate(input: PostInput!): PostDraft!
+  postDraftUpdate(id: ID!, input: PostInput!): PostDraft!
+  postDraftPublish(id: ID!): Post!
+  postsDropAll: Boolean!
   registerWebPush(endpoint: String!): String!
   registerPush(endpoint: String!, type: PushType!): String!
   debugSendAndroidDataPush(uid: ID!, message: String!): Boolean!
@@ -2430,6 +2375,61 @@ type PopularNowRoomConnection {
   cursor: String
 }
 
+type Post {
+  id: ID!
+  author: User
+  title: String!
+  content: [Paragraph!]!
+  draft: PostDraft
+  canEdit: Boolean!
+  channel: Channel
+  createdAt: Date!
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type PostConnection {
+  items: [Post!]!
+  cursor: String
+}
+
+input PostContentInput {
+  type: PostContentType!
+  text: String
+  spans: [PostSpanInput!]
+  image: ImageRefInput
+}
+
+enum PostContentType {
+  Text
+  Image
+  H1
+  H2
+}
+
+type PostDraft {
+  id: ID!
+  author: User
+  title: String!
+  content: [Paragraph!]!
+  publishedCopy: Post
+  channel: Channel
+  createdAt: Date!
+  updatedAt: Date
+  deletedAt: Date
+}
+
+type PostDraftConnection {
+  items: [PostDraft!]!
+  cursor: String
+}
+
+input PostInput {
+  hub: ID
+  title: String
+  content: [PostContentInput!]
+}
+
 enum PostMessageType {
   BLANK
   JOB_OPPORTUNITY
@@ -2442,6 +2442,46 @@ type PostRespondServiceMetadata {
   postRoom: Room!
   responder: User!
   respondType: ID!
+}
+
+interface PostSpan {
+  offset: Int!
+  length: Int!
+}
+
+type PostSpanBold implements PostSpan {
+  offset: Int!
+  length: Int!
+}
+
+input PostSpanInput {
+  offset: Int!
+  length: Int!
+  type: PostSpanType!
+  url: String
+}
+
+type PostSpanIrony implements PostSpan {
+  offset: Int!
+  length: Int!
+}
+
+type PostSpanItalic implements PostSpan {
+  offset: Int!
+  length: Int!
+}
+
+type PostSpanLink implements PostSpan {
+  offset: Int!
+  length: Int!
+  url: String!
+}
+
+enum PostSpanType {
+  Bold
+  Italic
+  Irony
+  Link
 }
 
 type Powerup {
@@ -2593,6 +2633,8 @@ type Query {
   appInviteFromUser(shortname: String!): String!
   appInviteInfo(key: String!): AppInvite
   alphaResolveInvite(key: String!): ResolveInviteEntry
+  channels: [Channel!]!
+  channel(id: ID!): Channel
   debugParseID(id: ID!): DebugID!
   debugCrashQuery: String!
   debugUrlInfo(url: String!): UrlAugmentation
@@ -2614,8 +2656,6 @@ type Query {
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!
-  hubs: [Hub!]!
-  hub(id: ID!): Hub
   myOauthApps: [OauthApp!]!
   oauthContext(code: String!): OauthContext
   alphaOrganizationMembers(orgId: ID!, first: Int, after: ID): [OrganizationMember!]!
@@ -2648,15 +2688,11 @@ type Query {
   conversationState(id: ID!): ConversationUpdateState!
   messageComments(messageId: ID!): CommentsPeer!
   feedItemComments(feedItemId: ID!): CommentsPeer!
-  discussionComments(discussionId: ID!): CommentsPeer!
+  postComments(postId: ID!): CommentsPeer!
   comments(peerId: ID!): CommentsPeer!
   conference(id: ID!): Conference!
   conferenceMedia(id: ID!, peerId: ID!): ConferenceMedia!
   dialogsState: DialogUpdateState!
-  discussion(id: ID!): Discussion
-  discussionDraft(id: ID!): DiscussionDraft
-  discussions(hubs: [ID!], first: Int!, after: String): DiscussionConnection!
-  discussionMyDrafts(first: Int!, after: String): DiscussionDraftConnection!
   envVars: [EnvVar!]
   envVar(name: String!): EnvVar
   featureFlags: [FeatureFlag!]!
@@ -2686,6 +2722,10 @@ type Query {
   discoverPopularNow(first: Int!, after: String): PopularNowRoomConnection!
   discoverTopPremium(first: Int!, after: String): SharedRoomConnection!
   discoverTopFree(first: Int!, after: String): SharedRoomConnection!
+  post(id: ID!): Post
+  postDraft(id: ID!): PostDraft
+  posts(hubs: [ID!], first: Int!, after: String): PostConnection!
+  postMyDrafts(first: Int!, after: String): PostDraftConnection!
   myProfilePrefill: ProfilePrefill
   pushSettings: PushSettings!
   sessionState: SessionState!
@@ -3023,7 +3063,7 @@ type SharedRoomMention {
   sharedRoom: SharedRoom!
 }
 
-union ShortNameDestination = User | Organization | FeedChannel | SharedRoom | DiscoverChatsCollection | Hub
+union ShortNameDestination = User | Organization | FeedChannel | SharedRoom | DiscoverChatsCollection | Channel
 
 type ShowNotificationMessageInfo {
   mobile: Boolean!
@@ -3217,7 +3257,7 @@ type TextMatchmakingQuestion {
 
 type TextParagraph {
   text: String!
-  spans: [MessageSpan!]!
+  spans: [PostSpan!]!
 }
 
 type TextSlide {

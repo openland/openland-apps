@@ -32,7 +32,7 @@ export const ShortnameFragment = React.memo(() => {
         if (data.__typename === 'DiscoverChatsCollection') {
             return <DiscoverCollectionFragment id={data.id} />;
         }
-        if (data.__typename === 'Hub') {
+        if (data.__typename === 'Channel') {
             if (unicorn.query.id) {
                 return <DiscussionFragment id={unicorn.query.id} />;
             }

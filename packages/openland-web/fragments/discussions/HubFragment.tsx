@@ -5,7 +5,7 @@ import { DiscussionsComponent } from './components/DiscussionsComponent';
 
 export const HubFragment = React.memo((props: { id: string }) => {
     const client = useClient();
-    let hub = client.useHub({ id: props.id }, { fetchPolicy: 'cache-and-network' }).hub!;
+    let hub = client.useChannel({ id: props.id }, { fetchPolicy: 'cache-and-network' }).channel!;
     return (
         <>
             <UHeader title={hub.title} appearance="wide" />

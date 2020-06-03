@@ -27,6 +27,20 @@ internal val AppFullSelector = obj(
                 )))
         )
 
+internal val ChannelSimpleSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("shortname", "shortname", notNull(scalar("String"))),
+            field("type", "type", notNull(scalar("String"))),
+            field("owner", "owner", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("firstName", "firstName", notNull(scalar("String"))),
+                    field("lastName", "lastName", scalar("String"))
+                ))
+        )
+
 internal val OrganizationShortSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -1100,107 +1114,6 @@ internal val DiscoverChatsCollectionShortSelector = obj(
                 )))
         )
 
-internal val ParagraphSimpleSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            inline("TextParagraph", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                field("text", "text", notNull(scalar("String"))),
-                field("spans", "spans", notNull(list(notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("MessageSpan", SpanFragmentSelector)
-                    )))))
-            )),
-            inline("ImageParagraph", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                field("url", "url", notNull(scalar("String"))),
-                field("image", "image", notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("uuid", "uuid", notNull(scalar("String")))
-                    ))),
-                field("fileMetadata", "fileMetadata", notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("isImage", "isImage", notNull(scalar("Boolean"))),
-                        field("imageWidth", "imageWidth", scalar("Int")),
-                        field("imageHeight", "imageHeight", scalar("Int")),
-                        field("imageFormat", "imageFormat", scalar("String"))
-                    )))
-            )),
-            inline("H1Paragraph", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                field("text", "text", notNull(scalar("String")))
-            )),
-            inline("H2Paragraph", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                field("text", "text", notNull(scalar("String")))
-            ))
-        )
-
-internal val DiscussionDraftSimpleSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("title", "title", notNull(scalar("String"))),
-            field("content", "content", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Paragraph", ParagraphSimpleSelector)
-                ))))),
-            field("publishedCopy", "publishedCopy", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID")))
-                )),
-            field("hub", "hub", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("title", "title", notNull(scalar("String"))),
-                    field("shortname", "shortname", notNull(scalar("String")))
-                )),
-            field("createdAt", "createdAt", notNull(scalar("Date"))),
-            field("updatedAt", "updatedAt", scalar("Date")),
-            field("deletedAt", "deletedAt", scalar("Date"))
-        )
-
-internal val DiscussionSimpleSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("title", "title", notNull(scalar("String"))),
-            field("content", "content", notNull(list(notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Paragraph", ParagraphSimpleSelector)
-                ))))),
-            field("hub", "hub", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("title", "title", notNull(scalar("String"))),
-                    field("shortname", "shortname", notNull(scalar("String")))
-                )),
-            field("author", "author", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("name", "name", notNull(scalar("String")))
-                )),
-            field("draft", "draft", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID")))
-                )),
-            field("canEdit", "canEdit", notNull(scalar("Boolean"))),
-            field("createdAt", "createdAt", notNull(scalar("Date"))),
-            field("updatedAt", "updatedAt", scalar("Date")),
-            field("deletedAt", "deletedAt", scalar("Date"))
-        )
-
-internal val HubSimpleSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("title", "title", notNull(scalar("String"))),
-            field("shortname", "shortname", notNull(scalar("String"))),
-            field("type", "type", notNull(scalar("String"))),
-            field("owner", "owner", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("firstName", "firstName", notNull(scalar("String"))),
-                    field("lastName", "lastName", scalar("String"))
-                ))
-        )
-
 internal val MediaStreamFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -1267,9 +1180,9 @@ internal val NotificationFragmentSelector = obj(
                                                     fragment("Room", RoomNanoSelector)
                                                 )))
                                         )),
-                                        inline("CommentPeerRootDiscussion", obj(
+                                        inline("CommentPeerRootPost", obj(
                                             field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("discussion", "discussion", notNull(obj(
+                                            field("post", "post", notNull(obj(
                                                     field("__typename", "__typename", notNull(scalar("String"))),
                                                     field("id", "id", notNull(scalar("ID")))
                                                 )))
@@ -1365,9 +1278,9 @@ internal val NotificationCenterUpdateFragmentSelector = obj(
                                                         fragment("Room", RoomNanoSelector)
                                                     )))
                                             )),
-                                            inline("CommentPeerRootDiscussion", obj(
+                                            inline("CommentPeerRootPost", obj(
                                                 field("__typename", "__typename", notNull(scalar("String"))),
-                                                field("discussion", "discussion", notNull(obj(
+                                                field("post", "post", notNull(obj(
                                                         field("__typename", "__typename", notNull(scalar("String"))),
                                                         field("id", "id", notNull(scalar("ID")))
                                                     )))
@@ -1456,6 +1369,61 @@ internal val OrganizationProfileFragmentSelector = obj(
             field("alphaEditorial", "editorial", notNull(scalar("Boolean")))
         )
 
+internal val ParagraphSimpleSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("TextParagraph", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("text", "text", notNull(scalar("String"))),
+                field("spans", "spans", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        inline("PostSpanBold", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("offset", "offset", notNull(scalar("Int"))),
+                            field("length", "length", notNull(scalar("Int")))
+                        )),
+                        inline("PostSpanItalic", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("offset", "offset", notNull(scalar("Int"))),
+                            field("length", "length", notNull(scalar("Int")))
+                        )),
+                        inline("PostSpanIrony", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("offset", "offset", notNull(scalar("Int"))),
+                            field("length", "length", notNull(scalar("Int")))
+                        )),
+                        inline("PostSpanLink", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("offset", "offset", notNull(scalar("Int"))),
+                            field("length", "length", notNull(scalar("Int"))),
+                            field("url", "url", notNull(scalar("String")))
+                        ))
+                    )))))
+            )),
+            inline("ImageParagraph", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("url", "url", notNull(scalar("String"))),
+                field("image", "image", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("uuid", "uuid", notNull(scalar("String")))
+                    ))),
+                field("fileMetadata", "fileMetadata", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("isImage", "isImage", notNull(scalar("Boolean"))),
+                        field("imageWidth", "imageWidth", scalar("Int")),
+                        field("imageHeight", "imageHeight", scalar("Int")),
+                        field("imageFormat", "imageFormat", scalar("String"))
+                    )))
+            )),
+            inline("H1Paragraph", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("text", "text", notNull(scalar("String")))
+            )),
+            inline("H2Paragraph", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("text", "text", notNull(scalar("String")))
+            ))
+        )
+
 internal val PlatformNotificationSettingsFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("direct", "direct", notNull(obj(
@@ -1484,6 +1452,58 @@ internal val PlatformNotificationSettingsFullSelector = obj(
                     field("sound", "sound", notNull(scalar("Boolean")))
                 ))),
             field("notificationPreview", "notificationPreview", notNull(scalar("String")))
+        )
+
+internal val PostDraftSimpleSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("content", "content", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Paragraph", ParagraphSimpleSelector)
+                ))))),
+            field("publishedCopy", "publishedCopy", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
+                )),
+            field("channel", "channel", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("title", "title", notNull(scalar("String"))),
+                    field("shortname", "shortname", notNull(scalar("String")))
+                )),
+            field("createdAt", "createdAt", notNull(scalar("Date"))),
+            field("updatedAt", "updatedAt", scalar("Date")),
+            field("deletedAt", "deletedAt", scalar("Date"))
+        )
+
+internal val PostSimpleSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("content", "content", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Paragraph", ParagraphSimpleSelector)
+                ))))),
+            field("channel", "channel", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("title", "title", notNull(scalar("String"))),
+                    field("shortname", "shortname", notNull(scalar("String")))
+                )),
+            field("author", "author", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String")))
+                )),
+            field("draft", "draft", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
+                )),
+            field("canEdit", "canEdit", notNull(scalar("Boolean"))),
+            field("createdAt", "createdAt", notNull(scalar("Date"))),
+            field("updatedAt", "updatedAt", scalar("Date")),
+            field("deletedAt", "deletedAt", scalar("Date"))
         )
 
 internal val RoomPreviewSelector = obj(

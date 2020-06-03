@@ -15,7 +15,7 @@ const scaleSVG = css`
 
 export const DiscussionsComponent = React.memo((props: { hubs: string[] | null }) => {
     const client = useClient();
-    const discussions = client.useDiscussions({ hubs: props.hubs || [] }, { fetchPolicy: 'network-only' }).discussions;
+    const discussions = client.usePosts({ channels: props.hubs || [] }, { fetchPolicy: 'network-only' }).posts;
     if (discussions.items.length === 0) {
         return (
             <XView flexGrow={1} flexShrink={1} alignItems="stretch" alignSelf="stretch" justifyContent="center" flexDirection="column">

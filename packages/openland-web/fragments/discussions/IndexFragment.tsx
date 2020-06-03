@@ -9,7 +9,7 @@ import { useClient } from 'openland-api/useClient';
 
 export const IndexFragment = React.memo(() => {
     const client = useClient();
-    let hubs = client.useHubs({ suspense: false });
+    let hubs = client.useChannels({ suspense: false });
     return (
         <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
             <USideHeader title="Discussions" />
@@ -26,8 +26,8 @@ export const IndexFragment = React.memo(() => {
                             path={'/discuss'}
                             icon={<IcHome />}
                         />
-                        {hubs && hubs.hubs.length > 0 && (
-                            hubs.hubs.map((v) => (
+                        {hubs && hubs.channels.length > 0 && (
+                            hubs.channels.map((v) => (
                                 <UListItem
                                     key={v.id}
                                     title={v.title}

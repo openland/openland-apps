@@ -80,7 +80,7 @@ export interface DataSourceMessageItem {
     isSubscribedMessageComments?: boolean;
     replyQuoteText?: string | null;
     peerRootId?: string;
-    peerRootType?: 'CommentPeerRootMessage' | 'CommentPeerRootFeedItem' | 'CommentPeerRootDiscussion';
+    peerRootType?: 'CommentPeerRootMessage' | 'CommentPeerRootFeedItem' | 'CommentPeerRootPost';
     notificationId?: string;
     notificationType?: 'new_comment' | 'unsupported';
     room?: Types.RoomNano;

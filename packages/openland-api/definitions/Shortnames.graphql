@@ -17,7 +17,7 @@ query ResolveShortName($shortname: String!) {
         ... on DiscoverChatsCollection {
             id
         }
-        ... on Hub {
+        ... on Channel {
             id
         }
     }

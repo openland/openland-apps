@@ -28,6 +28,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, opts?: OperationParameters): Promise<Types.AuthResolveShortName> {
         return this.query('AuthResolveShortName', variables, opts);
     }
+    queryChannel(variables: Types.ChannelVariables, opts?: OperationParameters): Promise<Types.Channel> {
+        return this.query('Channel', variables, opts);
+    }
+    queryChannels(opts?: OperationParameters): Promise<Types.Channels> {
+        return this.query('Channels', undefined, opts);
+    }
     queryChatInit(variables: Types.ChatInitVariables, opts?: OperationParameters): Promise<Types.ChatInit> {
         return this.query('ChatInit', variables, opts);
     }
@@ -100,15 +106,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: OperationParameters): Promise<Types.DiscoverTopPremium> {
         return this.query('DiscoverTopPremium', variables, opts);
     }
-    queryDiscussionDraft(variables: Types.DiscussionDraftVariables, opts?: OperationParameters): Promise<Types.DiscussionDraft> {
-        return this.query('DiscussionDraft', variables, opts);
-    }
-    queryDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts?: OperationParameters): Promise<Types.DiscussionDrafts> {
-        return this.query('DiscussionDrafts', variables, opts);
-    }
-    queryDiscussions(variables: Types.DiscussionsVariables, opts?: OperationParameters): Promise<Types.Discussions> {
-        return this.query('Discussions', variables, opts);
-    }
     queryExplorePeople(variables: Types.ExplorePeopleVariables, opts?: OperationParameters): Promise<Types.ExplorePeople> {
         return this.query('ExplorePeople', variables, opts);
     }
@@ -129,12 +126,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryGroupScreenViews(variables: Types.GroupScreenViewsVariables, opts?: OperationParameters): Promise<Types.GroupScreenViews> {
         return this.query('GroupScreenViews', variables, opts);
-    }
-    queryHub(variables: Types.HubVariables, opts?: OperationParameters): Promise<Types.Hub> {
-        return this.query('Hub', variables, opts);
-    }
-    queryHubs(opts?: OperationParameters): Promise<Types.Hubs> {
-        return this.query('Hubs', undefined, opts);
     }
     queryMessage(variables: Types.MessageVariables, opts?: OperationParameters): Promise<Types.Message> {
         return this.query('Message', variables, opts);
@@ -159,6 +150,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryMyOrganizations(opts?: OperationParameters): Promise<Types.MyOrganizations> {
         return this.query('MyOrganizations', undefined, opts);
+    }
+    queryMyPostDrafts(variables: Types.MyPostDraftsVariables, opts?: OperationParameters): Promise<Types.MyPostDrafts> {
+        return this.query('MyPostDrafts', variables, opts);
     }
     queryMyStickers(opts?: OperationParameters): Promise<Types.MyStickers> {
         return this.query('MyStickers', undefined, opts);
@@ -198,6 +192,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryPicSharedMedia(variables: Types.PicSharedMediaVariables, opts?: OperationParameters): Promise<Types.PicSharedMedia> {
         return this.query('PicSharedMedia', variables, opts);
+    }
+    queryPostDraft(variables: Types.PostDraftVariables, opts?: OperationParameters): Promise<Types.PostDraft> {
+        return this.query('PostDraft', variables, opts);
+    }
+    queryPosts(variables: Types.PostsVariables, opts?: OperationParameters): Promise<Types.Posts> {
+        return this.query('Posts', variables, opts);
     }
     queryProfile(opts?: OperationParameters): Promise<Types.Profile> {
         return this.query('Profile', undefined, opts);
@@ -325,6 +325,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, opts?: OperationParameters): Promise<Types.AuthResolveShortName> {
         return this.refetch('AuthResolveShortName', variables);
     }
+    refetchChannel(variables: Types.ChannelVariables, opts?: OperationParameters): Promise<Types.Channel> {
+        return this.refetch('Channel', variables);
+    }
+    refetchChannels(opts?: OperationParameters): Promise<Types.Channels> {
+        return this.refetch('Channels', undefined);
+    }
     refetchChatInit(variables: Types.ChatInitVariables, opts?: OperationParameters): Promise<Types.ChatInit> {
         return this.refetch('ChatInit', variables);
     }
@@ -397,15 +403,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: OperationParameters): Promise<Types.DiscoverTopPremium> {
         return this.refetch('DiscoverTopPremium', variables);
     }
-    refetchDiscussionDraft(variables: Types.DiscussionDraftVariables, opts?: OperationParameters): Promise<Types.DiscussionDraft> {
-        return this.refetch('DiscussionDraft', variables);
-    }
-    refetchDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts?: OperationParameters): Promise<Types.DiscussionDrafts> {
-        return this.refetch('DiscussionDrafts', variables);
-    }
-    refetchDiscussions(variables: Types.DiscussionsVariables, opts?: OperationParameters): Promise<Types.Discussions> {
-        return this.refetch('Discussions', variables);
-    }
     refetchExplorePeople(variables: Types.ExplorePeopleVariables, opts?: OperationParameters): Promise<Types.ExplorePeople> {
         return this.refetch('ExplorePeople', variables);
     }
@@ -426,12 +423,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchGroupScreenViews(variables: Types.GroupScreenViewsVariables, opts?: OperationParameters): Promise<Types.GroupScreenViews> {
         return this.refetch('GroupScreenViews', variables);
-    }
-    refetchHub(variables: Types.HubVariables, opts?: OperationParameters): Promise<Types.Hub> {
-        return this.refetch('Hub', variables);
-    }
-    refetchHubs(opts?: OperationParameters): Promise<Types.Hubs> {
-        return this.refetch('Hubs', undefined);
     }
     refetchMessage(variables: Types.MessageVariables, opts?: OperationParameters): Promise<Types.Message> {
         return this.refetch('Message', variables);
@@ -456,6 +447,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchMyOrganizations(opts?: OperationParameters): Promise<Types.MyOrganizations> {
         return this.refetch('MyOrganizations', undefined);
+    }
+    refetchMyPostDrafts(variables: Types.MyPostDraftsVariables, opts?: OperationParameters): Promise<Types.MyPostDrafts> {
+        return this.refetch('MyPostDrafts', variables);
     }
     refetchMyStickers(opts?: OperationParameters): Promise<Types.MyStickers> {
         return this.refetch('MyStickers', undefined);
@@ -495,6 +489,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchPicSharedMedia(variables: Types.PicSharedMediaVariables, opts?: OperationParameters): Promise<Types.PicSharedMedia> {
         return this.refetch('PicSharedMedia', variables);
+    }
+    refetchPostDraft(variables: Types.PostDraftVariables, opts?: OperationParameters): Promise<Types.PostDraft> {
+        return this.refetch('PostDraft', variables);
+    }
+    refetchPosts(variables: Types.PostsVariables, opts?: OperationParameters): Promise<Types.Posts> {
+        return this.refetch('Posts', variables);
     }
     refetchProfile(opts?: OperationParameters): Promise<Types.Profile> {
         return this.refetch('Profile', undefined);
@@ -622,6 +622,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, updater: (data: Types.AuthResolveShortName) => Types.AuthResolveShortName | null): Promise<boolean> {
         return this.updateQuery(updater, 'AuthResolveShortName', variables);
     }
+    updateChannel(variables: Types.ChannelVariables, updater: (data: Types.Channel) => Types.Channel | null): Promise<boolean> {
+        return this.updateQuery(updater, 'Channel', variables);
+    }
+    updateChannels(updater: (data: Types.Channels) => Types.Channels | null): Promise<boolean> {
+        return this.updateQuery(updater, 'Channels', undefined);
+    }
     updateChatInit(variables: Types.ChatInitVariables, updater: (data: Types.ChatInit) => Types.ChatInit | null): Promise<boolean> {
         return this.updateQuery(updater, 'ChatInit', variables);
     }
@@ -694,15 +700,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, updater: (data: Types.DiscoverTopPremium) => Types.DiscoverTopPremium | null): Promise<boolean> {
         return this.updateQuery(updater, 'DiscoverTopPremium', variables);
     }
-    updateDiscussionDraft(variables: Types.DiscussionDraftVariables, updater: (data: Types.DiscussionDraft) => Types.DiscussionDraft | null): Promise<boolean> {
-        return this.updateQuery(updater, 'DiscussionDraft', variables);
-    }
-    updateDiscussionDrafts(variables: Types.DiscussionDraftsVariables, updater: (data: Types.DiscussionDrafts) => Types.DiscussionDrafts | null): Promise<boolean> {
-        return this.updateQuery(updater, 'DiscussionDrafts', variables);
-    }
-    updateDiscussions(variables: Types.DiscussionsVariables, updater: (data: Types.Discussions) => Types.Discussions | null): Promise<boolean> {
-        return this.updateQuery(updater, 'Discussions', variables);
-    }
     updateExplorePeople(variables: Types.ExplorePeopleVariables, updater: (data: Types.ExplorePeople) => Types.ExplorePeople | null): Promise<boolean> {
         return this.updateQuery(updater, 'ExplorePeople', variables);
     }
@@ -723,12 +720,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateGroupScreenViews(variables: Types.GroupScreenViewsVariables, updater: (data: Types.GroupScreenViews) => Types.GroupScreenViews | null): Promise<boolean> {
         return this.updateQuery(updater, 'GroupScreenViews', variables);
-    }
-    updateHub(variables: Types.HubVariables, updater: (data: Types.Hub) => Types.Hub | null): Promise<boolean> {
-        return this.updateQuery(updater, 'Hub', variables);
-    }
-    updateHubs(updater: (data: Types.Hubs) => Types.Hubs | null): Promise<boolean> {
-        return this.updateQuery(updater, 'Hubs', undefined);
     }
     updateMessage(variables: Types.MessageVariables, updater: (data: Types.Message) => Types.Message | null): Promise<boolean> {
         return this.updateQuery(updater, 'Message', variables);
@@ -753,6 +744,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateMyOrganizations(updater: (data: Types.MyOrganizations) => Types.MyOrganizations | null): Promise<boolean> {
         return this.updateQuery(updater, 'MyOrganizations', undefined);
+    }
+    updateMyPostDrafts(variables: Types.MyPostDraftsVariables, updater: (data: Types.MyPostDrafts) => Types.MyPostDrafts | null): Promise<boolean> {
+        return this.updateQuery(updater, 'MyPostDrafts', variables);
     }
     updateMyStickers(updater: (data: Types.MyStickers) => Types.MyStickers | null): Promise<boolean> {
         return this.updateQuery(updater, 'MyStickers', undefined);
@@ -792,6 +786,12 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updatePicSharedMedia(variables: Types.PicSharedMediaVariables, updater: (data: Types.PicSharedMedia) => Types.PicSharedMedia | null): Promise<boolean> {
         return this.updateQuery(updater, 'PicSharedMedia', variables);
+    }
+    updatePostDraft(variables: Types.PostDraftVariables, updater: (data: Types.PostDraft) => Types.PostDraft | null): Promise<boolean> {
+        return this.updateQuery(updater, 'PostDraft', variables);
+    }
+    updatePosts(variables: Types.PostsVariables, updater: (data: Types.Posts) => Types.Posts | null): Promise<boolean> {
+        return this.updateQuery(updater, 'Posts', variables);
     }
     updateProfile(updater: (data: Types.Profile) => Types.Profile | null): Promise<boolean> {
         return this.updateQuery(updater, 'Profile', undefined);
@@ -933,6 +933,16 @@ export class OpenlandClient extends BaseSpaceXClient {
     useAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, opts?: SpaceQueryWatchParameters): Types.AuthResolveShortName | null {
         return this.useQuery('AuthResolveShortName', variables, opts);
     }
+    useChannel(variables: Types.ChannelVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Channel | null;
+    useChannel(variables: Types.ChannelVariables, opts?: SpaceQueryWatchParameters): Types.Channel;
+    useChannel(variables: Types.ChannelVariables, opts?: SpaceQueryWatchParameters): Types.Channel | null {
+        return this.useQuery('Channel', variables, opts);
+    }
+    useChannels(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Channels | null;
+    useChannels(opts?: SpaceQueryWatchParameters): Types.Channels;
+    useChannels(opts?: SpaceQueryWatchParameters): Types.Channels | null {
+        return this.useQuery('Channels', undefined, opts);
+    }
     useChatInit(variables: Types.ChatInitVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ChatInit | null;
     useChatInit(variables: Types.ChatInitVariables, opts?: SpaceQueryWatchParameters): Types.ChatInit;
     useChatInit(variables: Types.ChatInitVariables, opts?: SpaceQueryWatchParameters): Types.ChatInit | null {
@@ -1053,21 +1063,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverTopPremium | null {
         return this.useQuery('DiscoverTopPremium', variables, opts);
     }
-    useDiscussionDraft(variables: Types.DiscussionDraftVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscussionDraft | null;
-    useDiscussionDraft(variables: Types.DiscussionDraftVariables, opts?: SpaceQueryWatchParameters): Types.DiscussionDraft;
-    useDiscussionDraft(variables: Types.DiscussionDraftVariables, opts?: SpaceQueryWatchParameters): Types.DiscussionDraft | null {
-        return this.useQuery('DiscussionDraft', variables, opts);
-    }
-    useDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscussionDrafts | null;
-    useDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts?: SpaceQueryWatchParameters): Types.DiscussionDrafts;
-    useDiscussionDrafts(variables: Types.DiscussionDraftsVariables, opts?: SpaceQueryWatchParameters): Types.DiscussionDrafts | null {
-        return this.useQuery('DiscussionDrafts', variables, opts);
-    }
-    useDiscussions(variables: Types.DiscussionsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Discussions | null;
-    useDiscussions(variables: Types.DiscussionsVariables, opts?: SpaceQueryWatchParameters): Types.Discussions;
-    useDiscussions(variables: Types.DiscussionsVariables, opts?: SpaceQueryWatchParameters): Types.Discussions | null {
-        return this.useQuery('Discussions', variables, opts);
-    }
     useExplorePeople(variables: Types.ExplorePeopleVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ExplorePeople | null;
     useExplorePeople(variables: Types.ExplorePeopleVariables, opts?: SpaceQueryWatchParameters): Types.ExplorePeople;
     useExplorePeople(variables: Types.ExplorePeopleVariables, opts?: SpaceQueryWatchParameters): Types.ExplorePeople | null {
@@ -1102,16 +1097,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useGroupScreenViews(variables: Types.GroupScreenViewsVariables, opts?: SpaceQueryWatchParameters): Types.GroupScreenViews;
     useGroupScreenViews(variables: Types.GroupScreenViewsVariables, opts?: SpaceQueryWatchParameters): Types.GroupScreenViews | null {
         return this.useQuery('GroupScreenViews', variables, opts);
-    }
-    useHub(variables: Types.HubVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Hub | null;
-    useHub(variables: Types.HubVariables, opts?: SpaceQueryWatchParameters): Types.Hub;
-    useHub(variables: Types.HubVariables, opts?: SpaceQueryWatchParameters): Types.Hub | null {
-        return this.useQuery('Hub', variables, opts);
-    }
-    useHubs(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Hubs | null;
-    useHubs(opts?: SpaceQueryWatchParameters): Types.Hubs;
-    useHubs(opts?: SpaceQueryWatchParameters): Types.Hubs | null {
-        return this.useQuery('Hubs', undefined, opts);
     }
     useMessage(variables: Types.MessageVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Message | null;
     useMessage(variables: Types.MessageVariables, opts?: SpaceQueryWatchParameters): Types.Message;
@@ -1152,6 +1137,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useMyOrganizations(opts?: SpaceQueryWatchParameters): Types.MyOrganizations;
     useMyOrganizations(opts?: SpaceQueryWatchParameters): Types.MyOrganizations | null {
         return this.useQuery('MyOrganizations', undefined, opts);
+    }
+    useMyPostDrafts(variables: Types.MyPostDraftsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.MyPostDrafts | null;
+    useMyPostDrafts(variables: Types.MyPostDraftsVariables, opts?: SpaceQueryWatchParameters): Types.MyPostDrafts;
+    useMyPostDrafts(variables: Types.MyPostDraftsVariables, opts?: SpaceQueryWatchParameters): Types.MyPostDrafts | null {
+        return this.useQuery('MyPostDrafts', variables, opts);
     }
     useMyStickers(opts: SpaceQueryWatchParameters & { suspense: false }): Types.MyStickers | null;
     useMyStickers(opts?: SpaceQueryWatchParameters): Types.MyStickers;
@@ -1217,6 +1207,16 @@ export class OpenlandClient extends BaseSpaceXClient {
     usePicSharedMedia(variables: Types.PicSharedMediaVariables, opts?: SpaceQueryWatchParameters): Types.PicSharedMedia;
     usePicSharedMedia(variables: Types.PicSharedMediaVariables, opts?: SpaceQueryWatchParameters): Types.PicSharedMedia | null {
         return this.useQuery('PicSharedMedia', variables, opts);
+    }
+    usePostDraft(variables: Types.PostDraftVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.PostDraft | null;
+    usePostDraft(variables: Types.PostDraftVariables, opts?: SpaceQueryWatchParameters): Types.PostDraft;
+    usePostDraft(variables: Types.PostDraftVariables, opts?: SpaceQueryWatchParameters): Types.PostDraft | null {
+        return this.useQuery('PostDraft', variables, opts);
+    }
+    usePosts(variables: Types.PostsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Posts | null;
+    usePosts(variables: Types.PostsVariables, opts?: SpaceQueryWatchParameters): Types.Posts;
+    usePosts(variables: Types.PostsVariables, opts?: SpaceQueryWatchParameters): Types.Posts | null {
+        return this.useQuery('Posts', variables, opts);
     }
     useProfile(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Profile | null;
     useProfile(opts?: SpaceQueryWatchParameters): Types.Profile;
@@ -1489,15 +1489,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateDiscoverEditorsChoiceUpdate(variables: Types.DiscoverEditorsChoiceUpdateVariables): Promise<Types.DiscoverEditorsChoiceUpdate> {
         return this.mutate('DiscoverEditorsChoiceUpdate', variables);
     }
-    mutateDiscussionCreateDraft(): Promise<Types.DiscussionCreateDraft> {
-        return this.mutate('DiscussionCreateDraft');
-    }
-    mutateDiscussionPublish(variables: Types.DiscussionPublishVariables): Promise<Types.DiscussionPublish> {
-        return this.mutate('DiscussionPublish', variables);
-    }
-    mutateDiscussionUpdate(variables: Types.DiscussionUpdateVariables): Promise<Types.DiscussionUpdate> {
-        return this.mutate('DiscussionUpdate', variables);
-    }
     mutateEditComment(variables: Types.EditCommentVariables): Promise<Types.EditComment> {
         return this.mutate('EditComment', variables);
     }
@@ -1575,6 +1566,15 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutatePinMessage(variables: Types.PinMessageVariables): Promise<Types.PinMessage> {
         return this.mutate('PinMessage', variables);
+    }
+    mutatePostCreateDraft(): Promise<Types.PostCreateDraft> {
+        return this.mutate('PostCreateDraft');
+    }
+    mutatePostDraftUpdate(variables: Types.PostDraftUpdateVariables): Promise<Types.PostDraftUpdate> {
+        return this.mutate('PostDraftUpdate', variables);
+    }
+    mutatePostPublish(variables: Types.PostPublishVariables): Promise<Types.PostPublish> {
+        return this.mutate('PostPublish', variables);
     }
     mutateProfileCreate(variables: Types.ProfileCreateVariables): Promise<Types.ProfileCreate> {
         return this.mutate('ProfileCreate', variables);

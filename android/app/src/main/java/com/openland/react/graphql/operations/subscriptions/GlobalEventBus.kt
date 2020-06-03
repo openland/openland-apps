@@ -13,6 +13,6 @@ internal val GlobalEventBusSelector = obj(
 val GlobalEventBus = object: OperationDefinition {
     override val name = "GlobalEventBus"
     override val kind = OperationKind.SUBSCRIPTION
-    override val body = "subscription GlobalEventBus(\$topic:String){globalEventBus(topic:\$topic){__typename message}}"
+    override val body = "subscription GlobalEventBus(\$topic:String!){globalEventBus(topic:\$topic){__typename message}}"
     override val selector = GlobalEventBusSelector
 }

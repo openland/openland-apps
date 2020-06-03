@@ -2,7 +2,7 @@
 # Hubs
 #
 
-fragment HubSimple on Hub {
+fragment ChannelSimple on Channel {
     id
     title
     shortname
@@ -14,15 +14,15 @@ fragment HubSimple on Hub {
     }
 }
 
-query Hubs {
-    hubs {
-        ...HubSimple
+query Channels {
+    channels {
+        ...ChannelSimple
     }
 }
 
-query Hub($id: ID!) {
-    hub(id: $id) {
-       ...HubSimple
+query Channel($id: ID!) {
+    channel(id: $id) {
+       ...ChannelSimple
     }
 }
 
@@ -35,7 +35,23 @@ fragment ParagraphSimple on Paragraph {
     ... on TextParagraph {
         text
         spans {
-            ...SpanFragment
+            ... on PostSpanBold {
+                offset
+                length
+            }
+            ... on PostSpanItalic {
+                offset
+                length
+            }
+            ... on PostSpanIrony {
+                offset
+                length
+            }
+            ... on PostSpanLink {
+                offset
+                length
+                url
+            }
         }
     }
     ... on ImageParagraph {
@@ -58,7 +74,7 @@ fragment ParagraphSimple on Paragraph {
     }
 }
 
-fragment DiscussionDraftSimple on DiscussionDraft {
+fragment PostDraftSimple on PostDraft {
     id
     title
     content {
@@ -67,7 +83,7 @@ fragment DiscussionDraftSimple on DiscussionDraft {
     publishedCopy {
         id
     }
-    hub {
+    channel {
         id
         title
         shortname
@@ -77,13 +93,13 @@ fragment DiscussionDraftSimple on DiscussionDraft {
     deletedAt
 }
 
-fragment DiscussionSimple on Discussion {
+fragment PostSimple on Post {
     id
     title
     content {
        ...ParagraphSimple
     }
-    hub {
+    channel {
         id
         title
         shortname
@@ -103,44 +119,44 @@ fragment DiscussionSimple on Discussion {
     deletedAt
 }
 
-query Discussions($hubs: [ID!]!, $after: String) {
-    discussions(hubs: $hubs, first: 20, after: $after) {
+query Posts($channels: [ID!]!, $after: String) {
+    posts(hubs: $channels, first: 20, after: $after) {
         items {
-            ...DiscussionSimple
+            ...PostSimple
         }
         cursor   
     }
 }
 
-query DiscussionDrafts($after: String) {
-    discussionMyDrafts(first: 20, after: $after) {
+query MyPostDrafts($after: String) {
+    postMyDrafts(first: 20, after: $after) {
         items {
-            ...DiscussionDraftSimple
+            ...PostDraftSimple
         }
         cursor   
     }
 }
 
-query DiscussionDraft($id: ID!) {
-    discussionDraft(id: $id) {
-        ...DiscussionDraftSimple
+query PostDraft($id: ID!) {
+    postDraft(id: $id) {
+        ...PostDraftSimple
     }
 }
 
-mutation DiscussionCreateDraft {
-    discussionCreate(input: {  }) {
-        ...DiscussionDraftSimple
+mutation PostCreateDraft {
+    postDraftCreate(input: {  }) {
+        ...PostDraftSimple
     }
 }
 
-mutation DiscussionUpdate($id: ID!, $hub: ID, $title: String!, $content: [DiscussionContentInput!]) {
-    discussionUpdate(id: $id, input: { hub: $hub, title: $title, content: $content }) {
-        ...DiscussionDraftSimple
+mutation PostDraftUpdate($id: ID!, $channel: ID, $title: String!, $content: [PostContentInput!]) {
+    postDraftUpdate(id: $id, input: { hub: $channel, title: $title, content: $content }) {
+        ...PostDraftSimple
     }
 }
 
-mutation DiscussionPublish($id: ID!) {
-    discussionDraftPublish(draftId: $id) {
-        ...DiscussionSimple
+mutation PostPublish($id: ID!) {
+    postDraftPublish(id: $id) {
+        ...PostSimple
     }
 }

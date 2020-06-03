@@ -28,8 +28,8 @@ fragment NotificationFragment on Notification {
                             ...RoomNano
                         }
                     }                   
-                    ... on CommentPeerRootDiscussion {
-                        discussion {
+                    ... on CommentPeerRootPost {
+                        post {
                             id
                         }
                     }
@@ -108,8 +108,8 @@ fragment NotificationCenterUpdateFragment on NotificationCenterUpdate {
                                 ...RoomNano
                             }
                         }
-                        ... on CommentPeerRootDiscussion {
-                            discussion {
+                        ... on CommentPeerRootPost {
+                            post {
                                 id
                             }
                         }

@@ -14,6 +14,8 @@ object Operations {
         if (name == "AccountSettings") return AccountSettings
         if (name == "AuthPoints") return AuthPoints
         if (name == "AuthResolveShortName") return AuthResolveShortName
+        if (name == "Channel") return Channel
+        if (name == "Channels") return Channels
         if (name == "ChatInit") return ChatInit
         if (name == "ChatInitFromUnread") return ChatInitFromUnread
         if (name == "ChatJoin") return ChatJoin
@@ -38,9 +40,6 @@ object Operations {
         if (name == "DiscoverSuggestedRooms") return DiscoverSuggestedRooms
         if (name == "DiscoverTopFree") return DiscoverTopFree
         if (name == "DiscoverTopPremium") return DiscoverTopPremium
-        if (name == "DiscussionDraft") return DiscussionDraft
-        if (name == "DiscussionDrafts") return DiscussionDrafts
-        if (name == "Discussions") return Discussions
         if (name == "ExplorePeople") return ExplorePeople
         if (name == "ExploreRooms") return ExploreRooms
         if (name == "FeatureFlags") return FeatureFlags
@@ -48,8 +47,6 @@ object Operations {
         if (name == "GlobalCounter") return GlobalCounter
         if (name == "GlobalSearch") return GlobalSearch
         if (name == "GroupScreenViews") return GroupScreenViews
-        if (name == "Hub") return Hub
-        if (name == "Hubs") return Hubs
         if (name == "Message") return Message
         if (name == "MessagesBatch") return MessagesBatch
         if (name == "MessagesSearch") return MessagesSearch
@@ -58,6 +55,7 @@ object Operations {
         if (name == "MyNotificationCenter") return MyNotificationCenter
         if (name == "MyNotifications") return MyNotifications
         if (name == "MyOrganizations") return MyOrganizations
+        if (name == "MyPostDrafts") return MyPostDrafts
         if (name == "MyStickers") return MyStickers
         if (name == "MySuccessfulInvitesCount") return MySuccessfulInvitesCount
         if (name == "MyWallet") return MyWallet
@@ -71,6 +69,8 @@ object Operations {
         if (name == "OrganizationPublicRooms") return OrganizationPublicRooms
         if (name == "Permissions") return Permissions
         if (name == "PicSharedMedia") return PicSharedMedia
+        if (name == "PostDraft") return PostDraft
+        if (name == "Posts") return Posts
         if (name == "Profile") return Profile
         if (name == "ProfilePrefill") return ProfilePrefill
         if (name == "ResolveShortName") return ResolveShortName
@@ -138,9 +138,6 @@ object Operations {
         if (name == "DiscoverEditorsChoiceCreate") return DiscoverEditorsChoiceCreate
         if (name == "DiscoverEditorsChoiceDelete") return DiscoverEditorsChoiceDelete
         if (name == "DiscoverEditorsChoiceUpdate") return DiscoverEditorsChoiceUpdate
-        if (name == "DiscussionCreateDraft") return DiscussionCreateDraft
-        if (name == "DiscussionPublish") return DiscussionPublish
-        if (name == "DiscussionUpdate") return DiscussionUpdate
         if (name == "EditComment") return EditComment
         if (name == "EditMessage") return EditMessage
         if (name == "FeatureFlagAdd") return FeatureFlagAdd
@@ -167,6 +164,9 @@ object Operations {
         if (name == "PaymentIntentCommit") return PaymentIntentCommit
         if (name == "PersistEvents") return PersistEvents
         if (name == "PinMessage") return PinMessage
+        if (name == "PostCreateDraft") return PostCreateDraft
+        if (name == "PostDraftUpdate") return PostDraftUpdate
+        if (name == "PostPublish") return PostPublish
         if (name == "ProfileCreate") return ProfileCreate
         if (name == "ProfileUpdate") return ProfileUpdate
         if (name == "ReadNotification") return ReadNotification

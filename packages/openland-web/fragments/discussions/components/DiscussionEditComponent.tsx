@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { URickInput } from 'openland-web/components/unicorn/URickInput';
-import { DiscussionDraftSimple, DiscussionContentInput, DiscussionContentType, MessageSpanType } from 'openland-api/spacex.types';
+import { PostDraftSimple, PostContentInput, PostContentType, PostSpanType } from 'openland-api/spacex.types';
 import { InvalidateSync } from '@openland/patterns';
 import { URickTextArea, URichTextAreaValue, URichTextAreaInstance, URichTextSpan } from 'openland-web/components/unicorn/URichTextArea';
 import { useClient } from 'openland-api/useClient';
@@ -10,7 +10,7 @@ import { TextStyles } from 'openland-web/utils/TextStyles';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { USelect, OptionType } from 'openland-web/components/unicorn/USelect';
 
-export const DiscussionEditComponent = React.memo((props: { data: DiscussionDraftSimple }) => {
+export const DiscussionEditComponent = React.memo((props: { data: PostDraftSimple }) => {
     const initial = React.useMemo(() => props.data, []);
     const initialParagraph = React.useMemo(() => {
         const res: URichTextAreaValue = [];
@@ -18,10 +18,10 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionDraf
             if (r.__typename === 'TextParagraph') {
                 let spans: URichTextSpan[] = [];
                 for (let s of r.spans) {
-                    if (s.__typename === 'MessageSpanBold') {
+                    if (s.__typename === 'PostSpanBold') {
                         spans.push({ type: 'bold', start: s.offset, end: s.offset + s.length });
                     }
-                    if (s.__typename === 'MessageSpanItalic') {
+                    if (s.__typename === 'PostSpanItalic') {
                         spans.push({ type: 'italic', start: s.offset, end: s.offset + s.length });
                     }
                 }
@@ -41,7 +41,7 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionDraf
     }, []);
     const contentRef = React.useRef<URichTextAreaInstance>(null);
     const client = useClient();
-    const hubs = client.useHubs().hubs;
+    const hubs = client.useChannels().channels;
 
     // Sync
     const [saving, setSaving] = React.useState(false);
@@ -49,7 +49,7 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionDraf
         title: string,
         content: URichTextAreaValue,
         hub: string | null
-    }>({ title: initial.title, content: initialParagraph, hub: props.data.hub ? props.data.hub.id : null });
+    }>({ title: initial.title, content: initialParagraph, hub: props.data.channel ? props.data.channel.id : null });
     const sync = React.useMemo(() => {
         return new InvalidateSync(async () => {
 
@@ -63,40 +63,40 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionDraf
             // Save Draft
             setSaving(true);
             let title = syncData.current.title;
-            let content: DiscussionContentInput[] = [];
+            let content: PostContentInput[] = [];
             let hubId = syncData.current.hub;
             for (let c of syncData.current.content) {
                 if (c.type === 'paragraph') {
                     content.push({
-                        type: DiscussionContentType.Text,
+                        type: PostContentType.Text,
                         text: c.text,
                         spans: c.spans.map((v) => ({
-                            type: v.type === 'bold' ? MessageSpanType.Bold : (v.type === 'italic' ? MessageSpanType.Italic : MessageSpanType.Bold),
+                            type: v.type === 'bold' ? PostSpanType.Bold : (v.type === 'italic' ? PostSpanType.Italic : PostSpanType.Bold),
                             offset: v.start,
                             length: v.end - v.start
                         }))
                     });
                 } else if (c.type === 'image') {
                     content.push({
-                        type: DiscussionContentType.Image,
+                        type: PostContentType.Image,
                         image: {
                             uuid: c.id!
                         }
                     });
                 } else if (c.type === 'header1') {
                     content.push({
-                        type: DiscussionContentType.H1,
+                        type: PostContentType.H1,
                         text: c.text
                     });
                 } else if (c.type === 'header2') {
                     content.push({
-                        type: DiscussionContentType.H1,
+                        type: PostContentType.H1,
                         text: c.text
                     });
                 }
             }
             console.warn(content);
-            await client.mutateDiscussionUpdate({ id: initial.id, title, content, hub: hubId });
+            await client.mutatePostDraftUpdate({ id: initial.id, title, content, channel: hubId });
             setSaving(false);
         });
     }, []);
@@ -117,7 +117,7 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionDraf
     }, []);
 
     const publish = React.useCallback(() => {
-        client.mutateDiscussionPublish({ id: props.data.id });
+        client.mutatePostPublish({ id: props.data.id });
     }, []);
 
     const pageTitle = (
@@ -127,7 +127,7 @@ export const DiscussionEditComponent = React.memo((props: { data: DiscussionDraf
         </XView>
     );
 
-    const [hub, setHub] = React.useState(props.data.hub ? props.data.hub.id : null);
+    const [hub, setHub] = React.useState(props.data.channel ? props.data.channel.id : null);
 
     return (
         <XView flexDirection="row" alignItems="flex-start" justifyContent="center" paddingRight={56}>

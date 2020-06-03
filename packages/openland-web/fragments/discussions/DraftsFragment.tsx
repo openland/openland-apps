@@ -4,11 +4,11 @@ import { UHeader } from 'openland-unicorn/UHeader';
 import { XView, XViewRouterContext } from 'react-mental';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextStyles } from 'openland-web/utils/TextStyles';
-import { DiscussionDrafts_discussionMyDrafts_items } from 'openland-api/spacex.types';
+import { MyPostDrafts_postMyDrafts_items } from 'openland-api/spacex.types';
 import { XDate } from 'openland-x/XDate';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 
-const DraftComponent = (props: { data: DiscussionDrafts_discussionMyDrafts_items }) => {
+const DraftComponent = (props: { data: MyPostDrafts_postMyDrafts_items }) => {
     let title = props.data.title === '' ? 'Untitled discussion' : props.data.title;
     return (
         <XView
@@ -32,15 +32,15 @@ const DraftComponent = (props: { data: DiscussionDrafts_discussionMyDrafts_items
 
 export const DraftsFragment = React.memo(() => {
     const client = useClient();
-    const drafts = client.useDiscussionDrafts({}).discussionMyDrafts.items;
+    const drafts = client.useMyPostDrafts({}).postMyDrafts.items;
     const [creating, setCreating] = React.useState(false);
     const router = React.useContext(XViewRouterContext)!;
 
     const create = React.useCallback(() => {
         setCreating(true);
         (async () => {
-            let draft = (await client.mutateDiscussionCreateDraft()).discussionCreate;
-            client.refetchDiscussionDrafts({});
+            let draft = (await client.mutatePostCreateDraft()).postDraftCreate;
+            client.refetchMyPostDrafts({});
             router.navigate('/discuss/edit/' + draft.id);
             setCreating(false);
         })();
