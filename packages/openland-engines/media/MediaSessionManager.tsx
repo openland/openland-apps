@@ -133,9 +133,6 @@ export class MediaSessionManager {
 
         // Update track
         this.doLoadVideoIfNeeded();
-        if (this.videoTrack) {
-            this.videoTrack.enabled = videoEnabled;
-        }
 
         // Update server
         this.reportLocalMediaState();
@@ -554,17 +551,31 @@ export class MediaSessionManager {
     }
 
     private async doLoadVideoIfNeeded() {
-        if (!this.videoTrackPromise) {
+        if (!!this.videoTrack === this.videoEnabled) {
+            return;
+        }
+
+        if (!this.videoEnabled) {
+            if (this.videoDeviceSubscription) {
+                this.videoDeviceSubscription();
+            }
+            this.videoTrack?.stop();
+            this.videoTrack = null;
+        } else if (!this.videoTrack && !this.videoTrackPromise) {
             this.videoTrackPromise = new Promise<AppMediaStreamTrack | null>(resolve => {
+                if (this.videoDeviceSubscription) {
+                    this.videoDeviceSubscription();
+                }
                 this.videoDeviceSubscription = AppMediaDeviceManager.listenVideoDeviceChange(async deviceId => {
                     if (this.destroyed) {
                         resolve(null);
                     }
                     try {
-                        let video = await AppUserMedia.getUserVideo(deviceId);
-                        // Configure video track
-                        video.enabled = this.videoEnabled;
-
+                        let video: AppMediaStreamTrack | null = await AppUserMedia.getUserVideo(deviceId);
+                        if (!this.videoEnabled) {
+                            video.stop();
+                            video = null;
+                        }
                         if (this.videoTrack) {
                             this.videoTrack.stop();
                         }
@@ -578,8 +589,9 @@ export class MediaSessionManager {
                     }
                 });
             });
+            await this.videoTrackPromise;
+            this.videoTrackPromise = undefined;
         }
-        await this.videoTrackPromise;
     }
 
     doLoadScreencast() {
