@@ -200,13 +200,6 @@ export class AppPeerConnectionWeb implements AppPeerConnection {
                     continue;
                 }
                 console.log('[WEBRTC]: Play track: ' + t.id);
-                let track = (t.receiver.track as AppUserMediaTrackWeb).track;
-                track.onunmute = () => {
-                    console.log('[WEBRTC]: Unmuted: ' + t.id);
-                };
-                track.onmute = () => {
-                    console.log('[WEBRTC]: Muted: ' + t.id);
-                };
                 let audio = new Audio();
                 let stream = new MediaStream();
                 stream.addTrack((t.receiver.track as AppUserMediaTrackWeb).track);
