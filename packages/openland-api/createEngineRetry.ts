@@ -4,15 +4,25 @@ import { GraphqlEngine, GraphqlError, RetryEngine } from '@openland/spacex';
 export function createEngineRetry(engine: GraphqlEngine): GraphqlEngine {
     return new RetryEngine({
         engine: engine,
+        minRetry: 1000,
         errorHandler: (src) => {
+
+            console.warn('Handler: Received error', src);
 
             if (src instanceof GraphqlError) {
 
                 // If retry required
                 for (let e of src.errors) {
                     if (e.shouldRetry) {
-                        console.warn('Unexpected error: asked to try again.');
-                        return null;
+                        let delay: number;
+                        if (typeof e.retryDelay === 'number') {
+                            delay = e.retryDelay;
+                        } else {
+                            delay = Math.floor(1000 + Math.random() * 8000);
+                        }
+
+                        console.warn('Unexpected error: asked to try again. Retrying in ' + delay + ' ms');
+                        return { type: 'retry', delay };
                     }
                 }
 
@@ -32,12 +42,12 @@ export function createEngineRetry(engine: GraphqlEngine): GraphqlEngine {
                         }
                     }
                     console.warn('API Error: ' + message, src.errors);
-                    return new ApiError(message, invalidFields);
+                    return { type: 'error', error: new ApiError(message, invalidFields) };
                 }
             }
 
             console.warn('Unexpected error: try again.');
-            return null;
+            return { type: 'unknown' };
         }
     });
 }

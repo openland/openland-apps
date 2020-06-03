@@ -105,7 +105,7 @@
         "@bugsnag/plugin-react": "^6.5.0",
         "canvas-confetti": "^1.0.3",
         "fast-animations": "1.0.4",
-        "@openland/spacex": "1.0.4",
+        "@openland/spacex": "2.0.1",
         "graphql": "14.6.0",
         "sdp-transform": "2.14.0",
         "tslib": "1.11.1",
