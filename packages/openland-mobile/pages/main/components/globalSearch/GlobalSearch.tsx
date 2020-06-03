@@ -13,7 +13,6 @@ import { SNativeConfig } from 'react-native-s/SNativeConfig';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { GlobalSearchEntryKind } from 'openland-api/spacex.types';
 import { SDeferred } from 'react-native-s/SDeferred';
-import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
@@ -131,7 +130,6 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
 
 export const GlobalSearch = XMemo<GlobalSearchProps>(props => {
     const theme = React.useContext(ThemeContext);
-    const showMessagesSearch = props.onMessagePress && NON_PRODUCTION;
 
     return (
         <SScrollView keyboardDismissMode="on-drag">
@@ -143,8 +141,8 @@ export const GlobalSearch = XMemo<GlobalSearchProps>(props => {
                     >
                         <React.Suspense fallback={SNativeConfig.loader}>
                             <SDeferred>
-                                {showMessagesSearch && <GlobalSearchWithMessagesInner {...props} onMessagePress={props.onMessagePress!} />}
-                                {!showMessagesSearch && <GlobalSearchInner {...props} />}
+                                {props.onMessagePress && <GlobalSearchWithMessagesInner {...props} onMessagePress={props.onMessagePress} />}
+                                {!props.onMessagePress && <GlobalSearchInner {...props} />}
                             </SDeferred>
                         </React.Suspense>
                     </View>
