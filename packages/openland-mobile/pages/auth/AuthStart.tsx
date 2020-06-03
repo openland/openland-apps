@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { Text, TextStyle, TouchableOpacity, View } from 'react-native';
+import {
+    Text,
+    TextStyle,
+    TouchableOpacity,
+    View,
+    NativeSyntheticEvent,
+    TextInputKeyPressEventData,
+    TextInput,
+} from 'react-native';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { ZInput } from '../../components/ZInput';
@@ -23,10 +31,14 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZShaker } from 'openland-mobile/components/ZShaker';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
 import { Modals } from '../main/modals/Modals';
+import { countriesCode } from 'openland-y-utils/countriesCodes';
+import { AsYouType } from 'libphonenumber-js';
 
 export const ACTIVATION_CODE_LENGTH = 6;
+const INVALID_COUNTRY = 'Select country';
 
 let userAuthData = '';
+let userPhoneData = '';
 let session = '';
 let photoSrc: string | null = null;
 let photoCrop: { w: number; h: number; x: number; y: number } | null = null;
@@ -70,25 +82,41 @@ const requestActivationCode = async (isPhone: boolean) => {
 const AuthStartComponent = React.memo((props: PageProps) => {
     const isPhoneAuth = !!props.router.params.phone;
     const ref = React.useRef<{ shake: () => void }>(null);
+    const inputCodeRef = React.useRef<TextInput>(null);
+    const inputDataRef = React.useRef<TextInput>(null);
     const form = useForm({ disableAppLoader: true });
+    const userCodeField = useField(
+        'userCode',
+        {
+            label: 'United States',
+            value: '+1',
+        },
+        form,
+    );
     const userDataField = useField('userData', '', form);
-    const [country, setCountry] = React.useState({
-        label: 'United States',
-        value: '+1',
-    });
 
     const submitForm = () => {
-        if (!userDataField.value.trim()) {
+        const code = userCodeField.value.value;
+        const data = userDataField.value;
+        const shakeIt = () => {
             if (ref && ref.current) {
                 ref.current.shake();
             }
+        };
+        if (!isPhoneAuth && !data.trim()) {
+            shakeIt();
+            return;
+        }
+        if (isPhoneAuth && (!data.trim() || !code.match(/\d/g)!!)) {
+            shakeIt();
             return;
         }
         form.doAction(async () => {
             try {
-                const code = country.value.split(' ').join('');
+                userPhoneData = code + data;
+                const codeStr = code.split(' ').join('');
                 userAuthData = isPhoneAuth
-                    ? code + userDataField.value.trim()
+                    ? codeStr + data.trim().match(/\d/g)!!.join('')
                     : userDataField.value.trim();
                 await requestActivationCode(isPhoneAuth);
                 props.router.push('AuthCode', isPhoneAuth ? { phone: true } : undefined);
@@ -97,6 +125,60 @@ const AuthStartComponent = React.memo((props: PageProps) => {
             }
         });
     };
+
+    const onKeyPressHandler = React.useCallback(
+        (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+            if (
+                e.nativeEvent.key === 'Backspace' &&
+                !userDataField.value.trim() &&
+                inputCodeRef.current
+            ) {
+                inputCodeRef.current.focus();
+            }
+        },
+        [userDataField.value],
+    );
+
+    const onCountryCodeChange = React.useCallback((v: string) => {
+        const changeCountry = ({ value, label }: { value: string; label: string }) => {
+            userCodeField.input.onChange({ value: value, label: label });
+        };
+        let findCountry;
+        if (v === '+1') {
+            findCountry = {
+                label: 'United States',
+                value: '+1',
+            };
+        } else {
+            findCountry = countriesCode.find(
+                (i) => i.value.split(' ').join('') === v.split(' ').join(''),
+            );
+        }
+        if (findCountry) {
+            changeCountry(findCountry);
+            if (inputDataRef.current) {
+                inputDataRef.current.focus();
+            }
+        } else {
+            if (v) {
+                changeCountry({ value: v, label: INVALID_COUNTRY });
+            } else {
+                changeCountry({ value: '+', label: INVALID_COUNTRY });
+            }
+        }
+    }, []);
+
+    const onUserDataChange = React.useCallback((v: string) => {
+        if (isPhoneAuth) {
+            let val = v;
+            if (v.length > 4) {
+                val = new AsYouType('US').input(v);
+            }
+            userDataField.input.onChange(val);
+        } else {
+            userDataField.input.onChange(v);
+        }
+    }, []);
 
     return (
         <ZTrack event={isPhoneAuth ? 'signup_phone_view' : 'signup_email_view'}>
@@ -115,30 +197,59 @@ const AuthStartComponent = React.memo((props: PageProps) => {
                 <ZShaker ref={ref}>
                     {isPhoneAuth && (
                         <ZPickField
-                            value={country.value}
-                            label={country.label}
+                            value={userCodeField.value.label}
+                            label="Select country"
                             onPress={() => {
                                 Modals.showCountryPicker(
                                     props.router,
                                     async (d) => {
-                                        setCountry(d);
+                                        userCodeField.input.onChange(d);
                                         props.router.back();
                                     },
-                                    'Select region',
+                                    'Select country',
                                 );
                             }}
                         />
                     )}
-                    <ZInput
-                        field={userDataField}
-                        placeholder={isPhoneAuth ? 'Phone' : 'Email'}
-                        autoCapitalize="none"
-                        keyboardType={isPhoneAuth ? 'phone-pad' : 'email-address'}
-                        autoFocus={true}
-                        returnKeyType="next"
-                        allowFontScaling={false}
-                        onSubmitEditing={submitForm}
-                    />
+                    <View
+                        flexDirection="row"
+                        justifyContent="space-between"
+                        flexGrow={1}
+                        flexShrink={0}
+                        marginHorizontal={16}
+                    >
+                        {isPhoneAuth && (
+                            <View flexGrow={1} flexBasis={0} marginRight={16}>
+                                <ZInput
+                                    noWrapper={true}
+                                    ref={inputCodeRef}
+                                    placeholder="Code"
+                                    autoCapitalize="none"
+                                    keyboardType="phone-pad"
+                                    allowFontScaling={false}
+                                    value={userCodeField.value.value}
+                                    onSubmitEditing={submitForm}
+                                    onChangeText={onCountryCodeChange}
+                                />
+                            </View>
+                        )}
+                        <View flexGrow={2} flexBasis={0}>
+                            <ZInput
+                                noWrapper={true}
+                                ref={inputDataRef}
+                                value={userDataField.value}
+                                onChangeText={onUserDataChange}
+                                placeholder={isPhoneAuth ? 'Phone' : 'Email'}
+                                autoCapitalize="none"
+                                keyboardType={isPhoneAuth ? 'phone-pad' : 'email-address'}
+                                autoFocus={true}
+                                returnKeyType="next"
+                                allowFontScaling={false}
+                                onKeyPress={onKeyPressHandler}
+                                onSubmitEditing={submitForm}
+                            />
+                        </View>
+                    </View>
                 </ZShaker>
             </RegistrationContainer>
         </ZTrack>
@@ -149,7 +260,7 @@ export const AuthStart = withApp(AuthStartComponent, {
     navigationAppearance: 'small-hidden',
 });
 
-const AuthCodeHeader = React.memo((props: { resendCode: () => void }) => {
+const AuthCodeHeader = React.memo((props: { resendCode: () => void; isPhoneAuth: boolean }) => {
     const theme = React.useContext(ThemeContext);
     const textStyle = [
         TextStyles.Body,
@@ -161,7 +272,7 @@ const AuthCodeHeader = React.memo((props: { resendCode: () => void }) => {
     return (
         <View marginBottom={32}>
             <Text style={[textStyle, { paddingHorizontal: 16 }]} allowFontScaling={false}>
-                We just sent it to {userAuthData}.
+                We just sent it to {props.isPhoneAuth ? userPhoneData : userAuthData}.
             </Text>
             <View flexDirection="row" justifyContent="center" alignItems="center">
                 <Text style={textStyle} allowFontScaling={false}>
@@ -250,7 +361,7 @@ const AuthCodeComponent = React.memo((props: PageProps) => {
             <RegistrationContainer
                 autoScrollToBottom={true}
                 title="Enter login code"
-                subtitle={<AuthCodeHeader resendCode={resendCode} />}
+                subtitle={<AuthCodeHeader resendCode={resendCode} isPhoneAuth={isPhoneAuth} />}
                 floatContent={
                     <ZButton
                         title="Next"

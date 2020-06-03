@@ -51,7 +51,7 @@ export interface ZInputBasicProps extends TextInputProps {
     noWrapper?: boolean;
 }
 
-export const ZInputBasic = (props: ZInputBasicProps) => {
+export const ZInputBasic = React.forwardRef((props: ZInputBasicProps, ref: React.RefObject<TextInput>) => {
     const { placeholder, prefix, invalid, description, enabled, noWrapper, ...other } = props;
     const theme = React.useContext(ThemeContext);
     const [focused, setFocused] = React.useState<boolean>(false);
@@ -162,6 +162,7 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
                 )}
                 <TextInput
                     {...other}
+                    ref={ref}
                     keyboardAppearance={theme.keyboardAppearance}
                     onChangeText={handleChangeText}
                     onFocus={handleFocus}
@@ -198,4 +199,4 @@ export const ZInputBasic = (props: ZInputBasicProps) => {
             )}
         </View>
     );
-};
+});

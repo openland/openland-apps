@@ -1,18 +1,20 @@
 import * as React from 'react';
 import { ZInputBasicProps, ZInputBasic } from './basics/ZInputBasic';
 import { FormField } from 'openland-form/useField';
+import { TextInput } from 'react-native';
 
 export interface ZInputProps extends ZInputBasicProps {
     field?: FormField<string>;
 }
 
-export const ZInput = (props: ZInputProps) => {
+export const ZInput = React.forwardRef((props: ZInputProps, ref: React.RefObject<TextInput>) => {
     const { field, ...other } = props;
 
     if (field) {
         return (
             <ZInputBasic 
-                {...other} 
+                {...other}
+                ref={ref}
                 description={field.input.invalid ? field.input.errorText : undefined}
                 value={field.input.value}
                 invalid={field.input.invalid || props.invalid}
@@ -26,6 +28,6 @@ export const ZInput = (props: ZInputProps) => {
             />
         );
     } else {
-        return <ZInputBasic {...other} />;
+        return <ZInputBasic {...other} ref={ref} />;
     }
-};
+});
