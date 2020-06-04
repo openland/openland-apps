@@ -175,7 +175,7 @@ const TraceFragment = React.memo((props: { traceId: string }) => {
     const [scaleSize, setScaleSize] = React.useState(5);
 
     return (
-        <DevToolsScaffold title={trace.name} scroll="disable" maxWidth="100%">
+        <DevToolsScaffold title={trace.name} scroll="disable" appearance="fullwidth">
             <XView
                 flexDirection="column"
                 flexGrow={1}

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { XViewRouterContext, XViewRouteContext, XView } from 'react-mental';
+import { XViewRouterContext, XView } from 'react-mental';
 import { DialogListFragment } from './DialogListFragment';
 import { UCounter } from 'openland-unicorn/UCounter';
 import { useClient } from 'openland-api/useClient';

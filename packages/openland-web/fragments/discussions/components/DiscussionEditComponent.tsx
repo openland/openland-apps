@@ -131,8 +131,8 @@ export const DiscussionEditComponent = React.memo((props: { data: PostDraftSimpl
     const [hub, setHub] = React.useState(props.data.channel ? props.data.channel.id : null);
 
     return (
-        <Page track="discussion_create_page">
-            <UHeader title="Drafts" titleView={pageTitle} appearance="fullwidth" maxWidth={824} />
+        <Page track="discussion_create_page" appearance="fullwidth">
+            <UHeader title="Drafts" titleView={pageTitle} appearance="fullwidth" />
             <XView flexGrow={1} flexShrink={1} maxWidth={824} paddingHorizontal={16}>
                 <USelect
                     label="Channel"

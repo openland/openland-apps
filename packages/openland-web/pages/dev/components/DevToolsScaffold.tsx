@@ -15,8 +15,7 @@ export function DevToolsScaffold(props: {
     bottomOffset?: boolean;
     hideSidebar?: boolean;
     scroll?: 'disable' | 'enable';
-    style?: 'wide' | 'normal';
-    maxWidth?: number | string;
+    appearance?: 'normal' | 'wide' | 'fullwidth';
 }) {
     return (
         <>
@@ -49,8 +48,7 @@ export function DevToolsScaffold(props: {
                     <Page
                         track={'DevToolsScaffold'}
                         scroll={props.scroll || 'enable'}
-                        style={props.style}
-                        maxWidth={props.maxWidth}
+                        appearance={props.appearance}
                     >
                         {props.title !== undefined && (
                             <XView flexShrink={0}>

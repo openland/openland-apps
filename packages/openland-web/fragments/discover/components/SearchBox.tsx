@@ -2,7 +2,7 @@ import React from 'react';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
+import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 
 const searchContainer = css`
