@@ -1,4 +1,4 @@
-import { Queue, createFifoQueue } from 'openland-y-utils/Queue';
+import { createFifoQueue } from 'openland-y-utils/Queue';
 import { MessengerEngine } from './MessengerEngine';
 import { OpenlandClient } from 'openland-api/spacex';
 import { DataSource } from 'openland-y-utils/DataSource';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { WatchSubscription } from './Watcher';
-import { Queue, createFifoQueue } from 'openland-y-utils/Queue';
+import { createFifoQueue } from 'openland-y-utils/Queue';
 
 async function throttle() {
     return new Promise(r => {

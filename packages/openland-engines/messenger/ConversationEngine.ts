@@ -1,4 +1,4 @@
-import { Queue, createFifoQueue } from 'openland-y-utils/Queue';
+import { createFifoQueue } from 'openland-y-utils/Queue';
 import { MessengerEngine } from '../MessengerEngine';
 import { MessageReactionType } from 'openland-api/spacex.types';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';

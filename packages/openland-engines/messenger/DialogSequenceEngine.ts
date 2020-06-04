@@ -1,5 +1,5 @@
 import { reliableWatcher } from 'openland-api/reliableWatcher';
-import { Queue, createFifoQueue } from 'openland-y-utils/Queue';
+import { createFifoQueue } from 'openland-y-utils/Queue';
 import { MessengerEngine } from '../MessengerEngine';
 import { backoff } from 'openland-y-utils/timer';
 import * as Types from 'openland-api/spacex.types';
