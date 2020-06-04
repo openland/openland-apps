@@ -10,7 +10,7 @@ import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import Toast from 'openland-mobile/components/Toast';
 
 const SelectPrimaryOrganizationComponent = (props: PageProps) => {
-    let organizations = getClient().useMyOrganizations({ fetchPolicy: 'network-only' }).myOrganizations;
+    const organizations = getClient().useMyOrganizations({ fetchPolicy: 'network-only' }).myOrganizations;
 
     return (
         <>
@@ -19,7 +19,7 @@ const SelectPrimaryOrganizationComponent = (props: PageProps) => {
                 <View marginTop={Platform.OS === 'ios' ? 5 : undefined} />
 
                 <ZListGroup footer="Choose organization that people will see in your profile.">
-                    {organizations.map(org => (
+                    {organizations.filter(org => !org.isCommunity).map(org => (
                         <ZListItem
                             text={org.name}
                             leftAvatar={{
@@ -38,6 +38,7 @@ const SelectPrimaryOrganizationComponent = (props: PageProps) => {
                                     }
                                 });
 
+                                await getClient().refetchProfile();
                                 await getClient().refetchMyOrganizations();
                                 await getClient().refetchAccount();
 
