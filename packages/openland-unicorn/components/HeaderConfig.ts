@@ -3,8 +3,7 @@ export interface HeaderConfig {
     documentTitle?: string;
     titleView?: any;
     appearance?: 'normal' | 'wide' | 'fullwidth';
-    backgroundColor?: string;
-    maxWidth?: number;
+    forceShowBack?: boolean;
 }
 
 export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
@@ -12,8 +11,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let documentTitle: string | undefined;
     let appearance: 'normal' | 'wide' | 'fullwidth' | undefined;
     let titleView: any | undefined;
-    let backgroundColor: string | undefined;
-    let maxWidth: number | undefined;
+    let forceShowBack: boolean | undefined;
     for (let c of configs) {
         if (c.title) {
             title = c.title;
@@ -27,14 +25,11 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
         if (c.appearance) {
             appearance = c.appearance;
         }
-        if (c.backgroundColor) {
-            backgroundColor = c.backgroundColor;
-        }
-        if (c.maxWidth) {
-            maxWidth = c.maxWidth;
+        if (c.forceShowBack) {
+            forceShowBack = c.forceShowBack;
         }
     }
-    return { title, documentTitle, appearance, titleView, backgroundColor, maxWidth };
+    return { title, documentTitle, appearance, titleView, forceShowBack };
 }
 
 export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
@@ -50,10 +45,7 @@ export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
     if (a.titleView !== b.titleView) {
         return false;
     }
-    if (a.backgroundColor !== b.backgroundColor) {
-        return false;
-    }
-    if (a.maxWidth !== b.maxWidth) {
+    if (a.forceShowBack !== b.forceShowBack) {
         return false;
     }
     return true;

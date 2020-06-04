@@ -6,13 +6,12 @@ import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabConte
 
 interface PageProps {
     track: string;
-    style?: 'wide' | 'normal';
+    appearance?: 'normal' | 'wide' | 'fullwidth';
     scroll?: 'disable' | 'enable';
     onScroll?: (values: XScrollValues) => void;
     padded?: boolean;
     children?: any;
     flexGrow?: number;
-    maxWidth?: number | string;
 }
 
 export const Page = React.memo((props: PageProps) => {
@@ -22,11 +21,12 @@ export const Page = React.memo((props: PageProps) => {
             trackEvent('navigate_' + props.track);
         }
     }, [isTabVisible]);
-    const { style = 'normal', scroll = 'enable', padded, onScroll, children } = props;
-    const width = props.maxWidth
-        ? props.maxWidth
-        : style === 'normal' ? 600 : 856;
-    const marginHorizontal = padded ? 16 : 0;
+    const { appearance = 'normal', scroll = 'enable', onScroll, children, padded = true } = props;
+    const margin = padded ? 16 : undefined;
+    let maxWidth = appearance === 'normal' ? 600 : appearance === 'fullwidth' ? '100%' : 824;
+    if (!margin) {
+        maxWidth = appearance === 'normal' ? 632 : appearance === 'fullwidth' ? '100%' : 856;
+    }
 
     if (scroll !== 'enable') {
         return (
@@ -39,13 +39,13 @@ export const Page = React.memo((props: PageProps) => {
                 justifyContent="center"
             >
                 <XView
-                    maxWidth={width}
+                    maxWidth={maxWidth}
                     flexDirection="column"
                     flexGrow={1}
                     minWidth={0}
                     flexBasis={0}
                     alignItems="stretch"
-                    marginHorizontal={marginHorizontal}
+                    marginHorizontal={margin}
                 >
                     {children}
                 </XView>
@@ -62,19 +62,15 @@ export const Page = React.memo((props: PageProps) => {
                 alignItems="stretch"
             >
                 <XScrollView3 flexGrow={1} flexBasis={0} minHeight={0} onScroll={onScroll}>
-                    <XView
-                        flexDirection="row"
-                        justifyContent="center"
-                        flexGrow={props.flexGrow}
-                    >
+                    <XView flexDirection="row" justifyContent="center" flexGrow={props.flexGrow}>
                         <XView
-                            maxWidth={width}
+                            maxWidth={maxWidth}
                             flexDirection="column"
                             flexGrow={1}
                             minWidth={0}
                             flexBasis={0}
                             alignItems="stretch"
-                            marginHorizontal={marginHorizontal}
+                            marginHorizontal={margin}
                         >
                             {children}
                         </XView>

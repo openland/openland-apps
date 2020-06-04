@@ -54,7 +54,7 @@ export const DiscoverCollectionFragment = React.memo((props: { id?: string }) =>
     const [toastHash, setToastHash] = React.useState(0);
 
     return (
-        <Page track="discover_collection">
+        <Page track="discover_collection" padded={false}>
             <UHeader
                 documentTitle={title}
                 titleView={(

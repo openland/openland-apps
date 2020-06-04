@@ -55,8 +55,8 @@ export const DraftsFragment = React.memo(() => {
 
     if (drafts.length > 0) {
         return (
-            <Page track="discussion_drafts_page" padded={true} style="wide">
-                <UHeader title="Drafts" titleView={title} maxWidth={890} />
+            <Page track="discussion_drafts_page" appearance="wide">
+                <UHeader title="Drafts" titleView={title} appearance="wide" />
                 <XView flexDirection="row" alignItems="flex-start" justifyContent="center">
                     <XView flexGrow={1} flexShrink={1}>
                         <XView flexDirection="column">
@@ -70,8 +70,8 @@ export const DraftsFragment = React.memo(() => {
         );
     } else {
         return (
-            <Page track="discussion_drafts_page" padded={true} style="wide">
-                <UHeader title="Drafts" titleView={title} maxWidth={890} />
+            <Page track="discussion_drafts_page" appearance="wide">
+                <UHeader title="Drafts" titleView={title} appearance="wide" />
             </Page>
         );
     }

@@ -12,42 +12,27 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     const router = useStackRouter();
     const layout = useLayout();
 
-    let showBack = router.pages.length > 0 && (router.rootPath !== '/discover' && router.rootPath !== '/account' && router.rootPath !== '/channels');
-    if (router.rootPath === '/discover' && router.pages.length > 1) {
-        showBack = true;
-    }
-    if (router.rootPath === '/account' && router.pages.length > 1) {
-        showBack = true;
-    }
-    if (router.rootPath === '/channels' && router.pages.length > 1) {
-        showBack = true;
-    }
+    const hasBack = router.pages.length > 1 || props.config.forceShowBack || layout === 'mobile';
 
-    const wideHeader = (router.rootPath === '/mail' || router.rootPath === '/discover') && router.pages.length > 0;
+    const appearance = props.config.appearance || 'normal';
+    const hasTitleView = !!props.config.titleView;
+
+    const maxWidth = appearance === 'normal' ? 600 : appearance === 'fullwidth' ? '100%' : 824;
 
     useShortcuts({
         keys: ['Escape'],
         callback: () => {
-            return router.pages.length > 0 ? showBack ? router.pop() : false : false;
+            return hasBack ? router.pop() : false;
         },
     });
-    let appearance = props.config.appearance || 'normal';
-    let maxWidth = props.config.maxWidth;
-    let backgroundColor = props.config.backgroundColor;
 
     return (
-        <XView
-            height={56}
-            flexDirection="row"
-            alignItems="center"
-            zIndex={2}
-            backgroundColor={backgroundColor}
-        >
-            {layout === 'mobile' || showBack ? (
+        <XView height={56} flexDirection="row" alignItems="center" zIndex={2}>
+            {hasBack && (
                 <XView height={56} width={56} alignItems="center" justifyContent="center">
                     <UIconButton icon={<BackIcon />} onClick={() => router.pop()} size="large" />
                 </XView>
-            ) : null}
+            )}
             <XView
                 minWidth={0}
                 flexBasis={0}
@@ -55,44 +40,33 @@ export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
                 fontSize={24}
                 flexDirection="row"
                 justifyContent="center"
-                marginRight={wideHeader && layout !== 'mobile' ? 56 : undefined}
+                marginRight={(hasBack && layout !== 'mobile') ? 56 : undefined}
+                paddingHorizontal={16}
             >
-                {!!props.config.titleView && (
+                {hasTitleView && (
                     <XView
                         height={56}
                         color="var(--foregroundPrimary)"
                         minWidth={0}
                         flexBasis={0}
                         flexGrow={1}
-                        maxWidth={
-                            maxWidth && !showBack
-                                ? maxWidth
-                                : appearance === 'normal'
-                                    ? 600
-                                    : appearance === 'fullwidth'
-                                        ? '100%'
-                                        : 824
-                        }
+                        maxWidth={maxWidth}
                         flexDirection="row"
-                        paddingHorizontal={16}
                         alignItems="stretch"
                         justifyContent="flex-start"
                     >
                         {props.config.titleView}
                     </XView>
                 )}
-                {!props.config.titleView && (
+                {!hasTitleView && (
                     <XView
                         height={32}
                         color="var(--foregroundPrimary)"
                         minWidth={0}
                         flexBasis={0}
                         flexGrow={1}
-                        maxWidth={
-                            maxWidth && !showBack ? maxWidth : appearance === 'normal' ? 600 : 824
-                        }
+                        maxWidth={maxWidth}
                         flexDirection="row"
-                        paddingHorizontal={16}
                         {...TextStyles.Title1}
                     >
                         {props.config.title}

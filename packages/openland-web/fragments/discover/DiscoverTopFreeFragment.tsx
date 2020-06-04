@@ -36,10 +36,9 @@ export const DiscoverTopFreeFragment = React.memo(() => {
 
     return (
         <>
-            <UHeader title="Top free" maxWidth={577} />
+            <UHeader title="Top free" />
             <UFlatList
                 gap={16}
-                padded={true}
                 track="discover_top_free"
                 title="Top free"
                 loading={loading}

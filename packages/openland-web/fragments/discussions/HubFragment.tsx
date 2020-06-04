@@ -8,8 +8,8 @@ export const HubFragment = React.memo((props: { id: string }) => {
     const client = useClient();
     let hub = client.useChannel({ id: props.id }, { fetchPolicy: 'cache-and-network' }).channel!;
     return (
-        <Page track="discussions_hub_page" style="wide" padded={true}>
-            <UHeader title={hub.title} maxWidth={890} />
+        <Page track="discussions_hub_page" appearance="wide">
+            <UHeader title={hub.title} appearance="wide" />
             <DiscussionsComponent hubs={[hub.id]} />
         </Page>
     );

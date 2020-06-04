@@ -48,7 +48,7 @@ const AuthDiscoverCollectionInner = React.memo((props: { id: string, setTitle: (
     }, [title]);
 
     return (
-        <Page padded={false} maxWidth={630} track="discover_collection">
+        <Page padded={false} track="discover_collection">
             <XView paddingLeft={16} paddingRight={16} paddingBottom={8}>
                 {!!description && <div className={cx(descriptionBox, TextBody)}>{description}</div>}
                 <div className={imageBox}>

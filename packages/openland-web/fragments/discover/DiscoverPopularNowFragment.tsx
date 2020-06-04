@@ -38,10 +38,9 @@ export const DiscoverPopularNowFragment = React.memo(() => {
 
     return (
         <>
-            <UHeader title="Popular now" maxWidth={577} />
+            <UHeader title="Popular now" />
             <UFlatList
                 gap={16}
-                padded={true}
                 track="discover_popular_now"
                 title="Popular now"
                 loading={loading}

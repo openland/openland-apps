@@ -17,7 +17,7 @@ export const RecommendationsFragment = React.memo(() => {
     const tab = discoverDone.betaIsDiscoverDone ? 'discover' : 'start';
 
     const onStartClick = React.useCallback(() => {
-        showModalBox({ fullScreen: true }, ctx => (
+        showModalBox({ fullScreen: true }, (ctx) => (
             <DiscoverOnLocalState fullHeight={true} onJoinChats={ctx.hide} />
         ));
     }, []);
@@ -31,26 +31,26 @@ export const RecommendationsFragment = React.memo(() => {
                 </>
             )}
             {tab === 'discover' && (
-                <>
-                    <UHeader title="Chats for you" maxWidth={577} />
-                    <Page track="discover_recommended" padded={true}>
-                        <XView height={16} />
-                        {data.suggestedRooms.map((room) => {
-                            if (room.__typename === 'SharedRoom') {
-                                return (
-                                    <XView marginHorizontal={-16} maxWidth={560 + 16 * 2}>
-                                        <UGroupView
-                                            group={room as DiscoverSharedRoom}
-                                            rightElement={<JoinButton group={room as DiscoverSharedRoom} />}
-                                        />
-                                    </XView>
-                                );
-                            }
-                            return null;
-                        })}
-                        <XView height={56} />
-                    </Page>
-                </>
+                <Page track="discover_recommended">
+                    <UHeader title="Chats for you" />
+                    <XView height={16} />
+                    {data.suggestedRooms.map((room) => {
+                        if (room.__typename === 'SharedRoom') {
+                            return (
+                                <XView marginHorizontal={-16} maxWidth={560 + 16 * 2}>
+                                    <UGroupView
+                                        group={room as DiscoverSharedRoom}
+                                        rightElement={
+                                            <JoinButton group={room as DiscoverSharedRoom} />
+                                        }
+                                    />
+                                </XView>
+                            );
+                        }
+                        return null;
+                    })}
+                    <XView height={56} />
+                </Page>
             )}
         </React.Suspense>
     );

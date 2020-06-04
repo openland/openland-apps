@@ -18,7 +18,7 @@ const textWrapper = css`
 export const SettingsLicensesFragment = React.memo(() => {
     return (
         <Page track="account_licenses" scroll="disable">
-            <UHeader title="Licenses" maxWidth={550} />
+            <UHeader title="Licenses" />
             <FormWrapper>
                 <p className={cx(textWrapper, TextBody)}>Product illustrations by <ULink href="https://icons8.com/">Icons 8</ULink></p>
                 <p className={cx(textWrapper, TextBody)}>Editors’ choice and collections covers by&nbsp;<ULink href="https://freepik.com/stories">stories</ULink>
