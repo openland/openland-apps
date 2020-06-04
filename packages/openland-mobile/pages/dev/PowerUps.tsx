@@ -2,17 +2,13 @@ import * as React from 'react';
 import { withApp } from 'openland-mobile/components/withApp';
 import { View } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
-import { PegasusHost } from 'openland-pegasus/PegasusHost';
-import { PowerupSample } from 'openland-powerups/PowerupSample';
 
 export const PowerUps = withApp(() => {
     return (
         <>
             <SHeader title="PowerUp" />
             <View flexGrow={1} flexShrink={1} alignSelf="stretch">
-                <PegasusHost>
-                    <PowerupSample />
-                </PegasusHost>
+                {}
             </View>
             {/* <SHeader title="Developer" />
             <SScrollView>
