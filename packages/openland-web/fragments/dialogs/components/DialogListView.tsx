@@ -17,14 +17,7 @@ import { DataSourceWindow } from 'openland-y-utils/DataSourceWindow';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { CallFloating } from 'openland-web/modules/conference/CallFloating';
 import { DiscoverFooter } from 'openland-web/fragments/discover/components/DiscoverFooter';
-
-export const dialogSearchWrapperClassName = css`
-    justify-content: flex-start;
-    overflow-y: auto;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-`;
+import { DialogSearchMessages } from './DialogSearchMessages';
 
 const containerStyle = css`
   display: flex;
@@ -181,10 +174,9 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
 
     const onMessagePick = React.useCallback(
         (messageId: string) => {
-            // setQuery('');
             router!.navigate(`/message/${messageId}`);
         },
-        [query],
+        [],
     );
 
     return (
@@ -197,14 +189,18 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                 marginBottom={16}
             />
             <XView flexGrow={1} flexBasis={0} minHeight={0}>
-                {isSearching && (
-                    <div className={dialogSearchWrapperClassName}>
-                        <DialogSearchResults
-                            variables={{ query: query }}
-                            onPick={onPick}
-                            onMessagePick={onMessagePick}
-                        />
-                    </div>
+                {isSearching && !onMessagePick && (
+                    <DialogSearchResults
+                        variables={{ query }}
+                        onPick={onPick}
+                    />
+                )}
+                {isSearching && onMessagePick && (
+                    <DialogSearchMessages
+                        variables={{ query }}
+                        onPick={onPick}
+                        onMessagePick={onMessagePick}
+                    />
                 )}
                 {canUseDOM && !isSearching && (
                     <XListView
