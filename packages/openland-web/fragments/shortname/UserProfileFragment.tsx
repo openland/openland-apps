@@ -16,7 +16,7 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import MessageIcon from 'openland-icons/s/ic-message-24.svg';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
-import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 const MessageButton = React.memo((props: { isBot: boolean, id: string }) => {
     const layout = useLayout();
