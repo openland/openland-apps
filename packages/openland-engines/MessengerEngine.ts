@@ -102,6 +102,10 @@ export class MessengerEngine {
     private loadingSequence = async () => {
         await this.dialogSequence.start();
         this.location.start();
+
+        // After sequence
+        this.onlineReporter.onReady();
+        this.typingsWatcher.onReady();
     }
 
     handleTyping = (

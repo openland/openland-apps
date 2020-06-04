@@ -5,13 +5,18 @@ import { lockStatus, releaseLock, tryLock } from '../openland-y-utils/webSync';
 
 export class OnlineReportEngine {
     readonly engine: MessengerEngine;
+    readonly platform: string;
     private alive = true;
     private visible = true;
+    
     private breakable?: () => void;
 
     constructor(engine: MessengerEngine, platform: string) {
         this.engine = engine;
+        this.platform = platform;
+    }
 
+    onReady() {
         (async () => {
             const waitForActive = async () => {
                 let d = delayBreakable(2000);
@@ -44,15 +49,15 @@ export class OnlineReportEngine {
 
                 await backoff(async () => {
                     if (canUseDOM) {
-                        await engine.client.mutateReportOnline({
+                        await this.engine.client.mutateReportOnline({
                             active: active,
-                            platform: platform,
+                            platform: this.platform,
                         });
                     } else {
                         if (active) {
-                            await engine.client.mutateReportOnline({
+                            await this.engine.client.mutateReportOnline({
                                 active: true,
-                                platform: platform,
+                                platform: this.platform,
                             });
                         } else {
                             // Do nothing

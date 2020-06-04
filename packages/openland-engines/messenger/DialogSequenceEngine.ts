@@ -23,6 +23,7 @@ export class DialogSequenceEngine {
     }
 
     start = async () => {
+        let start = Date.now();
         log.log('Loading initial state');
 
         // Settings Watch
@@ -33,13 +34,16 @@ export class DialogSequenceEngine {
         reliableWatcher(handler => this.engine.client.subscribeSettingsWatch(handler), () => {
             log.log('New settings received');
         });
+        log.log('Settings loaded in ' + (Date.now() - start) + ' ms');
 
         // Global Counter
+        start = Date.now();
         let counter = backoff(async () => {
             return await this.engine.client.queryGlobalCounter({ fetchPolicy: 'cache-first' });
         });
         this.counterState = await counter;
         this.engine.notifications.handleGlobalCounterChanged(this.counterState.alphaNotificationCounter.unreadCount);
+        log.log('Global counter loaded in ' + (Date.now() - start) + ' ms');
 
         // Main Sequence Updates Queue
         (async () => {

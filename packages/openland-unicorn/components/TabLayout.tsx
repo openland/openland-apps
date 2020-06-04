@@ -13,6 +13,7 @@ import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 import { XDialogProviderComponent } from 'openland-x/XDialogProvider';
 import { VisibleTabContext } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { StackLayoutPlaceholder } from 'openland-unicorn/components/StackLayoutPlaceholder';
+import { XLoader } from 'openland-x/XLoader';
 
 const containerMobile = css`
     display: flex;
@@ -74,7 +75,9 @@ const TabContainer = React.memo(
             <CounterContext.Provider value={counterSetter}>
                 <XViewRouterContext.Provider value={xRouting}>
                     <VisibleTabContext.Provider value={props.activeIndex === props.index}>
-                        {props.router.tabs[props.index].component}
+                        <React.Suspense fallback={<XLoader loading={true} />}>
+                            {props.router.tabs[props.index].component}
+                        </React.Suspense>
                     </VisibleTabContext.Provider>
                 </XViewRouterContext.Provider>
             </CounterContext.Provider>
@@ -206,69 +209,69 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
                                     </XView>
                                 </div>
                             ) : (
-                                <div
-                                    key={'tab-' + i}
-                                    className={
-                                        selectedMounted === i
-                                            ? visibleContainer
-                                            : invisibleContainer
-                                    }
-                                >
-                                    <XView
-                                        width="100%"
-                                        height="100%"
-                                        flexDirection="row"
-                                        overflow="hidden"
-                                        paddingLeft={64}
+                                    <div
+                                        key={'tab-' + i}
+                                        className={
+                                            selectedMounted === i
+                                                ? visibleContainer
+                                                : invisibleContainer
+                                        }
                                     >
                                         <XView
-                                            key="sep1"
-                                            width={1}
-                                            backgroundColor="var(--border)"
+                                            width="100%"
                                             height="100%"
-                                        />
-                                        <XView
-                                            key="root"
-                                            maxWidth={370}
-                                            flexShrink={1}
-                                            flexGrow={1}
-                                            height="100%"
-                                            flexDirection="column"
+                                            flexDirection="row"
+                                            overflow="hidden"
+                                            paddingLeft={64}
                                         >
                                             <XView
-                                                width="100%"
+                                                key="sep1"
+                                                width={1}
+                                                backgroundColor="var(--border)"
                                                 height="100%"
-                                                position="relative"
-                                                alignItems="flex-start"
-                                                backgroundColor="#fff"
+                                            />
+                                            <XView
+                                                key="root"
+                                                maxWidth={370}
+                                                flexShrink={1}
+                                                flexGrow={1}
+                                                height="100%"
+                                                flexDirection="column"
                                             >
-                                                <TabContainer
-                                                    index={i}
-                                                    router={props.router}
-                                                    activeIndex={selected}
-                                                />
+                                                <XView
+                                                    width="100%"
+                                                    height="100%"
+                                                    position="relative"
+                                                    alignItems="flex-start"
+                                                    backgroundColor="#fff"
+                                                >
+                                                    <TabContainer
+                                                        index={i}
+                                                        router={props.router}
+                                                        activeIndex={selected}
+                                                    />
+                                                </XView>
                                             </XView>
+                                            <XView
+                                                key="sep2"
+                                                width={1}
+                                                height="100%"
+                                                backgroundColor="var(--border)"
+                                            />
+                                            <StackLayout
+                                                key="stack"
+                                                className={containerDesktop}
+                                                visible={selectedMounted === i}
+                                                router={v}
+                                                placeholder={
+                                                    v.rootPath === '/mail' ? (
+                                                        <StackLayoutPlaceholder />
+                                                    ) : null
+                                                }
+                                            />
                                         </XView>
-                                        <XView
-                                            key="sep2"
-                                            width={1}
-                                            height="100%"
-                                            backgroundColor="var(--border)"
-                                        />
-                                        <StackLayout
-                                            key="stack"
-                                            className={containerDesktop}
-                                            visible={selectedMounted === i}
-                                            router={v}
-                                            placeholder={
-                                                v.rootPath === '/mail' ? (
-                                                    <StackLayoutPlaceholder />
-                                                ) : null
-                                            }
-                                        />
-                                    </XView>
-                                </div>
-                            );
+                                    </div>
+                                );
                         })}
                         {layout === 'desktop' && (
                             <XView position="absolute" top={0} left={0} bottom={0} width={64}>

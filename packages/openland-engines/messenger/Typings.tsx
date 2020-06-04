@@ -41,13 +41,20 @@ type TypingsListener = (
 export class TypingsWatcher {
     private typings: Typings = {};
     private timeouts: Timeouts = {};
-    private subscription: () => void;
+    private subscription!: () => void;
+    private client: OpenlandClient;
+    private currentUserId: string;
     private onChange: (conversationId: string, data?: TypingsData) => void;
 
     constructor(client: OpenlandClient, onChange: (conversationId: string, data?: TypingsData) => void, currentUserId: string) {
+        this.client = client;
         this.onChange = onChange;
-        this.subscription = reliableWatcher<TypingsWatch>((handler) => client.subscribeTypingsWatch(handler), (event) => {
-            if (event.typings.user.id === currentUserId) {
+        this.currentUserId = currentUserId;
+    }
+
+    onReady() {
+        this.subscription = reliableWatcher<TypingsWatch>((handler) => this.client.subscribeTypingsWatch(handler), (event) => {
+            if (event.typings.user.id === this.currentUserId) {
                 return;
             }
             let conversationId: string = event.typings.conversation.id;
