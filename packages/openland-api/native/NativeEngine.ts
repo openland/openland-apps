@@ -1,5 +1,5 @@
 import { NativeModules, DeviceEventEmitter, NativeEventEmitter, Platform } from 'react-native';
-import { GraphqlBridgedEngine, OperationParameters } from '@openland/spacex';
+import { GraphqlBridgedEngine, QueryParameters } from '@openland/spacex';
 import { randomKey } from 'openland-y-utils/randomKey';
 import { API_HOST } from 'openland-y-utils/api';
 import { GraphqlUnknownError, GraphqlError } from '@openland/spacex';
@@ -73,10 +73,10 @@ export class NativeEngine extends GraphqlBridgedEngine {
         NativeGraphQL.closeClient(this.key);
     }
 
-    protected postQuery(id: string, query: string, vars: any, params?: OperationParameters) {
+    protected postQuery(id: string, query: string, vars: any, params?: QueryParameters) {
         NativeGraphQL.query(this.key, id, query, vars ? vars : {}, params ? params : {});
     }
-    protected postQueryWatch(id: string, query: string, vars: any, params?: OperationParameters) {
+    protected postQueryWatch(id: string, query: string, vars: any, params?: QueryParameters) {
         NativeGraphQL.watch(this.key, id, query, vars ? vars : {}, params ? params : {});
     }
     protected postQueryWatchEnd(id: string) {

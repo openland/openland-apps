@@ -1,611 +1,614 @@
 /* tslint:disable */
 /* eslint-disable */
 import * as Types from './spacex.types';
-import { GraphqlEngine, GraphqlActiveSubscription, OperationParameters, GraphqlSubscriptionHandler, BaseSpaceXClient, SpaceQueryWatchParameters } from '@openland/spacex';
+import { SpaceXClientParameters, GraphqlActiveSubscription, QueryParameters, MutationParameters, SubscriptionParameters, GraphqlSubscriptionHandler, BaseSpaceXClient, SpaceQueryWatchParameters } from '@openland/spacex';
 
 export class OpenlandClient extends BaseSpaceXClient {
-    constructor(engine: GraphqlEngine) {
-        super(engine);
+    constructor(params: SpaceXClientParameters) {
+        super(params);
     }
-    queryAccount(opts?: OperationParameters): Promise<Types.Account> {
-        return this.query('Account', undefined, opts);
+    withParameters(params: Partial<SpaceXClientParameters>) {
+        return new OpenlandClient({ ... params, engine: this.engine, globalCache: this.globalCache});
     }
-    queryAccountAppInvite(opts?: OperationParameters): Promise<Types.AccountAppInvite> {
-        return this.query('AccountAppInvite', undefined, opts);
+    queryAccount(params?: QueryParameters): Promise<Types.Account> {
+        return this.query('Account', undefined, params);
     }
-    queryAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, opts?: OperationParameters): Promise<Types.AccountAppInviteInfo> {
-        return this.query('AccountAppInviteInfo', variables, opts);
+    queryAccountAppInvite(params?: QueryParameters): Promise<Types.AccountAppInvite> {
+        return this.query('AccountAppInvite', undefined, params);
     }
-    queryAccountInviteInfo(variables: Types.AccountInviteInfoVariables, opts?: OperationParameters): Promise<Types.AccountInviteInfo> {
-        return this.query('AccountInviteInfo', variables, opts);
+    queryAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, params?: QueryParameters): Promise<Types.AccountAppInviteInfo> {
+        return this.query('AccountAppInviteInfo', variables, params);
     }
-    queryAccountSettings(opts?: OperationParameters): Promise<Types.AccountSettings> {
-        return this.query('AccountSettings', undefined, opts);
+    queryAccountInviteInfo(variables: Types.AccountInviteInfoVariables, params?: QueryParameters): Promise<Types.AccountInviteInfo> {
+        return this.query('AccountInviteInfo', variables, params);
     }
-    queryAuthPoints(opts?: OperationParameters): Promise<Types.AuthPoints> {
-        return this.query('AuthPoints', undefined, opts);
+    queryAccountSettings(params?: QueryParameters): Promise<Types.AccountSettings> {
+        return this.query('AccountSettings', undefined, params);
     }
-    queryAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, opts?: OperationParameters): Promise<Types.AuthResolveShortName> {
-        return this.query('AuthResolveShortName', variables, opts);
+    queryAuthPoints(params?: QueryParameters): Promise<Types.AuthPoints> {
+        return this.query('AuthPoints', undefined, params);
     }
-    queryChannel(variables: Types.ChannelVariables, opts?: OperationParameters): Promise<Types.Channel> {
-        return this.query('Channel', variables, opts);
+    queryAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, params?: QueryParameters): Promise<Types.AuthResolveShortName> {
+        return this.query('AuthResolveShortName', variables, params);
     }
-    queryChannels(opts?: OperationParameters): Promise<Types.Channels> {
-        return this.query('Channels', undefined, opts);
+    queryChannel(variables: Types.ChannelVariables, params?: QueryParameters): Promise<Types.Channel> {
+        return this.query('Channel', variables, params);
     }
-    queryChatInit(variables: Types.ChatInitVariables, opts?: OperationParameters): Promise<Types.ChatInit> {
-        return this.query('ChatInit', variables, opts);
+    queryChannels(params?: QueryParameters): Promise<Types.Channels> {
+        return this.query('Channels', undefined, params);
     }
-    queryChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, opts?: OperationParameters): Promise<Types.ChatInitFromUnread> {
-        return this.query('ChatInitFromUnread', variables, opts);
+    queryChatInit(variables: Types.ChatInitVariables, params?: QueryParameters): Promise<Types.ChatInit> {
+        return this.query('ChatInit', variables, params);
     }
-    queryChatJoin(variables: Types.ChatJoinVariables, opts?: OperationParameters): Promise<Types.ChatJoin> {
-        return this.query('ChatJoin', variables, opts);
+    queryChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, params?: QueryParameters): Promise<Types.ChatInitFromUnread> {
+        return this.query('ChatInitFromUnread', variables, params);
     }
-    queryChatMentionSearch(variables: Types.ChatMentionSearchVariables, opts?: OperationParameters): Promise<Types.ChatMentionSearch> {
-        return this.query('ChatMentionSearch', variables, opts);
+    queryChatJoin(variables: Types.ChatJoinVariables, params?: QueryParameters): Promise<Types.ChatJoin> {
+        return this.query('ChatJoin', variables, params);
     }
-    queryComments(variables: Types.CommentsVariables, opts?: OperationParameters): Promise<Types.Comments> {
-        return this.query('Comments', variables, opts);
+    queryChatMentionSearch(variables: Types.ChatMentionSearchVariables, params?: QueryParameters): Promise<Types.ChatMentionSearch> {
+        return this.query('ChatMentionSearch', variables, params);
     }
-    queryConference(variables: Types.ConferenceVariables, opts?: OperationParameters): Promise<Types.Conference> {
-        return this.query('Conference', variables, opts);
+    queryComments(variables: Types.CommentsVariables, params?: QueryParameters): Promise<Types.Comments> {
+        return this.query('Comments', variables, params);
     }
-    queryConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: OperationParameters): Promise<Types.ConferenceMedia> {
-        return this.query('ConferenceMedia', variables, opts);
+    queryConference(variables: Types.ConferenceVariables, params?: QueryParameters): Promise<Types.Conference> {
+        return this.query('Conference', variables, params);
     }
-    queryDebugGqlTrace(variables: Types.DebugGqlTraceVariables, opts?: OperationParameters): Promise<Types.DebugGqlTrace> {
-        return this.query('DebugGqlTrace', variables, opts);
+    queryConferenceMedia(variables: Types.ConferenceMediaVariables, params?: QueryParameters): Promise<Types.ConferenceMedia> {
+        return this.query('ConferenceMedia', variables, params);
     }
-    queryDebugGqlTraces(variables: Types.DebugGqlTracesVariables, opts?: OperationParameters): Promise<Types.DebugGqlTraces> {
-        return this.query('DebugGqlTraces', variables, opts);
+    queryDebugGqlTrace(variables: Types.DebugGqlTraceVariables, params?: QueryParameters): Promise<Types.DebugGqlTrace> {
+        return this.query('DebugGqlTrace', variables, params);
     }
-    queryDialogs(variables: Types.DialogsVariables, opts?: OperationParameters): Promise<Types.Dialogs> {
-        return this.query('Dialogs', variables, opts);
+    queryDebugGqlTraces(variables: Types.DebugGqlTracesVariables, params?: QueryParameters): Promise<Types.DebugGqlTraces> {
+        return this.query('DebugGqlTraces', variables, params);
     }
-    queryDiscoverCollection(variables: Types.DiscoverCollectionVariables, opts?: OperationParameters): Promise<Types.DiscoverCollection> {
-        return this.query('DiscoverCollection', variables, opts);
+    queryDialogs(variables: Types.DialogsVariables, params?: QueryParameters): Promise<Types.Dialogs> {
+        return this.query('Dialogs', variables, params);
     }
-    queryDiscoverCollectionShort(variables: Types.DiscoverCollectionShortVariables, opts?: OperationParameters): Promise<Types.DiscoverCollectionShort> {
-        return this.query('DiscoverCollectionShort', variables, opts);
+    queryDiscoverCollection(variables: Types.DiscoverCollectionVariables, params?: QueryParameters): Promise<Types.DiscoverCollection> {
+        return this.query('DiscoverCollection', variables, params);
     }
-    queryDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts?: OperationParameters): Promise<Types.DiscoverCollections> {
-        return this.query('DiscoverCollections', variables, opts);
+    queryDiscoverCollectionShort(variables: Types.DiscoverCollectionShortVariables, params?: QueryParameters): Promise<Types.DiscoverCollectionShort> {
+        return this.query('DiscoverCollectionShort', variables, params);
     }
-    queryDiscoverCollectionsShort(variables: Types.DiscoverCollectionsShortVariables, opts?: OperationParameters): Promise<Types.DiscoverCollectionsShort> {
-        return this.query('DiscoverCollectionsShort', variables, opts);
+    queryDiscoverCollections(variables: Types.DiscoverCollectionsVariables, params?: QueryParameters): Promise<Types.DiscoverCollections> {
+        return this.query('DiscoverCollections', variables, params);
     }
-    queryDiscoverEditorsChoice(opts?: OperationParameters): Promise<Types.DiscoverEditorsChoice> {
-        return this.query('DiscoverEditorsChoice', undefined, opts);
+    queryDiscoverCollectionsShort(variables: Types.DiscoverCollectionsShortVariables, params?: QueryParameters): Promise<Types.DiscoverCollectionsShort> {
+        return this.query('DiscoverCollectionsShort', variables, params);
     }
-    queryDiscoverIsDone(opts?: OperationParameters): Promise<Types.DiscoverIsDone> {
-        return this.query('DiscoverIsDone', undefined, opts);
+    queryDiscoverEditorsChoice(params?: QueryParameters): Promise<Types.DiscoverEditorsChoice> {
+        return this.query('DiscoverEditorsChoice', undefined, params);
     }
-    queryDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, opts?: OperationParameters): Promise<Types.DiscoverNewAndGrowing> {
-        return this.query('DiscoverNewAndGrowing', variables, opts);
+    queryDiscoverIsDone(params?: QueryParameters): Promise<Types.DiscoverIsDone> {
+        return this.query('DiscoverIsDone', undefined, params);
     }
-    queryDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: OperationParameters): Promise<Types.DiscoverNextPage> {
-        return this.query('DiscoverNextPage', variables, opts);
+    queryDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, params?: QueryParameters): Promise<Types.DiscoverNewAndGrowing> {
+        return this.query('DiscoverNewAndGrowing', variables, params);
     }
-    queryDiscoverNoAuth(variables: Types.DiscoverNoAuthVariables, opts?: OperationParameters): Promise<Types.DiscoverNoAuth> {
-        return this.query('DiscoverNoAuth', variables, opts);
+    queryDiscoverNextPage(variables: Types.DiscoverNextPageVariables, params?: QueryParameters): Promise<Types.DiscoverNextPage> {
+        return this.query('DiscoverNextPage', variables, params);
     }
-    queryDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, opts?: OperationParameters): Promise<Types.DiscoverPopularNow> {
-        return this.query('DiscoverPopularNow', variables, opts);
+    queryDiscoverNoAuth(variables: Types.DiscoverNoAuthVariables, params?: QueryParameters): Promise<Types.DiscoverNoAuth> {
+        return this.query('DiscoverNoAuth', variables, params);
     }
-    queryDiscoverState(opts?: OperationParameters): Promise<Types.DiscoverState> {
-        return this.query('DiscoverState', undefined, opts);
+    queryDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, params?: QueryParameters): Promise<Types.DiscoverPopularNow> {
+        return this.query('DiscoverPopularNow', variables, params);
     }
-    queryDiscoverSuggestedRooms(opts?: OperationParameters): Promise<Types.DiscoverSuggestedRooms> {
-        return this.query('DiscoverSuggestedRooms', undefined, opts);
+    queryDiscoverState(params?: QueryParameters): Promise<Types.DiscoverState> {
+        return this.query('DiscoverState', undefined, params);
     }
-    queryDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, opts?: OperationParameters): Promise<Types.DiscoverTopFree> {
-        return this.query('DiscoverTopFree', variables, opts);
+    queryDiscoverSuggestedRooms(params?: QueryParameters): Promise<Types.DiscoverSuggestedRooms> {
+        return this.query('DiscoverSuggestedRooms', undefined, params);
     }
-    queryDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: OperationParameters): Promise<Types.DiscoverTopPremium> {
-        return this.query('DiscoverTopPremium', variables, opts);
+    queryDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, params?: QueryParameters): Promise<Types.DiscoverTopFree> {
+        return this.query('DiscoverTopFree', variables, params);
     }
-    queryExplorePeople(variables: Types.ExplorePeopleVariables, opts?: OperationParameters): Promise<Types.ExplorePeople> {
-        return this.query('ExplorePeople', variables, opts);
+    queryDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, params?: QueryParameters): Promise<Types.DiscoverTopPremium> {
+        return this.query('DiscoverTopPremium', variables, params);
     }
-    queryExploreRooms(variables: Types.ExploreRoomsVariables, opts?: OperationParameters): Promise<Types.ExploreRooms> {
-        return this.query('ExploreRooms', variables, opts);
+    queryExplorePeople(variables: Types.ExplorePeopleVariables, params?: QueryParameters): Promise<Types.ExplorePeople> {
+        return this.query('ExplorePeople', variables, params);
     }
-    queryFeatureFlags(opts?: OperationParameters): Promise<Types.FeatureFlags> {
-        return this.query('FeatureFlags', undefined, opts);
+    queryExploreRooms(variables: Types.ExploreRoomsVariables, params?: QueryParameters): Promise<Types.ExploreRooms> {
+        return this.query('ExploreRooms', variables, params);
     }
-    queryFetchPushSettings(opts?: OperationParameters): Promise<Types.FetchPushSettings> {
-        return this.query('FetchPushSettings', undefined, opts);
+    queryFeatureFlags(params?: QueryParameters): Promise<Types.FeatureFlags> {
+        return this.query('FeatureFlags', undefined, params);
     }
-    queryGlobalCounter(opts?: OperationParameters): Promise<Types.GlobalCounter> {
-        return this.query('GlobalCounter', undefined, opts);
+    queryFetchPushSettings(params?: QueryParameters): Promise<Types.FetchPushSettings> {
+        return this.query('FetchPushSettings', undefined, params);
     }
-    queryGlobalSearch(variables: Types.GlobalSearchVariables, opts?: OperationParameters): Promise<Types.GlobalSearch> {
-        return this.query('GlobalSearch', variables, opts);
+    queryGlobalCounter(params?: QueryParameters): Promise<Types.GlobalCounter> {
+        return this.query('GlobalCounter', undefined, params);
     }
-    queryGroupScreenViews(variables: Types.GroupScreenViewsVariables, opts?: OperationParameters): Promise<Types.GroupScreenViews> {
-        return this.query('GroupScreenViews', variables, opts);
+    queryGlobalSearch(variables: Types.GlobalSearchVariables, params?: QueryParameters): Promise<Types.GlobalSearch> {
+        return this.query('GlobalSearch', variables, params);
     }
-    queryMessage(variables: Types.MessageVariables, opts?: OperationParameters): Promise<Types.Message> {
-        return this.query('Message', variables, opts);
+    queryGroupScreenViews(variables: Types.GroupScreenViewsVariables, params?: QueryParameters): Promise<Types.GroupScreenViews> {
+        return this.query('GroupScreenViews', variables, params);
     }
-    queryMessagesBatch(variables: Types.MessagesBatchVariables, opts?: OperationParameters): Promise<Types.MessagesBatch> {
-        return this.query('MessagesBatch', variables, opts);
+    queryMessage(variables: Types.MessageVariables, params?: QueryParameters): Promise<Types.Message> {
+        return this.query('Message', variables, params);
     }
-    queryMessagesSearch(variables: Types.MessagesSearchVariables, opts?: OperationParameters): Promise<Types.MessagesSearch> {
-        return this.query('MessagesSearch', variables, opts);
+    queryMessagesBatch(variables: Types.MessagesBatchVariables, params?: QueryParameters): Promise<Types.MessagesBatch> {
+        return this.query('MessagesBatch', variables, params);
     }
-    queryMyApps(opts?: OperationParameters): Promise<Types.MyApps> {
-        return this.query('MyApps', undefined, opts);
+    queryMessagesSearch(variables: Types.MessagesSearchVariables, params?: QueryParameters): Promise<Types.MessagesSearch> {
+        return this.query('MessagesSearch', variables, params);
     }
-    queryMyCards(opts?: OperationParameters): Promise<Types.MyCards> {
-        return this.query('MyCards', undefined, opts);
+    queryMyApps(params?: QueryParameters): Promise<Types.MyApps> {
+        return this.query('MyApps', undefined, params);
     }
-    queryMyNotificationCenter(opts?: OperationParameters): Promise<Types.MyNotificationCenter> {
-        return this.query('MyNotificationCenter', undefined, opts);
+    queryMyCards(params?: QueryParameters): Promise<Types.MyCards> {
+        return this.query('MyCards', undefined, params);
     }
-    queryMyNotifications(variables: Types.MyNotificationsVariables, opts?: OperationParameters): Promise<Types.MyNotifications> {
-        return this.query('MyNotifications', variables, opts);
+    queryMyNotificationCenter(params?: QueryParameters): Promise<Types.MyNotificationCenter> {
+        return this.query('MyNotificationCenter', undefined, params);
     }
-    queryMyOrganizations(opts?: OperationParameters): Promise<Types.MyOrganizations> {
-        return this.query('MyOrganizations', undefined, opts);
+    queryMyNotifications(variables: Types.MyNotificationsVariables, params?: QueryParameters): Promise<Types.MyNotifications> {
+        return this.query('MyNotifications', variables, params);
     }
-    queryMyPostDrafts(variables: Types.MyPostDraftsVariables, opts?: OperationParameters): Promise<Types.MyPostDrafts> {
-        return this.query('MyPostDrafts', variables, opts);
+    queryMyOrganizations(params?: QueryParameters): Promise<Types.MyOrganizations> {
+        return this.query('MyOrganizations', undefined, params);
     }
-    queryMyStickers(opts?: OperationParameters): Promise<Types.MyStickers> {
-        return this.query('MyStickers', undefined, opts);
+    queryMyPostDrafts(variables: Types.MyPostDraftsVariables, params?: QueryParameters): Promise<Types.MyPostDrafts> {
+        return this.query('MyPostDrafts', variables, params);
     }
-    queryMySuccessfulInvitesCount(opts?: OperationParameters): Promise<Types.MySuccessfulInvitesCount> {
-        return this.query('MySuccessfulInvitesCount', undefined, opts);
+    queryMyStickers(params?: QueryParameters): Promise<Types.MyStickers> {
+        return this.query('MyStickers', undefined, params);
     }
-    queryMyWallet(opts?: OperationParameters): Promise<Types.MyWallet> {
-        return this.query('MyWallet', undefined, opts);
+    queryMySuccessfulInvitesCount(params?: QueryParameters): Promise<Types.MySuccessfulInvitesCount> {
+        return this.query('MySuccessfulInvitesCount', undefined, params);
     }
-    queryOauthContext(variables: Types.OauthContextVariables, opts?: OperationParameters): Promise<Types.OauthContext> {
-        return this.query('OauthContext', variables, opts);
+    queryMyWallet(params?: QueryParameters): Promise<Types.MyWallet> {
+        return this.query('MyWallet', undefined, params);
     }
-    queryOnline(variables: Types.OnlineVariables, opts?: OperationParameters): Promise<Types.Online> {
-        return this.query('Online', variables, opts);
+    queryOauthContext(variables: Types.OauthContextVariables, params?: QueryParameters): Promise<Types.OauthContext> {
+        return this.query('OauthContext', variables, params);
     }
-    queryOrganization(variables: Types.OrganizationVariables, opts?: OperationParameters): Promise<Types.Organization> {
-        return this.query('Organization', variables, opts);
+    queryOnline(variables: Types.OnlineVariables, params?: QueryParameters): Promise<Types.Online> {
+        return this.query('Online', variables, params);
     }
-    queryOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: OperationParameters): Promise<Types.OrganizationMembers> {
-        return this.query('OrganizationMembers', variables, opts);
+    queryOrganization(variables: Types.OrganizationVariables, params?: QueryParameters): Promise<Types.Organization> {
+        return this.query('Organization', variables, params);
     }
-    queryOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, opts?: OperationParameters): Promise<Types.OrganizationMembersShort> {
-        return this.query('OrganizationMembersShort', variables, opts);
+    queryOrganizationMembers(variables: Types.OrganizationMembersVariables, params?: QueryParameters): Promise<Types.OrganizationMembers> {
+        return this.query('OrganizationMembers', variables, params);
     }
-    queryOrganizationProfile(variables: Types.OrganizationProfileVariables, opts?: OperationParameters): Promise<Types.OrganizationProfile> {
-        return this.query('OrganizationProfile', variables, opts);
+    queryOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: QueryParameters): Promise<Types.OrganizationMembersShort> {
+        return this.query('OrganizationMembersShort', variables, params);
     }
-    queryOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, opts?: OperationParameters): Promise<Types.OrganizationPublicInvite> {
-        return this.query('OrganizationPublicInvite', variables, opts);
+    queryOrganizationProfile(variables: Types.OrganizationProfileVariables, params?: QueryParameters): Promise<Types.OrganizationProfile> {
+        return this.query('OrganizationProfile', variables, params);
     }
-    queryOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: OperationParameters): Promise<Types.OrganizationPublicRooms> {
-        return this.query('OrganizationPublicRooms', variables, opts);
+    queryOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, params?: QueryParameters): Promise<Types.OrganizationPublicInvite> {
+        return this.query('OrganizationPublicInvite', variables, params);
     }
-    queryPermissions(opts?: OperationParameters): Promise<Types.Permissions> {
-        return this.query('Permissions', undefined, opts);
+    queryOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, params?: QueryParameters): Promise<Types.OrganizationPublicRooms> {
+        return this.query('OrganizationPublicRooms', variables, params);
     }
-    queryPicSharedMedia(variables: Types.PicSharedMediaVariables, opts?: OperationParameters): Promise<Types.PicSharedMedia> {
-        return this.query('PicSharedMedia', variables, opts);
+    queryPermissions(params?: QueryParameters): Promise<Types.Permissions> {
+        return this.query('Permissions', undefined, params);
     }
-    queryPost(variables: Types.PostVariables, opts?: OperationParameters): Promise<Types.Post> {
-        return this.query('Post', variables, opts);
+    queryPicSharedMedia(variables: Types.PicSharedMediaVariables, params?: QueryParameters): Promise<Types.PicSharedMedia> {
+        return this.query('PicSharedMedia', variables, params);
     }
-    queryPostDraft(variables: Types.PostDraftVariables, opts?: OperationParameters): Promise<Types.PostDraft> {
-        return this.query('PostDraft', variables, opts);
+    queryPost(variables: Types.PostVariables, params?: QueryParameters): Promise<Types.Post> {
+        return this.query('Post', variables, params);
     }
-    queryPosts(variables: Types.PostsVariables, opts?: OperationParameters): Promise<Types.Posts> {
-        return this.query('Posts', variables, opts);
+    queryPostDraft(variables: Types.PostDraftVariables, params?: QueryParameters): Promise<Types.PostDraft> {
+        return this.query('PostDraft', variables, params);
     }
-    queryProfile(opts?: OperationParameters): Promise<Types.Profile> {
-        return this.query('Profile', undefined, opts);
+    queryPosts(variables: Types.PostsVariables, params?: QueryParameters): Promise<Types.Posts> {
+        return this.query('Posts', variables, params);
     }
-    queryProfilePrefill(opts?: OperationParameters): Promise<Types.ProfilePrefill> {
-        return this.query('ProfilePrefill', undefined, opts);
+    queryProfile(params?: QueryParameters): Promise<Types.Profile> {
+        return this.query('Profile', undefined, params);
     }
-    queryResolveShortName(variables: Types.ResolveShortNameVariables, opts?: OperationParameters): Promise<Types.ResolveShortName> {
-        return this.query('ResolveShortName', variables, opts);
+    queryProfilePrefill(params?: QueryParameters): Promise<Types.ProfilePrefill> {
+        return this.query('ProfilePrefill', undefined, params);
     }
-    queryResolvedInvite(variables: Types.ResolvedInviteVariables, opts?: OperationParameters): Promise<Types.ResolvedInvite> {
-        return this.query('ResolvedInvite', variables, opts);
+    queryResolveShortName(variables: Types.ResolveShortNameVariables, params?: QueryParameters): Promise<Types.ResolveShortName> {
+        return this.query('ResolveShortName', variables, params);
     }
-    queryRoomAdminMembers(variables: Types.RoomAdminMembersVariables, opts?: OperationParameters): Promise<Types.RoomAdminMembers> {
-        return this.query('RoomAdminMembers', variables, opts);
+    queryResolvedInvite(variables: Types.ResolvedInviteVariables, params?: QueryParameters): Promise<Types.ResolvedInvite> {
+        return this.query('ResolvedInvite', variables, params);
     }
-    queryRoomChat(variables: Types.RoomChatVariables, opts?: OperationParameters): Promise<Types.RoomChat> {
-        return this.query('RoomChat', variables, opts);
+    queryRoomAdminMembers(variables: Types.RoomAdminMembersVariables, params?: QueryParameters): Promise<Types.RoomAdminMembers> {
+        return this.query('RoomAdminMembers', variables, params);
     }
-    queryRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, opts?: OperationParameters): Promise<Types.RoomFeaturedMembers> {
-        return this.query('RoomFeaturedMembers', variables, opts);
+    queryRoomChat(variables: Types.RoomChatVariables, params?: QueryParameters): Promise<Types.RoomChat> {
+        return this.query('RoomChat', variables, params);
     }
-    queryRoomInviteInfo(variables: Types.RoomInviteInfoVariables, opts?: OperationParameters): Promise<Types.RoomInviteInfo> {
-        return this.query('RoomInviteInfo', variables, opts);
+    queryRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, params?: QueryParameters): Promise<Types.RoomFeaturedMembers> {
+        return this.query('RoomFeaturedMembers', variables, params);
     }
-    queryRoomInviteLink(variables: Types.RoomInviteLinkVariables, opts?: OperationParameters): Promise<Types.RoomInviteLink> {
-        return this.query('RoomInviteLink', variables, opts);
+    queryRoomInviteInfo(variables: Types.RoomInviteInfoVariables, params?: QueryParameters): Promise<Types.RoomInviteInfo> {
+        return this.query('RoomInviteInfo', variables, params);
     }
-    queryRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, opts?: OperationParameters): Promise<Types.RoomMembersPaginated> {
-        return this.query('RoomMembersPaginated', variables, opts);
+    queryRoomInviteLink(variables: Types.RoomInviteLinkVariables, params?: QueryParameters): Promise<Types.RoomInviteLink> {
+        return this.query('RoomInviteLink', variables, params);
     }
-    queryRoomMembersShort(variables: Types.RoomMembersShortVariables, opts?: OperationParameters): Promise<Types.RoomMembersShort> {
-        return this.query('RoomMembersShort', variables, opts);
+    queryRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, params?: QueryParameters): Promise<Types.RoomMembersPaginated> {
+        return this.query('RoomMembersPaginated', variables, params);
     }
-    queryRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: OperationParameters): Promise<Types.RoomMembersTiny> {
-        return this.query('RoomMembersTiny', variables, opts);
+    queryRoomMembersShort(variables: Types.RoomMembersShortVariables, params?: QueryParameters): Promise<Types.RoomMembersShort> {
+        return this.query('RoomMembersShort', variables, params);
     }
-    queryRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, opts?: OperationParameters): Promise<Types.RoomMetaPreview> {
-        return this.query('RoomMetaPreview', variables, opts);
+    queryRoomMembersTiny(variables: Types.RoomMembersTinyVariables, params?: QueryParameters): Promise<Types.RoomMembersTiny> {
+        return this.query('RoomMembersTiny', variables, params);
     }
-    queryRoomPico(variables: Types.RoomPicoVariables, opts?: OperationParameters): Promise<Types.RoomPico> {
-        return this.query('RoomPico', variables, opts);
+    queryRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, params?: QueryParameters): Promise<Types.RoomMetaPreview> {
+        return this.query('RoomMetaPreview', variables, params);
     }
-    queryRoomSearch(variables: Types.RoomSearchVariables, opts?: OperationParameters): Promise<Types.RoomSearch> {
-        return this.query('RoomSearch', variables, opts);
+    queryRoomPico(variables: Types.RoomPicoVariables, params?: QueryParameters): Promise<Types.RoomPico> {
+        return this.query('RoomPico', variables, params);
     }
-    queryRoomSocialImage(variables: Types.RoomSocialImageVariables, opts?: OperationParameters): Promise<Types.RoomSocialImage> {
-        return this.query('RoomSocialImage', variables, opts);
+    queryRoomSearch(variables: Types.RoomSearchVariables, params?: QueryParameters): Promise<Types.RoomSearch> {
+        return this.query('RoomSearch', variables, params);
     }
-    queryRoomTiny(variables: Types.RoomTinyVariables, opts?: OperationParameters): Promise<Types.RoomTiny> {
-        return this.query('RoomTiny', variables, opts);
+    queryRoomSocialImage(variables: Types.RoomSocialImageVariables, params?: QueryParameters): Promise<Types.RoomSocialImage> {
+        return this.query('RoomSocialImage', variables, params);
     }
-    querySettings(opts?: OperationParameters): Promise<Types.Settings> {
-        return this.query('Settings', undefined, opts);
+    queryRoomTiny(variables: Types.RoomTinyVariables, params?: QueryParameters): Promise<Types.RoomTiny> {
+        return this.query('RoomTiny', variables, params);
     }
-    querySharedMedia(variables: Types.SharedMediaVariables, opts?: OperationParameters): Promise<Types.SharedMedia> {
-        return this.query('SharedMedia', variables, opts);
+    querySettings(params?: QueryParameters): Promise<Types.Settings> {
+        return this.query('Settings', undefined, params);
     }
-    querySharedMediaCounters(variables: Types.SharedMediaCountersVariables, opts?: OperationParameters): Promise<Types.SharedMediaCounters> {
-        return this.query('SharedMediaCounters', variables, opts);
+    querySharedMedia(variables: Types.SharedMediaVariables, params?: QueryParameters): Promise<Types.SharedMedia> {
+        return this.query('SharedMedia', variables, params);
     }
-    queryStickerPack(variables: Types.StickerPackVariables, opts?: OperationParameters): Promise<Types.StickerPack> {
-        return this.query('StickerPack', variables, opts);
+    querySharedMediaCounters(variables: Types.SharedMediaCountersVariables, params?: QueryParameters): Promise<Types.SharedMediaCounters> {
+        return this.query('SharedMediaCounters', variables, params);
     }
-    queryStickerPackCatalog(opts?: OperationParameters): Promise<Types.StickerPackCatalog> {
-        return this.query('StickerPackCatalog', undefined, opts);
+    queryStickerPack(variables: Types.StickerPackVariables, params?: QueryParameters): Promise<Types.StickerPack> {
+        return this.query('StickerPack', variables, params);
     }
-    queryStripeToken(opts?: OperationParameters): Promise<Types.StripeToken> {
-        return this.query('StripeToken', undefined, opts);
+    queryStickerPackCatalog(params?: QueryParameters): Promise<Types.StickerPackCatalog> {
+        return this.query('StickerPackCatalog', undefined, params);
     }
-    querySubscriptions(opts?: OperationParameters): Promise<Types.Subscriptions> {
-        return this.query('Subscriptions', undefined, opts);
+    queryStripeToken(params?: QueryParameters): Promise<Types.StripeToken> {
+        return this.query('StripeToken', undefined, params);
     }
-    querySuggestedRooms(opts?: OperationParameters): Promise<Types.SuggestedRooms> {
-        return this.query('SuggestedRooms', undefined, opts);
+    querySubscriptions(params?: QueryParameters): Promise<Types.Subscriptions> {
+        return this.query('Subscriptions', undefined, params);
     }
-    querySuperAccount(variables: Types.SuperAccountVariables, opts?: OperationParameters): Promise<Types.SuperAccount> {
-        return this.query('SuperAccount', variables, opts);
+    querySuggestedRooms(params?: QueryParameters): Promise<Types.SuggestedRooms> {
+        return this.query('SuggestedRooms', undefined, params);
     }
-    querySuperAccounts(opts?: OperationParameters): Promise<Types.SuperAccounts> {
-        return this.query('SuperAccounts', undefined, opts);
+    querySuperAccount(variables: Types.SuperAccountVariables, params?: QueryParameters): Promise<Types.SuperAccount> {
+        return this.query('SuperAccount', variables, params);
     }
-    querySuperAdmins(opts?: OperationParameters): Promise<Types.SuperAdmins> {
-        return this.query('SuperAdmins', undefined, opts);
+    querySuperAccounts(params?: QueryParameters): Promise<Types.SuperAccounts> {
+        return this.query('SuperAccounts', undefined, params);
     }
-    querySuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: OperationParameters): Promise<Types.SuperBadgeInRoom> {
-        return this.query('SuperBadgeInRoom', variables, opts);
+    querySuperAdmins(params?: QueryParameters): Promise<Types.SuperAdmins> {
+        return this.query('SuperAdmins', undefined, params);
     }
-    queryTransactionsHistory(variables: Types.TransactionsHistoryVariables, opts?: OperationParameters): Promise<Types.TransactionsHistory> {
-        return this.query('TransactionsHistory', variables, opts);
+    querySuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, params?: QueryParameters): Promise<Types.SuperBadgeInRoom> {
+        return this.query('SuperBadgeInRoom', variables, params);
     }
-    queryUser(variables: Types.UserVariables, opts?: OperationParameters): Promise<Types.User> {
-        return this.query('User', variables, opts);
+    queryTransactionsHistory(variables: Types.TransactionsHistoryVariables, params?: QueryParameters): Promise<Types.TransactionsHistory> {
+        return this.query('TransactionsHistory', variables, params);
     }
-    queryUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, opts?: OperationParameters): Promise<Types.UserAvailableRooms> {
-        return this.query('UserAvailableRooms', variables, opts);
+    queryUser(variables: Types.UserVariables, params?: QueryParameters): Promise<Types.User> {
+        return this.query('User', variables, params);
     }
-    queryUserPico(variables: Types.UserPicoVariables, opts?: OperationParameters): Promise<Types.UserPico> {
-        return this.query('UserPico', variables, opts);
+    queryUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, params?: QueryParameters): Promise<Types.UserAvailableRooms> {
+        return this.query('UserAvailableRooms', variables, params);
     }
-    queryUserStorage(variables: Types.UserStorageVariables, opts?: OperationParameters): Promise<Types.UserStorage> {
-        return this.query('UserStorage', variables, opts);
+    queryUserPico(variables: Types.UserPicoVariables, params?: QueryParameters): Promise<Types.UserPico> {
+        return this.query('UserPico', variables, params);
     }
-    queryUsers(variables: Types.UsersVariables, opts?: OperationParameters): Promise<Types.Users> {
-        return this.query('Users', variables, opts);
+    queryUserStorage(variables: Types.UserStorageVariables, params?: QueryParameters): Promise<Types.UserStorage> {
+        return this.query('UserStorage', variables, params);
     }
-    refetchAccount(opts?: OperationParameters): Promise<Types.Account> {
-        return this.refetch('Account', undefined);
+    queryUsers(variables: Types.UsersVariables, params?: QueryParameters): Promise<Types.Users> {
+        return this.query('Users', variables, params);
     }
-    refetchAccountAppInvite(opts?: OperationParameters): Promise<Types.AccountAppInvite> {
-        return this.refetch('AccountAppInvite', undefined);
+    refetchAccount(params?: QueryParameters): Promise<Types.Account> {
+        return this.refetch('Account', undefined, params);
     }
-    refetchAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, opts?: OperationParameters): Promise<Types.AccountAppInviteInfo> {
-        return this.refetch('AccountAppInviteInfo', variables);
+    refetchAccountAppInvite(params?: QueryParameters): Promise<Types.AccountAppInvite> {
+        return this.refetch('AccountAppInvite', undefined, params);
     }
-    refetchAccountInviteInfo(variables: Types.AccountInviteInfoVariables, opts?: OperationParameters): Promise<Types.AccountInviteInfo> {
-        return this.refetch('AccountInviteInfo', variables);
+    refetchAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, params?: QueryParameters): Promise<Types.AccountAppInviteInfo> {
+        return this.refetch('AccountAppInviteInfo', variables, params);
     }
-    refetchAccountSettings(opts?: OperationParameters): Promise<Types.AccountSettings> {
-        return this.refetch('AccountSettings', undefined);
+    refetchAccountInviteInfo(variables: Types.AccountInviteInfoVariables, params?: QueryParameters): Promise<Types.AccountInviteInfo> {
+        return this.refetch('AccountInviteInfo', variables, params);
     }
-    refetchAuthPoints(opts?: OperationParameters): Promise<Types.AuthPoints> {
-        return this.refetch('AuthPoints', undefined);
+    refetchAccountSettings(params?: QueryParameters): Promise<Types.AccountSettings> {
+        return this.refetch('AccountSettings', undefined, params);
     }
-    refetchAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, opts?: OperationParameters): Promise<Types.AuthResolveShortName> {
-        return this.refetch('AuthResolveShortName', variables);
+    refetchAuthPoints(params?: QueryParameters): Promise<Types.AuthPoints> {
+        return this.refetch('AuthPoints', undefined, params);
     }
-    refetchChannel(variables: Types.ChannelVariables, opts?: OperationParameters): Promise<Types.Channel> {
-        return this.refetch('Channel', variables);
+    refetchAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, params?: QueryParameters): Promise<Types.AuthResolveShortName> {
+        return this.refetch('AuthResolveShortName', variables, params);
     }
-    refetchChannels(opts?: OperationParameters): Promise<Types.Channels> {
-        return this.refetch('Channels', undefined);
+    refetchChannel(variables: Types.ChannelVariables, params?: QueryParameters): Promise<Types.Channel> {
+        return this.refetch('Channel', variables, params);
     }
-    refetchChatInit(variables: Types.ChatInitVariables, opts?: OperationParameters): Promise<Types.ChatInit> {
-        return this.refetch('ChatInit', variables);
+    refetchChannels(params?: QueryParameters): Promise<Types.Channels> {
+        return this.refetch('Channels', undefined, params);
     }
-    refetchChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, opts?: OperationParameters): Promise<Types.ChatInitFromUnread> {
-        return this.refetch('ChatInitFromUnread', variables);
+    refetchChatInit(variables: Types.ChatInitVariables, params?: QueryParameters): Promise<Types.ChatInit> {
+        return this.refetch('ChatInit', variables, params);
     }
-    refetchChatJoin(variables: Types.ChatJoinVariables, opts?: OperationParameters): Promise<Types.ChatJoin> {
-        return this.refetch('ChatJoin', variables);
+    refetchChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, params?: QueryParameters): Promise<Types.ChatInitFromUnread> {
+        return this.refetch('ChatInitFromUnread', variables, params);
     }
-    refetchChatMentionSearch(variables: Types.ChatMentionSearchVariables, opts?: OperationParameters): Promise<Types.ChatMentionSearch> {
-        return this.refetch('ChatMentionSearch', variables);
+    refetchChatJoin(variables: Types.ChatJoinVariables, params?: QueryParameters): Promise<Types.ChatJoin> {
+        return this.refetch('ChatJoin', variables, params);
     }
-    refetchComments(variables: Types.CommentsVariables, opts?: OperationParameters): Promise<Types.Comments> {
-        return this.refetch('Comments', variables);
+    refetchChatMentionSearch(variables: Types.ChatMentionSearchVariables, params?: QueryParameters): Promise<Types.ChatMentionSearch> {
+        return this.refetch('ChatMentionSearch', variables, params);
     }
-    refetchConference(variables: Types.ConferenceVariables, opts?: OperationParameters): Promise<Types.Conference> {
-        return this.refetch('Conference', variables);
+    refetchComments(variables: Types.CommentsVariables, params?: QueryParameters): Promise<Types.Comments> {
+        return this.refetch('Comments', variables, params);
     }
-    refetchConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: OperationParameters): Promise<Types.ConferenceMedia> {
-        return this.refetch('ConferenceMedia', variables);
+    refetchConference(variables: Types.ConferenceVariables, params?: QueryParameters): Promise<Types.Conference> {
+        return this.refetch('Conference', variables, params);
     }
-    refetchDebugGqlTrace(variables: Types.DebugGqlTraceVariables, opts?: OperationParameters): Promise<Types.DebugGqlTrace> {
-        return this.refetch('DebugGqlTrace', variables);
+    refetchConferenceMedia(variables: Types.ConferenceMediaVariables, params?: QueryParameters): Promise<Types.ConferenceMedia> {
+        return this.refetch('ConferenceMedia', variables, params);
     }
-    refetchDebugGqlTraces(variables: Types.DebugGqlTracesVariables, opts?: OperationParameters): Promise<Types.DebugGqlTraces> {
-        return this.refetch('DebugGqlTraces', variables);
+    refetchDebugGqlTrace(variables: Types.DebugGqlTraceVariables, params?: QueryParameters): Promise<Types.DebugGqlTrace> {
+        return this.refetch('DebugGqlTrace', variables, params);
     }
-    refetchDialogs(variables: Types.DialogsVariables, opts?: OperationParameters): Promise<Types.Dialogs> {
-        return this.refetch('Dialogs', variables);
+    refetchDebugGqlTraces(variables: Types.DebugGqlTracesVariables, params?: QueryParameters): Promise<Types.DebugGqlTraces> {
+        return this.refetch('DebugGqlTraces', variables, params);
     }
-    refetchDiscoverCollection(variables: Types.DiscoverCollectionVariables, opts?: OperationParameters): Promise<Types.DiscoverCollection> {
-        return this.refetch('DiscoverCollection', variables);
+    refetchDialogs(variables: Types.DialogsVariables, params?: QueryParameters): Promise<Types.Dialogs> {
+        return this.refetch('Dialogs', variables, params);
     }
-    refetchDiscoverCollectionShort(variables: Types.DiscoverCollectionShortVariables, opts?: OperationParameters): Promise<Types.DiscoverCollectionShort> {
-        return this.refetch('DiscoverCollectionShort', variables);
+    refetchDiscoverCollection(variables: Types.DiscoverCollectionVariables, params?: QueryParameters): Promise<Types.DiscoverCollection> {
+        return this.refetch('DiscoverCollection', variables, params);
     }
-    refetchDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts?: OperationParameters): Promise<Types.DiscoverCollections> {
-        return this.refetch('DiscoverCollections', variables);
+    refetchDiscoverCollectionShort(variables: Types.DiscoverCollectionShortVariables, params?: QueryParameters): Promise<Types.DiscoverCollectionShort> {
+        return this.refetch('DiscoverCollectionShort', variables, params);
     }
-    refetchDiscoverCollectionsShort(variables: Types.DiscoverCollectionsShortVariables, opts?: OperationParameters): Promise<Types.DiscoverCollectionsShort> {
-        return this.refetch('DiscoverCollectionsShort', variables);
+    refetchDiscoverCollections(variables: Types.DiscoverCollectionsVariables, params?: QueryParameters): Promise<Types.DiscoverCollections> {
+        return this.refetch('DiscoverCollections', variables, params);
     }
-    refetchDiscoverEditorsChoice(opts?: OperationParameters): Promise<Types.DiscoverEditorsChoice> {
-        return this.refetch('DiscoverEditorsChoice', undefined);
+    refetchDiscoverCollectionsShort(variables: Types.DiscoverCollectionsShortVariables, params?: QueryParameters): Promise<Types.DiscoverCollectionsShort> {
+        return this.refetch('DiscoverCollectionsShort', variables, params);
     }
-    refetchDiscoverIsDone(opts?: OperationParameters): Promise<Types.DiscoverIsDone> {
-        return this.refetch('DiscoverIsDone', undefined);
+    refetchDiscoverEditorsChoice(params?: QueryParameters): Promise<Types.DiscoverEditorsChoice> {
+        return this.refetch('DiscoverEditorsChoice', undefined, params);
     }
-    refetchDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, opts?: OperationParameters): Promise<Types.DiscoverNewAndGrowing> {
-        return this.refetch('DiscoverNewAndGrowing', variables);
+    refetchDiscoverIsDone(params?: QueryParameters): Promise<Types.DiscoverIsDone> {
+        return this.refetch('DiscoverIsDone', undefined, params);
     }
-    refetchDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: OperationParameters): Promise<Types.DiscoverNextPage> {
-        return this.refetch('DiscoverNextPage', variables);
+    refetchDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, params?: QueryParameters): Promise<Types.DiscoverNewAndGrowing> {
+        return this.refetch('DiscoverNewAndGrowing', variables, params);
     }
-    refetchDiscoverNoAuth(variables: Types.DiscoverNoAuthVariables, opts?: OperationParameters): Promise<Types.DiscoverNoAuth> {
-        return this.refetch('DiscoverNoAuth', variables);
+    refetchDiscoverNextPage(variables: Types.DiscoverNextPageVariables, params?: QueryParameters): Promise<Types.DiscoverNextPage> {
+        return this.refetch('DiscoverNextPage', variables, params);
     }
-    refetchDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, opts?: OperationParameters): Promise<Types.DiscoverPopularNow> {
-        return this.refetch('DiscoverPopularNow', variables);
+    refetchDiscoverNoAuth(variables: Types.DiscoverNoAuthVariables, params?: QueryParameters): Promise<Types.DiscoverNoAuth> {
+        return this.refetch('DiscoverNoAuth', variables, params);
     }
-    refetchDiscoverState(opts?: OperationParameters): Promise<Types.DiscoverState> {
-        return this.refetch('DiscoverState', undefined);
+    refetchDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, params?: QueryParameters): Promise<Types.DiscoverPopularNow> {
+        return this.refetch('DiscoverPopularNow', variables, params);
     }
-    refetchDiscoverSuggestedRooms(opts?: OperationParameters): Promise<Types.DiscoverSuggestedRooms> {
-        return this.refetch('DiscoverSuggestedRooms', undefined);
+    refetchDiscoverState(params?: QueryParameters): Promise<Types.DiscoverState> {
+        return this.refetch('DiscoverState', undefined, params);
     }
-    refetchDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, opts?: OperationParameters): Promise<Types.DiscoverTopFree> {
-        return this.refetch('DiscoverTopFree', variables);
+    refetchDiscoverSuggestedRooms(params?: QueryParameters): Promise<Types.DiscoverSuggestedRooms> {
+        return this.refetch('DiscoverSuggestedRooms', undefined, params);
     }
-    refetchDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: OperationParameters): Promise<Types.DiscoverTopPremium> {
-        return this.refetch('DiscoverTopPremium', variables);
+    refetchDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, params?: QueryParameters): Promise<Types.DiscoverTopFree> {
+        return this.refetch('DiscoverTopFree', variables, params);
     }
-    refetchExplorePeople(variables: Types.ExplorePeopleVariables, opts?: OperationParameters): Promise<Types.ExplorePeople> {
-        return this.refetch('ExplorePeople', variables);
+    refetchDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, params?: QueryParameters): Promise<Types.DiscoverTopPremium> {
+        return this.refetch('DiscoverTopPremium', variables, params);
     }
-    refetchExploreRooms(variables: Types.ExploreRoomsVariables, opts?: OperationParameters): Promise<Types.ExploreRooms> {
-        return this.refetch('ExploreRooms', variables);
+    refetchExplorePeople(variables: Types.ExplorePeopleVariables, params?: QueryParameters): Promise<Types.ExplorePeople> {
+        return this.refetch('ExplorePeople', variables, params);
     }
-    refetchFeatureFlags(opts?: OperationParameters): Promise<Types.FeatureFlags> {
-        return this.refetch('FeatureFlags', undefined);
+    refetchExploreRooms(variables: Types.ExploreRoomsVariables, params?: QueryParameters): Promise<Types.ExploreRooms> {
+        return this.refetch('ExploreRooms', variables, params);
     }
-    refetchFetchPushSettings(opts?: OperationParameters): Promise<Types.FetchPushSettings> {
-        return this.refetch('FetchPushSettings', undefined);
+    refetchFeatureFlags(params?: QueryParameters): Promise<Types.FeatureFlags> {
+        return this.refetch('FeatureFlags', undefined, params);
     }
-    refetchGlobalCounter(opts?: OperationParameters): Promise<Types.GlobalCounter> {
-        return this.refetch('GlobalCounter', undefined);
+    refetchFetchPushSettings(params?: QueryParameters): Promise<Types.FetchPushSettings> {
+        return this.refetch('FetchPushSettings', undefined, params);
     }
-    refetchGlobalSearch(variables: Types.GlobalSearchVariables, opts?: OperationParameters): Promise<Types.GlobalSearch> {
-        return this.refetch('GlobalSearch', variables);
+    refetchGlobalCounter(params?: QueryParameters): Promise<Types.GlobalCounter> {
+        return this.refetch('GlobalCounter', undefined, params);
     }
-    refetchGroupScreenViews(variables: Types.GroupScreenViewsVariables, opts?: OperationParameters): Promise<Types.GroupScreenViews> {
-        return this.refetch('GroupScreenViews', variables);
+    refetchGlobalSearch(variables: Types.GlobalSearchVariables, params?: QueryParameters): Promise<Types.GlobalSearch> {
+        return this.refetch('GlobalSearch', variables, params);
     }
-    refetchMessage(variables: Types.MessageVariables, opts?: OperationParameters): Promise<Types.Message> {
-        return this.refetch('Message', variables);
+    refetchGroupScreenViews(variables: Types.GroupScreenViewsVariables, params?: QueryParameters): Promise<Types.GroupScreenViews> {
+        return this.refetch('GroupScreenViews', variables, params);
     }
-    refetchMessagesBatch(variables: Types.MessagesBatchVariables, opts?: OperationParameters): Promise<Types.MessagesBatch> {
-        return this.refetch('MessagesBatch', variables);
+    refetchMessage(variables: Types.MessageVariables, params?: QueryParameters): Promise<Types.Message> {
+        return this.refetch('Message', variables, params);
     }
-    refetchMessagesSearch(variables: Types.MessagesSearchVariables, opts?: OperationParameters): Promise<Types.MessagesSearch> {
-        return this.refetch('MessagesSearch', variables);
+    refetchMessagesBatch(variables: Types.MessagesBatchVariables, params?: QueryParameters): Promise<Types.MessagesBatch> {
+        return this.refetch('MessagesBatch', variables, params);
     }
-    refetchMyApps(opts?: OperationParameters): Promise<Types.MyApps> {
-        return this.refetch('MyApps', undefined);
+    refetchMessagesSearch(variables: Types.MessagesSearchVariables, params?: QueryParameters): Promise<Types.MessagesSearch> {
+        return this.refetch('MessagesSearch', variables, params);
     }
-    refetchMyCards(opts?: OperationParameters): Promise<Types.MyCards> {
-        return this.refetch('MyCards', undefined);
+    refetchMyApps(params?: QueryParameters): Promise<Types.MyApps> {
+        return this.refetch('MyApps', undefined, params);
     }
-    refetchMyNotificationCenter(opts?: OperationParameters): Promise<Types.MyNotificationCenter> {
-        return this.refetch('MyNotificationCenter', undefined);
+    refetchMyCards(params?: QueryParameters): Promise<Types.MyCards> {
+        return this.refetch('MyCards', undefined, params);
     }
-    refetchMyNotifications(variables: Types.MyNotificationsVariables, opts?: OperationParameters): Promise<Types.MyNotifications> {
-        return this.refetch('MyNotifications', variables);
+    refetchMyNotificationCenter(params?: QueryParameters): Promise<Types.MyNotificationCenter> {
+        return this.refetch('MyNotificationCenter', undefined, params);
     }
-    refetchMyOrganizations(opts?: OperationParameters): Promise<Types.MyOrganizations> {
-        return this.refetch('MyOrganizations', undefined);
+    refetchMyNotifications(variables: Types.MyNotificationsVariables, params?: QueryParameters): Promise<Types.MyNotifications> {
+        return this.refetch('MyNotifications', variables, params);
     }
-    refetchMyPostDrafts(variables: Types.MyPostDraftsVariables, opts?: OperationParameters): Promise<Types.MyPostDrafts> {
-        return this.refetch('MyPostDrafts', variables);
+    refetchMyOrganizations(params?: QueryParameters): Promise<Types.MyOrganizations> {
+        return this.refetch('MyOrganizations', undefined, params);
     }
-    refetchMyStickers(opts?: OperationParameters): Promise<Types.MyStickers> {
-        return this.refetch('MyStickers', undefined);
+    refetchMyPostDrafts(variables: Types.MyPostDraftsVariables, params?: QueryParameters): Promise<Types.MyPostDrafts> {
+        return this.refetch('MyPostDrafts', variables, params);
     }
-    refetchMySuccessfulInvitesCount(opts?: OperationParameters): Promise<Types.MySuccessfulInvitesCount> {
-        return this.refetch('MySuccessfulInvitesCount', undefined);
+    refetchMyStickers(params?: QueryParameters): Promise<Types.MyStickers> {
+        return this.refetch('MyStickers', undefined, params);
     }
-    refetchMyWallet(opts?: OperationParameters): Promise<Types.MyWallet> {
-        return this.refetch('MyWallet', undefined);
+    refetchMySuccessfulInvitesCount(params?: QueryParameters): Promise<Types.MySuccessfulInvitesCount> {
+        return this.refetch('MySuccessfulInvitesCount', undefined, params);
     }
-    refetchOauthContext(variables: Types.OauthContextVariables, opts?: OperationParameters): Promise<Types.OauthContext> {
-        return this.refetch('OauthContext', variables);
+    refetchMyWallet(params?: QueryParameters): Promise<Types.MyWallet> {
+        return this.refetch('MyWallet', undefined, params);
     }
-    refetchOnline(variables: Types.OnlineVariables, opts?: OperationParameters): Promise<Types.Online> {
-        return this.refetch('Online', variables);
+    refetchOauthContext(variables: Types.OauthContextVariables, params?: QueryParameters): Promise<Types.OauthContext> {
+        return this.refetch('OauthContext', variables, params);
     }
-    refetchOrganization(variables: Types.OrganizationVariables, opts?: OperationParameters): Promise<Types.Organization> {
-        return this.refetch('Organization', variables);
+    refetchOnline(variables: Types.OnlineVariables, params?: QueryParameters): Promise<Types.Online> {
+        return this.refetch('Online', variables, params);
     }
-    refetchOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: OperationParameters): Promise<Types.OrganizationMembers> {
-        return this.refetch('OrganizationMembers', variables);
+    refetchOrganization(variables: Types.OrganizationVariables, params?: QueryParameters): Promise<Types.Organization> {
+        return this.refetch('Organization', variables, params);
     }
-    refetchOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, opts?: OperationParameters): Promise<Types.OrganizationMembersShort> {
-        return this.refetch('OrganizationMembersShort', variables);
+    refetchOrganizationMembers(variables: Types.OrganizationMembersVariables, params?: QueryParameters): Promise<Types.OrganizationMembers> {
+        return this.refetch('OrganizationMembers', variables, params);
     }
-    refetchOrganizationProfile(variables: Types.OrganizationProfileVariables, opts?: OperationParameters): Promise<Types.OrganizationProfile> {
-        return this.refetch('OrganizationProfile', variables);
+    refetchOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: QueryParameters): Promise<Types.OrganizationMembersShort> {
+        return this.refetch('OrganizationMembersShort', variables, params);
     }
-    refetchOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, opts?: OperationParameters): Promise<Types.OrganizationPublicInvite> {
-        return this.refetch('OrganizationPublicInvite', variables);
+    refetchOrganizationProfile(variables: Types.OrganizationProfileVariables, params?: QueryParameters): Promise<Types.OrganizationProfile> {
+        return this.refetch('OrganizationProfile', variables, params);
     }
-    refetchOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: OperationParameters): Promise<Types.OrganizationPublicRooms> {
-        return this.refetch('OrganizationPublicRooms', variables);
+    refetchOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, params?: QueryParameters): Promise<Types.OrganizationPublicInvite> {
+        return this.refetch('OrganizationPublicInvite', variables, params);
     }
-    refetchPermissions(opts?: OperationParameters): Promise<Types.Permissions> {
-        return this.refetch('Permissions', undefined);
+    refetchOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, params?: QueryParameters): Promise<Types.OrganizationPublicRooms> {
+        return this.refetch('OrganizationPublicRooms', variables, params);
     }
-    refetchPicSharedMedia(variables: Types.PicSharedMediaVariables, opts?: OperationParameters): Promise<Types.PicSharedMedia> {
-        return this.refetch('PicSharedMedia', variables);
+    refetchPermissions(params?: QueryParameters): Promise<Types.Permissions> {
+        return this.refetch('Permissions', undefined, params);
     }
-    refetchPost(variables: Types.PostVariables, opts?: OperationParameters): Promise<Types.Post> {
-        return this.refetch('Post', variables);
+    refetchPicSharedMedia(variables: Types.PicSharedMediaVariables, params?: QueryParameters): Promise<Types.PicSharedMedia> {
+        return this.refetch('PicSharedMedia', variables, params);
     }
-    refetchPostDraft(variables: Types.PostDraftVariables, opts?: OperationParameters): Promise<Types.PostDraft> {
-        return this.refetch('PostDraft', variables);
+    refetchPost(variables: Types.PostVariables, params?: QueryParameters): Promise<Types.Post> {
+        return this.refetch('Post', variables, params);
     }
-    refetchPosts(variables: Types.PostsVariables, opts?: OperationParameters): Promise<Types.Posts> {
-        return this.refetch('Posts', variables);
+    refetchPostDraft(variables: Types.PostDraftVariables, params?: QueryParameters): Promise<Types.PostDraft> {
+        return this.refetch('PostDraft', variables, params);
     }
-    refetchProfile(opts?: OperationParameters): Promise<Types.Profile> {
-        return this.refetch('Profile', undefined);
+    refetchPosts(variables: Types.PostsVariables, params?: QueryParameters): Promise<Types.Posts> {
+        return this.refetch('Posts', variables, params);
     }
-    refetchProfilePrefill(opts?: OperationParameters): Promise<Types.ProfilePrefill> {
-        return this.refetch('ProfilePrefill', undefined);
+    refetchProfile(params?: QueryParameters): Promise<Types.Profile> {
+        return this.refetch('Profile', undefined, params);
     }
-    refetchResolveShortName(variables: Types.ResolveShortNameVariables, opts?: OperationParameters): Promise<Types.ResolveShortName> {
-        return this.refetch('ResolveShortName', variables);
+    refetchProfilePrefill(params?: QueryParameters): Promise<Types.ProfilePrefill> {
+        return this.refetch('ProfilePrefill', undefined, params);
     }
-    refetchResolvedInvite(variables: Types.ResolvedInviteVariables, opts?: OperationParameters): Promise<Types.ResolvedInvite> {
-        return this.refetch('ResolvedInvite', variables);
+    refetchResolveShortName(variables: Types.ResolveShortNameVariables, params?: QueryParameters): Promise<Types.ResolveShortName> {
+        return this.refetch('ResolveShortName', variables, params);
     }
-    refetchRoomAdminMembers(variables: Types.RoomAdminMembersVariables, opts?: OperationParameters): Promise<Types.RoomAdminMembers> {
-        return this.refetch('RoomAdminMembers', variables);
+    refetchResolvedInvite(variables: Types.ResolvedInviteVariables, params?: QueryParameters): Promise<Types.ResolvedInvite> {
+        return this.refetch('ResolvedInvite', variables, params);
     }
-    refetchRoomChat(variables: Types.RoomChatVariables, opts?: OperationParameters): Promise<Types.RoomChat> {
-        return this.refetch('RoomChat', variables);
+    refetchRoomAdminMembers(variables: Types.RoomAdminMembersVariables, params?: QueryParameters): Promise<Types.RoomAdminMembers> {
+        return this.refetch('RoomAdminMembers', variables, params);
     }
-    refetchRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, opts?: OperationParameters): Promise<Types.RoomFeaturedMembers> {
-        return this.refetch('RoomFeaturedMembers', variables);
+    refetchRoomChat(variables: Types.RoomChatVariables, params?: QueryParameters): Promise<Types.RoomChat> {
+        return this.refetch('RoomChat', variables, params);
     }
-    refetchRoomInviteInfo(variables: Types.RoomInviteInfoVariables, opts?: OperationParameters): Promise<Types.RoomInviteInfo> {
-        return this.refetch('RoomInviteInfo', variables);
+    refetchRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, params?: QueryParameters): Promise<Types.RoomFeaturedMembers> {
+        return this.refetch('RoomFeaturedMembers', variables, params);
     }
-    refetchRoomInviteLink(variables: Types.RoomInviteLinkVariables, opts?: OperationParameters): Promise<Types.RoomInviteLink> {
-        return this.refetch('RoomInviteLink', variables);
+    refetchRoomInviteInfo(variables: Types.RoomInviteInfoVariables, params?: QueryParameters): Promise<Types.RoomInviteInfo> {
+        return this.refetch('RoomInviteInfo', variables, params);
     }
-    refetchRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, opts?: OperationParameters): Promise<Types.RoomMembersPaginated> {
-        return this.refetch('RoomMembersPaginated', variables);
+    refetchRoomInviteLink(variables: Types.RoomInviteLinkVariables, params?: QueryParameters): Promise<Types.RoomInviteLink> {
+        return this.refetch('RoomInviteLink', variables, params);
     }
-    refetchRoomMembersShort(variables: Types.RoomMembersShortVariables, opts?: OperationParameters): Promise<Types.RoomMembersShort> {
-        return this.refetch('RoomMembersShort', variables);
+    refetchRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, params?: QueryParameters): Promise<Types.RoomMembersPaginated> {
+        return this.refetch('RoomMembersPaginated', variables, params);
     }
-    refetchRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: OperationParameters): Promise<Types.RoomMembersTiny> {
-        return this.refetch('RoomMembersTiny', variables);
+    refetchRoomMembersShort(variables: Types.RoomMembersShortVariables, params?: QueryParameters): Promise<Types.RoomMembersShort> {
+        return this.refetch('RoomMembersShort', variables, params);
     }
-    refetchRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, opts?: OperationParameters): Promise<Types.RoomMetaPreview> {
-        return this.refetch('RoomMetaPreview', variables);
+    refetchRoomMembersTiny(variables: Types.RoomMembersTinyVariables, params?: QueryParameters): Promise<Types.RoomMembersTiny> {
+        return this.refetch('RoomMembersTiny', variables, params);
     }
-    refetchRoomPico(variables: Types.RoomPicoVariables, opts?: OperationParameters): Promise<Types.RoomPico> {
-        return this.refetch('RoomPico', variables);
+    refetchRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, params?: QueryParameters): Promise<Types.RoomMetaPreview> {
+        return this.refetch('RoomMetaPreview', variables, params);
     }
-    refetchRoomSearch(variables: Types.RoomSearchVariables, opts?: OperationParameters): Promise<Types.RoomSearch> {
-        return this.refetch('RoomSearch', variables);
+    refetchRoomPico(variables: Types.RoomPicoVariables, params?: QueryParameters): Promise<Types.RoomPico> {
+        return this.refetch('RoomPico', variables, params);
     }
-    refetchRoomSocialImage(variables: Types.RoomSocialImageVariables, opts?: OperationParameters): Promise<Types.RoomSocialImage> {
-        return this.refetch('RoomSocialImage', variables);
+    refetchRoomSearch(variables: Types.RoomSearchVariables, params?: QueryParameters): Promise<Types.RoomSearch> {
+        return this.refetch('RoomSearch', variables, params);
     }
-    refetchRoomTiny(variables: Types.RoomTinyVariables, opts?: OperationParameters): Promise<Types.RoomTiny> {
-        return this.refetch('RoomTiny', variables);
+    refetchRoomSocialImage(variables: Types.RoomSocialImageVariables, params?: QueryParameters): Promise<Types.RoomSocialImage> {
+        return this.refetch('RoomSocialImage', variables, params);
     }
-    refetchSettings(opts?: OperationParameters): Promise<Types.Settings> {
-        return this.refetch('Settings', undefined);
+    refetchRoomTiny(variables: Types.RoomTinyVariables, params?: QueryParameters): Promise<Types.RoomTiny> {
+        return this.refetch('RoomTiny', variables, params);
     }
-    refetchSharedMedia(variables: Types.SharedMediaVariables, opts?: OperationParameters): Promise<Types.SharedMedia> {
-        return this.refetch('SharedMedia', variables);
+    refetchSettings(params?: QueryParameters): Promise<Types.Settings> {
+        return this.refetch('Settings', undefined, params);
     }
-    refetchSharedMediaCounters(variables: Types.SharedMediaCountersVariables, opts?: OperationParameters): Promise<Types.SharedMediaCounters> {
-        return this.refetch('SharedMediaCounters', variables);
+    refetchSharedMedia(variables: Types.SharedMediaVariables, params?: QueryParameters): Promise<Types.SharedMedia> {
+        return this.refetch('SharedMedia', variables, params);
     }
-    refetchStickerPack(variables: Types.StickerPackVariables, opts?: OperationParameters): Promise<Types.StickerPack> {
-        return this.refetch('StickerPack', variables);
+    refetchSharedMediaCounters(variables: Types.SharedMediaCountersVariables, params?: QueryParameters): Promise<Types.SharedMediaCounters> {
+        return this.refetch('SharedMediaCounters', variables, params);
     }
-    refetchStickerPackCatalog(opts?: OperationParameters): Promise<Types.StickerPackCatalog> {
-        return this.refetch('StickerPackCatalog', undefined);
+    refetchStickerPack(variables: Types.StickerPackVariables, params?: QueryParameters): Promise<Types.StickerPack> {
+        return this.refetch('StickerPack', variables, params);
     }
-    refetchStripeToken(opts?: OperationParameters): Promise<Types.StripeToken> {
-        return this.refetch('StripeToken', undefined);
+    refetchStickerPackCatalog(params?: QueryParameters): Promise<Types.StickerPackCatalog> {
+        return this.refetch('StickerPackCatalog', undefined, params);
     }
-    refetchSubscriptions(opts?: OperationParameters): Promise<Types.Subscriptions> {
-        return this.refetch('Subscriptions', undefined);
+    refetchStripeToken(params?: QueryParameters): Promise<Types.StripeToken> {
+        return this.refetch('StripeToken', undefined, params);
     }
-    refetchSuggestedRooms(opts?: OperationParameters): Promise<Types.SuggestedRooms> {
-        return this.refetch('SuggestedRooms', undefined);
+    refetchSubscriptions(params?: QueryParameters): Promise<Types.Subscriptions> {
+        return this.refetch('Subscriptions', undefined, params);
     }
-    refetchSuperAccount(variables: Types.SuperAccountVariables, opts?: OperationParameters): Promise<Types.SuperAccount> {
-        return this.refetch('SuperAccount', variables);
+    refetchSuggestedRooms(params?: QueryParameters): Promise<Types.SuggestedRooms> {
+        return this.refetch('SuggestedRooms', undefined, params);
     }
-    refetchSuperAccounts(opts?: OperationParameters): Promise<Types.SuperAccounts> {
-        return this.refetch('SuperAccounts', undefined);
+    refetchSuperAccount(variables: Types.SuperAccountVariables, params?: QueryParameters): Promise<Types.SuperAccount> {
+        return this.refetch('SuperAccount', variables, params);
     }
-    refetchSuperAdmins(opts?: OperationParameters): Promise<Types.SuperAdmins> {
-        return this.refetch('SuperAdmins', undefined);
+    refetchSuperAccounts(params?: QueryParameters): Promise<Types.SuperAccounts> {
+        return this.refetch('SuperAccounts', undefined, params);
     }
-    refetchSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: OperationParameters): Promise<Types.SuperBadgeInRoom> {
-        return this.refetch('SuperBadgeInRoom', variables);
+    refetchSuperAdmins(params?: QueryParameters): Promise<Types.SuperAdmins> {
+        return this.refetch('SuperAdmins', undefined, params);
     }
-    refetchTransactionsHistory(variables: Types.TransactionsHistoryVariables, opts?: OperationParameters): Promise<Types.TransactionsHistory> {
-        return this.refetch('TransactionsHistory', variables);
+    refetchSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, params?: QueryParameters): Promise<Types.SuperBadgeInRoom> {
+        return this.refetch('SuperBadgeInRoom', variables, params);
     }
-    refetchUser(variables: Types.UserVariables, opts?: OperationParameters): Promise<Types.User> {
-        return this.refetch('User', variables);
+    refetchTransactionsHistory(variables: Types.TransactionsHistoryVariables, params?: QueryParameters): Promise<Types.TransactionsHistory> {
+        return this.refetch('TransactionsHistory', variables, params);
     }
-    refetchUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, opts?: OperationParameters): Promise<Types.UserAvailableRooms> {
-        return this.refetch('UserAvailableRooms', variables);
+    refetchUser(variables: Types.UserVariables, params?: QueryParameters): Promise<Types.User> {
+        return this.refetch('User', variables, params);
     }
-    refetchUserPico(variables: Types.UserPicoVariables, opts?: OperationParameters): Promise<Types.UserPico> {
-        return this.refetch('UserPico', variables);
+    refetchUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, params?: QueryParameters): Promise<Types.UserAvailableRooms> {
+        return this.refetch('UserAvailableRooms', variables, params);
     }
-    refetchUserStorage(variables: Types.UserStorageVariables, opts?: OperationParameters): Promise<Types.UserStorage> {
-        return this.refetch('UserStorage', variables);
+    refetchUserPico(variables: Types.UserPicoVariables, params?: QueryParameters): Promise<Types.UserPico> {
+        return this.refetch('UserPico', variables, params);
     }
-    refetchUsers(variables: Types.UsersVariables, opts?: OperationParameters): Promise<Types.Users> {
-        return this.refetch('Users', variables);
+    refetchUserStorage(variables: Types.UserStorageVariables, params?: QueryParameters): Promise<Types.UserStorage> {
+        return this.refetch('UserStorage', variables, params);
+    }
+    refetchUsers(variables: Types.UsersVariables, params?: QueryParameters): Promise<Types.Users> {
+        return this.refetch('Users', variables, params);
     }
     updateAccount(updater: (data: Types.Account) => Types.Account | null): Promise<boolean> {
         return this.updateQuery(updater, 'Account', undefined);
@@ -907,906 +910,906 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateUsers(variables: Types.UsersVariables, updater: (data: Types.Users) => Types.Users | null): Promise<boolean> {
         return this.updateQuery(updater, 'Users', variables);
     }
-    useAccount(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Account | null;
-    useAccount(opts?: SpaceQueryWatchParameters): Types.Account;
-    useAccount(opts?: SpaceQueryWatchParameters): Types.Account | null {
-        return this.useQuery('Account', undefined, opts);
-    }
-    useAccountAppInvite(opts: SpaceQueryWatchParameters & { suspense: false }): Types.AccountAppInvite | null;
-    useAccountAppInvite(opts?: SpaceQueryWatchParameters): Types.AccountAppInvite;
-    useAccountAppInvite(opts?: SpaceQueryWatchParameters): Types.AccountAppInvite | null {
-        return this.useQuery('AccountAppInvite', undefined, opts);
-    }
-    useAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.AccountAppInviteInfo | null;
-    useAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, opts?: SpaceQueryWatchParameters): Types.AccountAppInviteInfo;
-    useAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, opts?: SpaceQueryWatchParameters): Types.AccountAppInviteInfo | null {
-        return this.useQuery('AccountAppInviteInfo', variables, opts);
-    }
-    useAccountInviteInfo(variables: Types.AccountInviteInfoVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.AccountInviteInfo | null;
-    useAccountInviteInfo(variables: Types.AccountInviteInfoVariables, opts?: SpaceQueryWatchParameters): Types.AccountInviteInfo;
-    useAccountInviteInfo(variables: Types.AccountInviteInfoVariables, opts?: SpaceQueryWatchParameters): Types.AccountInviteInfo | null {
-        return this.useQuery('AccountInviteInfo', variables, opts);
-    }
-    useAccountSettings(opts: SpaceQueryWatchParameters & { suspense: false }): Types.AccountSettings | null;
-    useAccountSettings(opts?: SpaceQueryWatchParameters): Types.AccountSettings;
-    useAccountSettings(opts?: SpaceQueryWatchParameters): Types.AccountSettings | null {
-        return this.useQuery('AccountSettings', undefined, opts);
-    }
-    useAuthPoints(opts: SpaceQueryWatchParameters & { suspense: false }): Types.AuthPoints | null;
-    useAuthPoints(opts?: SpaceQueryWatchParameters): Types.AuthPoints;
-    useAuthPoints(opts?: SpaceQueryWatchParameters): Types.AuthPoints | null {
-        return this.useQuery('AuthPoints', undefined, opts);
-    }
-    useAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.AuthResolveShortName | null;
-    useAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, opts?: SpaceQueryWatchParameters): Types.AuthResolveShortName;
-    useAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, opts?: SpaceQueryWatchParameters): Types.AuthResolveShortName | null {
-        return this.useQuery('AuthResolveShortName', variables, opts);
-    }
-    useChannel(variables: Types.ChannelVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Channel | null;
-    useChannel(variables: Types.ChannelVariables, opts?: SpaceQueryWatchParameters): Types.Channel;
-    useChannel(variables: Types.ChannelVariables, opts?: SpaceQueryWatchParameters): Types.Channel | null {
-        return this.useQuery('Channel', variables, opts);
-    }
-    useChannels(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Channels | null;
-    useChannels(opts?: SpaceQueryWatchParameters): Types.Channels;
-    useChannels(opts?: SpaceQueryWatchParameters): Types.Channels | null {
-        return this.useQuery('Channels', undefined, opts);
-    }
-    useChatInit(variables: Types.ChatInitVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ChatInit | null;
-    useChatInit(variables: Types.ChatInitVariables, opts?: SpaceQueryWatchParameters): Types.ChatInit;
-    useChatInit(variables: Types.ChatInitVariables, opts?: SpaceQueryWatchParameters): Types.ChatInit | null {
-        return this.useQuery('ChatInit', variables, opts);
-    }
-    useChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ChatInitFromUnread | null;
-    useChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, opts?: SpaceQueryWatchParameters): Types.ChatInitFromUnread;
-    useChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, opts?: SpaceQueryWatchParameters): Types.ChatInitFromUnread | null {
-        return this.useQuery('ChatInitFromUnread', variables, opts);
-    }
-    useChatJoin(variables: Types.ChatJoinVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ChatJoin | null;
-    useChatJoin(variables: Types.ChatJoinVariables, opts?: SpaceQueryWatchParameters): Types.ChatJoin;
-    useChatJoin(variables: Types.ChatJoinVariables, opts?: SpaceQueryWatchParameters): Types.ChatJoin | null {
-        return this.useQuery('ChatJoin', variables, opts);
-    }
-    useChatMentionSearch(variables: Types.ChatMentionSearchVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ChatMentionSearch | null;
-    useChatMentionSearch(variables: Types.ChatMentionSearchVariables, opts?: SpaceQueryWatchParameters): Types.ChatMentionSearch;
-    useChatMentionSearch(variables: Types.ChatMentionSearchVariables, opts?: SpaceQueryWatchParameters): Types.ChatMentionSearch | null {
-        return this.useQuery('ChatMentionSearch', variables, opts);
-    }
-    useComments(variables: Types.CommentsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Comments | null;
-    useComments(variables: Types.CommentsVariables, opts?: SpaceQueryWatchParameters): Types.Comments;
-    useComments(variables: Types.CommentsVariables, opts?: SpaceQueryWatchParameters): Types.Comments | null {
-        return this.useQuery('Comments', variables, opts);
-    }
-    useConference(variables: Types.ConferenceVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Conference | null;
-    useConference(variables: Types.ConferenceVariables, opts?: SpaceQueryWatchParameters): Types.Conference;
-    useConference(variables: Types.ConferenceVariables, opts?: SpaceQueryWatchParameters): Types.Conference | null {
-        return this.useQuery('Conference', variables, opts);
-    }
-    useConferenceMedia(variables: Types.ConferenceMediaVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ConferenceMedia | null;
-    useConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: SpaceQueryWatchParameters): Types.ConferenceMedia;
-    useConferenceMedia(variables: Types.ConferenceMediaVariables, opts?: SpaceQueryWatchParameters): Types.ConferenceMedia | null {
-        return this.useQuery('ConferenceMedia', variables, opts);
-    }
-    useDebugGqlTrace(variables: Types.DebugGqlTraceVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DebugGqlTrace | null;
-    useDebugGqlTrace(variables: Types.DebugGqlTraceVariables, opts?: SpaceQueryWatchParameters): Types.DebugGqlTrace;
-    useDebugGqlTrace(variables: Types.DebugGqlTraceVariables, opts?: SpaceQueryWatchParameters): Types.DebugGqlTrace | null {
-        return this.useQuery('DebugGqlTrace', variables, opts);
-    }
-    useDebugGqlTraces(variables: Types.DebugGqlTracesVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DebugGqlTraces | null;
-    useDebugGqlTraces(variables: Types.DebugGqlTracesVariables, opts?: SpaceQueryWatchParameters): Types.DebugGqlTraces;
-    useDebugGqlTraces(variables: Types.DebugGqlTracesVariables, opts?: SpaceQueryWatchParameters): Types.DebugGqlTraces | null {
-        return this.useQuery('DebugGqlTraces', variables, opts);
-    }
-    useDialogs(variables: Types.DialogsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Dialogs | null;
-    useDialogs(variables: Types.DialogsVariables, opts?: SpaceQueryWatchParameters): Types.Dialogs;
-    useDialogs(variables: Types.DialogsVariables, opts?: SpaceQueryWatchParameters): Types.Dialogs | null {
-        return this.useQuery('Dialogs', variables, opts);
-    }
-    useDiscoverCollection(variables: Types.DiscoverCollectionVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverCollection | null;
-    useDiscoverCollection(variables: Types.DiscoverCollectionVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollection;
-    useDiscoverCollection(variables: Types.DiscoverCollectionVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollection | null {
-        return this.useQuery('DiscoverCollection', variables, opts);
-    }
-    useDiscoverCollectionShort(variables: Types.DiscoverCollectionShortVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverCollectionShort | null;
-    useDiscoverCollectionShort(variables: Types.DiscoverCollectionShortVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollectionShort;
-    useDiscoverCollectionShort(variables: Types.DiscoverCollectionShortVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollectionShort | null {
-        return this.useQuery('DiscoverCollectionShort', variables, opts);
-    }
-    useDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverCollections | null;
-    useDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollections;
-    useDiscoverCollections(variables: Types.DiscoverCollectionsVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollections | null {
-        return this.useQuery('DiscoverCollections', variables, opts);
-    }
-    useDiscoverCollectionsShort(variables: Types.DiscoverCollectionsShortVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverCollectionsShort | null;
-    useDiscoverCollectionsShort(variables: Types.DiscoverCollectionsShortVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollectionsShort;
-    useDiscoverCollectionsShort(variables: Types.DiscoverCollectionsShortVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverCollectionsShort | null {
-        return this.useQuery('DiscoverCollectionsShort', variables, opts);
-    }
-    useDiscoverEditorsChoice(opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverEditorsChoice | null;
-    useDiscoverEditorsChoice(opts?: SpaceQueryWatchParameters): Types.DiscoverEditorsChoice;
-    useDiscoverEditorsChoice(opts?: SpaceQueryWatchParameters): Types.DiscoverEditorsChoice | null {
-        return this.useQuery('DiscoverEditorsChoice', undefined, opts);
-    }
-    useDiscoverIsDone(opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverIsDone | null;
-    useDiscoverIsDone(opts?: SpaceQueryWatchParameters): Types.DiscoverIsDone;
-    useDiscoverIsDone(opts?: SpaceQueryWatchParameters): Types.DiscoverIsDone | null {
-        return this.useQuery('DiscoverIsDone', undefined, opts);
-    }
-    useDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverNewAndGrowing | null;
-    useDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverNewAndGrowing;
-    useDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverNewAndGrowing | null {
-        return this.useQuery('DiscoverNewAndGrowing', variables, opts);
-    }
-    useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverNextPage | null;
-    useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverNextPage;
-    useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverNextPage | null {
-        return this.useQuery('DiscoverNextPage', variables, opts);
-    }
-    useDiscoverNoAuth(variables: Types.DiscoverNoAuthVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverNoAuth | null;
-    useDiscoverNoAuth(variables: Types.DiscoverNoAuthVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverNoAuth;
-    useDiscoverNoAuth(variables: Types.DiscoverNoAuthVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverNoAuth | null {
-        return this.useQuery('DiscoverNoAuth', variables, opts);
-    }
-    useDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverPopularNow | null;
-    useDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverPopularNow;
-    useDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverPopularNow | null {
-        return this.useQuery('DiscoverPopularNow', variables, opts);
-    }
-    useDiscoverState(opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverState | null;
-    useDiscoverState(opts?: SpaceQueryWatchParameters): Types.DiscoverState;
-    useDiscoverState(opts?: SpaceQueryWatchParameters): Types.DiscoverState | null {
-        return this.useQuery('DiscoverState', undefined, opts);
-    }
-    useDiscoverSuggestedRooms(opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverSuggestedRooms | null;
-    useDiscoverSuggestedRooms(opts?: SpaceQueryWatchParameters): Types.DiscoverSuggestedRooms;
-    useDiscoverSuggestedRooms(opts?: SpaceQueryWatchParameters): Types.DiscoverSuggestedRooms | null {
-        return this.useQuery('DiscoverSuggestedRooms', undefined, opts);
-    }
-    useDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverTopFree | null;
-    useDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverTopFree;
-    useDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverTopFree | null {
-        return this.useQuery('DiscoverTopFree', variables, opts);
-    }
-    useDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverTopPremium | null;
-    useDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverTopPremium;
-    useDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, opts?: SpaceQueryWatchParameters): Types.DiscoverTopPremium | null {
-        return this.useQuery('DiscoverTopPremium', variables, opts);
-    }
-    useExplorePeople(variables: Types.ExplorePeopleVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ExplorePeople | null;
-    useExplorePeople(variables: Types.ExplorePeopleVariables, opts?: SpaceQueryWatchParameters): Types.ExplorePeople;
-    useExplorePeople(variables: Types.ExplorePeopleVariables, opts?: SpaceQueryWatchParameters): Types.ExplorePeople | null {
-        return this.useQuery('ExplorePeople', variables, opts);
-    }
-    useExploreRooms(variables: Types.ExploreRoomsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ExploreRooms | null;
-    useExploreRooms(variables: Types.ExploreRoomsVariables, opts?: SpaceQueryWatchParameters): Types.ExploreRooms;
-    useExploreRooms(variables: Types.ExploreRoomsVariables, opts?: SpaceQueryWatchParameters): Types.ExploreRooms | null {
-        return this.useQuery('ExploreRooms', variables, opts);
-    }
-    useFeatureFlags(opts: SpaceQueryWatchParameters & { suspense: false }): Types.FeatureFlags | null;
-    useFeatureFlags(opts?: SpaceQueryWatchParameters): Types.FeatureFlags;
-    useFeatureFlags(opts?: SpaceQueryWatchParameters): Types.FeatureFlags | null {
-        return this.useQuery('FeatureFlags', undefined, opts);
-    }
-    useFetchPushSettings(opts: SpaceQueryWatchParameters & { suspense: false }): Types.FetchPushSettings | null;
-    useFetchPushSettings(opts?: SpaceQueryWatchParameters): Types.FetchPushSettings;
-    useFetchPushSettings(opts?: SpaceQueryWatchParameters): Types.FetchPushSettings | null {
-        return this.useQuery('FetchPushSettings', undefined, opts);
-    }
-    useGlobalCounter(opts: SpaceQueryWatchParameters & { suspense: false }): Types.GlobalCounter | null;
-    useGlobalCounter(opts?: SpaceQueryWatchParameters): Types.GlobalCounter;
-    useGlobalCounter(opts?: SpaceQueryWatchParameters): Types.GlobalCounter | null {
-        return this.useQuery('GlobalCounter', undefined, opts);
-    }
-    useGlobalSearch(variables: Types.GlobalSearchVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.GlobalSearch | null;
-    useGlobalSearch(variables: Types.GlobalSearchVariables, opts?: SpaceQueryWatchParameters): Types.GlobalSearch;
-    useGlobalSearch(variables: Types.GlobalSearchVariables, opts?: SpaceQueryWatchParameters): Types.GlobalSearch | null {
-        return this.useQuery('GlobalSearch', variables, opts);
-    }
-    useGroupScreenViews(variables: Types.GroupScreenViewsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.GroupScreenViews | null;
-    useGroupScreenViews(variables: Types.GroupScreenViewsVariables, opts?: SpaceQueryWatchParameters): Types.GroupScreenViews;
-    useGroupScreenViews(variables: Types.GroupScreenViewsVariables, opts?: SpaceQueryWatchParameters): Types.GroupScreenViews | null {
-        return this.useQuery('GroupScreenViews', variables, opts);
-    }
-    useMessage(variables: Types.MessageVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Message | null;
-    useMessage(variables: Types.MessageVariables, opts?: SpaceQueryWatchParameters): Types.Message;
-    useMessage(variables: Types.MessageVariables, opts?: SpaceQueryWatchParameters): Types.Message | null {
-        return this.useQuery('Message', variables, opts);
-    }
-    useMessagesBatch(variables: Types.MessagesBatchVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.MessagesBatch | null;
-    useMessagesBatch(variables: Types.MessagesBatchVariables, opts?: SpaceQueryWatchParameters): Types.MessagesBatch;
-    useMessagesBatch(variables: Types.MessagesBatchVariables, opts?: SpaceQueryWatchParameters): Types.MessagesBatch | null {
-        return this.useQuery('MessagesBatch', variables, opts);
-    }
-    useMessagesSearch(variables: Types.MessagesSearchVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.MessagesSearch | null;
-    useMessagesSearch(variables: Types.MessagesSearchVariables, opts?: SpaceQueryWatchParameters): Types.MessagesSearch;
-    useMessagesSearch(variables: Types.MessagesSearchVariables, opts?: SpaceQueryWatchParameters): Types.MessagesSearch | null {
-        return this.useQuery('MessagesSearch', variables, opts);
-    }
-    useMyApps(opts: SpaceQueryWatchParameters & { suspense: false }): Types.MyApps | null;
-    useMyApps(opts?: SpaceQueryWatchParameters): Types.MyApps;
-    useMyApps(opts?: SpaceQueryWatchParameters): Types.MyApps | null {
-        return this.useQuery('MyApps', undefined, opts);
-    }
-    useMyCards(opts: SpaceQueryWatchParameters & { suspense: false }): Types.MyCards | null;
-    useMyCards(opts?: SpaceQueryWatchParameters): Types.MyCards;
-    useMyCards(opts?: SpaceQueryWatchParameters): Types.MyCards | null {
-        return this.useQuery('MyCards', undefined, opts);
-    }
-    useMyNotificationCenter(opts: SpaceQueryWatchParameters & { suspense: false }): Types.MyNotificationCenter | null;
-    useMyNotificationCenter(opts?: SpaceQueryWatchParameters): Types.MyNotificationCenter;
-    useMyNotificationCenter(opts?: SpaceQueryWatchParameters): Types.MyNotificationCenter | null {
-        return this.useQuery('MyNotificationCenter', undefined, opts);
-    }
-    useMyNotifications(variables: Types.MyNotificationsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.MyNotifications | null;
-    useMyNotifications(variables: Types.MyNotificationsVariables, opts?: SpaceQueryWatchParameters): Types.MyNotifications;
-    useMyNotifications(variables: Types.MyNotificationsVariables, opts?: SpaceQueryWatchParameters): Types.MyNotifications | null {
-        return this.useQuery('MyNotifications', variables, opts);
-    }
-    useMyOrganizations(opts: SpaceQueryWatchParameters & { suspense: false }): Types.MyOrganizations | null;
-    useMyOrganizations(opts?: SpaceQueryWatchParameters): Types.MyOrganizations;
-    useMyOrganizations(opts?: SpaceQueryWatchParameters): Types.MyOrganizations | null {
-        return this.useQuery('MyOrganizations', undefined, opts);
-    }
-    useMyPostDrafts(variables: Types.MyPostDraftsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.MyPostDrafts | null;
-    useMyPostDrafts(variables: Types.MyPostDraftsVariables, opts?: SpaceQueryWatchParameters): Types.MyPostDrafts;
-    useMyPostDrafts(variables: Types.MyPostDraftsVariables, opts?: SpaceQueryWatchParameters): Types.MyPostDrafts | null {
-        return this.useQuery('MyPostDrafts', variables, opts);
-    }
-    useMyStickers(opts: SpaceQueryWatchParameters & { suspense: false }): Types.MyStickers | null;
-    useMyStickers(opts?: SpaceQueryWatchParameters): Types.MyStickers;
-    useMyStickers(opts?: SpaceQueryWatchParameters): Types.MyStickers | null {
-        return this.useQuery('MyStickers', undefined, opts);
-    }
-    useMySuccessfulInvitesCount(opts: SpaceQueryWatchParameters & { suspense: false }): Types.MySuccessfulInvitesCount | null;
-    useMySuccessfulInvitesCount(opts?: SpaceQueryWatchParameters): Types.MySuccessfulInvitesCount;
-    useMySuccessfulInvitesCount(opts?: SpaceQueryWatchParameters): Types.MySuccessfulInvitesCount | null {
-        return this.useQuery('MySuccessfulInvitesCount', undefined, opts);
-    }
-    useMyWallet(opts: SpaceQueryWatchParameters & { suspense: false }): Types.MyWallet | null;
-    useMyWallet(opts?: SpaceQueryWatchParameters): Types.MyWallet;
-    useMyWallet(opts?: SpaceQueryWatchParameters): Types.MyWallet | null {
-        return this.useQuery('MyWallet', undefined, opts);
-    }
-    useOauthContext(variables: Types.OauthContextVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.OauthContext | null;
-    useOauthContext(variables: Types.OauthContextVariables, opts?: SpaceQueryWatchParameters): Types.OauthContext;
-    useOauthContext(variables: Types.OauthContextVariables, opts?: SpaceQueryWatchParameters): Types.OauthContext | null {
-        return this.useQuery('OauthContext', variables, opts);
-    }
-    useOnline(variables: Types.OnlineVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Online | null;
-    useOnline(variables: Types.OnlineVariables, opts?: SpaceQueryWatchParameters): Types.Online;
-    useOnline(variables: Types.OnlineVariables, opts?: SpaceQueryWatchParameters): Types.Online | null {
-        return this.useQuery('Online', variables, opts);
-    }
-    useOrganization(variables: Types.OrganizationVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Organization | null;
-    useOrganization(variables: Types.OrganizationVariables, opts?: SpaceQueryWatchParameters): Types.Organization;
-    useOrganization(variables: Types.OrganizationVariables, opts?: SpaceQueryWatchParameters): Types.Organization | null {
-        return this.useQuery('Organization', variables, opts);
-    }
-    useOrganizationMembers(variables: Types.OrganizationMembersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationMembers | null;
-    useOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationMembers;
-    useOrganizationMembers(variables: Types.OrganizationMembersVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationMembers | null {
-        return this.useQuery('OrganizationMembers', variables, opts);
-    }
-    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationMembersShort | null;
-    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationMembersShort;
-    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationMembersShort | null {
-        return this.useQuery('OrganizationMembersShort', variables, opts);
-    }
-    useOrganizationProfile(variables: Types.OrganizationProfileVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationProfile | null;
-    useOrganizationProfile(variables: Types.OrganizationProfileVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationProfile;
-    useOrganizationProfile(variables: Types.OrganizationProfileVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationProfile | null {
-        return this.useQuery('OrganizationProfile', variables, opts);
-    }
-    useOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationPublicInvite | null;
-    useOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationPublicInvite;
-    useOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationPublicInvite | null {
-        return this.useQuery('OrganizationPublicInvite', variables, opts);
-    }
-    useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationPublicRooms | null;
-    useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationPublicRooms;
-    useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, opts?: SpaceQueryWatchParameters): Types.OrganizationPublicRooms | null {
-        return this.useQuery('OrganizationPublicRooms', variables, opts);
-    }
-    usePermissions(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Permissions | null;
-    usePermissions(opts?: SpaceQueryWatchParameters): Types.Permissions;
-    usePermissions(opts?: SpaceQueryWatchParameters): Types.Permissions | null {
-        return this.useQuery('Permissions', undefined, opts);
-    }
-    usePicSharedMedia(variables: Types.PicSharedMediaVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.PicSharedMedia | null;
-    usePicSharedMedia(variables: Types.PicSharedMediaVariables, opts?: SpaceQueryWatchParameters): Types.PicSharedMedia;
-    usePicSharedMedia(variables: Types.PicSharedMediaVariables, opts?: SpaceQueryWatchParameters): Types.PicSharedMedia | null {
-        return this.useQuery('PicSharedMedia', variables, opts);
-    }
-    usePost(variables: Types.PostVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Post | null;
-    usePost(variables: Types.PostVariables, opts?: SpaceQueryWatchParameters): Types.Post;
-    usePost(variables: Types.PostVariables, opts?: SpaceQueryWatchParameters): Types.Post | null {
-        return this.useQuery('Post', variables, opts);
-    }
-    usePostDraft(variables: Types.PostDraftVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.PostDraft | null;
-    usePostDraft(variables: Types.PostDraftVariables, opts?: SpaceQueryWatchParameters): Types.PostDraft;
-    usePostDraft(variables: Types.PostDraftVariables, opts?: SpaceQueryWatchParameters): Types.PostDraft | null {
-        return this.useQuery('PostDraft', variables, opts);
-    }
-    usePosts(variables: Types.PostsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Posts | null;
-    usePosts(variables: Types.PostsVariables, opts?: SpaceQueryWatchParameters): Types.Posts;
-    usePosts(variables: Types.PostsVariables, opts?: SpaceQueryWatchParameters): Types.Posts | null {
-        return this.useQuery('Posts', variables, opts);
-    }
-    useProfile(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Profile | null;
-    useProfile(opts?: SpaceQueryWatchParameters): Types.Profile;
-    useProfile(opts?: SpaceQueryWatchParameters): Types.Profile | null {
-        return this.useQuery('Profile', undefined, opts);
-    }
-    useProfilePrefill(opts: SpaceQueryWatchParameters & { suspense: false }): Types.ProfilePrefill | null;
-    useProfilePrefill(opts?: SpaceQueryWatchParameters): Types.ProfilePrefill;
-    useProfilePrefill(opts?: SpaceQueryWatchParameters): Types.ProfilePrefill | null {
-        return this.useQuery('ProfilePrefill', undefined, opts);
-    }
-    useResolveShortName(variables: Types.ResolveShortNameVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ResolveShortName | null;
-    useResolveShortName(variables: Types.ResolveShortNameVariables, opts?: SpaceQueryWatchParameters): Types.ResolveShortName;
-    useResolveShortName(variables: Types.ResolveShortNameVariables, opts?: SpaceQueryWatchParameters): Types.ResolveShortName | null {
-        return this.useQuery('ResolveShortName', variables, opts);
-    }
-    useResolvedInvite(variables: Types.ResolvedInviteVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.ResolvedInvite | null;
-    useResolvedInvite(variables: Types.ResolvedInviteVariables, opts?: SpaceQueryWatchParameters): Types.ResolvedInvite;
-    useResolvedInvite(variables: Types.ResolvedInviteVariables, opts?: SpaceQueryWatchParameters): Types.ResolvedInvite | null {
-        return this.useQuery('ResolvedInvite', variables, opts);
-    }
-    useRoomAdminMembers(variables: Types.RoomAdminMembersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomAdminMembers | null;
-    useRoomAdminMembers(variables: Types.RoomAdminMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomAdminMembers;
-    useRoomAdminMembers(variables: Types.RoomAdminMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomAdminMembers | null {
-        return this.useQuery('RoomAdminMembers', variables, opts);
-    }
-    useRoomChat(variables: Types.RoomChatVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomChat | null;
-    useRoomChat(variables: Types.RoomChatVariables, opts?: SpaceQueryWatchParameters): Types.RoomChat;
-    useRoomChat(variables: Types.RoomChatVariables, opts?: SpaceQueryWatchParameters): Types.RoomChat | null {
-        return this.useQuery('RoomChat', variables, opts);
-    }
-    useRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomFeaturedMembers | null;
-    useRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomFeaturedMembers;
-    useRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, opts?: SpaceQueryWatchParameters): Types.RoomFeaturedMembers | null {
-        return this.useQuery('RoomFeaturedMembers', variables, opts);
-    }
-    useRoomInviteInfo(variables: Types.RoomInviteInfoVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomInviteInfo | null;
-    useRoomInviteInfo(variables: Types.RoomInviteInfoVariables, opts?: SpaceQueryWatchParameters): Types.RoomInviteInfo;
-    useRoomInviteInfo(variables: Types.RoomInviteInfoVariables, opts?: SpaceQueryWatchParameters): Types.RoomInviteInfo | null {
-        return this.useQuery('RoomInviteInfo', variables, opts);
-    }
-    useRoomInviteLink(variables: Types.RoomInviteLinkVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomInviteLink | null;
-    useRoomInviteLink(variables: Types.RoomInviteLinkVariables, opts?: SpaceQueryWatchParameters): Types.RoomInviteLink;
-    useRoomInviteLink(variables: Types.RoomInviteLinkVariables, opts?: SpaceQueryWatchParameters): Types.RoomInviteLink | null {
-        return this.useQuery('RoomInviteLink', variables, opts);
-    }
-    useRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMembersPaginated | null;
-    useRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, opts?: SpaceQueryWatchParameters): Types.RoomMembersPaginated;
-    useRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, opts?: SpaceQueryWatchParameters): Types.RoomMembersPaginated | null {
-        return this.useQuery('RoomMembersPaginated', variables, opts);
-    }
-    useRoomMembersShort(variables: Types.RoomMembersShortVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMembersShort | null;
-    useRoomMembersShort(variables: Types.RoomMembersShortVariables, opts?: SpaceQueryWatchParameters): Types.RoomMembersShort;
-    useRoomMembersShort(variables: Types.RoomMembersShortVariables, opts?: SpaceQueryWatchParameters): Types.RoomMembersShort | null {
-        return this.useQuery('RoomMembersShort', variables, opts);
-    }
-    useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMembersTiny | null;
-    useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: SpaceQueryWatchParameters): Types.RoomMembersTiny;
-    useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, opts?: SpaceQueryWatchParameters): Types.RoomMembersTiny | null {
-        return this.useQuery('RoomMembersTiny', variables, opts);
-    }
-    useRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMetaPreview | null;
-    useRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, opts?: SpaceQueryWatchParameters): Types.RoomMetaPreview;
-    useRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, opts?: SpaceQueryWatchParameters): Types.RoomMetaPreview | null {
-        return this.useQuery('RoomMetaPreview', variables, opts);
-    }
-    useRoomPico(variables: Types.RoomPicoVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomPico | null;
-    useRoomPico(variables: Types.RoomPicoVariables, opts?: SpaceQueryWatchParameters): Types.RoomPico;
-    useRoomPico(variables: Types.RoomPicoVariables, opts?: SpaceQueryWatchParameters): Types.RoomPico | null {
-        return this.useQuery('RoomPico', variables, opts);
-    }
-    useRoomSearch(variables: Types.RoomSearchVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomSearch | null;
-    useRoomSearch(variables: Types.RoomSearchVariables, opts?: SpaceQueryWatchParameters): Types.RoomSearch;
-    useRoomSearch(variables: Types.RoomSearchVariables, opts?: SpaceQueryWatchParameters): Types.RoomSearch | null {
-        return this.useQuery('RoomSearch', variables, opts);
-    }
-    useRoomSocialImage(variables: Types.RoomSocialImageVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomSocialImage | null;
-    useRoomSocialImage(variables: Types.RoomSocialImageVariables, opts?: SpaceQueryWatchParameters): Types.RoomSocialImage;
-    useRoomSocialImage(variables: Types.RoomSocialImageVariables, opts?: SpaceQueryWatchParameters): Types.RoomSocialImage | null {
-        return this.useQuery('RoomSocialImage', variables, opts);
-    }
-    useRoomTiny(variables: Types.RoomTinyVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.RoomTiny | null;
-    useRoomTiny(variables: Types.RoomTinyVariables, opts?: SpaceQueryWatchParameters): Types.RoomTiny;
-    useRoomTiny(variables: Types.RoomTinyVariables, opts?: SpaceQueryWatchParameters): Types.RoomTiny | null {
-        return this.useQuery('RoomTiny', variables, opts);
-    }
-    useSettings(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Settings | null;
-    useSettings(opts?: SpaceQueryWatchParameters): Types.Settings;
-    useSettings(opts?: SpaceQueryWatchParameters): Types.Settings | null {
-        return this.useQuery('Settings', undefined, opts);
-    }
-    useSharedMedia(variables: Types.SharedMediaVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.SharedMedia | null;
-    useSharedMedia(variables: Types.SharedMediaVariables, opts?: SpaceQueryWatchParameters): Types.SharedMedia;
-    useSharedMedia(variables: Types.SharedMediaVariables, opts?: SpaceQueryWatchParameters): Types.SharedMedia | null {
-        return this.useQuery('SharedMedia', variables, opts);
-    }
-    useSharedMediaCounters(variables: Types.SharedMediaCountersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.SharedMediaCounters | null;
-    useSharedMediaCounters(variables: Types.SharedMediaCountersVariables, opts?: SpaceQueryWatchParameters): Types.SharedMediaCounters;
-    useSharedMediaCounters(variables: Types.SharedMediaCountersVariables, opts?: SpaceQueryWatchParameters): Types.SharedMediaCounters | null {
-        return this.useQuery('SharedMediaCounters', variables, opts);
-    }
-    useStickerPack(variables: Types.StickerPackVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.StickerPack | null;
-    useStickerPack(variables: Types.StickerPackVariables, opts?: SpaceQueryWatchParameters): Types.StickerPack;
-    useStickerPack(variables: Types.StickerPackVariables, opts?: SpaceQueryWatchParameters): Types.StickerPack | null {
-        return this.useQuery('StickerPack', variables, opts);
-    }
-    useStickerPackCatalog(opts: SpaceQueryWatchParameters & { suspense: false }): Types.StickerPackCatalog | null;
-    useStickerPackCatalog(opts?: SpaceQueryWatchParameters): Types.StickerPackCatalog;
-    useStickerPackCatalog(opts?: SpaceQueryWatchParameters): Types.StickerPackCatalog | null {
-        return this.useQuery('StickerPackCatalog', undefined, opts);
-    }
-    useStripeToken(opts: SpaceQueryWatchParameters & { suspense: false }): Types.StripeToken | null;
-    useStripeToken(opts?: SpaceQueryWatchParameters): Types.StripeToken;
-    useStripeToken(opts?: SpaceQueryWatchParameters): Types.StripeToken | null {
-        return this.useQuery('StripeToken', undefined, opts);
-    }
-    useSubscriptions(opts: SpaceQueryWatchParameters & { suspense: false }): Types.Subscriptions | null;
-    useSubscriptions(opts?: SpaceQueryWatchParameters): Types.Subscriptions;
-    useSubscriptions(opts?: SpaceQueryWatchParameters): Types.Subscriptions | null {
-        return this.useQuery('Subscriptions', undefined, opts);
-    }
-    useSuggestedRooms(opts: SpaceQueryWatchParameters & { suspense: false }): Types.SuggestedRooms | null;
-    useSuggestedRooms(opts?: SpaceQueryWatchParameters): Types.SuggestedRooms;
-    useSuggestedRooms(opts?: SpaceQueryWatchParameters): Types.SuggestedRooms | null {
-        return this.useQuery('SuggestedRooms', undefined, opts);
-    }
-    useSuperAccount(variables: Types.SuperAccountVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.SuperAccount | null;
-    useSuperAccount(variables: Types.SuperAccountVariables, opts?: SpaceQueryWatchParameters): Types.SuperAccount;
-    useSuperAccount(variables: Types.SuperAccountVariables, opts?: SpaceQueryWatchParameters): Types.SuperAccount | null {
-        return this.useQuery('SuperAccount', variables, opts);
-    }
-    useSuperAccounts(opts: SpaceQueryWatchParameters & { suspense: false }): Types.SuperAccounts | null;
-    useSuperAccounts(opts?: SpaceQueryWatchParameters): Types.SuperAccounts;
-    useSuperAccounts(opts?: SpaceQueryWatchParameters): Types.SuperAccounts | null {
-        return this.useQuery('SuperAccounts', undefined, opts);
-    }
-    useSuperAdmins(opts: SpaceQueryWatchParameters & { suspense: false }): Types.SuperAdmins | null;
-    useSuperAdmins(opts?: SpaceQueryWatchParameters): Types.SuperAdmins;
-    useSuperAdmins(opts?: SpaceQueryWatchParameters): Types.SuperAdmins | null {
-        return this.useQuery('SuperAdmins', undefined, opts);
-    }
-    useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.SuperBadgeInRoom | null;
-    useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: SpaceQueryWatchParameters): Types.SuperBadgeInRoom;
-    useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, opts?: SpaceQueryWatchParameters): Types.SuperBadgeInRoom | null {
-        return this.useQuery('SuperBadgeInRoom', variables, opts);
-    }
-    useTransactionsHistory(variables: Types.TransactionsHistoryVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.TransactionsHistory | null;
-    useTransactionsHistory(variables: Types.TransactionsHistoryVariables, opts?: SpaceQueryWatchParameters): Types.TransactionsHistory;
-    useTransactionsHistory(variables: Types.TransactionsHistoryVariables, opts?: SpaceQueryWatchParameters): Types.TransactionsHistory | null {
-        return this.useQuery('TransactionsHistory', variables, opts);
-    }
-    useUser(variables: Types.UserVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.User | null;
-    useUser(variables: Types.UserVariables, opts?: SpaceQueryWatchParameters): Types.User;
-    useUser(variables: Types.UserVariables, opts?: SpaceQueryWatchParameters): Types.User | null {
-        return this.useQuery('User', variables, opts);
-    }
-    useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.UserAvailableRooms | null;
-    useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, opts?: SpaceQueryWatchParameters): Types.UserAvailableRooms;
-    useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, opts?: SpaceQueryWatchParameters): Types.UserAvailableRooms | null {
-        return this.useQuery('UserAvailableRooms', variables, opts);
-    }
-    useUserPico(variables: Types.UserPicoVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.UserPico | null;
-    useUserPico(variables: Types.UserPicoVariables, opts?: SpaceQueryWatchParameters): Types.UserPico;
-    useUserPico(variables: Types.UserPicoVariables, opts?: SpaceQueryWatchParameters): Types.UserPico | null {
-        return this.useQuery('UserPico', variables, opts);
-    }
-    useUserStorage(variables: Types.UserStorageVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.UserStorage | null;
-    useUserStorage(variables: Types.UserStorageVariables, opts?: SpaceQueryWatchParameters): Types.UserStorage;
-    useUserStorage(variables: Types.UserStorageVariables, opts?: SpaceQueryWatchParameters): Types.UserStorage | null {
-        return this.useQuery('UserStorage', variables, opts);
-    }
-    useUsers(variables: Types.UsersVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Users | null;
-    useUsers(variables: Types.UsersVariables, opts?: SpaceQueryWatchParameters): Types.Users;
-    useUsers(variables: Types.UsersVariables, opts?: SpaceQueryWatchParameters): Types.Users | null {
-        return this.useQuery('Users', variables, opts);
-    }
-    mutateAccountInviteJoin(variables: Types.AccountInviteJoinVariables): Promise<Types.AccountInviteJoin> {
-        return this.mutate('AccountInviteJoin', variables);
-    }
-    mutateAddAppToChat(variables: Types.AddAppToChatVariables): Promise<Types.AddAppToChat> {
-        return this.mutate('AddAppToChat', variables);
-    }
-    mutateAddComment(variables: Types.AddCommentVariables): Promise<Types.AddComment> {
-        return this.mutate('AddComment', variables);
-    }
-    mutateAddStickerComment(variables: Types.AddStickerCommentVariables): Promise<Types.AddStickerComment> {
-        return this.mutate('AddStickerComment', variables);
-    }
-    mutateBetaDiscoverSkip(variables: Types.BetaDiscoverSkipVariables): Promise<Types.BetaDiscoverSkip> {
-        return this.mutate('BetaDiscoverSkip', variables);
-    }
-    mutateBetaNextDiscoverReset(): Promise<Types.BetaNextDiscoverReset> {
-        return this.mutate('BetaNextDiscoverReset');
-    }
-    mutateBetaSubmitNextDiscover(variables: Types.BetaSubmitNextDiscoverVariables): Promise<Types.BetaSubmitNextDiscover> {
-        return this.mutate('BetaSubmitNextDiscover', variables);
-    }
-    mutateBuyPremiumChatPass(variables: Types.BuyPremiumChatPassVariables): Promise<Types.BuyPremiumChatPass> {
-        return this.mutate('BuyPremiumChatPass', variables);
-    }
-    mutateBuyPremiumChatSubscription(variables: Types.BuyPremiumChatSubscriptionVariables): Promise<Types.BuyPremiumChatSubscription> {
-        return this.mutate('BuyPremiumChatSubscription', variables);
-    }
-    mutateCancelSubscription(variables: Types.CancelSubscriptionVariables): Promise<Types.CancelSubscription> {
-        return this.mutate('CancelSubscription', variables);
-    }
-    mutateCommentSetReaction(variables: Types.CommentSetReactionVariables): Promise<Types.CommentSetReaction> {
-        return this.mutate('CommentSetReaction', variables);
-    }
-    mutateCommentUnsetReaction(variables: Types.CommentUnsetReactionVariables): Promise<Types.CommentUnsetReaction> {
-        return this.mutate('CommentUnsetReaction', variables);
-    }
-    mutateCommitCardSetupIntent(variables: Types.CommitCardSetupIntentVariables): Promise<Types.CommitCardSetupIntent> {
-        return this.mutate('CommitCardSetupIntent', variables);
-    }
-    mutateConferenceJoin(variables: Types.ConferenceJoinVariables): Promise<Types.ConferenceJoin> {
-        return this.mutate('ConferenceJoin', variables);
-    }
-    mutateConferenceKeepAlive(variables: Types.ConferenceKeepAliveVariables): Promise<Types.ConferenceKeepAlive> {
-        return this.mutate('ConferenceKeepAlive', variables);
-    }
-    mutateConferenceLeave(variables: Types.ConferenceLeaveVariables): Promise<Types.ConferenceLeave> {
-        return this.mutate('ConferenceLeave', variables);
-    }
-    mutateCreateApp(variables: Types.CreateAppVariables): Promise<Types.CreateApp> {
-        return this.mutate('CreateApp', variables);
-    }
-    mutateCreateCardSetupIntent(variables: Types.CreateCardSetupIntentVariables): Promise<Types.CreateCardSetupIntent> {
-        return this.mutate('CreateCardSetupIntent', variables);
-    }
-    mutateCreateDepositIntent(variables: Types.CreateDepositIntentVariables): Promise<Types.CreateDepositIntent> {
-        return this.mutate('CreateDepositIntent', variables);
-    }
-    mutateCreateOrganization(variables: Types.CreateOrganizationVariables): Promise<Types.CreateOrganization> {
-        return this.mutate('CreateOrganization', variables);
-    }
-    mutateDebugMails(variables: Types.DebugMailsVariables): Promise<Types.DebugMails> {
-        return this.mutate('DebugMails', variables);
-    }
-    mutateDeleteComment(variables: Types.DeleteCommentVariables): Promise<Types.DeleteComment> {
-        return this.mutate('DeleteComment', variables);
-    }
-    mutateDeleteNotification(variables: Types.DeleteNotificationVariables): Promise<Types.DeleteNotification> {
-        return this.mutate('DeleteNotification', variables);
-    }
-    mutateDeleteOrganization(variables: Types.DeleteOrganizationVariables): Promise<Types.DeleteOrganization> {
-        return this.mutate('DeleteOrganization', variables);
-    }
-    mutateDeleteUser(variables: Types.DeleteUserVariables): Promise<Types.DeleteUser> {
-        return this.mutate('DeleteUser', variables);
-    }
-    mutateDiscoverCollectionSetShortname(variables: Types.DiscoverCollectionSetShortnameVariables): Promise<Types.DiscoverCollectionSetShortname> {
-        return this.mutate('DiscoverCollectionSetShortname', variables);
-    }
-    mutateDiscoverCollectionsCreate(variables: Types.DiscoverCollectionsCreateVariables): Promise<Types.DiscoverCollectionsCreate> {
-        return this.mutate('DiscoverCollectionsCreate', variables);
-    }
-    mutateDiscoverCollectionsDelete(variables: Types.DiscoverCollectionsDeleteVariables): Promise<Types.DiscoverCollectionsDelete> {
-        return this.mutate('DiscoverCollectionsDelete', variables);
-    }
-    mutateDiscoverCollectionsUpdate(variables: Types.DiscoverCollectionsUpdateVariables): Promise<Types.DiscoverCollectionsUpdate> {
-        return this.mutate('DiscoverCollectionsUpdate', variables);
-    }
-    mutateDiscoverEditorsChoiceCreate(variables: Types.DiscoverEditorsChoiceCreateVariables): Promise<Types.DiscoverEditorsChoiceCreate> {
-        return this.mutate('DiscoverEditorsChoiceCreate', variables);
-    }
-    mutateDiscoverEditorsChoiceDelete(variables: Types.DiscoverEditorsChoiceDeleteVariables): Promise<Types.DiscoverEditorsChoiceDelete> {
-        return this.mutate('DiscoverEditorsChoiceDelete', variables);
-    }
-    mutateDiscoverEditorsChoiceUpdate(variables: Types.DiscoverEditorsChoiceUpdateVariables): Promise<Types.DiscoverEditorsChoiceUpdate> {
-        return this.mutate('DiscoverEditorsChoiceUpdate', variables);
-    }
-    mutateEditComment(variables: Types.EditCommentVariables): Promise<Types.EditComment> {
-        return this.mutate('EditComment', variables);
-    }
-    mutateEditMessage(variables: Types.EditMessageVariables): Promise<Types.EditMessage> {
-        return this.mutate('EditMessage', variables);
-    }
-    mutateFeatureFlagAdd(variables: Types.FeatureFlagAddVariables): Promise<Types.FeatureFlagAdd> {
-        return this.mutate('FeatureFlagAdd', variables);
-    }
-    mutateFeatureFlagDisable(variables: Types.FeatureFlagDisableVariables): Promise<Types.FeatureFlagDisable> {
-        return this.mutate('FeatureFlagDisable', variables);
-    }
-    mutateFeatureFlagEnable(variables: Types.FeatureFlagEnableVariables): Promise<Types.FeatureFlagEnable> {
-        return this.mutate('FeatureFlagEnable', variables);
-    }
-    mutateGlobalEventBusPublish(variables: Types.GlobalEventBusPublishVariables): Promise<Types.GlobalEventBusPublish> {
-        return this.mutate('GlobalEventBusPublish', variables);
-    }
-    mutateMakeCardDefault(variables: Types.MakeCardDefaultVariables): Promise<Types.MakeCardDefault> {
-        return this.mutate('MakeCardDefault', variables);
-    }
-    mutateMarkSequenceRead(variables: Types.MarkSequenceReadVariables): Promise<Types.MarkSequenceRead> {
-        return this.mutate('MarkSequenceRead', variables);
-    }
-    mutateMediaAnswer(variables: Types.MediaAnswerVariables): Promise<Types.MediaAnswer> {
-        return this.mutate('MediaAnswer', variables);
-    }
-    mutateMediaCandidate(variables: Types.MediaCandidateVariables): Promise<Types.MediaCandidate> {
-        return this.mutate('MediaCandidate', variables);
-    }
-    mutateMediaFailed(variables: Types.MediaFailedVariables): Promise<Types.MediaFailed> {
-        return this.mutate('MediaFailed', variables);
-    }
-    mutateMediaOffer(variables: Types.MediaOfferVariables): Promise<Types.MediaOffer> {
-        return this.mutate('MediaOffer', variables);
-    }
-    mutateMessageSetDonationReaction(variables: Types.MessageSetDonationReactionVariables): Promise<Types.MessageSetDonationReaction> {
-        return this.mutate('MessageSetDonationReaction', variables);
-    }
-    mutateMessageSetReaction(variables: Types.MessageSetReactionVariables): Promise<Types.MessageSetReaction> {
-        return this.mutate('MessageSetReaction', variables);
-    }
-    mutateMessageUnsetReaction(variables: Types.MessageUnsetReactionVariables): Promise<Types.MessageUnsetReaction> {
-        return this.mutate('MessageUnsetReaction', variables);
+    useAccount(params: SpaceQueryWatchParameters & { suspense: false }): Types.Account | null;
+    useAccount(params?: SpaceQueryWatchParameters): Types.Account;
+    useAccount(params?: SpaceQueryWatchParameters): Types.Account | null {
+        return this.useQuery('Account', undefined, params);
+    }
+    useAccountAppInvite(params: SpaceQueryWatchParameters & { suspense: false }): Types.AccountAppInvite | null;
+    useAccountAppInvite(params?: SpaceQueryWatchParameters): Types.AccountAppInvite;
+    useAccountAppInvite(params?: SpaceQueryWatchParameters): Types.AccountAppInvite | null {
+        return this.useQuery('AccountAppInvite', undefined, params);
+    }
+    useAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.AccountAppInviteInfo | null;
+    useAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, params?: SpaceQueryWatchParameters): Types.AccountAppInviteInfo;
+    useAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables, params?: SpaceQueryWatchParameters): Types.AccountAppInviteInfo | null {
+        return this.useQuery('AccountAppInviteInfo', variables, params);
+    }
+    useAccountInviteInfo(variables: Types.AccountInviteInfoVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.AccountInviteInfo | null;
+    useAccountInviteInfo(variables: Types.AccountInviteInfoVariables, params?: SpaceQueryWatchParameters): Types.AccountInviteInfo;
+    useAccountInviteInfo(variables: Types.AccountInviteInfoVariables, params?: SpaceQueryWatchParameters): Types.AccountInviteInfo | null {
+        return this.useQuery('AccountInviteInfo', variables, params);
+    }
+    useAccountSettings(params: SpaceQueryWatchParameters & { suspense: false }): Types.AccountSettings | null;
+    useAccountSettings(params?: SpaceQueryWatchParameters): Types.AccountSettings;
+    useAccountSettings(params?: SpaceQueryWatchParameters): Types.AccountSettings | null {
+        return this.useQuery('AccountSettings', undefined, params);
+    }
+    useAuthPoints(params: SpaceQueryWatchParameters & { suspense: false }): Types.AuthPoints | null;
+    useAuthPoints(params?: SpaceQueryWatchParameters): Types.AuthPoints;
+    useAuthPoints(params?: SpaceQueryWatchParameters): Types.AuthPoints | null {
+        return this.useQuery('AuthPoints', undefined, params);
+    }
+    useAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.AuthResolveShortName | null;
+    useAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, params?: SpaceQueryWatchParameters): Types.AuthResolveShortName;
+    useAuthResolveShortName(variables: Types.AuthResolveShortNameVariables, params?: SpaceQueryWatchParameters): Types.AuthResolveShortName | null {
+        return this.useQuery('AuthResolveShortName', variables, params);
+    }
+    useChannel(variables: Types.ChannelVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.Channel | null;
+    useChannel(variables: Types.ChannelVariables, params?: SpaceQueryWatchParameters): Types.Channel;
+    useChannel(variables: Types.ChannelVariables, params?: SpaceQueryWatchParameters): Types.Channel | null {
+        return this.useQuery('Channel', variables, params);
+    }
+    useChannels(params: SpaceQueryWatchParameters & { suspense: false }): Types.Channels | null;
+    useChannels(params?: SpaceQueryWatchParameters): Types.Channels;
+    useChannels(params?: SpaceQueryWatchParameters): Types.Channels | null {
+        return this.useQuery('Channels', undefined, params);
+    }
+    useChatInit(variables: Types.ChatInitVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ChatInit | null;
+    useChatInit(variables: Types.ChatInitVariables, params?: SpaceQueryWatchParameters): Types.ChatInit;
+    useChatInit(variables: Types.ChatInitVariables, params?: SpaceQueryWatchParameters): Types.ChatInit | null {
+        return this.useQuery('ChatInit', variables, params);
+    }
+    useChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ChatInitFromUnread | null;
+    useChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, params?: SpaceQueryWatchParameters): Types.ChatInitFromUnread;
+    useChatInitFromUnread(variables: Types.ChatInitFromUnreadVariables, params?: SpaceQueryWatchParameters): Types.ChatInitFromUnread | null {
+        return this.useQuery('ChatInitFromUnread', variables, params);
+    }
+    useChatJoin(variables: Types.ChatJoinVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ChatJoin | null;
+    useChatJoin(variables: Types.ChatJoinVariables, params?: SpaceQueryWatchParameters): Types.ChatJoin;
+    useChatJoin(variables: Types.ChatJoinVariables, params?: SpaceQueryWatchParameters): Types.ChatJoin | null {
+        return this.useQuery('ChatJoin', variables, params);
+    }
+    useChatMentionSearch(variables: Types.ChatMentionSearchVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ChatMentionSearch | null;
+    useChatMentionSearch(variables: Types.ChatMentionSearchVariables, params?: SpaceQueryWatchParameters): Types.ChatMentionSearch;
+    useChatMentionSearch(variables: Types.ChatMentionSearchVariables, params?: SpaceQueryWatchParameters): Types.ChatMentionSearch | null {
+        return this.useQuery('ChatMentionSearch', variables, params);
+    }
+    useComments(variables: Types.CommentsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.Comments | null;
+    useComments(variables: Types.CommentsVariables, params?: SpaceQueryWatchParameters): Types.Comments;
+    useComments(variables: Types.CommentsVariables, params?: SpaceQueryWatchParameters): Types.Comments | null {
+        return this.useQuery('Comments', variables, params);
+    }
+    useConference(variables: Types.ConferenceVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.Conference | null;
+    useConference(variables: Types.ConferenceVariables, params?: SpaceQueryWatchParameters): Types.Conference;
+    useConference(variables: Types.ConferenceVariables, params?: SpaceQueryWatchParameters): Types.Conference | null {
+        return this.useQuery('Conference', variables, params);
+    }
+    useConferenceMedia(variables: Types.ConferenceMediaVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ConferenceMedia | null;
+    useConferenceMedia(variables: Types.ConferenceMediaVariables, params?: SpaceQueryWatchParameters): Types.ConferenceMedia;
+    useConferenceMedia(variables: Types.ConferenceMediaVariables, params?: SpaceQueryWatchParameters): Types.ConferenceMedia | null {
+        return this.useQuery('ConferenceMedia', variables, params);
+    }
+    useDebugGqlTrace(variables: Types.DebugGqlTraceVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DebugGqlTrace | null;
+    useDebugGqlTrace(variables: Types.DebugGqlTraceVariables, params?: SpaceQueryWatchParameters): Types.DebugGqlTrace;
+    useDebugGqlTrace(variables: Types.DebugGqlTraceVariables, params?: SpaceQueryWatchParameters): Types.DebugGqlTrace | null {
+        return this.useQuery('DebugGqlTrace', variables, params);
+    }
+    useDebugGqlTraces(variables: Types.DebugGqlTracesVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DebugGqlTraces | null;
+    useDebugGqlTraces(variables: Types.DebugGqlTracesVariables, params?: SpaceQueryWatchParameters): Types.DebugGqlTraces;
+    useDebugGqlTraces(variables: Types.DebugGqlTracesVariables, params?: SpaceQueryWatchParameters): Types.DebugGqlTraces | null {
+        return this.useQuery('DebugGqlTraces', variables, params);
+    }
+    useDialogs(variables: Types.DialogsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.Dialogs | null;
+    useDialogs(variables: Types.DialogsVariables, params?: SpaceQueryWatchParameters): Types.Dialogs;
+    useDialogs(variables: Types.DialogsVariables, params?: SpaceQueryWatchParameters): Types.Dialogs | null {
+        return this.useQuery('Dialogs', variables, params);
+    }
+    useDiscoverCollection(variables: Types.DiscoverCollectionVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverCollection | null;
+    useDiscoverCollection(variables: Types.DiscoverCollectionVariables, params?: SpaceQueryWatchParameters): Types.DiscoverCollection;
+    useDiscoverCollection(variables: Types.DiscoverCollectionVariables, params?: SpaceQueryWatchParameters): Types.DiscoverCollection | null {
+        return this.useQuery('DiscoverCollection', variables, params);
+    }
+    useDiscoverCollectionShort(variables: Types.DiscoverCollectionShortVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverCollectionShort | null;
+    useDiscoverCollectionShort(variables: Types.DiscoverCollectionShortVariables, params?: SpaceQueryWatchParameters): Types.DiscoverCollectionShort;
+    useDiscoverCollectionShort(variables: Types.DiscoverCollectionShortVariables, params?: SpaceQueryWatchParameters): Types.DiscoverCollectionShort | null {
+        return this.useQuery('DiscoverCollectionShort', variables, params);
+    }
+    useDiscoverCollections(variables: Types.DiscoverCollectionsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverCollections | null;
+    useDiscoverCollections(variables: Types.DiscoverCollectionsVariables, params?: SpaceQueryWatchParameters): Types.DiscoverCollections;
+    useDiscoverCollections(variables: Types.DiscoverCollectionsVariables, params?: SpaceQueryWatchParameters): Types.DiscoverCollections | null {
+        return this.useQuery('DiscoverCollections', variables, params);
+    }
+    useDiscoverCollectionsShort(variables: Types.DiscoverCollectionsShortVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverCollectionsShort | null;
+    useDiscoverCollectionsShort(variables: Types.DiscoverCollectionsShortVariables, params?: SpaceQueryWatchParameters): Types.DiscoverCollectionsShort;
+    useDiscoverCollectionsShort(variables: Types.DiscoverCollectionsShortVariables, params?: SpaceQueryWatchParameters): Types.DiscoverCollectionsShort | null {
+        return this.useQuery('DiscoverCollectionsShort', variables, params);
+    }
+    useDiscoverEditorsChoice(params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverEditorsChoice | null;
+    useDiscoverEditorsChoice(params?: SpaceQueryWatchParameters): Types.DiscoverEditorsChoice;
+    useDiscoverEditorsChoice(params?: SpaceQueryWatchParameters): Types.DiscoverEditorsChoice | null {
+        return this.useQuery('DiscoverEditorsChoice', undefined, params);
+    }
+    useDiscoverIsDone(params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverIsDone | null;
+    useDiscoverIsDone(params?: SpaceQueryWatchParameters): Types.DiscoverIsDone;
+    useDiscoverIsDone(params?: SpaceQueryWatchParameters): Types.DiscoverIsDone | null {
+        return this.useQuery('DiscoverIsDone', undefined, params);
+    }
+    useDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverNewAndGrowing | null;
+    useDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, params?: SpaceQueryWatchParameters): Types.DiscoverNewAndGrowing;
+    useDiscoverNewAndGrowing(variables: Types.DiscoverNewAndGrowingVariables, params?: SpaceQueryWatchParameters): Types.DiscoverNewAndGrowing | null {
+        return this.useQuery('DiscoverNewAndGrowing', variables, params);
+    }
+    useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverNextPage | null;
+    useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, params?: SpaceQueryWatchParameters): Types.DiscoverNextPage;
+    useDiscoverNextPage(variables: Types.DiscoverNextPageVariables, params?: SpaceQueryWatchParameters): Types.DiscoverNextPage | null {
+        return this.useQuery('DiscoverNextPage', variables, params);
+    }
+    useDiscoverNoAuth(variables: Types.DiscoverNoAuthVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverNoAuth | null;
+    useDiscoverNoAuth(variables: Types.DiscoverNoAuthVariables, params?: SpaceQueryWatchParameters): Types.DiscoverNoAuth;
+    useDiscoverNoAuth(variables: Types.DiscoverNoAuthVariables, params?: SpaceQueryWatchParameters): Types.DiscoverNoAuth | null {
+        return this.useQuery('DiscoverNoAuth', variables, params);
+    }
+    useDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverPopularNow | null;
+    useDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, params?: SpaceQueryWatchParameters): Types.DiscoverPopularNow;
+    useDiscoverPopularNow(variables: Types.DiscoverPopularNowVariables, params?: SpaceQueryWatchParameters): Types.DiscoverPopularNow | null {
+        return this.useQuery('DiscoverPopularNow', variables, params);
+    }
+    useDiscoverState(params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverState | null;
+    useDiscoverState(params?: SpaceQueryWatchParameters): Types.DiscoverState;
+    useDiscoverState(params?: SpaceQueryWatchParameters): Types.DiscoverState | null {
+        return this.useQuery('DiscoverState', undefined, params);
+    }
+    useDiscoverSuggestedRooms(params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverSuggestedRooms | null;
+    useDiscoverSuggestedRooms(params?: SpaceQueryWatchParameters): Types.DiscoverSuggestedRooms;
+    useDiscoverSuggestedRooms(params?: SpaceQueryWatchParameters): Types.DiscoverSuggestedRooms | null {
+        return this.useQuery('DiscoverSuggestedRooms', undefined, params);
+    }
+    useDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverTopFree | null;
+    useDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, params?: SpaceQueryWatchParameters): Types.DiscoverTopFree;
+    useDiscoverTopFree(variables: Types.DiscoverTopFreeVariables, params?: SpaceQueryWatchParameters): Types.DiscoverTopFree | null {
+        return this.useQuery('DiscoverTopFree', variables, params);
+    }
+    useDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.DiscoverTopPremium | null;
+    useDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, params?: SpaceQueryWatchParameters): Types.DiscoverTopPremium;
+    useDiscoverTopPremium(variables: Types.DiscoverTopPremiumVariables, params?: SpaceQueryWatchParameters): Types.DiscoverTopPremium | null {
+        return this.useQuery('DiscoverTopPremium', variables, params);
+    }
+    useExplorePeople(variables: Types.ExplorePeopleVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ExplorePeople | null;
+    useExplorePeople(variables: Types.ExplorePeopleVariables, params?: SpaceQueryWatchParameters): Types.ExplorePeople;
+    useExplorePeople(variables: Types.ExplorePeopleVariables, params?: SpaceQueryWatchParameters): Types.ExplorePeople | null {
+        return this.useQuery('ExplorePeople', variables, params);
+    }
+    useExploreRooms(variables: Types.ExploreRoomsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ExploreRooms | null;
+    useExploreRooms(variables: Types.ExploreRoomsVariables, params?: SpaceQueryWatchParameters): Types.ExploreRooms;
+    useExploreRooms(variables: Types.ExploreRoomsVariables, params?: SpaceQueryWatchParameters): Types.ExploreRooms | null {
+        return this.useQuery('ExploreRooms', variables, params);
+    }
+    useFeatureFlags(params: SpaceQueryWatchParameters & { suspense: false }): Types.FeatureFlags | null;
+    useFeatureFlags(params?: SpaceQueryWatchParameters): Types.FeatureFlags;
+    useFeatureFlags(params?: SpaceQueryWatchParameters): Types.FeatureFlags | null {
+        return this.useQuery('FeatureFlags', undefined, params);
+    }
+    useFetchPushSettings(params: SpaceQueryWatchParameters & { suspense: false }): Types.FetchPushSettings | null;
+    useFetchPushSettings(params?: SpaceQueryWatchParameters): Types.FetchPushSettings;
+    useFetchPushSettings(params?: SpaceQueryWatchParameters): Types.FetchPushSettings | null {
+        return this.useQuery('FetchPushSettings', undefined, params);
+    }
+    useGlobalCounter(params: SpaceQueryWatchParameters & { suspense: false }): Types.GlobalCounter | null;
+    useGlobalCounter(params?: SpaceQueryWatchParameters): Types.GlobalCounter;
+    useGlobalCounter(params?: SpaceQueryWatchParameters): Types.GlobalCounter | null {
+        return this.useQuery('GlobalCounter', undefined, params);
+    }
+    useGlobalSearch(variables: Types.GlobalSearchVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.GlobalSearch | null;
+    useGlobalSearch(variables: Types.GlobalSearchVariables, params?: SpaceQueryWatchParameters): Types.GlobalSearch;
+    useGlobalSearch(variables: Types.GlobalSearchVariables, params?: SpaceQueryWatchParameters): Types.GlobalSearch | null {
+        return this.useQuery('GlobalSearch', variables, params);
+    }
+    useGroupScreenViews(variables: Types.GroupScreenViewsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.GroupScreenViews | null;
+    useGroupScreenViews(variables: Types.GroupScreenViewsVariables, params?: SpaceQueryWatchParameters): Types.GroupScreenViews;
+    useGroupScreenViews(variables: Types.GroupScreenViewsVariables, params?: SpaceQueryWatchParameters): Types.GroupScreenViews | null {
+        return this.useQuery('GroupScreenViews', variables, params);
+    }
+    useMessage(variables: Types.MessageVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.Message | null;
+    useMessage(variables: Types.MessageVariables, params?: SpaceQueryWatchParameters): Types.Message;
+    useMessage(variables: Types.MessageVariables, params?: SpaceQueryWatchParameters): Types.Message | null {
+        return this.useQuery('Message', variables, params);
+    }
+    useMessagesBatch(variables: Types.MessagesBatchVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.MessagesBatch | null;
+    useMessagesBatch(variables: Types.MessagesBatchVariables, params?: SpaceQueryWatchParameters): Types.MessagesBatch;
+    useMessagesBatch(variables: Types.MessagesBatchVariables, params?: SpaceQueryWatchParameters): Types.MessagesBatch | null {
+        return this.useQuery('MessagesBatch', variables, params);
+    }
+    useMessagesSearch(variables: Types.MessagesSearchVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.MessagesSearch | null;
+    useMessagesSearch(variables: Types.MessagesSearchVariables, params?: SpaceQueryWatchParameters): Types.MessagesSearch;
+    useMessagesSearch(variables: Types.MessagesSearchVariables, params?: SpaceQueryWatchParameters): Types.MessagesSearch | null {
+        return this.useQuery('MessagesSearch', variables, params);
+    }
+    useMyApps(params: SpaceQueryWatchParameters & { suspense: false }): Types.MyApps | null;
+    useMyApps(params?: SpaceQueryWatchParameters): Types.MyApps;
+    useMyApps(params?: SpaceQueryWatchParameters): Types.MyApps | null {
+        return this.useQuery('MyApps', undefined, params);
+    }
+    useMyCards(params: SpaceQueryWatchParameters & { suspense: false }): Types.MyCards | null;
+    useMyCards(params?: SpaceQueryWatchParameters): Types.MyCards;
+    useMyCards(params?: SpaceQueryWatchParameters): Types.MyCards | null {
+        return this.useQuery('MyCards', undefined, params);
+    }
+    useMyNotificationCenter(params: SpaceQueryWatchParameters & { suspense: false }): Types.MyNotificationCenter | null;
+    useMyNotificationCenter(params?: SpaceQueryWatchParameters): Types.MyNotificationCenter;
+    useMyNotificationCenter(params?: SpaceQueryWatchParameters): Types.MyNotificationCenter | null {
+        return this.useQuery('MyNotificationCenter', undefined, params);
+    }
+    useMyNotifications(variables: Types.MyNotificationsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.MyNotifications | null;
+    useMyNotifications(variables: Types.MyNotificationsVariables, params?: SpaceQueryWatchParameters): Types.MyNotifications;
+    useMyNotifications(variables: Types.MyNotificationsVariables, params?: SpaceQueryWatchParameters): Types.MyNotifications | null {
+        return this.useQuery('MyNotifications', variables, params);
+    }
+    useMyOrganizations(params: SpaceQueryWatchParameters & { suspense: false }): Types.MyOrganizations | null;
+    useMyOrganizations(params?: SpaceQueryWatchParameters): Types.MyOrganizations;
+    useMyOrganizations(params?: SpaceQueryWatchParameters): Types.MyOrganizations | null {
+        return this.useQuery('MyOrganizations', undefined, params);
+    }
+    useMyPostDrafts(variables: Types.MyPostDraftsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.MyPostDrafts | null;
+    useMyPostDrafts(variables: Types.MyPostDraftsVariables, params?: SpaceQueryWatchParameters): Types.MyPostDrafts;
+    useMyPostDrafts(variables: Types.MyPostDraftsVariables, params?: SpaceQueryWatchParameters): Types.MyPostDrafts | null {
+        return this.useQuery('MyPostDrafts', variables, params);
+    }
+    useMyStickers(params: SpaceQueryWatchParameters & { suspense: false }): Types.MyStickers | null;
+    useMyStickers(params?: SpaceQueryWatchParameters): Types.MyStickers;
+    useMyStickers(params?: SpaceQueryWatchParameters): Types.MyStickers | null {
+        return this.useQuery('MyStickers', undefined, params);
+    }
+    useMySuccessfulInvitesCount(params: SpaceQueryWatchParameters & { suspense: false }): Types.MySuccessfulInvitesCount | null;
+    useMySuccessfulInvitesCount(params?: SpaceQueryWatchParameters): Types.MySuccessfulInvitesCount;
+    useMySuccessfulInvitesCount(params?: SpaceQueryWatchParameters): Types.MySuccessfulInvitesCount | null {
+        return this.useQuery('MySuccessfulInvitesCount', undefined, params);
+    }
+    useMyWallet(params: SpaceQueryWatchParameters & { suspense: false }): Types.MyWallet | null;
+    useMyWallet(params?: SpaceQueryWatchParameters): Types.MyWallet;
+    useMyWallet(params?: SpaceQueryWatchParameters): Types.MyWallet | null {
+        return this.useQuery('MyWallet', undefined, params);
+    }
+    useOauthContext(variables: Types.OauthContextVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.OauthContext | null;
+    useOauthContext(variables: Types.OauthContextVariables, params?: SpaceQueryWatchParameters): Types.OauthContext;
+    useOauthContext(variables: Types.OauthContextVariables, params?: SpaceQueryWatchParameters): Types.OauthContext | null {
+        return this.useQuery('OauthContext', variables, params);
+    }
+    useOnline(variables: Types.OnlineVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.Online | null;
+    useOnline(variables: Types.OnlineVariables, params?: SpaceQueryWatchParameters): Types.Online;
+    useOnline(variables: Types.OnlineVariables, params?: SpaceQueryWatchParameters): Types.Online | null {
+        return this.useQuery('Online', variables, params);
+    }
+    useOrganization(variables: Types.OrganizationVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.Organization | null;
+    useOrganization(variables: Types.OrganizationVariables, params?: SpaceQueryWatchParameters): Types.Organization;
+    useOrganization(variables: Types.OrganizationVariables, params?: SpaceQueryWatchParameters): Types.Organization | null {
+        return this.useQuery('Organization', variables, params);
+    }
+    useOrganizationMembers(variables: Types.OrganizationMembersVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationMembers | null;
+    useOrganizationMembers(variables: Types.OrganizationMembersVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembers;
+    useOrganizationMembers(variables: Types.OrganizationMembersVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembers | null {
+        return this.useQuery('OrganizationMembers', variables, params);
+    }
+    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationMembersShort | null;
+    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembersShort;
+    useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembersShort | null {
+        return this.useQuery('OrganizationMembersShort', variables, params);
+    }
+    useOrganizationProfile(variables: Types.OrganizationProfileVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationProfile | null;
+    useOrganizationProfile(variables: Types.OrganizationProfileVariables, params?: SpaceQueryWatchParameters): Types.OrganizationProfile;
+    useOrganizationProfile(variables: Types.OrganizationProfileVariables, params?: SpaceQueryWatchParameters): Types.OrganizationProfile | null {
+        return this.useQuery('OrganizationProfile', variables, params);
+    }
+    useOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationPublicInvite | null;
+    useOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, params?: SpaceQueryWatchParameters): Types.OrganizationPublicInvite;
+    useOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables, params?: SpaceQueryWatchParameters): Types.OrganizationPublicInvite | null {
+        return this.useQuery('OrganizationPublicInvite', variables, params);
+    }
+    useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationPublicRooms | null;
+    useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, params?: SpaceQueryWatchParameters): Types.OrganizationPublicRooms;
+    useOrganizationPublicRooms(variables: Types.OrganizationPublicRoomsVariables, params?: SpaceQueryWatchParameters): Types.OrganizationPublicRooms | null {
+        return this.useQuery('OrganizationPublicRooms', variables, params);
+    }
+    usePermissions(params: SpaceQueryWatchParameters & { suspense: false }): Types.Permissions | null;
+    usePermissions(params?: SpaceQueryWatchParameters): Types.Permissions;
+    usePermissions(params?: SpaceQueryWatchParameters): Types.Permissions | null {
+        return this.useQuery('Permissions', undefined, params);
+    }
+    usePicSharedMedia(variables: Types.PicSharedMediaVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.PicSharedMedia | null;
+    usePicSharedMedia(variables: Types.PicSharedMediaVariables, params?: SpaceQueryWatchParameters): Types.PicSharedMedia;
+    usePicSharedMedia(variables: Types.PicSharedMediaVariables, params?: SpaceQueryWatchParameters): Types.PicSharedMedia | null {
+        return this.useQuery('PicSharedMedia', variables, params);
+    }
+    usePost(variables: Types.PostVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.Post | null;
+    usePost(variables: Types.PostVariables, params?: SpaceQueryWatchParameters): Types.Post;
+    usePost(variables: Types.PostVariables, params?: SpaceQueryWatchParameters): Types.Post | null {
+        return this.useQuery('Post', variables, params);
+    }
+    usePostDraft(variables: Types.PostDraftVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.PostDraft | null;
+    usePostDraft(variables: Types.PostDraftVariables, params?: SpaceQueryWatchParameters): Types.PostDraft;
+    usePostDraft(variables: Types.PostDraftVariables, params?: SpaceQueryWatchParameters): Types.PostDraft | null {
+        return this.useQuery('PostDraft', variables, params);
+    }
+    usePosts(variables: Types.PostsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.Posts | null;
+    usePosts(variables: Types.PostsVariables, params?: SpaceQueryWatchParameters): Types.Posts;
+    usePosts(variables: Types.PostsVariables, params?: SpaceQueryWatchParameters): Types.Posts | null {
+        return this.useQuery('Posts', variables, params);
+    }
+    useProfile(params: SpaceQueryWatchParameters & { suspense: false }): Types.Profile | null;
+    useProfile(params?: SpaceQueryWatchParameters): Types.Profile;
+    useProfile(params?: SpaceQueryWatchParameters): Types.Profile | null {
+        return this.useQuery('Profile', undefined, params);
+    }
+    useProfilePrefill(params: SpaceQueryWatchParameters & { suspense: false }): Types.ProfilePrefill | null;
+    useProfilePrefill(params?: SpaceQueryWatchParameters): Types.ProfilePrefill;
+    useProfilePrefill(params?: SpaceQueryWatchParameters): Types.ProfilePrefill | null {
+        return this.useQuery('ProfilePrefill', undefined, params);
+    }
+    useResolveShortName(variables: Types.ResolveShortNameVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ResolveShortName | null;
+    useResolveShortName(variables: Types.ResolveShortNameVariables, params?: SpaceQueryWatchParameters): Types.ResolveShortName;
+    useResolveShortName(variables: Types.ResolveShortNameVariables, params?: SpaceQueryWatchParameters): Types.ResolveShortName | null {
+        return this.useQuery('ResolveShortName', variables, params);
+    }
+    useResolvedInvite(variables: Types.ResolvedInviteVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.ResolvedInvite | null;
+    useResolvedInvite(variables: Types.ResolvedInviteVariables, params?: SpaceQueryWatchParameters): Types.ResolvedInvite;
+    useResolvedInvite(variables: Types.ResolvedInviteVariables, params?: SpaceQueryWatchParameters): Types.ResolvedInvite | null {
+        return this.useQuery('ResolvedInvite', variables, params);
+    }
+    useRoomAdminMembers(variables: Types.RoomAdminMembersVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomAdminMembers | null;
+    useRoomAdminMembers(variables: Types.RoomAdminMembersVariables, params?: SpaceQueryWatchParameters): Types.RoomAdminMembers;
+    useRoomAdminMembers(variables: Types.RoomAdminMembersVariables, params?: SpaceQueryWatchParameters): Types.RoomAdminMembers | null {
+        return this.useQuery('RoomAdminMembers', variables, params);
+    }
+    useRoomChat(variables: Types.RoomChatVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomChat | null;
+    useRoomChat(variables: Types.RoomChatVariables, params?: SpaceQueryWatchParameters): Types.RoomChat;
+    useRoomChat(variables: Types.RoomChatVariables, params?: SpaceQueryWatchParameters): Types.RoomChat | null {
+        return this.useQuery('RoomChat', variables, params);
+    }
+    useRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomFeaturedMembers | null;
+    useRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, params?: SpaceQueryWatchParameters): Types.RoomFeaturedMembers;
+    useRoomFeaturedMembers(variables: Types.RoomFeaturedMembersVariables, params?: SpaceQueryWatchParameters): Types.RoomFeaturedMembers | null {
+        return this.useQuery('RoomFeaturedMembers', variables, params);
+    }
+    useRoomInviteInfo(variables: Types.RoomInviteInfoVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomInviteInfo | null;
+    useRoomInviteInfo(variables: Types.RoomInviteInfoVariables, params?: SpaceQueryWatchParameters): Types.RoomInviteInfo;
+    useRoomInviteInfo(variables: Types.RoomInviteInfoVariables, params?: SpaceQueryWatchParameters): Types.RoomInviteInfo | null {
+        return this.useQuery('RoomInviteInfo', variables, params);
+    }
+    useRoomInviteLink(variables: Types.RoomInviteLinkVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomInviteLink | null;
+    useRoomInviteLink(variables: Types.RoomInviteLinkVariables, params?: SpaceQueryWatchParameters): Types.RoomInviteLink;
+    useRoomInviteLink(variables: Types.RoomInviteLinkVariables, params?: SpaceQueryWatchParameters): Types.RoomInviteLink | null {
+        return this.useQuery('RoomInviteLink', variables, params);
+    }
+    useRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMembersPaginated | null;
+    useRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersPaginated;
+    useRoomMembersPaginated(variables: Types.RoomMembersPaginatedVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersPaginated | null {
+        return this.useQuery('RoomMembersPaginated', variables, params);
+    }
+    useRoomMembersShort(variables: Types.RoomMembersShortVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMembersShort | null;
+    useRoomMembersShort(variables: Types.RoomMembersShortVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersShort;
+    useRoomMembersShort(variables: Types.RoomMembersShortVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersShort | null {
+        return this.useQuery('RoomMembersShort', variables, params);
+    }
+    useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMembersTiny | null;
+    useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersTiny;
+    useRoomMembersTiny(variables: Types.RoomMembersTinyVariables, params?: SpaceQueryWatchParameters): Types.RoomMembersTiny | null {
+        return this.useQuery('RoomMembersTiny', variables, params);
+    }
+    useRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomMetaPreview | null;
+    useRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, params?: SpaceQueryWatchParameters): Types.RoomMetaPreview;
+    useRoomMetaPreview(variables: Types.RoomMetaPreviewVariables, params?: SpaceQueryWatchParameters): Types.RoomMetaPreview | null {
+        return this.useQuery('RoomMetaPreview', variables, params);
+    }
+    useRoomPico(variables: Types.RoomPicoVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomPico | null;
+    useRoomPico(variables: Types.RoomPicoVariables, params?: SpaceQueryWatchParameters): Types.RoomPico;
+    useRoomPico(variables: Types.RoomPicoVariables, params?: SpaceQueryWatchParameters): Types.RoomPico | null {
+        return this.useQuery('RoomPico', variables, params);
+    }
+    useRoomSearch(variables: Types.RoomSearchVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomSearch | null;
+    useRoomSearch(variables: Types.RoomSearchVariables, params?: SpaceQueryWatchParameters): Types.RoomSearch;
+    useRoomSearch(variables: Types.RoomSearchVariables, params?: SpaceQueryWatchParameters): Types.RoomSearch | null {
+        return this.useQuery('RoomSearch', variables, params);
+    }
+    useRoomSocialImage(variables: Types.RoomSocialImageVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomSocialImage | null;
+    useRoomSocialImage(variables: Types.RoomSocialImageVariables, params?: SpaceQueryWatchParameters): Types.RoomSocialImage;
+    useRoomSocialImage(variables: Types.RoomSocialImageVariables, params?: SpaceQueryWatchParameters): Types.RoomSocialImage | null {
+        return this.useQuery('RoomSocialImage', variables, params);
+    }
+    useRoomTiny(variables: Types.RoomTinyVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.RoomTiny | null;
+    useRoomTiny(variables: Types.RoomTinyVariables, params?: SpaceQueryWatchParameters): Types.RoomTiny;
+    useRoomTiny(variables: Types.RoomTinyVariables, params?: SpaceQueryWatchParameters): Types.RoomTiny | null {
+        return this.useQuery('RoomTiny', variables, params);
+    }
+    useSettings(params: SpaceQueryWatchParameters & { suspense: false }): Types.Settings | null;
+    useSettings(params?: SpaceQueryWatchParameters): Types.Settings;
+    useSettings(params?: SpaceQueryWatchParameters): Types.Settings | null {
+        return this.useQuery('Settings', undefined, params);
+    }
+    useSharedMedia(variables: Types.SharedMediaVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.SharedMedia | null;
+    useSharedMedia(variables: Types.SharedMediaVariables, params?: SpaceQueryWatchParameters): Types.SharedMedia;
+    useSharedMedia(variables: Types.SharedMediaVariables, params?: SpaceQueryWatchParameters): Types.SharedMedia | null {
+        return this.useQuery('SharedMedia', variables, params);
+    }
+    useSharedMediaCounters(variables: Types.SharedMediaCountersVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.SharedMediaCounters | null;
+    useSharedMediaCounters(variables: Types.SharedMediaCountersVariables, params?: SpaceQueryWatchParameters): Types.SharedMediaCounters;
+    useSharedMediaCounters(variables: Types.SharedMediaCountersVariables, params?: SpaceQueryWatchParameters): Types.SharedMediaCounters | null {
+        return this.useQuery('SharedMediaCounters', variables, params);
+    }
+    useStickerPack(variables: Types.StickerPackVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.StickerPack | null;
+    useStickerPack(variables: Types.StickerPackVariables, params?: SpaceQueryWatchParameters): Types.StickerPack;
+    useStickerPack(variables: Types.StickerPackVariables, params?: SpaceQueryWatchParameters): Types.StickerPack | null {
+        return this.useQuery('StickerPack', variables, params);
+    }
+    useStickerPackCatalog(params: SpaceQueryWatchParameters & { suspense: false }): Types.StickerPackCatalog | null;
+    useStickerPackCatalog(params?: SpaceQueryWatchParameters): Types.StickerPackCatalog;
+    useStickerPackCatalog(params?: SpaceQueryWatchParameters): Types.StickerPackCatalog | null {
+        return this.useQuery('StickerPackCatalog', undefined, params);
+    }
+    useStripeToken(params: SpaceQueryWatchParameters & { suspense: false }): Types.StripeToken | null;
+    useStripeToken(params?: SpaceQueryWatchParameters): Types.StripeToken;
+    useStripeToken(params?: SpaceQueryWatchParameters): Types.StripeToken | null {
+        return this.useQuery('StripeToken', undefined, params);
+    }
+    useSubscriptions(params: SpaceQueryWatchParameters & { suspense: false }): Types.Subscriptions | null;
+    useSubscriptions(params?: SpaceQueryWatchParameters): Types.Subscriptions;
+    useSubscriptions(params?: SpaceQueryWatchParameters): Types.Subscriptions | null {
+        return this.useQuery('Subscriptions', undefined, params);
+    }
+    useSuggestedRooms(params: SpaceQueryWatchParameters & { suspense: false }): Types.SuggestedRooms | null;
+    useSuggestedRooms(params?: SpaceQueryWatchParameters): Types.SuggestedRooms;
+    useSuggestedRooms(params?: SpaceQueryWatchParameters): Types.SuggestedRooms | null {
+        return this.useQuery('SuggestedRooms', undefined, params);
+    }
+    useSuperAccount(variables: Types.SuperAccountVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.SuperAccount | null;
+    useSuperAccount(variables: Types.SuperAccountVariables, params?: SpaceQueryWatchParameters): Types.SuperAccount;
+    useSuperAccount(variables: Types.SuperAccountVariables, params?: SpaceQueryWatchParameters): Types.SuperAccount | null {
+        return this.useQuery('SuperAccount', variables, params);
+    }
+    useSuperAccounts(params: SpaceQueryWatchParameters & { suspense: false }): Types.SuperAccounts | null;
+    useSuperAccounts(params?: SpaceQueryWatchParameters): Types.SuperAccounts;
+    useSuperAccounts(params?: SpaceQueryWatchParameters): Types.SuperAccounts | null {
+        return this.useQuery('SuperAccounts', undefined, params);
+    }
+    useSuperAdmins(params: SpaceQueryWatchParameters & { suspense: false }): Types.SuperAdmins | null;
+    useSuperAdmins(params?: SpaceQueryWatchParameters): Types.SuperAdmins;
+    useSuperAdmins(params?: SpaceQueryWatchParameters): Types.SuperAdmins | null {
+        return this.useQuery('SuperAdmins', undefined, params);
+    }
+    useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.SuperBadgeInRoom | null;
+    useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, params?: SpaceQueryWatchParameters): Types.SuperBadgeInRoom;
+    useSuperBadgeInRoom(variables: Types.SuperBadgeInRoomVariables, params?: SpaceQueryWatchParameters): Types.SuperBadgeInRoom | null {
+        return this.useQuery('SuperBadgeInRoom', variables, params);
+    }
+    useTransactionsHistory(variables: Types.TransactionsHistoryVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.TransactionsHistory | null;
+    useTransactionsHistory(variables: Types.TransactionsHistoryVariables, params?: SpaceQueryWatchParameters): Types.TransactionsHistory;
+    useTransactionsHistory(variables: Types.TransactionsHistoryVariables, params?: SpaceQueryWatchParameters): Types.TransactionsHistory | null {
+        return this.useQuery('TransactionsHistory', variables, params);
+    }
+    useUser(variables: Types.UserVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.User | null;
+    useUser(variables: Types.UserVariables, params?: SpaceQueryWatchParameters): Types.User;
+    useUser(variables: Types.UserVariables, params?: SpaceQueryWatchParameters): Types.User | null {
+        return this.useQuery('User', variables, params);
+    }
+    useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.UserAvailableRooms | null;
+    useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, params?: SpaceQueryWatchParameters): Types.UserAvailableRooms;
+    useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, params?: SpaceQueryWatchParameters): Types.UserAvailableRooms | null {
+        return this.useQuery('UserAvailableRooms', variables, params);
+    }
+    useUserPico(variables: Types.UserPicoVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.UserPico | null;
+    useUserPico(variables: Types.UserPicoVariables, params?: SpaceQueryWatchParameters): Types.UserPico;
+    useUserPico(variables: Types.UserPicoVariables, params?: SpaceQueryWatchParameters): Types.UserPico | null {
+        return this.useQuery('UserPico', variables, params);
+    }
+    useUserStorage(variables: Types.UserStorageVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.UserStorage | null;
+    useUserStorage(variables: Types.UserStorageVariables, params?: SpaceQueryWatchParameters): Types.UserStorage;
+    useUserStorage(variables: Types.UserStorageVariables, params?: SpaceQueryWatchParameters): Types.UserStorage | null {
+        return this.useQuery('UserStorage', variables, params);
+    }
+    useUsers(variables: Types.UsersVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.Users | null;
+    useUsers(variables: Types.UsersVariables, params?: SpaceQueryWatchParameters): Types.Users;
+    useUsers(variables: Types.UsersVariables, params?: SpaceQueryWatchParameters): Types.Users | null {
+        return this.useQuery('Users', variables, params);
+    }
+    mutateAccountInviteJoin(variables: Types.AccountInviteJoinVariables, params?: MutationParameters): Promise<Types.AccountInviteJoin> {
+        return this.mutate('AccountInviteJoin', variables, params);
+    }
+    mutateAddAppToChat(variables: Types.AddAppToChatVariables, params?: MutationParameters): Promise<Types.AddAppToChat> {
+        return this.mutate('AddAppToChat', variables, params);
+    }
+    mutateAddComment(variables: Types.AddCommentVariables, params?: MutationParameters): Promise<Types.AddComment> {
+        return this.mutate('AddComment', variables, params);
+    }
+    mutateAddStickerComment(variables: Types.AddStickerCommentVariables, params?: MutationParameters): Promise<Types.AddStickerComment> {
+        return this.mutate('AddStickerComment', variables, params);
+    }
+    mutateBetaDiscoverSkip(variables: Types.BetaDiscoverSkipVariables, params?: MutationParameters): Promise<Types.BetaDiscoverSkip> {
+        return this.mutate('BetaDiscoverSkip', variables, params);
+    }
+    mutateBetaNextDiscoverReset(params?: MutationParameters): Promise<Types.BetaNextDiscoverReset> {
+        return this.mutate('BetaNextDiscoverReset', undefined, params);
+    }
+    mutateBetaSubmitNextDiscover(variables: Types.BetaSubmitNextDiscoverVariables, params?: MutationParameters): Promise<Types.BetaSubmitNextDiscover> {
+        return this.mutate('BetaSubmitNextDiscover', variables, params);
+    }
+    mutateBuyPremiumChatPass(variables: Types.BuyPremiumChatPassVariables, params?: MutationParameters): Promise<Types.BuyPremiumChatPass> {
+        return this.mutate('BuyPremiumChatPass', variables, params);
+    }
+    mutateBuyPremiumChatSubscription(variables: Types.BuyPremiumChatSubscriptionVariables, params?: MutationParameters): Promise<Types.BuyPremiumChatSubscription> {
+        return this.mutate('BuyPremiumChatSubscription', variables, params);
+    }
+    mutateCancelSubscription(variables: Types.CancelSubscriptionVariables, params?: MutationParameters): Promise<Types.CancelSubscription> {
+        return this.mutate('CancelSubscription', variables, params);
+    }
+    mutateCommentSetReaction(variables: Types.CommentSetReactionVariables, params?: MutationParameters): Promise<Types.CommentSetReaction> {
+        return this.mutate('CommentSetReaction', variables, params);
+    }
+    mutateCommentUnsetReaction(variables: Types.CommentUnsetReactionVariables, params?: MutationParameters): Promise<Types.CommentUnsetReaction> {
+        return this.mutate('CommentUnsetReaction', variables, params);
+    }
+    mutateCommitCardSetupIntent(variables: Types.CommitCardSetupIntentVariables, params?: MutationParameters): Promise<Types.CommitCardSetupIntent> {
+        return this.mutate('CommitCardSetupIntent', variables, params);
+    }
+    mutateConferenceJoin(variables: Types.ConferenceJoinVariables, params?: MutationParameters): Promise<Types.ConferenceJoin> {
+        return this.mutate('ConferenceJoin', variables, params);
+    }
+    mutateConferenceKeepAlive(variables: Types.ConferenceKeepAliveVariables, params?: MutationParameters): Promise<Types.ConferenceKeepAlive> {
+        return this.mutate('ConferenceKeepAlive', variables, params);
+    }
+    mutateConferenceLeave(variables: Types.ConferenceLeaveVariables, params?: MutationParameters): Promise<Types.ConferenceLeave> {
+        return this.mutate('ConferenceLeave', variables, params);
+    }
+    mutateCreateApp(variables: Types.CreateAppVariables, params?: MutationParameters): Promise<Types.CreateApp> {
+        return this.mutate('CreateApp', variables, params);
+    }
+    mutateCreateCardSetupIntent(variables: Types.CreateCardSetupIntentVariables, params?: MutationParameters): Promise<Types.CreateCardSetupIntent> {
+        return this.mutate('CreateCardSetupIntent', variables, params);
+    }
+    mutateCreateDepositIntent(variables: Types.CreateDepositIntentVariables, params?: MutationParameters): Promise<Types.CreateDepositIntent> {
+        return this.mutate('CreateDepositIntent', variables, params);
+    }
+    mutateCreateOrganization(variables: Types.CreateOrganizationVariables, params?: MutationParameters): Promise<Types.CreateOrganization> {
+        return this.mutate('CreateOrganization', variables, params);
+    }
+    mutateDebugMails(variables: Types.DebugMailsVariables, params?: MutationParameters): Promise<Types.DebugMails> {
+        return this.mutate('DebugMails', variables, params);
+    }
+    mutateDeleteComment(variables: Types.DeleteCommentVariables, params?: MutationParameters): Promise<Types.DeleteComment> {
+        return this.mutate('DeleteComment', variables, params);
+    }
+    mutateDeleteNotification(variables: Types.DeleteNotificationVariables, params?: MutationParameters): Promise<Types.DeleteNotification> {
+        return this.mutate('DeleteNotification', variables, params);
+    }
+    mutateDeleteOrganization(variables: Types.DeleteOrganizationVariables, params?: MutationParameters): Promise<Types.DeleteOrganization> {
+        return this.mutate('DeleteOrganization', variables, params);
+    }
+    mutateDeleteUser(variables: Types.DeleteUserVariables, params?: MutationParameters): Promise<Types.DeleteUser> {
+        return this.mutate('DeleteUser', variables, params);
+    }
+    mutateDiscoverCollectionSetShortname(variables: Types.DiscoverCollectionSetShortnameVariables, params?: MutationParameters): Promise<Types.DiscoverCollectionSetShortname> {
+        return this.mutate('DiscoverCollectionSetShortname', variables, params);
+    }
+    mutateDiscoverCollectionsCreate(variables: Types.DiscoverCollectionsCreateVariables, params?: MutationParameters): Promise<Types.DiscoverCollectionsCreate> {
+        return this.mutate('DiscoverCollectionsCreate', variables, params);
+    }
+    mutateDiscoverCollectionsDelete(variables: Types.DiscoverCollectionsDeleteVariables, params?: MutationParameters): Promise<Types.DiscoverCollectionsDelete> {
+        return this.mutate('DiscoverCollectionsDelete', variables, params);
+    }
+    mutateDiscoverCollectionsUpdate(variables: Types.DiscoverCollectionsUpdateVariables, params?: MutationParameters): Promise<Types.DiscoverCollectionsUpdate> {
+        return this.mutate('DiscoverCollectionsUpdate', variables, params);
+    }
+    mutateDiscoverEditorsChoiceCreate(variables: Types.DiscoverEditorsChoiceCreateVariables, params?: MutationParameters): Promise<Types.DiscoverEditorsChoiceCreate> {
+        return this.mutate('DiscoverEditorsChoiceCreate', variables, params);
+    }
+    mutateDiscoverEditorsChoiceDelete(variables: Types.DiscoverEditorsChoiceDeleteVariables, params?: MutationParameters): Promise<Types.DiscoverEditorsChoiceDelete> {
+        return this.mutate('DiscoverEditorsChoiceDelete', variables, params);
+    }
+    mutateDiscoverEditorsChoiceUpdate(variables: Types.DiscoverEditorsChoiceUpdateVariables, params?: MutationParameters): Promise<Types.DiscoverEditorsChoiceUpdate> {
+        return this.mutate('DiscoverEditorsChoiceUpdate', variables, params);
+    }
+    mutateEditComment(variables: Types.EditCommentVariables, params?: MutationParameters): Promise<Types.EditComment> {
+        return this.mutate('EditComment', variables, params);
+    }
+    mutateEditMessage(variables: Types.EditMessageVariables, params?: MutationParameters): Promise<Types.EditMessage> {
+        return this.mutate('EditMessage', variables, params);
+    }
+    mutateFeatureFlagAdd(variables: Types.FeatureFlagAddVariables, params?: MutationParameters): Promise<Types.FeatureFlagAdd> {
+        return this.mutate('FeatureFlagAdd', variables, params);
+    }
+    mutateFeatureFlagDisable(variables: Types.FeatureFlagDisableVariables, params?: MutationParameters): Promise<Types.FeatureFlagDisable> {
+        return this.mutate('FeatureFlagDisable', variables, params);
+    }
+    mutateFeatureFlagEnable(variables: Types.FeatureFlagEnableVariables, params?: MutationParameters): Promise<Types.FeatureFlagEnable> {
+        return this.mutate('FeatureFlagEnable', variables, params);
+    }
+    mutateGlobalEventBusPublish(variables: Types.GlobalEventBusPublishVariables, params?: MutationParameters): Promise<Types.GlobalEventBusPublish> {
+        return this.mutate('GlobalEventBusPublish', variables, params);
+    }
+    mutateMakeCardDefault(variables: Types.MakeCardDefaultVariables, params?: MutationParameters): Promise<Types.MakeCardDefault> {
+        return this.mutate('MakeCardDefault', variables, params);
+    }
+    mutateMarkSequenceRead(variables: Types.MarkSequenceReadVariables, params?: MutationParameters): Promise<Types.MarkSequenceRead> {
+        return this.mutate('MarkSequenceRead', variables, params);
+    }
+    mutateMediaAnswer(variables: Types.MediaAnswerVariables, params?: MutationParameters): Promise<Types.MediaAnswer> {
+        return this.mutate('MediaAnswer', variables, params);
+    }
+    mutateMediaCandidate(variables: Types.MediaCandidateVariables, params?: MutationParameters): Promise<Types.MediaCandidate> {
+        return this.mutate('MediaCandidate', variables, params);
+    }
+    mutateMediaFailed(variables: Types.MediaFailedVariables, params?: MutationParameters): Promise<Types.MediaFailed> {
+        return this.mutate('MediaFailed', variables, params);
+    }
+    mutateMediaOffer(variables: Types.MediaOfferVariables, params?: MutationParameters): Promise<Types.MediaOffer> {
+        return this.mutate('MediaOffer', variables, params);
+    }
+    mutateMessageSetDonationReaction(variables: Types.MessageSetDonationReactionVariables, params?: MutationParameters): Promise<Types.MessageSetDonationReaction> {
+        return this.mutate('MessageSetDonationReaction', variables, params);
+    }
+    mutateMessageSetReaction(variables: Types.MessageSetReactionVariables, params?: MutationParameters): Promise<Types.MessageSetReaction> {
+        return this.mutate('MessageSetReaction', variables, params);
+    }
+    mutateMessageUnsetReaction(variables: Types.MessageUnsetReactionVariables, params?: MutationParameters): Promise<Types.MessageUnsetReaction> {
+        return this.mutate('MessageUnsetReaction', variables, params);
     }
-    mutateMyNotificationCenterMarkSeqRead(variables: Types.MyNotificationCenterMarkSeqReadVariables): Promise<Types.MyNotificationCenterMarkSeqRead> {
-        return this.mutate('MyNotificationCenterMarkSeqRead', variables);
+    mutateMyNotificationCenterMarkSeqRead(variables: Types.MyNotificationCenterMarkSeqReadVariables, params?: MutationParameters): Promise<Types.MyNotificationCenterMarkSeqRead> {
+        return this.mutate('MyNotificationCenterMarkSeqRead', variables, params);
     }
-    mutateOrganizationActivateByInvite(variables: Types.OrganizationActivateByInviteVariables): Promise<Types.OrganizationActivateByInvite> {
-        return this.mutate('OrganizationActivateByInvite', variables);
+    mutateOrganizationActivateByInvite(variables: Types.OrganizationActivateByInviteVariables, params?: MutationParameters): Promise<Types.OrganizationActivateByInvite> {
+        return this.mutate('OrganizationActivateByInvite', variables, params);
     }
-    mutateOrganizationAddMember(variables: Types.OrganizationAddMemberVariables): Promise<Types.OrganizationAddMember> {
-        return this.mutate('OrganizationAddMember', variables);
+    mutateOrganizationAddMember(variables: Types.OrganizationAddMemberVariables, params?: MutationParameters): Promise<Types.OrganizationAddMember> {
+        return this.mutate('OrganizationAddMember', variables, params);
     }
-    mutateOrganizationChangeMemberRole(variables: Types.OrganizationChangeMemberRoleVariables): Promise<Types.OrganizationChangeMemberRole> {
-        return this.mutate('OrganizationChangeMemberRole', variables);
+    mutateOrganizationChangeMemberRole(variables: Types.OrganizationChangeMemberRoleVariables, params?: MutationParameters): Promise<Types.OrganizationChangeMemberRole> {
+        return this.mutate('OrganizationChangeMemberRole', variables, params);
     }
-    mutateOrganizationCreatePublicInvite(variables: Types.OrganizationCreatePublicInviteVariables): Promise<Types.OrganizationCreatePublicInvite> {
-        return this.mutate('OrganizationCreatePublicInvite', variables);
+    mutateOrganizationCreatePublicInvite(variables: Types.OrganizationCreatePublicInviteVariables, params?: MutationParameters): Promise<Types.OrganizationCreatePublicInvite> {
+        return this.mutate('OrganizationCreatePublicInvite', variables, params);
     }
-    mutateOrganizationMemberRemove(variables: Types.OrganizationMemberRemoveVariables): Promise<Types.OrganizationMemberRemove> {
-        return this.mutate('OrganizationMemberRemove', variables);
+    mutateOrganizationMemberRemove(variables: Types.OrganizationMemberRemoveVariables, params?: MutationParameters): Promise<Types.OrganizationMemberRemove> {
+        return this.mutate('OrganizationMemberRemove', variables, params);
     }
-    mutatePairPhone(variables: Types.PairPhoneVariables): Promise<Types.PairPhone> {
-        return this.mutate('PairPhone', variables);
+    mutatePairPhone(variables: Types.PairPhoneVariables, params?: MutationParameters): Promise<Types.PairPhone> {
+        return this.mutate('PairPhone', variables, params);
     }
-    mutatePaymentIntentCancel(variables: Types.PaymentIntentCancelVariables): Promise<Types.PaymentIntentCancel> {
-        return this.mutate('PaymentIntentCancel', variables);
+    mutatePaymentIntentCancel(variables: Types.PaymentIntentCancelVariables, params?: MutationParameters): Promise<Types.PaymentIntentCancel> {
+        return this.mutate('PaymentIntentCancel', variables, params);
     }
-    mutatePaymentIntentCommit(variables: Types.PaymentIntentCommitVariables): Promise<Types.PaymentIntentCommit> {
-        return this.mutate('PaymentIntentCommit', variables);
+    mutatePaymentIntentCommit(variables: Types.PaymentIntentCommitVariables, params?: MutationParameters): Promise<Types.PaymentIntentCommit> {
+        return this.mutate('PaymentIntentCommit', variables, params);
     }
-    mutatePersistEvents(variables: Types.PersistEventsVariables): Promise<Types.PersistEvents> {
-        return this.mutate('PersistEvents', variables);
+    mutatePersistEvents(variables: Types.PersistEventsVariables, params?: MutationParameters): Promise<Types.PersistEvents> {
+        return this.mutate('PersistEvents', variables, params);
     }
-    mutatePinMessage(variables: Types.PinMessageVariables): Promise<Types.PinMessage> {
-        return this.mutate('PinMessage', variables);
+    mutatePinMessage(variables: Types.PinMessageVariables, params?: MutationParameters): Promise<Types.PinMessage> {
+        return this.mutate('PinMessage', variables, params);
     }
-    mutatePostCreateDraft(): Promise<Types.PostCreateDraft> {
-        return this.mutate('PostCreateDraft');
+    mutatePostCreateDraft(params?: MutationParameters): Promise<Types.PostCreateDraft> {
+        return this.mutate('PostCreateDraft', undefined, params);
     }
-    mutatePostDraftUpdate(variables: Types.PostDraftUpdateVariables): Promise<Types.PostDraftUpdate> {
-        return this.mutate('PostDraftUpdate', variables);
+    mutatePostDraftUpdate(variables: Types.PostDraftUpdateVariables, params?: MutationParameters): Promise<Types.PostDraftUpdate> {
+        return this.mutate('PostDraftUpdate', variables, params);
     }
-    mutatePostPublish(variables: Types.PostPublishVariables): Promise<Types.PostPublish> {
-        return this.mutate('PostPublish', variables);
+    mutatePostPublish(variables: Types.PostPublishVariables, params?: MutationParameters): Promise<Types.PostPublish> {
+        return this.mutate('PostPublish', variables, params);
     }
-    mutateProfileCreate(variables: Types.ProfileCreateVariables): Promise<Types.ProfileCreate> {
-        return this.mutate('ProfileCreate', variables);
+    mutateProfileCreate(variables: Types.ProfileCreateVariables, params?: MutationParameters): Promise<Types.ProfileCreate> {
+        return this.mutate('ProfileCreate', variables, params);
     }
-    mutateProfileUpdate(variables: Types.ProfileUpdateVariables): Promise<Types.ProfileUpdate> {
-        return this.mutate('ProfileUpdate', variables);
+    mutateProfileUpdate(variables: Types.ProfileUpdateVariables, params?: MutationParameters): Promise<Types.ProfileUpdate> {
+        return this.mutate('ProfileUpdate', variables, params);
     }
-    mutateReadNotification(variables: Types.ReadNotificationVariables): Promise<Types.ReadNotification> {
-        return this.mutate('ReadNotification', variables);
+    mutateReadNotification(variables: Types.ReadNotificationVariables, params?: MutationParameters): Promise<Types.ReadNotification> {
+        return this.mutate('ReadNotification', variables, params);
     }
-    mutateRefreshAppToken(variables: Types.RefreshAppTokenVariables): Promise<Types.RefreshAppToken> {
-        return this.mutate('RefreshAppToken', variables);
+    mutateRefreshAppToken(variables: Types.RefreshAppTokenVariables, params?: MutationParameters): Promise<Types.RefreshAppToken> {
+        return this.mutate('RefreshAppToken', variables, params);
     }
-    mutateRegisterPush(variables: Types.RegisterPushVariables): Promise<Types.RegisterPush> {
-        return this.mutate('RegisterPush', variables);
+    mutateRegisterPush(variables: Types.RegisterPushVariables, params?: MutationParameters): Promise<Types.RegisterPush> {
+        return this.mutate('RegisterPush', variables, params);
     }
-    mutateRegisterWebPush(variables: Types.RegisterWebPushVariables): Promise<Types.RegisterWebPush> {
-        return this.mutate('RegisterWebPush', variables);
+    mutateRegisterWebPush(variables: Types.RegisterWebPushVariables, params?: MutationParameters): Promise<Types.RegisterWebPush> {
+        return this.mutate('RegisterWebPush', variables, params);
     }
-    mutateRemoveCard(variables: Types.RemoveCardVariables): Promise<Types.RemoveCard> {
-        return this.mutate('RemoveCard', variables);
+    mutateRemoveCard(variables: Types.RemoveCardVariables, params?: MutationParameters): Promise<Types.RemoveCard> {
+        return this.mutate('RemoveCard', variables, params);
     }
-    mutateReportContent(variables: Types.ReportContentVariables): Promise<Types.ReportContent> {
-        return this.mutate('ReportContent', variables);
+    mutateReportContent(variables: Types.ReportContentVariables, params?: MutationParameters): Promise<Types.ReportContent> {
+        return this.mutate('ReportContent', variables, params);
     }
-    mutateReportOnline(variables: Types.ReportOnlineVariables): Promise<Types.ReportOnline> {
-        return this.mutate('ReportOnline', variables);
+    mutateReportOnline(variables: Types.ReportOnlineVariables, params?: MutationParameters): Promise<Types.ReportOnline> {
+        return this.mutate('ReportOnline', variables, params);
     }
-    mutateRoomAddMembers(variables: Types.RoomAddMembersVariables): Promise<Types.RoomAddMembers> {
-        return this.mutate('RoomAddMembers', variables);
+    mutateRoomAddMembers(variables: Types.RoomAddMembersVariables, params?: MutationParameters): Promise<Types.RoomAddMembers> {
+        return this.mutate('RoomAddMembers', variables, params);
     }
-    mutateRoomChangeRole(variables: Types.RoomChangeRoleVariables): Promise<Types.RoomChangeRole> {
-        return this.mutate('RoomChangeRole', variables);
+    mutateRoomChangeRole(variables: Types.RoomChangeRoleVariables, params?: MutationParameters): Promise<Types.RoomChangeRole> {
+        return this.mutate('RoomChangeRole', variables, params);
     }
-    mutateRoomCreate(variables: Types.RoomCreateVariables): Promise<Types.RoomCreate> {
-        return this.mutate('RoomCreate', variables);
+    mutateRoomCreate(variables: Types.RoomCreateVariables, params?: MutationParameters): Promise<Types.RoomCreate> {
+        return this.mutate('RoomCreate', variables, params);
     }
-    mutateRoomDeleteMessage(variables: Types.RoomDeleteMessageVariables): Promise<Types.RoomDeleteMessage> {
-        return this.mutate('RoomDeleteMessage', variables);
+    mutateRoomDeleteMessage(variables: Types.RoomDeleteMessageVariables, params?: MutationParameters): Promise<Types.RoomDeleteMessage> {
+        return this.mutate('RoomDeleteMessage', variables, params);
     }
-    mutateRoomDeleteMessages(variables: Types.RoomDeleteMessagesVariables): Promise<Types.RoomDeleteMessages> {
-        return this.mutate('RoomDeleteMessages', variables);
+    mutateRoomDeleteMessages(variables: Types.RoomDeleteMessagesVariables, params?: MutationParameters): Promise<Types.RoomDeleteMessages> {
+        return this.mutate('RoomDeleteMessages', variables, params);
     }
-    mutateRoomDeleteUrlAugmentation(variables: Types.RoomDeleteUrlAugmentationVariables): Promise<Types.RoomDeleteUrlAugmentation> {
-        return this.mutate('RoomDeleteUrlAugmentation', variables);
+    mutateRoomDeleteUrlAugmentation(variables: Types.RoomDeleteUrlAugmentationVariables, params?: MutationParameters): Promise<Types.RoomDeleteUrlAugmentation> {
+        return this.mutate('RoomDeleteUrlAugmentation', variables, params);
     }
-    mutateRoomJoin(variables: Types.RoomJoinVariables): Promise<Types.RoomJoin> {
-        return this.mutate('RoomJoin', variables);
+    mutateRoomJoin(variables: Types.RoomJoinVariables, params?: MutationParameters): Promise<Types.RoomJoin> {
+        return this.mutate('RoomJoin', variables, params);
     }
-    mutateRoomJoinInviteLink(variables: Types.RoomJoinInviteLinkVariables): Promise<Types.RoomJoinInviteLink> {
-        return this.mutate('RoomJoinInviteLink', variables);
+    mutateRoomJoinInviteLink(variables: Types.RoomJoinInviteLinkVariables, params?: MutationParameters): Promise<Types.RoomJoinInviteLink> {
+        return this.mutate('RoomJoinInviteLink', variables, params);
     }
-    mutateRoomKick(variables: Types.RoomKickVariables): Promise<Types.RoomKick> {
-        return this.mutate('RoomKick', variables);
+    mutateRoomKick(variables: Types.RoomKickVariables, params?: MutationParameters): Promise<Types.RoomKick> {
+        return this.mutate('RoomKick', variables, params);
     }
-    mutateRoomLeave(variables: Types.RoomLeaveVariables): Promise<Types.RoomLeave> {
-        return this.mutate('RoomLeave', variables);
+    mutateRoomLeave(variables: Types.RoomLeaveVariables, params?: MutationParameters): Promise<Types.RoomLeave> {
+        return this.mutate('RoomLeave', variables, params);
     }
-    mutateRoomRead(variables: Types.RoomReadVariables): Promise<Types.RoomRead> {
-        return this.mutate('RoomRead', variables);
+    mutateRoomRead(variables: Types.RoomReadVariables, params?: MutationParameters): Promise<Types.RoomRead> {
+        return this.mutate('RoomRead', variables, params);
     }
-    mutateRoomRenewInviteLink(variables: Types.RoomRenewInviteLinkVariables): Promise<Types.RoomRenewInviteLink> {
-        return this.mutate('RoomRenewInviteLink', variables);
+    mutateRoomRenewInviteLink(variables: Types.RoomRenewInviteLinkVariables, params?: MutationParameters): Promise<Types.RoomRenewInviteLink> {
+        return this.mutate('RoomRenewInviteLink', variables, params);
     }
-    mutateRoomSettingsUpdate(variables: Types.RoomSettingsUpdateVariables): Promise<Types.RoomSettingsUpdate> {
-        return this.mutate('RoomSettingsUpdate', variables);
+    mutateRoomSettingsUpdate(variables: Types.RoomSettingsUpdateVariables, params?: MutationParameters): Promise<Types.RoomSettingsUpdate> {
+        return this.mutate('RoomSettingsUpdate', variables, params);
     }
-    mutateRoomUpdate(variables: Types.RoomUpdateVariables): Promise<Types.RoomUpdate> {
-        return this.mutate('RoomUpdate', variables);
+    mutateRoomUpdate(variables: Types.RoomUpdateVariables, params?: MutationParameters): Promise<Types.RoomUpdate> {
+        return this.mutate('RoomUpdate', variables, params);
     }
-    mutateRoomsInviteUser(variables: Types.RoomsInviteUserVariables): Promise<Types.RoomsInviteUser> {
-        return this.mutate('RoomsInviteUser', variables);
+    mutateRoomsInviteUser(variables: Types.RoomsInviteUserVariables, params?: MutationParameters): Promise<Types.RoomsInviteUser> {
+        return this.mutate('RoomsInviteUser', variables, params);
     }
-    mutateRoomsJoin(variables: Types.RoomsJoinVariables): Promise<Types.RoomsJoin> {
-        return this.mutate('RoomsJoin', variables);
+    mutateRoomsJoin(variables: Types.RoomsJoinVariables, params?: MutationParameters): Promise<Types.RoomsJoin> {
+        return this.mutate('RoomsJoin', variables, params);
     }
-    mutateSendDonation(variables: Types.SendDonationVariables): Promise<Types.SendDonation> {
-        return this.mutate('SendDonation', variables);
+    mutateSendDonation(variables: Types.SendDonationVariables, params?: MutationParameters): Promise<Types.SendDonation> {
+        return this.mutate('SendDonation', variables, params);
     }
-    mutateSendMessage(variables: Types.SendMessageVariables): Promise<Types.SendMessage> {
-        return this.mutate('SendMessage', variables);
+    mutateSendMessage(variables: Types.SendMessageVariables, params?: MutationParameters): Promise<Types.SendMessage> {
+        return this.mutate('SendMessage', variables, params);
     }
-    mutateSendPhonePairCode(variables: Types.SendPhonePairCodeVariables): Promise<Types.SendPhonePairCode> {
-        return this.mutate('SendPhonePairCode', variables);
+    mutateSendPhonePairCode(variables: Types.SendPhonePairCodeVariables, params?: MutationParameters): Promise<Types.SendPhonePairCode> {
+        return this.mutate('SendPhonePairCode', variables, params);
     }
-    mutateSendSticker(variables: Types.SendStickerVariables): Promise<Types.SendSticker> {
-        return this.mutate('SendSticker', variables);
+    mutateSendSticker(variables: Types.SendStickerVariables, params?: MutationParameters): Promise<Types.SendSticker> {
+        return this.mutate('SendSticker', variables, params);
     }
-    mutateSetFeedChannelShortname(variables: Types.SetFeedChannelShortnameVariables): Promise<Types.SetFeedChannelShortname> {
-        return this.mutate('SetFeedChannelShortname', variables);
+    mutateSetFeedChannelShortname(variables: Types.SetFeedChannelShortnameVariables, params?: MutationParameters): Promise<Types.SetFeedChannelShortname> {
+        return this.mutate('SetFeedChannelShortname', variables, params);
     }
-    mutateSetOrgShortname(variables: Types.SetOrgShortnameVariables): Promise<Types.SetOrgShortname> {
-        return this.mutate('SetOrgShortname', variables);
+    mutateSetOrgShortname(variables: Types.SetOrgShortnameVariables, params?: MutationParameters): Promise<Types.SetOrgShortname> {
+        return this.mutate('SetOrgShortname', variables, params);
     }
-    mutateSetRoomShortname(variables: Types.SetRoomShortnameVariables): Promise<Types.SetRoomShortname> {
-        return this.mutate('SetRoomShortname', variables);
+    mutateSetRoomShortname(variables: Types.SetRoomShortnameVariables, params?: MutationParameters): Promise<Types.SetRoomShortname> {
+        return this.mutate('SetRoomShortname', variables, params);
     }
-    mutateSetTyping(variables: Types.SetTypingVariables): Promise<Types.SetTyping> {
-        return this.mutate('SetTyping', variables);
+    mutateSetTyping(variables: Types.SetTypingVariables, params?: MutationParameters): Promise<Types.SetTyping> {
+        return this.mutate('SetTyping', variables, params);
     }
-    mutateSetUserShortname(variables: Types.SetUserShortnameVariables): Promise<Types.SetUserShortname> {
-        return this.mutate('SetUserShortname', variables);
+    mutateSetUserShortname(variables: Types.SetUserShortnameVariables, params?: MutationParameters): Promise<Types.SetUserShortname> {
+        return this.mutate('SetUserShortname', variables, params);
     }
-    mutateSettingsUpdate(variables: Types.SettingsUpdateVariables): Promise<Types.SettingsUpdate> {
-        return this.mutate('SettingsUpdate', variables);
+    mutateSettingsUpdate(variables: Types.SettingsUpdateVariables, params?: MutationParameters): Promise<Types.SettingsUpdate> {
+        return this.mutate('SettingsUpdate', variables, params);
     }
-    mutateStickerPackAddToCollection(variables: Types.StickerPackAddToCollectionVariables): Promise<Types.StickerPackAddToCollection> {
-        return this.mutate('StickerPackAddToCollection', variables);
+    mutateStickerPackAddToCollection(variables: Types.StickerPackAddToCollectionVariables, params?: MutationParameters): Promise<Types.StickerPackAddToCollection> {
+        return this.mutate('StickerPackAddToCollection', variables, params);
     }
-    mutateStickerPackRemoveFromCollection(variables: Types.StickerPackRemoveFromCollectionVariables): Promise<Types.StickerPackRemoveFromCollection> {
-        return this.mutate('StickerPackRemoveFromCollection', variables);
+    mutateStickerPackRemoveFromCollection(variables: Types.StickerPackRemoveFromCollectionVariables, params?: MutationParameters): Promise<Types.StickerPackRemoveFromCollection> {
+        return this.mutate('StickerPackRemoveFromCollection', variables, params);
     }
-    mutateSubscribeToComments(variables: Types.SubscribeToCommentsVariables): Promise<Types.SubscribeToComments> {
-        return this.mutate('SubscribeToComments', variables);
+    mutateSubscribeToComments(variables: Types.SubscribeToCommentsVariables, params?: MutationParameters): Promise<Types.SubscribeToComments> {
+        return this.mutate('SubscribeToComments', variables, params);
     }
-    mutateSuperAccountActivate(variables: Types.SuperAccountActivateVariables): Promise<Types.SuperAccountActivate> {
-        return this.mutate('SuperAccountActivate', variables);
+    mutateSuperAccountActivate(variables: Types.SuperAccountActivateVariables, params?: MutationParameters): Promise<Types.SuperAccountActivate> {
+        return this.mutate('SuperAccountActivate', variables, params);
     }
-    mutateSuperAccountAdd(variables: Types.SuperAccountAddVariables): Promise<Types.SuperAccountAdd> {
-        return this.mutate('SuperAccountAdd', variables);
+    mutateSuperAccountAdd(variables: Types.SuperAccountAddVariables, params?: MutationParameters): Promise<Types.SuperAccountAdd> {
+        return this.mutate('SuperAccountAdd', variables, params);
     }
-    mutateSuperAccountMemberAdd(variables: Types.SuperAccountMemberAddVariables): Promise<Types.SuperAccountMemberAdd> {
-        return this.mutate('SuperAccountMemberAdd', variables);
+    mutateSuperAccountMemberAdd(variables: Types.SuperAccountMemberAddVariables, params?: MutationParameters): Promise<Types.SuperAccountMemberAdd> {
+        return this.mutate('SuperAccountMemberAdd', variables, params);
     }
-    mutateSuperAccountMemberRemove(variables: Types.SuperAccountMemberRemoveVariables): Promise<Types.SuperAccountMemberRemove> {
-        return this.mutate('SuperAccountMemberRemove', variables);
+    mutateSuperAccountMemberRemove(variables: Types.SuperAccountMemberRemoveVariables, params?: MutationParameters): Promise<Types.SuperAccountMemberRemove> {
+        return this.mutate('SuperAccountMemberRemove', variables, params);
     }
-    mutateSuperAccountPend(variables: Types.SuperAccountPendVariables): Promise<Types.SuperAccountPend> {
-        return this.mutate('SuperAccountPend', variables);
+    mutateSuperAccountPend(variables: Types.SuperAccountPendVariables, params?: MutationParameters): Promise<Types.SuperAccountPend> {
+        return this.mutate('SuperAccountPend', variables, params);
     }
-    mutateSuperAccountRename(variables: Types.SuperAccountRenameVariables): Promise<Types.SuperAccountRename> {
-        return this.mutate('SuperAccountRename', variables);
+    mutateSuperAccountRename(variables: Types.SuperAccountRenameVariables, params?: MutationParameters): Promise<Types.SuperAccountRename> {
+        return this.mutate('SuperAccountRename', variables, params);
     }
-    mutateSuperAccountSuspend(variables: Types.SuperAccountSuspendVariables): Promise<Types.SuperAccountSuspend> {
-        return this.mutate('SuperAccountSuspend', variables);
+    mutateSuperAccountSuspend(variables: Types.SuperAccountSuspendVariables, params?: MutationParameters): Promise<Types.SuperAccountSuspend> {
+        return this.mutate('SuperAccountSuspend', variables, params);
     }
-    mutateSuperAdminAdd(variables: Types.SuperAdminAddVariables): Promise<Types.SuperAdminAdd> {
-        return this.mutate('SuperAdminAdd', variables);
+    mutateSuperAdminAdd(variables: Types.SuperAdminAddVariables, params?: MutationParameters): Promise<Types.SuperAdminAdd> {
+        return this.mutate('SuperAdminAdd', variables, params);
     }
-    mutateSuperAdminRemove(variables: Types.SuperAdminRemoveVariables): Promise<Types.SuperAdminRemove> {
-        return this.mutate('SuperAdminRemove', variables);
+    mutateSuperAdminRemove(variables: Types.SuperAdminRemoveVariables, params?: MutationParameters): Promise<Types.SuperAdminRemove> {
+        return this.mutate('SuperAdminRemove', variables, params);
     }
-    mutateSuperBadgeCreateToRoom(variables: Types.SuperBadgeCreateToRoomVariables): Promise<Types.SuperBadgeCreateToRoom> {
-        return this.mutate('SuperBadgeCreateToRoom', variables);
+    mutateSuperBadgeCreateToRoom(variables: Types.SuperBadgeCreateToRoomVariables, params?: MutationParameters): Promise<Types.SuperBadgeCreateToRoom> {
+        return this.mutate('SuperBadgeCreateToRoom', variables, params);
     }
-    mutateSuperBadgeUnsetToRoom(variables: Types.SuperBadgeUnsetToRoomVariables): Promise<Types.SuperBadgeUnsetToRoom> {
-        return this.mutate('SuperBadgeUnsetToRoom', variables);
+    mutateSuperBadgeUnsetToRoom(variables: Types.SuperBadgeUnsetToRoomVariables, params?: MutationParameters): Promise<Types.SuperBadgeUnsetToRoom> {
+        return this.mutate('SuperBadgeUnsetToRoom', variables, params);
     }
-    mutateUnSubscribeFromComments(variables: Types.UnSubscribeFromCommentsVariables): Promise<Types.UnSubscribeFromComments> {
-        return this.mutate('UnSubscribeFromComments', variables);
+    mutateUnSubscribeFromComments(variables: Types.UnSubscribeFromCommentsVariables, params?: MutationParameters): Promise<Types.UnSubscribeFromComments> {
+        return this.mutate('UnSubscribeFromComments', variables, params);
     }
-    mutateUnpinMessage(variables: Types.UnpinMessageVariables): Promise<Types.UnpinMessage> {
-        return this.mutate('UnpinMessage', variables);
+    mutateUnpinMessage(variables: Types.UnpinMessageVariables, params?: MutationParameters): Promise<Types.UnpinMessage> {
+        return this.mutate('UnpinMessage', variables, params);
     }
-    mutateUnsetTyping(variables: Types.UnsetTypingVariables): Promise<Types.UnsetTyping> {
-        return this.mutate('UnsetTyping', variables);
+    mutateUnsetTyping(variables: Types.UnsetTypingVariables, params?: MutationParameters): Promise<Types.UnsetTyping> {
+        return this.mutate('UnsetTyping', variables, params);
     }
-    mutateUpdateApp(variables: Types.UpdateAppVariables): Promise<Types.UpdateApp> {
-        return this.mutate('UpdateApp', variables);
+    mutateUpdateApp(variables: Types.UpdateAppVariables, params?: MutationParameters): Promise<Types.UpdateApp> {
+        return this.mutate('UpdateApp', variables, params);
     }
-    mutateUpdateOrganization(variables: Types.UpdateOrganizationVariables): Promise<Types.UpdateOrganization> {
-        return this.mutate('UpdateOrganization', variables);
+    mutateUpdateOrganization(variables: Types.UpdateOrganizationVariables, params?: MutationParameters): Promise<Types.UpdateOrganization> {
+        return this.mutate('UpdateOrganization', variables, params);
     }
-    mutateUpdateWelcomeMessage(variables: Types.UpdateWelcomeMessageVariables): Promise<Types.UpdateWelcomeMessage> {
-        return this.mutate('UpdateWelcomeMessage', variables);
+    mutateUpdateWelcomeMessage(variables: Types.UpdateWelcomeMessageVariables, params?: MutationParameters): Promise<Types.UpdateWelcomeMessage> {
+        return this.mutate('UpdateWelcomeMessage', variables, params);
     }
-    mutateUserStorageSet(variables: Types.UserStorageSetVariables): Promise<Types.UserStorageSet> {
-        return this.mutate('UserStorageSet', variables);
+    mutateUserStorageSet(variables: Types.UserStorageSetVariables, params?: MutationParameters): Promise<Types.UserStorageSet> {
+        return this.mutate('UserStorageSet', variables, params);
     }
-    mutateconferenceAddScreenShare(variables: Types.conferenceAddScreenShareVariables): Promise<Types.conferenceAddScreenShare> {
-        return this.mutate('conferenceAddScreenShare', variables);
+    mutateconferenceAddScreenShare(variables: Types.conferenceAddScreenShareVariables, params?: MutationParameters): Promise<Types.conferenceAddScreenShare> {
+        return this.mutate('conferenceAddScreenShare', variables, params);
     }
-    mutateconferenceAlterMediaState(variables: Types.conferenceAlterMediaStateVariables): Promise<Types.conferenceAlterMediaState> {
-        return this.mutate('conferenceAlterMediaState', variables);
+    mutateconferenceAlterMediaState(variables: Types.conferenceAlterMediaStateVariables, params?: MutationParameters): Promise<Types.conferenceAlterMediaState> {
+        return this.mutate('conferenceAlterMediaState', variables, params);
     }
-    mutateconferenceRemoveScreenShare(variables: Types.conferenceRemoveScreenShareVariables): Promise<Types.conferenceRemoveScreenShare> {
-        return this.mutate('conferenceRemoveScreenShare', variables);
+    mutateconferenceRemoveScreenShare(variables: Types.conferenceRemoveScreenShareVariables, params?: MutationParameters): Promise<Types.conferenceRemoveScreenShare> {
+        return this.mutate('conferenceRemoveScreenShare', variables, params);
     }
-    mutateconferenceRequestLocalMediaChange(variables: Types.conferenceRequestLocalMediaChangeVariables): Promise<Types.conferenceRequestLocalMediaChange> {
-        return this.mutate('conferenceRequestLocalMediaChange', variables);
+    mutateconferenceRequestLocalMediaChange(variables: Types.conferenceRequestLocalMediaChangeVariables, params?: MutationParameters): Promise<Types.conferenceRequestLocalMediaChange> {
+        return this.mutate('conferenceRequestLocalMediaChange', variables, params);
     }
-    subscribeChatOnlinesCountWatch(variables: Types.ChatOnlinesCountWatchVariables, handler: GraphqlSubscriptionHandler<Types.ChatOnlinesCountWatch>): GraphqlActiveSubscription<Types.ChatOnlinesCountWatch> {
-        return this.subscribe(handler, 'ChatOnlinesCountWatch', variables);
+    subscribeChatOnlinesCountWatch(variables: Types.ChatOnlinesCountWatchVariables, handler: GraphqlSubscriptionHandler<Types.ChatOnlinesCountWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.ChatOnlinesCountWatch> {
+        return this.subscribe(handler, 'ChatOnlinesCountWatch', variables, params);
     }
-    subscribeChatWatch(variables: Types.ChatWatchVariables, handler: GraphqlSubscriptionHandler<Types.ChatWatch>): GraphqlActiveSubscription<Types.ChatWatch> {
-        return this.subscribe(handler, 'ChatWatch', variables);
+    subscribeChatWatch(variables: Types.ChatWatchVariables, handler: GraphqlSubscriptionHandler<Types.ChatWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.ChatWatch> {
+        return this.subscribe(handler, 'ChatWatch', variables, params);
     }
-    subscribeCommentWatch(variables: Types.CommentWatchVariables, handler: GraphqlSubscriptionHandler<Types.CommentWatch>): GraphqlActiveSubscription<Types.CommentWatch> {
-        return this.subscribe(handler, 'CommentWatch', variables);
+    subscribeCommentWatch(variables: Types.CommentWatchVariables, handler: GraphqlSubscriptionHandler<Types.CommentWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.CommentWatch> {
+        return this.subscribe(handler, 'CommentWatch', variables, params);
     }
-    subscribeConferenceMediaWatch(variables: Types.ConferenceMediaWatchVariables, handler: GraphqlSubscriptionHandler<Types.ConferenceMediaWatch>): GraphqlActiveSubscription<Types.ConferenceMediaWatch> {
-        return this.subscribe(handler, 'ConferenceMediaWatch', variables);
+    subscribeConferenceMediaWatch(variables: Types.ConferenceMediaWatchVariables, handler: GraphqlSubscriptionHandler<Types.ConferenceMediaWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.ConferenceMediaWatch> {
+        return this.subscribe(handler, 'ConferenceMediaWatch', variables, params);
     }
-    subscribeConferenceWatch(variables: Types.ConferenceWatchVariables, handler: GraphqlSubscriptionHandler<Types.ConferenceWatch>): GraphqlActiveSubscription<Types.ConferenceWatch> {
-        return this.subscribe(handler, 'ConferenceWatch', variables);
+    subscribeConferenceWatch(variables: Types.ConferenceWatchVariables, handler: GraphqlSubscriptionHandler<Types.ConferenceWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.ConferenceWatch> {
+        return this.subscribe(handler, 'ConferenceWatch', variables, params);
     }
-    subscribeDebugEventsWatch(variables: Types.DebugEventsWatchVariables, handler: GraphqlSubscriptionHandler<Types.DebugEventsWatch>): GraphqlActiveSubscription<Types.DebugEventsWatch> {
-        return this.subscribe(handler, 'DebugEventsWatch', variables);
+    subscribeDebugEventsWatch(variables: Types.DebugEventsWatchVariables, handler: GraphqlSubscriptionHandler<Types.DebugEventsWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.DebugEventsWatch> {
+        return this.subscribe(handler, 'DebugEventsWatch', variables, params);
     }
-    subscribeDialogsWatch(variables: Types.DialogsWatchVariables, handler: GraphqlSubscriptionHandler<Types.DialogsWatch>): GraphqlActiveSubscription<Types.DialogsWatch> {
-        return this.subscribe(handler, 'DialogsWatch', variables);
+    subscribeDialogsWatch(variables: Types.DialogsWatchVariables, handler: GraphqlSubscriptionHandler<Types.DialogsWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.DialogsWatch> {
+        return this.subscribe(handler, 'DialogsWatch', variables, params);
     }
-    subscribeGlobalEventBus(variables: Types.GlobalEventBusVariables, handler: GraphqlSubscriptionHandler<Types.GlobalEventBus>): GraphqlActiveSubscription<Types.GlobalEventBus> {
-        return this.subscribe(handler, 'GlobalEventBus', variables);
+    subscribeGlobalEventBus(variables: Types.GlobalEventBusVariables, handler: GraphqlSubscriptionHandler<Types.GlobalEventBus>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.GlobalEventBus> {
+        return this.subscribe(handler, 'GlobalEventBus', variables, params);
     }
-    subscribeMyNotificationsCenter(variables: Types.MyNotificationsCenterVariables, handler: GraphqlSubscriptionHandler<Types.MyNotificationsCenter>): GraphqlActiveSubscription<Types.MyNotificationsCenter> {
-        return this.subscribe(handler, 'MyNotificationsCenter', variables);
+    subscribeMyNotificationsCenter(variables: Types.MyNotificationsCenterVariables, handler: GraphqlSubscriptionHandler<Types.MyNotificationsCenter>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.MyNotificationsCenter> {
+        return this.subscribe(handler, 'MyNotificationsCenter', variables, params);
     }
-    subscribeOnlineWatch(variables: Types.OnlineWatchVariables, handler: GraphqlSubscriptionHandler<Types.OnlineWatch>): GraphqlActiveSubscription<Types.OnlineWatch> {
-        return this.subscribe(handler, 'OnlineWatch', variables);
+    subscribeOnlineWatch(variables: Types.OnlineWatchVariables, handler: GraphqlSubscriptionHandler<Types.OnlineWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.OnlineWatch> {
+        return this.subscribe(handler, 'OnlineWatch', variables, params);
     }
-    subscribeSettingsWatch(handler: GraphqlSubscriptionHandler<Types.SettingsWatch>): GraphqlActiveSubscription<Types.SettingsWatch> {
-        return this.subscribe(handler, 'SettingsWatch', undefined);
+    subscribeSettingsWatch(handler: GraphqlSubscriptionHandler<Types.SettingsWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.SettingsWatch> {
+        return this.subscribe(handler, 'SettingsWatch', undefined, params);
     }
-    subscribeTypingsWatch(handler: GraphqlSubscriptionHandler<Types.TypingsWatch>): GraphqlActiveSubscription<Types.TypingsWatch> {
-        return this.subscribe(handler, 'TypingsWatch', undefined);
+    subscribeTypingsWatch(handler: GraphqlSubscriptionHandler<Types.TypingsWatch>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.TypingsWatch> {
+        return this.subscribe(handler, 'TypingsWatch', undefined, params);
     }
-    subscribeWalletUpdates(variables: Types.WalletUpdatesVariables, handler: GraphqlSubscriptionHandler<Types.WalletUpdates>): GraphqlActiveSubscription<Types.WalletUpdates> {
-        return this.subscribe(handler, 'WalletUpdates', variables);
+    subscribeWalletUpdates(variables: Types.WalletUpdatesVariables, handler: GraphqlSubscriptionHandler<Types.WalletUpdates>, params?: SubscriptionParameters): GraphqlActiveSubscription<Types.WalletUpdates> {
+        return this.subscribe(handler, 'WalletUpdates', variables, params);
     }
 }
