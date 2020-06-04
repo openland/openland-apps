@@ -1,4 +1,4 @@
-import { Queue } from 'openland-y-utils/Queue';
+import { Queue, createFifoQueue } from 'openland-y-utils/Queue';
 import { MessengerEngine } from './MessengerEngine';
 import { OpenlandClient } from 'openland-api/spacex';
 import { DataSource } from 'openland-y-utils/DataSource';
@@ -145,7 +145,7 @@ export class NotificationCenterEngine {
             onStarted: (state: string, items: NotificationsDataSourceItem[]) => {
                 log.log('onStarted');
 
-                let queue = new Queue<{ state: string, events: Types.MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates[] }>();
+                let queue = createFifoQueue<{ state: string, events: Types.MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates[] }>();
                 sequenceWatcher<MyNotificationsCenter>(state, (s, handler) => this.engine.client.subscribeMyNotificationsCenter({ state }, handler), (update) => {
                     if (!update.event) {
                         return null;

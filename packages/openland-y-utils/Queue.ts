@@ -1,29 +1,32 @@
+import { FIFOQueue } from './queue/FIFOQueue';
+import { QueueEngine } from './queue/QueueEngine';
+
 export class Queue<T> {
-    private pending?: (src: T) => void;
-    private queue: T[] = [];
+    private _pending = new FIFOQueue<(src: T) => void>();
+    private _engine: QueueEngine<T>;
+
+    constructor(engine: QueueEngine<T>) {
+        this._engine = engine;
+    }
 
     get = async () => {
-        if (this.queue.length > 0) {
-            return this.queue.shift();
+        if (this._engine.size > 0) {
+            return this._engine.pop();
         } else {
-            if (this.pending) {
-                throw Error('Multiple subscribers are not supported yet');
-            }
-            return await new Promise<any>((resolver) => this.pending = resolver);
+            return await new Promise<any>((resolver) => this._pending.push(resolver));
         }
     }
 
     post = (src: T) => {
-        if (this.pending) {
-            if (this.queue.length > 0) {
-                this.queue.push(src);
-            } else {
-                let p = this.pending;
-                this.pending = undefined;
-                p(src);
-            }
+        if (this._pending.size > 0) {
+            let pend = this._pending.pop()!;
+            pend(src);
         } else {
-            this.queue.push(src);
+            this._engine.push(src);
         }
     }
+}
+
+export function createFifoQueue<T>() {
+    return new Queue<T>(new FIFOQueue<T>());
 }

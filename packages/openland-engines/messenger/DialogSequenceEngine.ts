@@ -1,5 +1,5 @@
 import { reliableWatcher } from 'openland-api/reliableWatcher';
-import { Queue } from 'openland-y-utils/Queue';
+import { Queue, createFifoQueue } from 'openland-y-utils/Queue';
 import { MessengerEngine } from '../MessengerEngine';
 import { backoff } from 'openland-y-utils/timer';
 import * as Types from 'openland-api/spacex.types';
@@ -15,7 +15,7 @@ export class DialogSequenceEngine {
     private visibleConversations = new Set<string>();
     private counterQueue: InvalidationQueue;
     private counterState!: Types.GlobalCounter;
-    private queue = new Queue<{ state: string, events: Types.DialogUpdateFragment[] }>();
+    private queue = createFifoQueue<{ state: string, events: Types.DialogUpdateFragment[] }>();
 
     constructor(engine: MessengerEngine) {
         this.engine = engine;

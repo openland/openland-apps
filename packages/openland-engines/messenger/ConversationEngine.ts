@@ -1,4 +1,4 @@
-import { Queue } from 'openland-y-utils/Queue';
+import { Queue, createFifoQueue } from 'openland-y-utils/Queue';
 import { MessengerEngine } from '../MessengerEngine';
 import { MessageReactionType } from 'openland-api/spacex.types';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
@@ -259,7 +259,7 @@ export class ConversationEngine implements MessageSendHandler {
     private gen = 0;
     private loadFrom: 'unread' | 'end' = 'unread';
     private watcher: GraphqlActiveSubscription<Types.ChatWatch> | null = null;
-    private updateQueue = new Queue<Types.ChatWatch_event_ChatUpdateBatch_updates>();
+    private updateQueue = createFifoQueue<Types.ChatWatch_event_ChatUpdateBatch_updates>();
     private isOpen = false;
     private messages: (FullMessage | PendingMessage)[] = [];
     private state: ConversationState;
