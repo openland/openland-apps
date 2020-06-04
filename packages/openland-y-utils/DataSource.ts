@@ -408,7 +408,7 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
             this.needMoreForward();
         });
 
-        let queue = new Queue();
+        let queue = new Queue<() => any>();
         (async () => {
             let c = 0;
             while (true) {

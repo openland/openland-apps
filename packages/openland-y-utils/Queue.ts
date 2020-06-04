@@ -1,6 +1,6 @@
-export class Queue {
-    private pending?: (src: any) => void;
-    private queue: any[] = [];
+export class Queue<T> {
+    private pending?: (src: T) => void;
+    private queue: T[] = [];
 
     get = async () => {
         if (this.queue.length > 0) {
@@ -13,7 +13,7 @@ export class Queue {
         }
     }
 
-    post = (src: any) => {
+    post = (src: T) => {
         if (this.pending) {
             if (this.queue.length > 0) {
                 this.queue.push(src);

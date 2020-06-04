@@ -15,7 +15,7 @@ export class DialogSequenceEngine {
     private visibleConversations = new Set<string>();
     private counterQueue: InvalidationQueue;
     private counterState!: Types.GlobalCounter;
-    private queue = new Queue();
+    private queue = new Queue<{ state: string, events: Types.DialogUpdateFragment[] }>();
 
     constructor(engine: MessengerEngine) {
         this.engine = engine;

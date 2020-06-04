@@ -259,7 +259,7 @@ export class ConversationEngine implements MessageSendHandler {
     private gen = 0;
     private loadFrom: 'unread' | 'end' = 'unread';
     private watcher: GraphqlActiveSubscription<Types.ChatWatch> | null = null;
-    private updateQueue = new Queue();
+    private updateQueue = new Queue<Types.ChatWatch_event_ChatUpdateBatch_updates>();
     private isOpen = false;
     private messages: (FullMessage | PendingMessage)[] = [];
     private state: ConversationState;
@@ -679,7 +679,7 @@ export class ConversationEngine implements MessageSendHandler {
                 message: null,
                 failed: false,
                 isImage: !!info.isImage,
-                imageSize: info.imageSize || localImage && {width: localImage.width, height: localImage.height},
+                imageSize: info.imageSize || localImage && { width: localImage.width, height: localImage.height },
                 quoted,
                 filePreview: localImage && localImage.src || '',
             } as PendingMessage;
