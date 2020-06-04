@@ -9,8 +9,8 @@ import { DiscoverFragment } from 'openland-web/fragments/discover/DiscoverFragme
 import { XLoader } from 'openland-x/XLoader';
 import DiscoverIcon from './navigation/icon_discover.svg';
 import DiscoverActiveIcon from './navigation/icon_discover_active.svg';
-import DiscussionsIcon from './navigation/ic-flashlight-24.svg';
-import DiscussionsActiveIcon from './navigation/ic-flashlight-filled-24.svg';
+import ChannelsIcon from './navigation/ic-flashlight-24.svg';
+import ChannelsActiveIcon from './navigation/ic-flashlight-filled-24.svg';
 import ChatIcon from './navigation/icon_chat.svg';
 import ChatActiveIcon from './navigation/icon_chat_active.svg';
 import ProfileIcon from './navigation/icon_profile.svg';
@@ -35,11 +35,11 @@ const Unicorn = React.memo(() => {
                         defaultPage: true
                     },
                     {
-                        icon: <DiscussionsIcon />,
-                        iconActive: <DiscussionsActiveIcon />,
-                        path: '/discuss',
+                        icon: <ChannelsIcon />,
+                        iconActive: <ChannelsActiveIcon />,
+                        path: '/channels',
                         component: <IndexFragment />,
-                        caption: 'Discussions',
+                        caption: 'Channels',
                         defaultPage: true
                     },
                     {

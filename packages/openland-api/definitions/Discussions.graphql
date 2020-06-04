@@ -128,6 +128,12 @@ query Posts($channels: [ID!]!, $after: String) {
     }
 }
 
+query Post($id: ID!) {
+    post(id: $id) {
+        ...PostSimple
+    }
+}
+
 query MyPostDrafts($after: String) {
     postMyDrafts(first: 20, after: $after) {
         items {

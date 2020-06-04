@@ -193,6 +193,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryPicSharedMedia(variables: Types.PicSharedMediaVariables, opts?: OperationParameters): Promise<Types.PicSharedMedia> {
         return this.query('PicSharedMedia', variables, opts);
     }
+    queryPost(variables: Types.PostVariables, opts?: OperationParameters): Promise<Types.Post> {
+        return this.query('Post', variables, opts);
+    }
     queryPostDraft(variables: Types.PostDraftVariables, opts?: OperationParameters): Promise<Types.PostDraft> {
         return this.query('PostDraft', variables, opts);
     }
@@ -490,6 +493,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchPicSharedMedia(variables: Types.PicSharedMediaVariables, opts?: OperationParameters): Promise<Types.PicSharedMedia> {
         return this.refetch('PicSharedMedia', variables);
     }
+    refetchPost(variables: Types.PostVariables, opts?: OperationParameters): Promise<Types.Post> {
+        return this.refetch('Post', variables);
+    }
     refetchPostDraft(variables: Types.PostDraftVariables, opts?: OperationParameters): Promise<Types.PostDraft> {
         return this.refetch('PostDraft', variables);
     }
@@ -786,6 +792,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updatePicSharedMedia(variables: Types.PicSharedMediaVariables, updater: (data: Types.PicSharedMedia) => Types.PicSharedMedia | null): Promise<boolean> {
         return this.updateQuery(updater, 'PicSharedMedia', variables);
+    }
+    updatePost(variables: Types.PostVariables, updater: (data: Types.Post) => Types.Post | null): Promise<boolean> {
+        return this.updateQuery(updater, 'Post', variables);
     }
     updatePostDraft(variables: Types.PostDraftVariables, updater: (data: Types.PostDraft) => Types.PostDraft | null): Promise<boolean> {
         return this.updateQuery(updater, 'PostDraft', variables);
@@ -1207,6 +1216,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     usePicSharedMedia(variables: Types.PicSharedMediaVariables, opts?: SpaceQueryWatchParameters): Types.PicSharedMedia;
     usePicSharedMedia(variables: Types.PicSharedMediaVariables, opts?: SpaceQueryWatchParameters): Types.PicSharedMedia | null {
         return this.useQuery('PicSharedMedia', variables, opts);
+    }
+    usePost(variables: Types.PostVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.Post | null;
+    usePost(variables: Types.PostVariables, opts?: SpaceQueryWatchParameters): Types.Post;
+    usePost(variables: Types.PostVariables, opts?: SpaceQueryWatchParameters): Types.Post | null {
+        return this.useQuery('Post', variables, opts);
     }
     usePostDraft(variables: Types.PostDraftVariables, opts: SpaceQueryWatchParameters & { suspense: false }): Types.PostDraft | null;
     usePostDraft(variables: Types.PostDraftVariables, opts?: SpaceQueryWatchParameters): Types.PostDraft;

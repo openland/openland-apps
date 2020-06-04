@@ -88,12 +88,12 @@ routes.add('/discover/free/', '/unicorn/index');
 //
 // Discussions
 //
-routes.add('/discuss', '/unicorn/index');
-routes.add('/discuss/', '/unicorn/index');
-routes.add('/discuss/drafts', '/unicorn/index');
-routes.add('/discuss/drafts/', '/unicorn/index');
-routes.add('/discuss/edit/:id', '/unicorn/index');
-routes.add('/discuss/edit/:id/', '/unicorn/index');
+routes.add('/channels', '/unicorn/index');
+routes.add('/channels/', '/unicorn/index');
+routes.add('/channels/drafts', '/unicorn/index');
+routes.add('/channels/drafts/', '/unicorn/index');
+routes.add('/channels/edit/:id', '/unicorn/index');
+routes.add('/channels/edit/:id/', '/unicorn/index');
 
 //
 // Onboardinng

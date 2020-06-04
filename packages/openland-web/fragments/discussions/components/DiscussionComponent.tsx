@@ -9,11 +9,13 @@ export const DiscussionComponent = React.memo((props: { data: PostSimple }) => {
     // let account = client.useAccount();
     return (
         <XView flexDirection="column" paddingBottom={48}>
-            <XView {...TextStyles.Subhead} opacity={0.7} paddingBottom={4}>
-                {props.data.channel!.title.toUpperCase()}
-            </XView>
+            {props.data.channel && (
+                <XView {...TextStyles.Subhead} opacity={0.7} paddingBottom={4} path={'/' + props.data.channel.shortname}>
+                    {props.data.channel!.title.toUpperCase()}
+                </XView>
+            )}
             <XView flexDirection="row">
-                <XView {...TextStyles.Title1} paddingBottom={16} fontSize={38} fontWeight="400">
+                <XView {...TextStyles.Title1} paddingBottom={16} fontSize={38} fontWeight="400" path={props.data.channel ? '/' + props.data.channel.shortname + '/' + props.data.id : undefined}>
                     {props.data.title}
                 </XView>
             </XView>

@@ -100,12 +100,12 @@ routing.addRoute('/discover/premium', () => DiscoverTopPremiumFragment);
 routing.addRoute('/discover/free', () => DiscoverTopFreeFragment);
 
 // Discussions
-routing.addRoute('/discuss', () => DiscussionsFragment);
-routing.addRoute('/discuss/', () => DiscussionsFragment);
-routing.addRoute('/discuss/drafts', () => DraftsFragment);
-routing.addRoute('/discuss/drafts/', () => DraftsFragment);
-routing.addRoute('/discuss/edit/:id', () => DiscussionEditorFragment);
-routing.addRoute('/discuss/edit/:id/', () => DiscussionEditorFragment);
+routing.addRoute('/channels', () => DiscussionsFragment);
+routing.addRoute('/channels/', () => DiscussionsFragment);
+routing.addRoute('/channels/drafts', () => DraftsFragment);
+routing.addRoute('/channels/drafts/', () => DraftsFragment);
+routing.addRoute('/channels/edit/:id', () => DiscussionEditorFragment);
+routing.addRoute('/channels/edit/:id/', () => DiscussionEditorFragment);
 
 // Account
 routing.addRoute('/account', () => UserProfileFragment);
@@ -126,6 +126,7 @@ routing.addRoute('/subscriptions', () => SubscriptionsFragment);
 
 // Profile
 routing.addRoute('/group/:id', () => GroupProfileFragment);
+routing.addRoute('/:shortname/:id', () => ShortnameFragment);
 routing.addRoute('/:shortname', () => ShortnameFragment);
 
 // Invites

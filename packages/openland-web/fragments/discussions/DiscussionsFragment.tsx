@@ -5,7 +5,7 @@ import { DiscussionsComponent } from './components/DiscussionsComponent';
 export const DiscussionsFragment = React.memo(() => {
     return (
         <>
-            <UHeader title="All discussions" appearance="wide" />
+            <UHeader title="All channels" appearance="wide" />
             <DiscussionsComponent hubs={null} />
         </>
     );

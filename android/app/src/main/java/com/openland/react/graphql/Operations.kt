@@ -69,6 +69,7 @@ object Operations {
         if (name == "OrganizationPublicRooms") return OrganizationPublicRooms
         if (name == "Permissions") return Permissions
         if (name == "PicSharedMedia") return PicSharedMedia
+        if (name == "Post") return Post
         if (name == "PostDraft") return PostDraft
         if (name == "Posts") return Posts
         if (name == "Profile") return Profile

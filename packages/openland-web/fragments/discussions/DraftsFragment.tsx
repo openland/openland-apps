@@ -15,7 +15,7 @@ const DraftComponent = (props: { data: MyPostDrafts_postMyDrafts_items }) => {
             alignSelf="stretch"
             height={56}
             marginVertical={20}
-            path={'/discuss/edit/' + props.data.id}
+            path={'/channels/edit/' + props.data.id}
             cursor="pointer"
             flexDirection="column"
         >
@@ -41,7 +41,7 @@ export const DraftsFragment = React.memo(() => {
         (async () => {
             let draft = (await client.mutatePostCreateDraft()).postDraftCreate;
             client.refetchMyPostDrafts({});
-            router.navigate('/discuss/edit/' + draft.id);
+            router.navigate('/channels/edit/' + draft.id);
             setCreating(false);
         })();
     }, []);
