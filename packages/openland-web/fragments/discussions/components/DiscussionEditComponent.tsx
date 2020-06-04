@@ -8,6 +8,7 @@ import { useClient } from 'openland-api/useClient';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { UHeader } from 'openland-unicorn/UHeader';
+import { Page } from 'openland-unicorn/Page';
 import { USelect, OptionType } from 'openland-web/components/unicorn/USelect';
 
 export const DiscussionEditComponent = React.memo((props: { data: PostDraftSimple }) => {
@@ -130,7 +131,7 @@ export const DiscussionEditComponent = React.memo((props: { data: PostDraftSimpl
     const [hub, setHub] = React.useState(props.data.channel ? props.data.channel.id : null);
 
     return (
-        <XView flexDirection="row" alignItems="flex-start" justifyContent="center" paddingRight={56}>
+        <Page track="discussion_create_page">
             <UHeader title="Drafts" titleView={pageTitle} appearance="fullwidth" maxWidth={824} />
             <XView flexGrow={1} flexShrink={1} maxWidth={824} paddingHorizontal={16}>
                 <USelect
@@ -166,6 +167,6 @@ export const DiscussionEditComponent = React.memo((props: { data: PostDraftSimpl
                     placeholder="Your story..."
                 />
             </XView>
-        </XView>
+        </Page>
     );
 });

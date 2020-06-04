@@ -11,18 +11,19 @@ import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 export const PageHeader = React.memo((props: { config: HeaderConfig }) => {
     const router = useStackRouter();
     const layout = useLayout();
-    const wideHeader = router.pages.length > 0;
 
-    let showBack = router.pages.length > 0 && (router.rootPath !== '/discover' && router.rootPath !== '/account' && router.rootPath !== '/discuss');
+    let showBack = router.pages.length > 0 && (router.rootPath !== '/discover' && router.rootPath !== '/account' && router.rootPath !== '/channels');
     if (router.rootPath === '/discover' && router.pages.length > 1) {
         showBack = true;
     }
     if (router.rootPath === '/account' && router.pages.length > 1) {
         showBack = true;
     }
-    if (router.rootPath === '/discuss' && router.pages.length > 1) {
+    if (router.rootPath === '/channels' && router.pages.length > 1) {
         showBack = true;
     }
+
+    const wideHeader = (router.rootPath === '/mail' || router.rootPath === '/discover') && router.pages.length > 0;
 
     useShortcuts({
         keys: ['Escape'],

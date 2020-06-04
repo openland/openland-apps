@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { useClient } from 'openland-api/useClient';
 import { UHeader } from 'openland-unicorn/UHeader';
+import { Page } from 'openland-unicorn/Page';
 import { XView, XViewRouterContext } from 'react-mental';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { MyPostDrafts_postMyDrafts_items } from 'openland-api/spacex.types';
 import { XDate } from 'openland-x/XDate';
-import { XScrollView3 } from 'openland-x/XScrollView3';
 
 const DraftComponent = (props: { data: MyPostDrafts_postMyDrafts_items }) => {
     let title = props.data.title === '' ? 'Untitled discussion' : props.data.title;
@@ -55,26 +55,24 @@ export const DraftsFragment = React.memo(() => {
 
     if (drafts.length > 0) {
         return (
-            <>
-                <UHeader title="Drafts" titleView={title} appearance="fullwidth" maxWidth={824} />
-                <XScrollView3 flexGrow={1}>
-                    <XView flexDirection="row" alignItems="flex-start" justifyContent="center" paddingRight={56}>
-                        <XView flexGrow={1} flexShrink={1} maxWidth={824} paddingHorizontal={16}>
-                            <XView flexDirection="column">
-                                {drafts.map((d) => (
-                                    <DraftComponent key={d.id} data={d} />
-                                ))}
-                            </XView>
+            <Page track="discussion_drafts_page" padded={true} style="wide">
+                <UHeader title="Drafts" titleView={title} maxWidth={890} />
+                <XView flexDirection="row" alignItems="flex-start" justifyContent="center">
+                    <XView flexGrow={1} flexShrink={1}>
+                        <XView flexDirection="column">
+                            {drafts.map((d) => (
+                                <DraftComponent key={d.id} data={d} />
+                            ))}
                         </XView>
                     </XView>
-                </XScrollView3>
-            </>
+                </XView>
+            </Page>
         );
     } else {
         return (
-            <>
-                <UHeader title="Drafts" titleView={title} appearance="fullwidth" maxWidth={824} />
-            </>
+            <Page track="discussion_drafts_page" padded={true} style="wide">
+                <UHeader title="Drafts" titleView={title} maxWidth={890} />
+            </Page>
         );
     }
 });

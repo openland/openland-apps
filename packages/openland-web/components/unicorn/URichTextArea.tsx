@@ -48,7 +48,7 @@ const quillStyle = css`
         font-style: normal;
         line-height: 1.58;
         font-weight: 400;
-        word-wrap: 'break';
+        word-wrap: break-word;
         margin-bottom: 12px;
     }
 
@@ -73,7 +73,6 @@ const tooltipStyle = css`
     display: flex;
     overflow: hidden;
     transition: opacity .1s ease .06s,transform .1s ease .06s,top .16s cubic-bezier(.29, .09, .24, .99),left .16s cubic-bezier(.29, .09, .24, .99);
-    will-change: transform opacity;
     position: absolute;
 `;
 
@@ -90,7 +89,6 @@ const tooltipHidden = css`
 const sidePopupStyle = css`
     height: 44px;
     width: 44px;
-    will-change: transform opacity;
     position: absolute;
     transition: opacity .1s ease .06s,transform .1s ease .06s,top .16s cubic-bezier(.29, .09, .24, .99),left .16s cubic-bezier(.29, .09, .24, .99);
 `;
