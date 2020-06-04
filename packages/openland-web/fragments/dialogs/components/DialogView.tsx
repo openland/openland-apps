@@ -34,6 +34,14 @@ const dialogContainer = css`
     }
 `;
 
+const dialogHoveredContainer = css`
+    background-color: #f0f2f5;
+    
+    .online-dot {
+        border-color: #f0f2f5;
+    }
+`;
+
 const dialogActiveContainer = css`
     background-color: var(--accentMuted);
 
@@ -178,6 +186,7 @@ interface DialogViewProps {
     item: DialogListWebItem;
     onPress?: (id: string) => void;
     selected?: boolean;
+    hovered?: boolean;
 }
 
 export const DialogView = React.memo<DialogViewProps>(props => {
@@ -197,7 +206,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                     ''
                 );
     let message: JSX.Element | null = null;
-    
+
     let typingAnimation: string;
 
     switch (dialog.typingType) {
@@ -279,7 +288,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
         >
             <XViewSelectedContext.Consumer>
                 {active => (
-                    <div className={cx(dialogContainer, active && dialogActiveContainer)}>
+                    <div className={cx(dialogContainer, props.hovered && dialogHoveredContainer, active && dialogActiveContainer)}>
                         <UAvatar
                             title={dialog.title}
                             titleEmoji={dialog.titlePlaceholderEmojify}
