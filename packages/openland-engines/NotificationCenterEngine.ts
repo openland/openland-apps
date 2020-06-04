@@ -145,7 +145,7 @@ export class NotificationCenterEngine {
             onStarted: (state: string, items: NotificationsDataSourceItem[]) => {
                 log.log('onStarted');
 
-                let queue = new Queue();
+                let queue = new Queue<{ state: string, events: Types.MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates[] }>();
                 sequenceWatcher<MyNotificationsCenter>(state, (s, handler) => this.engine.client.subscribeMyNotificationsCenter({ state }, handler), (update) => {
                     if (!update.event) {
                         return null;
