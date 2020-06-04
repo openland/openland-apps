@@ -67,7 +67,6 @@ export const prepareLegacyMentions = (
                         __typename: 'User',
                         name: mention.name,
                         id: mention.id,
-                        isYou: mention.isYou,
                         photo: mention.photo,
                         primaryOrganization: mention.primaryOrganization,
                         shortname: mention.shortname,

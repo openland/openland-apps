@@ -16,6 +16,7 @@ import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import MessageIcon from 'openland-icons/s/ic-message-24.svg';
 import { UserInfoContext } from 'openland-web/components/UserInfo';
+import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 
 const MessageButton = React.memo((props: { isBot: boolean, id: string }) => {
     const layout = useLayout();
@@ -32,13 +33,14 @@ const MessageButton = React.memo((props: { isBot: boolean, id: string }) => {
 });
 
 export const UserProfileFragment = React.memo((props: { id?: string }) => {
+    const engine = React.useContext(MessengerContext);
     const isMobile = useLayout() === 'mobile';
     const userContext = React.useContext(UserInfoContext)!.user!;
     const uId = props.id ? props.id : userContext.id;
     const client = useClient();
     const { user, conversation } = client.useUser({ userId: uId }, { fetchPolicy: 'cache-and-network' });
     const { id, isBot, name, photo, audienceSize, about, shortname, location, phone, email, linkedin, instagram,
-        primaryOrganization, isYou, chatsWithBadge, website, twitter, facebook } = user;
+        primaryOrganization, chatsWithBadge, website, twitter, facebook } = user;
 
     return (
         <Page padded={false} track="user_profile">
@@ -49,8 +51,8 @@ export const UserProfileFragment = React.memo((props: { id?: string }) => {
                 description={<UPresence user={user} />}
                 avatar={{ photo, id, title: name }}
             >
-                {!isYou && <MessageButton isBot={isBot} id={id} />}
-                {!isYou && conversation && conversation.__typename === 'PrivateRoom' && (
+                {engine.user.id !== id && <MessageButton isBot={isBot} id={id} />}
+                {engine.user.id !== id && conversation && conversation.__typename === 'PrivateRoom' && (
                     <UNotificationsSwitch
                         id={conversation.id}
                         mute={!!conversation.settings.mute}

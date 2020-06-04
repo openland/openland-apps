@@ -8,6 +8,7 @@ import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { useToast, UToastHandlers } from 'openland-web/components/unicorn/UToast';
 import AttachIcon from "../../../../openland-icons/s/ic-attach-24-1.svg";
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 interface UserMenuProps {
     user: User_user;
@@ -16,8 +17,9 @@ interface UserMenuProps {
 }
 
 const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperController, toastHandlers: UToastHandlers }) => {
+    const engine = React.useContext(MessengerContext);
     const { ctx, user, toastHandlers } = props;
-    const { id, isYou, shortname } = user;
+    const { id, shortname } = user;
     const builder = new UPopperMenuBuilder();
 
     builder.item({
@@ -41,7 +43,7 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
         });
     }
 
-    if (isYou) {
+    if (engine.user.id === user.id) {
         builder.item({
             title: 'Edit profile',
             icon: <EditIcon />,

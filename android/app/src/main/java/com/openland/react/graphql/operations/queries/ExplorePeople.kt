@@ -30,6 +30,6 @@ internal val ExplorePeopleSelector = obj(
 val ExplorePeople = object: OperationDefinition {
     override val name = "ExplorePeople"
     override val kind = OperationKind.QUERY
-    override val body = "query ExplorePeople(\$query:String,\$sort:String,\$page:Int,\$after:String){items:userSearch(query:\$query,sort:\$sort,page:\$page,first:25,after:\$after){__typename edges{__typename node{__typename ...UserShort isYou}cursor}pageInfo{__typename hasNextPage hasPreviousPage itemsCount currentPage pagesCount openEnded}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}"
+    override val body = "query ExplorePeople(\$query:String,\$sort:String,\$page:Int,\$after:String){items:userSearch(query:\$query,sort:\$sort,page:\$page,first:25,after:\$after){__typename edges{__typename node{__typename ...UserShort isYou}cursor}pageInfo{__typename hasNextPage hasPreviousPage itemsCount currentPage pagesCount openEnded}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}"
     override val selector = ExplorePeopleSelector
 }

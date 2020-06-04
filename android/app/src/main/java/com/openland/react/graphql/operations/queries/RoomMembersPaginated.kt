@@ -23,6 +23,6 @@ internal val RoomMembersPaginatedSelector = obj(
 val RoomMembersPaginated = object: OperationDefinition {
     override val name = "RoomMembersPaginated"
     override val kind = OperationKind.QUERY
-    override val body = "query RoomMembersPaginated(\$roomId:ID!,\$first:Int,\$after:ID){members:roomMembers(roomId:\$roomId,first:\$first,after:\$after){__typename user{__typename ...UserShort}role membership canKick badge{__typename ...UserBadge}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment UserBadge on UserBadge{__typename id name verified}"
+    override val body = "query RoomMembersPaginated(\$roomId:ID!,\$first:Int,\$after:ID){members:roomMembers(roomId:\$roomId,first:\$first,after:\$after){__typename user{__typename ...UserShort}role membership canKick badge{__typename ...UserBadge}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment UserBadge on UserBadge{__typename id name verified}"
     override val selector = RoomMembersPaginatedSelector
 }

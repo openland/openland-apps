@@ -1,6 +1,5 @@
 fragment UserTiny on User {
     id
-    isYou
     name
     firstName
     lastName

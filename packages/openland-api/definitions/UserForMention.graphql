@@ -1,5 +1,4 @@
 fragment UserForMention on User {
-    isYou
     id
     name
     photo

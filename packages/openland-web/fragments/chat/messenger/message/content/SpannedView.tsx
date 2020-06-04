@@ -11,6 +11,7 @@ import { defaultHover } from 'openland-web/utils/Styles';
 import { plural } from 'openland-y-utils/plural';
 import { isInviteLink, InviteLink } from './InviteContent';
 import { XViewRouterContext, XViewRouter } from 'react-mental';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 const boldTextClassName = css`
     font-weight: bold;
@@ -112,26 +113,26 @@ const mentionBgClassName = css`
     border-radius: 4px;
 `;
 
-const MentionedUser = React.memo(
-    (props: { user: UserForMention; children: any; isService?: boolean }) => {
-        const { user, children, isService } = props;
-        const [show] = useUserPopper({ user, isMe: user.isYou, noCardOnMe: true });
-        return (
-            <span onMouseEnter={show}>
-                <ULink
-                    path={`/${user.shortname || user.id}`}
-                    className={cx(
-                        mentionClassName,
-                        user.isYou && !isService && mentionBgClassName,
-                        isService && mentionServiceClassName,
-                        isService && defaultHover,
-                    )}
-                >
-                    {children}
-                </ULink>
-            </span>
-        );
-    },
+const MentionedUser = React.memo((props: { user: UserForMention; children: any; isService?: boolean }) => {
+    const engine = React.useContext(MessengerContext);
+    const { user, children, isService } = props;
+    const [show] = useUserPopper({ user, noCardOnMe: true });
+    return (
+        <span onMouseEnter={show}>
+            <ULink
+                path={`/${user.shortname || user.id}`}
+                className={cx(
+                    mentionClassName,
+                    (user.id === engine.user.id) && !isService && mentionBgClassName,
+                    isService && mentionServiceClassName,
+                    isService && defaultHover,
+                )}
+            >
+                {children}
+            </ULink>
+        </span>
+    );
+},
 );
 
 interface OpenEntityParams {

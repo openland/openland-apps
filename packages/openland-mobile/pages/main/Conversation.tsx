@@ -225,7 +225,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
             ? this.props.chat.user
             : this.props.chat.owner;
         let isChannel = this.props.chat.__typename === 'SharedRoom' && this.props.chat.isChannel;
-        let donationCb = user && user.isYou || isChannel
+        let donationCb = user &&  user.id === this.props.engine.user.id || isChannel
             ? undefined
             : () => {
                 if (user) {

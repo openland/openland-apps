@@ -22,6 +22,7 @@ import { PeerObjects, TEXT_MIN_HEIGHT } from './PeerObjects';
 import IconCursor from 'openland-icons/s/ic-cursor-space-24.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IconSide from 'openland-icons/s/ic-side-space-24.svg';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 let VolumeSpaceContainerStyle = css`
     width: 100%;
@@ -130,6 +131,7 @@ const Objects = React.memo((props: { peers: Conference_conference_peers[], space
 ////
 
 const PeerPath = React.memo((props: { peerId: string, peer?: Conference_conference_peers, pathId: string, eraseDistance: number, space: MediaSessionVolumeSpace, peersRef: React.MutableRefObject<Conference_conference_peers[]> }) => {
+    const engine = React.useContext(MessengerContext);
     let [strPath, setPath] = React.useState<string>();
     let [color, setColor] = React.useState<string>('white');
     let [size, setSize] = React.useState<number>(2);
@@ -143,7 +145,7 @@ const PeerPath = React.memo((props: { peerId: string, peer?: Conference_conferen
     React.useEffect(() => {
         let path: Path | undefined;
         // worse access mgmt ever
-        let d1 = (props.peer?.user.isYou || !props.peersRef.current.find(p => p.id === props.peerId)) && props.space.eraseVM.listen(coords => {
+        let d1 = (props.peer?.user.id === engine.user.id || !props.peersRef.current.find(p => p.id === props.peerId)) && props.space.eraseVM.listen(coords => {
             if (path?.path.find((p, i, points) => {
                 const nextP = points[i + 1];
                 if (i === 0 && pointsDistance(p, coords) < eraseDistanceRef.current) {

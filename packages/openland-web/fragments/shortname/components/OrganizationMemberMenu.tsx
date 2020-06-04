@@ -13,6 +13,7 @@ import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder, MenuItem } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { OpenlandClient } from 'openland-api/spacex';
 import { useClient } from 'openland-api/useClient';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 interface MenuContentOpts {
     organization: Organization_organization;
@@ -26,13 +27,14 @@ interface MenuContentOpts {
 const getMenuContent = (opts: MenuContentOpts) => {
     const res: MenuItem[] = [];
 
+    const engine = React.useContext(MessengerContext);
     const { organization, onRemove, onChangeRole, client, memberRef, isMobile } = opts;
     const { id, name, isOwner, isAdmin, isCommunity } = organization;
     const { user, role } = memberRef.current;
 
     const typeString = isCommunity ? 'community' : 'organization';
 
-    if (!user.isYou && isOwner) {
+    if (user.id !== engine.user.id && isOwner) {
         res.push({
             title: role === 'MEMBER' ? 'Make admin' : 'Revoke admin status',
             icon: <StarIcon />,
@@ -47,14 +49,14 @@ const getMenuContent = (opts: MenuContentOpts) => {
                     organizationId: id,
                     newRole,
                 });
-                await client.refetchOrganizationMembersShort({organizationId: id});
+                await client.refetchOrganizationMembersShort({ organizationId: id });
 
                 onChangeRole(user.id, newRole);
             },
         });
     }
 
-    if (user.isYou && !isOwner) {
+    if (user.id === engine.user.id && !isOwner) {
         res.push({
             title: `Leave ${typeString}`,
             icon: <LeaveIcon />,
@@ -86,7 +88,7 @@ const getMenuContent = (opts: MenuContentOpts) => {
         });
     }
 
-    if (!user.isYou && (isOwner || isAdmin) && role !== OrganizationMemberRole.OWNER) {
+    if (user.id !== engine.user.id && (isOwner || isAdmin) && role !== OrganizationMemberRole.OWNER) {
         res.push({
             title: `Remove from ${typeString}`,
             icon: <LeaveIcon />,
@@ -96,7 +98,7 @@ const getMenuContent = (opts: MenuContentOpts) => {
                 builder.title(`Remove ${user.name} from ${name}`);
                 builder.message(
                     `Are you sure you want to remove ${
-                        user.name
+                    user.name
                     }? They will be removed from all internal chats at ${name}.`,
                 );
                 builder.action(

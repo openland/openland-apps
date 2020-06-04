@@ -26,6 +26,7 @@ import { XModalContent } from 'openland-web/components/XModalContent';
 import { UCheckbox } from 'openland-web/components/unicorn/UCheckbox';
 import { showModalBox } from 'openland-x/showModalBox';
 import { useTabRouter, TabRouterContextProps } from 'openland-unicorn/components/TabLayout';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 const MakeFeaturedModal = (props: { ctx: XModalController; roomId: string; userId: string }) => {
     const { ctx, roomId, userId } = props;
@@ -127,6 +128,7 @@ interface GroupMemberMenuProps {
 const getMenuContent = (
     opts: GroupMemberMenuProps & { client: OpenlandClient; tabRouter: TabRouterContextProps },
 ) => {
+    const engine = React.useContext(MessengerContext);
     const res: MenuItem[] = [];
     const { group, member, onRemove, client, tabRouter } = opts;
     const { id, isChannel } = group;
@@ -142,7 +144,7 @@ const getMenuContent = (
         });
     }
 
-    if ((group.role === 'OWNER' || AppConfig.isSuperAdmin()) && !user.isYou) {
+    if ((group.role === 'OWNER' || AppConfig.isSuperAdmin()) && user.id !== engine.user.id) {
         res.push({
             title: member.role === 'ADMIN' ? 'Revoke admin status' : 'Make admin',
             icon: <StarIcon />,
@@ -162,7 +164,7 @@ const getMenuContent = (
         });
     }
 
-    if (user.isYou) {
+    if (user.id === engine.user.id) {
         res.push({
             title: `Leave ${typeString}`,
             icon: <LeaveIcon />,
@@ -176,7 +178,7 @@ const getMenuContent = (
         });
     }
 
-    if (!user.isYou && canKick) {
+    if (user.id !== engine.user.id && canKick) {
         res.push({
             title: `Remove from ${typeString}`,
             icon: <LeaveIcon />,

@@ -167,7 +167,7 @@ const Buttons = (props: {
     let canReply = props.conversation.canSendMessage;
     let canDelete =
         useRole('super-admin') ||
-        !state.messages.filter((m) => !m.sender.isYou).length ||
+        !state.messages.filter((m) => m.sender.id !== props.messenger.user.id).length ||
         (props.chat.__typename === 'SharedRoom' && props.chat.role === 'OWNER') ||
         (props.chat.__typename === 'SharedRoom' && props.chat.role === 'ADMIN');
     return (

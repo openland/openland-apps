@@ -62,7 +62,6 @@ internal val UserShortSelector = obj(
             field("email", "email", scalar("String")),
             field("online", "online", notNull(scalar("Boolean"))),
             field("lastSeen", "lastSeen", scalar("String")),
-            field("isYou", "isYou", notNull(scalar("Boolean"))),
             field("isBot", "isBot", notNull(scalar("Boolean"))),
             field("shortname", "shortname", scalar("String")),
             field("primaryOrganization", "primaryOrganization", obj(
@@ -80,7 +79,6 @@ internal val UserBadgeSelector = obj(
 
 internal val UserForMentionSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
-            field("isYou", "isYou", notNull(scalar("Boolean"))),
             field("id", "id", notNull(scalar("ID"))),
             field("name", "name", notNull(scalar("String"))),
             field("photo", "photo", scalar("String")),
@@ -406,7 +404,6 @@ internal val StickerFragmentSelector = obj(
 internal val UserTinySelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
-            field("isYou", "isYou", notNull(scalar("Boolean"))),
             field("name", "name", notNull(scalar("String"))),
             field("firstName", "firstName", notNull(scalar("String"))),
             field("lastName", "lastName", scalar("String")),
@@ -1655,7 +1652,6 @@ internal val UserFullSelector = obj(
             field("about", "about", scalar("String")),
             field("location", "location", scalar("String")),
             field("isBot", "isBot", notNull(scalar("Boolean"))),
-            field("isYou", "isYou", notNull(scalar("Boolean"))),
             field("online", "online", notNull(scalar("Boolean"))),
             field("lastSeen", "lastSeen", scalar("String")),
             field("linkedin", "linkedin", scalar("String")),

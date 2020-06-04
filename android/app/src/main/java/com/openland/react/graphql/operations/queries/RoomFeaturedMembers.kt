@@ -23,6 +23,6 @@ internal val RoomFeaturedMembersSelector = obj(
 val RoomFeaturedMembers = object: OperationDefinition {
     override val name = "RoomFeaturedMembers"
     override val kind = OperationKind.QUERY
-    override val body = "query RoomFeaturedMembers(\$roomId:ID!){roomFeaturedMembers(roomId:\$roomId){__typename user{__typename ...UserShort}role membership canKick badge{__typename ...UserBadge}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isYou isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment UserBadge on UserBadge{__typename id name verified}"
+    override val body = "query RoomFeaturedMembers(\$roomId:ID!){roomFeaturedMembers(roomId:\$roomId){__typename user{__typename ...UserShort}role membership canKick badge{__typename ...UserBadge}}}fragment UserShort on User{__typename id name firstName lastName photo email online lastSeen isBot shortname primaryOrganization{__typename ...OrganizationShort}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}fragment UserBadge on UserBadge{__typename id name verified}"
     override val selector = RoomFeaturedMembersSelector
 }

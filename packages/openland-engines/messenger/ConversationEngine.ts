@@ -1024,7 +1024,7 @@ export class ConversationEngine implements MessageSendHandler {
         let scrollTo: string | undefined = undefined;
         let conv: DataSourceMessageItem;
         if (isServerMessage(src)) {
-            if (!this.lastReadedDividerMessageId && prev && this.lastTopMessageRead && !this.isOpen && !src.sender.isYou) {
+            if (!this.lastReadedDividerMessageId && prev && this.lastTopMessageRead && !this.isOpen && src.sender.id !== this.engine.user.id) {
                 let divider = createNewMessageDividerSourceItem(this.lastTopMessageRead);
                 scrollTo = divider.key;
                 this.dataSource.addItem(divider, 0, true);

@@ -56,7 +56,6 @@ const notificationUnsupported = (id: string): NotificationsDataSourceItem => {
                 firstName: 'Openland Support',
                 photo: 'https://ucarecdn.com/db12b7df-6005-42d9-87d6-46f15dd5b880/',
                 online: true,
-                isYou: false,
                 isBot: false,
                 lastName: null,
                 email: null,

@@ -6,6 +6,7 @@ import { useJsDrag } from './CallFloating';
 import { uploadcareOptions } from 'openland-y-utils/MediaLayout';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { YoutubeParty } from './YoutubeParty';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 export const TEXT_MIN_HEIGHT = 34;
 export const TEXT_MIN_WIDTH = 50;
@@ -161,6 +162,7 @@ const saveResizePointer = (args: { placement: Placement, coords: number[], conta
 };
 
 const PeerImage = React.memo((props: { peerId: string, peer?: Conference_conference_peers, imageId: string, space: MediaSessionVolumeSpace, peersRef: React.MutableRefObject<Conference_conference_peers[]> }) => {
+    const engine = React.useContext(MessengerContext);
     const ref = React.useRef<HTMLDivElement>(null);
     const imgRef = React.useRef<HTMLImageElement>(null);
     const resizeRefTL = React.useRef<HTMLDivElement>(null);
@@ -190,7 +192,7 @@ const PeerImage = React.memo((props: { peerId: string, peer?: Conference_confere
     };
 
     // worse access mgmt ever
-    let canEdit = (props.peer?.user.isYou || !props.peersRef.current.find(peer => peer.id === props.peerId));
+    let canEdit = (props.peer?.user.id === engine.user.id || !props.peersRef.current.find(peer => peer.id === props.peerId));
     if (canEdit) {
         useJsDrag(ref, {
             containerRef: ref,
@@ -286,6 +288,7 @@ const PeerImage = React.memo((props: { peerId: string, peer?: Conference_confere
 });
 
 const PeerText = React.memo((props: { peerId: string, peer?: Conference_conference_peers, textId: string, space: MediaSessionVolumeSpace, peersRef: React.MutableRefObject<Conference_conference_peers[]> }) => {
+    const engine = React.useContext(MessengerContext);
     const ref = React.useRef<HTMLDivElement>(null);
     const moveRef = React.useRef<HTMLDivElement>(null);
     const textRef = React.useRef<HTMLTextAreaElement>(null);
@@ -349,7 +352,7 @@ const PeerText = React.memo((props: { peerId: string, peer?: Conference_conferen
     }, [textRef.current]);
 
     // worse access mgmt ever
-    let canEdit = (props.peer?.user.isYou || !props.peersRef.current.find(peer => peer.id === props.peerId));
+    let canEdit = (props.peer?.user.id === engine.user.id || !props.peersRef.current.find(peer => peer.id === props.peerId));
     if (canEdit) {
         useJsDrag(moveRef, {
             containerRef: ref,

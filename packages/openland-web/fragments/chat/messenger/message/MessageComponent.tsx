@@ -86,7 +86,6 @@ export const MessageSenderName = React.memo(
     (props: { sender: UserShort; senderNameEmojify?: string | JSX.Element }) => {
         const [show] = useUserPopper({
             user: props.sender,
-            isMe: props.sender.isYou,
             noCardOnMe: false,
         });
         return (
@@ -388,7 +387,6 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const Avatar = () => {
         const [show] = useUserPopper({
             user: message.sender,
-            isMe: message.sender.isYou,
             noCardOnMe: false,
         });
 
