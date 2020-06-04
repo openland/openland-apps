@@ -169,6 +169,6 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
 
 export const DialogSearchMessages = React.memo((props: DialogSearchMessagesProps) => (
     <React.Suspense fallback={<XLoader loading={true} />}>
-        <DialogSearchMessagesInner {...props} />
+        <DialogSearchMessagesInner key={props.variables.query} {...props} />
     </React.Suspense>
 ));
