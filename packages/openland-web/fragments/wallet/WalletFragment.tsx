@@ -45,9 +45,10 @@ export const WalletFragment = React.memo(() => {
             items={transactions}
             loading={walletState.historyLoading}
             title="Wallet"
+            padded={false}
             renderItem={transaction => <TransactionView key={transaction.id} item={transaction} />}
         >
-            <UHeader title="Wallet" maxWidth={550} />
+            <UHeader title="Wallet" />
             <div className={cx('x', balanceWrapper)}>
                 <XView flexDirection="column">
                     <XView
@@ -58,7 +59,7 @@ export const WalletFragment = React.memo(() => {
                     </XView>
                     <XView {...TextStyles.Subhead} color="var(--foregroundSecondary)">Your balance</XView>
                 </XView>
-            
+
                 <XView flexDirection="row">
                     <UButton text="Withdraw" style="secondary" marginRight={8} onClick={() => showWithdrawFunds(router)} />
                     <UButton text="Add funds" onClick={showAddFunds} />

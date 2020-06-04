@@ -38,7 +38,6 @@ const AuthDiscoverPopularNowInner = React.memo(() => {
     return (
         <UFlatList
             gap={16}
-            padded={true}
             track="discover_popular_now"
             loading={loading}
             loadMore={handleLoadMore}

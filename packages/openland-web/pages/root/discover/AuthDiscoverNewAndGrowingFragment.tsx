@@ -39,7 +39,6 @@ const AuthDiscoverNewAndGrowingInner = React.memo((props: { seed: number }) => {
     return (
         <UFlatList
             gap={16}
-            padded={true}
             track="discover_new_and_growing"
             loading={loading}
             loadMore={handleLoadMore}

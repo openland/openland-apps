@@ -20,7 +20,7 @@ import { IndexFragment } from 'openland-web/fragments/discussions/IndexFragment'
 import { useRole } from 'openland-x-permissions/XWithRole';
 
 const Unicorn = React.memo(() => {
-    let isSuperadmin = useRole('super-admin');
+    const isSuperadmin = useRole('super-admin');
     const router = React.useMemo(
         () =>
 

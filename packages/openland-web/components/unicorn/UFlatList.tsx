@@ -23,12 +23,11 @@ interface UFlatListProps<T> {
     children?: any;
     title?: string;
     grid?: boolean;
-    maxWidth?: number;
     gap?: number;
 }
 
 export const UFlatList: <T>(props: UFlatListProps<T>) => any = React.memo((props) => {
-    const { loadMore, loading, loadingHeight = 200, children, items, padded, track } = props;
+    const { loadMore, loading, loadingHeight = 200, children, items, track, padded } = props;
     const onScroll = (values: XScrollValues) => {
         const d = values.scrollHeight - (values.clientHeight + values.scrollTop);
 
@@ -38,7 +37,7 @@ export const UFlatList: <T>(props: UFlatListProps<T>) => any = React.memo((props
     };
 
     return (
-        <Page onScroll={onScroll} padded={padded} track={track} maxWidth={props.maxWidth}>
+        <Page onScroll={onScroll} track={track} padded={padded}>
             {!!props.title && <UHeader documentTitle={props.title} />}
             {props.gap && (
                 <XView height={props.gap} />

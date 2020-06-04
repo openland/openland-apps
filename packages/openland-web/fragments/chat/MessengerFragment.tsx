@@ -56,6 +56,7 @@ export const MessengerFragment = React.memo<{ id: string }>(props => {
                 titleView={header}
                 documentTitle={chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title}
                 appearance="wide"
+                forceShowBack={true}
             />
             <Deferred>
                 <XView

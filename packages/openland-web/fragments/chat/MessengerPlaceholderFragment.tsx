@@ -2,6 +2,11 @@ import React from 'react';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
+import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
+import { showCreatingGroupFragment } from 'openland-web/fragments/create/CreateEntityFragment';
+import Plus from 'openland-icons/placeholder/plus.svg';
+import Person from 'openland-icons/placeholder/person.svg';
+import Apps from 'openland-icons/placeholder/apps.svg';
 
 const button = css`
     &:hover,
@@ -52,7 +57,7 @@ interface ButtonProps {
     onClick?: () => void;
 }
 
-export const Button = React.memo((props: ButtonProps) => (
+const Button = React.memo((props: ButtonProps) => (
     <div className={button}>
         <XView
             paddingLeft={8}
@@ -74,3 +79,35 @@ export const Button = React.memo((props: ButtonProps) => (
         </XView>
     </div>
 ));
+
+export const MessengerPlaceholderFragment = React.memo(() => {
+    const createGroup = () => showCreatingGroupFragment({ entityType: 'group' });
+    return (
+        <XView
+            width="100%"
+            height="100%"
+            alignItems="center"
+            justifyContent="center"
+            backgroundColor="var(--backgroundPrimary)"
+        >
+            <img
+                width="320"
+                height="200"
+                src="//cdn.openland.com/shared/art/art-create.png"
+                srcSet="//cdn.openland.com/shared/art/art-create@2x.png 2x, //cdn.openland.com/shared/art/art-create@3x.png 3x"
+                alt=""
+            />
+            <XView marginTop={16}>
+                <h2 className={TextTitle1}>Pick a chat on the left</h2>
+            </XView>
+            <XView marginTop={8} color="var(--foregroundSecondary)">
+                <p className={TextBody}>Or get done something else</p>
+            </XView>
+            <XView marginTop={32} justifyContent="center" flexWrap="nowrap" flexDirection="row">
+                <Button icon={<Plus />} text="Create group" onClick={createGroup} />
+                <Button icon={<Person />} text="Invite friends" path="/account/invites" />
+                <Button icon={<Apps />} text="Install apps" path="/account/download" />
+            </XView>
+        </XView>
+    );
+});

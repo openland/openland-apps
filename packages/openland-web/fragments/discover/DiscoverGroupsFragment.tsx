@@ -5,8 +5,8 @@ import { UHeader } from 'openland-unicorn/UHeader';
 
 export const DiscoverGroupsFragment = React.memo(() => {
     return (
-        <Page track="discover_groups" style="wide">
-            <UHeader title="Groups" />
+        <Page track="discover_groups" appearance="wide">
+            <UHeader title="Groups" appearance="wide" />
             <RoomsExploreComponent />
         </Page>
     );

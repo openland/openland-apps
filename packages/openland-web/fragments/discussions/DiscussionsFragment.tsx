@@ -5,8 +5,8 @@ import { DiscussionsComponent } from './components/DiscussionsComponent';
 
 export const DiscussionsFragment = React.memo(() => {
     return (
-        <Page track="discussions_page" style="wide" padded={true}>
-            <UHeader title="All channels" maxWidth={890} />
+        <Page track="discussions_page" appearance="wide">
+            <UHeader title="All channels" appearance="wide" />
             <DiscussionsComponent hubs={null} />
         </Page>
     );
