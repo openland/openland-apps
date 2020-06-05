@@ -21,6 +21,7 @@ import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { XModalContent } from 'openland-web/components/XModalContent';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const modalSubtitle = css`
     color: var(--foregroundPrimary);
@@ -255,19 +256,21 @@ export const SettingsProfileFragment = React.memo(() => {
                                     label="Phone number"
                                     field={phoneNumberField}
                                 />
-                                {!phone && !!phoneNumberField.value.trim() && (
-                                    <XView
-                                        fontSize={15}
-                                        color="#248BF2"
-                                        marginLeft={16}
-                                        marginTop={8}
-                                        cursor="pointer"
-                                        alignSelf="flex-start"
-                                        onClick={() => showPairPhoneModal(phoneNumberField.value)}
-                                    >
-                                        Pair this phone
-                                    </XView>
-                                )}
+                                <XWithRole role="super-admin">
+                                    {!phone && !!phoneNumberField.value.trim() && (
+                                        <XView
+                                            fontSize={15}
+                                            color="#248BF2"
+                                            marginLeft={16}
+                                            marginTop={8}
+                                            cursor="pointer"
+                                            alignSelf="flex-start"
+                                            onClick={() => showPairPhoneModal(phoneNumberField.value)}
+                                        >
+                                            Pair this phone
+                                        </XView>
+                                    )}
+                                </XWithRole>
                             </XView>
                             <XView marginBottom={16}>
                                 <UInputField label="Email" field={emailField} />
