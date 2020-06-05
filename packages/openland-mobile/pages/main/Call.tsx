@@ -305,7 +305,7 @@ let Content = XMemo<{ id: string, speaker: boolean, setSpeaker: (fn: (s: boolean
                 </TouchableOpacity>
                 <TouchableOpacity
                     activeOpacity={0.6}
-                    onPress={showControls}
+                    onPress={props.hide}
                     style={{ width: 72, height: 72, justifyContent: 'center', alignItems: 'center' }}
                 >
                     <View backgroundColor="rgba(255, 255, 255, 0.08)" width={40} height={40} borderRadius={28} alignItems="center" justifyContent="center">
