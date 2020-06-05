@@ -4,6 +4,7 @@ import { getToken } from 'openland-api/auth';
 import { SharedStorage, getServerStorage, getClientStorage } from 'openland-x-utils/SharedStorage';
 import { OpenlandClient } from 'openland-api/spacex';
 import { createClientWeb } from 'openland-api/createClientWeb';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 export function withData(App: React.ComponentType<any>) {
     return class WithData extends React.Component {
@@ -36,7 +37,9 @@ export function withData(App: React.ComponentType<any>) {
             }
 
             let token = getToken(ctx.ctx.req);
-            createClientWeb(token);
+            if (canUseDOM) {
+                createClientWeb(token);
+            }
             await null;
             return {
                 ...appProps,
@@ -48,10 +51,12 @@ export function withData(App: React.ComponentType<any>) {
             };
         }
 
-        private client: OpenlandClient;
+        private client: OpenlandClient | null = null;
         constructor(props: any) {
             super(props);
-            this.client = createClientWeb(props.token);
+            if (canUseDOM) {
+                this.client = createClientWeb(props.token);
+            }
         }
 
         render() {

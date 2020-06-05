@@ -72,7 +72,7 @@ const ErrorBoundary = bugsnagClient.getPlugin('react');
 
 export default withData(
     class MyApp extends App<{
-        client: OpenlandClient;
+        client: OpenlandClient | null;
         storage: SharedStorage;
         host: string;
         protocol: string;
@@ -111,21 +111,17 @@ export default withData(
                                     hostName={this.props.host}
                                     protocol={this.props.protocol}
                                 >
-                                    <QueryCacheProvider>
-                                        <GQLClientContext.Provider value={this.props.client}>
-                                            <RootErrorBoundary>
-                                                <AppContainer>
-                                                    {/* <XView justifyContent="center" width="50%">
-                                                    <TestCommentsComponent />
-                                                </XView> */}
-                                                    {/* <XView justifyContent="center" width="50%">
-                                                    <TestMessengerComponent />
-                                                </XView> */}
-                                                    <Component {...pageProps} />
-                                                </AppContainer>
-                                            </RootErrorBoundary>
-                                        </GQLClientContext.Provider>
-                                    </QueryCacheProvider>
+                                    {this.props.client && (
+                                        <QueryCacheProvider>
+                                            <GQLClientContext.Provider value={this.props.client}>
+                                                <RootErrorBoundary>
+                                                    <AppContainer>
+                                                        <Component {...pageProps} />
+                                                    </AppContainer>
+                                                </RootErrorBoundary>
+                                            </GQLClientContext.Provider>
+                                        </QueryCacheProvider>
+                                    )}
                                 </XRouterProvider>
                             </XStorageProvider>
                         </EnvironmentContext.Provider>
