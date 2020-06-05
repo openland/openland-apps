@@ -1,7 +1,26 @@
+import { ExecutionQueue } from 'openland-y-utils/ExecutionQueue';
 import { Watcher } from 'openland-y-utils/Watcher';
 import { GraphqlEngine, QueryParameters, QueryWatchParameters, GraphqlQueryWatch, GraphqlSubscriptionHandler, SubscriptionParameters, GraphqlActiveSubscription, MutationParameters, GraphqlEngineStatus } from '@openland/spacex';
+import { Priority } from 'openland-api/Priority';
+
+function extractPriority(params: undefined | QueryParameters | QueryWatchParameters | MutationParameters) {
+    if (params !== undefined) {
+        if (params.priority !== undefined) {
+            if (typeof params.priority === 'number') {
+                return params.priority;
+            } else {
+                return params.priority.priority;
+            }
+        }
+    }
+
+    return Priority.NORMAL;
+}
 
 export class PriorityEngine implements GraphqlEngine {
+
+    // Execution queue
+    private _execitionQueue = new ExecutionQueue({ parallelism: 5 /* Enforced by server too */ });
 
     // Status
     protected readonly statusWatcher: Watcher<GraphqlEngineStatus> = new Watcher();
@@ -32,7 +51,10 @@ export class PriorityEngine implements GraphqlEngine {
     //
 
     query<TQuery, TVars>(query: string, vars?: TVars, params?: QueryParameters): Promise<TQuery> {
-        return this.engine.query(query, vars, params);
+        let priority = extractPriority(params);
+        return this._execitionQueue.sync(async () => {
+            return await this.engine.query(query, vars, params);
+        }, priority);
     }
 
     queryWatch<TQuery, TVars>(query: string, vars?: TVars, params?: QueryWatchParameters): GraphqlQueryWatch<TQuery> {
@@ -42,9 +64,12 @@ export class PriorityEngine implements GraphqlEngine {
     //
     // Mutation
     //
-    
+
     mutate<TQuery, TVars>(query: string, vars?: TVars, params?: MutationParameters): Promise<TQuery> {
-        return this.engine.mutate(query, vars, params);
+        let priority = extractPriority(params);
+        return this._execitionQueue.sync(async () => {
+            return await this.engine.mutate(query, vars, params);
+        }, priority);
     }
 
     //

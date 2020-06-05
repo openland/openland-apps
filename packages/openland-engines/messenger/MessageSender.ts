@@ -10,6 +10,7 @@ import {
 } from 'openland-api/spacex.types';
 import { OpenlandClient } from 'openland-api/spacex';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
+import { Priority } from 'openland-api/Priority';
 
 export type MentionToSend =
     | ChatMentionSearch_mentions_globalItems
@@ -304,7 +305,7 @@ export class MessageSender {
                     replyMessages,
                     chatId: conversationId,
                     spans: spans,
-                });
+                }, { priority: Priority.LOW });
             } catch (e) {
                 if (e.graphQLErrors && e.graphQLErrors.find((v: any) => v.doubleInvoke === true)) {
                     // Ignore

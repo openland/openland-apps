@@ -5,6 +5,7 @@ import { OpenlandClient } from 'openland-api/spacex';
 import { EventPlatform, Event } from 'openland-api/spacex.types';
 import { createLogger } from 'mental-log';
 import { AppStorageQueued } from 'openland-y-utils/AppStorageQueued';
+import { Priority } from 'openland-api/Priority';
 
 const TRACKING_STORAGE_VERSION = 4;
 const BATCH_SIZE = 100;
@@ -38,7 +39,8 @@ class TrackingEngine {
 
     async setClient(client: OpenlandClient) {
         if (!this.client) {
-            this.client = client;
+            this.client = client
+                .withParameters({ defaultPriority: Priority.LOW });
 
             const fromStorage = await this.storage.getItems();
 

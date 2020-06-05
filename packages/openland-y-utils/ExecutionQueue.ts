@@ -1,6 +1,6 @@
-import { createFifoQueue } from 'openland-y-utils/Queue';
+import { createPriorityQueue } from 'openland-y-utils/Queue';
 export class ExecutionQueue {
-    private readonly _queue = createFifoQueue<{ action: () => any }>();
+    private readonly _queue = createPriorityQueue<{ action: () => Promise<any>, priority: number }>((v) => v.priority);
     private readonly _parallelism: number;
     private _active = 0;
 
@@ -12,11 +12,11 @@ export class ExecutionQueue {
         }
     }
 
-    post = (action: () => any, priority: number = 0) => {
+    post = (action: () => Promise<any>, priority: number = 0) => {
         if (this._active < this._parallelism) {
             this._run(action);
         } else {
-            this._queue.post({ action });
+            this._queue.post({ action, priority });
         }
     }
 
@@ -32,11 +32,11 @@ export class ExecutionQueue {
         });
     }
 
-    private _run = (action: () => any) => {
+    private _run = (action: () => Promise<any>) => {
         this._active++;
         (async () => {
             try {
-                action();
+                await action();
             } finally {
                 this._active--;
                 this._scheduleNextIfNeeded();

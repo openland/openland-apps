@@ -11,6 +11,7 @@ import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { backoff } from 'openland-y-utils/timer';
 import { MyNotificationsCenter } from 'openland-api/spacex.types';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
+import { Priority } from 'openland-api/Priority';
 
 const log = createLogger('Engine-NotificationCenter');
 
@@ -119,11 +120,16 @@ export class NotificationCenterEngine {
             loadMore: async (cursor?: string) => {
                 log.log('loadMore (cursor: ' + cursor + ')');
 
-                const notificationsQuery = await this.engine.client.queryMyNotifications(
+                const notificationsQueryPromise = this.engine.client.queryMyNotifications(
                     { first: 20, before: cursor },
-                    { fetchPolicy: 'network-only' }
+                    { fetchPolicy: 'network-only', priority: Priority.LOW /* TODO: Make Dynamic */ }
                 );
-                const notificationCenterQuery = await this.engine.client.queryMyNotificationCenter({ fetchPolicy: 'network-only' });
+                const notificationCenterQueryPromise = this.engine.client.queryMyNotificationCenter({
+                    fetchPolicy: 'network-only',
+                    priority: Priority.LOW /* TODO: Make Dynamic */
+                });
+                const notificationsQuery = await notificationsQueryPromise;
+                const notificationCenterQuery = await notificationCenterQueryPromise;
 
                 const notifications = notificationsQuery.myNotifications.items;
                 const items = [];

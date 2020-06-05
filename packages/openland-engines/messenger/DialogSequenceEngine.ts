@@ -7,6 +7,7 @@ import { createLogger } from 'mental-log';
 import { currentTimeMillis } from 'openland-y-utils/currentTime';
 import { InvalidationQueue } from 'openland-y-utils/InvalidationQueue';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
+import { Priority } from 'openland-api/Priority';
 
 const log = createLogger('Engine-Dialog-Sequence');
 
@@ -30,7 +31,7 @@ export class DialogSequenceEngine {
         await backoff(async () => {
             return await this.engine.client.querySettings({ fetchPolicy: 'cache-first' });
         });
-        this.engine.client.querySettings({ fetchPolicy: 'network-only' });
+        this.engine.client.querySettings({ fetchPolicy: 'network-only', priority: Priority.LOW });
         reliableWatcher(handler => this.engine.client.subscribeSettingsWatch(handler), () => {
             log.log('New settings received');
         });

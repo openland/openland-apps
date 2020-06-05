@@ -4,6 +4,7 @@ import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { WalletUpdates_event_WalletUpdateBatch_updates } from 'openland-api/spacex.types';
 import { StateStore } from 'openland-engines/utils/StateStore';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
+import { Priority } from 'openland-api/Priority';
 
 export interface WalletState {
     balance: number;
@@ -27,8 +28,8 @@ export class WalletEngine {
     }
 
     private async start() {
-        this.token = (await backoff(() => this.messenger.client.queryStripeToken({ fetchPolicy: 'network-only' }))).stripeToken;
-        let wallet = await backoff(() => this.messenger.client.queryMyWallet({ fetchPolicy: 'network-only' }));
+        this.token = (await backoff(() => this.messenger.client.queryStripeToken({ fetchPolicy: 'network-only', priority: Priority.LOW }))).stripeToken;
+        let wallet = await backoff(() => this.messenger.client.queryMyWallet({ fetchPolicy: 'network-only', priority: Priority.LOW }));
         this.state.setState({
             balance: wallet.myWallet.balance,
             isLocked: wallet.myWallet.isLocked,
