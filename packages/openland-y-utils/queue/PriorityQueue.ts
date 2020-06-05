@@ -18,6 +18,6 @@ export class PriorityQueue<T> implements QueueEngine<T> {
     }
 
     push = (value: T) => {
-        this._heap.push(value, this._priority(value));
+        this._heap.push(value, -this._priority(value));
     }
 }
