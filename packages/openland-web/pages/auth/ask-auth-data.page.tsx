@@ -223,6 +223,7 @@ const WebSignUpCreateWithEmail = (
                 marginTop={32}
                 marginRight={8}
                 flexShrink={1}
+                type="tel"
                 value={codeField.input.value.value}
                 hasPlaceholder={true}
                 width={codeWidth}
