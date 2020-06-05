@@ -124,14 +124,14 @@ routing.addRoute('/account/licenses', () => SettingsLicensesFragment);
 routing.addRoute('/wallet', () => WalletFragment);
 routing.addRoute('/subscriptions', () => SubscriptionsFragment);
 
+// Invites
+routing.addRoute('/invite/:invite', () => InviteLandingComponent);
+routing.addRoute('/join/:invite', () => InviteLandingComponent);
+
 // Profile
 routing.addRoute('/group/:id', () => GroupProfileFragment);
 routing.addRoute('/:shortname/:id', () => ShortnameFragment);
 routing.addRoute('/:shortname', () => ShortnameFragment);
-
-// Invites
-routing.addRoute('/invite/:invite', () => InviteLandingComponent);
-routing.addRoute('/join/:invite', () => InviteLandingComponent);
 
 //
 // Backward compatibility
