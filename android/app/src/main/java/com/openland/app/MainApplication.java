@@ -60,7 +60,6 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.mapbox.rctmgl.RCTMGLPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 import java.util.Arrays;

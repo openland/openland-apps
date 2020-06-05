@@ -43,11 +43,11 @@ PODS:
   - GTMAppAuth (1.0.0):
     - AppAuth/Core (~> 1.0)
     - GTMSessionFetcher (~> 1.1)
-  - GTMSessionFetcher (1.3.1):
-    - GTMSessionFetcher/Full (= 1.3.1)
-  - GTMSessionFetcher/Core (1.3.1)
-  - GTMSessionFetcher/Full (1.3.1):
-    - GTMSessionFetcher/Core (= 1.3.1)
+  - GTMSessionFetcher (1.4.0):
+    - GTMSessionFetcher/Full (= 1.4.0)
+  - GTMSessionFetcher/Core (1.4.0)
+  - GTMSessionFetcher/Full (1.4.0):
+    - GTMSessionFetcher/Core (= 1.4.0)
   - libwebp (1.1.0):
     - libwebp/demux (= 1.1.0)
     - libwebp/mux (= 1.1.0)
@@ -57,7 +57,7 @@ PODS:
   - libwebp/mux (1.1.0):
     - libwebp/demux
   - libwebp/webp (1.1.0)
-  - lottie-ios (3.1.6)
+  - lottie-ios (3.1.8)
   - lottie-react-native (3.3.2):
     - lottie-ios (~> 3.1.3)
     - React
@@ -269,8 +269,6 @@ PODS:
     - React
   - react-native-location (2.5.0):
     - React
-  - react-native-mapbox-gl (7.0.8):
-    - React
   - react-native-pdf (5.1.0):
     - React
   - react-native-safe-area-context (0.7.3):
@@ -352,14 +350,14 @@ PODS:
   - RNShare (2.0.0):
     - React
   - RSKImageCropper (2.2.3)
-  - SDWebImage (5.5.2):
-    - SDWebImage/Core (= 5.5.2)
-  - SDWebImage/Core (5.5.2)
+  - SDWebImage (5.7.3):
+    - SDWebImage/Core (= 5.7.3)
+  - SDWebImage/Core (5.7.3)
   - SDWebImageWebPCoder (0.2.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.0)
   - Starscream (3.0.6)
-  - Stripe (19.0.1)
+  - Stripe (19.2.0)
   - SwiftyJSON (4.3.0)
   - Texture (2.7):
     - Texture/PINRemoteImage (= 2.7)
@@ -406,7 +404,6 @@ DEPENDENCIES:
   - react-native-haptic-feedback (from `../node_modules/react-native-haptic-feedback`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-location (from `../node_modules/react-native-location`)
-  - "react-native-mapbox-gl (from `../node_modules/@react-native-mapbox-gl/maps`)"
   - react-native-pdf (from `../node_modules/react-native-pdf`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
@@ -518,8 +515,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-location:
     :path: "../node_modules/react-native-location"
-  react-native-mapbox-gl:
-    :path: "../node_modules/@react-native-mapbox-gl/maps"
   react-native-pdf:
     :path: "../node_modules/react-native-pdf"
   react-native-safe-area-context:
@@ -600,9 +595,9 @@ SPEC CHECKSUMS:
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GTMAppAuth: 4deac854479704f348309e7b66189e604cf5e01e
-  GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
+  GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
-  lottie-ios: 85ce835dd8c53e02509f20729fc7d6a4e6645a0a
+  lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: 2a1a82bb326ae51331a5520de0cf706733c6db69
   ObjectiveRocks: 464f1d38a77847be0acc3dda268bec52486ec02d
   PINCache: d195fdba255283f7e9900a55e3cced377f431f9b
@@ -628,7 +623,6 @@ SPEC CHECKSUMS:
   react-native-haptic-feedback: 22c9dc85fd8059f83bf9edd9212ac4bd4ae6074d
   react-native-image-picker: 7a85cf7b0a53845f03ae52fb4592a2748ded069b
   react-native-location: 5a40ec1cc6abf2f6d94df979f98ec76c3a415681
-  react-native-mapbox-gl: fcd88e2bf0ddea552b0209cc2770a5ac2b9c9910
   react-native-pdf: 8cc276fd8ab7dff6b602eb65fcf0f6c145c0f524
   react-native-safe-area-context: e200d4433aba6b7e60b52da5f37af11f7a0b0392
   react-native-sqlite-storage: dba8e864e9a76f1aae6ddb5e7d0dc330d59f4bb3
@@ -658,14 +652,14 @@ SPEC CHECKSUMS:
   RNRate: 29be49c24b314c4e8ec09d848c3965f61cb0be47
   RNShare: 8b171d4b43c1d886917fdd303bf7a4b87167b05c
   RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a
-  SDWebImage: 4d5c027c935438f341ed33dbac53ff9f479922ca
+  SDWebImage: 97351f6582ceca541ea294ba66a1fcb342a331c2
   SDWebImageWebPCoder: 947093edd1349d820c40afbd9f42acb6cdecd987
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
-  Stripe: 03313f9520a0786e2c00d9a7a2672c11e08821af
+  Stripe: d481c2dab9a892fd923f097f854661217f70dc7f
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   Yoga: 14927e37bd25376d216b150ab2a561773d57911f
 
-PODFILE CHECKSUM: b6d90b5c225d60ac1bf41871e4d0a2bdf9389aa2
+PODFILE CHECKSUM: 91c0839ea3d348162e9946dda0bb4617e2577423
 
 COCOAPODS: 1.9.1
