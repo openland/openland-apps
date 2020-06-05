@@ -109,7 +109,6 @@ public class MainApplication extends Application implements ShareApplication, Re
                     new RNSPackage(),
                     new SQLitePluginPackage(),
                     new DarkModePackage(),
-                    new RCTMGLPackage(),
                     new LottiePackage(),
                     new SafeAreaContextPackage()
             );
