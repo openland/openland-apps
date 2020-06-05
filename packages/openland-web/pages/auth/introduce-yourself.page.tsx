@@ -100,7 +100,7 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
             setSending(true);
 
             const inviteKey =
-                Cookie.get('x-openland-invite') || Cookie.get('x-openland-app-invite');
+                Cookie.get('x-openland-invite')  || Cookie.get('x-openland-org-invite') || Cookie.get('x-openland-app-invite');
 
             if (props.initialProfileFormData) {
                 await client.mutateProfileUpdate({
@@ -139,6 +139,10 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
             trackEvent('registration_complete');
             if (isPremium) {
                 window.location.href = `/invite/${inviteKey}`;
+            } else if (Cookie.get('x-openland-org-invite')) {
+                const orgInvite = Cookie.get('x-openland-org-invite');
+                Cookie.remove('x-openland-org-invite');
+                window.location.href = `/join/${orgInvite}`;
             } else {
                 window.location.href = '/';
             }
