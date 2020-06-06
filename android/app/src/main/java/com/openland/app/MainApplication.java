@@ -12,6 +12,8 @@ import com.openland.react.animations.FastAnimationsPackage;
 import com.github.reactnativecommunity.location.RNLocationPackage;
 import com.apsl.versionnumber.RNVersionNumberPackage;
 import com.reactnativecommunity.cameraroll.CameraRollPackage;
+import com.rt2zz.reactnativecontacts.ReactNativeContacts;
+import com.reactcommunity.rnlocalize.RNLocalizePackage;
 
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 
@@ -110,7 +112,9 @@ public class MainApplication extends Application implements ShareApplication, Re
                     new SQLitePluginPackage(),
                     new DarkModePackage(),
                     new LottiePackage(),
-                    new SafeAreaContextPackage()
+                    new SafeAreaContextPackage(),
+                    new ReactNativeContacts(),
+                    new RNLocalizePackage()
             );
         }
 
