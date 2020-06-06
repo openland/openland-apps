@@ -41,10 +41,10 @@ class ContactsRegistrator {
 
     constructor(client: OpenlandClient) {
         this.client = client.withParameters({ defaultPriority: Priority.LOW });
-        this.init();
+        // this.init();
     }
 
-    private init = async () => {
+    init = async () => {
         const deviceCountry = Localize.getCountry();
 
         this.defaultCountry = isSupportedCountry(deviceCountry) ? deviceCountry as CountryCode : 'US';
