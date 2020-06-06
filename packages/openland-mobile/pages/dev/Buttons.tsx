@@ -15,8 +15,11 @@ export const ButtonsComponent = (props: PageProps) => (
                 <View marginRight={10}>
                     <ZButton title="Label" style="secondary" />
                 </View>
-                <View>
+                <View marginRight={10}>
                     <ZButton title="Label" style="danger" />
+                </View>
+                <View>
+                    <ZButton title="Label" style="pay" />
                 </View>
             </View>
             <View marginVertical={16} flexDirection="row">
@@ -26,19 +29,25 @@ export const ButtonsComponent = (props: PageProps) => (
                 <View marginRight={10}>
                     <ZButton title="Label" style="secondary" loading={true} />
                 </View>
-                <View>
+                <View marginRight={10}>
                     <ZButton title="Label" style="danger" loading={true} />
+                </View>
+                <View>
+                    <ZButton title="Label" style="pay" loading={true} />
                 </View>
             </View>
             <View marginVertical={16}>
                 <View marginBottom={10}>
-                    <ZButton title="Label" size="large"  />
+                    <ZButton title="Label" size="large" />
                 </View>
                 <View marginBottom={10}>
-                    <ZButton title="Label" size="large" style="secondary"  />
+                    <ZButton title="Label" size="large" style="secondary" />
                 </View>
                 <View marginBottom={10}>
-                    <ZButton title="Label" size="large" style="danger"  />
+                    <ZButton title="Label" size="large" style="danger" />
+                </View>
+                <View marginBottom={10}>
+                    <ZButton title="Label" size="large" style="pay" />
                 </View>
             </View>
             <View marginVertical={16}>
@@ -50,6 +59,9 @@ export const ButtonsComponent = (props: PageProps) => (
                 </View>
                 <View marginBottom={10}>
                     <ZButton title="Label" size="large" style="danger" loading={true} />
+                </View>
+                <View marginBottom={10}>
+                    <ZButton title="Label" size="large" style="pay" loading={true} />
                 </View>
             </View>
         </View>

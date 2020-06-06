@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ViewStyle, TextStyle, Platform, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, TextStyle, Platform, Animated, TouchableWithoutFeedback, Easing } from 'react-native';
 import { withRouter } from 'react-native-s/withRouter';
 import { SRouter } from 'react-native-s/SRouter';
 import Alert from './AlertBlanket';
@@ -113,18 +113,50 @@ const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) 
     };
 
     const underlayColor = highlightedColors[style];
-    const TouchableComponent = underlayColor ? TouchableHighlight : TouchableOpacity;
+
+    const animation = React.useRef(new Animated.Value(0)).current;
+    const animatedBgColor = animation.interpolate({
+        inputRange: [0, 1],
+        outputRange: [backgroundColor, underlayColor || backgroundColor],
+    });
+
+    const animatedOpacity = animation.interpolate({
+        inputRange: [0, 1],
+        outputRange: [1, 0.6],
+    });
+
+    const handlePressIn = () => {
+        Animated.timing(animation, {
+            toValue: 1,
+            duration: 100,
+            easing: Easing.inOut(Easing.quad)
+        }).start();
+    };
+    const handlePressOut = () => {
+        Animated.timing(animation, {
+            toValue: 0,
+            duration: 200,
+            easing: Easing.inOut(Easing.quad)
+        }).start();
+    };
 
     return (
-        <View style={{ borderRadius: RadiusStyles.Medium, overflow: 'hidden' }}>
-            <TouchableComponent
-                style={[styles.container, { backgroundColor: backgroundColor, opacity: props.enabled === false ? 0.6 : undefined }]}
+        <Animated.View
+            style={{
+                backgroundColor: animatedBgColor,
+                opacity: props.enabled === false ? 0.6 : (!underlayColor ? animatedOpacity : undefined),
+                borderRadius: RadiusStyles.Medium,
+                overflow: 'hidden'
+            }}
+        >
+            <TouchableWithoutFeedback
                 onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined}
+                onPressIn={handlePressIn}
+                onPressOut={handlePressOut}
                 disabled={actionInProgress || props.enabled === false}
-                {...(underlayColor ? { underlayColor } : { activeOpacity: 0.6 })}
                 delayPressIn={0}
             >
-                <>
+                <View style={styles.container}>
                     <Text
                         style={[styles.title, { color: actionInProgress ? 'transparent' : textColor, paddingBottom: Platform.OS === 'android' ? 2 : undefined }]}
                         allowFontScaling={false}
@@ -138,9 +170,9 @@ const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) 
                             <LoaderSpinner color={textColor} size={size === 'default' ? 'small' : 'medium'} />
                         </View>
                     )}
-                </>
-            </TouchableComponent>
-        </View>
+                </View>
+            </TouchableWithoutFeedback>
+        </Animated.View>
     );
 });
 
