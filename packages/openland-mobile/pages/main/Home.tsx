@@ -10,8 +10,6 @@ import { Explore } from './Explore';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { NotificationCenter } from './NotificationCenter';
-// import { isPad } from '../Root';
-// import { NON_PRODUCTION } from '../Init';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 
@@ -27,7 +25,6 @@ export const Home = XMemo<PageProps>((props) => {
     const notificationsCounter = getClient().useMyNotificationCenter({ suspense: false });
     const discoverDone = getClient().useDiscoverIsDone({ suspense: false });
     const wallet = getClient().useMyWallet({ suspense: false });
-    // const showFeed = NON_PRODUCTION && !isPad;
     const failingPaymentsCount = wallet && wallet.myWallet.failingPaymentsCount || undefined;
 
     return (
