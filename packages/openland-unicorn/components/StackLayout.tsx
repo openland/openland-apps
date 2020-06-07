@@ -4,11 +4,12 @@ import { PageLayout } from './PageLayout';
 import { UnicornContext } from './UnicornContext';
 import { XViewRoute, XViewRouteContext } from 'react-mental';
 import { VisibleTabContext } from 'openland-unicorn/components/utils/VisibleTabContext';
-import { useClient } from 'openland-api/useClient';
+import { useClient, GQLClientContext } from 'openland-api/useClient';
 import { debounce } from 'openland-y-utils/timer';
 import { css } from 'linaria';
 import { UToast, useToastContext, UToastContext, UToastConfig, UToastHandlers } from 'openland-web/components/unicorn/UToast';
 import { RootErrorBoundary } from 'openland-web/pages/root/RootErrorBoundary';
+import { QueryCacheProvider } from '@openland/spacex';
 
 const PageAnimator = React.memo(
     (props: {
@@ -225,12 +226,19 @@ const PageComponent = React.memo(
             }),
             [],
         );
+
+        const client = useClient();
+
         return (
-            <XViewRouteContext.Provider value={xRoute}>
-                <UnicornContext.Provider value={ctx}>{props.component}</UnicornContext.Provider>
-            </XViewRouteContext.Provider>
+            <QueryCacheProvider>
+                <GQLClientContext.Provider value={client}>
+                    <XViewRouteContext.Provider value={xRoute}>
+                        <UnicornContext.Provider value={ctx}>{props.component}</UnicornContext.Provider>
+                    </XViewRouteContext.Provider>
+                </GQLClientContext.Provider>
+            </QueryCacheProvider>
         );
-    },
+    }
 );
 
 const toastWrapperClass = css`
