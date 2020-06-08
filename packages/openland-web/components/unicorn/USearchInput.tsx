@@ -76,6 +76,8 @@ const searchIconWrapper = css`
 interface USearchInputProps extends XViewProps {
     value?: string;
     onChange?: (e: string) => void;
+    onKeyDown?: React.KeyboardEventHandler;
+    onFocus?: React.FocusEventHandler;
     autoFocus?: boolean;
     placeholder?: string;
 }
@@ -85,7 +87,7 @@ export interface USearchInputRef extends HTMLInputElement {
 }
 
 export const USearchInput = React.forwardRef((props: USearchInputProps, ref: React.RefObject<USearchInputRef>) => {
-    const { value, onChange, autoFocus, placeholder = 'Search', ...other } = props;
+    const { value, onChange, autoFocus, onKeyDown, onFocus, placeholder = 'Search', ...other } = props;
 
     const [val, setValue] = React.useState(typeof value === 'string' ? value : '');
 
@@ -107,6 +109,8 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
                 className={cx(TextBody, field)}
                 value={val || ''}
                 onChange={e => handleChange(e.target.value)}
+                onKeyDown={onKeyDown}
+                onFocus={onFocus}
                 placeholder={placeholder}
                 autoFocus={autoFocus}
                 ref={ref}

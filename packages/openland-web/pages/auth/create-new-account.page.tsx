@@ -8,35 +8,32 @@ import { isElectron } from 'openland-y-utils/isElectron';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { AuthHeaderConfig } from './root.page';
+import { SignUpWithPhone, AskAuthDataProps } from './ask-auth-data.page';
 
-type AuthMechanism = {
-    loginWith: (isPhone: boolean) => void;
+type AuthMechanism = AskAuthDataProps & {
+    loginWith: () => void;
 };
 
-const SignUpAuthMechanism = ({loginWith}: AuthMechanism) => {
+const SignUpAuthMechanism = (props: AuthMechanism) => {
+    const { loginWith, ...other } = props;
     const [width] = useWithWidth();
     return (
         <FormLayout>
             <XView alignItems="center" marginBottom={16}>
-                <Unicorn width="128" height="128" />
+                <Unicorn width="96" height="96" />
             </XView>
             <Title text="Openland" />
             <Subtitle text="The best place to find and build inspiring&nbsp;communities" />
 
+            <SignUpWithPhone {...other} />
+
             <XView alignSelf="center" width={width && width < 400 ? '100%' : 240} marginTop={32}>
                 <UButton
-                    onClick={() => loginWith(true)}
-                    marginBottom={16}
-                    size="large"
-                    shape="square"
-                    text="Continue with Phone"
-                />
-                <UButton
-                    onClick={() => loginWith(false)}
+                    onClick={loginWith}
                     size="large"
                     shape="square"
                     text="Continue with email"
-                    style="secondary"
+                    style="tertiary"
                 />
             </XView>
         </FormLayout>
@@ -54,6 +51,7 @@ export const CreateNewAccountPage = (props: AuthMechanism) => {
             <XDocumentHead title="Login" />
             {!isElectron && (
                 <AuthHeaderConfig
+                    mobileTransparent={true}
                     onBack={() => {
                         if (isInvite) {
                             router.replace('/joinChannel/' + router.query.redirect.split('/')[2]);

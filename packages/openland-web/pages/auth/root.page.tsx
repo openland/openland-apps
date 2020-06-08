@@ -279,13 +279,11 @@ export default () => {
         }
     }, []);
 
-    const loginWith = React.useCallback((isPhone: boolean) => {
+    const loginWith = React.useCallback(() => {
         setAuthValue('');
         setAuthError('');
         setAuthSending(false);
-        const loginPath = isPhone
-            ? '/authorization/ask-auth-data?phone=true'
-            : '/authorization/ask-auth-data';
+        const loginPath = '/authorization/ask-auth-data';
         setTimeout(() => {
             router.push(loginPath);
         }, 0);
@@ -312,7 +310,18 @@ export default () => {
             )}
             {page === pages.createNewAccount && (
                 <XTrack event={'signin_view'} key={'signin-track'}>
-                    <CreateNewAccountPage loginWith={loginWith} />
+                    <CreateNewAccountPage
+                        loginWith={loginWith}
+                        fireAuth={fireAuth}
+                        authError={authError}
+                        authValue={authValue}
+                        phoneCodeValue={phoneCodeValue}
+                        authSending={authSending}
+                        setPhoneCodeValue={setPhoneCodeValue}
+                        setAuthSending={setAuthSending}
+                        setAuthError={setAuthError}
+                        setAuthValue={setAuthValue}
+                    />
                 </XTrack>
             )}
             {page === pages.askAuthData && (

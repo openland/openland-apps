@@ -166,10 +166,11 @@ const toastWrapper = css`
     }
 `;
 
-export const AuthToastWrapper = (props: UToastProps) => {
+export const AuthToastWrapper = (props: UToastProps & { className?: string }) => {
+    const { className, ...other } = props;
     return (
-        <div className={toastWrapper}>
-            <UToast {...props} />
+        <div className={cx(toastWrapper, className)}>
+            <UToast {...other} />
         </div>
     );
 };

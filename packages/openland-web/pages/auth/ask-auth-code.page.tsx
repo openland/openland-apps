@@ -165,7 +165,7 @@ export const AskAuthCodePage = (props: ActivationCodeProps) => {
 
     const onBackClick = () => {
         const path = isPhoneAuth
-            ? '/authorization/ask-auth-data?phone=true'
+            ? '/signin'
             : '/authorization/ask-auth-data';
 
         router.replace(path);
