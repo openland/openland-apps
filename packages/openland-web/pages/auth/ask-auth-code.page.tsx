@@ -12,7 +12,6 @@ import {
     AuthActionButton,
     AuthInputWrapper,
     AuthToastWrapper,
-    AuthInput,
     useShake,
 } from './components/authComponents';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
@@ -21,6 +20,64 @@ import { XImage } from 'react-mental';
 import { AuthHeaderConfig } from './root.page';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { checkCode, AuthError, trackError } from './utils/checkCode';
+import { TextTitle1 } from 'openland-web/utils/TextStyles';
+import { usePreviousState } from 'openland-y-utils/usePreviousState';
+import { css, cx } from 'linaria';
+
+const codeWrapperStyle = css`
+    margin-top: 32px;
+`;
+
+const codeInputStyle = cx(TextTitle1, css`
+    width: 47px;
+    height: 56px;
+    border-radius: 8px;
+    background-color: var(--backgroundTertiaryTrans);
+    color: var(--foregroundPrimary);
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    &:focus, &:hover {
+        background-color: rgba(148, 155, 168, 0.24);
+    }
+    
+    &:not(:last-child) {
+        margin-right: 8px;
+    }
+`);
+
+const ResendSubtitle = React.memo((props: { authWasResend: boolean, onResend: () => void }) => {
+    const [seconds, setSeconds] = React.useState(60);
+    const prevAuthWasResend = usePreviousState(props.authWasResend);
+    React.useEffect(() => {
+        let timerId: any;
+        const resendChanged = !prevAuthWasResend && props.authWasResend;
+        if (resendChanged) {
+            setSeconds(60);
+        }
+        if (seconds === 60 || resendChanged) {
+            timerId = setInterval(() => {
+                setSeconds(x => {
+                    if (x > 0) {
+                        return x - 1;
+                    } else {
+                        clearInterval(timerId);
+                        return 0;
+                    }
+                });
+            }, 1000);
+        }
+        return () => {
+            clearInterval(timerId);
+        };
+    }, [props.authWasResend]);
+    return (
+        <>
+            {InitTexts.auth.haveNotReceiveCode} {seconds > 0 ? `Wait for ${seconds} sec` : <ULink onClick={props.onResend}>Resend</ULink>}
+        </>
+    );
+});
 
 type ActivationCodeProps = {
     authValue: string;
@@ -60,15 +117,18 @@ const WebSignUpActivationCode = (
     } = props;
 
     const form = useForm();
+    const codeRefs = React.useRef<React.RefObject<HTMLInputElement>[]>(
+        new Array(6).fill(undefined).map(() => React.createRef())
+    );
 
-    let codeField = useField('input.code', '', form);
+    let codeField = useField('input.code', new Array(6).fill(''), form);
 
     const doConfirm = React.useCallback(() => {
         form.doAction(async () => {
             setCodeError('');
             setAuthWasResend(false);
             setTimeout(() => {
-                loginCodeStart(codeField.value);
+                loginCodeStart(codeField.value.join(''));
             }, 100);
         });
     }, [codeField.value, authValue]);
@@ -76,10 +136,13 @@ const WebSignUpActivationCode = (
     const [shakeClassName, shake] = useShake();
 
     const handleNext = React.useCallback(() => {
-        doConfirm();
-        if (codeField.input.value.trim() === '') {
+        const codeCompleted = codeField.input.value.every(value => !!value);
+        if (!codeCompleted) {
             shake();
+            return;
         }
+
+        doConfirm();
     }, [shakeClassName, doConfirm]);
 
     useShortcuts({ keys: ['Enter'], callback: handleNext });
@@ -96,16 +159,57 @@ const WebSignUpActivationCode = (
     const opsRetina =
         '-/format/auto/-/scale_crop/144x144/center/-/quality/best/-/progressive/yes/ 2x';
 
-    const inputRef = React.useRef<HTMLInputElement>(null);
     React.useEffect(() => {
-        if (inputRef.current) {
-            inputRef.current.focus();
+        let indexToFocus = codeField.input.value.findIndex(value => !value);
+        if (indexToFocus !== -1) {
+            codeRefs.current[indexToFocus]?.current?.focus();
         }
     }, [errorText, shakeClassName, authWasResend]);
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+        if (e.target.value.length === 6) {
+            codeField.input.onChange([...e.target.value]);
+            return;
+        }
+
+        let value = e.target.value ? e.target.value[e.target.value.length - 1] : '';
+        let newValue = codeField.input.value.slice();
+        newValue[index] = value;
+        codeField.input.onChange(newValue);
+
+        if (value.length > 0) {
+            codeRefs.current[index + 1]?.current?.focus();
+        } else {
+            codeRefs.current[index - 1]?.current?.focus();
+        }
+    };
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+        const BACKSPACE_CODE = 8;
+        if (e.keyCode === BACKSPACE_CODE && e.currentTarget.value.length === 0) {
+            // let newValue = codeField.input.value.slice();
+            // newValue[index] = '';
+            // codeField.input.onChange(newValue);
+            e.preventDefault();
+            codeRefs.current[index - 1]?.current?.focus();
+        }
+    };
 
     const sendToText = isPhoneAuth
         ? phoneCodeValue.value.split(' ').join('') + ' ' + authValue
         : authValue;
+
+    React.useEffect(() => {
+        if (codeField.input.value.length === 6 && codeField.input.value.every(x => x.length === 1)) {
+            handleNext();
+        }
+    }, [codeField.input.value, handleNext]);
+
+    const prevIsInvalid = usePreviousState(isInvalid);
+    React.useEffect(() => {
+        if (!prevIsInvalid && isInvalid) {
+            codeField.input.onChange(new Array(6).fill(''));
+            codeRefs.current[0]?.current?.focus();
+        }
+    }, [isInvalid, prevIsInvalid]);
 
     return (
         <>
@@ -123,7 +227,7 @@ const WebSignUpActivationCode = (
                 <Title text={InitTexts.auth.enterActivationCode} />
                 <Subtitle>
                     We just sent it to {sendToText}.<br />
-                    {InitTexts.auth.haveNotReceiveCode} <ULink onClick={handleResend}>Resend</ULink>
+                    {<ResendSubtitle authWasResend={authWasResend} onResend={handleResend} />}
                 </Subtitle>
                 {!!avatarId && (
                     <XImage
@@ -136,20 +240,25 @@ const WebSignUpActivationCode = (
                         srcSet={`https://ucarecdn.com/${avatarId}/${opsRetina}`}
                     />
                 )}
-                <AuthInputWrapper className={shakeClassName}>
-                    <AuthInput
-                        pattern="[0-9]*"
-                        type="number"
-                        label={InitTexts.auth.codePlaceholder}
-                        onChange={codeField.input.onChange}
-                        invalid={isInvalid}
-                        ref={inputRef}
-                    />
+                <AuthInputWrapper className={cx(codeWrapperStyle, shakeClassName)}>
+                    {codeField.input.value.map((value, i) => (
+                        <input
+                            ref={codeRefs.current[i]}
+                            key={i}
+                            inputMode="numeric"
+                            pattern="[0-9]"
+                            value={value}
+                            className={codeInputStyle}
+                            onChange={(e) => handleChange(e, i)}
+                            onKeyDown={(e) => handleKeyDown(e, i)}
+                        />
+                    ))}
                 </AuthInputWrapper>
                 <AuthActionButton
                     text={isExistingUser ? InitTexts.auth.done : InitTexts.auth.next}
                     loading={codeSending}
                     onClick={handleNext}
+                    marginTop={32}
                 />
             </FormLayout>
         </>

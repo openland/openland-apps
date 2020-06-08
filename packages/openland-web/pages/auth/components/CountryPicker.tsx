@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView, XViewProps } from 'react-mental';
+import { XView } from 'react-mental';
 import IcDropdown from 'openland-icons/s/ic-dropdown-16.svg';
 import { css, cx } from 'linaria';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -90,6 +90,12 @@ const VirtualMenuList = (props: { children: React.ReactNode[], options: GroupTyp
         </VariableSizeList>
     );
 };
+
+const wrapper = css`
+    width: auto;
+    margin: 32px 16px 0 0;
+    min-width: 108;
+`;
 
 const arrowWrapper = css`
     position: absolute;
@@ -194,15 +200,16 @@ const filterCountryOption = ({ label: rawLabel, value }: { label: string, value:
     return label.startsWith(input) || removeSpace(value).replace(/\+/g, '').startsWith(removeSpace(rawInput));
 };
 
-interface CountryPickerProps extends XViewProps {
+interface CountryPickerProps {
     value: OptionType;
+    className?: string;
     onChange: (o: OptionType) => void;
     onOpen: () => void;
     onClose: () => void;
 }
 
 export const CountryPicker = (props: CountryPickerProps) => {
-    const { value, onChange, onOpen, onClose, ...other } = props;
+    const { value, onChange, onOpen, onClose, className } = props;
     const [isOpen, setIsOpen] = React.useState(false);
     const [selectedItem, setSelectedItem] = React.useState<{ groupIndex: number, optionIndex: number }>({ groupIndex: 0, optionIndex: 0 });
     const [searchValue, setSearchValue] = React.useState('');
@@ -287,7 +294,7 @@ export const CountryPicker = (props: CountryPickerProps) => {
     }, [searchValue]);
 
     return (
-        <XView width="100%" {...other}>
+        <div className={cx('x', wrapper, className)} tabIndex={0} onFocus={() => setIsOpen(true)}>
             <XView
                 width="100%"
                 backgroundColor="var(--backgroundTertiaryTrans)"
@@ -345,6 +352,6 @@ export const CountryPicker = (props: CountryPickerProps) => {
                     <XView position="fixed" zIndex={10} top={0} left={0} right={0} bottom={0} onClick={() => setIsOpen(false)} />
                 </>
             )}
-        </XView>
+        </div>
     );
 };

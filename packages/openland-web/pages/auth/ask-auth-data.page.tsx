@@ -156,10 +156,6 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
             <FormLayout minWidth={0}>
                 <AuthInputWrapper className={cx(shakeClassName)}>
                     <CountryPicker
-                        marginTop={32}
-                        minWidth={108}
-                        width="auto"
-                        marginRight={16}
                         value={codeField.input.value}
                         onOpen={handleMenuOpen}
                         onClose={handleMenuClose}
