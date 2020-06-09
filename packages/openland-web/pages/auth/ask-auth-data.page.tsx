@@ -145,9 +145,7 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
         if (inputRef.current) {
             inputRef.current.focus();
         }
-        // setTimeout(() => {
         countryMenuOpen.current = false;
-        // }, 200);
     }, []);
 
     return (
@@ -162,7 +160,7 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
                         onChange={codeField.input.onChange}
                     />
                     <UInput
-                        label={InitTexts.auth.phonePlaceholder}
+                        label="Phone number"
                         invalid={isInvalid}
                         type="tel"
                         ref={inputRef}
@@ -278,6 +276,7 @@ export const AskAuthDataPage = (props: AskAuthDataProps) => {
             <AuthHeaderConfig
                 onBack={() => {
                     props.setAuthError('');
+                    props.setAuthValue('');
                     router.replace('/signin');
                 }}
             />

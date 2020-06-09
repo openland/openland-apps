@@ -94,7 +94,7 @@ const VirtualMenuList = (props: { children: React.ReactNode[], options: GroupTyp
 const wrapper = css`
     width: auto;
     margin: 32px 16px 0 0;
-    min-width: 108;
+    min-width: 108px;
 `;
 
 const arrowWrapper = css`
@@ -114,6 +114,8 @@ const arrowOpenStyle = css`
 
 const triggerTextStyle = css`
     user-select: none;
+    display: flex;
+    align-items: center;
 `;
 
 const menuWrapper = css`
@@ -297,6 +299,7 @@ export const CountryPicker = (props: CountryPickerProps) => {
         <div className={cx('x', wrapper, className)} tabIndex={0} onFocus={() => setIsOpen(true)}>
             <XView
                 width="100%"
+                height={40}
                 backgroundColor="var(--backgroundTertiaryTrans)"
                 color="var(--foregroundPrimary)"
                 flexDirection="row"

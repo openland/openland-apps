@@ -185,9 +185,6 @@ const WebSignUpActivationCode = (
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
         const BACKSPACE_CODE = 8;
         if (e.keyCode === BACKSPACE_CODE && e.currentTarget.value.length === 0) {
-            // let newValue = codeField.input.value.slice();
-            // newValue[index] = '';
-            // codeField.input.onChange(newValue);
             e.preventDefault();
             codeRefs.current[index - 1]?.current?.focus();
         }
