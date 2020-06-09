@@ -106,7 +106,7 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
                                     title,
                                     key: chat.id,
                                     flexibleId: chat.id,
-                                    kind: chat.__typename === 'PrivateRoom' ? 'PRIVATE' : 'GROUP',
+                                    kind: chat.__typename === 'PrivateRoom' ? 'PRIVATE' : chat.kind,
                                     unread: 0,
                                     fallback: message.fallback,
                                     date: parseInt(message.date, 10),
@@ -114,8 +114,9 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
                                     isService: false,
                                     isOut: message.sender.id === messenger.engine.user.id,
                                     isMuted: !!chat.settings.mute,
-                                    sender: message.sender.name,
-                                    membership: chat.__typename === 'SharedRoom' ? chat.membership : 'NONE'
+                                    sender: message.sender.id === messenger.engine.user.id ? 'You' : message.sender.name,
+                                    membership: chat.__typename === 'SharedRoom' ? chat.membership : 'NONE',
+                                    showSenderName: true
                                 }}
                                 showDiscover={() => false}
                                 onPress={() => props.onMessagePress(message.id)}
