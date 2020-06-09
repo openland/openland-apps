@@ -1,31 +1,21 @@
 import {
-    FullMessage_GeneralMessage_spans_MessageSpanUserMention,
-    FullMessage_GeneralMessage_spans_MessageSpanAllMention,
     MentionInput,
     FullMessage_GeneralMessage_spans,
-    FullMessage_GeneralMessage_spans_MessageSpanOrganizationMention,
-    FullMessage_GeneralMessage_spans_MessageSpanRoomMention,
     ChatMentionSearch_mentions_globalItems_SharedRoom,
 } from 'openland-api/spacex.types';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 
+type SpanMentionsT = FullMessage_GeneralMessage_spans[];
+
 export const prepareLegacyMentions = (
     message: string,
     intermediateMentions: MentionToSend[],
-): (
-    | FullMessage_GeneralMessage_spans_MessageSpanUserMention
-    | FullMessage_GeneralMessage_spans_MessageSpanOrganizationMention
-    | FullMessage_GeneralMessage_spans_MessageSpanRoomMention
-    | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[] => {
+): SpanMentionsT => {
     if (message.length === 0) {
         return [];
     }
 
-    let spans: (
-        | FullMessage_GeneralMessage_spans_MessageSpanUserMention
-        | FullMessage_GeneralMessage_spans_MessageSpanOrganizationMention
-        | FullMessage_GeneralMessage_spans_MessageSpanRoomMention
-        | FullMessage_GeneralMessage_spans_MessageSpanAllMention)[] = [];
+    let spans: SpanMentionsT = [];
 
     let offsets = new Set<number>();
 
@@ -67,10 +57,6 @@ export const prepareLegacyMentions = (
                         __typename: 'User',
                         name: mention.name,
                         id: mention.id,
-                        photo: mention.photo,
-                        primaryOrganization: mention.primaryOrganization,
-                        shortname: mention.shortname,
-                        isBot: mention.isBot
                     },
                 });
             } else if (mention.__typename === 'Organization') {
@@ -82,11 +68,6 @@ export const prepareLegacyMentions = (
                         __typename: 'Organization',
                         id: mention.id,
                         name: mention.name,
-                        photo: mention.photo,
-                        shortname: mention.shortname,
-                        about: mention.about,
-                        isCommunity: mention.isCommunity,
-                        membersCount: mention.membersCount,
                     },
                 });
             } else if (mention.__typename === 'SharedRoom') {
@@ -98,12 +79,7 @@ export const prepareLegacyMentions = (
                         __typename: 'SharedRoom',
                         id: mention.id,
                         title: mention.title,
-                        roomPhoto: mention.roomPhoto,
-                        kind: mention.kind,
-                        isChannel: mention.isChannel,
                         isPremium: mention.isPremium,
-                        settings: mention.settings,
-                        membersCount: mention.membersCount,
                     },
                 });
             } else if (mention.__typename === 'AllMention') {
@@ -126,7 +102,7 @@ export const prepareLegacyMentionsForSend = (
     let preparedMentions: MentionInput[] = [];
     let legacyMentions = prepareLegacyMentions(message, intermediateMentions);
 
-    legacyMentions.map(m => {
+    legacyMentions.map((m) => {
         if (m.__typename === 'MessageSpanUserMention') {
             preparedMentions.push({
                 offset: m.offset,
@@ -157,10 +133,13 @@ export const prepareLegacyMentionsForSend = (
     return preparedMentions;
 };
 
-export const convertMentionsFromMessage = (text?: string | null, spans?: FullMessage_GeneralMessage_spans[]): MentionToSend[] => {
+export const convertMentionsFromMessage = (
+    text?: string | null,
+    spans?: SpanMentionsT,
+): MentionToSend[] => {
     let res: MentionToSend[] = [];
 
-    (spans || []).map(s => {
+    (spans || []).map((s) => {
         if (s.__typename === 'MessageSpanUserMention') {
             if ((text || '').substr(s.offset, s.length).toLowerCase() === '@all') {
                 res.push({
@@ -169,13 +148,24 @@ export const convertMentionsFromMessage = (text?: string | null, spans?: FullMes
             } else {
                 res.push({
                     __typename: 'User',
-                    ...s.user
+                    id: s.user.id,
+                    name: s.user.name,
+                    photo: null,
+                    primaryOrganization: null,
+                    shortname: null,
+                    isBot: false,
                 });
             }
         } else if (s.__typename === 'MessageSpanOrganizationMention') {
             res.push({
                 __typename: 'Organization',
-                ...s.organization
+                id: s.organization.id,
+                name: s.organization.name,
+                photo: null,
+                isCommunity: false,
+                membersCount: 0,
+                about: null,
+                shortname: null,
             });
         } else if (s.__typename === 'MessageSpanRoomMention') {
             res.push({

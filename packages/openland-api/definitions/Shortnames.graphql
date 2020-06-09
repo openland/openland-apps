@@ -25,10 +25,15 @@ query ResolveShortName($shortname: String!) {
 query AuthResolveShortName($shortname: String!) {
     item: alphaResolveShortName(shortname: $shortname) {
         ... on User {
-            ...UserNano
+            id
+            name
+            firstName
+            lastName
+            photo
+            online
         }
         ... on SharedRoom {
-            ...RoomPreview
+            ...SharedRoomPreview
         }
         ... on DiscoverChatsCollection {
             id

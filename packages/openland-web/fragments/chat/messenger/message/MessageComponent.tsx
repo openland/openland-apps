@@ -8,7 +8,7 @@ import { ConversationEngine } from 'openland-engines/messenger/ConversationEngin
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
 import StarIcon from 'openland-icons/s/ic-star-16.svg';
 import { formatTime } from 'openland-y-utils/formatTime';
-import { UserShort_primaryOrganization, UserShort } from 'openland-api/spacex.types';
+import { MessageSender, MessageSender_primaryOrganization } from 'openland-api/spacex.types';
 import { HoverMenu } from './Menu/HoverMenu';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
@@ -83,7 +83,7 @@ const senderBadgeStyle = css`
 `;
 
 export const MessageSenderName = React.memo(
-    (props: { sender: UserShort; senderNameEmojify?: string | JSX.Element }) => {
+    (props: { sender: MessageSender; senderNameEmojify?: string | JSX.Element }) => {
         const [show] = useUserPopper({
             user: props.sender,
             noCardOnMe: false,
@@ -110,7 +110,7 @@ const MessageSenderFeatured = React.memo(
     },
 );
 
-const MessageSenderOrg = React.memo((props: { organization: UserShort_primaryOrganization }) => (
+const MessageSenderOrg = React.memo((props: { organization: MessageSender_primaryOrganization }) => (
     <ULink
         path={`/${props.organization.shortname || props.organization.id}`}
         className={cx(TextDensed, senderOrgStyle, defaultHover)}
@@ -124,7 +124,7 @@ const MessageTime = React.memo((props: { time: number }) => (
 ));
 
 interface MessageSenderContentProps {
-    sender: UserShort;
+    sender: MessageSender;
     senderNameEmojify?: string | JSX.Element;
     senderBadgeNameEmojify?: string | JSX.Element;
     date?: number;

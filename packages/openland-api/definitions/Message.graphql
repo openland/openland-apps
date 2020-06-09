@@ -1,25 +1,71 @@
-fragment SpanFragment on MessageSpan {
+fragment MessageSender on User {
+    id
+    name
+    photo
+    isBot
+    shortname
+    primaryOrganization {
+        id
+        name
+        shortname
+    }
+}
+
+fragment MessageSource on MessageSourceChat {
+    chat {
+        ... on PrivateRoom {
+            id
+        }
+        ... on SharedRoom {
+            id
+        }
+    }
+}
+
+fragment MessageReactions on ModernMessageReaction {
+    user {
+        id
+        name
+    }
+    reaction
+}
+
+fragment MessageSpan on MessageSpan {
     offset
     length
 
     ... on MessageSpanUserMention {
         user {
-            ...UserForMention
+            id
+            name
         }
     }
     ... on MessageSpanMultiUserMention {
         users {
-            ...UserForMention
+            id
+            name
         }
     }
     ... on MessageSpanOrganizationMention {
         organization {
-            ...OrganizationShort
+            id
+            name
         }
     }
     ... on MessageSpanRoomMention {
         room {
-            ...RoomNano
+            ... on PrivateRoom {
+                id
+                user {
+                    id
+                    name
+                }
+            }
+            ... on SharedRoom {
+                id
+                title
+                isPremium
+            }
         }
     }
     ... on MessageSpanLink {
@@ -30,89 +76,26 @@ fragment SpanFragment on MessageSpan {
     }
 }
 
-fragment TinyMessage on ModernMessage {
-    id
-    date
-    sender {
-        ...UserTiny
-    }
-    senderBadge {
-        ...UserBadge
-    }
-    message
-    fallback
-    ... on GeneralMessage {
-        id
-        overrideName
-        overrideAvatar {
-            uuid
-            crop {
-                x
-                y
-                w
-                h
-            }
-        }
-        isMentioned
-        commentsCount
-        attachments {
-            id
-            fallback
-            ... on MessageAttachmentFile {
-                id
-                fileId
-                fileMetadata {
-                    isImage
-                    imageFormat
-                }
-                filePreview
-            }
-        }
-        quotedMessages {
-            id
-        }
-    }
-}
 fragment QuotedMessage on ModernMessage {
     id
     date
     message
     sender {
-        ...UserShort
+        ...MessageSender
     }
     senderBadge {
         ...UserBadge
     }
-    message
     fallback
     source {
-        ... on MessageSourceChat {
-            chat {
-                ... on PrivateRoom {
-                    id
-                }
-                ... on SharedRoom {
-                    id
-                }
-            }
-        }
+        ...MessageSource
     }
     spans {
-        ...SpanFragment
+        ...MessageSpan
     }
 
     ... on GeneralMessage {
         id
-        overrideName
-        overrideAvatar {
-            uuid
-            crop {
-                x
-                y
-                w
-                h
-            }
-        }
         commentsCount
         edited
         attachments {
@@ -192,40 +175,8 @@ fragment QuotedMessage on ModernMessage {
 
     ... on StickerMessage {
         id
-        date
-        overrideName
-        overrideAvatar {
-            uuid
-            crop {
-                x
-                y
-                w
-                h
-            }
-        }
-        sender {
-            ...UserShort
-        }
         senderBadge {
             ...UserBadge
-        }
-        source {
-            ... on MessageSourceChat {
-                chat {
-                    ... on PrivateRoom {
-                        id
-                    }
-                    ... on SharedRoom {
-                        id
-                    }
-                }
-            }
-        }
-        reactions {
-            user {
-                ...UserShort
-            }
-            reaction
         }
         sticker {
             ... on ImageSticker {
@@ -250,7 +201,7 @@ fragment FullMessage on ModernMessage {
     id
     date
     sender {
-        ...UserShort
+        ...MessageSender
     }
     senderBadge {
         ...UserBadge
@@ -258,31 +209,13 @@ fragment FullMessage on ModernMessage {
     message
     fallback
     source {
-        ... on MessageSourceChat {
-            chat {
-                ... on PrivateRoom {
-                    id
-                }
-                ... on SharedRoom {
-                    id
-                    isChannel
-                    membersCount
-                }
-            }
-        }
+        ...MessageSource
+    }
+    spans {
+        ...MessageSpan
     }
     ... on GeneralMessage {
         id
-        overrideName
-        overrideAvatar {
-            uuid
-            crop {
-                x
-                y
-                w
-                h
-            }
-        }
         edited
         commentsCount
         attachments {
@@ -374,45 +307,18 @@ fragment FullMessage on ModernMessage {
         }
 
         reactions {
-            user {
-                ...UserShort
-            }
-            reaction
+            ...MessageReactions
         }
-    }
-
-    spans {
-        ...SpanFragment
     }
 
     ... on StickerMessage {
         id
-        overrideName
-        overrideAvatar {
-            uuid
-            crop {
-                x
-                y
-                w
-                h
-            }
-        }
-        date
         commentsCount
-        sender {
-            ...UserShort
-        }
-        senderBadge {
-            ...UserBadge
-        }
         quotedMessages {
             ...QuotedMessage
         }
         reactions {
-            user {
-                ...UserShort
-            }
-            reaction
+            ...MessageReactions
         }
         sticker {
             ...StickerFragment
@@ -421,32 +327,22 @@ fragment FullMessage on ModernMessage {
 
     ... on ServiceMessage {
         id
-        overrideName
-        overrideAvatar {
-            uuid
-            crop {
-                x
-                y
-                w
-                h
-            }
-        }
         serviceMetadata {
             ... on InviteServiceMetadata {
                 users {
-                    ...UserTiny
+                    id
                 }
                 invitedBy {
-                    ...UserTiny
+                    id
                 }
             }
 
             ... on KickServiceMetadata {
                 user {
-                    ...UserTiny
+                    id
                 }
                 kickedBy {
-                    ...UserTiny
+                    id
                 }
             }
 

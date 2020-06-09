@@ -154,11 +154,6 @@ export const SpanSymbolToType: SpanSymbolToTypeT = {
     '🔄': { type: MessageSpanType.Rotating },
 };
 
-export const PostSpanSymbolToType: SpanSymbolToTypeT = {
-    '*': { type: MessageSpanType.Bold },
-    '_': { type: MessageSpanType.Italic },
-};
-
 export interface SpecSymbolsType {
     variants: ({
         s: string;

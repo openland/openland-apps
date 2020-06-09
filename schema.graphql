@@ -537,13 +537,6 @@ type DebugID {
   type: String!
 }
 
-type DebugIpInfo {
-  ip: String!
-  locationCode: String!
-  locationName: String!
-  location: GeoLocation
-}
-
 type DebugUserMetrics {
   messagesSent: Int!
   messagesReceived: Int!
@@ -1135,6 +1128,13 @@ input InviteRequest {
 type InviteServiceMetadata {
   users: [User!]
   invitedBy: User!
+}
+
+type IpLocation {
+  ip: String!
+  countryCode: String
+  locationName: String
+  location: GeoLocation
 }
 
 type IsAppInstalledResponse {
@@ -1763,6 +1763,7 @@ type Mutation {
   debugSetCommission(cid: ID!, percents: Int!): Boolean!
   debugFixEditedMessagesAugmentation: Boolean!
   debugReindexUsers: Boolean!
+  debugSetChatPayments(cid: ID!, price: Int!, interval: WalletSubscriptionInterval): Boolean!
   debugCalcEntitiesCount(entity: String!): Boolean!
   debugCalcEntitiesCountAll: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
@@ -2647,7 +2648,6 @@ type Query {
   debugUserMetrics(id: ID!): DebugUserMetrics!
   debugGlobalCounters(uid: ID): DebugGlobalCounters!
   debugServerId: String!
-  debugClientIp: DebugIpInfo
   debugGqlTraces(first: Int!, after: ID): GqlTraceConnection!
   debugGqlTrace(id: ID!): GqlTrace!
   debugUserWallet(id: ID!): WalletAccount!
@@ -2697,6 +2697,7 @@ type Query {
   envVar(name: String!): EnvVar
   featureFlags: [FeatureFlag!]!
   myLocation: UserLocation!
+  ipLocation: IpLocation
   shouldShareLocation: Boolean!
   myStickers: UserStickers!
   createdStickerPacks: [StickerPack!]!

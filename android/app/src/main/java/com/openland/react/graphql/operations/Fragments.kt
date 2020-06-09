@@ -41,32 +41,18 @@ internal val ChannelSimpleSelector = obj(
                 ))
         )
 
-internal val OrganizationShortSelector = obj(
+internal val MessageSenderSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             field("name", "name", notNull(scalar("String"))),
             field("photo", "photo", scalar("String")),
-            field("shortname", "shortname", scalar("String")),
-            field("about", "about", scalar("String")),
-            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
-            field("membersCount", "membersCount", notNull(scalar("Int")))
-        )
-
-internal val UserShortSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("name", "name", notNull(scalar("String"))),
-            field("firstName", "firstName", notNull(scalar("String"))),
-            field("lastName", "lastName", scalar("String")),
-            field("photo", "photo", scalar("String")),
-            field("email", "email", scalar("String")),
-            field("online", "online", notNull(scalar("Boolean"))),
-            field("lastSeen", "lastSeen", scalar("String")),
             field("isBot", "isBot", notNull(scalar("Boolean"))),
             field("shortname", "shortname", scalar("String")),
             field("primaryOrganization", "primaryOrganization", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Organization", OrganizationShortSelector)
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("shortname", "shortname", scalar("String"))
                 ))
         )
 
@@ -77,60 +63,22 @@ internal val UserBadgeSelector = obj(
             field("verified", "verified", notNull(scalar("Boolean")))
         )
 
-internal val UserForMentionSelector = obj(
+internal val MessageSourceSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("name", "name", notNull(scalar("String"))),
-            field("photo", "photo", scalar("String")),
-            field("shortname", "shortname", scalar("String")),
-            field("isBot", "isBot", notNull(scalar("Boolean"))),
-            field("primaryOrganization", "primaryOrganization", obj(
+            field("chat", "chat", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("name", "name", notNull(scalar("String")))
-                ))
-        )
-
-internal val RoomSharedNanoSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("kind", "kind", notNull(scalar("String"))),
-            field("isChannel", "isChannel", notNull(scalar("Boolean"))),
-            field("isPremium", "isPremium", notNull(scalar("Boolean"))),
-            field("title", "title", notNull(scalar("String"))),
-            field("photo", "roomPhoto", notNull(scalar("String"))),
-            field("membersCount", "membersCount", notNull(scalar("Int"))),
-            field("settings", "settings", notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
-                    field("mute", "mute", scalar("Boolean"))
+                    inline("PrivateRoom", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
+                    )),
+                    inline("SharedRoom", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
+                    ))
                 )))
         )
 
-internal val RoomNanoSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            inline("PrivateRoom", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                field("id", "id", notNull(scalar("ID"))),
-                field("user", "user", notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("name", "name", notNull(scalar("String"))),
-                        field("photo", "photo", scalar("String"))
-                    ))),
-                field("settings", "settings", notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("mute", "mute", scalar("Boolean"))
-                    )))
-            )),
-            inline("SharedRoom", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                fragment("SharedRoom", RoomSharedNanoSelector)
-            ))
-        )
-
-internal val SpanFragmentSelector = obj(
+internal val MessageSpanSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("offset", "offset", notNull(scalar("Int"))),
             field("length", "length", notNull(scalar("Int"))),
@@ -138,28 +86,45 @@ internal val SpanFragmentSelector = obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("user", "user", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("User", UserForMentionSelector)
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("name", "name", notNull(scalar("String")))
                     )))
             )),
             inline("MessageSpanMultiUserMention", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("users", "users", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("User", UserForMentionSelector)
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("name", "name", notNull(scalar("String")))
                     )))))
             )),
             inline("MessageSpanOrganizationMention", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("organization", "organization", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("Organization", OrganizationShortSelector)
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("name", "name", notNull(scalar("String")))
                     )))
             )),
             inline("MessageSpanRoomMention", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("room", "room", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("Room", RoomNanoSelector)
+                        inline("PrivateRoom", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("user", "user", notNull(obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("name", "name", notNull(scalar("String")))
+                                )))
+                        )),
+                        inline("SharedRoom", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("title", "title", notNull(scalar("String"))),
+                            field("isPremium", "isPremium", notNull(scalar("Boolean")))
+                        ))
                     )))
             )),
             inline("MessageSpanLink", obj(
@@ -179,50 +144,24 @@ internal val QuotedMessageSelector = obj(
             field("message", "message", scalar("String")),
             field("sender", "sender", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("User", UserShortSelector)
+                    fragment("User", MessageSenderSelector)
                 ))),
             field("senderBadge", "senderBadge", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("UserBadge", UserBadgeSelector)
                 )),
-            field("message", "message", scalar("String")),
             field("fallback", "fallback", notNull(scalar("String"))),
             field("source", "source", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    inline("MessageSourceChat", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("chat", "chat", notNull(obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                inline("PrivateRoom", obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("id", "id", notNull(scalar("ID")))
-                                )),
-                                inline("SharedRoom", obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("id", "id", notNull(scalar("ID")))
-                                ))
-                            )))
-                    ))
+                    fragment("MessageSourceChat", MessageSourceSelector)
                 )),
             field("spans", "spans", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("MessageSpan", SpanFragmentSelector)
+                    fragment("MessageSpan", MessageSpanSelector)
                 ))))),
             inline("GeneralMessage", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("id", "id", notNull(scalar("ID"))),
-                field("overrideName", "overrideName", scalar("String")),
-                field("overrideAvatar", "overrideAvatar", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("uuid", "uuid", notNull(scalar("String"))),
-                        field("crop", "crop", obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("x", "x", notNull(scalar("Int"))),
-                                field("y", "y", notNull(scalar("Int"))),
-                                field("w", "w", notNull(scalar("Int"))),
-                                field("h", "h", notNull(scalar("Int")))
-                            ))
-                    )),
                 field("commentsCount", "commentsCount", notNull(scalar("Int"))),
                 field("edited", "edited", notNull(scalar("Boolean"))),
                 field("attachments", "attachments", notNull(list(notNull(obj(
@@ -313,52 +252,10 @@ internal val QuotedMessageSelector = obj(
             inline("StickerMessage", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("id", "id", notNull(scalar("ID"))),
-                field("date", "date", notNull(scalar("Date"))),
-                field("overrideName", "overrideName", scalar("String")),
-                field("overrideAvatar", "overrideAvatar", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("uuid", "uuid", notNull(scalar("String"))),
-                        field("crop", "crop", obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("x", "x", notNull(scalar("Int"))),
-                                field("y", "y", notNull(scalar("Int"))),
-                                field("w", "w", notNull(scalar("Int"))),
-                                field("h", "h", notNull(scalar("Int")))
-                            ))
-                    )),
-                field("sender", "sender", notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("User", UserShortSelector)
-                    ))),
                 field("senderBadge", "senderBadge", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("UserBadge", UserBadgeSelector)
                     )),
-                field("source", "source", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        inline("MessageSourceChat", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("chat", "chat", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    inline("PrivateRoom", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID")))
-                                    )),
-                                    inline("SharedRoom", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID")))
-                                    ))
-                                )))
-                        ))
-                    )),
-                field("reactions", "reactions", notNull(list(notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("user", "user", notNull(obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                fragment("User", UserShortSelector)
-                            ))),
-                        field("reaction", "reaction", notNull(scalar("String")))
-                    ))))),
                 field("sticker", "sticker", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         inline("ImageSticker", obj(
@@ -384,6 +281,16 @@ internal val QuotedMessageSelector = obj(
             ))
         )
 
+internal val MessageReactionsSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("user", "user", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String")))
+                ))),
+            field("reaction", "reaction", notNull(scalar("String")))
+        )
+
 internal val StickerFragmentSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             inline("ImageSticker", obj(
@@ -401,27 +308,13 @@ internal val StickerFragmentSelector = obj(
             ))
         )
 
-internal val UserTinySelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("name", "name", notNull(scalar("String"))),
-            field("firstName", "firstName", notNull(scalar("String"))),
-            field("lastName", "lastName", scalar("String")),
-            field("photo", "photo", scalar("String")),
-            field("shortname", "shortname", scalar("String")),
-            field("primaryOrganization", "primaryOrganization", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("Organization", OrganizationShortSelector)
-                ))
-        )
-
 internal val FullMessageSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
             field("date", "date", notNull(scalar("Date"))),
             field("sender", "sender", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("User", UserShortSelector)
+                    fragment("User", MessageSenderSelector)
                 ))),
             field("senderBadge", "senderBadge", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -431,42 +324,15 @@ internal val FullMessageSelector = obj(
             field("fallback", "fallback", notNull(scalar("String"))),
             field("source", "source", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    inline("MessageSourceChat", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("chat", "chat", notNull(obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                inline("PrivateRoom", obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("id", "id", notNull(scalar("ID")))
-                                )),
-                                inline("SharedRoom", obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("id", "id", notNull(scalar("ID"))),
-                                    field("isChannel", "isChannel", notNull(scalar("Boolean"))),
-                                    field("membersCount", "membersCount", notNull(scalar("Int")))
-                                ))
-                            )))
-                    ))
+                    fragment("MessageSourceChat", MessageSourceSelector)
                 )),
             field("spans", "spans", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("MessageSpan", SpanFragmentSelector)
+                    fragment("MessageSpan", MessageSpanSelector)
                 ))))),
             inline("GeneralMessage", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("id", "id", notNull(scalar("ID"))),
-                field("overrideName", "overrideName", scalar("String")),
-                field("overrideAvatar", "overrideAvatar", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("uuid", "uuid", notNull(scalar("String"))),
-                        field("crop", "crop", obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("x", "x", notNull(scalar("Int"))),
-                                field("y", "y", notNull(scalar("Int"))),
-                                field("w", "w", notNull(scalar("Int"))),
-                                field("h", "h", notNull(scalar("Int")))
-                            ))
-                    )),
                 field("edited", "edited", notNull(scalar("Boolean"))),
                 field("commentsCount", "commentsCount", notNull(scalar("Int"))),
                 field("attachments", "attachments", notNull(list(notNull(obj(
@@ -573,49 +439,20 @@ internal val FullMessageSelector = obj(
                     ))))),
                 field("reactions", "reactions", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        field("user", "user", notNull(obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                fragment("User", UserShortSelector)
-                            ))),
-                        field("reaction", "reaction", notNull(scalar("String")))
+                        fragment("ModernMessageReaction", MessageReactionsSelector)
                     )))))
             )),
             inline("StickerMessage", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("id", "id", notNull(scalar("ID"))),
-                field("overrideName", "overrideName", scalar("String")),
-                field("overrideAvatar", "overrideAvatar", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("uuid", "uuid", notNull(scalar("String"))),
-                        field("crop", "crop", obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("x", "x", notNull(scalar("Int"))),
-                                field("y", "y", notNull(scalar("Int"))),
-                                field("w", "w", notNull(scalar("Int"))),
-                                field("h", "h", notNull(scalar("Int")))
-                            ))
-                    )),
-                field("date", "date", notNull(scalar("Date"))),
                 field("commentsCount", "commentsCount", notNull(scalar("Int"))),
-                field("sender", "sender", notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("User", UserShortSelector)
-                    ))),
-                field("senderBadge", "senderBadge", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("UserBadge", UserBadgeSelector)
-                    )),
                 field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", QuotedMessageSelector)
                     ))))),
                 field("reactions", "reactions", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        field("user", "user", notNull(obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                fragment("User", UserShortSelector)
-                            ))),
-                        field("reaction", "reaction", notNull(scalar("String")))
+                        fragment("ModernMessageReaction", MessageReactionsSelector)
                     ))))),
                 field("sticker", "sticker", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -625,40 +462,28 @@ internal val FullMessageSelector = obj(
             inline("ServiceMessage", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("id", "id", notNull(scalar("ID"))),
-                field("overrideName", "overrideName", scalar("String")),
-                field("overrideAvatar", "overrideAvatar", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("uuid", "uuid", notNull(scalar("String"))),
-                        field("crop", "crop", obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("x", "x", notNull(scalar("Int"))),
-                                field("y", "y", notNull(scalar("Int"))),
-                                field("w", "w", notNull(scalar("Int"))),
-                                field("h", "h", notNull(scalar("Int")))
-                            ))
-                    )),
                 field("serviceMetadata", "serviceMetadata", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         inline("InviteServiceMetadata", obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("users", "users", list(notNull(obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),
-                                    fragment("User", UserTinySelector)
+                                    field("id", "id", notNull(scalar("ID")))
                                 )))),
                             field("invitedBy", "invitedBy", notNull(obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),
-                                    fragment("User", UserTinySelector)
+                                    field("id", "id", notNull(scalar("ID")))
                                 )))
                         )),
                         inline("KickServiceMetadata", obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("user", "user", notNull(obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),
-                                    fragment("User", UserTinySelector)
+                                    field("id", "id", notNull(scalar("ID")))
                                 ))),
                             field("kickedBy", "kickedBy", notNull(obj(
                                     field("__typename", "__typename", notNull(scalar("String"))),
-                                    fragment("User", UserTinySelector)
+                                    field("id", "id", notNull(scalar("ID")))
                                 )))
                         )),
                         inline("TitleChangeServiceMetadata", obj(
@@ -675,6 +500,35 @@ internal val FullMessageSelector = obj(
                         ))
                     ))
             ))
+        )
+
+internal val OrganizationShortSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String")),
+            field("shortname", "shortname", scalar("String")),
+            field("about", "about", scalar("String")),
+            field("alphaIsCommunity", "isCommunity", notNull(scalar("Boolean"))),
+            field("membersCount", "membersCount", notNull(scalar("Int")))
+        )
+
+internal val UserShortSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("name", "name", notNull(scalar("String"))),
+            field("firstName", "firstName", notNull(scalar("String"))),
+            field("lastName", "lastName", scalar("String")),
+            field("photo", "photo", scalar("String")),
+            field("email", "email", scalar("String")),
+            field("online", "online", notNull(scalar("Boolean"))),
+            field("lastSeen", "lastSeen", scalar("String")),
+            field("isBot", "isBot", notNull(scalar("Boolean"))),
+            field("shortname", "shortname", scalar("String")),
+            field("primaryOrganization", "primaryOrganization", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    fragment("Organization", OrganizationShortSelector)
+                ))
         )
 
 internal val RoomShortSelector = obj(
@@ -1135,6 +989,45 @@ internal val MediaStreamFullSelector = obj(
                 )))))
         )
 
+internal val RoomSharedNanoSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("kind", "kind", notNull(scalar("String"))),
+            field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+            field("isPremium", "isPremium", notNull(scalar("Boolean"))),
+            field("title", "title", notNull(scalar("String"))),
+            field("photo", "roomPhoto", notNull(scalar("String"))),
+            field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("settings", "settings", notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("mute", "mute", scalar("Boolean"))
+                )))
+        )
+
+internal val RoomNanoSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("PrivateRoom", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("name", "name", notNull(scalar("String"))),
+                        field("photo", "photo", scalar("String"))
+                    ))),
+                field("settings", "settings", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("mute", "mute", scalar("Boolean"))
+                    )))
+            )),
+            inline("SharedRoom", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                fragment("SharedRoom", RoomSharedNanoSelector)
+            ))
+        )
+
 internal val NotificationFragmentSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -1503,52 +1396,6 @@ internal val PostSimpleSelector = obj(
             field("deletedAt", "deletedAt", scalar("Date"))
         )
 
-internal val RoomPreviewSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            inline("PrivateRoom", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                field("id", "id", notNull(scalar("ID"))),
-                field("user", "user", notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("User", UserShortSelector)
-                    )))
-            )),
-            inline("SharedRoom", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                field("id", "id", notNull(scalar("ID"))),
-                field("isChannel", "isChannel", notNull(scalar("Boolean"))),
-                field("isPremium", "isPremium", notNull(scalar("Boolean"))),
-                field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean"))),
-                field("premiumSubscription", "premiumSubscription", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("state", "state", notNull(scalar("String")))
-                    )),
-                field("premiumSettings", "premiumSettings", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("price", "price", notNull(scalar("Int"))),
-                        field("interval", "interval", scalar("String"))
-                    )),
-                field("membership", "membership", notNull(scalar("String"))),
-                field("owner", "owner", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID")))
-                    )),
-                field("title", "title", notNull(scalar("String"))),
-                field("photo", "photo", notNull(scalar("String"))),
-                field("membersCount", "membersCount", notNull(scalar("Int"))),
-                field("description", "description", scalar("String")),
-                field("previewMembers", "previewMembers", notNull(list(notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("name", "name", notNull(scalar("String"))),
-                        field("photo", "photo", scalar("String"))
-                    ))))),
-                field("onlineMembersCount", "onlineMembersCount", notNull(scalar("Int")))
-            ))
-        )
-
 internal val SettingsFullSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -1564,6 +1411,41 @@ internal val SettingsFullSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("PlatformNotificationSettings", PlatformNotificationSettingsFullSelector)
                 )))
+        )
+
+internal val SharedRoomPreviewSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
+            field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+            field("isPremium", "isPremium", notNull(scalar("Boolean"))),
+            field("premiumPassIsActive", "premiumPassIsActive", notNull(scalar("Boolean"))),
+            field("premiumSubscription", "premiumSubscription", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("state", "state", notNull(scalar("String")))
+                )),
+            field("premiumSettings", "premiumSettings", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("price", "price", notNull(scalar("Int"))),
+                    field("interval", "interval", scalar("String"))
+                )),
+            field("membership", "membership", notNull(scalar("String"))),
+            field("owner", "owner", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID")))
+                )),
+            field("title", "title", notNull(scalar("String"))),
+            field("photo", "photo", notNull(scalar("String"))),
+            field("membersCount", "membersCount", notNull(scalar("Int"))),
+            field("description", "description", scalar("String")),
+            field("previewMembers", "previewMembers", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String"))),
+                    field("photo", "photo", scalar("String"))
+                ))))),
+            field("onlineMembersCount", "onlineMembersCount", notNull(scalar("Int")))
         )
 
 internal val SharedRoomViewSelector = obj(
@@ -1585,58 +1467,18 @@ internal val StickerPackFragmentSelector = obj(
                 )))))
         )
 
-internal val TinyMessageSelector = obj(
+internal val UserForMentionSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
-            field("date", "date", notNull(scalar("Date"))),
-            field("sender", "sender", notNull(obj(
+            field("name", "name", notNull(scalar("String"))),
+            field("photo", "photo", scalar("String")),
+            field("shortname", "shortname", scalar("String")),
+            field("isBot", "isBot", notNull(scalar("Boolean"))),
+            field("primaryOrganization", "primaryOrganization", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("User", UserTinySelector)
-                ))),
-            field("senderBadge", "senderBadge", obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("UserBadge", UserBadgeSelector)
-                )),
-            field("message", "message", scalar("String")),
-            field("fallback", "fallback", notNull(scalar("String"))),
-            inline("GeneralMessage", obj(
-                field("__typename", "__typename", notNull(scalar("String"))),
-                field("id", "id", notNull(scalar("ID"))),
-                field("overrideName", "overrideName", scalar("String")),
-                field("overrideAvatar", "overrideAvatar", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("uuid", "uuid", notNull(scalar("String"))),
-                        field("crop", "crop", obj(
-                                field("__typename", "__typename", notNull(scalar("String"))),
-                                field("x", "x", notNull(scalar("Int"))),
-                                field("y", "y", notNull(scalar("Int"))),
-                                field("w", "w", notNull(scalar("Int"))),
-                                field("h", "h", notNull(scalar("Int")))
-                            ))
-                    )),
-                field("isMentioned", "isMentioned", notNull(scalar("Boolean"))),
-                field("commentsCount", "commentsCount", notNull(scalar("Int"))),
-                field("attachments", "attachments", notNull(list(notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("fallback", "fallback", notNull(scalar("String"))),
-                        inline("MessageAttachmentFile", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("fileId", "fileId", notNull(scalar("String"))),
-                            field("fileMetadata", "fileMetadata", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("isImage", "isImage", notNull(scalar("Boolean"))),
-                                    field("imageFormat", "imageFormat", scalar("String"))
-                                ))),
-                            field("filePreview", "filePreview", scalar("String"))
-                        ))
-                    ))))),
-                field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID")))
-                    )))))
-            ))
+                    field("id", "id", notNull(scalar("ID"))),
+                    field("name", "name", notNull(scalar("String")))
+                ))
         )
 
 internal val UserFullSelector = obj(
@@ -1664,16 +1506,6 @@ internal val UserFullSelector = obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("Organization", OrganizationShortSelector)
                 ))
-        )
-
-internal val UserNanoSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
-            field("name", "name", notNull(scalar("String"))),
-            field("firstName", "firstName", notNull(scalar("String"))),
-            field("lastName", "lastName", scalar("String")),
-            field("photo", "photo", scalar("String")),
-            field("online", "online", notNull(scalar("Boolean")))
         )
 
 internal val WalletTransactionFragmentSelector = obj(

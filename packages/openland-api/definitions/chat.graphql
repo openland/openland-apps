@@ -567,9 +567,9 @@ query ResolvedInvite($key: String!) {
             }
         }
     }
-    shortnameItem: alphaResolveShortName(shortname: $key){
+    shortnameItem: alphaResolveShortName(shortname: $key) {
         ... on SharedRoom {
-            ... RoomPreview
+            ... SharedRoomPreview
         }
     }
 }

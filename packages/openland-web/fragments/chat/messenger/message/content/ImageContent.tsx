@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentFile,
-    UserShort,
+    MessageSender,
 } from 'openland-api/spacex.types';
 // import { useImageViewer, ImageViewerCb } from 'openland-x-utils/imageViewer';
 import { layoutMedia, uploadcareOptions } from 'openland-y-utils/MediaLayout';
@@ -284,7 +284,7 @@ interface ModalProps {
     imageWidth: number;
     imageHeight: number;
     preview?: string | null;
-    sender?: UserShort;
+    sender?: MessageSender;
     senderNameEmojify?: string | JSX.Element;
     date?: number;
     chatId?: string;
@@ -646,7 +646,7 @@ const GifContent = React.memo(
 
 interface ImageContentProps {
     file: FullMessage_GeneralMessage_attachments_MessageAttachmentFile;
-    sender?: UserShort;
+    sender?: MessageSender;
     senderNameEmojify?: string | JSX.Element;
     date?: number;
     chatId?: string;

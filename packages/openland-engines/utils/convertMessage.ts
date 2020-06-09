@@ -14,11 +14,20 @@ export const convertMessage = (
     let reply =
         generalMessage && generalMessage.quotedMessages
             ? generalMessage.quotedMessages
-                .sort((a, b) => a.date - b.date)
-                .map(r => convertMessage(r as FullMessage))
+                  .sort((a, b) => a.date - b.date)
+                  .map((r) => convertMessage(r as FullMessage))
             : undefined;
 
-    const source = generalMessage && generalMessage.source && generalMessage.source.__typename === 'MessageSourceChat' ? generalMessage.source : (stickerMessage && stickerMessage.source && stickerMessage.source.__typename === 'MessageSourceChat' ? stickerMessage.source : undefined);
+    const source = generalMessage?.source || stickerMessage?.source || null;
+        // generalMessage &&
+        // generalMessage.source &&
+        // generalMessage.source.__typename === 'MessageSourceChat'
+        //     ? generalMessage.source
+        //     : stickerMessage &&
+        //       stickerMessage.source &&
+        //       stickerMessage.source.__typename === 'MessageSourceChat'
+        //     ? stickerMessage.source
+        //     : undefined;
 
     return {
         chatId: '',
@@ -50,6 +59,6 @@ export const convertMessage = (
         reactionsReduced: [],
         reactionsLabel: '',
         overrideName: src.overrideName,
-        overrideAvatar: src.overrideAvatar
+        overrideAvatar: src.overrideAvatar,
     };
 };

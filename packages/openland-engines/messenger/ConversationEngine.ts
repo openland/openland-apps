@@ -6,11 +6,14 @@ import { backoff, delay } from 'openland-y-utils/timer';
 import {
     UserBadge,
     FullMessage,
+    MessageSource,
+    MessageReactions,
+    MessageSpan,
     FullMessage_GeneralMessage_reactions,
     FullMessage_ServiceMessage_serviceMetadata,
     FullMessage_GeneralMessage_attachments,
     FullMessage_GeneralMessage_spans,
-    UserShort,
+    MessageSender,
     DialogUpdateFragment_DialogPeerUpdated_peer,
 } from 'openland-api/spacex.types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
@@ -49,19 +52,15 @@ export interface DataSourceMessageItem {
     id?: string;
     date: number;
     isOut: boolean;
-    sender: UserShort;
-    senderId: string;
-    senderName: string;
-    senderPhoto?: string;
+    sender: MessageSender;
     senderBadge?: UserBadge;
     text?: string;
-    title?: string;
     isEdited?: boolean;
     reply?: DataSourceMessageItem[];
-    source?: Types.FullMessage_GeneralMessage_source_MessageSourceChat;
-    reactions: FullMessage_GeneralMessage_reactions[];
+    source?: MessageSource;
+    reactions: MessageReactions[];
     attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string, filePreview?: string | null })[];
-    spans?: FullMessage_GeneralMessage_spans[];
+    spans?: MessageSpan[];
     isSending: boolean;
     attachTop: boolean;
     attachBottom: boolean;
@@ -84,8 +83,6 @@ export interface DataSourceMessageItem {
     notificationId?: string;
     notificationType?: 'new_comment' | 'unsupported';
     room?: Types.RoomNano;
-    overrideName: string | null;
-    overrideAvatar: Types.FullMessage_ServiceMessage_overrideAvatar | null;
 }
 
 export interface DataSourceDateItem {
@@ -138,8 +135,6 @@ export function convertPartialMessage(src: RecursivePartial<FullMessage> & { id:
         quotedMessages: [],
         reactions: [],
         spans: [],
-        overrideName: null,
-        overrideAvatar: null
     };
     return convertMessage({ ...genericGeneralMessage, ...src as FullMessage }, chatId, engine);
 }
@@ -181,8 +176,6 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId
         reactionsReduced: reactions.length ? reduceReactions(reactions, engine.user.id) : [],
         reactionsLabel: reactions.length ? getReactionsLabel(reactions, engine.user.id) : '',
         sticker: stickerMessage ? stickerMessage.sticker : undefined,
-        overrideName: src.overrideName,
-        overrideAvatar: src.overrideAvatar
     };
 }
 
@@ -203,8 +196,6 @@ export function convertMessageBack(src: DataSourceMessageItem): Types.FullMessag
         reactions: [],
         source: src.source || null,
         sticker: src.sticker,
-        overrideName: src.overrideName,
-        overrideAvatar: src.overrideAvatar
     };
 
     return res;
@@ -743,34 +734,6 @@ export class ConversationEngine implements MessageSendHandler {
         return key;
     }
 
-    retryMessage = (key: string) => {
-        let ex = this.messages.find((v) => isPendingMessage(v) && v.key === key);
-        if (ex) {
-            this.messages = this.messages.map((v) => {
-                if (isPendingMessage(v) && v.key === key) {
-                    return {
-                        ...v,
-                        failed: false
-                    } as PendingMessage;
-                } else {
-                    return v;
-                }
-            });
-            this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
-            this.onMessagesUpdated();
-            this.engine.sender.retryMessage(key, this);
-        }
-    }
-
-    cancelMessage = (key: string) => {
-        let ex = this.messages.find((v) => isPendingMessage(v) && v.key === key);
-        if (ex) {
-            this.messages = this.messages.filter((v) => isServerMessage(v) || v.key !== key);
-            this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
-            this.onMessagesUpdated();
-        }
-    }
-
     onFailed = (key: string) => {
         // Handle failed
         let ex = this.messages.find((v) => isPendingMessage(v) && v.key === key);
@@ -873,16 +836,6 @@ export class ConversationEngine implements MessageSendHandler {
                 }
             }
 
-            return null;
-        });
-    }
-
-    handlePhotoUpdated = async (photo: string) => {
-        await this.engine.client.updateRoomChat({ id: this.conversationId }, (data) => {
-            if (data.room && data.room.__typename === 'SharedRoom') {
-                data.room.photo = photo;
-                return data;
-            }
             return null;
         });
     }
@@ -1085,8 +1038,6 @@ export class ConversationEngine implements MessageSendHandler {
                 reactionsReduced: [],
                 reactionsLabel: '',
                 sticker: src.sticker || undefined,
-                overrideName: null,
-                overrideAvatar: null
             };
         }
         if (this.dataSource.hasItem(conv.key)) {
@@ -1197,7 +1148,7 @@ export class ConversationEngine implements MessageSendHandler {
         //
         // Start a new sender group
         //
-        let prepareSenderIfNeeded = (sender: UserShort, message: ModelMessage, date: number) => {
+        let prepareSenderIfNeeded = (sender: MessageSender, message: ModelMessage, date: number) => {
             let day = prepareDateIfNeeded(date);
             let isService = isServerMessage(message) && message.__typename === 'ServiceMessage';
             if (prevMessageSender === sender.id && prevMessageDate !== undefined && isService === prevMessageIsService) {

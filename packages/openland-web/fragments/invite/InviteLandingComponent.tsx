@@ -4,7 +4,7 @@ import {
     ResolvedInvite_invite_InviteInfo_organization,
     WalletSubscriptionInterval,
     WalletSubscriptionState,
-    RoomPreview_SharedRoom,
+    SharedRoomPreview,
 } from 'openland-api/spacex.types';
 import { XViewRouterContext } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
@@ -127,7 +127,7 @@ interface InviteLandingComponentLayoutProps {
     description?: string | null;
     button: any;
     noLogin: boolean;
-    room?: RoomPreview_SharedRoom;
+    room?: SharedRoomPreview;
 }
 
 const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLayoutProps) => {
@@ -363,7 +363,7 @@ const BuyPaidChatPassButton = (props: {
 };
 
 const resolveRoomButton = (
-    room: RoomPreview_SharedRoom,
+    room: SharedRoomPreview,
     buttonText: string,
     key?: string,
 ) => {
@@ -448,7 +448,7 @@ const resolveRoomButton = (
     return <></>;
 };
 
-export const SharedRoomPlaceholder = ({ room }: { room: RoomPreview_SharedRoom }) => {
+export const SharedRoomPlaceholder = ({ room }: { room: SharedRoomPreview }) => {
     const buttonText = room.isChannel ? 'Join channel' : 'Join group';
     const premiumSuspended =
         room &&
@@ -487,7 +487,7 @@ export const InviteLandingComponent = ({ signupRedirect }: { signupRedirect?: st
     const key = unicorn ? unicorn.id : path[path.length - 1];
 
     let invite = client.useResolvedInvite({ key });
-    let room: RoomPreview_SharedRoom | undefined;
+    let room: SharedRoomPreview | undefined;
     let organization: ResolvedInvite_invite_InviteInfo_organization | undefined;
 
     // let invitedByUser;

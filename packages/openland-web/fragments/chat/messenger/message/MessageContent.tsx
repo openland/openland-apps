@@ -5,7 +5,7 @@ import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase,
     FullMessage_GeneralMessage_attachments,
     MyStickers_stickers_packs_stickers,
-    UserShort,
+    MessageSender,
 } from 'openland-api/spacex.types';
 import { MessageTextComponent } from './content/MessageTextComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
@@ -94,7 +94,7 @@ interface MessageContentProps {
     isOut?: boolean;
     attachTop?: boolean;
     chatId?: string;
-    sender?: UserShort;
+    sender?: MessageSender;
     senderNameEmojify?: string | JSX.Element;
     date?: number;
     fileProgress?: number;
