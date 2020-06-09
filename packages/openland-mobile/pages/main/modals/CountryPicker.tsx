@@ -73,7 +73,6 @@ const CountryPickerComponent = React.memo((props: PageProps) => {
                         keyboardAppearance={theme.keyboardAppearance}
                         backgroundColor={theme.backgroundTertiaryTrans}
                         placeholderTextColor={theme.foregroundTertiary}
-                        inlineImageLeft={require('assets/ic-search-16.png')}
                         style={{ fontSize: 17, marginBottom: sortCountries ? 16 : 14 }}
                     />
                     <Image
