@@ -18,6 +18,7 @@ import { DialogItemViewAsync } from 'openland-mobile/messenger/components/Dialog
 import { SFlatList } from 'react-native-s/SFlatList';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
+import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
 
 export interface GlobalSearchProps {
     query: string;
@@ -98,6 +99,10 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
     const [messages, setMessages] = React.useState(initialData.edges);
 
     const handleNeedMore = React.useCallback(async () => {
+        if (!NON_PRODUCTION) {
+            return;
+        }
+
         if (loadingMore || !after) {
             return;
         }
