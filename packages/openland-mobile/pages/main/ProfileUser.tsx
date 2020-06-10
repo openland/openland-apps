@@ -224,11 +224,18 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                 )}
 
                 {myID !== user.id && (
-                    <ZListGroup header="Settings">
+                    <ZListGroup header="Options">
                         <NotificationSettings
                             id={(conversation as User_conversation_PrivateRoom).id}
                             mute={!!(conversation as User_conversation_PrivateRoom).settings.mute}
                         />
+                        {conversation && conversation.__typename === 'PrivateRoom' && (
+                            <ZListItem
+                                leftIcon={require('assets/ic-attach-glyph-24.png')}
+                                text="Shared media"
+                                onPress={() => props.router.push('SharedMedia', { chatId: conversation.id })}
+                            />
+                        )}
                         {SUPER_ADMIN && !user.isBot && (
                             <ZListItem
                                 leftIcon={require('assets/ic-invite-glyph-24.png')}
@@ -240,7 +247,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                 )}
 
                 <ZListGroup header="Featured in" counter={user.chatsWithBadge.length}>
-                    {user.chatsWithBadge.map((item, index) => (
+                    {user.chatsWithBadge.map((item) => (
                         <ZListItem
                             leftAvatar={{
                                 photo:
