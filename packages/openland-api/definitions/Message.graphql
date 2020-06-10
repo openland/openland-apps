@@ -76,6 +76,123 @@ fragment MessageSpan on MessageSpan {
     }
 }
 
+fragment MessageAttachments on ModernMessageAttachment {
+    fallback
+    ... on MessageAttachmentFile {
+        id
+        fileId
+        fileMetadata {
+            name
+            mimeType
+            size
+            isImage
+            imageWidth
+            imageHeight
+            imageFormat
+        }
+        filePreview
+    }
+
+    ... on MessageRichAttachment {
+        id
+        title
+        subTitle
+        titleLink
+        titleLinkHostname
+        text
+        icon {
+            url
+            metadata {
+                name
+                mimeType
+                size
+                isImage
+                imageWidth
+                imageHeight
+                imageFormat
+            }
+        }
+        image {
+            url
+            metadata {
+                name
+                mimeType
+                size
+                isImage
+                imageWidth
+                imageHeight
+                imageFormat
+            }
+        }
+        socialImage {
+            url
+            metadata {
+                name
+                mimeType
+                size
+                isImage
+                imageWidth
+                imageHeight
+                imageFormat
+            }
+        }
+        imageFallback {
+            photo
+            text
+        }
+        keyboard {
+            buttons {
+                id
+                title
+                style
+                url
+            }
+        }
+        fallback
+    }
+    ... on MessageAttachmentPurchase {
+        id
+        purchase {
+            id
+            state
+            amount
+        }
+        fallback
+    }
+}
+
+fragment ServiceMessageMetadata on ServiceMetadata {
+    ... on InviteServiceMetadata {
+        users {
+            id
+        }
+        invitedBy {
+            id
+        }
+    }
+
+    ... on KickServiceMetadata {
+        user {
+            id
+        }
+        kickedBy {
+            id
+        }
+    }
+
+    ... on TitleChangeServiceMetadata {
+        title
+    }
+
+    ... on PhotoChangeServiceMetadata {
+        photo
+    }
+
+    ... on PostRespondServiceMetadata {
+        respondType
+    }
+}
+
 fragment QuotedMessage on ModernMessage {
     id
     date
@@ -99,100 +216,14 @@ fragment QuotedMessage on ModernMessage {
         commentsCount
         edited
         attachments {
-            fallback
-            ... on MessageAttachmentFile {
-                id
-                fileId
-                fileMetadata {
-                    name
-                    mimeType
-                    size
-                    isImage
-                    imageWidth
-                    imageHeight
-                    imageFormat
-                }
-                filePreview
-            }
-
-            ... on MessageRichAttachment {
-                id
-                title
-                subTitle
-                titleLink
-                titleLinkHostname
-                text
-                icon {
-                    url
-                    metadata {
-                        name
-                        mimeType
-                        size
-                        isImage
-                        imageWidth
-                        imageHeight
-                        imageFormat
-                    }
-                }
-                image {
-                    url
-                    metadata {
-                        name
-                        mimeType
-                        size
-                        isImage
-                        imageWidth
-                        imageHeight
-                        imageFormat
-                    }
-                }
-                keyboard {
-                    buttons {
-                        id
-                        title
-                        style
-                        url
-                    }
-                }
-                imageFallback {
-                    photo
-                    text
-                }
-                fallback
-            }
-
-            ... on MessageAttachmentPurchase {
-                id
-                purchase {
-                    id
-                    state
-                    amount
-                }
-                fallback
-            }
+            ...MessageAttachments
         }
     }
 
     ... on StickerMessage {
         id
-        senderBadge {
-            ...UserBadge
-        }
         sticker {
-            ... on ImageSticker {
-                id
-                pack {
-                    ... on StickerPack {
-                        id
-                        title
-                    }
-                }
-                image {
-                    ... on ImageRef {
-                        uuid
-                    }
-                }
-            }
+            ...StickerFragment
         }
     }
 }
@@ -219,93 +250,11 @@ fragment FullMessage on ModernMessage {
         edited
         commentsCount
         attachments {
-            fallback
-            ... on MessageAttachmentFile {
-                id
-                fileId
-                fileMetadata {
-                    name
-                    mimeType
-                    size
-                    isImage
-                    imageWidth
-                    imageHeight
-                    imageFormat
-                }
-                filePreview
-            }
-
-            ... on MessageRichAttachment {
-                id
-                title
-                subTitle
-                titleLink
-                titleLinkHostname
-                text
-                icon {
-                    url
-                    metadata {
-                        name
-                        mimeType
-                        size
-                        isImage
-                        imageWidth
-                        imageHeight
-                        imageFormat
-                    }
-                }
-                image {
-                    url
-                    metadata {
-                        name
-                        mimeType
-                        size
-                        isImage
-                        imageWidth
-                        imageHeight
-                        imageFormat
-                    }
-                }
-                socialImage {
-                    url
-                    metadata {
-                        name
-                        mimeType
-                        size
-                        isImage
-                        imageWidth
-                        imageHeight
-                        imageFormat
-                    }
-                }
-                imageFallback {
-                    photo
-                    text
-                }
-                keyboard {
-                    buttons {
-                        id
-                        title
-                        style
-                        url
-                    }
-                }
-                fallback
-            }
-            ... on MessageAttachmentPurchase {
-                id
-                purchase {
-                    id
-                    state
-                    amount
-                }
-                fallback
-            }
+            ...MessageAttachments
         }
         quotedMessages {
             ...QuotedMessage
         }
-
         reactions {
             ...MessageReactions
         }
@@ -317,46 +266,18 @@ fragment FullMessage on ModernMessage {
         quotedMessages {
             ...QuotedMessage
         }
-        reactions {
-            ...MessageReactions
-        }
         sticker {
             ...StickerFragment
+        }
+        reactions {
+            ...MessageReactions
         }
     }
 
     ... on ServiceMessage {
         id
         serviceMetadata {
-            ... on InviteServiceMetadata {
-                users {
-                    id
-                }
-                invitedBy {
-                    id
-                }
-            }
-
-            ... on KickServiceMetadata {
-                user {
-                    id
-                }
-                kickedBy {
-                    id
-                }
-            }
-
-            ... on TitleChangeServiceMetadata {
-                title
-            }
-
-            ... on PhotoChangeServiceMetadata {
-                photo
-            }
-
-            ... on PostRespondServiceMetadata {
-                respondType
-            }
+            ...ServiceMessageMetadata
         }
     }
 }

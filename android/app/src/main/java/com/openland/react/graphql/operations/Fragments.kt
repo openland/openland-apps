@@ -137,6 +137,122 @@ internal val MessageSpanSelector = obj(
             ))
         )
 
+internal val MessageAttachmentsSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            field("fallback", "fallback", notNull(scalar("String"))),
+            inline("MessageAttachmentFile", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("fileId", "fileId", notNull(scalar("String"))),
+                field("fileMetadata", "fileMetadata", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("name", "name", notNull(scalar("String"))),
+                        field("mimeType", "mimeType", scalar("String")),
+                        field("size", "size", notNull(scalar("Int"))),
+                        field("isImage", "isImage", notNull(scalar("Boolean"))),
+                        field("imageWidth", "imageWidth", scalar("Int")),
+                        field("imageHeight", "imageHeight", scalar("Int")),
+                        field("imageFormat", "imageFormat", scalar("String"))
+                    ))),
+                field("filePreview", "filePreview", scalar("String"))
+            )),
+            inline("MessageRichAttachment", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("title", "title", scalar("String")),
+                field("subTitle", "subTitle", scalar("String")),
+                field("titleLink", "titleLink", scalar("String")),
+                field("titleLinkHostname", "titleLinkHostname", scalar("String")),
+                field("text", "text", scalar("String")),
+                field("icon", "icon", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("url", "url", notNull(scalar("String"))),
+                        field("metadata", "metadata", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("name", "name", notNull(scalar("String"))),
+                                field("mimeType", "mimeType", scalar("String")),
+                                field("size", "size", notNull(scalar("Int"))),
+                                field("isImage", "isImage", notNull(scalar("Boolean"))),
+                                field("imageWidth", "imageWidth", scalar("Int")),
+                                field("imageHeight", "imageHeight", scalar("Int")),
+                                field("imageFormat", "imageFormat", scalar("String"))
+                            ))
+                    )),
+                field("image", "image", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("url", "url", notNull(scalar("String"))),
+                        field("metadata", "metadata", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("name", "name", notNull(scalar("String"))),
+                                field("mimeType", "mimeType", scalar("String")),
+                                field("size", "size", notNull(scalar("Int"))),
+                                field("isImage", "isImage", notNull(scalar("Boolean"))),
+                                field("imageWidth", "imageWidth", scalar("Int")),
+                                field("imageHeight", "imageHeight", scalar("Int")),
+                                field("imageFormat", "imageFormat", scalar("String"))
+                            ))
+                    )),
+                field("socialImage", "socialImage", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("url", "url", notNull(scalar("String"))),
+                        field("metadata", "metadata", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("name", "name", notNull(scalar("String"))),
+                                field("mimeType", "mimeType", scalar("String")),
+                                field("size", "size", notNull(scalar("Int"))),
+                                field("isImage", "isImage", notNull(scalar("Boolean"))),
+                                field("imageWidth", "imageWidth", scalar("Int")),
+                                field("imageHeight", "imageHeight", scalar("Int")),
+                                field("imageFormat", "imageFormat", scalar("String"))
+                            ))
+                    )),
+                field("imageFallback", "imageFallback", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("photo", "photo", notNull(scalar("String"))),
+                        field("text", "text", notNull(scalar("String")))
+                    )),
+                field("keyboard", "keyboard", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("buttons", "buttons", notNull(list(list(notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("id", "id", notNull(scalar("ID"))),
+                                field("title", "title", notNull(scalar("String"))),
+                                field("style", "style", notNull(scalar("String"))),
+                                field("url", "url", scalar("String"))
+                            ))))))
+                    )),
+                field("fallback", "fallback", notNull(scalar("String")))
+            )),
+            inline("MessageAttachmentPurchase", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("purchase", "purchase", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("state", "state", notNull(scalar("String"))),
+                        field("amount", "amount", notNull(scalar("Int")))
+                    ))),
+                field("fallback", "fallback", notNull(scalar("String")))
+            ))
+        )
+
+internal val StickerFragmentSelector = obj(
+            field("__typename", "__typename", notNull(scalar("String"))),
+            inline("ImageSticker", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("id", "id", notNull(scalar("ID"))),
+                field("pack", "pack", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID"))),
+                        field("title", "title", notNull(scalar("String")))
+                    ))),
+                field("image", "image", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("uuid", "uuid", notNull(scalar("String")))
+                    )))
+            ))
+        )
+
 internal val QuotedMessageSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("id", "id", notNull(scalar("ID"))),
@@ -166,117 +282,15 @@ internal val QuotedMessageSelector = obj(
                 field("edited", "edited", notNull(scalar("Boolean"))),
                 field("attachments", "attachments", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        field("fallback", "fallback", notNull(scalar("String"))),
-                        inline("MessageAttachmentFile", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("fileId", "fileId", notNull(scalar("String"))),
-                            field("fileMetadata", "fileMetadata", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("name", "name", notNull(scalar("String"))),
-                                    field("mimeType", "mimeType", scalar("String")),
-                                    field("size", "size", notNull(scalar("Int"))),
-                                    field("isImage", "isImage", notNull(scalar("Boolean"))),
-                                    field("imageWidth", "imageWidth", scalar("Int")),
-                                    field("imageHeight", "imageHeight", scalar("Int")),
-                                    field("imageFormat", "imageFormat", scalar("String"))
-                                ))),
-                            field("filePreview", "filePreview", scalar("String"))
-                        )),
-                        inline("MessageRichAttachment", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("title", "title", scalar("String")),
-                            field("subTitle", "subTitle", scalar("String")),
-                            field("titleLink", "titleLink", scalar("String")),
-                            field("titleLinkHostname", "titleLinkHostname", scalar("String")),
-                            field("text", "text", scalar("String")),
-                            field("icon", "icon", obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("url", "url", notNull(scalar("String"))),
-                                    field("metadata", "metadata", obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("name", "name", notNull(scalar("String"))),
-                                            field("mimeType", "mimeType", scalar("String")),
-                                            field("size", "size", notNull(scalar("Int"))),
-                                            field("isImage", "isImage", notNull(scalar("Boolean"))),
-                                            field("imageWidth", "imageWidth", scalar("Int")),
-                                            field("imageHeight", "imageHeight", scalar("Int")),
-                                            field("imageFormat", "imageFormat", scalar("String"))
-                                        ))
-                                )),
-                            field("image", "image", obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("url", "url", notNull(scalar("String"))),
-                                    field("metadata", "metadata", obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("name", "name", notNull(scalar("String"))),
-                                            field("mimeType", "mimeType", scalar("String")),
-                                            field("size", "size", notNull(scalar("Int"))),
-                                            field("isImage", "isImage", notNull(scalar("Boolean"))),
-                                            field("imageWidth", "imageWidth", scalar("Int")),
-                                            field("imageHeight", "imageHeight", scalar("Int")),
-                                            field("imageFormat", "imageFormat", scalar("String"))
-                                        ))
-                                )),
-                            field("keyboard", "keyboard", obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("buttons", "buttons", notNull(list(list(notNull(obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("id", "id", notNull(scalar("ID"))),
-                                            field("title", "title", notNull(scalar("String"))),
-                                            field("style", "style", notNull(scalar("String"))),
-                                            field("url", "url", scalar("String"))
-                                        ))))))
-                                )),
-                            field("imageFallback", "imageFallback", obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("photo", "photo", notNull(scalar("String"))),
-                                    field("text", "text", notNull(scalar("String")))
-                                )),
-                            field("fallback", "fallback", notNull(scalar("String")))
-                        )),
-                        inline("MessageAttachmentPurchase", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("purchase", "purchase", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("id", "id", notNull(scalar("ID"))),
-                                    field("state", "state", notNull(scalar("String"))),
-                                    field("amount", "amount", notNull(scalar("Int")))
-                                ))),
-                            field("fallback", "fallback", notNull(scalar("String")))
-                        ))
+                        fragment("ModernMessageAttachment", MessageAttachmentsSelector)
                     )))))
             )),
             inline("StickerMessage", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("id", "id", notNull(scalar("ID"))),
-                field("senderBadge", "senderBadge", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("UserBadge", UserBadgeSelector)
-                    )),
                 field("sticker", "sticker", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        inline("ImageSticker", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("pack", "pack", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    inline("StickerPack", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("id", "id", notNull(scalar("ID"))),
-                                        field("title", "title", notNull(scalar("String")))
-                                    ))
-                                ))),
-                            field("image", "image", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    inline("ImageRef", obj(
-                                        field("__typename", "__typename", notNull(scalar("String"))),
-                                        field("uuid", "uuid", notNull(scalar("String")))
-                                    ))
-                                )))
-                        ))
+                        fragment("Sticker", StickerFragmentSelector)
                     )))
             ))
         )
@@ -291,20 +305,41 @@ internal val MessageReactionsSelector = obj(
             field("reaction", "reaction", notNull(scalar("String")))
         )
 
-internal val StickerFragmentSelector = obj(
+internal val ServiceMessageMetadataSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
-            inline("ImageSticker", obj(
+            inline("InviteServiceMetadata", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
-                field("id", "id", notNull(scalar("ID"))),
-                field("pack", "pack", notNull(obj(
+                field("users", "users", list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("title", "title", notNull(scalar("String")))
-                    ))),
-                field("image", "image", notNull(obj(
+                        field("id", "id", notNull(scalar("ID")))
+                    )))),
+                field("invitedBy", "invitedBy", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        field("uuid", "uuid", notNull(scalar("String")))
+                        field("id", "id", notNull(scalar("ID")))
                     )))
+            )),
+            inline("KickServiceMetadata", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("user", "user", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
+                    ))),
+                field("kickedBy", "kickedBy", notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("id", "id", notNull(scalar("ID")))
+                    )))
+            )),
+            inline("TitleChangeServiceMetadata", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("title", "title", notNull(scalar("String")))
+            )),
+            inline("PhotoChangeServiceMetadata", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("photo", "photo", scalar("String"))
+            )),
+            inline("PostRespondServiceMetadata", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("respondType", "respondType", notNull(scalar("ID")))
             ))
         )
 
@@ -337,101 +372,7 @@ internal val FullMessageSelector = obj(
                 field("commentsCount", "commentsCount", notNull(scalar("Int"))),
                 field("attachments", "attachments", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        field("fallback", "fallback", notNull(scalar("String"))),
-                        inline("MessageAttachmentFile", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("fileId", "fileId", notNull(scalar("String"))),
-                            field("fileMetadata", "fileMetadata", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("name", "name", notNull(scalar("String"))),
-                                    field("mimeType", "mimeType", scalar("String")),
-                                    field("size", "size", notNull(scalar("Int"))),
-                                    field("isImage", "isImage", notNull(scalar("Boolean"))),
-                                    field("imageWidth", "imageWidth", scalar("Int")),
-                                    field("imageHeight", "imageHeight", scalar("Int")),
-                                    field("imageFormat", "imageFormat", scalar("String"))
-                                ))),
-                            field("filePreview", "filePreview", scalar("String"))
-                        )),
-                        inline("MessageRichAttachment", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("title", "title", scalar("String")),
-                            field("subTitle", "subTitle", scalar("String")),
-                            field("titleLink", "titleLink", scalar("String")),
-                            field("titleLinkHostname", "titleLinkHostname", scalar("String")),
-                            field("text", "text", scalar("String")),
-                            field("icon", "icon", obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("url", "url", notNull(scalar("String"))),
-                                    field("metadata", "metadata", obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("name", "name", notNull(scalar("String"))),
-                                            field("mimeType", "mimeType", scalar("String")),
-                                            field("size", "size", notNull(scalar("Int"))),
-                                            field("isImage", "isImage", notNull(scalar("Boolean"))),
-                                            field("imageWidth", "imageWidth", scalar("Int")),
-                                            field("imageHeight", "imageHeight", scalar("Int")),
-                                            field("imageFormat", "imageFormat", scalar("String"))
-                                        ))
-                                )),
-                            field("image", "image", obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("url", "url", notNull(scalar("String"))),
-                                    field("metadata", "metadata", obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("name", "name", notNull(scalar("String"))),
-                                            field("mimeType", "mimeType", scalar("String")),
-                                            field("size", "size", notNull(scalar("Int"))),
-                                            field("isImage", "isImage", notNull(scalar("Boolean"))),
-                                            field("imageWidth", "imageWidth", scalar("Int")),
-                                            field("imageHeight", "imageHeight", scalar("Int")),
-                                            field("imageFormat", "imageFormat", scalar("String"))
-                                        ))
-                                )),
-                            field("socialImage", "socialImage", obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("url", "url", notNull(scalar("String"))),
-                                    field("metadata", "metadata", obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("name", "name", notNull(scalar("String"))),
-                                            field("mimeType", "mimeType", scalar("String")),
-                                            field("size", "size", notNull(scalar("Int"))),
-                                            field("isImage", "isImage", notNull(scalar("Boolean"))),
-                                            field("imageWidth", "imageWidth", scalar("Int")),
-                                            field("imageHeight", "imageHeight", scalar("Int")),
-                                            field("imageFormat", "imageFormat", scalar("String"))
-                                        ))
-                                )),
-                            field("imageFallback", "imageFallback", obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("photo", "photo", notNull(scalar("String"))),
-                                    field("text", "text", notNull(scalar("String")))
-                                )),
-                            field("keyboard", "keyboard", obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("buttons", "buttons", notNull(list(list(notNull(obj(
-                                            field("__typename", "__typename", notNull(scalar("String"))),
-                                            field("id", "id", notNull(scalar("ID"))),
-                                            field("title", "title", notNull(scalar("String"))),
-                                            field("style", "style", notNull(scalar("String"))),
-                                            field("url", "url", scalar("String"))
-                                        ))))))
-                                )),
-                            field("fallback", "fallback", notNull(scalar("String")))
-                        )),
-                        inline("MessageAttachmentPurchase", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("id", "id", notNull(scalar("ID"))),
-                            field("purchase", "purchase", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("id", "id", notNull(scalar("ID"))),
-                                    field("state", "state", notNull(scalar("String"))),
-                                    field("amount", "amount", notNull(scalar("Int")))
-                                ))),
-                            field("fallback", "fallback", notNull(scalar("String")))
-                        ))
+                        fragment("ModernMessageAttachment", MessageAttachmentsSelector)
                     ))))),
                 field("quotedMessages", "quotedMessages", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
@@ -450,54 +391,21 @@ internal val FullMessageSelector = obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessage", QuotedMessageSelector)
                     ))))),
-                field("reactions", "reactions", notNull(list(notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        fragment("ModernMessageReaction", MessageReactionsSelector)
-                    ))))),
                 field("sticker", "sticker", notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("Sticker", StickerFragmentSelector)
-                    )))
+                    ))),
+                field("reactions", "reactions", notNull(list(notNull(obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        fragment("ModernMessageReaction", MessageReactionsSelector)
+                    )))))
             )),
             inline("ServiceMessage", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("id", "id", notNull(scalar("ID"))),
                 field("serviceMetadata", "serviceMetadata", obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
-                        inline("InviteServiceMetadata", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("users", "users", list(notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("id", "id", notNull(scalar("ID")))
-                                )))),
-                            field("invitedBy", "invitedBy", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("id", "id", notNull(scalar("ID")))
-                                )))
-                        )),
-                        inline("KickServiceMetadata", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("user", "user", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("id", "id", notNull(scalar("ID")))
-                                ))),
-                            field("kickedBy", "kickedBy", notNull(obj(
-                                    field("__typename", "__typename", notNull(scalar("String"))),
-                                    field("id", "id", notNull(scalar("ID")))
-                                )))
-                        )),
-                        inline("TitleChangeServiceMetadata", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("title", "title", notNull(scalar("String")))
-                        )),
-                        inline("PhotoChangeServiceMetadata", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("photo", "photo", scalar("String"))
-                        )),
-                        inline("PostRespondServiceMetadata", obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("respondType", "respondType", notNull(scalar("ID")))
-                        ))
+                        fragment("ServiceMetadata", ServiceMessageMetadataSelector)
                     ))
             ))
         )
