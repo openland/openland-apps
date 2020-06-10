@@ -45,13 +45,13 @@ export const GlobalSearchMessage = React.memo<GlobalSearchMessageProps>((props) 
                             </Text>
                         </View>
                         <View marginLeft={10} marginTop={2}>
-                            <Text style={{ ...TextStyles.Caption, color: theme.foregroundTertiary }}>{formatDate(date)}</Text>
+                            <Text style={{ ...TextStyles.Caption, color: theme.foregroundTertiary }} allowFontScaling={false}>{formatDate(date)}</Text>
                         </View>
                     </View>
                     <View flexDirection="row" alignItems="stretch" height={40}>
                         <View flexGrow={1}>
                             <View flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
-                                <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} numberOfLines={2}>
+                                <Text style={{ ...TextStyles.Subhead, color: theme.foregroundSecondary }} numberOfLines={2} allowFontScaling={false} ellipsizeMode="tail">
                                     {sender}{': '}{message.fallback}
                                 </Text>
                             </View>
