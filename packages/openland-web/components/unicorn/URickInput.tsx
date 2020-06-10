@@ -4,7 +4,6 @@ import { css, cx } from 'linaria';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { StickerFragment, UserForMention } from 'openland-api/spacex.types';
 import { EmojiPicker } from './emoji/EmojiPicker';
-import { ShortcutButton } from './shortcuts/ShortcutsButton';
 import { emojiConvertToName } from 'openland-y-utils/emojiExtract';
 import { fileListToArray } from 'openland-web/fragments/chat/components/DropZone';
 import { MentionToSend } from 'openland-engines/messenger/MessageSender';
@@ -55,12 +54,6 @@ const quillStyle = css`
     }
 `;
 
-const quillWithButtonStyle = css`
-    .ql-editor {
-        padding-right: 80px;
-    }
-`;
-
 export type AllMention = { __typename: 'AllMention' };
 export type URickTextValue = (string | MentionToSend)[];
 
@@ -96,7 +89,6 @@ export interface URickInputProps {
 
     onFilesPaste?: (files: File[]) => void;
     className?: string;
-    withShortcutsButton?: boolean;
     hideEmoji?: boolean;
 }
 
@@ -368,12 +360,10 @@ export const URickInput = React.memo(
                         quillStyle,
                         'scroll-container',
                         props.className && props.className,
-                        props.withShortcutsButton && quillWithButtonStyle,
                         quillInputStyle,
                     )}
                 >
                     <div ref={containerRef} />
-                    {props.withShortcutsButton && <ShortcutButton />}
                     {!props.hideEmoji && (
                         <EmojiPicker
                             onEmojiPicked={onEmojiPicked}

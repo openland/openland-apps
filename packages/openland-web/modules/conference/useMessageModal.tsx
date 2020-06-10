@@ -4,7 +4,6 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { URickInput, URickInputInstance } from 'openland-web/components/unicorn/URickInput';
-import { detectOS } from 'openland-x-utils/detectOS';
 import { css, cx } from 'linaria';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import MediaIcon from 'openland-icons/s/ic-gallery-24.svg';
@@ -57,8 +56,6 @@ interface MessageModalProps {
 
 const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
     let messenger = React.useContext(MessengerContext);
-    let os = detectOS();
-    let isMobile = os === 'Android' || os === 'iOS';
     let inputRef = React.useRef<URickInputInstance>(null);
     let fileInputRef = React.useRef<HTMLInputElement>(null);
     let conversation = messenger.getConversation(props.chatId);
@@ -195,7 +192,6 @@ const MessageModal = (props: MessageModalProps & { ctx: XModalController }) => {
                         ref={inputRef}
                         className={cx(inputStyle, shakeStyle)}
                         placeholder="Write a message..."
-                        withShortcutsButton={!isMobile}
                         autofocus={true}
                         autocompletePrefixes={['@', ':', ...Object.keys(emojiWordMap)]}
                         onAutocompleteWordChange={onAutocompleteWordChange}
