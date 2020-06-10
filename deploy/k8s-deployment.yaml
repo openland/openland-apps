@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openland-web
+  labels:
+    app: openland-web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: openland-web
+  template:
+    metadata:
+      labels:
+        app: openland-web
+    spec:
+      containers:
+        - name: openland-web
+          image: openland/web:v9704
+          env:
+            - name: "API_ENDPOINT"
+              value: "https://api-us.openland.com"
+            - name: "APP_PRODUCTION"
+              value: "true"
+            - name: "APP_ENVIRONMENT"
+              value: "true"
+            - name: "API_WS_ENDPOINT"
+              value: "wss://api-us.openland.com/gql_ws"
+            - name: "DATACENTER"
+              value: "us-east4"
+          ports:
+            - containerPort: 3000
+      imagePullSecrets:
+        - name: openland-docker
