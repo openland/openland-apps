@@ -325,7 +325,7 @@ export const CountryPicker = (props: CountryPickerProps) => {
                 borderRadius={8}
                 hoverBackgroundColor="var(--backgroundTertiaryHoverTrans)"
                 cursor="pointer"
-                onClick={() => setIsOpen(x => !x)}
+                onMouseDown={() => { setIsOpen(x => !x); }}
             >
                 <span className={triggerTextStyle}>{value.value}</span>
                 <UIcon
