@@ -47,7 +47,7 @@ const codeInputStyle = cx(TextTitle1, css`
     }
 `);
 
-const RESEND_SECONDS = 20;
+const RESEND_SECONDS = 60;
 
 const ResendSubtitle = React.memo((props: { onResend: () => void }) => {
     const [count, setCount] = React.useState(0);
