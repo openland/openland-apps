@@ -12,13 +12,10 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { GlobalSearchEntryKind, MessagesSearch_messagesSearch } from 'openland-api/spacex.types';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { getMessenger } from 'openland-mobile/utils/messenger';
-import { ASView } from 'react-native-async-view/ASView';
-import { DialogItemViewAsync } from 'openland-mobile/messenger/components/DialogItemViewAsync';
 import { SFlatList } from 'react-native-s/SFlatList';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
-import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
+import { GlobalSearchMessage } from './GlobalSearchMessage';
 
 export interface GlobalSearchProps {
     query: string;
@@ -87,7 +84,6 @@ const constructVariables = (query: string, after?: string | null) => ({
 
 const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePress: (id: string) => void; }) => {
     const theme = React.useContext(ThemeContext);
-    const messenger = getMessenger();
     const client = getClient();
     const items = client.useGlobalSearch({ query: props.query, kinds: props.kinds }).items;
     const initialData = client.useMessagesSearch(constructVariables(props.query), { fetchPolicy: 'network-only' }).messagesSearch;
@@ -99,10 +95,6 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
     const [messages, setMessages] = React.useState(initialData.edges);
 
     const handleNeedMore = React.useCallback(async () => {
-        if (!NON_PRODUCTION) {
-            return;
-        }
-
         if (loadingMore || !after) {
             return;
         }
@@ -133,37 +125,7 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
     return (
         <SFlatList
             data={messages}
-            renderItem={({ item }) => {
-                const { message, chat } = item.node;
-                const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
-                const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
-
-                return (
-                    <ASView key={'msg' + message.id} style={{ height: 80 }}>
-                        <DialogItemViewAsync
-                            item={{
-                                message: message.message || undefined,
-                                title,
-                                key: chat.id,
-                                flexibleId: chat.id,
-                                kind: chat.__typename === 'PrivateRoom' ? 'PRIVATE' : chat.kind,
-                                unread: 0,
-                                fallback: message.fallback,
-                                date: parseInt(message.date, 10),
-                                photo: photo || undefined,
-                                isService: false,
-                                isOut: message.sender.id === messenger.engine.user.id,
-                                isMuted: !!chat.settings.mute,
-                                sender: message.sender.id === messenger.engine.user.id ? 'You' : message.sender.name,
-                                membership: chat.__typename === 'SharedRoom' ? chat.membership : 'NONE',
-                                showSenderName: true
-                            }}
-                            showDiscover={() => false}
-                            onPress={() => props.onMessagePress(message.id)}
-                        />
-                    </ASView>
-                );
-            }}
+            renderItem={({ item }) => <GlobalSearchMessage item={item.node} key={item.node.message.id} onPress={() => props.onMessagePress(item.node.message.id)} />}
             keyboardShouldPersistTaps="always"
             keyboardDismissMode="on-drag"
             scrollEventThrottle={1}
