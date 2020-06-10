@@ -547,7 +547,6 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
     const os = detectOS();
     const isWindows = os === 'Windows';
     const isLinux = os === 'Linux';
-    const isMobile = os === 'Android' || os === 'iOS';
 
     const ref = props.rickRef || React.useRef<URickInputInstance>(null);
     const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -716,7 +715,6 @@ export const SendMessageComponent = React.memo((props: SendMessageComponentProps
                     autofocus={props.autoFocus}
                     placeholder={props.placeholder || 'Write a message...'}
                     onFilesPaste={props.onAttach}
-                    withShortcutsButton={!isMobile}
                     className={(isWindows || isLinux) ? hideScrollStyle : undefined}
                     onEmojiPickerShow={props.onEmojiPickerShow}
                     onEmojiPickerHide={props.onEmojiPickerHide}

@@ -135,17 +135,17 @@ export const SettingsProfileFragment = React.memo(() => {
         {
             checkIsValid: (value) =>
                 !!value && value.length > 0 ? value.length >= shortnameMinLength : true,
-            text: 'Username must have at least ' + shortnameMinLength + ' characters.',
+            text: 'Username must have at least ' + shortnameMinLength + ' characters',
         },
         {
             checkIsValid: (value) =>
                 !!value && value.length > 0 ? value.length < shortnameMaxLength : true,
-            text: 'Username must have no more than ' + shortnameMaxLength + ' characters.',
+            text: 'Username must have no more than ' + shortnameMaxLength + ' characters',
         },
         {
             checkIsValid: (value) =>
                 !!value && value.length > 0 ? !!value.match('^[a-z0-9_]+$') : true,
-            text: 'A username can only contain a-z, 0-9, and underscores.',
+            text: 'A username can only contain a-z, 0-9, and underscores',
         },
     ]);
     const phoneNumberField = useField('input.phoneNumber', profile.phone || '', form);
@@ -236,7 +236,7 @@ export const SettingsProfileFragment = React.memo(() => {
                                 <UTextAreaField
                                     placeholder="About"
                                     field={aboutField}
-                                    resize={false}
+                                    autoResize={true}
                                 />
                             </XView>
                             <UInputField label="Location" field={locationField} />

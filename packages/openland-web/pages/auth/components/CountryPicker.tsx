@@ -44,14 +44,15 @@ const groupedCountriesCodes = countriesCode.reduce((acc, country) => {
 
 groupedCountriesCodes.unshift({ label: 'Frequent', options: frequentCountries });
 
-const VirtualMenuList = (props: { children: React.ReactNode[], options: GroupType[], value: OptionType }) => {
+const VirtualMenuList = (props: { children: React.ReactNode[], options: GroupType[], filtered: boolean, value: OptionType }) => {
     const listRef = React.useRef<VariableSizeList>(null);
-    const { children, options, value } = props;
+    const { children, options, value, filtered } = props;
     const maxHeight = 272;
     const paddingBottom = 8;
     const headerHeight = 48;
     const itemHeight = 40;
-    const optionsHeight = options.length * headerHeight + options.flatMap((x) => x.options).length * itemHeight;
+    const itemsHeigth = options.flatMap((x) => x.options).length * itemHeight;
+    const optionsHeight = filtered ? itemsHeigth : options.length * headerHeight + itemsHeigth;
     const height = Math.min(optionsHeight + paddingBottom, maxHeight);
 
     let foundOffset = options.reduce(({ offset, found }, group) => {
@@ -131,11 +132,8 @@ const menuWrapper = css`
     border-radius: 8px;
 `;
 
-const groupStyle = css`
-    margin-top: 8px;
-`;
-
 const groupHeaderStyle = cx(TextLabel1, css`
+    margin-top: 8px;
     padding: 8px 16px;
     color: var(--foregroundPrimary);
     text-transform: capitalize;
@@ -171,10 +169,16 @@ const optionValueStyle = css`
     color: var(--foregroundSecondary);
 `;
 
-const CountriesGroup = (props: { group: GroupType, value: OptionType, activeIndex: number | undefined, onCountrySelect: (v: OptionType) => void }) => {
+const CountriesGroup = (props: {
+    group: GroupType,
+    value: OptionType,
+    activeIndex: number | undefined,
+    filtered: boolean,
+    onCountrySelect: (v: OptionType) => void
+}) => {
     return (
-        <div className={groupStyle}>
-            <h4 className={groupHeaderStyle}>{props.group.label}</h4>
+        <div>
+            {!props.filtered && <h4 className={groupHeaderStyle}>{props.group.label}</h4>}
             {props.group.options.map((option, i) => {
                 const isSelected = option.value === props.value.value && option.label === props.value.label;
                 return (
@@ -199,7 +203,7 @@ const filterCountryOption = ({ label: rawLabel, value }: { label: string, value:
     if (label === US_LABEL.toLowerCase() && ['usa', 'america', 'united states of america', 'u.s.'].some(x => x.startsWith(input))) {
         return true;
     }
-    return label.startsWith(input) || removeSpace(value).replace(/\+/g, '').startsWith(removeSpace(rawInput));
+    return label.includes(input) || removeSpace(value).replace(/\+/g, '').startsWith(removeSpace(rawInput));
 };
 
 interface CountryPickerProps {
@@ -217,9 +221,12 @@ export const CountryPicker = (props: CountryPickerProps) => {
     const [searchValue, setSearchValue] = React.useState('');
 
     const filteredOptions = React.useMemo(() =>
-        groupedCountriesCodes
-            .map(group => ({ label: group.label, options: group.options.filter(c => filterCountryOption(c, searchValue)) }))
-            .filter(group => group.options.length > 0)
+        !searchValue
+            ? groupedCountriesCodes
+            : [groupedCountriesCodes
+                .flatMap(x => x.options)
+                .filter(x => filterCountryOption(x, searchValue))
+                .reduce((acc, x) => ({ label: '', options: [...acc.options, x] }), { label: '', options: [] })]
         , [searchValue]);
 
     const handleCountrySelect = React.useCallback((option: OptionType) => {
@@ -329,15 +336,17 @@ export const CountryPicker = (props: CountryPickerProps) => {
                         <USearchInput
                             marginTop={8}
                             marginHorizontal={16}
+                            marginBottom={searchValue ? 8 : 0}
                             placeholder="Country"
                             autoFocus={true}
                             onChange={setSearchValue}
                             onKeyDown={handleEnter}
                             onFocus={() => setIsOpen(true)}
                         />
-                        <VirtualMenuList options={filteredOptions} value={value}>
+                        <VirtualMenuList options={filteredOptions} filtered={!!searchValue} value={value}>
                             {filteredOptions.map((group, i) => (
                                 <CountriesGroup
+                                    filtered={!!searchValue}
                                     activeIndex={selectedItem.groupIndex === i ? selectedItem.optionIndex : undefined}
                                     key={group.label}
                                     group={group}

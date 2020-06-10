@@ -9,12 +9,12 @@ export const useShortnameField = (title: string, initialShortname: string, form:
         {
             checkIsValid: value =>
                 !!value && value.length > 0 ? value.length >= shortnameMinLength : true,
-            text: 'Must have at least ' + shortnameMinLength + ' chars.',
+            text: 'Must have at least ' + shortnameMinLength + ' chars',
         },
         {
             checkIsValid: value =>
                 !!value && value.length > 0 ? value.length < shortnameMaxLength : true,
-            text: 'Shortname must have no more than ' + shortnameMaxLength + ' characters.',
+            text: 'Shortname must have no more than ' + shortnameMaxLength + ' characters',
         },
         {
             checkIsValid: value =>

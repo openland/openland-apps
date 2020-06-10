@@ -369,10 +369,15 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             )} */}
 
             <ZListGroup
-                header="Settings"
+                header="Options"
                 headerMarginTop={(!hasDonate || Platform.OS === 'ios') && !hasAbout ? 0 : undefined}
             >
                 <NotificationSettings id={room.id} mute={!!room.settings.mute} />
+                <ZListItem
+                    leftIcon={require('assets/ic-attach-glyph-24.png')}
+                    text="Shared media"
+                    onPress={onSharedPress}
+                />
             </ZListGroup>
 
             <ZListHeader text="Members" counter={room.membersCount} />

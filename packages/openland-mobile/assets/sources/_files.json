@@ -1162,6 +1162,13 @@
             ]
         },
         {
+            "name": "ic-attach-glyph",
+            "src": "ic-attach-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-send",
             "src": "ic-send-24.svg",
             "sizes": [

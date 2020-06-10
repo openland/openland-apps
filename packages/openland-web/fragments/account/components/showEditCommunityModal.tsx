@@ -9,6 +9,7 @@ import { XScrollView3 } from 'openland-x/XScrollView3';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { StoredFileT, UAvatarUploadField } from 'openland-web/components/unicorn/UAvatarUpload';
 import { UInputField } from 'openland-web/components/unicorn/UInput';
+import { UTextAreaField } from 'openland-web/components/unicorn/UTextArea';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { USelectField } from 'openland-web/components/unicorn/USelect';
@@ -127,11 +128,12 @@ const EditCommunityEntity = (props: {
                                 />
                             </XView>
                         )}
-                        <UInputField
+                        <UTextAreaField
                             field={aboutField}
-                            label="Description"
+                            placeholder="Description"
                             marginTop={16}
                             marginBottom={28}
+                            autoResize={true}
                         />
                         <div className={TextTitle3}>Shortname</div>
                         <UInputField field={shortnameField} label="Shortname" marginTop={12} />
