@@ -48,12 +48,11 @@ const VirtualMenuList = (props: { children: React.ReactNode[], options: GroupTyp
     const listRef = React.useRef<VariableSizeList>(null);
     const { children, options, value, filtered } = props;
     const maxHeight = 272;
-    const paddingBottom = 8;
     const headerHeight = 48;
     const itemHeight = 40;
     const itemsHeigth = options.flatMap((x) => x.options).length * itemHeight;
     const optionsHeight = filtered ? itemsHeigth : options.length * headerHeight + itemsHeigth;
-    const height = Math.min(optionsHeight + paddingBottom, maxHeight);
+    const height = Math.min(optionsHeight, maxHeight);
 
     let foundOffset = options.reduce(({ offset, found }, group) => {
         if (found) {
@@ -70,16 +69,21 @@ const VirtualMenuList = (props: { children: React.ReactNode[], options: GroupTyp
     React.useEffect(() => {
         if (listRef.current) {
             listRef.current.resetAfterIndex(0, true);
+            setTimeout(() => {
+                if (filtered) {
+                    listRef.current?.scrollToItem(0, 'start');
+                }
+            }, 20);
         }
     }, [options]);
 
     return (
         <VariableSizeList
             ref={listRef}
-            style={{ paddingBottom, position: 'relative' }}
+            style={{ marginBottom: 8, position: 'relative' }}
             height={height}
             itemCount={options.length}
-            itemSize={i => options[i].options.length * itemHeight + headerHeight}
+            itemSize={i => filtered ? options[i].options.length * itemHeight : options[i].options.length * itemHeight + headerHeight}
             width={320}
             initialScrollOffset={value.value === '+1' ? 0 : foundOffset.offset}
         >
@@ -140,6 +144,10 @@ const groupHeaderStyle = cx(TextLabel1, css`
     text-align: left;
 `);
 
+const groupHeaderStyleFirst = css`
+    margin-top: 0;
+`;
+
 const optionStyle = cx(TextBody, css`
     display: flex;
     flex-direction: row;
@@ -174,11 +182,12 @@ const CountriesGroup = (props: {
     value: OptionType,
     activeIndex: number | undefined,
     filtered: boolean,
+    first: boolean,
     onCountrySelect: (v: OptionType) => void
 }) => {
     return (
         <div>
-            {!props.filtered && <h4 className={groupHeaderStyle}>{props.group.label}</h4>}
+            {!props.filtered && <h4 className={cx(groupHeaderStyle, props.first && groupHeaderStyleFirst)}>{props.group.label}</h4>}
             {props.group.options.map((option, i) => {
                 const isSelected = option.value === props.value.value && option.label === props.value.label;
                 return (
@@ -336,7 +345,7 @@ export const CountryPicker = (props: CountryPickerProps) => {
                         <USearchInput
                             marginTop={8}
                             marginHorizontal={16}
-                            marginBottom={searchValue ? 8 : 0}
+                            marginBottom={8}
                             placeholder="Country"
                             autoFocus={true}
                             onChange={setSearchValue}
@@ -346,6 +355,7 @@ export const CountryPicker = (props: CountryPickerProps) => {
                         <VirtualMenuList options={filteredOptions} filtered={!!searchValue} value={value}>
                             {filteredOptions.map((group, i) => (
                                 <CountriesGroup
+                                    first={i === 0}
                                     filtered={!!searchValue}
                                     activeIndex={selectedItem.groupIndex === i ? selectedItem.optionIndex : undefined}
                                     key={group.label}
@@ -355,8 +365,8 @@ export const CountryPicker = (props: CountryPickerProps) => {
                                 />
                             ))}
                         </VirtualMenuList>
-                        {filteredOptions.length === 0 && (
-                            <XView {...TextStyles.Body} color="var(--foregroundTertiary)" paddingHorizontal={16} paddingVertical={8}>
+                        {searchValue && filteredOptions[0]?.options.length === 0 && (
+                            <XView {...TextStyles.Body} color="var(--foregroundTertiary)" paddingHorizontal={16} paddingBottom={16}>
                                 No country
                             </XView>
                         )}
