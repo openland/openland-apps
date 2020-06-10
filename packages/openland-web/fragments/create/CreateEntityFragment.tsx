@@ -689,7 +689,11 @@ const CreateEntityComponentOrg = React.memo((props: CreateEntityOrgProps) => {
                 </div>
             )}
             <div className={otherInputContainer}>
-                <UTextAreaField field={descriptionField} placeholder="Short description" />
+                <UTextAreaField
+                    field={descriptionField}
+                    placeholder="Short description"
+                    autoResize={true}
+                />
             </div>
         </CreatingContainer>
     );
