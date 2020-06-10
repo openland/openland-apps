@@ -100,7 +100,7 @@ const EditGroupComponent = React.memo((props: PageProps) => {
                     <ZInput field={descriptionField} placeholder="Description" multiline={true} />
                     {!isShared && <SecretLabel />}
                 </ZListGroup>
-                <ZListGroup header="Advanced" headerMarginTop={0}>
+                <ZListGroup header="Settings" headerMarginTop={0}>
                     {isShared && (
                         <ZListItem
                             leftIcon={require('assets/ic-at-24.png')}

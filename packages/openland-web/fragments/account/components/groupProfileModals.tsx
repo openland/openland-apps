@@ -530,7 +530,7 @@ const RoomEditModalBody = React.memo((props: RoomEditModalT & { onClose: Functio
                         autoResize={true}
                     />
                     {!isShared && <SecretLabel />}
-                    <div className={cx(formTitle, TextTitle3)}>Advanced</div>
+                    <div className={cx(formTitle, TextTitle3)}>Settings</div>
                     <XView marginHorizontal={-24}>
                         {isShared && (
                             <UListItem
