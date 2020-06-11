@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { TouchableHighlight, View, Text } from 'react-native';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TouchableHighlight, View, Text, Image } from 'react-native';
+import { TextStyles, CompensationAlpha } from 'openland-mobile/styles/AppStyles';
 import { formatDate } from 'openland-mobile/utils/formatDate';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
@@ -38,13 +38,14 @@ export const GlobalSearchMessage = React.memo<GlobalSearchMessageProps>((props) 
                 </View>
                 <View marginLeft={16} marginRight={16} marginTop={8} marginBottom={8} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
                     <View height={24} flexDirection="row">
+                        {highlightGroup && <View alignItems="center" marginRight={4} marginTop={4}><Image style={{ opacity: CompensationAlpha, tintColor: theme.accentPositive, width: 16, height: 16 }} source={require('assets/ic-lock-16.png')} /></View>}
+
                         <View flexDirection="row" flexGrow={1} flexShrink={1}>
-                            {/* {highlightGroup && <View alignItems="center" marginRight={4} marginTop={4}><Image style={{ opacity: CompensationAlpha, tintColor: theme.accentPositive, width: 16, height: 16 }} source={require('assets/ic-lock-16.png')} /></View>} */}
                             <Text numberOfLines={1} allowFontScaling={false} ellipsizeMode="tail" style={{ ...TextStyles.Label1, color: highlightGroup ? theme.accentPositive : theme.foregroundPrimary }}>
                                 {title}
                             </Text>
                         </View>
-                        <View marginLeft={10} marginTop={2}>
+                        <View marginLeft={10} marginTop={3}>
                             <Text style={{ ...TextStyles.Caption, color: theme.foregroundTertiary }} allowFontScaling={false}>{formatDate(date)}</Text>
                         </View>
                     </View>
