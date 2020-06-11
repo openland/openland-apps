@@ -10,6 +10,7 @@ import { extractPlaceholder } from '../../../../openland-y-utils/extractPlacehol
 import { DialogSearchEmptyView, DialogSearchItemRender, DialogSearchResults } from './DialogSearchResults';
 import { XScrollView3, XScrollValues } from 'openland-x/XScrollView3';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { InvalidateSync } from '@openland/patterns';
 
 const LOADING_HEIGHT = 200;
 
@@ -38,6 +39,10 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
 
+    const [messagesInvalidator, _] = React.useState<InvalidateSync>(new InvalidateSync(async () => {
+        await client.refetchMessagesSearch(constructVariables(props.variables.query), { fetchPolicy: 'network-only' });
+    }));
+
     const [selectedIndex, setSelectedIndex] = React.useState<number>(-1);
 
     const items = client.useGlobalSearch({ query: props.variables.query }, { fetchPolicy: 'cache-and-network' }).items;
@@ -50,10 +55,7 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
     const [messages, setMessages] = React.useState(initialData.edges);
 
     React.useEffect(() => {
-        (async () => {
-            let messages = await client.refetchMessagesSearch(constructVariables(props.variables.query), { fetchPolicy: 'network-only' });
-            setMessages(messages.messagesSearch.edges);
-        })();
+        messagesInvalidator.invalidate();
     }, [props.variables.query]);
 
     const resultsLength = items.length + messages.length;
