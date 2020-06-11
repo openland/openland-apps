@@ -20,11 +20,11 @@ import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { AuthHeaderConfig } from './root.page';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
-import { CountryPicker } from './components/CountryPicker';
+import { CountryPicker, OptionType } from './components/CountryPicker';
 
 export type AskAuthDataProps = {
     fireAuth: (data: string, isPhoneFire: boolean) => Promise<void>;
-    phoneCodeValue: { value: string; label: string };
+    phoneCodeValue: OptionType;
     authError: string;
     authValue: string;
     authSending: boolean;

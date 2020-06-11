@@ -5,12 +5,12 @@ import { css, cx } from 'linaria';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
 import { VariableSizeList } from 'react-window';
-import { countriesCode } from 'openland-y-utils/countriesCodes';
+import { countriesMeta } from 'openland-y-utils/countriesMeta';
 import { TextLabel1, TextBody, TextStyles } from 'openland-web/utils/TextStyles';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import IcCheck from 'openland-icons/s/ic-done-16.svg';
 
-type OptionType = { label: string, value: string };
+export type OptionType = { label: string, value: string, shortname: string };
 type GroupType = { label: string, options: OptionType[] };
 
 const SPACE_REGEX = /\s/g;
@@ -18,29 +18,30 @@ const removeSpace = (s: string) => s.replace(SPACE_REGEX, '');
 const US_LABEL = 'United States';
 
 const frequentCountries = [
-    { label: 'United States', value: '+1' },
-    { label: 'China', value: '+86' },
-    { label: 'India', value: '+91' },
-    { label: 'Russia', value: '+7' },
+    { label: 'United States', value: '+1', shortname: 'US', },
+    { label: 'China', value: '+86', shortname: 'CN', },
+    { label: 'India', value: '+91', shortname: 'IN', },
+    { label: 'Russia', value: '+7', shortname: 'RU', },
 ];
 
-const groupedCountriesCodes = countriesCode.reduce((acc, country) => {
-    if (frequentCountries.some(({ label }) => label === country.label)) {
-        return acc;
-    }
-    let countryLetter = country.label.toLowerCase()[0];
-    let prevGroup = acc[acc.length - 1];
-    if (prevGroup) {
-        if (countryLetter === prevGroup.label.toLowerCase()[0] || countryLetter === 'å') {
-            prevGroup.options.push(country);
+const groupedCountriesCodes = countriesMeta
+    .reduce((acc, country) => {
+        if (frequentCountries.some(({ label }) => label === country.label)) {
+            return acc;
+        }
+        let countryLetter = country.label.toLowerCase()[0];
+        let prevGroup = acc[acc.length - 1];
+        if (prevGroup) {
+            if (countryLetter === prevGroup.label.toLowerCase()[0]) {
+                prevGroup.options.push(country);
+            } else {
+                acc.push({ label: countryLetter, options: [country] });
+            }
         } else {
             acc.push({ label: countryLetter, options: [country] });
         }
-    } else {
-        acc.push({ label: countryLetter, options: [country] });
-    }
-    return acc;
-}, [] as GroupType[]);
+        return acc;
+    }, [] as GroupType[]);
 
 groupedCountriesCodes.unshift({ label: 'Frequent', options: frequentCountries });
 
@@ -85,7 +86,7 @@ const VirtualMenuList = (props: { children: React.ReactNode[], options: GroupTyp
             itemCount={options.length}
             itemSize={i => filtered ? options[i].options.length * itemHeight : options[i].options.length * itemHeight + headerHeight}
             width={320}
-            initialScrollOffset={value.value === '+1' ? 0 : foundOffset.offset}
+            initialScrollOffset={value.label === 'United States' ? 0 : foundOffset.offset}
         >
             {({ index, style }) => (
                 <div style={style}>
@@ -326,6 +327,7 @@ export const CountryPicker = (props: CountryPickerProps) => {
                 hoverBackgroundColor="var(--backgroundTertiaryHoverTrans)"
                 cursor="pointer"
                 onMouseDown={() => { setIsOpen(x => !x); }}
+                zIndex={11}
             >
                 <span className={triggerTextStyle}>{value.value}</span>
                 <UIcon

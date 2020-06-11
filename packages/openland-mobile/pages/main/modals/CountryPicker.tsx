@@ -5,7 +5,7 @@ import { withApp } from '../../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { countriesCode } from 'openland-y-utils/countriesCodes';
+import { countriesMeta } from 'openland-y-utils/countriesMeta';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
@@ -21,7 +21,7 @@ const CountryPickerComponent = React.memo((props: PageProps) => {
         if (!countriesData) {
             const countriesObject = {};
 
-            countriesCode.forEach((i) => {
+            countriesMeta.forEach((i) => {
                 let c = i.label[0];
                 if (!countriesObject[c]) {
                     countriesObject[c] = {
@@ -46,7 +46,7 @@ const CountryPickerComponent = React.memo((props: PageProps) => {
     let sortCountries;
 
     if (query) {
-        sortCountries = countriesCode.filter((i) => {
+        sortCountries = countriesMeta.filter((i) => {
             const searchValue = i.label.toLowerCase() + i.value.toLowerCase();
             return searchValue.indexOf(query.toLowerCase()) !== -1;
         });
