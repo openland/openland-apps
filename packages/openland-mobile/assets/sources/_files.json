@@ -1,6 +1,13 @@
 {
     "icons": [
         {
+            "name": "ic-call",
+            "src": "ic-call-12.svg",
+            "sizes": [
+                12
+            ]
+        },
+        {
             "name": "ic-call-end-glyph",
             "src": "ic-call-end-glyph-48.svg",
             "sizes": [
