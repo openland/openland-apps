@@ -41,6 +41,7 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
 
     const [messagesInvalidator] = React.useState<InvalidateSync>(new InvalidateSync(async () => {
         await client.refetchMessagesSearch(constructVariables(props.variables.query), { fetchPolicy: 'network-only' });
+        await client.refetchGlobalSearch({ query: props.variables.query }, { fetchPolicy: 'network-only' });
     }));
 
     const [selectedIndex, setSelectedIndex] = React.useState<number>(-1);

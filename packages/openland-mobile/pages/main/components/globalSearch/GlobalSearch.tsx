@@ -92,6 +92,7 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
 
     const [messagesInvalidator] = React.useState<InvalidateSync>(new InvalidateSync(async () => {
         await client.refetchMessagesSearch(constructVariables(props.query), { fetchPolicy: 'network-only' });
+        await client.refetchGlobalSearch({ query: props.query }, { fetchPolicy: 'network-only' });
     }));
 
     const items = client.useGlobalSearch({ query: props.query, kinds: props.kinds }).items;
