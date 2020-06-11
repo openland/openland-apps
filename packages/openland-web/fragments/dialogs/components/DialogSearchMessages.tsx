@@ -39,7 +39,7 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
 
-    const [messagesInvalidator, _] = React.useState<InvalidateSync>(new InvalidateSync(async () => {
+    const [messagesInvalidator] = React.useState<InvalidateSync>(new InvalidateSync(async () => {
         await client.refetchMessagesSearch(constructVariables(props.variables.query), { fetchPolicy: 'network-only' });
     }));
 
