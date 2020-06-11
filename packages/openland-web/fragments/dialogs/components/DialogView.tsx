@@ -5,6 +5,7 @@ import { XDate } from 'openland-x/XDate';
 import IcLock from 'openland-icons/s/ic-lock-16.svg';
 import IcReply from 'openland-icons/s/ic-reply-16.svg';
 import IcMention from 'openland-icons/s/ic-mention-12.svg';
+import IcCall from 'openland-icons/s/ic-call-12.svg';
 import IcMuted from 'openland-icons/s/ic-muted-16.svg';
 import { XCounter } from 'openland-x/XCounter';
 import { DialogListWebItem } from './DialogListWebDataSource';
@@ -132,18 +133,17 @@ const dialogUnreadContainer = css`
     display: flex;
     align-items: center;
     align-self: center;
+    padding: 0 0 0 3px;
 `;
 
 const unreadCounterContainer = css`
     display: flex;
     align-items: center;
     align-self: center;
-    margin-left: 12px;
+    margin-left: 6px;
 `;
 
 const mentionContainer = css`
-    margin-right: -6px;
-
     background-color: var(--accentPrimary);
     width: 22px;
     height: 22px;
@@ -159,12 +159,32 @@ const mentionContainer = css`
     }
 `;
 
+const callBadgeContainer = css`
+    background-color: var(--accentPositive);
+    width: 22px;
+    height: 22px;
+    border-radius: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
 const mentionContainerActive = css`
     background-color: var(--backgroundPrimary);
 
     & svg path,
     & svg circle {
         stroke: var(--accentPrimary);
+    }
+`;
+
+const callBadgeContainerActive = css`
+    background-color: var(--backgroundPrimary);
+
+    & svg path,
+    & svg circle {
+        fill: var(--accentPrimary);
     }
 `;
 
@@ -355,8 +375,19 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                 >
                                     {message}
                                 </div>
-                                {dialog.unread > 0 && (
+                                {(dialog.unread > 0 || dialog.hasActiveCall) && (
                                     <div className={dialogUnreadContainer}>
+                                        {dialog.hasActiveCall && (
+                                            <div
+                                                className={cx(
+                                                    unreadCounterContainer,
+                                                    callBadgeContainer,
+                                                    active && callBadgeContainerActive
+                                                )}
+                                            >
+                                                <UIcon icon={<IcCall />} color={'var(--foregroundContrast)'} />
+                                            </div>
+                                        )}
                                         {haveMention && (
                                             <div
                                                 className={cx(
@@ -368,14 +399,16 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                                                 <UIcon icon={<IcMention />} color={'var(--foregroundContrast)'} />
                                             </div>
                                         )}
-                                        <div className={unreadCounterContainer}>
-                                            <XCounter
-                                                grey={isMuted}
-                                                count={dialog.unread}
-                                                active={active}
-                                                big={true}
-                                            />
-                                        </div>
+                                        {dialog.unread > 0 && (
+                                            <div className={unreadCounterContainer}>
+                                                <XCounter
+                                                    grey={isMuted}
+                                                    count={dialog.unread}
+                                                    active={active}
+                                                    big={true}
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>

@@ -16,6 +16,7 @@ import {
     DialogUpdateFragment_DialogDeleted,
     DialogUpdateFragment_DialogMuteChanged,
     DialogUpdateFragment_DialogMessageRead,
+    DialogUpdateFragment_DialogCallStateChanged,
     RoomNano_PrivateRoom,
     RoomPico_room_SharedRoom,
     TypingType,
@@ -39,6 +40,7 @@ export interface DialogDataSourceItemStored {
     // Chat State
     unread: number;
     isMuted?: boolean;
+    hasActiveCall?: boolean;
 
     // Chat Top Message
     message?: string;
@@ -80,6 +82,7 @@ const extractDialog = (dialog: DialogFragment, uid: string): DialogDataSourceIte
     return {
         haveMention: dialog.haveMention,
         isMuted: dialog.isMuted,
+        hasActiveCall: dialog.hasActiveCall,
         kind: dialog.kind,
         isChannel: dialog.isChannel,
         isPremium: dialog.isPremium,
@@ -237,6 +240,9 @@ export class DialogListEngine {
         } else if (update.__typename === 'DialogDeleted') {
             await this.handleDialogDeleted(update);
             return true;
+        } else if (update.__typename === 'DialogCallStateChanged') {
+            await this.handleDialogCallStateChanged(update);
+            return true;
         }
         return false;
     }
@@ -307,6 +313,7 @@ export class DialogListEngine {
                     isMuted: !!existing.isMuted,
                     haveMention: update.haveMention,
                     membership: existing.membership as SharedRoomMembershipStatus,
+                    hasActiveCall: !!existing.hasActiveCall
                 }, this.engine.user.id));
             }
         }
@@ -331,6 +338,17 @@ export class DialogListEngine {
             await this._dataSourceStored.updateItem({
                 ...existing,
                 isMuted: update.mute,
+            });
+        }
+    }
+
+    private handleDialogCallStateChanged = async (update: DialogUpdateFragment_DialogCallStateChanged) => {
+        log.log('Call State Changed');
+        let existing = await this._dataSourceStored.getItem(update.cid);
+        if (existing) {
+            await this._dataSourceStored.updateItem({
+                ...existing,
+                hasActiveCall: update.hasActiveCall,
             });
         }
     }

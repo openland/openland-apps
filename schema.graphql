@@ -537,13 +537,6 @@ type DebugID {
   type: String!
 }
 
-type DebugIpInfo {
-  ip: String!
-  locationCode: String!
-  locationName: String!
-  location: GeoLocation
-}
-
 type DebugUserMetrics {
   messagesSent: Int!
   messagesReceived: Int!
@@ -579,6 +572,7 @@ type Dialog {
   alphaTopMessage: ModernMessage
   isMuted: Boolean!
   haveMention: Boolean!
+  hasActiveCall: Boolean!
   membership: SharedRoomMembershipStatus!
 }
 
@@ -589,6 +583,11 @@ type DialogBump {
   topMessage: ModernMessage
   haveMention: Boolean!
   membership: SharedRoomMembershipStatus!
+}
+
+type DialogCallStateChanged {
+  cid: ID!
+  hasActiveCall: Boolean!
 }
 
 type DialogDeleted {
@@ -676,7 +675,7 @@ type DialogTitleUpdated {
   title: String!
 }
 
-union DialogUpdate = DialogMessageReceived | DialogMessageUpdated | DialogMessageDeleted | DialogMessageRead | DialogTitleUpdated | DialogDeleted | DialogPhotoUpdated | DialogMuteChanged | DialogMentionedChanged | DialogBump | DialogPeerUpdated
+union DialogUpdate = DialogMessageReceived | DialogMessageUpdated | DialogMessageDeleted | DialogMessageRead | DialogTitleUpdated | DialogDeleted | DialogPhotoUpdated | DialogMuteChanged | DialogMentionedChanged | DialogBump | DialogPeerUpdated | DialogCallStateChanged
 
 type DialogUpdateBatch {
   updates: [DialogUpdate!]!
@@ -1135,6 +1134,13 @@ input InviteRequest {
 type InviteServiceMetadata {
   users: [User!]
   invitedBy: User!
+}
+
+type IpLocation {
+  ip: String!
+  countryCode: String
+  locationName: String
+  location: GeoLocation
 }
 
 type IsAppInstalledResponse {
@@ -1763,6 +1769,7 @@ type Mutation {
   debugSetCommission(cid: ID!, percents: Int!): Boolean!
   debugFixEditedMessagesAugmentation: Boolean!
   debugReindexUsers: Boolean!
+  debugSetChatPayments(cid: ID!, price: Int!, interval: WalletSubscriptionInterval): Boolean!
   debugCalcEntitiesCount(entity: String!): Boolean!
   debugCalcEntitiesCountAll: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
@@ -2331,9 +2338,10 @@ type PhonebookRecord {
 }
 """
 input PhonebookRecordInput {
-  name: String!
+  firstName: String!
+  lastName: String
   info: String
-  phone: String!
+  phones: [String!]!
 }
 
 type PhotoChangeServiceMetadata {
@@ -2647,7 +2655,6 @@ type Query {
   debugUserMetrics(id: ID!): DebugUserMetrics!
   debugGlobalCounters(uid: ID): DebugGlobalCounters!
   debugServerId: String!
-  debugClientIp: DebugIpInfo
   debugGqlTraces(first: Int!, after: ID): GqlTraceConnection!
   debugGqlTrace(id: ID!): GqlTrace!
   debugUserWallet(id: ID!): WalletAccount!
@@ -2697,6 +2704,7 @@ type Query {
   envVar(name: String!): EnvVar
   featureFlags: [FeatureFlag!]!
   myLocation: UserLocation!
+  ipLocation: IpLocation
   shouldShareLocation: Boolean!
   myStickers: UserStickers!
   createdStickerPacks: [StickerPack!]!

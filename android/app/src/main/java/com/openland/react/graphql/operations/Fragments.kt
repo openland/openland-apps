@@ -918,6 +918,7 @@ internal val DialogFragmentSelector = obj(
             field("photo", "photo", notNull(scalar("String"))),
             field("unreadCount", "unreadCount", notNull(scalar("Int"))),
             field("isMuted", "isMuted", notNull(scalar("Boolean"))),
+            field("hasActiveCall", "hasActiveCall", notNull(scalar("Boolean"))),
             field("haveMention", "haveMention", notNull(scalar("Boolean"))),
             field("alphaTopMessage", "topMessage", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -1040,6 +1041,11 @@ internal val DialogUpdateFragmentSelector = obj(
                     )),
                 field("haveMention", "haveMention", notNull(scalar("Boolean"))),
                 field("membership", "membership", notNull(scalar("String")))
+            )),
+            inline("DialogCallStateChanged", obj(
+                field("__typename", "__typename", notNull(scalar("String"))),
+                field("cid", "cid", notNull(scalar("ID"))),
+                field("hasActiveCall", "hasActiveCall", notNull(scalar("Boolean")))
             ))
         )
 
