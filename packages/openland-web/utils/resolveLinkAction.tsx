@@ -3,7 +3,7 @@ import { showModalBox } from 'openland-x/showModalBox';
 import { XScrollView3 } from 'openland-x/XScrollView3';
 import { DiscoverOnLocalState } from 'openland-web/pages/onboarding/discover.page';
 import { showWriteFirstMessageModal } from 'openland-web/fragments/onboarding/showWriteFirstMessageModal';
-import { InviteFriendsComponent } from 'openland-web/fragments/account/SettingsInviteFriendsFragment';
+import { InviteFriendsFullscreen } from 'openland-web/fragments/account/SettingsInviteFriendsFragment';
 import { DownloadAppsComponent } from 'openland-web/fragments/account/SettingsDownloadAppsFragment';
 import { trackEvent } from 'openland-x-analytics';
 import { OpenlandClient } from 'openland-api/spacex';
@@ -62,7 +62,7 @@ export const resolveLinkAction = (url: string | null, client: OpenlandClient, ro
         });
         showModalBox({ fullScreen: true }, ctx => (
             <XScrollView3 flexGrow={1} flexShrink={1} useDefaultScroll={true}>
-                <InviteFriendsComponent modalContext={ctx} />
+                <InviteFriendsFullscreen />
             </XScrollView3>
         ));
     } else if (url === '/onboarding_apps') {

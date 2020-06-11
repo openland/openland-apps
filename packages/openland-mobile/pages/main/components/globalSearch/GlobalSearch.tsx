@@ -16,6 +16,8 @@ import { SFlatList } from 'react-native-s/SFlatList';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';
 import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { GlobalSearchMessage } from './GlobalSearchMessage';
+import { SDevice } from 'react-native-s/SDevice';
+import { DeviceConfig } from 'react-native-s/navigation/DeviceConfig';
 
 export interface GlobalSearchProps {
     query: string;
@@ -85,6 +87,7 @@ const constructVariables = (query: string, after?: string | null) => ({
 const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePress: (id: string) => void; }) => {
     const theme = React.useContext(ThemeContext);
     const client = getClient();
+    const area = React.useContext(ASSafeAreaContext);
     const items = client.useGlobalSearch({ query: props.query, kinds: props.kinds }).items;
     const initialData = client.useMessagesSearch(constructVariables(props.query), { fetchPolicy: 'network-only' }).messagesSearch;
 
@@ -135,6 +138,7 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
             ListHeaderComponent={content}
             onEndReached={handleNeedMore}
             refreshing={loadingMore}
+            scrollIndicatorInsets={{ top: area.top - DeviceConfig.statusBarHeight, bottom: area.bottom - SDevice.safeArea.bottom }}
             ListFooterComponent={loadingMore ? (
                 <View height={56} alignItems="center" justifyContent="center">
                     <LoaderSpinner />

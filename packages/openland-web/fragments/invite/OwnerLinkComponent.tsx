@@ -49,9 +49,8 @@ const linkStyle = css`
     flex-grow: 1;
     height: 40px;
     border-radius: 8px;
-    padding: 8px 16px 8px 8px;
-    padding-right: 40px;
-    background-color: var(--backgroundTertiary);
+    padding: 8px 40px 8px 16px;
+    background-color: var(--backgroundTertiaryTrans);
     color: var(--foregroundPrimary);
     text-overflow: ellipsis;
     overflow: hidden;
@@ -106,7 +105,7 @@ const OwnerLink = (props: OwnerLinkComponentProps) => {
                 alignItems="center"
                 flexGrow={1}
                 flexShrink={1}
-                marginRight={8}
+                marginRight={16}
             >
                 <div className={cx(linkStyle, TextBody)}>{invitePath}</div>
                 {props.id &&

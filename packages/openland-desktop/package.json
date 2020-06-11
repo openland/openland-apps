@@ -1,6 +1,6 @@
 {
     "name": "Openland",
-    "version": "2.0.1",
+    "version": "2.0.4",
     "main": "src/main.js",
     "scripts": {
         "dev": "./node_modules/.bin/electron ./src/dev.js"
@@ -21,7 +21,11 @@
             "target": "dmg",
             "hardenedRuntime": true,
             "entitlements": "Info.plist",
-            "entitlementsInherit": "Info.plist"
+            "entitlementsInherit": "Info.plist",
+            "extendInfo": {
+                "NSMicrophoneUsageDescription": "Microphone will be used for Openland video chat and voice calls.",
+                "NSCameraUsageDescription": "Camera will be used for Openland video chat and voice calls."
+            }
         },
         "linux": {
             "target": "appimage"
@@ -37,8 +41,8 @@
         "electron-builder": "22.5.1"
     },
     "dependencies": {
-        "electron-notarize": "^0.3.0",
-        "electron-updater": "4.2.5",
+        "electron-notarize": "1.0.0",
+        "electron-updater": "4.3.1",
         "electron-window-state": "5.0.3"
     }
 }

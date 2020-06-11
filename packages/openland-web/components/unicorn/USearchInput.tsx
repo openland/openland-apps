@@ -104,6 +104,9 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
 
     return (
         <XView position="relative" {...other}>
+            <div className={searchIconWrapper}>
+                <SearchIcon />
+            </div>
             <input
                 type="search"
                 className={cx(TextBody, field)}
@@ -115,9 +118,6 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
                 autoFocus={autoFocus}
                 ref={ref}
             />
-            <div className={searchIconWrapper}>
-                <SearchIcon />
-            </div>
             {props.value && props.value.length > 0 && (
                 <button className={resetClassName} onClick={() => handleChange('')}>
                     <ClearIcon />

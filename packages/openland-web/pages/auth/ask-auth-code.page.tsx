@@ -47,34 +47,44 @@ const codeInputStyle = cx(TextTitle1, css`
     }
 `);
 
-const ResendSubtitle = React.memo((props: { authWasResend: boolean, onResend: () => void }) => {
-    const [seconds, setSeconds] = React.useState(60);
-    const prevAuthWasResend = usePreviousState(props.authWasResend);
+const RESEND_SECONDS = 60;
+
+const ResendSubtitle = React.memo((props: { onResend: () => void }) => {
+    const [count, setCount] = React.useState(0);
+    const [seconds, setSeconds] = React.useState(RESEND_SECONDS);
+    const startTime = React.useRef(Date.now());
     React.useEffect(() => {
         let timerId: any;
-        const resendChanged = !prevAuthWasResend && props.authWasResend;
-        if (resendChanged) {
-            setSeconds(60);
-        }
-        if (seconds === 60 || resendChanged) {
+        startTime.current = Date.now();
+        setSeconds(RESEND_SECONDS);
+        setTimeout(() => {
             timerId = setInterval(() => {
                 setSeconds(x => {
+                    let elapsedSeconds = Math.round((Date.now() - startTime.current) / 1000) - 1;
+                    if (elapsedSeconds > RESEND_SECONDS) {
+                        clearInterval(timerId);
+                        return 0;
+                    }
                     if (x > 0) {
-                        return x - 1;
+                        return x > RESEND_SECONDS - elapsedSeconds ? RESEND_SECONDS - elapsedSeconds : x - 1;
                     } else {
                         clearInterval(timerId);
                         return 0;
                     }
                 });
             }, 1000);
-        }
+        }, 500);
         return () => {
             clearInterval(timerId);
         };
-    }, [props.authWasResend]);
+    }, [count]);
+    const handleResend = () => {
+        props.onResend();
+        setCount(x => x + 1);
+    };
     return (
         <>
-            {InitTexts.auth.haveNotReceiveCode} {seconds > 0 ? `Wait for ${seconds} sec` : <ULink onClick={props.onResend}>Resend</ULink>}
+            {InitTexts.auth.haveNotReceiveCode} {seconds > 0 ? `Wait for ${seconds} sec` : <ULink onClick={handleResend}>Resend</ULink>}
         </>
     );
 });
@@ -224,7 +234,7 @@ const WebSignUpActivationCode = (
                 <Title text={InitTexts.auth.enterActivationCode} />
                 <Subtitle>
                     We just sent it to {sendToText}.<br />
-                    {<ResendSubtitle authWasResend={authWasResend} onResend={handleResend} />}
+                    {<ResendSubtitle onResend={handleResend} />}
                 </Subtitle>
                 {!!avatarId && (
                     <XImage
