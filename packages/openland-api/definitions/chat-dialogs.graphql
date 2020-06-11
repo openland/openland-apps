@@ -25,6 +25,7 @@ fragment DialogFragment on Dialog {
     photo
     unreadCount
     isMuted
+    hasActiveCall
     haveMention
     topMessage: alphaTopMessage {
         ...DialogMessage
@@ -160,5 +161,9 @@ fragment DialogUpdateFragment on DialogUpdate {
         }
         haveMention
         membership
+    }
+    ... on DialogCallStateChanged {
+        cid
+        hasActiveCall
     }
 }

@@ -19,12 +19,12 @@ import {
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { AuthHeaderConfig } from './root.page';
 import { UInput } from 'openland-web/components/unicorn/UInput';
-import { AsYouType } from 'libphonenumber-js';
-import { CountryPicker } from './components/CountryPicker';
+import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
+import { CountryPicker, OptionType } from './components/CountryPicker';
 
 export type AskAuthDataProps = {
     fireAuth: (data: string, isPhoneFire: boolean) => Promise<void>;
-    phoneCodeValue: { value: string; label: string };
+    phoneCodeValue: OptionType;
     authError: string;
     authValue: string;
     authSending: boolean;
@@ -147,6 +147,8 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
         }
         countryMenuOpen.current = false;
     }, []);
+    let parsedPhone = parsePhoneNumberFromString(codeField.value.value + dataField.value);
+    let isPhoneValid = !!(parsedPhone && parsedPhone.isPossible());
 
     return (
         <>
@@ -173,6 +175,7 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
                     />
                 </AuthInputWrapper>
                 <AuthActionButton
+                    disable={!isPhoneValid}
                     text={InitTexts.auth.next}
                     loading={authSending}
                     onClick={handleNext}

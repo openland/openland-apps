@@ -31,7 +31,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZShaker } from 'openland-mobile/components/ZShaker';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
 import { Modals } from '../main/modals/Modals';
-import { countriesCode } from 'openland-y-utils/countriesCodes';
+import { countriesMeta } from 'openland-y-utils/countriesMeta';
 import { AsYouType } from 'libphonenumber-js';
 
 export const ACTIVATION_CODE_LENGTH = 6;
@@ -150,7 +150,7 @@ const AuthStartComponent = React.memo((props: PageProps) => {
                 value: '+1',
             };
         } else {
-            findCountry = countriesCode.find(
+            findCountry = countriesMeta.find(
                 (i) => i.value.split(' ').join('') === v.split(' ').join(''),
             );
         }

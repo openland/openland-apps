@@ -236,6 +236,7 @@ export default () => {
     const [phoneCodeValue, setPhoneCodeValue] = React.useState({
         label: 'United States',
         value: '+1',
+        shortname: 'US', 
     });
     const [authValue, setAuthValue] = React.useState('');
     const [authWasResend, setAuthWasResend] = React.useState(false);
@@ -421,4 +422,4 @@ export default () => {
             </AuthHeaderConfigContex.Provider>
         </div>
     );
-};
+}; 

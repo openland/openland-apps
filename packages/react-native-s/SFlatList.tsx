@@ -39,7 +39,7 @@ export class SFlatList<T> extends React.Component<SFlatListProps<T>> {
                                 }}
                                 onScroll={this.contentOffset.event}
                                 scrollEventThrottle={1}
-                                scrollIndicatorInsets={{
+                                scrollIndicatorInsets={this.props.scrollIndicatorInsets || {
                                     bottom: area.bottom,
                                     top: area.top
                                 }}
