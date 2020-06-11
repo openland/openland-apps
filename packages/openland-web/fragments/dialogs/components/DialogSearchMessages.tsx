@@ -41,13 +41,21 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
     const [selectedIndex, setSelectedIndex] = React.useState<number>(-1);
 
     const items = client.useGlobalSearch({ query: props.variables.query }, { fetchPolicy: 'cache-and-network' }).items;
-    const initialData = client.useMessagesSearch(constructVariables(props.variables.query), { fetchPolicy: 'network-only' }).messagesSearch;
+    const initialData = client.useMessagesSearch(constructVariables(props.variables.query), { fetchPolicy: 'cache-and-network' }).messagesSearch;
 
     const initialCursor = getCursor(initialData);
 
     const [loadingMore, setLoadingMore] = React.useState(false);
     const [after, setAfter] = React.useState<string | null>(initialCursor);
     const [messages, setMessages] = React.useState(initialData.edges);
+
+    React.useEffect(() => {
+        console.log('effect called');
+        (async () => {
+            let messages = await client.refetchMessagesSearch(constructVariables(props.variables.query), { fetchPolicy: 'network-only' });
+            setMessages(messages.messagesSearch.edges);
+        })();
+    }, [props.variables.query]);
 
     const resultsLength = items.length + messages.length;
 
@@ -117,7 +125,7 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
     }, [handleNeedMore, after, loadingMore]);
 
     if (items.length === 0 && messages.length === 0) {
-        return <DialogSearchEmptyView />;
+        return <DialogSearchEmptyView/>;
     }
 
     return (
