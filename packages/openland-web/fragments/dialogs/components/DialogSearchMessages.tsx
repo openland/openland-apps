@@ -50,7 +50,6 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
     const [messages, setMessages] = React.useState(initialData.edges);
 
     React.useEffect(() => {
-        console.log('effect called');
         (async () => {
             let messages = await client.refetchMessagesSearch(constructVariables(props.variables.query), { fetchPolicy: 'network-only' });
             setMessages(messages.messagesSearch.edges);
