@@ -3,7 +3,7 @@ import { XView } from 'react-mental';
 import IcDropdown from 'openland-icons/s/ic-dropdown-16.svg';
 import { css, cx } from 'linaria';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import { USearchInput } from 'openland-web/components/unicorn/USearchInput';
+import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
 import { VariableSizeList } from 'react-window';
 import { countriesMeta } from 'openland-y-utils/countriesMeta';
 import { TextLabel1, TextBody, TextStyles } from 'openland-web/utils/TextStyles';
@@ -17,18 +17,8 @@ const SPACE_REGEX = /\s/g;
 const removeSpace = (s: string) => s.replace(SPACE_REGEX, '');
 const US_LABEL = 'United States';
 
-const frequentCountries = [
-    { label: 'United States', value: '+1', shortname: 'US', },
-    { label: 'China', value: '+86', shortname: 'CN', },
-    { label: 'India', value: '+91', shortname: 'IN', },
-    { label: 'Russia', value: '+7', shortname: 'RU', },
-];
-
 const groupedCountriesCodes = countriesMeta
     .reduce((acc, country) => {
-        if (frequentCountries.some(({ label }) => label === country.label)) {
-            return acc;
-        }
         let countryLetter = country.label.toLowerCase()[0];
         let prevGroup = acc[acc.length - 1];
         if (prevGroup) {
@@ -42,8 +32,6 @@ const groupedCountriesCodes = countriesMeta
         }
         return acc;
     }, [] as GroupType[]);
-
-groupedCountriesCodes.unshift({ label: 'Frequent', options: frequentCountries });
 
 const VirtualMenuList = (props: { children: React.ReactNode[], options: GroupType[], filtered: boolean, value: OptionType }) => {
     const listRef = React.useRef<VariableSizeList>(null);
@@ -86,7 +74,7 @@ const VirtualMenuList = (props: { children: React.ReactNode[], options: GroupTyp
             itemCount={options.length}
             itemSize={i => filtered ? options[i].options.length * itemHeight : options[i].options.length * itemHeight + headerHeight}
             width={320}
-            initialScrollOffset={value.label === 'United States' ? 0 : foundOffset.offset}
+            initialScrollOffset={foundOffset.offset}
         >
             {({ index, style }) => (
                 <div style={style}>
@@ -227,6 +215,7 @@ interface CountryPickerProps {
 export const CountryPicker = (props: CountryPickerProps) => {
     const { value, onChange, onOpen, onClose, className } = props;
     const [isOpen, setIsOpen] = React.useState(false);
+    const inputRef = React.useRef<USearchInputRef>(null);
     const [selectedItem, setSelectedItem] = React.useState<{ groupIndex: number, optionIndex: number }>({ groupIndex: 0, optionIndex: 0 });
     const [searchValue, setSearchValue] = React.useState('');
 
@@ -254,6 +243,7 @@ export const CountryPicker = (props: CountryPickerProps) => {
                 return optionIndex !== -1;
             });
             setSelectedItem({ groupIndex, optionIndex });
+            inputRef.current?.focus();
         } else {
             onClose();
         }
@@ -345,14 +335,13 @@ export const CountryPicker = (props: CountryPickerProps) => {
                 <>
                     <div className={menuWrapper}>
                         <USearchInput
+                            ref={inputRef}
                             marginTop={8}
                             marginHorizontal={16}
                             marginBottom={8}
                             placeholder="Country"
-                            autoFocus={true}
                             onChange={setSearchValue}
                             onKeyDown={handleEnter}
-                            onFocus={() => setIsOpen(true)}
                         />
                         <VirtualMenuList options={filteredOptions} filtered={!!searchValue} value={value}>
                             {filteredOptions.map((group, i) => (
