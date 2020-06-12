@@ -1581,6 +1581,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutatePersistEvents(variables: Types.PersistEventsVariables, params?: MutationParameters): Promise<Types.PersistEvents> {
         return this.mutate('PersistEvents', variables, params);
     }
+    mutatePhonebookAdd(variables: Types.PhonebookAddVariables, params?: MutationParameters): Promise<Types.PhonebookAdd> {
+        return this.mutate('PhonebookAdd', variables, params);
+    }
     mutatePinMessage(variables: Types.PinMessageVariables, params?: MutationParameters): Promise<Types.PinMessage> {
         return this.mutate('PinMessage', variables, params);
     }

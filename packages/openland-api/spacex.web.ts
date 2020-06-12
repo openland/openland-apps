@@ -4299,6 +4299,9 @@ const PaymentIntentCommitSelector = obj(
 const PersistEventsSelector = obj(
             field('track', 'track', args(fieldValue("did", refValue('did')), fieldValue("events", refValue('events')), fieldValue("isProd", refValue('isProd'))), notNull(scalar('String')))
         );
+const PhonebookAddSelector = obj(
+            field('phonebookAdd', 'phonebookAdd', args(fieldValue("records", refValue('records'))), notNull(scalar('Boolean')))
+        );
 const PinMessageSelector = obj(
             field('gammaPinMessage', 'pinMessage', args(fieldValue("chatId", refValue('chatId')), fieldValue("messageId", refValue('messageId'))), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5862,6 +5865,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'PersistEvents',
         body: 'mutation PersistEvents($did:String!,$events:[Event!]!,$isProd:Boolean){track(did:$did,events:$events,isProd:$isProd)}',
         selector: PersistEventsSelector
+    },
+    PhonebookAdd: {
+        kind: 'mutation',
+        name: 'PhonebookAdd',
+        body: 'mutation PhonebookAdd($records:[PhonebookRecordInput!]!){phonebookAdd(records:$records)}',
+        selector: PhonebookAddSelector
     },
     PinMessage: {
         kind: 'mutation',

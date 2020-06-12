@@ -6,10 +6,10 @@ import { Priority } from 'openland-api/Priority';
 import { parsePhoneNumberFromString, CountryCode, isSupportedCountry } from 'libphonenumber-js';
 import * as Localize from "react-native-localize";
 import { backoff } from 'openland-y-utils/timer';
+import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
 
 /*
     TODO:
-    - send pending contacts to server
     - implement for Android
     - improve phone normalization (with device country code if needed)
     - optimize processing
@@ -38,10 +38,14 @@ class ContactsRegistrator {
     private client: OpenlandClient;
     private pending: LocaleContact[] = [];
     private defaultCountry: CountryCode = 'US';
+    private isSending = false;
 
     constructor(client: OpenlandClient) {
         this.client = client.withParameters({ defaultPriority: Priority.LOW });
-        // this.init();
+
+        if (NON_PRODUCTION) {
+            this.init();
+        }
     }
 
     init = async () => {
@@ -135,11 +139,23 @@ class ContactsRegistrator {
     }
 
     private sendContacts = async () => {
+        if (this.isSending || this.pending.length <= 0) {
+            return;
+        }
+
+        this.isSending = true;
+
         while (this.pending.length > 0) {
             const batch = this.pending.splice(0, BATCH_SIZE);
 
             await backoff(async () => {
-                // execute mutation
+                await this.client.mutatePhonebookAdd({
+                    records: batch.map(c => ({
+                        firstName: c.firstName,
+                        lastName: c.lastName,
+                        phones: c.phones.map(p => p.number)
+                    }))
+                });
             });
 
             await AsyncStorage.multiSet(batch.map(p => ([
@@ -147,6 +163,8 @@ class ContactsRegistrator {
                 JSON.stringify({ ...p, sent: true })
             ])));
         }
+
+        this.isSending = false;
     }
 }
 

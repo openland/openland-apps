@@ -4292,6 +4292,9 @@ private let PaymentIntentCommitSelector = obj(
 private let PersistEventsSelector = obj(
             field("track", "track", arguments(fieldValue("did", refValue("did")), fieldValue("events", refValue("events")), fieldValue("isProd", refValue("isProd"))), notNull(scalar("String")))
         )
+private let PhonebookAddSelector = obj(
+            field("phonebookAdd", "phonebookAdd", arguments(fieldValue("records", refValue("records"))), notNull(scalar("Boolean")))
+        )
 private let PinMessageSelector = obj(
             field("gammaPinMessage", "pinMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("messageId", refValue("messageId"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -5860,6 +5863,12 @@ class Operations {
         "mutation PersistEvents($did:String!,$events:[Event!]!,$isProd:Boolean){track(did:$did,events:$events,isProd:$isProd)}",
         PersistEventsSelector
     )
+    let PhonebookAdd = OperationDefinition(
+        "PhonebookAdd",
+        .mutation, 
+        "mutation PhonebookAdd($records:[PhonebookRecordInput!]!){phonebookAdd(records:$records)}",
+        PhonebookAddSelector
+    )
     let PinMessage = OperationDefinition(
         "PinMessage",
         .mutation, 
@@ -6481,6 +6490,7 @@ class Operations {
         if name == "PaymentIntentCancel" { return PaymentIntentCancel }
         if name == "PaymentIntentCommit" { return PaymentIntentCommit }
         if name == "PersistEvents" { return PersistEvents }
+        if name == "PhonebookAdd" { return PhonebookAdd }
         if name == "PinMessage" { return PinMessage }
         if name == "PostCreateDraft" { return PostCreateDraft }
         if name == "PostDraftUpdate" { return PostDraftUpdate }
