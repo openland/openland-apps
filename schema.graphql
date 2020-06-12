@@ -572,6 +572,7 @@ type Dialog {
   alphaTopMessage: ModernMessage
   isMuted: Boolean!
   haveMention: Boolean!
+  hasActiveCall: Boolean!
   membership: SharedRoomMembershipStatus!
 }
 
@@ -582,6 +583,11 @@ type DialogBump {
   topMessage: ModernMessage
   haveMention: Boolean!
   membership: SharedRoomMembershipStatus!
+}
+
+type DialogCallStateChanged {
+  cid: ID!
+  hasActiveCall: Boolean!
 }
 
 type DialogDeleted {
@@ -669,7 +675,7 @@ type DialogTitleUpdated {
   title: String!
 }
 
-union DialogUpdate = DialogMessageReceived | DialogMessageUpdated | DialogMessageDeleted | DialogMessageRead | DialogTitleUpdated | DialogDeleted | DialogPhotoUpdated | DialogMuteChanged | DialogMentionedChanged | DialogBump | DialogPeerUpdated
+union DialogUpdate = DialogMessageReceived | DialogMessageUpdated | DialogMessageDeleted | DialogMessageRead | DialogTitleUpdated | DialogDeleted | DialogPhotoUpdated | DialogMuteChanged | DialogMentionedChanged | DialogBump | DialogPeerUpdated | DialogCallStateChanged
 
 type DialogUpdateBatch {
   updates: [DialogUpdate!]!
@@ -2332,9 +2338,10 @@ type PhonebookRecord {
 }
 """
 input PhonebookRecordInput {
-  name: String!
+  firstName: String!
+  lastName: String
   info: String
-  phone: String!
+  phones: [String!]!
 }
 
 type PhotoChangeServiceMetadata {

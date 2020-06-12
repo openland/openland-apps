@@ -6,12 +6,14 @@ import { backoff, delay } from 'openland-y-utils/timer';
 import {
     UserBadge,
     FullMessage,
+    MessageSpan,
+    MessageSender,
     MessageSource,
     MessageReactions,
     MessageAttachments,
-    MessageSpan,
     ServiceMessageMetadata,
-    MessageSender,
+    FullMessage_GeneralMessage,
+    FullMessage_StickerMessage,
     DialogUpdateFragment_DialogPeerUpdated_peer,
 } from 'openland-api/spacex.types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
