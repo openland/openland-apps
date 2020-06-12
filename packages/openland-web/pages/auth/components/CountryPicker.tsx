@@ -13,8 +13,6 @@ import IcCheck from 'openland-icons/s/ic-done-16.svg';
 export type OptionType = { label: string, value: string, shortname: string };
 type GroupType = { label: string, options: OptionType[] };
 
-const SPACE_REGEX = /\s/g;
-const removeSpace = (s: string) => s.replace(SPACE_REGEX, '');
 const US_LABEL = 'United States';
 
 const groupedCountriesCodes = countriesMeta
@@ -194,13 +192,20 @@ const CountriesGroup = (props: {
     );
 };
 
-const filterCountryOption = ({ label: rawLabel, value }: { label: string, value: string }, rawInput: string) => {
-    let label = rawLabel.toLowerCase();
-    let input = rawInput.toLowerCase();
-    if (label === US_LABEL.toLowerCase() && ['usa', 'america', 'united states of america', 'u.s.'].some(x => x.startsWith(input))) {
-        return true;
-    }
-    return label.includes(input) || removeSpace(value).replace(/\+/g, '').startsWith(removeSpace(rawInput));
+const filterCountries = (searchValue: string, countries: OptionType[]) => {
+    let input = searchValue.toLowerCase();
+    let firstRank = countries.filter(x => {
+        let label = x.label.toLowerCase();
+        if (label === US_LABEL.toLowerCase() && ['usa', 'america', 'united states of america', 'u.s.'].some(y => y.startsWith(input))) {
+            return true;
+        }
+        return label.startsWith(input);
+    });
+    let secondRank = countries.filter(x => {
+        let label = x.label.toLowerCase();
+        return label.includes(input) || x.value.replace(/\+/g, '').startsWith(input);
+    });
+    return firstRank.concat(secondRank.filter(x => !firstRank.some(y => y.label === x.label)));
 };
 
 interface CountryPickerProps {
@@ -221,9 +226,7 @@ export const CountryPicker = (props: CountryPickerProps) => {
     const filteredOptions = React.useMemo(() =>
         !searchValue
             ? groupedCountriesCodes
-            : [groupedCountriesCodes
-                .flatMap(x => x.options)
-                .filter(x => filterCountryOption(x, searchValue))
+            : [filterCountries(searchValue, groupedCountriesCodes.flatMap(x => x.options))
                 .reduce((acc, x) => ({ label: '', options: [...acc.options, x] }), { label: '', options: [] })]
         , [searchValue]);
 
