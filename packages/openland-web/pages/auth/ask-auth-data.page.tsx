@@ -260,6 +260,7 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
                         marginRight={8}
                         flexShrink={1}
                         marginTop={16}
+                        minWidth={72}
                         type="tel"
                         value={codeField.input.value.value}
                         hasPlaceholder={true}
