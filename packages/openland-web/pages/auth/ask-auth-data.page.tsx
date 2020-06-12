@@ -203,6 +203,7 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
     }, [dataField.input.value]);
 
     const handlePhoneChange = React.useCallback((value: string) => {
+        let code = codeField.value.value.split(' ').join('');
         if (value === '') {
             dataField.input.onChange('');
             return;
@@ -211,7 +212,18 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
             dataField.input.onChange(value);
             return;
         }
-        const code = codeField.value.value.split(' ').join('');
+
+        let parsed = parsePhoneNumberFromString(value);
+        if (parsed && parsed.isPossible()) {
+            let codeString = `+${parsed.countryCallingCode}`;
+            let codeValue = findCode(codeString);
+            if (codeValue) {
+                codeField.input.onChange(codeValue);
+                code = codeString;
+                value = parsed.nationalNumber as string;
+            }
+        }
+
         let formatted = formatIncompletePhoneNumber(code + value, codeField.value.shortname as CountryCode);
         dataField.input.onChange(formatted.replace(code, '').trim());
     }, [codeField.value]);
