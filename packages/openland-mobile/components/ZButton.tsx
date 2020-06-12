@@ -15,7 +15,6 @@ const stylesDefault = StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: RadiusStyles.Large,
         height: 36,
         paddingHorizontal: 16,
     } as ViewStyle,
@@ -29,7 +28,6 @@ const stylesLarge = StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: RadiusStyles.Medium,
         height: 48,
         paddingHorizontal: 24,
     } as ViewStyle,
@@ -42,6 +40,11 @@ const stylesLarge = StyleSheet.create({
 const resolveStylesBySize = {
     default: stylesDefault,
     large: stylesLarge,
+};
+
+const resolveRadiusBySize = {
+    default: RadiusStyles.Large,
+    large: RadiusStyles.Medium,
 };
 
 export interface ZButtonProps {
@@ -145,7 +148,7 @@ const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) 
             style={{
                 backgroundColor: animatedBgColor,
                 opacity: props.enabled === false ? 0.6 : (!underlayColor ? animatedOpacity : undefined),
-                borderRadius: RadiusStyles.Medium,
+                borderRadius: resolveRadiusBySize[size],
                 overflow: 'hidden'
             }}
         >
