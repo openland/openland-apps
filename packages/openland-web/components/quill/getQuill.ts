@@ -3,7 +3,7 @@ import * as QuillType from 'quill';
 import { css } from 'linaria';
 import { emojiLink } from 'openland-y-utils/emojiLink';
 import './InteractiveComponents';
-import { registeredRenderers } from './InteractiveComponent';
+// import { registeredRenderers } from './InteractiveComponent';
 
 const mentionStyle = css`
     color: var(--accentPrimary);
@@ -20,9 +20,9 @@ const emojiStyle = css`
     vertical-align: -0.1em;
 `;
 
-const interactiveEmbedStyle = css`
-    width: 100%;
-`;
+// const interactiveEmbedStyle = css`
+//     width: 100%;
+// `;
 
 let Quill: typeof QuillType.Quill;
 let QuillDelta: typeof QuillType.Delta;
@@ -104,23 +104,23 @@ export function getQuill() {
         Quill.register(HeaderBlot);
 
         // Interactive
-        class InteractiveEmbed extends BlockEmbed {
-            static create(data: { editorId: string, embedId: string }) {
-                const node = super.create() as HTMLImageElement;
-                node.className = interactiveEmbedStyle;
-                node.setAttribute('contenteditable', 'false');
-                node.dataset.editorId = data.editorId;
-                node.dataset.embedId = data.embedId;
-                registeredRenderers.get(data.editorId)!.register(data.embedId, node);
-                return node;
-            }
-            static value(domNode: HTMLDivElement) {
-                return { editorId: domNode.dataset.editorId, embedId: domNode.dataset.embedId };
-            }
-        }
-        InteractiveEmbed.blotName = 'interactive';
-        InteractiveEmbed.tagName = 'div';
-        Quill.register(InteractiveEmbed);
+        // class InteractiveEmbed extends BlockEmbed {
+        //     static create(data: { editorId: string, embedId: string }) {
+        //         const node = super.create() as HTMLImageElement;
+        //         node.className = interactiveEmbedStyle;
+        //         node.setAttribute('contenteditable', 'false');
+        //         node.dataset.editorId = data.editorId;
+        //         node.dataset.embedId = data.embedId;
+        //         registeredRenderers.get(data.editorId)!.register(data.embedId, node);
+        //         return node;
+        //     }
+        //     static value(domNode: HTMLDivElement) {
+        //         return { editorId: domNode.dataset.editorId, embedId: domNode.dataset.embedId };
+        //     }
+        // }
+        // InteractiveEmbed.blotName = 'interactive';
+        // InteractiveEmbed.tagName = 'div';
+        // Quill.register(InteractiveEmbed);
     }
 
     return {

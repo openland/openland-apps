@@ -16,12 +16,12 @@ export interface PickedImage {
 }
 
 export function showPickImage(callback: (image: PickedImage) => void) {
-    var input = document.createElement('input');
+    let input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
     input.onchange = (e) => {
         if (e.target) {
-            var files = fileListToArray((e.target as any).files);
+            let files = fileListToArray((e.target as any).files);
             if (files.length !== 1) {
                 return;
             }
