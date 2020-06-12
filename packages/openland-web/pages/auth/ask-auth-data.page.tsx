@@ -19,8 +19,15 @@ import {
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import { AuthHeaderConfig } from './root.page';
 import { UInput } from 'openland-web/components/unicorn/UInput';
-import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js';
+import { AsYouType, parsePhoneNumberFromString, formatIncompletePhoneNumber, CountryCode } from 'libphonenumber-js';
 import { CountryPicker, OptionType } from './components/CountryPicker';
+import { countriesMeta } from 'openland-y-utils/countriesMeta';
+
+const INVALID_CODE_LABEL = 'Invalid country code';
+const SPACE_REGEX = /\s/g;
+const removeSpace = (s: string) => s.replace(SPACE_REGEX, '');
+const US_LABEL = 'United States';
+const RUSSIA_LABEL = 'Russia';
 
 export type AskAuthDataProps = {
     fireAuth: (data: string, isPhoneFire: boolean) => Promise<void>;
@@ -73,6 +80,16 @@ const phoneToast = css`
     width: calc(100% - 32px);
 `;
 
+const findCode = (val: string) => {
+    if (val === '+1') {
+        return { value: '+1', label: US_LABEL, shortname: 'US' };
+    }
+    if (val === '+7') {
+        return { value: '+7', label: RUSSIA_LABEL, shortname: 'RU' };
+    }
+    return countriesMeta.find(country => country.value === val);
+};
+
 export const SignUpWithPhone = (props: AskAuthDataProps) => {
     const {
         authError,
@@ -97,7 +114,7 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
             setTimeout(() => {
                 const code = codeField.value.value.split(' ').join('');
                 let value = dataField.value.trim();
-                let phone = new AsYouType('US');
+                let phone = new AsYouType(codeField.value.shortname as CountryCode);
                 phone.input(code + value);
                 let phoneNumber = phone.getNumber();
 
@@ -114,9 +131,11 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
     const countryMenuOpen = React.useRef(false);
 
     const [shakeClassName, shake] = useShake();
+    let parsedPhone = parsePhoneNumberFromString(codeField.value.value + dataField.value);
+    let isPhoneValid = !!(parsedPhone && parsedPhone.isPossible());
 
     const handleNext = React.useCallback(() => {
-        if (countryMenuOpen.current) {
+        if (countryMenuOpen.current || !isPhoneValid) {
             return;
         }
         if (dataField.input.value.trim() === '') {
@@ -127,6 +146,7 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
 
     useShortcuts({ keys: ['Enter'], callback: handleNext });
 
+    const codeRef = React.useRef<HTMLInputElement>(null);
     const inputRef = React.useRef<HTMLInputElement>(null);
     React.useEffect(() => {
         if (inputRef.current) {
@@ -134,21 +154,78 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
         }
     }, [errorText, shakeClassName]);
 
-    const handlePhoneChange = React.useCallback((s: string) => {
-        let val = new AsYouType('US').input(s);
-        dataField.input.onChange(val);
-    }, []);
+    const [codeWidth, setCodeWidth] = React.useState<string>(`calc(${codeField.input.value.value.length}ch + 32px)`);
+
+    React.useEffect(() => {
+        setCodeWidth(`calc(${codeField.input.value.value.length}ch + 34px)`);
+    }, [codeField.input.value.value]);
+
+    const handleCountryCodeChange = React.useCallback((str: string) => {
+        let v = '+' + removeSpace(str).replace(/\+/g, '');
+        if (!/^\+\d*$/.test(v)) {
+            return true;
+        }
+        let existing;
+        if (v.length >= 6) {
+            try {
+                let parsed = parsePhoneNumberFromString(v);
+                if (parsed) {
+                    existing = findCode('+' + parsed.countryCallingCode);
+                    if (existing) {
+                        dataField.input.onChange(parsed.formatNational());
+                        if (inputRef.current) {
+                            inputRef.current.focus();
+                        }
+                    }
+                }
+            } catch (error) {
+                console.warn('Phone parsing failed:', error);
+            }
+        } else {
+            existing = findCode(v);
+        }
+        if (existing) {
+            codeField.input.onChange(existing);
+        } else {
+            codeField.input.onChange({ value: v, label: INVALID_CODE_LABEL, shortname: '' });
+        }
+        setCodeWidth(`calc(${v.length}ch + 34px)`);
+        return true;
+    }, [countriesMeta]);
+
+    const handlePhoneKeyDown = React.useCallback((e: React.KeyboardEvent) => {
+        if (e.keyCode === 8 && inputRef.current?.value === '') {
+            if (codeRef.current) {
+                e.preventDefault();
+                codeRef.current.focus();
+            }
+        }
+    }, [dataField.input.value]);
+
+    const handlePhoneChange = React.useCallback((value: string) => {
+        if (value === '') {
+            dataField.input.onChange('');
+            return;
+        }
+        if (codeField.value.label === INVALID_CODE_LABEL) {
+            dataField.input.onChange(value);
+            return;
+        }
+        const code = codeField.value.value.split(' ').join('');
+        let formatted = formatIncompletePhoneNumber(code + value, codeField.value.shortname as CountryCode);
+        dataField.input.onChange(formatted.replace(code, '').trim());
+    }, [codeField.value]);
     const handleMenuOpen = React.useCallback(() => {
         countryMenuOpen.current = true;
     }, []);
     const handleMenuClose = React.useCallback(() => {
-        if (inputRef.current) {
-            inputRef.current.focus();
-        }
-        countryMenuOpen.current = false;
+        setTimeout(() => {
+            if (inputRef.current) {
+                inputRef.current.focus();
+            }
+            countryMenuOpen.current = false;
+        }, 200);
     }, []);
-    let parsedPhone = parsePhoneNumberFromString(codeField.value.value + dataField.value);
-    let isPhoneValid = !!(parsedPhone && parsedPhone.isPossible());
 
     return (
         <>
@@ -159,7 +236,23 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
                         value={codeField.input.value}
                         onOpen={handleMenuOpen}
                         onClose={handleMenuClose}
-                        onChange={codeField.input.onChange}
+                        onChange={(s) => {
+                            codeField.input.onChange(s);
+                            dataField.input.onChange('');
+                        }}
+                    />
+                </AuthInputWrapper>
+                <AuthInputWrapper className={cx(shakeClassName)}>
+                    <UInput
+                        ref={codeRef}
+                        marginRight={8}
+                        flexShrink={1}
+                        marginTop={16}
+                        type="tel"
+                        value={codeField.input.value.value}
+                        hasPlaceholder={true}
+                        width={codeWidth}
+                        onChange={handleCountryCodeChange}
                     />
                     <UInput
                         label="Phone number"
@@ -169,9 +262,10 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
                         hasPlaceholder={true}
                         flexGrow={1}
                         flexShrink={1}
-                        marginTop={32}
+                        marginTop={16}
                         value={dataField.input.value}
                         onChange={handlePhoneChange}
+                        onKeyDown={handlePhoneKeyDown}
                     />
                 </AuthInputWrapper>
                 <AuthActionButton

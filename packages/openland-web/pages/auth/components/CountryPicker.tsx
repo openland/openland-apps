@@ -74,7 +74,7 @@ const VirtualMenuList = (props: { children: React.ReactNode[], options: GroupTyp
             itemCount={options.length}
             itemSize={i => filtered ? options[i].options.length * itemHeight : options[i].options.length * itemHeight + headerHeight}
             width={320}
-            initialScrollOffset={foundOffset.offset}
+            initialScrollOffset={foundOffset.found ? foundOffset.offset : 0}
         >
             {({ index, style }) => (
                 <div style={style}>
@@ -86,9 +86,8 @@ const VirtualMenuList = (props: { children: React.ReactNode[], options: GroupTyp
 };
 
 const wrapper = css`
-    width: auto;
-    margin: 32px 16px 0 0;
-    min-width: 108px;
+    width: 100%;
+    margin-top: 32px;
 `;
 
 const arrowWrapper = css`
@@ -319,7 +318,7 @@ export const CountryPicker = (props: CountryPickerProps) => {
                 onMouseDown={() => { setIsOpen(x => !x); }}
                 zIndex={11}
             >
-                <span className={triggerTextStyle}>{value.value}</span>
+                <span className={triggerTextStyle}>{value.label}</span>
                 <UIcon
                     className={arrowWrapper}
                     icon={
