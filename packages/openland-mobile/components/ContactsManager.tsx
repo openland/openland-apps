@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { OpenlandClient } from 'openland-api/spacex';
-import { Platform, AsyncStorage } from 'react-native';
+import { Platform, AsyncStorage, PermissionsAndroid } from 'react-native';
 import * as Contacts from 'react-native-contacts';
 import { Priority } from 'openland-api/Priority';
 import { parsePhoneNumberFromString, CountryCode, isSupportedCountry } from 'libphonenumber-js';
@@ -10,7 +10,6 @@ import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
 
 /*
     TODO:
-    - implement for Android
     - improve phone normalization (with device country code if needed)
     - optimize processing
     - think about alternative data formats and storages
@@ -34,7 +33,6 @@ interface LocaleContact {
 }
 
 class ContactsRegistrator {
-    // @ts-ignore
     private client: OpenlandClient;
     private pending: LocaleContact[] = [];
     private defaultCountry: CountryCode = 'US';
@@ -67,6 +65,12 @@ class ContactsRegistrator {
                     this.findContacts();
                 }
             });
+        } else if (Platform.OS === 'android') {
+            const permission = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS);
+
+            if (permission === PermissionsAndroid.RESULTS.GRANTED) {
+                this.findContacts();
+            }
         }
     }
 
