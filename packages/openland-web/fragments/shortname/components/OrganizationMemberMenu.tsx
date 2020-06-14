@@ -162,14 +162,7 @@ export const OrganizationMemberMenu = React.memo((props: OrganizationMemberMenuP
             menu={ctx => (
                 <MenuComponent
                     ctx={ctx}
-                    items={getMenuContent({
-                        organization,
-                        memberRef,
-                        onRemove,
-                        onChangeRole,
-                        client,
-                        isMobile,
-                    })}
+                    items={menuContent}
                 />
             )}
         />
