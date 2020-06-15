@@ -395,14 +395,6 @@ export class DialogListEngine {
             log.log('Move Item: ' + res.key);
             await this._dataSourceStored.moveItem(res.key, 0);
         } else {
-            if (
-                message.__typename === 'ServiceMessage' &&
-                message.serviceMetadata &&
-                message.serviceMetadata.__typename === 'KickServiceMetadata'
-            ) {
-                return;
-            }
-
             let info = await this.engine.client.queryRoomPico({
                 id: conversationId,
             });
