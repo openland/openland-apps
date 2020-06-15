@@ -162,7 +162,7 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
 
     const handleCountryCodeChange = React.useCallback((str: string) => {
         let v = '+' + removeSpace(str).replace(/\+/g, '');
-        if (!/^\+\d*$/.test(v)) {
+        if (!/^\+(\d|-|\(|\))*$/.test(v)) {
             return true;
         }
         let existing;
@@ -171,12 +171,6 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
                 let parsed = parsePhoneNumberFromString(v);
                 if (parsed) {
                     existing = findCode('+' + parsed.countryCallingCode);
-                    if (existing) {
-                        dataField.input.onChange(parsed.formatNational());
-                        if (inputRef.current) {
-                            inputRef.current.focus();
-                        }
-                    }
                 }
             } catch (error) {
                 console.warn('Phone parsing failed:', error);
@@ -186,12 +180,21 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
         }
         if (existing) {
             codeField.input.onChange(existing);
+            let parsed = parsePhoneNumberFromString(v) || parsePhoneNumberFromString(v + dataField.value);
+            if (parsed) {
+                let formatted = formatIncompletePhoneNumber(existing.value + parsed.nationalNumber, codeField.value.shortname as CountryCode);
+                dataField.input.onChange(formatted.replace(existing.value, '').trim());
+                if (inputRef.current) {
+                    inputRef.current.focus();
+                }
+
+            }
         } else {
             codeField.input.onChange({ value: v, label: INVALID_CODE_LABEL, shortname: '' });
         }
-        setCodeWidth(`calc(${v.length}ch + 34px)`);
+        setCodeWidth(`calc(${existing?.value.length || v.length}ch + 34px)`);
         return true;
-    }, [countriesMeta]);
+    }, [countriesMeta, dataField.value]);
 
     const handlePhoneKeyDown = React.useCallback((e: React.KeyboardEvent) => {
         if (e.keyCode === 8 && inputRef.current?.value === '') {
@@ -206,13 +209,8 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
         let code = codeField.value.value.split(' ').join('');
         if (value === '') {
             dataField.input.onChange('');
-            return;
+            return true;
         }
-        if (codeField.value.label === INVALID_CODE_LABEL) {
-            dataField.input.onChange(value);
-            return;
-        }
-
         let parsed = parsePhoneNumberFromString(value);
         if (parsed && parsed.isPossible()) {
             let codeString = `+${parsed.countryCallingCode}`;
@@ -226,7 +224,8 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
 
         let formatted = formatIncompletePhoneNumber(code + value, codeField.value.shortname as CountryCode);
         dataField.input.onChange(formatted.replace(code, '').trim());
-    }, [codeField.value]);
+        return true;
+    }, [codeField.value, dataField.value]);
     const handleMenuOpen = React.useCallback(() => {
         countryMenuOpen.current = true;
     }, []);
@@ -276,7 +275,7 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
                         flexGrow={1}
                         flexShrink={1}
                         marginTop={16}
-                        value={dataField.input.value}
+                        value={dataField.value}
                         onChange={handlePhoneChange}
                         onKeyDown={handlePhoneKeyDown}
                     />
