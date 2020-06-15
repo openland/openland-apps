@@ -38,7 +38,7 @@ export const shiftReplyMeta = (message: DataSourceMessageItem, isForward: boolea
     let isPurchaseAttach = getAttachPurchase(lastReply);
 
     return isForward && (isImage || isSticker)
-        || !isForward && !message.text && (isRichAttach || isSticker) 
+        || !isForward && !message.text && (isRichAttach || isSticker)
         || (isPurchaseAttach && isForward);
 };
 
@@ -86,12 +86,13 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                         const hasAttachments = m.attachments && m.attachments.length > 0;
                         const needPaddedText = !m.isService && !!m.text && !hasAttachments && (i + 1 === message.reply!.length);
                         const repliedMessage = !m.isService ? m : undefined;
-                        
-                        const handlePress = () => { 
+                        const paddedMargin = needPaddedText && !isForward && !message.text;
+
+                        const handlePress = () => {
                             if (!isForward && onPress) {
                                 onPress(m);
                             }
-                         };
+                        };
 
                         if (repliedMessage) {
                             const attachFile = repliedMessage.attachments && repliedMessage.attachments.filter(a => a.__typename === 'MessageAttachmentFile')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentFile | undefined;
@@ -117,16 +118,16 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                     </ASText>
 
                                     {repliedMessage.textSpans.length > 0 && (
-                                        <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10} onPress={handlePress}>
+                                        <ASFlex key={'reply-spans-' + m.id} flexDirection="column" alignItems="stretch" marginLeft={10} marginRight={paddedMargin ? 65 : undefined} onPress={handlePress}>
                                             <RenderSpans
                                                 spans={repliedMessage.textSpans}
                                                 message={message}
-                                                padded={compensateBubble ? needPaddedText : false}
+                                                padded={compensateBubble && isForward ? needPaddedText : false}
                                                 theme={theme}
-                                                maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - 70}
+                                                maxWidth={maxWidth ? maxWidth : (message.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming) - (paddedMargin ? 95 : 70)}
                                                 width={width}
                                                 insetLeft={8}
-                                                insetRight={contentInsetsHorizontal}
+                                                insetRight={paddedMargin ? 0 : contentInsetsHorizontal}
                                                 insetVertical={4}
                                                 numberOfLines={isForward ? undefined : 1}
 
