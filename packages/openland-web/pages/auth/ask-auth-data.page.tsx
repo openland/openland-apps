@@ -334,11 +334,15 @@ const WebSignUpCreateWithEmail = (
 
     const inputRef = React.useRef<HTMLInputElement>(null);
     React.useEffect(() => {
-        setTimeout(() => {
+        let timeoutId: any;
+        timeoutId = setTimeout(() => {
             if (inputRef.current) {
                 inputRef.current.focus();
             }
         }, 200);
+        return () => {
+            clearTimeout(timeoutId);
+        };
     }, [errorText, shakeClassName]);
 
     return (

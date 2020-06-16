@@ -23,6 +23,7 @@ import { checkCode, AuthError, trackError } from './utils/checkCode';
 import { TextTitle1 } from 'openland-web/utils/TextStyles';
 import { usePreviousState } from 'openland-y-utils/usePreviousState';
 import { css, cx } from 'linaria';
+import { useResendTimer } from 'openland-y-utils/auth/useResendTimer';
 
 const codeWrapperStyle = css`
     margin-top: 32px;
@@ -38,8 +39,12 @@ const codeInputStyle = cx(TextTitle1, css`
     align-items: center;
     text-align: center;
 
-    &:focus, &:hover {
-        background-color: rgba(148, 155, 168, 0.24);
+    &:hover {
+        background-color: var(--backgroundTertiaryHoverTrans);
+    }
+
+    &:focus {
+        background-color: var(--backgroundTertiaryActiveTrans);
     }
     
     &:not(:last-child) {
@@ -47,41 +52,9 @@ const codeInputStyle = cx(TextTitle1, css`
     }
 `);
 
-const RESEND_SECONDS = 60;
-
 const ResendSubtitle = React.memo((props: { onResend: () => void }) => {
-    const [count, setCount] = React.useState(0);
-    const [seconds, setSeconds] = React.useState(RESEND_SECONDS);
-    const startTime = React.useRef(Date.now());
-    React.useEffect(() => {
-        let timerId: any;
-        startTime.current = Date.now();
-        setSeconds(RESEND_SECONDS);
-        setTimeout(() => {
-            timerId = setInterval(() => {
-                setSeconds(x => {
-                    let elapsedSeconds = Math.round((Date.now() - startTime.current) / 1000) - 1;
-                    if (elapsedSeconds > RESEND_SECONDS) {
-                        clearInterval(timerId);
-                        return 0;
-                    }
-                    if (x > 0) {
-                        return x > RESEND_SECONDS - elapsedSeconds ? RESEND_SECONDS - elapsedSeconds : x - 1;
-                    } else {
-                        clearInterval(timerId);
-                        return 0;
-                    }
-                });
-            }, 1000);
-        }, 500);
-        return () => {
-            clearInterval(timerId);
-        };
-    }, [count]);
-    const handleResend = () => {
-        props.onResend();
-        setCount(x => x + 1);
-    };
+    const [seconds, handleResend] = useResendTimer({ onResend: props.onResend });
+
     return (
         <>
             {InitTexts.auth.haveNotReceiveCode} {seconds > 0 ? `Wait for ${seconds} sec` : <ULink onClick={handleResend}>Resend</ULink>}
@@ -172,7 +145,9 @@ const WebSignUpActivationCode = (
     React.useEffect(() => {
         let indexToFocus = codeField.input.value.findIndex(value => !value);
         if (indexToFocus !== -1) {
-            codeRefs.current[indexToFocus]?.current?.focus();
+            setTimeout(() => {
+                codeRefs.current[indexToFocus]?.current?.focus();
+            }, 200);
         }
     }, [errorText, shakeClassName, authWasResend]);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
@@ -252,10 +227,10 @@ const WebSignUpActivationCode = (
                         <input
                             ref={codeRefs.current[i]}
                             key={i}
-                            autoFocus={i === 0}
                             inputMode="numeric"
                             pattern="[0-9]"
                             value={value}
+                            autoFocus={i === 0}
                             className={codeInputStyle}
                             onChange={(e) => handleChange(e, i)}
                             onKeyDown={(e) => handleKeyDown(e, i)}

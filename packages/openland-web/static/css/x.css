@@ -34,6 +34,7 @@ body {
 
     --backgroundTertiaryTrans: rgba(201, 204, 209, 0.24);
     --backgroundTertiaryHoverTrans: rgba(169, 174, 184, 0.24);
+    --backgroundTertiaryActiveTrans: rgba(148, 155, 168, 0.24);
 
     --accentPrimary: #248BF2;
     --accentPrimaryHover: #3399FF;
