@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ViewStyle, TextStyle, Platform, Animated, TouchableWithoutFeedback, Easing } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, TextStyle, Platform, TouchableWithoutFeedback } from 'react-native';
 import { withRouter } from 'react-native-s/withRouter';
 import { SRouter } from 'react-native-s/SRouter';
 import Alert from './AlertBlanket';
@@ -149,7 +149,7 @@ const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) 
         SAnimated.beginTransaction();
         SAnimated.setDuration(v === 'down' ? 0.1 : 0.2);
         SAnimated.setPropertyAnimator((name, property, from, to) => {
-            SAnimated.timing(name, { property, from, to, easing: { bezier: [0.17, 0.67, 0.83, 0.67] } });
+            SAnimated.timing(name, { property, from, to, easing: { bezier: [0.17, 0.67, 0.83, 0.67] } }); // ease-in-out
         });
 
         if (v === 'down') {
