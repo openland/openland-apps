@@ -64,6 +64,20 @@ export const ButtonsComponent = (props: PageProps) => (
                     <ZButton title="Label" size="large" style="pay" loading={true} />
                 </View>
             </View>
+            <View marginVertical={16}>
+                <View marginBottom={10}>
+                    <ZButton title="Label" size="large" enabled={false} />
+                </View>
+                <View marginBottom={10}>
+                    <ZButton title="Label" size="large" style="secondary" enabled={false} />
+                </View>
+                <View marginBottom={10}>
+                    <ZButton title="Label" size="large" style="danger" enabled={false} />
+                </View>
+                <View marginBottom={10}>
+                    <ZButton title="Label" size="large" style="pay" enabled={false} />
+                </View>
+            </View>
         </View>
     </SScrollView>
 );
