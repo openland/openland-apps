@@ -84,7 +84,8 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
         }
 
         const color = emojiOnly ? theme.foregroundPrimary : bubbleForegroundPrimary;
-        const content = getSpansSlices(spans, padded);
+        const slices = getSpansSlices(spans, padded);
+        const content = numberOfLines ? slices.slice(0, 1) : slices;
 
         return (
             <ASFlex flexDirection="column" alignItems="stretch">

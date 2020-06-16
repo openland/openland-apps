@@ -358,6 +358,7 @@
         "native:adb": "adb reverse tcp:8081 tcp:8081",
         "native:res": "node ./packages/openland-mobile/assets/sources/_extract.js",
         "native:babel": "yarn tsc --project ./packages/react-native-async-view-babel",
+        "native:pods": "cd ios && pod install && cd ..",
         "schema": "yarn schema:download && yarn schema:generate",
         "schema:local": "yarn schema:download:local && yarn schema:generate",
         "schema:download": "./scripts/schema_download.sh",
