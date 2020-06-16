@@ -60,7 +60,7 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
         <>
             <SHeader title="Country" />
             <ASSafeAreaView marginBottom={20} flexDirection="column">
-                <View alignItems="center" marginHorizontal={16} marginTop={8}>
+                <View alignItems="center" marginHorizontal={16} marginTop={8} marginBottom={Platform.OS === 'ios' ? 0 : 16}>
                     <View position="relative" flexDirection="row" maxWidth={600}>
                         <TextInput
                             value={query}
@@ -112,6 +112,7 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                                         alignItems="center"
                                         flexDirection="row"
                                         backgroundColor={theme.backgroundPrimary}
+                                        {...Platform.OS !== 'ios' && index === 0 && { height: 48, paddingTop: 0 }}
                                     >
                                         <Text
                                             style={[

@@ -85,10 +85,11 @@ interface ButtonProps {
 const Buttons = React.memo((props: ButtonProps) => {
     const isIos = Platform.OS === 'ios';
     const isXGen = isIos && Dimensions.get('window').height > 800;
+    const isPad = !!(Platform.OS === 'ios' && (Platform as any).isPad);
     const defaultIosPadding = isXGen ? 0 : 16;
 
     return (
-        <View style={styles.buttons} paddingBottom={isIos ? defaultIosPadding : 16}>
+        <View style={styles.buttons} paddingBottom={isIos && !isPad ? defaultIosPadding : 16}>
             <ZButton title="Continue with phone" onPress={props.onPhonePress} loading={props.phoneLoading} size="large" />
             <View height={16} />
             <ZButton

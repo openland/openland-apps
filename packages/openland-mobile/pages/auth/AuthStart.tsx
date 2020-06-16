@@ -10,10 +10,11 @@ import {
     Image,
     TextInputProps,
     Keyboard,
+    Platform,
+    ViewProps,
 } from 'react-native';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
-import { ZInput } from '../../components/ZInput';
 import RNRestart from 'react-native-restart';
 import { NamedError, UserError } from 'openland-y-forms/errorHandling';
 import { ShowAuthError } from './ShowAuthError';
@@ -36,6 +37,7 @@ import { Modals } from '../main/modals/Modals';
 import { countriesMeta } from 'openland-y-utils/auth/countriesMeta';
 import { parsePhoneNumberFromString, formatIncompletePhoneNumber, CountryCode } from 'libphonenumber-js';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { useResendTimer } from 'openland-y-utils/auth/useResendTimer';
 
 export const ACTIVATION_CODE_LENGTH = 6;
 const INVALID_COUNTRY = 'Select country';
@@ -363,6 +365,57 @@ export const AuthStart = withApp(AuthStartComponent, {
     navigationAppearance: 'small-hidden',
 });
 
+interface CodeInputProps extends TextInputProps {
+    initialFocused?: boolean;
+    wrapperProps?: ViewProps;
+    onFocus: () => void;
+}
+
+const CodeInput = React.forwardRef((props: CodeInputProps, ref: React.RefObject<TextInput>) => {
+    const { style, wrapperProps, onFocus, initialFocused, ...other } = props;
+    const theme = useTheme();
+    const [focused, setFocused] = React.useState(!!initialFocused);
+
+    return (
+        <View
+            height={56}
+            maxWidth={50}
+            flexGrow={1}
+            borderRadius={12}
+            backgroundColor={focused ? theme.backgroundTertiaryActiveTrans : theme.backgroundTertiaryTrans}
+            {...wrapperProps}
+        >
+            <TextInput
+                style={[{
+                    ...TextStyles.Title1,
+                    height: 56,
+                    maxWidth: 50,
+                    flexGrow: 1,
+                    borderRadius: 12,
+                    paddingVertical: 0,
+                    paddingHorizontal: 0,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    color: theme.foregroundPrimary,
+                }, style]}
+                allowFontScaling={false}
+                onFocus={() => {
+                    setFocused(true);
+                    onFocus();
+                }}
+                onBlur={() => setFocused(false)}
+                ref={ref}
+                caretHidden={true}
+                autoCapitalize="none"
+                keyboardType="number-pad"
+                returnKeyType="next"
+                {...other}
+            />
+        </View>
+    );
+});
+
 const AuthCodeHeader = React.memo((props: { resendCode: () => void; isPhoneAuth: boolean }) => {
     const theme = React.useContext(ThemeContext);
     const textStyle = [
@@ -372,6 +425,7 @@ const AuthCodeHeader = React.memo((props: { resendCode: () => void; isPhoneAuth:
             textAlign: 'center',
         },
     ] as TextStyle;
+    const [seconds, handleResend] = useResendTimer({ onResend: props.resendCode });
     return (
         <View marginBottom={32}>
             <Text style={[textStyle, { paddingHorizontal: 16 }]} allowFontScaling={false}>
@@ -379,16 +433,18 @@ const AuthCodeHeader = React.memo((props: { resendCode: () => void; isPhoneAuth:
             </Text>
             <View flexDirection="row" justifyContent="center" alignItems="center">
                 <Text style={textStyle} allowFontScaling={false}>
-                    Haven’t received?{' '}
+                    Haven’t received?{' '}{seconds > 0 && `Wait for ${seconds} sec`}
                 </Text>
-                <TouchableOpacity onPress={props.resendCode} activeOpacity={0.24}>
-                    <Text
-                        style={[TextStyles.Body, { color: theme.accentPrimary }]}
-                        allowFontScaling={false}
-                    >
-                        Resend
-                    </Text>
-                </TouchableOpacity>
+                {seconds <= 0 && (
+                    <TouchableOpacity onPress={handleResend} activeOpacity={0.24}>
+                        <Text
+                            style={[TextStyles.Body, { color: theme.accentPrimary }]}
+                            allowFontScaling={false}
+                        >
+                            Resend
+                        </Text>
+                    </TouchableOpacity>
+                )}
             </View>
         </View>
     );
@@ -397,20 +453,47 @@ const AuthCodeHeader = React.memo((props: { resendCode: () => void; isPhoneAuth:
 const AuthCodeComponent = React.memo((props: PageProps) => {
     const isPhoneAuth = !!props.router.params.phone;
     const ref = React.useRef<{ shake: () => void }>(null);
+    const codeRefs = React.useRef<React.RefObject<TextInput>[]>(
+        new Array(6).fill(undefined).map(() => React.createRef())
+    );
     const form = useForm({ disableAppLoader: true });
-    const codeField = useField('code', '', form);
+    const initialCode = new Array(6).fill('');
+    const codeField = useField('code', initialCode, form);
+
+    const focusOnError = () => {
+        let indexToFocus = codeField.input.value.findIndex(value => !value);
+        if (indexToFocus !== -1) {
+            setTimeout(() => {
+                codeRefs.current[indexToFocus]?.current?.focus();
+            }, Platform.OS === 'ios' ? 500 : 1000);
+        } else {
+            codeField.input.onChange(initialCode);
+            setTimeout(() => {
+                codeRefs.current[0].current?.focus();
+            }, Platform.OS === 'ios' ? 500 : 1000);
+        }
+    };
 
     const resendCode = async () => {
-        trackEvent('code_resend_action');
-        await requestActivationCode(isPhoneAuth);
-        Toast.success({ duration: 1000 }).show();
-        codeField.input.onChange('');
+        try {
+            trackEvent('code_resend_action');
+            await requestActivationCode(isPhoneAuth);
+            Toast.success({ duration: 1000 }).show();
+            codeField.input.onChange(initialCode);
+            setTimeout(() => {
+                codeRefs.current[0].current?.focus();
+            }, Platform.OS === 'ios' ? 500 : 1000);
+        } catch (e) {
+            ShowAuthError(e.name);
+            focusOnError();
+        }
     };
 
     const submitForm = () => {
-        if (!codeField.value.trim()) {
+        if (codeField.value.some(x => x.length === 0)) {
             if (ref && ref.current) {
                 ref.current.shake();
+                focusOnError();
             }
             return;
         }
@@ -424,7 +507,7 @@ const AuthCodeComponent = React.memo((props: PageProps) => {
                     url: 'https://' + API_HOST + checkCodeHost,
                     body: {
                         session: session,
-                        code: codeField.value.trim(),
+                        code: codeField.value.join(''),
                     },
                     method: 'POST',
                 });
@@ -444,12 +527,37 @@ const AuthCodeComponent = React.memo((props: PageProps) => {
             } catch (e) {
                 TrackAuthError(e);
                 ShowAuthError(e);
+                focusOnError();
             }
         });
     };
 
+    const handleChange = (text: string, index: number) => {
+        if (text.length === 6) {
+            codeField.input.onChange([...text]);
+            return;
+        }
+
+        let value = text ? text[text.length - 1] : '';
+        let newValue = codeField.input.value.slice();
+        newValue[index] = value;
+        codeField.input.onChange(newValue);
+
+        if (value.length > 0) {
+            codeRefs.current[index + 1]?.current?.focus();
+        } else {
+            codeRefs.current[index - 1]?.current?.focus();
+        }
+    };
+    const handleKeyPress = (e: NativeSyntheticEvent<TextInputKeyPressEventData>, index: number) => {
+        if (e.nativeEvent.key === 'Backspace' && codeField.value[index]?.length === 0) {
+            e.preventDefault();
+            codeRefs.current[index - 1]?.current?.focus();
+        }
+    };
+
     React.useEffect(() => {
-        if (codeField.value.length === ACTIVATION_CODE_LENGTH) {
+        if (codeField.value.every(x => !!x)) {
             submitForm();
         }
     }, [codeField.value]);
@@ -486,17 +594,25 @@ const AuthCodeComponent = React.memo((props: PageProps) => {
                 )}
                 <View>
                     <ZShaker ref={ref}>
-                        <ZInput
-                            field={codeField}
-                            placeholder="Login code"
-                            autoCapitalize="none"
-                            keyboardType="number-pad"
-                            autoFocus={true}
-                            returnKeyType="next"
-                            allowFontScaling={false}
-                            onSubmitEditing={submitForm}
-                            maxLength={ACTIVATION_CODE_LENGTH}
-                        />
+                        <View flexDirection="row" justifyContent="center" width="100%">
+                            {codeField.value.map((value, i) => (
+                                <CodeInput
+                                    wrapperProps={{ marginRight: i !== codeField.value.length - 1 ? 8 : 0 }}
+                                    ref={codeRefs.current[i]}
+                                    key={i}
+                                    autoFocus={i === 0}
+                                    initialFocused={i === 0}
+                                    value={value}
+                                    onChangeText={(text) => handleChange(text, i)}
+                                    onKeyPress={(e) => handleKeyPress(e, i)}
+                                    onFocus={() => {
+                                        codeField.input.onChange(codeField.value.map((x, idx) => idx === i ? '' : x));
+                                    }}
+                                    onSubmitEditing={submitForm}
+                                    {...Platform.OS === 'ios' && i === 0 && { textContentType: 'oneTimeCode' }}
+                                />
+                            ))}
+                        </View>
                     </ZShaker>
                 </View>
             </RegistrationContainer>

@@ -58,6 +58,7 @@ export type ThemeGlobal = {
 
     backgroundTertiaryTrans: string;
     backgroundTertiaryHoverTrans: string;
+    backgroundTertiaryActiveTrans: string;
 
     payBackgroundPrimary: string;
     payBackgroundSecondary: string;

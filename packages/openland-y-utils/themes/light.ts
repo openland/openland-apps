@@ -39,6 +39,7 @@ export const ThemeLight: ThemeGlobal = {
 
     backgroundTertiaryTrans: 'rgba(201, 204, 209, 0.24)',
     backgroundTertiaryHoverTrans: 'rgba(169, 174, 184, 0.24)',
+    backgroundTertiaryActiveTrans: 'rgba(148, 155, 168, 0.24)',
 
     payBackgroundPrimary: '#171A1F',
     payBackgroundSecondary: '#292C33',
