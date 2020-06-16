@@ -29,8 +29,8 @@ export class NavigationPage {
             key,
             params: params || {},
             dismiss: () => {
-                if (manager.parent && manager.parent.presentationManager) {
-                    manager.parent.presentationManager.dismiss();
+                if (manager.presentationManager) {
+                    manager.presentationManager.dismiss();
                 }
             },
             present: (destRoute: string, destParams?: any) => {

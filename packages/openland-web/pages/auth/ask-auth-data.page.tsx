@@ -21,13 +21,12 @@ import { AuthHeaderConfig } from './root.page';
 import { UInput } from 'openland-web/components/unicorn/UInput';
 import { AsYouType, parsePhoneNumberFromString, formatIncompletePhoneNumber, CountryCode } from 'libphonenumber-js';
 import { CountryPicker, OptionType } from './components/CountryPicker';
-import { countriesMeta } from 'openland-y-utils/countriesMeta';
+import { countriesMeta } from 'openland-y-utils/auth/countriesMeta';
+import { US_LABEL, RUSSIA_LABEL } from 'openland-y-utils/auth/constants';
 
 const INVALID_CODE_LABEL = 'Invalid country code';
 const SPACE_REGEX = /\s/g;
 const removeSpace = (s: string) => s.replace(SPACE_REGEX, '');
-const US_LABEL = 'United States';
-const RUSSIA_LABEL = 'Russia';
 
 export type AskAuthDataProps = {
     fireAuth: (data: string, isPhoneFire: boolean) => Promise<void>;
@@ -166,14 +165,10 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
             return true;
         }
         let existing;
-        if (v.length >= 6) {
-            try {
-                let parsed = parsePhoneNumberFromString(v);
-                if (parsed) {
-                    existing = findCode('+' + parsed.countryCallingCode);
-                }
-            } catch (error) {
-                console.warn('Phone parsing failed:', error);
+        if (v.length >= 5) {
+            let parsed = parsePhoneNumberFromString(v);
+            if (parsed) {
+                existing = findCode('+' + parsed.countryCallingCode);
             }
         } else {
             existing = findCode(v);
@@ -187,7 +182,6 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
                 if (inputRef.current) {
                     inputRef.current.focus();
                 }
-
             }
         } else {
             codeField.input.onChange({ value: v, label: INVALID_CODE_LABEL, shortname: '' });

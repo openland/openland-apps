@@ -16,7 +16,7 @@ import { API_AUTH_ENDPOINT, API_ENDPOINT } from 'openland-api/endpoint';
 import { BackSkipLogo, BackSkipLogoProps } from '../components/BackSkipLogo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { countriesMeta } from 'openland-y-utils/countriesMeta';
+import { countriesMeta } from 'openland-y-utils/auth/countriesMeta';
 
 const getAppInvite = (router: any) => {
     if (router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite') {
@@ -52,13 +52,7 @@ const fetchCountry = async (): Promise<string | undefined> => {
             query: `{
             ipLocation 
                 { 
-                    ip 
                     countryCode
-                    locationName
-                    location {
-                        lat
-                        long
-                    } 
                 } 
             }`
         }),

@@ -5,15 +5,14 @@ import { css, cx } from 'linaria';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
 import { VariableSizeList } from 'react-window';
-import { countriesMeta } from 'openland-y-utils/countriesMeta';
+import { countriesMeta } from 'openland-y-utils/auth/countriesMeta';
 import { TextLabel1, TextBody, TextStyles } from 'openland-web/utils/TextStyles';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
 import IcCheck from 'openland-icons/s/ic-done-16.svg';
+import { filterCountries } from 'openland-y-utils/auth/filterCountries';
 
 export type OptionType = { label: string, value: string, shortname: string };
 type GroupType = { label: string, options: OptionType[] };
-
-const US_LABEL = 'United States';
 
 const groupedCountriesCodes = countriesMeta
     .reduce((acc, country) => {
@@ -190,22 +189,6 @@ const CountriesGroup = (props: {
             })}
         </div>
     );
-};
-
-const filterCountries = (searchValue: string, countries: OptionType[]) => {
-    let input = searchValue.toLowerCase();
-    let firstRank = countries.filter(x => {
-        let label = x.label.toLowerCase();
-        if (label === US_LABEL.toLowerCase() && ['usa', 'america', 'united states of america', 'u.s.'].some(y => y.startsWith(input))) {
-            return true;
-        }
-        return label.startsWith(input);
-    });
-    let secondRank = countries.filter(x => {
-        let label = x.label.toLowerCase();
-        return label.includes(input) || x.value.replace(/\+/g, '').startsWith(input);
-    });
-    return firstRank.concat(secondRank.filter(x => !firstRank.some(y => y.label === x.label)));
 };
 
 interface CountryPickerProps {

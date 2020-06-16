@@ -252,6 +252,7 @@ const WebSignUpActivationCode = (
                         <input
                             ref={codeRefs.current[i]}
                             key={i}
+                            autoFocus={i === 0}
                             inputMode="numeric"
                             pattern="[0-9]"
                             value={value}

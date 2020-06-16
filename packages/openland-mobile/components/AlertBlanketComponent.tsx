@@ -81,7 +81,7 @@ export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modal
                 {props.builder._message && <Text style={{ ...TextStyles.Body, marginBottom: 16, color: theme.foregroundPrimary }} allowFontScaling={false}>{props.builder._message}</Text>}
                 {props.builder._view}
                 <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
-                    {props.builder._cancelAction && !props.builder._actions.find(a => a.name.toLowerCase() === 'cancel') && (
+                    {props.builder._cancelAction && !props.builder._actions.find(a => a.name.toLowerCase() === 'cancel' || a.style?.toLowerCase() === 'cancel') && (
                         <>
                             <View style={{ width: 8 }} />
                             <ZButton

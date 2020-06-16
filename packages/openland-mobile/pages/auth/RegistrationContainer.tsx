@@ -90,12 +90,14 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
         <>
             {props.header && props.header}
             {isIos && <SHeader title={props.title} />}
-            <KeyboardAvoidingView behavior="padding" flex={1}>
+            <KeyboardAvoidingView behavior="padding" alignItems="center" flex={1}>
                 <SScrollView
                     flex={1}
                     paddingTop={16}
                     scrollRef={scrollRef}
                     keyboardShouldPersistTaps="handled"
+                    maxWidth={600}
+                    width="100%"
                 >
                     <Text
                         style={[titlesStyles.title, { color: theme.foregroundPrimary }]}
@@ -111,12 +113,12 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
                             {props.subtitle}
                         </Text>
                     ) : (
-                        props.subtitle
-                    )}
+                            props.subtitle
+                        )}
                     {props.children}
                 </SScrollView>
                 {isAndroid && (
-                    <View paddingHorizontal={16} paddingBottom={bottomOffset + 16} paddingTop={16}>
+                    <View maxWidth={424} width="100%" paddingHorizontal={16} paddingBottom={bottomOffset + 16} paddingTop={16}>
                         {props.floatContent}
                     </View>
                 )}
@@ -125,6 +127,8 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
                         paddingHorizontal={16}
                         paddingBottom={floatPadding}
                         paddingTop={16}
+                        maxWidth={424}
+                        width="100%"
                     >
                         {props.floatContent}
                     </Animated.View>
