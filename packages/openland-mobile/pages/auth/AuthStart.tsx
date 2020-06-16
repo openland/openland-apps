@@ -153,7 +153,7 @@ const AuthPicker = (props: { value: string, onPress: () => void }) => {
             }}
             onPress={props.onPress}
         >
-            <Text style={{ ...TextStyles.Densed, flexGrow: 1 }}>{props.value}</Text>
+            <Text style={{ ...TextStyles.Densed, flexGrow: 1, color: theme.foregroundPrimary }}>{props.value}</Text>
             <Image style={{ tintColor: theme.foregroundTertiary }} source={require('assets/ic-dropdown-16.png')} />
         </TouchableOpacity>
     );
