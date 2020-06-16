@@ -1,16 +1,15 @@
 import * as React from 'react';
 import { OpenlandClient } from 'openland-api/spacex';
-import { Platform, AsyncStorage } from 'react-native';
+import { Platform, AsyncStorage, PermissionsAndroid } from 'react-native';
 import * as Contacts from 'react-native-contacts';
 import { Priority } from 'openland-api/Priority';
 import { parsePhoneNumberFromString, CountryCode, isSupportedCountry } from 'libphonenumber-js';
 import * as Localize from "react-native-localize";
 import { backoff } from 'openland-y-utils/timer';
+import { NON_PRODUCTION } from 'openland-mobile/pages/Init';
 
 /*
     TODO:
-    - send pending contacts to server
-    - implement for Android
     - improve phone normalization (with device country code if needed)
     - optimize processing
     - think about alternative data formats and storages
@@ -34,14 +33,17 @@ interface LocaleContact {
 }
 
 class ContactsRegistrator {
-    // @ts-ignore
     private client: OpenlandClient;
     private pending: LocaleContact[] = [];
     private defaultCountry: CountryCode = 'US';
+    private isSending = false;
 
     constructor(client: OpenlandClient) {
         this.client = client.withParameters({ defaultPriority: Priority.LOW });
-        // this.init();
+
+        if (NON_PRODUCTION) {
+            this.init();
+        }
     }
 
     init = async () => {
@@ -63,6 +65,12 @@ class ContactsRegistrator {
                     this.findContacts();
                 }
             });
+        } else if (Platform.OS === 'android') {
+            const permission = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS);
+
+            if (permission === PermissionsAndroid.RESULTS.GRANTED) {
+                this.findContacts();
+            }
         }
     }
 
@@ -135,11 +143,23 @@ class ContactsRegistrator {
     }
 
     private sendContacts = async () => {
+        if (this.isSending || this.pending.length <= 0) {
+            return;
+        }
+
+        this.isSending = true;
+
         while (this.pending.length > 0) {
             const batch = this.pending.splice(0, BATCH_SIZE);
 
             await backoff(async () => {
-                // execute mutation
+                await this.client.mutatePhonebookAdd({
+                    records: batch.map(c => ({
+                        firstName: c.firstName,
+                        lastName: c.lastName,
+                        phones: c.phones.map(p => p.number)
+                    }))
+                });
             });
 
             await AsyncStorage.multiSet(batch.map(p => ([
@@ -147,6 +167,8 @@ class ContactsRegistrator {
                 JSON.stringify({ ...p, sent: true })
             ])));
         }
+
+        this.isSending = false;
     }
 }
 

@@ -122,7 +122,6 @@ export const AuthInput = React.forwardRef(
     (props: UInputProps, ref: React.RefObject<HTMLInputElement>) => {
         return (
             <UInput
-                autofocus={true}
                 width="100%"
                 marginTop={32}
                 type="email"

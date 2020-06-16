@@ -129,6 +129,10 @@ const CommentsWrapperInner = (props: CommentsWrapperProps & { comments: CommentE
 
         if (mention.__typename === 'User') {
             newText = inputText.substring(0, inputSelection.start - word.length) + '@' + mention.name + ' ' + inputText.slice(inputSelection.start);
+        } else if (mention.__typename === 'Organization') {
+            newText = inputText.substring(0, inputSelection.start - word.length) + '@' + mention.name + ' ' + inputText.slice(inputSelection.start);
+        } else if (mention.__typename === 'SharedRoom') {
+            newText = inputText.substring(0, inputSelection.start - word.length) + '@' + mention.title + ' ' + inputText.slice(inputSelection.start);
         } else if (mention.__typename === 'AllMention') {
             newText = inputText.substring(0, inputSelection.start - word.length) + '@All' + ' ' + inputText.slice(inputSelection.start);
         }

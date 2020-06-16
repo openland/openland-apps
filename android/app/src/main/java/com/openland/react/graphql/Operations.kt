@@ -164,6 +164,7 @@ object Operations {
         if (name == "PaymentIntentCancel") return PaymentIntentCancel
         if (name == "PaymentIntentCommit") return PaymentIntentCommit
         if (name == "PersistEvents") return PersistEvents
+        if (name == "PhonebookAdd") return PhonebookAdd
         if (name == "PinMessage") return PinMessage
         if (name == "PostCreateDraft") return PostCreateDraft
         if (name == "PostDraftUpdate") return PostDraftUpdate

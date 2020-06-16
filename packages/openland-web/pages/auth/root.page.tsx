@@ -12,9 +12,11 @@ import { AskAuthDataPage } from './ask-auth-data.page';
 import { AskAuthCodePage } from './ask-auth-code.page';
 import { CreateNewAccountPage } from './create-new-account.page';
 import { IntroduceYourselfPage } from './introduce-yourself.page';
-import { API_AUTH_ENDPOINT } from 'openland-api/endpoint';
+import { API_AUTH_ENDPOINT, API_ENDPOINT } from 'openland-api/endpoint';
 import { BackSkipLogo, BackSkipLogoProps } from '../components/BackSkipLogo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { countriesMeta } from 'openland-y-utils/auth/countriesMeta';
 
 const getAppInvite = (router: any) => {
     if (router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite') {
@@ -37,6 +39,29 @@ const checkIfIsSignInInvite = (router: any) => {
         (router.query.redirect.split('/')[1] === 'invite' ||
             router.query.redirect.split('/')[1] === 'joinChannel')
     );
+};
+
+const fetchCountry = async (): Promise<string | undefined> => {
+    if (!canUseDOM) {
+        return Promise.resolve(undefined);
+    }
+    return fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            query: `{
+            ipLocation 
+                { 
+                    countryCode
+                } 
+            }`
+        }),
+    })
+        .then(r => r.json())
+        .then(r => r?.data?.ipLocation?.countryCode)
+        .catch(() => {
+            console.warn('Country fetch failed');
+        });
 };
 
 const pageContainer = css`
@@ -198,7 +223,7 @@ const AuthHeader = React.memo(
     }),
 );
 
-export default () => {
+const Root = (props: { countryCode?: string }) => {
     const router = React.useContext(XRouterContext)!;
     const isPhoneAuth = !!router.query.phone;
     let page: pagesT = pages.createNewAccount;
@@ -233,11 +258,12 @@ export default () => {
         }
     }
 
-    const [phoneCodeValue, setPhoneCodeValue] = React.useState({
+    const initialCountry = countriesMeta.find(x => x.shortname === props.countryCode) || {
         label: 'United States',
         value: '+1',
-        shortname: 'US', 
-    });
+        shortname: 'US',
+    };
+    const [phoneCodeValue, setPhoneCodeValue] = React.useState(initialCountry);
     const [authValue, setAuthValue] = React.useState('');
     const [authWasResend, setAuthWasResend] = React.useState(false);
     const [authSending, setAuthSending] = React.useState(false);
@@ -422,4 +448,11 @@ export default () => {
             </AuthHeaderConfigContex.Provider>
         </div>
     );
-}; 
+};
+
+Root.getInitialProps = async () => {
+    const countryCode = await fetchCountry();
+    return { countryCode };
+};
+
+export default Root;

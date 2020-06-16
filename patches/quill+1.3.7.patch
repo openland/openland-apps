@@ -1,0 +1,22 @@
+diff --git a/node_modules/quill/dist/quill.js b/node_modules/quill/dist/quill.js
+index 811b3d0..171f9f7 100644
+--- a/node_modules/quill/dist/quill.js
++++ b/node_modules/quill/dist/quill.js
+@@ -2925,7 +2925,7 @@ var Selection = function () {
+     key: 'focus',
+     value: function focus() {
+       if (this.hasFocus()) return;
+-      this.root.focus();
++      // this.root.focus();
+       this.setRange(this.savedRange);
+     }
+   }, {
+@@ -3176,7 +3176,7 @@ var Selection = function () {
+       var selection = document.getSelection();
+       if (selection == null) return;
+       if (startNode != null) {
+-        if (!this.hasFocus()) this.root.focus();
++        // if (!this.hasFocus()) this.root.focus();
+         var native = (this.getNativeRange() || {}).native;
+         if (native == null || force || startNode !== native.startContainer || startOffset !== native.startOffset || endNode !== native.endContainer || endOffset !== native.endOffset) {
+ 

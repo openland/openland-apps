@@ -219,6 +219,7 @@ export const ChatHeader = React.memo((props: { chat: ChatInfo }) => {
             minWidth={0}
             position="relative"
             justifyContent="space-between"
+            paddingHorizontal={16}
         >
             <XView
                 hoverOpacity={HoverAlpha}

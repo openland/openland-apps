@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ViewStyle, TextStyle, Platform, Animated, TouchableWithoutFeedback, Easing } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, TextStyle, Platform, TouchableWithoutFeedback } from 'react-native';
 import { withRouter } from 'react-native-s/withRouter';
 import { SRouter } from 'react-native-s/SRouter';
 import Alert from './AlertBlanket';
@@ -7,6 +7,8 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { LoaderSpinner } from './LoaderSpinner';
+import { SAnimatedView, SAnimated, SAnimatedShadowView } from 'react-native-fast-animations';
+import UUID from 'uuid/v4';
 
 type ZButtonStyle = 'primary' | 'secondary' | 'danger' | 'pay';
 type ZButtonSize = 'default' | 'large';
@@ -15,7 +17,6 @@ const stylesDefault = StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: RadiusStyles.Large,
         height: 36,
         paddingHorizontal: 16,
     } as ViewStyle,
@@ -29,7 +30,6 @@ const stylesLarge = StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: RadiusStyles.Medium,
         height: 48,
         paddingHorizontal: 24,
     } as ViewStyle,
@@ -42,6 +42,11 @@ const stylesLarge = StyleSheet.create({
 const resolveStylesBySize = {
     default: stylesDefault,
     large: stylesLarge,
+};
+
+const resolveRadiusBySize = {
+    default: RadiusStyles.Large,
+    large: RadiusStyles.Medium,
 };
 
 export interface ZButtonProps {
@@ -103,56 +108,70 @@ const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) 
     const size: ZButtonSize = props.size || 'default';
     const style: ZButtonStyle = props.style || 'primary';
     const styles = resolveStylesBySize[size];
-    const backgroundColor = style === 'primary' ? theme.accentPrimary : (style === 'danger' ? theme.accentNegative : style === 'pay' ? theme.payBackgroundPrimary : theme.backgroundTertiaryTrans);
-    const textColor = style === 'primary' ? theme.foregroundInverted : (style === 'danger' ? theme.foregroundContrast : style === 'pay' ? theme.foregroundContrast : theme.foregroundSecondary);
+    const borderRadius = resolveRadiusBySize[size];
 
-    const highlightedColors = {
+    const backgroundColor = ({
+        'primary': theme.accentPrimary,
+        'secondary': theme.backgroundTertiaryTrans,
+        'danger': theme.accentNegative,
+        'pay': theme.payBackgroundPrimary,
+    })[style];
+
+    const textColor = ({
+        'primary': theme.foregroundInverted,
+        'secondary': theme.foregroundSecondary,
+        'danger': theme.foregroundContrast,
+        'pay': theme.foregroundContrast,
+    })[style];
+
+    const underlayColor = ({
         'primary': theme.accentPrimaryActive,
         'secondary': theme.backgroundTertiaryActive,
         'danger': theme.accentNegativeActive,
-    };
+    })[style];
 
-    const underlayColor = highlightedColors[style];
+    const animateView = React.useMemo(() => new SAnimatedShadowView(UUID()), []);
+    const inverted = style === 'secondary';
 
-    const animation = React.useRef(new Animated.Value(0)).current;
-    const animatedBgColor = animation.interpolate({
-        inputRange: [0, 1],
-        outputRange: [backgroundColor, underlayColor || backgroundColor],
-    });
+    let staticViewColor = inverted ? backgroundColor : underlayColor;
+    let staticViewOpacity = 1;
+    let dynamicViewColor = inverted ? underlayColor : backgroundColor;
+    let dynamicViewOpacity = inverted ? 0 : 1;
 
-    const animatedOpacity = animation.interpolate({
-        inputRange: [0, 1],
-        outputRange: [1, 0.6],
-    });
+    if (props.enabled === false) {
+        staticViewColor = backgroundColor;
+        staticViewOpacity = 0.6;
+        dynamicViewColor = undefined;
+        dynamicViewOpacity = 0;
+    }
 
-    const handlePressIn = () => {
-        Animated.timing(animation, {
-            toValue: 1,
-            duration: 100,
-            easing: Easing.inOut(Easing.quad)
-        }).start();
-    };
-    const handlePressOut = () => {
-        Animated.timing(animation, {
-            toValue: 0,
-            duration: 200,
-            easing: Easing.inOut(Easing.quad)
-        }).start();
+    const triggerAnimation = (v: 'down' | 'up') => {
+        SAnimated.beginTransaction();
+        SAnimated.setDuration(v === 'down' ? 0.1 : 0.2);
+        SAnimated.setPropertyAnimator((name, property, from, to) => {
+            SAnimated.timing(name, { property, from, to, easing: { bezier: [0.17, 0.67, 0.83, 0.67] } }); // ease-in-out
+        });
+
+        if (v === 'down') {
+            animateView.opacity = inverted ? 1 : (!underlayColor ? 0.6 : 0);
+        } else {
+            animateView.opacity = inverted ? 0 : 1;
+        }
+
+        SAnimated.commitTransaction();
     };
 
     return (
-        <Animated.View
-            style={{
-                backgroundColor: animatedBgColor,
-                opacity: props.enabled === false ? 0.6 : (!underlayColor ? animatedOpacity : undefined),
-                borderRadius: RadiusStyles.Medium,
-                overflow: 'hidden'
-            }}
-        >
+        <View style={{ borderRadius, backgroundColor: staticViewColor, opacity: staticViewOpacity, overflow: 'hidden' }}>
+            <SAnimatedView
+                name={animateView.name}
+                style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: dynamicViewColor, opacity: dynamicViewOpacity, borderRadius }}
+            />
+
             <TouchableWithoutFeedback
                 onPress={(!actionInProgress && props.enabled !== false) ? handlePress : undefined}
-                onPressIn={handlePressIn}
-                onPressOut={handlePressOut}
+                onPressIn={() => triggerAnimation('down')}
+                onPressOut={() => triggerAnimation('up')}
                 disabled={actionInProgress || props.enabled === false}
                 delayPressIn={0}
             >
@@ -172,7 +191,7 @@ const ZButtonComponent = React.memo<ZButtonProps & { router: SRouter }>((props) 
                     )}
                 </View>
             </TouchableWithoutFeedback>
-        </Animated.View>
+        </View>
     );
 });
 

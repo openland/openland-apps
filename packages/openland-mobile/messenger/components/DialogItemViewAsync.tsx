@@ -15,7 +15,7 @@ import { avatarSizes } from 'openland-mobile/components/ZAvatar';
 import { PremiumBadgeAsync } from 'openland-mobile/components/PremiumBadge';
 
 const ASCounter = (props: { value: number | string, muted?: boolean, theme: ThemeGlobal }) => (
-    <ASFlex borderRadius={11} backgroundColor={props.muted ? props.theme.foregroundQuaternary : props.theme.accentPrimary} height={22} minWidth={22} justifyContent="center" alignItems="center">
+    <ASFlex borderRadius={11} backgroundColor={props.muted ? props.theme.foregroundQuaternary : props.theme.accentPrimary} height={22} minWidth={22} marginLeft={6} justifyContent="center" alignItems="center">
         <ASFlex justifyContent="center" alignItems="center" marginLeft={7} marginRight={7}>
             <ASText color={props.muted ? props.theme.foregroundContrast : props.theme.foregroundInverted} fontSize={13} textAlign="center" fontWeight={FontStyles.Weight.Bold} letterSpacing={-0.08}>{props.value}</ASText>
         </ASFlex>
@@ -30,7 +30,7 @@ interface DialogItemViewAsyncProps {
     onDiscoverPress?: () => void;
 }
 
-const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & {theme: ThemeGlobal}>((props) => {
+const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme: ThemeGlobal }>((props) => {
     const { item, theme, showDiscover } = props;
     const isUser = item.kind === 'PRIVATE';
     const highlightGroup = item.kind === 'GROUP' && !item.isPremium;
@@ -43,7 +43,7 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & {theme: 
 
     return (
         <ASFlex flexDirection={shouldShowDiscover ? 'column' : 'row'} flexGrow={1} alignItems="stretch">
-            <ASFlex 
+            <ASFlex
                 flexGrow={1}
                 height={height}
                 flexDirection="row"
@@ -92,14 +92,19 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & {theme: 
                                 <ASText {...TextStylesAsync.Subhead} height={36} color={theme.accentPrimary} numberOfLines={2}>{item.typing}...</ASText>
                             </ASFlex>}
                         </ASFlex>
-                        {item.unread > 0 && (
-                            <ASFlex flexShrink={0} alignItems="center" marginLeft={9}>
+                        {(item.unread > 0 || item.hasActiveCall) && (
+                            <ASFlex flexShrink={0} alignItems="center" marginLeft={3}>
+                                {item.hasActiveCall && (
+                                    <ASFlex width={22} height={22} backgroundColor={theme.accentPositive} borderRadius={11} marginLeft={6} alignItems="center" justifyContent="center">
+                                        <ASImage key={`call-${theme.foregroundInverted}`} tintColor={theme.foregroundInverted} width={12} height={12} source={require('assets/ic-call-12.png')} />
+                                    </ASFlex>
+                                )}
                                 {item.haveMention && (
-                                    <ASFlex width={22} height={22} backgroundColor={theme.accentPrimary} borderRadius={11} marginRight={6} alignItems="center" justifyContent="center">
+                                    <ASFlex width={22} height={22} backgroundColor={theme.accentPrimary} borderRadius={11} marginLeft={6} alignItems="center" justifyContent="center">
                                         <ASImage key={`mention-${theme.foregroundInverted}`} tintColor={theme.foregroundInverted} width={12} height={12} source={require('assets/ic-at-12.png')} />
                                     </ASFlex>
                                 )}
-                                <ASCounter value={item.unread} muted={item.isMuted} theme={theme} />
+                                {item.unread > 0 && <ASCounter value={item.unread} muted={item.isMuted} theme={theme} />}
                             </ASFlex>
                         )}
                     </ASFlex>}

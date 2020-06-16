@@ -80,12 +80,18 @@ export class MediaConnectionManager {
         if (this.currentConfig.iceTransportPolicy === 'RELAY') {
             iceTransportPolicy = 'relay';
         }
+
+        let iceServers = this.currentConfig.iceTransportPolicy !== 'NONE' ? session.iceServers.map(v => ({
+            urls: v.urls,
+            credential: v.credential ? v.credential : undefined,
+            username: v.username ? v.username : undefined,
+        })) : [];
+
+        console.log('[WEBRTC]: Using ICE: ', iceServers);
+        console.log('[WEBRTC]: Using ICE Policy: ', iceTransportPolicy);
+
         this.peerConnection = AppPeerConnectionFactory.createConnection({
-            iceServers: this.currentConfig.iceTransportPolicy !== 'NONE' ? session.iceServers.map(v => ({
-                urls: v.urls,
-                credential: v.credential ? v.credential : undefined,
-                username: v.username ? v.username : undefined,
-            })) : [],
+            iceServers: iceServers,
             iceTransportPolicy: iceTransportPolicy,
         });
 

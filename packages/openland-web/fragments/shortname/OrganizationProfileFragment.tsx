@@ -88,7 +88,7 @@ export const OrganizationProfileFragment = React.memo((props: { id: string }) =>
             title={name}
             renderItem={member => (
                 <UUserView
-                    key={'member-' + member.user.id}
+                    key={'member-' + member.user.id + '-' + member.role}
                     user={member.user}
                     role={member.role}
                     rightElement={

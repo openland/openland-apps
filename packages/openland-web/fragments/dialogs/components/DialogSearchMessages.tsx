@@ -10,6 +10,7 @@ import { extractPlaceholder } from '../../../../openland-y-utils/extractPlacehol
 import { DialogSearchEmptyView, DialogSearchItemRender, DialogSearchResults } from './DialogSearchResults';
 import { XScrollView3, XScrollValues } from 'openland-x/XScrollView3';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
+import { InvalidateSync } from '@openland/patterns';
 
 const LOADING_HEIGHT = 200;
 
@@ -38,16 +39,25 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
 
+    const [messagesInvalidator] = React.useState<InvalidateSync>(new InvalidateSync(async () => {
+        await client.refetchMessagesSearch(constructVariables(props.variables.query), { fetchPolicy: 'network-only' });
+        await client.refetchGlobalSearch({ query: props.variables.query }, { fetchPolicy: 'network-only' });
+    }));
+
     const [selectedIndex, setSelectedIndex] = React.useState<number>(-1);
 
     const items = client.useGlobalSearch({ query: props.variables.query }, { fetchPolicy: 'cache-and-network' }).items;
-    const initialData = client.useMessagesSearch(constructVariables(props.variables.query), { fetchPolicy: 'network-only' }).messagesSearch;
+    const initialData = client.useMessagesSearch(constructVariables(props.variables.query), { fetchPolicy: 'cache-and-network' }).messagesSearch;
 
     const initialCursor = getCursor(initialData);
 
     const [loadingMore, setLoadingMore] = React.useState(false);
     const [after, setAfter] = React.useState<string | null>(initialCursor);
     const [messages, setMessages] = React.useState(initialData.edges);
+
+    React.useEffect(() => {
+        messagesInvalidator.invalidate();
+    }, [props.variables.query]);
 
     const resultsLength = items.length + messages.length;
 
@@ -117,7 +127,7 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
     }, [handleNeedMore, after, loadingMore]);
 
     if (items.length === 0 && messages.length === 0) {
-        return <DialogSearchEmptyView />;
+        return <DialogSearchEmptyView/>;
     }
 
     return (

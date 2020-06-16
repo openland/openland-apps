@@ -82,14 +82,16 @@ interface USearchInputProps extends XViewProps {
     placeholder?: string;
 }
 
-export interface USearchInputRef extends HTMLInputElement {
+export interface USearchInputRef {
     reset: () => void;
+    focus: () => void;
 }
 
 export const USearchInput = React.forwardRef((props: USearchInputProps, ref: React.RefObject<USearchInputRef>) => {
     const { value, onChange, autoFocus, onKeyDown, onFocus, placeholder = 'Search', ...other } = props;
 
     const [val, setValue] = React.useState(typeof value === 'string' ? value : '');
+    const inputRef = React.useRef<HTMLInputElement>(null);
 
     const handleChange = (v: string) => {
         setValue(v);
@@ -100,6 +102,7 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
 
     React.useImperativeHandle<any, { reset: () => void }>(ref, () => ({
         reset: () => handleChange(''),
+        focus: () => inputRef.current?.focus(),
     }));
 
     return (
@@ -116,7 +119,7 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
                 onFocus={onFocus}
                 placeholder={placeholder}
                 autoFocus={autoFocus}
-                ref={ref}
+                ref={inputRef}
             />
             {props.value && props.value.length > 0 && (
                 <button className={resetClassName} onClick={() => handleChange('')}>

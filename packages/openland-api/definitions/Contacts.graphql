@@ -1,0 +1,3 @@
+mutation PhonebookAdd($records: [PhonebookRecordInput!]!) {
+    phonebookAdd(records: $records)
+}

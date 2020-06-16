@@ -18,6 +18,7 @@ import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 import { GlobalSearchMessage } from './GlobalSearchMessage';
 import { SDevice } from 'react-native-s/SDevice';
 import { DeviceConfig } from 'react-native-s/navigation/DeviceConfig';
+import { InvalidateSync } from '@openland/patterns';
 
 export interface GlobalSearchProps {
     query: string;
@@ -88,14 +89,24 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
     const theme = React.useContext(ThemeContext);
     const client = getClient();
     const area = React.useContext(ASSafeAreaContext);
+
+    const [messagesInvalidator] = React.useState<InvalidateSync>(new InvalidateSync(async () => {
+        await client.refetchMessagesSearch(constructVariables(props.query), { fetchPolicy: 'network-only' });
+        await client.refetchGlobalSearch({ query: props.query }, { fetchPolicy: 'network-only' });
+    }));
+
     const items = client.useGlobalSearch({ query: props.query, kinds: props.kinds }).items;
-    const initialData = client.useMessagesSearch(constructVariables(props.query), { fetchPolicy: 'network-only' }).messagesSearch;
+    const initialData = client.useMessagesSearch(constructVariables(props.query), { fetchPolicy: 'cache-and-network' }).messagesSearch;
 
     const initialCursor = getCursor(initialData);
 
     const [loadingMore, setLoadingMore] = React.useState(false);
     const [after, setAfter] = React.useState<string | null>(initialCursor);
     const [messages, setMessages] = React.useState(initialData.edges);
+
+    React.useEffect(() => {
+        messagesInvalidator.invalidate();
+    }, [props.query]);
 
     const handleNeedMore = React.useCallback(async () => {
         if (loadingMore || !after) {

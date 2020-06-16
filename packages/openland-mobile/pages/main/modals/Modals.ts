@@ -60,15 +60,9 @@ export const Modals = {
     },
     showCountryPicker(
         router: SRouter,
-        action: ({label, value}: {label: string, value: string}) => any,
-        title?: string,
-        pushAndReset?: boolean
+        action: (value: { label: string, value: string, shortname: string }) => any,
     ) {
-        if (pushAndReset) {
-            router.pushAndReset('CountryPicker', { action, title });
-        } else {
-            router.push('CountryPicker', { action, title });
-        }
+        router.present('CountryPicker', { action });
     },
     showFilePreview(router: SRouter, uuid: string, name: string, size: number) {
         router.push('FilePreview', { config: { uuid, name, size } });
