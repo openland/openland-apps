@@ -255,7 +255,8 @@ const VideoMediaView = React.memo((props: {
     calls: CallsEngine
 }) => {
     const receiver = props.state.receivers[props.peer?.id || ''];
-    const track = receiver?.screencastTrack || receiver?.videoTrack;
+    const videoTrack = !props?.peer?.mediaState.videoPaused && receiver?.videoTrack;
+    const track = receiver?.screencastTrack || videoTrack;
     return (
         <XView width={VIDEO_WIDTH} height={VIDEO_HEIGHT} overflow="hidden" backgroundColor="var(--overlayHeavy)" alignItems="center" justifyContent="center">
             {track ? (
