@@ -19,15 +19,6 @@ export const convertMessage = (
             : undefined;
 
     const source = generalMessage?.source || stickerMessage?.source;
-        // generalMessage &&
-        // generalMessage.source &&
-        // generalMessage.source.__typename === 'MessageSourceChat'
-        //     ? generalMessage.source
-        //     : stickerMessage &&
-        //       stickerMessage.source &&
-        //       stickerMessage.source.__typename === 'MessageSourceChat'
-        //     ? stickerMessage.source
-        //     : undefined;
 
     return {
         chatId: '',
@@ -46,7 +37,7 @@ export const convertMessage = (
         serviceMetaData: (serviceMessage && serviceMessage.serviceMetadata) || undefined,
         isService: !!serviceMessage,
         attachments: generalMessage && generalMessage.attachments,
-        source: (source && source.__typename === 'MessageSourceChat') ? source : null,
+        source: source,
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : 0,

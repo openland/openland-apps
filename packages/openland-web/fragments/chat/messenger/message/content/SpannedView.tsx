@@ -14,6 +14,7 @@ import { plural } from 'openland-y-utils/plural';
 import { isInviteLink, InviteLink } from './InviteContent';
 import { XViewRouterContext, XViewRouter, XView } from 'react-mental';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { XLoader } from 'openland-x/XLoader';
 
 const boldTextClassName = css`
     font-weight: bold;
@@ -34,7 +35,7 @@ const othersMentionStyle = css`
 const othersMentionWrapper = css`
     padding: 8px 0;
     max-height: 70vh;
-    max-width: 60vw;
+    max-width: 400px;
     overflow-y: scroll;
 `;
 
@@ -148,20 +149,35 @@ const MentionedUser = React.memo(
     (props: { userId: string; children: any; isService?: boolean }) => {
         const engine = React.useContext(MessengerContext);
         const { userId, children, isService } = props;
+
+        const useWrapper = userId !== engine.user.id;
+
         const [, show] = usePopper(
             {
                 placement: 'top',
                 hideOnLeave: true,
                 borderRadius: 8,
                 scope: 'entity-popper',
-                useWrapper: userId !== engine.user.id,
+                useWrapper: useWrapper,
                 showTimeout: 400,
                 hideOnChildClick: true,
             },
             (ctx) => (
-                <React.Suspense fallback={null}>
-                    <MentionedUserPopperContent userId={userId} myId={engine.user.id} hide={ctx.hide} />
-                </React.Suspense>
+                <XView
+                    minWidth={!useWrapper ? 78 : 360}
+                    maxWidth={400}
+                    height={!useWrapper ? 30 : 144}
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <React.Suspense fallback={<XLoader loading={true} />}>
+                        <MentionedUserPopperContent
+                            userId={userId}
+                            myId={engine.user.id}
+                            hide={ctx.hide}
+                        />
+                    </React.Suspense>
+                </XView>
             ),
         );
         return (
@@ -185,52 +201,55 @@ const MentionedUser = React.memo(
 const MentionedOtherUsersPopperContent = React.memo((props: { mId?: string; hide: Function }) => {
     const client = useClient();
     const message = client.useMessageMultiSpan({ id: props.mId || '' }).message;
-
     if (!message) {
         return null;
     }
 
+    const findSpans = message.spans.find((i) => i.__typename === 'MessageSpanMultiUserMention');
     return (
         <>
-            {message.spans[0].__typename === 'MessageSpanMultiUserMention' && (
-                <div className={othersMentionWrapper}>
-                    {message.spans[0].users.map((user, i) => (
-                        <XView
-                            key={`user-${user.name}-${i}`}
-                            hoverBackgroundColor="var(--backgroundPrimaryHover)"
-                            cursor="pointer"
-                            path={`/${user.shortname || user.id}`}
-                            onClick={() => props.hide()}
-                        >
-                            <MentionItemComponent
-                                id={user.id}
-                                title={user.name}
-                                photo={user.photo}
-                                subtitle={
-                                    user.isBot
-                                        ? 'Bot'
-                                        : user.primaryOrganization
-                                        ? user.primaryOrganization.name
-                                        : undefined
-                                }
-                            />
-                        </XView>
-                    ))}
-                </div>
-            )}
+            {findSpans &&
+                findSpans.__typename === 'MessageSpanMultiUserMention' &&
+                findSpans.users && (
+                    <div className={othersMentionWrapper}>
+                        {findSpans.users.map((user, i) => (
+                            <XView
+                                key={`user-${user.name}-${i}`}
+                                hoverBackgroundColor="var(--backgroundPrimaryHover)"
+                                cursor="pointer"
+                                path={`/${user.shortname || user.id}`}
+                                onClick={() => props.hide()}
+                            >
+                                <MentionItemComponent
+                                    id={user.id}
+                                    title={user.name}
+                                    photo={user.photo}
+                                    subtitle={
+                                        user.isBot
+                                            ? 'Bot'
+                                            : user.primaryOrganization
+                                            ? user.primaryOrganization.name
+                                            : undefined
+                                    }
+                                />
+                            </XView>
+                        ))}
+                    </div>
+                )}
         </>
     );
 });
 
 const MentionedOtherUsers = React.memo((props: { mId?: string; children: any }) => {
     const { mId, children } = props;
-
     const [, show] = usePopper(
         { placement: 'top', hideOnLeave: true, scope: 'others-users' },
         (ctx) => (
-            <React.Suspense fallback={null}>
-                <MentionedOtherUsersPopperContent mId={mId} hide={ctx.hide} />
-            </React.Suspense>
+            <XView minWidth={250} minHeight={96}>
+                <React.Suspense fallback={<XLoader loading={true} />}>
+                    <MentionedOtherUsersPopperContent mId={mId} hide={ctx.hide} />
+                </React.Suspense>
+            </XView>
         ),
     );
 
@@ -304,9 +323,11 @@ const MentionedGroup = React.memo(
                 showTimeout: 400,
             },
             (ctx) => (
-                <React.Suspense fallback={null}>
-                    <MentionedGroupPopperContent hide={ctx.hide} groupId={groupId} />
-                </React.Suspense>
+                <XView width={320} height={96}>
+                    <React.Suspense fallback={<XLoader loading={true} />}>
+                        <MentionedGroupPopperContent hide={ctx.hide} groupId={groupId} />
+                    </React.Suspense>
+                </XView>
             ),
         );
 
@@ -369,9 +390,14 @@ const MentionedOrganization = React.memo(
                 showTimeout: 400,
             },
             (ctx) => (
-                <React.Suspense fallback={null}>
-                    <MentionedOrgPopperContent hide={ctx.hide} organizationId={organizationId} />
-                </React.Suspense>
+                <XView width={320} height={96}>
+                    <React.Suspense fallback={<XLoader loading={true} />}>
+                        <MentionedOrgPopperContent
+                            hide={ctx.hide}
+                            organizationId={organizationId}
+                        />
+                    </React.Suspense>
+                </XView>
             ),
         );
         const router = React.useContext(XViewRouterContext)!;
@@ -467,6 +493,6 @@ export const SpanView = React.memo<{
 
 export const SpannedView = React.memo<{ spans: Span[]; isService?: boolean; mId?: string }>(
     (props) => {
-        return <>{renderSpans(SpanView, props.spans, props.isService)}</>;
+        return <>{renderSpans(SpanView, props.spans, props.isService, props.mId)}</>;
     },
 );

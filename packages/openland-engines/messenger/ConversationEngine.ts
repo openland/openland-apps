@@ -8,7 +8,8 @@ import {
     FullMessage,
     MessageSpan,
     MessageSender,
-    MessageSource,
+    FullMessage_GeneralMessage_source,
+    FullMessage_StickerMessage_source,
     MessageReactions,
     MessageAttachments,
     ServiceMessageMetadata,
@@ -45,6 +46,8 @@ export interface ConversationStateHandler {
 
 const timeGroup = 1000 * 60 * 60;
 
+type DataSourceMessageSourceT = FullMessage_GeneralMessage_source | FullMessage_StickerMessage_source;
+
 export interface DataSourceMessageItem {
     chatId: string;
     type: 'message';
@@ -57,7 +60,7 @@ export interface DataSourceMessageItem {
     text?: string;
     isEdited?: boolean;
     reply?: DataSourceMessageItem[];
-    source?: MessageSource | null;
+    source?: DataSourceMessageSourceT | null;
     reactions: MessageReactions[];
     attachments?: (MessageAttachments & { uri?: string, filePreview?: string | null })[];
     spans?: MessageSpan[];

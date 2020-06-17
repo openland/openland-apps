@@ -300,7 +300,13 @@ internal val MessageReactionsSelector = obj(
             field("user", "user", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     field("id", "id", notNull(scalar("ID"))),
-                    field("name", "name", notNull(scalar("String")))
+                    field("name", "name", notNull(scalar("String"))),
+                    field("photo", "photo", scalar("String")),
+                    field("primaryOrganization", "primaryOrganization", obj(
+                            field("__typename", "__typename", notNull(scalar("String"))),
+                            field("id", "id", notNull(scalar("ID"))),
+                            field("name", "name", notNull(scalar("String")))
+                        ))
                 ))),
             field("reaction", "reaction", notNull(scalar("String")))
         )

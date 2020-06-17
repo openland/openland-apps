@@ -240,7 +240,10 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
 
     if (reply && reply.length) {
         const hasForward =
-            props.chatId && reply[0].source && reply[0].source.chat.id !== props.chatId;
+            props.chatId &&
+            reply[0].source &&
+            reply[0].source.__typename === 'MessageSourceChat' &&
+            reply[0].source.chat.id !== props.chatId;
 
         const replySection = (
             <div key={'msg-' + id + '-forward'} className={cx(extraClassName, replySectionWrapper)}>

@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { View, FlatList } from 'react-native';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { MentionsDividerType, MentionsDivider, MentionsDividerView } from './MentionsDivider';
-import { MentionView } from './MentionView';
+import { MentionView, MentionViewT } from './MentionView';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -14,22 +13,22 @@ interface MentionsSuggestionsProps {
     groupId: string;
     isChannel: boolean;
     isPrivate?: boolean;
-    onMentionPress: (word: string | undefined, mention: MentionToSend) => void;
+    onMentionPress: (word: string | undefined, mention: MentionViewT) => void;
 }
 
 export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) => {
     const client = getClient();
     const theme = React.useContext(ThemeContext);
     const { activeWord, groupId, isChannel, onMentionPress } = props;
-    const [localItems, setLocalItems] = React.useState<MentionToSend[]>([]);
-    const [globalItems, setGlobalItems] = React.useState<MentionToSend[]>([]);
+    const [localItems, setLocalItems] = React.useState<MentionViewT[]>([]);
+    const [globalItems, setGlobalItems] = React.useState<MentionViewT[]>([]);
     const [loadingPagination, setLoadingPagination] = React.useState(false);
     const [loadingQuery, setLoadingQuery] = React.useState(false);
     const lastQuery = React.useRef<string>();
     const lastCursor = React.useRef<string | null>(null);
-    const listRef = React.useRef<FlatList<MentionToSend | MentionsDividerType>>(null);
+    const listRef = React.useRef<FlatList<MentionViewT | MentionsDividerType>>(null);
 
-    const handleOnPress = React.useCallback((mention: MentionToSend) => {
+    const handleOnPress = React.useCallback((mention: MentionViewT) => {
         onMentionPress(activeWord, mention);
     }, [activeWord, onMentionPress]);
 
@@ -54,7 +53,7 @@ export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) 
 
         lastCursor.current = data.cursor;
 
-        const items: MentionToSend[] = data.localItems;
+        const items: MentionViewT[] = data.localItems;
 
         if ('@all'.startsWith(activeWord.toLowerCase())) {
             items.unshift({ __typename: 'AllMention' });
@@ -113,7 +112,7 @@ export const MentionsSuggestions = React.memo((props: MentionsSuggestionsProps) 
         return null;
     }
 
-    const mergedItems: (MentionToSend | MentionsDividerType | MentionsPlaceholderType)[] = props.isPrivate 
+    const mergedItems: (MentionViewT | MentionsDividerType | MentionsPlaceholderType)[] = props.isPrivate
         ? globalItems.length === 0 && activeWord === '@' ? [MentionsPlaceholder] : globalItems
         : [...localItems, ...(globalItems.length > 0 ? [MentionsDivider, ...globalItems] : [])];
     return (

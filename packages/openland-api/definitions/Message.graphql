@@ -28,6 +28,11 @@ fragment MessageReactions on ModernMessageReaction {
     user {
         id
         name
+        photo
+        primaryOrganization {
+            id
+            name
+        }
     }
     reaction
 }

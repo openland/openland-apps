@@ -8,7 +8,15 @@ import { ZListItemBase } from './ZListItemBase';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export interface ZUserViewProps {
-    user: UserForMention;
+    user: {
+        id: string,
+        name: string,
+        photo: string | null,
+        primaryOrganization: {
+            id: string,
+            name: string,
+        } | null
+    };
     onPress: (userId: string) => void;
 }
 

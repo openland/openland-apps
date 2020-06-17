@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { View, Image } from 'react-native';
+import { ChatMentionSearch_mentions_globalItems } from 'openland-api/spacex.types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { MentionToSend } from 'openland-engines/messenger/MessageSender';
 import { SuggestionsItemName } from '../Suggestions';
 
+export type MentionViewT = ChatMentionSearch_mentions_globalItems  | { __typename: 'AllMention' };
+
 interface MentionViewProps {
-    mention: MentionToSend;
+    mention: MentionViewT;
     onPress: () => void;
     isChannel: boolean;
 }
@@ -36,7 +38,7 @@ export const MentionView = React.memo((props: MentionViewProps) => {
                     )}
                     {mention.__typename === 'SharedRoom' && (
                         <ZAvatar
-                            photo={mention.roomPhoto}
+                            photo={mention.photo}
                             size="x-small"
                             id={mention.id}
                             title={mention.title}

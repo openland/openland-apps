@@ -109,7 +109,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     const purchaseAttach = attaches.filter(a => a.__typename === 'MessageAttachmentPurchase')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase | undefined;
     const hasImage = !!(fileAttach && fileAttach.fileMetadata.isImage);
     const hasReply = !!(message.reply && message.reply.length > 0);
-    const hasForward = !!(hasReply && conversationId && message.reply![0].source && message.reply![0].source.chat.id !== conversationId);
+    const hasForward = !!(hasReply && conversationId && message.reply![0].source && message.reply![0].source?.__typename === 'MessageSourceChat' && message.reply![0].source.chat.id !== conversationId);
     const hasText = !!(message.text);
     const hasUrlAug = !!augmenationAttach;
     const hasPurchase = !!purchaseAttach;
