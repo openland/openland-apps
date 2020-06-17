@@ -66,7 +66,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         } else if (span.type === 'mention_organization') {
             return <ASText key={'mention-organization'} color={linkColor} textDecorationLine={linkTextDecoration} onPress={() => onOrganizationPress(span.organization.id)}>{children}</ASText>;
         } else if (span.type === 'mention_users') {
-            return <OthersUsersWrapper key={'mentions'} theme={theme} onUserPress={uid => onUserPress(uid)} users={span.users} useAsync={true}>{children}</OthersUsersWrapper>;
+            return <OthersUsersWrapper key={'mentions'} theme={theme} onUserPress={uid => onUserPress(uid)} useAsync={true} mId={message.id || ''}>{children}</OthersUsersWrapper>;
         } else if (span.type === 'bold') {
             return <ASText key={'bold'} fontWeight={FontStyles.Weight.Bold}>{children}</ASText>;
         } else if (span.type === 'date') {
