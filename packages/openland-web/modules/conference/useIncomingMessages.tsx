@@ -192,7 +192,7 @@ const IncomingMessage = React.memo(React.forwardRef((props: IncomingMessageProps
     const messageRef = React.useRef<HTMLDivElement>(null);
     const translateRef = React.useRef<number>(0);
 
-    const senderNameEmojify = React.useMemo(() => emoji(message.senderName), [message.senderName]);
+    const senderNameEmojify = React.useMemo(() => emoji(message.sender.name), [message.sender.name]);
     const imageAttaches =
         (message.attachments && message.attachments.filter(
             a => a.__typename === 'MessageAttachmentFile' && a.fileMetadata.isImage,
@@ -275,9 +275,9 @@ const IncomingMessage = React.memo(React.forwardRef((props: IncomingMessageProps
         <div className={messageWrapper} ref={messageRef}>
             <XView marginRight={16} paddingTop={4}>
                 <UAvatar
-                    id={message.senderId}
-                    title={message.senderName}
-                    photo={message.senderPhoto}
+                    id={message.sender.id}
+                    title={message.sender.name}
+                    photo={message.sender.photo}
                 />
             </XView>
             <XView flexGrow={1} flexShrink={1} alignItems="flex-start">

@@ -150,10 +150,6 @@ export const convertMentionsFromMessage = (
                     __typename: 'User',
                     id: s.user.id,
                     name: s.user.name,
-                    photo: null,
-                    primaryOrganization: null,
-                    shortname: null,
-                    isBot: false,
                 });
             }
         } else if (s.__typename === 'MessageSpanOrganizationMention') {
@@ -161,11 +157,6 @@ export const convertMentionsFromMessage = (
                 __typename: 'Organization',
                 id: s.organization.id,
                 name: s.organization.name,
-                photo: null,
-                isCommunity: false,
-                membersCount: 0,
-                about: null,
-                shortname: null,
             });
         } else if (s.__typename === 'MessageSpanRoomMention') {
             res.push({

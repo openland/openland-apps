@@ -427,7 +427,7 @@ export class DialogListEngine {
                     title: sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '',
                     photo:
                         (sharedRoom
-                            ? sharedRoom.roomPhoto
+                            ? sharedRoom.photo
                             : privateRoom
                                 ? privateRoom.user.photo
                                 : undefined) || undefined,

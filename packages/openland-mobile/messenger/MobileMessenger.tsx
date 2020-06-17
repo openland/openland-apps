@@ -446,14 +446,14 @@ export class MobileMessenger {
 
         if (message.text) {
             let hasPurchase = message.attachments && message.attachments.some(a => a.__typename === 'MessageAttachmentPurchase');
-            if (message.senderId === this.engine.user.id && !hasPurchase) {
+            if (message.sender.id === this.engine.user.id && !hasPurchase) {
                 builder.action('Edit', () => {
                     conversation.messagesActionsStateEngine.edit(message);
                 }, false, require('assets/ic-edit-24.png'));
             }
         }
 
-        if (message.senderId === this.engine.user.id || SUPER_ADMIN || role === 'ADMIN' || role === 'OWNER') {
+        if (message.sender.id === this.engine.user.id || SUPER_ADMIN || role === 'ADMIN' || role === 'OWNER') {
             builder.action('Delete', async () => {
                 try {
                     Alert.builder()

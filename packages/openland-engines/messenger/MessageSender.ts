@@ -6,13 +6,18 @@ import {
     MessageSpanInput,
     MyStickers_stickers_packs_stickers,
     StickerFragment,
-    ChatMentionSearch_mentions_globalItems,
+    MessageSpan_MessageSpanRoomMention_room_SharedRoom,
+    MessageSpan_MessageSpanOrganizationMention_organization,
+    MessageSpan_MessageSpanUserMention_user,
+    // ChatMentionSearch_mentions_globalItems,
 } from 'openland-api/spacex.types';
 import { OpenlandClient } from 'openland-api/spacex';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import { Priority } from 'openland-api/Priority';
 
-export type MentionToSend = ChatMentionSearch_mentions_globalItems | { __typename: 'AllMention' };
+type ChatMentionT = MessageSpan_MessageSpanRoomMention_room_SharedRoom | MessageSpan_MessageSpanOrganizationMention_organization | MessageSpan_MessageSpanUserMention_user;
+
+export type MentionToSend = ChatMentionT | { __typename: 'AllMention' };
 
 export interface MessageSendHandler {
     onProgress(key: string, progress: number): void;

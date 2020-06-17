@@ -91,7 +91,7 @@ export const ChatSelectedActions = (props: ChatSelectedActionsProps) => {
 
     if (!SUPER_ADMIN) {
         props.conversation.messagesActionsStateEngine.getState().messages.map((m) => {
-            if (m.senderId !== getMessenger().engine.user.id) {
+            if (m.sender.id !== getMessenger().engine.user.id) {
                 canDelete = false;
             }
         });

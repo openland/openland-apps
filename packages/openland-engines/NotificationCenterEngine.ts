@@ -51,16 +51,11 @@ const notificationUnsupported = (id: string): NotificationsDataSourceItem => {
             id: id,
             date: date,
             sender: {
-                __typename: 'User',
+                __typename: 'User' as 'User',
                 id: 'mJMk3EkbzBs7dyPBPp9Bck0pxn',
                 name: 'Openland Support',
-                firstName: 'Openland Support',
                 photo: 'https://ucarecdn.com/db12b7df-6005-42d9-87d6-46f15dd5b880/',
-                online: true,
                 isBot: false,
-                lastName: null,
-                email: null,
-                lastSeen: null,
                 shortname: null,
                 primaryOrganization: null,
             },
@@ -74,8 +69,6 @@ const notificationUnsupported = (id: string): NotificationsDataSourceItem => {
             quotedMessages: [],
             reactions: [],
             spans: [{ __typename: 'MessageSpanBold', offset: 0, length: 33 }],
-            overrideName: null,
-            overrideAvatar: null
         }),
 
         notificationId: id,
@@ -120,11 +113,11 @@ export class NotificationCenterEngine {
             loadMore: async (cursor?: string) => {
                 log.log('loadMore (cursor: ' + cursor + ')');
 
-                const notificationsQueryPromise = this.engine.client.queryMyNotifications(
+                const notificationsQueryPromise = this.client.queryMyNotifications(
                     { first: 20, before: cursor },
                     { fetchPolicy: 'network-only', priority: Priority.LOW /* TODO: Make Dynamic */ }
                 );
-                const notificationCenterQueryPromise = this.engine.client.queryMyNotificationCenter({
+                const notificationCenterQueryPromise = this.client.queryMyNotificationCenter({
                     fetchPolicy: 'network-only',
                     priority: Priority.LOW /* TODO: Make Dynamic */
                 });
@@ -152,7 +145,7 @@ export class NotificationCenterEngine {
                 log.log('onStarted');
 
                 let queue = createFifoQueue<{ state: string, events: Types.MyNotificationsCenter_event_NotificationCenterUpdateBatch_updates[] }>();
-                sequenceWatcher<MyNotificationsCenter>(state, (s, handler) => this.engine.client.subscribeMyNotificationsCenter({ state }, handler), (update) => {
+                sequenceWatcher<MyNotificationsCenter>(state, (s, handler) => this.client.subscribeMyNotificationsCenter({ state }, handler), (update) => {
                     if (!update.event) {
                         return null;
                     }
@@ -225,7 +218,7 @@ export class NotificationCenterEngine {
 
             if (id !== this.lastNotificationRead) {
                 this.lastNotificationRead = id;
-                this.engine.client.mutateReadNotification({ notificationId: id });
+                this.client.mutateReadNotification({ notificationId: id });
             }
         }
     }
@@ -241,7 +234,7 @@ export class NotificationCenterEngine {
             this.lastReportedSeq = this.maxSeq;
             let seq = this.maxSeq;
             (async () => {
-                backoff(() => this.engine.client.mutateMyNotificationCenterMarkSeqRead({ seq }));
+                backoff(() => this.client.mutateMyNotificationCenterMarkSeqRead({ seq }));
             })();
         }
     }

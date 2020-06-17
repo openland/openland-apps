@@ -63,6 +63,11 @@ query Organization($organizationId: ID!) {
         ...OrganizationFragment
     }
 }
+query OrganizationPico($id: ID!) {
+    organization(id: $id) {
+        ...OrganizationShort
+    }
+}
 query OrganizationMembersShort($organizationId: ID!) {
     organization(id: $organizationId) {
         ...OrganizationFragment

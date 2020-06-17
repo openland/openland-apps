@@ -139,6 +139,7 @@ internal val MessageSpanSelector = obj(
 
 internal val MessageAttachmentsSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
+            field("id", "id", notNull(scalar("ID"))),
             field("fallback", "fallback", notNull(scalar("String"))),
             inline("MessageAttachmentFile", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
@@ -545,17 +546,16 @@ internal val CommentEntryFragmentSelector = obj(
             field("deleted", "deleted", notNull(scalar("Boolean"))),
             field("betaComment", "comment", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    field("id", "id", notNull(scalar("ID"))),
                     fragment("ModernMessage", FullMessageSelector)
                 ))),
             field("parentComment", "parentComment", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
+                    field("id", "id", notNull(scalar("ID"))),
                     field("betaComment", "comment", notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("id", "id", notNull(scalar("ID"))),
                             field("message", "message", scalar("String"))
-                        ))),
-                    field("id", "id", notNull(scalar("ID")))
+                        )))
                 )),
             field("childComments", "childComments", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -910,7 +910,7 @@ internal val RoomSharedNanoSelector = obj(
             field("isChannel", "isChannel", notNull(scalar("Boolean"))),
             field("isPremium", "isPremium", notNull(scalar("Boolean"))),
             field("title", "title", notNull(scalar("String"))),
-            field("photo", "roomPhoto", notNull(scalar("String"))),
+            field("photo", "photo", notNull(scalar("String"))),
             field("membersCount", "membersCount", notNull(scalar("Int"))),
             field("settings", "settings", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),

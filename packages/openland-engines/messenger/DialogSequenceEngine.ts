@@ -47,7 +47,7 @@ export class DialogSequenceEngine {
         log.log('Global counter loaded in ' + (Date.now() - start) + ' ms');
 
         // Main Sequence Updates Queue
-        await (async () => {
+        (async () => {
             while (true) {
                 let update = await this.queue.get();
                 for (let u of update.events) {

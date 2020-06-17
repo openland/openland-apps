@@ -5,7 +5,6 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { emoji } from 'openland-y-utils/emoji';
 import { TextBody } from 'openland-web/utils/TextStyles';
 import { ULink } from 'openland-web/components/unicorn/ULink';
-// import { useUserPopper } from 'openland-web/components/EntityPoppers';
 import { TypingsUser } from 'openland-engines/messenger/Typings';
 import Lottie from 'react-lottie';
 import { XView } from 'react-mental';

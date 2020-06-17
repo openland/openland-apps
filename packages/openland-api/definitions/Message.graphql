@@ -1,3 +1,16 @@
+query MessageMultiSpan($id: ID!) {
+    message(messageId: $id) {
+        id
+        spans {
+            ... on MessageSpanMultiUserMention {
+                users {
+                    ...UserForMention
+                }
+            }
+        }
+    }
+}
+
 fragment MessageSender on User {
     id
     name

@@ -57,7 +57,7 @@ export interface DataSourceMessageItem {
     text?: string;
     isEdited?: boolean;
     reply?: DataSourceMessageItem[];
-    source?: MessageSource;
+    source?: MessageSource | null;
     reactions: MessageReactions[];
     attachments?: (MessageAttachments & { uri?: string, filePreview?: string | null })[];
     spans?: MessageSpan[];
@@ -99,19 +99,19 @@ export interface DataSourceNewDividerItem {
     date: undefined;
 }
 
-const getReplies = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined, chaId: string, engine: MessengerEngine) => {
+const getReplies = (src: FullMessage_GeneralMessage | FullMessage_StickerMessage | undefined, chaId: string, engine: MessengerEngine) => {
     return src && src.quotedMessages ? src.quotedMessages.sort((a, b) => a.date - b.date).map(m => convertMessage(m as FullMessage, chaId, engine)) : undefined;
 };
 
-const getSourceChat = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined) => {
+const getSourceChat = (src: FullMessage_GeneralMessage | FullMessage_StickerMessage | undefined) => {
     return src && src.source && src.source.__typename === 'MessageSourceChat' ? src.source : undefined;
 };
 
-const getCommentsCount = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined) => {
+const getCommentsCount = (src: FullMessage_GeneralMessage | FullMessage_StickerMessage | undefined) => {
     return src ? src.commentsCount : 0;
 };
 
-const getReactions = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined) => {
+const getReactions = (src: FullMessage_GeneralMessage | FullMessage_StickerMessage | undefined) => {
     return src ? src.reactions || [] : [];
 };
 

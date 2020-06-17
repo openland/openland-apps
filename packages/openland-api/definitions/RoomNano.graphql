@@ -4,13 +4,14 @@ fragment RoomSharedNano on SharedRoom {
     isChannel
     isPremium
     title
-    roomPhoto: photo
+    photo
     membersCount
     settings {
         id
         mute
     }
 }
+
 fragment RoomNano on Room {
     ... on PrivateRoom {
         id

@@ -393,10 +393,10 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
         return (
             <div className={messageAvatarWrapper} onMouseEnter={show}>
                 <MAvatar
-                    senderPhoto={message.senderPhoto}
+                    senderPhoto={message.sender.photo}
                     senderNameEmojify={message.senderNameEmojify}
-                    senderName={message.senderName}
-                    senderId={message.senderId}
+                    senderName={message.sender.name}
+                    senderId={message.sender.id}
                 />
             </div>
         );

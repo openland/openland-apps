@@ -14,7 +14,7 @@ const singleLine = css`
 export const MessageCompactComponent = React.memo((props: { message: DataSourceMessageItem }) => {
     return (
         <>
-            <span className={cx(TextLabel1, singleLine)}>{emoji(props.message.senderName)}</span>
+            <span className={cx(TextLabel1, singleLine)}>{emoji(props.message.sender.name)}</span>
             <span className={cx(TextBody, singleLine)}>{emoji(props.message.fallback)}</span>
         </>
     );

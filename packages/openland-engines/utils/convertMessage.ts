@@ -18,7 +18,7 @@ export const convertMessage = (
                   .map((r) => convertMessage(r as FullMessage))
             : undefined;
 
-    const source = generalMessage?.source || stickerMessage?.source || null;
+    const source = generalMessage?.source || stickerMessage?.source;
         // generalMessage &&
         // generalMessage.source &&
         // generalMessage.source.__typename === 'MessageSourceChat'
@@ -36,21 +36,17 @@ export const convertMessage = (
         key: src.repeatKey || src.id,
         date: parseInt(src.date, 10),
         isOut: true,
-        senderId: src.sender.id,
-        senderName: src.sender.name,
-        senderPhoto: src.sender.photo || undefined,
         sender: src.sender,
         senderBadge: src.senderBadge || undefined,
         text: src.message || undefined,
         isSending: false,
         attachTop: false,
         attachBottom: false,
-        reactions: generalMessage ? generalMessage.reactions : [],
+        reactions: generalMessage ? generalMessage.reactions : stickerMessage ? stickerMessage.reactions : [],
         serviceMetaData: (serviceMessage && serviceMessage.serviceMetadata) || undefined,
         isService: !!serviceMessage,
         attachments: generalMessage && generalMessage.attachments,
-        reply,
-        source: source,
+        source: (source && source.__typename === 'MessageSourceChat') ? source : null,
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
         commentsCount: generalMessage ? generalMessage.commentsCount : 0,
@@ -58,7 +54,6 @@ export const convertMessage = (
         fallback: src.message || '',
         reactionsReduced: [],
         reactionsLabel: '',
-        overrideName: src.overrideName,
-        overrideAvatar: src.overrideAvatar,
+        reply,
     };
 };

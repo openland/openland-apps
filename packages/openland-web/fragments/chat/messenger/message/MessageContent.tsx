@@ -186,6 +186,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
                     spans={textSpans}
                     edited={!!edited}
                     shouldCrop={isReplyOnly}
+                    mId={id}
                 />
             </ContentWrapper>,
         );
@@ -259,7 +260,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
 
         content.push(
             <ContentWrapper key={'unsupported-' + id} className={textClassName}>
-                <MessageTextComponent spans={createSimpleSpan(unsupportedText, SpanType.italic)} />
+                <MessageTextComponent spans={createSimpleSpan(unsupportedText, SpanType.italic)} mId={id} />
             </ContentWrapper>,
         );
     }

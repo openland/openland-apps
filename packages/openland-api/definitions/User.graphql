@@ -36,6 +36,11 @@ query UserPico($userId: ID!) {
         photo
     }
 }
+query UserNano($id: ID!) {
+    user(id: $id) {
+        ...UserForMention
+    }
+}
 query Online($userId: ID!) {
     user: user(id: $userId) {
         id
