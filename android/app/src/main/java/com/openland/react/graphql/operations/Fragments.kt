@@ -139,7 +139,6 @@ internal val MessageSpanSelector = obj(
 
 internal val MessageAttachmentsSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
-            field("id", "id", notNull(scalar("ID"))),
             field("fallback", "fallback", notNull(scalar("String"))),
             inline("MessageAttachmentFile", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
