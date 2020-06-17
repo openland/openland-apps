@@ -214,6 +214,7 @@ interface PopperConfig {
     showTimeout?: number;
     useArrow?: boolean;
     darkStyle?: boolean;
+    useObserve?: boolean;
 
     marginRight?: number;
     marginLeft?: number;
@@ -279,6 +280,7 @@ export const usePopper = (
                     {
                         target,
                         placement: config.placement,
+                        useObserve: config.useObserve,
                     },
                     ctx => {
                         ctxRef.current = ctx;
