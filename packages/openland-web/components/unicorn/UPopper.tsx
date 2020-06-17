@@ -5,8 +5,7 @@ export type UPopper = (
 ) => {
     target: HTMLElement;
     placement?: Placement;
-    useArrow?: boolean;
-    darkStyle?: boolean;
+    useObserve?: boolean;
     content: React.ReactElement<{}>;
 };
 
@@ -25,14 +24,17 @@ export function registerPopupProvider(provider: UPopperProvider) {
 }
 
 export function showPopper(
-    config: { target: HTMLElement; placement: Placement; useArrow?: boolean, darkStyle?: boolean },
+    config: {
+        target: HTMLElement;
+        placement: Placement;
+        useObserve?: boolean;
+    },
     popper: (ctx: UPopperController) => React.ReactElement<{}>,
 ) {
-    currentProvider!!.showPopper(ctx => ({
+    currentProvider!!.showPopper((ctx) => ({
         target: config.target,
         placement: config.placement,
-        useArrow: config.useArrow,
-        darkStyle: config.darkStyle,
+        useObserve: config.useObserve,
         content: popper(ctx),
     }));
 }

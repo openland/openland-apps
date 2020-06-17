@@ -48,6 +48,7 @@ object Operations {
         if (name == "GlobalSearch") return GlobalSearch
         if (name == "GroupScreenViews") return GroupScreenViews
         if (name == "Message") return Message
+        if (name == "MessageMultiSpan") return MessageMultiSpan
         if (name == "MessagesBatch") return MessagesBatch
         if (name == "MessagesSearch") return MessagesSearch
         if (name == "MyApps") return MyApps
@@ -64,6 +65,7 @@ object Operations {
         if (name == "Organization") return Organization
         if (name == "OrganizationMembers") return OrganizationMembers
         if (name == "OrganizationMembersShort") return OrganizationMembersShort
+        if (name == "OrganizationPico") return OrganizationPico
         if (name == "OrganizationProfile") return OrganizationProfile
         if (name == "OrganizationPublicInvite") return OrganizationPublicInvite
         if (name == "OrganizationPublicRooms") return OrganizationPublicRooms
@@ -104,6 +106,7 @@ object Operations {
         if (name == "TransactionsHistory") return TransactionsHistory
         if (name == "User") return User
         if (name == "UserAvailableRooms") return UserAvailableRooms
+        if (name == "UserNano") return UserNano
         if (name == "UserPico") return UserPico
         if (name == "UserStorage") return UserStorage
         if (name == "Users") return Users

@@ -31,7 +31,7 @@ export class DialogSequenceEngine {
         await backoff(async () => {
             return await this.engine.client.querySettings({ fetchPolicy: 'cache-first' });
         });
-        this.engine.client.querySettings({ fetchPolicy: 'network-only', priority: Priority.LOW });
+        await this.engine.client.querySettings({ fetchPolicy: 'network-only', priority: Priority.LOW });
         reliableWatcher(handler => this.engine.client.subscribeSettingsWatch(handler), () => {
             log.log('New settings received');
         });

@@ -1,10 +1,9 @@
 import {
-    FullMessage_GeneralMessage_spans,
-    FullMessage_ServiceMessage_spans,
-    UserForMention,
+    MessageSpan,
+    MessageSpan_MessageSpanOrganizationMention_organization,
+    MessageSpan_MessageSpanRoomMention_room,
+    MessageSpan_MessageSpanUserMention_user,
     MessageSpanType,
-    RoomNano,
-    OrganizationShort,
 } from 'openland-api/spacex.types';
 
 export enum SpanType {
@@ -115,12 +114,11 @@ export interface SpanLink extends SpanAbs {
 
 export interface SpanUser extends SpanAbs {
     type: SpanType.mention_user;
-    user: UserForMention;
+    user: MessageSpan_MessageSpanUserMention_user;
 }
 
 export interface SpanUsers extends SpanAbs {
     type: SpanType.mention_users;
-    users: UserForMention[];
 }
 
 export interface SpanAll extends SpanAbs {
@@ -129,15 +127,15 @@ export interface SpanAll extends SpanAbs {
 
 export interface SpanRoom extends SpanAbs {
     type: SpanType.mention_room;
-    room: RoomNano;
+    room: MessageSpan_MessageSpanRoomMention_room;
 }
 
 export interface SpanOrganization extends SpanAbs {
     type: SpanType.mention_organization;
-    organization: OrganizationShort;
+    organization: MessageSpan_MessageSpanOrganizationMention_organization;
 }
 
-export type ServerSpan = FullMessage_GeneralMessage_spans | FullMessage_ServiceMessage_spans;
+export type ServerSpan = MessageSpan;
 
 export type SpanSymbolToTypeT = {
     [key: string]: { type: MessageSpanType; master?: boolean; lined?: boolean };
@@ -152,11 +150,6 @@ export const SpanSymbolToType: SpanSymbolToTypeT = {
     '_': { type: MessageSpanType.Italic },
     '# ': { type: MessageSpanType.Loud, lined: true },
     '🔄': { type: MessageSpanType.Rotating },
-};
-
-export const PostSpanSymbolToType: SpanSymbolToTypeT = {
-    '*': { type: MessageSpanType.Bold },
-    '_': { type: MessageSpanType.Italic },
 };
 
 export interface SpecSymbolsType {

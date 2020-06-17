@@ -19,7 +19,7 @@ const openLinkContextMenu = (link: string) => {
     builder.show(true);
 };
 
-export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) => void, onGroupPress: (id: string) => void, onOrganizationPress: (id: string) => void, theme: ThemeGlobal) => {
+export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) => void, onGroupPress: (id: string) => void, onOrganizationPress: (id: string) => void, theme: ThemeGlobal, mId: string) => {
     const SpanView = (props: { span: Span, children?: any }) => {
         const { span, children } = props;
 
@@ -84,8 +84,8 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
                     key={'mentions'}
                     theme={theme}
                     onUserPress={uid => onUserPress(uid)}
-                    users={span.users}
                     useAsync={false}
+                    mId={mId}
                 >
                     {children}
                 </OthersUsersWrapper>

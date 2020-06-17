@@ -5,6 +5,7 @@ import { Span, SpanType } from 'openland-y-utils/spans/Span';
 import { TextCaption } from 'openland-web/utils/TextStyles';
 
 export interface MessageTextComponentProps {
+    mId?: string;
     spans: Span[];
     edited?: boolean;
     shouldCrop?: boolean;
@@ -64,7 +65,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
         <div className={spansMessageWrapper}>
             <div className={cx(styleSpansMessageContainer, shouldCrop && cropTextStyle)} style={{maxHeight: hasMaxHeight ? maxHeight : undefined}}>
                 <span>
-                    <SpannedView spans={spans} />
+                    <SpannedView spans={spans} mId={props.mId} />
                     {!!edited && (
                         <span className={cx(EditLabelStyle, TextCaption)}>
                             {'\u00A0'}

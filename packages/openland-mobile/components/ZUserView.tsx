@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { UserForMention } from 'openland-api/spacex.types';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { View, Text, Dimensions } from 'react-native';
 import { ZAvatar } from './ZAvatar';
@@ -8,7 +7,15 @@ import { ZListItemBase } from './ZListItemBase';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export interface ZUserViewProps {
-    user: UserForMention;
+    user: {
+        id: string,
+        name: string,
+        photo: string | null,
+        primaryOrganization: {
+            id: string,
+            name: string,
+        } | null
+    };
     onPress: (userId: string) => void;
 }
 

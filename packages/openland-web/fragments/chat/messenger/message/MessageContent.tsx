@@ -5,7 +5,7 @@ import {
     FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase,
     FullMessage_GeneralMessage_attachments,
     MyStickers_stickers_packs_stickers,
-    UserShort,
+    MessageSender,
 } from 'openland-api/spacex.types';
 import { MessageTextComponent } from './content/MessageTextComponent';
 import { DataSourceWebMessageItem } from '../data/WebMessageItemDataSource';
@@ -94,7 +94,7 @@ interface MessageContentProps {
     isOut?: boolean;
     attachTop?: boolean;
     chatId?: string;
-    sender?: UserShort;
+    sender?: MessageSender;
     senderNameEmojify?: string | JSX.Element;
     date?: number;
     fileProgress?: number;
@@ -186,6 +186,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
                     spans={textSpans}
                     edited={!!edited}
                     shouldCrop={isReplyOnly}
+                    mId={id}
                 />
             </ContentWrapper>,
         );
@@ -239,7 +240,10 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
 
     if (reply && reply.length) {
         const hasForward =
-            props.chatId && reply[0].source && reply[0].source.chat.id !== props.chatId;
+            props.chatId &&
+            reply[0].source &&
+            reply[0].source.__typename === 'MessageSourceChat' &&
+            reply[0].source.chat.id !== props.chatId;
 
         const replySection = (
             <div key={'msg-' + id + '-forward'} className={cx(extraClassName, replySectionWrapper)}>
@@ -259,7 +263,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
 
         content.push(
             <ContentWrapper key={'unsupported-' + id} className={textClassName}>
-                <MessageTextComponent spans={createSimpleSpan(unsupportedText, SpanType.italic)} />
+                <MessageTextComponent spans={createSimpleSpan(unsupportedText, SpanType.italic)} mId={id} />
             </ContentWrapper>,
         );
     }

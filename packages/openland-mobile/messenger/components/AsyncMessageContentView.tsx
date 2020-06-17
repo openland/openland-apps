@@ -66,7 +66,7 @@ export let renderPreprocessedText = (spans: Span[], message: DataSourceMessageIt
         } else if (span.type === 'mention_organization') {
             return <ASText key={'mention-organization'} color={linkColor} textDecorationLine={linkTextDecoration} onPress={() => onOrganizationPress(span.organization.id)}>{children}</ASText>;
         } else if (span.type === 'mention_users') {
-            return <OthersUsersWrapper key={'mentions'} theme={theme} onUserPress={uid => onUserPress(uid)} users={span.users} useAsync={true}>{children}</OthersUsersWrapper>;
+            return <OthersUsersWrapper key={'mentions'} theme={theme} onUserPress={uid => onUserPress(uid)} useAsync={true} mId={message.id || ''}>{children}</OthersUsersWrapper>;
         } else if (span.type === 'bold') {
             return <ASText key={'bold'} fontWeight={FontStyles.Weight.Bold}>{children}</ASText>;
         } else if (span.type === 'date') {
@@ -109,7 +109,7 @@ export let extractContent = (props: AsyncMessageTextViewProps, maxSize?: number,
     const purchaseAttach = attaches.filter(a => a.__typename === 'MessageAttachmentPurchase')[0] as FullMessage_GeneralMessage_attachments_MessageAttachmentPurchase | undefined;
     const hasImage = !!(fileAttach && fileAttach.fileMetadata.isImage);
     const hasReply = !!(message.reply && message.reply.length > 0);
-    const hasForward = !!(hasReply && conversationId && message.reply![0].source && message.reply![0].source.chat.id !== conversationId);
+    const hasForward = !!(hasReply && conversationId && message.reply![0].source && message.reply![0].source?.__typename === 'MessageSourceChat' && message.reply![0].source.chat.id !== conversationId);
     const hasText = !!(message.text);
     const hasUrlAug = !!augmenationAttach;
     const hasPurchase = !!purchaseAttach;

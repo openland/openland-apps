@@ -1,4 +1,4 @@
-import { UserShort } from 'openland-api/spacex.types';
+import { MessageSender } from 'openland-api/spacex.types';
 import { ModelMessage } from './types';
 
 export interface Day {
@@ -11,7 +11,7 @@ export interface Day {
 
 export interface MessageGroup {
     key: string;
-    sender: UserShort;
+    sender: MessageSender;
     messages: ModelMessage[];
 }
 

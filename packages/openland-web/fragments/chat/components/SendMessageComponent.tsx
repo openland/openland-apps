@@ -11,7 +11,7 @@ import AtIcon from 'openland-icons/s/ic-at-24.svg';
 import SendIcon from 'openland-icons/s/ic-send-24.svg';
 import { UNavigableListRef } from 'openland-web/components/unicorn/UNavigableReactWindow';
 import { useClient } from 'openland-api/useClient';
-import { StickerFragment } from 'openland-api/spacex.types';
+import { StickerFragment, ChatMentionSearch_mentions_globalItems } from 'openland-api/spacex.types';
 import { emojiSuggest } from 'openland-y-utils/emojiSuggest';
 import { emojiComponent } from 'openland-y-utils/emojiComponent';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
@@ -153,7 +153,7 @@ interface Divider { __typename: 'divider'; }
 
 interface Placeholder { __typename: 'placeholder'; }
 
-type ListItem = (MentionToSend | Cursor | Divider | Placeholder) & { selectable?: boolean };
+type ListItem = (ChatMentionSearch_mentions_globalItems | { __typename: 'AllMention' } | Cursor | Divider | Placeholder) & { selectable?: boolean };
 
 export const AutoCompleteComponent = React.memo(
     React.forwardRef(
@@ -345,7 +345,7 @@ export const AutoCompleteComponent = React.memo(
                         return (
                             <MentionItemComponent
                                 id={v.id}
-                                photo={v.roomPhoto}
+                                photo={v.photo}
                                 title={v.title}
                                 subtitle="Group"
                             />

@@ -133,6 +133,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryMessage(variables: Types.MessageVariables, params?: QueryParameters): Promise<Types.Message> {
         return this.query('Message', variables, params);
     }
+    queryMessageMultiSpan(variables: Types.MessageMultiSpanVariables, params?: QueryParameters): Promise<Types.MessageMultiSpan> {
+        return this.query('MessageMultiSpan', variables, params);
+    }
     queryMessagesBatch(variables: Types.MessagesBatchVariables, params?: QueryParameters): Promise<Types.MessagesBatch> {
         return this.query('MessagesBatch', variables, params);
     }
@@ -180,6 +183,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: QueryParameters): Promise<Types.OrganizationMembersShort> {
         return this.query('OrganizationMembersShort', variables, params);
+    }
+    queryOrganizationPico(variables: Types.OrganizationPicoVariables, params?: QueryParameters): Promise<Types.OrganizationPico> {
+        return this.query('OrganizationPico', variables, params);
     }
     queryOrganizationProfile(variables: Types.OrganizationProfileVariables, params?: QueryParameters): Promise<Types.OrganizationProfile> {
         return this.query('OrganizationProfile', variables, params);
@@ -300,6 +306,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     queryUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, params?: QueryParameters): Promise<Types.UserAvailableRooms> {
         return this.query('UserAvailableRooms', variables, params);
+    }
+    queryUserNano(variables: Types.UserNanoVariables, params?: QueryParameters): Promise<Types.UserNano> {
+        return this.query('UserNano', variables, params);
     }
     queryUserPico(variables: Types.UserPicoVariables, params?: QueryParameters): Promise<Types.UserPico> {
         return this.query('UserPico', variables, params);
@@ -433,6 +442,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchMessage(variables: Types.MessageVariables, params?: QueryParameters): Promise<Types.Message> {
         return this.refetch('Message', variables, params);
     }
+    refetchMessageMultiSpan(variables: Types.MessageMultiSpanVariables, params?: QueryParameters): Promise<Types.MessageMultiSpan> {
+        return this.refetch('MessageMultiSpan', variables, params);
+    }
     refetchMessagesBatch(variables: Types.MessagesBatchVariables, params?: QueryParameters): Promise<Types.MessagesBatch> {
         return this.refetch('MessagesBatch', variables, params);
     }
@@ -480,6 +492,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: QueryParameters): Promise<Types.OrganizationMembersShort> {
         return this.refetch('OrganizationMembersShort', variables, params);
+    }
+    refetchOrganizationPico(variables: Types.OrganizationPicoVariables, params?: QueryParameters): Promise<Types.OrganizationPico> {
+        return this.refetch('OrganizationPico', variables, params);
     }
     refetchOrganizationProfile(variables: Types.OrganizationProfileVariables, params?: QueryParameters): Promise<Types.OrganizationProfile> {
         return this.refetch('OrganizationProfile', variables, params);
@@ -600,6 +615,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     refetchUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, params?: QueryParameters): Promise<Types.UserAvailableRooms> {
         return this.refetch('UserAvailableRooms', variables, params);
+    }
+    refetchUserNano(variables: Types.UserNanoVariables, params?: QueryParameters): Promise<Types.UserNano> {
+        return this.refetch('UserNano', variables, params);
     }
     refetchUserPico(variables: Types.UserPicoVariables, params?: QueryParameters): Promise<Types.UserPico> {
         return this.refetch('UserPico', variables, params);
@@ -733,6 +751,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     updateMessage(variables: Types.MessageVariables, updater: (data: Types.Message) => Types.Message | null): Promise<boolean> {
         return this.updateQuery(updater, 'Message', variables);
     }
+    updateMessageMultiSpan(variables: Types.MessageMultiSpanVariables, updater: (data: Types.MessageMultiSpan) => Types.MessageMultiSpan | null): Promise<boolean> {
+        return this.updateQuery(updater, 'MessageMultiSpan', variables);
+    }
     updateMessagesBatch(variables: Types.MessagesBatchVariables, updater: (data: Types.MessagesBatch) => Types.MessagesBatch | null): Promise<boolean> {
         return this.updateQuery(updater, 'MessagesBatch', variables);
     }
@@ -780,6 +801,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, updater: (data: Types.OrganizationMembersShort) => Types.OrganizationMembersShort | null): Promise<boolean> {
         return this.updateQuery(updater, 'OrganizationMembersShort', variables);
+    }
+    updateOrganizationPico(variables: Types.OrganizationPicoVariables, updater: (data: Types.OrganizationPico) => Types.OrganizationPico | null): Promise<boolean> {
+        return this.updateQuery(updater, 'OrganizationPico', variables);
     }
     updateOrganizationProfile(variables: Types.OrganizationProfileVariables, updater: (data: Types.OrganizationProfile) => Types.OrganizationProfile | null): Promise<boolean> {
         return this.updateQuery(updater, 'OrganizationProfile', variables);
@@ -900,6 +924,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, updater: (data: Types.UserAvailableRooms) => Types.UserAvailableRooms | null): Promise<boolean> {
         return this.updateQuery(updater, 'UserAvailableRooms', variables);
+    }
+    updateUserNano(variables: Types.UserNanoVariables, updater: (data: Types.UserNano) => Types.UserNano | null): Promise<boolean> {
+        return this.updateQuery(updater, 'UserNano', variables);
     }
     updateUserPico(variables: Types.UserPicoVariables, updater: (data: Types.UserPico) => Types.UserPico | null): Promise<boolean> {
         return this.updateQuery(updater, 'UserPico', variables);
@@ -1115,6 +1142,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useMessage(variables: Types.MessageVariables, params?: SpaceQueryWatchParameters): Types.Message | null {
         return this.useQuery('Message', variables, params);
     }
+    useMessageMultiSpan(variables: Types.MessageMultiSpanVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.MessageMultiSpan | null;
+    useMessageMultiSpan(variables: Types.MessageMultiSpanVariables, params?: SpaceQueryWatchParameters): Types.MessageMultiSpan;
+    useMessageMultiSpan(variables: Types.MessageMultiSpanVariables, params?: SpaceQueryWatchParameters): Types.MessageMultiSpan | null {
+        return this.useQuery('MessageMultiSpan', variables, params);
+    }
     useMessagesBatch(variables: Types.MessagesBatchVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.MessagesBatch | null;
     useMessagesBatch(variables: Types.MessagesBatchVariables, params?: SpaceQueryWatchParameters): Types.MessagesBatch;
     useMessagesBatch(variables: Types.MessagesBatchVariables, params?: SpaceQueryWatchParameters): Types.MessagesBatch | null {
@@ -1194,6 +1226,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembersShort;
     useOrganizationMembersShort(variables: Types.OrganizationMembersShortVariables, params?: SpaceQueryWatchParameters): Types.OrganizationMembersShort | null {
         return this.useQuery('OrganizationMembersShort', variables, params);
+    }
+    useOrganizationPico(variables: Types.OrganizationPicoVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationPico | null;
+    useOrganizationPico(variables: Types.OrganizationPicoVariables, params?: SpaceQueryWatchParameters): Types.OrganizationPico;
+    useOrganizationPico(variables: Types.OrganizationPicoVariables, params?: SpaceQueryWatchParameters): Types.OrganizationPico | null {
+        return this.useQuery('OrganizationPico', variables, params);
     }
     useOrganizationProfile(variables: Types.OrganizationProfileVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.OrganizationProfile | null;
     useOrganizationProfile(variables: Types.OrganizationProfileVariables, params?: SpaceQueryWatchParameters): Types.OrganizationProfile;
@@ -1394,6 +1431,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, params?: SpaceQueryWatchParameters): Types.UserAvailableRooms;
     useUserAvailableRooms(variables: Types.UserAvailableRoomsVariables, params?: SpaceQueryWatchParameters): Types.UserAvailableRooms | null {
         return this.useQuery('UserAvailableRooms', variables, params);
+    }
+    useUserNano(variables: Types.UserNanoVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.UserNano | null;
+    useUserNano(variables: Types.UserNanoVariables, params?: SpaceQueryWatchParameters): Types.UserNano;
+    useUserNano(variables: Types.UserNanoVariables, params?: SpaceQueryWatchParameters): Types.UserNano | null {
+        return this.useQuery('UserNano', variables, params);
     }
     useUserPico(variables: Types.UserPicoVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.UserPico | null;
     useUserPico(variables: Types.UserPicoVariables, params?: SpaceQueryWatchParameters): Types.UserPico;

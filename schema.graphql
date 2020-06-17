@@ -1772,6 +1772,8 @@ type Mutation {
   debugSetChatPayments(cid: ID!, price: Int!, interval: WalletSubscriptionInterval): Boolean!
   debugCalcEntitiesCount(entity: String!): Boolean!
   debugCalcEntitiesCountAll: Boolean!
+  debugSetRoomOwner(roomId: ID!, owner: ID!): Boolean!
+  debugApplySchedulerToConferences(scheduler: ConferenceStrategy!): Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailChangeCode(newEmail: String!): String!
   changeEmail(sessionId: String!, confirmationCode: String!): Boolean!

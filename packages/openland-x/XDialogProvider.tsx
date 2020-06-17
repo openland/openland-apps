@@ -9,6 +9,7 @@ import {
     UPopperController,
 } from 'openland-web/components/unicorn/UPopper';
 import * as ReactDOM from 'react-dom';
+import ResizeObserver from 'resize-observer-polyfill';
 import Popper from 'popper.js';
 import { css } from 'linaria';
 
@@ -92,11 +93,28 @@ export class XDialogProviderComponent extends React.Component<{}, XDialogProvide
                             flip: {
                                 flipVariations: true,
                                 flipVariationsByContent: true,
+                                behavior: ['top', 'bottom', 'left', 'right'],
                             },
                         },
                     });
+                    let observer: any;
+                    if (res.useObserve) {
+                        let width = ref.current!.offsetWidth;
+                        let height = ref.current!.offsetHeight;
+                        observer = new ResizeObserver(src => {
+                            for (let s of src) {
+                                if (s.contentRect.width !== width || s.contentRect.height !== height) {
+                                    pjs.scheduleUpdate();
+                                }
+                            }
+                        });
+                        observer.observe(ref.current!);
+                    }
                     return () => {
                         pjs.destroy();
+                        if (res.useObserve) {
+                            observer.disconnect();
+                        }
                     };
                 }, []);
 

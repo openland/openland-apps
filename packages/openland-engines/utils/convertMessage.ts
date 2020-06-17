@@ -14,11 +14,11 @@ export const convertMessage = (
     let reply =
         generalMessage && generalMessage.quotedMessages
             ? generalMessage.quotedMessages
-                .sort((a, b) => a.date - b.date)
-                .map(r => convertMessage(r as FullMessage))
+                  .sort((a, b) => a.date - b.date)
+                  .map((r) => convertMessage(r as FullMessage))
             : undefined;
 
-    const source = generalMessage && generalMessage.source && generalMessage.source.__typename === 'MessageSourceChat' ? generalMessage.source : (stickerMessage && stickerMessage.source && stickerMessage.source.__typename === 'MessageSourceChat' ? stickerMessage.source : undefined);
+    const source = generalMessage?.source || stickerMessage?.source;
 
     return {
         chatId: '',
@@ -27,20 +27,16 @@ export const convertMessage = (
         key: src.repeatKey || src.id,
         date: parseInt(src.date, 10),
         isOut: true,
-        senderId: src.sender.id,
-        senderName: src.sender.name,
-        senderPhoto: src.sender.photo || undefined,
         sender: src.sender,
         senderBadge: src.senderBadge || undefined,
         text: src.message || undefined,
         isSending: false,
         attachTop: false,
         attachBottom: false,
-        reactions: generalMessage ? generalMessage.reactions : [],
+        reactions: generalMessage ? generalMessage.reactions : stickerMessage ? stickerMessage.reactions : [],
         serviceMetaData: (serviceMessage && serviceMessage.serviceMetadata) || undefined,
         isService: !!serviceMessage,
         attachments: generalMessage && generalMessage.attachments,
-        reply,
         source: source,
         isEdited: generalMessage && generalMessage.edited,
         spans: src.spans || [],
@@ -49,7 +45,6 @@ export const convertMessage = (
         fallback: src.message || '',
         reactionsReduced: [],
         reactionsLabel: '',
-        overrideName: src.overrideName,
-        overrideAvatar: src.overrideAvatar
+        reply,
     };
 };

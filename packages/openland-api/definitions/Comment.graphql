@@ -3,15 +3,13 @@ fragment CommentEntryFragment on CommentEntry {
     deleted
     comment: betaComment {
         ...FullMessage
-        id
     }
     parentComment {
+        id
         comment: betaComment {
             id
             message
         }
-
-        id
     }
     childComments {
         id

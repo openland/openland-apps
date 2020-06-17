@@ -19,7 +19,7 @@ export const SenderContent = React.memo((props: SenderContentProps) => {
 
     return (
         <ASFlex
-            onPress={() => onUserPress(message.senderId)}
+            onPress={() => onUserPress(message.sender.id)}
             key={'name-' + theme.accentPrimary}
             alignItems="center"
         >
@@ -38,7 +38,7 @@ export const SenderContent = React.memo((props: SenderContentProps) => {
                 numberOfLines={1}
                 flexShrink={1}
             >
-                {message.senderName}
+                {message.sender.name}
             </ASText>
         </ASFlex>
     );

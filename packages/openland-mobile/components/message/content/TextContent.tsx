@@ -80,7 +80,7 @@ export const TextContent = (props: TextContentProps) => {
                                 lineHeight: lineHeight[c.type]
                             }}
                         >
-                            {c.spans.length > 0 && renderPreprocessedText(c.spans, onUserPress, onGroupPress, onOrganizationPress, theme)}
+                            {c.spans.length > 0 && renderPreprocessedText(c.spans, onUserPress, onGroupPress, onOrganizationPress, theme, message.id)}
                         </TextWrapper>
                     )}
                     {c.type === 'code_block' && (
@@ -102,7 +102,7 @@ export const TextContent = (props: TextContentProps) => {
                                 }}
                                 color={theme.incomingForegroundPrimary}
                             >
-                                {renderPreprocessedText(c.spans, onUserPress, onGroupPress, onOrganizationPress, theme)}
+                                {renderPreprocessedText(c.spans, onUserPress, onGroupPress, onOrganizationPress, theme, message.id)}
                             </TextWrapper>
                         </View>
                     )}

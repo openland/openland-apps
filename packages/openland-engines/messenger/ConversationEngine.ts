@@ -6,11 +6,15 @@ import { backoff, delay } from 'openland-y-utils/timer';
 import {
     UserBadge,
     FullMessage,
-    FullMessage_GeneralMessage_reactions,
-    FullMessage_ServiceMessage_serviceMetadata,
-    FullMessage_GeneralMessage_attachments,
-    FullMessage_GeneralMessage_spans,
-    UserShort,
+    MessageSpan,
+    MessageSender,
+    FullMessage_GeneralMessage_source,
+    FullMessage_StickerMessage_source,
+    MessageReactions,
+    MessageAttachments,
+    ServiceMessageMetadata,
+    FullMessage_GeneralMessage,
+    FullMessage_StickerMessage,
     DialogUpdateFragment_DialogPeerUpdated_peer,
 } from 'openland-api/spacex.types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
@@ -42,6 +46,8 @@ export interface ConversationStateHandler {
 
 const timeGroup = 1000 * 60 * 60;
 
+type DataSourceMessageSourceT = FullMessage_GeneralMessage_source | FullMessage_StickerMessage_source;
+
 export interface DataSourceMessageItem {
     chatId: string;
     type: 'message';
@@ -49,23 +55,19 @@ export interface DataSourceMessageItem {
     id?: string;
     date: number;
     isOut: boolean;
-    sender: UserShort;
-    senderId: string;
-    senderName: string;
-    senderPhoto?: string;
+    sender: MessageSender;
     senderBadge?: UserBadge;
     text?: string;
-    title?: string;
     isEdited?: boolean;
     reply?: DataSourceMessageItem[];
-    source?: Types.FullMessage_GeneralMessage_source_MessageSourceChat;
-    reactions: FullMessage_GeneralMessage_reactions[];
-    attachments?: (FullMessage_GeneralMessage_attachments & { uri?: string, filePreview?: string | null })[];
-    spans?: FullMessage_GeneralMessage_spans[];
+    source?: DataSourceMessageSourceT | null;
+    reactions: MessageReactions[];
+    attachments?: (MessageAttachments & { uri?: string, filePreview?: string | null })[];
+    spans?: MessageSpan[];
     isSending: boolean;
     attachTop: boolean;
     attachBottom: boolean;
-    serviceMetaData?: FullMessage_ServiceMessage_serviceMetadata;
+    serviceMetaData?: ServiceMessageMetadata;
     isService?: boolean;
     progress?: number;
     commentsCount: number;
@@ -84,8 +86,6 @@ export interface DataSourceMessageItem {
     notificationId?: string;
     notificationType?: 'new_comment' | 'unsupported';
     room?: Types.RoomNano;
-    overrideName: string | null;
-    overrideAvatar: Types.FullMessage_ServiceMessage_overrideAvatar | null;
 }
 
 export interface DataSourceDateItem {
@@ -102,19 +102,19 @@ export interface DataSourceNewDividerItem {
     date: undefined;
 }
 
-const getReplies = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined, chaId: string, engine: MessengerEngine) => {
+const getReplies = (src: FullMessage_GeneralMessage | FullMessage_StickerMessage | undefined, chaId: string, engine: MessengerEngine) => {
     return src && src.quotedMessages ? src.quotedMessages.sort((a, b) => a.date - b.date).map(m => convertMessage(m as FullMessage, chaId, engine)) : undefined;
 };
 
-const getSourceChat = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined) => {
+const getSourceChat = (src: FullMessage_GeneralMessage | FullMessage_StickerMessage | undefined) => {
     return src && src.source && src.source.__typename === 'MessageSourceChat' ? src.source : undefined;
 };
 
-const getCommentsCount = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined) => {
+const getCommentsCount = (src: FullMessage_GeneralMessage | FullMessage_StickerMessage | undefined) => {
     return src ? src.commentsCount : 0;
 };
 
-const getReactions = (src: Types.FullMessage_GeneralMessage | Types.FullMessage_StickerMessage | undefined) => {
+const getReactions = (src: FullMessage_GeneralMessage | FullMessage_StickerMessage | undefined) => {
     return src ? src.reactions || [] : [];
 };
 
@@ -138,8 +138,6 @@ export function convertPartialMessage(src: RecursivePartial<FullMessage> & { id:
         quotedMessages: [],
         reactions: [],
         spans: [],
-        overrideName: null,
-        overrideAvatar: null
     };
     return convertMessage({ ...genericGeneralMessage, ...src as FullMessage }, chatId, engine);
 }
@@ -158,9 +156,6 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId
         key: src.repeatKey || src.id,
         date: parseInt(src.date, 10),
         isOut: src.sender.id === engine.user.id,
-        senderId: src.sender.id,
-        senderName: src.sender.name,
-        senderPhoto: src.sender.photo || undefined,
         senderBadge: src.senderBadge || undefined,
         sender: src.sender,
         text: src.message || undefined,
@@ -181,8 +176,6 @@ export function convertMessage(src: FullMessage & { repeatKey?: string }, chatId
         reactionsReduced: reactions.length ? reduceReactions(reactions, engine.user.id) : [],
         reactionsLabel: reactions.length ? getReactionsLabel(reactions, engine.user.id) : '',
         sticker: stickerMessage ? stickerMessage.sticker : undefined,
-        overrideName: src.overrideName,
-        overrideAvatar: src.overrideAvatar
     };
 }
 
@@ -203,8 +196,6 @@ export function convertMessageBack(src: DataSourceMessageItem): Types.FullMessag
         reactions: [],
         source: src.source || null,
         sticker: src.sticker,
-        overrideName: src.overrideName,
-        overrideAvatar: src.overrideAvatar
     };
 
     return res;
@@ -743,34 +734,6 @@ export class ConversationEngine implements MessageSendHandler {
         return key;
     }
 
-    retryMessage = (key: string) => {
-        let ex = this.messages.find((v) => isPendingMessage(v) && v.key === key);
-        if (ex) {
-            this.messages = this.messages.map((v) => {
-                if (isPendingMessage(v) && v.key === key) {
-                    return {
-                        ...v,
-                        failed: false
-                    } as PendingMessage;
-                } else {
-                    return v;
-                }
-            });
-            this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
-            this.onMessagesUpdated();
-            this.engine.sender.retryMessage(key, this);
-        }
-    }
-
-    cancelMessage = (key: string) => {
-        let ex = this.messages.find((v) => isPendingMessage(v) && v.key === key);
-        if (ex) {
-            this.messages = this.messages.filter((v) => isServerMessage(v) || v.key !== key);
-            this.state = { ...this.state, messages: this.messages, messagesPrepprocessed: this.groupMessages(this.messages) };
-            this.onMessagesUpdated();
-        }
-    }
-
     onFailed = (key: string) => {
         // Handle failed
         let ex = this.messages.find((v) => isPendingMessage(v) && v.key === key);
@@ -873,16 +836,6 @@ export class ConversationEngine implements MessageSendHandler {
                 }
             }
 
-            return null;
-        });
-    }
-
-    handlePhotoUpdated = async (photo: string) => {
-        await this.engine.client.updateRoomChat({ id: this.conversationId }, (data) => {
-            if (data.room && data.room.__typename === 'SharedRoom') {
-                data.room.photo = photo;
-                return data;
-            }
             return null;
         });
     }
@@ -1034,8 +987,8 @@ export class ConversationEngine implements MessageSendHandler {
 
             conv.attachTop = false;
             if (prev && prev.type === 'message') {
-                conv.attachTop = prev.senderId === src.sender.id && !!prev.serviceMetaData === !!(src.__typename === 'ServiceMessage');
-                if (prev.isService && !prev.serviceMetaData && src.__typename === 'GeneralMessage' && prev.senderId === src.sender.id) {
+                conv.attachTop = prev.sender.id === src.sender.id && !!prev.serviceMetaData === !!(src.__typename === 'ServiceMessage');
+                if (prev.isService && !prev.serviceMetaData && src.__typename === 'GeneralMessage' && prev.sender.id === src.sender.id) {
                     conv.attachTop = false;
                 }
             }
@@ -1047,10 +1000,7 @@ export class ConversationEngine implements MessageSendHandler {
                 chatId: this.conversationId,
                 key: src.key,
                 date: parseInt(src.date, 10),
-                senderId: this.engine.user.id,
-                senderName: this.engine.user.name,
                 sender: this.engine.user,
-                senderPhoto: this.engine.user.photo ? this.engine.user.photo : undefined,
                 senderBadge: this.badge,
                 isOut: true,
                 isSending: true,
@@ -1078,15 +1028,13 @@ export class ConversationEngine implements MessageSendHandler {
                 }] : undefined,
                 reply,
                 source: undefined,
-                attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData && !prev.isService : false,
+                attachTop: prev && prev.type === 'message' ? prev.sender.id === this.engine.user.id && !prev.serviceMetaData && !prev.isService : false,
                 textSpans: src.message ? processSpans(src.message, src.spans) : [],
                 reactions: [],
                 fallback: src.message || '',
                 reactionsReduced: [],
                 reactionsLabel: '',
                 sticker: src.sticker || undefined,
-                overrideName: null,
-                overrideAvatar: null
             };
         }
         if (this.dataSource.hasItem(conv.key)) {
@@ -1107,7 +1055,7 @@ export class ConversationEngine implements MessageSendHandler {
             };
             this.dataSource.updateItem(converted);
         } else {
-            if (prev && prev.type === 'message' && prev.senderId === conv.senderId && (!!prev.serviceMetaData === !!conv.serviceMetaData)) {
+            if (prev && prev.type === 'message' && prev.sender.id === conv.sender.id && (!!prev.serviceMetaData === !!conv.serviceMetaData)) {
                 // same sender and prev not service
                 let dateChanged = prev.date && !isSameIntDate(prev.date, conv.date);
                 let prevMessageTooOld = prev.date && (conv.date - prev.date > timeGroup);
@@ -1152,12 +1100,12 @@ export class ConversationEngine implements MessageSendHandler {
 
             const current = this.dataSource.getAt(index) as DataSourceMessageItem;
 
-            if (prev && prev.type === 'message' && current.senderId === prev.senderId) {
+            if (prev && prev.type === 'message' && current.sender.id === prev.sender.id) {
                 const newPrev = { ...prev, attachTop: current.attachTop };
                 this.dataSource.updateItem(newPrev);
             }
 
-            if (next && next.type === 'message' && current.senderId === next.senderId) {
+            if (next && next.type === 'message' && current.sender.id === next.sender.id) {
                 const newNext = { ...next, attachBottom: current.attachBottom };
                 this.dataSource.updateItem(newNext);
             }
@@ -1197,7 +1145,7 @@ export class ConversationEngine implements MessageSendHandler {
         //
         // Start a new sender group
         //
-        let prepareSenderIfNeeded = (sender: UserShort, message: ModelMessage, date: number) => {
+        let prepareSenderIfNeeded = (sender: MessageSender, message: ModelMessage, date: number) => {
             let day = prepareDateIfNeeded(date);
             let isService = isServerMessage(message) && message.__typename === 'ServiceMessage';
             if (prevMessageSender === sender.id && prevMessageDate !== undefined && isService === prevMessageIsService) {
@@ -1234,7 +1182,7 @@ export class ConversationEngine implements MessageSendHandler {
         return res;
     }
 
-    private computeAdditionalReactionsData = (reactions: FullMessage_GeneralMessage_reactions[]) => {
+    private computeAdditionalReactionsData = (reactions: MessageReactions[]) => {
         const reactionsReduced = reduceReactions(reactions, this.engine.user.id);
         const reactionsLabel = getReactionsLabel(reactions, this.engine.user.id);
 

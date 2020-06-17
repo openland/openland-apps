@@ -72,7 +72,7 @@ export const findSpans = (text: string, allowedSpans?: SpanSymbolToTypeT): Messa
     let currentSpecSymbol = '';
     let lastPos = 0;
 
-    for (var i = 0; i < text.length; i++) {
+    for (let i = 0; i < text.length; i++) {
         let mayBeSymbol = getCurrentSymbol(text, i, currentSpecSymbol, allowedSpans);
 
         if (typeof mayBeSymbol === 'string') {

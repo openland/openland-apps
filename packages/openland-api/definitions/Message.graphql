@@ -1,25 +1,76 @@
-fragment SpanFragment on MessageSpan {
+query MessageMultiSpan($id: ID!) {
+    message(messageId: $id) {
+        id
+        spans {
+            ... on MessageSpanMultiUserMention {
+                users {
+                    ...UserForMention
+                }
+            }
+        }
+    }
+}
+
+fragment MessageSender on User {
+    id
+    name
+    photo
+    isBot
+    shortname
+    primaryOrganization {
+        id
+        name
+        shortname
+    }
+}
+
+fragment MessageReactions on ModernMessageReaction {
+    user {
+        id
+        name
+        photo
+        primaryOrganization {
+            id
+            name
+        }
+    }
+    reaction
+}
+
+fragment MessageSpan on MessageSpan {
     offset
     length
 
     ... on MessageSpanUserMention {
         user {
-            ...UserForMention
+            id
+            name
         }
     }
     ... on MessageSpanMultiUserMention {
-        users {
-            ...UserForMention
-        }
+        offset
+        length
     }
     ... on MessageSpanOrganizationMention {
         organization {
-            ...OrganizationShort
+            id
+            name
         }
     }
     ... on MessageSpanRoomMention {
         room {
-            ...RoomNano
+            ... on PrivateRoom {
+                id
+                user {
+                    id
+                    name
+                }
+            }
+            ... on SharedRoom {
+                id
+                title
+                isPremium
+            }
         }
     }
     ... on MessageSpanLink {
@@ -30,60 +81,133 @@ fragment SpanFragment on MessageSpan {
     }
 }
 
-fragment TinyMessage on ModernMessage {
-    id
-    date
-    sender {
-        ...UserTiny
-    }
-    senderBadge {
-        ...UserBadge
-    }
-    message
+fragment MessageAttachments on ModernMessageAttachment {
     fallback
-    ... on GeneralMessage {
+    ... on MessageAttachmentFile {
         id
-        overrideName
-        overrideAvatar {
-            uuid
-            crop {
-                x
-                y
-                w
-                h
+        fileId
+        fileMetadata {
+            name
+            mimeType
+            size
+            isImage
+            imageWidth
+            imageHeight
+            imageFormat
+        }
+        filePreview
+    }
+
+    ... on MessageRichAttachment {
+        id
+        title
+        subTitle
+        titleLink
+        titleLinkHostname
+        text
+        icon {
+            url
+            metadata {
+                name
+                mimeType
+                size
+                isImage
+                imageWidth
+                imageHeight
+                imageFormat
             }
         }
-        isMentioned
-        commentsCount
-        attachments {
-            id
-            fallback
-            ... on MessageAttachmentFile {
+        image {
+            url
+            metadata {
+                name
+                mimeType
+                size
+                isImage
+                imageWidth
+                imageHeight
+                imageFormat
+            }
+        }
+        socialImage {
+            url
+            metadata {
+                name
+                mimeType
+                size
+                isImage
+                imageWidth
+                imageHeight
+                imageFormat
+            }
+        }
+        imageFallback {
+            photo
+            text
+        }
+        keyboard {
+            buttons {
                 id
-                fileId
-                fileMetadata {
-                    isImage
-                    imageFormat
-                }
-                filePreview
+                title
+                style
+                url
             }
         }
-        quotedMessages {
+        fallback
+    }
+    ... on MessageAttachmentPurchase {
+        id
+        purchase {
             id
+            state
+            amount
         }
+        fallback
     }
 }
+
+fragment ServiceMessageMetadata on ServiceMetadata {
+    ... on InviteServiceMetadata {
+        users {
+            id
+        }
+        invitedBy {
+            id
+        }
+    }
+
+    ... on KickServiceMetadata {
+        user {
+            id
+        }
+        kickedBy {
+            id
+        }
+    }
+
+    ... on TitleChangeServiceMetadata {
+        title
+    }
+
+    ... on PhotoChangeServiceMetadata {
+        photo
+    }
+
+    ... on PostRespondServiceMetadata {
+        respondType
+    }
+}
+
 fragment QuotedMessage on ModernMessage {
     id
     date
     message
     sender {
-        ...UserShort
+        ...MessageSender
     }
     senderBadge {
         ...UserBadge
     }
-    message
     fallback
     source {
         ... on MessageSourceChat {
@@ -93,155 +217,29 @@ fragment QuotedMessage on ModernMessage {
                 }
                 ... on SharedRoom {
                     id
+                    isChannel
+                    membersCount
                 }
             }
         }
     }
     spans {
-        ...SpanFragment
+        ...MessageSpan
     }
 
     ... on GeneralMessage {
         id
-        overrideName
-        overrideAvatar {
-            uuid
-            crop {
-                x
-                y
-                w
-                h
-            }
-        }
-        commentsCount
         edited
+        commentsCount
         attachments {
-            fallback
-            ... on MessageAttachmentFile {
-                id
-                fileId
-                fileMetadata {
-                    name
-                    mimeType
-                    size
-                    isImage
-                    imageWidth
-                    imageHeight
-                    imageFormat
-                }
-                filePreview
-            }
-
-            ... on MessageRichAttachment {
-                id
-                title
-                subTitle
-                titleLink
-                titleLinkHostname
-                text
-                icon {
-                    url
-                    metadata {
-                        name
-                        mimeType
-                        size
-                        isImage
-                        imageWidth
-                        imageHeight
-                        imageFormat
-                    }
-                }
-                image {
-                    url
-                    metadata {
-                        name
-                        mimeType
-                        size
-                        isImage
-                        imageWidth
-                        imageHeight
-                        imageFormat
-                    }
-                }
-                keyboard {
-                    buttons {
-                        id
-                        title
-                        style
-                        url
-                    }
-                }
-                imageFallback {
-                    photo
-                    text
-                }
-                fallback
-            }
-
-            ... on MessageAttachmentPurchase {
-                id
-                purchase {
-                    id
-                    state
-                    amount
-                }
-                fallback
-            }
+            ...MessageAttachments
         }
     }
 
     ... on StickerMessage {
         id
-        date
-        overrideName
-        overrideAvatar {
-            uuid
-            crop {
-                x
-                y
-                w
-                h
-            }
-        }
-        sender {
-            ...UserShort
-        }
-        senderBadge {
-            ...UserBadge
-        }
-        source {
-            ... on MessageSourceChat {
-                chat {
-                    ... on PrivateRoom {
-                        id
-                    }
-                    ... on SharedRoom {
-                        id
-                    }
-                }
-            }
-        }
-        reactions {
-            user {
-                ...UserShort
-            }
-            reaction
-        }
         sticker {
-            ... on ImageSticker {
-                id
-                pack {
-                    ... on StickerPack {
-                        id
-                        title
-                    }
-                }
-                image {
-                    ... on ImageRef {
-                        uuid
-                    }
-                }
-            }
+            ...StickerFragment
         }
     }
 }
@@ -250,7 +248,7 @@ fragment FullMessage on ModernMessage {
     id
     date
     sender {
-        ...UserShort
+        ...MessageSender
     }
     senderBadge {
         ...UserBadge
@@ -271,196 +269,42 @@ fragment FullMessage on ModernMessage {
             }
         }
     }
+    spans {
+        ...MessageSpan
+    }
     ... on GeneralMessage {
         id
-        overrideName
-        overrideAvatar {
-            uuid
-            crop {
-                x
-                y
-                w
-                h
-            }
-        }
         edited
         commentsCount
         attachments {
-            fallback
-            ... on MessageAttachmentFile {
-                id
-                fileId
-                fileMetadata {
-                    name
-                    mimeType
-                    size
-                    isImage
-                    imageWidth
-                    imageHeight
-                    imageFormat
-                }
-                filePreview
-            }
-
-            ... on MessageRichAttachment {
-                id
-                title
-                subTitle
-                titleLink
-                titleLinkHostname
-                text
-                icon {
-                    url
-                    metadata {
-                        name
-                        mimeType
-                        size
-                        isImage
-                        imageWidth
-                        imageHeight
-                        imageFormat
-                    }
-                }
-                image {
-                    url
-                    metadata {
-                        name
-                        mimeType
-                        size
-                        isImage
-                        imageWidth
-                        imageHeight
-                        imageFormat
-                    }
-                }
-                socialImage {
-                    url
-                    metadata {
-                        name
-                        mimeType
-                        size
-                        isImage
-                        imageWidth
-                        imageHeight
-                        imageFormat
-                    }
-                }
-                imageFallback {
-                    photo
-                    text
-                }
-                keyboard {
-                    buttons {
-                        id
-                        title
-                        style
-                        url
-                    }
-                }
-                fallback
-            }
-            ... on MessageAttachmentPurchase {
-                id
-                purchase {
-                    id
-                    state
-                    amount
-                }
-                fallback
-            }
+            ...MessageAttachments
         }
         quotedMessages {
             ...QuotedMessage
         }
-
         reactions {
-            user {
-                ...UserShort
-            }
-            reaction
+            ...MessageReactions
         }
-    }
-
-    spans {
-        ...SpanFragment
     }
 
     ... on StickerMessage {
         id
-        overrideName
-        overrideAvatar {
-            uuid
-            crop {
-                x
-                y
-                w
-                h
-            }
-        }
-        date
         commentsCount
-        sender {
-            ...UserShort
-        }
-        senderBadge {
-            ...UserBadge
-        }
         quotedMessages {
             ...QuotedMessage
         }
-        reactions {
-            user {
-                ...UserShort
-            }
-            reaction
-        }
         sticker {
             ...StickerFragment
+        }
+        reactions {
+            ...MessageReactions
         }
     }
 
     ... on ServiceMessage {
         id
-        overrideName
-        overrideAvatar {
-            uuid
-            crop {
-                x
-                y
-                w
-                h
-            }
-        }
         serviceMetadata {
-            ... on InviteServiceMetadata {
-                users {
-                    ...UserTiny
-                }
-                invitedBy {
-                    ...UserTiny
-                }
-            }
-
-            ... on KickServiceMetadata {
-                user {
-                    ...UserTiny
-                }
-                kickedBy {
-                    ...UserTiny
-                }
-            }
-
-            ... on TitleChangeServiceMetadata {
-                title
-            }
-
-            ... on PhotoChangeServiceMetadata {
-                photo
-            }
-
-            ... on PostRespondServiceMetadata {
-                respondType
-            }
+            ...ServiceMessageMetadata
         }
     }
 }

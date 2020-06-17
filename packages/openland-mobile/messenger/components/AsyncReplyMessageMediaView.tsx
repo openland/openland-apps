@@ -29,7 +29,7 @@ export class AsyncReplyMessageMediaView extends React.PureComponent<AsyncMessage
         if (this.state.downloadState && this.state.downloadState.path && this.props.attach.fileMetadata.imageHeight && this.props.attach.fileMetadata.imageWidth) {
             let w = this.props.attach.fileMetadata.imageWidth;
             let h = this.props.attach.fileMetadata.imageHeight;
-            this.props.onPress({ imageHeight: h, imageWidth: w }, { path: this.state.downloadState.path, ...event }, radius, this.props.message.senderName, this.props.message.date);
+            this.props.onPress({ imageHeight: h, imageWidth: w }, { path: this.state.downloadState.path, ...event }, radius, this.props.message.sender.name, this.props.message.date);
         }
     }
 

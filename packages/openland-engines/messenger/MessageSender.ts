@@ -6,17 +6,18 @@ import {
     MessageSpanInput,
     MyStickers_stickers_packs_stickers,
     StickerFragment,
-    ChatMentionSearch_mentions_globalItems
+    MessageSpan_MessageSpanRoomMention_room_SharedRoom,
+    MessageSpan_MessageSpanOrganizationMention_organization,
+    MessageSpan_MessageSpanUserMention_user,
+    // ChatMentionSearch_mentions_globalItems,
 } from 'openland-api/spacex.types';
 import { OpenlandClient } from 'openland-api/spacex';
 import { prepareLegacyMentionsForSend } from 'openland-engines/legacy/legacymentions';
 import { Priority } from 'openland-api/Priority';
 
-export type MentionToSend =
-    | ChatMentionSearch_mentions_globalItems
-    | {
-        __typename: 'AllMention';
-    };
+type ChatMentionT = MessageSpan_MessageSpanRoomMention_room_SharedRoom | MessageSpan_MessageSpanOrganizationMention_organization | MessageSpan_MessageSpanUserMention_user;
+
+export type MentionToSend = ChatMentionT | { __typename: 'AllMention' };
 
 export interface MessageSendHandler {
     onProgress(key: string, progress: number): void;
@@ -42,32 +43,6 @@ export class MessageSender {
 
     constructor(client: OpenlandClient) {
         this.client = client;
-    }
-
-    async sendFileDirect(conversationId: string, uuid: string) {
-        await new Promise<void>((resolver, reject) => {
-            this.doSendMessage({
-                message: null,
-                replyMessages: null,
-                mentions: null,
-                conversationId,
-                fileAttachments: [{ fileId: uuid }],
-                key: UUID(),
-                callback: {
-                    onProgress(key: string, progress: number) {
-                        //
-                    },
-                    onCompleted(key: string) {
-                        resolver();
-                    },
-                    onFailed(key: string) {
-                        reject();
-                    },
-                },
-                spans: null,
-                sticker: null,
-            });
-        });
     }
 
     sendFile(
@@ -223,37 +198,6 @@ export class MessageSender {
             sticker: null,
         });
         return key;
-    }
-
-    async sendMessageAsync({
-        conversationId,
-        message,
-        mentions,
-    }: {
-        conversationId: string;
-        message: string;
-        mentions: MentionToSend[] | null;
-    }) {
-        await new Promise<string>((resolve, reject) => {
-            let handler: MessageSendHandler = {
-                onCompleted: (key: string) => {
-                    resolve();
-                },
-                onFailed: () => {
-                    reject();
-                },
-                onProgress: () => {
-                    // Ignore
-                },
-            };
-            this.sendMessage({
-                spans: null,
-                conversationId,
-                message,
-                mentions,
-                callback: handler,
-            });
-        });
     }
 
     retryMessage(key: string, callback: MessageSendHandler) {

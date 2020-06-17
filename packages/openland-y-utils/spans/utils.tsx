@@ -6,9 +6,10 @@ export const findChildSpans = (
     spans: ServerSpan[],
     parent: ServerSpan,
 ): { lastIndex: number; childs: ServerSpan[] } => {
+    let i;
     let childs: ServerSpan[] = [];
 
-    for (var i = 0; i < spans.length; i++) {
+    for (i = 0; i < spans.length; i++) {
         const span = spans[i];
 
         if (
@@ -38,7 +39,7 @@ export const convertServerSpan = (text: string, s: ServerSpan): Span => {
     } else if (s.__typename === 'MessageSpanOrganizationMention') {
         span = { offset, length, type: SpanType.mention_organization, organization: s.organization };
     } else if (s.__typename === 'MessageSpanMultiUserMention') {
-        span = { offset, length, type: SpanType.mention_users, users: s.users };
+        span = { offset, length, type: SpanType.mention_users };
     } else if (s.__typename === 'MessageSpanAllMention') {
         span = { offset, length, type: SpanType.mention_all };
     } else if (s.__typename === 'MessageSpanBold') {
