@@ -166,6 +166,7 @@ const AuthStartComponent = React.memo((props: PageProps) => {
     const inputCodeRef = React.useRef<TextInput>(null);
     const inputDataRef = React.useRef<TextInput>(null);
     const form = useForm({ disableAppLoader: true });
+    const [loading, setLoading] = React.useState(false);
     const initialCode = countriesMeta.find(x => x.shortname === countryShortname) || {
         label: 'United States',
         value: '+1',
@@ -203,15 +204,20 @@ const AuthStartComponent = React.memo((props: PageProps) => {
                 if (isPhoneAuth) {
                     showConfirmModal({
                         onConfirm: async () => {
+                            setLoading(true);
                             await requestActivationCode(true);
+                            setLoading(false);
                             props.router.push('AuthCode', { phone: true });
                         }
                     });
                 } else {
+                    setLoading(true);
                     await requestActivationCode(false);
+                    setLoading(false);
                     props.router.push('AuthCode');
                 }
             } catch (e) {
+                setLoading(false);
                 ShowAuthError(e);
             }
         });
@@ -297,7 +303,7 @@ const AuthStartComponent = React.memo((props: PageProps) => {
                         title="Next"
                         size="large"
                         onPress={submitForm}
-                        loading={form.loading}
+                        loading={loading}
                     />
                 }
             >
@@ -406,7 +412,7 @@ const CodeInput = React.forwardRef((props: CodeInputProps, ref: React.RefObject<
                 }}
                 onBlur={() => setFocused(false)}
                 ref={ref}
-                caretHidden={true}
+                selectionColor="rgba(255, 255, 255, 0)"
                 autoCapitalize="none"
                 keyboardType="number-pad"
                 returnKeyType="next"
