@@ -48,10 +48,8 @@ fragment MessageSpan on MessageSpan {
         }
     }
     ... on MessageSpanMultiUserMention {
-        users {
-            id
-            name
-        }
+        offset
+        length
     }
     ... on MessageSpanOrganizationMention {
         organization {

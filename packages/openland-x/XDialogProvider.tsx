@@ -77,7 +77,7 @@ export class XDialogProviderComponent extends React.Component<{}, XDialogProvide
                 const target = res.target;
                 const ref = React.useRef<HTMLDivElement>(null);
 
-                React.useEffect(() => {
+                React.useLayoutEffect(() => {
                     const pjs = new Popper(target, ref.current!, {
                         placement: res.placement || 'auto',
                         modifiers: {

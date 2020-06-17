@@ -77,11 +77,8 @@ internal val MessageSpanSelector = obj(
             )),
             inline("MessageSpanMultiUserMention", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
-                field("users", "users", notNull(list(notNull(obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID"))),
-                        field("name", "name", notNull(scalar("String")))
-                    )))))
+                field("offset", "offset", notNull(scalar("Int"))),
+                field("length", "length", notNull(scalar("Int")))
             )),
             inline("MessageSpanOrganizationMention", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),

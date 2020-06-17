@@ -119,7 +119,6 @@ export interface SpanUser extends SpanAbs {
 
 export interface SpanUsers extends SpanAbs {
     type: SpanType.mention_users;
-    users: MessageSpan_MessageSpanUserMention_user[];
 }
 
 export interface SpanAll extends SpanAbs {
