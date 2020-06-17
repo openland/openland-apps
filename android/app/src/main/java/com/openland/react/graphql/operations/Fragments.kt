@@ -63,21 +63,6 @@ internal val UserBadgeSelector = obj(
             field("verified", "verified", notNull(scalar("Boolean")))
         )
 
-internal val MessageSourceSelector = obj(
-            field("__typename", "__typename", notNull(scalar("String"))),
-            field("chat", "chat", notNull(obj(
-                    field("__typename", "__typename", notNull(scalar("String"))),
-                    inline("PrivateRoom", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID")))
-                    )),
-                    inline("SharedRoom", obj(
-                        field("__typename", "__typename", notNull(scalar("String"))),
-                        field("id", "id", notNull(scalar("ID")))
-                    ))
-                )))
-        )
-
 internal val MessageSpanSelector = obj(
             field("__typename", "__typename", notNull(scalar("String"))),
             field("offset", "offset", notNull(scalar("Int"))),
@@ -269,7 +254,22 @@ internal val QuotedMessageSelector = obj(
             field("fallback", "fallback", notNull(scalar("String"))),
             field("source", "source", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("MessageSourceChat", MessageSourceSelector)
+                    inline("MessageSourceChat", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("chat", "chat", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                inline("PrivateRoom", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID")))
+                                )),
+                                inline("SharedRoom", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                                    field("membersCount", "membersCount", notNull(scalar("Int")))
+                                ))
+                            )))
+                    ))
                 )),
             field("spans", "spans", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -278,8 +278,8 @@ internal val QuotedMessageSelector = obj(
             inline("GeneralMessage", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
                 field("id", "id", notNull(scalar("ID"))),
-                field("commentsCount", "commentsCount", notNull(scalar("Int"))),
                 field("edited", "edited", notNull(scalar("Boolean"))),
+                field("commentsCount", "commentsCount", notNull(scalar("Int"))),
                 field("attachments", "attachments", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessageAttachment", MessageAttachmentsSelector)
@@ -359,7 +359,22 @@ internal val FullMessageSelector = obj(
             field("fallback", "fallback", notNull(scalar("String"))),
             field("source", "source", obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    fragment("MessageSourceChat", MessageSourceSelector)
+                    inline("MessageSourceChat", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("chat", "chat", notNull(obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                inline("PrivateRoom", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID")))
+                                )),
+                                inline("SharedRoom", obj(
+                                    field("__typename", "__typename", notNull(scalar("String"))),
+                                    field("id", "id", notNull(scalar("ID"))),
+                                    field("isChannel", "isChannel", notNull(scalar("Boolean"))),
+                                    field("membersCount", "membersCount", notNull(scalar("Int")))
+                                ))
+                            )))
+                    ))
                 )),
             field("spans", "spans", notNull(list(notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),

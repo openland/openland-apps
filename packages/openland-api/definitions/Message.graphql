@@ -24,17 +24,6 @@ fragment MessageSender on User {
     }
 }
 
-fragment MessageSource on MessageSourceChat {
-    chat {
-        ... on PrivateRoom {
-            id
-        }
-        ... on SharedRoom {
-            id
-        }
-    }
-}
-
 fragment MessageReactions on ModernMessageReaction {
     user {
         id
@@ -218,7 +207,18 @@ fragment QuotedMessage on ModernMessage {
     }
     fallback
     source {
-        ...MessageSource
+        ... on MessageSourceChat {
+            chat {
+                ... on PrivateRoom {
+                    id
+                }
+                ... on SharedRoom {
+                    id
+                    isChannel
+                    membersCount
+                }
+            }
+        }
     }
     spans {
         ...MessageSpan
@@ -226,8 +226,8 @@ fragment QuotedMessage on ModernMessage {
 
     ... on GeneralMessage {
         id
-        commentsCount
         edited
+        commentsCount
         attachments {
             ...MessageAttachments
         }
@@ -253,7 +253,18 @@ fragment FullMessage on ModernMessage {
     message
     fallback
     source {
-        ...MessageSource
+        ... on MessageSourceChat {
+            chat {
+                ... on PrivateRoom {
+                    id
+                }
+                ... on SharedRoom {
+                    id
+                    isChannel
+                    membersCount
+                }
+            }
+        }
     }
     spans {
         ...MessageSpan
