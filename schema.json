@@ -27631,25 +27631,24 @@
             "deprecationReason": null
           },
           {
-            "name": "debugClearSchedulerFromConferences",
+            "name": "debugApplySchedulerToConferences",
             "description": "",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
+            "args": [
+              {
+                "name": "scheduler",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "ConferenceStrategy",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
               }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "debugInvalidateAllMessages",
-            "description": "",
-            "args": [],
+            ],
             "type": {
               "kind": "NON_NULL",
               "name": null,

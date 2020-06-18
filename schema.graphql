@@ -1773,8 +1773,7 @@ type Mutation {
   debugCalcEntitiesCount(entity: String!): Boolean!
   debugCalcEntitiesCountAll: Boolean!
   debugSetRoomOwner(roomId: ID!, owner: ID!): Boolean!
-  debugClearSchedulerFromConferences: Boolean!
-  debugInvalidateAllMessages: Boolean!
+  debugApplySchedulerToConferences(scheduler: ConferenceStrategy!): Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailChangeCode(newEmail: String!): String!
   changeEmail(sessionId: String!, confirmationCode: String!): Boolean!
