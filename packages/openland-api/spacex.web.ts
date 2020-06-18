@@ -2887,10 +2887,7 @@ const PicSharedMediaSelector = obj(
                     field('pageInfo', 'pageInfo', args(), notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
                             field('hasNextPage', 'hasNextPage', args(), notNull(scalar('Boolean'))),
-                            field('hasPreviousPage', 'hasPreviousPage', args(), notNull(scalar('Boolean'))),
-                            field('currentPage', 'currentPage', args(), notNull(scalar('Int'))),
-                            field('pagesCount', 'pagesCount', args(), notNull(scalar('Int'))),
-                            field('itemsCount', 'itemsCount', args(), notNull(scalar('Int')))
+                            field('hasPreviousPage', 'hasPreviousPage', args(), notNull(scalar('Boolean')))
                         ))),
                     field('edges', 'edges', args(), notNull(list(notNull(obj(
                             field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5095,7 +5092,7 @@ export const Operations: { [key: string]: OperationDefinition } = {
     PicSharedMedia: {
         kind: 'query',
         name: 'PicSharedMedia',
-        body: 'query PicSharedMedia($chatId:ID!,$first:Int!,$after:ID,$before:ID,$around:ID){chatSharedMedia(chatId:$chatId,mediaTypes:[IMAGE],first:$first,after:$after,before:$before,around:$around){__typename pageInfo{__typename hasNextPage hasPreviousPage currentPage pagesCount itemsCount}edges{__typename cursor index node{__typename message{__typename ... on GeneralMessage{__typename id date sender{__typename id name}attachments{__typename ... on MessageAttachmentFile{__typename id fileMetadata{__typename name isImage imageFormat mimeType imageWidth imageHeight size}filePreview fileId fallback}}}}}}}}',
+        body: 'query PicSharedMedia($chatId:ID!,$first:Int!,$after:ID,$before:ID,$around:ID){chatSharedMedia(chatId:$chatId,mediaTypes:[IMAGE],first:$first,after:$after,before:$before,around:$around){__typename pageInfo{__typename hasNextPage hasPreviousPage}edges{__typename cursor index node{__typename message{__typename ... on GeneralMessage{__typename id date sender{__typename id name}attachments{__typename ... on MessageAttachmentFile{__typename id fileMetadata{__typename name isImage imageFormat mimeType imageWidth imageHeight size}filePreview fileId fallback}}}}}}}}',
         selector: PicSharedMediaSelector
     },
     Post: {

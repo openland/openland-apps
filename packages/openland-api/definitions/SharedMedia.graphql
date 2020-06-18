@@ -78,9 +78,6 @@ query PicSharedMedia($chatId: ID!, $first: Int!, $after: ID, $before: ID, $aroun
         pageInfo {
             hasNextPage
             hasPreviousPage
-            currentPage
-            pagesCount
-            itemsCount
         }
         edges {
             cursor
