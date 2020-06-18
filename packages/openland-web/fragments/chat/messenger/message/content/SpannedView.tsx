@@ -133,7 +133,8 @@ const mentionBgClassName = css`
 const MentionedUserPopperContent = React.memo(
     (props: { userId: string; myId: string; hide: Function }) => {
         const client = useClient();
-        const user = client.useUserNano({ id: props.userId }).user;
+        const user = client.useUserNano({ id: props.userId }, { fetchPolicy: 'cache-and-network' })
+            .user;
         return (
             <UserPopperContent
                 user={user}
@@ -162,6 +163,7 @@ const MentionedUser = React.memo(
                 useWrapper: useWrapper,
                 showTimeout: 400,
                 hideOnChildClick: true,
+                updatedDeps: userId,
             },
             (ctx) => (
                 <React.Suspense fallback={<XLoader loading={true} />}>
@@ -199,10 +201,20 @@ interface MentionedOtherUsersPopperContentProps {
 const MentionedOtherUsersPopperContent = React.memo(
     (props: MentionedOtherUsersPopperContentProps) => {
         const client = useClient();
-        const message = client.useMessageMultiSpan({ id: props.mId || '' }).message;
+        const message = client.useMessageMultiSpan(
+            { id: props.mId || '' },
+            { fetchPolicy: 'cache-and-network' },
+        ).message;
         if (!message) {
             return null;
         }
+
+        // TODO: remove this when cache-and-network be work!
+        React.useLayoutEffect(() => {
+            (async () => {
+                await client.refetchMessageMultiSpan({id: props.mId || '' });
+            })();
+        }, []);
 
         const findSpans = message.spans.find((i) => i.__typename === 'MessageSpanMultiUserMention');
         return (
@@ -243,7 +255,13 @@ const MentionedOtherUsersPopperContent = React.memo(
 const MentionedOtherUsers = React.memo((props: { mId?: string; children: any }) => {
     const { mId, children } = props;
     const [, show] = usePopper(
-        { placement: 'top', hideOnLeave: true, useObserve: true, scope: 'others-users', showTimeout: 400 },
+        {
+            placement: 'top',
+            hideOnLeave: true,
+            useObserve: true,
+            scope: 'others-users',
+            showTimeout: 400,
+        },
         (ctx) => (
             <React.Suspense fallback={<XLoader loading={true} />}>
                 <MentionedOtherUsersPopperContent mId={mId} hide={ctx.hide} />
@@ -276,7 +294,8 @@ const openEntity = async (params: OpenEntityParams) => {
 
 const MentionedGroupPopperContent = React.memo((props: { groupId: string; hide: Function }) => {
     const client = useClient();
-    const group = client.useRoomPico({ id: props.groupId }).room;
+    const group = client.useRoomPico({ id: props.groupId }, { fetchPolicy: 'cache-and-network' })
+        .room;
     if (!group) {
         return null;
     }
@@ -320,6 +339,7 @@ const MentionedGroup = React.memo(
                 borderRadius: 8,
                 scope: 'entity-popper',
                 showTimeout: 400,
+                updatedDeps: groupId,
             },
             (ctx) => (
                 <React.Suspense fallback={<XLoader loading={true} />}>
@@ -356,7 +376,10 @@ const MentionedGroup = React.memo(
 const MentionedOrgPopperContent = React.memo(
     (props: { organizationId: string; hide: Function }) => {
         const client = useClient();
-        const organization = client.useOrganizationPico({ id: props.organizationId }).organization;
+        const organization = client.useOrganizationPico(
+            { id: props.organizationId },
+            { fetchPolicy: 'cache-and-network' },
+        ).organization;
 
         return (
             <EntityPopperContent
@@ -386,13 +409,11 @@ const MentionedOrganization = React.memo(
                 borderRadius: 8,
                 scope: 'entity-popper',
                 showTimeout: 400,
+                updatedDeps: organizationId,
             },
             (ctx) => (
                 <React.Suspense fallback={<XLoader loading={true} />}>
-                    <MentionedOrgPopperContent
-                        hide={ctx.hide}
-                        organizationId={organizationId}
-                    />
+                    <MentionedOrgPopperContent hide={ctx.hide} organizationId={organizationId} />
                 </React.Suspense>
             ),
         );

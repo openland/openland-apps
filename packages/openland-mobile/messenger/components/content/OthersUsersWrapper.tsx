@@ -25,10 +25,19 @@ interface OtherUsersContentProps {
 
 const OtherUsersContent = React.memo((props: OtherUsersContentProps) => {
     const client = useClient();
-    const message = client.useMessageMultiSpan({ id: props.mId || '' }).message;
+    const message = client.useMessageMultiSpan(
+        { id: props.mId || '' },
+    ).message;
+
     if (!message) {
         return null;
     }
+    // TODO: remove this when cache-and-network be work!
+    React.useLayoutEffect(() => {
+        (async () => {
+            await client.refetchMessageMultiSpan({ id: props.mId || '' });
+        })();
+    }, []);
 
     const findSpans = message.spans.find((i) => i.__typename === 'MessageSpanMultiUserMention');
 

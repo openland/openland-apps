@@ -847,7 +847,6 @@ export class ConversationEngine implements MessageSendHandler {
         }
         for (let l of this.listeners) {
             l.onConversationUpdated(this.state);
-
         }
     }
 

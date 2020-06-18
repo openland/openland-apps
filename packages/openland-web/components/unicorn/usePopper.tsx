@@ -220,6 +220,7 @@ interface PopperConfig {
     marginLeft?: number;
     marginTop?: number;
     marginBottom?: number;
+    updatedDeps?: any;
 }
 
 export const usePopper = (
@@ -330,7 +331,7 @@ export const usePopper = (
                 );
             };
         },
-        [config.placement, config.wrapperClassName],
+        [config.placement, config.wrapperClassName, config.updatedDeps],
     );
 
     React.useEffect(() => {
