@@ -152,7 +152,7 @@ export const Placeholder = (props: { mediaTypes: SharedMediaType[]; }) => {
     );
 };
 
-export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps, ref: React.RefObject<Paginated>) => {
+const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps, ref: React.RefObject<Paginated>) => {
     const client = useClient();
     const [loading, setLoading] = React.useState(false);
     const [data, setData] = React.useState<SharedItem[]>([]);
@@ -162,20 +162,22 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
             setLoading(true);
             let res = await client.querySharedMedia({ chatId: props.chatId, after, mediaTypes: props.mediaTypes, first: 30 });
             let nextAfter: string | undefined = undefined;
-            setData(currentData => res.sharedMedia.edges.reduce((attaches, next) => {
-                nextAfter = next.cursor;
-                if (next.node.message.__typename === 'GeneralMessage') {
-                    let sender = next.node.message.sender;
-                    let d = new Date(Number.parseInt(next.node.message.date, 10));
+            let newArr: SharedItem[] = [];
+            res.sharedMedia.edges.map((i) => {
+                nextAfter = i.cursor;
+                if (i.node.message.__typename === 'GeneralMessage') {
+                    let sender = i.node.message.sender;
+                    let d = new Date(Number.parseInt(i.node.message.date, 10));
                     let date = monthsFull[d.getMonth()] + ' ' + d.getFullYear();
-                    for (let attach of next.node.message.attachments) {
+                    for (let attach of i.node.message.attachments) {
                         if (attach.__typename === 'MessageAttachmentFile' || attach.__typename === 'MessageRichAttachment') {
-                            attaches.push({ sender, date, attach, message: next.node.message, dateRaw: next.node.message.date });
+                            newArr.push({ sender, date, attach, message: i.node.message, dateRaw: i.node.message.date });
                         }
                     }
                 }
-                return attaches;
-            }, currentData));
+                return newArr;
+            });
+            setData(prev => prev.concat(newArr));
             setAfter(res.sharedMedia.pageInfo.hasNextPage ? nextAfter : null);
             setLoading(false);
         }
