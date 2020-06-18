@@ -117,12 +117,15 @@ export const AuthRouter = React.memo((props: { children: any }) => {
     ////////////////////////////////////////////////
 
     // Redirect to Join prview before Signup/Signin if there are was redirect to join
-    if (router.path.startsWith('/join/') || router.path.startsWith('/invite/')) {
-        if (!userInfo.isCompleted) {
-            return redirectIfNeeded('/signin/invite');
-        } else {
-            return defaultRoute;
-        }
+    // if (router.path.startsWith('/join/') || router.path.startsWith('/invite/')) {
+    //     if (!userInfo.isCompleted) {
+    //         return redirectIfNeeded('/signin/invite');
+    //     } else {
+    //         return defaultRoute;
+    //     }
+    // }
+    if (!userInfo.isLoggedIn && (router.path.startsWith('/join/') || router.path.startsWith('/invite/'))) {
+        return redirectIfNeeded('/signin/invite');
     }
 
     if (!userInfo.isLoggedIn && shortname) {

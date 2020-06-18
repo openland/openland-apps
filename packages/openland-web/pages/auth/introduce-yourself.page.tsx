@@ -126,11 +126,14 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
                 inviteInfo = await client.queryResolvedInvite({ key: inviteKey });
                 if (inviteInfo.invite?.__typename === 'RoomInvite') {
                     isPremium = inviteInfo.invite.room.isPremium;
-                }
-                if (!isPremium) {
-                    await client.mutateRoomJoinInviteLink({
-                        invite: inviteKey,
-                    });
+
+                    if (!isPremium) {
+                        await client.mutateRoomJoinInviteLink({
+                            invite: inviteKey,
+                        });
+                    }
+                } else if (inviteInfo.invite?.__typename === 'AppInvite') {
+                    await client.mutateOrganizationActivateByInvite({ inviteKey });
                 }
             }
             await client.refetchProfile();
