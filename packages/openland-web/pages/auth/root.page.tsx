@@ -32,17 +32,21 @@ const getOrgInvite = (router: any) => {
     return null;
 };
 
-const checkIfIsSignInInvite = (router: any) => {
+const checkIfIsSignInInvite = (query: any) => {
     return (
-        router.query &&
-        router.query.redirect &&
-        (router.query.redirect.split('/')[1] === 'invite' ||
-            router.query.redirect.split('/')[1] === 'joinChannel')
+        query &&
+        query.redirect &&
+        (query.redirect.split('/')[1] === 'invite' ||
+            query.redirect.split('/')[1] === 'joinChannel')
     );
 };
 
 const isIntroduceYourself = (path: string) => {
     return path.includes('introduce-yourself') || path.includes('/createProfile');
+};
+
+const isAcceptInvite = (path: string, query: any) => {
+    return path.includes('accept-invite') || checkIfIsSignInInvite(query);
 };
 
 const fetchCountry = async (): Promise<string | undefined> => {
@@ -240,7 +244,7 @@ const Root = (props: { countryCode?: string }) => {
         Cookie.set('x-openland-org-invite', getOrgInvite(router));
     }
 
-    if (router.path.includes('accept-invite') || checkIfIsSignInInvite(router)) {
+    if (isAcceptInvite(router.path, router.query)) {
         page = pages.acceptInvite;
     }
     if (router.path.includes('ask-auth-data')) {
@@ -456,7 +460,8 @@ const Root = (props: { countryCode?: string }) => {
 
 Root.getInitialProps = async (props: any) => {
     const countryCode = await fetchCountry();
-    return { countryCode, forceSSR: props.asPath && !isIntroduceYourself(props.asPath) };
+
+    return { countryCode, forceSSR: props.asPath && !isIntroduceYourself(props.asPath) && !isAcceptInvite(props.asPath, props.query) };
 };
 
 export default Root;
