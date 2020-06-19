@@ -25,10 +25,10 @@ class RNAsyncLoadingIndicator: ASDisplayNode {
     didSet {
       if self.node != nil {
         if (loading) {
-          self.node.layer.add(self.animation, forKey: "loader.rotating")
+          // self.node.layer.add(self.animation, forKey: "loader.rotating")
           self.node.alpha = 1.0
         } else {
-          self.node.layer.removeAnimation(forKey: "loader.rotating")
+          // self.node.layer.removeAnimation(forKey: "loader.rotating")
           self.node.alpha = 0.0
         }
       }
@@ -66,7 +66,7 @@ class RNAsyncLoadingIndicator: ASDisplayNode {
   override func didEnterVisibleState() {
     super.didEnterVisibleState()
     if self.loading && self.indicator != nil {
-      self.node.layer.add(self.animation, forKey: "loader.rotating")
+      // self.node.layer.add(self.animation, forKey: "loader.rotating")
     }
   }
   
