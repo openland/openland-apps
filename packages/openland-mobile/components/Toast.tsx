@@ -55,6 +55,7 @@ type ToastBuildConfig = {
     Success?: () => React.ReactElement;
     Failure?: () => React.ReactElement;
     hide?: () => void;
+    hideKeyboardOnOpen?: boolean;
 };
 
 const RawToast = ({ text, iconSource, IconComponent, textStyle }: ToastBuildConfig) => {
@@ -116,7 +117,8 @@ function build(config: ToastBuildConfig) {
             {
                 withoutWrapper: true,
                 overlayStyle: { backgroundColor: 'transparent' },
-                cancelable: false
+                cancelable: false,
+                hideKeyboardOnOpen: config.hideKeyboardOnOpen,
             },
 
         );

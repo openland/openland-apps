@@ -11,15 +11,15 @@ export interface ZModalController {
 export type ZModal = (modal: ZModalController) => React.ReactElement<{}>;
 
 interface ZModalProviderInt {
-    showModal(modal: ZModal): void;
+    showModal(modal: ZModal, hideKeyboardOnOpen?: boolean): void;
     hideModals(): void;
 }
 
 export let ModalProvider: ZModalProviderInt | undefined;
 
-export function showModal(modal: ZModal) {
+export function showModal(modal: ZModal, hideKeyboardOnOpen: boolean = true) {
     if (ModalProvider) {
-        ModalProvider.showModal(modal);
+        ModalProvider.showModal(modal, hideKeyboardOnOpen);
     }
 }
 
@@ -62,9 +62,11 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
         this.setState({ acessoryHeight: height });
     }
 
-    showModal(modal: ZModal) {
+    showModal(modal: ZModal, hideKeyboardOnOpen: boolean = true) {
         setTimeout(() => {
-            Keyboard.dismiss();
+            if (hideKeyboardOnOpen) {
+                Keyboard.dismiss();
+            }
             let key = randomKey();
             let cont: ZModalController = {
                 hide: () => {

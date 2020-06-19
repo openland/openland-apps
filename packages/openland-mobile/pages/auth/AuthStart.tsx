@@ -290,7 +290,10 @@ const AuthStartComponent = React.memo((props: PageProps) => {
         }
 
         let formatted = formatIncompletePhoneNumber(code + value, userCodeField.value.shortname as CountryCode);
-        userDataField.input.onChange(formatted.replace(code, '').trim());
+        // hack for codes with space
+        let formattedCode = formatIncompletePhoneNumber(code, userCodeField.value.shortname as CountryCode);
+
+        userDataField.input.onChange(formatted.replace(formattedCode, '').trim());
     };
 
     return (
@@ -319,6 +322,9 @@ const AuthStartComponent = React.memo((props: PageProps) => {
                                         userCodeField.input.onChange(d);
                                         userDataField.input.onChange('');
                                         props.router.dismiss();
+                                        if (inputDataRef.current) {
+                                            inputDataRef.current.focus();
+                                        }
                                     }
                                 );
                             }}
@@ -465,34 +471,32 @@ const AuthCodeComponent = React.memo((props: PageProps) => {
     const form = useForm({ disableAppLoader: true });
     const initialCode = new Array(6).fill('');
     const codeField = useField('code', initialCode, form);
+    const [resendLoading, setResendLoading] = React.useState(false);
+    const loading = form.loading || resendLoading;
 
     const focusOnError = () => {
         let indexToFocus = codeField.input.value.findIndex(value => !value);
         if (indexToFocus !== -1) {
-            setTimeout(() => {
-                codeRefs.current[indexToFocus]?.current?.focus();
-            }, Platform.OS === 'ios' ? 500 : 1000);
+            codeRefs.current[indexToFocus]?.current?.focus();
         } else {
             codeField.input.onChange(initialCode);
-            setTimeout(() => {
-                codeRefs.current[0].current?.focus();
-            }, Platform.OS === 'ios' ? 500 : 1000);
+            codeRefs.current[0].current?.focus();
         }
     };
 
     const resendCode = async () => {
+        setResendLoading(true);
         try {
             trackEvent('code_resend_action');
             await requestActivationCode(isPhoneAuth);
-            Toast.success({ duration: 1000 }).show();
+            Toast.success({ duration: 1000, hideKeyboardOnOpen: false }).show();
             codeField.input.onChange(initialCode);
-            setTimeout(() => {
-                codeRefs.current[0].current?.focus();
-            }, Platform.OS === 'ios' ? 500 : 1000);
+            codeRefs.current[0].current?.focus();
         } catch (e) {
             ShowAuthError(e.name);
             focusOnError();
         }
+        setResendLoading(false);
     };
 
     const submitForm = () => {
@@ -549,6 +553,9 @@ const AuthCodeComponent = React.memo((props: PageProps) => {
         newValue[index] = value;
         codeField.input.onChange(newValue);
 
+        if (value.length === 6) {
+            return;
+        }
         if (value.length > 0) {
             codeRefs.current[index + 1]?.current?.focus();
         } else {
@@ -584,7 +591,7 @@ const AuthCodeComponent = React.memo((props: PageProps) => {
                         title="Next"
                         size="large"
                         onPress={submitForm}
-                        loading={form.loading}
+                        loading={loading}
                     />
                 }
             >
@@ -612,7 +619,9 @@ const AuthCodeComponent = React.memo((props: PageProps) => {
                                     onChangeText={(text) => handleChange(text, i)}
                                     onKeyPress={(e) => handleKeyPress(e, i)}
                                     onFocus={() => {
-                                        codeField.input.onChange(codeField.value.map((x, idx) => idx === i ? '' : x));
+                                        if (!loading) {
+                                            codeField.input.onChange(codeField.value.map((x, idx) => idx === i ? '' : x));
+                                        }
                                     }}
                                     onSubmitEditing={submitForm}
                                     {...Platform.OS === 'ios' && i === 0 && { textContentType: 'oneTimeCode' }}

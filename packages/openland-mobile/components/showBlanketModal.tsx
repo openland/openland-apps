@@ -226,8 +226,8 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
                         {!withoutWrapper ? (
                             this.renderWrapper()
                         ) : (
-                            <View onLayout={this.onLayout}>{this.contents}</View>
-                        )}
+                                <View onLayout={this.onLayout}>{this.contents}</View>
+                            )}
                     </View>
                 </SAnimated.View>
             </View>
@@ -248,13 +248,15 @@ export function showBlanketModal(
         overlayStyle?: ViewStyle;
         onCancel?: () => void;
         ignoreSafeArea?: boolean;
+        hideKeyboardOnOpen?: boolean;
     },
 ) {
+    const { hideKeyboardOnOpen, ...other } = props || {};
     showModal(modal => {
         return (
             <ASSafeAreaContext.Consumer>
-                {safe => <ThemedBlanketModal ctx={modal} modal={render} safe={safe} {...props} />}
+                {safe => <ThemedBlanketModal ctx={modal} modal={render} safe={safe} {...other} />}
             </ASSafeAreaContext.Consumer>
         );
-    });
+    }, hideKeyboardOnOpen);
 }

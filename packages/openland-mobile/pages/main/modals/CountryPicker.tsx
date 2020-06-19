@@ -61,7 +61,14 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
             <SHeader title="Country" />
             <ASSafeAreaView marginBottom={20} flexDirection="column">
                 <View alignItems="center" marginHorizontal={16} marginTop={8} marginBottom={Platform.OS === 'ios' ? 0 : 16}>
-                    <View position="relative" flexDirection="row" maxWidth={600}>
+                    <View
+                        position="relative"
+                        flexDirection="row"
+                        maxWidth={600}
+                        backgroundColor={theme.backgroundTertiaryTrans}
+                        borderRadius={100}
+                        height={36}
+                    >
                         <TextInput
                             value={query}
                             onChangeText={setQuery}
@@ -73,8 +80,8 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                             paddingTop={Platform.OS === 'ios' ? undefined : 0}
                             placeholder="Search"
                             allowFontScaling={false}
+                            autoFocus={true}
                             keyboardAppearance={theme.keyboardAppearance}
-                            backgroundColor={theme.backgroundTertiaryTrans}
                             placeholderTextColor={theme.foregroundTertiary}
                             style={{ fontSize: 17, flexGrow: 1 }}
                         />
@@ -94,6 +101,7 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                         {!sortCountries && (
                             <SectionList
                                 keyboardDismissMode="on-drag"
+                                keyboardShouldPersistTaps="always"
                                 sections={countriesData}
                                 keyExtractor={(item, index) => item + index}
                                 renderItem={({ item }) => (
@@ -135,6 +143,7 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                                     flexGrow: 1,
                                 }}
                                 keyboardDismissMode="on-drag"
+                                keyboardShouldPersistTaps="always"
                                 data={sortCountries}
                                 renderItem={({ item }) => (
                                     <ZListItem
