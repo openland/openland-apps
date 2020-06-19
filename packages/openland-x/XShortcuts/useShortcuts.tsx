@@ -38,7 +38,7 @@ let listeners: ShortcutsProps[] = [];
 
 let inited = false;
 const init = () => {
-    if (inited) {
+    if (inited || typeof window === 'undefined') {
         return;
     }
     inited = true;

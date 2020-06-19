@@ -254,6 +254,9 @@ const appIcon = css`
 `;
 
 const getOS = () => {
+    if (typeof window === 'undefined') {
+        return '';
+    }
     const platform = window.navigator.platform;
     const macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K', 'darwin'];
     const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
@@ -268,7 +271,10 @@ const getOS = () => {
 };
 
 export default () => {
-    const os = getOS();
+    const [os, setOS] = React.useState('');
+    React.useEffect(() => {
+        setOS(getOS());
+    }, []);
     return (
         <div className={root}>
             <Block>
@@ -287,6 +293,7 @@ export default () => {
                             <h2 className={subheading}>Desktop app</h2>
                             <div className={apps}>
                                 <a
+                                    key="mac"
                                     className={cx(appButton, os === 'mac' && appButtonActive)}
                                     href="https://oplnd.com/mac"
                                 >
@@ -294,6 +301,7 @@ export default () => {
                                     Mac
                                 </a>
                                 <a
+                                    key="windows"
                                     className={cx(appButton, os === 'windows' && appButtonActive)}
                                     href="https://oplnd.com/windows"
                                 >
@@ -301,6 +309,7 @@ export default () => {
                                     Windows
                                 </a>
                                 <a
+                                    key="linux"
                                     className={cx(appButton, os === 'linux' && appButtonActive)}
                                     href="https://oplnd.com/linux"
                                 >

@@ -53,7 +53,7 @@ import '../globals';
 //  App
 //
 
-import App, { AppProps, Container } from 'next/app';
+import App, { AppProps, DefaultAppIProps, Container } from 'next/app';
 
 import { withData } from './root/withData';
 import { RootErrorBoundary } from './root/RootErrorBoundary';
@@ -67,8 +67,46 @@ import { EnvironmentContext } from './root/EnvironmentContext';
 import { OpenlandClient } from 'openland-api/spacex';
 import { GQLClientContext } from 'openland-api/useClient';
 import { QueryCacheProvider } from '@openland/spacex';
+import { DiscoverPage as LandingHomePage } from 'openland-landing/discover.page';
 
 const ErrorBoundary = bugsnagClient.getPlugin('react');
+
+const Page = (props: AppProps & DefaultAppIProps & { client: OpenlandClient | null, token?: string }) => {
+    const { Component, pageProps, client, token, router } = props;
+    const isLanding = !token && router.asPath === '/';
+
+    if (isLanding) {
+        return (
+            <RootErrorBoundary>
+                <LandingHomePage />
+            </RootErrorBoundary>
+        );
+    }
+
+    if (pageProps.forceSSR) {
+        return (
+            <RootErrorBoundary>
+                <Component {...pageProps} />
+            </RootErrorBoundary>
+        );
+    }
+
+    if (client) {
+        return (
+            <QueryCacheProvider>
+                <GQLClientContext.Provider value={client}>
+                    <RootErrorBoundary>
+                        <AppContainer>
+                            <Component {...pageProps} />
+                        </AppContainer>
+                    </RootErrorBoundary>
+                </GQLClientContext.Provider>
+            </QueryCacheProvider>
+        );
+    }
+
+    return null;
+};
 
 export default withData(
     class MyApp extends App<{
@@ -77,6 +115,7 @@ export default withData(
         host: string;
         protocol: string;
         isApp: boolean;
+        token: string;
     }> {
 
         constructor(
@@ -86,6 +125,7 @@ export default withData(
                 host: string;
                 protocol: string;
                 isApp: boolean;
+                token: string;
             } & AppProps,
         ) {
             super(props as any);
@@ -98,7 +138,6 @@ export default withData(
         }
 
         render() {
-            const { Component, pageProps } = this.props;
             return (
                 <ErrorBoundary>
                     <Container>
@@ -111,17 +150,7 @@ export default withData(
                                     hostName={this.props.host}
                                     protocol={this.props.protocol}
                                 >
-                                    {this.props.client && (
-                                        <QueryCacheProvider>
-                                            <GQLClientContext.Provider value={this.props.client}>
-                                                <RootErrorBoundary>
-                                                    <AppContainer>
-                                                        <Component {...pageProps} />
-                                                    </AppContainer>
-                                                </RootErrorBoundary>
-                                            </GQLClientContext.Provider>
-                                        </QueryCacheProvider>
-                                    )}
+                                    <Page {...this.props} />
                                 </XRouterProvider>
                             </XStorageProvider>
                         </EnvironmentContext.Provider>

@@ -41,6 +41,10 @@ const checkIfIsSignInInvite = (router: any) => {
     );
 };
 
+const isIntroduceYourself = (path: string) => {
+    return path.includes('introduce-yourself') || path.includes('/createProfile');
+};
+
 const fetchCountry = async (): Promise<string | undefined> => {
     if (!canUseDOM) {
         return Promise.resolve(undefined);
@@ -245,7 +249,7 @@ const Root = (props: { countryCode?: string }) => {
     if (router.path.includes('ask-auth-code')) {
         page = pages.askAuthCode;
     }
-    if (router.path.includes('introduce-yourself') || router.path.includes('/createProfile')) {
+    if (isIntroduceYourself(router.path)) {
         page = pages.introduceYourself;
     }
 
@@ -450,9 +454,9 @@ const Root = (props: { countryCode?: string }) => {
     );
 };
 
-Root.getInitialProps = async () => {
+Root.getInitialProps = async (props: any) => {
     const countryCode = await fetchCountry();
-    return { countryCode };
+    return { countryCode, forceSSR: props.asPath && !isIntroduceYourself(props.asPath) };
 };
 
 export default Root;
