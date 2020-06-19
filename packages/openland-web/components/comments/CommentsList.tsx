@@ -11,6 +11,9 @@ import { UListHeader } from 'openland-web/components/unicorn/UListHeader';
 import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { sequenceWatcher } from 'openland-api/sequenceWatcher';
+import { createLogger } from 'mental-log';
+
+const log = createLogger('CommentsList');
 
 const wrapper = css`
     padding-bottom: 32px;
@@ -103,15 +106,28 @@ const CommentsListInner = React.memo((props: CommentsListProps & { comments: Com
 export const CommentsList = React.memo((props: CommentsListProps) => {
     const { peerId } = props;
     const client = useClient();
+
+    log.log(`render peerId: ${peerId}`);
+
     const data = client.useComments({ peerId }, { fetchPolicy: 'cache-and-network' }).comments;
 
+    log.log(`data count: ${data.count} | state: ${data.state}`);
+
     const updateHandler = React.useCallback(async () => {
+        log.log(`updateHandler refetch`);
+
         await client.refetchComments({ peerId });
     }, [peerId]);
 
     React.useEffect(() => {
+        log.log(`useEffect before subscribe`);
+
         return sequenceWatcher<CommentWatch>(data.state.state, (state, handler) => client.subscribeCommentWatch({ peerId, fromState: state }, handler), (updates) => {
+            log.log(`event recieved. start`);
+
             if (updates.event) {
+                log.log(`event recieved state: ${updates.event.state}`);
+
                 updateHandler();
                 return updates.event.state;
             } else {
