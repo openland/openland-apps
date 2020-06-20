@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
+import { XView, XViewRouteContext } from 'react-mental';
 import { useClient } from 'openland-api/useClient';
 import { XLoader } from 'openland-x/XLoader';
 import { MessagesSearch_messagesSearch } from 'openland-api/spacex.types';
@@ -38,6 +38,7 @@ const constructVariables = (query: string, after?: string | null) => ({
 const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) => {
     const messenger = React.useContext(MessengerContext);
     const client = useClient();
+    const router = React.useContext(XViewRouteContext);
 
     const [messagesInvalidator] = React.useState<InvalidateSync>(new InvalidateSync(async () => {
         await client.refetchMessagesSearch(constructVariables(props.variables.query), { fetchPolicy: 'network-only' });
@@ -127,7 +128,7 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
     }, [handleNeedMore, after, loadingMore]);
 
     if (items.length === 0 && messages.length === 0) {
-        return <DialogSearchEmptyView/>;
+        return <DialogSearchEmptyView />;
     }
 
     return (
@@ -140,6 +141,7 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
                 const { message, chat } = i.node;
                 const title = chat.__typename === 'PrivateRoom' ? chat.user.name : chat.title;
                 const photo = chat.__typename === 'PrivateRoom' ? chat.user.photo : chat.photo;
+                const selected = router ? (router as any).routeQuery?.messageId === message.id : false;
 
                 return (
                     <DialogView
@@ -166,6 +168,7 @@ const DialogSearchMessagesInner = React.memo((props: DialogSearchMessagesProps) 
                             membership: chat.__typename === 'SharedRoom' ? chat.membership : 'NONE'
                         }}
                         hovered={index === (selectedIndex - items.length)}
+                        selected={selected}
                         onPress={() => props.onMessagePick(message.id)}
                     />
                 );
