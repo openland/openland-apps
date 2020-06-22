@@ -157,7 +157,7 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                         )}
                         {sortCountries && sortCountries.length === 0 && (
                             <Text style={{ ...TextStyles.Body, textAlign: 'center', color: theme.foregroundTertiary, paddingHorizontal: 16 }}>
-                                No country
+                                Nothing found
                             </Text>
                         )}
                     </View>

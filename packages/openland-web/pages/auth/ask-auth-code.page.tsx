@@ -35,8 +35,6 @@ const codeInputStyle = cx(TextTitle1, css`
     border-radius: 8px;
     background-color: var(--backgroundTertiaryTrans);
     color: var(--foregroundPrimary);
-    display: flex;
-    align-items: center;
     text-align: center;
 
     &:hover {
@@ -50,6 +48,8 @@ const codeInputStyle = cx(TextTitle1, css`
     &:not(:last-child) {
         margin-right: 8px;
     }
+    /* because of safari input text-align bug */
+    caret-color: transparent;
 `);
 
 const ResendSubtitle = React.memo((props: { onResend: () => void }) => {
@@ -171,6 +171,7 @@ const WebSignUpActivationCode = (
         const BACKSPACE_CODE = 8;
         if (e.keyCode === BACKSPACE_CODE && e.currentTarget.value.length === 0) {
             e.preventDefault();
+            codeField.input.onChange(codeField.value.map((x, idx) => idx === index - 1 ? '' : x));
             codeRefs.current[index - 1]?.current?.focus();
         }
     };
@@ -225,6 +226,7 @@ const WebSignUpActivationCode = (
                 <AuthInputWrapper className={cx(codeWrapperStyle, shakeClassName)}>
                     {codeField.input.value.map((value, i) => (
                         <input
+                            name={`code-${i}`}
                             ref={codeRefs.current[i]}
                             key={i}
                             inputMode="numeric"
@@ -234,6 +236,7 @@ const WebSignUpActivationCode = (
                             className={codeInputStyle}
                             onChange={(e) => handleChange(e, i)}
                             onKeyDown={(e) => handleKeyDown(e, i)}
+                            autoComplete="off"
                         />
                     ))}
                 </AuthInputWrapper>
