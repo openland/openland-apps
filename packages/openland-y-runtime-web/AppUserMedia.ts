@@ -98,7 +98,7 @@ class AppUserMediaIpl implements AppUserMediaApi {
             audio: false,
             video: {
                 advanced: [{ deviceId: deviceId || MediaDevicesManager.instance().getSelectedVideoInput()?.deviceId || 'default' }],
-                height: { ideal: 720 }
+                height: { ideal: 480 }
             },
         });
         if (this.userVideoPromiseResolve) {
