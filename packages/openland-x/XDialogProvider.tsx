@@ -93,7 +93,6 @@ export class XDialogProviderComponent extends React.Component<{}, XDialogProvide
                             flip: {
                                 flipVariations: true,
                                 flipVariationsByContent: true,
-                                behavior: ['top', 'bottom', 'left', 'right'],
                             },
                         },
                     });
