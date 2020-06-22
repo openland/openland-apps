@@ -10,7 +10,6 @@ import {
     Image,
     TextInputProps,
     Keyboard,
-    Platform,
     ViewProps,
 } from 'react-native';
 import { PageProps } from '../../components/PageProps';
@@ -583,7 +582,7 @@ const AuthCodeComponent = React.memo((props: PageProps) => {
     return (
         <ZTrack event="code_view">
             <RegistrationContainer
-                autoScrollToBottom={true}
+                // autoScrollToBottom={true}
                 title="Enter login code"
                 subtitle={<AuthCodeHeader resendCode={resendCode} isPhoneAuth={isPhoneAuth} />}
                 floatContent={
@@ -624,7 +623,7 @@ const AuthCodeComponent = React.memo((props: PageProps) => {
                                         }
                                     }}
                                     onSubmitEditing={submitForm}
-                                    {...Platform.OS === 'ios' && i === 0 && { textContentType: 'oneTimeCode' }}
+                                // {...Platform.OS === 'ios' && i === 0 && { textContentType: 'oneTimeCode' }}
                                 />
                             ))}
                         </View>
