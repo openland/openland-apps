@@ -6,11 +6,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { NotificationCenterEngine } from 'openland-engines/NotificationCenterEngine';
 import { NotificationCenterEmpty } from 'openland-mobile/notificationCenter/NotificationCenterEmpty';
-import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { NotificationCenterHandlers } from 'openland-mobile/notificationCenter/NotificationCenterHandlers';
-import { NON_PRODUCTION } from '../Init';
 import { SHeader } from 'react-native-s/SHeader';
-import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { STrackedValue } from 'react-native-s/STrackedValue';
 import { Animated } from 'react-native';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
@@ -59,10 +55,6 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
         }
     }
 
-    handleManagePress = () => {
-        NotificationCenterHandlers.handleManagePress(this.props.engine.dataSource.getItems());
-    }
-
     render() {
         const isEmpty = this.props.engine.dataSource.getSize() === 0 && this.props.engine.dataSource.isInited();
 
@@ -70,7 +62,6 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
             return (
                 <>
                     <SHeader title="Notifications" />
-                    {NON_PRODUCTION && <SHeaderButton key={'btn-' + isEmpty} />}
                     <NotificationCenterEmpty />
                 </>
             );
@@ -80,7 +71,6 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
             <>
                 <HeaderConfigRegistrator config={{ contentOffset: this.contentOffset }} />
                 <SHeader title="Notifications" />
-                {NON_PRODUCTION && <ZManageButton key={'btn-' + isEmpty} onPress={this.handleManagePress} />}
                 <ASSafeAreaContext.Consumer>
                     {area => (
                         <>
