@@ -4,8 +4,8 @@ import { Conversation } from './pages/main/Conversation';
 import { Typography } from './pages/dev/Typography';
 import { Components } from './pages/dev/Components';
 import { SettingsProfile } from './pages/main/SettingsProfile';
-import { SettingsProfilePhone } from './pages/main/SettingsProfilePhone';
 import { SettingsNotifications } from './pages/main/SettingsNotifications';
+import { SettingsPrivacy, ChangeLoginMethod, ChangeLoginMethodCode } from './pages/main/SettingsPrivacy';
 import { SettingsEmail } from './pages/main/SettingsEmail';
 import { ProfileUser } from './pages/main/ProfileUser';
 import { ProfileOrganization } from './pages/main/ProfileOrganization';
@@ -85,7 +85,9 @@ export const Routes = new SRoutesBuilder()
   .addRoute('EditGroupWelcomeMessage', EditGroupWelcomeMessage)
   .addRoute('EditGroupPrice', EditGroupPrice)
   .addRoute('SettingsProfile', SettingsProfile)
-  .addRoute('SettingsProfilePhone', SettingsProfilePhone)
+  .addRoute('SettingsPrivacy', SettingsPrivacy)
+  .addRoute('ChangeLoginMethod', ChangeLoginMethod)
+  .addRoute('ChangeLoginMethodCode', ChangeLoginMethodCode)
   .addRoute('SettingsNotifications', SettingsNotifications)
   .addRoute('SettingsEmail', SettingsEmail)
   .addRoute('SettingsOrganizations', SettingsOrganizations)

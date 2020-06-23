@@ -1,0 +1,28 @@
+query AuthPoints {
+    authPoints {
+        email
+        phone
+    }
+}
+
+query IpLocation {
+    ipLocation {
+        countryCode
+    }
+}
+
+mutation SendPhonePairCode($phone: String!) {
+    sendPhonePairCode(phone: $phone)
+}
+
+mutation PairPhone($sessionId: String!, $confirmationCode: String!) {
+    pairPhone(sessionId: $sessionId, confirmationCode: $confirmationCode)
+}
+
+mutation SendEmailChangeCode($email: String!) {
+    sendEmailChangeCode(newEmail: $email)
+}
+
+mutation ChangeEmail($sessionId: String!, $confirmationCode: String!) {
+    changeEmail(sessionId: $sessionId, confirmationCode: $confirmationCode)
+}

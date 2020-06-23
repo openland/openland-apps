@@ -47,6 +47,7 @@ object Operations {
         if (name == "GlobalCounter") return GlobalCounter
         if (name == "GlobalSearch") return GlobalSearch
         if (name == "GroupScreenViews") return GroupScreenViews
+        if (name == "IpLocation") return IpLocation
         if (name == "Message") return Message
         if (name == "MessageMultiSpan") return MessageMultiSpan
         if (name == "MessagesBatch") return MessagesBatch
@@ -120,6 +121,7 @@ object Operations {
         if (name == "BuyPremiumChatPass") return BuyPremiumChatPass
         if (name == "BuyPremiumChatSubscription") return BuyPremiumChatSubscription
         if (name == "CancelSubscription") return CancelSubscription
+        if (name == "ChangeEmail") return ChangeEmail
         if (name == "CommentSetReaction") return CommentSetReaction
         if (name == "CommentUnsetReaction") return CommentUnsetReaction
         if (name == "CommitCardSetupIntent") return CommitCardSetupIntent
@@ -198,6 +200,7 @@ object Operations {
         if (name == "RoomsInviteUser") return RoomsInviteUser
         if (name == "RoomsJoin") return RoomsJoin
         if (name == "SendDonation") return SendDonation
+        if (name == "SendEmailChangeCode") return SendEmailChangeCode
         if (name == "SendMessage") return SendMessage
         if (name == "SendPhonePairCode") return SendPhonePairCode
         if (name == "SendSticker") return SendSticker

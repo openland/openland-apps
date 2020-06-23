@@ -141,6 +141,7 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                             <FlatList
                                 style={{
                                     flexGrow: 1,
+                                    paddingVertical: Platform.OS === 'ios' ? 16 : 0,
                                 }}
                                 keyboardDismissMode="on-drag"
                                 keyboardShouldPersistTaps="always"
@@ -162,7 +163,7 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                                     textAlign: 'center',
                                     color: theme.foregroundTertiary,
                                     paddingHorizontal: 16,
-                                    paddingVertical: Platform.OS === 'ios' ? 16 : 0,
+                                    paddingVertical: Platform.OS === 'ios' ? 28 : 0,
                                 }}
                             >
                                 Nothing found

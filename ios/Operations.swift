@@ -2542,6 +2542,12 @@ private let GlobalSearchSelector = obj(
 private let GroupScreenViewsSelector = obj(
             field("groupScreenViews", "groupScreenViews", arguments(fieldValue("id", refValue("id")), fieldValue("from", refValue("from")), fieldValue("to", refValue("to"))), notNull(scalar("Int")))
         )
+private let IpLocationSelector = obj(
+            field("ipLocation", "ipLocation", obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("countryCode", "countryCode", scalar("String"))
+                ))
+        )
 private let MessageSelector = obj(
             field("message", "message", arguments(fieldValue("messageId", refValue("messageId"))), obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -3794,6 +3800,9 @@ private let CancelSubscriptionSelector = obj(
                     field("id", "id", notNull(scalar("ID")))
                 )))
         )
+private let ChangeEmailSelector = obj(
+            field("changeEmail", "changeEmail", arguments(fieldValue("sessionId", refValue("sessionId")), fieldValue("confirmationCode", refValue("confirmationCode"))), notNull(scalar("Boolean")))
+        )
 private let CommentSetReactionSelector = obj(
             field("commentReactionAdd", "commentReactionAdd", arguments(fieldValue("commentId", refValue("commentId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
@@ -4341,6 +4350,9 @@ private let RoomsJoinSelector = obj(
         )
 private let SendDonationSelector = obj(
             field("sendDonation", "sendDonation", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("userId", refValue("userId")), fieldValue("amount", refValue("amount")), fieldValue("message", refValue("message")), fieldValue("repeatKey", refValue("repeatKey"))), notNull(scalar("Boolean")))
+        )
+private let SendEmailChangeCodeSelector = obj(
+            field("sendEmailChangeCode", "sendEmailChangeCode", arguments(fieldValue("newEmail", refValue("email"))), notNull(scalar("String")))
         )
 private let SendMessageSelector = obj(
             field("sendMessage", "sentMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("message", refValue("message")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("mentions", refValue("mentions")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("spans", refValue("spans")), fieldValue("repeatKey", refValue("repeatKey"))), notNull(scalar("Boolean")))
@@ -4951,6 +4963,12 @@ class Operations {
         "query GroupScreenViews($id:ID!,$from:Date,$to:Date){groupScreenViews(id:$id,from:$from,to:$to)}",
         GroupScreenViewsSelector
     )
+    let IpLocation = OperationDefinition(
+        "IpLocation",
+        .query, 
+        "query IpLocation{ipLocation{__typename countryCode}}",
+        IpLocationSelector
+    )
     let Message = OperationDefinition(
         "Message",
         .query, 
@@ -5388,6 +5406,12 @@ class Operations {
         .mutation, 
         "mutation CancelSubscription($id:ID!){subscriptionCancel(id:$id){__typename id}}",
         CancelSubscriptionSelector
+    )
+    let ChangeEmail = OperationDefinition(
+        "ChangeEmail",
+        .mutation, 
+        "mutation ChangeEmail($sessionId:String!,$confirmationCode:String!){changeEmail(sessionId:$sessionId,confirmationCode:$confirmationCode)}",
+        ChangeEmailSelector
     )
     let CommentSetReaction = OperationDefinition(
         "CommentSetReaction",
@@ -5857,6 +5881,12 @@ class Operations {
         "mutation SendDonation($amount:Int!,$chatId:ID,$userId:ID,$message:String,$repeatKey:String){sendDonation(chatId:$chatId,userId:$userId,amount:$amount,message:$message,repeatKey:$repeatKey)}",
         SendDonationSelector
     )
+    let SendEmailChangeCode = OperationDefinition(
+        "SendEmailChangeCode",
+        .mutation, 
+        "mutation SendEmailChangeCode($email:String!){sendEmailChangeCode(newEmail:$email)}",
+        SendEmailChangeCodeSelector
+    )
     let SendMessage = OperationDefinition(
         "SendMessage",
         .mutation, 
@@ -6181,6 +6211,7 @@ class Operations {
         if name == "GlobalCounter" { return GlobalCounter }
         if name == "GlobalSearch" { return GlobalSearch }
         if name == "GroupScreenViews" { return GroupScreenViews }
+        if name == "IpLocation" { return IpLocation }
         if name == "Message" { return Message }
         if name == "MessageMultiSpan" { return MessageMultiSpan }
         if name == "MessagesBatch" { return MessagesBatch }
@@ -6254,6 +6285,7 @@ class Operations {
         if name == "BuyPremiumChatPass" { return BuyPremiumChatPass }
         if name == "BuyPremiumChatSubscription" { return BuyPremiumChatSubscription }
         if name == "CancelSubscription" { return CancelSubscription }
+        if name == "ChangeEmail" { return ChangeEmail }
         if name == "CommentSetReaction" { return CommentSetReaction }
         if name == "CommentUnsetReaction" { return CommentUnsetReaction }
         if name == "CommitCardSetupIntent" { return CommitCardSetupIntent }
@@ -6332,6 +6364,7 @@ class Operations {
         if name == "RoomsInviteUser" { return RoomsInviteUser }
         if name == "RoomsJoin" { return RoomsJoin }
         if name == "SendDonation" { return SendDonation }
+        if name == "SendEmailChangeCode" { return SendEmailChangeCode }
         if name == "SendMessage" { return SendMessage }
         if name == "SendPhonePairCode" { return SendPhonePairCode }
         if name == "SendSticker" { return SendSticker }

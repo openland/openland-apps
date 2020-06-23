@@ -2549,6 +2549,12 @@ const GlobalSearchSelector = obj(
 const GroupScreenViewsSelector = obj(
             field('groupScreenViews', 'groupScreenViews', args(fieldValue("id", refValue('id')), fieldValue("from", refValue('from')), fieldValue("to", refValue('to'))), notNull(scalar('Int')))
         );
+const IpLocationSelector = obj(
+            field('ipLocation', 'ipLocation', args(), obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('countryCode', 'countryCode', args(), scalar('String'))
+                ))
+        );
 const MessageSelector = obj(
             field('message', 'message', args(fieldValue("messageId", refValue('messageId'))), obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -3801,6 +3807,9 @@ const CancelSubscriptionSelector = obj(
                     field('id', 'id', args(), notNull(scalar('ID')))
                 )))
         );
+const ChangeEmailSelector = obj(
+            field('changeEmail', 'changeEmail', args(fieldValue("sessionId", refValue('sessionId')), fieldValue("confirmationCode", refValue('confirmationCode'))), notNull(scalar('Boolean')))
+        );
 const CommentSetReactionSelector = obj(
             field('commentReactionAdd', 'commentReactionAdd', args(fieldValue("commentId", refValue('commentId')), fieldValue("reaction", refValue('reaction'))), notNull(scalar('Boolean')))
         );
@@ -4348,6 +4357,9 @@ const RoomsJoinSelector = obj(
         );
 const SendDonationSelector = obj(
             field('sendDonation', 'sendDonation', args(fieldValue("chatId", refValue('chatId')), fieldValue("userId", refValue('userId')), fieldValue("amount", refValue('amount')), fieldValue("message", refValue('message')), fieldValue("repeatKey", refValue('repeatKey'))), notNull(scalar('Boolean')))
+        );
+const SendEmailChangeCodeSelector = obj(
+            field('sendEmailChangeCode', 'sendEmailChangeCode', args(fieldValue("newEmail", refValue('email'))), notNull(scalar('String')))
         );
 const SendMessageSelector = obj(
             field('sendMessage', 'sentMessage', args(fieldValue("chatId", refValue('chatId')), fieldValue("message", refValue('message')), fieldValue("replyMessages", refValue('replyMessages')), fieldValue("mentions", refValue('mentions')), fieldValue("fileAttachments", refValue('fileAttachments')), fieldValue("spans", refValue('spans')), fieldValue("repeatKey", refValue('repeatKey'))), notNull(scalar('Boolean')))
@@ -4954,6 +4966,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'query GroupScreenViews($id:ID!,$from:Date,$to:Date){groupScreenViews(id:$id,from:$from,to:$to)}',
         selector: GroupScreenViewsSelector
     },
+    IpLocation: {
+        kind: 'query',
+        name: 'IpLocation',
+        body: 'query IpLocation{ipLocation{__typename countryCode}}',
+        selector: IpLocationSelector
+    },
     Message: {
         kind: 'query',
         name: 'Message',
@@ -5391,6 +5409,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'CancelSubscription',
         body: 'mutation CancelSubscription($id:ID!){subscriptionCancel(id:$id){__typename id}}',
         selector: CancelSubscriptionSelector
+    },
+    ChangeEmail: {
+        kind: 'mutation',
+        name: 'ChangeEmail',
+        body: 'mutation ChangeEmail($sessionId:String!,$confirmationCode:String!){changeEmail(sessionId:$sessionId,confirmationCode:$confirmationCode)}',
+        selector: ChangeEmailSelector
     },
     CommentSetReaction: {
         kind: 'mutation',
@@ -5859,6 +5883,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'SendDonation',
         body: 'mutation SendDonation($amount:Int!,$chatId:ID,$userId:ID,$message:String,$repeatKey:String){sendDonation(chatId:$chatId,userId:$userId,amount:$amount,message:$message,repeatKey:$repeatKey)}',
         selector: SendDonationSelector
+    },
+    SendEmailChangeCode: {
+        kind: 'mutation',
+        name: 'SendEmailChangeCode',
+        body: 'mutation SendEmailChangeCode($email:String!){sendEmailChangeCode(newEmail:$email)}',
+        selector: SendEmailChangeCodeSelector
     },
     SendMessage: {
         kind: 'mutation',

@@ -130,6 +130,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryGroupScreenViews(variables: Types.GroupScreenViewsVariables, params?: QueryParameters): Promise<Types.GroupScreenViews> {
         return this.query('GroupScreenViews', variables, params);
     }
+    queryIpLocation(params?: QueryParameters): Promise<Types.IpLocation> {
+        return this.query('IpLocation', undefined, params);
+    }
     queryMessage(variables: Types.MessageVariables, params?: QueryParameters): Promise<Types.Message> {
         return this.query('Message', variables, params);
     }
@@ -439,6 +442,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchGroupScreenViews(variables: Types.GroupScreenViewsVariables, params?: QueryParameters): Promise<Types.GroupScreenViews> {
         return this.refetch('GroupScreenViews', variables, params);
     }
+    refetchIpLocation(params?: QueryParameters): Promise<Types.IpLocation> {
+        return this.refetch('IpLocation', undefined, params);
+    }
     refetchMessage(variables: Types.MessageVariables, params?: QueryParameters): Promise<Types.Message> {
         return this.refetch('Message', variables, params);
     }
@@ -747,6 +753,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateGroupScreenViews(variables: Types.GroupScreenViewsVariables, updater: (data: Types.GroupScreenViews) => Types.GroupScreenViews | null): Promise<boolean> {
         return this.updateQuery(updater, 'GroupScreenViews', variables);
+    }
+    updateIpLocation(updater: (data: Types.IpLocation) => Types.IpLocation | null): Promise<boolean> {
+        return this.updateQuery(updater, 'IpLocation', undefined);
     }
     updateMessage(variables: Types.MessageVariables, updater: (data: Types.Message) => Types.Message | null): Promise<boolean> {
         return this.updateQuery(updater, 'Message', variables);
@@ -1137,6 +1146,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useGroupScreenViews(variables: Types.GroupScreenViewsVariables, params?: SpaceQueryWatchParameters): Types.GroupScreenViews | null {
         return this.useQuery('GroupScreenViews', variables, params);
     }
+    useIpLocation(params: SpaceQueryWatchParameters & { suspense: false }): Types.IpLocation | null;
+    useIpLocation(params?: SpaceQueryWatchParameters): Types.IpLocation;
+    useIpLocation(params?: SpaceQueryWatchParameters): Types.IpLocation | null {
+        return this.useQuery('IpLocation', undefined, params);
+    }
     useMessage(variables: Types.MessageVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.Message | null;
     useMessage(variables: Types.MessageVariables, params?: SpaceQueryWatchParameters): Types.Message;
     useMessage(variables: Types.MessageVariables, params?: SpaceQueryWatchParameters): Types.Message | null {
@@ -1482,6 +1496,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateCancelSubscription(variables: Types.CancelSubscriptionVariables, params?: MutationParameters): Promise<Types.CancelSubscription> {
         return this.mutate('CancelSubscription', variables, params);
     }
+    mutateChangeEmail(variables: Types.ChangeEmailVariables, params?: MutationParameters): Promise<Types.ChangeEmail> {
+        return this.mutate('ChangeEmail', variables, params);
+    }
     mutateCommentSetReaction(variables: Types.CommentSetReactionVariables, params?: MutationParameters): Promise<Types.CommentSetReaction> {
         return this.mutate('CommentSetReaction', variables, params);
     }
@@ -1715,6 +1732,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     mutateSendDonation(variables: Types.SendDonationVariables, params?: MutationParameters): Promise<Types.SendDonation> {
         return this.mutate('SendDonation', variables, params);
+    }
+    mutateSendEmailChangeCode(variables: Types.SendEmailChangeCodeVariables, params?: MutationParameters): Promise<Types.SendEmailChangeCode> {
+        return this.mutate('SendEmailChangeCode', variables, params);
     }
     mutateSendMessage(variables: Types.SendMessageVariables, params?: MutationParameters): Promise<Types.SendMessage> {
         return this.mutate('SendMessage', variables, params);

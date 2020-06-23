@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity, Platform } from 'react-native';
+import { View, Platform } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { PageProps } from '../../components/PageProps';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
@@ -15,13 +14,11 @@ import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
-import { SUPER_ADMIN } from '../Init';
 
 const SettingsProfileContent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const isIos = Platform.OS === 'ios';
     const { user, profile } = getClient().useProfile({ fetchPolicy: 'network-only' });
-    const { phone } = getClient().useAuthPoints({ fetchPolicy: 'network-only' }).authPoints;
 
     if (!user || !profile) {
         return null;
@@ -97,35 +94,7 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                 </ZListGroup>
 
                 <ZListGroup header="Contacts" headerMarginTop={0}>
-                    <ZInput placeholder="Phone" prefix="+" field={phoneField} />
-                    {SUPER_ADMIN && (
-                        <>
-                            {!phone && !!phoneField.value.trim() && (
-                                <TouchableOpacity
-                                    style={{
-                                        marginLeft: 32,
-                                        marginTop: -8,
-                                        marginBottom: 16,
-                                        alignSelf: 'flex-start',
-                                    }}
-                                    onPress={() =>
-                                        props.router.push('SettingsProfilePhone', {
-                                            phone: phoneField.value,
-                                        })
-                                    }
-                                >
-                                    <View>
-                                        <Text
-                                            style={{ color: theme.accentPrimary, ...TextStyles.Body }}
-                                            allowFontScaling={false}
-                                        >
-                                            Pair this phone
-                                        </Text>
-                                    </View>
-                                </TouchableOpacity>
-                            )}
-                        </>
-                    )}
+                    <ZInput placeholder="Phone" field={phoneField} />
                     <ZInput placeholder="Email" field={emailField} />
                     <ZInput placeholder="Website" field={websiteField} />
                     <ZInput placeholder="Instagram" field={instagramField} />

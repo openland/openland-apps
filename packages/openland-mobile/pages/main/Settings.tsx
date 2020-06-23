@@ -9,7 +9,7 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import Rate from 'react-native-rate';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { NON_PRODUCTION } from '../Init';
+import { NON_PRODUCTION, SUPER_ADMIN } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { trackEvent } from 'openland-mobile/analytics';
@@ -88,25 +88,15 @@ let SettingsContent = ((props: PageProps) => {
                 text="Invite friends"
                 onPress={handleGlobalInvitePress}
             />
-            <ZListGroup header="Billing">
-                <ZListItem
-                    leftIconColor={theme.tintPurple}
-                    leftIcon={require('assets/ic-wallet-glyph-24.png')}
-                    text="Wallet"
-                    path="Wallet"
-                    rightElement={wallet && wallet.myWallet.isLocked ? (
-                        <ZCounter theme={theme} value={wallet.myWallet.failingPaymentsCount} size="medium" />
-                    ) : undefined}
-                />
-                <ZListItem
-                    leftIconColor={theme.tintPink}
-                    leftIcon={require('assets/ic-subscriptions-glyph-24.png')}
-                    text="Subscriptions"
-                    path="Subscriptions"
-                />
-            </ZListGroup>
-
-            <ZListGroup header="Settings">
+            <ZListGroup header="Account">
+                {SUPER_ADMIN && (
+                    <ZListItem
+                        leftIconColor={theme.tintGrey}
+                        leftIcon={require('assets/ic-access-glyph-24.png')}
+                        text="Login and privacy"
+                        path="SettingsPrivacy"
+                    />
+                )}
                 <ZListItem
                     leftIconColor={theme.tintBlue}
                     leftIcon={require('assets/ic-notifications-glyph-24.png')}
@@ -124,6 +114,23 @@ let SettingsContent = ((props: PageProps) => {
                     leftIcon={require('assets/ic-appearance-glyph-24.png')}
                     text="Appearance"
                     path="SettingsAppearance"
+                />
+            </ZListGroup>
+            <ZListGroup header="Billing">
+                <ZListItem
+                    leftIconColor={theme.tintPurple}
+                    leftIcon={require('assets/ic-wallet-glyph-24.png')}
+                    text="Wallet"
+                    path="Wallet"
+                    rightElement={wallet && wallet.myWallet.isLocked ? (
+                        <ZCounter theme={theme} value={wallet.myWallet.failingPaymentsCount} size="medium" />
+                    ) : undefined}
+                />
+                <ZListItem
+                    leftIconColor={theme.tintPink}
+                    leftIcon={require('assets/ic-subscriptions-glyph-24.png')}
+                    text="Subscriptions"
+                    path="Subscriptions"
                 />
             </ZListGroup>
             <ZListGroup header="About">
