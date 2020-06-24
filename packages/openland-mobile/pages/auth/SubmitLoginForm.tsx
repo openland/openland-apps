@@ -162,10 +162,8 @@ export const SubmitLoginForm = React.memo((props: SubmitLoginFormProps) => {
                     if (!confirmed) {
                         return;
                     }
-                    if (confirmed) {
-                        setLoading(true);
-                        await onSubmit(formData, phoneData);
-                    }
+                    setLoading(true);
+                    await onSubmit(formData, phoneData);
                 } else {
                     setLoading(true);
                     await onSubmit(formData, phoneData);
@@ -305,9 +303,9 @@ export const SubmitLoginForm = React.memo((props: SubmitLoginFormProps) => {
                                     onSubmitEditing={submitForm}
                                     onChangeText={onCountryCodeChange}
                                     {
-                                        ...Platform.OS === 'ios'
-                                            ? { textContentType: 'telephoneNumber' }
-                                            : { autoCompleteType: 'tel' }
+                                    ...Platform.OS === 'ios'
+                                        ? { textContentType: 'telephoneNumber' }
+                                        : { autoCompleteType: 'tel' }
                                     }
                                 />
                             </View>

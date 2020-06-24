@@ -47,12 +47,12 @@ export interface ZInputBasicProps extends TextInputProps {
     prefix?: string;
     invalid?: boolean;
     description?: string;
-    enabled?: boolean;
+    disabled?: boolean;
     noWrapper?: boolean;
 }
 
 export const ZInputBasic = React.forwardRef((props: ZInputBasicProps, ref: React.RefObject<TextInput>) => {
-    const { placeholder, prefix, invalid, description, enabled, noWrapper, ...other } = props;
+    const { placeholder, prefix, invalid, description, disabled, noWrapper, ...other } = props;
     const theme = React.useContext(ThemeContext);
     const [focused, setFocused] = React.useState<boolean>(false);
     const [filled, setFilled] = React.useState<boolean>(!!(props.value && props.value.length > 0));
@@ -143,7 +143,7 @@ export const ZInputBasic = React.forwardRef((props: ZInputBasicProps, ref: React
 
     return (
         <View marginHorizontal={noWrapper ? 0 : 16} marginBottom={noWrapper ? 0 : 16}>
-            <View style={styles.container} backgroundColor={theme.backgroundTertiaryTrans}>
+            <View style={styles.container} opacity={disabled ? 0.56 : 1} pointerEvents={disabled ? 'none' : undefined} backgroundColor={theme.backgroundTertiaryTrans}>
                 {!!placeholder && (
                     <View style={styles.placeholderContainer}>
                         <Animated.View style={placeholderAimatedStyle} onLayout={handlePlaceholderLayout}>

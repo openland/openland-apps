@@ -95,7 +95,7 @@ export const ChangeLoginMethodCode = withApp(ChangeLoginMethodCodeComponent, {
     navigationAppearance: 'small-hidden',
 });
 
-const getFormattedPhone = (phone: string) => {
+export const getFormattedPhone = (phone: string) => {
     let formatted = parsePhoneNumberFromString(phone);
     if (formatted) {
         return formatted.formatInternational();
@@ -108,8 +108,8 @@ const SettingsPrivacyContent = (props: PageProps) => {
     const client = useClient();
     const { phone, email } = client.useAuthPoints({ fetchPolicy: 'cache-and-network' }).authPoints;
     const countryCode = client.useIpLocation({ fetchPolicy: 'cache-and-network' })?.ipLocation?.countryCode;
-    const emailStr = email || 'Not linked';
-    const phoneStr = phone ? getFormattedPhone(phone) : 'Not linked';
+    const emailStr = email || 'Not paired';
+    const phoneStr = phone ? getFormattedPhone(phone) : 'Not paired';
 
     const initiateEmailPair = React.useCallback(() => {
         props.router.push('ChangeLoginMethod', { phone: false });
