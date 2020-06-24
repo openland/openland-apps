@@ -9,7 +9,7 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import Rate from 'react-native-rate';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { NON_PRODUCTION, SUPER_ADMIN } from '../Init';
+import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { trackEvent } from 'openland-mobile/analytics';
@@ -89,14 +89,12 @@ let SettingsContent = ((props: PageProps) => {
                 onPress={handleGlobalInvitePress}
             />
             <ZListGroup header="Account">
-                {SUPER_ADMIN && (
-                    <ZListItem
-                        leftIconColor={theme.tintGrey}
-                        leftIcon={require('assets/ic-access-glyph-24.png')}
-                        text="Login and privacy"
-                        path="SettingsPrivacy"
-                    />
-                )}
+                <ZListItem
+                    leftIconColor={theme.tintGrey}
+                    leftIcon={require('assets/ic-access-glyph-24.png')}
+                    text="Login and privacy"
+                    path="SettingsPrivacy"
+                />
                 <ZListItem
                     leftIconColor={theme.tintBlue}
                     leftIcon={require('assets/ic-notifications-glyph-24.png')}

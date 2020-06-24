@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform } from 'react-native';
+import { View, Platform, Text, TouchableWithoutFeedback } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { PageProps } from '../../components/PageProps';
@@ -12,25 +12,42 @@ import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
 import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
-import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
+import { SRouter } from 'react-native-s/SRouter';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { getFormattedPhone } from './SettingsPrivacy';
+
+const PrivacyLink = React.memo((props: { router: SRouter }) => {
+    const theme = useTheme();
+    const onPress = React.useCallback(() => {
+        props.router.push('SettingsPrivacy');
+    }, []);
+    return (
+        <TouchableWithoutFeedback onPress={onPress}>
+            <Text style={{ color: theme.accentPrimary }}>Account and privacy</Text>
+        </TouchableWithoutFeedback>
+    );
+});
 
 const SettingsProfileContent = React.memo((props: PageProps) => {
-    const theme = React.useContext(ThemeContext);
+    const theme = useTheme();
     const isIos = Platform.OS === 'ios';
     const { user, profile } = getClient().useProfile({ fetchPolicy: 'network-only' });
+    const { phone, email } = getClient().useAuthPoints({ fetchPolicy: 'network-only' }).authPoints;
 
     if (!user || !profile) {
         return null;
     }
+    console.log('@@ phone', phone, email);
 
     const form = useForm();
     const firstNameField = useField('firstName', profile.firstName || '', form);
     const lastNameField = useField('lastName', profile.lastName || '', form);
     const photoField = useField('photoRef', profile.photoRef, form);
     const aboutField = useField('about', profile.about || '', form);
-    const phoneField = useField('phone', profile.phone || '', form);
-    const emailField = useField('email', profile.email || '', form);
+    const phoneField = useField('phone', (phone && getFormattedPhone(phone)) || '', form);
+    const emailField = useField('email', email || '', form);
     const locationField = useField('location', profile.location || '', form);
     const websiteField = useField('website', profile.website || '', form);
     const linkedinField = useField('linkedin', profile.linkedin || '', form);
@@ -94,8 +111,12 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
                 </ZListGroup>
 
                 <ZListGroup header="Contacts" headerMarginTop={0}>
-                    <ZInput placeholder="Phone" field={phoneField} />
-                    <ZInput placeholder="Email" field={emailField} />
+                    <ZInput placeholder="Phone" field={phoneField} disabled={true} />
+                    <ZInput placeholder="Email" field={emailField} disabled={true} />
+                    <Text style={{ ...TextStyles.Caption, marginHorizontal: 32, marginBottom: 24, color: theme.foregroundTertiary }}>
+                        {'Edit phone/email and their visibility \nin '}
+                        <PrivacyLink router={props.router} />
+                    </Text>
                     <ZInput placeholder="Website" field={websiteField} />
                     <ZInput placeholder="Instagram" field={instagramField} />
                     <ZInput placeholder="Twitter" field={twitterField} />
