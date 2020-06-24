@@ -79,7 +79,7 @@ const WritePostBlock = (props: { inviteKey: string; isMobile: boolean }) => {
             invite_type: 'Openland',
             action_type: 'post_copied',
         });
-        copy(sharingTextFull);
+        copy(sharingTextFull, { format: 'text/plain' });
         setCopied(true);
         setTimeout(() => {
             setCopied(false);

@@ -65,9 +65,9 @@ export const DiscoverCollectionFragment = React.memo((props: { id?: string }) =>
                             icon={<LinkIcon />}
                             onClick={() => {
                                 if (shortname) {
-                                    copy(`https://openland.com/${shortname}`);
+                                    copy(`https://openland.com/${shortname}`, { format: 'text/plain' });
                                 } else {
-                                    copy(`https://openland.com/discover/collections/${id}`);
+                                    copy(`https://openland.com/discover/collections/${id}`, { format: 'text/plain' });
                                 }
 
                                 toastHandlers.show({

@@ -88,7 +88,7 @@ const OwnerLink = (props: OwnerLinkComponentProps) => {
                     : 'organization';
 
         trackEvent('invite_link_action', { invite_type: objType, action_type: 'link_copied' });
-        copy(invitePath);
+        copy(invitePath, { format: 'text/plain' });
         setCopied(true);
 
         const t = setTimeout(() => {

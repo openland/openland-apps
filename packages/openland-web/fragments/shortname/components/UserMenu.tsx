@@ -26,7 +26,7 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
         title: 'Copy link',
         icon: <CopyIcon />,
         onClick: () => {
-            copy(`https://openland.com/${shortname || id}`);
+            copy(`https://openland.com/${shortname || id}`, { format: 'text/plain' });
 
             toastHandlers.show({
                 type: 'success',
