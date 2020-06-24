@@ -3800,9 +3800,6 @@ private let CancelSubscriptionSelector = obj(
                     field("id", "id", notNull(scalar("ID")))
                 )))
         )
-private let ChangeEmailSelector = obj(
-            field("changeEmail", "changeEmail", arguments(fieldValue("sessionId", refValue("sessionId")), fieldValue("confirmationCode", refValue("confirmationCode"))), notNull(scalar("Boolean")))
-        )
 private let CommentSetReactionSelector = obj(
             field("commentReactionAdd", "commentReactionAdd", arguments(fieldValue("commentId", refValue("commentId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
@@ -4079,6 +4076,9 @@ private let OrganizationMemberRemoveSelector = obj(
                     field("id", "id", notNull(scalar("ID")))
                 )))
         )
+private let PairEmailSelector = obj(
+            field("pairEmail", "pairEmail", arguments(fieldValue("sessionId", refValue("sessionId")), fieldValue("confirmationCode", refValue("confirmationCode"))), notNull(scalar("Boolean")))
+        )
 private let PairPhoneSelector = obj(
             field("pairPhone", "pairPhone", arguments(fieldValue("sessionId", refValue("sessionId")), fieldValue("confirmationCode", refValue("confirmationCode"))), notNull(scalar("Boolean")))
         )
@@ -4351,8 +4351,8 @@ private let RoomsJoinSelector = obj(
 private let SendDonationSelector = obj(
             field("sendDonation", "sendDonation", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("userId", refValue("userId")), fieldValue("amount", refValue("amount")), fieldValue("message", refValue("message")), fieldValue("repeatKey", refValue("repeatKey"))), notNull(scalar("Boolean")))
         )
-private let SendEmailChangeCodeSelector = obj(
-            field("sendEmailChangeCode", "sendEmailChangeCode", arguments(fieldValue("newEmail", refValue("email"))), notNull(scalar("String")))
+private let SendEmailPairCodeSelector = obj(
+            field("sendEmailPairCode", "sendEmailPairCode", arguments(fieldValue("email", refValue("email"))), notNull(scalar("String")))
         )
 private let SendMessageSelector = obj(
             field("sendMessage", "sentMessage", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("message", refValue("message")), fieldValue("replyMessages", refValue("replyMessages")), fieldValue("mentions", refValue("mentions")), fieldValue("fileAttachments", refValue("fileAttachments")), fieldValue("spans", refValue("spans")), fieldValue("repeatKey", refValue("repeatKey"))), notNull(scalar("Boolean")))
@@ -5407,12 +5407,6 @@ class Operations {
         "mutation CancelSubscription($id:ID!){subscriptionCancel(id:$id){__typename id}}",
         CancelSubscriptionSelector
     )
-    let ChangeEmail = OperationDefinition(
-        "ChangeEmail",
-        .mutation, 
-        "mutation ChangeEmail($sessionId:String!,$confirmationCode:String!){changeEmail(sessionId:$sessionId,confirmationCode:$confirmationCode)}",
-        ChangeEmailSelector
-    )
     let CommentSetReaction = OperationDefinition(
         "CommentSetReaction",
         .mutation, 
@@ -5671,6 +5665,12 @@ class Operations {
         "mutation OrganizationMemberRemove($userId:ID!,$organizationId:ID!){betaOrganizationMemberRemove(userId:$userId,organizationId:$organizationId){__typename id}}",
         OrganizationMemberRemoveSelector
     )
+    let PairEmail = OperationDefinition(
+        "PairEmail",
+        .mutation, 
+        "mutation PairEmail($sessionId:String!,$confirmationCode:String!){pairEmail(sessionId:$sessionId,confirmationCode:$confirmationCode)}",
+        PairEmailSelector
+    )
     let PairPhone = OperationDefinition(
         "PairPhone",
         .mutation, 
@@ -5881,11 +5881,11 @@ class Operations {
         "mutation SendDonation($amount:Int!,$chatId:ID,$userId:ID,$message:String,$repeatKey:String){sendDonation(chatId:$chatId,userId:$userId,amount:$amount,message:$message,repeatKey:$repeatKey)}",
         SendDonationSelector
     )
-    let SendEmailChangeCode = OperationDefinition(
-        "SendEmailChangeCode",
+    let SendEmailPairCode = OperationDefinition(
+        "SendEmailPairCode",
         .mutation, 
-        "mutation SendEmailChangeCode($email:String!){sendEmailChangeCode(newEmail:$email)}",
-        SendEmailChangeCodeSelector
+        "mutation SendEmailPairCode($email:String!){sendEmailPairCode(email:$email)}",
+        SendEmailPairCodeSelector
     )
     let SendMessage = OperationDefinition(
         "SendMessage",
@@ -6285,7 +6285,6 @@ class Operations {
         if name == "BuyPremiumChatPass" { return BuyPremiumChatPass }
         if name == "BuyPremiumChatSubscription" { return BuyPremiumChatSubscription }
         if name == "CancelSubscription" { return CancelSubscription }
-        if name == "ChangeEmail" { return ChangeEmail }
         if name == "CommentSetReaction" { return CommentSetReaction }
         if name == "CommentUnsetReaction" { return CommentUnsetReaction }
         if name == "CommitCardSetupIntent" { return CommitCardSetupIntent }
@@ -6329,6 +6328,7 @@ class Operations {
         if name == "OrganizationChangeMemberRole" { return OrganizationChangeMemberRole }
         if name == "OrganizationCreatePublicInvite" { return OrganizationCreatePublicInvite }
         if name == "OrganizationMemberRemove" { return OrganizationMemberRemove }
+        if name == "PairEmail" { return PairEmail }
         if name == "PairPhone" { return PairPhone }
         if name == "PaymentIntentCancel" { return PaymentIntentCancel }
         if name == "PaymentIntentCommit" { return PaymentIntentCommit }
@@ -6364,7 +6364,7 @@ class Operations {
         if name == "RoomsInviteUser" { return RoomsInviteUser }
         if name == "RoomsJoin" { return RoomsJoin }
         if name == "SendDonation" { return SendDonation }
-        if name == "SendEmailChangeCode" { return SendEmailChangeCode }
+        if name == "SendEmailPairCode" { return SendEmailPairCode }
         if name == "SendMessage" { return SendMessage }
         if name == "SendPhonePairCode" { return SendPhonePairCode }
         if name == "SendSticker" { return SendSticker }

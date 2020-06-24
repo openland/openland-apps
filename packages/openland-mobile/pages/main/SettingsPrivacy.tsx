@@ -27,7 +27,7 @@ const ChangeLoginMethodComponent = React.memo((props: PageProps) => {
         if (isPhone) {
             sessionIdRef.current = (await client.mutateSendPhonePairCode({ phone: formData })).sendPhonePairCode;
         } else {
-            sessionIdRef.current = (await client.mutateSendEmailChangeCode({ email: formData })).sendEmailChangeCode;
+            sessionIdRef.current = (await client.mutateSendEmailPairCode({ email: formData })).sendEmailPairCode;
         }
     }, [isPhone]);
     const handleSuccess = React.useCallback(() => {
@@ -68,14 +68,14 @@ const ChangeLoginMethodCodeComponent = React.memo((props: PageProps) => {
         if (isPhone) {
             sessionIdRef.current = (await client.mutateSendPhonePairCode({ phone: formData })).sendPhonePairCode;
         } else {
-            sessionIdRef.current = (await client.mutateSendEmailChangeCode({ email: formData })).sendEmailChangeCode;
+            sessionIdRef.current = (await client.mutateSendEmailPairCode({ email: formData })).sendEmailPairCode;
         }
     }, []);
     const handleSubmit = React.useCallback(async (code: string) => {
         if (isPhone) {
             await client.mutatePairPhone({ confirmationCode: code, sessionId: sessionIdRef.current });
         } else {
-            await client.mutateChangeEmail({ confirmationCode: code, sessionId: sessionIdRef.current });
+            await client.mutatePairEmail({ confirmationCode: code, sessionId: sessionIdRef.current });
         }
         await Promise.all([client.refetchAuthPoints(), client.refetchProfile()]);
         props.router.pushAndReset('SettingsPrivacy');
@@ -106,12 +106,12 @@ const getFormattedPhone = (phone: string) => {
 const SettingsPrivacyContent = (props: PageProps) => {
     const theme = useTheme();
     const client = useClient();
-    const { phone, email } = client.useAuthPoints().authPoints;
-    const countryCode = client.useIpLocation()?.ipLocation?.countryCode;
+    const { phone, email } = client.useAuthPoints({ fetchPolicy: 'network-only' }).authPoints;
+    const countryCode = client.useIpLocation({ fetchPolicy: 'network-only' })?.ipLocation?.countryCode;
     const emailStr = email || 'Not linked';
     const phoneStr = phone ? getFormattedPhone(phone) : 'Not linked';
 
-    const initiateEmailChange = React.useCallback(() => {
+    const initiateEmailPair = React.useCallback(() => {
         props.router.push('ChangeLoginMethod', { phone: false });
     }, []);
     const initiatePhonePair = React.useCallback(() => {
@@ -132,10 +132,13 @@ const SettingsPrivacyContent = (props: PageProps) => {
                     >
                         <View flex={1}>
                             <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>Phone</Text>
-                            <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>{phoneStr}</Text>
+                            <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }} numberOfLines={1}>{phoneStr}</Text>
                         </View>
-                        <View>
-                            {!phone ? <ZButton style="primary" title="Add" onPress={initiatePhonePair} /> : null}
+                        <View marginLeft={8}>
+                            {phone
+                                ? <ZButton style="secondary" title="Edit" onPress={initiatePhonePair} />
+                                : <ZButton style="primary" title="Add" onPress={initiatePhonePair} />
+                            }
                         </View>
                     </View>
                     <View
@@ -149,13 +152,12 @@ const SettingsPrivacyContent = (props: PageProps) => {
                     >
                         <View flex={1}>
                             <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>Email</Text>
-                            <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>{emailStr}</Text>
+                            <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }} numberOfLines={1}>{emailStr}{emailStr}</Text>
                         </View>
-                        <View>
+                        <View marginLeft={8}>
                             {email
-                                ? <ZButton style="secondary" title="Edit" onPress={initiateEmailChange} />
-                                : null
-                                // : <ZButton style="primary" title="Add" onPress={initiateEmailChange} />
+                                ? <ZButton style="secondary" title="Edit" onPress={initiateEmailPair} />
+                                : <ZButton style="primary" title="Add" onPress={initiateEmailPair} />
                             }
                         </View>
                     </View>

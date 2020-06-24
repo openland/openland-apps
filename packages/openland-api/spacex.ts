@@ -1496,9 +1496,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateCancelSubscription(variables: Types.CancelSubscriptionVariables, params?: MutationParameters): Promise<Types.CancelSubscription> {
         return this.mutate('CancelSubscription', variables, params);
     }
-    mutateChangeEmail(variables: Types.ChangeEmailVariables, params?: MutationParameters): Promise<Types.ChangeEmail> {
-        return this.mutate('ChangeEmail', variables, params);
-    }
     mutateCommentSetReaction(variables: Types.CommentSetReactionVariables, params?: MutationParameters): Promise<Types.CommentSetReaction> {
         return this.mutate('CommentSetReaction', variables, params);
     }
@@ -1628,6 +1625,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateOrganizationMemberRemove(variables: Types.OrganizationMemberRemoveVariables, params?: MutationParameters): Promise<Types.OrganizationMemberRemove> {
         return this.mutate('OrganizationMemberRemove', variables, params);
     }
+    mutatePairEmail(variables: Types.PairEmailVariables, params?: MutationParameters): Promise<Types.PairEmail> {
+        return this.mutate('PairEmail', variables, params);
+    }
     mutatePairPhone(variables: Types.PairPhoneVariables, params?: MutationParameters): Promise<Types.PairPhone> {
         return this.mutate('PairPhone', variables, params);
     }
@@ -1733,8 +1733,8 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateSendDonation(variables: Types.SendDonationVariables, params?: MutationParameters): Promise<Types.SendDonation> {
         return this.mutate('SendDonation', variables, params);
     }
-    mutateSendEmailChangeCode(variables: Types.SendEmailChangeCodeVariables, params?: MutationParameters): Promise<Types.SendEmailChangeCode> {
-        return this.mutate('SendEmailChangeCode', variables, params);
+    mutateSendEmailPairCode(variables: Types.SendEmailPairCodeVariables, params?: MutationParameters): Promise<Types.SendEmailPairCode> {
+        return this.mutate('SendEmailPairCode', variables, params);
     }
     mutateSendMessage(variables: Types.SendMessageVariables, params?: MutationParameters): Promise<Types.SendMessage> {
         return this.mutate('SendMessage', variables, params);

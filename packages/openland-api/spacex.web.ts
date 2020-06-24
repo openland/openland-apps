@@ -3807,9 +3807,6 @@ const CancelSubscriptionSelector = obj(
                     field('id', 'id', args(), notNull(scalar('ID')))
                 )))
         );
-const ChangeEmailSelector = obj(
-            field('changeEmail', 'changeEmail', args(fieldValue("sessionId", refValue('sessionId')), fieldValue("confirmationCode", refValue('confirmationCode'))), notNull(scalar('Boolean')))
-        );
 const CommentSetReactionSelector = obj(
             field('commentReactionAdd', 'commentReactionAdd', args(fieldValue("commentId", refValue('commentId')), fieldValue("reaction", refValue('reaction'))), notNull(scalar('Boolean')))
         );
@@ -4086,6 +4083,9 @@ const OrganizationMemberRemoveSelector = obj(
                     field('id', 'id', args(), notNull(scalar('ID')))
                 )))
         );
+const PairEmailSelector = obj(
+            field('pairEmail', 'pairEmail', args(fieldValue("sessionId", refValue('sessionId')), fieldValue("confirmationCode", refValue('confirmationCode'))), notNull(scalar('Boolean')))
+        );
 const PairPhoneSelector = obj(
             field('pairPhone', 'pairPhone', args(fieldValue("sessionId", refValue('sessionId')), fieldValue("confirmationCode", refValue('confirmationCode'))), notNull(scalar('Boolean')))
         );
@@ -4358,8 +4358,8 @@ const RoomsJoinSelector = obj(
 const SendDonationSelector = obj(
             field('sendDonation', 'sendDonation', args(fieldValue("chatId", refValue('chatId')), fieldValue("userId", refValue('userId')), fieldValue("amount", refValue('amount')), fieldValue("message", refValue('message')), fieldValue("repeatKey", refValue('repeatKey'))), notNull(scalar('Boolean')))
         );
-const SendEmailChangeCodeSelector = obj(
-            field('sendEmailChangeCode', 'sendEmailChangeCode', args(fieldValue("newEmail", refValue('email'))), notNull(scalar('String')))
+const SendEmailPairCodeSelector = obj(
+            field('sendEmailPairCode', 'sendEmailPairCode', args(fieldValue("email", refValue('email'))), notNull(scalar('String')))
         );
 const SendMessageSelector = obj(
             field('sendMessage', 'sentMessage', args(fieldValue("chatId", refValue('chatId')), fieldValue("message", refValue('message')), fieldValue("replyMessages", refValue('replyMessages')), fieldValue("mentions", refValue('mentions')), fieldValue("fileAttachments", refValue('fileAttachments')), fieldValue("spans", refValue('spans')), fieldValue("repeatKey", refValue('repeatKey'))), notNull(scalar('Boolean')))
@@ -5410,12 +5410,6 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'mutation CancelSubscription($id:ID!){subscriptionCancel(id:$id){__typename id}}',
         selector: CancelSubscriptionSelector
     },
-    ChangeEmail: {
-        kind: 'mutation',
-        name: 'ChangeEmail',
-        body: 'mutation ChangeEmail($sessionId:String!,$confirmationCode:String!){changeEmail(sessionId:$sessionId,confirmationCode:$confirmationCode)}',
-        selector: ChangeEmailSelector
-    },
     CommentSetReaction: {
         kind: 'mutation',
         name: 'CommentSetReaction',
@@ -5674,6 +5668,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'mutation OrganizationMemberRemove($userId:ID!,$organizationId:ID!){betaOrganizationMemberRemove(userId:$userId,organizationId:$organizationId){__typename id}}',
         selector: OrganizationMemberRemoveSelector
     },
+    PairEmail: {
+        kind: 'mutation',
+        name: 'PairEmail',
+        body: 'mutation PairEmail($sessionId:String!,$confirmationCode:String!){pairEmail(sessionId:$sessionId,confirmationCode:$confirmationCode)}',
+        selector: PairEmailSelector
+    },
     PairPhone: {
         kind: 'mutation',
         name: 'PairPhone',
@@ -5884,11 +5884,11 @@ export const Operations: { [key: string]: OperationDefinition } = {
         body: 'mutation SendDonation($amount:Int!,$chatId:ID,$userId:ID,$message:String,$repeatKey:String){sendDonation(chatId:$chatId,userId:$userId,amount:$amount,message:$message,repeatKey:$repeatKey)}',
         selector: SendDonationSelector
     },
-    SendEmailChangeCode: {
+    SendEmailPairCode: {
         kind: 'mutation',
-        name: 'SendEmailChangeCode',
-        body: 'mutation SendEmailChangeCode($email:String!){sendEmailChangeCode(newEmail:$email)}',
-        selector: SendEmailChangeCodeSelector
+        name: 'SendEmailPairCode',
+        body: 'mutation SendEmailPairCode($email:String!){sendEmailPairCode(email:$email)}',
+        selector: SendEmailPairCodeSelector
     },
     SendMessage: {
         kind: 'mutation',

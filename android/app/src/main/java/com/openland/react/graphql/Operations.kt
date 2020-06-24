@@ -121,7 +121,6 @@ object Operations {
         if (name == "BuyPremiumChatPass") return BuyPremiumChatPass
         if (name == "BuyPremiumChatSubscription") return BuyPremiumChatSubscription
         if (name == "CancelSubscription") return CancelSubscription
-        if (name == "ChangeEmail") return ChangeEmail
         if (name == "CommentSetReaction") return CommentSetReaction
         if (name == "CommentUnsetReaction") return CommentUnsetReaction
         if (name == "CommitCardSetupIntent") return CommitCardSetupIntent
@@ -165,6 +164,7 @@ object Operations {
         if (name == "OrganizationChangeMemberRole") return OrganizationChangeMemberRole
         if (name == "OrganizationCreatePublicInvite") return OrganizationCreatePublicInvite
         if (name == "OrganizationMemberRemove") return OrganizationMemberRemove
+        if (name == "PairEmail") return PairEmail
         if (name == "PairPhone") return PairPhone
         if (name == "PaymentIntentCancel") return PaymentIntentCancel
         if (name == "PaymentIntentCommit") return PaymentIntentCommit
@@ -200,7 +200,7 @@ object Operations {
         if (name == "RoomsInviteUser") return RoomsInviteUser
         if (name == "RoomsJoin") return RoomsJoin
         if (name == "SendDonation") return SendDonation
-        if (name == "SendEmailChangeCode") return SendEmailChangeCode
+        if (name == "SendEmailPairCode") return SendEmailPairCode
         if (name == "SendMessage") return SendMessage
         if (name == "SendPhonePairCode") return SendPhonePairCode
         if (name == "SendSticker") return SendSticker

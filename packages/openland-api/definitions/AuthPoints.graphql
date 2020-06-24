@@ -19,10 +19,10 @@ mutation PairPhone($sessionId: String!, $confirmationCode: String!) {
     pairPhone(sessionId: $sessionId, confirmationCode: $confirmationCode)
 }
 
-mutation SendEmailChangeCode($email: String!) {
-    sendEmailChangeCode(newEmail: $email)
+mutation SendEmailPairCode($email: String!) {
+    sendEmailPairCode(email: $email)
 }
 
-mutation ChangeEmail($sessionId: String!, $confirmationCode: String!) {
-    changeEmail(sessionId: $sessionId, confirmationCode: $confirmationCode)
+mutation PairEmail($sessionId: String!, $confirmationCode: String!) {
+    pairEmail(sessionId: $sessionId, confirmationCode: $confirmationCode)
 }

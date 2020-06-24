@@ -27700,11 +27700,11 @@
             "deprecationReason": null
           },
           {
-            "name": "sendEmailChangeCode",
+            "name": "sendEmailPairCode",
             "description": "",
             "args": [
               {
-                "name": "newEmail",
+                "name": "email",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -27731,7 +27731,7 @@
             "deprecationReason": null
           },
           {
-            "name": "changeEmail",
+            "name": "pairEmail",
             "description": "",
             "args": [
               {
