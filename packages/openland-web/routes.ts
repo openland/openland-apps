@@ -225,6 +225,8 @@ routes.add('/account/me', '/unicorn/index');
 routes.add('/account/me/', '/unicorn/index');
 routes.add('/account/profile', '/unicorn/index');
 routes.add('/account/profile/', '/unicorn/index');
+routes.add('/account/privacy', '/unicorn/index');
+routes.add('/account/privacy/', '/unicorn/index');
 routes.add('/account/appearance', '/unicorn/index');
 routes.add('/account/appearance/', '/unicorn/index');
 routes.add('/account/download', '/unicorn/index');

@@ -5,6 +5,7 @@ import { UListItem, SelectableText } from 'openland-web/components/unicorn/UList
 import { emoji } from 'openland-y-utils/emoji';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
+import AccessIcon from 'openland-icons/s/ic-access-24.svg';
 import EmailIcon from 'openland-icons/s/ic-mail-24.svg';
 import InviteFriendsIcon from 'openland-icons/s/ic-invite-24.svg';
 import EditProfileIcon from 'openland-icons/s/ic-edit-24.svg';
@@ -234,7 +235,28 @@ export const AccountFragment = React.memo(() => {
                             icon={<InviteFriendsIcon />}
                             path="/account/invites"
                         />
-
+                        <UListGroup header="Preferences">
+                            <UListItem
+                                title="Account and privacy"
+                                icon={<AccessIcon />}
+                                path="/account/privacy"
+                            />
+                            <UListItem
+                                title="Notifications"
+                                icon={<NotificationsIcon />}
+                                path="/account/notifications"
+                            />
+                            <UListItem
+                                title="Email preferences"
+                                icon={<EmailIcon />}
+                                path="/account/email"
+                            />
+                            <UListItem
+                                title="Appearance"
+                                icon={<AppearanceIcon />}
+                                path="/account/appearance"
+                            />
+                        </UListGroup>
                         <UListGroup header="Billing">
                             <UListItem
                                 title="Wallet"
@@ -267,25 +289,6 @@ export const AccountFragment = React.memo(() => {
                                 path="/subscriptions"
                             />
                         </UListGroup>
-
-                        <UListGroup header="Settings">
-                            <UListItem
-                                title="Notifications"
-                                icon={<NotificationsIcon />}
-                                path="/account/notifications"
-                            />
-                            <UListItem
-                                title="Email preferences"
-                                icon={<EmailIcon />}
-                                path="/account/email"
-                            />
-                            <UListItem
-                                title="Appearance"
-                                icon={<AppearanceIcon />}
-                                path="/account/appearance"
-                            />
-                        </UListGroup>
-
                         <UListGroup header="Openland">
                             <UListItem
                                 title="Install apps"
@@ -294,7 +297,6 @@ export const AccountFragment = React.memo(() => {
                             />
                             <UListItem title="About us" icon={<InfoIcon />} path="/account/about" />
                         </UListGroup>
-
                         <UListGroup
                             header="Organizations"
                             action={{

@@ -39,6 +39,13 @@ const inputWrapper = css`
     }
 `;
 
+const disabledInputWrapper = css`
+    opacity: 0.56;
+    &:hover {
+        background-color: var(--backgroundTertiaryTrans);
+    }
+`;
+
 const inputWrapperWithPlaceholder = css`
     height: 40px;
 `;
@@ -164,6 +171,7 @@ export const UInput = React.forwardRef(
                 <div
                     className={cx(
                         inputWrapper,
+                        disabled && disabledInputWrapper,
                         hasPlaceholder && inputWrapperWithPlaceholder,
                         pref && 'has-prefix',
                     )}

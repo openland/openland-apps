@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
-import { TextBody } from 'openland-web/utils/TextStyles';
+import { TextCaption } from 'openland-web/utils/TextStyles';
+import { ULink } from 'openland-web/components/unicorn/ULink';
 import { useForm } from 'openland-form/useForm';
 import { useClient } from 'openland-api/useClient';
 import { useField } from 'openland-form/useField';
@@ -18,82 +19,12 @@ import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
-import { showModalBox } from 'openland-x/showModalBox';
-import { XModalFooter } from 'openland-web/components/XModalFooter';
-import { XModalContent } from 'openland-web/components/XModalContent';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 
-const modalSubtitle = css`
-    color: var(--foregroundPrimary);
-    margin-bottom: 20px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 320px;
+const privacyText = css`
+    margin-bottom: 24px;
+    margin-left: 16px;
+    color: var(--foregroundSecondary);
 `;
-
-const PairPhoneModalContent = React.memo((props: { phone: string; hide: () => void }) => {
-    const [confirmState, setConfirmState] = React.useState(false);
-    const [validCode, setValidCode] = React.useState('');
-    const [loading, setLoading] = React.useState(false);
-    const [sessionState, setSessionState] = React.useState<null | string>(null);
-    const client = useClient();
-
-    const userPhoneParse = props.phone.match(/\d/g);
-    const userPhone = userPhoneParse && userPhoneParse.join('');
-
-    const handleConfirm = async () => {
-        setConfirmState(true);
-        const data = await client.mutateSendPhonePairCode({ phone: `+${userPhone}` });
-        setSessionState(data.sendPhonePairCode);
-    };
-
-    const handleSave = async () => {
-        if (sessionState) {
-            setLoading(true);
-            await client.mutatePairPhone({
-                sessionId: sessionState,
-                confirmationCode: validCode
-            });
-            await client.refetchProfile();
-            await client.refetchAuthPoints();
-            setLoading(false);
-            props.hide();
-        }
-    };
-
-    const subtitleText = !confirmState
-        ? `Are you sure you want to pair this phone +${userPhone} ?`
-        : 'Enter confirm code';
-
-    return (
-        <>
-            <XModalContent>
-                <div className={cx(modalSubtitle, TextBody)}>{subtitleText}</div>
-                {confirmState && <UInput type="number" label="Code" value={validCode} onChange={setValidCode} />}
-            </XModalContent>
-            <XModalFooter>
-                <UButton text="Cancel" style="tertiary" size="large" onClick={() => props.hide()} />
-                <UButton
-                    text={confirmState ? 'Save' : 'Pair'}
-                    style="primary"
-                    size="large"
-                    onClick={confirmState ? handleSave : handleConfirm}
-                    loading={loading}
-                />
-            </XModalFooter>
-        </>
-    );
-});
-
-const showPairPhoneModal = (phone: string) => {
-    showModalBox(
-        {
-            width: 400,
-            title: 'Pair phone',
-        },
-        (ctx) => <PairPhoneModalContent phone={phone} hide={ctx.hide} />,
-    );
-};
 
 export const SettingsProfileFragment = React.memo(() => {
     const form = useForm();
@@ -103,7 +34,7 @@ export const SettingsProfileFragment = React.memo(() => {
     const shortnameMaxLength = 16;
 
     const { profile, user } = client.useProfile();
-    const { phone } = client.useAuthPoints().authPoints;
+    const { phone, email } = client.useAuthPoints().authPoints;
 
     const organizations = client.useMyOrganizations();
 
@@ -148,8 +79,6 @@ export const SettingsProfileFragment = React.memo(() => {
             text: 'A username can only contain a-z, 0-9, and underscores',
         },
     ]);
-    const phoneNumberField = useField('input.phoneNumber', profile.phone || '', form);
-    const emailField = useField('input.email', profile.email || '', form);
     const websiteField = useField('input.website', profile.website || '', form);
     const linkedinField = useField('input.linkedin', profile.linkedin || '', form);
     const instagramField = useField('input.instagram', profile.instagram || '', form);
@@ -165,11 +94,9 @@ export const SettingsProfileFragment = React.memo(() => {
                     primaryOrganization: primaryOrganizationField.value,
                     about: aboutField.value,
                     photoRef: sanitizeImageRef(avatarField.value),
-                    email: emailField.value,
                     website: websiteField.value,
                     linkedin: linkedinField.value,
                     instagram: instagramField.value,
-                    phone: phoneNumberField.value,
                     location: locationField.value,
                     twitter: twitterField.value,
                     facebook: facebookField.value,
@@ -250,31 +177,34 @@ export const SettingsProfileFragment = React.memo(() => {
                             />
                         </FormSection>
                         <FormSection title="Contacts">
-                            <XView marginBottom={16}>
-                                <UInputField
-                                    prefix="+"
-                                    label="Phone number"
-                                    field={phoneNumberField}
+                            <XView
+                                marginBottom={16}
+                                flexDirection="row"
+                                alignItems="center"
+                                justifyContent="space-between"
+                            >
+                                <UInput
+                                    value={phone || ''}
+                                    disabled={true}
+                                    label="Phone"
+                                    flexGrow={1}
+                                    flexShrink={0}
+                                    flexBasis={0}
+                                    marginRight={8}
                                 />
-                                <XWithRole role="super-admin">
-                                    {!phone && !!phoneNumberField.value.trim() && (
-                                        <XView
-                                            fontSize={15}
-                                            color="#248BF2"
-                                            marginLeft={16}
-                                            marginTop={8}
-                                            cursor="pointer"
-                                            alignSelf="flex-start"
-                                            onClick={() => showPairPhoneModal(phoneNumberField.value)}
-                                        >
-                                            Pair this phone
-                                        </XView>
-                                    )}
-                                </XWithRole>
+                                <UInput
+                                    label="Email"
+                                    value={email || ''}
+                                    disabled={true}
+                                    flexGrow={1}
+                                    flexShrink={0}
+                                    flexBasis={0}
+                                    marginLeft={8}
+                                />
                             </XView>
-                            <XView marginBottom={16}>
-                                <UInputField label="Email" field={emailField} />
-                            </XView>
+                            <div className={cx(privacyText, TextCaption)}>
+                                Edit phone/email and their visibility in <ULink path="/account/privacy">Account and privacy</ULink>
+                            </div>
                             <XView marginBottom={16}>
                                 <UInputField label="Website" field={websiteField} />
                             </XView>

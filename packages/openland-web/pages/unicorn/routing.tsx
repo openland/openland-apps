@@ -4,6 +4,7 @@ import { ShortnameFragment } from 'openland-web/fragments/shortname/ShortnameFra
 import { MessengerFragment } from 'openland-web/fragments/chat/MessengerFragment';
 import { useUnicorn } from 'openland-unicorn/useUnicorn';
 import { SettingsProfileFragment } from 'openland-web/fragments/account/SettingsProfileFragment';
+import { SettingsPrivacyFragment } from 'openland-web/fragments/account/SettingsPrivacyFragment';
 import { SettingsAppearanceFragment } from 'openland-web/fragments/account/SettingsAppearanceFragment';
 import { RecommendationsFragment } from 'openland-web/fragments/discover/RecommendationsFragment';
 import { DiscoverHomeFragment } from 'openland-web/fragments/discover/DiscoverHomeFragment';
@@ -111,6 +112,7 @@ routing.addRoute('/channels/edit/:id/', () => DiscussionEditorFragment);
 routing.addRoute('/account', () => UserProfileFragment);
 routing.addRoute('/account/me', () => UserProfileFragment);
 routing.addRoute('/account/profile', () => SettingsProfileFragment);
+routing.addRoute('/account/privacy', () => SettingsPrivacyFragment);
 routing.addRoute('/account/notifications', () => SettingsNotificationsFragment);
 routing.addRoute('/settings/email', () => SettingsNotificationsFragment);
 routing.addRoute('/account/email', () => SettingsEmailFragment);
