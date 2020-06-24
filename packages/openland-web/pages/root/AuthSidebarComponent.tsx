@@ -3,8 +3,8 @@ import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
 import Logo from 'openland-unicorn/components/Logo';
 import IcArrow from 'openland-icons/s/ic-chevron-16.svg';
-import IcIos from 'openland-icons/s/ic-apple-16.svg';
-import IcAndroid from 'openland-icons/s/ic-playmarket-24.svg';
+import IcIos from 'openland-icons/s/ic-appstore-24.svg';
+import IcAndroid from 'openland-icons/s/ic-googleplay-24.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { TextTitle1, TextBody } from 'openland-web/utils/TextStyles';
@@ -20,6 +20,16 @@ const sidebarContainer = css`
     padding: 112px 0;
     user-select: none;
     width: 424px;
+    position: relative;
+
+    &:after {
+        content: "";
+        position: absolute;
+        top: 0; right: 0; bottom: 0;
+        width: 1px;
+        opacity: 0.56;
+        background-color: var(--border);
+    }
 `;
 
 const logoContainer = css`
@@ -66,12 +76,11 @@ const buttonContainer = css`
     cursor: pointer;
     padding: 8px 0 8px 16px;
     color: var(--foregroundSecondary);
+    transition: all 0.15s ease;
     &:hover {
         text-decoration: none;
-        color: var(--accentPrimary);
-        & path {
-            fill: var(--accentPrimary);
-        }
+        color: var(--foregroundSecondary);
+        background-color: var(--backgroundTertiaryHoverTrans);
     }
 
     &:last-of-type {
@@ -82,6 +91,7 @@ const buttonContainer = css`
 const buttonIcon = css`
     width: 24px;
     height: 24px;
+    opacity: 0.72;
     & path {
         fill: var(--foregroundSecondary);
     }
