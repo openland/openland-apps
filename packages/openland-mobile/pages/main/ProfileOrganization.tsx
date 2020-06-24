@@ -32,68 +32,66 @@ import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 
-const PrivateProfile = XMemo<PageProps & { organization: Organization_organization }>(
-    (props) => {
-        const { organization } = props;
-        const theme = React.useContext(ThemeContext);
-        const area = React.useContext(ASSafeAreaContext);
-        const typeString = organization.isCommunity ? 'Community' : 'Organization';
+const PrivateProfile = XMemo<PageProps & { organization: Organization_organization }>((props) => {
+    const { organization } = props;
+    const theme = React.useContext(ThemeContext);
+    const area = React.useContext(ASSafeAreaContext);
+    const typeString = organization.isCommunity ? 'Community' : 'Organization';
 
-        return (
-            <View
-                flexGrow={1}
-                paddingTop={area.top}
-                paddingBottom={area.bottom + 16}
-                paddingHorizontal={32}
-                alignItems="center"
-                flexDirection="column"
-            >
-                <View flexGrow={1} justifyContent="center" alignItems="center">
-                    <ZAvatar
-                        size="xx-large"
-                        photo={organization.photo}
-                        id={organization.id}
-                        title={organization.name}
-                    />
-                    <Text
-                        style={{
-                            color: theme.foregroundPrimary,
-                            marginTop: 16,
-                            textAlign: 'center',
-                            ...TextStyles.Title2,
-                        }}
-                        allowFontScaling={false}
-                    >
-                        {organization.name}
-                    </Text>
-                    <Text
-                        style={{
-                            color: theme.foregroundTertiary,
-                            marginTop: 4,
-                            textAlign: 'center',
-                            ...TextStyles.Subhead,
-                        }}
-                        allowFontScaling={false}
-                    >
-                        {typeString}
-                    </Text>
-                </View>
-                <View flexShrink={1} flexDirection="row" alignItems="flex-end">
-                    <Text
-                        style={{
-                            color: theme.foregroundTertiary,
-                            textAlign: 'center',
-                            ...TextStyles.Caption,
-                        }}
-                        allowFontScaling={false}
-                    >
-                        You must be invited to view this community. Its creator made it private
-                    </Text>
-                </View>
+    return (
+        <View
+            flexGrow={1}
+            paddingTop={area.top}
+            paddingBottom={area.bottom + 16}
+            paddingHorizontal={32}
+            alignItems="center"
+            flexDirection="column"
+        >
+            <View flexGrow={1} justifyContent="center" alignItems="center">
+                <ZAvatar
+                    size="xx-large"
+                    photo={organization.photo}
+                    id={organization.id}
+                    title={organization.name}
+                />
+                <Text
+                    style={{
+                        color: theme.foregroundPrimary,
+                        marginTop: 16,
+                        textAlign: 'center',
+                        ...TextStyles.Title2,
+                    }}
+                    allowFontScaling={false}
+                >
+                    {organization.name}
+                </Text>
+                <Text
+                    style={{
+                        color: theme.foregroundTertiary,
+                        marginTop: 4,
+                        textAlign: 'center',
+                        ...TextStyles.Subhead,
+                    }}
+                    allowFontScaling={false}
+                >
+                    {typeString}
+                </Text>
             </View>
-        );
-    },
-);
+            <View flexShrink={1} flexDirection="row" alignItems="flex-end">
+                <Text
+                    style={{
+                        color: theme.foregroundTertiary,
+                        textAlign: 'center',
+                        ...TextStyles.Caption,
+                    }}
+                    allowFontScaling={false}
+                >
+                    You must be invited to view this community. Its creator made it private
+                </Text>
+            </View>
+        </View>
+    );
+});
 
 const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
     const client = getClient();
@@ -111,10 +109,13 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
         { organizationId: props.router.params.id, first: 10 },
         { fetchPolicy: 'network-only' },
     ).organization.members;
-    const publicRooms = client.useOrganizationPublicRooms({
-        organizationId: props.router.params.id,
-        first: 3,
-    }).organizationPublicRooms;
+    const publicRooms = client.useOrganizationPublicRooms(
+        {
+            organizationId: props.router.params.id,
+            first: 3,
+        },
+        { fetchPolicy: 'cache-and-network' },
+    ).organizationPublicRooms;
     const organizationRooms = publicRooms ? publicRooms.items : [];
 
     const myUserID = getMessenger().engine.user.id;
@@ -355,7 +356,7 @@ const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
                                     });
 
                                     await client.refetchOrganizationMembersShort({
-                                        organizationId: props.router.params.id
+                                        organizationId: props.router.params.id,
                                     });
 
                                     handleChangeMemberRole(user.id, newRole);
