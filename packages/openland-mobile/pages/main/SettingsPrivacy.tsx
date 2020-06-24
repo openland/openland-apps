@@ -162,7 +162,7 @@ const SettingsPrivacyContent = (props: PageProps) => {
     return (
         <SScrollView>
             <ZListGroup header="Login methods">
-                <View marginTop={8} paddingHorizontal={16}>
+                <View marginVertical={8} paddingHorizontal={16}>
                     <View
                         paddingHorizontal={16}
                         paddingVertical={14}
