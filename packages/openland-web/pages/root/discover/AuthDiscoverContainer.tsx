@@ -68,11 +68,15 @@ const AuthDiscoverHeader = React.memo((props: { title: string, showBack?: boolea
                     minWidth={0}
                     flexBasis={0}
                     flexGrow={1}
-                    maxWidth={showBack ? 600 : 560}
+                    maxWidth={600}
                     flexDirection="row"
                     {...TextStyles.Title1}
                 >
-                    {title}
+                    {showBack ? title : (
+                        <XView maxWidth={560} width="100%">
+                            {title}
+                        </XView>
+                    )}
                 </XView>
             </XView>
         </XView>

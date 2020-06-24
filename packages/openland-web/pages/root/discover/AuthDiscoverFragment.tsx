@@ -28,36 +28,37 @@ const AuthDiscoverInner = React.memo((props: { seed: number }) => {
             alignItems="stretch"
         >
             <XScrollView3 flexGrow={1} flexBasis={0} minHeight={0}>
-                <XView maxWidth={592} paddingTop={25} paddingHorizontal={16} width="100%" alignSelf="center">
+                <XView maxWidth={632} paddingTop={25} paddingHorizontal={16} width="100%" alignSelf="center">
+                    <XView maxWidth={560} width="100%">
+                        <USlider title="Featured" childrenCount={editorsChoice.length}>
+                            {editorsChoice.map(i => (
+                                <div className={editorsChoiceItem} key={i.id}>
+                                    <EditorsChoiceItem {...i} />
+                                </div>
+                            ))}
+                        </USlider>
 
-                    <USlider title="Featured" childrenCount={editorsChoice.length}>
-                        {editorsChoice.map(i => (
-                            <div className={editorsChoiceItem} key={i.id}>
-                                <EditorsChoiceItem {...i} />
+                        <XView marginTop={10} marginBottom={24}>
+                            <div className={listingsContainer}>
+                                <ListingCompact title="Popular now" items={normalizePopularItems(discoverPopularNow.items)} path="/discover/popular" />
+                                <ListingCompact title="New and growing" items={discoverNewAndGrowing.items || []} path="/discover/new" />
                             </div>
-                        ))}
-                    </USlider>
+                        </XView>
 
-                    <XView marginTop={10} marginBottom={24}>
-                        <div className={listingsContainer}>
-                            <ListingCompact title="Popular now" items={normalizePopularItems(discoverPopularNow.items)} path="/discover/popular" />
-                            <ListingCompact title="New and growing" items={discoverNewAndGrowing.items || []} path="/discover/new" />
-                        </div>
-                    </XView>
+                        <USlider title="Collections" path="/discover/collections" childrenCount={collections.length}>
+                            {collections.map(i => (
+                                <div className={sliderCollectionItem} key={i.id}>
+                                    <DiscoverCollection {...i} />
+                                </div>
+                            ))}
+                        </USlider>
 
-                    <USlider title="Collections" path="/discover/collections" childrenCount={collections.length}>
-                        {collections.map(i => (
-                            <div className={sliderCollectionItem} key={i.id}>
-                                <DiscoverCollection {...i} />
+                        <XView marginBottom={40} marginTop={20}>
+                            <div className={listingsContainer}>
+                                <ListingCompact title="Top premium" items={discoverTopPremium.items || []} path="/discover/premium" />
+                                <ListingCompact title="Top free" items={discoverTopFree.items || []} path="/discover/free" />
                             </div>
-                        ))}
-                    </USlider>
-
-                    <XView marginBottom={40} marginTop={20}>
-                        <div className={listingsContainer}>
-                            <ListingCompact title="Top premium" items={discoverTopPremium.items || []} path="/discover/premium" />
-                            <ListingCompact title="Top free" items={discoverTopFree.items || []} path="/discover/free" />
-                        </div>
+                        </XView>
                     </XView>
                 </XView>
             </XScrollView3>
