@@ -65,8 +65,12 @@ const TabContainer = React.memo(
         );
         const xRouting = React.useMemo(
             () => ({
-                navigate: (to: string) => {
-                    props.router.reset(to);
+                navigate: (to: string, replace?: boolean) => {
+                    if (replace === false) {
+                        props.router.navigate(to);
+                    } else {
+                        props.router.reset(to);
+                    }
                 },
             }),
             [],

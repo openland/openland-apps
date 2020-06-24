@@ -174,7 +174,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
 
     const onMessagePick = React.useCallback(
         (messageId: string) => {
-            router!.navigate(`/message/${messageId}`);
+            router!.navigate(`/message/${messageId}`, false);
         },
         [],
     );
