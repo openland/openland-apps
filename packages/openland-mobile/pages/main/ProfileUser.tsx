@@ -22,6 +22,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import Toast from 'openland-mobile/components/Toast';
+import { formatPhone } from 'openland-y-utils/auth/formatPhone';
 
 const ProfileUserComponent = XMemo<PageProps>((props) => {
     const { user, conversation } = getClient().useUser(
@@ -119,9 +120,9 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     score={
                         !user.isBot && user.audienceSize > 0
                             ? {
-                                  value: user.audienceSize,
-                                  onPress: handleScorePress,
-                              }
+                                value: user.audienceSize,
+                                onPress: handleScorePress,
+                            }
                             : undefined
                     }
                 />
@@ -149,7 +150,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                     {!!user.phone && (
                         <ZListItem
                             title="Phone"
-                            text={'tel:' + user.phone}
+                            text={'tel:' + formatPhone(user.phone)}
                             linkify={true}
                             tall={true}
                             copy={true}

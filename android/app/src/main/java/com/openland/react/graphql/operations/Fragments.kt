@@ -1334,6 +1334,8 @@ internal val SettingsFullSelector = obj(
             field("emailFrequency", "emailFrequency", notNull(scalar("String"))),
             field("excludeMutedChats", "excludeMutedChats", notNull(scalar("Boolean"))),
             field("countUnreadChats", "countUnreadChats", notNull(scalar("Boolean"))),
+            field("whoCanSeeEmail", "whoCanSeeEmail", notNull(scalar("String"))),
+            field("whoCanSeePhone", "whoCanSeePhone", notNull(scalar("String"))),
             field("desktop", "desktop", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
                     fragment("PlatformNotificationSettings", PlatformNotificationSettingsFullSelector)

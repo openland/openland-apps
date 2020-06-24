@@ -28,6 +28,8 @@ fragment SettingsFull on Settings {
     emailFrequency
     excludeMutedChats
     countUnreadChats
+    whoCanSeeEmail
+    whoCanSeePhone
 
     desktop {
         ...PlatformNotificationSettingsFull

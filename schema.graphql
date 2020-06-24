@@ -1775,6 +1775,7 @@ type Mutation {
   debugSetRoomOwner(roomId: ID!, owner: ID!): Boolean!
   debugClearSchedulerFromConferences: Boolean!
   debugInvalidateAllMessages: Boolean!
+  debugFixUserSettings: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2522,6 +2523,11 @@ type PremiumChatSettings {
   interval: WalletSubscriptionInterval
 }
 
+enum PrivacyWhoCanSee {
+  EVERYONE
+  NOBODY
+}
+
 type PrivateConversation implements Conversation {
   id: ID!
   flexibleId: ID!
@@ -2663,6 +2669,7 @@ type Query {
   debugUserWallet(id: ID!): WalletAccount!
   debugEntitiesCounter(name: String!): Int!
   debugEntitiesCleanerProgress(name: String!): Int!
+  debugUserSearch(query: String!): String!
   dialogs(first: Int!, after: String): DialogsConnection!
   settings: Settings!
   authPoints: AuthPoint!
@@ -2967,6 +2974,8 @@ type Settings {
   mobile: PlatformNotificationSettings!
   countUnreadChats: Boolean!
   excludeMutedChats: Boolean!
+  whoCanSeeEmail: PrivacyWhoCanSee!
+  whoCanSeePhone: PrivacyWhoCanSee!
 
   """Deprecated"""
   notificationsDelay: NotificationsDelay!
@@ -3371,6 +3380,8 @@ input UpdateSettingsInput {
   mobile: PlatformNotificationSettingsInput
   countUnreadChats: Boolean
   excludeMutedChats: Boolean
+  whoCanSeeEmail: PrivacyWhoCanSee
+  whoCanSeePhone: PrivacyWhoCanSee
 
   """Deprecated"""
   notificationsDelay: NotificationsDelay

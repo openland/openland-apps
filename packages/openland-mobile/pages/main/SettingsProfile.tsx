@@ -16,7 +16,7 @@ import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 import { SRouter } from 'react-native-s/SRouter';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { getFormattedPhone } from './SettingsPrivacy';
+import { formatPhone } from 'openland-y-utils/auth/formatPhone';
 
 const PrivacyLink = React.memo((props: { router: SRouter }) => {
     const theme = useTheme();
@@ -46,7 +46,7 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
     const lastNameField = useField('lastName', profile.lastName || '', form);
     const photoField = useField('photoRef', profile.photoRef, form);
     const aboutField = useField('about', profile.about || '', form);
-    const phoneField = useField('phone', (phone && getFormattedPhone(phone)) || '', form);
+    const phoneField = useField('phone', (phone && formatPhone(phone)) || '', form);
     const emailField = useField('email', email || '', form);
     const locationField = useField('location', profile.location || '', form);
     const websiteField = useField('website', profile.website || '', form);

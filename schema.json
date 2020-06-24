@@ -1057,6 +1057,37 @@
             "deprecationReason": null
           },
           {
+            "name": "debugUserSearch",
+            "description": "",
+            "args": [
+              {
+                "name": "query",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "dialogs",
             "description": "",
             "args": [
@@ -17130,6 +17161,38 @@
             "deprecationReason": null
           },
           {
+            "name": "whoCanSeeEmail",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "PrivacyWhoCanSee",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "whoCanSeePhone",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "PrivacyWhoCanSee",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "notificationsDelay",
             "description": "Deprecated",
             "args": [],
@@ -17466,6 +17529,29 @@
           },
           {
             "name": "NAME",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "PrivacyWhoCanSee",
+        "description": "",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "EVERYONE",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "NOBODY",
             "description": "",
             "isDeprecated": false,
             "deprecationReason": null
@@ -27648,6 +27734,22 @@
           },
           {
             "name": "debugInvalidateAllMessages",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "debugFixUserSettings",
             "description": "",
             "args": [],
             "type": {
@@ -38659,6 +38761,26 @@
             "type": {
               "kind": "SCALAR",
               "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "whoCanSeeEmail",
+            "description": "",
+            "type": {
+              "kind": "ENUM",
+              "name": "PrivacyWhoCanSee",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "whoCanSeePhone",
+            "description": "",
+            "type": {
+              "kind": "ENUM",
+              "name": "PrivacyWhoCanSee",
               "ofType": null
             },
             "defaultValue": null

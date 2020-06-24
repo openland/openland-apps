@@ -9,9 +9,14 @@ import { ZButton } from 'openland-mobile/components/ZButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { useClient } from 'openland-api/useClient';
-import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { SubmitLoginForm } from '../auth/SubmitLoginForm';
 import { SubmitCodeForm } from '../auth/SubmitCodeForm';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
+import ActionSheet from 'openland-mobile/components/ActionSheet';
+import { useForm } from 'openland-form/useForm';
+import { useField } from 'openland-form/useField';
+import { PrivacyWhoCanSee } from 'openland-api/spacex.types';
+import { formatPhone } from 'openland-y-utils/auth/formatPhone';
 
 const ChangeLoginMethodComponent = React.memo((props: PageProps) => {
     const client = useClient();
@@ -95,21 +100,24 @@ export const ChangeLoginMethodCode = withApp(ChangeLoginMethodCodeComponent, {
     navigationAppearance: 'small-hidden',
 });
 
-export const getFormattedPhone = (phone: string) => {
-    let formatted = parsePhoneNumberFromString(phone);
-    if (formatted) {
-        return formatted.formatInternational();
-    }
-    return undefined;
+type SettingLabel = 'Everyone' | 'Nobody';
+
+const labelBySetting: { [setting in PrivacyWhoCanSee]: SettingLabel } = {
+    [PrivacyWhoCanSee.EVERYONE]: 'Everyone',
+    [PrivacyWhoCanSee.NOBODY]: 'Nobody',
 };
 
 const SettingsPrivacyContent = (props: PageProps) => {
     const theme = useTheme();
     const client = useClient();
+    const form = useForm({ disableAppLoader: true });
     const { phone, email } = client.useAuthPoints({ fetchPolicy: 'cache-and-network' }).authPoints;
+    const { whoCanSeeEmail, whoCanSeePhone } = client.useSettings({ fetchPolicy: 'cache-and-network' }).settings;
     const countryCode = client.useIpLocation({ fetchPolicy: 'cache-and-network' })?.ipLocation?.countryCode;
     const emailStr = email || 'Not paired';
-    const phoneStr = phone ? getFormattedPhone(phone) : 'Not paired';
+    const phoneStr = phone ? formatPhone(phone) : 'Not paired';
+    const phonePrivacyField = useField<SettingLabel>('phone-privacy', labelBySetting[whoCanSeePhone], form);
+    const emailPrivacyField = useField<SettingLabel>('email-privacy', labelBySetting[whoCanSeeEmail], form);
 
     const initiateEmailPair = React.useCallback(() => {
         props.router.push('ChangeLoginMethod', { phone: false });
@@ -117,6 +125,39 @@ const SettingsPrivacyContent = (props: PageProps) => {
     const initiatePhonePair = React.useCallback(() => {
         props.router.push('ChangeLoginMethod', { phone: true, countryShortname: countryCode });
     }, []);
+
+    const handleSave = (input: { whoCanSeeEmail?: PrivacyWhoCanSee, whoCanSeePhone?: PrivacyWhoCanSee }) =>
+        form.doAction(async () => {
+            await client.mutateSettingsUpdate({ input });
+        });
+
+    const showPhoneModal = React.useCallback(() => {
+        const actionSheet = ActionSheet.builder();
+        actionSheet.title('Who can see my phone');
+        actionSheet.action('Everyone', () => {
+            phonePrivacyField.input.onChange('Everyone');
+            handleSave({ whoCanSeePhone: PrivacyWhoCanSee.EVERYONE });
+        }, false, null, undefined, phonePrivacyField.value === 'Everyone');
+        actionSheet.action('Nobody', () => {
+            phonePrivacyField.input.onChange('Nobody');
+            handleSave({ whoCanSeePhone: PrivacyWhoCanSee.NOBODY });
+        }, false, null, undefined, phonePrivacyField.value === 'Nobody');
+        actionSheet.show();
+    }, [phonePrivacyField.value]);
+
+    const showEmailModal = React.useCallback(() => {
+        const actionSheet = ActionSheet.builder();
+        actionSheet.title('Who can see my email');
+        actionSheet.action('Everyone', () => {
+            emailPrivacyField.input.onChange('Everyone');
+            handleSave({ whoCanSeeEmail: PrivacyWhoCanSee.EVERYONE });
+        }, false, null, undefined, emailPrivacyField.value === 'Everyone');
+        actionSheet.action('Nobody', () => {
+            emailPrivacyField.input.onChange('Nobody');
+            handleSave({ whoCanSeeEmail: PrivacyWhoCanSee.NOBODY });
+        }, false, null, undefined, emailPrivacyField.value === 'Nobody');
+        actionSheet.show();
+    }, [emailPrivacyField.value]);
 
     return (
         <SScrollView>
@@ -162,6 +203,20 @@ const SettingsPrivacyContent = (props: PageProps) => {
                         </View>
                     </View>
                 </View>
+            </ZListGroup>
+            <ZListGroup header="Privacy">
+                <ZListItem
+                    text="Who can see my phone"
+                    small={true}
+                    description={phonePrivacyField.value}
+                    onPress={showPhoneModal}
+                />
+                <ZListItem
+                    text="Who can see my email"
+                    small={true}
+                    description={emailPrivacyField.value}
+                    onPress={showEmailModal}
+                />
             </ZListGroup>
         </SScrollView>
     );
