@@ -89,7 +89,7 @@ let SettingsContent = ((props: PageProps) => {
                 onPress={handleGlobalInvitePress}
             />
             <ZListGroup header="Account">
-                {true && (
+                {SUPER_ADMIN && (
                     <ZListItem
                         leftIconColor={theme.tintGrey}
                         leftIcon={require('assets/ic-access-glyph-24.png')}

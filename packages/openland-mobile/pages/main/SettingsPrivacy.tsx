@@ -106,8 +106,8 @@ const getFormattedPhone = (phone: string) => {
 const SettingsPrivacyContent = (props: PageProps) => {
     const theme = useTheme();
     const client = useClient();
-    const { phone, email } = client.useAuthPoints({ fetchPolicy: 'network-only' }).authPoints;
-    const countryCode = client.useIpLocation({ fetchPolicy: 'network-only' })?.ipLocation?.countryCode;
+    const { phone, email } = client.useAuthPoints({ fetchPolicy: 'cache-and-network' }).authPoints;
+    const countryCode = client.useIpLocation({ fetchPolicy: 'cache-and-network' })?.ipLocation?.countryCode;
     const emailStr = email || 'Not linked';
     const phoneStr = phone ? getFormattedPhone(phone) : 'Not linked';
 
@@ -131,8 +131,8 @@ const SettingsPrivacyContent = (props: PageProps) => {
                         borderRadius={12}
                     >
                         <View flex={1}>
-                            <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>Phone</Text>
-                            <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }} numberOfLines={1}>{phoneStr}</Text>
+                            <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }} allowFontScaling={false}>Phone</Text>
+                            <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }} numberOfLines={1} allowFontScaling={false}>{phoneStr}</Text>
                         </View>
                         <View marginLeft={8}>
                             {phone
@@ -151,8 +151,8 @@ const SettingsPrivacyContent = (props: PageProps) => {
                         marginTop={16}
                     >
                         <View flex={1}>
-                            <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}>Email</Text>
-                            <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }} numberOfLines={1}>{emailStr}{emailStr}</Text>
+                            <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }} allowFontScaling={false}>Email</Text>
+                            <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }} numberOfLines={1} allowFontScaling={false}>{emailStr}</Text>
                         </View>
                         <View marginLeft={8}>
                             {email
