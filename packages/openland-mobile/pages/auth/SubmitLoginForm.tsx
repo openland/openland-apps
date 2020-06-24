@@ -159,6 +159,9 @@ export const SubmitLoginForm = React.memo((props: SubmitLoginFormProps) => {
                     : userDataField.value.trim();
                 if (isPhone) {
                     let confirmed = await showConfirmModal({ phone: phoneData });
+                    if (!confirmed) {
+                        return;
+                    }
                     if (confirmed) {
                         setLoading(true);
                         await onSubmit(formData, phoneData);
@@ -296,11 +299,16 @@ export const SubmitLoginForm = React.memo((props: SubmitLoginFormProps) => {
                                     ref={inputCodeRef}
                                     width={96}
                                     autoCapitalize="none"
-                                    keyboardType="phone-pad"
+                                    keyboardType="number-pad"
                                     allowFontScaling={false}
                                     value={userCodeField.value.value}
                                     onSubmitEditing={submitForm}
                                     onChangeText={onCountryCodeChange}
+                                    {
+                                        ...Platform.OS === 'ios'
+                                            ? { textContentType: 'telephoneNumber' }
+                                            : { autoCompleteType: 'tel' }
+                                    }
                                 />
                             </View>
                         )}
@@ -311,7 +319,7 @@ export const SubmitLoginForm = React.memo((props: SubmitLoginFormProps) => {
                                 onChangeText={onUserDataChange}
                                 placeholder={isPhone ? 'Phone number' : 'Email'}
                                 autoCapitalize="none"
-                                keyboardType={isPhone ? 'phone-pad' : 'email-address'}
+                                keyboardType={isPhone ? 'number-pad' : 'email-address'}
                                 autoFocus={true}
                                 returnKeyType="next"
                                 allowFontScaling={false}

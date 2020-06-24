@@ -224,7 +224,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                 )}
 
                 {myID !== user.id && (
-                    <ZListGroup header="Options">
+                    <ZListGroup header="Settings">
                         <NotificationSettings
                             id={(conversation as User_conversation_PrivateRoom).id}
                             mute={!!(conversation as User_conversation_PrivateRoom).settings.mute}
@@ -232,7 +232,7 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                         {conversation && conversation.__typename === 'PrivateRoom' && (
                             <ZListItem
                                 leftIcon={require('assets/ic-attach-glyph-24.png')}
-                                text="Shared media"
+                                text="Media, files, links"
                                 onPress={() => props.router.push('SharedMedia', { chatId: conversation.id })}
                             />
                         )}
