@@ -24,9 +24,9 @@ import { CountryPicker, OptionType } from './components/CountryPicker';
 import { countriesMeta } from 'openland-y-utils/auth/countriesMeta';
 import { US_LABEL, RUSSIA_LABEL } from 'openland-y-utils/auth/constants';
 
-const INVALID_CODE_LABEL = 'Invalid country code';
-const SPACE_REGEX = /\s/g;
-const removeSpace = (s: string) => s.replace(SPACE_REGEX, '');
+export const INVALID_CODE_LABEL = 'Invalid country code';
+export const SPACE_REGEX = /\s/g;
+export const removeSpace = (s: string) => s.replace(SPACE_REGEX, '');
 
 export type AskAuthDataProps = {
     fireAuth: (data: string, isPhoneFire: boolean) => Promise<void>;
@@ -79,7 +79,7 @@ const phoneToast = css`
     width: calc(100% - 32px);
 `;
 
-const findCode = (val: string) => {
+export const findCode = (val: string) => {
     if (val === '+1') {
         return { value: '+1', label: US_LABEL, shortname: 'US' };
     }

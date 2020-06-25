@@ -71,7 +71,7 @@ const VirtualMenuList = (props: { children: React.ReactNode[], options: GroupTyp
             height={height}
             itemCount={options.length}
             itemSize={i => filtered ? options[i].options.length * itemHeight : options[i].options.length * itemHeight + headerHeight}
-            width={320}
+            width="100%"
             initialScrollOffset={foundOffset.found ? foundOffset.offset : 0}
         >
             {({ index, style }) => (
@@ -112,7 +112,7 @@ const triggerTextStyle = css`
 const menuWrapper = css`
     position: absolute;
     top: calc(100% + 8px);
-    width: 320px;
+    width: 100%;
     padding-top: 8px;
     background-color: var(--backgroundSecondary);
     display: flex;
@@ -161,7 +161,7 @@ const optionValueStyle = css`
 
 const triggerStyle = cx('x', css`
     width: 100%;
-    height: 40;
+    height: 40px;
     background-color: var(--backgroundTertiaryTrans);
     color: var(--foregroundPrimary);
     flex-direction: row;
