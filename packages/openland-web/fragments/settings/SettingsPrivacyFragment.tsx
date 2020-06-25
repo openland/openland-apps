@@ -414,7 +414,6 @@ const PairMailModalContent = React.memo((props: { hide: () => void, initialValue
         }
     }, []);
 
-
     return (
         <>
             <XModalContent>
