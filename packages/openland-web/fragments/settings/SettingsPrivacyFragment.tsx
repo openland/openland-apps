@@ -388,10 +388,11 @@ const showPairPhoneModal = () => {
     );
 };
 
-const PairMailModalContent = React.memo((props: { hide: () => void }) => {
+const PairMailModalContent = React.memo((props: { hide: () => void, initialValue?: string }) => {
     const client = useClient();
     const form = useForm();
-    const dataField = useField('input.data', '', form);
+    const dataField = useField('input.data', props.initialValue || '', form);
+    const inputRef = React.useRef<HTMLInputElement>(null);
 
     const handleNext = async () => {
         const val = dataField.value.trim();
@@ -407,29 +408,36 @@ const PairMailModalContent = React.memo((props: { hide: () => void }) => {
         }
     };
 
+    React.useLayoutEffect(() => {
+        if (!!props.initialValue && inputRef.current) {
+            inputRef.current.select();
+        }
+    }, []);
+
+
     return (
         <>
             <XModalContent>
                 <div className={cx(modalSubtitle, TextBody)}>
                     You can pair your account to any email address and use it for login
                 </div>
-                <UInputField label="Email address" hasPlaceholder={true} field={dataField} />
+                <UInputField ref={inputRef} label="Email address" hasPlaceholder={true} field={dataField} autofocus={true} />
             </XModalContent>
             <XModalFooter>
                 <UButton text="Cancel" style="tertiary" size="large" onClick={() => props.hide()} />
-                <UButton text="Next" style="primary" size="large" onClick={handleNext} />
+                <UButton text="Next" style="primary" size="large" onClick={handleNext} disable={!dataField.value} />
             </XModalFooter>
         </>
     );
 });
 
-const showPairMailModal = () => {
+const showPairMailModal = (initialValue?: string) => {
     showModalBox(
         {
             width: 400,
             title: 'Email',
         },
-        (ctx) => <PairMailModalContent hide={ctx.hide} />,
+        (ctx) => <PairMailModalContent hide={ctx.hide} initialValue={initialValue} />,
     );
 };
 
@@ -485,7 +493,7 @@ export const SettingsPrivacyFragment = React.memo(() => {
         <Page track="account_privacy">
             <UHeader title="Account and privacy" />
             <XView marginTop={12}>
-                <FormSection title="Login methods">
+                <FormSection title="Sign-in methods">
                     <XView
                         flexDirection="row"
                         alignItems="center"
@@ -497,7 +505,15 @@ export const SettingsPrivacyFragment = React.memo(() => {
                                 title="Phone"
                                 subtitle={phone || 'Not paired'}
                                 button={
-                                    !phone && <UButton text="Add" onClick={showPairPhoneModal} />
+                                    !!phone ? (
+                                        <UButton
+                                            text="Edit"
+                                            style="secondary"
+                                            onClick={showPairPhoneModal}
+                                        />
+                                    ) : (
+                                            <UButton text="Add" onClick={showPairPhoneModal} />
+                                        )
                                 }
                             />
                         </XView>
@@ -510,10 +526,10 @@ export const SettingsPrivacyFragment = React.memo(() => {
                                         <UButton
                                             text="Edit"
                                             style="secondary"
-                                            onClick={showPairMailModal}
+                                            onClick={() => showPairMailModal(email)}
                                         />
                                     ) : (
-                                            <UButton text="Add" onClick={showPairMailModal} />
+                                            <UButton text="Add" onClick={() => showPairMailModal()} />
                                         )
                                 }
                             />
