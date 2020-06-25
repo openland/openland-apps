@@ -99,7 +99,7 @@ const EnterCodeModalContent = React.memo((props: EnterCodeModalContentProps) => 
         <>
             <XModalContent>
                 <ResendSubtitle sendTo={props.parseValue} onResend={handleResend} />
-                <UInputField label="Code" hasPlaceholder={true} field={confirmField} />
+                <UInputField label="Code" hasPlaceholder={true} field={confirmField} autofocus={true} />
             </XModalContent>
             <XModalFooter>
                 <UButton text="Cancel" style="tertiary" size="large" onClick={() => props.hide()} />
@@ -109,6 +109,7 @@ const EnterCodeModalContent = React.memo((props: EnterCodeModalContentProps) => 
                     size="large"
                     onClick={handleSave}
                     loading={loading}
+                    disable={!confirmField.value}
                 />
             </XModalFooter>
         </>
@@ -414,6 +415,8 @@ const PairMailModalContent = React.memo((props: { hide: () => void, initialValue
         }
     }, []);
 
+    const canSubmit = !!dataField.value && (dataField.value !== props.initialValue);
+
     return (
         <>
             <XModalContent>
@@ -424,7 +427,7 @@ const PairMailModalContent = React.memo((props: { hide: () => void, initialValue
             </XModalContent>
             <XModalFooter>
                 <UButton text="Cancel" style="tertiary" size="large" onClick={() => props.hide()} />
-                <UButton text="Next" style="primary" size="large" onClick={handleNext} disable={!dataField.value} />
+                <UButton text="Next" style="primary" size="large" onClick={handleNext} disable={!canSubmit} />
             </XModalFooter>
         </>
     );
