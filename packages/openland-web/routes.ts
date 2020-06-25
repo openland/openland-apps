@@ -235,8 +235,6 @@ routes.add('/account/invites', '/unicorn/index');
 routes.add('/account/invites/', '/unicorn/index');
 routes.add('/account/notifications', '/unicorn/index');
 routes.add('/account/notifications/', '/unicorn/index');
-routes.add('/settings/email', '/unicorn/index');
-routes.add('/settings/email/', '/unicorn/index');
 routes.add('/account/email', '/unicorn/index');
 routes.add('/account/email/', '/unicorn/index');
 routes.add('/account/apps', '/unicorn/index');
@@ -245,6 +243,30 @@ routes.add('/account/about', '/unicorn/index');
 routes.add('/account/about/', '/unicorn/index');
 routes.add('/account/licenses', '/unicorn/index');
 routes.add('/account/licenses/', '/unicorn/index');
+
+routes.add('/settings', '/unicorn/index');
+routes.add('/settings/me', '/unicorn/index');
+routes.add('/settings/me/', '/unicorn/index');
+routes.add('/settings/profile', '/unicorn/index');
+routes.add('/settings/profile/', '/unicorn/index');
+routes.add('/settings/privacy', '/unicorn/index');
+routes.add('/settings/privacy/', '/unicorn/index');
+routes.add('/settings/appearance', '/unicorn/index');
+routes.add('/settings/appearance/', '/unicorn/index');
+routes.add('/settings/download', '/unicorn/index');
+routes.add('/settings/download/', '/unicorn/index');
+routes.add('/settings/invites', '/unicorn/index');
+routes.add('/settings/invites/', '/unicorn/index');
+routes.add('/settings/notifications', '/unicorn/index');
+routes.add('/settings/notifications/', '/unicorn/index');
+routes.add('/settings/email', '/unicorn/index');
+routes.add('/settings/email/', '/unicorn/index');
+routes.add('/settings/apps', '/unicorn/index');
+routes.add('/settings/apps/', '/unicorn/index');
+routes.add('/settings/about', '/unicorn/index');
+routes.add('/settings/about/', '/unicorn/index');
+routes.add('/settings/licenses', '/unicorn/index');
+routes.add('/settings/licenses/', '/unicorn/index');
 
 //
 // Wallet

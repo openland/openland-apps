@@ -25,7 +25,7 @@ import { showAddMembersModal } from '../showAddMembersModal';
 import {
     showRoomEditModal,
     showLeaveChatConfirmation,
-} from 'openland-web/fragments/account/components/groupProfileModals';
+} from 'openland-web/fragments/settings/components/groupProfileModals';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { TextDensed, TextStyles, HoverAlpha } from 'openland-web/utils/TextStyles';
 import { emoji } from 'openland-y-utils/emoji';

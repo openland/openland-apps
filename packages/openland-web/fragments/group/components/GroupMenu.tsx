@@ -5,7 +5,7 @@ import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButt
 import {
     showRoomEditModal,
     showLeaveChatConfirmation,
-} from 'openland-web/fragments/account/components/groupProfileModals';
+} from 'openland-web/fragments/settings/components/groupProfileModals';
 import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
 import SettingsIcon from 'openland-icons/s/ic-settings-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';

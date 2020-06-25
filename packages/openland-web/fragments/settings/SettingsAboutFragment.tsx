@@ -68,10 +68,10 @@ const MenuItem = React.memo((props: MenuItemProps) => {
     return props.inStack ? (
         <ULink path={props.path} className={menuItem}>{content}</ULink>
     ) : (
-        <a className={menuItem} href={props.path} target="_blank" rel="noopener noreferrer">
-            {content}
-        </a>
-    );
+            <a className={menuItem} href={props.path} target="_blank" rel="noopener noreferrer">
+                {content}
+            </a>
+        );
 });
 
 export const SettingsAboutFragment = React.memo(() => {
@@ -100,7 +100,7 @@ export const SettingsAboutFragment = React.memo(() => {
                     <MenuItem icon={<Info />} path="/about">About Openland</MenuItem>
                     <MenuItem icon={<Terms />} path="/terms">Terms of service</MenuItem>
                     <MenuItem icon={<Privacy />} path="/privacy">Privacy policy</MenuItem>
-                    <MenuItem icon={<Copyright />} path="/account/licenses" inStack={true}>Licenses</MenuItem>
+                    <MenuItem icon={<Copyright />} path="/settings/licenses" inStack={true}>Licenses</MenuItem>
                 </XView>
             </FormWrapper>
         </Page>

@@ -38,13 +38,14 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
             'wallet': { route: 'Wallet' },
             'discover': { route: 'Explore' },
             'discover/home': { route: 'Explore' },
-            'discover/new': { route: 'DiscoverListing', params: {type: 'new'} },
-            'discover/popular': { route: 'DiscoverListing', params: {type: 'popular'} },
+            'discover/new': { route: 'DiscoverListing', params: { type: 'new' } },
+            'discover/popular': { route: 'DiscoverListing', params: { type: 'popular' } },
             'discover/collections': { route: 'Collections' },
-            'discover/premium': { route: 'DiscoverListing', params: {type: 'top-premium'} },
-            'discover/free': { route: 'DiscoverListing', params: {type: 'top-free'} },
-            'discover/recommendations': { route: 'DiscoverListing', params: {type: 'recommendations'} },
+            'discover/premium': { route: 'DiscoverListing', params: { type: 'top-premium' } },
+            'discover/free': { route: 'DiscoverListing', params: { type: 'top-free' } },
+            'discover/recommendations': { route: 'DiscoverListing', params: { type: 'recommendations' } },
             'account/licenses': { route: 'SettingsLicenses' },
+            'settings/licenses': { route: 'SettingsLicenses' },
         };
 
         let pagePattern = /(http(s)?\:\/\/)?(.*)?.openland.com\/(.*)/g;
@@ -106,7 +107,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
             if (genericInviteMatch && genericInviteMatch.invite) {
                 loader.show();
                 try {
-                    let info = await getMessenger().engine.client.queryResolvedInvite({ key: genericInviteMatch.invite }, {fetchPolicy: 'network-only'});
+                    let info = await getMessenger().engine.client.queryResolvedInvite({ key: genericInviteMatch.invite }, { fetchPolicy: 'network-only' });
                     if (info.invite) {
                         if (info.invite.__typename === 'RoomInvite') {
                             await joinRoom(info.invite, genericInviteMatch.invite);
@@ -282,13 +283,13 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void, reset?
                             collectionId: info.item.id,
                         });
                     } else {
-                        Toast.failure({text: 'Nothing found', duration: 1000}).show();
+                        Toast.failure({ text: 'Nothing found', duration: 1000 }).show();
                     }
                 } else {
-                    Toast.failure({text: 'Nothing found', duration: 1000}).show();
+                    Toast.failure({ text: 'Nothing found', duration: 1000 }).show();
                 }
             } catch (e) {
-                Toast.failure({text: e.message, duration: 1000}).show();
+                Toast.failure({ text: e.message, duration: 1000 }).show();
             }
             AppLoader.stop();
             return;
@@ -439,7 +440,7 @@ export const joinInviteIfHave = async () => {
     if (matchGlobal && matchGlobal.invite) {
         try {
             loader.show();
-            let info = await getMessenger().engine.client.queryResolvedInvite({ key: matchGlobal.invite }, {fetchPolicy: 'network-only'});
+            let info = await getMessenger().engine.client.queryResolvedInvite({ key: matchGlobal.invite }, { fetchPolicy: 'network-only' });
             if (info.invite) {
                 if (info.invite.__typename === 'AppInvite') {
                     await getMessenger().engine.client.mutateOrganizationActivateByInvite({ inviteKey: matchGlobal.invite });

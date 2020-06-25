@@ -411,7 +411,7 @@ const PairMailModalContent = React.memo((props: { hide: () => void }) => {
         <>
             <XModalContent>
                 <div className={cx(modalSubtitle, TextBody)}>
-                    You can pair your account to any email address and use it for login
+                    You can pair your account to any email address and use it for login
                 </div>
                 <UInputField label="Email address" hasPlaceholder={true} field={dataField} />
             </XModalContent>
@@ -513,8 +513,8 @@ export const SettingsPrivacyFragment = React.memo(() => {
                                             onClick={showPairMailModal}
                                         />
                                     ) : (
-                                        <UButton text="Add" onClick={showPairMailModal} />
-                                    )
+                                            <UButton text="Add" onClick={showPairMailModal} />
+                                        )
                                 }
                             />
                         </XView>

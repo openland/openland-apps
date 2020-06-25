@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Organization_organization } from 'openland-api/spacex.types';
 import { UMoreButton } from 'openland-web/components/unicorn/templates/UMoreButton';
 import { showLeaveConfirmation } from 'openland-web/fragments/org/showLeaveConfirmation';
-import { showEditCommunityModal } from 'openland-web/fragments/account/components/showEditCommunityModal';
+import { showEditCommunityModal } from 'openland-web/fragments/settings/components/showEditCommunityModal';
 import { useRole } from 'openland-x-permissions/XWithRole';
 import copy from 'copy-to-clipboard';
 import EditIcon from 'openland-icons/s/ic-edit-24.svg';

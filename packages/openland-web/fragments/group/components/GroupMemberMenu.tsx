@@ -9,7 +9,7 @@ import StarIcon from 'openland-icons/s/ic-star-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import { MenuItem, UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
-import { showLeaveChatConfirmation } from 'openland-web/fragments/account/components/groupProfileModals';
+import { showLeaveChatConfirmation } from 'openland-web/fragments/settings/components/groupProfileModals';
 import { OpenlandClient } from 'openland-api/spacex';
 import { useClient } from 'openland-api/useClient';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';

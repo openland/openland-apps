@@ -105,8 +105,8 @@ export const MessengerPlaceholderFragment = React.memo(() => {
             </XView>
             <XView marginTop={32} justifyContent="center" flexWrap="nowrap" flexDirection="row">
                 <Button icon={<Plus />} text="Create group" onClick={createGroup} />
-                <Button icon={<Person />} text="Invite friends" path="/account/invites" />
-                <Button icon={<Apps />} text="Install apps" path="/account/download" />
+                <Button icon={<Person />} text="Invite friends" path="/settings/invites" />
+                <Button icon={<Apps />} text="Install apps" path="/settings/download" />
             </XView>
         </XView>
     );

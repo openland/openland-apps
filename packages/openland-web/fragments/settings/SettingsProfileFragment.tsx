@@ -203,7 +203,7 @@ export const SettingsProfileFragment = React.memo(() => {
                                 />
                             </XView>
                             <div className={cx(privacyText, TextCaption)}>
-                                Edit phone/email and their visibility in <ULink path="/account/privacy">Account and privacy</ULink>
+                                Edit phone/email and their visibility in <ULink path="/settings/privacy">Account and privacy</ULink>
                             </div>
                             <XView marginBottom={16}>
                                 <UInputField label="Website" field={websiteField} />

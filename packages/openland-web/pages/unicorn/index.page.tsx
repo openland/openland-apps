@@ -3,7 +3,7 @@ import { Routing } from './routing';
 import { TabRouter } from 'openland-unicorn/components/TabRouter';
 import { TabLayout } from 'openland-unicorn/components/TabLayout';
 import { LayoutProvider } from 'openland-unicorn/components/utils/LayoutContext';
-import { AccountFragment } from 'openland-web/fragments/account/AccountFragment';
+import { SettingsFragment } from 'openland-web/fragments/settings/SettingsFragment';
 import { DialogsFragment } from 'openland-web/fragments/dialogs/DialogsFragment';
 import { DiscoverFragment } from 'openland-web/fragments/discover/DiscoverFragment';
 import { XLoader } from 'openland-x/XLoader';
@@ -53,9 +53,9 @@ const Unicorn = React.memo(() => {
                     {
                         icon: <ProfileIcon />,
                         iconActive: <ProfileActiveIcon />,
-                        path: '/account',
-                        component: <AccountFragment />,
-                        caption: 'Account',
+                        path: '/settings',
+                        component: <SettingsFragment />,
+                        caption: 'Settings',
                         defaultPage: true
                     },
                 ] : [
@@ -78,9 +78,9 @@ const Unicorn = React.memo(() => {
                         {
                             icon: <ProfileIcon />,
                             iconActive: <ProfileActiveIcon />,
-                            path: '/account',
-                            component: <AccountFragment />,
-                            caption: 'Account',
+                            path: '/settings',
+                            component: <SettingsFragment />,
+                            caption: 'Settings',
                             defaultPage: true
                         },
                     ],

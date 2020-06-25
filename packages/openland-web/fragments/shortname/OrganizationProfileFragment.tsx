@@ -16,7 +16,7 @@ import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import MoreHIcon from 'openland-icons/s/ic-more-h-24.svg';
 import { CreateGroupButton } from './components/CreateGroupButton';
 import { OrganizationMembers_organization_members, OrganizationMemberRole } from 'openland-api/spacex.types';
-import { PrivateCommunityView } from '../account/components/PrivateCommunityView';
+import { PrivateCommunityView } from '../settings/components/PrivateCommunityView';
 
 export const OrganizationProfileFragment = React.memo((props: { id: string }) => {
     const client = useClient();

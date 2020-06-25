@@ -48,7 +48,7 @@ const UserProfileCard = React.memo(() => {
         return (
             <XView
                 cursor="pointer"
-                path={isMobile ? '/account/me' : '/account'}
+                path={isMobile ? '/settings/me' : '/settings'}
                 color="var(--foregroundPrimary)"
                 hoverBackgroundColor="var(--backgroundPrimaryHover)"
                 selectedBackgroundColor="var(--accentMuted)"
@@ -187,7 +187,7 @@ const NewOptionsMenu = React.memo(() => (
     </>
 ));
 
-export const AccountFragment = React.memo(() => {
+export const SettingsFragment = React.memo(() => {
     const isVisible = useVisibleTab();
 
     React.useEffect(() => {
@@ -215,7 +215,7 @@ export const AccountFragment = React.memo(() => {
         <>
             <AccountCounter />
             <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
-                <USideHeader title="Account">
+                <USideHeader title="Settings">
                     <UIconButton
                         icon={<LeaveIcon />}
                         size="large"
@@ -228,33 +228,33 @@ export const AccountFragment = React.memo(() => {
                         <UListItem
                             title="Edit profile"
                             icon={<EditProfileIcon />}
-                            path="/account/profile"
+                            path="/settings/profile"
                         />
                         <UListItem
                             title="Invite friends"
                             icon={<InviteFriendsIcon />}
-                            path="/account/invites"
+                            path="/settings/invites"
                         />
                         <UListGroup header="Preferences">
                             <UListItem
                                 title="Account and privacy"
                                 icon={<AccessIcon />}
-                                path="/account/privacy"
+                                path="/settings/privacy"
                             />
                             <UListItem
                                 title="Notifications"
                                 icon={<NotificationsIcon />}
-                                path="/account/notifications"
+                                path="/settings/notifications"
                             />
                             <UListItem
                                 title="Email preferences"
                                 icon={<EmailIcon />}
-                                path="/account/email"
+                                path="/settings/email"
                             />
                             <UListItem
                                 title="Appearance"
                                 icon={<AppearanceIcon />}
-                                path="/account/appearance"
+                                path="/settings/appearance"
                             />
                         </UListGroup>
                         <UListGroup header="Billing">
@@ -293,9 +293,9 @@ export const AccountFragment = React.memo(() => {
                             <UListItem
                                 title="Install apps"
                                 icon={<AppsIcon />}
-                                path="/account/download"
+                                path="/settings/download"
                             />
-                            <UListItem title="About us" icon={<InfoIcon />} path="/account/about" />
+                            <UListItem title="About us" icon={<InfoIcon />} path="/settings/about" />
                         </UListGroup>
                         <UListGroup
                             header="Organizations"
