@@ -26,10 +26,12 @@ import {
     findCode,
     INVALID_CODE_LABEL,
     removeSpace,
+    validateEmail,
 } from 'openland-web/pages/auth/ask-auth-data.page';
 import { UpdateSettingsInput } from 'openland-api/spacex.types';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { WhoCanSee } from './components/WhoCanSee';
+import { InitTexts } from 'openland-web/pages/init/_text';
 
 const modalSubtitle = css`
     color: var(--foregroundPrimary);
@@ -406,10 +408,16 @@ const PairMailModalContent = React.memo((props: { hide: () => void, initialValue
     const form = useForm();
     const dataField = useField('input.data', props.initialValue || '', form);
     const inputRef = React.useRef<HTMLInputElement>(null);
+    const [localError, setLocalError] = React.useState('');
 
     const handleNext = () => {
         const val = dataField.value.trim();
         if (!val) {
+            return;
+        }
+
+        if (!validateEmail(val)) {
+            setLocalError(InitTexts.auth.emailInvalid);
             return;
         }
 
@@ -419,6 +427,10 @@ const PairMailModalContent = React.memo((props: { hide: () => void, initialValue
             props.hide();
         });
     };
+
+    React.useEffect(() => {
+        setLocalError('');
+    }, [dataField.value]);
 
     React.useLayoutEffect(() => {
         if (!!props.initialValue && inputRef.current) {
@@ -436,8 +448,8 @@ const PairMailModalContent = React.memo((props: { hide: () => void, initialValue
                     and use it for login
                 </div>
                 <UInputField ref={inputRef} label="Email address" hasPlaceholder={true} field={dataField} autofocus={true} />
-                {!!form.error && (
-                    <UInputErrorText text={form.error} />
+                {!!(form.error || localError) && (
+                    <UInputErrorText text={form.error || localError} />
                 )}
             </XModalContent>
             <XModalFooter>
