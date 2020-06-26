@@ -6,7 +6,7 @@ import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { View, Platform, Clipboard } from 'react-native';
+import { View, Platform, Clipboard, Linking } from 'react-native';
 import { User_conversation_PrivateRoom } from 'openland-api/spacex.types';
 import { useLastSeen } from 'openland-y-utils/LastSeen';
 import { NotificationSettings } from './components/NotificationSetting';
@@ -90,6 +90,13 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
         builder.show();
     }, [user.shortname, user.id]);
 
+    const phone = !!user.phone ? formatPhone(user.phone) : undefined;
+    const handleContactPress = React.useCallback(async (link: string) => {
+        if (await Linking.canOpenURL(link)) {
+            await Linking.openURL(link);
+        }
+    }, []);
+
     return (
         <>
             <SHeader title={Platform.OS === 'android' ? 'Info' : user.name} />
@@ -136,24 +143,28 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                             text={'@' + user.shortname}
                             tall={true}
                             copy={true}
+                            textToCopy={`https://openland.com/${user.shortname}`}
                         />
                     )}
                     {!!user.email && (
                         <ZListItem
                             title="Email"
                             text={user.email}
-                            linkify={true}
+                            textStyle={{ color: theme.accentPrimary }}
+                            onPress={() => handleContactPress(`mailto:${user.email}`)}
                             tall={true}
                             copy={true}
                         />
                     )}
-                    {!!user.phone && (
+                    {!!phone && (
                         <ZListItem
                             title="Phone"
-                            text={'tel:' + formatPhone(user.phone)}
-                            linkify={true}
+                            text={phone}
+                            textStyle={{ color: theme.accentPrimary }}
+                            textToCopy={phone}
                             tall={true}
                             copy={true}
+                            onPress={() => handleContactPress(`tel:${phone}`)}
                         />
                     )}
                     {!!user.website && (
