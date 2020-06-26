@@ -27,7 +27,7 @@ import {
     INVALID_CODE_LABEL,
     removeSpace,
 } from 'openland-web/pages/auth/ask-auth-data.page';
-import { PrivacyWhoCanSee } from 'openland-api/spacex.types';
+import { UpdateSettingsInput } from 'openland-api/spacex.types';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { WhoCanSee } from './components/WhoCanSee';
 
@@ -176,9 +176,10 @@ const showConfirmPhoneModal = (phone: string, value: string, onConfirm: () => vo
     );
 };
 
-const PairPhoneModalContent = React.memo((props: { hide: () => void }) => {
+const PairPhoneModalContent = React.memo((props: { hide: () => void, initialValue?: string | null }) => {
     const client = useClient();
-    const countryCode = client.useIpLocation().ipLocation?.countryCode;
+    const initial = props.initialValue ? parsePhoneNumberFromString(props.initialValue) : undefined;
+    const countryCode = initial ? initial.country : client.useIpLocation().ipLocation?.countryCode;
     const initialCountry = countriesMeta.find((x) => x.shortname === countryCode) || {
         label: 'United States',
         value: '+1',
@@ -191,7 +192,7 @@ const PairPhoneModalContent = React.memo((props: { hide: () => void }) => {
 
     const form = useForm();
     const codeField = useField('input.code', initialCountry, form);
-    const dataField = useField('input.data', '', form);
+    const dataField = useField('input.data', initial ? initial.nationalNumber.toString() : '', form);
 
     const [codeWidth, setCodeWidth] = React.useState<string>(
         `calc(${codeField.input.value.value.length}ch + 32px)`,
@@ -318,8 +319,15 @@ const PairPhoneModalContent = React.memo((props: { hide: () => void }) => {
         }, 200);
     }, []);
 
+    let notChanged = initial ? dataField.value === initial.nationalNumber.toString() : false;
     let parsedPhone = parsePhoneNumberFromString(codeField.value.value + dataField.value);
-    let isPhoneValid = !!(parsedPhone && parsedPhone.isPossible());
+    let isPhoneValid = !!(parsedPhone && parsedPhone.isPossible()) && !notChanged;
+
+    React.useLayoutEffect(() => {
+        if (!!props.initialValue && inputRef.current) {
+            inputRef.current.select();
+        }
+    }, []);
 
     return (
         <>
@@ -382,18 +390,18 @@ const PairPhoneModalContent = React.memo((props: { hide: () => void }) => {
     );
 });
 
-const showPairPhoneModal = () => {
+const showPairPhoneModal = (initialValue?: string | null) => {
     showModalBox(
         {
             width: 400,
             title: 'Phone',
             overflowVisible: true,
         },
-        (ctx) => <PairPhoneModalContent hide={ctx.hide} />,
+        (ctx) => <PairPhoneModalContent hide={ctx.hide} initialValue={initialValue} />,
     );
 };
 
-const PairMailModalContent = React.memo((props: { hide: () => void, initialValue?: string }) => {
+const PairMailModalContent = React.memo((props: { hide: () => void, initialValue?: string | null }) => {
     const client = useClient();
     const form = useForm();
     const dataField = useField('input.data', props.initialValue || '', form);
@@ -440,7 +448,7 @@ const PairMailModalContent = React.memo((props: { hide: () => void, initialValue
     );
 });
 
-const showPairMailModal = (initialValue?: string) => {
+const showPairMailModal = (initialValue?: string | null) => {
     showModalBox(
         {
             width: 400,
@@ -500,8 +508,8 @@ export const SettingsPrivacyFragment = React.memo(() => {
     const { phone, email } = client.useAuthPoints({ fetchPolicy: 'network-only' }).authPoints;
     const { whoCanSeeEmail, whoCanSeePhone } = client.useSettings({ fetchPolicy: 'network-only' }).settings;
 
-    const handleChangeWhoCanSee = React.useCallback(async (type: 'phone' | 'email', value: PrivacyWhoCanSee) => {
-        await client.mutateSettingsUpdate({ input: type === 'phone' ? { whoCanSeePhone: value } : { whoCanSeeEmail: value } });
+    const handleChangeWhoCanSee = React.useCallback(async (input: UpdateSettingsInput) => {
+        await client.mutateSettingsUpdate({ input });
         await client.refetchSettings();
     }, []);
 
@@ -520,15 +528,11 @@ export const SettingsPrivacyFragment = React.memo(() => {
                             title="Phone"
                             subtitle={phone || 'Not paired'}
                             button={
-                                !!phone ? (
-                                    <UButton
-                                        text="Edit"
-                                        style="secondary"
-                                        onClick={showPairPhoneModal}
-                                    />
-                                ) : (
-                                        <UButton text="Add" onClick={showPairPhoneModal} />
-                                    )
+                                <UButton
+                                    text={phone ? 'Edit' : 'Add'}
+                                    style={phone ? 'secondary' : 'primary'}
+                                    onClick={() => showPairPhoneModal(phone)}
+                                />
                             }
                         />
                     </XView>
@@ -537,23 +541,19 @@ export const SettingsPrivacyFragment = React.memo(() => {
                             title="Email"
                             subtitle={email || 'Not paired'}
                             button={
-                                !!email ? (
-                                    <UButton
-                                        text="Edit"
-                                        style="secondary"
-                                        onClick={() => showPairMailModal(email)}
-                                    />
-                                ) : (
-                                        <UButton text="Add" onClick={() => showPairMailModal()} />
-                                    )
+                                <UButton
+                                    text={email ? 'Edit' : 'Add'}
+                                    style={email ? 'secondary' : 'primary'}
+                                    onClick={() => showPairMailModal(email)}
+                                />
                             }
                         />
                     </XView>
                 </XView>
             </UListGroup>
             <UListGroup header="Privacy" padded={false}>
-                <WhoCanSee text="Who can see my phone" value={whoCanSeePhone} onClick={v => handleChangeWhoCanSee('phone', v)} />
-                <WhoCanSee text="Who can see my email" value={whoCanSeeEmail} onClick={v => handleChangeWhoCanSee('email', v)} />
+                <WhoCanSee text="Who can see my phone" value={whoCanSeePhone} onClick={v => handleChangeWhoCanSee({ whoCanSeePhone: v })} />
+                <WhoCanSee text="Who can see my email" value={whoCanSeeEmail} onClick={v => handleChangeWhoCanSee({ whoCanSeeEmail: v })} />
             </UListGroup>
         </Page>
     );
