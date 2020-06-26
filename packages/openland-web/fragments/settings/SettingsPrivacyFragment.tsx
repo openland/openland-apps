@@ -78,32 +78,37 @@ const EnterCodeModalContent = React.memo((props: EnterCodeModalContentProps) => 
         }
     };
 
-    const handleSave = async () => {
-        const code = confirmField.value.trim();
-        if (sessionState) {
-            setLoading(true);
-            if (props.isPhone) {
-                await client.mutatePairPhone({
-                    sessionId: sessionState,
-                    confirmationCode: code,
-                });
-            } else {
-                await client.mutatePairEmail({
-                    sessionId: sessionState,
-                    confirmationCode: code,
-                });
+    const handleSave = () => {
+        form.doAction(async () => {
+            const code = confirmField.value.trim();
+            if (sessionState) {
+                setLoading(true);
+                if (props.isPhone) {
+                    await client.mutatePairPhone({
+                        sessionId: sessionState,
+                        confirmationCode: code,
+                    });
+                } else {
+                    await client.mutatePairEmail({
+                        sessionId: sessionState,
+                        confirmationCode: code,
+                    });
+                }
+                await client.refetchProfile();
+                await client.refetchAuthPoints();
+                setLoading(false);
+                props.hide();
             }
-            await client.refetchProfile();
-            await client.refetchAuthPoints();
-            setLoading(false);
-            props.hide();
-        }
+        });
     };
     return (
         <>
             <XModalContent>
                 <ResendSubtitle sendTo={props.parseValue} onResend={handleResend} />
                 <UInputField label="Code" hasPlaceholder={true} field={confirmField} autofocus={true} />
+                {!!form.error && (
+                    <UInputErrorText text={form.error} />
+                )}
             </XModalContent>
             <XModalFooter>
                 <UButton text="Cancel" style="tertiary" size="large" onClick={() => props.hide()} />
