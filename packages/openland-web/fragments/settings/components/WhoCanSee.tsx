@@ -46,7 +46,7 @@ const MenuComponent = React.memo((props: WhoCanSeeItemProps & { ctx: UPopperCont
 
 export const WhoCanSee = React.memo((props: WhoCanSeeItemProps) => {
     const { text, value } = props;
-    const [menuVisible, menuShow] = usePopper({ placement: 'bottom-end', hideOnClick: true, marginTop: -64, updatedDeps: [props.value] }, (ctx) => <MenuComponent ctx={ctx} {...props} />);
+    const [menuVisible, menuShow] = usePopper({ placement: 'bottom-end', hideOnClick: true, marginTop: -64, updatedDeps: [props.value], scope: 'whocansee' }, (ctx) => <MenuComponent ctx={ctx} {...props} />);
 
     return (
         <XView
