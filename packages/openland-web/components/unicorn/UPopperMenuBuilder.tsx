@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { XLoader } from 'openland-x/XLoader';
+import IcCheck from 'openland-icons/s/ic-done-16.svg';
+import { UIcon } from './UIcon';
+import { XView } from 'react-mental';
 
 const container = css`
     min-width: 150px;
@@ -22,6 +25,7 @@ export interface MenuItem {
     closeDelay?: number;
     counter?: number;
     disabled?: boolean;
+    selected?: boolean;
 }
 interface MenuElementItem {
     element: (ctx: UPopperController) => JSX.Element;
@@ -58,6 +62,8 @@ const MenuItemComponent = (props: { item: MenuItem, ctx: UPopperController }) =>
             path={item.path}
             linkSelectable={false}
             disabled={item.disabled}
+            hovered={item.selected}
+            rightElement={item.selected ? <XView paddingRight={8}><UIcon icon={<IcCheck />} color="var(--foregroundTertiary)" size={16} /></XView> : undefined}
         />
     );
 };
@@ -83,9 +89,9 @@ export class UPopperMenuBuilder {
         return this;
     }
 
-    build = (ctx: UPopperController, width?: number) => {
+    build = (ctx: UPopperController, width?: number, containerClass?: string) => {
         return (
-            <div className={container} style={{ width }}>
+            <div className={cx(container, containerClass)} style={{ width }}>
                 {this._items.map((item, index) => {
                     if (item._type === 'item') {
                         return (

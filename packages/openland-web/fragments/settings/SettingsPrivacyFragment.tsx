@@ -7,7 +7,6 @@ import { TextDensed, TextLabel1, TextBody } from 'openland-web/utils/TextStyles'
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { UInput, UInputField } from 'openland-web/components/unicorn/UInput';
 import { ULink } from 'openland-web/components/unicorn/ULink';
-import { FormSection } from './components/FormSection';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
 import { XModalContent } from 'openland-web/components/XModalContent';
@@ -28,6 +27,9 @@ import {
     INVALID_CODE_LABEL,
     removeSpace,
 } from 'openland-web/pages/auth/ask-auth-data.page';
+import { PrivacyWhoCanSee } from 'openland-api/spacex.types';
+import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
+import { WhoCanSee } from './components/WhoCanSee';
 
 const modalSubtitle = css`
     color: var(--foregroundPrimary);
@@ -421,7 +423,7 @@ const PairMailModalContent = React.memo((props: { hide: () => void, initialValue
         <>
             <XModalContent>
                 <div className={cx(modalSubtitle, TextBody)}>
-                    You can pair your account to any email address and use it for login
+                    You can pair your account to any email address<br /> and use it for login
                 </div>
                 <UInputField ref={inputRef} label="Email address" hasPlaceholder={true} field={dataField} autofocus={true} />
             </XModalContent>
@@ -471,7 +473,7 @@ const entityItemSubtitle = css`
 interface EntityItemProps {
     title: string;
     subtitle: string;
-    button?: JSX.Element | boolean;
+    button?: JSX.Element;
 }
 
 const EntityItem = React.memo((props: EntityItemProps) => {
@@ -483,62 +485,71 @@ const EntityItem = React.memo((props: EntityItemProps) => {
                     {props.subtitle}
                 </div>
             </XView>
-            {!!props.button && props.button}
+            {props.button}
         </div>
     );
 });
 
 export const SettingsPrivacyFragment = React.memo(() => {
     const client = useClient();
-    const { phone, email } = client.useAuthPoints().authPoints;
+    const { phone, email } = client.useAuthPoints({ fetchPolicy: 'network-only' }).authPoints;
+    const { whoCanSeeEmail, whoCanSeePhone } = client.useSettings({ fetchPolicy: 'network-only' }).settings;
+
+    const handleChangeWhoCanSee = React.useCallback(async (type: 'phone' | 'email', value: PrivacyWhoCanSee) => {
+        await client.mutateSettingsUpdate({ input: type === 'phone' ? { whoCanSeePhone: value } : { whoCanSeeEmail: value } });
+        await client.refetchSettings();
+    }, []);
+
     return (
         <Page track="account_privacy">
             <UHeader title="Account and privacy" />
-            <XView marginTop={12}>
-                <FormSection title="Sign-in methods">
-                    <XView
-                        flexDirection="row"
-                        alignItems="center"
-                        justifyContent="space-between"
-                        marginTop={8}
-                    >
-                        <XView flexGrow={1} flexShrink={0} flexBasis={0} marginRight={8}>
-                            <EntityItem
-                                title="Phone"
-                                subtitle={phone || 'Not paired'}
-                                button={
-                                    !!phone ? (
-                                        <UButton
-                                            text="Edit"
-                                            style="secondary"
-                                            onClick={showPairPhoneModal}
-                                        />
-                                    ) : (
-                                            <UButton text="Add" onClick={showPairPhoneModal} />
-                                        )
-                                }
-                            />
-                        </XView>
-                        <XView flexGrow={1} flexShrink={0} flexBasis={0} marginLeft={8}>
-                            <EntityItem
-                                title="Email"
-                                subtitle={email || 'Not paired'}
-                                button={
-                                    !!email ? (
-                                        <UButton
-                                            text="Edit"
-                                            style="secondary"
-                                            onClick={() => showPairMailModal(email)}
-                                        />
-                                    ) : (
-                                            <UButton text="Add" onClick={() => showPairMailModal()} />
-                                        )
-                                }
-                            />
-                        </XView>
+            <UListGroup header="Sign-in methods" padded={false}>
+                <XView
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    marginVertical={8}
+                >
+                    <XView flexGrow={1} flexShrink={0} flexBasis={0} marginRight={8}>
+                        <EntityItem
+                            title="Phone"
+                            subtitle={phone || 'Not paired'}
+                            button={
+                                !!phone ? (
+                                    <UButton
+                                        text="Edit"
+                                        style="secondary"
+                                        onClick={showPairPhoneModal}
+                                    />
+                                ) : (
+                                        <UButton text="Add" onClick={showPairPhoneModal} />
+                                    )
+                            }
+                        />
                     </XView>
-                </FormSection>
-            </XView>
+                    <XView flexGrow={1} flexShrink={0} flexBasis={0} marginLeft={8}>
+                        <EntityItem
+                            title="Email"
+                            subtitle={email || 'Not paired'}
+                            button={
+                                !!email ? (
+                                    <UButton
+                                        text="Edit"
+                                        style="secondary"
+                                        onClick={() => showPairMailModal(email)}
+                                    />
+                                ) : (
+                                        <UButton text="Add" onClick={() => showPairMailModal()} />
+                                    )
+                            }
+                        />
+                    </XView>
+                </XView>
+            </UListGroup>
+            <UListGroup header="Privacy" padded={false}>
+                <WhoCanSee text="Who can see my phone" value={whoCanSeePhone} onClick={v => handleChangeWhoCanSee('phone', v)} />
+                <WhoCanSee text="Who can see my email" value={whoCanSeeEmail} onClick={v => handleChangeWhoCanSee('email', v)} />
+            </UListGroup>
         </Page>
     );
 });
