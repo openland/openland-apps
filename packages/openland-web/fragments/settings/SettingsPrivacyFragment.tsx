@@ -181,6 +181,7 @@ const showConfirmPhoneModal = (phone: string, value: string, onConfirm: () => vo
 const PairPhoneModalContent = React.memo((props: { hide: () => void, initialValue?: string | null }) => {
     const client = useClient();
     const initial = props.initialValue ? parsePhoneNumberFromString(props.initialValue) : undefined;
+    const formatedPhone = initial ? initial.formatInternational().replace('+' + initial.countryCallingCode, '').trim() : undefined;
     const countryCode = initial ? initial.country : client.useIpLocation().ipLocation?.countryCode;
     const initialCountry = countriesMeta.find((x) => x.shortname === countryCode) || {
         label: 'United States',
@@ -194,7 +195,7 @@ const PairPhoneModalContent = React.memo((props: { hide: () => void, initialValu
 
     const form = useForm();
     const codeField = useField('input.code', initialCountry, form);
-    const dataField = useField('input.data', initial ? initial.nationalNumber.toString() : '', form);
+    const dataField = useField('input.data', formatedPhone || '', form);
 
     const [codeWidth, setCodeWidth] = React.useState<string>(
         `calc(${codeField.input.value.value.length}ch + 32px)`,
@@ -321,9 +322,9 @@ const PairPhoneModalContent = React.memo((props: { hide: () => void, initialValu
         }, 200);
     }, []);
 
-    let notChanged = initial ? dataField.value === initial.nationalNumber.toString() : false;
     let parsedPhone = parsePhoneNumberFromString(codeField.value.value + dataField.value);
-    let isPhoneValid = !!(parsedPhone && parsedPhone.isPossible()) && !notChanged;
+    let changed = initial && parsedPhone ? parsedPhone.nationalNumber !== initial.nationalNumber : true;
+    let isPhoneValid = !!(parsedPhone && parsedPhone.isPossible()) && changed;
 
     React.useLayoutEffect(() => {
         if (!!props.initialValue && inputRef.current) {
