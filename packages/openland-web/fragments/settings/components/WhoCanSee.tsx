@@ -22,7 +22,13 @@ const WhoCanSeeLabel: { [key in PrivacyWhoCanSee]: string } = {
 
 const WhoCanSeeLabelOrder: PrivacyWhoCanSee[] = [PrivacyWhoCanSee.EVERYONE, PrivacyWhoCanSee.NOBODY];
 
+const boxClass = css`
+    user-select: none;
+`;
+
 const wrapperClass = css`
+    user-select: none;
+
     /* Disable hoverBackground for selected item if mouse on another */
     &:hover > div > div:not(:hover) {
         background-color: transparent;
@@ -49,24 +55,26 @@ export const WhoCanSee = React.memo((props: WhoCanSeeItemProps) => {
     const [menuVisible, menuShow] = usePopper({ placement: 'bottom-end', hideOnClick: true, marginTop: -64, updatedDeps: [props.value], scope: 'whocansee' }, (ctx) => <MenuComponent ctx={ctx} {...props} />);
 
     return (
-        <XView
-            cursor="pointer"
-            borderRadius={8}
-            backgroundColor={menuVisible ? 'var(--backgroundTertiary)' : 'var(--backgroundPrimary)'}
-            hoverBackgroundColor="var(--backgroundTertiary)"
-            onClick={menuShow}
-            flexDirection="row"
-            paddingHorizontal={16}
-            paddingVertical={12}
-            marginHorizontal={-16}
-        >
-            <XView {...TextStyles.Body} flexGrow={1} color="var(--foregroundPrimary)">
-                {text}
+        <div className={boxClass}>
+            <XView
+                cursor="pointer"
+                borderRadius={8}
+                backgroundColor={menuVisible ? 'var(--backgroundTertiary)' : 'var(--backgroundPrimary)'}
+                hoverBackgroundColor="var(--backgroundTertiary)"
+                onClick={menuShow}
+                flexDirection="row"
+                paddingHorizontal={16}
+                paddingVertical={12}
+                marginHorizontal={-16}
+            >
+                <XView {...TextStyles.Body} flexGrow={1} color="var(--foregroundPrimary)">
+                    {text}
+                </XView>
+                <XView {...TextStyles.Body} color="var(--foregroundSecondary)">
+                    {WhoCanSeeLabel[value]}
+                </XView>
+                <XView marginLeft={8}><UIcon icon={<IcDropdown />} color="var(--foregroundTertiary)" size={16} /></XView>
             </XView>
-            <XView {...TextStyles.Body} color="var(--foregroundSecondary)">
-                {WhoCanSeeLabel[value]}
-            </XView>
-            <XView marginLeft={8}><UIcon icon={<IcDropdown />} color="var(--foregroundTertiary)" size={16} /></XView>
-        </XView>
+        </div>
     );
 });

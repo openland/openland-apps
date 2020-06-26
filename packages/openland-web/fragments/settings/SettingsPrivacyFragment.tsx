@@ -5,7 +5,7 @@ import { Page } from 'openland-unicorn/Page';
 import { UHeader } from 'openland-unicorn/UHeader';
 import { TextDensed, TextLabel1, TextBody } from 'openland-web/utils/TextStyles';
 import { UButton } from 'openland-web/components/unicorn/UButton';
-import { UInput, UInputField } from 'openland-web/components/unicorn/UInput';
+import { UInput, UInputField, UInputErrorText } from 'openland-web/components/unicorn/UInput';
 import { ULink } from 'openland-web/components/unicorn/ULink';
 import { showModalBox } from 'openland-x/showModalBox';
 import { XModalFooter } from 'openland-web/components/XModalFooter';
@@ -211,15 +211,14 @@ const PairPhoneModalContent = React.memo((props: { hide: () => void }) => {
         return [value, phonePrs];
     }
 
-    const handleConfirm = async () => {
+    const handleConfirm = () => {
         const [val, prs] = getVal();
-        try {
+
+        form.doAction(async () => {
             const data = await client.mutateSendPhonePairCode({ phone: val });
             showEnterCodeModal(true, val, prs, data.sendPhonePairCode);
             props.hide();
-        } catch (e) {
-            throw new Error(e);
-        }
+        });
     };
 
     const handleNext = () => {
@@ -365,6 +364,9 @@ const PairPhoneModalContent = React.memo((props: { hide: () => void }) => {
                         />
                     </XView>
                 </XView>
+                {!!form.error && (
+                    <UInputErrorText text={form.error} />
+                )}
             </XModalContent>
             <XModalFooter>
                 <UButton text="Cancel" style="tertiary" size="large" onClick={() => props.hide()} />
@@ -397,18 +399,17 @@ const PairMailModalContent = React.memo((props: { hide: () => void, initialValue
     const dataField = useField('input.data', props.initialValue || '', form);
     const inputRef = React.useRef<HTMLInputElement>(null);
 
-    const handleNext = async () => {
+    const handleNext = () => {
         const val = dataField.value.trim();
         if (!val) {
             return;
         }
-        try {
+
+        form.doAction(async () => {
             const data = await client.mutateSendEmailPairCode({ email: val });
             showEnterCodeModal(false, val, val, data.sendEmailPairCode);
             props.hide();
-        } catch (e) {
-            throw new Error(e);
-        }
+        });
     };
 
     React.useLayoutEffect(() => {
@@ -423,9 +424,13 @@ const PairMailModalContent = React.memo((props: { hide: () => void, initialValue
         <>
             <XModalContent>
                 <div className={cx(modalSubtitle, TextBody)}>
-                    You can pair your account to any email address<br /> and use it for login
+                    You can pair your account to any email address<br />
+                    and use it for login
                 </div>
                 <UInputField ref={inputRef} label="Email address" hasPlaceholder={true} field={dataField} autofocus={true} />
+                {!!form.error && (
+                    <UInputErrorText text={form.error} />
+                )}
             </XModalContent>
             <XModalFooter>
                 <UButton text="Cancel" style="tertiary" size="large" onClick={() => props.hide()} />
