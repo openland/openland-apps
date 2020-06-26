@@ -255,6 +255,7 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
                         marginTop={16}
                         minWidth={72}
                         type="tel"
+                        autoComplete="tel"
                         value={codeField.input.value.value}
                         hasPlaceholder={true}
                         width={codeWidth}
@@ -264,6 +265,7 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
                         label="Phone number"
                         invalid={isInvalid}
                         type="tel"
+                        autoComplete="tel"
                         ref={inputRef}
                         hasPlaceholder={true}
                         flexGrow={1}

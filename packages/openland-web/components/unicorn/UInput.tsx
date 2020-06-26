@@ -119,6 +119,7 @@ export interface UInputProps extends XViewProps {
     type?: string;
     hasPlaceholder?: boolean;
     pattern?: string;
+    autoComplete?: string;
     autofocus?: boolean;
     onChange?: (v: string) => void | boolean;
     maxLength?: number;
@@ -139,6 +140,7 @@ export const UInput = React.forwardRef(
             autofocus,
             onChange,
             maxLength,
+            autoComplete,
             onKeyDown,
             ...other
         } = props;
@@ -198,7 +200,7 @@ export const UInput = React.forwardRef(
                         type={type}
                         pattern={pattern}
                         autoFocus={autofocus}
-                        autoComplete="off"
+                        autoComplete={autoComplete || "off"}
                         onChange={(e) => handleChange(e.target.value)}
                         maxLength={maxLength}
                         ref={ref}
