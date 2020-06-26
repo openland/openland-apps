@@ -10,6 +10,7 @@ import {
     TextInputProps,
     ViewProps,
     Platform,
+    Dimensions,
 } from 'react-native';
 import { ShowAuthError } from './ShowAuthError';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
@@ -215,10 +216,11 @@ export const SubmitCodeForm = React.memo((props: SubmitCodeFormProps) => {
             ? `https://ucarecdn.com/${photoSrc}/-/crop/${photoCrop.w}x${photoCrop.h}/${photoCrop.x},${photoCrop.y}/-/scale_crop/72x72/center/`
             : null;
 
+    const compensationHeight = Dimensions.get('screen').height <= 667 ? 44 : 0;
     return (
         <ZTrack event="code_view">
             <RegistrationContainer
-                // autoScrollToBottom={true}
+                autoScrollToBottom={true}
                 title="Enter login code"
                 subtitle={<AuthCodeHeader resendCode={resendCode} formData={formData} />}
                 floatContent={
@@ -265,6 +267,7 @@ export const SubmitCodeForm = React.memo((props: SubmitCodeFormProps) => {
                         </View>
                     </ZShaker>
                 </View>
+                <View height={compensationHeight} />
             </RegistrationContainer>
         </ZTrack>
     );
