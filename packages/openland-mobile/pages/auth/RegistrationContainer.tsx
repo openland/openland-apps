@@ -10,6 +10,7 @@ import {
     StyleSheet,
     TextStyle,
     Text,
+    LayoutAnimation,
 } from 'react-native';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -45,6 +46,7 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
     const theme = React.useContext(ThemeContext);
     const area = React.useContext(ASSafeAreaContext);
     const scrollRef = React.useRef<ScrollView>(null);
+    const prevHeight = React.useRef<number>();
     const bottomOffset = area.bottom;
 
     const isAndroid = Platform.OS === 'android';
@@ -53,11 +55,24 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
     const defaultIosPadding = isXGen ? 34 : 16;
 
     const [floatPadding] = React.useState(new Animated.Value(defaultIosPadding));
+    const [iOSFloatMargin, setIOSFloatMargin] = React.useState(0);
 
     const keyboardWillShow = (e: any) => {
         if (props.autoScrollToBottom && scrollRef.current) {
             (scrollRef.current as any).getNode().scrollToEnd({ animated: true });
         }
+        if (Platform.OS === 'ios' && prevHeight.current && e?.endCoordinates?.height) {
+            let diff = Math.abs(e?.endCoordinates?.height - prevHeight.current);
+            LayoutAnimation.configureNext(LayoutAnimation.create(
+                e.duration,
+                LayoutAnimation.Types[e.easing]
+            ));
+
+            setIOSFloatMargin(diff);
+            return;
+        }
+
+        prevHeight.current = e?.endCoordinates?.height;
         Animated.parallel([
             Animated.timing(floatPadding, {
                 duration: e.duration,
@@ -67,11 +82,13 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
     };
 
     const keyboardWillHide = (e: any) => {
+        prevHeight.current = undefined;
+        setIOSFloatMargin(0);
         Animated.parallel([
             Animated.timing(floatPadding, {
                 duration: e.duration,
                 toValue: defaultIosPadding,
-            }),
+            })
         ]).start();
     };
 
@@ -129,6 +146,7 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
                         paddingTop={16}
                         maxWidth={424}
                         width="100%"
+                        marginBottom={iOSFloatMargin}
                     >
                         {props.floatContent}
                     </Animated.View>
