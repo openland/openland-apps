@@ -10,6 +10,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { preprocessText } from 'openland-y-utils/TextProcessor';
+import Toast from './Toast';
 
 export interface ZListItemProps {
     leftAvatar?: { photo?: string | null, id?: string, title?: string };
@@ -42,6 +43,7 @@ export interface ZListItemProps {
     multiline?: boolean;
     linkify?: boolean;
     copy?: boolean;
+    textToCopy?: string | null;
     small?: boolean;
     tall?: boolean;
 }
@@ -97,10 +99,14 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
         if (this.props.onLongPress) {
             this.props.onLongPress();
         }
-        if (this.props.copy && this.props.text) {
+        const textToCopy = this.props.textToCopy || this.props.text;
+        if (this.props.copy && textToCopy) {
             ActionSheet.builder()
-                .action('Copy', () => Clipboard.setString(this.props.text!), undefined, require('assets/ic-copy-24.png'))
-                .show();
+                .action('Copy', () => {
+                    Clipboard.setString(textToCopy);
+                    Toast.showCopied();
+                }, undefined, require('assets/ic-copy-24.png'))
+                .show(true);
         }
     }
 

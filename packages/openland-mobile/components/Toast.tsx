@@ -152,6 +152,10 @@ function failure(config: ToastBuildConfig = {}) {
     });
 }
 
+function showCopied() {
+    success({ text: 'Copied', duration: 1000 }).show();
+}
+
 function showCopiedLink() {
     success({ text: 'Link copied', duration: 1000 }).show();
 }
@@ -170,4 +174,4 @@ const handle = async (
     toastLoader.show();
 };
 
-export default { build, loader, success, failure, showCopiedLink, handle };
+export default { build, loader, success, failure, showCopiedLink, showCopied, handle };
