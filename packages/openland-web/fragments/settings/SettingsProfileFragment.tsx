@@ -219,7 +219,7 @@ export const SettingsProfileFragment = React.memo(() => {
                             </XView>
                             <UInputField label="LinkedIn" field={linkedinField} />
                         </FormSection>
-                        <FormFooter>
+                        <FormFooter sticky={true}>
                             <UButton
                                 text="Save changes"
                                 size="large"
