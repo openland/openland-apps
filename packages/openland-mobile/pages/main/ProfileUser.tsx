@@ -6,7 +6,7 @@ import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { View, Platform, Clipboard, Linking } from 'react-native';
+import { View, Platform, Clipboard, Linking, Share } from 'react-native';
 import { User_conversation_PrivateRoom } from 'openland-api/spacex.types';
 import { useLastSeen } from 'openland-y-utils/LastSeen';
 import { NotificationSettings } from './components/NotificationSetting';
@@ -23,6 +23,7 @@ import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import Toast from 'openland-mobile/components/Toast';
 import { formatPhone } from 'openland-y-utils/auth/formatPhone';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 const ProfileUserComponent = XMemo<PageProps>((props) => {
     const { user, conversation } = getClient().useUser(
@@ -97,6 +98,12 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
         }
     }, []);
 
+    const handleShareProfile = React.useCallback(() => {
+        ReactNativeHapticFeedback.trigger('impactLight', { ignoreAndroidSystemSettings: false });
+
+        Share.share({ url: `https://openland.com/${user.shortname || user.id}` });
+    }, [user.shortname, user.id]);
+
     return (
         <>
             <SHeader title={Platform.OS === 'android' ? 'Info' : user.name} />
@@ -142,8 +149,8 @@ const ProfileUserComponent = XMemo<PageProps>((props) => {
                             title="Username"
                             text={'@' + user.shortname}
                             tall={true}
-                            copy={true}
-                            textToCopy={`https://openland.com/${user.shortname}`}
+                            onPress={handleShareProfile}
+                            onLongPress={handleShareProfile}
                         />
                     )}
                     {!!user.email && (
