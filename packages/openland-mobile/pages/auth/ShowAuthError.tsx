@@ -10,6 +10,6 @@ const textByError = {
 };
 
 export const ShowAuthError = (error: NamedError) => {
-    const text = textByError[error.name] || error.message || 'Unexpected error';
+    const text = textByError[error.name] || 'Unexpected error';
     Toast.failure({ text, duration: 1000, hideKeyboardOnOpen: false }).show();
 };

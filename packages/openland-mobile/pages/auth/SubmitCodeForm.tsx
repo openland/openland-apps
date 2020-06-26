@@ -9,6 +9,7 @@ import {
     TextInput,
     TextInputProps,
     ViewProps,
+    Platform,
 } from 'react-native';
 import { ShowAuthError } from './ShowAuthError';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
@@ -258,7 +259,7 @@ export const SubmitCodeForm = React.memo((props: SubmitCodeFormProps) => {
                                         }
                                     }}
                                     onSubmitEditing={submitForm}
-                                // {...Platform.OS === 'ios' && i === 0 && { textContentType: 'oneTimeCode' }}
+                                    {...Platform.OS === 'ios' && { textContentType: 'oneTimeCode' }}
                                 />
                             ))}
                         </View>
