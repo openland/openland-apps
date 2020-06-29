@@ -114,7 +114,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
                     (room as RoomTiny_room_SharedRoom).isChannel ? 'Manage channel' : 'Manage group',
                     () => props.router.push('EditGroup', { id: room.id }),
                     false,
-                    require('assets/ic-settings-24.png'),
+                    require('assets/ic-settings-deprecated-24.png'),
                 );
             }
         }

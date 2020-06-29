@@ -254,7 +254,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 room.isChannel ? 'Manage channel' : 'Manage group',
                 () => props.router.push('EditGroup', { id: room.id }),
                 false,
-                require('assets/ic-settings-24.png'),
+                require('assets/ic-settings-deprecated-24.png'),
             );
         }
 

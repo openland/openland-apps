@@ -229,7 +229,7 @@ class SettingsPrivacyComponent extends React.Component<PageProps> {
     render() {
         return (
             <>
-                <SHeader title="Login and privacy" />
+                <SHeader title="Account and privacy" />
                 <SettingsPrivacyContent {...this.props} />
             </>
         );

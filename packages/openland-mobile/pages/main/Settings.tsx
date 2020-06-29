@@ -88,11 +88,11 @@ let SettingsContent = ((props: PageProps) => {
                 text="Invite friends"
                 onPress={handleGlobalInvitePress}
             />
-            <ZListGroup header="Account">
+            <ZListGroup header="Preferences">
                 <ZListItem
                     leftIconColor={theme.tintGrey}
                     leftIcon={require('assets/ic-access-glyph-24.png')}
-                    text="Login and privacy"
+                    text="Account and privacy"
                     path="SettingsPrivacy"
                 />
                 <ZListItem
@@ -131,7 +131,7 @@ let SettingsContent = ((props: PageProps) => {
                     path="Subscriptions"
                 />
             </ZListGroup>
-            <ZListGroup header="About">
+            <ZListGroup header="Openland">
                 <ZListItem
                     leftIconColor={theme.tintOrange}
                     leftIcon={require('assets/ic-star-glyph-24.png')}
@@ -146,11 +146,11 @@ let SettingsContent = ((props: PageProps) => {
                 <ZListItem
                     leftIconColor={theme.tintCyan}
                     leftIcon={require('assets/ic-help-glyph-24.png')}
-                    text="Ask for help"
+                    text="Help and feedback"
                     onPress={() => props.router.push('Conversation', { flexibleId: '9KkDvyowQgcYAn0WvYgXFrdqAp' })}
                 />
                 <ZListItem
-                    leftIconColor={theme.tintGrey}
+                    leftIconColor={theme.tintBlue}
                     leftIcon={require('assets/ic-info-glyph-24.png')}
                     text="About us"
                     path="SettingsAbout"
@@ -189,7 +189,7 @@ class SettingsComponent extends React.Component<PageProps> {
     render() {
         return (
             <>
-                <SHeader title="Account" />
+                <SHeader title="Settings" />
                 <SettingsContent {...this.props} />
             </>
         );

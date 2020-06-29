@@ -90,10 +90,10 @@ export const Home = XMemo<PageProps>((props) => {
                     />
                     <AppBarBottomItem
                         counter={failingPaymentsCount}
-                        icon={require('assets/ic-user-24.png')}
-                        iconSelected={require('assets/ic-user-filled-24.png')}
-                        iconCounter={require('assets/ic-user-counter-24.png')}
-                        iconSelectedCounter={require('assets/ic-user-filled-counter-24.png')}
+                        icon={require('assets/ic-settings-24.png')}
+                        iconSelected={require('assets/ic-settings-filled-24.png')}
+                        iconCounter={require('assets/ic-settings-counter-24.png')}
+                        iconSelectedCounter={require('assets/ic-settings-filled-counter-24.png')}
                         selected={tab === 3}
                         onPress={() => setTab(3)}
                     />
