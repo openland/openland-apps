@@ -89,7 +89,7 @@ const EditGroupComponent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title={`Manage ${typeString}`} />
+            <SHeader title={`Edit ${typeString}`} />
             <SHeaderButton title="Save" onPress={handleSave} />
             <KeyboardAvoidingScrollView>
                 <ZListGroup header={null} alignItems="center">

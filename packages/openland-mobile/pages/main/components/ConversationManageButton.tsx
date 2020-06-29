@@ -111,7 +111,7 @@ export const ConversationManageButton = React.memo((props: ConversationManageBut
         if (!isPrivate) {
             if ((room as RoomTiny_room_SharedRoom).canEdit) {
                 builder.action(
-                    (room as RoomTiny_room_SharedRoom).isChannel ? 'Manage channel' : 'Manage group',
+                    (room as RoomTiny_room_SharedRoom).isChannel ? 'Edit channel' : 'Edit group',
                     () => props.router.push('EditGroup', { id: room.id }),
                     false,
                     require('assets/ic-settings-deprecated-24.png'),

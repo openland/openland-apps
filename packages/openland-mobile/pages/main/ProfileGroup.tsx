@@ -251,7 +251,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
 
         if (room.canEdit) {
             builder.action(
-                room.isChannel ? 'Manage channel' : 'Manage group',
+                room.isChannel ? 'Edit channel' : 'Edit group',
                 () => props.router.push('EditGroup', { id: room.id }),
                 false,
                 require('assets/ic-settings-deprecated-24.png'),

@@ -175,7 +175,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     if (chat.__typename === 'SharedRoom') {
         if (chat.canEdit) {
             res.item({
-                title: chat.isChannel ? 'Manage channel' : 'Manage group',
+                title: chat.isChannel ? 'Edit channel' : 'Edit group',
                 icon: <SettingsIcon />,
                 action: () => showRoomEditModal(chat.id, chat.isChannel),
             });

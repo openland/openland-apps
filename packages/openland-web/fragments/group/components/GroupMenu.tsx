@@ -33,7 +33,7 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
 
     if (canEdit) {
         builder.item({
-            title: isChannel ? 'Manage channel' : 'Manage group',
+            title: isChannel ? 'Edit channel' : 'Edit group',
             icon: <SettingsIcon />,
             onClick: () => showRoomEditModal(id, isChannel),
         });

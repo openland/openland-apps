@@ -607,7 +607,7 @@ export const showRoomEditModal = (chatId: string, isChannel: boolean) => {
     showModalBox(
         {
             width: 480,
-            title: isChannel ? 'Manage channel' : 'Manage group',
+            title: isChannel ? 'Edit channel' : 'Edit group',
         },
         (ctx) => <RoomEditModal chatId={chatId} hide={ctx.hide} />,
     );
