@@ -32,7 +32,7 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
     }, []);
 
     const handleGroupPress = React.useCallback((id: string) => {
-        router.push('ProfileGroup', { id });
+        router.push('Conversation', { id });
     }, []);
 
     const handleOrganizationPress = React.useCallback((id: string) => {
