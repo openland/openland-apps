@@ -7,7 +7,7 @@ import {
     showLeaveChatConfirmation,
 } from 'openland-web/fragments/settings/components/groupProfileModals';
 import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
-import SettingsIcon from 'openland-icons/s/ic-settings-24.svg';
+import SettingsIcon from 'openland-icons/s/ic-settings-deprecated-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';

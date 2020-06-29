@@ -13,8 +13,8 @@ import ChannelsIcon from './navigation/ic-flashlight-24.svg';
 import ChannelsActiveIcon from './navigation/ic-flashlight-filled-24.svg';
 import ChatIcon from './navigation/icon_chat.svg';
 import ChatActiveIcon from './navigation/icon_chat_active.svg';
-import ProfileIcon from './navigation/icon_profile.svg';
-import ProfileActiveIcon from './navigation/icon_profile_active.svg';
+import SettingsIcon from './navigation/icon_settings.svg';
+import SettingsActiveIcon from './navigation/icon_settings_active.svg';
 import { AuthRouter } from '../root/AuthRouter';
 import { IndexFragment } from 'openland-web/fragments/discussions/IndexFragment';
 import { useRole } from 'openland-x-permissions/XWithRole';
@@ -51,8 +51,8 @@ const Unicorn = React.memo(() => {
                         defaultPage: false,
                     },
                     {
-                        icon: <ProfileIcon />,
-                        iconActive: <ProfileActiveIcon />,
+                        icon: <SettingsIcon />,
+                        iconActive: <SettingsActiveIcon />,
                         path: '/settings',
                         component: <SettingsFragment />,
                         caption: 'Settings',
@@ -76,8 +76,8 @@ const Unicorn = React.memo(() => {
                             defaultPage: false,
                         },
                         {
-                            icon: <ProfileIcon />,
-                            iconActive: <ProfileActiveIcon />,
+                            icon: <SettingsIcon />,
+                            iconActive: <SettingsActiveIcon />,
                             path: '/settings',
                             component: <SettingsFragment />,
                             caption: 'Settings',

@@ -7,7 +7,7 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { showShortcutsHelp } from 'openland-web/fragments/chat/showShortcutsHelp';
 import Logo from './Logo';
 import AppearanceIcon from 'openland-icons/s/ic-appearance-24.svg';
-import SuperIcon from 'openland-icons/s/ic-settings-24.svg';
+import SuperIcon from 'openland-icons/s/ic-settings-deprecated-24.svg';
 import IcKeyboard from 'openland-icons/s/ic-keyboard-24.svg';
 
 const selectorStyle = css`
