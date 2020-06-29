@@ -26,12 +26,12 @@ import {
     findCode,
     INVALID_CODE_LABEL,
     removeSpace,
-    validateEmail,
 } from 'openland-web/pages/auth/ask-auth-data.page';
 import { UpdateSettingsInput } from 'openland-api/spacex.types';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { WhoCanSee } from './components/WhoCanSee';
 import { InitTexts } from 'openland-web/pages/init/_text';
+import { validateEmail } from 'openland-y-utils/validateEmail';
 
 const modalSubtitle = css`
     color: var(--foregroundPrimary);

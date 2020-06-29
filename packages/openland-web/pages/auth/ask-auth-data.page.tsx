@@ -23,6 +23,7 @@ import { AsYouType, parsePhoneNumberFromString, formatIncompletePhoneNumber, Cou
 import { CountryPicker, OptionType } from './components/CountryPicker';
 import { countriesMeta } from 'openland-y-utils/auth/countriesMeta';
 import { US_LABEL, RUSSIA_LABEL } from 'openland-y-utils/auth/constants';
+import { validateEmail } from 'openland-y-utils/validateEmail';
 
 export const INVALID_CODE_LABEL = 'Invalid country code';
 export const SPACE_REGEX = /\s/g;
@@ -372,11 +373,6 @@ const WebSignUpCreateWithEmail = (
         </>
     );
 };
-
-export function validateEmail(email: string) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-}
 
 export const AskAuthDataPage = (props: AskAuthDataProps) => {
     const router = React.useContext(XRouterContext)!;

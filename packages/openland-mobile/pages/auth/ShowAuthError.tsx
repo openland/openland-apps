@@ -9,7 +9,7 @@ const textByError = {
     'code_expired': 'Code expired',
 };
 
-export const ShowAuthError = (error: NamedError) => {
-    const text = textByError[error.name] || 'Unexpected error';
+export const ShowAuthError = (error: NamedError, processErrors?: boolean) => {
+    const text = processErrors === false ? error.message : (textByError[error.name] || 'Unexpected error');
     Toast.failure({ text, duration: 1000, hideKeyboardOnOpen: false }).show();
 };

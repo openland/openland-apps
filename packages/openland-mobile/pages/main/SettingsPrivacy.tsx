@@ -25,6 +25,7 @@ const ChangeLoginMethodComponent = React.memo((props: PageProps) => {
     const sessionIdRef = React.useRef('');
     const isPhone = !!props.router.params.phone;
     const countryShortname = props.router.params.countryShortname as string;
+    const initialValue = props.router.params.initialValue as string | undefined;
 
     const handleSubmit = React.useCallback(async (formData: string, phoneData: string) => {
         phoneDataRef.current = phoneData;
@@ -54,6 +55,8 @@ const ChangeLoginMethodComponent = React.memo((props: PageProps) => {
             router={props.router}
             onSubmit={handleSubmit}
             onSuccess={handleSuccess}
+            initialValue={initialValue}
+            processErrors={false}
         />
     );
 });
@@ -120,11 +123,11 @@ const SettingsPrivacyContent = (props: PageProps) => {
     const emailPrivacyField = useField<SettingLabel>('email-privacy', labelBySetting[whoCanSeeEmail], form);
 
     const initiateEmailPair = React.useCallback(() => {
-        props.router.push('ChangeLoginMethod', { phone: false });
-    }, []);
+        props.router.push('ChangeLoginMethod', { phone: false, initialValue: email });
+    }, [email]);
     const initiatePhonePair = React.useCallback(() => {
-        props.router.push('ChangeLoginMethod', { phone: true, countryShortname: countryCode });
-    }, []);
+        props.router.push('ChangeLoginMethod', { phone: true, countryShortname: countryCode, initialValue: phone });
+    }, [phone, countryCode]);
 
     const handleSave = (input: { whoCanSeeEmail?: PrivacyWhoCanSee, whoCanSeePhone?: PrivacyWhoCanSee }) =>
         form.doAction(async () => {
@@ -161,7 +164,7 @@ const SettingsPrivacyContent = (props: PageProps) => {
 
     return (
         <SScrollView>
-            <ZListGroup header="Login methods">
+            <ZListGroup header="Sign-in methods">
                 <View marginVertical={8} paddingHorizontal={16}>
                     <View
                         paddingHorizontal={16}

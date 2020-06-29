@@ -25,6 +25,7 @@ import { countriesMeta } from 'openland-y-utils/auth/countriesMeta';
 import { parsePhoneNumberFromString, formatIncompletePhoneNumber, CountryCode } from 'libphonenumber-js';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { SRouter } from 'react-native-s/SRouter';
+import { validateEmail } from 'openland-y-utils/validateEmail';
 
 const INVALID_COUNTRY = 'Select country';
 const SPACE_REGEX = /\s/g;
@@ -114,21 +115,29 @@ interface SubmitLoginFormProps {
     countryShortname: string;
     onSubmit: (formData: string, phoneData: string) => Promise<any>;
     onSuccess: () => void;
+    initialValue?: string;
+    processErrors?: boolean;
 }
 
 export const SubmitLoginForm = React.memo((props: SubmitLoginFormProps) => {
-    const { isPhone, countryShortname, eventTitle, title, subtitle, onSubmit, onSuccess } = props;
+    const { isPhone, countryShortname, eventTitle, title, subtitle, onSubmit, onSuccess, initialValue, processErrors = true } = props;
     const inputCodeRef = React.useRef<TextInput>(null);
     const inputDataRef = React.useRef<TextInput>(null);
     const shakerRef = React.useRef<{ shake: () => void }>(null);
+
+    const initialEmail = (initialValue && !isPhone) ? initialValue : undefined;
+    const initialPhone = (initialValue && isPhone) ? parsePhoneNumberFromString(initialValue) : undefined;
+    const initialPhoneFormated = initialPhone ? initialPhone.formatInternational().replace('+' + initialPhone.countryCallingCode, '').trim() : undefined;
+
     const form = useForm({ disableAppLoader: true });
-    const initialCode = countriesMeta.find(x => x.shortname === countryShortname) || {
+    const countryCode = initialPhone ? initialPhone.country : countryShortname;
+    const initialCode = countriesMeta.find(x => x.shortname === countryCode) || {
         label: 'United States',
         value: '+1',
         shortname: 'US',
     };
     const userCodeField = useField('userCode', initialCode, form);
-    const userDataField = useField('userData', '', form);
+    const userDataField = useField('userData', initialEmail || initialPhoneFormated || '', form);
     const [loading, setLoading] = React.useState(false);
 
     let parsedPhone = parsePhoneNumberFromString(userCodeField.value.value + userDataField.value);
@@ -141,7 +150,7 @@ export const SubmitLoginForm = React.memo((props: SubmitLoginFormProps) => {
                 shakerRef.current.shake();
             }
         };
-        if (!isPhone && !data.trim()) {
+        if (!isPhone && (!data.trim() || !validateEmail(data.trim()))) {
             shakeIt();
             return;
         }
@@ -172,7 +181,7 @@ export const SubmitLoginForm = React.memo((props: SubmitLoginFormProps) => {
                 onSuccess();
             } catch (e) {
                 setLoading(false);
-                ShowAuthError(e);
+                ShowAuthError(e, processErrors);
             }
         });
     };
