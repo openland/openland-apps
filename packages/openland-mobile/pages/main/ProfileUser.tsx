@@ -12,7 +12,6 @@ import { useLastSeen } from 'openland-y-utils/LastSeen';
 import { NotificationSettings } from './components/NotificationSetting';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { SUPER_ADMIN } from '../Init';
 import { Modals } from './modals/Modals';
 import Alert from 'openland-mobile/components/AlertBlanket';
@@ -25,7 +24,7 @@ import Toast from 'openland-mobile/components/Toast';
 import { formatPhone } from 'openland-y-utils/auth/formatPhone';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
-const ProfileUserComponent = XMemo<PageProps>((props) => {
+const ProfileUserComponent = React.memo((props: PageProps) => {
     const { user, conversation } = getClient().useUser(
         { userId: props.router.params.id },
         { fetchPolicy: 'cache-and-network' },

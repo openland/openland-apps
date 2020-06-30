@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { Share } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 
-const InstallAppsComponent = XMemo<PageProps>((props) => {
+const InstallAppsComponent = React.memo(() => {
     let shareCallback = (message: string) => {
         Share.share({ message });
     };

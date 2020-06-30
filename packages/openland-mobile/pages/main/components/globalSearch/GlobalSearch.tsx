@@ -5,7 +5,6 @@ import { SRouter } from 'react-native-s/SRouter';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { GlobalSearchItem } from './GlobalSearchItems';
 import { randomEmptyPlaceholderEmoji } from 'openland-mobile/utils/tolerance';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SNativeConfig } from 'react-native-s/SNativeConfig';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
@@ -176,7 +175,7 @@ const Loader = React.memo((props: { theme: ThemeGlobal }) => {
     );
 });
 
-export const GlobalSearch = XMemo<GlobalSearchProps>(props => {
+export const GlobalSearch = React.memo((props: GlobalSearchProps) => {
     const theme = React.useContext(ThemeContext);
 
     return (

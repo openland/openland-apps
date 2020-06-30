@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { css, cx } from 'linaria';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { emoji } from 'openland-y-utils/emoji';
 import { TextBody } from 'openland-web/utils/TextStyles';
 import { ULink } from 'openland-web/components/unicorn/ULink';
@@ -59,7 +58,7 @@ const UserLink = (props: TypingsUser) => {
     );
 };
 
-export const TypingsView = XMemo<TypingsViewProps>(props => {
+export const TypingsView = React.memo((props: TypingsViewProps) => {
     let messeger = React.useContext(MessengerContext);
     const [typingArr, setTypingArr] = React.useState<TypingsUser[]>([]);
     const [typingType, setTypingType] = React.useState<string>('');

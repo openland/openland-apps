@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Head from 'next/head';
 import { XRouterContext } from './XRouterContext';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { isElectron } from 'openland-y-utils/isElectron';
 
 const DEFAULT_OG = {
@@ -21,7 +20,7 @@ export type XDocumentHeadT = {
     description?: string | null;
 };
 
-export const XDocumentHead = XMemo<XDocumentHeadT>(props => {
+export const XDocumentHead = React.memo((props: XDocumentHeadT) => {
     let router = React.useContext(XRouterContext)!;
     // remove "Openland" prefix from title. Remove it only if a valid title passed
     // so the actual page title will never be empty

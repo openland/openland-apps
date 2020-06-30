@@ -17,7 +17,6 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { MentionsSuggestions } from './components/suggestions/MentionsSuggestions';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import Alert from 'openland-mobile/components/AlertBlanket';
@@ -442,7 +441,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     }
 }
 
-const ConversationComponent = XMemo<PageProps>((props) => {
+const ConversationComponent = React.memo((props: PageProps) => {
     let theme = React.useContext(ThemeContext);
     let messenger = getMessenger();
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id }, { fetchPolicy: 'cache-and-network' }).room;

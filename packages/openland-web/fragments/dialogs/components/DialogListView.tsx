@@ -9,7 +9,7 @@ import { DialogView } from './DialogView';
 import { DialogSearchResults } from './DialogSearchResults';
 import { USearchInput, USearchInputRef } from 'openland-web/components/unicorn/USearchInput';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { XMemo } from 'openland-y-utils/XMemo';
+import { useGlobalSearch } from 'openland-unicorn/components/TabLayout';
 import { dialogListWebDataSource, DialogListWebItem } from './DialogListWebDataSource';
 import { XLoader } from 'openland-x/XLoader';
 import { DataSource } from 'openland-y-utils/DataSource';
@@ -37,17 +37,17 @@ export interface DialogListViewProps {
 
 let ds: DataSource<DialogListWebItem> | undefined;
 
-export const DialogListView = XMemo<DialogListViewProps>(props => {
+export const DialogListView = React.memo((props: DialogListViewProps) => {
     const ref = React.useRef<USearchInputRef>(null);
     let messenger = React.useContext(MessengerContext);
     if (!ds) {
         ds = dialogListWebDataSource(messenger.dialogList.dataSource);
     }
-    let dataSource = React.useMemo(() => new DataSourceWindow(ds!, 20), [ds]);
-    let [query, setQuery] = React.useState('');
-    let isSearching = query.trim().length > 0;
-    let router = React.useContext(XViewRouterContext);
-    let route = React.useContext(XViewRouteContext);
+    const dataSource = React.useMemo(() => new DataSourceWindow(ds!, 20), [ds]);
+    const globalSearch = useGlobalSearch();
+    const isSearching = globalSearch.value.trim().length > 0;
+    const router = React.useContext(XViewRouterContext);
+    const route = React.useContext(XViewRouteContext);
 
     React.useEffect(
         () => {
@@ -105,39 +105,6 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
         [props.onDialogClick, conversationId],
     );
 
-    // const getCurrentConversationId = () => {
-    //     return route && (route as any).routeQuery ? (route as any).routeQuery.conversationId : null;
-    // };
-
-    // const getConversationId = (delta: number) => {
-    //     const currentConversationId = getCurrentConversationId();
-    //     if (currentConversationId === null) {
-    //         return 0;
-    //     }
-
-    //     const currentDialogIndex = dataSource.findIndex(currentConversationId);
-    //     const nextIndex = Math.min(
-    //         Math.max(currentDialogIndex - delta, 0),
-    //         dataSource.getSize() - 1,
-    //     );
-
-    //     return dataSource.getAt(nextIndex).key;
-    // };
-
-    // const handleOptionUp = () => {
-    //     const nextId = getConversationId(+1);
-    //     if (nextId !== getCurrentConversationId()) {
-    //         router!.navigate(`/mail/${nextId}`);
-    //     }
-    // };
-
-    // const handleOptionDown = () => {
-    //     const nextId = getConversationId(-1);
-    //     if (nextId !== getCurrentConversationId()) {
-    //         router!.navigate(`/mail/${nextId}`);
-    //     }
-    // };
-
     const handleCtrlS = () => {
         if (ref.current) {
             ref.current.focus();
@@ -149,7 +116,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
             keys: ['Escape'],
             callback: () => {
                 // TODO: check input focus (implement is useShortcuts via ref?)
-                if (ref.current && query) {
+                if (ref.current && globalSearch.value) {
                     ref.current.reset();
                     return true;
                 }
@@ -179,11 +146,13 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
         [],
     );
 
+    const query = globalSearch.value;
+
     return (
         <div className={containerStyle}>
             <USearchInput
-                value={query}
-                onChange={setQuery}
+                value={globalSearch.value}
+                onChange={globalSearch.onChange}
                 ref={ref}
                 marginHorizontal={16}
                 marginBottom={16}

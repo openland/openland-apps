@@ -13,7 +13,6 @@ import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-fast-animations';
 import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAreaContext';
 import { isPad } from 'openland-mobile/pages/Root';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
@@ -235,7 +234,7 @@ class BlanketModal extends React.PureComponent<BlanketModalProps & { theme: Them
     }
 }
 
-const ThemedBlanketModal = XMemo((props: BlanketModalProps) => {
+const ThemedBlanketModal = React.memo((props: BlanketModalProps) => {
     let theme = React.useContext(ThemeContext);
     return <BlanketModal {...props} theme={theme} />;
 });

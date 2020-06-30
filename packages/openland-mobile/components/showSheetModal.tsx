@@ -6,7 +6,6 @@ import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-fast-animations';
 import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAreaContext';
 import { isPad } from 'openland-mobile/pages/Root';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { RadiusStyles, TextStyles } from 'openland-mobile/styles/AppStyles';
@@ -215,7 +214,7 @@ class SheetModal extends React.PureComponent<SheetModalProps & { theme: ThemeGlo
     }
 }
 
-const ThemedSheetModal = XMemo((props: SheetModalProps) => {
+const ThemedSheetModal = React.memo((props: SheetModalProps) => {
     let theme = React.useContext(ThemeContext);
     return <SheetModal {...props} theme={theme} />;
 });

@@ -12,13 +12,12 @@ import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { ZImage } from '../ZImage';
 import { SStatusBar } from 'react-native-s/SStatusBar';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles, SecondarinessAlpha } from 'openland-mobile/styles/AppStyles';
 import Toast from '../Toast';
 import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 
-export const ZPictureOverlay = XMemo<{ config: ZPictureTransitionConfig, onClose: () => void }>((props) => {
+export const ZPictureOverlay = React.memo((props: { config: ZPictureTransitionConfig, onClose: () => void }) => {
     let theme = React.useContext(ThemeContext);
 
     let ref = React.createRef<FastImageViewer>();

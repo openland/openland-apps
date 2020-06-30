@@ -7,7 +7,6 @@ import { View } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { ZAvatarPicker } from 'openland-mobile/components/ZAvatarPicker';
 import { ZPickField } from 'openland-mobile/components/ZPickField';
@@ -15,7 +14,7 @@ import { useForm } from 'openland-form/useForm';
 import { useField } from 'openland-form/useField';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 
-const EditOrganizationComponent = XMemo<PageProps>((props) => {
+const EditOrganizationComponent = React.memo((props: PageProps) => {
     const organizationId = props.router.params.id;
     const client = getClient();
     const profile = client.useOrganizationProfile({ organizationId }, { fetchPolicy: 'network-only' }).organizationProfile;

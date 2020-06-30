@@ -3,7 +3,6 @@ import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { Settings_settings, EmailFrequency } from 'openland-api/spacex.types';
 import { ZCheckmarkGroup } from 'openland-mobile/components/ZCheckmarkGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
@@ -19,7 +18,7 @@ const sendMutate = debounce(async (state: Settings_settings) => {
     });
 }, 3000);
 
-const SettingsEmailContent = XMemo<PageProps>(props => {
+const SettingsEmailContent = React.memo(() => {
     const settingsData = getClient().useSettings({ fetchPolicy: 'network-only' }).settings;
     const [settings, setSettings] = React.useState<Settings_settings>(settingsData);
 
@@ -74,7 +73,7 @@ class SettingsEmailComponent extends React.Component<PageProps> {
         return (
             <>
                 <SHeader title="Email preferences" />
-                <SettingsEmailContent {...this.props} />
+                <SettingsEmailContent />
             </>
         );
     }

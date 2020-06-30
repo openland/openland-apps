@@ -93,6 +93,12 @@ export const USearchInput = React.forwardRef((props: USearchInputProps, ref: Rea
     const [val, setValue] = React.useState(typeof value === 'string' ? value : '');
     const inputRef = React.useRef<HTMLInputElement>(null);
 
+    React.useLayoutEffect(() => {
+        if (val !== value) {
+            setValue(value || '');
+        }
+    }, [value]);
+
     const handleChange = (v: string) => {
         setValue(v);
         if (onChange) {

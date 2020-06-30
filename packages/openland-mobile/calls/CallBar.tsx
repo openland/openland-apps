@@ -3,9 +3,8 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { View, TouchableOpacity, Text, Platform } from 'react-native';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { useWatchCall } from './useWatchCall';
-import { XMemo } from 'openland-y-utils/XMemo';
 
-export const CallBarComponent = XMemo<{ id: string, showCallModal: () => void }>((props) => {
+export const CallBarComponent = React.memo((props: { id: string, showCallModal: () => void }) => {
     let conference = getClient().useConference({ id: props.id }, { suspense: false });
 
     useWatchCall(conference && conference.conference.id);

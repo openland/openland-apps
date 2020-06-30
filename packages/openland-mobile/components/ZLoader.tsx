@@ -2,7 +2,6 @@ import * as React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { LoaderSpinner, LoaderSpinnerProps } from 'openland-mobile/components/LoaderSpinner';
-import { XMemo } from 'openland-y-utils/XMemo';
 
 const styles = StyleSheet.create({
     container: {
@@ -16,7 +15,7 @@ const styles = StyleSheet.create({
     } as ViewStyle,
 });
 
-export const ZLoader = XMemo<LoaderSpinnerProps>((props) => (
+export const ZLoader = React.memo((props: LoaderSpinnerProps) => (
     <View style={styles.container}>
         <KeyboardSafeAreaView >
             <LoaderSpinner {...props} />

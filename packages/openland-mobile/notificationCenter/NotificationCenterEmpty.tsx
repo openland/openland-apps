@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { Image, Text } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
-export const NotificationCenterEmpty = XMemo((props) => {
+export const NotificationCenterEmpty = React.memo(() => {
     let theme = React.useContext(ThemeContext);
 
     return (

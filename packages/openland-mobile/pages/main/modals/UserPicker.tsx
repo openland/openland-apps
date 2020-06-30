@@ -6,10 +6,9 @@ import { View } from 'react-native';
 import { UserShort } from 'openland-api/spacex.types';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { UserView } from '../components/UserView';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { CheckListBoxWraper } from './UserMultiplePicker';
 
-const UserPickerComponent = XMemo<PageProps>((props) => {
+const UserPickerComponent = React.memo((props: PageProps) => {
     let action = props.router.params.action;
     let users: UserShort[] = props.router.params.users;
     let title = props.router.params.title;

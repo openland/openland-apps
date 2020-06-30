@@ -3,7 +3,6 @@ import { XView, XImage, XViewProps } from 'react-mental';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { emoji } from 'openland-y-utils/emoji';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { css, cx } from 'linaria';
 import { PlaceholderColors } from 'openland-y-utils/themes/placeholders';
 import { useReloadImage } from 'openland-web/components/ImgWithRetry';
@@ -32,10 +31,6 @@ export const getPlaceholderColorByIndex = (index: number) => {
 export const getPlaceholderColorById = (id: string) => {
     let color = PlaceholderColors[getPlaceholderIndex(id)];
     return `linear-gradient(138deg, ${color.start}, ${color.end})`;
-};
-
-export const getPlaceholderColorRawById = (id: string) => {
-    return PlaceholderColors[getPlaceholderIndex(id)];
 };
 
 export const AvatarSizes: {
@@ -222,7 +217,7 @@ const colorProvider = css`
     flex-grow: 1;
 `;
 
-export const UAvatar = XMemo<UAvatarProps>(props => {
+export const UAvatar = React.memo((props: UAvatarProps) => {
     const {
         title,
         titleEmoji,

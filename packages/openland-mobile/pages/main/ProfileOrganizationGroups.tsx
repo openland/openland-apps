@@ -3,11 +3,10 @@ import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { GroupView } from './components/GroupView';
 import { SFlatList } from 'react-native-s/SFlatList';
 
-const ProfileOrganizationGroupsComponent = XMemo<PageProps>((props) => {
+const ProfileOrganizationGroupsComponent = React.memo((props: PageProps) => {
     const client = getClient();
     const { organizationId } = props.router.params;
     const organizationRooms = client.useOrganizationPublicRooms({ organizationId, first: 3 }, { fetchPolicy: 'cache-and-network' }).organizationPublicRooms;

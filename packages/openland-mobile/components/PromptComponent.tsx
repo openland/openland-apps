@@ -2,12 +2,11 @@ import * as React from 'react';
 import { View, Text, Keyboard, TextInput, } from 'react-native';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { ZButton } from './ZButton';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZModalController } from './ZModal';
 import { PromptBuilder } from './Prompt';
 
-export const PromptComponent = XMemo((props: { builder: PromptBuilder; modalController: ZModalController }) => {
+export const PromptComponent = React.memo((props: { builder: PromptBuilder; modalController: ZModalController }) => {
     const theme = React.useContext(ThemeContext);
     const { builder, modalController } = props;
 

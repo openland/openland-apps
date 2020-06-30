@@ -5,7 +5,6 @@ import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { NotificationPreview, UpdateSettingsInput } from 'openland-api/spacex.types';
 import { ZCheckmarkGroup } from 'openland-mobile/components/ZCheckmarkGroup';
 import { SScrollView } from 'react-native-s/SScrollView';
@@ -72,7 +71,7 @@ interface SettingsState {
     notificationPreview: NotificationPreview;
 }
 
-const SettingsNotificationsContent = XMemo<PageProps>(props => {
+const SettingsNotificationsContent = React.memo(() => {
     const settingsData = getClient().useSettings({ fetchPolicy: 'network-only' }).settings;
     const [settings, setSettings] = React.useState<SettingsState>({
         excludeMutedChats: settingsData.excludeMutedChats,
@@ -211,7 +210,7 @@ class SettingsNotifciationsComponent extends React.Component<PageProps> {
         return (
             <>
                 <SHeader title="Notifications" />
-                <SettingsNotificationsContent {...this.props} />
+                <SettingsNotificationsContent />
             </>
         );
     }

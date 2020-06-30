@@ -97,13 +97,23 @@ export interface TabRouterContextProps {
 const TabRouterContext = React.createContext<TabRouterContextProps | null>(null);
 export const useTabRouter = () => React.useContext(TabRouterContext)!;
 
+interface GlobalSearchContextProps {
+    value: string;
+    onChange: (e: string) => void;
+}
+
+const GlobalSearchContext = React.createContext<GlobalSearchContextProps | null>(null);
+export const useGlobalSearch = () => React.useContext(GlobalSearchContext)!;
+
 export const TabLayout = React.memo((props: { router: TabRouter }) => {
     let layout = useLayout();
 
+    const [globalSearchQuery, setGlobalSearchQuery] = React.useState('');
+
     // Two-phase commit for better performance
-    let [selected, setSelected] = React.useState(props.router.currentTab);
-    let [selectedMounted, setSelectedMounted] = React.useState(props.router.currentTab);
-    let currentTab = React.useRef(props.router.currentTab);
+    const [selected, setSelected] = React.useState(props.router.currentTab);
+    const [selectedMounted, setSelectedMounted] = React.useState(props.router.currentTab);
+    const currentTab = React.useRef(props.router.currentTab);
     const setSelectedClb = React.useCallback((id: number) => {
         props.router.switchTab(id);
         currentTab.current = id;
@@ -154,95 +164,32 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
     return (
         <TabRouterContext.Provider value={{ router: props.router, setTab: setSelectedClb }}>
             <XViewRouterContext.Provider value={xRouting}>
-                <Container>
-                    <XDialogProviderComponent />
+                <GlobalSearchContext.Provider value={{ value: globalSearchQuery, onChange: setGlobalSearchQuery }}>
+                    <Container>
+                        <XDialogProviderComponent />
 
-                    {layout === 'desktop' && <Banners />}
+                        {layout === 'desktop' && <Banners />}
 
-                    <InnerContainer>
-                        {props.router.stacks.map((v, i) => {
-                            return layout === 'mobile' ? (
-                                <div
-                                    key={'tab-' + i}
-                                    className={
-                                        selectedMounted === i
-                                            ? visibleContainer
-                                            : invisibleContainer
-                                    }
-                                >
-                                    <XView
-                                        width="100%"
-                                        height="100%"
-                                        flexDirection="row"
-                                        overflow="hidden"
-                                        paddingBottom={52}
+                        <InnerContainer>
+                            {props.router.stacks.map((v, i) => {
+                                return layout === 'mobile' ? (
+                                    <div
+                                        key={'tab-' + i}
+                                        className={
+                                            selectedMounted === i
+                                                ? visibleContainer
+                                                : invisibleContainer
+                                        }
                                     >
                                         <XView
-                                            key="root"
                                             width="100%"
                                             height="100%"
-                                            position="relative"
-                                            alignItems="flex-start"
-                                            backgroundColor="#fff"
-                                        >
-                                            <TabContainer
-                                                index={i}
-                                                router={props.router}
-                                                activeIndex={selected}
-                                            />
-                                            <XView
-                                                position="absolute"
-                                                bottom={-52}
-                                                left={0}
-                                                right={0}
-                                                height={52}
-                                            >
-                                                <TabBarMobile
-                                                    selected={selected}
-                                                    setSelected={setSelectedClb}
-                                                    router={props.router}
-                                                />
-                                            </XView>
-                                        </XView>
-                                        <StackLayout
-                                            key="stack"
-                                            className={containerMobile}
-                                            visible={selectedMounted === i}
-                                            router={v}
-                                        />
-                                    </XView>
-                                </div>
-                            ) : (
-                                <div
-                                    key={'tab-' + i}
-                                    className={
-                                        selectedMounted === i
-                                            ? visibleContainer
-                                            : invisibleContainer
-                                    }
-                                >
-                                    <XView
-                                        width="100%"
-                                        height="100%"
-                                        flexDirection="row"
-                                        overflow="hidden"
-                                        paddingLeft={64}
-                                    >
-                                        <XView
-                                            key="sep1"
-                                            width={1}
-                                            backgroundColor="var(--border)"
-                                            height="100%"
-                                        />
-                                        <XView
-                                            key="root"
-                                            maxWidth={370}
-                                            flexShrink={1}
-                                            flexGrow={1}
-                                            height="100%"
-                                            flexDirection="column"
+                                            flexDirection="row"
+                                            overflow="hidden"
+                                            paddingBottom={52}
                                         >
                                             <XView
+                                                key="root"
                                                 width="100%"
                                                 height="100%"
                                                 position="relative"
@@ -254,41 +201,106 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
                                                     router={props.router}
                                                     activeIndex={selected}
                                                 />
+                                                <XView
+                                                    position="absolute"
+                                                    bottom={-52}
+                                                    left={0}
+                                                    right={0}
+                                                    height={52}
+                                                >
+                                                    <TabBarMobile
+                                                        selected={selected}
+                                                        setSelected={setSelectedClb}
+                                                        router={props.router}
+                                                    />
+                                                </XView>
                                             </XView>
+                                            <StackLayout
+                                                key="stack"
+                                                className={containerMobile}
+                                                visible={selectedMounted === i}
+                                                router={v}
+                                            />
                                         </XView>
+                                    </div>
+                                ) : (
+                                    <div
+                                        key={'tab-' + i}
+                                        className={
+                                            selectedMounted === i
+                                                ? visibleContainer
+                                                : invisibleContainer
+                                        }
+                                    >
                                         <XView
-                                            key="sep2"
-                                            width={1}
+                                            width="100%"
                                             height="100%"
-                                            backgroundColor="var(--border)"
-                                        />
-                                        <StackLayout
-                                            key="stack"
-                                            className={containerDesktop}
-                                            visible={selectedMounted === i}
-                                            router={v}
-                                            placeholder={
-                                                v.rootPath === '/mail' ? (
-                                                    <MessengerPlaceholderFragment />
-                                                ) : null
-                                            }
-                                        />
-                                    </XView>
-                                </div>
-                            );
-                        })}
-                        {layout === 'desktop' && (
-                            <XView position="absolute" top={0} left={0} bottom={0} width={64}>
-                                <TabBarDesktop
-                                    selected={selected}
-                                    setSelected={setSelectedClb}
-                                    router={props.router}
-                                    xRouter={xRouting}
-                                />
-                            </XView>
-                        )}
-                    </InnerContainer>
-                </Container>
+                                            flexDirection="row"
+                                            overflow="hidden"
+                                            paddingLeft={64}
+                                        >
+                                            <XView
+                                                key="sep1"
+                                                width={1}
+                                                backgroundColor="var(--border)"
+                                                height="100%"
+                                            />
+                                            <XView
+                                                key="root"
+                                                maxWidth={370}
+                                                flexShrink={1}
+                                                flexGrow={1}
+                                                height="100%"
+                                                flexDirection="column"
+                                            >
+                                                <XView
+                                                    width="100%"
+                                                    height="100%"
+                                                    position="relative"
+                                                    alignItems="flex-start"
+                                                    backgroundColor="#fff"
+                                                >
+                                                    <TabContainer
+                                                        index={i}
+                                                        router={props.router}
+                                                        activeIndex={selected}
+                                                    />
+                                                </XView>
+                                            </XView>
+                                            <XView
+                                                key="sep2"
+                                                width={1}
+                                                height="100%"
+                                                backgroundColor="var(--border)"
+                                            />
+                                            <StackLayout
+                                                key="stack"
+                                                className={containerDesktop}
+                                                visible={selectedMounted === i}
+                                                router={v}
+                                                placeholder={
+                                                    v.rootPath === '/mail' ? (
+                                                        <MessengerPlaceholderFragment />
+                                                    ) : null
+                                                }
+                                            />
+                                        </XView>
+                                    </div>
+                                );
+                            })}
+                            {layout === 'desktop' && (
+                                <XView position="absolute" top={0} left={0} bottom={0} width={64}>
+                                    <TabBarDesktop
+                                        selected={selected}
+                                        setSelected={setSelectedClb}
+                                        router={props.router}
+                                        xRouter={xRouting}
+                                    />
+                                </XView>
+                            )}
+                        </InnerContainer>
+                    </Container>
+                </GlobalSearchContext.Provider>
             </XViewRouterContext.Provider>
         </TabRouterContext.Provider>
     );

@@ -5,7 +5,6 @@ import { UploadCareDirectUploading } from '../utils/UploadCareDirectUploading';
 import { UploadStatus } from 'openland-engines/messenger/types';
 import { ZAvatar, ZAvatarSize, avatarSizes } from './ZAvatar';
 import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { LoaderSpinner } from './LoaderSpinner';
@@ -240,7 +239,7 @@ const ZAvatarPickerComponent = (props: ZAvatarPickerProps & { theme: ThemeGlobal
     );
 };
 
-export const ZAvatarPicker = XMemo<ZAvatarPickerProps>((props) => {
+export const ZAvatarPicker = React.memo((props: ZAvatarPickerProps) => {
     const { field } = props;
     const theme = React.useContext(ThemeContext);
 

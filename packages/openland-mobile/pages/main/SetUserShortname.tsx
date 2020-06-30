@@ -4,7 +4,6 @@ import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ZInput } from 'openland-mobile/components/ZInput';
 import { Clipboard, Text } from 'react-native';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
@@ -64,7 +63,7 @@ export const validateShortname = (shortname: string | null, min: number, max: nu
     return validateResult;
 };
 
-const SetUserShortnameContent = XMemo<PageProps>((props) => {
+const SetUserShortnameContent = React.memo((props: PageProps) => {
     const { user, profile } = getClient().useProfile({ fetchPolicy: 'network-only' });
 
     if (!user || !profile) {

@@ -5,7 +5,6 @@ import { View, Text, StyleSheet, TextStyle } from 'react-native';
 import { ZImage } from './ZImage';
 import { ZLinearGradient } from './visual/ZLinearGradient.native';
 import { ZStyles } from './ZStyles';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export type ZAvatarSize = 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
@@ -46,7 +45,7 @@ export const getPlaceholderColors = (id: string) => {
     return ZStyles.avatars[placeholderIndex % ZStyles.avatars.length];
 };
 
-const ZAvatarInner = XMemo<ZAvatarProps>((props) => {
+const ZAvatarInner = React.memo((props: ZAvatarProps) => {
     const theme = React.useContext(ThemeContext);
     const { size, placeholder: textSize, dotSize, dotPosition, dotBorderWidth } = avatarSizes[props.size];
 
@@ -95,6 +94,6 @@ const ZAvatarInner = XMemo<ZAvatarProps>((props) => {
     );
 });
 
-export const ZAvatar = XMemo<ZAvatarProps>((props) => {
+export const ZAvatar = React.memo((props: ZAvatarProps) => {
     return (<ZAvatarInner {...props} />);
 });

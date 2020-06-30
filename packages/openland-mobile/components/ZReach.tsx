@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Text, TouchableWithoutFeedback, View } from 'react-native';
 import { FontStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import LinearGradient from 'react-native-linear-gradient';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ActionSheetBuilder } from './ActionSheet';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
@@ -11,13 +10,13 @@ export interface ZReachProps {
     onPress?: () => void;
 }
 
-const ZReachInner = XMemo<ZReachProps>(props => (
+const ZReachInner = React.memo((props: ZReachProps) => (
     <LinearGradient colors={['#FEBD17', '#FF9B04']} style={{ height: 20, paddingHorizontal: 6, borderRadius: RadiusStyles.Large }}>
         <Text style={{ fontSize: 13, lineHeight: 20, color: '#ffffff', fontWeight: FontStyles.Weight.Medium }} allowFontScaling={false}>{props.value}</Text>
     </LinearGradient>
 ));
 
-export const ZReach = XMemo<ZReachProps>(props => {
+export const ZReach = React.memo((props: ZReachProps) => {
     if (!!props.onPress) {
         return (
             <TouchableWithoutFeedback onPress={props.onPress}>

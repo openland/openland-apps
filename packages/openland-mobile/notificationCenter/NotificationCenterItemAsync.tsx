@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';
 import { extractContent } from 'openland-mobile/messenger/components/AsyncMessageContentView';
 import { Dimensions, Image } from 'react-native';
@@ -20,7 +19,7 @@ interface NotificationCenterItemAsyncProps {
     item: NotificationsDataSourceItem;
 }
 
-const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps & { theme: ThemeGlobal }>((props) => {
+const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterItemAsyncProps & { theme: ThemeGlobal }) => {
     const { theme, item } = props;
     const messenger = getMessenger();
     const maxWidth = Dimensions.get('screen').width - 32 - (isPad ? 320 : 0);
@@ -161,7 +160,7 @@ const NotificationCenterItemAsyncRender = XMemo<NotificationCenterItemAsyncProps
     );
 });
 
-export const NotificationCenterItemAsync = XMemo<NotificationCenterItemAsyncProps>((props) => {
+export const NotificationCenterItemAsync = React.memo((props: NotificationCenterItemAsyncProps) => {
     let theme = useThemeGlobal();
 
     return <NotificationCenterItemAsyncRender theme={theme} {...props} />;

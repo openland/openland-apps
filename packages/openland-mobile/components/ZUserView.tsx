@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { View, Text, Dimensions } from 'react-native';
 import { ZAvatar } from './ZAvatar';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
@@ -19,7 +18,7 @@ export interface ZUserViewProps {
     onPress: (userId: string) => void;
 }
 
-export const ZUserView = XMemo<ZUserViewProps>((props) => {
+export const ZUserView = React.memo((props: ZUserViewProps) => {
     const theme = React.useContext(ThemeContext);
 
     return (

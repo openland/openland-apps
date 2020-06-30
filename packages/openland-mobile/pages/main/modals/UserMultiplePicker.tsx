@@ -13,11 +13,10 @@ import { UserView } from '../components/UserView';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { RadiusStyles } from 'openland-mobile/styles/AppStyles';
 
-export const CheckListBoxWraper = XMemo<{ checked?: boolean, isRadio?: boolean, children: any }>((props) => {
+export const CheckListBoxWraper = React.memo((props: { checked?: boolean, isRadio?: boolean, children: any }) => {
     const theme = React.useContext(ThemeContext);
 
     return (
@@ -49,7 +48,7 @@ export const CheckListBoxWraper = XMemo<{ checked?: boolean, isRadio?: boolean, 
     );
 });
 
-const UsersList = XMemo<PageProps & { query: string, users: any, onAdd: (user: UserShort) => void }>((props) => {
+const UsersList = React.memo((props: PageProps & { query: string, users: any, onAdd: (user: UserShort) => void }) => {
     const users = getClient().useExplorePeople({ query: props.query });
     const disableUsers = props.router.params.disableUsers || [];
     const excludeUsers = props.router.params.excludeUsers || [];
@@ -82,7 +81,7 @@ const UsersList = XMemo<PageProps & { query: string, users: any, onAdd: (user: U
     );
 });
 
-const UserMultiplePickerComponent = XMemo<PageProps>((props) => {
+const UserMultiplePickerComponent = React.memo((props: PageProps) => {
 
     let theme = React.useContext(ThemeContext);
 

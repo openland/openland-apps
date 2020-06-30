@@ -22,7 +22,6 @@ import {
 } from 'openland-api/spacex.types';
 import { GroupView } from './components/GroupView';
 import { SFlatList } from 'react-native-s/SFlatList';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZManageButton } from 'openland-mobile/components/ZManageButton';
@@ -32,7 +31,7 @@ import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 
-const PrivateProfile = XMemo<PageProps & { organization: Organization_organization }>((props) => {
+const PrivateProfile = React.memo((props: PageProps & { organization: Organization_organization }) => {
     const { organization } = props;
     const theme = React.useContext(ThemeContext);
     const area = React.useContext(ASSafeAreaContext);
@@ -93,7 +92,7 @@ const PrivateProfile = XMemo<PageProps & { organization: Organization_organizati
     );
 });
 
-const ProfileOrganizationComponent = XMemo<PageProps>((props) => {
+const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     const client = getClient();
     const settings = client.useAccountSettings();
     const organization = client.useOrganization(

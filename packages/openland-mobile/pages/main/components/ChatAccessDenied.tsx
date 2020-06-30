@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { View, Text, Image } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -13,7 +12,7 @@ interface ChatAccessDeniedProps {
     onPress: () => void;
 }
 
-export const ChatAccessDenied = XMemo<ChatAccessDeniedProps>((props) => (
+export const ChatAccessDenied = React.memo((props: ChatAccessDeniedProps) => (
     <>
         <SHeader title="Access Denied" />
         <SHeaderButton />

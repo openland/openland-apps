@@ -6,12 +6,10 @@ export const LayoutProvider = React.memo((props: { children?: any }) => {
     const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 750);
     React.useEffect(() => {
         let prev = window.innerWidth <= 750;
-        console.log('inited with mobile: ' + prev);
         const handleResize = () => {
             let n = window.innerWidth <= 750;
             if (prev !== n) {
                 prev = n;
-                console.log('updated with mobile: ' + prev);
                 setIsMobile(n);
             }
         };

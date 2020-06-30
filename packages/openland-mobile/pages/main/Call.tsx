@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { BackHandler, TouchableOpacity, StatusBar, Dimensions, View, Platform, Image, Text } from 'react-native';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { SStatusBar } from 'react-native-s/SStatusBar';
 import { ZModalController, showModal } from 'openland-mobile/components/ZModal';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
@@ -174,7 +173,7 @@ const VideoView = React.memo((props: VideoViewProps) => {
     );
 });
 
-let Content = XMemo<{ id: string, speaker: boolean, setSpeaker: (fn: (s: boolean) => boolean) => void, hide: () => void }>((props) => {
+let Content = React.memo((props: { id: string, speaker: boolean, setSpeaker: (fn: (s: boolean) => boolean) => void, hide: () => void }) => {
     let theme = React.useContext(ThemeContext);
     let area = React.useContext(ASSafeAreaContext);
     let calls = getMessenger().engine.calls;

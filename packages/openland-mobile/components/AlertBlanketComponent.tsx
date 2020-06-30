@@ -9,10 +9,9 @@ import { randomKey } from 'openland-mobile/utils/randomKey';
 import { SAnimated } from 'react-native-fast-animations';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { AlertBlanketBuilder } from './AlertBlanket';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
-export const AlertBlanketComponent = XMemo<{ builder: AlertBlanketBuilder, modalController: ZModalController }>((props) => {
+export const AlertBlanketComponent = React.memo((props: { builder: AlertBlanketBuilder, modalController: ZModalController }) => {
     let theme = React.useContext(ThemeContext);
     let [state, setState] = React.useState<'initial' | 'done' | 'error'>('initial');
     let [isActionInProgress, setActionInProgress] = React.useState(false);

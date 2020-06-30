@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { PageProps } from 'openland-mobile/components/PageProps';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZMessageView } from 'openland-mobile/components/message/ZMessageView';
@@ -11,7 +10,7 @@ import { SHeaderView } from 'react-native-s/SHeaderView';
 import { EntityHeader } from './components/EntityHeader';
 import { formatDateAtTime } from 'openland-y-utils/formatTime';
 
-const MessageComponent = XMemo<PageProps>((props) => {
+const MessageComponent = React.memo((props: PageProps) => {
     const { router } = props;
     const { messageId, highlightId } = router.params;
     const client = getClient();

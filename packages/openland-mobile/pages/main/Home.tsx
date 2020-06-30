@@ -8,7 +8,6 @@ import { PageProps } from '../../components/PageProps';
 import { AppBarBottom, AppBarBottomItem } from '../../components/AppBarBottom';
 import { Explore } from './Explore';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { NotificationCenter } from './NotificationCenter';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { SRouterContext } from 'react-native-s/SRouterContext';
@@ -18,7 +17,7 @@ export const SetTabContext = React.createContext<(index: number) => void>(() => 
 
 const DEFAULT_TAB = 1;
 
-export const Home = XMemo<PageProps>((props) => {
+export const Home = React.memo((props: PageProps) => {
     const router = React.useContext(SRouterContext);
     const [tab, setTab] = React.useState(router && router.params && typeof router.params.initialTab === 'number' ? router.params.initialTab : DEFAULT_TAB);
     const counter = getClient().useGlobalCounter({ suspense: false });

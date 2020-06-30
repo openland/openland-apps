@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ViewStyle, StyleProp, NativeSyntheticEvent, NativeScrollEvent, processColor } from 'react-native';
 import { ASDataView } from './ASDataView';
 import { ASViewListRender } from './platform/ASViewRender';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SDeferred } from 'react-native-s/SDeferred';
 
@@ -22,7 +21,7 @@ export interface ASListViewProps {
     onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void;
     applyModes?: string[];
 }
-export const ASListView = XMemo<ASListViewProps>((props) => {
+export const ASListView = React.memo((props: ASListViewProps) => {
     const theme = React.useContext(ThemeContext);
     return (
         <SDeferred>

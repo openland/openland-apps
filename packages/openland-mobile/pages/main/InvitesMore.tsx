@@ -2,7 +2,6 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { View, Share, Text, Clipboard } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
@@ -12,7 +11,7 @@ import { FontStyles } from 'openland-mobile/styles/AppStyles';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 
-const InvitesMoreComponent = XMemo<PageProps>((props) => {
+const InvitesMoreComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
 
     const invite = getClient().useAccountAppInvite();

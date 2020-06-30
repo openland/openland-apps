@@ -2,7 +2,6 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { View, Share, Text, Clipboard, Image } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
@@ -12,7 +11,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { FontStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { trackEvent } from 'openland-mobile/analytics';
 
-const InvitesComponent = XMemo<PageProps>((props) => {
+const InvitesComponent = React.memo((props: PageProps) => {
     React.useEffect(() => {
         trackEvent('navigate_account_invite');
     }, []);

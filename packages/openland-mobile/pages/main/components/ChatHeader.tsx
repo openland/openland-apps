@@ -4,7 +4,6 @@ import { SRouter } from 'react-native-s/SRouter';
 import { getMessenger } from '../../../utils/messenger';
 import { TypingType, RoomTiny_room_SharedRoom, RoomTiny_room_PrivateRoom } from 'openland-api/spacex.types';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { getChatOnlinesCount } from 'openland-y-utils/getChatOnlinesCount';
 import { useClient } from 'openland-api/useClient';
@@ -24,7 +23,7 @@ const styles = StyleSheet.create({
     } as TextStyle,
 });
 
-const SharedChatHeaderContent = XMemo<{ room: RoomTiny_room_SharedRoom, typing?: string, theme: ThemeGlobal }>((props) => {
+const SharedChatHeaderContent = React.memo((props: { room: RoomTiny_room_SharedRoom, typing?: string, theme: ThemeGlobal }) => {
     const { room, typing, theme } = props;
     const [onlineCount, setOnlineCount] = React.useState<number>(0);
 
@@ -76,7 +75,7 @@ const SharedChatHeaderContent = XMemo<{ room: RoomTiny_room_SharedRoom, typing?:
     );
 });
 
-const PrivateChatHeaderContent = XMemo<{ room: RoomTiny_room_PrivateRoom, typing?: string, typingType?: string, theme: ThemeGlobal }>((props) => {
+const PrivateChatHeaderContent = React.memo((props: { room: RoomTiny_room_PrivateRoom, typing?: string, typingType?: string, theme: ThemeGlobal }) => {
     const { room, typing, theme, typingType } = props;
 
     let [subtitle, accent] = useLastSeen(room.user);
@@ -193,7 +192,7 @@ const PrivateChatHeaderContent = XMemo<{ room: RoomTiny_room_PrivateRoom, typing
     );
 });
 
-const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typing?: string, typingType?: string }>((props) => {
+const ChatHeaderContent = React.memo((props: { conversationId: string, router: SRouter, typing?: string, typingType?: string }) => {
     let theme = React.useContext(ThemeContext);
     let room = getClient().useRoomTiny({ id: props.conversationId });
 

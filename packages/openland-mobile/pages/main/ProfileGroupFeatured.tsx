@@ -5,11 +5,10 @@ import { ZListGroup } from '../../components/ZListGroup';
 import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { UserView } from './components/UserView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
-const ProfileGroupFeaturedComponent = XMemo<PageProps>((props) => {
+const ProfileGroupFeaturedComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const members = getClient().useRoomFeaturedMembers({ roomId: props.router.params.id }, { fetchPolicy: 'network-only' }).roomFeaturedMembers;
 

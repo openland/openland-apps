@@ -7,7 +7,6 @@ import { SSearchControler } from 'react-native-s/SSearchController';
 import { Platform } from 'react-native';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { GlobalSearch } from './components/globalSearch/GlobalSearch';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ASDataView } from 'react-native-async-view/ASDataView';
 import { DialogItemViewAsync } from 'openland-mobile/messenger/components/DialogItemViewAsync';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
@@ -18,7 +17,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { GlobalSearchEntryKind } from 'openland-api/spacex.types';
 import { SetTabContext } from './Home';
 
-const DialogsComponent = XMemo<PageProps>((props) => {
+const DialogsComponent = React.memo((props: PageProps) => {
     const handlePress = React.useCallback((id: string, title: string) => {
         if (props.router.params.share) {
             Alert.builder().title(`Share with ${title}?`).button('Cancel', 'cancel').button('Share', 'default', async () => {

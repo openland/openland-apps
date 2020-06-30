@@ -8,12 +8,11 @@ import { AsyncMessageReactionsView } from './AsyncMessageReactionsView';
 import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { useMessageSelected } from 'openland-engines/messenger/MessagesActionsState';
 import { ASImage } from 'react-native-async-view/ASImage';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { UnsupportedContent } from './content/UnsupportedContent';
 
-const SelectCheckbox = XMemo<{ engine: ConversationEngine, message: DataSourceMessageItem, theme: ThemeGlobal }>((props) => {
+const SelectCheckbox = React.memo((props: { engine: ConversationEngine, message: DataSourceMessageItem, theme: ThemeGlobal }) => {
     const [selected, toggleSelect] = useMessageSelected(props.engine.messagesActionsStateEngine, props.message);
     return (
         <ASFlex marginLeft={-200} renderModes={rm({ 'selection': { marginLeft: 8 } })} overlay={true} alignItems="center">

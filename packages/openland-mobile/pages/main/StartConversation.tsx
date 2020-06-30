@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { View, Text, AsyncStorage } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SScrollView } from 'react-native-s/SScrollView';
@@ -49,7 +48,7 @@ const Chat = (props: { item: DialogDataSourceItem, onPress: (key: string) => voi
     </ZListItemBase>;
 };
 
-const StartConversationComponent = XMemo<PageProps>((props) => {
+const StartConversationComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const [items, setItems] = React.useState([] as DialogDataSourceItem[]);
     // const [selected, setSelected] = React.useState<DialogDataSourceItem>();

@@ -11,12 +11,11 @@ import { UserView } from './components/UserView';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZListGroup } from 'openland-mobile/components/ZListGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { LoaderSpinnerWrapped } from 'openland-mobile/components/LoaderSpinner';
 
-const UserSearchComponent = XMemo<PageProps & { query: string, useScroll: boolean }>((props) => {
+const UserSearchComponent = React.memo((props: PageProps & { query: string, useScroll: boolean }) => {
     let theme = React.useContext(ThemeContext);
     let search = getClient().useExplorePeople({ query: props.query });
 
@@ -52,7 +51,7 @@ const UserSearchComponent = XMemo<PageProps & { query: string, useScroll: boolea
     }
 });
 
-const ComposeComponent = XMemo<PageProps>((props) => {
+const ComposeComponent = React.memo((props: PageProps) => {
     return (
         <>
             <SHeader title="New message" hairline="hidden" />

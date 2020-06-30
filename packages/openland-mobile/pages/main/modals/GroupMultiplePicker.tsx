@@ -11,7 +11,6 @@ import { ZBlurredView } from '../../../components/ZBlurredView';
 import { ZTagView } from '../../../components/ZTagView';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { GroupView } from '../components/GroupView';
 import { CheckListBoxWraper } from './UserMultiplePicker';
@@ -27,7 +26,7 @@ interface GroupsListProps {
     onAdd: (item: PickedItems) => void;
 }
 
-const GroupsList = XMemo<GroupsListProps>((props) => {
+const GroupsList = React.memo((props: GroupsListProps) => {
     let groups = getClient().useUserAvailableRooms({ first: 100 }, { fetchPolicy: 'cache-and-network' }).alphaUserAvailableRooms;
 
     return (
@@ -51,7 +50,7 @@ const GroupsList = XMemo<GroupsListProps>((props) => {
     );
 });
 
-const GroupsSearchList = XMemo<GroupsListProps>((props) => {
+const GroupsSearchList = React.memo((props: GroupsListProps) => {
     let groups = getClient().useGlobalSearch({
         query: props.query,
         kinds: [GlobalSearchEntryKind.SHAREDROOM]
@@ -74,7 +73,7 @@ const GroupsSearchList = XMemo<GroupsListProps>((props) => {
     );
 });
 
-const GroupMultiplePickerComponent = XMemo<PageProps>((props) => {
+const GroupMultiplePickerComponent = React.memo((props: PageProps) => {
     let theme = React.useContext(ThemeContext);
 
     let [groups, setGroups] = React.useState<PickedItems[]>([]);

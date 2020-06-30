@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { XMemo } from 'openland-y-utils/XMemo';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { FullMessage } from 'openland-api/spacex.types';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
@@ -20,7 +19,7 @@ interface PinnedMessageProps {
     chatId: string;
 }
 
-export const PinnedMessage = XMemo<PinnedMessageProps>((props) => {
+export const PinnedMessage = React.memo((props: PinnedMessageProps) => {
     const client = useClient();
     const { message, onPress, theme, showAuthor, chatId, canUnpin } = props;
 

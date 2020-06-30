@@ -1,9 +1,11 @@
 import * as React from 'react';
+import { css, cx } from 'linaria';
+import { XViewRouterContext, XViewRouter, XView } from 'react-mental';
 import { UserPopperContent } from 'openland-web/components/EntityPopperContent';
 import { usePopper } from 'openland-web/components/unicorn/usePopper';
 import { EntityPopperContent } from 'openland-web/components/EntityPopperContent';
 import { MentionItemComponent } from 'openland-web/fragments/chat/components/SendMessageComponent';
-import { css, cx } from 'linaria';
+import { useGlobalSearch } from 'openland-unicorn/components/TabLayout';
 import { Span } from 'openland-y-utils/spans/Span';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { ULink } from 'openland-web/components/unicorn/ULink';
@@ -12,7 +14,6 @@ import { defaultHover } from 'openland-web/utils/Styles';
 import { useClient } from 'openland-api/useClient';
 import { plural } from 'openland-y-utils/plural';
 import { isInviteLink, InviteLink } from './InviteContent';
-import { XViewRouterContext, XViewRouter, XView } from 'react-mental';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { XLoader } from 'openland-x/XLoader';
 
@@ -212,7 +213,7 @@ const MentionedOtherUsersPopperContent = React.memo(
         // TODO: remove this when cache-and-network be work!
         React.useLayoutEffect(() => {
             (async () => {
-                await client.refetchMessageMultiSpan({id: props.mId || '' });
+                await client.refetchMessageMultiSpan({ id: props.mId || '' });
             })();
         }, []);
 
@@ -441,6 +442,18 @@ const MentionedOrganization = React.memo(
     },
 );
 
+const HashtagView = React.memo((props: { text?: string; children: any }) => {
+    const globalSearch = useGlobalSearch();
+
+    const handleClick = () => {
+        if (props.text) {
+            globalSearch.onChange(props.text);
+        }
+    };
+
+    return <ULink onClick={handleClick}>{props.children}</ULink>;
+});
+
 export const SpanView = React.memo<{
     span: Span;
     children?: any;
@@ -448,12 +461,13 @@ export const SpanView = React.memo<{
     mId?: string;
 }>((props) => {
     const { span, children } = props;
-
     if (span.type === 'link') {
         if (isInviteLink(span.link)) {
             return <InviteLink link={span.link}>{children}</InviteLink>;
         }
         return <ULink href={span.link}>{children}</ULink>;
+    } else if (span.type === 'hashtag') {
+        return <HashtagView text={span.textRaw}>{children}</HashtagView>;
     } else if (span.type === 'bold') {
         return (
             <span className={cx(boldTextClassName, props.isService && boldTextServiceClassName)}>
@@ -462,8 +476,6 @@ export const SpanView = React.memo<{
         );
     } else if (span.type === 'italic') {
         return <span className={italicTextClassName}>{children}</span>;
-    } else if (span.type === 'hashtag') {
-        return <ULink onClick={() => null}>{children}</ULink>;
     } else if (span.type === 'loud') {
         return <span className={cx(loudTextClassName, TextTitle2)}>{children}</span>;
     } else if (span.type === 'rotating') {
