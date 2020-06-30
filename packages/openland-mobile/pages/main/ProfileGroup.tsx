@@ -26,7 +26,6 @@ import { ZManageButton } from 'openland-mobile/components/ZManageButton';
 import { ZListHeader } from 'openland-mobile/components/ZListHeader';
 import { trackEvent } from 'openland-mobile/analytics';
 import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
-import { SUPER_ADMIN } from '../Init';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
 
 const ProfileGroupComponent = React.memo((props: PageProps) => {
