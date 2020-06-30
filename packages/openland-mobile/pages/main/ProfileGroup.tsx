@@ -420,7 +420,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                         badge={item.badge}
                         user={item.user}
                         onLongPress={() =>
-                            handleMemberLongPress(item, item.canKick, room.canEdit || SUPER_ADMIN)
+                            handleMemberLongPress(item, item.canKick, room.canEdit)
                         }
                         onPress={() => props.router.push('ProfileUser', { id: item.user.id })}
                     />

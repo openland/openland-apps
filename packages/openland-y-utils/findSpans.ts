@@ -16,6 +16,7 @@ const spanInputMap = {
     'Italic': 'MessageSpanItalic',
     'Loud': 'MessageSpanLoud',
     'Rotating': 'MessageSpanRotating',
+    'HashTag': 'MessageSpanHashTag',
 };
 
 const isSpanMaster = (symbol: string) => {

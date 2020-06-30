@@ -462,6 +462,8 @@ export const SpanView = React.memo<{
         );
     } else if (span.type === 'italic') {
         return <span className={italicTextClassName}>{children}</span>;
+    } else if (span.type === 'hashtag') {
+        return <ULink onClick={() => null}>{children}</ULink>;
     } else if (span.type === 'loud') {
         return <span className={cx(loudTextClassName, TextTitle2)}>{children}</span>;
     } else if (span.type === 'rotating') {

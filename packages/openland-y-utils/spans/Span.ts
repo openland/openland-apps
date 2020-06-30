@@ -26,6 +26,7 @@ export enum SpanType {
     loud = 'loud',
     rotating = 'rotating',
     emoji = 'emoji',
+    hashtag = 'hashtag',
 }
 
 export type Span =
@@ -38,6 +39,7 @@ export type Span =
     | SpanLink
     | SpanUsers
     | SpanBold
+    | SpanHashtag
     | SpanDate
     | SpanCodeBlock
     | SpanCodeInline
@@ -72,6 +74,10 @@ export interface SpanEmoji extends SpanAbs {
 
 export interface SpanBold extends SpanAbs {
     type: SpanType.bold;
+}
+
+export interface SpanHashtag extends SpanAbs {
+    type: SpanType.hashtag;
 }
 
 export interface SpanCodeBlock extends SpanAbs {

@@ -1,6 +1,5 @@
-import { ServerSpan, Span, SpanTypeToSymbol } from './Span';
+import { ServerSpan, Span, SpanType, SpanTypeToSymbol } from './Span';
 import { TextRenderProccessor } from 'openland-y-runtime/TextRenderProcessor';
-import { SpanType } from 'openland-y-utils/spans/Span';
 
 export const findChildSpans = (
     spans: ServerSpan[],
@@ -60,6 +59,8 @@ export const convertServerSpan = (text: string, s: ServerSpan): Span => {
         span = { offset, length, type: SpanType.loud };
     } else if (s.__typename === 'MessageSpanRotating') {
         span = { offset, length, type: SpanType.rotating };
+    } else if (s.__typename === 'MessageSpanHashTag') {
+        span = { offset, length, type: SpanType.hashtag };
     } else {
         span = {
             offset,

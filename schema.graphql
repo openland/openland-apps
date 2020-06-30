@@ -1506,6 +1506,12 @@ type MessageSpanDate implements MessageSpan {
   date: Date!
 }
 
+type MessageSpanHashTag implements MessageSpan {
+  offset: Int!
+  length: Int!
+  tag: String!
+}
+
 type MessageSpanInlineCode implements MessageSpan {
   offset: Int!
   length: Int!
@@ -1776,6 +1782,7 @@ type Mutation {
   debugClearSchedulerFromConferences: Boolean!
   debugInvalidateAllMessages: Boolean!
   debugFixUserSettings: Boolean!
+  debugFixDeletedRooms: Boolean!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -1904,6 +1911,8 @@ type Mutation {
   registerPush(endpoint: String!, type: PushType!): String!
   debugSendAndroidDataPush(uid: ID!, message: String!): Boolean!
   debugSendAppleDataPush(uid: ID!, message: String!): Boolean!
+  terminateSession(id: ID!): Boolean!
+  terminateAllSessionsExcept(id: ID!): Boolean!
   betaDiscoverSkip(selectedTagsIds: [String!]!): DiscoverPage
   betaNextDiscoverReset: Boolean!
   betaNextDiscoverPageOrChats(selectedTagsIds: [String!]!, excudedGroupsIds: [String!]!): DiscoverPage
@@ -2746,6 +2755,7 @@ type Query {
   postMyDrafts(first: Int!, after: String): PostDraftConnection!
   myProfilePrefill: ProfilePrefill
   pushSettings: PushSettings!
+  activeSessions: [Session]!
   sessionState: SessionState!
 
   """deprecated"""
@@ -2952,6 +2962,16 @@ type ServiceMessage implements ModernMessage {
 }
 
 union ServiceMetadata = InviteServiceMetadata | KickServiceMetadata | TitleChangeServiceMetadata | PhotoChangeServiceMetadata | PostRespondServiceMetadata
+
+type Session {
+  id: ID!
+  lastIp: String!
+  lastLocation: String!
+  online: Boolean
+  lastSeen: Date
+  platform: String
+  current: Boolean!
+}
 
 type SessionState {
   isLoggedIn: Boolean!
