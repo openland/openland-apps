@@ -14,7 +14,7 @@ import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import PhoneIcon from 'openland-icons/s/ic-call-24.svg';
 import InviteIcon from 'openland-icons/s/ic-invite-24.svg';
-import SettingsIcon from 'openland-icons/s/ic-settings-deprecated-24.svg';
+import SettingsIcon from 'openland-icons/s/ic-edit-24.svg';
 import NotificationsIcon from 'openland-icons/s/ic-notifications-24.svg';
 import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
 import NotificationsOffIcon from 'openland-icons/s/ic-notifications-off-24.svg';
