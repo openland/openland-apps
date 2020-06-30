@@ -27,6 +27,7 @@ import { ZListHeader } from 'openland-mobile/components/ZListHeader';
 import { trackEvent } from 'openland-mobile/analytics';
 import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
+import { SUPER_ADMIN } from '../Init';
 
 const ProfileGroupComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
@@ -419,7 +420,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                         badge={item.badge}
                         user={item.user}
                         onLongPress={() =>
-                            handleMemberLongPress(item, item.canKick, room.canEdit)
+                            handleMemberLongPress(item, item.canKick, room.role === 'OWNER' || room.role === 'ADMIN' || SUPER_ADMIN)
                         }
                         onPress={() => props.router.push('ProfileUser', { id: item.user.id })}
                     />

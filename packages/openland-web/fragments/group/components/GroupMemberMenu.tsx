@@ -144,7 +144,7 @@ const getMenuContent = (
         });
     }
 
-    if (group.canEdit && user.id !== engine.user.id) {
+    if ((group.role === 'OWNER' || group.role === 'ADMIN' || AppConfig.isSuperAdmin()) && user.id !== engine.user.id) {
         res.push({
             title: member.role === 'ADMIN' ? 'Revoke admin status' : 'Make admin',
             icon: <StarIcon />,

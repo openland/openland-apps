@@ -46,7 +46,6 @@ object Operations {
         if (name == "FetchPushSettings") return FetchPushSettings
         if (name == "GlobalCounter") return GlobalCounter
         if (name == "GlobalSearch") return GlobalSearch
-        if (name == "GroupScreenViews") return GroupScreenViews
         if (name == "IpLocation") return IpLocation
         if (name == "Message") return Message
         if (name == "MessageMultiSpan") return MessageMultiSpan

@@ -127,9 +127,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryGlobalSearch(variables: Types.GlobalSearchVariables, params?: QueryParameters): Promise<Types.GlobalSearch> {
         return this.query('GlobalSearch', variables, params);
     }
-    queryGroupScreenViews(variables: Types.GroupScreenViewsVariables, params?: QueryParameters): Promise<Types.GroupScreenViews> {
-        return this.query('GroupScreenViews', variables, params);
-    }
     queryIpLocation(params?: QueryParameters): Promise<Types.IpLocation> {
         return this.query('IpLocation', undefined, params);
     }
@@ -439,9 +436,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchGlobalSearch(variables: Types.GlobalSearchVariables, params?: QueryParameters): Promise<Types.GlobalSearch> {
         return this.refetch('GlobalSearch', variables, params);
     }
-    refetchGroupScreenViews(variables: Types.GroupScreenViewsVariables, params?: QueryParameters): Promise<Types.GroupScreenViews> {
-        return this.refetch('GroupScreenViews', variables, params);
-    }
     refetchIpLocation(params?: QueryParameters): Promise<Types.IpLocation> {
         return this.refetch('IpLocation', undefined, params);
     }
@@ -750,9 +744,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateGlobalSearch(variables: Types.GlobalSearchVariables, updater: (data: Types.GlobalSearch) => Types.GlobalSearch | null): Promise<boolean> {
         return this.updateQuery(updater, 'GlobalSearch', variables);
-    }
-    updateGroupScreenViews(variables: Types.GroupScreenViewsVariables, updater: (data: Types.GroupScreenViews) => Types.GroupScreenViews | null): Promise<boolean> {
-        return this.updateQuery(updater, 'GroupScreenViews', variables);
     }
     updateIpLocation(updater: (data: Types.IpLocation) => Types.IpLocation | null): Promise<boolean> {
         return this.updateQuery(updater, 'IpLocation', undefined);
@@ -1140,11 +1131,6 @@ export class OpenlandClient extends BaseSpaceXClient {
     useGlobalSearch(variables: Types.GlobalSearchVariables, params?: SpaceQueryWatchParameters): Types.GlobalSearch;
     useGlobalSearch(variables: Types.GlobalSearchVariables, params?: SpaceQueryWatchParameters): Types.GlobalSearch | null {
         return this.useQuery('GlobalSearch', variables, params);
-    }
-    useGroupScreenViews(variables: Types.GroupScreenViewsVariables, params: SpaceQueryWatchParameters & { suspense: false }): Types.GroupScreenViews | null;
-    useGroupScreenViews(variables: Types.GroupScreenViewsVariables, params?: SpaceQueryWatchParameters): Types.GroupScreenViews;
-    useGroupScreenViews(variables: Types.GroupScreenViewsVariables, params?: SpaceQueryWatchParameters): Types.GroupScreenViews | null {
-        return this.useQuery('GroupScreenViews', variables, params);
     }
     useIpLocation(params: SpaceQueryWatchParameters & { suspense: false }): Types.IpLocation | null;
     useIpLocation(params?: SpaceQueryWatchParameters): Types.IpLocation;
