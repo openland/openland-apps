@@ -237,6 +237,8 @@ export const SignUpWithPhone = (props: AskAuthDataProps) => {
         <>
             <AuthToastWrapper isVisible={!!errorText} text={errorText} className={phoneToast} />
             <FormLayout minWidth={0}>
+                <Title text="What’s your phone?" />
+                <Subtitle text="We’ll send you a sign-in code" />
                 <AuthInputWrapper className={cx(shakeClassName)}>
                     <CountryPicker
                         value={codeField.input.value}
@@ -353,7 +355,7 @@ const WebSignUpCreateWithEmail = (
             <AuthToastWrapper isVisible={!!errorText} text={errorText} />
             <FormLayout>
                 <Title text="What’s your email?" />
-                <Subtitle text="We’ll send you a login code" />
+                <Subtitle text="We’ll send you a sign-in code" />
                 <AuthInputWrapper className={cx(shakeClassName)}>
                     <AuthInput
                         label={InitTexts.auth.emailPlaceholder}
@@ -376,10 +378,11 @@ const WebSignUpCreateWithEmail = (
 
 export const AskAuthDataPage = (props: AskAuthDataProps) => {
     const router = React.useContext(XRouterContext)!;
+    const isPhoneAuth = !!router.query.phone;
 
     return (
         <Wrapper>
-            <XDocumentHead title="What’s your email?" />
+            <XDocumentHead title={isPhoneAuth ? 'What’s your phone?' : 'What’s your email?'} />
             <AuthHeaderConfig
                 onBack={() => {
                     props.setAuthError('');
@@ -387,7 +390,8 @@ export const AskAuthDataPage = (props: AskAuthDataProps) => {
                     router.replace('/signin');
                 }}
             />
-            <WebSignUpCreateWithEmail {...props} />
+            {isPhoneAuth && <SignUpWithPhone {...props} />}
+            {!isPhoneAuth && <WebSignUpCreateWithEmail {...props} />}
         </Wrapper>
     );
 };

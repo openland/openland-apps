@@ -314,11 +314,11 @@ const Root = (props: { countryCode?: string }) => {
         }
     }, []);
 
-    const loginWith = React.useCallback(() => {
+    const loginWith = React.useCallback((phone: boolean) => {
         setAuthValue('');
         setAuthError('');
         setAuthSending(false);
-        const loginPath = '/authorization/ask-auth-data';
+        const loginPath = phone ? '/authorization/ask-auth-data?phone=true' : '/authorization/ask-auth-data';
         setTimeout(() => {
             router.push(loginPath);
         }, 0);

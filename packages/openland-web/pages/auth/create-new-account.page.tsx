@@ -8,14 +8,14 @@ import { isElectron } from 'openland-y-utils/isElectron';
 import { useWithWidth } from 'openland-web/hooks/useWithWidth';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { AuthHeaderConfig } from './root.page';
-import { SignUpWithPhone, AskAuthDataProps } from './ask-auth-data.page';
+import { AskAuthDataProps } from './ask-auth-data.page';
 
 type AuthMechanism = AskAuthDataProps & {
-    loginWith: () => void;
+    loginWith: (phone: boolean) => void;
 };
 
 const SignUpAuthMechanism = (props: AuthMechanism) => {
-    const { loginWith, ...other } = props;
+    const { loginWith } = props;
     const [width] = useWithWidth();
     return (
         <FormLayout>
@@ -23,17 +23,23 @@ const SignUpAuthMechanism = (props: AuthMechanism) => {
                 <Unicorn width="96" height="96" />
             </XView>
             <Title text="Openland" />
-            <Subtitle text="The best place to find and build inspiring&nbsp;communities" />
-
-            <SignUpWithPhone {...other} />
+            <Subtitle text="Modern social network built&nbsp;for&nbsp;you,&nbsp;not&nbsp;advertisers" />
 
             <XView alignSelf="center" width={width && width < 400 ? '100%' : 240} marginTop={32}>
                 <UButton
-                    onClick={loginWith}
+                    onClick={() => loginWith(true)}
+                    size="large"
+                    shape="square"
+                    text="Continue with phone"
+                    style="primary"
+                />
+                <XView height={16} />
+                <UButton
+                    onClick={() => loginWith(false)}
                     size="large"
                     shape="square"
                     text="Continue with email"
-                    style="tertiary"
+                    style="secondary"
                 />
             </XView>
         </FormLayout>
