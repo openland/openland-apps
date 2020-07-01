@@ -18,7 +18,6 @@ import { GroupMemberMenu } from './components/GroupMemberMenu';
 import { RoomMembersPaginated_members, RoomMemberRole } from 'openland-api/spacex.types';
 import { PremiumBadge } from 'openland-web/components/PremiumBadge';
 import { formatMoneyInterval } from 'openland-y-utils/wallet/Money';
-import { ProfileDonationButtons } from 'openland-web/components/ProfileDonationButtons';
 
 export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
     const client = useClient();
@@ -51,8 +50,7 @@ export const GroupProfileFragment = React.memo<{ id?: string }>((props) => {
         organization,
         settings,
         isPremium,
-        premiumSettings,
-        owner
+        premiumSettings
     } = group;
 
     const [members, setMembers] = React.useState(initialMembers);
