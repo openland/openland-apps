@@ -2699,6 +2699,14 @@ private let MyCardsSelector = obj(
                     field("deleted", "deleted", notNull(scalar("Boolean")))
                 )))))
         )
+private let MyCommunitiesSelector = obj(
+            field("myCommunities", "myCommunities", notNull(list(notNull(obj(
+                    field("__typename", "__typename", notNull(scalar("String"))),
+                    field("betaIsOwner", "isOwner", notNull(scalar("Boolean"))),
+                    field("betaIsAdmin", "isAdmin", notNull(scalar("Boolean"))),
+                    fragment("Organization", OrganizationShortSelector)
+                )))))
+        )
 private let MyNotificationCenterSelector = obj(
             field("myNotificationCenter", "myNotificationCenter", notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
@@ -4998,6 +5006,12 @@ class Operations {
         "query MyCards{myCards{__typename id pmid last4 brand expYear expMonth isDefault deleted}}",
         MyCardsSelector
     )
+    let MyCommunities = OperationDefinition(
+        "MyCommunities",
+        .query, 
+        "query MyCommunities{myCommunities{__typename ...OrganizationShort isOwner:betaIsOwner isAdmin:betaIsAdmin}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}",
+        MyCommunitiesSelector
+    )
     let MyNotificationCenter = OperationDefinition(
         "MyNotificationCenter",
         .query, 
@@ -6210,6 +6224,7 @@ class Operations {
         if name == "MessagesSearch" { return MessagesSearch }
         if name == "MyApps" { return MyApps }
         if name == "MyCards" { return MyCards }
+        if name == "MyCommunities" { return MyCommunities }
         if name == "MyNotificationCenter" { return MyNotificationCenter }
         if name == "MyNotifications" { return MyNotifications }
         if name == "MyOrganizations" { return MyOrganizations }

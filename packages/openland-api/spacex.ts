@@ -148,6 +148,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     queryMyCards(params?: QueryParameters): Promise<Types.MyCards> {
         return this.query('MyCards', undefined, params);
     }
+    queryMyCommunities(params?: QueryParameters): Promise<Types.MyCommunities> {
+        return this.query('MyCommunities', undefined, params);
+    }
     queryMyNotificationCenter(params?: QueryParameters): Promise<Types.MyNotificationCenter> {
         return this.query('MyNotificationCenter', undefined, params);
     }
@@ -457,6 +460,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     refetchMyCards(params?: QueryParameters): Promise<Types.MyCards> {
         return this.refetch('MyCards', undefined, params);
     }
+    refetchMyCommunities(params?: QueryParameters): Promise<Types.MyCommunities> {
+        return this.refetch('MyCommunities', undefined, params);
+    }
     refetchMyNotificationCenter(params?: QueryParameters): Promise<Types.MyNotificationCenter> {
         return this.refetch('MyNotificationCenter', undefined, params);
     }
@@ -765,6 +771,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     }
     updateMyCards(updater: (data: Types.MyCards) => Types.MyCards | null): Promise<boolean> {
         return this.updateQuery(updater, 'MyCards', undefined);
+    }
+    updateMyCommunities(updater: (data: Types.MyCommunities) => Types.MyCommunities | null): Promise<boolean> {
+        return this.updateQuery(updater, 'MyCommunities', undefined);
     }
     updateMyNotificationCenter(updater: (data: Types.MyNotificationCenter) => Types.MyNotificationCenter | null): Promise<boolean> {
         return this.updateQuery(updater, 'MyNotificationCenter', undefined);
@@ -1166,6 +1175,11 @@ export class OpenlandClient extends BaseSpaceXClient {
     useMyCards(params?: SpaceQueryWatchParameters): Types.MyCards;
     useMyCards(params?: SpaceQueryWatchParameters): Types.MyCards | null {
         return this.useQuery('MyCards', undefined, params);
+    }
+    useMyCommunities(params: SpaceQueryWatchParameters & { suspense: false }): Types.MyCommunities | null;
+    useMyCommunities(params?: SpaceQueryWatchParameters): Types.MyCommunities;
+    useMyCommunities(params?: SpaceQueryWatchParameters): Types.MyCommunities | null {
+        return this.useQuery('MyCommunities', undefined, params);
     }
     useMyNotificationCenter(params: SpaceQueryWatchParameters & { suspense: false }): Types.MyNotificationCenter | null;
     useMyNotificationCenter(params?: SpaceQueryWatchParameters): Types.MyNotificationCenter;

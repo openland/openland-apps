@@ -2706,6 +2706,14 @@ const MyCardsSelector = obj(
                     field('deleted', 'deleted', args(), notNull(scalar('Boolean')))
                 )))))
         );
+const MyCommunitiesSelector = obj(
+            field('myCommunities', 'myCommunities', args(), notNull(list(notNull(obj(
+                    field('__typename', '__typename', args(), notNull(scalar('String'))),
+                    field('betaIsOwner', 'isOwner', args(), notNull(scalar('Boolean'))),
+                    field('betaIsAdmin', 'isAdmin', args(), notNull(scalar('Boolean'))),
+                    fragment('Organization', OrganizationShortSelector)
+                )))))
+        );
 const MyNotificationCenterSelector = obj(
             field('myNotificationCenter', 'myNotificationCenter', args(), notNull(obj(
                     field('__typename', '__typename', args(), notNull(scalar('String'))),
@@ -5000,6 +5008,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'MyCards',
         body: 'query MyCards{myCards{__typename id pmid last4 brand expYear expMonth isDefault deleted}}',
         selector: MyCardsSelector
+    },
+    MyCommunities: {
+        kind: 'query',
+        name: 'MyCommunities',
+        body: 'query MyCommunities{myCommunities{__typename ...OrganizationShort isOwner:betaIsOwner isAdmin:betaIsAdmin}}fragment OrganizationShort on Organization{__typename id name photo shortname about isCommunity:alphaIsCommunity membersCount}',
+        selector: MyCommunitiesSelector
     },
     MyNotificationCenter: {
         kind: 'query',

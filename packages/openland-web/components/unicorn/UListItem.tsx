@@ -57,6 +57,7 @@ export interface UListItemProps {
     interactive?: boolean;
     linkSelectable?: boolean;
     disableHover?: boolean;
+    href?: string;
 }
 
 export const UListItem = React.memo((props: UListItemProps) => {
@@ -83,6 +84,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
         paddingHorizontal = 16,
         interactive = true,
         linkSelectable = true,
+        href,
     } = props;
     const height = large ? 80 : !!avatar || !!leftElement || !!iconBackground ? 56 : 48;
     const titleFont = !!description ? TextStyles.Label1 : TextStyles.Body;
@@ -229,6 +231,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 flexDirection="row"
                 backgroundColor={hovered ? 'var(--backgroundPrimaryHover)' : undefined}
                 hoverBackgroundColor={props.disableHover ? undefined : 'var(--backgroundPrimaryHover)'}
+                hoverTextDecoration="none"
                 selectedBackgroundColor="var(--accentMuted)"
                 selectedHoverBackgroundColor="var(--accentMutedHover) !important"
                 selectedColor="var(--foregroundContrast)"
@@ -237,6 +240,9 @@ export const UListItem = React.memo((props: UListItemProps) => {
                 onClick={onClick}
                 path={path}
                 linkSelectable={linkSelectable}
+                href={href}
+                target={!!href ? '_blank' : undefined}
+                as={!!href ? 'a' : undefined}
             >
                 {content}
             </XView>

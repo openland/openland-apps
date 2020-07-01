@@ -267,6 +267,8 @@ routes.add('/settings/about', '/unicorn/index');
 routes.add('/settings/about/', '/unicorn/index');
 routes.add('/settings/licenses', '/unicorn/index');
 routes.add('/settings/licenses/', '/unicorn/index');
+routes.add('/settings/communities', '/unicorn/index');
+routes.add('/settings/communities/', '/unicorn/index');
 
 //
 // Wallet
