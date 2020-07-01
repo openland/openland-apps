@@ -91,6 +91,7 @@ const ChangeLoginMethodCodeComponent = React.memo((props: PageProps) => {
 
     return (
         <SubmitCodeForm
+            title="Enter code"
             formData={isPhone ? phoneData : formData}
             buttonTitle="Done"
             onSubmit={handleSubmit}

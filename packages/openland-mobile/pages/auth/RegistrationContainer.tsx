@@ -39,6 +39,7 @@ interface RegistrationContainerProps {
     children: any;
     floatContent: JSX.Element;
     autoScrollToBottom?: boolean;
+    autoScrollToTop?: boolean;
 }
 
 export const RegistrationContainer = React.memo((props: RegistrationContainerProps) => {
@@ -57,6 +58,9 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
     const keyboardWillShow = (e: any) => {
         if (props.autoScrollToBottom && scrollRef.current) {
             (scrollRef.current as any).getNode().scrollToEnd({ animated: true });
+        }
+        if (props.autoScrollToTop && scrollRef.current) {
+            (scrollRef.current as any).getNode().scrollToTop({ animated: true });
         }
         Animated.parallel([
             Animated.timing(floatPadding, {

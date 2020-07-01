@@ -10,39 +10,43 @@ import { filterCountries } from 'openland-y-utils/auth/filterCountries';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { CountryItem } from 'openland-y-utils/auth/constants';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+
+type GroupItem = {
+    title: string;
+    index: number;
+    data: (CountryItem & { isLast: boolean })[];
+};
 
 export const CountryPickerComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
+    const safeArea = React.useContext(ASSafeAreaContext);
     const [query, setQuery] = React.useState('');
-    const [countriesData, setCountriesData] = React.useState<any>(null);
-    let action = props.router.params.action as (country: { value: string, label: string, shortname: string }) => void;
+    const [countriesData, setCountriesData] = React.useState<GroupItem[] | null>(null);
+    let action = props.router.params.action as (country: CountryItem) => void;
 
     React.useEffect(() => {
         let index = 0;
         if (!countriesData) {
-            const countriesObject = {};
+            const countriesObject: { [label: string]: GroupItem } = {};
 
-            countriesMeta.forEach((i) => {
-                let c = i.label[0];
+            countriesMeta.forEach((item, i, arr) => {
+                let nextItem = arr[i + 1];
+                let c = item.label[0];
                 if (!countriesObject[c]) {
                     countriesObject[c] = {
                         title: c,
                         index: index,
-                        data: [i],
+                        data: [{ ...item, isLast: false }],
                     };
                     index++;
                 } else {
-                    countriesObject[c].data.push(i);
+                    countriesObject[c].data.push({ ...item, isLast: nextItem ? nextItem.label[0] !== c : true });
                 }
             });
 
-            const data = [];
-
-            for (let k of Object.keys(countriesObject)) {
-                data.push(countriesObject[k]);
-            }
-
-            setCountriesData(data);
+            setCountriesData(Object.values(countriesObject));
         }
     }, [countriesData]);
 
@@ -60,7 +64,7 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
         <>
             <SHeader title="Country" />
             <ASSafeAreaView marginBottom={20} flexDirection="column">
-                <View alignItems="center" marginHorizontal={16} marginTop={8} marginBottom={Platform.OS === 'ios' ? 0 : 16}>
+                <View alignItems="center" marginHorizontal={16} marginTop={8} marginBottom={16}>
                     <View
                         position="relative"
                         flexDirection="row"
@@ -102,25 +106,35 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                             <SectionList
                                 keyboardDismissMode="on-drag"
                                 keyboardShouldPersistTaps="always"
-                                sections={countriesData}
-                                keyExtractor={(item, index) => item + index}
+                                sections={countriesData!}
+                                keyExtractor={(item, index) => item.label + index}
                                 renderItem={({ item }) => (
-                                    <ZListItem
-                                        text={item.label}
-                                        description={item.value}
-                                        onPress={() => action(item)}
-                                        small={true}
-                                    />
+                                    item.isLast ? (
+                                        <>
+                                            <ZListItem
+                                                text={item.label}
+                                                description={item.value}
+                                                onPress={() => action(item)}
+                                                small={true}
+                                            />
+                                            <View height={16} />
+                                        </>
+                                    ) : (
+                                            <ZListItem
+                                                text={item.label}
+                                                description={item.value}
+                                                onPress={() => action(item)}
+                                                small={true}
+                                            />
+                                        )
                                 )}
-                                renderSectionHeader={({ section: { title, index } }) => (
+                                renderSectionHeader={({ section: { title } }) => (
                                     <View
-                                        height={64}
+                                        height={48}
                                         paddingHorizontal={16}
-                                        paddingTop={16}
                                         alignItems="center"
                                         flexDirection="row"
                                         backgroundColor={theme.backgroundPrimary}
-                                        {...Platform.OS !== 'ios' && index === 0 && { height: 48, paddingTop: 0 }}
                                     >
                                         <Text
                                             style={[
@@ -141,11 +155,11 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                             <FlatList
                                 style={{
                                     flexGrow: 1,
-                                    paddingVertical: Platform.OS === 'ios' ? 16 : 0,
                                 }}
                                 keyboardDismissMode="on-drag"
                                 keyboardShouldPersistTaps="always"
                                 data={sortCountries}
+                                keyExtractor={(item, index) => item.label + index}
                                 renderItem={({ item }) => (
                                     <ZListItem
                                         text={item.label}
@@ -157,17 +171,27 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                             />
                         )}
                         {sortCountries && sortCountries.length === 0 && (
-                            <Text
+                            <View
                                 style={{
-                                    ...TextStyles.Body,
-                                    textAlign: 'center',
-                                    color: theme.foregroundTertiary,
-                                    paddingHorizontal: 16,
-                                    paddingVertical: Platform.OS === 'ios' ? 28 : 0,
+                                    height: '100%',
+                                    flexGrow: 1,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    marginTop: -safeArea.top,
                                 }}
                             >
-                                Nothing found
-                            </Text>
+                                <Text
+                                    style={{
+                                        ...TextStyles.Body,
+                                        paddingVertical: 16,
+                                        paddingHorizontal: 32,
+                                        textAlign: 'center',
+                                        color: theme.foregroundTertiary,
+                                    }}
+                                >
+                                    Nothing found
+                                </Text>
+                            </View>
                         )}
                     </View>
                 </View>

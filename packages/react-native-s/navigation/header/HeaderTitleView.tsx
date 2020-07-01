@@ -101,7 +101,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
         let title = <Text style={[styles.title, { color: this.props.style.textColor }, this.props.page.page.startIndex === 0 ? styles.rootFirst : {}]}>{this.props.page.config.title}</Text>;
         title = (v.config.titleView && <View flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignItems="stretch">{v.config.titleView()}</View>) || title;
 
-        let showCloseButton = !v.config.searchActive && (!!this.props.manager.parent && this.props.page.page.startIndex === 0);
+        let showCloseButton = !!this.props.manager.parent && this.props.page.page.startIndex === 0;
         let showBackButton = !showCloseButton && (this.props.page.page.startIndex !== 0 || v.config.searchActive);
         return (
             <SAnimated.View name={'header--' + this.props.page.page.key} style={styles.root} pointerEvents={this.props.current ? 'box-none' : 'none'}>
@@ -124,7 +124,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                         >
                             {!v.config.hideIcon && (
                                 <>
-                                    {showCloseButton && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.textColor} />}
+                                    {showCloseButton && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.iconColor} />}
                                     {showBackButton && <SBackButton onPress={v.config.searchActive ? v.config.searchClosed!! : this.handleSoftBackPress} tintColor={this.props.style.iconColor} />}
                                     {!showCloseButton && !showBackButton && v.config.backButtonRootFallback && <SBackButton onPress={v.config.backButtonRootFallback} tintColor={this.props.style.iconColor} />}
                                 </>

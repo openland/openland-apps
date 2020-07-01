@@ -264,6 +264,7 @@ export const SubmitLoginForm = React.memo((props: SubmitLoginFormProps) => {
             <RegistrationContainer
                 title={title}
                 subtitle={subtitle}
+                autoScrollToTop={Platform.OS !== 'ios'}
                 floatContent={
                     <ZButton
                         title="Next"

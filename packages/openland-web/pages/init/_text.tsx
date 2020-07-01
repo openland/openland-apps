@@ -34,7 +34,7 @@ export const InitTexts = {
         codeInvalid: 'Invalid activation code',
         noCode: "Please enter the 6-digit code we've just sent to your email",
         wrongCodeLength:
-            'Incorrect login code.\nPlease check it and try again',
+            'Incorrect code.\nPlease check it and try again',
         codePlaceholder: 'Login code',
         continue: 'Continue',
         next: 'Next',

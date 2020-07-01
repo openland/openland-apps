@@ -113,6 +113,7 @@ const AuthCodeHeader = React.memo((props: { resendCode: () => void; formData: st
 });
 
 interface SubmitCodeFormProps {
+    title: string;
     formData: string;
     buttonTitle?: string;
     photoSrc?: string | null;
@@ -122,7 +123,7 @@ interface SubmitCodeFormProps {
 }
 
 export const SubmitCodeForm = React.memo((props: SubmitCodeFormProps) => {
-    const { photoSrc, photoCrop, buttonTitle, formData, onSubmit, onResend } = props;
+    const { photoSrc, photoCrop, title, buttonTitle, formData, onSubmit, onResend } = props;
     const shakerRef = React.useRef<{ shake: () => void }>(null);
     const codeRefs = React.useRef<React.RefObject<TextInput>[]>(
         new Array(6).fill(undefined).map(() => React.createRef())
@@ -221,7 +222,7 @@ export const SubmitCodeForm = React.memo((props: SubmitCodeFormProps) => {
         <ZTrack event="code_view">
             <RegistrationContainer
                 autoScrollToBottom={true}
-                title="Enter login code"
+                title={title}
                 subtitle={<AuthCodeHeader resendCode={resendCode} formData={formData} />}
                 floatContent={
                     <ZButton
