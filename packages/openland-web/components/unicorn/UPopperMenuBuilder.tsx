@@ -3,7 +3,7 @@ import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { css, cx } from 'linaria';
 import { XLoader } from 'openland-x/XLoader';
-import IcCheck from 'openland-icons/s/ic-done-16.svg';
+import IcCheck from 'openland-icons/s/ic-done-new-16.svg';
 import { UIcon } from './UIcon';
 import { XView } from 'react-mental';
 

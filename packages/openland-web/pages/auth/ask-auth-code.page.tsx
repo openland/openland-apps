@@ -207,7 +207,7 @@ const WebSignUpActivationCode = (
                 type="success"
             />
             <FormLayout>
-                <Title text={InitTexts.auth.enterActivationCode} />
+                <Title text="Enter sign-in code" />
                 <Subtitle>
                     We just sent it to {sendToText}.<br />
                     {<ResendSubtitle onResend={handleResend} />}
@@ -297,7 +297,7 @@ export const AskAuthCodePage = (props: ActivationCodeProps) => {
 
     return (
         <Wrapper>
-            <XDocumentHead title="Enter login code" />
+            <XDocumentHead title="Enter sign-in code" />
             <AuthHeaderConfig onBack={onBackClick} />
 
             <WebSignUpActivationCode

@@ -8,7 +8,7 @@ import { VariableSizeList } from 'react-window';
 import { countriesMeta } from 'openland-y-utils/auth/countriesMeta';
 import { TextLabel1, TextBody, TextStyles } from 'openland-web/utils/TextStyles';
 import { useShortcuts } from 'openland-x/XShortcuts/useShortcuts';
-import IcCheck from 'openland-icons/s/ic-done-16.svg';
+import IcCheck from 'openland-icons/s/ic-done-new-16.svg';
 import { filterCountries } from 'openland-y-utils/auth/filterCountries';
 import { throttle } from 'openland-y-utils/timer';
 
@@ -51,7 +51,7 @@ const VirtualMenuList = (props: { children: React.ReactNode[], options: GroupTyp
         } else {
             return { offset: offset + headerHeight + itemHeight * localIndex, found: true };
         }
-    }, { offset: -10, found: false } as { offset: number, found: boolean });
+    }, { offset: -28, found: false } as { offset: number, found: boolean });
 
     React.useEffect(() => {
         if (listRef.current) {
@@ -67,7 +67,7 @@ const VirtualMenuList = (props: { children: React.ReactNode[], options: GroupTyp
     return (
         <VariableSizeList
             ref={listRef}
-            style={{ marginBottom: 8, position: 'relative' }}
+            style={{ position: 'relative', marginBottom: height < maxHeight && height > 0 ? 8 : 0 }}
             height={height}
             itemCount={options.length}
             itemSize={i => filtered ? options[i].options.length * itemHeight : options[i].options.length * itemHeight + headerHeight}
@@ -123,16 +123,11 @@ const menuWrapper = css`
 `;
 
 const groupHeaderStyle = cx(TextLabel1, css`
-    margin-top: 8px;
     padding: 8px 16px;
     color: var(--foregroundPrimary);
     text-transform: capitalize;
     text-align: left;
 `);
-
-const groupHeaderStyleFirst = css`
-    margin-top: 0;
-`;
 
 const optionStyle = cx(TextBody, css`
     display: flex;
@@ -187,7 +182,7 @@ const CountriesGroup = (props: {
 }) => {
     return (
         <div>
-            {!props.filtered && <h4 className={cx(groupHeaderStyle, props.index === 0 && groupHeaderStyleFirst)}>{props.group.label}</h4>}
+            {!props.filtered && <h4 className={cx(groupHeaderStyle)}>{props.group.label}</h4>}
             {props.group.options.map((option, i) => {
                 const isSelected = option.value === props.value.value && option.label === props.value.label;
                 const isActive = i === props.activeIndex;
@@ -301,6 +296,7 @@ const CountryPickerMenu = React.forwardRef((props: CountryPickerMenuProps, ref: 
                     marginBottom={16}
                     placeholder="Country"
                     autoFocus={true}
+                    value={searchValue}
                     onChange={setSearchValue}
                 />
                 <VirtualMenuList options={filteredOptions} filtered={!!searchValue} value={value}>
@@ -328,7 +324,7 @@ const CountryPickerMenu = React.forwardRef((props: CountryPickerMenuProps, ref: 
                     ))}
                 </VirtualMenuList>
                 {searchValue && filteredOptions[0]?.options.length === 0 && (
-                    <XView {...TextStyles.Body} color="var(--foregroundTertiary)" paddingHorizontal={16} paddingBottom={16}>
+                    <XView {...TextStyles.Body} color="var(--foregroundTertiary)" paddingHorizontal={16} paddingTop={8} paddingBottom={24}>
                         Nothing found
                     </XView>
                 )}

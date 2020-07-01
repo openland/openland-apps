@@ -2,7 +2,7 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { TextLabel1 } from 'openland-web/utils/TextStyles';
 import { XLoader } from 'openland-x/XLoader';
-import DoneIcon from 'openland-icons/s/ic-done-16.svg';
+import DoneIcon from 'openland-icons/s/ic-done-new-16.svg';
 import WarningIcon from 'openland-icons/s/ic-warning-16.svg';
 
 const toastWrapper = css`
@@ -109,13 +109,13 @@ export interface UToastHandlers {
     hide: () => void;
 }
 
-export const UToastContext = React.createContext<UToastHandlers>({show: () => {/* noop */}, hide: () => {/* noop */}});
+export const UToastContext = React.createContext<UToastHandlers>({ show: () => {/* noop */ }, hide: () => {/* noop */ } });
 
-export const useToastContext = (): {visible: boolean, config: UToastConfig, handlers: UToastHandlers} => {
+export const useToastContext = (): { visible: boolean, config: UToastConfig, handlers: UToastHandlers } => {
     const [visible, setVisible] = React.useState(false);
     const [config, setConfig] = React.useState({});
     const handlers = React.useRef({
-        show: (newConfig: UToastConfig) =>  {
+        show: (newConfig: UToastConfig) => {
             setVisible(true);
             setConfig(newConfig);
         },

@@ -17,7 +17,7 @@ import { TextStyles, TextBody, TextDensed, TextLabel1 } from 'openland-web/utils
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import IcClear from 'openland-icons/s/ic-close-16.svg';
 import IcDropdown from 'openland-icons/s/ic-dropdown-16.svg';
-import IcCheck from 'openland-icons/s/ic-done-16.svg';
+import IcCheck from 'openland-icons/s/ic-done-new-16.svg';
 import { FixedSizeList } from 'react-window';
 
 type USelectSize = 'small' | 'default';
