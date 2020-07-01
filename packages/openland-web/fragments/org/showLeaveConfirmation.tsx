@@ -21,6 +21,7 @@ export const showLeaveConfirmation = (organization: Organization_organization, m
         onLeave(user.id);
 
         await client.refetchMyOrganizations();
+        await client.refetchMyCommunities();
         await client.refetchAccount();
     }, 'danger');
 
