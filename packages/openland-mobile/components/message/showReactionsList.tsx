@@ -16,13 +16,14 @@ interface ReactionsListProps {
     };
 }
 
-const ReactionLabel: { [key in Exclude<MessageReactionType, MessageReactionType.DONATE>]: string } = {
+const ReactionLabel: { [key in MessageReactionType]: string } = {
     ANGRY: 'Angry',
     CRYING: 'Crying',
     JOY: 'Joy',
     LIKE: 'Like',
     SCREAM: 'Scream',
     THUMB_UP: 'Thumb Up',
+    DONATE: 'Donate',
 };
 
 const ReactionsList = (props: ReactionsListProps) => {
