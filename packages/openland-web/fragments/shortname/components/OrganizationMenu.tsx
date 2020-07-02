@@ -79,6 +79,7 @@ const MenuComponent = React.memo((props: OrganizationMenuProps & { ctx: UPopperC
                     .action('Delete', async () => {
                         await client.mutateDeleteOrganization({ organizationId: organization.id });
                         await client.refetchAccountSettings();
+                        await client.refetchMyCommunities();
 
                         router.pop();
                     }, 'danger').show();

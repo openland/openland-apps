@@ -263,6 +263,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                                 userId: myUserID,
                                 organizationId: props.router.params.id,
                             });
+                            await client.refetchMyCommunities();
                             await client.refetchMyOrganizations();
                             await client.refetchAccount();
 
@@ -288,6 +289,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                                 organizationId: organization.id,
                             });
                             await client.refetchAccountSettings();
+                            await client.refetchMyCommunities();
 
                             props.router.back();
                         })

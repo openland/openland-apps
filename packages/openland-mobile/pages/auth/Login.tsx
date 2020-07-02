@@ -70,7 +70,7 @@ const Logo = React.memo(() => {
                     color: theme.foregroundSecondary,
                 }}
             >
-                The best place to find and build {'\n'} inspiring communities
+                Modern social network{'\n'}built for you, not advertisers
             </Text>
         </View>
     );

@@ -70,7 +70,7 @@ const AuthStartComponent = React.memo((props: PageProps) => {
             countryShortname={countryShortname}
             eventTitle={isPhoneAuth ? 'signup_phone_view' : 'signup_email_view'}
             title={isPhoneAuth ? 'What’s your phone?' : 'What’s your email?'}
-            subtitle="We’ll send you a login code"
+            subtitle="We’ll send you a sign-in code"
             router={props.router}
             onSubmit={handleSubmit}
             onSuccess={handleSuccess}
@@ -119,6 +119,7 @@ const AuthCodeComponent = React.memo((props: PageProps) => {
 
     return (
         <SubmitCodeForm
+            title="Enter sign-in code"
             formData={isPhoneAuth ? userPhoneData : userAuthData}
             photoSrc={photoSrc}
             photoCrop={photoCrop}

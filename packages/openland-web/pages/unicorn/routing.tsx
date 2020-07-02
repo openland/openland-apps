@@ -33,6 +33,7 @@ import { DiscoverCollectionFragment } from 'openland-web/fragments/discover/Disc
 import { DiscussionsFragment } from 'openland-web/fragments/discussions/DiscussionsFragment';
 import { DraftsFragment } from 'openland-web/fragments/discussions/DraftsFragment';
 import { DiscussionEditorFragment } from 'openland-web/fragments/discussions/DiscussionEditorFragment';
+import { SettingsCommunitiesFragment } from 'openland-web/fragments/settings/SettingsCommunitiesFragment';
 // import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 
 // temporary stub for /mail/ -> not found bug
@@ -132,6 +133,7 @@ routing.addRoute('/settings/download', () => DownloadAppsFragment);
 routing.addRoute('/settings/invites', () => InviteFriendsFragment);
 routing.addRoute('/settings/about', () => SettingsAboutFragment);
 routing.addRoute('/settings/licenses', () => SettingsLicensesFragment);
+routing.addRoute('/settings/communities', () => SettingsCommunitiesFragment);
 
 // Wallet
 routing.addRoute('/wallet', () => WalletFragment);

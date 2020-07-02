@@ -1,6 +1,20 @@
 {
     "icons": [
         {
+            "name": "ic-read-glyph",
+            "src": "ic-read-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
+            "name": "ic-leave-glyph",
+            "src": "ic-leave-glyph-24.svg",
+            "sizes": [
+                24
+            ]
+        },
+        {
             "name": "ic-settings",
             "src": "ic-settings-24.svg",
             "sizes": [

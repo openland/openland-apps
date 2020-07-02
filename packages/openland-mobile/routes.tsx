@@ -72,6 +72,7 @@ import { AddCard } from './pages/wallet/AddCard';
 import { Explore } from './pages/main/Explore';
 import { Collections } from './pages/main/Collections';
 import { Donation } from './pages/wallet/Donation';
+import { SettingsCommunities } from './pages/main/SettingsCommunities';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -94,6 +95,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('SettingsAppearance', SettingsAppearance)
   .addRoute('SettingsAbout', SettingsAbout)
   .addRoute('SettingsLicenses', SettingsLicenses)
+  .addRoute('SettingsCommunities', SettingsCommunities)
   .addRoute('NewOrganization', NewOrganization)
   .addRoute('EditCommunity', EditCommunity)
   .addRoute('EditOrganization', EditOrganization)

@@ -1783,6 +1783,7 @@ type Mutation {
   debugInvalidateAllMessages: Boolean!
   debugFixUserSettings: Boolean!
   debugFixDeletedRooms: Boolean!
+  debugUnsubscribeEveryoneFromChat(cid: ID!): Int!
   settingsUpdate(settings: UpdateSettingsInput, uid: ID): Settings!
   sendEmailPairCode(email: String!): String!
   pairEmail(sessionId: String!, confirmationCode: String!): Boolean!
@@ -2734,6 +2735,7 @@ type Query {
   myNotifications(first: Int!, before: ID): NotificationConnection!
   myOrganization: Organization
   myOrganizations: [Organization!]!
+  myCommunities: [Organization!]!
   organization(id: ID!): Organization!
   organizationPublicRooms(id: ID!, first: Int!, after: ID): SharedRoomConnection!
   myOrganizationProfile: OrganizationProfile!

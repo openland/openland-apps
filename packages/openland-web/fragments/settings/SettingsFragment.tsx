@@ -14,25 +14,21 @@ import AppsIcon from 'openland-icons/s/ic-apps-24.svg';
 import InfoIcon from 'openland-icons/s/ic-info-24.svg';
 import WalletIcon from 'openland-icons/s/ic-wallet-24.svg';
 import SubscriptionsIcon from 'openland-icons/s/ic-subscriptions-24.svg';
-import { XLoader } from 'openland-x/XLoader';
+import CommunitiesIcon from 'openland-icons/s/ic-community-2-24.svg';
+import BookIcon from 'openland-icons/s/ic-read-24.svg';
+import HelpIcon from 'openland-icons/s/ic-help-24.svg';
 import { useClient } from 'openland-api/useClient';
-import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { UListGroup } from 'openland-web/components/unicorn/UListGroup';
 import { showLogoutConfirmation } from './LogoutFragment';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { TextDensed, TextLabel1, TextStyles } from 'openland-web/utils/TextStyles';
+import { TextStyles } from 'openland-web/utils/TextStyles';
 import { USideHeader } from 'openland-web/components/unicorn/USideHeader';
-import { showCreatingOrgFragment } from 'openland-web/fragments/create/CreateEntityFragment';
 import { useVisibleTab } from 'openland-unicorn/components/utils/VisibleTabContext';
 import { trackEvent } from 'openland-x-analytics';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { UCounter } from 'openland-unicorn/UCounter';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
-import { usePopper } from 'openland-web/components/unicorn/usePopper';
-import { css, cx } from 'linaria';
-import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import CommunityIcon from 'openland-icons/s/ic-community-2-24.svg';
-import OrganizationIcon from 'openland-icons/s/ic-organization-2-24.svg';
+import { css } from 'linaria';
 
 const ellipsisText = css`
     white-space: nowrap;
@@ -89,103 +85,10 @@ const UserProfileCard = React.memo(() => {
     }
 });
 
-export const Organizations = React.memo(() => {
-    const client = useClient();
-    const myOrganizations = client.useMyOrganizations().myOrganizations;
-
-    return (
-        <XView paddingBottom={56}>
-            {myOrganizations
-                .sort((a, b) => (a.isPrimary ? 1 : 0))
-                .map((organization, key) => {
-                    const { id, photo, name, isPrimary, shortname } = organization;
-
-                    return (
-                        <UListItem
-                            key={'organization-' + id}
-                            avatar={{ photo, id, title: name }}
-                            title={name}
-                            textRight={isPrimary ? 'Primary' : undefined}
-                            path={`/${shortname || id}`}
-                        />
-                    );
-                })}
-        </XView>
-    );
-});
-
 const AccountCounter = React.memo(() => {
     const walletState = React.useContext(MessengerContext).wallet.state.useState();
     return <UCounter value={walletState.isLocked ? walletState.failingPaymentsCount : 0} />;
 });
-
-const iconContainerClass = css`
-    width: 24px;
-    height: 24px;
-    flex-grow: 0;
-`;
-
-const itemContainerClass = css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    cursor: pointer;
-    padding: 6px 16px;
-
-    &:hover {
-        background-color: var(--backgroundPrimaryHover);
-    }
-`;
-
-const itemTextContainer = css`
-    display: flex;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-direction: column;
-    margin-left: 16px;
-`;
-
-const itemDescriptionClass = css`
-    color: var(--foregroundSecondary);
-`;
-
-interface ItemProps {
-    title: string;
-    description: string;
-    onClick?: ((event: React.MouseEvent) => void) | undefined;
-    icon: JSX.Element;
-}
-
-const Item = ({ title, description, onClick, icon }: ItemProps) => (
-    <div className={itemContainerClass} onClick={onClick}>
-        {icon}
-        <div className={itemTextContainer}>
-            <div className={TextLabel1}>{title}</div>
-            <div className={cx(TextDensed, itemDescriptionClass)}>{description}</div>
-        </div>
-    </div>
-);
-
-const NewOptionsMenu = React.memo(() => (
-    <>
-        <Item
-            onClick={() => {
-                showCreatingOrgFragment({ entityType: 'community' });
-            }}
-            icon={<UIcon icon={<CommunityIcon />} className={iconContainerClass} />}
-            title="New community"
-            description="A hub for chats for the same audience"
-        />
-        <Item
-            onClick={() => {
-                showCreatingOrgFragment({ entityType: 'organization' });
-            }}
-            icon={<UIcon icon={<OrganizationIcon />} className={iconContainerClass} />}
-            title="New organization"
-            description="A hub for chats with your teammates"
-        />
-    </>
-));
 
 export const SettingsFragment = React.memo(() => {
     const isVisible = useVisibleTab();
@@ -197,31 +100,11 @@ export const SettingsFragment = React.memo(() => {
     }, [isVisible]);
     const walletState = React.useContext(MessengerContext).wallet.state.useState();
 
-    const [, show] = usePopper(
-        {
-            placement: 'bottom-end',
-            hideOnEsc: true,
-            hideOnChildClick: true,
-            showTimeout: 100,
-        },
-        () => (
-            <XView paddingVertical={8}>
-                <NewOptionsMenu />
-            </XView>
-        ),
-    );
-
     return (
         <>
             <AccountCounter />
             <XView width="100%" height="100%" flexDirection="column" alignItems="stretch">
-                <USideHeader title="Settings">
-                    <UIconButton
-                        icon={<LeaveIcon />}
-                        size="large"
-                        onClick={showLogoutConfirmation}
-                    />
-                </USideHeader>
+                <USideHeader title="Settings" />
                 <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0} flexDirection="column">
                     <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>
                         <UserProfileCard />
@@ -234,6 +117,11 @@ export const SettingsFragment = React.memo(() => {
                             title="Invite friends"
                             icon={<InviteFriendsIcon />}
                             path="/settings/invites"
+                        />
+                        <UListItem
+                            title="Communities"
+                            icon={<CommunitiesIcon />}
+                            path="/settings/communities"
                         />
                         <UListGroup header="Preferences">
                             <UListItem
@@ -295,19 +183,31 @@ export const SettingsFragment = React.memo(() => {
                                 icon={<AppsIcon />}
                                 path="/settings/download"
                             />
-                            <UListItem title="About us" icon={<InfoIcon />} path="/settings/about" />
+                            <UListItem
+                                title="User guide"
+                                icon={<BookIcon />}
+                                href="//notion.so/openland/Openland-User-Guide-2af553fb409a42c296651e708d5561f3"
+                            />
+                            <UListItem
+                                title="Help and feedback"
+                                icon={<HelpIcon />}
+                                path="/mail/9KkDvyowQgcYAn0WvYgXFrdqAp"
+                            />
+                            <UListItem
+                                title="About us"
+                                icon={<InfoIcon />}
+                                path="/settings/about"
+                            />
                         </UListGroup>
-                        <UListGroup
-                            header="Organizations"
-                            action={{
-                                title: 'New',
-                                onClick: show,
-                            }}
-                        >
-                            <React.Suspense fallback={<XLoader loading={true} />}>
-                                <Organizations />
-                            </React.Suspense>
+                        <UListGroup header="Other">
+                            <UListItem
+                                title="Sign out"
+                                icon={<LeaveIcon />}
+                                onClick={showLogoutConfirmation}
+                            />
                         </UListGroup>
+
+                        <XView height={48} />
                     </XScrollView3>
                 </XView>
             </XView>

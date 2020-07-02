@@ -21,7 +21,7 @@ const LogoutDialog = React.memo<{ ctx: XModalController }>(props => {
     return (
         <XView flexDirection="column" borderRadius={8} overflow="hidden">
             <XModalContent fontSize={18} lineHeight="28px">
-                Are you sure you want to logout?
+                Are you sure you want to sign out?
             </XModalContent>
             <XModalFooter>
                 <UButton
@@ -42,7 +42,7 @@ const LogoutDialog = React.memo<{ ctx: XModalController }>(props => {
 });
 
 export function showLogoutConfirmation() {
-    showModalBox({ title: 'Logout from app' }, ctx => {
+    showModalBox({ title: 'Sign out from app' }, ctx => {
         return <LogoutDialog ctx={ctx} />;
     });
 }

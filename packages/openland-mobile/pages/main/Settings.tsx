@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Share, View } from 'react-native';
+import { Share, View, Linking } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListGroup } from '../../components/ZListGroup';
@@ -11,10 +11,11 @@ import Rate from 'react-native-rate';
 import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { NON_PRODUCTION } from '../Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
-import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { trackEvent } from 'openland-mobile/analytics';
 import { ZCounter } from 'openland-mobile/components/ZCounter';
 import Toast from 'openland-mobile/components/Toast';
+import { logout } from 'openland-mobile/utils/logout';
+import AlertBlanket from 'openland-mobile/components/AlertBlanket';
 
 export const handleGlobalInvitePress = async () => {
     const loader = Toast.loader();
@@ -45,26 +46,17 @@ let SettingsContent = ((props: PageProps) => {
         return null;
     }
 
-    const onNewPress = React.useCallback(() => {
-        const builder = new ActionSheetBuilder();
-        builder.action(
-            'New organization',
-            () => props.router.push('NewOrganization'),
-            false,
-            require('assets/ic-organization-24.png')
-        );
-        builder.action(
-            'New community',
-            () => props.router.push('NewOrganization', { isCommunity: true }),
-            false,
-            require('assets/ic-community-24.png')
-        );
-        builder.show();
-    }, []);
-
-    const primary = resp.me.primaryOrganization;
-    const secondary = resp.organizations.filter((v) => v.id !== (primary && primary.id)).sort((a, b) => a.name.localeCompare(b.name));
     const wallet = getClient().useMyWallet({ suspense: false });
+    const handleSignOut = React.useCallback(() => {
+        AlertBlanket.builder()
+            .title('Sign out from app')
+            .message('Are you sure you want to sign out?')
+            .button('Cancel', 'cancel')
+            .action('Yes, I am sure', 'destructive', async () => {
+                logout();
+            })
+            .show();
+    }, []);
 
     return (
         <SScrollView>
@@ -88,6 +80,13 @@ let SettingsContent = ((props: PageProps) => {
                 text="Invite friends"
                 onPress={handleGlobalInvitePress}
             />
+            <ZListItem
+                leftIconColor={theme.tintCyan}
+                leftIcon={require('assets/ic-community-glyph-24.png')}
+                text="Communities"
+                path="SettingsCommunities"
+            />
+
             <ZListGroup header="Preferences">
                 <ZListItem
                     leftIconColor={theme.tintGrey}
@@ -114,6 +113,7 @@ let SettingsContent = ((props: PageProps) => {
                     path="SettingsAppearance"
                 />
             </ZListGroup>
+
             <ZListGroup header="Billing">
                 <ZListItem
                     leftIconColor={theme.tintPurple}
@@ -131,6 +131,7 @@ let SettingsContent = ((props: PageProps) => {
                     path="Subscriptions"
                 />
             </ZListGroup>
+
             <ZListGroup header="Openland">
                 <ZListItem
                     leftIconColor={theme.tintOrange}
@@ -142,6 +143,12 @@ let SettingsContent = ((props: PageProps) => {
                             GooglePackageName: 'com.openland.app'
                         }, () => { /**/ });
                     }}
+                />
+                <ZListItem
+                    leftIconColor={theme.tintGreen}
+                    leftIcon={require('assets/ic-read-glyph-24.png')}
+                    text="User guide"
+                    onPress={() => Linking.openURL('https://notion.so/openland/Openland-User-Guide-2af553fb409a42c296651e708d5561f3')}
                 />
                 <ZListItem
                     leftIconColor={theme.tintCyan}
@@ -157,22 +164,15 @@ let SettingsContent = ((props: PageProps) => {
                 />
             </ZListGroup>
 
-            <ZListGroup header="Organizations" actionRight={{ title: 'New', onPress: onNewPress }}>
-                {primary && <ZListItem
-                    text={primary.name}
-                    leftAvatar={{ photo: primary.photo, id: primary.id, title: primary.name }}
-                    description="Primary"
-                    onPress={() => props.router.push('ProfileOrganization', { id: primary!.id })}
-                />}
-                {secondary.map((v) => (
-                    <ZListItem
-                        key={v.id}
-                        text={v.name}
-                        leftAvatar={{ photo: v.photo, id: v.id, title: v.name }}
-                        onPress={() => props.router.push('ProfileOrganization', { id: v.id })}
-                    />
-                ))}
+            <ZListGroup header="Other">
+                <ZListItem
+                    leftIconColor={theme.tintGrey}
+                    leftIcon={require('assets/ic-leave-glyph-24.png')}
+                    text="Sign out"
+                    onPress={handleSignOut}
+                />
             </ZListGroup>
+
             {NON_PRODUCTION && (
                 <ZListGroup header={null}>
                     <ZListItem text="Developer Menu" path="Dev" />

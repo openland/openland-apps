@@ -53,6 +53,14 @@ query MyOrganizations {
         isPrimary: betaIsPrimary
     }
 }
+query MyCommunities {
+    myCommunities {
+        ...OrganizationShort
+
+        isOwner: betaIsOwner
+        isAdmin: betaIsAdmin
+    }
+}
 mutation UpdateOrganization($input: UpdateOrganizationProfileInput!, $organizationId: ID) {
     updateOrganizationProfile(input: $input, id: $organizationId) {
         id
