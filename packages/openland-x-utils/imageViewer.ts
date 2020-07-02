@@ -22,18 +22,14 @@ export interface ImageViewerCb {
     hasNextPage: boolean;
     prevCursor: string | null;
     nextCursor: string | null;
-    index: number;
-    count: number;
     current: currentT;
 }
 
-export function useImageViewer(data: dataT, currentId: string): ImageViewerCb {
+export function useImageViewer(data: dataT, currentId: string, inverted?: boolean): ImageViewerCb {
     let hasPrev = false;
     let hasNext = false;
     let prevCursor = null;
     let nextCursor = null;
-    let index = data.edges[0].index;
-    let count = data.pageInfo.itemsCount;
 
     let current;
 
@@ -48,7 +44,6 @@ export function useImageViewer(data: dataT, currentId: string): ImageViewerCb {
             date: parseInt(getMsg(i).date, 10),
             senderName: getMsg(i).sender.name,
         };
-        index = data.edges[i].index;
     };
     setCurrent(0);
 
@@ -58,9 +53,13 @@ export function useImageViewer(data: dataT, currentId: string): ImageViewerCb {
         setCurrent(1);
         prevCursor = getMsg(2).id;
         nextCursor = getMsg(0).id;
+        if (inverted) {
+            prevCursor = getMsg(0).id;
+            nextCursor = getMsg(2).id;
+        }
     }
 
-    if (data.edges.length === 2) {
+    if (data.edges.length === 2 && !inverted) {
         if (getMsg(1).id === currentId) {
             setCurrent(1);
             nextCursor = getMsg(0).id;
@@ -72,13 +71,23 @@ export function useImageViewer(data: dataT, currentId: string): ImageViewerCb {
         }
     }
 
+    if (data.edges.length === 2 && inverted) {
+        if (getMsg(1).id === currentId) {
+            setCurrent(1);
+            prevCursor = getMsg(0).id;
+            hasPrev = true;
+        }
+        if (getMsg(0).id === currentId) {
+            nextCursor = getMsg(1).id;
+            hasNext = true;
+        }
+    }
+
     return {
         hasPrevPage: hasPrev,
         hasNextPage: hasNext,
         prevCursor: prevCursor,
         nextCursor: nextCursor,
-        index: index,
-        count: count,
         current: (current as any) as currentT,
     };
 }
