@@ -39,7 +39,6 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
     if (!user || !profile) {
         return null;
     }
-    console.log('@@ phone', phone, email);
 
     const form = useForm();
     const firstNameField = useField('firstName', profile.firstName || '', form);

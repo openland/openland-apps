@@ -2,6 +2,7 @@ package com.openland.react.window
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.util.Log
@@ -14,6 +15,7 @@ import com.facebook.react.uimanager.UIManagerModule
 import com.facebook.react.uimanager.UIManagerModuleListener
 import com.openland.react.runOnUIThread
 import com.openland.react.runOnUIThreadDelayed
+import java.lang.reflect.Field
 
 /**
  * RNSWindowManager removes window background right after first rendering of the application to avoid overdraw
@@ -22,6 +24,9 @@ class RNSWindowManager(reactContext: ReactApplicationContext) : ReactContextBase
 
     private var isActive = false
     private var resumed = false
+
+    private var attachInfoField: Field? = null
+    private var stableInsetsField: Field? = null
 
     override fun getName(): String {
         return "RNSWindowManager"
@@ -67,10 +72,44 @@ class RNSWindowManager(reactContext: ReactApplicationContext) : ReactContextBase
         return 0f
     }
 
+    private fun navbarHeightOf(ctx: Context, view: View?): Float {
+        if (view == null) {
+            return 0f
+        }
+
+        try {
+            return attachInfoOf(view)?.let { insetsRectOf(it) }?.bottom?.toFloat() ?: 0f
+        } catch (e: Exception) {
+            Log.e(javaClass.name, "ViewInset error", e)
+            return getNormalNavigationBarHeight(ctx)
+        }
+    }
+
+    private fun attachInfoOf(view: View): Any? {
+        if (attachInfoField == null) {
+            attachInfoField = View::class.java.getDeclaredField("mAttachInfo")
+        }
+
+        attachInfoField?.isAccessible = true
+        return attachInfoField?.get(view)
+    }
+
+    private fun insetsRectOf(attachInfo: Any): Rect? {
+        if (stableInsetsField == null) {
+            stableInsetsField = attachInfo.javaClass.getDeclaredField("mStableInsets")
+        }
+
+        stableInsetsField?.isAccessible = true
+        return stableInsetsField?.get(attachInfo) as? Rect
+    }
+
     override fun getConstants(): MutableMap<String, Any> {
         val res = mutableMapOf<String, Any>()
         val usableMetrics = reactApplicationContext.resources.getDisplayMetrics()
-        res["NAVIGATION_BAR"] = getNormalNavigationBarHeight(reactApplicationContext) / usableMetrics.density
+        val view = reactApplicationContext.currentActivity?.window?.decorView
+        val navbarHeight = navbarHeightOf(reactApplicationContext, view)
+        res["NAVIGATION_BAR"] = navbarHeight / usableMetrics.density
+
         return res
     }
 

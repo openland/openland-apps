@@ -18,7 +18,9 @@ export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keybo
     }
 
     onKeyboardChange = (e: any) => {
-        this.setState({ keyboardHeight: e ? e.height : 0 });
+        let height = e ? e.height : 0;
+        let compensation = SDevice.safeArea.bottom === 0 ? SDevice.navigationBarHeight : 0;
+        this.setState({ keyboardHeight: height === 0 ? height : height + compensation });
     }
 
     componentWillMount() {
