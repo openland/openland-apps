@@ -15,6 +15,7 @@ interface ReplyContentProps {
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
     onOrganizationPress: (id: string) => void;
+    onHashtagPress: (d?: string) => void;
     onDocumentPress: (document: FullMessage_GeneralMessage_attachments_MessageAttachmentFile) => void;
 }
 
@@ -66,14 +67,14 @@ export const ReplyContent = (props: ReplyContentProps) => {
                                 {generalMesage.sender.name || ''}
                             </Text>
 
-                            {!!generalMesage.message && <TextContent message={generalMesage} inReply={true} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} onOrganizationPress={props.onOrganizationPress} wrapped={true} theme={theme} />}
+                            {!!generalMesage.message && <TextContent message={generalMesage} inReply={true} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} onOrganizationPress={props.onOrganizationPress} onHashtagPress={props.onHashtagPress} wrapped={true} theme={theme} />}
                             {contentAttach}
                         </View>
                     );
                 } else {
                     return (
                         <View key={'quote-' + quote.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} borderLeftWidth={2} borderLeftColor="#0084fe" paddingLeft={8}>
-                            <TextContent message={quote} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} onOrganizationPress={props.onOrganizationPress} theme={theme} />
+                            <TextContent message={quote} onUserPress={props.onUserPress} onGroupPress={props.onGroupPress} onOrganizationPress={props.onOrganizationPress} onHashtagPress={props.onHashtagPress} theme={theme} />
                         </View>
                     );
                 }

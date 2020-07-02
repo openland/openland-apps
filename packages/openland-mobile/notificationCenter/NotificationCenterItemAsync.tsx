@@ -42,6 +42,7 @@ const NotificationCenterItemAsyncRender = React.memo((props: NotificationCenterI
         onUserPress: messenger.handleUserClick,
         onGroupPress: messenger.handleChatClick,
         onOrganizationPress: messenger.handleOrganizationClick,
+        onHashtagPress: messenger.handleHashtagClick,
         onMediaPress: messenger.handleMediaClick,
         onLongPress: handleLongPress,
         onDocumentPress: messenger.handleDocumentClick

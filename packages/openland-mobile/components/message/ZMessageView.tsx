@@ -39,6 +39,10 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
         router.push('ProfileOrganization', { id });
     }, []);
 
+    const handleHashtagPress = React.useCallback((d?: string) => {
+        router.push('HomeDialogs', { searchValue: d, title: d });
+    }, []);
+
     const handleDocumentPress = React.useCallback((document: FullMessage_GeneralMessage_attachments_MessageAttachmentFile) => {
         showFileModal({ uuid: document.fileId, name: document.fileMetadata.name, size: document.fileMetadata.size });
     }, []);
@@ -52,7 +56,7 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
 
     if (message.__typename === 'ServiceMessage') {
         return (
-            <TextContent key={'msg-' + message.id + '-text'} message={message} onUserPress={handleUserPress} onGroupPress={handleGroupPress} onOrganizationPress={handleOrganizationPress} wrapped={wrapped} theme={theme} />
+            <TextContent key={'msg-' + message.id + '-text'} message={message} onUserPress={handleUserPress} onGroupPress={handleGroupPress} onOrganizationPress={handleOrganizationPress} onHashtagPress={handleHashtagPress} wrapped={wrapped} theme={theme} />
         );
     }
 
@@ -70,7 +74,7 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
     let content: JSX.Element[] = [];
 
     if (hasReply) {
-        content.push(<ReplyContent key={'msg-' + message.id + '-reply'} quotedMessages={replies} onUserPress={handleUserPress} onGroupPress={handleGroupPress} onOrganizationPress={handleOrganizationPress} onDocumentPress={handleDocumentPress} theme={theme} />);
+        content.push(<ReplyContent key={'msg-' + message.id + '-reply'} quotedMessages={replies} onUserPress={handleUserPress} onGroupPress={handleGroupPress} onOrganizationPress={handleOrganizationPress} onHashtagPress={handleHashtagPress} onDocumentPress={handleDocumentPress} theme={theme} />);
     }
 
     if (message.__typename === 'GeneralMessage') {
@@ -90,7 +94,7 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
     }
 
     if (hasText) {
-        content.push(<TextContent key={'msg-' + message.id + '-text'} message={message} onUserPress={handleUserPress} onGroupPress={handleGroupPress} onOrganizationPress={handleOrganizationPress} wrapped={wrapped} theme={theme} />);
+        content.push(<TextContent key={'msg-' + message.id + '-text'} message={message} onUserPress={handleUserPress} onGroupPress={handleGroupPress} onOrganizationPress={handleOrganizationPress} onHashtagPress={handleHashtagPress} wrapped={wrapped} theme={theme} />);
     }
 
     if (sticker) {
