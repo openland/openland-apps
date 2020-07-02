@@ -40,7 +40,7 @@ export const ZMessageView = React.memo<ZMessageViewProps>((props) => {
     }, []);
 
     const handleHashtagPress = React.useCallback((d?: string) => {
-        router.push('HomeDialogs', { searchValue: d, title: d });
+        getMessenger().handleHashtagClick(d);
     }, []);
 
     const handleDocumentPress = React.useCallback((document: FullMessage_GeneralMessage_attachments_MessageAttachmentFile) => {
