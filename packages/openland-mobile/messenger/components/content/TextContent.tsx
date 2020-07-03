@@ -18,13 +18,14 @@ interface TextContentProps {
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
     onOrganizationPress: (id: string) => void;
+    onHashtagPress: (d?: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
 }
 
 export class TextContent extends React.PureComponent<TextContentProps> {
     render() {
-        const { message, theme, fontStyle, onUserPress, onGroupPress, emojiOnly, hasPurchase, maxWidth, width, compensateBubble, onOrganizationPress } = this.props;
+        const { message, theme, fontStyle, onUserPress, onGroupPress, emojiOnly, hasPurchase, maxWidth, width, compensateBubble, onOrganizationPress, onHashtagPress } = this.props;
 
         return (
             <RenderSpans
@@ -45,6 +46,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
                 onUserPress={onUserPress}
                 onGroupPress={onGroupPress}
                 onOrganizationPress={onOrganizationPress}
+                onHashtagPress={onHashtagPress}
             />
         );
     }

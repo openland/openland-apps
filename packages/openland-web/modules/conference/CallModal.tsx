@@ -69,7 +69,7 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
 
     let [layout, setLayout] = React.useState<'grid' | 'volume-space'>('grid');
 
-    const [renderedMessages, handleItemAdded, handleItemUpdated] = useIncomingMessages();
+    const [renderedMessages, handleItemAdded, handleItemUpdated] = useIncomingMessages({ hide: props.ctx.hide });
 
     React.useEffect(() => {
         // on message with linkm open it in iframe

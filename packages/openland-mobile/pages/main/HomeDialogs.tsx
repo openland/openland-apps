@@ -6,7 +6,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { Platform } from 'react-native';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { GlobalSearch } from './components/globalSearch/GlobalSearch';
+import { GlobalSearch, SearchMessages } from './components/globalSearch/GlobalSearch';
 import { ASDataView } from 'react-native-async-view/ASDataView';
 import { DialogItemViewAsync } from 'openland-mobile/messenger/components/DialogItemViewAsync';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
@@ -49,13 +49,15 @@ const DialogsComponent = React.memo((props: PageProps) => {
 
     const setTab = React.useContext(SetTabContext);
 
-    const dialogs = (props.router.params.share || props.router.params.pressCallback) ? new ASDataView(getMessenger().engine.dialogList.dataSource, (item) => {
-        return (
-            <DialogItemViewAsync item={item} onPress={(id, i) => handlePress(id, (i as DialogDataSourceItem).title)} showDiscover={() => false} />
-        );
-    }) :
-        getMessenger().getDialogs(setTab)
-        ;
+    const dialogs = (props.router.params.share || props.router.params.pressCallback)
+        ? new ASDataView(getMessenger().engine.dialogList.dataSource, (item) => {
+            return (
+                <DialogItemViewAsync item={item} onPress={(id, i) => handlePress(id, (i as DialogDataSourceItem).title)} showDiscover={() => false} />
+            );
+        }
+    ) : getMessenger().getDialogs(setTab);
+
+    const globalSearchValue = props.router.params.searchValue;
 
     return (
         <ZTrack event="mail_view">
@@ -69,20 +71,29 @@ const DialogsComponent = React.memo((props: PageProps) => {
             )}
 
             {/* ugly fix - ensure list recreated for new page (reseting to root from > 1 stack)  */}
-            <SSearchControler
-                searchRender={(p) => (
-                    <GlobalSearch
-                        query={p.query}
-                        router={props.router}
-                        onGroupPress={handlePress}
-                        onUserPress={handlePress}
-                        kinds={(props.router.params.title || props.router.params.share) ? [GlobalSearchEntryKind.USER, GlobalSearchEntryKind.SHAREDROOM] : undefined}
-                        onMessagePress={(props.router.params.title || props.router.params.share) ? undefined : handleMessagePress}
-                    />
-                )}
-            >
-                <DialogListComponent dialogs={dialogs} />
-            </SSearchControler>
+            {!globalSearchValue && (
+                <SSearchControler
+                    searchRender={(p) => (
+                        <GlobalSearch
+                            query={p.query}
+                            router={props.router}
+                            onGroupPress={handlePress}
+                            onUserPress={handlePress}
+                            kinds={(props.router.params.title || props.router.params.share) ? [GlobalSearchEntryKind.USER, GlobalSearchEntryKind.SHAREDROOM] : undefined}
+                            onMessagePress={(props.router.params.title || props.router.params.share) ? undefined : handleMessagePress}
+                        />
+                    )}
+                >
+                    <DialogListComponent dialogs={dialogs} />
+                </SSearchControler>
+            )}
+            {globalSearchValue && (
+                <SearchMessages
+                    query={globalSearchValue}
+                    router={props.router}
+                    onMessagePress={handleMessagePress}
+                />
+            )}
         </ZTrack>
     );
 });

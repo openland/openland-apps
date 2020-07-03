@@ -37,6 +37,7 @@ export interface AsyncMessageViewProps {
     onUserPress: (message: DataSourceMessageItem) => (id: string) => void;
     onGroupPress: (message: DataSourceMessageItem) => (id: string) => void;
     onOrganizationPress: (message: DataSourceMessageItem) => (id: string) => void;
+    onHashtagPress: (d?: string) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onMediaPress: (message: DataSourceMessageItem) => (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => void;
     onCommentsPress: (message: DataSourceMessageItem) => void;
@@ -48,7 +49,7 @@ type SendingIndicatorT = 'pending' | 'sending' | 'sent' | 'hide';
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const theme = useThemeGlobal();
-    const { conversationId, message, engine, onMessageDoublePress, onMessagePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress } = props;
+    const { conversationId, message, engine, onMessageDoublePress, onMessagePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress, onHashtagPress } = props;
     const { isOut, attachTop, attachBottom, commentsCount, reactions, sender, isSending } = message;
 
     const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
@@ -101,7 +102,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     let res;
 
     if (message.text || message.reply || (message.attachments && message.attachments.length) || message.sticker) {
-        res = <AsyncMessageContentView conversationId={conversationId} theme={theme} key={'message-content'} message={message} onMediaPress={handleMediaPress} onLongPress={handleLongPress} onDocumentPress={onDocumentPress} onUserPress={handleUserPress} onGroupPress={handleGroupPress} onOrganizationPress={handleOrganizationPress} onReplyPress={handleReplyPress} />;
+        res = <AsyncMessageContentView conversationId={conversationId} theme={theme} key={'message-content'} message={message} onMediaPress={handleMediaPress} onLongPress={handleLongPress} onDocumentPress={onDocumentPress} onUserPress={handleUserPress} onGroupPress={handleGroupPress} onOrganizationPress={handleOrganizationPress} onHashtagPress={onHashtagPress} onReplyPress={handleReplyPress} />;
     }
 
     if (!res) {

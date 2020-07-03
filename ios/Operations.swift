@@ -2890,14 +2890,6 @@ private let PermissionsSelector = obj(
 private let PicSharedMediaSelector = obj(
             field("chatSharedMedia", "chatSharedMedia", arguments(fieldValue("chatId", refValue("chatId")), fieldValue("mediaTypes", listValue(stringValue("IMAGE"))), fieldValue("first", refValue("first")), fieldValue("after", refValue("after")), fieldValue("before", refValue("before")), fieldValue("around", refValue("around"))), notNull(obj(
                     field("__typename", "__typename", notNull(scalar("String"))),
-                    field("pageInfo", "pageInfo", notNull(obj(
-                            field("__typename", "__typename", notNull(scalar("String"))),
-                            field("hasNextPage", "hasNextPage", notNull(scalar("Boolean"))),
-                            field("hasPreviousPage", "hasPreviousPage", notNull(scalar("Boolean"))),
-                            field("currentPage", "currentPage", notNull(scalar("Int"))),
-                            field("pagesCount", "pagesCount", notNull(scalar("Int"))),
-                            field("itemsCount", "itemsCount", notNull(scalar("Int")))
-                        ))),
                     field("edges", "edges", notNull(list(notNull(obj(
                             field("__typename", "__typename", notNull(scalar("String"))),
                             field("cursor", "cursor", notNull(scalar("String"))),
@@ -5117,7 +5109,7 @@ class Operations {
     let PicSharedMedia = OperationDefinition(
         "PicSharedMedia",
         .query, 
-        "query PicSharedMedia($chatId:ID!,$first:Int!,$after:ID,$before:ID,$around:ID){chatSharedMedia(chatId:$chatId,mediaTypes:[IMAGE],first:$first,after:$after,before:$before,around:$around){__typename pageInfo{__typename hasNextPage hasPreviousPage currentPage pagesCount itemsCount}edges{__typename cursor index node{__typename message{__typename ... on GeneralMessage{__typename id date sender{__typename id name}attachments{__typename ... on MessageAttachmentFile{__typename id fileMetadata{__typename name isImage imageFormat mimeType imageWidth imageHeight size}filePreview fileId fallback}}}}}}}}",
+        "query PicSharedMedia($chatId:ID!,$first:Int!,$after:ID,$before:ID,$around:ID){chatSharedMedia(chatId:$chatId,mediaTypes:[IMAGE],first:$first,after:$after,before:$before,around:$around){__typename edges{__typename cursor index node{__typename message{__typename ... on GeneralMessage{__typename id date sender{__typename id name}attachments{__typename ... on MessageAttachmentFile{__typename id fileMetadata{__typename name isImage imageFormat mimeType imageWidth imageHeight size}filePreview fileId fallback}}}}}}}}",
         PicSharedMediaSelector
     )
     let Post = OperationDefinition(

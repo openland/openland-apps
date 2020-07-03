@@ -16,7 +16,7 @@ export const IndexFragment = React.memo(() => {
             <USearchInput
                 marginHorizontal={16}
                 marginBottom={16}
-                placeholder="Groups, people, and more"
+                placeholder="Groups, people and more"
             />
             <XView width="100%" minHeight={0} flexGrow={1} flexBasis={0}>
                 <XScrollView3 flexGrow={1} flexShrink={1} flexBasis={0} minHeight={0}>

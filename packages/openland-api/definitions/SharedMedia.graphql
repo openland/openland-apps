@@ -75,13 +75,6 @@ query SharedMediaCounters($chatId: ID!) {
 
 query PicSharedMedia($chatId: ID!, $first: Int!, $after: ID, $before: ID, $around: ID) {
     chatSharedMedia(chatId: $chatId, mediaTypes: [IMAGE], first: $first, after: $after, before: $before, around: $around) {
-        pageInfo {
-            hasNextPage
-            hasPreviousPage
-            currentPage
-            pagesCount
-            itemsCount
-        }
         edges {
             cursor
             index

@@ -49,6 +49,7 @@ interface RenderSpansProps {
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
     onOrganizationPress: (id: string) => void;
+    onHashtagPress: (d?: string) => void;
 }
 
 const fontSize = {
@@ -74,7 +75,7 @@ const letterSpacing = {
 
 export class RenderSpans extends React.PureComponent<RenderSpansProps> {
     render() {
-        const { emojiOnly, hasPurchase, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetVertical, numberOfLines, onUserPress, onGroupPress, onOrganizationPress } = this.props;
+        const { emojiOnly, hasPurchase, textAlign, spans, message, padded, fontStyle, theme, maxWidth, width, insetLeft, insetRight, insetVertical, numberOfLines, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress } = this.props;
 
         let bubbleForegroundPrimary = message.isOut ? theme.outgoingForegroundPrimary : theme.incomingForegroundPrimary;
         const bubbleBackgroundSecondary = message.isOut ? theme.outgoingBackgroundSecondary : theme.incomingBackgroundSecondary;
@@ -107,7 +108,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                     width={width}
                                     numberOfLines={numberOfLines}
                                 >
-                                    {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress, onOrganizationPress)}
+                                    {c.spans.length > 0 && renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress)}
                                     {c.padded && paddedText(message.isEdited)}
                                 </TextWrapper>
                             </ASFlex>
@@ -133,7 +134,7 @@ export class RenderSpans extends React.PureComponent<RenderSpansProps> {
                                     maxWidth={!width ? maxWidth : undefined}
                                     width={width}
                                 >
-                                    {renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress, onOrganizationPress)}
+                                    {renderPreprocessedText(c.spans, message, theme, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress)}
                                 </TextWrapper>
                             </ASFlex>
                         </ASFlex>

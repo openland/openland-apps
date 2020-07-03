@@ -24,12 +24,15 @@ const menuContainerClass = css`
     position: absolute;
     opacity: 0;
     top: 20px;
-    right: 0;
+    right: -36px;
     display: flex;
     flex-direction: row;
     flex-shrink: 0;
     background-color: var(--backgroundPrimary);
     border-radius: 8px;
+    @media(max-width: 1350px) {
+      right: 0;
+    }
 `;
 const attachTop = css`
     top: -4px;

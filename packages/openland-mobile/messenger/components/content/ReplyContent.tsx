@@ -50,6 +50,7 @@ interface ReplyContentProps {
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
     onOrganizationPress: (id: string) => void;
+    onHashtagPress: (d?: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
     onPress?: (message: DataSourceMessageItem) => void;
@@ -134,6 +135,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                                 onUserPress={this.props.onUserPress}
                                                 onGroupPress={this.props.onGroupPress}
                                                 onOrganizationPress={this.props.onOrganizationPress}
+                                                onHashtagPress={this.props.onHashtagPress}
                                             />
                                         </ASFlex>
                                     )}
@@ -195,6 +197,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                                                 onUserPress={this.props.onUserPress}
                                                 onGroupPress={this.props.onGroupPress}
                                                 onOrganizationPress={this.props.onOrganizationPress}
+                                                onHashtagPress={this.props.onHashtagPress}
                                             />
                                         </ASFlex>
                                     )}

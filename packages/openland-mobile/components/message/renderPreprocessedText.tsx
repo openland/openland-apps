@@ -19,7 +19,7 @@ const openLinkContextMenu = (link: string) => {
     builder.show(true);
 };
 
-export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) => void, onGroupPress: (id: string) => void, onOrganizationPress: (id: string) => void, theme: ThemeGlobal, mId: string) => {
+export const renderPreprocessedText = (spans: Span[], theme: ThemeGlobal, mId: string, onUserPress: (id: string) => void, onGroupPress: (id: string) => void, onOrganizationPress: (id: string) => void, onHashtagPress: (d?: string) => void) => {
     const SpanView = (props: { span: Span, children?: any }) => {
         const { span, children } = props;
 
@@ -30,6 +30,17 @@ export const renderPreprocessedText = (spans: Span[], onUserPress: (id: string) 
                     style={{ color: theme.accentPrimary, textDecorationLine: 'underline' }}
                     onPress={resolveInternalLink(span.link, async () => await Linking.openURL(span.link))}
                     onLongPress={() => openLinkContextMenu(span.link)}
+                    allowFontScaling={false}
+                >
+                    {children}
+                </Text>
+            );
+        } else if (span.type === 'hashtag') {
+            return (
+                <Text
+                    key={'hashtag'}
+                    style={{ color: theme.accentPrimary, textDecorationLine: 'underline' }}
+                    onPress={() => onHashtagPress(span.textRaw)}
                     allowFontScaling={false}
                 >
                     {children}

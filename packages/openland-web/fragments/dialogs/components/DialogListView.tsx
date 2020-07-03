@@ -156,7 +156,7 @@ export const DialogListView = React.memo((props: DialogListViewProps) => {
                 ref={ref}
                 marginHorizontal={16}
                 marginBottom={16}
-                placeholder="Groups, people, and more"
+                placeholder="Groups, people and more"
             />
             <XView flexGrow={1} flexBasis={0} minHeight={0}>
                 {isSearching && !onMessagePick && (

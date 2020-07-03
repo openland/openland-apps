@@ -38,10 +38,11 @@ interface TextContentProps {
     onUserPress: (id: string) => void;
     onGroupPress: (id: string) => void;
     onOrganizationPress: (id: string) => void;
+    onHashtagPress: (d?: string) => void;
 }
 
 export const TextContent = (props: TextContentProps) => {
-    const { theme, message, inReply, wrapped, fontStyle, onUserPress, onGroupPress, onOrganizationPress } = props;
+    const { theme, message, inReply, wrapped, fontStyle, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress } = props;
     const preprocessed = processSpans(message.message || '', message.spans);
     const content = getSpansSlices(preprocessed);
 
@@ -80,7 +81,7 @@ export const TextContent = (props: TextContentProps) => {
                                 lineHeight: lineHeight[c.type]
                             }}
                         >
-                            {c.spans.length > 0 && renderPreprocessedText(c.spans, onUserPress, onGroupPress, onOrganizationPress, theme, message.id)}
+                            {c.spans.length > 0 && renderPreprocessedText(c.spans, theme, message.id, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress)}
                         </TextWrapper>
                     )}
                     {c.type === 'code_block' && (
@@ -102,7 +103,7 @@ export const TextContent = (props: TextContentProps) => {
                                 }}
                                 color={theme.incomingForegroundPrimary}
                             >
-                                {renderPreprocessedText(c.spans, onUserPress, onGroupPress, onOrganizationPress, theme, message.id)}
+                                {renderPreprocessedText(c.spans, theme, message.id, onUserPress, onGroupPress, onOrganizationPress, onHashtagPress)}
                             </TextWrapper>
                         </View>
                     )}
