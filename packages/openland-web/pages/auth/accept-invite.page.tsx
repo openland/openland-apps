@@ -99,6 +99,7 @@ export const AcceptInvitePage = (props: {
     variables: { inviteKey: string };
 }) => {
     const client = useClient();
+    const userInfo = React.useContext(UserInfoContext);
 
     const resolvedInvite = client.useResolvedInvite({
         key: props.variables.inviteKey,
@@ -135,5 +136,11 @@ export const AcceptInvitePage = (props: {
     if (!inviter) {
         return <XLoader loading={true} />;
     }
+
+    if ((!userInfo || !userInfo.isLoggedIn) && resolvedInvite.invite.__typename === 'AppInvite') {
+        localStorage.setItem('app-inviter-name', inviter.name);
+        return <XPageRedirect path="/signin" />;
+    }
+
     return <AcceptInvite inviter={inviter} />;
 };
