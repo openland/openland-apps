@@ -9,6 +9,9 @@ import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuB
 import { useToast, UToastHandlers } from 'openland-web/components/unicorn/UToast';
 import AttachIcon from "../../../../openland-icons/s/ic-attach-24-1.svg";
 import { MessengerContext } from 'openland-engines/MessengerEngine';
+import { useRole } from 'openland-x-permissions/XWithRole';
+import BlockUserModal from 'openland-web/fragments/admin/BlockUserModalFragment';
+import { useClient } from 'openland-api/useClient';
 
 interface UserMenuProps {
     user: User_user;
@@ -21,6 +24,8 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
     const { ctx, user, toastHandlers } = props;
     const { id, shortname } = user;
     const builder = new UPopperMenuBuilder();
+    const client = useClient();
+    const [deleted, setDelete] = React.useState(false);
 
     builder.item({
         title: 'Copy link',
@@ -48,6 +53,13 @@ const MenuComponent = React.memo((props: UserMenuProps & { ctx: UPopperControlle
             title: 'Edit profile',
             icon: <EditIcon />,
             path: '/settings/profile',
+        });
+    }
+
+    if (useRole('super-admin')) {
+        builder.item({
+            title: 'Delete user',
+            onClick: () => BlockUserModal(user.id, client, deleted, setDelete)
         });
     }
 

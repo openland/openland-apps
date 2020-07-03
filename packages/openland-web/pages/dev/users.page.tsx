@@ -7,8 +7,8 @@ import { UInput } from 'openland-web/components/unicorn/UInput';
 import { XView } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 import { useClient } from 'openland-api/useClient';
-import { showModalBox } from 'openland-x/showModalBox';
 import { UUserView } from 'openland-web/components/unicorn/templates/UUserView';
+import BlockUserModal from 'openland-web/fragments/admin/BlockUserModalFragment';
 
 interface ExplorePeopleProps {
     variables: { query?: string };
@@ -27,40 +27,6 @@ const UsersPickerWrapperClassName = css`
     flex-direction: column;
     -webkit-overflow-scrolling: touch;
 `;
-
-function BlockUserModal(
-    id: string,
-    client: any,
-    deleted: boolean,
-    setDelete: (i: boolean) => void,
-) {
-    showModalBox({ title: 'Are you shure?' }, ctx => (
-        <XView
-            paddingHorizontal={40}
-            paddingVertical={20}
-            flexDirection="row"
-            justifyContent="flex-end"
-        >
-            <XView flexDirection="row" justifyContent="space-between">
-                <UButton text="Cancel" onClick={ctx.hide} />
-                <UButton
-                    text={deleted ? 'Done!' : 'Delete'}
-                    style={deleted ? 'success' : 'danger'}
-                    action={async () => {
-                        await client
-                            .mutateDeleteUser({
-                                id: id,
-                            })
-                            .then(() => {
-                                setDelete(!deleted);
-                                ctx.hide();
-                            });
-                    }}
-                />
-            </XView>
-        </XView>
-    ));
-}
 
 const BlockUserButton = (props: { id: string }) => {
     const client = useClient();
