@@ -25,6 +25,7 @@ import IcClose from 'openland-icons/s/ic-close-24.svg';
 import IcLeft from 'openland-icons/s/ic-back-24.svg';
 import IcRight from 'openland-icons/s/ic-next-24.svg';
 import { MediaLoader } from './MediaLoader';
+import moment from 'moment';
 
 const modalImgContainer = css`
     position: relative;
@@ -355,7 +356,8 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
     const downloadLink =
         'https://ucarecdn.com/' +
         (viewerState ? viewerState.current.fileId : props.fileId) +
-        '/-/format/jpg/-/inline/no/pic.jpg';
+        '/-/format/jpg/-/inline/no/Openland-' +
+        moment(date).format('YYYY-MM-DD-HH-mm-ss') + '.jpg';
 
     const url = `https://ucarecdn.com/${
         viewerState ? viewerState.current.fileId : props.fileId
