@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { DataSourceMessageItem, DataSourceDateItem, DataSourceNewDividerItem } from 'openland-engines/messenger/ConversationEngine';
-import { XView } from 'react-mental';
+import { XView, XViewRouterContext, XViewRouteContext } from 'react-mental';
 import { cx, css } from 'linaria';
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
-import { TextStyles } from 'openland-web/utils/TextStyles';
+import { TextStyles, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { emoji } from 'openland-y-utils/emoji';
 
 import { SpannedView } from 'openland-web/fragments/chat/messenger/message/content/SpannedView';
-import { MessageSenderName } from 'openland-web/fragments/chat/messenger/message/MessageComponent';
 import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile } from 'openland-api/spacex.types';
 import { ImgWithRetry } from 'openland-web/components/ImgWithRetry';
 import { showImageModal } from 'openland-web/fragments/chat/messenger/message/content/ImageContent';
 import { SpanType } from 'openland-y-utils/spans/Span';
+import { ULink } from 'openland-web/components/unicorn/ULink';
 
 const MediaItemClass = css`
     display: flex;
@@ -88,7 +88,8 @@ interface MediaContentProps {
 export const MediaContent = React.memo((props: MediaContentProps) => {
     const imgRef = React.useRef<HTMLImageElement>(null);
     const placeholderRef = React.useRef<HTMLDivElement>(null);
-    const onClick = React.useCallback(() => {
+    const onClick = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
         showImageModal({
             chatId: props.chatId,
             mId: props.messageId,
@@ -159,6 +160,10 @@ const messageWrapper = cx(
         transform: translate3d(100%, 0, 0);
         transition: transform 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99),
             opacity 200ms cubic-bezier(0.29, 0.09, 0.24, 0.99);
+
+        &:hover {
+            cursor: pointer;
+        }
     `
 );
 
@@ -171,6 +176,28 @@ const textContentWrapper = css`
     max-height: var(--text-max-height);
 `;
 
+const senderNameStyle = css`
+    color: var(--foregroundPrimary);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    &:hover {
+        text-decoration: none;
+    }
+`;
+
+const MessageSender = (props: { children: any, path: string }) => {
+    return (
+        <ULink
+            path={props.path}
+            className={cx(TextLabel1, senderNameStyle)}
+        >
+            {props.children}
+        </ULink>
+    );
+};
+
 const heightBySpan = {
     [SpanType.loud]: 72,
     [SpanType.emoji]: 84,
@@ -182,15 +209,18 @@ type MessageHandlersRef = { slideDown: (height: number) => void };
 
 interface IncomingMessageProps {
     message: DataSourceMessageItem;
+    hide: () => void;
     onHide: () => void;
     onMount: (height: number) => void;
 }
 
 const IncomingMessage = React.memo(React.forwardRef((props: IncomingMessageProps, ref: React.RefObject<MessageHandlersRef>) => {
-    const { message, onHide } = props;
+    const { message, hide, onHide } = props;
     const [visible, setVisible] = React.useState(false);
     const messageRef = React.useRef<HTMLDivElement>(null);
     const translateRef = React.useRef<number>(0);
+    const router = React.useContext(XViewRouterContext)!;
+    const route = React.useContext(XViewRouteContext)!;
 
     const senderNameEmojify = React.useMemo(() => emoji(message.sender.name), [message.sender.name]);
     const imageAttaches =
@@ -270,18 +300,34 @@ const IncomingMessage = React.memo(React.forwardRef((props: IncomingMessageProps
             </XView>
         );
     }
+    let senderPath = `/${message.sender.shortname || message.sender.id}`;
+    let conversationId = message.source?.__typename === 'MessageSourceChat' && message.source.chat.id;
+    const handleClick = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        if (conversationId) {
+            let nextPath = `/mail/${conversationId}`;
+            if (route.path === nextPath) {
+                hide();
+                return;
+            }
+            router.navigate(nextPath);
+        }
+    }, [route.path, router]);
 
     return (
-        <div className={messageWrapper} ref={messageRef}>
+        <div className={messageWrapper} ref={messageRef} onClick={handleClick}>
             <XView marginRight={16} paddingTop={4}>
                 <UAvatar
                     id={message.sender.id}
                     title={message.sender.name}
                     photo={message.sender.photo}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        router.navigate(senderPath);
+                    }}
                 />
             </XView>
             <XView flexGrow={1} flexShrink={1} alignItems="flex-start">
-                <MessageSenderName sender={message.sender} senderNameEmojify={senderNameEmojify} />
+                <MessageSender path={senderPath}>{senderNameEmojify}</MessageSender>
                 {textContent}
             </XView>
             {imageContent}
@@ -289,7 +335,7 @@ const IncomingMessage = React.memo(React.forwardRef((props: IncomingMessageProps
     );
 }));
 
-export const useIncomingMessages = (): [JSX.Element | null, (item: IncomingMessage) => void, (item: IncomingMessage) => void] => {
+export const useIncomingMessages = (props: { hide: () => void }): [JSX.Element | null, (item: IncomingMessage) => void, (item: IncomingMessage) => void] => {
     const handlersRef = React.useRef<React.RefObject<MessageHandlersRef>[]>([]);
     const [messages, setMessages] = React.useState<DataSourceMessageItem[]>([]);
     const pendingMessages = React.useRef<Record<string, DataSourceMessageItem | undefined>>({}).current;
@@ -340,7 +386,7 @@ export const useIncomingMessages = (): [JSX.Element | null, (item: IncomingMessa
             maxHeight="100%"
             zIndex={4}
         >
-            {messages.map((m, i) => <IncomingMessage key={m.id} message={m} onHide={handleHide} onMount={handleMount} ref={handlersRef?.current[i]} />)}
+            {messages.map((m, i) => <IncomingMessage key={m.id} message={m} onHide={handleHide} onMount={handleMount} ref={handlersRef?.current[i]} hide={props.hide} />)}
         </XView>
     );
     return [renderedMessages, onMessageAdded, onMessageUpdated];
