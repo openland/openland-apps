@@ -22,14 +22,9 @@ export default function BlockUserModal(
                     text={deleted ? 'Done!' : 'Delete'}
                     style={deleted ? 'success' : 'danger'}
                     action={async () => {
-                        await client
-                            .mutateDeleteUser({
-                                id: id,
-                            })
-                            .then(() => {
-                                setDelete(!deleted);
-                                ctx.hide();
-                            });
+                        await client.mutateDeleteUser({ id });
+                        setDelete(!deleted);
+                        ctx.hide();
                     }}
                 />
             </XView>
