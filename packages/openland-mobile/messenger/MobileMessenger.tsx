@@ -212,6 +212,7 @@ export class MobileMessenger {
             width: fileMeta.imageWidth,
             height: fileMeta.imageHeight,
             isGif: false,
+            crossFade: true,
             animate: {
                 x: event.x,
                 y: event.y,
