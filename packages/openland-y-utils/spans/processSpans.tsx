@@ -13,12 +13,12 @@ const recursiveProcessing = (text: string, spans: ServerSpan[]): Span[] => {
         let currentSpan: Span = {
             ...convertServerSpan(text, span),
 
-            childrens: recursiveProcessing(text, childs),
+            children: recursiveProcessing(text, childs),
         };
 
         let textSpans = getTextSpans(text, currentSpan);
 
-        currentSpan.childrens = (currentSpan.childrens || [])
+        currentSpan.children = (currentSpan.children || [])
             .concat(textSpans)
             .sort((a, b) => a.offset - b.offset);
 
@@ -36,7 +36,7 @@ const handleNoSpans = (text: string, disableBig?: boolean): Span => {
             type: rootType as any,
             offset: 0,
             length: rootText.length,
-            childrens: [
+            children: [
                 {
                     type: SpanType.text,
                     offset: 0,
@@ -59,7 +59,7 @@ const handleNoSpans = (text: string, disableBig?: boolean): Span => {
             text: TextRenderProccessor.processSpan(SpanType.text, rootText),
         };
 
-        currentSpan.childrens = getTextSpans(text, currentSpan);
+        currentSpan.children = getTextSpans(text, currentSpan);
 
         return currentSpan;
     }
@@ -80,7 +80,7 @@ export const processSpans = (text: string, spans?: ServerSpan[], disableBig?: bo
 
         res.push(
             ...TextRenderProccessor.removeLineBreakers(
-                recursiveProcessing(text, spans)[0].childrens!,
+                recursiveProcessing(text, spans)[0].children!,
             ),
         );
     }
@@ -93,7 +93,7 @@ export const createSimpleSpan = (text: string, type: SpanType) => (
         type: type,
         offset: 0,
         length: text.length,
-        childrens: [{
+        children: [{
             type: SpanType.text,
             text: text,
             offset: 0,

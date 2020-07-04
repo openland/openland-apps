@@ -5,7 +5,7 @@ export const renderSpans = (Element: any, spans?: Span[], isService?: boolean, m
     if (spans && spans.length > 0) {
         return spans.map((s, key) => (
             <Element span={s} key={key} isService={isService} mId={mId}>
-                {renderSpans(Element, s.childrens, isService, mId)}
+                {renderSpans(Element, s.children, isService, mId)}
             </Element>
         ));
     } else {

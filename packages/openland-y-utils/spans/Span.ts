@@ -57,7 +57,7 @@ interface SpanAbs {
 
     textRaw?: string;
     text?: string | Element[] | JSX.Element[] | Element | JSX.Element;
-    childrens?: Span[];
+    children?: Span[];
 }
 
 export interface SpanRoot extends SpanAbs {

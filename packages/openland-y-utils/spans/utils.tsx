@@ -119,7 +119,7 @@ export const getTextSpans = (text: string, parent: Span): Span[] => {
 
     let slicedText = text.substr(parent.offset, parent.length);
 
-    for (let s of parent.childrens || []) {
+    for (let s of parent.children || []) {
         let rawFirst = slicedText.substr(offset, s.offset - parent.offset - offset);
 
         if (rawFirst) {
