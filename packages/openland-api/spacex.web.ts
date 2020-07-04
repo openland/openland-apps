@@ -3806,6 +3806,9 @@ const CancelSubscriptionSelector = obj(
                     field('id', 'id', args(), notNull(scalar('ID')))
                 )))
         );
+const CommentDeleteUrlAugmentationSelector = obj(
+            field('deleteCommentAugmentation', 'deleteCommentAugmentation', args(fieldValue("id", refValue('id'))), notNull(scalar('Boolean')))
+        );
 const CommentSetReactionSelector = obj(
             field('commentReactionAdd', 'commentReactionAdd', args(fieldValue("commentId", refValue('commentId')), fieldValue("reaction", refValue('reaction'))), notNull(scalar('Boolean')))
         );
@@ -5408,6 +5411,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'CancelSubscription',
         body: 'mutation CancelSubscription($id:ID!){subscriptionCancel(id:$id){__typename id}}',
         selector: CancelSubscriptionSelector
+    },
+    CommentDeleteUrlAugmentation: {
+        kind: 'mutation',
+        name: 'CommentDeleteUrlAugmentation',
+        body: 'mutation CommentDeleteUrlAugmentation($id:ID!){deleteCommentAugmentation(id:$id)}',
+        selector: CommentDeleteUrlAugmentationSelector
     },
     CommentSetReaction: {
         kind: 'mutation',

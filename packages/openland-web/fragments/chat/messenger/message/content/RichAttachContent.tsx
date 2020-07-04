@@ -217,10 +217,11 @@ interface RichAttachContentProps {
     attach: messageRichAttach;
     canDelete: boolean;
     messageId?: string;
+    isComment: boolean;
 }
 
 export const RichAttachContent = React.memo((props: RichAttachContentProps) => {
-    const { attach, canDelete, messageId } = props;
+    const { attach, canDelete, messageId, isComment } = props;
     const titleRef = React.useRef<HTMLDivElement>(null);
     const textRef = React.useRef<HTMLDivElement>(null);
     const client = useClient();
@@ -249,16 +250,18 @@ export const RichAttachContent = React.memo((props: RichAttachContentProps) => {
                 builder.action(
                     'Remove',
                     async () => {
-                        await client.mutateRoomDeleteUrlAugmentation({
-                            messageId,
-                        });
+                        if (isComment) {
+                            await client.mutateCommentDeleteUrlAugmentation({ id: messageId });
+                        } else {
+                            await client.mutateRoomDeleteUrlAugmentation({ messageId });
+                        }
                     },
                     'danger',
                 );
                 builder.show();
             }
         },
-        [messageId],
+        [messageId, isComment],
     );
 
     let img = null;

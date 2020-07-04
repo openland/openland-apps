@@ -101,6 +101,7 @@ interface MessageContentProps {
     isReply?: boolean;
     isForward?: boolean;
     isPending?: boolean;
+    isComment?: boolean;
 }
 
 export const MessageContent = React.memo((props: MessageContentProps) => {
@@ -119,6 +120,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
         isReply = false,
         isForward = false,
         isPending,
+        isComment = false,
     } = props;
     const isReplyOnly = isReply && !isForward;
 
@@ -220,7 +222,7 @@ export const MessageContent = React.memo((props: MessageContentProps) => {
                 id={id}
                 isReply={isReplyOnly}
             >
-                <RichAttachContent attach={attach} canDelete={isOut} messageId={id} />
+                <RichAttachContent attach={attach} canDelete={isOut} messageId={id} isComment={isComment} />
             </ContentWrapper>,
         );
     });

@@ -3799,6 +3799,9 @@ private let CancelSubscriptionSelector = obj(
                     field("id", "id", notNull(scalar("ID")))
                 )))
         )
+private let CommentDeleteUrlAugmentationSelector = obj(
+            field("deleteCommentAugmentation", "deleteCommentAugmentation", arguments(fieldValue("id", refValue("id"))), notNull(scalar("Boolean")))
+        )
 private let CommentSetReactionSelector = obj(
             field("commentReactionAdd", "commentReactionAdd", arguments(fieldValue("commentId", refValue("commentId")), fieldValue("reaction", refValue("reaction"))), notNull(scalar("Boolean")))
         )
@@ -5406,6 +5409,12 @@ class Operations {
         "mutation CancelSubscription($id:ID!){subscriptionCancel(id:$id){__typename id}}",
         CancelSubscriptionSelector
     )
+    let CommentDeleteUrlAugmentation = OperationDefinition(
+        "CommentDeleteUrlAugmentation",
+        .mutation, 
+        "mutation CommentDeleteUrlAugmentation($id:ID!){deleteCommentAugmentation(id:$id)}",
+        CommentDeleteUrlAugmentationSelector
+    )
     let CommentSetReaction = OperationDefinition(
         "CommentSetReaction",
         .mutation, 
@@ -6284,6 +6293,7 @@ class Operations {
         if name == "BuyPremiumChatPass" { return BuyPremiumChatPass }
         if name == "BuyPremiumChatSubscription" { return BuyPremiumChatSubscription }
         if name == "CancelSubscription" { return CancelSubscription }
+        if name == "CommentDeleteUrlAugmentation" { return CommentDeleteUrlAugmentation }
         if name == "CommentSetReaction" { return CommentSetReaction }
         if name == "CommentUnsetReaction" { return CommentUnsetReaction }
         if name == "CommitCardSetupIntent" { return CommitCardSetupIntent }

@@ -197,6 +197,7 @@ export const CommentView = React.memo((props: CommentViewProps) => {
                                     ? comment.sticker
                                     : undefined
                             }
+                            isComment={true}
                         />
                         {!deleted && (
                             <CommentTools

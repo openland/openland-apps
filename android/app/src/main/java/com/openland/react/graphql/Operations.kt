@@ -121,6 +121,7 @@ object Operations {
         if (name == "BuyPremiumChatPass") return BuyPremiumChatPass
         if (name == "BuyPremiumChatSubscription") return BuyPremiumChatSubscription
         if (name == "CancelSubscription") return CancelSubscription
+        if (name == "CommentDeleteUrlAugmentation") return CommentDeleteUrlAugmentation
         if (name == "CommentSetReaction") return CommentSetReaction
         if (name == "CommentUnsetReaction") return CommentUnsetReaction
         if (name == "CommitCardSetupIntent") return CommitCardSetupIntent

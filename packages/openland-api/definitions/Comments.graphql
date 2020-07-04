@@ -95,3 +95,7 @@ subscription CommentWatch($peerId: ID!, $fromState: String) {
         }
     }
 }
+
+mutation CommentDeleteUrlAugmentation($id: ID!) {
+    deleteCommentAugmentation(id: $id)
+}
