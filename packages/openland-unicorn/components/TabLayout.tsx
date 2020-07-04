@@ -151,7 +151,7 @@ export const TabLayout = React.memo((props: { router: TabRouter }) => {
     const xNotificationRouting = React.useMemo(
         () => ({
             navigate: (to: string) => {
-                props.router.reset(to);
+                props.router.navigate(to);
             },
         }),
         [],
