@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { preprocessText } from 'openland-y-utils/TextProcessor';
+import { useRole } from 'openland-x-permissions/XWithRole';
+import { useGlobalSearch, useTabRouter } from 'openland-unicorn/components/TabLayout';
 import { ULink } from './ULink';
 
 interface UTextProps {
@@ -15,6 +17,19 @@ const textStyle = css`
     word-wrap: break-word;
 `;
 
+const HashtagView = React.memo((props: { text: string }) => {
+    const globalSearch = useGlobalSearch();
+    const tabRouter = useTabRouter();
+    const isSuperAdmin = useRole('super-admin');
+
+    const handleClick = () => {
+        tabRouter.setTab(isSuperAdmin ? 2 : 1);
+        globalSearch.onChange(props.text);
+    };
+
+    return <ULink onClick={handleClick}>{props.text}</ULink>;
+});
+
 export const UText = React.memo((props: UTextProps) => {
     const { text, proccessText, linkify = true } = props;
 
@@ -28,6 +43,10 @@ export const UText = React.memo((props: UTextProps) => {
                     <ULink key={'link-' + i} href={v.link}>
                         {v.text || v.link}
                     </ULink>
+                );
+            } else if (v.type === 'hashtag' && v.hashtag && v.text) {
+                return (
+                    <HashtagView key={'hashtag-' + i} text={v.text}/>
                 );
             } else {
                 return <span key={'text-' + i}>{proccessText ? proccessText(v.text) : v.text}</span>;
