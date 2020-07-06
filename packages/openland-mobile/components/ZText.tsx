@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { preprocessText } from 'openland-y-utils/TextProcessor';
+import { SRouterContext } from 'react-native-s/SRouterContext';
 import { Text, Linking, StyleProp, TextStyle, Clipboard } from 'react-native';
 import { resolveInternalLink } from '../utils/resolveInternalLink';
 import ActionSheet from './ActionSheet';
@@ -15,14 +16,14 @@ interface ZTextProps {
 }
 
 export const ZText = (props: ZTextProps) => {
+    const router = React.useContext(SRouterContext)!;
+    const theme = React.useContext(ThemeContext);
 
-    let theme = React.useContext(ThemeContext);
-
-    let openContextMenu = React.useCallback(async (link: string) => {
+    const openContextMenu = React.useCallback(async (link: string) => {
         ActionSheet.builder().action('Copy', () => Clipboard.setString(link), false, require('assets/ic-copy-24.png')).show();
     }, []);
 
-    let linkifyPressFallback = React.useCallback((link: string) => {
+    const linkifyPressFallback = React.useCallback((link: string) => {
         return (async () => {
             if (await Linking.canOpenURL(link)) {
                 await Linking.openURL(link);
@@ -30,6 +31,10 @@ export const ZText = (props: ZTextProps) => {
                 await openContextMenu(link);
             }
         });
+    }, []);
+
+    const onHashTagPress = React.useCallback((hashtag: string) => {
+        router.push('HomeDialogs', { searchValue: hashtag, title: hashtag });
     }, []);
 
     if (props.text) {
@@ -45,6 +50,18 @@ export const ZText = (props: ZTextProps) => {
                         style={[props.style, props.linkify && { color: theme.accentPrimary, textDecorationLine }]}
                         onLongPress={() => props.onLongPress ? props.onLongPress(v.link!) : openContextMenu(v.link!)}
                         onPress={props.onPress ? () => { props.onPress!(v.link!); } : props.linkify !== false ? resolveInternalLink(v.link!, linkifyPressFallback(v.link!)) : undefined}
+                        allowFontScaling={false}
+                    >
+                        {v.text}
+                    </Text>
+                );
+            } else if (v.type === 'hashtag') {
+                const textDecorationLine = theme.accentPrimary === theme.foregroundPrimary ? 'underline' : 'none';
+                return (
+                    <Text
+                        key={'hashtag-' + i}
+                        style={[props.style, props.linkify && { color: theme.accentPrimary, textDecorationLine }]}
+                        onPress={props.onPress ? () => { props.onPress!(v.hashtag!); } : () => onHashTagPress(v.hashtag!)}
                         allowFontScaling={false}
                     >
                         {v.text}
