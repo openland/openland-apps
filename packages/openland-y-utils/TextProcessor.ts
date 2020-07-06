@@ -47,6 +47,13 @@ function preprocessRawText(text: string): Span[] {
             });
         }
         p.split(' ').forEach(i => {
+            if (i === '') {
+                res.push({
+                    type: 'text',
+                    text: ' ',
+                });
+                return;
+            }
             if (i.match(hashTagRegexp)) {
                 res.push({
                     type: 'hashtag',
@@ -98,6 +105,9 @@ export function preprocessText(text: string): Span[] {
             type: 'text',
             text: '',
         });
+    }
+    if (res.slice(-1)[0].text === ' ') {
+        res.pop();
     }
     return res;
 }
