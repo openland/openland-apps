@@ -46,7 +46,7 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
         setHighlightId(current => id === current ? undefined : id);
     }, [highlightId]);
 
-    const handleCommentSent = React.useCallback(async (data: URickTextValue) => {
+    const handleCommentSent = React.useCallback(async (data: URickTextValue, topLevel: boolean = false) => {
         const { text, mentions } = extractTextAndMentions(data);
 
         const mentionsPrepared = prepareLegacyMentionsForSend(text, mentions);
@@ -69,27 +69,31 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                 mentions: mentionsPrepared,
                 message: text,
                 spans: findSpans(text),
-                replyComment: highlightId
+                replyComment: topLevel ? undefined : highlightId
             });
 
-            setHighlightId(undefined);
+            if (!topLevel) {
+                setHighlightId(undefined);
+            }
         }
 
         return true;
     }, [peerId, highlightId]);
 
-    const handleStickerSent = React.useCallback(async (sticker: StickerFragment) => {
+    const handleStickerSent = React.useCallback(async (sticker: StickerFragment, topLevel: boolean = false) => {
         await client.mutateAddStickerComment({
             peerId,
             repeatKey: UUID(),
             stickerId: sticker.id,
-            replyComment: highlightId
+            replyComment: topLevel ? undefined : highlightId
         });
 
-        setHighlightId(undefined);
+        if (!topLevel) {
+            setHighlightId(undefined);
+        }
     }, [peerId, highlightId]);
 
-    const handleCommentSentAttach = React.useCallback((files: File[]) => {
+    const handleCommentSentAttach = React.useCallback((files: File[], topLevel: boolean = false) => {
         if (files.length > 0) {
             showAttachConfirm(files, (res) => new Promise(resolve => {
                 const uploadedFiles: string[] = [];
@@ -107,10 +111,12 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                                 peerId,
                                 repeatKey: UUID(),
                                 fileAttachments: uploadedFiles.map(f => ({ fileId: f })),
-                                replyComment: highlightId
+                                replyComment: topLevel ? undefined : highlightId
                             });
 
-                            setHighlightId(undefined);
+                            if (!topLevel) {
+                                setHighlightId(undefined);
+                            }
                         }
                     });
                 });
@@ -136,9 +142,9 @@ export const CommentsWrapper = React.memo((props: CommentsWrapperProps) => {
                 </div>
             </XScrollView3>
             <CommentInput
-                onSent={handleCommentSent}
-                onSentAttach={handleCommentSentAttach}
-                onStickerSent={handleStickerSent}
+                onSent={data => handleCommentSent(data, true)}
+                onSentAttach={files => handleCommentSentAttach(files, true)}
+                onStickerSent={sticker => handleStickerSent(sticker, true)}
                 groupId={groupId}
                 forceAutofocus={!highlightId}
             />
