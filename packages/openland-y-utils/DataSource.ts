@@ -134,7 +134,7 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
 
     requestScrollToTop() {
         if (this.getSize() > 0) {
-            this.requestScrollToKey(this.getAt(0).key)
+            this.requestScrollToKey(this.getAt(0).key);
         }
     }
 
