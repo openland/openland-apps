@@ -187,6 +187,7 @@ object Operations {
         if (name == "RoomAddMembers") return RoomAddMembers
         if (name == "RoomChangeRole") return RoomChangeRole
         if (name == "RoomCreate") return RoomCreate
+        if (name == "RoomDelete") return RoomDelete
         if (name == "RoomDeleteMessage") return RoomDeleteMessage
         if (name == "RoomDeleteMessages") return RoomDeleteMessages
         if (name == "RoomDeleteUrlAugmentation") return RoomDeleteUrlAugmentation

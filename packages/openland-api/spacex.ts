@@ -1694,6 +1694,9 @@ export class OpenlandClient extends BaseSpaceXClient {
     mutateRoomCreate(variables: Types.RoomCreateVariables, params?: MutationParameters): Promise<Types.RoomCreate> {
         return this.mutate('RoomCreate', variables, params);
     }
+    mutateRoomDelete(variables: Types.RoomDeleteVariables, params?: MutationParameters): Promise<Types.RoomDelete> {
+        return this.mutate('RoomDelete', variables, params);
+    }
     mutateRoomDeleteMessage(variables: Types.RoomDeleteMessageVariables, params?: MutationParameters): Promise<Types.RoomDeleteMessage> {
         return this.mutate('RoomDeleteMessage', variables, params);
     }

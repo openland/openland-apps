@@ -596,6 +596,11 @@ mutation RoomDeleteMessages($mids: [ID!]!) {
 mutation RoomDeleteUrlAugmentation($messageId: ID!) {
     betaMessageDeleteAugmentation(mid: $messageId)
 }
+
+mutation RoomDelete($chatId: ID!) {
+  deleteChat(chatId: $chatId)
+}
+
 mutation EditMessage(
     $messageId: ID!
     $message: String

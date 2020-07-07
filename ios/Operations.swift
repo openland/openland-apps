@@ -4247,6 +4247,9 @@ private let RoomCreateSelector = obj(
                     field("id", "id", notNull(scalar("ID")))
                 )))
         )
+private let RoomDeleteSelector = obj(
+            field("deleteChat", "deleteChat", arguments(fieldValue("chatId", refValue("chatId"))), notNull(scalar("Boolean")))
+        )
 private let RoomDeleteMessageSelector = obj(
             field("betaMessageDelete", "betaMessageDelete", arguments(fieldValue("mid", refValue("messageId"))), notNull(scalar("Boolean")))
         )
@@ -5805,6 +5808,12 @@ class Operations {
         "mutation RoomCreate($kind:SharedRoomKind!,$members:[ID!]!,$message:String,$title:String,$description:String,$photoRef:ImageRefInput,$organizationId:ID,$channel:Boolean!,$price:Int,$interval:WalletSubscriptionInterval){room:betaRoomCreate(kind:$kind,members:$members,message:$message,title:$title,description:$description,photoRef:$photoRef,organizationId:$organizationId,channel:$channel,price:$price,interval:$interval){__typename id}}",
         RoomCreateSelector
     )
+    let RoomDelete = OperationDefinition(
+        "RoomDelete",
+        .mutation, 
+        "mutation RoomDelete($chatId:ID!){deleteChat(chatId:$chatId)}",
+        RoomDeleteSelector
+    )
     let RoomDeleteMessage = OperationDefinition(
         "RoomDeleteMessage",
         .mutation, 
@@ -6359,6 +6368,7 @@ class Operations {
         if name == "RoomAddMembers" { return RoomAddMembers }
         if name == "RoomChangeRole" { return RoomChangeRole }
         if name == "RoomCreate" { return RoomCreate }
+        if name == "RoomDelete" { return RoomDelete }
         if name == "RoomDeleteMessage" { return RoomDeleteMessage }
         if name == "RoomDeleteMessages" { return RoomDeleteMessages }
         if name == "RoomDeleteUrlAugmentation" { return RoomDeleteUrlAugmentation }

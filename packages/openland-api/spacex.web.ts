@@ -4254,6 +4254,9 @@ const RoomCreateSelector = obj(
                     field('id', 'id', args(), notNull(scalar('ID')))
                 )))
         );
+const RoomDeleteSelector = obj(
+            field('deleteChat', 'deleteChat', args(fieldValue("chatId", refValue('chatId'))), notNull(scalar('Boolean')))
+        );
 const RoomDeleteMessageSelector = obj(
             field('betaMessageDelete', 'betaMessageDelete', args(fieldValue("mid", refValue('messageId'))), notNull(scalar('Boolean')))
         );
@@ -5807,6 +5810,12 @@ export const Operations: { [key: string]: OperationDefinition } = {
         name: 'RoomCreate',
         body: 'mutation RoomCreate($kind:SharedRoomKind!,$members:[ID!]!,$message:String,$title:String,$description:String,$photoRef:ImageRefInput,$organizationId:ID,$channel:Boolean!,$price:Int,$interval:WalletSubscriptionInterval){room:betaRoomCreate(kind:$kind,members:$members,message:$message,title:$title,description:$description,photoRef:$photoRef,organizationId:$organizationId,channel:$channel,price:$price,interval:$interval){__typename id}}',
         selector: RoomCreateSelector
+    },
+    RoomDelete: {
+        kind: 'mutation',
+        name: 'RoomDelete',
+        body: 'mutation RoomDelete($chatId:ID!){deleteChat(chatId:$chatId)}',
+        selector: RoomDeleteSelector
     },
     RoomDeleteMessage: {
         kind: 'mutation',
