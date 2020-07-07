@@ -626,7 +626,7 @@ export const showLeaveChatConfirmation = (
         .message(
             isPremium
                 ? 'Leaving the group only removes it from your chat list. To cancel the associated subscription, visit Subscriptions section in your Account tab and cancel it from there.'
-                : 'Are you sure you want to leave? You will need to request access to join it again in the future.',
+                : 'Are you sure you want to leave?',
         )
         .action(
             'Leave',
