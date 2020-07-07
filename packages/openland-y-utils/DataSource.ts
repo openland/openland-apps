@@ -132,12 +132,6 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
         }
     }
 
-    requestScrollToTop() {
-        if (this.getSize() > 0) {
-            this.requestScrollToKey(this.getAt(0).key);
-        }
-    }
-
     getAt(index: number) {
         if (this.destroyed) {
             throw Error('Datasource already destroyed');
