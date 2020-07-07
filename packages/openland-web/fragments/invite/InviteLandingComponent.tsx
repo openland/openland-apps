@@ -153,7 +153,6 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
         : [];
 
     const showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
-    const showOnlineMembers = room ? room.onlineMembersCount >= 10 : false;
 
     const joinTitle = !!invitedByUser
         ? `${invitedByUser.name} invites you to join “${title}”`
@@ -209,7 +208,6 @@ const InviteLandingComponentLayout = React.memo((props: InviteLandingComponentLa
                             </div>
                             <div className={cx(TextBody, descriptionStyle)}>
                                 {membersCount} members
-                                {room && showOnlineMembers && `, ${room.onlineMembersCount} online`}
                             </div>
                         </div>
                     )}

@@ -25,5 +25,4 @@ fragment SharedRoomPreview on SharedRoom {
         name
         photo
     }
-    onlineMembersCount
 }

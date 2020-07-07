@@ -61,7 +61,6 @@ interface ChatJoinComponentProps {
         | 'photo'
         | 'description'
         | 'membersCount'
-        | 'onlineMembersCount'
         | 'previewMembers'
         | 'isChannel'
         | 'isPremium'
@@ -193,7 +192,6 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
         photo,
         description,
         membersCount,
-        onlineMembersCount,
         previewMembers = [],
         isChannel,
     } = room;
@@ -205,7 +203,6 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
         .filter((x) => !!x)
         .slice(0, 5);
     let showMembers = membersCount ? membersCount >= 10 && avatars.length >= 3 : false;
-    const showOnlineMembers = onlineMembersCount ? onlineMembersCount >= 10 : false;
     // let joinTitle = !!invitedBy ? `${invitedBy.name} invites you to join “${title}”` : title;
     let joinTitle = title;
     // const joinAvatars = !!invitedBy ? (
@@ -256,7 +253,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                     style={[styles.members, { color: theme.foregroundSecondary }]}
                     allowFontScaling={false}
                 >
-                    {membersCount} members{showOnlineMembers && `, ${onlineMembersCount} online`}
+                    {membersCount} members
                 </Text>
             </View>
         </>

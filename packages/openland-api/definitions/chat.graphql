@@ -113,7 +113,6 @@ query RoomChat($id: ID!) {
                 mute
             }
             description
-            onlineMembersCount
             previewMembers {
                 id
                 photo
@@ -473,7 +472,6 @@ query RoomInviteInfo($invite: String!) {
                 }
                 membership
                 membersCount
-                onlineMembersCount
                 previewMembers {
                     id
                     photo
@@ -542,7 +540,6 @@ query ResolvedInvite($key: String!) {
                     description
                     membership
                     membersCount
-                    onlineMembersCount
                     previewMembers {
                         id
                         photo
@@ -749,7 +746,6 @@ query ChatJoin($id: ID!) {
             description
             photo
             membersCount
-            onlineMembersCount
             previewMembers {
                 id
                 photo
