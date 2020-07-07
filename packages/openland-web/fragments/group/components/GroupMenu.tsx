@@ -12,6 +12,8 @@ import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { UPopperMenuBuilder } from 'openland-web/components/unicorn/UPopperMenuBuilder';
 import { useClient } from 'openland-api/useClient';
+import { AlertBlanketBuilder } from 'openland-x/AlertBlanket';
+import { useRole } from 'openland-x-permissions/XWithRole';
 
 interface GroupMenu {
     group: RoomChat_room_SharedRoom;
@@ -50,6 +52,22 @@ const MenuComponent = React.memo((props: GroupMenu & { ctx: UPopperController })
                 group.__typename === 'SharedRoom' && group.isPremium,
             ),
     });
+
+    if (useRole('super-admin')) {
+        builder.item({
+            title: `Delete ${typeString}`,
+            onClick: () => {
+                const alertBuilder = new AlertBlanketBuilder();
+
+                alertBuilder.title(`Delete this ${typeString}?`);
+                alertBuilder.message('Are you sure?');
+                alertBuilder.action('Delete', async () => {
+                    await client.mutateRoomDelete({ chatId: id });
+                }, 'danger');
+                alertBuilder.show();
+            }
+        });
+    }
 
     return builder.build(ctx, 240);
 });
