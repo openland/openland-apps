@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform } from 'react-native';
+import { View, Platform, ScrollView } from 'react-native';
 import { HomeDialogs } from './HomeDialogs';
 import { Settings } from './Settings';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
@@ -11,9 +11,11 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { NotificationCenter } from './NotificationCenter';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { SRouterContext } from 'react-native-s/SRouterContext';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 export const ActiveTabContext = React.createContext(false);
 export const SetTabContext = React.createContext<(index: number) => void>(() => {/* noop */ });
+export const ScrollViewRefContext = React.createContext<React.RefObject<ScrollView> | undefined>(undefined);
 
 const DEFAULT_TAB = 1;
 
@@ -26,6 +28,28 @@ export const Home = React.memo((props: PageProps) => {
     const wallet = getClient().useMyWallet({ suspense: false });
     const failingPaymentsCount = wallet && wallet.myWallet.failingPaymentsCount || undefined;
 
+    const messengerEngine = getMessenger().engine;
+    const exploreRef = React.createRef<ScrollView>();
+    const dialogsDataSource = messengerEngine.dialogList.dataSource;
+    const notificationsDataSource = messengerEngine.notificationCenter.dataSource;
+    const settingsRef = React.createRef<ScrollView>();
+
+    const handleChangeTab = React.useCallback((newTab: number) => {
+        if (newTab === tab) {
+            if (tab === 0 && exploreRef.current) {
+                (exploreRef.current as any).getNode().scrollTo(0); // hack because of Animated.ScrollView
+            } else if (tab === 1) {
+                dialogsDataSource.requestScrollToTop();
+            } else if (tab === 2) {
+                notificationsDataSource.requestScrollToTop();
+            } else if (tab === 3 && settingsRef.current) {
+                (settingsRef.current as any).getNode().scrollTo(0); // hack because of Animated.ScrollView
+            }
+        } else {
+            setTab(newTab);
+        }
+    }, [tab]);
+
     return (
         <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>
             <ASSafeAreaProvider bottom={Platform.OS === 'ios' ? 52 : 0}>
@@ -33,7 +57,9 @@ export const Home = React.memo((props: PageProps) => {
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 0 ? 1 : 0 }} pointerEvents={tab === 0 ? 'box-none' : 'none'}>
                         <HeaderContextChild enabled={tab === 0}>
                             {tab === 0 && <ZTrack event={'navigate_discover'} />}
-                            <Explore {...props} />
+                            <ScrollViewRefContext.Provider value={exploreRef}>
+                                <Explore {...props} />
+                            </ScrollViewRefContext.Provider>
                         </HeaderContextChild>
                     </View>
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 1 ? 1 : 0 }} pointerEvents={tab === 1 ? 'box-none' : 'none'}>
@@ -55,7 +81,9 @@ export const Home = React.memo((props: PageProps) => {
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 3 ? 1 : 0 }} pointerEvents={tab === 3 ? 'box-none' : 'none'}>
                         <HeaderContextChild enabled={tab === 3}>
                             {tab === 3 && <ZTrack event="navigate_account" />}
-                            <Settings {...props} />
+                            <ScrollViewRefContext.Provider value={settingsRef}>
+                                <Settings {...props} />
+                            </ScrollViewRefContext.Provider>
                         </HeaderContextChild>
                     </View>
                 </View>
@@ -67,7 +95,7 @@ export const Home = React.memo((props: PageProps) => {
                         icon={require('assets/ic-discover-24.png')}
                         iconSelected={require('assets/ic-discover-filled-24.png')}
                         selected={tab === 0}
-                        onPress={() => setTab(0)}
+                        onPress={() => handleChangeTab(0)}
                     />
                     <AppBarBottomItem
                         counter={counter && counter.alphaNotificationCounter.unreadCount || undefined}
@@ -76,7 +104,7 @@ export const Home = React.memo((props: PageProps) => {
                         iconCounter={require('assets/ic-message-counter-24.png')}
                         iconSelectedCounter={require('assets/ic-message-filled-counter-24.png')}
                         selected={tab === 1}
-                        onPress={() => setTab(1)}
+                        onPress={() => handleChangeTab(1)}
                     />
                     <AppBarBottomItem
                         counter={notificationsCounter && notificationsCounter.myNotificationCenter.unread || undefined}
@@ -85,7 +113,7 @@ export const Home = React.memo((props: PageProps) => {
                         iconCounter={require('assets/ic-notifications-counter-24.png')}
                         iconSelectedCounter={require('assets/ic-notifications-filled-counter-24.png')}
                         selected={tab === 2}
-                        onPress={() => setTab(2)}
+                        onPress={() => handleChangeTab(2)}
                     />
                     <AppBarBottomItem
                         counter={failingPaymentsCount}
@@ -94,7 +122,7 @@ export const Home = React.memo((props: PageProps) => {
                         iconCounter={require('assets/ic-settings-counter-24.png')}
                         iconSelectedCounter={require('assets/ic-settings-filled-counter-24.png')}
                         selected={tab === 3}
-                        onPress={() => setTab(3)}
+                        onPress={() => handleChangeTab(3)}
                     />
                 </AppBarBottom>
             </View>
