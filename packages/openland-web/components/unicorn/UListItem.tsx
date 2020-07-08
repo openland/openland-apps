@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { XView, XViewSelectedContext, XViewProps } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { UAvatar } from './UAvatar';
@@ -58,6 +58,7 @@ export interface UListItemProps {
     linkSelectable?: boolean;
     disableHover?: boolean;
     href?: string;
+    wrapperClassName?: string;
 }
 
 export const UListItem = React.memo((props: UListItemProps) => {
@@ -85,6 +86,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
         interactive = true,
         linkSelectable = true,
         href,
+        wrapperClassName,
     } = props;
     const height = large ? 80 : !!avatar || !!leftElement || !!iconBackground ? 56 : 48;
     const titleFont = !!description ? TextStyles.Label1 : TextStyles.Body;
@@ -193,7 +195,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
 
     if (disabled) {
         return (
-            <div ref={containerRef} className="x">
+            <div ref={containerRef} className={cx('x', wrapperClassName)}>
                 <XView
                     height={height}
                     paddingHorizontal={paddingHorizontal}
@@ -209,7 +211,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
 
     if (!interactive) {
         return (
-            <div ref={containerRef} className="x">
+            <div ref={containerRef} className={cx('x', wrapperClassName)}>
                 <XView
                     height={height}
                     paddingHorizontal={paddingHorizontal}
@@ -223,7 +225,7 @@ export const UListItem = React.memo((props: UListItemProps) => {
     }
 
     return (
-        <div ref={containerRef} className="x">
+        <div ref={containerRef} className={cx('x', wrapperClassName)}>
             <XView
                 height={height}
                 paddingHorizontal={paddingHorizontal}

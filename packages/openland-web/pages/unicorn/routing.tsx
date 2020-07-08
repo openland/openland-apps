@@ -34,6 +34,7 @@ import { DiscussionsFragment } from 'openland-web/fragments/discussions/Discussi
 import { DraftsFragment } from 'openland-web/fragments/discussions/DraftsFragment';
 import { DiscussionEditorFragment } from 'openland-web/fragments/discussions/DiscussionEditorFragment';
 import { SettingsCommunitiesFragment } from 'openland-web/fragments/settings/SettingsCommunitiesFragment';
+// import { ContactProfileFragment } from 'openland-web/fragments/contacts/ContactProfileFragment';
 // import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 
 // temporary stub for /mail/ -> not found bug
@@ -100,6 +101,18 @@ routing.addRoute('/discover/collections', () => DiscoverCollectionsFragment);
 routing.addRoute('/discover/collections/:collectionId', () => DiscoverCollectionFragment);
 routing.addRoute('/discover/premium', () => DiscoverTopPremiumFragment);
 routing.addRoute('/discover/free', () => DiscoverTopFreeFragment);
+
+// Contacts
+
+// let Empty = () => <div />;
+
+// routing.addRoute('/contacts', () => Empty);
+// routing.addRoute('/contacts/:id', () =>
+//     React.memo(() => {
+//         let ctx = useUnicorn();
+//         return <ContactProfileFragment id={ctx.id!} />;
+//     })
+// );
 
 // Discussions
 routing.addRoute('/channels', () => DiscussionsFragment);

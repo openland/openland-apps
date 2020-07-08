@@ -13,6 +13,7 @@ export interface TabDefinition {
     readonly component: any;
     readonly caption: string;
     readonly defaultPage: boolean;
+    readonly isStackHidden?: boolean;
 }
 
 export class TabRouter {

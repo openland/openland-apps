@@ -9,6 +9,10 @@ import { emoji } from 'openland-y-utils/emoji';
 import { useClient } from 'openland-api/useClient';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { TextCaption, TextStyles } from 'openland-web/utils/TextStyles';
+import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
+import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
+import { UIconButton } from './unicorn/UIconButton';
+import { useCaptionPopper } from './CaptionPopper';
 
 const userStatus = css`
     color: #676d7a;
@@ -42,8 +46,8 @@ const Status = (({ variables }) => {
                 {user.lastSeen === 'never_online' ? (
                     'moments ago'
                 ) : (
-                    <XDate value={user.lastSeen} format="humanize_cute" />
-                )}
+                        <XDate value={user.lastSeen} format="humanize_cute" />
+                    )}
             </div>
         );
     } else if (user && user.online) {
@@ -96,6 +100,8 @@ export const UserPopperContent = React.memo(
         hidePopper: Function;
     }) => {
         const router = React.useContext(XViewRouterContext);
+        const isContact = false;
+        const [showContactCaption] = useCaptionPopper({ text: isContact ? 'Remove from contacts' : 'Save to contacts' });
         if (noCardOnMe && isMe) {
             return (
                 <XView
@@ -112,6 +118,7 @@ export const UserPopperContent = React.memo(
             );
         } else {
             const organizationName = user.primaryOrganization ? user.primaryOrganization.name : '';
+            const contactsEnabled = false;
             const messenger = React.useContext(MessengerContext);
             React.useEffect(() => {
                 messenger.getOnlines().onUserAppears(user.id!);
@@ -162,21 +169,31 @@ export const UserPopperContent = React.memo(
                             <React.Suspense fallback={<div />}>
                                 <Status variables={{ userId: user.id }} />
                             </React.Suspense>
-                            <div className={cx(organizationTitle, TextCaption)}>
-                                {organizationName}
-                            </div>
+                            {!contactsEnabled && (
+                                <div className={cx(organizationTitle, TextCaption)}>
+                                    {organizationName}
+                                </div>
+                            )}
                             {!isMe && (
-                                <UButton
-                                    text="Message"
-                                    marginTop={16}
-                                    onClick={(e: React.MouseEvent) => {
-                                        e.preventDefault();
-                                        if (router) {
-                                            router.navigate('/mail/' + user.id);
-                                            hidePopper();
-                                        }
-                                    }}
-                                />
+                                <XView width="100%" alignItems="center" marginTop={20} flexDirection="row" justifyContent="space-between">
+                                    <UButton
+                                        text="Message"
+                                        onClick={(e: React.MouseEvent) => {
+                                            e.preventDefault();
+                                            if (router) {
+                                                router.navigate('/mail/' + user.id);
+                                                hidePopper();
+                                            }
+                                        }}
+                                    />
+                                    {contactsEnabled && (
+                                        <UIconButton
+                                            icon={isContact ? <RemoveContactIcon /> : <AddContactIcon />}
+                                            size="medium"
+                                            onMouseEnter={showContactCaption}
+                                        />
+                                    )}
+                                </XView>
                             )}
                         </div>
                     </XView>

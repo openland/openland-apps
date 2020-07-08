@@ -20,6 +20,8 @@ import AttachIcon from 'openland-icons/s/ic-attach-24-1.svg';
 import NotificationsOffIcon from 'openland-icons/s/ic-notifications-off-24.svg';
 import LeaveIcon from 'openland-icons/s/ic-leave-24.svg';
 import MutedIcon from 'openland-icons/s/ic-muted-16.svg';
+import RemoveContactIcon from 'openland-icons/s/ic-invite-off-24.svg';
+import AddContactIcon from 'openland-icons/s/ic-invite-24.svg';
 import { UPopperController } from 'openland-web/components/unicorn/UPopper';
 import { showAddMembersModal } from '../showAddMembersModal';
 import {
@@ -166,11 +168,25 @@ const MenuComponent = (props: { ctx: UPopperController; id: string }) => {
     });
 
     res.item({
-        title: 'Shared media',
+        title: 'Media, files, links',
         icon: <AttachIcon />,
         path: `/mail/${props.id}/shared`,
         closeDelay: 400,
     });
+
+    let contactsEnabled = false;
+
+    if (contactsEnabled && chat.__typename === 'PrivateRoom' && chat.user.id !== messenger.user.id) {
+        const isContact = false;
+        res.item({
+            title: isContact ? 'Remove from contacts' : 'Save to contacts',
+            icon: isContact ? <RemoveContactIcon /> : <AddContactIcon />,
+            action: async () => {
+                // handle contact
+            },
+            closeDelay: 400,
+        });
+    }
 
     if (chat.__typename === 'SharedRoom') {
         if (chat.canEdit) {
