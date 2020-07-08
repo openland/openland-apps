@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { XView } from 'react-mental';
-import { TextBody, TextTitle3 } from 'openland-web/utils/TextStyles';
+import { TextBody, TextLabel1 } from 'openland-web/utils/TextStyles';
 import CheckIcon from 'openland-icons/ic-checkbox.svg';
 import { FormField } from 'openland-form/useField';
 
@@ -28,6 +28,14 @@ const textClassName = css`
     &:hover {
         background-color: var(--backgroundPrimaryHover);
     }
+`;
+
+const textTallClassName = css`
+    height: 56px;
+`;
+
+const textWithCornersClassName = css`
+    border-radius: 0;
 `;
 
 const checkDotStyle = css`
@@ -112,7 +120,10 @@ interface UCheckboxItemProps {
     onChange?: (value: boolean) => void;
     asSwitcher?: boolean;
     squared?: boolean;
+    tall?: boolean;
+    withCorners?: boolean;
     boldTitle?: boolean;
+    leftElement?: JSX.Element;
 }
 
 export const UCheckbox = (props: UCheckboxItemProps) => {
@@ -136,8 +147,11 @@ export const UCheckbox = (props: UCheckboxItemProps) => {
                 className={inputClassName}
             />
             <label htmlFor={id} className={labelClassName}>
-                <div className={cx(textClassName, props.boldTitle ? TextTitle3 : TextBody)}>
-                    <span>{props.label}</span>
+                <div className={cx(textClassName, props.tall && textTallClassName, props.withCorners && textWithCornersClassName)}>
+                    <XView flexDirection="row" alignItems="center">
+                        {props.leftElement || null}
+                        <span className={cx(props.boldTitle ? TextLabel1 : TextBody)}>{props.label}</span>
+                    </XView>
                     {!props.asSwitcher && (
                         <CheckComponent checked={props.checked} squared={props.squared} />
                     )}

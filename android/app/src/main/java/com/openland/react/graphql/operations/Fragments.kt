@@ -1377,8 +1377,7 @@ internal val SharedRoomPreviewSelector = obj(
                     field("id", "id", notNull(scalar("ID"))),
                     field("name", "name", notNull(scalar("String"))),
                     field("photo", "photo", scalar("String"))
-                ))))),
-            field("onlineMembersCount", "onlineMembersCount", notNull(scalar("Int")))
+                )))))
         )
 
 internal val SharedRoomViewSelector = obj(
