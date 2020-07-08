@@ -7,8 +7,21 @@ import { STrackedValue } from 'react-native-s/STrackedValue';
 import { ASDataView } from 'react-native-async-view/ASDataView';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 
-export class DialogListComponent extends React.PureComponent<{ dialogs: ASDataView<DialogDataSourceItem> }> {
+interface DialogListComponentProps {
+    dialogs: ASDataView<DialogDataSourceItem>;
+    contentOffsetRef?: React.MutableRefObject<STrackedValue | undefined>;
+}
+
+export class DialogListComponent extends React.PureComponent<DialogListComponentProps> {
     contentOffset = new STrackedValue();
+
+    constructor(props: DialogListComponentProps) {
+        super(props);
+        if (props.contentOffsetRef) {
+            props.contentOffsetRef.current = this.contentOffset;
+        }
+    }
+
     render() {
         return (
             <ASSafeAreaContext.Consumer>

@@ -16,6 +16,7 @@ import { ZCounter } from 'openland-mobile/components/ZCounter';
 import Toast from 'openland-mobile/components/Toast';
 import { logout } from 'openland-mobile/utils/logout';
 import AlertBlanket from 'openland-mobile/components/AlertBlanket';
+import { ComponentRefContext } from './Home';
 
 export const handleGlobalInvitePress = async () => {
     const loader = Toast.loader();
@@ -58,8 +59,10 @@ let SettingsContent = ((props: PageProps) => {
             .show();
     }, []);
 
+    const scrollRef = React.useContext(ComponentRefContext);
+
     return (
-        <SScrollView>
+        <SScrollView scrollRef={scrollRef}>
             <ZListHero
                 photo={resp.me.photo}
                 id={resp.me.id}

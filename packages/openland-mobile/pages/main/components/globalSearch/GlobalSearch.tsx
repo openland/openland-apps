@@ -23,6 +23,7 @@ export interface GlobalSearchProps {
     query: string;
     router: SRouter;
     kinds?: GlobalSearchEntryKind[];
+    scrollRef?: React.RefObject<any>;
 
     onOrganizationPress?: (id: string, title: string) => void;
     onUserPress?: (id: string, title: string) => void;
@@ -58,7 +59,7 @@ const GlobalSearchInner = (props: GlobalSearchProps) => {
     const items = getClient().useGlobalSearch({ query: props.query, kinds: props.kinds }).items;
 
     return (
-        <SScrollView keyboardDismissMode="on-drag" backgroundColor={theme.backgroundPrimary}>
+        <SScrollView keyboardDismissMode="on-drag" backgroundColor={theme.backgroundPrimary} scrollRef={props.scrollRef}>
             {items.length === 0 && <EmptyView theme={theme} />}
             {items.map((item, index) => (
                 <GlobalSearchItem key={`search-item-${index}-${item.id}`} item={item} {...props} />
@@ -154,6 +155,7 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
                     <LoaderSpinner />
                 </View>
             ) : undefined}
+            flatListRef={props.scrollRef}
         />
     );
 };
@@ -216,6 +218,7 @@ export const SearchMessages = React.memo((props: GlobalSearchProps & { onMessage
                     <LoaderSpinner />
                 </View>
             ) : undefined}
+            flatListRef={props.scrollRef}
         />
     );
 });

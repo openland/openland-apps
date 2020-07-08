@@ -11,6 +11,10 @@ export class STrackedValue {
         return this._offsetValue;
     }
 
+    setOffset(to: number) {
+        this.offset.setValue(to);
+    }
+
     constructor() {
         this.offset.addListener((v) => {
             this._offsetValue = v.value;
