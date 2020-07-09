@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     } as ViewStyle,
     line: {
-        width: 62,
+        width: 56,
         height: 2,
         borderBottomLeftRadius: 2,
         borderBottomRightRadius: 2
