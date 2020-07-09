@@ -9,7 +9,7 @@ import { detectOS } from 'openland-x-utils/detectOS';
 import { LandingLinks } from '../components/_links';
 
 const box = css`
-    padding: 141px 0 166px;
+    padding: 100px 0 200px;
 
     @media (min-width: 960px) and (max-width: 1599px) {
         padding: 100px 0 120px;
@@ -20,7 +20,7 @@ const box = css`
     }
 
     @media (max-width: 767px) {
-        padding: 70px 0 76px;
+        display: none;
     }
 `;
 
@@ -80,10 +80,9 @@ const content = css`
 `;
 
 const subheading = css`
-    font-size: 24px;
-    line-height: 1.6;
-
-    margin-bottom: 20px;
+    font-size: 32px;
+    line-height: 36px;
+    margin-bottom: 24px;
 
     @media (min-width: 768px) and (max-width: 1599px) {
         font-size: 20px;
@@ -210,10 +209,9 @@ const appIcon = css`
 
 const title = css`
     font-weight: 800;
-    font-size: 36px;
-    line-height: 40px;
-    color: #272750;
-    margin: 0 0 12px;
+    font-size: 62px;
+    line-height: 64px;
+    margin: 0 0 28px;
 
     @media (min-width: 768px) and (max-width: 1599px) {
         font-size: 32px;
@@ -229,10 +227,10 @@ const title = css`
 `;
 
 const text = css`
-    font-size: 24px;
+    font-size: 32px;
     line-height: 36px;
-    color: #525273;
-    margin: 0 0 56px;
+    margin: 0 0 86px;
+    font-weight: 600;
 
     @media (min-width: 768px) and (max-width: 1599px) {
         font-size: 22px;
@@ -308,7 +306,7 @@ export const HomeApps = React.memo(() => {
     return (
         <div className={box}>
             <Container>
-                <div className={title}>Get your party started  🎉</div>
+                <div className={title}>Welcome aboard  🎉</div>
                 <div className={text}>Join now and claim<span className={link}>openland.com/<span>name</span></span></div>
                 <div className={content}>
                     <div className={webApp}>
