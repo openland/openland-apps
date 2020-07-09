@@ -11,6 +11,7 @@ import { ASImage } from 'react-native-async-view/ASImage';
 import { rm } from 'react-native-async-view/internals/baseStyleProcessor';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { UnsupportedContent } from './content/UnsupportedContent';
+import { buildBaseImageUrl } from 'openland-y-utils/photoRefUtils';
 
 const SelectCheckbox = React.memo((props: { engine: ConversationEngine, message: DataSourceMessageItem, theme: ThemeGlobal }) => {
     const [selected, toggleSelect] = useMessageSelected(props.engine.messagesActionsStateEngine, props.message);
@@ -50,7 +51,7 @@ type SendingIndicatorT = 'pending' | 'sending' | 'sent' | 'hide';
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     const theme = useThemeGlobal();
     const { conversationId, message, engine, onMessageDoublePress, onMessagePress, onMessageLongPress, onUserPress, onGroupPress, onDocumentPress, onMediaPress, onCommentsPress, onReplyPress, onReactionsPress, onOrganizationPress, onHashtagPress } = props;
-    const { isOut, attachTop, attachBottom, commentsCount, reactions, sender, isSending } = message;
+    const { isOut, attachTop, attachBottom, commentsCount, reactions, sender, isSending, overrideAvatar, overrideName } = message;
 
     const [sendingIndicator, setSendingIndicator] = React.useState<SendingIndicatorT>('hide');
 
@@ -125,9 +126,9 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
                         <ASFlex marginRight={12} onPress={() => handleUserPress(sender.id)} alignItems="flex-end">
                             <AsyncAvatar
                                 size="small"
-                                src={sender.photo}
+                                src={overrideAvatar ? buildBaseImageUrl(overrideAvatar) : sender.photo}
                                 placeholderKey={sender.id}
-                                placeholderTitle={sender.name}
+                                placeholderTitle={overrideName || sender.name}
                             />
                         </ASFlex>
                     }

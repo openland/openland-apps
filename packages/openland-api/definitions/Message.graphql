@@ -285,6 +285,16 @@ fragment FullMessage on ModernMessage {
         reactions {
             ...MessageReactions
         }
+        overrideAvatar {
+            uuid
+            crop {
+                x
+                y
+                w
+                h
+            }
+        }
+        overrideName
     }
 
     ... on StickerMessage {
@@ -299,6 +309,16 @@ fragment FullMessage on ModernMessage {
         reactions {
             ...MessageReactions
         }
+        overrideAvatar {
+            uuid
+            crop {
+                x
+                y
+                w
+                h
+            }
+        }
+        overrideName
     }
 
     ... on ServiceMessage {

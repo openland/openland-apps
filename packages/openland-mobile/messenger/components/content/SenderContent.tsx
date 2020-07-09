@@ -38,7 +38,7 @@ export const SenderContent = React.memo((props: SenderContentProps) => {
                 numberOfLines={1}
                 flexShrink={1}
             >
-                {message.sender.name}
+                {message.overrideName || message.sender.name}
             </ASText>
         </ASFlex>
     );

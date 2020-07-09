@@ -399,7 +399,19 @@ internal val FullMessageSelector = obj(
                 field("reactions", "reactions", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessageReaction", MessageReactionsSelector)
-                    )))))
+                    ))))),
+                field("overrideAvatar", "overrideAvatar", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("uuid", "uuid", notNull(scalar("String"))),
+                        field("crop", "crop", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("x", "x", notNull(scalar("Int"))),
+                                field("y", "y", notNull(scalar("Int"))),
+                                field("w", "w", notNull(scalar("Int"))),
+                                field("h", "h", notNull(scalar("Int")))
+                            ))
+                    )),
+                field("overrideName", "overrideName", scalar("String"))
             )),
             inline("StickerMessage", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
@@ -416,7 +428,19 @@ internal val FullMessageSelector = obj(
                 field("reactions", "reactions", notNull(list(notNull(obj(
                         field("__typename", "__typename", notNull(scalar("String"))),
                         fragment("ModernMessageReaction", MessageReactionsSelector)
-                    )))))
+                    ))))),
+                field("overrideAvatar", "overrideAvatar", obj(
+                        field("__typename", "__typename", notNull(scalar("String"))),
+                        field("uuid", "uuid", notNull(scalar("String"))),
+                        field("crop", "crop", obj(
+                                field("__typename", "__typename", notNull(scalar("String"))),
+                                field("x", "x", notNull(scalar("Int"))),
+                                field("y", "y", notNull(scalar("Int"))),
+                                field("w", "w", notNull(scalar("Int"))),
+                                field("h", "h", notNull(scalar("Int")))
+                            ))
+                    )),
+                field("overrideName", "overrideName", scalar("String"))
             )),
             inline("ServiceMessage", obj(
                 field("__typename", "__typename", notNull(scalar("String"))),
