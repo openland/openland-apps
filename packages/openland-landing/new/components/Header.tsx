@@ -7,7 +7,7 @@ import { MobileMenu } from './MobileMenu';
 import { HeaderApps } from './HeaderApps';
 
 const box = css`
-    padding: 0 0 8px;
+    padding: 0 0 4px;
 `;
 
 const grey = css`
@@ -18,7 +18,7 @@ const header = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 16px;
+    margin-top: 12px;
     margin-bottom: 16px;
 
     z-index: 10;
@@ -32,8 +32,8 @@ const logo = css`
 const menu = css`
     z-index: 10;
     position: relative;
-    margin: -21px;
     top: 5px;
+    margin: -16px 0 -16px -24px;
 
     @media (max-width: 767px) {
         display: none;
@@ -42,8 +42,9 @@ const menu = css`
 
 const menuItem = css`
     display: inline-block;
-    font-size: 16px;
-    margin: 20px;
+    font-size: 20px;
+    line-height: 24px;
+    padding: 16px 24px 16px 24px;
     z-index: 10;
     cursor: pointer;
     position: relative;
@@ -69,7 +70,8 @@ const menuItem = css`
 `;
 
 const menuItemActive = css`
-    padding: 10px 20px;
+    padding: 12px 24px;
+    margin: 0 0 0 24px;
     color: #50a2f5;
     background-color: rgba(36, 139, 242, 0.1);
     border-radius: 8px;
@@ -112,8 +114,8 @@ export const Header = React.memo((props: HeaderProps) => {
                         <img
                             className={logo}
                             src="/static/landing/logo.svg"
-                            width="155"
-                            height="52"
+                            width="180"
+                            height="60"
                         />
                     </XView>
 
@@ -121,17 +123,16 @@ export const Header = React.memo((props: HeaderProps) => {
 
                     <div className={menu}>
                         <span className={menuItem}>
-                            <XView path={LandingLinks.discover}>Discover</XView>
+                            <XView path={LandingLinks.signin}>
+                                Join on web
+                            </XView>
                         </span>
-                        <a href={LandingLinks.creators} target="_blank" className={menuItem}>
-                            Creators
-                        </a>
 
                         <HeaderApps className={menuItem} />
 
                         <span className={XViewWrapper}>
                             <XView path={LandingLinks.signin}>
-                                <span className={cx(menuItem, menuItemActive)}>Login</span>
+                                <span className={cx(menuItem, menuItemActive)}>Sign in</span>
                             </XView>
                         </span>
                     </div>

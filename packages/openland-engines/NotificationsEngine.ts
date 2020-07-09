@@ -54,6 +54,7 @@ export class NotificationsEngine {
                 path: '/message/' + peerRootId,
                 image: sender.photo || undefined,
                 id: doSimpleHash(key).toString(),
+                replace: false
             });
         } else {
             AppNotifications.displayNotification({
@@ -62,6 +63,7 @@ export class NotificationsEngine {
                 path: '/message/' + peerRootId,
                 image: sender.photo || undefined,
                 id: doSimpleHash(key).toString(),
+                replace: false
             });
         }
     }

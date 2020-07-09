@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TextInput, Image, SectionList, FlatList, Text, Platform } from 'react-native';
+import { View, TextInput, Image, SectionList, FlatList, Text, Platform, Keyboard } from 'react-native';
 import { PageProps } from '../../../components/PageProps';
 import { withApp } from '../../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
@@ -23,6 +23,7 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const safeArea = React.useContext(ASSafeAreaContext);
     const [query, setQuery] = React.useState('');
+    const [keyboardHeight, setKeyboardHeight] = React.useState(0);
     const [countriesData, setCountriesData] = React.useState<GroupItem[] | null>(null);
     let action = props.router.params.action as (country: CountryItem) => void;
 
@@ -50,6 +51,21 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
         }
     }, [countriesData]);
 
+    React.useEffect(() => {
+        const handleShow = (e: any) => {
+            setKeyboardHeight(e?.endCoordinates?.height);
+        };
+        const handleHide = (e: any) => {
+            setKeyboardHeight(0);
+        };
+        Keyboard.addListener('keyboardWillShow', handleShow);
+        Keyboard.addListener('keyboardWillHide', handleHide);
+        return () => {
+            Keyboard.removeListener('keyboardWillShow', handleShow);
+            Keyboard.removeListener('keyboardWillHide', handleHide);
+        };
+    }, []);
+
     let sortCountries;
 
     if (query) {
@@ -63,7 +79,7 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
     return (
         <>
             <SHeader title="Country" />
-            <ASSafeAreaView marginBottom={20} flexDirection="column">
+            <ASSafeAreaView marginBottom={sortCountries && sortCountries.length === 0 ? 0 : 20} flexGrow={1} flexDirection="column">
                 <View alignItems="center" marginHorizontal={16} marginTop={8} marginBottom={16}>
                     <View
                         position="relative"
@@ -101,7 +117,7 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                     </View>
                 </View>
                 <View flexGrow={1} flexShrink={1} alignItems="center">
-                    <View maxWidth={600} width="100%">
+                    <View maxWidth={600} width="100%" justifyContent="center" flexGrow={1}>
                         {!sortCountries && (
                             <SectionList
                                 keyboardDismissMode="on-drag"
@@ -171,26 +187,26 @@ export const CountryPickerComponent = React.memo((props: PageProps) => {
                             />
                         )}
                         {sortCountries && sortCountries.length === 0 && (
-                            <View
-                                style={{
-                                    height: '100%',
-                                    flexGrow: 1,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    marginTop: -safeArea.top,
-                                }}
-                            >
-                                <Text
+                            <View flexGrow={1} marginTop={1} position="relative" marginBottom={keyboardHeight - (Platform.OS === 'ios' ? safeArea.bottom : 0)}>
+                                <View
                                     style={{
-                                        ...TextStyles.Body,
-                                        paddingVertical: 16,
-                                        paddingHorizontal: 32,
-                                        textAlign: 'center',
-                                        color: theme.foregroundTertiary,
+                                        flexGrow: 1,
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
                                     }}
                                 >
-                                    Nothing found
-                                </Text>
+                                    <Text
+                                        style={{
+                                            ...TextStyles.Body,
+                                            paddingVertical: 16,
+                                            paddingHorizontal: 32,
+                                            textAlign: 'center',
+                                            color: theme.foregroundTertiary,
+                                        }}
+                                    >
+                                        Nothing found
+                                    </Text>
+                                </View>
                             </View>
                         )}
                     </View>

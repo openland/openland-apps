@@ -3,9 +3,9 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { HomeApps } from './home/HomeApps';
 import { Page } from './components/Page';
 import { HomeIntro } from './home/HomeIntro';
-import { HomeIdeas } from './home/HomeIdeas';
-import { HomeScreenshots } from './home/HomeScreenshots';
-import { HomeCreators } from './home/HomeCreators';
+import { HomeWhy } from './home/HomeWhy';
+import { HomeExceptional } from './home/HomeExceptional';
+import { HomeHelp } from './home/HomeHelp';
 
 export const HomePage = React.memo(() => (
     <Page transparentHeader={true}>
@@ -17,10 +17,9 @@ export const HomePage = React.memo(() => (
         />
 
         <HomeIntro />
-        <HomeIdeas />
-        <HomeScreenshots />
-        <HomeCreators />
-
+        <HomeWhy />
+        <HomeExceptional />
+        <HomeHelp />
         <HomeApps />
     </Page>
 ));

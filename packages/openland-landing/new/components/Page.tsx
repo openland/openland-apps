@@ -15,7 +15,7 @@ export const Page = React.memo((props: PageProps) => (
         width="100%"
         minHeight="100vh"
         backgroundColor="#ffffff"
-        color="#1f3449"
+        color="var(--foregroundPrimary)"
     >
         <Header transparent={props.transparentHeader} />
 

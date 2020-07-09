@@ -85,7 +85,12 @@ export const RegistrationContainer = React.memo((props: RegistrationContainerPro
                 Keyboard.addListener('keyboardWillShow', keyboardWillShow);
                 Keyboard.addListener('keyboardWillHide', keyboardWillHide);
             }
-            return () => (isIos ? Keyboard.removeAllListeners() : undefined);
+            return () => {
+                if (isIos) {
+                    Keyboard.removeListener('keyboardWillShow', keyboardWillShow);
+                    Keyboard.removeListener('keyboardWillHide', keyboardWillHide);
+                }
+            };
         },
         [floatPadding],
     );

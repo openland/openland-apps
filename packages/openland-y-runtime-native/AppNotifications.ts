@@ -56,7 +56,7 @@ class AppNotiticationsIOS implements AppNotificationsApi {
         // Do nothing
     }
 
-    displayNotification(content: { path: string, title: string, body: string, image?: string, id?: string }) {
+    displayNotification(content: { path: string, title: string, body: string, image?: string, id?: string, replace?: boolean }) {
         // Do not show local notifications since remote one is good enougth
     }
 }
