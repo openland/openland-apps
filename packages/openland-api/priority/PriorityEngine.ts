@@ -20,7 +20,7 @@ function extractPriority(params: undefined | QueryParameters | QueryWatchParamet
 export class PriorityEngine implements GraphqlEngine {
 
     // Execution queue
-    private _execitionQueue = new ExecutionQueue({ parallelism: 5 /* Enforced by server too */ });
+    private _execitionQueue = new ExecutionQueue({ parallelism: 24 /* Enforced by server too */ });
 
     // Status
     protected readonly statusWatcher: Watcher<GraphqlEngineStatus> = new Watcher();
