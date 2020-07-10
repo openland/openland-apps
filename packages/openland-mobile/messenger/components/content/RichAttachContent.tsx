@@ -26,6 +26,7 @@ interface UrlAugmentationContentProps {
     onUserPress: (id: string) => void;
     onMediaPress: (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
+    onLongPress: (e: ASPressEvent) => void;
     padded?: boolean;
     hasPurchase?: boolean;
     theme: ThemeGlobal;
@@ -163,7 +164,7 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                 : 5;
 
         return (
-            <ASFlex flexDirection="column" alignItems="stretch" alignSelf="stretch" onPress={this.onPress}>
+            <ASFlex flexDirection="column" alignItems="stretch" alignSelf="stretch" onPress={this.onPress} onLongPress={this.props.onLongPress}>
                 {!!this.props.attach.titleLinkHostname && imgCompact && (
                     <ASText
                         maxWidth={maxWidth}
@@ -279,27 +280,34 @@ export class RichAttachContent extends React.PureComponent<UrlAugmentationConten
                             <ASFlex
                                 marginTop={i !== 0 ? 4 : 0}
                                 key={'button-' + i + '-' + j}
-                                borderRadius={8}
                                 backgroundColor={theme.backgroundPrimary}
                                 marginLeft={j > 0 ? 4 : 0}
                                 marginRight={j < line.length - 1 ? 4 : 0}
-                                alignItems="center"
-                                justifyContent="center"
                                 height={36}
                                 flexGrow={1}
-                                onPress={resolveInternalLink(button.url!, () => Linking.openURL(button.url!))}
+                                borderRadius={8}
                             >
-                                <ASText
-                                    textAlign='center'
-                                    color={theme.accentPrimary}
-                                    {...TextStylesAsync.Label2}
-                                    height={20}
-                                    marginTop={-2}
-                                    maxWidth={maxWidth - 24 - 16}
+                                <ASFlex
+                                    height={36}
+                                    borderRadius={8}
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    flexGrow={1}
+                                    onPress={resolveInternalLink(button.url!, () => Linking.openURL(button.url!))}
+                                    onLongPress={resolveInternalLink(button.url!, () => Linking.openURL(button.url!))}
+                                    highlightColor={theme.backgroundPrimaryActive}
                                 >
-                                    {button.title}
-                                </ASText>
-
+                                    <ASText
+                                        textAlign='center'
+                                        color={theme.accentPrimary}
+                                        {...TextStylesAsync.Label2}
+                                        height={20}
+                                        marginTop={-2}
+                                        maxWidth={maxWidth - 24 - 16}
+                                    >
+                                        {button.title}
+                                    </ASText>
+                                </ASFlex>
                             </ASFlex>
                         )}
                     </ASFlex>
