@@ -107,6 +107,9 @@ export const CallModalConponent = React.memo((props: { chatId: string, calls: Ca
                 },
                 onDataSourceScrollToKeyRequested: () => {
                     //
+                },
+                onDataSourceScrollToTop: () => {
+                    //
                 }
             }
         );

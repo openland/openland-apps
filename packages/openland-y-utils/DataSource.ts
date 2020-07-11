@@ -25,6 +25,7 @@ export interface DataSourceItem {
 export interface DataSourceWatcher<T extends DataSourceItem> {
     onDataSourceInited(data: T[], completed: boolean, completedForward: boolean, anchor?: string, reloaded?: boolean): void;
     onDataSourceScrollToKeyRequested(scrollToKey: string): void;
+    onDataSourceScrollToTop(): void;
     onDataSourceItemAdded(item: T, index: number, isAnchor: boolean): void;
     onDataSourceItemUpdated(item: T, index: number): void;
     onDataSourceItemRemoved(item: T, index: number): void;
@@ -133,9 +134,14 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
     }
 
     requestScrollToTop() {
-        if (this.getSize() > 0) {
-            this.requestScrollToKey(this.getAt(0).key);
+        for (let w of this.watchers) {
+            if (w.onDataSourceScrollToTop) {
+                w.onDataSourceScrollToTop();
+            }
         }
+        // if (this.getSize() > 0) {
+        //     this.requestScrollToKey(this.getAt(0).key);
+        // }
     }
 
     getAt(index: number) {
@@ -349,6 +355,9 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
             },
             onDataSourceScrollToKeyRequested(key: string) {
                 //
+            },
+            onDataSourceScrollToTop() {
+                //
             }
         });
     }
@@ -401,6 +410,9 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
             },
             onDataSourceScrollToKeyRequested(key: string) {
                 res.requestScrollToKey(key);
+            },
+            onDataSourceScrollToTop() {
+                res.requestScrollToTop();
             }
         });
 
@@ -486,6 +498,11 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
             onDataSourceScrollToKeyRequested(key: string) {
                 schedule(async () => {
                     res.requestScrollToKey(key);
+                });
+            },
+            onDataSourceScrollToTop() {
+                schedule(async () => {
+                    res.requestScrollToTop();
                 });
             }
         });
@@ -636,6 +653,13 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
                 }
                 res.requestScrollToKey(key);
             },
+            onDataSourceScrollToTop() {
+                if (batchScheduled) {
+                    clearTimeout(timer);
+                    doDlush();
+                }
+                res.requestScrollToTop();
+            }
         });
 
         return res;
@@ -712,6 +736,9 @@ export function useDataSource<T extends DataSourceItem>(
                 onDataSourceScrollToKeyRequested: scrollTo => {
                     setScrollTo({ scrollTo });
                 },
+                onDataSourceScrollToTop: () => {
+                    //
+                }
             });
             return w;
         },

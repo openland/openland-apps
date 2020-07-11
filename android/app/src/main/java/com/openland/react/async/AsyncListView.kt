@@ -30,7 +30,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
     private var inited = false
     private var dataView: AsyncDataView? = null
     private var dataViewKey: String? = null
-    private var state: AsyncDataViewState = AsyncDataViewState(emptyList(), true, true, null)
+    private var state: AsyncDataViewState = AsyncDataViewState(emptyList(), true, true, null, false)
     private var dataViewSubscription: (() -> Unit)? = null
     private var inverted: Boolean = false
     private var headerPadding: Float = 0.0f
@@ -127,7 +127,11 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
             // TODO: figure out how to make it scroll without animation and delay
 //            Handler().postDelayed( {
 //            }, 1)
-            this.eventController.requestScrollToPosition(scrollToIndex + 1, false)
+            if (this.state.animated === true) {
+                this.eventController.requestScrollToPosition(scrollToIndex + 1, true)
+            } else {
+                this.eventController.requestScrollToPosition(scrollToIndex + 1, false)
+            }
 
             this.state.scrollToKey = null
         }

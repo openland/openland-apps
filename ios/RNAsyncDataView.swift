@@ -30,6 +30,7 @@ protocol RNAsyncDataViewDelegate {
   func onCompleted(state: RNAsyncDataViewState)
   func onCompletedForward(state: RNAsyncDataViewState)
   func onScrollToRequested(index: Int)
+  func onScrollToTopFunc()
 }
 
 class RNAsyncDataViewState {
@@ -208,6 +209,12 @@ class RNAsyncDataView {
       for i in watchers.all() {
         i.value.onScrollToRequested(index: index!)
       }
+    }
+  }
+  
+  func handleScrollToTopFunc() {
+    for i in watchers.all() {
+      i.value.onScrollToTopFunc()
     }
   }
   
@@ -570,6 +577,14 @@ class RNAsyncDataViewWindow: RNAsyncDataViewDelegate {
       }
     }
   }
+  
+  func onScrollToTopFunc(){
+    queue.asyncAfter(deadline: .now() + .milliseconds(1)) {
+      for i in self.watchers.all() {
+        i.value.onScrollToTopFunc()
+      }
+    }
+  }
 
   func watch(delegate: RNAsyncDataViewDelegate) -> ()-> Void {
     let key = UUID().uuidString
@@ -664,6 +679,11 @@ class RNAsyncDataViewManager: NSObject {
   @objc(dataViewScrollToKeyReqested:scrollToKey:)
   func dataViewScrollToKeyReqested(dataSourceKey: String, scrollToKey: String) -> Void {
     RNAsyncDataView.getDataView(key: dataSourceKey).handleScrollToRequest(key: scrollToKey)
+  }
+  
+  @objc(dataViewScrollToTopFunc:)
+  func dataViewScrollToTopFunc(dataSourceKey: String) -> Void {
+    RNAsyncDataView.getDataView(key: dataSourceKey).handleScrollToTopFunc()
   }
   
   @objc(dataViewCompleted:)

@@ -46,17 +46,17 @@ export const Home = React.memo((props: PageProps) => {
                 exploreRef.current.getNode().scrollTo({ y: 0 });
             } else if (tab === 2) {
                 dialogsDataSource.requestScrollToTop();
-                if (dialogsContentOffset.current) {
-                    dialogsContentOffset.current.setOffset(0);
-                }
-                if (dialogsAdditionalRef.current && dialogsAdditionalRef.current.getNode) {
-                    const node = dialogsAdditionalRef.current.getNode();
-                    if (node.scrollToOffset) {
-                        node.scrollToOffset({ offset: 0 });
-                    } else if (node.scrollTo) {
-                        node.scrollTo({ y: 0 });
-                    }
-                }
+                // if (dialogsContentOffset.current) {
+                //     dialogsContentOffset.current.setOffset(0);
+                // }
+                // if (dialogsAdditionalRef.current && dialogsAdditionalRef.current.getNode) {
+                //     const node = dialogsAdditionalRef.current.getNode();
+                //     if (node.scrollToOffset) {
+                //         node.scrollToOffset({ offset: 0 });
+                //     } else if (node.scrollTo) {
+                //         node.scrollTo({ y: 0 });
+                //     }
+                // }
             } else if (tab === 3) {
                 notificationsDataSource.requestScrollToTop();
                 if (notificationsContentOffset.current) {

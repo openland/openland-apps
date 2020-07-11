@@ -82,6 +82,10 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
         NativeDataView.dataViewScrollToKeyReqested(this.key, scrollToKey);
     }
 
+    onDataSourceScrollToTop = () => {
+        NativeDataView.dataViewScrollToTopFunc(this.key);
+    }
+
     onDataSourceItemAdded = (item: T, index: number, isAnchor: boolean) => {
         this.queue.push(async () => {
             let holder = new ItemRenderHolder(this, item, this.render);

@@ -9,12 +9,12 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 data class AsyncDataViewItem(val key: String, var spec: AsyncViewSpec)
 
-data class AsyncDataViewState(var items: List<AsyncDataViewItem>, val competed: Boolean, val competedForward: Boolean, var scrollToKey: String?)
+data class AsyncDataViewState(var items: List<AsyncDataViewItem>, val competed: Boolean, val competedForward: Boolean, var scrollToKey: String?, var animated: Boolean?)
 
 class AsyncDataView(val context: ReactContext, val key: String) {
     private var applyModes: Array<String> = arrayOf()
 
-    var state: AsyncDataViewState = AsyncDataViewState(emptyList(), false, false, null)
+    var state: AsyncDataViewState = AsyncDataViewState(emptyList(), false, false, null, false)
 
     private var listeners = CopyOnWriteArrayList<(state: AsyncDataViewState) -> Unit>()
     private var isRequested = false
@@ -27,7 +27,7 @@ class AsyncDataView(val context: ReactContext, val key: String) {
                 is AsyncFlexSpec -> AsyncDataViewItem(it.key, (it.spec as AsyncFlexSpec).applyModes(this.applyModes))
                 else -> it
             }
-        }, this.state.competed, this.state.competedForward, this.state.scrollToKey)
+        }, this.state.competed, this.state.competedForward, this.state.scrollToKey, false)
         this.state = s
         notifyWatchers(s)
     }
@@ -54,19 +54,19 @@ class AsyncDataView(val context: ReactContext, val key: String) {
     }
 
     fun handleInit(items: List<AsyncDataViewItem>, completed: Boolean, completedForward: Boolean, anchor: String?) {
-        val s = AsyncDataViewState(items, completed, completedForward, anchor)
+        val s = AsyncDataViewState(items, completed, completedForward, anchor, false)
         this.state = s
         notifyWatchers(s)
     }
 
     fun handleAddItem(item: AsyncDataViewItem, index: Int, isAnchor: Boolean?) {
-        val s = AsyncDataViewState(this.state.items.subList(0, index) + AsyncDataViewItem(item.key, (item.spec as AsyncFlexSpec).applyModes(this.applyModes)) + this.state.items.subList(index, this.state.items.size), this.state.competed, this.state.competedForward, if (isAnchor !== null && isAnchor) item.key else this.state.scrollToKey)
+        val s = AsyncDataViewState(this.state.items.subList(0, index) + AsyncDataViewItem(item.key, (item.spec as AsyncFlexSpec).applyModes(this.applyModes)) + this.state.items.subList(index, this.state.items.size), this.state.competed, this.state.competedForward, if (isAnchor !== null && isAnchor) item.key else this.state.scrollToKey, false)
         this.state = s
         notifyWatchers(s)
     }
 
     fun handleUpdateItem(item: AsyncDataViewItem, index: Int) {
-        val s = AsyncDataViewState(this.state.items.subList(0, index) + AsyncDataViewItem(item.key, (item.spec as AsyncFlexSpec).applyModes(this.applyModes)) + this.state.items.subList(index + 1, this.state.items.size), this.state.competed, this.state.competedForward, this.state.scrollToKey)
+        val s = AsyncDataViewState(this.state.items.subList(0, index) + AsyncDataViewItem(item.key, (item.spec as AsyncFlexSpec).applyModes(this.applyModes)) + this.state.items.subList(index + 1, this.state.items.size), this.state.competed, this.state.competedForward, this.state.scrollToKey, false)
         this.state = s
         notifyWatchers(s)
     }
@@ -75,14 +75,14 @@ class AsyncDataView(val context: ReactContext, val key: String) {
         val i = this.state.items[from]
         var itms = this.state.items.subList(0, from) + this.state.items.subList(from + 1, this.state.items.size)
         itms = itms.subList(0, to) + i + itms.subList(to, itms.size)
-        val s = AsyncDataViewState(itms, this.state.competed, this.state.competedForward, this.state.scrollToKey)
+        val s = AsyncDataViewState(itms, this.state.competed, this.state.competedForward, this.state.scrollToKey, false)
         this.state = s
         notifyWatchers(s)
     }
 
     fun handleRemoveItem(key: String, index: Int) {
         val itms = this.state.items.subList(0, index) + this.state.items.subList(index + 1, this.state.items.size)
-        val s = AsyncDataViewState(itms, this.state.competed, this.state.competedForward, this.state.scrollToKey)
+        val s = AsyncDataViewState(itms, this.state.competed, this.state.competedForward, this.state.scrollToKey, false)
         this.state = s
         notifyWatchers(s)
     }
@@ -93,7 +93,7 @@ class AsyncDataView(val context: ReactContext, val key: String) {
                 is AsyncFlexSpec -> AsyncDataViewItem(it.key, (it.spec as AsyncFlexSpec).applyModes(this.applyModes))
                 else -> it
             }
-        }, completed, this.state.competedForward, this.state.scrollToKey)
+        }, completed, this.state.competedForward, this.state.scrollToKey, false)
         this.state = s
         notifyWatchers(s)
         this.isRequested = false
@@ -105,14 +105,20 @@ class AsyncDataView(val context: ReactContext, val key: String) {
                 is AsyncFlexSpec -> AsyncDataViewItem(it.key, (it.spec as AsyncFlexSpec).applyModes(this.applyModes))
                 else -> it
             }
-        } + this.state.items, this.state.competed, completed, this.state.scrollToKey)
+        } + this.state.items, this.state.competed, completed, this.state.scrollToKey, false)
         this.state = s
         notifyWatchers(s)
         this.isRequestedForward = false
     }
 
     fun handleScrollToKeyRequest(scrollToKey: String){
-        val s = AsyncDataViewState(this.state.items, this.state.competed, this.state.competedForward, scrollToKey)
+        val s = AsyncDataViewState(this.state.items, this.state.competed, this.state.competedForward, scrollToKey, false)
+        this.state = s
+        notifyWatchers(s)
+    }
+
+    fun handleScrollToTopFunc() {
+        val s = AsyncDataViewState(this.state.items, this.state.competed, this.state.competedForward, this.state.items[0].key, true);
         this.state = s
         notifyWatchers(s)
     }
@@ -226,5 +232,10 @@ class AsyncDataViewManager(reactContext: ReactApplicationContext) : ReactContext
     @ReactMethod
     fun dataViewScrollToKeyReqested(dataSourceKey: String, scrollToKey: String) {
         getDataView(dataSourceKey, this.reactApplicationContext).handleScrollToKeyRequest(scrollToKey)
+    }
+
+    @ReactMethod
+    fun dataViewScrollToTopFunc(dataSourceKey: String) {
+        getDataView(dataSourceKey, this.reactApplicationContext).handleScrollToTopFunc()
     }
 }
