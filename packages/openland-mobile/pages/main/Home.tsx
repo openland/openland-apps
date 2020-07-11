@@ -12,12 +12,10 @@ import { getClient } from 'openland-mobile/utils/graphqlClient';
 import { NotificationCenter } from './NotificationCenter';
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { SRouterContext } from 'react-native-s/SRouterContext';
-import { STrackedValue } from 'react-native-s/STrackedValue';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 
 export const ActiveTabContext = React.createContext(false);
 export const SetTabContext = React.createContext<(index: number) => void>(() => {/* noop */ });
-export const STrackedValueRefContext = React.createContext<React.MutableRefObject<STrackedValue | undefined> | undefined>(undefined);
 export const ComponentRefContext = React.createContext<React.RefObject<any> | undefined>(undefined); // terrible hack here and after because of Animated.FlatList and Animated.ScrollView
 
 const DEFAULT_TAB = 2;
@@ -34,10 +32,8 @@ export const Home = React.memo((props: PageProps) => {
     const messengerEngine = getMessenger().engine;
     const exploreRef = React.createRef<any>();
     const dialogsDataSource = messengerEngine.dialogList.dataSource;
-    const dialogsContentOffset = React.useRef<STrackedValue>();
     const dialogsAdditionalRef = React.createRef<any>();
     const notificationsDataSource = messengerEngine.notificationCenter.dataSource;
-    const notificationsContentOffset = React.useRef<STrackedValue>();
     const settingsRef = React.createRef<any>();
 
     const handleChangeTab = (newTab: number) => {
@@ -46,22 +42,16 @@ export const Home = React.memo((props: PageProps) => {
                 exploreRef.current.getNode().scrollTo({ y: 0 });
             } else if (tab === 2) {
                 dialogsDataSource.requestScrollToTop();
-                // if (dialogsContentOffset.current) {
-                //     dialogsContentOffset.current.setOffset(0);
-                // }
-                // if (dialogsAdditionalRef.current && dialogsAdditionalRef.current.getNode) {
-                //     const node = dialogsAdditionalRef.current.getNode();
-                //     if (node.scrollToOffset) {
-                //         node.scrollToOffset({ offset: 0 });
-                //     } else if (node.scrollTo) {
-                //         node.scrollTo({ y: 0 });
-                //     }
-                // }
+                if (dialogsAdditionalRef.current && dialogsAdditionalRef.current.getNode) {
+                    const node = dialogsAdditionalRef.current.getNode();
+                    if (node.scrollToOffset) {
+                        node.scrollToOffset({ offset: 0 });
+                    } else if (node.scrollTo) {
+                        node.scrollTo({ y: 0 });
+                    }
+                }
             } else if (tab === 3) {
                 notificationsDataSource.requestScrollToTop();
-                if (notificationsContentOffset.current) {
-                    notificationsContentOffset.current.setOffset(0);
-                }
             } else if (tab === 4 && settingsRef.current) {
                 settingsRef.current.getNode().scrollTo({ y: 0 });
             }
@@ -92,11 +82,9 @@ export const Home = React.memo((props: PageProps) => {
                         <HeaderContextChild enabled={tab === 2}>
                             {tab === 2 && <ZTrack event="navigate_chats" />}
                             <SetTabContext.Provider value={setTab}>
-                                <STrackedValueRefContext.Provider value={dialogsContentOffset}>
-                                    <ComponentRefContext.Provider value={dialogsAdditionalRef}>
-                                        <HomeDialogs {...props} />
-                                    </ComponentRefContext.Provider>
-                                </STrackedValueRefContext.Provider>
+                                <ComponentRefContext.Provider value={dialogsAdditionalRef}>
+                                    <HomeDialogs {...props} />
+                                </ComponentRefContext.Provider>
                             </SetTabContext.Provider>
                         </HeaderContextChild>
                     </View>
@@ -104,9 +92,7 @@ export const Home = React.memo((props: PageProps) => {
                         <HeaderContextChild enabled={tab === 3}>
                             <ActiveTabContext.Provider value={tab === 3}>
                                 {tab === 3 && <ZTrack event="navigate_notifications" />}
-                                <STrackedValueRefContext.Provider value={notificationsContentOffset}>
-                                    <NotificationCenter {...props} />
-                                </STrackedValueRefContext.Provider>
+                                <NotificationCenter {...props} />
                             </ActiveTabContext.Provider>
                         </HeaderContextChild>
                     </View>

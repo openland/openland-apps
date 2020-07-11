@@ -139,9 +139,6 @@ export class DataSource<T extends DataSourceItem> implements ReadableDataSource<
                 w.onDataSourceScrollToTop();
             }
         }
-        // if (this.getSize() > 0) {
-        //     this.requestScrollToKey(this.getAt(0).key);
-        // }
     }
 
     getAt(index: number) {

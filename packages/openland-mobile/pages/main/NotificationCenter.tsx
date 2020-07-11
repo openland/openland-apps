@@ -10,12 +10,11 @@ import { SHeader } from 'react-native-s/SHeader';
 import { STrackedValue } from 'react-native-s/STrackedValue';
 import { Animated } from 'react-native';
 import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
-import { ActiveTabContext, STrackedValueRefContext } from './Home';
+import { ActiveTabContext } from './Home';
 
 interface NotificationCenterPageProps {
     engine: NotificationCenterEngine;
     tabEnabled: boolean;
-    contentOffsetRef?: React.MutableRefObject<STrackedValue | undefined>;
 }
 
 class NotificationCenterPage extends React.PureComponent<NotificationCenterPageProps, { dataSourceGeneration: number }> {
@@ -26,9 +25,6 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
     constructor(props: any) {
         super(props);
         this.state = { dataSourceGeneration: 0 };
-        if (props.contentOffsetRef) {
-            props.contentOffsetRef.current = this.contentOffset;
-        }
     }
 
     componentWillMount() {
@@ -101,9 +97,8 @@ class NotificationCenterPage extends React.PureComponent<NotificationCenterPageP
 const NotificationCenterWrapper = React.memo((props: PageProps) => {
     const engine = getMessenger().engine.notificationCenter;
     const tabEnabled = React.useContext(ActiveTabContext);
-    const contentOffsetRef = React.useContext(STrackedValueRefContext);
 
-    return <NotificationCenterPage engine={engine} tabEnabled={tabEnabled} contentOffsetRef={contentOffsetRef} />;
+    return <NotificationCenterPage engine={engine} tabEnabled={tabEnabled} />;
 });
 
 export const NotificationCenter = withApp(NotificationCenterWrapper);

@@ -9,18 +9,10 @@ import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngin
 
 interface DialogListComponentProps {
     dialogs: ASDataView<DialogDataSourceItem>;
-    contentOffsetRef?: React.MutableRefObject<STrackedValue | undefined>;
 }
 
 export class DialogListComponent extends React.PureComponent<DialogListComponentProps> {
     contentOffset = new STrackedValue();
-
-    constructor(props: DialogListComponentProps) {
-        super(props);
-        if (props.contentOffsetRef) {
-            props.contentOffsetRef.current = this.contentOffset;
-        }
-    }
 
     render() {
         return (

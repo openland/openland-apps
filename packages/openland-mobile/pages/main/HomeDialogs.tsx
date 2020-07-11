@@ -15,7 +15,7 @@ import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngin
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { GlobalSearchEntryKind } from 'openland-api/spacex.types';
-import { SetTabContext, STrackedValueRefContext, ComponentRefContext } from './Home';
+import { SetTabContext, ComponentRefContext } from './Home';
 
 const DialogsComponent = React.memo((props: PageProps) => {
     const handlePress = React.useCallback((id: string, title: string) => {
@@ -59,7 +59,6 @@ const DialogsComponent = React.memo((props: PageProps) => {
 
     const globalSearchValue = props.router.params.searchValue;
 
-    const contentOffsetRef = React.useContext(STrackedValueRefContext);
     const additionalRef = React.useContext(ComponentRefContext);
 
     return (
@@ -88,7 +87,7 @@ const DialogsComponent = React.memo((props: PageProps) => {
                         />
                     )}
                 >
-                    <DialogListComponent dialogs={dialogs} contentOffsetRef={contentOffsetRef} />
+                    <DialogListComponent dialogs={dialogs} />
                 </SSearchControler>
             )}
             {globalSearchValue && (
