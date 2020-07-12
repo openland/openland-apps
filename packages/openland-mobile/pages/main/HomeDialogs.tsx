@@ -15,7 +15,7 @@ import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngin
 import { ZTrack } from 'openland-mobile/analytics/ZTrack';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { GlobalSearchEntryKind } from 'openland-api/spacex.types';
-import { SetTabContext, ComponentRefContext } from './Home';
+import { SetTabContext } from './Home';
 
 const DialogsComponent = React.memo((props: PageProps) => {
     const handlePress = React.useCallback((id: string, title: string) => {
@@ -59,8 +59,6 @@ const DialogsComponent = React.memo((props: PageProps) => {
 
     const globalSearchValue = props.router.params.searchValue;
 
-    const additionalRef = React.useContext(ComponentRefContext);
-
     return (
         <ZTrack event="mail_view">
             <SHeader title={props.router.params.title || (props.router.params.share ? 'Share with' : 'Chats')} />
@@ -83,7 +81,6 @@ const DialogsComponent = React.memo((props: PageProps) => {
                             onUserPress={handlePress}
                             kinds={(props.router.params.title || props.router.params.share) ? [GlobalSearchEntryKind.USER, GlobalSearchEntryKind.SHAREDROOM] : undefined}
                             onMessagePress={(props.router.params.title || props.router.params.share) ? undefined : handleMessagePress}
-                            scrollRef={additionalRef}
                         />
                     )}
                 >
@@ -95,7 +92,6 @@ const DialogsComponent = React.memo((props: PageProps) => {
                     query={globalSearchValue}
                     router={props.router}
                     onMessagePress={handleMessagePress}
-                    scrollRef={additionalRef}
                 />
             )}
         </ZTrack>

@@ -7,7 +7,6 @@ import { LoaderSpinner } from 'openland-mobile/components/LoaderSpinner';
 
 export interface SFlatListProps<T> extends FlatListProps<T> {
     safeAreaViaMargin?: boolean;
-    flatListRef?: React.RefObject<any>;
 }
 
 export class SFlatList<T> extends React.Component<SFlatListProps<T>> {
@@ -20,7 +19,7 @@ export class SFlatList<T> extends React.Component<SFlatListProps<T>> {
     );
 
     render() {
-        let { safeAreaViaMargin, legacyImplementation, onEndReachedThreshold, refreshing, ListFooterComponent, flatListRef, ...other } = this.props;
+        let { safeAreaViaMargin, legacyImplementation, onEndReachedThreshold, refreshing, ListFooterComponent, ...other } = this.props;
         let AnimatedFlatList = (Animated as any).FlatList;
         return (
             <>
@@ -52,7 +51,6 @@ export class SFlatList<T> extends React.Component<SFlatListProps<T>> {
                                 onEndReachedThreshold={1}
                                 refreshing={refreshing}
                                 ListFooterComponent={refreshing ? this.renderLoader : ListFooterComponent}
-                                ref={flatListRef}
                             />
                         );
                     }}

@@ -32,7 +32,6 @@ export const Home = React.memo((props: PageProps) => {
     const messengerEngine = getMessenger().engine;
     const exploreRef = React.createRef<any>();
     const dialogsDataSource = messengerEngine.dialogList.dataSource;
-    const dialogsAdditionalRef = React.createRef<any>();
     const notificationsDataSource = messengerEngine.notificationCenter.dataSource;
     const settingsRef = React.createRef<any>();
 
@@ -42,14 +41,6 @@ export const Home = React.memo((props: PageProps) => {
                 exploreRef.current.getNode().scrollTo({ y: 0 });
             } else if (tab === 2) {
                 dialogsDataSource.requestScrollToTop();
-                if (dialogsAdditionalRef.current && dialogsAdditionalRef.current.getNode) {
-                    const node = dialogsAdditionalRef.current.getNode();
-                    if (node.scrollToOffset) {
-                        node.scrollToOffset({ offset: 0 });
-                    } else if (node.scrollTo) {
-                        node.scrollTo({ y: 0 });
-                    }
-                }
             } else if (tab === 3) {
                 notificationsDataSource.requestScrollToTop();
             } else if (tab === 4 && settingsRef.current) {
@@ -74,7 +65,7 @@ export const Home = React.memo((props: PageProps) => {
                     </View>
                     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: tab === 1 ? 1 : 0 }} pointerEvents={tab === 1 ? 'box-none' : 'none'}>
                         <HeaderContextChild enabled={tab === 1}>
-                            {tab === 1 && <ZTrack event={'navigate_discover'} />}
+                            {tab === 1 && <ZTrack event={'navigate_contacts'} />}
                             <Contacts {...props} />
                         </HeaderContextChild>
                     </View>
@@ -82,9 +73,7 @@ export const Home = React.memo((props: PageProps) => {
                         <HeaderContextChild enabled={tab === 2}>
                             {tab === 2 && <ZTrack event="navigate_chats" />}
                             <SetTabContext.Provider value={setTab}>
-                                <ComponentRefContext.Provider value={dialogsAdditionalRef}>
-                                    <HomeDialogs {...props} />
-                                </ComponentRefContext.Provider>
+                                <HomeDialogs {...props} />
                             </SetTabContext.Provider>
                         </HeaderContextChild>
                     </View>
@@ -116,7 +105,6 @@ export const Home = React.memo((props: PageProps) => {
                         onPress={() => handleChangeTab(0)}
                     />
                     <AppBarBottomItem
-                        dot={discoverDone !== null && !discoverDone.betaIsDiscoverDone}
                         icon={require('assets/ic-user-24.png')}
                         iconSelected={require('assets/ic-user-filled-24.png')}
                         selected={tab === 1}
