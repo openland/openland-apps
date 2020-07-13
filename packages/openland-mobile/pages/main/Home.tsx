@@ -25,7 +25,6 @@ export const Home = React.memo((props: PageProps) => {
     const [tab, setTab] = React.useState(router && router.params && typeof router.params.initialTab === 'number' ? router.params.initialTab : DEFAULT_TAB);
     const counter = getClient().useGlobalCounter({ suspense: false });
     const notificationsCounter = getClient().useMyNotificationCenter({ suspense: false });
-    const discoverDone = getClient().useDiscoverIsDone({ suspense: false });
     const wallet = getClient().useMyWallet({ suspense: false });
     const failingPaymentsCount = wallet && wallet.myWallet.failingPaymentsCount || undefined;
 
@@ -98,7 +97,6 @@ export const Home = React.memo((props: PageProps) => {
             <View style={{ position: Platform.OS === 'ios' ? 'absolute' : 'relative', bottom: 0, left: 0, right: 0 }}>
                 <AppBarBottom>
                     <AppBarBottomItem
-                        dot={discoverDone !== null && !discoverDone.betaIsDiscoverDone}
                         icon={require('assets/ic-discover-24.png')}
                         iconSelected={require('assets/ic-discover-filled-24.png')}
                         selected={tab === 0}
