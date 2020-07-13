@@ -21,7 +21,7 @@ export const resolveNextPage = (session: Account_sessionState) => {
     throw new Error('inconsistent state');
 };
 
-export let next: (router: SRouter | NavigationManager) => void;
+export let next: (router: SRouter | NavigationManager) => Promise<any>;
 
 next = async (router: SRouter | NavigationManager) => {
     const res = await backoff(async () => await getClient().refetchAccount()); // TODO: Refetch!

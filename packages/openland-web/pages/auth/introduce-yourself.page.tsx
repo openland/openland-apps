@@ -87,20 +87,20 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
                 lastName: lastName.value.trim(),
                 photoRef: photoRef.value
                     ? {
-                          ...(photoRef.value as any),
-                          isImage: undefined,
-                          width: undefined,
-                          height: undefined,
-                          crop: undefined,
-                          __typename: undefined,
-                      }
+                        ...(photoRef.value as any),
+                        isImage: undefined,
+                        width: undefined,
+                        height: undefined,
+                        crop: undefined,
+                        __typename: undefined,
+                    }
                     : undefined,
             };
 
             setSending(true);
 
             const inviteKey =
-                Cookie.get('x-openland-invite')  || Cookie.get('x-openland-org-invite') || Cookie.get('x-openland-app-invite');
+                Cookie.get('x-openland-invite') || Cookie.get('x-openland-org-invite') || Cookie.get('x-openland-app-invite');
 
             if (props.initialProfileFormData) {
                 await client.mutateProfileUpdate({
@@ -112,6 +112,7 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
                     input: formData,
                     inviteKey,
                 });
+                await client.mutateBetaDiscoverSkip({ selectedTagsIds: [] });
             }
             await client.mutateCreateOrganization({
                 input: {
@@ -136,9 +137,11 @@ const CreateProfileFormInnerWeb = (props: EnterYourOrganizationPageProps) => {
                     await client.mutateOrganizationActivateByInvite({ inviteKey });
                 }
             }
-            await client.refetchProfile();
-            await client.refetchProfilePrefill();
-            await client.refetchAccount();
+            await Promise.all([
+                client.refetchProfile(),
+                client.refetchProfilePrefill(),
+                client.refetchAccount(),
+            ]);
             trackEvent('registration_complete');
             if (isPremium) {
                 window.location.href = `/invite/${inviteKey}`;
@@ -232,10 +235,10 @@ const IntroduceYourselfPageInner = (props: EnterYourOrganizationPageProps) => {
 
     const initialProfileFormData = profile.profile
         ? {
-              firstName: profile.profile.firstName,
-              lastName: profile.profile.lastName,
-              photoRef: profile.profile.photoRef,
-          }
+            firstName: profile.profile.firstName,
+            lastName: profile.profile.lastName,
+            photoRef: profile.profile.photoRef,
+        }
         : null;
 
     return (
